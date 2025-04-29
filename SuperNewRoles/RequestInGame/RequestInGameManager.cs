@@ -3,8 +3,12 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Net.Http;
-using System.Text.Json;
+using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 using System.Threading.Tasks;
+using Il2CppInterop.Runtime;
+using BepInEx.Unity.IL2CPP.Utils.Collections;
+using SuperNewRoles.Modules;
 
 namespace SuperNewRoles.RequestInGame;
 
@@ -81,8 +85,8 @@ public class RequestInGameManager
         {
             var response = await client.PostAsync("https://reports-api.supernewroles.com/createAccount/", new StringContent(""));
             var content = await response.Content.ReadAsStringAsync();
-            using var document = System.Text.Json.JsonDocument.Parse(content);
-            Token = document.RootElement.GetProperty("token").GetString() ?? string.Empty;
+            var jsonObj = JsonParser.Parse(content) as Dictionary<string, object>;
+            Token = (jsonObj != null && jsonObj.TryGetValue("token", out var tokenVal) && tokenVal is string tokenStr) ? tokenStr : string.Empty;
             File.WriteAllText(FilePath, Token);
             ValidatedToken = true;
         }
@@ -99,15 +103,22 @@ public class RequestInGameManager
                 return new List<Thread>();
             }
             var content = await response.Content.ReadAsStringAsync();
-            Logger.Info(content);
-            using var document = JsonDocument.Parse(content);
-            var threads = document.RootElement.EnumerateArray().Select(thread => new Thread
-            (
-                title: thread.GetProperty("title").GetString() ?? string.Empty,
-                thread_id: thread.GetProperty("thread_id").GetString() ?? string.Empty,
-                first_message: thread.GetProperty("message").GetString() ?? string.Empty,
-                created_at: thread.GetProperty("created_at").GetString() ?? string.Empty
-            )).ToList();
+            List<Thread> threads = new();
+            var root = JsonParser.Parse(content) as Dictionary<string, object>;
+            if (root != null && root.TryGetValue("threads", out var threadsValue) && threadsValue is List<object> threadsList)
+            {
+                foreach (var threadObj in threadsList)
+                {
+                    if (threadObj is Dictionary<string, object> threadDict)
+                    {
+                        string title = threadDict.TryGetValue("title", out var titleVal) && titleVal is string titleStr ? titleStr : string.Empty;
+                        string threadId = threadDict.TryGetValue("thread_id", out var idVal) && idVal is string idStr ? idStr : string.Empty;
+                        string firstMessage = threadDict.TryGetValue("message", out var msgVal) && msgVal is string msgStr ? msgStr : string.Empty;
+                        string createdAt = threadDict.TryGetValue("created_at", out var caVal) && caVal is string caStr ? caStr : string.Empty;
+                        threads.Add(new Thread(threadId, title, firstMessage, createdAt));
+                    }
+                }
+            }
             return threads;
         }
     }
@@ -122,17 +133,22 @@ public class RequestInGameManager
                 return new List<Message>();
             }
             var content = await response.Content.ReadAsStringAsync();
-            Logger.Info(content);
-            using var document = JsonDocument.Parse(content);
-            var messages = document.RootElement.EnumerateArray()
-                .Select(msg => new Message(
-                    message_id: msg.GetProperty("message_id").GetString() ?? string.Empty,
-                    content: msg.GetProperty("content").GetString() ?? string.Empty,
-                    sender: msg.TryGetProperty("sender", out var senderEl) && senderEl.ValueKind != JsonValueKind.Null
-                        ? senderEl.GetString() ?? string.Empty
-                        : string.Empty,
-                    created_at: msg.GetProperty("created_at").GetString() ?? string.Empty
-                )).ToList();
+            List<Message> messages = new();
+            var root2 = JsonParser.Parse(content) as Dictionary<string, object>;
+            if (root2 != null && root2.TryGetValue("messages", out var msgsValue) && msgsValue is List<object> msgsList)
+            {
+                foreach (var msgObj in msgsList)
+                {
+                    if (msgObj is Dictionary<string, object> msgDict)
+                    {
+                        string messageId = msgDict.TryGetValue("message_id", out var midVal) && midVal is string midStr ? midStr : string.Empty;
+                        string msgContent2 = msgDict.TryGetValue("content", out var contVal) && contVal is string contStr ? contStr : string.Empty;
+                        string sender = msgDict.TryGetValue("sender", out var senVal) && senVal is string senStr ? senStr : string.Empty;
+                        string createdAt2 = msgDict.TryGetValue("created_at", out var ca2Val) && ca2Val is string ca2Str ? ca2Str : string.Empty;
+                        messages.Add(new Message(messageId, msgContent2, sender, createdAt2));
+                    }
+                }
+            }
             return messages;
         }
     }
@@ -145,7 +161,7 @@ public class RequestInGameManager
                 { "thread_id", thread_id },
                 { "content", text }
             };
-            var content = new StringContent(JsonSerializer.Serialize(data), System.Text.Encoding.UTF8, "application/json");
+            var content = new StringContent(JsonConvert.SerializeObject(data.Wrap()), System.Text.Encoding.UTF8, "application/json");
             var response = await client.PostAsync($"https://reports-api.supernewroles.com/sendMessage/{thread_id}", content);
             if (response.IsSuccessStatusCode)
             {
@@ -166,7 +182,7 @@ public class RequestInGameManager
         {
             additionalInfo["message"] = description;
             additionalInfo["title"] = title;
-            var content = new StringContent(JsonSerializer.Serialize(additionalInfo), System.Text.Encoding.UTF8, "application/json");
+            var content = new StringContent(JsonConvert.SerializeObject(additionalInfo.Wrap()), System.Text.Encoding.UTF8, "application/json");
             var response = await client.PostAsync($"https://reports-api.supernewroles.com/sendRequest/{type}", content);
             if (response.IsSuccessStatusCode)
             {

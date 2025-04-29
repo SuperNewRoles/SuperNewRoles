@@ -273,6 +273,15 @@ public static class ModHelpers
     {
         return GetSystemEnumerable<T>(list.TryCast<Il2CppSystem.Collections.IEnumerable>());
     }
+    public static Il2CppSystem.Collections.Generic.Dictionary<TKey, TValue> Wrap<TKey, TValue>(this Dictionary<TKey, TValue> dict)
+    {
+        var newDict = new Il2CppSystem.Collections.Generic.Dictionary<TKey, TValue>();
+        foreach (var item in dict)
+        {
+            newDict.Add(item.Key, item.Value);
+        }
+        return newDict;
+    }
     public static T TryGetIndex<T>(this List<T> list, int index)
     {
         if (index < 0 || index >= list.Count) return default;
