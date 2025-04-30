@@ -37,6 +37,7 @@ public class PenguinAbility : TargetCustomButtonBase, IButtonEffect
     private ExPlayerControl targetPlayer;
 
     private EventListener fixedUpdateEvent;
+    private EventListener<WrapUpEventData> wrapUpEvent;
     private KillableAbility customKillButtonAbility;
     private bool CanKill;
     public PenguinAbility(float coolDown, float effectDuration, bool meetingKill, bool CanKill)
@@ -58,6 +59,7 @@ public class PenguinAbility : TargetCustomButtonBase, IButtonEffect
         base.DetachToAlls();
         fixedUpdateEvent?.RemoveListener();
         _onMeetingStartEvent?.RemoveListener();
+        wrapUpEvent?.RemoveListener();
     }
     private void OnFixedUpdate()
     {
@@ -75,6 +77,7 @@ public class PenguinAbility : TargetCustomButtonBase, IButtonEffect
         customKillButtonAbility = new KillableAbility(() => CanKill || (targetPlayer != null && targetPlayer.IsAlive()));
         Player.AttachAbility(customKillButtonAbility, new AbilityParentAbility(this));
         fixedUpdateEvent = FixedUpdateEvent.Instance.AddListener(OnFixedUpdate);
+        wrapUpEvent = WrapUpEvent.Instance.AddListener(OnWrapUp);
     }
 
     private void OnMeetingStart(MeetingStartEventData data)
@@ -88,7 +91,14 @@ public class PenguinAbility : TargetCustomButtonBase, IButtonEffect
             RpcEndPenguin(Player, this);
         }
     }
-
+    private void OnWrapUp(WrapUpEventData data)
+    {
+        if (targetPlayer == null) return;
+        if (data.exiled == Player || Player.IsDead())
+            targetPlayer = null;
+        else if (Player.AmOwner)
+            RpcKillPenguinTarget(Player, this);
+    }
     [CustomRPC]
     public static void RpcStartPenguin(ExPlayerControl source, PlayerControl target, ulong abilityId)
     {
