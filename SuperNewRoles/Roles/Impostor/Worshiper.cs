@@ -13,7 +13,7 @@ class Worshiper : RoleBase<Worshiper>
     public override RoleId Role { get; } = RoleId.Worshiper;
     public override Color32 RoleColor { get; } = Palette.ImpostorRed;
     public override List<Func<AbilityBase>> Abilities { get; } = [
-        () => new SuicideButtonAbility(WorshiperAbilitySuicideCoolTime),
+        () => new SuicideButtonAbility(WorshiperAbilitySuicideCoolTime, AssetManager.GetAsset<Sprite>("ShermansServantSuicideButton.png")),
         () => new MadmateAbility(
             new(WorshiperHasImpostorVision, WorshiperCanUseVent, WorshiperCanKnowImpostors, WorshiperNeededTaskCount, WorshiperIsSpecialTasks ? WorshiperSpecialTasks : null)
         )
@@ -31,9 +31,6 @@ class Worshiper : RoleBase<Worshiper>
 
     [CustomOptionFloat("WorshiperAbilitySuicideCoolTime", 0f, 60f, 2.5f, 30f)]
     public static float WorshiperAbilitySuicideCoolTime;
-
-    [CustomOptionFloat("WorshiperKillSuicideCoolTime", 2.5f, 60f, 2.5f, 30f)]
-    public static float WorshiperKillSuicideCoolTime;
 
     [CustomOptionBool("WorshiperCanUseVent", false, translationName: "CanUseVent")]
     public static bool WorshiperCanUseVent;

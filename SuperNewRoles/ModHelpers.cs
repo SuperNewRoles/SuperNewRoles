@@ -84,6 +84,25 @@ public static class ModHelpers
             return false;
         }
     }
+    public static bool IsSabotageAvailable(bool isMushroomMixAsSabotage = true)
+    {
+        try
+        {
+            if (isMushroomMixAsSabotage && PlayerControl.LocalPlayer.IsMushroomMixupActive())
+            {
+                return true;
+            }
+            foreach (PlayerTask task in PlayerControl.LocalPlayer.myTasks)
+            {
+                if (task.TaskType is TaskTypes.FixLights or TaskTypes.RestoreOxy or TaskTypes.ResetReactor or TaskTypes.ResetSeismic or TaskTypes.FixComms or TaskTypes.StopCharles)
+                {
+                    return true;
+                }
+            }
+        }
+        catch { }
+        return false;
+    }
     public static string Cs(Color c, string s)
     {
         return $"<color=#{ToByte(c.r):X2}{ToByte(c.g):X2}{ToByte(c.b):X2}{ToByte(c.a):X2}>{s}</color>";
@@ -281,6 +300,19 @@ public static class ModHelpers
             newDict.Add(item.Key, item.Value);
         }
         return newDict;
+    }
+    public static TValue GetOrDefault<TKey, TValue>(this Dictionary<TKey, TValue> dict, TKey key, TValue defaultValue = default)
+    {
+        if (dict.TryGetValue(key, out TValue value))
+            return value;
+        return defaultValue;
+    }
+    public static void AddOrUpdate<TKey>(this Dictionary<TKey, int> dict, TKey key, int value)
+    {
+        if (dict.TryGetValue(key, out int oldValue))
+            dict[key] = oldValue + value;
+        else
+            dict[key] = value;
     }
     public static T TryGetIndex<T>(this List<T> list, int index)
     {

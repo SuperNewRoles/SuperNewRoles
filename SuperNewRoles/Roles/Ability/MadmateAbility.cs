@@ -53,7 +53,7 @@ public class MadmateData
         if (_lastTaskChecked) return true;
         var (complete, all) = ModHelpers.TaskCompletedData(ExPlayerControl.LocalPlayer.Data);
         if (complete == -1 || all == -1) return false;
-        return _lastTaskChecked = complete >= TaskNeeded;
+        return _lastTaskChecked = complete >= Math.Min(TaskNeeded, SpecialTasks.Total);
     }
     public MadmateData(bool hasImpostorVision, bool couldUseVent, bool couldKnowImpostors, int taskNeeded, TaskOptionData specialTasks)
     {

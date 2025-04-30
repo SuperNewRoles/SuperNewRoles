@@ -13,11 +13,13 @@ public class GhostAssignRole
     public static int ImpostorGhostRolePlayerNum = 0;
     public static int NeutralGhostRolePlayerNum = 0;
     public static int CrewmateGhostRolePlayerNum = 0;
+    public static Dictionary<GhostRoleId, int> GhostRolePlayerNum = new();
     public static void ClearAndReloads()
     {
         ImpostorGhostRolePlayerNum = int.MaxValue;
         NeutralGhostRolePlayerNum = int.MaxValue;
         CrewmateGhostRolePlayerNum = int.MaxValue;
+        GhostRolePlayerNum.Clear();
     }
     public static bool Prefix([HarmonyArgument(0)] PlayerControl player, bool specialRolesAllowed)
     {
@@ -104,6 +106,7 @@ public class GhostAssignRole
         }
         var assignrole = Assing(ghostRoles);
         if (assignrole == GhostRoleId.None) return false;
+        GhostRolePlayerNum.AddOrUpdate(assignrole, 1);
         switch (assignTeam)
         {
             case AssignedTeamType.Impostor:
@@ -142,7 +145,7 @@ public class GhostAssignRole
 
             //確率が0%ではないかつ、
             //もう割り当てきられてないか(最大人数まで割り当てられていないか)
-            if (selection != 0 && count > ExPlayerControl.ExPlayerControls.Count((ExPlayerControl pc) => pc.GhostRole == data.RoleId))
+            if (selection != 0 && count > GhostRolePlayerNum.GetOrDefault(data.RoleId, 0))
             {
                 //100%なら100%アサインListに入れる
                 if (selection == 10)

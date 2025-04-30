@@ -14,13 +14,14 @@ public class ButtonerAbility : CustomButtonBase, IAbilityCount
     public override float DefaultTimer => Data.cooldown;
     public override string buttonText => ModTranslation.GetString("ButtonerButtonText");
     private Sprite _sprite;
-    public override Sprite Sprite => _sprite ??= AssetManager.GetAsset<Sprite>("ButtonerButton.png");
+    public override Sprite Sprite => _sprite;
     protected override KeyType keytype => KeyType.Ability1;
     public ButtonerAbilityData Data { get; }
 
-    public ButtonerAbility(ButtonerAbilityData data)
+    public ButtonerAbility(ButtonerAbilityData data, Sprite sprite)
     {
         Data = data;
+        _sprite = sprite;
     }
 
     public override void AttachToAlls()
@@ -31,7 +32,7 @@ public class ButtonerAbility : CustomButtonBase, IAbilityCount
 
     public override bool CheckIsAvailable()
     {
-        return Timer <= 0f && HasCount;
+        return Timer <= 0f && HasCount && ModHelpers.IsSabotageAvailable();
     }
 
     public override void OnClick()

@@ -160,7 +160,7 @@ public abstract class CustomButtonBase : AbilityBase
         }
         bool active = HudManager.Instance.UseButton.isActiveAndEnabled || HudManager.Instance.PetButton.isActiveAndEnabled;
         SetActive(active);
-        if (Timer > 0 && (Timer == MaybeZero || CheckDecreaseCoolCount())) DecreaseTimer();
+        if (Timer > 0 && (Timer == MaybeZero || CheckDecreaseCoolCount()) && buttonEffect?.isEffectActive != true) DecreaseTimer();
         actionButton.graphic.sprite = Sprite;
         //エフェクト中は直後のbuttonEffect.Updateで表記が上書きされる……はず
         actionButton.SetCoolDown(Timer, DefaultTimerAdjusted);

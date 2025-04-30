@@ -97,6 +97,7 @@ class RevenantAbility : TargetCustomButtonBase
         customHauntToAbility = new CustomHauntToAbility(() => HauntedPlayers?.FirstOrDefault().player);
         Player.AttachAbility(customTaskAbility, new AbilityParentAbility(this));
         Player.AttachAbility(customHauntToAbility, new AbilityParentAbility(this));
+        Player.AttachAbility(new DisibleHauntAbility(() => Player.GhostRole == GhostRoleId.Revenant), new AbilityParentAbility(this));
 
         if (Player.AmOwner)
             ReassignTasks();

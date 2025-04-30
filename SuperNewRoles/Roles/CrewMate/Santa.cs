@@ -30,9 +30,8 @@ internal class Santa : RoleBase<Santa>
                 (RoleId.Balancer, SantaBalancerPercentage),
                 (RoleId.Celebrity, SantaCelebrityPercentage),
                 (RoleId.HomeSecurityGuard, SantaHomeSecurityGuardPercentage),
-                // (RoleId.SuicidalIdeation, SantaSuicidalIdeationPercentage),
             }
-        )
+        ), "SantaButton.png"
     )];
     public override QuoteMod QuoteMod => QuoteMod.SuperNewRoles;
     public override AssignedTeamType AssignedTeam => AssignedTeamType.Crewmate;
@@ -74,6 +73,4 @@ internal class Santa : RoleBase<Santa>
     public static int SantaCelebrityPercentage;
     [CustomOptionInt("SantaHomeSecurityGuardPercentage", 0, 100, 5, 0)]
     public static int SantaHomeSecurityGuardPercentage;
-    [CustomOptionInt("SantaSuicidalIdeationPercentage", 0, 100, 5, 0)]
-    public static int SantaSuicidalIdeationPercentage;
 }

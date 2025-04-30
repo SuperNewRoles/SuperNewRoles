@@ -16,7 +16,7 @@ class NiceButtoner : RoleBase<NiceButtoner>
 {
     public override RoleId Role => RoleId.NiceButtoner;
     public override Color32 RoleColor => new(0, 255, 255, byte.MaxValue);
-    public override List<Func<AbilityBase>> Abilities => [() => new ButtonerAbility(new(NiceButtonerCooldown, NiceButtonerUseLimit))];
+    public override List<Func<AbilityBase>> Abilities => [() => new ButtonerAbility(new(NiceButtonerCooldown, NiceButtonerUseLimit), AssetManager.GetAsset<Sprite>("NiceButtonerButton.png"))];
     public override QuoteMod QuoteMod => QuoteMod.SuperNewRoles;
     public override AssignedTeamType AssignedTeam => AssignedTeamType.Crewmate;
     public override WinnerTeamType WinnerTeam => WinnerTeamType.Crewmate;

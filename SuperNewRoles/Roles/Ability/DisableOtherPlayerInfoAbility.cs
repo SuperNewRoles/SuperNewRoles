@@ -2,6 +2,7 @@ using System;
 using SuperNewRoles.Events;
 using SuperNewRoles.Modules;
 using SuperNewRoles.Modules.Events.Bases;
+using UnityEngine;
 
 namespace SuperNewRoles.Roles.Ability;
 
@@ -34,5 +35,7 @@ public class DisableOtherPlayerInfoAbility : AbilityBase
             data.Player.PlayerInfoText.enabled = false;
         if (data.Player.PlayerInfoText != null)
             data.Player.PlayerInfoText.enabled = false;
+        data.Player.cosmetics.nameText.color = Color.white;
+        data.Player.cosmetics.nameText.text = data.Player.Data.PlayerName;
     }
 }

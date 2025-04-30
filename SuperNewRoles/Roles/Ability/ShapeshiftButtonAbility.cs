@@ -37,6 +37,7 @@ public class ShapeshiftButtonAbility : CustomButtonBase, IButtonEffect
     public bool effectCancellable => true; // Allow cancelling the shapeshift early
 
     private PlayerControl _shapeTarget;
+    public PlayerControl ShapeTarget => _shapeTarget;
 
     // Constructor to set duration and cooldown
     public ShapeshiftButtonAbility(float durationTime, float coolTime)
@@ -104,9 +105,9 @@ public class ShapeshiftButtonAbility : CustomButtonBase, IButtonEffect
     private EventListener<ShapeshiftEventData> _shapeshiftEvent;
     private EventListener<WrapUpEventData> _wrapUpEvent;
 
-    public override void AttachToLocalPlayer()
+    public void AttachToLocalPlayer(PlayerControl player)
     {
-        base.AttachToLocalPlayer();
+        base.Attach(player, 0, null);
         _shapeshiftEvent = ShapeshiftEvent.Instance.AddListener(OnShapeshift);
         _wrapUpEvent = WrapUpEvent.Instance.AddListener(OnWrapUp);
     }

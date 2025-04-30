@@ -32,7 +32,7 @@ internal class Teleporter : RoleBase<Teleporter>
 
     [CustomOptionFloat("TeleporterCooldown", 5f, 120f, 5f, 45f, translationName: "CoolTime")]
     public static float TeleporterCooldown;
-    [CustomOptionFloat("TeleporterWaitingTime", 1f, 10f, 1f, 5f)]
+    [CustomOptionFloat("TeleporterWaitingTime", 0f, 10f, 1f, 3f)]
     public static float TeleporterWaitingTime;
 
 }
@@ -75,7 +75,7 @@ internal class TeleporterAbility : CustomButtonBase, IButtonEffect
     private void Teleport()
     {
         ExPlayerControl targetPlayer = ExPlayerControl.ExPlayerControls.Where(p => p.IsAlive()).ToList().GetRandom();
-        RpcAllTeleportTo(targetPlayer.GetTruePosition());
+        RpcAllTeleportTo(targetPlayer.GetTruePosition(), targetPlayer);
     }
 
     [CustomRPC]
@@ -97,10 +97,11 @@ internal class TeleporterAbility : CustomButtonBase, IButtonEffect
     }
 
     [CustomRPC]
-    public static void RpcAllTeleportTo(Vector2 position)
+    public static void RpcAllTeleportTo(Vector2 position, ExPlayerControl target)
     {
         foreach (var player in ExPlayerControl.ExPlayerControls)
             player.NetTransform.SnapTo(position);
         ExPlayerControl.LocalPlayer.RpcCustomSnapTo(position);
+        new CustomMessage(ModTranslation.GetString("TeleporterTeleportText", target.Data.PlayerName), 1, true);
     }
 }
