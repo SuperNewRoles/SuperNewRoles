@@ -600,7 +600,7 @@ BlackSantaWaveCannonPercentage,波動砲の確率(%),Wave Cannon Percentage (%),
 PenguinButtonText,ぺチペチ,Penguin!,企鵝!,企鵝!
 PenguinCooldown,クールダウン,Attach Cooldown,黏贴冷却时间,黏貼冷卻時間
 PenguinDuration,持続時間,Attach Duration,黏贴持续时间,黏貼持續時間
-PenguinMeetingKill,会議中に殺害する,Kill during meeting,会议期间杀死,會議期間殺死
+PenguinMeetingKill,会議召集時に殺害する,Kill during meeting,会议期间杀死,會議期間殺死
 PenguinCanDefaulKill,通常キルできる,Can default kill,可以默认杀死,可以預設殺死
 
 # Penguin Trophies

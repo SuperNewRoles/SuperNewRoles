@@ -52,6 +52,7 @@ public abstract class CustomButtonBase : AbilityBase
     public abstract string buttonText { get; }
     private const float MaybeZero = 0.001f;
     public abstract Sprite Sprite { get; }
+    public virtual Action OnClickEventAction { get; set; } = () => { };
     private static readonly Color GrayOut = new(1f, 1f, 1f, 0.3f);
 
     public virtual bool IsFirstCooldownTenSeconds => true;
@@ -220,6 +221,7 @@ public abstract class CustomButtonBase : AbilityBase
         {
             actionButton.graphic.color = GrayOut;
             this.OnClick();
+            this.OnClickEventAction();
             ResetTimer();
             if (buttonEffect != null) buttonEffect.OnClick(actionButton);
         }

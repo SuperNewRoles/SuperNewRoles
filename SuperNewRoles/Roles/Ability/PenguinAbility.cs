@@ -53,16 +53,11 @@ public class PenguinAbility : TargetCustomButtonBase, IButtonEffect
         RpcStartPenguin(PlayerControl.LocalPlayer, Target, AbilityId);
         ResetTimer();
     }
-    public override void Detach()
+    public override void DetachToAlls()
     {
-        base.Detach();
-        if (fixedUpdateEvent != null)
-            FixedUpdateEvent.Instance.RemoveListener(fixedUpdateEvent);
-    }
-    public override void Attach(PlayerControl player, ulong abilityId, AbilityParentBase parent)
-    {
-        base.Attach(player, abilityId, parent);
-        fixedUpdateEvent = FixedUpdateEvent.Instance.AddListener(OnFixedUpdate);
+        base.DetachToAlls();
+        fixedUpdateEvent?.RemoveListener();
+        _onMeetingStartEvent?.RemoveListener();
     }
     private void OnFixedUpdate()
     {
@@ -75,16 +70,11 @@ public class PenguinAbility : TargetCustomButtonBase, IButtonEffect
     }
     public override void AttachToAlls()
     {
+        SyncKillCoolTimeAbility.CreateAndAttach(this);
         _onMeetingStartEvent = MeetingStartEvent.Instance.AddListener(OnMeetingStart);
         customKillButtonAbility = new KillableAbility(() => CanKill || (targetPlayer != null && targetPlayer.IsAlive()));
         Player.AttachAbility(customKillButtonAbility, new AbilityParentAbility(this));
-    }
-
-    public override void DetachToLocalPlayer()
-    {
-        base.DetachToLocalPlayer();
-        if (_onMeetingStartEvent != null)
-            MeetingStartEvent.Instance.RemoveListener(_onMeetingStartEvent);
+        fixedUpdateEvent = FixedUpdateEvent.Instance.AddListener(OnFixedUpdate);
     }
 
     private void OnMeetingStart(MeetingStartEventData data)
@@ -120,9 +110,9 @@ public class PenguinAbility : TargetCustomButtonBase, IButtonEffect
     {
         if (ability.targetPlayer != null && ability.targetPlayer.IsAlive())
         {
-            source.RpcCustomDeath(ability.targetPlayer, CustomDeathType.Kill);
+            ability.targetPlayer.CustomDeath(CustomDeathType.Kill, source: source);
         }
-        RpcEndPenguin(source, ability);
+        ability.targetPlayer = null;
     }
 }
 
