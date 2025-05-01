@@ -80,7 +80,7 @@ public class PavlovsOwnerAbility : AbilityBase
         }
         else
         {
-            RpcSetDogAbility(this, sidekick.PlayerAbilities.FirstOrDefault(x => x is PavlovsDogAbility) as PavlovsDogAbility);
+            RpcSetDogAbility(this, sidekick.GetAbility<PavlovsDogAbility>(), _sidekickCount);
         }
     }
 
@@ -93,10 +93,11 @@ public class PavlovsOwnerAbility : AbilityBase
         base.DetachToLocalPlayer();
     }
     [CustomRPC]
-    public static void RpcSetDogAbility(PavlovsOwnerAbility owner, PavlovsDogAbility dog)
+    public static void RpcSetDogAbility(PavlovsOwnerAbility owner, PavlovsDogAbility dog, int sidekickCount)
     {
         owner.dogAbility = dog;
         dog.ownerAbility = owner;
+        owner._sidekickCount = sidekickCount;
     }
     public bool HasRemainingDogCount()
     {

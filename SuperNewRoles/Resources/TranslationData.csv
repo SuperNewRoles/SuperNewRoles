@@ -470,6 +470,7 @@ SerialKillerCanSabotage,サボタージュを使用できる,Can Sabotage,可以
 SerialKillerSuicideText,自殺まで{0}秒,Suicide in {0} seconds,自杀前{0}秒,自殺前{0}秒
 
 # Pavlovs
+Pavlovs,パブロフの犬,Pavlov's Dog,帕夫洛夫的狗,帕夫洛夫的狗
 PavlovsOwnerCanUseVent,オーナーがベントを使用できる,Owner can use vents,主人可以使用通风口,主人可以使用通風口
 PavlovsOwnerSidekickCooldown,指名のクールタイム,Appointment Cooldown,指定冷却时间,指定冷卻時間
 PavlovsOwnerMaxSidekickCount,1試合内に指名できる回数,Maximum Appointments per Game,每局游戏最大指定次数,每局遊戲最大指定次數

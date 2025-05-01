@@ -4,6 +4,7 @@ using System.Linq;
 using HarmonyLib;
 using SuperNewRoles.Patches;
 using SuperNewRoles.Roles;
+using SuperNewRoles.Roles.Ability;
 using SuperNewRoles.Roles.Neutral;
 using UnityEngine;
 
@@ -235,7 +236,7 @@ public class PlayerStatistics
         TeamImpostorsAlive = alivePlayers.Count(player => player.IsImpostor());
         CrewAlive = alivePlayers.Count(player => player.IsCrewmate());
         TeamJackalAlive = alivePlayers.Count(player => player.IsJackalTeam());
-        TeamPavlovsAlive = alivePlayers.Count(player => player.IsPavlovsTeam());
+        TeamPavlovsAlive = alivePlayers.Count(player => player.Role == RoleId.PavlovsDog || (player.Role == RoleId.PavlovsOwner && player.GetAbility<PavlovsOwnerAbility>()?.HasRemainingDogCount() == true));
         ArsonistAlive = alivePlayers.Count(player => player.Role == RoleId.Arsonist);
         TotalAlive = alivePlayers.Count();
         TotalKiller = alivePlayers.Count(player => player.IsNonCrewKiller());

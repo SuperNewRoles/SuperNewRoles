@@ -107,7 +107,7 @@ public class PavlovsDogAbility : AbilityBase
         if (_isRampage && MeetingHud.Instance == null && ExileController.Instance == null)
         {
             _timer -= Time.fixedDeltaTime;
-            timerText.text = ModTranslation.GetString("PavlovsDogTimerText", _timer.ToString("F1"));
+            timerText.text = ModTranslation.GetString("PavlovsDogTimerText", _timer.ToString("F0"));
             if (_timer <= 0f)
             {
                 ExPlayerControl exLocalPlayer = (ExPlayerControl)Player;

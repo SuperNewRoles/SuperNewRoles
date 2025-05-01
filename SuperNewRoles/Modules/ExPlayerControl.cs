@@ -424,13 +424,7 @@ public class ExPlayerControl
     public bool IsImpostorWinTeam()
         => IsImpostor() || IsMadRoles() || Role == RoleId.MadKiller || GhostRole == GhostRoleId.Revenant;
     public bool IsPavlovsTeam()
-    {
-        if (Role == RoleId.PavlovsDog)
-            return true;
-        if (PlayerAbilities.FirstOrDefault(x => x is PavlovsOwnerAbility) is PavlovsOwnerAbility ownerAbility)
-            return ownerAbility.HasRemainingDogCount();
-        return false;
-    }
+        => Role is RoleId.PavlovsDog or RoleId.PavlovsOwner;
     public bool IsMadRoles()
         => HasAbility(nameof(MadmateAbility));//|| HasAbility(nameof(ModifierMadmateAbility));
     public bool IsFriendRoles()
