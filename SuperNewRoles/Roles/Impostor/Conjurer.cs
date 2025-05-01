@@ -36,7 +36,7 @@ class Conjurer : RoleBase<Conjurer>
     [CustomOptionFloat("ConjurerCanAddLengthOption", 0.5f, 40f, 1f, 10f)]
     public static float ConjurerCanAddLength;
 
-    [CustomOptionFloat("ConjurerBeaconCooldownOption", 5f, 60f, 1f, 15f)]
+    [CustomOptionFloat("ConjurerBeaconCooldownOption", 5f, 60f, 1f, 15f, translationName: "CoolTime")]
     public static float ConjurerBeaconCooldown;
 
     [CustomOptionBool("ConjurerCanKillImpostorOption", false)]
@@ -58,7 +58,7 @@ public class ConjurerAbility : AbilityBase
     {
         Data = data;
         Count = 0;
-        Positions = new Vector2[] { new(), new(), new() };
+        Positions = [new(), new(), new()];
     }
 
     public override void AttachToAlls()
@@ -167,7 +167,6 @@ public class ConjurerBeaconButton : CustomButtonBase
     public ConjurerBeaconButton(ConjurerAbility ability)
     {
         this.ability = ability;
-        AttachToLocalPlayer();
     }
 
     public override float DefaultTimer => ability.Data.ConjurerBeaconCooldown;

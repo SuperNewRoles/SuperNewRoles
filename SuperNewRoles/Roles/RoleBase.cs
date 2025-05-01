@@ -48,6 +48,7 @@ internal abstract class RoleBase<T> : BaseSingleton<T>, IRoleBase where T : Role
     }
 
     public abstract RoleOptionMenuType OptionTeam { get; }
+    public virtual MapNames[] AvailableMaps { get; } = [];
 
     // public abstract void CreateCustomOption();
 }
@@ -79,7 +80,7 @@ public interface IRoleBase
     public AudioClip CustomIntroSound { get; }
 
     public RoleId[] RelatedRoleIds { get; }
-
+    public MapNames[] AvailableMaps { get; }
     /// <summary>
     /// AbilityはAbilitiesから自動でセットされるが、追加で他の処理を行いたい場合はOverrideすること
     /// </summary>

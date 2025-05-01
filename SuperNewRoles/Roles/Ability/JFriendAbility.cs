@@ -61,7 +61,7 @@ public class JFriendAbility : AbilityBase
         if (!Data.CouldKnowJackals) _canKnowJackal = false;
         else
         {
-            var (complete, all) = ModHelpers.TaskCompletedData(ExPlayerControl.LocalPlayer.Data);
+            var (complete, all) = ModHelpers.TaskCompletedData(player.Data);
             if (complete == -1 || all == -1) _canKnowJackal = false;
             else _canKnowJackal = complete >= Data.TaskNeeded;
         }

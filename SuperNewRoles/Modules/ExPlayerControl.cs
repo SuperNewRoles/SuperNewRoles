@@ -145,7 +145,7 @@ public class ExPlayerControl
     {
         if (GhostRole == ghostRoleId) return;
         DetachOldGhostRole(GhostRole);
-        if (AmOwner)
+        if (AmOwner && GhostRole != GhostRoleId.None)
             SuperTrophyManager.DetachTrophy(GhostRole);
         GhostRole = ghostRoleId;
         if (CustomRoleManager.TryGetGhostRoleById(ghostRoleId, out var role))
@@ -153,12 +153,9 @@ public class ExPlayerControl
             role.OnSetRole(Player);
             if (AmOwner)
                 SuperTrophyManager.RegisterTrophy(Role);
+            if (GhostRoleBase != null)
+                DetachOldGhostRole(GhostRoleBase.Role);
             GhostRoleBase = role;
-            foreach (var modifier in ModifierRoleBases)
-            {
-                if (!modifier.AssignedTeams.Contains(roleBase.AssignedTeam))
-                    DetachOldModifierRole(modifier.ModifierRole);
-            }
         }
         else
         {
@@ -196,7 +193,7 @@ public class ExPlayerControl
     }
     public bool showKillButtonVanilla()
     {
-        return _customKillButtonAbility == null && (_killableAbility == null || _killableAbility.CanKill);
+        return IsImpostor() && _customKillButtonAbility == null && (_killableAbility == null || _killableAbility.CanKill);
     }
     private void DetachOldRole(RoleId roleId)
     {
@@ -414,6 +411,10 @@ public class ExPlayerControl
     }
     public bool IsKiller()
         => IsImpostor() || Role == RoleId.PavlovsDog || Role == RoleId.MadKiller || IsJackal() || HasCustomKillButton() || Role == RoleId.Hitman;
+
+    public bool IsNonCrewKiller()
+        => IsKiller() && !IsCrewmate();
+
     public bool IsCrewmate()
         => roleBase != null ? roleBase.AssignedTeam == AssignedTeamType.Crewmate && !IsMadRoles() : !Data.Role.IsImpostor;
     public bool IsImpostor()
@@ -421,15 +422,9 @@ public class ExPlayerControl
     public bool IsNeutral()
         => roleBase != null ? roleBase.AssignedTeam == AssignedTeamType.Neutral : false;
     public bool IsImpostorWinTeam()
-        => IsImpostor() || IsMadRoles() || Role == RoleId.MadKiller;
+        => IsImpostor() || IsMadRoles() || Role == RoleId.MadKiller || GhostRole == GhostRoleId.Revenant;
     public bool IsPavlovsTeam()
-    {
-        if (Role == RoleId.PavlovsDog)
-            return true;
-        if (PlayerAbilities.FirstOrDefault(x => x is PavlovsOwnerAbility) is PavlovsOwnerAbility ownerAbility)
-            return ownerAbility.HasRemainingDogCount();
-        return false;
-    }
+        => Role is RoleId.PavlovsDog or RoleId.PavlovsOwner;
     public bool IsMadRoles()
         => HasAbility(nameof(MadmateAbility));//|| HasAbility(nameof(ModifierMadmateAbility));
     public bool IsFriendRoles()

@@ -145,19 +145,13 @@ public class DatahackerAbility : AbilityBase
 
     private void UpdateNameText(NameTextUpdateEventData data)
     {
-        if (data.Player == Player && Player != ExPlayerControl.LocalPlayer && ExPlayerControl.LocalPlayer.IsKiller() && exposedToImpostors)
+        if (data.Player == Player && Player != ExPlayerControl.LocalPlayer && ExPlayerControl.LocalPlayer.IsNonCrewKiller() && exposedToImpostors)
             NameText.SetNameTextColor(data.Player, Datahacker.Instance.RoleColor);
         else if (Player.AmOwner && hackingCompleted)
         {
             if (MeetingHud.Instance != null && !hackingData.CanSeeDuringMeeting) return;
-            if (data.Player.IsImpostor() && hackingData.CanSeeImpostor)
-                NameText.SetNameTextColor(data.Player, Palette.ImpostorRed);
-            else if (data.Player.IsNeutral() && hackingData.CanSeeNeutral)
-                NameText.SetNameTextColor(data.Player, Jackal.Instance.RoleColor);
-            else if (data.Player.IsMadRoles() && hackingData.CanSeeMadmates)
-                NameText.SetNameTextColor(data.Player, Palette.ImpostorRed);
-            else if ((data.Player.IsCrewmate() || data.Player.IsMadRoles()) && hackingData.CanSeeCrew)
-                NameText.SetNameTextColor(data.Player, Color.white);
+            if (CanSeeRole(data.Player, out Color color))
+                NameText.SetNameTextColor(data.Player, color);
             if (hackingData.CanSeeRoleNames)
                 NameText.UpdateVisiable(data.Player, true);
         }
@@ -211,9 +205,10 @@ public class DatahackerAbility : AbilityBase
         if (exposedToImpostors && arrow == null)
         {
             arrow = new Arrow(Datahacker.Instance.RoleColor);
+            arrow.arrow.SetActive(false);
             NameText.UpdateNameInfo(Player);
         }
-        else if (hackingCompleted && !oldhackingCompleted)
+        if (hackingCompleted && !oldhackingCompleted)
             NameText.UpdateAllNameInfo();
     }
 
@@ -222,7 +217,7 @@ public class DatahackerAbility : AbilityBase
     /// </summary>
     private void UpdateArrow()
     {
-        if (!hackingData.ShowArrowWhenExposed || !ExPlayerControl.LocalPlayer.IsKiller() || !exposedToImpostors)
+        if (!hackingData.ShowArrowWhenExposed || !ExPlayerControl.LocalPlayer.IsNonCrewKiller() || !exposedToImpostors)
         {
             if (arrow != null && arrow.arrow != null && arrow.arrow.activeSelf)
                 arrow.arrow.SetActive(false);
@@ -233,5 +228,30 @@ public class DatahackerAbility : AbilityBase
                 arrow.arrow.SetActive(true);
             arrow.Update(Player.transform.position);
         }
+    }
+    private bool CanSeeRole(ExPlayerControl target, out Color color)
+    {
+        if (target.IsNeutral() && hackingData.CanSeeNeutral)
+        {
+            color = new(127, 127, 127, byte.MaxValue);
+            return hackingData.CanSeeKillingNeutral ? target.IsKiller() : true;
+        }
+        if (target.IsMadRoles() && hackingData.CanSeeMadmates)
+        {
+            color = Palette.ImpostorRed;
+            return true;
+        }
+        if (target.IsCrewmate() && hackingData.CanSeeCrew)
+        {
+            color = target.Data.Role.TeamColor;
+            return true;
+        }
+        if (target.IsImpostor() && hackingData.CanSeeImpostor)
+        {
+            color = Palette.ImpostorRed;
+            return true;
+        }
+        color = Color.clear;
+        return false;
     }
 }

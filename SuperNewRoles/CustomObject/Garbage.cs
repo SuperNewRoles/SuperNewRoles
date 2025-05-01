@@ -46,6 +46,7 @@ public class Garbage
         AllPlayerCanSeeGarbage = allPlayerCanSeeGarbage;
         GarbageObject = Object.Instantiate(InstantiateGarbage, AllGarbageObject.transform);
         GarbageObject.transform.position = new(pos.x, pos.y, (pos.y / 1000f) + 0.0005f);
+        GarbageObject.transform.localScale *= 1.5f;
         GarbageObject.name = $"Garbage {madeBy.PlayerId} {index}";
         Index = index;
         MadeBy = madeBy;

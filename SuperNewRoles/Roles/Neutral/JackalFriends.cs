@@ -38,11 +38,11 @@ class JackalFriends : RoleBase<JackalFriends>
     [CustomOptionBool("JackalFriendsImpostorVision", true, translationName: "HasImpostorVision")]
     public static bool JackalFriendsImpostorVision;
 
-    [CustomOptionBool("JackalFriendsCouldKnowJackals", true)]
-    public static bool JackalFriendsCouldKnowJackals;
-
     [CustomOptionBool("JackalFriendsDontAssignIfJackalNotAssigned", true)]
     public static bool JackalFriendsDontAssignIfJackalNotAssigned;
+
+    [CustomOptionBool("JackalFriendsCouldKnowJackals", true)]
+    public static bool JackalFriendsCouldKnowJackals;
 
     [CustomOptionInt("JackalFriendsTaskNeed", 0, 10, 1, 0, parentFieldName: nameof(JackalFriendsCouldKnowJackals))]
     public static int JackalFriendsTaskNeed;

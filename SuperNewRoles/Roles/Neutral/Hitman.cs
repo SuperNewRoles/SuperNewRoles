@@ -100,6 +100,7 @@ public class HitmanAbility : AbilityBase
     public HitmanAbility(HitmanData data)
     {
         Data = data;
+        _timer = Data.ChangeTargetTime;
     }
     public override void AttachToAlls()
     {
@@ -133,7 +134,7 @@ public class HitmanAbility : AbilityBase
         _fixedUpdateListener = FixedUpdateEvent.Instance.AddListener(OnFixedUpdate);
         _murderListener = MurderEvent.Instance.AddListener(OnMurder);
         reSelect();
-        ArrowToTarget = new Arrow(Hitman.Instance.RoleColor);
+        ArrowToTarget = new Arrow(Color.red);
     }
     public override void DetachToLocalPlayer()
     {
@@ -151,7 +152,7 @@ public class HitmanAbility : AbilityBase
     {
         if (data.Player != Player) return;
         if (!data.Visiable) return;
-        string hitmanText = ModHelpers.Cs(Hitman.Instance.RoleColor, $"({_successCount}/{Data.WinKillCount})");
+        string hitmanText = ModHelpers.Cs(Color.cyan, $"({_successCount}/{Data.WinKillCount})");
         if (Data.IsOutMission)
             hitmanText += ModHelpers.Cs(Color.red, $"({_failedCount}/{Data.OutMissionLimit})");
         Player.PlayerInfoText.text += hitmanText;

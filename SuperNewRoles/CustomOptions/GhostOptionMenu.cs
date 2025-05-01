@@ -18,9 +18,9 @@ public static class GhostOptionMenu
 
     public static void ShowGhostOptionMenu()
     {
-        if (GhostOptionMenuObjectData.Instance == null)
+        if (GhostOptionMenuObjectData.Instance?.MenuObject == null)
             InitializeGhostOptionMenu();
-        GhostOptionMenuObjectData.Instance.MenuObject.SetActive(true);
+        GhostOptionMenuObjectData.Instance.MenuObject?.SetActive(true);
         UpdateMenuTitle();
         UpdateGhostRoleButtons();
         HideRightSettings();

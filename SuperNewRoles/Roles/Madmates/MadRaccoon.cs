@@ -20,11 +20,7 @@ class MadRaccoon : RoleBase<MadRaccoon>
             MadRaccoonCanKnowImpostors,
             MadRaccoonNeededTaskCount,
             MadRaccoonIsSpecialTasks ? MadRaccoonSpecialTasks : null)),
-        () => new DoppelgangerAbility(new(
-            durationTime: MadRaccoonShapeshiftDuration,
-            coolTime: MadRaccoonShapeshiftCooldown,
-            sucCool: MadRaccoonShapeshiftCooldown,
-            notSucCool: MadRaccoonShapeshiftCooldown))
+        () => new ShapeshiftButtonAbility(MadRaccoonShapeshiftCooldown, MadRaccoonShapeshiftDuration)
     ];
 
     public override QuoteMod QuoteMod { get; } = QuoteMod.TheOtherRoles;

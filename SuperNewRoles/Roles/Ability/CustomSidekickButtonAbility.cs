@@ -12,7 +12,7 @@ public class CustomSidekickButtonAbility : TargetCustomButtonBase
     private readonly Func<bool, bool> _canCreateSidekick;
     private readonly Func<float?> _sidekickCooldown;
     private readonly Func<RoleId> _sidekickRole;
-    private readonly Func<RoleTypes> _sidekickRoleVanilla;
+    private readonly Func<RoleTypes?> _sidekickRoleVanilla;
     private readonly Action<ExPlayerControl> _onSidekickCreated;
     private readonly Func<ExPlayerControl, bool>? _sidekickSuccess;
     private readonly SidekickedPromoteData? _sidekickedPromoteData;
@@ -21,7 +21,7 @@ public class CustomSidekickButtonAbility : TargetCustomButtonBase
     private readonly Func<ExPlayerControl, bool>? _isTargetable;
     public Action<float> OnCooldownStarted;
     private readonly bool _isSubButton;
-    public override Color32 OutlineColor => new Color32(0, 255, 255, 255);
+    public override Color32 OutlineColor => new(0, 255, 255, 255);
     public override Sprite Sprite => _sidekickSprite;
     public override string buttonText => _sidekickText;
     protected override KeyType keytype => _isSubButton ? KeyType.Ability2 : KeyType.Ability1;
@@ -37,7 +37,7 @@ public class CustomSidekickButtonAbility : TargetCustomButtonBase
         Func<bool, bool> canCreateSidekick,
         Func<float?> sidekickCooldown,
         Func<RoleId> sidekickRole,
-        Func<RoleTypes> sidekickRoleVanilla,
+        Func<RoleTypes?> sidekickRoleVanilla,
         Sprite sidekickSprite,
         string sidekickText,
         Func<int> sidekickCount,
@@ -70,7 +70,8 @@ public class CustomSidekickButtonAbility : TargetCustomButtonBase
         if (!_canCreateSidekick(_sidekickCreated)) return;
         if (_sidekickSuccess == null || _sidekickSuccess(Target))
         {
-            RpcSidekicked(Player, Target, _sidekickRole(), _sidekickRoleVanilla());
+            var vanillaRole = _sidekickRoleVanilla?.Invoke();
+            RpcSidekicked(Player, Target, _sidekickRole(), vanillaRole ?? RoleTypes.Crewmate, vanillaRole == null);
             var target = Target;
             if (_sidekickedPromoteData != null)
             {
@@ -97,10 +98,11 @@ public class CustomSidekickButtonAbility : TargetCustomButtonBase
         return ExPlayerControl.LocalPlayer.IsAlive() && _canCreateSidekick(_sidekickCreated);
     }
     [CustomRPC]
-    public static void RpcSidekicked(ExPlayerControl source, ExPlayerControl player, RoleId roleId, RoleTypes roleType)
+    public static void RpcSidekicked(ExPlayerControl source, ExPlayerControl player, RoleId roleId, RoleTypes roleType, bool isVanilla)
     {
         player.SetRole(roleId);
-        RoleManager.Instance.SetRole(player, roleType);
+        if (isVanilla)
+            RoleManager.Instance.SetRole(player, roleType);
         NameText.UpdateAllNameInfo();
     }
     [CustomRPC]

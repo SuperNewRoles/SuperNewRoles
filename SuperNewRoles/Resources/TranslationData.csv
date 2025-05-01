@@ -471,6 +471,7 @@ SerialKillerCanSabotage,サボタージュを使用できる,Can Sabotage,可以
 SerialKillerSuicideText,自殺まで{0}秒,Suicide in {0} seconds,自杀前{0}秒,自殺前{0}秒
 
 # Pavlovs
+Pavlovs,パブロフの犬,Pavlov's Dog,帕夫洛夫的狗,帕夫洛夫的狗
 PavlovsOwnerCanUseVent,オーナーがベントを使用できる,Owner can use vents,主人可以使用通风口,主人可以使用通風口
 PavlovsOwnerSidekickCooldown,指名のクールタイム,Appointment Cooldown,指定冷却时间,指定冷卻時間
 PavlovsOwnerMaxSidekickCount,1試合内に指名できる回数,Maximum Appointments per Game,每局游戏最大指定次数,每局遊戲最大指定次數
@@ -601,7 +602,7 @@ BlackSantaWaveCannonPercentage,波動砲の確率(%),Wave Cannon Percentage (%),
 PenguinButtonText,ぺチペチ,Penguin!,企鵝!,企鵝!
 PenguinCooldown,クールダウン,Attach Cooldown,黏贴冷却时间,黏貼冷卻時間
 PenguinDuration,持続時間,Attach Duration,黏贴持续时间,黏貼持續時間
-PenguinMeetingKill,会議中に殺害する,Kill during meeting,会议期间杀死,會議期間殺死
+PenguinMeetingKill,会議召集時に殺害する,Kill during meeting,会议期间杀死,會議期間殺死
 PenguinCanDefaulKill,通常キルできる,Can default kill,可以默认杀死,可以預設殺死
 
 # Penguin Trophies
@@ -641,7 +642,7 @@ SuicideWisherButtonText,自殺,Suicide,自杀,自殺
 JackalFriendsCouldKnowJackals,ジャッカルを知れる,Could Know Jackals,可以知道杰克,可以知道傑克
 JackalFriendsTaskNeed,知るためのタスク数,Task Needed to Know Jackals,需要知道杰克任务数,需要知道傑克任務數
 JackalFriendsCustomTaskCount,タスク数を独自にする,Custom Task Count,自定义任务数,自訂任務數
-JackalFriendsDontAssignIfJackalNotAssigned,ジャッカルがいないときに割選出しない,Don't Assign If Jackal Not Assigned,杰克不在时不要分配,傑克不在時不要分配
+JackalFriendsDontAssignIfJackalNotAssigned,ジャッカルがいないときに選出しない,Don't Assign If Jackal Not Assigned,杰克不在时不要分配,傑克不在時不要分配
 
 # WellBehaver
 WellBehaverLimitTrashCountSetting,ゴミの上限数,Limit Trash Count,垃圾上限,垃圾上限
@@ -730,6 +731,7 @@ RevenantHauntButtonText,呪う,Haunt,詛咒,詛咒
 TeleporterWaitingText,テレポート中... 残り{0}秒,Teleporting... Remaining {0}s,Teleporting... 剩餘{0}秒,Teleporting... 剩餘{0}秒
 TeleporterAbilityButtonText,テレポート,Teleport
 TeleporterWaitingTime,テレポート待機時間,Waiting Time,等待時間,等待時間
+TeleporterTeleportText,{0}へテレポートされた,Teleported to {0},被傳送到{0},被傳送到{0}
 
 # Pursuer
 PursuerUpdateInterval,追跡更新間隔,Update Interval,更新间隔,更新間隔
@@ -751,6 +753,10 @@ BakeryExileText2,パン屋がパンを焼いたようだ...,Bakery baked bread,�
 # MadRaccoon
 MadRaccoonShapeshiftCooldown,MadRaccoon Shapeshift Cooldown,シェイプシフトクールダウン
 MadRaccoonShapeshiftDuration,MadRaccoon Shapeshift Duration,シェイプシフト持続時間
+
+# Worshiper Options
+WorshiperCanKnowImpostors,インポスターが分かる,Can Know Impostors,可以知道内鬼,可以知道內鬼
+WorshiperAbilitySuicideCoolTime,自殺クールタイム,Suicide Cooldown,自殺冷卻時間,自殺冷卻時間
 
 # Owl
 OwlIntro1,暗闇に羽ばたきし者,The one who flapped his wings in the dark,黑暗中鼓动羽翼之人,在黑暗中鼓動翅膀的人

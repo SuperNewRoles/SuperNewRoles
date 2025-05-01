@@ -70,6 +70,10 @@ public static class AssignRoles
         {
             if (roleOption.NumberOfCrews <= 0)
                 continue;
+            if (CustomRoleManager.TryGetRoleById(roleOption.RoleId, out var role) &&
+                role.AvailableMaps.Length != 0 &&
+                !role.AvailableMaps.Any(map => (byte)map == GameOptionsManager.Instance.CurrentGameOptions.MapId))
+                continue;
             if (roleOption.Percentage >= 100)
             {
                 AssignTickets_HundredPercent[roleOption.AssignTeam].Add(new AssignTickets(roleOption));

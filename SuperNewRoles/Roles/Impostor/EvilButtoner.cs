@@ -16,7 +16,7 @@ class EvilButtoner : RoleBase<EvilButtoner>
 {
     public override RoleId Role => RoleId.EvilButtoner;
     public override Color32 RoleColor => Palette.ImpostorRed;
-    public override List<Func<AbilityBase>> Abilities => [() => new ButtonerAbility(new(EvilButtonerCooldown, EvilButtonerUseLimit))];
+    public override List<Func<AbilityBase>> Abilities => [() => new ButtonerAbility(new(EvilButtonerCooldown, EvilButtonerUseLimit), AssetManager.GetAsset<Sprite>("EvilButtonerButton.png"))];
     public override QuoteMod QuoteMod => QuoteMod.SuperNewRoles;
     public override AssignedTeamType AssignedTeam => AssignedTeamType.Impostor;
     public override WinnerTeamType WinnerTeam => WinnerTeamType.Impostor;

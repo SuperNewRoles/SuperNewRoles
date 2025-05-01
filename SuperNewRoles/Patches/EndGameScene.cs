@@ -193,7 +193,7 @@ public class EndGameManagerSetUpPatch
                 roleColor = Vulture.Instance.RoleColor;
                 break;
             case WinCondition.PavlovsWin:
-                baseText = "PavlovsDog";
+                baseText = "Pavlovs";
                 roleColor = PavlovsDog.Instance.RoleColor;
                 break;
             case WinCondition.ArsonistWin:

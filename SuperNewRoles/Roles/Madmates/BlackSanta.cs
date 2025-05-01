@@ -31,7 +31,7 @@ class BlackSanta : RoleBase<BlackSanta>
                     (RoleId.Penguin, BlackSantaPenguinPercentage),
                     (RoleId.WaveCannon, BlackSantaWaveCannonPercentage),
                 }
-            )
+            ), "BlackSantaButton.png"
         )
     ];
     public override QuoteMod QuoteMod => QuoteMod.SuperNewRoles;

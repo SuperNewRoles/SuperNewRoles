@@ -16,7 +16,8 @@ public class SantaAbility : AbilityBase
     private SantaAbilityData _data;
     private List<RoleId> _tickets;
     private RoleId _selectedRole;
-    public SantaAbility(SantaAbilityData data)
+    private Sprite _buttonSprite;
+    public SantaAbility(SantaAbilityData data, string buttonSpritePath)
     {
         _data = data;
         _tickets = new();
@@ -29,6 +30,7 @@ public class SantaAbility : AbilityBase
         }
         if (_tickets.Count == 0)
             data.Roles.ForEach(role => _tickets.Add(role.role));
+        _buttonSprite = AssetManager.GetAsset<Sprite>(buttonSpritePath);
     }
 
     public override void AttachToLocalPlayer()
@@ -41,8 +43,8 @@ public class SantaAbility : AbilityBase
             canCreateSidekick: (_) => ButtonAbility.HasCount,
             sidekickCooldown: () => _data.Cooldown,
             sidekickRole: () => _selectedRole,
-            sidekickRoleVanilla: () => CustomRoleManager.GetRoleById(_selectedRole)?.AssignedTeam == AssignedTeamType.Impostor ? RoleTypes.Impostor : RoleTypes.Crewmate,
-            sidekickSprite: AssetManager.GetAsset<Sprite>("SantaButton.png"),
+            sidekickRoleVanilla: () => CustomRoleManager.GetRoleById(_selectedRole)?.AssignedTeam == AssignedTeamType.Impostor ? (RoleTypes?)null : RoleTypes.Crewmate,
+            sidekickSprite: _buttonSprite,
             sidekickText: ModTranslation.GetString("SantaButtonText"),
             sidekickCount: () => _data.InitialCount,
             isTargetable: (player) => player.IsAlive(),

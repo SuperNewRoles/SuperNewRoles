@@ -30,7 +30,7 @@ class Pusher : RoleBase<Pusher>
     public override TeamTag TeamTag { get; } = TeamTag.Impostor;
     public override RoleTag[] RoleTags { get; } = [RoleTag.SpecialKiller];
     public override RoleOptionMenuType OptionTeam { get; } = RoleOptionMenuType.Impostor;
-
+    public override MapNames[] AvailableMaps { get; } = [MapNames.Airship];
     [CustomOptionFloat("PusherCooldown", 0f, 180f, 2.5f, 15f, translationName: "CoolTime")]
     public static float PusherCooldown;
 }
@@ -72,6 +72,7 @@ public class PusherAbility : TargetCustomButtonBase
     private List<PlayerControl> _untargetPlayers = new();
     private float updateUntargetPlayersTimer;
     private EventListener fixedUpdateEvent;
+    private EventListener<WrapUpEventData> wrapupEvent;
 
     public override Sprite Sprite => AssetManager.GetAsset<Sprite>("PusherPushButton.png");
     public override string buttonText => ModTranslation.GetString("PusherButtonName");
@@ -225,14 +226,21 @@ public class PusherAbility : TargetCustomButtonBase
     public override void Attach(PlayerControl player, ulong abilityId, AbilityParentBase parent)
     {
         base.Attach(player, abilityId, parent);
+        SyncKillCoolTimeAbility.CreateAndAttach(this);
         fixedUpdateEvent = FixedUpdateEvent.Instance.AddListener(OnFixedUpdate);
+        wrapupEvent = WrapUpEvent.Instance.AddListener(x => OnWrapup());
     }
 
     public override void Detach()
     {
         base.Detach();
-        if (fixedUpdateEvent != null)
-            FixedUpdateEvent.Instance.RemoveListener(fixedUpdateEvent);
+        fixedUpdateEvent?.RemoveListener();
+        wrapupEvent?.RemoveListener();
+    }
+
+    private void OnWrapup()
+    {
+        new LateTask(() => Timer = 0.001f, 0.1f);
     }
 
     private void OnFixedUpdate()
