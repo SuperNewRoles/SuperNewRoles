@@ -238,7 +238,7 @@ public class PlayerStatistics
         TeamPavlovsAlive = alivePlayers.Count(player => player.IsPavlovsTeam());
         ArsonistAlive = alivePlayers.Count(player => player.Role == RoleId.Arsonist);
         TotalAlive = alivePlayers.Count();
-        TotalKiller = TeamImpostorsAlive + TeamJackalAlive + TeamPavlovsAlive;
+        TotalKiller = alivePlayers.Count(player => player.IsNonCrewKiller());
     }
 
     // ExPlayerControl配列から生存しているプレイヤーを返すヘルパーメソッド

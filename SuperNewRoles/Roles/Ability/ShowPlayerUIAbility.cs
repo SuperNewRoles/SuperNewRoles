@@ -71,7 +71,8 @@ public class ShowPlayerUIAbility : AbilityBase
             var playerUIObject = GameObject.Instantiate(playerUIObjectPrefab, _playerUIContainer.transform);
             _playerUIObjects.Add((player.PlayerId, playerUIObject.gameObject));
             playerUIObject.UpdateFromEitherPlayerDataOrCache(player.Data, PlayerOutfitType.Default, PlayerMaterial.MaskType.None, false);
-            playerUIObject?.cosmetics?.colorBlindText?.gameObject?.SetActive(false);
+            if (playerUIObject.cosmetics.colorBlindText != null)
+                playerUIObject.cosmetics.colorBlindText.text = "";
             playerUIObject.transform.localPosition = new(index * 1.5f, 0f, -0.3f);
             index++;
         }

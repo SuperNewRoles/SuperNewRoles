@@ -16,7 +16,12 @@ class NekoKabocha : RoleBase<NekoKabocha>
 {
     public override RoleId Role { get; } = RoleId.NekoKabocha;
     public override Color32 RoleColor { get; } = Palette.ImpostorRed;
-    public override List<Func<AbilityBase>> Abilities { get; } = [() => new NekoKabochaRevenge()];
+    public override List<Func<AbilityBase>> Abilities { get; } = [() => new NekoKabochaRevenge(
+        new(NekoKabochaCanRevengeCrewmate,
+            NekoKabochaCanRevengeNeutral,
+            NekoKabochaCanRevengeImpostor,
+            NekoKabochaCanRevengeExiled))
+        ];
 
     public override QuoteMod QuoteMod { get; } = QuoteMod.SuperNewRoles;
     public override RoleTypes IntroSoundType { get; } = RoleTypes.Impostor;
@@ -41,11 +46,19 @@ class NekoKabocha : RoleBase<NekoKabocha>
     public static bool NekoKabochaCanRevengeExiled;
 }
 
+public record NekoKabochaData(bool CanRevengeCrewmate, bool CanRevengeNeutral, bool CanRevengeImpostor, bool CanRevengeExiled);
+
 public class NekoKabochaRevenge : AbilityBase
 {
     private EventListener<MurderEventData> _onMurderEvent;
     private EventListener<WrapUpEventData> _onWrapUpEvent;
 
+    public NekoKabochaData Data { get; }
+
+    public NekoKabochaRevenge(NekoKabochaData data)
+    {
+        Data = data;
+    }
 
     public override void AttachToLocalPlayer()
     {
@@ -64,11 +77,11 @@ public class NekoKabochaRevenge : AbilityBase
             ExPlayerControl killer = data.killer;
 
             // 殺害したプレイヤーのタイプに基づいて復讐できるかどうかを判断
-            if (killer.IsCrewmate() && NekoKabocha.NekoKabochaCanRevengeCrewmate)
+            if (killer.IsCrewmate() && Data.CanRevengeCrewmate)
                 canRevenge = true;
-            else if (killer.IsNeutral() && NekoKabocha.NekoKabochaCanRevengeNeutral)
+            else if (killer.IsNeutral() && Data.CanRevengeNeutral)
                 canRevenge = true;
-            else if (killer.IsImpostor() && NekoKabocha.NekoKabochaCanRevengeImpostor)
+            else if (killer.IsImpostor() && Data.CanRevengeImpostor)
                 canRevenge = true;
 
             if (canRevenge)
@@ -78,16 +91,17 @@ public class NekoKabochaRevenge : AbilityBase
 
     private void OnWrapUp(WrapUpEventData data)
     {
-        if (NekoKabocha.NekoKabochaCanRevengeExiled &&
+        if (Data.CanRevengeExiled &&
             data.exiled != null && data.exiled.Object != null &&
-            data.exiled == ExPlayerControl.LocalPlayer)
+            data.exiled == ExPlayerControl.LocalPlayer &&
+            data.exiled.AmOwner)
         {
             List<ExPlayerControl> targets = ExPlayerControl.ExPlayerControls.Where(x => x.IsAlive() && !x.AmOwner).ToList();
 
             if (targets.Count > 0)
             {
                 ExPlayerControl randomTarget = ModHelpers.GetRandom(targets);
-                randomTarget.RpcCustomDeath(CustomDeathType.Revange);
+                ExPlayerControl.LocalPlayer.RpcCustomDeath(randomTarget, CustomDeathType.Revange);
             }
         }
     }

@@ -110,7 +110,6 @@ public class MatryoshkaAbility : CustomButtonBase, IButtonEffect, IAbilityCount
         {
             // 着用している死体を脱ぐ
             RpcSetMatryoshkaDeadBody(this, null, false);
-            this.UseAbilityCount();
         }
         else
         {
@@ -119,6 +118,7 @@ public class MatryoshkaAbility : CustomButtonBase, IButtonEffect, IAbilityCount
             if (targetBody != null)
                 RpcSetMatryoshkaDeadBody(this, targetPlayer, true);
             Counter++;
+            this.UseAbilityCount();
         }
     }
 
