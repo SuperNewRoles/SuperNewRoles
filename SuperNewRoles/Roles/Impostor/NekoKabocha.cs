@@ -93,8 +93,7 @@ public class NekoKabochaRevenge : AbilityBase
     {
         if (Data.CanRevengeExiled &&
             data.exiled != null && data.exiled.Object != null &&
-            data.exiled == ExPlayerControl.LocalPlayer &&
-            data.exiled.AmOwner)
+            data.exiled.PlayerId == ExPlayerControl.LocalPlayer.PlayerId)
         {
             List<ExPlayerControl> targets = ExPlayerControl.ExPlayerControls.Where(x => x.IsAlive() && !x.AmOwner).ToList();
 

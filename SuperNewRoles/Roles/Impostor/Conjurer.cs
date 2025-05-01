@@ -58,7 +58,7 @@ public class ConjurerAbility : AbilityBase
     {
         Data = data;
         Count = 0;
-        Positions = [new Vector2() * 3];
+        Positions = [new(), new(), new()];
     }
 
     public override void AttachToAlls()

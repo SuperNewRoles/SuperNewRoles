@@ -60,14 +60,7 @@ public class DoppelgangerAbility : AbilityBase
         base.AttachToAlls();
 
         _shapeshiftButtonAbility = new ShapeshiftButtonAbility(DurationTime, CoolTime);
-        if (Player != null && Player.roleBase != null)
-        {
-            Player.AttachAbility(_shapeshiftButtonAbility, new AbilityParentAbility(this));
-        }
-        else
-        {
-            Debug.LogError($"[SuperNewRoles] DoppelgangerAbility.AttachToAlls: Player ({Player?.PlayerId}) or Player.roleBase is null!");
-        }
+        Player.AttachAbility(_shapeshiftButtonAbility, new AbilityParentAbility(this));
     }
 
     public class DoppelgangerAbilityOption
