@@ -31,6 +31,7 @@ class Pteranodon : RoleBase<Pteranodon>
     public override RoleTag[] RoleTags { get; } = [];
     public override RoleOptionMenuType OptionTeam { get; } = RoleOptionMenuType.Crewmate;
     public override RoleId[] RelatedRoleIds { get; } = [];
+    public override MapNames[] AvailableMaps { get; } = [MapNames.Airship];
 
     [CustomOptionFloat("PteranodonCoolTime", 0, 120f, 2.5f, 5f, translationName: "CoolTime")]
     public static float PteranodonCoolTime;
@@ -146,6 +147,7 @@ public class PteranodonAbility : CustomButtonBase
         _timer -= Time.fixedDeltaTime;
         Vector3 pos = _currentPosition;
         Player.MyPhysics.Animations.PlayIdleAnimation();
+        Player.cosmetics.AnimateSkinIdle();
         float tarpos = (_targetPosition.x - _startPosition.x);
 
         if ((_timer + 0.025f) > (StartTime / 2f))
