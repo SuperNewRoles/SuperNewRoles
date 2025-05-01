@@ -32,7 +32,7 @@ public class ButtonerAbility : CustomButtonBase, IAbilityCount
 
     public override bool CheckIsAvailable()
     {
-        return Timer <= 0f && HasCount && ModHelpers.IsSabotageAvailable();
+        return Timer <= 0f && HasCount && !ModHelpers.IsSabotageAvailable();
     }
 
     public override void OnClick()
