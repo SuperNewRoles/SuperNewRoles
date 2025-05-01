@@ -203,7 +203,6 @@ public class ConjurerStartButton : CustomButtonBase
     public ConjurerStartButton(ConjurerAbility ability)
     {
         this.ability = ability;
-        AttachToLocalPlayer();
     }
 
     public override float DefaultTimer => 0;
