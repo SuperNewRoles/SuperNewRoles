@@ -115,7 +115,7 @@ public class ShapeshiftButtonAbility : CustomButtonBase, IButtonEffect
     public override void DetachToLocalPlayer()
     {
         base.DetachToLocalPlayer();
-        _shapeshiftEvent?.RemoveListePner();
+        _shapeshiftEvent?.RemoveListener();
         _wrapUpEvent?.RemoveListener();
 
         // Ensure player reverts shape if the ability is detached while active

@@ -145,7 +145,7 @@ public class ExPlayerControl
     {
         if (GhostRole == ghostRoleId) return;
         DetachOldGhostRole(GhostRole);
-        if (AmOwner)
+        if (AmOwner && GhostRole != GhostRoleId.None)
             SuperTrophyManager.DetachTrophy(GhostRole);
         GhostRole = ghostRoleId;
         if (CustomRoleManager.TryGetGhostRoleById(ghostRoleId, out var role))
@@ -153,12 +153,9 @@ public class ExPlayerControl
             role.OnSetRole(Player);
             if (AmOwner)
                 SuperTrophyManager.RegisterTrophy(Role);
+            if (GhostRoleBase != null)
+                DetachOldGhostRole(GhostRoleBase.Role);
             GhostRoleBase = role;
-            foreach (var modifier in ModifierRoleBases)
-            {
-                if (!modifier.AssignedTeams.Contains(roleBase.AssignedTeam))
-                    DetachOldModifierRole(modifier.ModifierRole);
-            }
         }
         else
         {

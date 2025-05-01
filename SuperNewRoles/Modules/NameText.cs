@@ -69,7 +69,7 @@ public static class NameText
         {
             roleName = $"{ModHelpers.CsWithTranslation(Crewmate.Instance.RoleColor, Crewmate.Instance.Role.ToString())}";
         }
-        if (player.GhostRole != GhostRoleId.None)
+        if (player.GhostRole != GhostRoleId.None && player.GhostRoleBase != null)
             roleName = $"{ModHelpers.CsWithTranslation(player.GhostRoleBase.RoleColor, player.GhostRole.ToString())} ({roleName}) ";
         foreach (var modifier in player.ModifierRoleBases)
         {
