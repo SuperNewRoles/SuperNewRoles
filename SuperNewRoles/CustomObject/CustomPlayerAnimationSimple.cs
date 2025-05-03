@@ -54,10 +54,15 @@ public class CustomPlayerAnimationSimple : MonoBehaviour
             return;
         }
         if (option.PlayerFlipX)
+        {
             spriteRenderer.transform.localScale = new Vector3(player.cosmetics.FlipX ? option.LocalScale.x : -option.LocalScale.x, option.LocalScale.y, option.LocalScale.z);
+            spriteRenderer.transform.localPosition = new Vector3(player.cosmetics.FlipX ? option.LocalPosition.x : -option.LocalPosition.x, option.LocalPosition.y, option.LocalPosition.z);
+        }
         else
+        {
             spriteRenderer.transform.localScale = option.LocalScale;
-        spriteRenderer.transform.localPosition = option.LocalPosition;
+            spriteRenderer.transform.localPosition = option.LocalPosition;
+        }
         if (option.Sprites.Length == 0)
             return;
         if (option.frameRate > 0)
