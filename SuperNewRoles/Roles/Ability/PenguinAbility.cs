@@ -20,7 +20,7 @@ public class PenguinAbility : TargetCustomButtonBase, IButtonEffect
     // IButtonEffect
     private float effectDuration;
     public float EffectDuration => effectDuration;
-    public Action OnEffectEnds => () => { RpcKillPenguinTarget(PlayerControl.LocalPlayer, this); };
+    public Action OnEffectEnds => () => { RpcKillPenguinTarget(PlayerControl.LocalPlayer, this, targetPlayer); };
     public bool isEffectActive { get; set; }
     public float EffectTimer { get; set; }
     public bool effectCancellable => false;
@@ -52,6 +52,7 @@ public class PenguinAbility : TargetCustomButtonBase, IButtonEffect
     {
         targetPlayer = Target;
         RpcStartPenguin(PlayerControl.LocalPlayer, Target, AbilityId);
+        ExPlayerControl.LocalPlayer.SetKillTimerUnchecked(0.00001f, 0.00001f);
         ResetTimer();
     }
     public override void DetachToAlls()
@@ -84,7 +85,7 @@ public class PenguinAbility : TargetCustomButtonBase, IButtonEffect
     {
         if (isEffectActive && targetPlayer != null && targetPlayer.IsAlive() && meetingKill && Player.AmOwner)
         {
-            RpcKillPenguinTarget(Player, this);
+            RpcKillPenguinTarget(Player, this, targetPlayer);
         }
         else if (isEffectActive && Player.AmOwner)
         {
@@ -94,10 +95,12 @@ public class PenguinAbility : TargetCustomButtonBase, IButtonEffect
     private void OnWrapUp(WrapUpEventData data)
     {
         if (targetPlayer == null) return;
-        if (data.exiled == Player || Player.IsDead())
+        if (data.exiled?.PlayerId == Player.PlayerId || Player.IsDead())
             targetPlayer = null;
         else if (Player.AmOwner)
-            RpcKillPenguinTarget(Player, this);
+        {
+            RpcKillPenguinTarget(Player, this, targetPlayer);
+        }
     }
     [CustomRPC]
     public static void RpcStartPenguin(ExPlayerControl source, PlayerControl target, ulong abilityId)
@@ -116,11 +119,11 @@ public class PenguinAbility : TargetCustomButtonBase, IButtonEffect
     }
 
     [CustomRPC]
-    public static void RpcKillPenguinTarget(ExPlayerControl source, PenguinAbility ability)
+    public static void RpcKillPenguinTarget(ExPlayerControl source, PenguinAbility ability, ExPlayerControl target)
     {
-        if (ability.targetPlayer != null && ability.targetPlayer.IsAlive())
+        if (target != null && target.IsAlive())
         {
-            ability.targetPlayer.CustomDeath(CustomDeathType.Kill, source: source);
+            target.CustomDeath(CustomDeathType.Kill, source: source);
         }
         ability.targetPlayer = null;
     }

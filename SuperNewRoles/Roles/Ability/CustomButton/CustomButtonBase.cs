@@ -250,7 +250,11 @@ public abstract class CustomButtonBase : AbilityBase
     public virtual void ResetTimer()
     {
         Timer = DefaultTimerAdjusted;
-        if (buttonEffect != null) buttonEffect.EffectTimer = buttonEffect.EffectDuration;
+        if (buttonEffect != null)
+        {
+            buttonEffect.EffectTimer = buttonEffect.EffectDuration;
+            buttonEffect.isEffectActive = false;
+        }
     }
     public override void DetachToLocalPlayer()
     {

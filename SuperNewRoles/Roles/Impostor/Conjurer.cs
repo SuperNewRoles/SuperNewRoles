@@ -33,7 +33,7 @@ class Conjurer : RoleBase<Conjurer>
     public override RoleTag[] RoleTags => [RoleTag.SpecialKiller, RoleTag.Killer, RoleTag.CustomObject];
     public override RoleOptionMenuType OptionTeam => RoleOptionMenuType.Impostor;
 
-    [CustomOptionFloat("ConjurerCanAddLengthOption", 0.5f, 40f, 1f, 10f)]
+    [CustomOptionFloat("ConjurerCanAddLengthOption", 1f, 40f, 1f, 10f)]
     public static float ConjurerCanAddLength;
 
     [CustomOptionFloat("ConjurerBeaconCooldownOption", 5f, 60f, 1f, 15f, translationName: "CoolTime")]

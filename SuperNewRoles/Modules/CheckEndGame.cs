@@ -260,6 +260,6 @@ public class PlayerStatistics
     // 対象チームのキラー数が、全体の半数以上かつ全キラーがそのチームである場合、勝利と判定
     private bool IsKillerWin(int teamAlive)
     {
-        return teamAlive >= TotalAlive - teamAlive && TotalKiller <= teamAlive && teamAlive != 0;
+        return teamAlive >= TotalAlive - teamAlive && TotalKiller <= teamAlive && teamAlive != 0 && !(PavlovsDogAlive <= 0 && TeamPavlovsAlive > 0);
     }
 }
