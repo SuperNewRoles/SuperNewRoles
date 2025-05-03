@@ -417,6 +417,8 @@ public class ExPlayerControl
 
     public bool IsCrewmate()
         => roleBase != null ? roleBase.AssignedTeam == AssignedTeamType.Crewmate && !IsMadRoles() : !Data.Role.IsImpostor;
+    public bool IsCrewmateOrMadRoles()
+        => IsCrewmate() || IsMadRoles();
     public bool IsImpostor()
         => Data.Role.IsImpostor;
     public bool IsNeutral()

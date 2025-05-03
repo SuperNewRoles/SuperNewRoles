@@ -83,8 +83,10 @@ public record WellBehaverData(float FrequencyGarbageDumping, int LimitTrashCount
 public class WellBehaverAbility : AbilityBase
 {
     private WellBehaverButtonAbility button;
+    private CustomTaskAbility customTaskAbility;
     private EventListener<WrapUpEventData> _wrapUpEventListener;
     private EventListener _fixedUpdateEventListener;
+    private EventListener<NameTextUpdateEventData> _nameTextUpdateEventListener;
 
     private PlayerControl garbager;
     private float timer;
@@ -104,9 +106,19 @@ public class WellBehaverAbility : AbilityBase
     public override void AttachToAlls()
     {
         button = new WellBehaverButtonAbility();
+        customTaskAbility = new CustomTaskAbility(() => (false, 0));
+
         Player.AttachAbility(button, new AbilityParentAbility(this));
+        Player.AttachAbility(customTaskAbility, new AbilityParentAbility(this));
+
         new LateTask(() => _limitTrashCount = Data.LimitTrashCount * ExPlayerControl.ExPlayerControls.Count(x => x.Role == RoleId.WellBehaver), 1f);
         ReAssignGarbager();
+        _nameTextUpdateEventListener = NameTextUpdateEvent.Instance.AddListener(OnNameTextUpdate);
+    }
+
+    public override void DetachToAlls()
+    {
+        _nameTextUpdateEventListener?.RemoveListener();
     }
 
     public override void AttachToLocalPlayer()
@@ -126,6 +138,13 @@ public class WellBehaverAbility : AbilityBase
         return Vector2.Distance(player.transform.position, new Vector2(3, 6)) <= 0.5f ||
                Vector2.Distance(player.transform.position, new Vector2(-25, 40)) <= 0.5f ||
                Vector2.Distance(player.transform.position, new Vector2(-1.4f, 2.3f)) <= 0.5f;
+    }
+
+    private void OnNameTextUpdate(NameTextUpdateEventData data)
+    {
+        if (data.Player != Player) return;
+        if (data.Player.AmOwner || ExPlayerControl.LocalPlayer.IsDead())
+            NameText.SetCustomTaskCount(data.Player, Garbage.AllGarbage.Count, _limitTrashCount, true, true);
     }
 
     private void OnWrapUp(WrapUpEventData data)
@@ -167,6 +186,8 @@ public class WellBehaverAbility : AbilityBase
     public static void RpcCreateGarbage(Vector2 pos, ExPlayerControl madeBy, int index, bool allPlayerCanSeeGarbage)
     {
         new Garbage(pos, madeBy, index, allPlayerCanSeeGarbage);
+        if (ExPlayerControl.LocalPlayer.Role == RoleId.WellBehaver || ExPlayerControl.LocalPlayer.IsDead())
+            NameText.UpdateNameInfo(ExPlayerControl.LocalPlayer);
     }
 
     [CustomRPC]
@@ -180,5 +201,7 @@ public class WellBehaverAbility : AbilityBase
                 break;
             }
         }
+        if (ExPlayerControl.LocalPlayer.Role == RoleId.WellBehaver || ExPlayerControl.LocalPlayer.IsDead())
+            NameText.UpdateNameInfo(ExPlayerControl.LocalPlayer);
     }
 }

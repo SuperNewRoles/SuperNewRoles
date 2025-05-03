@@ -40,6 +40,8 @@ public class CustomHauntToAbility : AbilityBase
         base.DetachToLocalPlayer();
         _fixedUpdateEvent?.RemoveListener();
         _meetingStartEvent?.RemoveListener();
+        if (lastEnabled)
+            ExPlayerControl.LocalPlayer.Player.moveable = true;
     }
 
     private void OnFixedUpdate()
@@ -55,7 +57,6 @@ public class CustomHauntToAbility : AbilityBase
         }
         lastEnabled = true;
         ExPlayerControl.LocalPlayer.Player.moveable = false;
-        Logger.Info("Fixed!!!");
         Vector2 val = Vector2.zero;
         Vector2 val2 = target.GetTruePosition() + Offset;
         Vector2 truePosition = PlayerControl.LocalPlayer.GetTruePosition();

@@ -48,6 +48,11 @@ public class JFriendAbility : AbilityBase
         Player.AttachAbility(ImpostorVisionAbility, parentAbility);
         Player.AttachAbility(CustomTaskAbility, parentAbility);
     }
+    public override void DetachToAlls()
+    {
+        base.DetachToAlls();
+        _taskCompleteEvent?.RemoveListener();
+    }
     private bool CanKnowJackal()
     {
         return _canKnowJackal;
@@ -57,13 +62,17 @@ public class JFriendAbility : AbilityBase
     }
     private void RecalucateTaskComplete(PlayerControl player)
     {
+        if (!Player.AmOwner) return;
         if (player != Player) return;
         if (!Data.CouldKnowJackals) _canKnowJackal = false;
         else
         {
+            bool last = _canKnowJackal;
             var (complete, all) = ModHelpers.TaskCompletedData(player.Data);
             if (complete == -1 || all == -1) _canKnowJackal = false;
             else _canKnowJackal = complete >= Data.TaskNeeded;
+            if (last != _canKnowJackal)
+                NameText.UpdateAllNameInfo();
         }
     }
 }

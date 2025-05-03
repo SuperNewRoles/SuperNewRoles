@@ -102,6 +102,6 @@ internal class TeleporterAbility : CustomButtonBase, IButtonEffect
         foreach (var player in ExPlayerControl.ExPlayerControls)
             player.NetTransform.SnapTo(position);
         ExPlayerControl.LocalPlayer.RpcCustomSnapTo(position);
-        new CustomMessage(ModTranslation.GetString("TeleporterTeleportText", target.Data.PlayerName), 1, true);
+        new LateTask(() => new CustomMessage(ModTranslation.GetString("TeleporterTeleportText", target.Data.PlayerName), 1, true), 0.1f);
     }
 }

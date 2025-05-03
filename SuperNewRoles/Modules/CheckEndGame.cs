@@ -215,6 +215,8 @@ public class PlayerStatistics
     public int CrewAlive { get; }
     public int TotalAlive { get; }
     public int TeamJackalAlive { get; }
+    public int PavlovsDogAlive { get; }
+    public int PavlovsOwnerAlive { get; }
     public int TeamPavlovsAlive { get; }
     public int TotalKiller { get; }
     public int ArsonistAlive { get; }
@@ -223,8 +225,7 @@ public class PlayerStatistics
 
     public bool IsImpostorDominating => IsKillerWin(TeamImpostorsAlive);
     public bool IsJackalDominating => IsKillerWin(TeamJackalAlive);
-    public bool IsPavlovsWin => IsKillerWin(TeamPavlovsAlive);
-    public bool IsCrewmateVictory => !IsKillerExist;
+    public bool IsPavlovsWin => IsKillerWin(TeamPavlovsAlive); public bool IsCrewmateVictory => !IsKillerExist;
     public bool IsArsonistWin => ArsonistAlive > 0 && ArsonistAlive == TotalAlive;
 
     public PlayerStatistics()
@@ -236,7 +237,13 @@ public class PlayerStatistics
         TeamImpostorsAlive = alivePlayers.Count(player => player.IsImpostor());
         CrewAlive = alivePlayers.Count(player => player.IsCrewmate());
         TeamJackalAlive = alivePlayers.Count(player => player.IsJackalTeam());
-        TeamPavlovsAlive = alivePlayers.Count(player => player.Role == RoleId.PavlovsDog || (player.Role == RoleId.PavlovsOwner && player.GetAbility<PavlovsOwnerAbility>()?.HasRemainingDogCount() == true));
+
+        PavlovsDogAlive = alivePlayers.Count(player => player.Role == RoleId.PavlovsDog);
+        PavlovsOwnerAlive = alivePlayers.Count(player => player.Role == RoleId.PavlovsOwner);
+        if (PavlovsDogAlive > 0)
+            TeamPavlovsAlive = PavlovsDogAlive + PavlovsOwnerAlive;
+        else
+            TeamPavlovsAlive = alivePlayers.Count(player => player.Role == RoleId.PavlovsOwner && player.GetAbility<PavlovsOwnerAbility>()?.HasRemainingDogCount() == true);
         ArsonistAlive = alivePlayers.Count(player => player.Role == RoleId.Arsonist);
         TotalAlive = alivePlayers.Count();
         TotalKiller = alivePlayers.Count(player => player.IsNonCrewKiller());
@@ -253,6 +260,6 @@ public class PlayerStatistics
     // 対象チームのキラー数が、全体の半数以上かつ全キラーがそのチームである場合、勝利と判定
     private bool IsKillerWin(int teamAlive)
     {
-        return teamAlive >= TotalAlive - teamAlive && TotalKiller == teamAlive && teamAlive != 0;
+        return teamAlive >= TotalAlive - teamAlive && TotalKiller <= teamAlive && teamAlive != 0;
     }
 }

@@ -12,6 +12,7 @@ public class KnowOtherAbility : AbilityBase
     public Func<bool> IsShowRole { get; }
     public Func<ExPlayerControl, Color32>? Color { get; }
     private EventListener<NameTextUpdateEventData> _nameTextUpdateEvent;
+    private EventListener<NameTextUpdateVisiableEventData> _nameTextUpdateVisiableEvent;
 
     public KnowOtherAbility(Func<ExPlayerControl, bool> canKnowOther, Func<bool> isShowRole, Func<ExPlayerControl, Color32>? color = null)
     {
@@ -23,15 +24,20 @@ public class KnowOtherAbility : AbilityBase
     public override void AttachToLocalPlayer()
     {
         _nameTextUpdateEvent = NameTextUpdateEvent.Instance.AddListener(OnNameTextUpdate);
+        _nameTextUpdateVisiableEvent = NameTextUpdateVisiableEvent.Instance.AddListener(OnNameTextUpdateVisiable);
     }
 
     private void OnNameTextUpdate(NameTextUpdateEventData data)
     {
         if (!CanKnowOther(data.Player)) return;
-        if (IsShowRole())
-            NameText.UpdateVisiable(data.Player, true);
         Color32 color = Color?.Invoke(data.Player) ?? data.Player.roleBase.RoleColor;
         UpdatePlayerNameColor(data.Player, color);
+    }
+
+    private void OnNameTextUpdateVisiable(NameTextUpdateVisiableEventData data)
+    {
+        if (IsShowRole())
+            NameText.UpdateVisiable(data.Player, data.Visiable);
     }
 
     private void UpdatePlayerNameColor(ExPlayerControl player, Color color)
@@ -43,6 +49,7 @@ public class KnowOtherAbility : AbilityBase
     public override void DetachToLocalPlayer()
     {
         base.DetachToLocalPlayer();
-        NameTextUpdateEvent.Instance.RemoveListener(_nameTextUpdateEvent);
+        _nameTextUpdateEvent?.RemoveListener();
+        _nameTextUpdateVisiableEvent?.RemoveListener();
     }
 }

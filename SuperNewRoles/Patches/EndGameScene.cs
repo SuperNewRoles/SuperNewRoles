@@ -127,10 +127,42 @@ public static class ShipStatusPatch
     }
 }
 
+public class EndGameCondition
+{
+    public GameOverReason reason;
+    public List<byte> winners;
+    public string UpperText;
+    public Color UpperTextColor;
+    public bool IsHaison;
+    public EndGameCondition(GameOverReason reason, List<byte> winners, string UpperText, Color UpperTextColor, bool IsHaison)
+    {
+        this.reason = reason;
+        this.winners = winners;
+        this.UpperText = UpperText;
+        this.UpperTextColor = UpperTextColor;
+        this.IsHaison = IsHaison;
+    }
+}
 [HarmonyPatch(typeof(EndGameManager), nameof(EndGameManager.SetEverythingUp))]
 public class EndGameManagerSetUpPatch
 {
+    [CustomRPC]
+    public static void RpcEndGameWithCondition(GameOverReason reason, List<byte> winners, string UpperText, Color UpperTextColor, bool IsHaison)
+    {
+        EndGameCondition newCond = new(
+            reason: reason,
+            winners: winners,
+            UpperText: UpperText,
+            UpperTextColor: UpperTextColor,
+            IsHaison: IsHaison
+        );
+        EndGameManagerSetUpPatch.endGameCondition = newCond;
+        if (AmongUsClient.Instance.AmHost)
+            GameManager.Instance.RpcEndGame(newCond.reason, false);
+    }
+
     public static TMPro.TMP_Text textRenderer;
+    public static EndGameCondition endGameCondition;
     [HarmonyPatch(typeof(EndGameNavigation), nameof(EndGameNavigation.ShowProgression))]
     public class ShowProgressionPatch
     {
@@ -267,6 +299,15 @@ public class EndGameManagerSetUpPatch
             textRenderer.text = winText;
 
         CreateRoleSummary(__instance);
+
+        // static endGameCondition があれば UI を上書き
+        if (endGameCondition != null)
+        {
+            __instance.WinText.text = endGameCondition.UpperText;
+            __instance.WinText.color = endGameCondition.UpperTextColor;
+            textRenderer.color = endGameCondition.IsHaison ? Color.clear : endGameCondition.UpperTextColor;
+            textRenderer.text = endGameCondition.UpperText;
+        }
 
         AdditionalTempData.Clear();
         OnGameEndPatch.WinText = ModHelpers.Cs(roleColor, winText);

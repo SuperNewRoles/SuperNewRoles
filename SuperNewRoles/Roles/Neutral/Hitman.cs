@@ -151,7 +151,7 @@ public class HitmanAbility : AbilityBase
     private void OnNameTextUpdate(NameTextUpdateEventData data)
     {
         if (data.Player != Player) return;
-        if (!data.Visiable) return;
+        if (!data.Player.Player.Visible) return;
         string hitmanText = ModHelpers.Cs(Color.cyan, $"({_successCount}/{Data.WinKillCount})");
         if (Data.IsOutMission)
             hitmanText += ModHelpers.Cs(Color.red, $"({_failedCount}/{Data.OutMissionLimit})");
@@ -162,7 +162,7 @@ public class HitmanAbility : AbilityBase
     private void OnFixedUpdate()
     {
         if (ExPlayerControl.LocalPlayer.IsDead()) return;
-        if (MeetingHud.Instance != null) return;
+        if (IntroCutscene.Instance != null || MeetingHud.Instance != null || ExileController.Instance != null) return;
         _timer -= Time.fixedDeltaTime;
         if (_currentTarget == null || _currentTarget.IsDead())
         {
@@ -173,6 +173,7 @@ public class HitmanAbility : AbilityBase
         if (_timer <= 0)
         {
             IncreaseFailedCount();
+            NameText.UpdateNameInfo(ExPlayerControl.LocalPlayer);
             reSelect();
         }
     }
