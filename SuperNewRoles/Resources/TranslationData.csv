@@ -115,8 +115,8 @@ NetworkTransformType.ModdedLowLatency,低遅延モード(カスタムサーバ�
 NetworkTransformTypeLowLatencyLevel,低遅延レベル(高いほど低遅延),Low Latency Mode Level (Higher is Lower Latency),低延迟模式等级(越高越低延迟),低延遲模式等級(越高越低延遲)
 NetworkTransformTypeLowLatencyLevel.Max,最大(サーバーに大きな負担がかかります),Max (High Server Load),最大(服务器负担较大),最大(伺服器負擔較大)
 NetworkTransformTypeLowLatencyLevel.High,高,High,高,高
-NetworkTransformTypeLowLatencyLevel.Medium,中,Medium,中,中
-NetworkTransformTypeLowLatencyLevel.Low,低(推奨),Low (Recommended),低(推荐),低(推薦)
+NetworkTransformTypeLowLatencyLevel.Medium,中(推奨),Medium (Recommended),中(推荐),中(推薦)
+NetworkTransformTypeLowLatencyLevel.Low,低,Low,低,低
 NetworkTransformTypeLowLatencyLevel.SuperLow,超低,Super Low,超低,超低
 NetworkTransformTypeLowLatencyLevel.Bad,絶対ダメ(超高遅延),Bad (Very Very High Latency),差(超高延迟),差(超高延遲)
 
