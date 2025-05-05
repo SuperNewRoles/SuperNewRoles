@@ -248,24 +248,18 @@ public static class ModdedNetworkTransform
     {
         if (movementBuffer.Count > 0)
         {
-            var positions = new Vector3[movementBuffer.Count];
-            var velocities = new Vector2[movementBuffer.Count];
-            for (int i = 0; i < movementBuffer.Count; i++)
-            {
-                positions[i] = movementBuffer[i].position;
-                velocities[i] = movementBuffer[i].velocity;
-            }
             MessageWriter writer = AmongUsClient.Instance.StartRpcImmediately(player.NetId, CustomRPCManager.SNRNetworkTransformRpc, SendOption.Reliable);
             writer.Write((byte)MovementRpcType.BatchMovement);
             writer.Write(player.PlayerId);
-            writer.Write(positions.Length);
-            for (int i = 0; i < positions.Length; i++)
+            writer.Write(movementBuffer.Count); // List の Count を送信
+            // List を直接ループして書き込む
+            foreach (var data in movementBuffer)
             {
-                writer.Write(positions[i].x);
-                writer.Write(positions[i].y);
-                writer.Write(positions[i].z);
-                writer.Write(velocities[i].x);
-                writer.Write(velocities[i].y);
+                writer.Write(data.position.x);
+                writer.Write(data.position.y);
+                writer.Write(data.position.z);
+                writer.Write(data.velocity.x);
+                writer.Write(data.velocity.y);
             }
             AmongUsClient.Instance.FinishRpcImmediately(writer);
 
