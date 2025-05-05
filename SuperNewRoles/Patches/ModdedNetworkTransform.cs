@@ -4,6 +4,7 @@ using SuperNewRoles.CustomOptions.Categories;
 using SuperNewRoles.Modules;
 using UnityEngine;
 using System.Linq;
+using Hazel;
 
 namespace SuperNewRoles.Patches;
 public static class ModdedNetworkTransform
@@ -157,7 +158,13 @@ public static class ModdedNetworkTransform
                 // Send remaining buffer if any
                 SendMovementBuffer(player);
 
-                RpcStopMovement(player, player.transform.position);
+                MessageWriter writer = AmongUsClient.Instance.StartRpcImmediately(player.NetId, CustomRPCManager.SNRNetworkTransformRpc, SendOption.Reliable);
+                writer.Write((byte)MovementRpcType.StopMovement);
+                writer.Write(player.PlayerId);
+                writer.Write(player.transform.position.x);
+                writer.Write(player.transform.position.y);
+                writer.Write(player.transform.position.z);
+                AmongUsClient.Instance.FinishRpcImmediately(writer);
                 stopDetectionCounter.Remove(player.PlayerId); // Reset counter
                 // --- End Confirmed Stop ---
             }
@@ -192,7 +199,14 @@ public static class ModdedNetworkTransform
             sendTimer = 0f;
             dontSaveMovementTimerTimer = DONT_SAVE_MOVEMENT_TIMER_THRESHOLD;
             movementBuffer.Clear();
-            RpcStartMovement(player, player.transform.position, currentVelocity);
+            MessageWriter writer = AmongUsClient.Instance.StartRpcImmediately(player.NetId, CustomRPCManager.SNRNetworkTransformRpc, SendOption.Reliable);
+            writer.Write((byte)MovementRpcType.StartMovement);
+            writer.Write(player.PlayerId);
+            writer.Write(player.transform.position.x);
+            writer.Write(player.transform.position.y);
+            writer.Write(player.transform.position.z);
+            writer.Write(currentVelocity.x);
+            writer.Write(currentVelocity.y);
             // Add initial movement data immediately
             movementBuffer.Add(new MovementData { position = player.transform.position, velocity = currentVelocity });
         }
@@ -241,8 +255,52 @@ public static class ModdedNetworkTransform
                 positions[i] = movementBuffer[i].position;
                 velocities[i] = movementBuffer[i].velocity;
             }
-            RpcBatchMovement(player, positions, velocities);
+            MessageWriter writer = AmongUsClient.Instance.StartRpcImmediately(player.NetId, CustomRPCManager.SNRNetworkTransformRpc, SendOption.Reliable);
+            writer.Write((byte)MovementRpcType.BatchMovement);
+            writer.Write(player.PlayerId);
+            writer.Write(positions.Length);
+            for (int i = 0; i < positions.Length; i++)
+            {
+                writer.Write(positions[i].x);
+                writer.Write(positions[i].y);
+                writer.Write(positions[i].z);
+                writer.Write(velocities[i].x);
+                writer.Write(velocities[i].y);
+            }
+            AmongUsClient.Instance.FinishRpcImmediately(writer);
+
             movementBuffer.Clear();
+        }
+    }
+
+    public static void ReceivedNetworkTransform(MessageReader reader)
+    {
+        byte playerId;
+        switch (reader.ReadByte())
+        {
+            case (byte)MovementRpcType.BatchMovement:
+                playerId = reader.ReadByte();
+                int count = reader.ReadInt32();
+                var positions = new Vector3[count];
+                var velocities = new Vector2[count];
+                for (int i = 0; i < count; i++)
+                {
+                    positions[i] = new Vector3(reader.ReadSingle(), reader.ReadSingle(), reader.ReadSingle());
+                    velocities[i] = new Vector2(reader.ReadSingle(), reader.ReadSingle());
+                }
+                RpcBatchMovement(playerId, positions, velocities);
+                break;
+            case (byte)MovementRpcType.StartMovement:
+                playerId = reader.ReadByte();
+                Vector3 position = new Vector3(reader.ReadSingle(), reader.ReadSingle(), reader.ReadSingle());
+                Vector2 velocity = new Vector2(reader.ReadSingle(), reader.ReadSingle());
+                RpcStartMovement(playerId, position, velocity);
+                break;
+            case (byte)MovementRpcType.StopMovement:
+                playerId = reader.ReadByte();
+                position = new Vector3(reader.ReadSingle(), reader.ReadSingle(), reader.ReadSingle());
+                RpcStopMovement(playerId, position);
+                break;
         }
     }
 
@@ -341,16 +399,13 @@ public static class ModdedNetworkTransform
     }
 
     // --- RPC Handlers ---
-    // 後でCustomRPC側でいい感じにする
-    [CustomRPC]
-    public static void RpcStartMovement(PlayerControl player, Vector3 startPosition, Vector2 velocity)
+    public static void RpcStartMovement(byte playerId, Vector3 startPosition, Vector2 velocity)
     {
-        if (player.AmOwner) return;
-
+        PlayerControl player = ExPlayerControl.ById(playerId);
         // Clear any potential stopping state
-        finishedMovementPosition.Remove(player.PlayerId);
-        smoothingTimeLeft.Remove(player.PlayerId);
-        smoothingVelocity.Remove(player.PlayerId);
+        finishedMovementPosition.Remove(playerId);
+        smoothingTimeLeft.Remove(playerId);
+        smoothingVelocity.Remove(playerId);
 
         // Warp if too far away
         if (Vector2.Distance(player.transform.position, startPosition) > START_WARP_DISTANCE_THRESHOLD)
@@ -365,31 +420,25 @@ public static class ModdedNetworkTransform
         queue.Clear();
 
         // Reset sync counter
-        syncPositionLimit[player.PlayerId] = SYNC_POSITION_LIMIT_INITIAL_VALUE;
+        syncPositionLimit[playerId] = SYNC_POSITION_LIMIT_INITIAL_VALUE;
     }
-    [CustomRPC]
-    public static void RpcStopMovement(PlayerControl player, Vector3 position)
+    public static void RpcStopMovement(byte playerId, Vector3 position)
     {
-        if (player.AmOwner) return;
-
         // Set the target position for smoothing stop
-        finishedMovementPosition[player.PlayerId] = position;
+        finishedMovementPosition[playerId] = position;
         // Initialize smoothing time, velocity will be calculated on first FixedUpdateRemote call
-        smoothingTimeLeft[player.PlayerId] = STOP_SMOOTHING_TIME;
-        smoothingVelocity.Remove(player.PlayerId); // Ensure previous smoothing velocity is cleared
+        smoothingTimeLeft[playerId] = STOP_SMOOTHING_TIME;
+        smoothingVelocity.Remove(playerId); // Ensure previous smoothing velocity is cleared
 
         // Clear the queue on stop command
-        if (movementQueues.TryGetValue(player.PlayerId, out var queue))
+        if (movementQueues.TryGetValue(playerId, out var queue))
         {
             queue.Clear();
         }
     }
-    [CustomRPC]
-    public static void RpcBatchMovement(PlayerControl player, Vector3[] positions, Vector2[] velocities)
+    public static void RpcBatchMovement(byte playerId, Vector3[] positions, Vector2[] velocities)
     {
-        if (player.AmOwner) return;
-
-        var queue = GetOrCreateQueue(player.PlayerId);
+        var queue = GetOrCreateQueue(playerId);
 
         for (int i = 0; i < positions.Length; i++)
         {
@@ -444,8 +493,9 @@ public enum NetworkTransformTypeLowLatencyLevel
     High,
     Max,
 }
-
-// Deleted code: Original FixedUpdate logic which is now refactored into smaller methods.
-// Deleted code: Redundant checks for queue existence inside loops, now handled by GetOrCreateQueue or TryGetValue.
-// Deleted code: LINQ ToArray calls inside FixedUpdateOwner, replaced with direct array creation in SendMovementBuffer.
-
+public enum MovementRpcType
+{
+    StartMovement,
+    StopMovement,
+    BatchMovement,
+}

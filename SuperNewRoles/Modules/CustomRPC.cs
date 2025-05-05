@@ -50,11 +50,15 @@ public static class CustomRPCManager
     /// <summary>
     /// SuperNewRoles専用のRPC識別子
     /// </summary>
-    private static byte SNRRpcId = byte.MaxValue;
+    private const byte SNRRpcId = byte.MaxValue;
     /// <summary>
     /// バージョン同期用のRPC識別子
     /// </summary>
-    public static byte SNRSyncVersionRpc = byte.MaxValue - 1;
+    public const byte SNRSyncVersionRpc = byte.MaxValue - 1;
+    /// <summary>
+    /// ネットワーク移動用のRPC識別子
+    /// </summary>
+    public const byte SNRNetworkTransformRpc = byte.MaxValue - 2;
     /// <summary>
     /// RPCの受信状態を追跡するフラグ
     /// </summary>
@@ -171,27 +175,31 @@ public static class CustomRPCManager
         {
             Logger.Info($"Received RPC: {callId}");
             // SuperNewRoles専用のRPCの場合
-            if (callId == SNRRpcId)
+            switch (callId)
             {
-                byte id = reader.ReadByte();
-                Logger.Info($"Received RPC: {id}");
-                if (!RpcMethods.TryGetValue(id, out var method))
-                    return;
+                case SNRRpcId:
+                    byte id = reader.ReadByte();
+                    Logger.Info($"Received RPC: {id}");
+                    if (!RpcMethods.TryGetValue(id, out var method))
+                        return;
 
-                // パラメーターを元にobject[]を作成
-                List<object> args = new();
-                for (int i = 0; i < method.GetParameters().Length; i++)
-                {
-                    args.Add(reader.ReadFromType(method.GetParameters()[i].ParameterType));
-                }
+                    // パラメーターを元にobject[]を作成
+                    List<object> args = new();
+                    for (int i = 0; i < method.GetParameters().Length; i++)
+                    {
+                        args.Add(reader.ReadFromType(method.GetParameters()[i].ParameterType));
+                    }
 
-                IsRpcReceived = true;
-                Logger.Info($"Received RPC: {method.Name}");
-                method.Invoke(null, args.ToArray());
-            }
-            else if (callId == SNRSyncVersionRpc)
-            {
-                SyncVersion.ReceivedSyncVersion(reader);
+                    IsRpcReceived = true;
+                    Logger.Info($"Received RPC: {method.Name}");
+                    method.Invoke(null, args.ToArray());
+                    break;
+                case SNRSyncVersionRpc:
+                    SyncVersion.ReceivedSyncVersion(reader);
+                    break;
+                case SNRNetworkTransformRpc:
+                    ModdedNetworkTransform.ReceivedNetworkTransform(reader);
+                    break;
             }
         }
     }

@@ -24,6 +24,6 @@ public static class GeneralSettingOptions
     [CustomOptionSelect("NetworkTransformType", typeof(NetworkTransformType), "NetworkTransformType.", parentFieldName: nameof(Categories.GeneralSettings))]
     public static NetworkTransformType NetworkTransformType;
 
-    [CustomOptionSelect("NetworkTransformTypeLowLatencyLevel", typeof(NetworkTransformTypeLowLatencyLevel), "NetworkTransformTypeLowLatencyLevel.", parentFieldName: nameof(NetworkTransformType), parentActiveValue: NetworkTransformType.ModdedLowLatency, defaultValue: NetworkTransformTypeLowLatencyLevel.Low)]
+    [CustomOptionSelect("NetworkTransformTypeLowLatencyLevel", typeof(NetworkTransformTypeLowLatencyLevel), "NetworkTransformTypeLowLatencyLevel.", parentFieldName: nameof(NetworkTransformType), parentActiveValue: NetworkTransformType.ModdedLowLatency, defaultValue: NetworkTransformTypeLowLatencyLevel.Medium)]
     public static NetworkTransformTypeLowLatencyLevel NetworkTransformTypeLowLatencyLevel;
 }
