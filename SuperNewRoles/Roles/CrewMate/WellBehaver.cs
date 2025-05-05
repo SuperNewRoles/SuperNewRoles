@@ -159,6 +159,7 @@ public class WellBehaverAbility : AbilityBase
         if (ExPlayerControl.LocalPlayer.IsDead()) return;
         if (garbager == null || garbager.Data.IsDead)
             ReAssignGarbager();
+        if (garbager == null) return;
         // スポーン待ちの場合はスキップ
         if (IsWaitSpawn(garbager)) return;
         timer += Time.fixedDeltaTime;

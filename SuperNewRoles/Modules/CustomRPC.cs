@@ -475,6 +475,37 @@ public static class CustomRPCManager
                         writer.Write(v3.z);
                     }
                 }
+                else if (type == typeof(Vector2[]))
+                {
+                    if (obj == null)
+                        writer.Write(0);
+                    else
+                    {
+                        var v2Array = obj as Vector2[];
+                        writer.Write(v2Array.Length);
+                        foreach (var v in v2Array)
+                        {
+                            writer.Write(v.x);
+                            writer.Write(v.y);
+                        }
+                    }
+                }
+                else if (type == typeof(Vector3[]))
+                {
+                    if (obj == null)
+                        writer.Write(0);
+                    else
+                    {
+                        var v3Array = obj as Vector3[];
+                        writer.Write(v3Array.Length);
+                        foreach (var v in v3Array)
+                        {
+                            writer.Write(v.x);
+                            writer.Write(v.y);
+                            writer.Write(v.z);
+                        }
+                    }
+                }
                 else
                 {
                     throw new Exception($"Invalid type: {obj.GetType()}");
@@ -529,6 +560,8 @@ public static class CustomRPCManager
             Type t when t == typeof(List<byte>) => ReadByteList(reader),
             Type t when t == typeof(Vector2) => new Vector2(reader.ReadSingle(), reader.ReadSingle()),
             Type t when t == typeof(Vector3) => new Vector3(reader.ReadSingle(), reader.ReadSingle(), reader.ReadSingle()),
+            Type t when t == typeof(Vector2[]) => ReadVector2Array(reader),
+            Type t when t == typeof(Vector3[]) => ReadVector3Array(reader),
             Type t when t.IsSubclassOf(typeof(AbilityBase)) => ReadAbilityBase(reader),
             _ => throw new Exception($"Invalid type: {type}")
         };
@@ -621,5 +654,29 @@ public static class CustomRPCManager
             list.Add(reader.ReadByte());
         }
         return list;
+    }
+
+    // Vector2[]を読み取るヘルパーメソッド
+    private static Vector2[] ReadVector2Array(MessageReader reader)
+    {
+        int length = reader.ReadInt32();
+        Vector2[] array = new Vector2[length];
+        for (int i = 0; i < length; i++)
+        {
+            array[i] = new Vector2(reader.ReadSingle(), reader.ReadSingle());
+        }
+        return array;
+    }
+
+    // Vector3[]を読み取るヘルパーメソッド
+    private static Vector3[] ReadVector3Array(MessageReader reader)
+    {
+        int length = reader.ReadInt32();
+        Vector3[] array = new Vector3[length];
+        for (int i = 0; i < length; i++)
+        {
+            array[i] = new Vector3(reader.ReadSingle(), reader.ReadSingle(), reader.ReadSingle());
+        }
+        return array;
     }
 }

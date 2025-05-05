@@ -109,6 +109,16 @@ NeutralSubIntro,自分の事だけ考えろ。他人の事は利用せよ。,Thi
 KickNonPCPlayers,PC以外をキックする,Kick Non-PC Players,踢出非PC玩家,踢出非PC玩家
 BanNoFriendCodePlayers,フレンドコードを持っていない人をBANする,Ban Players Without Friend Code,封禁没有好友代码的玩家,封禁沒有好友代碼的玩家
 PetOnlyMe,ペットを自分のみに表示する,Show only my pet,只显示我的宠物,只顯示我的寵物
+NetworkTransformType,歩行通信タイプ,Walking Network type,步行通信类型,步行通信類型
+NetworkTransformType.Vanilla,バニラ,Vanilla,原版,原版
+NetworkTransformType.ModdedLowLatency,低遅延モード(カスタムサーバー限定ベータ版),Low Latency Mode (Custom Server Only Beta),低延迟模式(仅限自定义服务器),低延遲模式(僅限自定義伺服器)
+NetworkTransformTypeLowLatencyLevel,低遅延レベル(高いほど低遅延),Low Latency Mode Level (Higher is Lower Latency),低延迟模式等级(越高越低延迟),低延遲模式等級(越高越低延遲)
+NetworkTransformTypeLowLatencyLevel.Max,最大(サーバーに大きな負担がかかります),Max (High Server Load),最大(服务器负担较大),最大(伺服器負擔較大)
+NetworkTransformTypeLowLatencyLevel.High,高,High,高,高
+NetworkTransformTypeLowLatencyLevel.Medium,中,Medium,中,中
+NetworkTransformTypeLowLatencyLevel.Low,低(推奨),Low (Recommended),低(推荐),低(推薦)
+NetworkTransformTypeLowLatencyLevel.SuperLow,超低,Super Low,超低,超低
+NetworkTransformTypeLowLatencyLevel.Bad,絶対ダメ(超高遅延),Bad (Very Very High Latency),差(超高延迟),差(超高延遲)
 
 # SyncSpawn
 WaitingSpawnText,ロドー中... 残り:{0}/{1}クルー,Waiting... {0}/{1} Crewmates,等待中... {0}/{1} 船员,等待中... {0}/{1} 船員
