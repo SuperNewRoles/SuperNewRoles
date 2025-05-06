@@ -65,6 +65,7 @@ public enum RoleId : short
     Teleporter,
     Pursuer,
     Bakery,
+    God,
 }
 
 public enum GhostRoleId : short

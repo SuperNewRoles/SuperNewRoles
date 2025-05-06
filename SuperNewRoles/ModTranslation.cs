@@ -53,6 +53,10 @@ public static partial class ModTranslation
     {
         return CurrentTranslations.TryGetValue(key, out var value) ? value : key;
     }
+    public static bool TryGetString(string key, out string value)
+    {
+        return CurrentTranslations.TryGetValue(key, out value);
+    }
     public static string GetString(string key, params object[] format)
     {
         return string.Format(GetString(key), format);

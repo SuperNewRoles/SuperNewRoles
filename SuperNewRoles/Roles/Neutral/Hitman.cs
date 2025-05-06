@@ -204,7 +204,7 @@ public class HitmanAbility : AbilityBase
         _successCount++;
         if (_successCount >= Data.WinKillCount)
         {
-            CustomRpcExts.RpcEndGameForHost((GameOverReason)CustomGameOverReason.HitmanWin);
+            EndGamer.RpcEndGameWithWinner(CustomGameOverReason.HitmanWin, [Player], Hitman.Instance.RoleColor, "Hitman", string.Empty);
         }
         reSelect();
         RpcSyncCount();

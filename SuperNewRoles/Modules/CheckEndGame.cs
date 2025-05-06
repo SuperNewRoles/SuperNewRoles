@@ -20,7 +20,6 @@ public enum VictoryType
     CrewmateVote,
     JackalDomination,
     PavlovsWin,
-    ArsonistWin
 }
 
 public enum SabotageSystemType
@@ -29,14 +28,24 @@ public enum SabotageSystemType
     Critical
 }
 
+[HarmonyPatch(typeof(AmongUsClient), nameof(AmongUsClient.CoStartGame))]
+public static class CoStartGamePatch
+{
+    public static void Postfix()
+    {
+        CheckGameEndPatch.CouldCheckEndGame = true;
+    }
+}
 [HarmonyPatch(typeof(LogicGameFlowNormal), nameof(LogicGameFlowNormal.CheckEndCriteria))]
 public static class CheckGameEndPatch
 {
     private static readonly TimeSpan CheckInterval = TimeSpan.FromSeconds(0.15);
     private static float _nextCheckTime;
+    public static bool CouldCheckEndGame = true;
 
     public static bool Prefix()
     {
+        if (!CouldCheckEndGame) return false;
         try
         {
             return HandleGameEndCheck();
@@ -120,10 +129,6 @@ public static class CheckGameEndPatch
         if (stats.IsCrewmateVictory)
             return VictoryType.CrewmateVote;
 
-        // アルソニスト勝利
-        if (stats.IsArsonistWin)
-            return VictoryType.ArsonistWin;
-
         return null;
     }
 
@@ -133,7 +138,28 @@ public static class CheckGameEndPatch
             ShipStatus.Instance.enabled = false;
 
         var reason = MapVictoryTypeToGameOverReason(victoryType);
-        GameManager.Instance.RpcEndGame(reason, false);
+        (var winners, var color, var upperText) = GetEndGameData(victoryType);
+        EndGamer.EndGame(reason, winners, color, upperText);
+    }
+
+    private static (HashSet<ExPlayerControl> winners, Color32 color, string upperText) GetEndGameData(VictoryType victoryType)
+    {
+        switch (victoryType)
+        {
+            case VictoryType.ImpostorKill:
+            case VictoryType.ImpostorVote:
+            case VictoryType.ImpostorSabotage:
+                return (ExPlayerControl.ExPlayerControls.Where(player => player.IsImpostorWinTeam()).ToHashSet(), Palette.ImpostorRed, "ImpostorWin");
+            case VictoryType.CrewmateTask:
+            case VictoryType.CrewmateVote:
+                return (ExPlayerControl.ExPlayerControls.Where(player => player.IsCrewmate()).ToHashSet(), Palette.CrewmateBlue, "CrewmateWin");
+            case VictoryType.JackalDomination:
+                return (ExPlayerControl.ExPlayerControls.Where(player => player.IsJackalTeam()).ToHashSet(), Jackal.Instance.RoleColor, "JackalWin");
+            case VictoryType.PavlovsWin:
+                return (ExPlayerControl.ExPlayerControls.Where(player => player.IsPavlovsTeam()).ToHashSet(), PavlovsDog.Instance.RoleColor, "PavlovsWin");
+            default:
+                throw new ArgumentException($"Invalid victory type: {victoryType}");
+        }
     }
 
     private static GameOverReason MapVictoryTypeToGameOverReason(VictoryType victoryType) => victoryType switch
@@ -145,7 +171,6 @@ public static class CheckGameEndPatch
         VictoryType.CrewmateVote => GameOverReason.CrewmatesByVote,
         VictoryType.JackalDomination => (GameOverReason)CustomGameOverReason.JackalWin,
         VictoryType.PavlovsWin => (GameOverReason)CustomGameOverReason.PavlovsWin,
-        VictoryType.ArsonistWin => (GameOverReason)CustomGameOverReason.ArsonistWin,
         _ => throw new ArgumentException($"無効な勝利タイプ: {victoryType}")
     };
 }
@@ -226,7 +251,6 @@ public class PlayerStatistics
     public bool IsImpostorDominating => IsKillerWin(TeamImpostorsAlive);
     public bool IsJackalDominating => IsKillerWin(TeamJackalAlive);
     public bool IsPavlovsWin => IsKillerWin(TeamPavlovsAlive); public bool IsCrewmateVictory => !IsKillerExist;
-    public bool IsArsonistWin => ArsonistAlive > 0 && ArsonistAlive == TotalAlive;
 
     public PlayerStatistics()
     {
@@ -244,7 +268,6 @@ public class PlayerStatistics
             TeamPavlovsAlive = PavlovsDogAlive + PavlovsOwnerAlive;
         else
             TeamPavlovsAlive = alivePlayers.Count(player => player.Role == RoleId.PavlovsOwner && player.GetAbility<PavlovsOwnerAbility>()?.HasRemainingDogCount() == true);
-        ArsonistAlive = alivePlayers.Count(player => player.Role == RoleId.Arsonist);
         TotalAlive = alivePlayers.Count();
         TotalKiller = alivePlayers.Count(player => player.IsNonCrewKiller());
     }

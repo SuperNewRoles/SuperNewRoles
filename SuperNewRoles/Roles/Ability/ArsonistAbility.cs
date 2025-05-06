@@ -141,7 +141,6 @@ public class ArsonistAbility : AbilityBase
                     target.CustomDeath(CustomDeathType.Ignite, source);
                 }
             }
-            CustomRpcExts.RpcEndGameForHost((GameOverReason)CustomGameOverReason.ArsonistWin);
         }
     }
 }
@@ -241,5 +240,6 @@ public class IgniteButtonAbility : CustomButtonBase
 
         // 点火処理
         ArsonistAbility.RpcIgniteAll(Player);
+        EndGamer.RpcEndGameWithWinner(CustomGameOverReason.ArsonistWin, [Player], Arsonist.Instance.RoleColor, "Arsonist", string.Empty);
     }
 }

@@ -445,7 +445,7 @@ public static class ModdedNetworkTransform
         private static bool IsVanillaServerCache;
         private static int lastShipStatusInstanceId;
         private static bool IsVanillaServer()
-            => lastShipStatusInstanceId == ShipStatus.Instance.GetInstanceID() ? IsVanillaServerCache : (IsVanillaServerCache = AmongUsClient.Instance.NetworkMode != NetworkModes.LocalGame && !ModHelpers.IsCustomServer());
+            => ShipStatus.Instance != null && lastShipStatusInstanceId == ShipStatus.Instance.GetInstanceID() ? IsVanillaServerCache : (IsVanillaServerCache = AmongUsClient.Instance.NetworkMode != NetworkModes.LocalGame && !ModHelpers.IsCustomServer());
         public static bool Prefix(CustomNetworkTransform __instance)
         {
             // 開始時のみ

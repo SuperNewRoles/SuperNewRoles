@@ -262,6 +262,13 @@ public static class CustomRPCManager
             case string s:
                 writer.Write(s);
                 break;
+            case List<string> list:
+                writer.Write(list.Count);
+                foreach (var s in list)
+                {
+                    writer.Write(s);
+                }
+                break;
             case Color color:
                 writer.Write(color.r);
                 writer.Write(color.g);
@@ -551,6 +558,7 @@ public static class CustomRPCManager
             Type t when t == typeof(float) => reader.ReadSingle(),
             Type t when t == typeof(bool) => reader.ReadBoolean(),
             Type t when t == typeof(string) => reader.ReadString(),
+            Type t when t == typeof(List<string>) => ReadStringList(reader),
             Type t when t == typeof(PlayerControl) => (PlayerControl)ExPlayerControl.ById(reader.ReadByte()),
             Type t when t == typeof(PlayerControl[]) => ReadPlayerControlArray(reader),
             Type t when t == typeof(ExPlayerControl) => ExPlayerControl.ById(reader.ReadByte()),
@@ -620,6 +628,16 @@ public static class CustomRPCManager
             dict[key] = (tupleItem1, tupleItem2);
         }
         return dict;
+    }
+    private static List<string> ReadStringList(MessageReader reader)
+    {
+        int count = reader.ReadInt32();
+        var list = new List<string>(count);
+        for (int i = 0; i < count; i++)
+        {
+            list.Add(reader.ReadString());
+        }
+        return list;
     }
 
     /// <summary>
