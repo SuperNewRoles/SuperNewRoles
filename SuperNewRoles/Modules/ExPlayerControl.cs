@@ -428,7 +428,7 @@ public class ExPlayerControl
     public bool IsPavlovsTeam()
         => Role is RoleId.PavlovsDog or RoleId.PavlovsOwner;
     public bool IsMadRoles()
-        => HasAbility(nameof(MadmateAbility));//|| HasAbility(nameof(ModifierMadmateAbility));
+        => HasAbility(nameof(MadmateAbility)) || GhostRole == GhostRoleId.Revenant;//|| HasAbility(nameof(ModifierMadmateAbility));
     public bool IsFriendRoles()
         => roleBase?.Role == RoleId.JackalFriends;
     public bool IsJackal()
