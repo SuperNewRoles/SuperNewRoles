@@ -7,6 +7,15 @@ using UnityEngine;
 
 namespace SuperNewRoles.Modules;
 
+public enum WinType
+{
+    // クルーとかの普通のやつ
+    Default,
+    // 単独勝利
+    SingleNeutral,
+    // 乗っ取り勝利
+    Hijackers
+}
 public static class EndGamer
 {/*
     public static void EndGame(GameOverReason reason)
@@ -32,9 +41,10 @@ public static class EndGamer
         }
         EndGame(reason, winners, color, upperText);
     }*/
-    public static void EndGame(GameOverReason reason, HashSet<ExPlayerControl> winners, Color32 color, string upperText, string winText = null)
+    public static void EndGame(GameOverReason reason, WinType winType, HashSet<ExPlayerControl> winners, Color32 color, string upperText, string winText = null)
     {
-        UpdateHijackers(ref reason, ref winners, ref color, ref upperText, ref winText);
+        if (winType != WinType.SingleNeutral)
+            UpdateHijackers(ref reason, ref winners, ref color, ref upperText, ref winText, ref winType);
         UpdateAdditionalWinners(out HashSet<ExPlayerControl> additionalWinners);
         winners.UnionWith(additionalWinners);
         Logger.Info("----------- Finished EndGame Start -----------");
@@ -44,23 +54,32 @@ public static class EndGamer
         Logger.Info("upperText: " + upperText);
         Logger.Info("winText: " + winText);
         Logger.Info("----------- Finished EndGame End -----------");
+        RpcSyncAlive(ExPlayerControl.ExPlayerControls.ToDictionary(x => x.PlayerId, x => x.IsDead()));
         EndGameManagerSetUpPatch.RpcEndGameWithCondition(reason, winners.Select(x => x.PlayerId).ToList(), upperText ?? reason.ToString(), additionalWinners.Select(x => x.Role.ToString()).ToList(), color, false, winText ?? "WinText");
     }
     [CustomRPC]
-    public static void RpcEndGameWithWinner(CustomGameOverReason reason, ExPlayerControl[] winners, Color32 color, string upperText, string winText = null)
+    public static void RpcSyncAlive(Dictionary<byte, bool> dead)
+    {
+        foreach (ExPlayerControl player in ExPlayerControl.ExPlayerControls)
+        {
+            if (dead.TryGetValue(player.PlayerId, out bool isDead))
+                player.Data.IsDead = isDead;
+        }
+    }
+    [CustomRPC]
+    public static void RpcEndGameWithWinner(CustomGameOverReason reason, WinType winType, ExPlayerControl[] winners, Color32 color, string upperText, string winText = null)
     {
         if (!AmongUsClient.Instance.AmHost) return;
-        EndGame((GameOverReason)reason, winners.ToHashSet(), color, upperText, string.IsNullOrEmpty(winText) ? null : winText);
+        EndGame((GameOverReason)reason, winType, winners.ToHashSet(), color, upperText, string.IsNullOrEmpty(winText) ? null : winText);
     }
     [CustomRPC]
     public static void RpcEndGameImpostorWin()
     {
         if (!AmongUsClient.Instance.AmHost) return;
-        EndGame(GameOverReason.ImpostorsByKill, ExPlayerControl.ExPlayerControls.Where(x => x.IsImpostorWinTeam()).ToHashSet(), Palette.ImpostorRed, "ImpostorWin");
+        EndGame(GameOverReason.ImpostorsByKill, WinType.Default, ExPlayerControl.ExPlayerControls.Where(x => x.IsImpostorWinTeam()).ToHashSet(), Palette.ImpostorRed, "ImpostorWin");
     }
-    private static void UpdateHijackers(ref GameOverReason reason, ref HashSet<ExPlayerControl> winners, ref Color32 color, ref string upperText, ref string winText)
+    private static void UpdateHijackers(ref GameOverReason reason, ref HashSet<ExPlayerControl> winners, ref Color32 color, ref string upperText, ref string winText, ref WinType winType)
     {
-        winners = new();
         foreach (ExPlayerControl player in ExPlayerControl.ExPlayerControls)
         {
             if (player.Role == RoleId.God && player.IsAlive())
@@ -71,6 +90,7 @@ public static class EndGamer
                 color = God.Instance.RoleColor;
                 upperText = "God";
                 winText = "GodDescends";
+                winType = WinType.Hijackers;
             }
         }
         foreach (ExPlayerControl player in ExPlayerControl.ExPlayerControls)
@@ -81,6 +101,7 @@ public static class EndGamer
                 winners = [player];
                 color = Tuna.Instance.RoleColor;
                 upperText = "TunaWin";
+                winType = WinType.Hijackers;
             }
         }
     }

@@ -277,17 +277,6 @@ public class EndGameManagerSetUpPatch
         textRenderer = bonusTextObject.GetComponent<TMPro.TMP_Text>();
         textRenderer.text = "";
 
-        (string winText, Color roleColor, bool isHaison) = ProcessWinText(AdditionalTempData.winCondition);
-
-        foreach (var additionalWinCondition in AdditionalTempData.additionalWinConditions)
-        {
-            (string additionalWinText, Color additionalRoleColor, bool additionalIsHaison) = ProcessWinText(additionalWinCondition);
-            winText += $" <color=white>+</color> {ModHelpers.Cs(additionalRoleColor, additionalWinText)}";
-        }
-
-        textRenderer.color = AdditionalTempData.winCondition == WinCondition.Haison ? Color.clear : roleColor;
-        __instance.BackgroundBar.material.SetColor("_Color", roleColor);
-
         if (AdditionalTempData.winCondition == WinCondition.Haison)
         {
             __instance.WinText.text = ModTranslation.GetString("Haison");
@@ -297,13 +286,7 @@ public class EndGameManagerSetUpPatch
         {
             __instance.WinText.text = ModTranslation.GetString("NoWinner");
             __instance.WinText.color = Color.white;
-            roleColor = Color.white;
         }
-        else
-            winText += " " + ModTranslation.GetString("WinName");
-
-        if (AdditionalTempData.winCondition != WinCondition.Haison)
-            textRenderer.text = winText;
 
         CreateRoleSummary(__instance);
 
@@ -324,10 +307,10 @@ public class EndGameManagerSetUpPatch
                 upperText += " & " + string.Join(" & ", endGameCondition.additionalWinTexts);
             }
             textRenderer.text = upperText + " " + endGameCondition.winText;
+            __instance.BackgroundBar.material.SetColor("_Color", endGameCondition.UpperTextColor);
         }
 
         AdditionalTempData.Clear();
-        OnGameEndPatch.WinText = ModHelpers.Cs(roleColor, winText);
 
         // トロフィー処理を実行
         SuperTrophyManager.OnEndGame();
@@ -438,16 +421,6 @@ public class EndGameManagerSetUpPatch
 // このクラスはゲーム終了時の処理にフックするパッチクラスです。
 public static class OnGameEndPatch
 {
-    // 勝者のプレイヤーコントロールを保持します。
-    public static PlayerControl WinnerPlayer;
-    // カスタムゲームオーバー理由を保持するための変数（null許容型）。
-    public static CustomGameOverReason? EndData = null;
-    // 勝利時に表示するテキスト（カスタムの勝利メッセージなど）。
-    public static string WinText;
-
-    // ゲーム終了直前に呼ばれるプレフィックスメソッドです。
-    // このメソッドはHarmonyによって、ゲーム終了処理が実行される前に呼ばれ、
-    // endGameResultの内容を加工または解析するために使用されます。
     public static void Prefix([HarmonyArgument(0)] ref EndGameResult endGameResult)
     {
         // エンドゲームの結果からゲームオーバー理由を一時データに保存します。

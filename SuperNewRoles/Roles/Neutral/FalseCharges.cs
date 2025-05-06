@@ -70,7 +70,7 @@ public class FalseChargesAbility : TargetCustomButtonBase
         if (data.exiled == null || data.exiled.PlayerId != _target?.PlayerId) return;
         if (_turn >= 0)
         {
-            EndGamer.RpcEndGameWithWinner(CustomGameOverReason.FalseChargesWin, [Player], FalseCharges.Instance.RoleColor, "FalseCharges", string.Empty);
+            EndGamer.RpcEndGameWithWinner(CustomGameOverReason.FalseChargesWin, WinType.SingleNeutral, [Player], FalseCharges.Instance.RoleColor, "FalseCharges", string.Empty);
         }
     }
 

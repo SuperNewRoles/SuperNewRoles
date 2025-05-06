@@ -69,7 +69,7 @@ public class WorkpersonAbility : AbilityBase
         if (ExPlayerControl.LocalPlayer.IsTaskComplete())
         {
             if (_needAliveToWin && !ExPlayerControl.LocalPlayer.IsAlive()) return;
-            EndGamer.RpcEndGameWithWinner(CustomGameOverReason.WorkpersonWin, [Player], Workperson.Instance.RoleColor, "Workperson", string.Empty);
+            EndGamer.RpcEndGameWithWinner(CustomGameOverReason.WorkpersonWin, WinType.SingleNeutral, [Player], Workperson.Instance.RoleColor, "Workperson", string.Empty);
         }
     }
     public override void DetachToLocalPlayer()

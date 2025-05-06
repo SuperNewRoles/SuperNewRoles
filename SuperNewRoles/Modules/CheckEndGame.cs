@@ -139,7 +139,7 @@ public static class CheckGameEndPatch
 
         var reason = MapVictoryTypeToGameOverReason(victoryType);
         (var winners, var color, var upperText) = GetEndGameData(victoryType);
-        EndGamer.EndGame(reason, winners, color, upperText);
+        EndGamer.EndGame(reason, WinType.Default, winners, color, upperText);
     }
 
     private static (HashSet<ExPlayerControl> winners, Color32 color, string upperText) GetEndGameData(VictoryType victoryType)
