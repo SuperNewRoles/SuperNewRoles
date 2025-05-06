@@ -26,6 +26,7 @@ public enum FinalStatus
     FalseCharges,
     SheriffSelfDeath,
     SheriffKill,
+    LoversSuicide,
 }
 
 public static class FinalStatusListener

@@ -46,6 +46,10 @@ public static class CustomDeathExtensions
                 player.Player.MurderPlayer(player.Player, MurderResultFlags.Succeeded);
                 FinalStatusManager.SetFinalStatus(player, FinalStatus.Suicide);
                 break;
+            case CustomDeathType.LoversSuicide:
+                player.Player.MurderPlayer(player.Player, MurderResultFlags.Succeeded);
+                FinalStatusManager.SetFinalStatus(player, FinalStatus.LoversSuicide);
+                break;
             case CustomDeathType.WaveCannon:
                 source.Player.MurderPlayer(player.Player, MurderResultFlags.Succeeded);
                 FinalStatusManager.SetFinalStatus(player, FinalStatus.WaveCannon);
@@ -112,4 +116,5 @@ public enum CustomDeathType
     Push,
     Ignite,
     FalseCharges,
+    LoversSuicide,
 }

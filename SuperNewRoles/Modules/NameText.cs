@@ -74,7 +74,7 @@ public static class NameText
             roleName = $"{ModHelpers.CsWithTranslation(player.GhostRoleBase.RoleColor, player.GhostRole.ToString())} ({roleName}) ";
         foreach (var modifier in player.ModifierRoleBases)
         {
-            roleName = modifier.ModifierMark.Replace("{0}", roleName);
+            roleName = modifier.ModifierMark(player).Replace("{0}", roleName);
         }
         playerInfoText = roleName;
         playerInfoText += TaskText;

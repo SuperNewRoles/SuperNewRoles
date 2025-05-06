@@ -305,6 +305,7 @@ Bakery,パン屋,Bakery
 MadRaccoon,化け狸,MadRaccoon
 Balancer,天秤,Balancer
 God,神,God
+Lovers,ラバーズ,Lovers,恋爱,戀愛
 
 # Descriptions
 BestFalseCharge.Description,特に能力を有さないクルーメイトです。\n死亡するまでこの役職だと自覚出来ません。\n最初の会議が終了すると、そのまま死亡します。,The ultimate red herring! A Crewmate with no abilities who lives in blissful ignorance.\nThey won't realize they have this role until they're dead—talk about a rude awakening!\nAfter the first meeting ends, they die faster than someone saying "I saw Blue vent!",这是一个没有特殊能力的船员。\n在死亡之前他们不会意识到自己拥有这个角色。\n第一场会议结束后，他们会直接死亡。,這是一個沒有特殊能力的船員。\n在死亡之前他們不會察覺自己擁有這個角色。\n第一場會議結束後，他們會直接死亡。
@@ -777,3 +778,13 @@ WorshiperAbilitySuicideCoolTime,自殺クールタイム,Suicide Cooldown,自殺
 GodNeededTask,勝利にタスクが必要,Required Tasks for Victory,胜利需要任务,勝利需要任務
 GodSeeVote,投票結果を見れる,See Vote Results,可以看投票结果,可以看投票結果
 GodDescends,降臨,Descends,降臨,降臨
+
+# Lovers
+LoversCategory,<color=#FF69B4>ラバーズ</color>,<color=#FF69B4>Lovers</color>,<color=#FF69B4>恋爱</color>,<color=#FF69B4>戀愛</color>
+LoversMaxCoupleCount,最大カップル数,Max Couple Count
+LoversSpawnChance,排出確率,Spawn Chance
+LoversDieWithPartner,2人同時に死ぬ,Die with Partner
+LoversAvoidQuarreled,クラードと重複しない,Avoid Quarreled
+LoversAdditionalWinCondition,追加勝利,Additional Win Condition
+LoversIncludeImpostorsInSelection,抽選にインポスターを含む,Include Impostors in Selection
+LoversIncludeThirdTeamInSelection,抽選に第三陣営を含む,Include Third Team in Selection

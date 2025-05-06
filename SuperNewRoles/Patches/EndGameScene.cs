@@ -98,6 +98,7 @@ static class AdditionalTempData
         public IRoleBase roleBase { get; set; }
         public IGhostRoleBase ghostRoleBase { get; set; }
         public List<IModifierBase> modifierRoleBases { get; set; }
+        public List<string> modifierMarks { get; set; }
         public string RoleString { get; set; }
         public int TasksCompleted { get; set; }
         public int TasksTotal { get; set; }
@@ -367,9 +368,9 @@ public class EndGameManagerSetUpPatch
                 string roleText = ModHelpers.CsWithTranslation(roleInfo.roleBase.RoleColor, roleInfo.roleBase.Role.ToString());
                 if (roleInfo.GhostRoleId != GhostRoleId.None)
                     roleText = $"{ModHelpers.CsWithTranslation(roleInfo.ghostRoleBase.RoleColor, roleInfo.GhostRoleId.ToString())} ({roleText}) ";
-                foreach (var modifier in roleInfo.modifierRoleBases)
+                foreach (var modifier in roleInfo.modifierMarks)
                 {
-                    roleText = modifier.ModifierMark.Replace("{0}", roleText);
+                    roleText = modifier.Replace("{0}", roleText);
                 }
                 playerObj.cosmetics.nameText.text = $"{roleInfo.PlayerName}{roleInfo.NameSuffix}\n{string.Join("\n", roleText)}";
                 customCosmeticsLayer.hat2?.SetHat(roleInfo.Hat2Id, roleInfo.ColorId);
@@ -491,6 +492,7 @@ public static class OnGameEndPatch
             roleBase = exPlayer.roleBase,
             ghostRoleBase = exPlayer.GhostRoleBase,
             modifierRoleBases = exPlayer.ModifierRoleBases,
+            modifierMarks = exPlayer.ModifierRoleBases.Select(x => x.ModifierMark(exPlayer)).ToList(),
             Hat2Id = hat2Id,
             Visor2Id = visor2Id,
         };
