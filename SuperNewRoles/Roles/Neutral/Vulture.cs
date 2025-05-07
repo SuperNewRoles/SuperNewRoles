@@ -151,7 +151,7 @@ public class EatDeadBodyAbility : CustomButtonBase
     {
         if (canWin)
         {
-            CustomRpcExts.RpcEndGameForHost((GameOverReason)CustomGameOverReason.VultureWin);
+            EndGamer.RpcEndGameWithWinner(CustomGameOverReason.VultureWin, WinType.SingleNeutral, [Player], Vulture.Instance.RoleColor, "Vulture", string.Empty);
         }
     }
 

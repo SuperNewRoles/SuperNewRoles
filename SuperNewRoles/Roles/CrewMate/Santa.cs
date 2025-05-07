@@ -20,6 +20,7 @@ internal class Santa : RoleBase<Santa>
             TryLoversToDeath: SantaTryLoverToDeath,
             TryMadRolesToDeath: SantaTryMadmateToDeath,
             TryJackalFriendsToDeath: SantaTryJackalFriendsToDeath,
+            ForImpostor: false,
             Roles: new List<(RoleId role, int percentage)>
             {
                 // (RoleId.SpeedBooster, SantaSpeedBoosterPercentage),

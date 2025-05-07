@@ -71,7 +71,7 @@ public class CustomSidekickButtonAbility : TargetCustomButtonBase
         if (_sidekickSuccess == null || _sidekickSuccess(Target))
         {
             var vanillaRole = _sidekickRoleVanilla?.Invoke();
-            RpcSidekicked(Player, Target, _sidekickRole(), vanillaRole ?? RoleTypes.Crewmate, vanillaRole == null);
+            RpcSidekicked(Player, Target, _sidekickRole(), vanillaRole ?? RoleTypes.Crewmate, vanillaRole != null);
             var target = Target;
             if (_sidekickedPromoteData != null)
             {

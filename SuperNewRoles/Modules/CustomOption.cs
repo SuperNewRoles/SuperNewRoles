@@ -1467,21 +1467,36 @@ public class CustomOptionSelectAttribute : CustomOptionBaseAttribute
 {
     private readonly string[] _selectionNames;
     private readonly Type _enumType;
+    private readonly object _defaultValue;
     public string TranslationPrefix { get; }
 
-    public CustomOptionSelectAttribute(string id, Type enumType, string translationPrefix, string? translationName = null, string? parentFieldName = null, DisplayModeId displayMode = DisplayModeId.All, object? parentActiveValue = null)
+    public CustomOptionSelectAttribute(string id, Type enumType, string translationPrefix, string? translationName = null, string? parentFieldName = null, DisplayModeId displayMode = DisplayModeId.All, object? parentActiveValue = null, object defaultValue = null)
         : base(id, translationName, parentFieldName, displayMode, parentActiveValue)
     {
         if (!enumType.IsEnum) throw new ArgumentException("Type must be an enum", nameof(enumType));
         _enumType = enumType;
         _selectionNames = Enum.GetNames(enumType);
         TranslationPrefix = translationPrefix;
+        _defaultValue = defaultValue;
     }
 
     public override object[] GenerateSelections() =>
         _selectionNames.Select(name => Enum.Parse(_enumType, name)).ToArray();
 
-    public override byte GenerateDefaultSelection() => 0;
+    public override byte GenerateDefaultSelection()
+    {
+        if (_defaultValue == null) return 0;
+        var selections = GenerateSelections();
+        for (byte i = 0; i < selections.Length; i++)
+        {
+            if (selections[i].Equals(_defaultValue))
+            {
+                return i;
+            }
+        }
+        Logger.Warning($"Default value {_defaultValue} not found for enum type {_enumType}. Using index 0.");
+        return 0;
+    }
 }
 
 [AttributeUsage(AttributeTargets.Field)]

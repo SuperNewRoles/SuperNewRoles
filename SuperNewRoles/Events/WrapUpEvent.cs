@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using HarmonyLib;
+using SuperNewRoles.Modules;
 using SuperNewRoles.Modules.Events.Bases;
 using UnityEngine;
 
@@ -30,6 +31,11 @@ public static class WrapUpPatch
     public static void Postfix(ExileController __instance)
     {
         WrapUpEvent.Invoke(__instance.initData.networkedPlayer);
+        CheckGameEndPatch.CouldCheckEndGame = false;
+        new LateTask(() =>
+        {
+            CheckGameEndPatch.CouldCheckEndGame = true;
+        }, 0.5f);
     }
 }
 
@@ -39,5 +45,10 @@ public static class AirshipWrapUpPatch
     public static void Postfix(AirshipExileController __instance)
     {
         WrapUpEvent.Invoke(__instance.initData.networkedPlayer);
+        CheckGameEndPatch.CouldCheckEndGame = false;
+        new LateTask(() =>
+        {
+            CheckGameEndPatch.CouldCheckEndGame = true;
+        }, 0.5f);
     }
 }

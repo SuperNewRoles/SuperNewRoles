@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using System.Linq;
 using SuperNewRoles.Events;
 using SuperNewRoles.Events.PCEvents;
@@ -73,7 +74,7 @@ public static class NameText
             roleName = $"{ModHelpers.CsWithTranslation(player.GhostRoleBase.RoleColor, player.GhostRole.ToString())} ({roleName}) ";
         foreach (var modifier in player.ModifierRoleBases)
         {
-            roleName = modifier.ModifierMark.Replace("{0}", roleName);
+            roleName = modifier.ModifierMark(player).Replace("{0}", roleName);
         }
         playerInfoText = roleName;
         playerInfoText += TaskText;
@@ -99,10 +100,20 @@ public static class NameText
             SetNameTextColor(player, Color.white);
         }
         UpdateVisiable(player);
-        NameTextUpdateEvent.Invoke(player, visiable);
+        NameTextUpdateEvent.Invoke(player);
+        NameTextUpdateVisiableEvent.Invoke(player, visiable);
+    }
+    public static void SetCustomTaskCount(ExPlayerControl player, int completed, int total, bool showOnMeeting = false, bool showCompletedOnComms = false)
+    {
+        string text = ModHelpers.Cs(Color.yellow, "(" + (showOnMeeting ? (ModHelpers.IsComms() ? "?" : completed.ToString()) : (showCompletedOnComms ? completed.ToString() : "?")) + "/" + total.ToString() + ")");
+        if (player.PlayerInfoText != null)
+            player.PlayerInfoText.text += text;
+        if (player.MeetingInfoText != null && showOnMeeting)
+            player.MeetingInfoText.text += text;
     }
     public static void SetNameTextColor(ExPlayerControl player, Color color)
     {
+        Logger.Info($"SetNameTextColor: {player.Data.PlayerName} {color}");
         player.Player.cosmetics.nameText.color = color;
         if (player.VoteArea != null)
             player.VoteArea.NameText.color = color;
@@ -119,11 +130,16 @@ public static class NameText
         WrapUpEvent.Instance.AddListener(x => UpdateAllNameInfo());
         MeetingStartEvent.Instance.AddListener(x => UpdateAllNameInfo());
         FixedUpdateEvent.Instance.AddListener(UpdateAllVisiable);
+        _lastDead = new();
     }
+    private static Dictionary<ExPlayerControl, bool> _lastDead = new();
     private static void UpdateAllVisiable()
     {
         foreach (var player in ExPlayerControl.ExPlayerControls)
+        {
             UpdateVisiable(player);
+            NameTextUpdateVisiableEvent.Invoke(player, player.Player.Visible);
+        }
     }
     public static void UpdateVisiable(ExPlayerControl player)
     {
@@ -136,6 +152,8 @@ public static class NameText
     {
         if (player == null || player.Player == null)
             return;
+        if (!player.Player.Visible)
+            visiable = false;
         if (visiable && player.PlayerInfoText == null)
             UpdateNameInfo(player);
         player.PlayerInfoText.gameObject.SetActive(visiable);

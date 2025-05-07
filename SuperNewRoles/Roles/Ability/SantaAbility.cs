@@ -9,7 +9,7 @@ using UnityEngine;
 
 namespace SuperNewRoles.Roles.Ability;
 
-public record SantaAbilityData(int InitialCount, float Cooldown, bool TryLoversToDeath, bool TryMadRolesToDeath, bool TryJackalFriendsToDeath, List<(RoleId role, int percentage)> Roles);
+public record SantaAbilityData(int InitialCount, float Cooldown, bool TryLoversToDeath, bool TryMadRolesToDeath, bool TryJackalFriendsToDeath, bool ForImpostor, List<(RoleId role, int percentage)> Roles);
 public class SantaAbility : AbilityBase
 {
     private CustomSidekickButtonAbility ButtonAbility;
@@ -57,7 +57,7 @@ public class SantaAbility : AbilityBase
                 else if (player.IsFriendRoles() && _data.TryJackalFriendsToDeath)
                     return false;
                 _selectedRole = SelectRole();
-                return CustomRoleManager.GetRoleById(_selectedRole)?.AssignedTeam == AssignedTeamType.Impostor ? player.IsImpostor() : player.IsCrewmate();
+                return _data.ForImpostor ? player.IsImpostor() : player.IsCrewmateOrMadRoles();
             },
             onSidekickCreated: (player) =>
             {
@@ -70,7 +70,7 @@ public class SantaAbility : AbilityBase
                 else if (player.IsFriendRoles() && _data.TryJackalFriendsToDeath)
                     successed = false;
                 else
-                    successed = CustomRoleManager.GetRoleById(_selectedRole)?.AssignedTeam == AssignedTeamType.Impostor ? player.IsImpostor() : player.IsCrewmate();
+                    successed = _data.ForImpostor ? player.IsImpostor() : player.IsCrewmateOrMadRoles();
                 RpcSantaAssigndRole(Player, player, successed);
             },
             showSidekickLimitText: () => true

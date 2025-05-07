@@ -30,14 +30,24 @@ public enum SabotageSystemType
     Critical
 }
 
+[HarmonyPatch(typeof(AmongUsClient), nameof(AmongUsClient.CoStartGame))]
+public static class CoStartGamePatch
+{
+    public static void Postfix()
+    {
+        CheckGameEndPatch.CouldCheckEndGame = true;
+    }
+}
 [HarmonyPatch(typeof(LogicGameFlowNormal), nameof(LogicGameFlowNormal.CheckEndCriteria))]
 public static class CheckGameEndPatch
 {
     private static readonly TimeSpan CheckInterval = TimeSpan.FromSeconds(0.15);
     private static float _nextCheckTime;
+    public static bool CouldCheckEndGame = true;
 
     public static bool Prefix()
     {
+        if (!CouldCheckEndGame) return false;
         try
         {
             return HandleGameEndCheck();
@@ -138,7 +148,28 @@ public static class CheckGameEndPatch
             ShipStatus.Instance.enabled = false;
 
         var reason = MapVictoryTypeToGameOverReason(victoryType);
-        GameManager.Instance.RpcEndGame(reason, false);
+        (var winners, var color, var upperText) = GetEndGameData(victoryType);
+        EndGamer.EndGame(reason, WinType.Default, winners, color, upperText);
+    }
+
+    private static (HashSet<ExPlayerControl> winners, Color32 color, string upperText) GetEndGameData(VictoryType victoryType)
+    {
+        switch (victoryType)
+        {
+            case VictoryType.ImpostorKill:
+            case VictoryType.ImpostorVote:
+            case VictoryType.ImpostorSabotage:
+                return (ExPlayerControl.ExPlayerControls.Where(player => player.IsImpostorWinTeam()).ToHashSet(), Palette.ImpostorRed, "ImpostorWin");
+            case VictoryType.CrewmateTask:
+            case VictoryType.CrewmateVote:
+                return (ExPlayerControl.ExPlayerControls.Where(player => player.IsCrewmate()).ToHashSet(), Palette.CrewmateBlue, "CrewmateWin");
+            case VictoryType.JackalDomination:
+                return (ExPlayerControl.ExPlayerControls.Where(player => player.IsJackalTeam()).ToHashSet(), Jackal.Instance.RoleColor, "JackalWin");
+            case VictoryType.PavlovsWin:
+                return (ExPlayerControl.ExPlayerControls.Where(player => player.IsPavlovsTeam()).ToHashSet(), PavlovsDog.Instance.RoleColor, "PavlovsWin");
+            default:
+                throw new ArgumentException($"Invalid victory type: {victoryType}");
+        }
     }
 
     private static GameOverReason MapVictoryTypeToGameOverReason(VictoryType victoryType) => victoryType switch
@@ -221,6 +252,8 @@ public class PlayerStatistics
     public int CrewAlive { get; }
     public int TotalAlive { get; }
     public int TeamJackalAlive { get; }
+    public int PavlovsDogAlive { get; }
+    public int PavlovsOwnerAlive { get; }
     public int TeamPavlovsAlive { get; }
     public int TotalKiller { get; }
     public int ArsonistAlive { get; }
@@ -244,7 +277,13 @@ public class PlayerStatistics
         TeamImpostorsAlive = alivePlayers.Count(player => player.IsImpostor());
         CrewAlive = alivePlayers.Count(player => player.IsCrewmate());
         TeamJackalAlive = alivePlayers.Count(player => player.IsJackalTeam());
-        TeamPavlovsAlive = alivePlayers.Count(player => player.Role == RoleId.PavlovsDog || (player.Role == RoleId.PavlovsOwner && player.GetAbility<PavlovsOwnerAbility>()?.HasRemainingDogCount() == true));
+
+        PavlovsDogAlive = alivePlayers.Count(player => player.Role == RoleId.PavlovsDog);
+        PavlovsOwnerAlive = alivePlayers.Count(player => player.Role == RoleId.PavlovsOwner);
+        if (PavlovsDogAlive > 0)
+            TeamPavlovsAlive = PavlovsDogAlive + PavlovsOwnerAlive;
+        else
+            TeamPavlovsAlive = alivePlayers.Count(player => player.Role == RoleId.PavlovsOwner && player.GetAbility<PavlovsOwnerAbility>()?.HasRemainingDogCount() == true);
         ArsonistAlive = alivePlayers.Count(player => player.Role == RoleId.Arsonist);
         OwlAlive = alivePlayers.Count(player => player.Role == RoleId.Owl);
         TotalAlive = alivePlayers.Count();
@@ -262,6 +301,6 @@ public class PlayerStatistics
     // 対象チームのキラー数が、全体の半数以上かつ全キラーがそのチームである場合、勝利と判定
     private bool IsKillerWin(int teamAlive)
     {
-        return teamAlive >= TotalAlive - teamAlive && TotalKiller == teamAlive && teamAlive != 0;
+        return teamAlive >= TotalAlive - teamAlive && TotalKiller <= teamAlive && teamAlive != 0 && !(PavlovsDogAlive <= 0 && TeamPavlovsAlive > 0);
     }
 }

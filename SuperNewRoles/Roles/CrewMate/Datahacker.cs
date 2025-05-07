@@ -116,7 +116,7 @@ public class DatahackerAbility : AbilityBase
     private EventListener fixedUpdateListener;
     private EventListener<TaskCompleteEventData> taskCompleteListener;
     private EventListener<NameTextUpdateEventData> nameTextUpdateListener;
-
+    private EventListener<NameTextUpdateVisiableEventData> nameTextUpdateVisiableListener;
     private CustomTaskAbility customTaskAbility;
 
     private bool exposedToImpostors = false;
@@ -129,48 +129,56 @@ public class DatahackerAbility : AbilityBase
         this.hackingData = hackingData;
     }
 
-    public override void AttachToLocalPlayer() { }
-
-    public override void Attach(PlayerControl player, ulong abilityId, AbilityParentBase parent)
+    public override void AttachToLocalPlayer()
     {
-        base.Attach(player, abilityId, parent);
+        nameTextUpdateVisiableListener = NameTextUpdateVisiableEvent.Instance.AddListener((data) => UpdateNameText(data));
+    }
+
+    public override void DetachToLocalPlayer()
+    {
+        nameTextUpdateVisiableListener?.RemoveListener();
+    }
+
+    public override void AttachToAlls()
+    {
+        base.AttachToAlls();
 
         customTaskAbility = new CustomTaskAbility(() => (true, hackingData.IndividualTasks.Total), hackingData.UseIndividualTaskSetting ? hackingData.IndividualTasks : null);
-        ((ExPlayerControl)player).AttachAbility(customTaskAbility, new AbilityParentAbility(this));
+        Player.AttachAbility(customTaskAbility, new AbilityParentAbility(this));
 
         taskCompleteListener = TaskCompleteEvent.Instance.AddListener((data) => TaskCompleted(data));
         fixedUpdateListener = FixedUpdateEvent.Instance.AddListener(() => UpdateArrow());
         nameTextUpdateListener = NameTextUpdateEvent.Instance.AddListener((data) => UpdateNameText(data));
     }
 
+    public override void DetachToAlls()
+    {
+        base.DetachToAlls();
+        fixedUpdateListener?.RemoveListener();
+        taskCompleteListener?.RemoveListener();
+        nameTextUpdateListener?.RemoveListener();
+        nameTextUpdateVisiableListener?.RemoveListener();
+        if (arrow != null && arrow.arrow != null)
+            UnityEngine.Object.Destroy(arrow.arrow);
+        arrow = null;
+    }
+
     private void UpdateNameText(NameTextUpdateEventData data)
     {
-        if (data.Player == Player && Player != ExPlayerControl.LocalPlayer && ExPlayerControl.LocalPlayer.IsNonCrewKiller() && exposedToImpostors)
+        if (data.Player == Player && !Player.AmOwner && ExPlayerControl.LocalPlayer.IsNonCrewKiller() && exposedToImpostors)
             NameText.SetNameTextColor(data.Player, Datahacker.Instance.RoleColor);
         else if (Player.AmOwner && hackingCompleted)
         {
             if (MeetingHud.Instance != null && !hackingData.CanSeeDuringMeeting) return;
-            if (CanSeeRole(data.Player, out Color color))
+            if (CanSeeRole(data.Player, out Color32 color))
                 NameText.SetNameTextColor(data.Player, color);
-            if (hackingData.CanSeeRoleNames)
-                NameText.UpdateVisiable(data.Player, true);
         }
     }
 
-    public override void Detach()
+    private void UpdateNameText(NameTextUpdateVisiableEventData data)
     {
-        base.Detach();
-        if (fixedUpdateListener != null)
-            FixedUpdateEvent.Instance.RemoveListener(fixedUpdateListener);
-
-        if (taskCompleteListener != null)
-            TaskCompleteEvent.Instance.RemoveListener(taskCompleteListener);
-
-        if (nameTextUpdateListener != null)
-            NameTextUpdateEvent.Instance.RemoveListener(nameTextUpdateListener);
-
-        if (arrow != null && arrow.arrow != null)
-            UnityEngine.Object.Destroy(arrow.arrow);
+        if (Player.AmOwner && hackingCompleted && hackingData.CanSeeRoleNames)
+            NameText.UpdateVisiable(data.Player, data.Player.IsAlive());
     }
 
     /// <summary>
@@ -229,28 +237,34 @@ public class DatahackerAbility : AbilityBase
             arrow.Update(Player.transform.position);
         }
     }
-    private bool CanSeeRole(ExPlayerControl target, out Color color)
+    private bool CanSeeRole(ExPlayerControl target, out Color32 color)
     {
+        Logger.Info($"CanSeeRole: {target.Data.PlayerName}");
         if (target.IsNeutral() && hackingData.CanSeeNeutral)
         {
+            Logger.Info("Neutral");
             color = new(127, 127, 127, byte.MaxValue);
             return hackingData.CanSeeKillingNeutral ? target.IsKiller() : true;
         }
-        if (target.IsMadRoles() && hackingData.CanSeeMadmates)
+        if (target.IsImpostor() && hackingData.CanSeeImpostor)
         {
+            Logger.Info("Impostor");
             color = Palette.ImpostorRed;
             return true;
         }
         if (target.IsCrewmate() && hackingData.CanSeeCrew)
         {
+            if (target.IsMadRoles() && hackingData.CanSeeMadmates)
+            {
+                Logger.Info("Madmates");
+                color = Palette.ImpostorRed;
+                return true;
+            }
+            Logger.Info("Crewmate");
             color = target.Data.Role.TeamColor;
             return true;
         }
-        if (target.IsImpostor() && hackingData.CanSeeImpostor)
-        {
-            color = Palette.ImpostorRed;
-            return true;
-        }
+        Logger.Info("Clear");
         color = Color.clear;
         return false;
     }

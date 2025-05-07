@@ -50,11 +50,15 @@ public static class CustomRPCManager
     /// <summary>
     /// SuperNewRoles専用のRPC識別子
     /// </summary>
-    private static byte SNRRpcId = byte.MaxValue;
+    private const byte SNRRpcId = byte.MaxValue;
     /// <summary>
     /// バージョン同期用のRPC識別子
     /// </summary>
-    public static byte SNRSyncVersionRpc = byte.MaxValue - 1;
+    public const byte SNRSyncVersionRpc = byte.MaxValue - 1;
+    /// <summary>
+    /// ネットワーク移動用のRPC識別子
+    /// </summary>
+    public const byte SNRNetworkTransformRpc = byte.MaxValue - 2;
     /// <summary>
     /// RPCの受信状態を追跡するフラグ
     /// </summary>
@@ -171,27 +175,31 @@ public static class CustomRPCManager
         {
             Logger.Info($"Received RPC: {callId}");
             // SuperNewRoles専用のRPCの場合
-            if (callId == SNRRpcId)
+            switch (callId)
             {
-                byte id = reader.ReadByte();
-                Logger.Info($"Received RPC: {id}");
-                if (!RpcMethods.TryGetValue(id, out var method))
-                    return;
+                case SNRRpcId:
+                    byte id = reader.ReadByte();
+                    Logger.Info($"Received RPC: {id}");
+                    if (!RpcMethods.TryGetValue(id, out var method))
+                        return;
 
-                // パラメーターを元にobject[]を作成
-                List<object> args = new();
-                for (int i = 0; i < method.GetParameters().Length; i++)
-                {
-                    args.Add(reader.ReadFromType(method.GetParameters()[i].ParameterType));
-                }
+                    // パラメーターを元にobject[]を作成
+                    List<object> args = new();
+                    for (int i = 0; i < method.GetParameters().Length; i++)
+                    {
+                        args.Add(reader.ReadFromType(method.GetParameters()[i].ParameterType));
+                    }
 
-                IsRpcReceived = true;
-                Logger.Info($"Received RPC: {method.Name}");
-                method.Invoke(null, args.ToArray());
-            }
-            else if (callId == SNRSyncVersionRpc)
-            {
-                SyncVersion.ReceivedSyncVersion(reader);
+                    IsRpcReceived = true;
+                    Logger.Info($"Received RPC: {method.Name}");
+                    method.Invoke(null, args.ToArray());
+                    break;
+                case SNRSyncVersionRpc:
+                    SyncVersion.ReceivedSyncVersion(reader);
+                    break;
+                case SNRNetworkTransformRpc:
+                    ModdedNetworkTransform.ReceivedNetworkTransform(reader);
+                    break;
             }
         }
     }
@@ -253,6 +261,13 @@ public static class CustomRPCManager
                 break;
             case string s:
                 writer.Write(s);
+                break;
+            case List<string> list:
+                writer.Write(list.Count);
+                foreach (var s in list)
+                {
+                    writer.Write(s);
+                }
                 break;
             case Color color:
                 writer.Write(color.r);
@@ -475,6 +490,52 @@ public static class CustomRPCManager
                         writer.Write(v3.z);
                     }
                 }
+                else if (type == typeof(Vector2[]))
+                {
+                    if (obj == null)
+                        writer.Write(0);
+                    else
+                    {
+                        var v2Array = obj as Vector2[];
+                        writer.Write(v2Array.Length);
+                        foreach (var v in v2Array)
+                        {
+                            writer.Write(v.x);
+                            writer.Write(v.y);
+                        }
+                    }
+                }
+                else if (type == typeof(Vector3[]))
+                {
+                    if (obj == null)
+                        writer.Write(0);
+                    else
+                    {
+                        var v3Array = obj as Vector3[];
+                        writer.Write(v3Array.Length);
+                        foreach (var v in v3Array)
+                        {
+                            writer.Write(v.x);
+                            writer.Write(v.y);
+                            writer.Write(v.z);
+                        }
+                    }
+                }
+                else if (type == typeof(Dictionary<byte, bool>))
+                {
+                    if (obj == null)
+                        writer.Write(0);
+                    else
+                    {
+                        var dict = obj as Dictionary<byte, bool>;
+                        writer.Write(dict.Count);
+                        foreach (var kvp in dict)
+                        {
+                            writer.Write(kvp.Key);
+                            writer.Write(kvp.Value);
+                        }
+                    }
+                }
                 else
                 {
                     throw new Exception($"Invalid type: {obj.GetType()}");
@@ -512,6 +573,7 @@ public static class CustomRPCManager
             Type t when t == typeof(float) => reader.ReadSingle(),
             Type t when t == typeof(bool) => reader.ReadBoolean(),
             Type t when t == typeof(string) => reader.ReadString(),
+            Type t when t == typeof(List<string>) => ReadStringList(reader),
             Type t when t == typeof(PlayerControl) => (PlayerControl)ExPlayerControl.ById(reader.ReadByte()),
             Type t when t == typeof(PlayerControl[]) => ReadPlayerControlArray(reader),
             Type t when t == typeof(ExPlayerControl) => ExPlayerControl.ById(reader.ReadByte()),
@@ -524,11 +586,14 @@ public static class CustomRPCManager
             Type t when t == typeof(Dictionary<string, byte>) => ReadDictionary<string, byte>(reader, r => r.ReadString(), r => r.ReadByte()),
             Type t when t == typeof(Dictionary<ushort, byte>) => ReadDictionary<ushort, byte>(reader, r => r.ReadUInt16(), r => r.ReadByte()),
             Type t when t == typeof(Dictionary<byte, (byte, int)>) => ReadDictionaryWithTuple(reader),
+            Type t when t == typeof(Dictionary<byte, bool>) => ReadDictionary<byte, bool>(reader, r => r.ReadByte(), r => r.ReadBoolean()),
             Type t when t == typeof(Color) => new Color(reader.ReadSingle(), reader.ReadSingle(), reader.ReadSingle(), reader.ReadSingle()),
             Type t when t == typeof(Color32) => new Color32(reader.ReadByte(), reader.ReadByte(), reader.ReadByte(), reader.ReadByte()),
             Type t when t == typeof(List<byte>) => ReadByteList(reader),
             Type t when t == typeof(Vector2) => new Vector2(reader.ReadSingle(), reader.ReadSingle()),
             Type t when t == typeof(Vector3) => new Vector3(reader.ReadSingle(), reader.ReadSingle(), reader.ReadSingle()),
+            Type t when t == typeof(Vector2[]) => ReadVector2Array(reader),
+            Type t when t == typeof(Vector3[]) => ReadVector3Array(reader),
             Type t when t.IsSubclassOf(typeof(AbilityBase)) => ReadAbilityBase(reader),
             _ => throw new Exception($"Invalid type: {type}")
         };
@@ -580,6 +645,16 @@ public static class CustomRPCManager
         }
         return dict;
     }
+    private static List<string> ReadStringList(MessageReader reader)
+    {
+        int count = reader.ReadInt32();
+        var list = new List<string>(count);
+        for (int i = 0; i < count; i++)
+        {
+            list.Add(reader.ReadString());
+        }
+        return list;
+    }
 
     /// <summary>
     /// PlayerControlの配列を読み取る
@@ -621,5 +696,29 @@ public static class CustomRPCManager
             list.Add(reader.ReadByte());
         }
         return list;
+    }
+
+    // Vector2[]を読み取るヘルパーメソッド
+    private static Vector2[] ReadVector2Array(MessageReader reader)
+    {
+        int length = reader.ReadInt32();
+        Vector2[] array = new Vector2[length];
+        for (int i = 0; i < length; i++)
+        {
+            array[i] = new Vector2(reader.ReadSingle(), reader.ReadSingle());
+        }
+        return array;
+    }
+
+    // Vector3[]を読み取るヘルパーメソッド
+    private static Vector3[] ReadVector3Array(MessageReader reader)
+    {
+        int length = reader.ReadInt32();
+        Vector3[] array = new Vector3[length];
+        for (int i = 0; i < length; i++)
+        {
+            array[i] = new Vector3(reader.ReadSingle(), reader.ReadSingle(), reader.ReadSingle());
+        }
+        return array;
     }
 }

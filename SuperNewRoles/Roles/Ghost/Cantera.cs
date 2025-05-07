@@ -117,7 +117,7 @@ public class CanteraAbility : TargetCustomButtonBase, IButtonEffect
     }
     public override bool CheckHasButton()
     {
-        return Player.AmOwner && HasCount;
+        return Player.AmOwner && HasCount && !isEffectActive;
     }
 
     public override bool CheckIsAvailable()
@@ -133,7 +133,6 @@ public class CanteraAbility : TargetCustomButtonBase, IButtonEffect
 
     public override void OnClick()
     {
-        Logger.Info("OnClick");
         if (CurrentTarget == null)
         {
             RpcCantera(this, Target);
@@ -143,6 +142,7 @@ public class CanteraAbility : TargetCustomButtonBase, IButtonEffect
     public static void RpcCantera(CanteraAbility ability, ExPlayerControl target)
     {
         ability.CurrentTarget = target;
-        ability.Count--;
+        if (target != null)
+            ability.Count--;
     }
 }

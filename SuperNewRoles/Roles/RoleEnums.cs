@@ -65,6 +65,7 @@ public enum RoleId : short
     Teleporter,
     Pursuer,
     Bakery,
+    God,
     Owl,
 }
 
@@ -83,6 +84,7 @@ public enum ModifierRoleId : short
     ModifierGuesser = 1 << 0,
     ModifierMadmate = 1 << 1,
     MakeMadmateModifier = 1 << 2,
+    Lovers = 1 << 3,
 }
 
 public enum QuoteMod : byte

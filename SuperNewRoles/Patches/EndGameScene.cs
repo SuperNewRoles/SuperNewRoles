@@ -47,7 +47,8 @@ public enum CustomGameOverReason
     ArsonistWin = 39,
     FalseChargesWin = 40,
     HitmanWin = 41,
-    OwlWin = 42,
+    GodWin = 42,
+    OwlWin = 43,
 }
 
 static class AdditionalTempData
@@ -99,6 +100,7 @@ static class AdditionalTempData
         public IRoleBase roleBase { get; set; }
         public IGhostRoleBase ghostRoleBase { get; set; }
         public List<IModifierBase> modifierRoleBases { get; set; }
+        public List<string> modifierMarks { get; set; }
         public string RoleString { get; set; }
         public int TasksCompleted { get; set; }
         public int TasksTotal { get; set; }
@@ -129,10 +131,48 @@ public static class ShipStatusPatch
     }
 }
 
+public class EndGameCondition
+{
+    public GameOverReason reason;
+    public List<byte> winners;
+    public string UpperText;
+    public Color UpperTextColor;
+    public bool IsHaison;
+    public string winText;
+    public List<string> additionalWinTexts;
+    public EndGameCondition(GameOverReason reason, List<byte> winners, string UpperText, List<string> additionalWinTexts, Color UpperTextColor, bool IsHaison, string winText = "WinText")
+    {
+        this.reason = reason;
+        this.winners = winners;
+        this.UpperText = UpperText;
+        this.UpperTextColor = UpperTextColor;
+        this.IsHaison = IsHaison;
+        this.winText = winText;
+        this.additionalWinTexts = additionalWinTexts;
+    }
+}
 [HarmonyPatch(typeof(EndGameManager), nameof(EndGameManager.SetEverythingUp))]
 public class EndGameManagerSetUpPatch
 {
+    [CustomRPC]
+    public static void RpcEndGameWithCondition(GameOverReason reason, List<byte> winners, string UpperText, List<string> additionalWinTexts, Color UpperTextColor, bool IsHaison, string winText = "WinText")
+    {
+        EndGameCondition newCond = new(
+            reason: reason,
+            winners: winners,
+            UpperText: ModTranslation.TryGetString(UpperText, out var value) ? value : "<INVALID_TEXT>",
+            additionalWinTexts: additionalWinTexts.Select(x => ModTranslation.TryGetString(x, out var value) ? value : "<INVALID_TEXT>").ToList(),
+            UpperTextColor: UpperTextColor,
+            IsHaison: IsHaison,
+            winText: ModTranslation.TryGetString(winText, out value) ? value : "<INVALID_TEXT>"
+        );
+        EndGameManagerSetUpPatch.endGameCondition = newCond;
+        if (AmongUsClient.Instance.AmHost)
+            GameManager.Instance.RpcEndGame(newCond.reason, false);
+    }
+
     public static TMPro.TMP_Text textRenderer;
+    public static EndGameCondition endGameCondition;
     [HarmonyPatch(typeof(EndGameNavigation), nameof(EndGameNavigation.ShowProgression))]
     public class ShowProgressionPatch
     {
@@ -244,17 +284,6 @@ public class EndGameManagerSetUpPatch
         textRenderer = bonusTextObject.GetComponent<TMPro.TMP_Text>();
         textRenderer.text = "";
 
-        (string winText, Color roleColor, bool isHaison) = ProcessWinText(AdditionalTempData.winCondition);
-
-        foreach (var additionalWinCondition in AdditionalTempData.additionalWinConditions)
-        {
-            (string additionalWinText, Color additionalRoleColor, bool additionalIsHaison) = ProcessWinText(additionalWinCondition);
-            winText += $" <color=white>+</color> {ModHelpers.Cs(additionalRoleColor, additionalWinText)}";
-        }
-
-        textRenderer.color = AdditionalTempData.winCondition == WinCondition.Haison ? Color.clear : roleColor;
-        __instance.BackgroundBar.material.SetColor("_Color", roleColor);
-
         if (AdditionalTempData.winCondition == WinCondition.Haison)
         {
             __instance.WinText.text = ModTranslation.GetString("Haison");
@@ -264,18 +293,31 @@ public class EndGameManagerSetUpPatch
         {
             __instance.WinText.text = ModTranslation.GetString("NoWinner");
             __instance.WinText.color = Color.white;
-            roleColor = Color.white;
         }
-        else
-            winText += " " + ModTranslation.GetString("WinName");
-
-        if (AdditionalTempData.winCondition != WinCondition.Haison)
-            textRenderer.text = winText;
 
         CreateRoleSummary(__instance);
 
+        // static endGameCondition があれば UI を上書き
+        if (endGameCondition != null)
+        {
+            if (endGameCondition.IsHaison)
+            {
+                __instance.WinText.text = ModTranslation.GetString("Haison");
+                __instance.WinText.color = HaisonColor;
+            }
+
+            textRenderer.color = endGameCondition.IsHaison ? Color.clear : endGameCondition.UpperTextColor;
+            // UpperText の後ろに追加のテキストがあれば結合
+            var upperText = endGameCondition.UpperText;
+            if (endGameCondition.additionalWinTexts != null && endGameCondition.additionalWinTexts.Any())
+            {
+                upperText += " & " + string.Join(" & ", endGameCondition.additionalWinTexts);
+            }
+            textRenderer.text = upperText + " " + endGameCondition.winText;
+            __instance.BackgroundBar.material.SetColor("_Color", endGameCondition.UpperTextColor);
+        }
+
         AdditionalTempData.Clear();
-        OnGameEndPatch.WinText = ModHelpers.Cs(roleColor, winText);
 
         // トロフィー処理を実行
         SuperTrophyManager.OnEndGame();
@@ -332,9 +374,9 @@ public class EndGameManagerSetUpPatch
                 string roleText = ModHelpers.CsWithTranslation(roleInfo.roleBase.RoleColor, roleInfo.roleBase.Role.ToString());
                 if (roleInfo.GhostRoleId != GhostRoleId.None)
                     roleText = $"{ModHelpers.CsWithTranslation(roleInfo.ghostRoleBase.RoleColor, roleInfo.GhostRoleId.ToString())} ({roleText}) ";
-                foreach (var modifier in roleInfo.modifierRoleBases)
+                foreach (var modifier in roleInfo.modifierMarks)
                 {
-                    roleText = modifier.ModifierMark.Replace("{0}", roleText);
+                    roleText = modifier.Replace("{0}", roleText);
                 }
                 playerObj.cosmetics.nameText.text = $"{roleInfo.PlayerName}{roleInfo.NameSuffix}\n{string.Join("\n", roleText)}";
                 customCosmeticsLayer.hat2?.SetHat(roleInfo.Hat2Id, roleInfo.ColorId);
@@ -386,16 +428,6 @@ public class EndGameManagerSetUpPatch
 // このクラスはゲーム終了時の処理にフックするパッチクラスです。
 public static class OnGameEndPatch
 {
-    // 勝者のプレイヤーコントロールを保持します。
-    public static PlayerControl WinnerPlayer;
-    // カスタムゲームオーバー理由を保持するための変数（null許容型）。
-    public static CustomGameOverReason? EndData = null;
-    // 勝利時に表示するテキスト（カスタムの勝利メッセージなど）。
-    public static string WinText;
-
-    // ゲーム終了直前に呼ばれるプレフィックスメソッドです。
-    // このメソッドはHarmonyによって、ゲーム終了処理が実行される前に呼ばれ、
-    // endGameResultの内容を加工または解析するために使用されます。
     public static void Prefix([HarmonyArgument(0)] ref EndGameResult endGameResult)
     {
         // エンドゲームの結果からゲームオーバー理由を一時データに保存します。
@@ -407,131 +439,6 @@ public static class OnGameEndPatch
             endGameResult.GameOverReason = GameOverReason.ImpostorsByKill;
     }
 
-    public static (IEnumerable<ExPlayerControl> Winners, WinCondition winCondition, List<NetworkedPlayerInfo> WillRevivePlayers) HandleEndGameProcess(ref GameOverReason gameOverReason)
-    {
-        // オポチュニストが生きていれば追加勝利
-        bool opportunistAlive = false;
-        foreach (ExPlayerControl player in ExPlayerControl.ExPlayerControls)
-        {
-            if (player == null) continue;
-
-            if (player.Role == RoleId.Tuna && player.IsAlive())
-            {
-                gameOverReason = (GameOverReason)CustomGameOverReason.TunaWin;
-            }
-
-            // オポチュニストが生きているかチェック
-            if (player.Role == RoleId.Opportunist && player.IsAlive())
-            {
-                opportunistAlive = true;
-            }
-        }
-
-        // 他の勝利条件が発生した場合、オポチュニストも勝利に含める
-        if (opportunistAlive)
-        {
-            // オポチュニストの勝利を追加勝利条件として記録
-            AdditionalTempData.AddAdditionalWinCondition(WinCondition.OpportunistWin);
-        }
-
-        var (winners, winCondition, willRevivePlayers) = GetWinningTeamInfo((CustomGameOverReason)gameOverReason);
-        if (opportunistAlive && winCondition != WinCondition.Haison)
-        {
-            foreach (ExPlayerControl player in ExPlayerControl.ExPlayerControls)
-            {
-                if (player.Role == RoleId.Opportunist && player.IsAlive())
-                {
-                    winners = winners.Append(player);
-                }
-            }
-        }
-        return (winners, winCondition, willRevivePlayers);
-    }
-
-    private static (IEnumerable<ExPlayerControl> Winners, WinCondition winCondition, List<NetworkedPlayerInfo> WillRevivePlayers) GetWinningTeamInfo(CustomGameOverReason reason)
-    {
-        var emptyReviveList = new List<NetworkedPlayerInfo>();
-
-        switch (reason)
-        {
-            case (CustomGameOverReason)GameOverReason.CrewmatesByTask:
-            case (CustomGameOverReason)GameOverReason.CrewmatesByVote:
-            case (CustomGameOverReason)GameOverReason.CrewmateDisconnect:
-                return GetCrewmateWinInfo(emptyReviveList);
-            case (CustomGameOverReason)GameOverReason.ImpostorsByKill:
-            case (CustomGameOverReason)GameOverReason.ImpostorsBySabotage:
-            case (CustomGameOverReason)GameOverReason.ImpostorsByVote:
-            case (CustomGameOverReason)GameOverReason.ImpostorDisconnect:
-                return GetImpostorWinInfo(emptyReviveList);
-            case CustomGameOverReason.Haison:
-                return GetHaisonWinInfo(emptyReviveList);
-            case CustomGameOverReason.JackalWin:
-                return (ExPlayerControl.ExPlayerControls.Where(p => p.IsJackalTeamWins()),
-                        WinCondition.JackalWin,
-                        emptyReviveList);
-            case CustomGameOverReason.TunaWin:
-                return (ExPlayerControl.ExPlayerControls.Where(p => p != null && p.Role == RoleId.Tuna),
-                        WinCondition.TunaWin,
-                        emptyReviveList);
-            case CustomGameOverReason.TeruteruWin:
-                return (ExPlayerControl.ExPlayerControls.Where(p => p != null && p.Role == RoleId.Teruteru),
-                        WinCondition.TeruteruWin,
-                        emptyReviveList);
-            case CustomGameOverReason.WorkpersonWin:
-                return (ExPlayerControl.ExPlayerControls.Where(p => p != null && p.Role == RoleId.Workperson),
-                        WinCondition.WorkpersonWin,
-                        emptyReviveList);
-            case CustomGameOverReason.VultureWin:
-                return (ExPlayerControl.ExPlayerControls.Where(p => p != null && p.Role == RoleId.Vulture && p.PlayerAbilities.FirstOrDefault(x => x is EatDeadBodyAbility eatDeadBodyAbility && eatDeadBodyAbility.canWin) != null),
-                        WinCondition.VultureWin,
-                        emptyReviveList);
-            case CustomGameOverReason.PavlovsWin:
-                return (ExPlayerControl.ExPlayerControls.Where(p => p != null && p.IsPavlovsTeam()),
-                        WinCondition.PavlovsWin,
-                        emptyReviveList);
-            case CustomGameOverReason.ArsonistWin:
-                return (ExPlayerControl.ExPlayerControls.Where(p => p != null && p.Role == RoleId.Arsonist),
-                        WinCondition.ArsonistWin,
-                        emptyReviveList);
-            case CustomGameOverReason.FalseChargesWin:
-                return (ExPlayerControl.ExPlayerControls.Where(p => p != null && p.Role == RoleId.FalseCharges),
-                        WinCondition.FalseChargesWin,
-                        emptyReviveList);
-            case CustomGameOverReason.HitmanWin:
-                return (ExPlayerControl.ExPlayerControls.Where(p => p != null && p.Role == RoleId.Hitman),
-                        WinCondition.HitmanWin,
-                        emptyReviveList);
-            case CustomGameOverReason.OwlWin:
-                return (ExPlayerControl.ExPlayerControls.Where(p => p != null && p.Role == RoleId.Owl),
-                        WinCondition.OwlWin,
-                        emptyReviveList);
-            default:
-                Logger.Error("不明なゲームオーバー理由:" + reason);
-                return (null, WinCondition.None, emptyReviveList);
-        }
-    }
-
-    private static (IEnumerable<ExPlayerControl> Winners, WinCondition winCondition, List<NetworkedPlayerInfo> WillRevivePlayers) GetCrewmateWinInfo(List<NetworkedPlayerInfo> reviveList)
-    {
-        return (ExPlayerControl.ExPlayerControls.Where(p => p.IsCrewmate()),
-                WinCondition.CrewmateWin,
-                reviveList);
-    }
-
-    private static (IEnumerable<ExPlayerControl> Winners, WinCondition winCondition, List<NetworkedPlayerInfo> WillRevivePlayers) GetImpostorWinInfo(List<NetworkedPlayerInfo> reviveList)
-    {
-        return (ExPlayerControl.ExPlayerControls.Where(p => p.IsImpostorWinTeam()),
-                WinCondition.ImpostorWin,
-                reviveList);
-    }
-
-    private static (IEnumerable<ExPlayerControl> Winners, WinCondition winCondition, List<NetworkedPlayerInfo> WillRevivePlayers) GetHaisonWinInfo(List<NetworkedPlayerInfo> reviveList)
-    {
-        return (ExPlayerControl.ExPlayerControls,
-                WinCondition.Haison,
-                reviveList);
-    }
-
     // ゲーム終了後に呼ばれるポストフィックスメソッドです。
     // このメソッドはゲーム終了後に勝者情報を確定し、各プレイヤーの状態を更新するために使用されます。
     public static void Postfix()
@@ -541,18 +448,13 @@ public static class OnGameEndPatch
 
         CollectPlayerRoleData(gameOverReason);
 
-        var (winners, winCondition, willRevivePlayers) = HandleEndGameProcess(ref gameOverReason);
         EndGameResult.CachedWinners = new Il2CppSystem.Collections.Generic.List<CachedPlayerData>();
-        foreach (var winner in winners)
-            EndGameResult.CachedWinners.Add(new CachedPlayerData(winner.Data));
-
-        foreach (NetworkedPlayerInfo player in willRevivePlayers)
-            player.IsDead = false;
+        foreach (var winner in EndGameManagerSetUpPatch.endGameCondition.winners)
+            EndGameResult.CachedWinners.Add(new CachedPlayerData(GameData.Instance.GetPlayerById(winner)));
 
         AdditionalTempData.gameOverReason = gameOverReason;
-        AdditionalTempData.winCondition = winCondition;
 
-        EndGameEvent.Invoke(AdditionalTempData.gameOverReason, winners.ToList());
+        EndGameEvent.Invoke(AdditionalTempData.gameOverReason, EndGameManagerSetUpPatch.endGameCondition.winners.Select(x => ExPlayerControl.ById(x)).ToList());
     }
 
     private static void CollectPlayerRoleData(GameOverReason gameOverReason)
@@ -596,6 +498,7 @@ public static class OnGameEndPatch
             roleBase = exPlayer.roleBase,
             ghostRoleBase = exPlayer.GhostRoleBase,
             modifierRoleBases = exPlayer.ModifierRoleBases,
+            modifierMarks = exPlayer.ModifierRoleBases.Select(x => x.ModifierMark(exPlayer)).ToList(),
             Hat2Id = hat2Id,
             Visor2Id = visor2Id,
         };

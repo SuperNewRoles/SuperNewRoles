@@ -109,6 +109,16 @@ NeutralSubIntro,自分の事だけ考えろ。他人の事は利用せよ。,Thi
 KickNonPCPlayers,PC以外をキックする,Kick Non-PC Players,踢出非PC玩家,踢出非PC玩家
 BanNoFriendCodePlayers,フレンドコードを持っていない人をBANする,Ban Players Without Friend Code,封禁没有好友代码的玩家,封禁沒有好友代碼的玩家
 PetOnlyMe,ペットを自分のみに表示する,Show only my pet,只显示我的宠物,只顯示我的寵物
+NetworkTransformType,歩行通信タイプ,Walking Network type,步行通信类型,步行通信類型
+NetworkTransformType.Vanilla,バニラ,Vanilla,原版,原版
+NetworkTransformType.ModdedLowLatency,低遅延モード(カスタムサーバー限定ベータ版),Low Latency Mode (Custom Server Only Beta),低延迟模式(仅限自定义服务器),低延遲模式(僅限自定義伺服器)
+NetworkTransformTypeLowLatencyLevel,低遅延レベル(高いほど低遅延),Low Latency Mode Level (Higher is Lower Latency),低延迟模式等级(越高越低延迟),低延遲模式等級(越高越低延遲)
+NetworkTransformTypeLowLatencyLevel.Max,最大(サーバーに大きな負担がかかります),Max (High Server Load),最大(服务器负担较大),最大(伺服器負擔較大)
+NetworkTransformTypeLowLatencyLevel.High,高,High,高,高
+NetworkTransformTypeLowLatencyLevel.Medium,中(推奨),Medium (Recommended),中(推荐),中(推薦)
+NetworkTransformTypeLowLatencyLevel.Low,低,Low,低,低
+NetworkTransformTypeLowLatencyLevel.SuperLow,超低,Super Low,超低,超低
+NetworkTransformTypeLowLatencyLevel.Bad,絶対ダメ(超高遅延),Bad (Very Very High Latency),差(超高延迟),差(超高延遲)
 
 # SyncSpawn
 WaitingSpawnText,ロドー中... 残り:{0}/{1}クルー,Waiting... {0}/{1} Crewmates,等待中... {0}/{1} 船员,等待中... {0}/{1} 船員
@@ -294,6 +304,8 @@ Mirage,ミラージュ,Mirage
 Bakery,パン屋,Bakery
 MadRaccoon,化け狸,MadRaccoon
 Balancer,天秤,Balancer
+God,神,God
+Lovers,ラバーズ,Lovers,恋爱,戀愛
 Owl,フクロウ,Owl
 
 # Descriptions
@@ -327,6 +339,11 @@ Vulture.Description,キル能力を有さない独自の勝利条件を持つ第
 Balancer.Description,会議に関する能力を有するクルーメイトです。\n会議中に出現するボタン2つを押すと、対象のプレイヤー二人のどちらか片方は最低でも追放される特殊な会議を開くことが出来ます。\n投票が同数だった場合、二人同時に追放されます。,A Crewmate with a meeting‐focused ability.\nBy pressing the two buttons that appear during a meeting, a special meeting is initiated in which at least one of the two targeted players will be ejected.\nIn the event of a tie vote, both players are ejected simultaneously.,这是一个拥有会议相关能力的船员。\n在会议中按下出现的两个按钮后，便会发起一场特殊会议，确保目标的两名玩家中至少有一人被放逐。\n若投票数相同，则两人同时被放逐。,這是一個具備會議相關能力的船員。\n在會議中按下出現的兩個按鈕後，會啟動一個特殊會議，使目標的兩名玩家中至少有一人被逐出。\n若投票數相同，則兩人將同時被逐出。
 Celebrity.Description,特に能力を有さないクルーメイトです。\n全員視点で名前が役職色に変わっており、全員からスターだということがわかります。,A Crewmate with no special abilities.\nTheir name is displayed in the color of their role for everyone, making it clear to all that they are the Star.,这是一个没有特殊能力的船员。\n他们的名字以角色颜色显示在所有人的视角中，让大家都看出他们是明星。,這是一個沒有特殊能力的船員。\n他們的名字以角色顏色呈現在所有人眼中，讓大家都能看出他們是明星。
 Datahacker.Description,タスクターンに発動する能力を有するクルーメイトです。\nタスクを一定数こなすと、敵対する陣営のプレイヤーが誰かわかります。\nただし、それより少し前に敵対する陣営のプレイヤーから自身がデータハッカーとバレてしまいます。,A Crewmate with an ability that activates during task turns.\nAfter completing a certain number of tasks, they can identify the players from opposing factions.\nHowever, shortly before that, opposing faction players will realize that they are the Datahacker.,
+
+# wins
+WinText,勝利,Win
+ImpostorWin,インポスター,Impostors
+CrewmateWin,クルーメイト,Crewmates
 
 # Sheriff Options
 SheriffKillCooldown,キルクールタイム,Kill Cooldown,杀人冷却时间,殺人冷卻時間
@@ -757,6 +774,21 @@ MadRaccoonShapeshiftDuration,MadRaccoon Shapeshift Duration,シェイプシフ�
 # Worshiper Options
 WorshiperCanKnowImpostors,インポスターが分かる,Can Know Impostors,可以知道内鬼,可以知道內鬼
 WorshiperAbilitySuicideCoolTime,自殺クールタイム,Suicide Cooldown,自殺冷卻時間,自殺冷卻時間
+
+# God
+GodNeededTask,勝利にタスクが必要,Required Tasks for Victory,胜利需要任务,勝利需要任務
+GodSeeVote,投票結果を見れる,See Vote Results,可以看投票结果,可以看投票結果
+GodDescends,降臨,Descends,降臨,降臨
+
+# Lovers
+LoversCategory,<color=#FF69B4>ラバーズ</color>,<color=#FF69B4>Lovers</color>,<color=#FF69B4>恋爱</color>,<color=#FF69B4>戀愛</color>
+LoversMaxCoupleCount,最大カップル数,Max Couple Count
+LoversSpawnChance,排出確率,Spawn Chance
+LoversDieWithPartner,2人同時に死ぬ,Die with Partner
+LoversAvoidQuarreled,クラードと重複しない,Avoid Quarreled
+LoversAdditionalWinCondition,追加勝利,Additional Win Condition
+LoversIncludeImpostorsInSelection,抽選にインポスターを含む,Include Impostors in Selection
+LoversIncludeThirdTeamInSelection,抽選に第三陣営を含む,Include Third Team in Selection
 
 # Owl
 OwlIntro1,暗闇に羽ばたきし者,The one who flapped his wings in the dark,黑暗中鼓动羽翼之人,在黑暗中鼓動翅膀的人

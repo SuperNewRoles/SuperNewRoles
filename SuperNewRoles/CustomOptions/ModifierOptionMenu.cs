@@ -49,6 +49,8 @@ public static class ModifierOptionMenu
         }
         foreach (var modifier in RoleOptionManager.ModifierRoleOptions)
         {
+            if (CustomRoleManager.TryGetModifierById(modifier.ModifierRoleId, out var modifierData) && modifierData.HiddenOption)
+                continue;
             GenerateRoleDetailButton(new ModifierOptionMenuObjectData.ModifierCategoryDataModifier(modifier), index++);
         }
     }
@@ -69,7 +71,7 @@ public static class ModifierOptionMenu
             buttonPosition,
             Vector3.one * Constants.ButtonScale);
 
-        UIHelper.SetText(obj, ModTranslation.GetString(category.Name));
+        UIHelper.SetText(obj, $"<b>{ModTranslation.GetString(category.Name)}</b>");
         ConfigureButton(obj, category);
 
         return obj;

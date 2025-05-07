@@ -15,7 +15,7 @@ public class ShapeshiftButtonAbility : CustomButtonBase, IButtonEffect
     public float DurationTime;
     public float CoolTime; // Separate cooldown for the shapeshift ability itself
 
-    public override Sprite Sprite => FastDestroyableSingleton<RoleManager>.Instance.GetRole(RoleTypes.Shapeshifter).buttonManager.graphic.sprite;
+    public override Sprite Sprite => FastDestroyableSingleton<RoleManager>.Instance.GetRole(RoleTypes.Shapeshifter).Ability.Image;
     public override string buttonText => ModTranslation.GetString("ShapeshiftButtonText");
     protected override KeyType keytype => KeyType.Ability1;
     public override float DefaultTimer => CoolTime;
@@ -28,7 +28,7 @@ public class ShapeshiftButtonAbility : CustomButtonBase, IButtonEffect
     public Action OnEffectEnds => () =>
     {
         _shapeTarget = null;
-        PlayerControl.LocalPlayer.RpcShapeshift(PlayerControl.LocalPlayer, false); // Revert shape
+        PlayerControl.LocalPlayer.RpcShapeshift(PlayerControl.LocalPlayer, true); // Revert shape
         ResetTimer(); // Start cooldown
     };
 
@@ -39,7 +39,6 @@ public class ShapeshiftButtonAbility : CustomButtonBase, IButtonEffect
     private PlayerControl _shapeTarget;
     public PlayerControl ShapeTarget => _shapeTarget;
 
-    // Constructor to set duration and cooldown
     public ShapeshiftButtonAbility(float durationTime, float coolTime)
     {
         DurationTime = durationTime;
@@ -52,19 +51,22 @@ public class ShapeshiftButtonAbility : CustomButtonBase, IButtonEffect
         RoleManager.Instance.SetRole(Player, RoleTypes.Shapeshifter);
         ExPlayerControl.LocalPlayer.Data.Role.TryCast<ShapeshifterRole>()?.UseAbility();
         RoleManager.Instance.SetRole(Player, baseRole);
+        new LateTask(() =>
+        {
+            isEffectActive = false;
+            actionButton.cooldownTimerText.color = Palette.EnabledColor;
+        }, 0.1f, "ShapeshiftButtonAbility");
     }
 
     public override bool CheckIsAvailable()
     {
         if (!ExPlayerControl.LocalPlayer.IsAlive()) return false;
         if (!PlayerControl.LocalPlayer.CanMove) return false;
-        // Additional checks might be needed, e.g., if already shapeshifted
         return true;
     }
 
     public override bool CheckHasButton()
     {
-        // Check if the player is alive and potentially if they are the correct role (e.g., Impostor)
         return ExPlayerControl.LocalPlayer.IsAlive();
     }
 
@@ -74,19 +76,10 @@ public class ShapeshiftButtonAbility : CustomButtonBase, IButtonEffect
         if (data.shapeshifter != Player || data.shapeshifter == data.target) return;
 
         _shapeTarget = data.target;
+        if (!Player.AmOwner) return;
         isEffectActive = true;
         EffectTimer = DurationTime;
-        // Kill cooldown might be set by ShapeshifterRole itself, or needs adjustment here
-    }
-
-    // Called when the shapeshift effect naturally ends or is cancelled
-    private void HandleShapeRevert()
-    {
-        if (!isEffectActive) return;
-        isEffectActive = false;
-        _shapeTarget = null;
-        // RpcShapeshift is likely handled by OnEffectEnds action
-        ResetTimer(); // Ensure cooldown starts
+        actionButton.cooldownTimerText.color = IButtonEffect.color;
     }
 
     private void OnWrapUp(WrapUpEventData data)

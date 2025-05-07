@@ -36,7 +36,7 @@ class MakeMadmateModifier : ModifierBase<MakeMadmateModifier>
     public override RoleTag[] RoleTags => [];
 
     public override short IntroNum => 1;
-    public override string ModifierMark => ModHelpers.Cs(RoleColor, "狂わせる{0}");
+    public override Func<ExPlayerControl, string> ModifierMark => (player) => ModHelpers.Cs(RoleColor, "狂わせる{0}");
 
     [CustomOptionFloat("MakeMadmateModifierCooldown", 0f, 180f, 2.5f, 30f, translationName: "CoolTime")]
     public static float Cooldown;

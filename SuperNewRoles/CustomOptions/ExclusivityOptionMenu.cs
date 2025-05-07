@@ -186,6 +186,7 @@ public static class ExclusivityOptionMenu
                 GenerateRoleDetailButtons(buttonType);
             }), spriteRenderer);
         }
+        GenerateRoleDetailButtons(buttons.First());
     }
 
     private static void GenerateRoleDetailButtons(string roleType)

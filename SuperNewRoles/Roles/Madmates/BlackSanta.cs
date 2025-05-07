@@ -22,6 +22,7 @@ class BlackSanta : RoleBase<BlackSanta>
                 TryLoversToDeath: BlackSantaTryLoverToDeath,
                 TryMadRolesToDeath: true,
                 TryJackalFriendsToDeath: true,
+                ForImpostor: true,
                 Roles: new List<(RoleId role, int percentage)>
                 {
                     (RoleId.EvilGuesser, BlackSantaEvilGuesserPercentage),

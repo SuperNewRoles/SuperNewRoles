@@ -843,6 +843,9 @@ public class CustomCosmeticsCostumeMenu : CustomCosmeticsMenuBase<CustomCosmetic
             categoryButton.OnMouseOut = new();
             categoryButton.OnMouseOver = new();
 
+            if (tabType == CostumeTabType.Skin)
+                category.SetActive(false);
+
             package_i++;
             if (package_i < packagedCosmetics.Count)
             {

@@ -1,4 +1,5 @@
 using SuperNewRoles.Modules;
+using SuperNewRoles.Patches;
 
 namespace SuperNewRoles.CustomOptions.Categories;
 
@@ -19,4 +20,10 @@ public static class GeneralSettingOptions
 
     [CustomOptionBool("AdvancedRandom", true, parentFieldName: nameof(Categories.GeneralSettings))]
     public static bool AdvancedRandom;
+
+    [CustomOptionSelect("NetworkTransformType", typeof(NetworkTransformType), "NetworkTransformType.", parentFieldName: nameof(Categories.GeneralSettings))]
+    public static NetworkTransformType NetworkTransformType;
+
+    [CustomOptionSelect("NetworkTransformTypeLowLatencyLevel", typeof(NetworkTransformTypeLowLatencyLevel), "NetworkTransformTypeLowLatencyLevel.", parentFieldName: nameof(NetworkTransformType), parentActiveValue: NetworkTransformType.ModdedLowLatency, defaultValue: NetworkTransformTypeLowLatencyLevel.Medium)]
+    public static NetworkTransformTypeLowLatencyLevel NetworkTransformTypeLowLatencyLevel;
 }
