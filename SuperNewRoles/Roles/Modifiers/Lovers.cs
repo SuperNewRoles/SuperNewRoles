@@ -30,6 +30,7 @@ class Lovers : ModifierBase<Lovers>
     public override short IntroNum => 1;
     public override Func<ExPlayerControl, string> ModifierMark => (player) => "{0}" + ModHelpers.Cs(player.AmOwner && player.IsAlive() ? RoleColor : player.GetAbility<LoversAbility>().HeartColor, "♡");
     public override bool HiddenOption => true;
+
     [Modifier]
     public static CustomOptionCategory LoversCategory;
 
@@ -80,7 +81,10 @@ class LoversAbility : AbilityBase
         if (ExPlayerControl.LocalPlayer.IsDead()) return;
         if (IsCoupleWith(data.player))
         {
-            ExPlayerControl.LocalPlayer.RpcCustomDeath(CustomDeathType.LoversSuicide);
+            if (ExileController.Instance != null)
+                ExPlayerControl.LocalPlayer.RpcCustomDeath(CustomDeathType.LoversSuicideMurderWithoutDeadbody);
+            else
+                ExPlayerControl.LocalPlayer.RpcCustomDeath(CustomDeathType.LoversSuicide);
         }
     }
     private bool IsCoupleWith(ExPlayerControl player)

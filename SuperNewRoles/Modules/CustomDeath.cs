@@ -1,4 +1,5 @@
 using System;
+using System.Linq;
 using SuperNewRoles.Events;
 using SuperNewRoles.Events.PCEvents;
 using UnityEngine;
@@ -48,6 +49,13 @@ public static class CustomDeathExtensions
                 break;
             case CustomDeathType.LoversSuicide:
                 player.Player.MurderPlayer(player.Player, MurderResultFlags.Succeeded);
+                FinalStatusManager.SetFinalStatus(player, FinalStatus.LoversSuicide);
+                break;
+            case CustomDeathType.LoversSuicideMurderWithoutDeadbody:
+                player.Player.MurderPlayer(player.Player, MurderResultFlags.Succeeded);
+                DeadBody deadBody = GameObject.FindObjectsOfType<DeadBody>().FirstOrDefault(x => x.ParentId == player.PlayerId);
+                if (deadBody != null)
+                    GameObject.Destroy(deadBody.gameObject);
                 FinalStatusManager.SetFinalStatus(player, FinalStatus.LoversSuicide);
                 break;
             case CustomDeathType.WaveCannon:
@@ -117,4 +125,5 @@ public enum CustomDeathType
     Ignite,
     FalseCharges,
     LoversSuicide,
+    LoversSuicideMurderWithoutDeadbody,
 }

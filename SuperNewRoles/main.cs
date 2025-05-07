@@ -85,6 +85,8 @@ public partial class SuperNewRolesPlugin : BasePlugin
         ApiServerManager.Initialize();
         RequestInGameManager.Load();
 
+        CustomServer.UpdateRegions();
+
         CheckStarts();
 
         Logger.LogInfo("Waiting for Harmony patch");
