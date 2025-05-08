@@ -66,6 +66,7 @@ public enum RoleId : short
     Pursuer,
     Bakery,
     God,
+    Owl,
 }
 
 public enum GhostRoleId : short

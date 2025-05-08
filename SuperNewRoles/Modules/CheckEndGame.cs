@@ -20,6 +20,8 @@ public enum VictoryType
     CrewmateVote,
     JackalDomination,
     PavlovsWin,
+    ArsonistWin,
+    OwlWin,
 }
 
 public enum SabotageSystemType
@@ -129,6 +131,14 @@ public static class CheckGameEndPatch
         if (stats.IsCrewmateVictory)
             return VictoryType.CrewmateVote;
 
+        // アルソニスト勝利
+        if (stats.IsArsonistWin)
+            return VictoryType.ArsonistWin;
+
+        // フクロウ勝利
+        if (stats.IsOwlWin)
+            return VictoryType.OwlWin;
+
         return null;
     }
 
@@ -171,6 +181,8 @@ public static class CheckGameEndPatch
         VictoryType.CrewmateVote => GameOverReason.CrewmatesByVote,
         VictoryType.JackalDomination => (GameOverReason)CustomGameOverReason.JackalWin,
         VictoryType.PavlovsWin => (GameOverReason)CustomGameOverReason.PavlovsWin,
+        VictoryType.ArsonistWin => (GameOverReason)CustomGameOverReason.ArsonistWin,
+        VictoryType.OwlWin => (GameOverReason)CustomGameOverReason.OwlWin,
         _ => throw new ArgumentException($"無効な勝利タイプ: {victoryType}")
     };
 }
@@ -245,12 +257,16 @@ public class PlayerStatistics
     public int TeamPavlovsAlive { get; }
     public int TotalKiller { get; }
     public int ArsonistAlive { get; }
+    public int OwlAlive { get; }
 
     public bool IsKillerExist => TotalKiller > 0;
 
     public bool IsImpostorDominating => IsKillerWin(TeamImpostorsAlive);
     public bool IsJackalDominating => IsKillerWin(TeamJackalAlive);
-    public bool IsPavlovsWin => IsKillerWin(TeamPavlovsAlive); public bool IsCrewmateVictory => !IsKillerExist;
+    public bool IsPavlovsWin => IsKillerWin(TeamPavlovsAlive);
+    public bool IsCrewmateVictory => !IsKillerExist;
+    public bool IsArsonistWin => ArsonistAlive > 0 && ArsonistAlive == TotalAlive;
+    public bool IsOwlWin => IsKillerWin(OwlAlive) && OwlAlive == 1;
 
     public PlayerStatistics()
     {
@@ -268,6 +284,8 @@ public class PlayerStatistics
             TeamPavlovsAlive = PavlovsDogAlive + PavlovsOwnerAlive;
         else
             TeamPavlovsAlive = alivePlayers.Count(player => player.Role == RoleId.PavlovsOwner && player.GetAbility<PavlovsOwnerAbility>()?.HasRemainingDogCount() == true);
+        ArsonistAlive = alivePlayers.Count(player => player.Role == RoleId.Arsonist);
+        OwlAlive = alivePlayers.Count(player => player.Role == RoleId.Owl);
         TotalAlive = alivePlayers.Count();
         TotalKiller = alivePlayers.Count(player => player.IsNonCrewKiller());
     }

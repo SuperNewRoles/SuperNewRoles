@@ -7,6 +7,7 @@ using System.Text;
 using BepInEx.Unity.IL2CPP.Utils.Collections;
 using Hazel;
 using SuperNewRoles.Modules;
+using SuperNewRoles.Roles.Ability;
 using UnityEngine;
 
 namespace SuperNewRoles;
@@ -81,6 +82,22 @@ public static class ModHelpers
         catch (Exception e)
         {
             Logger.Error(e.ToString(), "IsComms");
+            return false;
+        }
+    }
+    public static bool IsElectrical()
+    {
+        try
+        {
+            if (ExPlayerControl.ExPlayerControls.Any(x => x.GetAbility<OwlSpecialBlackoutAbility>()?.IsSpecialBlackout ?? false)) return true;
+            if (!ShipStatus.Instance.Systems.TryGetValue(SystemTypes.Electrical, out ISystemType system)) return false;
+            SwitchSystem electrical;
+            if ((electrical = system.TryCast<SwitchSystem>()) != null) return electrical.IsActive;
+            return false;
+        }
+        catch (Exception e)
+        {
+            Logger.Error(e.ToString(), "IsElectrical");
             return false;
         }
     }

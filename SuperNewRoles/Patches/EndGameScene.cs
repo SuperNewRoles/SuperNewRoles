@@ -31,6 +31,7 @@ public enum WinCondition
     ArsonistWin,
     FalseChargesWin,
     HitmanWin,
+    OwlWin,
 }
 public enum CustomGameOverReason
 {
@@ -47,6 +48,7 @@ public enum CustomGameOverReason
     FalseChargesWin = 40,
     HitmanWin = 41,
     GodWin = 42,
+    OwlWin = 43,
 }
 
 static class AdditionalTempData
@@ -245,6 +247,10 @@ public class EndGameManagerSetUpPatch
             case WinCondition.HitmanWin:
                 baseText = "Hitman";
                 roleColor = Hitman.Instance.RoleColor;
+                break;
+            case WinCondition.OwlWin:
+                baseText = "Owl";
+                roleColor = Owl.Instance.RoleColor;
                 break;
             default:
                 baseText = "Unknown";
