@@ -2,6 +2,7 @@ using System.Collections.Generic;
 using System.Linq;
 using SuperNewRoles.Patches;
 using SuperNewRoles.Roles;
+using SuperNewRoles.Roles.Modifiers;
 using SuperNewRoles.Roles.Neutral;
 using UnityEngine;
 
@@ -69,6 +70,7 @@ public static class EndGamer
     [CustomRPC]
     public static void RpcEndGameWithWinner(CustomGameOverReason reason, WinType winType, ExPlayerControl[] winners, Color32 color, string upperText, string winText = null)
     {
+        ShipStatus.Instance.enabled = false;
         if (!AmongUsClient.Instance.AmHost) return;
         EndGame((GameOverReason)reason, winType, winners.ToHashSet(), color, upperText, string.IsNullOrEmpty(winText) ? null : winText);
     }
@@ -108,6 +110,17 @@ public static class EndGamer
     private static void UpdateAdditionalWinners(out HashSet<ExPlayerControl> winners)
     {
         winners = new();
+        // ラバーズじゃない人がいる場合
+        if (Lovers.LoversOriginalTeamCannotWin && winners.Any(x => !x.IsLovers()))
+        {
+            foreach (ExPlayerControl winner in winners)
+            {
+                if (winner.IsLovers())
+                {
+                    winners.Remove(winner);
+                }
+            }
+        }
         foreach (ExPlayerControl player in ExPlayerControl.ExPlayerControls)
         {
             switch (player.Role)
@@ -116,6 +129,17 @@ public static class EndGamer
                     if (player.IsAlive())
                         winners.Add(player);
                     break;
+            }
+        }
+        foreach (ExPlayerControl winner in winners)
+        {
+            if (Lovers.LoversAdditionalWinCondition && winner.IsLovers())
+            {
+                foreach (LoversAbility lovers in winner.GetAbility<LoversAbility>()?.couple?.lovers)
+                {
+                    if (lovers.Player.IsDead()) continue;
+                    winners.Add(lovers.Player);
+                }
             }
         }
     }

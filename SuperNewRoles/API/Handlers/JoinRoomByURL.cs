@@ -358,6 +358,7 @@ public class JoinRoomURLGenerator // または既存のクラスに追加
         }
         public static void Postfix(GameStartManager __instance)
         {
+            if (AmongUsClient.Instance.NetworkMode != NetworkModes.OnlineGame) return;
             var obj = new GameObject("JoinRoomURLGenerator");
             obj.layer = 5;
             var selected = new GameObject("Selected");

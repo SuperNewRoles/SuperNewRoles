@@ -4,10 +4,19 @@ using System.Linq;
 using HarmonyLib;
 using SuperNewRoles.CustomOptions.Categories;
 using SuperNewRoles.Modules;
+using SuperNewRoles.Roles.Modifiers;
 using SuperNewRoles.Roles.Neutral;
 
 namespace SuperNewRoles.Roles;
 
+[HarmonyPatch(typeof(GameStartManager), nameof(GameStartManager.Start))]
+class GameStartManagerStartPatch
+{
+    public static void Postfix()
+    {
+        AssignRoles.LoversIndex = 0;
+    }
+}
 [HarmonyPatch(typeof(RoleManager), nameof(RoleManager.SelectRoles))]
 class RoleManagerSelectRolesPatch
 {
@@ -25,6 +34,8 @@ public static class AssignRoles
     public static int MaxCrews;
     [CustomOptionInt("AssignRoles_MaxNeutrals", 0, 15, 1, 2, parentFieldName: nameof(Categories.GeneralSettings))]
     public static int MaxNeutrals;
+
+    public static byte LoversIndex = 0;
 
     private static Dictionary<AssignedTeamType, List<AssignTickets>> AssignTickets_HundredPercent = new();
     private static Dictionary<AssignedTeamType, List<AssignTickets>> AssignTickets_NotHundredPercent = new();
@@ -58,6 +69,9 @@ public static class AssignRoles
 
         // Assign Modifiers
         AssignModifiers();
+
+        // Assign Lovers
+        AssignLovers();
     }
     private static void CreateTickets()
     {
@@ -215,6 +229,101 @@ public static class AssignRoles
             Logger.Info($"AssignModifiers: ModifierRole {modifierRoleId} の処理が完了しました。");
         }
         Logger.Info("AssignModifiers() 終了: 全てのModifier処理が完了しました。");
+    }
+
+    private static void AssignLovers()
+    {
+        LoversIndex = 0;
+        Logger.Info("AssignLovers() 開始: Loversのアサイン処理を開始します。");
+        // スポーン確率チェック
+        if (Lovers.LoversSpawnChance <= 0)
+        {
+            Logger.Info("AssignLovers: 生成確率が0以下のためスキップします。");
+            return;
+        }
+
+        // 生存プレイヤー取得
+        var candidates = ExPlayerControl.ExPlayerControls
+            .Where(p => !p.IsDead());
+
+        // オプションに応じて候補をフィルタリング
+        if (!Lovers.LoversIncludeImpostorsInSelection)
+        {
+            candidates = candidates
+                .Where(p => !p.Data.Role.IsImpostor);
+        }
+        if (!Lovers.LoversIncludeThirdTeamInSelection)
+        {
+            candidates = candidates
+                .Where(p => !p.IsNeutral());
+        }
+
+        var candidatesList = candidates.ToList();
+
+        // カップル数計算
+        int maxCouples = (int)Lovers.LoversMaxCoupleCount;
+        int coupleCount = Math.Min(maxCouples, candidatesList.Count / 2);
+        Logger.Info($"AssignLovers: カップル数 = {coupleCount}");
+
+        int impostorTriedCount = 0;
+
+        // カップル作成ループ
+        for (int i = 0; i < coupleCount; i++)
+        {
+            int roll = ModHelpers.GetRandomInt(0, 100);
+            Logger.Info($"AssignLovers: カップル {i + 1}/{coupleCount} 判定 = {roll} (閾値: {Lovers.LoversSpawnChance})");
+            if (roll >= Lovers.LoversSpawnChance)
+            {
+                Logger.Info($"AssignLovers: カップル {i + 1} はスキップ");
+                continue;
+            }
+            if (candidatesList.Count < 2)
+            {
+                Logger.Info("AssignLovers: 候補が2名未満のため終了します。");
+                break;
+            }
+
+            // ランダムで2名選択
+            int idxA = candidatesList.GetRandomIndex();
+            var playerA = candidatesList[idxA];
+            candidatesList.RemoveAt(idxA);
+            int idxB = candidatesList.GetRandomIndex();
+            var playerB = candidatesList[idxB];
+            candidatesList.RemoveAt(idxB);
+
+            // インポスター同士の組み合わせはスキップ
+            if ((playerA.IsImpostor() && playerB.IsImpostor()) ||
+                (playerA.IsJackal() && playerB.IsJackal()))
+            {
+                Logger.Info($"AssignLovers: インポスター同士({playerA.PlayerId}, {playerB.PlayerId})のためスキップします。");
+                // 候補リストに戻す
+                candidatesList.Add(playerA);
+                candidatesList.Add(playerB);
+                impostorTriedCount++;
+                // 100回までトライできる
+                if (impostorTriedCount <= 100)
+                    i--;
+                continue;
+            }
+
+            Logger.Info($"AssignLovers: カップル {i + 1} - プレイヤー {playerA.PlayerId} と {playerB.PlayerId}");
+            RpcCustomSetLovers(playerA, playerB, LoversIndex);
+        }
+
+        Logger.Info("AssignLovers() 終了: Loversのアサイン処理が完了しました。");
+    }
+
+    [CustomRPC]
+    public static void RpcCustomSetLovers(ExPlayerControl playerA, ExPlayerControl playerB, byte loversIndex)
+    {
+        playerA.SetModifierRole(ModifierRoleId.Lovers);
+        playerB.SetModifierRole(ModifierRoleId.Lovers);
+        LoversAbility loversAbilityA = playerA.GetAbility<LoversAbility>();
+        LoversAbility loversAbilityB = playerB.GetAbility<LoversAbility>();
+        LoversCouple loversCouple = new([loversAbilityA, loversAbilityB], loversIndex);
+        loversAbilityA.SetCouple(loversCouple);
+        loversAbilityB.SetCouple(loversCouple);
+        LoversIndex++;
     }
 
     private static void AssignModifier(PlayerControl player, ModifierRoleId modifierRoleId)

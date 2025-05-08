@@ -35,18 +35,19 @@ public enum WinCondition
 public enum CustomGameOverReason
 {
     None = 30,
-    Haison = 31,
-    NoWinner = 32,
-    JackalWin = 33,
-    TunaWin = 34,
-    TeruteruWin = 35,
-    WorkpersonWin = 36,
-    VultureWin = 37,
-    PavlovsWin = 38,
-    ArsonistWin = 39,
-    FalseChargesWin = 40,
-    HitmanWin = 41,
-    GodWin = 42,
+    Haison,
+    NoWinner,
+    JackalWin,
+    TunaWin,
+    TeruteruWin,
+    WorkpersonWin,
+    VultureWin,
+    PavlovsWin,
+    ArsonistWin,
+    FalseChargesWin,
+    HitmanWin,
+    GodWin,
+    LoversWin,
 }
 
 static class AdditionalTempData
@@ -166,7 +167,7 @@ public class EndGameManagerSetUpPatch
         );
         EndGameManagerSetUpPatch.endGameCondition = newCond;
         if (AmongUsClient.Instance.AmHost)
-            GameManager.Instance.RpcEndGame(newCond.reason, false);
+            new LateTask(() => GameManager.Instance.RpcEndGame(newCond.reason, false), 0.5f);
     }
 
     public static TMPro.TMP_Text textRenderer;

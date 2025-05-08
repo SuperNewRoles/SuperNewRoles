@@ -193,7 +193,7 @@ public class ExPlayerControl
     }
     public bool showKillButtonVanilla()
     {
-        return IsImpostor() && _customKillButtonAbility == null && (_killableAbility == null || _killableAbility.CanKill);
+        return IsImpostor() && IsAlive() && _customKillButtonAbility == null && (_killableAbility == null || _killableAbility.CanKill);
     }
     private void DetachOldRole(RoleId roleId)
     {
@@ -440,7 +440,7 @@ public class ExPlayerControl
     public bool IsJackalTeamWins()
         => IsJackal() || IsSidekick() || IsFriendRoles();
     public bool IsLovers()
-        => false;
+        => ModifierRole.HasFlag(ModifierRoleId.Lovers);
     public bool IsDead()
         => Data == null || Data.Disconnected || Data.IsDead;
     public bool IsAlive()

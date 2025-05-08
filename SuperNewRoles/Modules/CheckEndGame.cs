@@ -7,6 +7,7 @@ using SuperNewRoles.Roles;
 using SuperNewRoles.Roles.Ability;
 using SuperNewRoles.Roles.Neutral;
 using UnityEngine;
+using SuperNewRoles.Roles.Modifiers;
 
 namespace SuperNewRoles.Modules;
 
@@ -89,9 +90,10 @@ public static class CheckGameEndPatch
     {
         if (!state.IsValid) return VictoryType.None;
 
-        return DeterminePriorityVictory(state) ??
-               DeterminePlayerBasedVictory(state) ??
-               VictoryType.None;
+        var victory = DeterminePriorityVictory(state) ??
+                     DeterminePlayerBasedVictory(state) ??
+                     VictoryType.None;
+        return victory;
     }
 
     private static VictoryType? DeterminePriorityVictory(GameState state)
@@ -139,6 +141,7 @@ public static class CheckGameEndPatch
 
         var reason = MapVictoryTypeToGameOverReason(victoryType);
         (var winners, var color, var upperText) = GetEndGameData(victoryType);
+
         EndGamer.EndGame(reason, WinType.Default, winners, color, upperText);
     }
 
@@ -248,14 +251,16 @@ public class PlayerStatistics
 
     public bool IsKillerExist => TotalKiller > 0;
 
-    public bool IsImpostorDominating => IsKillerWin(TeamImpostorsAlive);
-    public bool IsJackalDominating => IsKillerWin(TeamJackalAlive);
-    public bool IsPavlovsWin => IsKillerWin(TeamPavlovsAlive); public bool IsCrewmateVictory => !IsKillerExist;
+    // 事前計算したプロパティ（コンストラクタで設定）
+    public bool IsImpostorDominating { get; }
+    public bool IsJackalDominating { get; }
+    public bool IsPavlovsWin { get; }
+    public bool IsCrewmateVictory => !IsKillerExist;
 
     public PlayerStatistics()
     {
-        // 生存中のプレイヤーのみを抽出
-        var alivePlayers = GetAlivePlayers();
+        // 生存中のプレイヤーのみを列挙（一度だけ）
+        var alivePlayers = GetAlivePlayers().ToList();
 
         // 各チームの生存者数をLINQで計算（条件が増えた場合もここを修正しやすい）
         TeamImpostorsAlive = alivePlayers.Count(player => player.IsImpostor());
@@ -270,6 +275,31 @@ public class PlayerStatistics
             TeamPavlovsAlive = alivePlayers.Count(player => player.Role == RoleId.PavlovsOwner && player.GetAbility<PavlovsOwnerAbility>()?.HasRemainingDogCount() == true);
         TotalAlive = alivePlayers.Count();
         TotalKiller = alivePlayers.Count(player => player.IsNonCrewKiller());
+
+        // キラー勝利判定を事前計算し、ラバーズ追加条件を適用
+        bool impostorWin = IsKillerWin(TeamImpostorsAlive);
+        bool jackalWin = IsKillerWin(TeamJackalAlive);
+        bool pavlovWin = IsKillerWin(TeamPavlovsAlive);
+
+        if (Lovers.LoversAdditionalWinCondition && impostorWin && TeamImpostorsAlive > 1 && alivePlayers.Any(p => p.IsLovers() && p.IsImpostorWinTeam()))
+        {
+            Logger.Info("Lovers追加勝利判定（Impostor）: ラバーズを含むため勝利取消");
+            impostorWin = false;
+        }
+        if (Lovers.LoversAdditionalWinCondition && jackalWin && TeamJackalAlive > 1 && alivePlayers.Any(p => p.IsLovers() && p.IsJackalTeam()))
+        {
+            Logger.Info("Lovers追加勝利判定（Jackal）: ラバーズを含むため勝利取消");
+            jackalWin = false;
+        }
+        if (Lovers.LoversAdditionalWinCondition && pavlovWin && TeamPavlovsAlive > 1 && alivePlayers.Any(p => p.IsLovers() && p.IsPavlovsTeam()))
+        {
+            Logger.Info("Lovers追加勝利判定（Pavlovs）: ラバーズを含むため勝利取消");
+            pavlovWin = false;
+        }
+
+        IsImpostorDominating = impostorWin;
+        IsJackalDominating = jackalWin;
+        IsPavlovsWin = pavlovWin;
     }
 
     // ExPlayerControl配列から生存しているプレイヤーを返すヘルパーメソッド
