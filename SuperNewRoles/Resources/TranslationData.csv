@@ -306,6 +306,7 @@ MadRaccoon,化け狸,MadRaccoon
 Balancer,天秤,Balancer
 God,神,God
 Lovers,ラバーズ,Lovers,恋爱,戀愛
+Owl,フクロウ,Owl
 
 # Descriptions
 BestFalseCharge.Description,特に能力を有さないクルーメイトです。\n死亡するまでこの役職だと自覚出来ません。\n最初の会議が終了すると、そのまま死亡します。,The ultimate red herring! A Crewmate with no abilities who lives in blissful ignorance.\nThey won't realize they have this role until they're dead—talk about a rude awakening!\nAfter the first meeting ends, they die faster than someone saying "I saw Blue vent!",这是一个没有特殊能力的船员。\n在死亡之前他们不会意识到自己拥有这个角色。\n第一场会议结束后，他们会直接死亡。,這是一個沒有特殊能力的船員。\n在死亡之前他們不會察覺自己擁有這個角色。\n第一場會議結束後，他們會直接死亡。
@@ -788,3 +789,15 @@ LoversAvoidQuarreled,クラードと重複しない,Avoid Quarreled
 LoversAdditionalWinCondition,追加勝利,Additional Win Condition
 LoversIncludeImpostorsInSelection,抽選にインポスターを含む,Include Impostors in Selection
 LoversIncludeThirdTeamInSelection,抽選に第三陣営を含む,Include Third Team in Selection
+
+# Owl
+OwlIntro1,暗闇に羽ばたきし者,The one who flapped his wings in the dark,黑暗中鼓动羽翼之人,在黑暗中鼓動翅膀的人
+OwlCanSpecialBlackoutDeadBodyCount,特殊停電を使えるようになる死体数,Number of bodies that will be able to use special blackout,获得紧急停电所需藏匿的尸体数,啟用黑幕降臨所需的屍體數
+OwlSpecialBlackoutCool,特殊停電のクールタイム,Cool time for special power outages,紧急停电冷却时间,黑幕降臨的冷卻時間
+OwlSpecialBlackoutTime,特殊停電の効果時間,Effect duration of special power outages,紧急停电持续时间,黑幕降臨的持續時間
+OwlCanKillOutsideOfBlackout,停電以外でもキルできる,Can kill outside of blackout
+OwlCanTransportOutsideOfBlackout,停電以外でも運搬できる,Can transported outside of blackout
+OwlNestButtonText,巣作り,Nest building,筑巢,築巢
+OwlTransportButton,運搬,Transport,搬运,搬運
+OwlHideDeadBodyButton,隠す,Hide,藏匿,隱藏
+OwlSpecialBlackoutButton,特殊停電,Special Blackout,紧急停电,黑幕降臨

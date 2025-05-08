@@ -16,7 +16,7 @@ namespace SuperNewRoles.Roles.Ability;
 public record MatryoshkaData(bool WearReport, int WearLimit, float WearTime, float AdditionalKillCoolTime, float CoolTime);
 public class MatryoshkaAbility : CustomButtonBase, IButtonEffect, IAbilityCount
 {
-    private DeadBody currentWearingBody;
+    public DeadBody currentWearingBody { get; private set; }
     private PlayerControl targetPlayer;
 
     public override Sprite Sprite => AssetManager.GetAsset<Sprite>(currentWearingBody != null ? "MatryoshkaTakeOffButton.png" : "MatryoshkaPutOnButton.png");
@@ -139,7 +139,10 @@ public class MatryoshkaAbility : CustomButtonBase, IButtonEffect, IAbilityCount
         foreach (DeadBody body in deadBodies)
         {
             // 既に誰かが着用している死体はスキップ
-            if (ExPlayerControl.ExPlayerControls.Any(x => x.Role == RoleId.Matryoshka && x.GetAbility<MatryoshkaAbility>()?.currentWearingBody == body)) continue;
+            if (ExPlayerControl.ExPlayerControls.Any(x =>
+                (x.Role == RoleId.Matryoshka && x.GetAbility<MatryoshkaAbility>()?.currentWearingBody == body) ||
+                (x.Role == RoleId.Owl && x.GetAbility<OwlDeadBodyTransportAbility>()?.DeadBodyInTransport == body)
+            )) continue;
 
             float distance = Vector2.Distance(localPlayer.transform.position, body.transform.position);
             if (distance <= 2f && distance < closestDistance)
