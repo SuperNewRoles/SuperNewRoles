@@ -260,9 +260,10 @@ public class PlayerStatistics
 
     public bool IsKillerExist => TotalKiller > 0;
 
-    public bool IsImpostorDominating => IsKillerWin(TeamImpostorsAlive);
-    public bool IsJackalDominating => IsKillerWin(TeamJackalAlive);
-    public bool IsPavlovsWin => IsKillerWin(TeamPavlovsAlive); public bool IsCrewmateVictory => !IsKillerExist;
+    public bool IsImpostorDominating { get; }
+    public bool IsJackalDominating { get; }
+    public bool IsPavlovsWin { get; }
+    public bool IsCrewmateVictory => !IsKillerExist;
     public bool IsOwlWin => IsKillerWin(OwlAlive) && OwlAlive == 1;
 
     public PlayerStatistics()
@@ -310,7 +311,6 @@ public class PlayerStatistics
         IsImpostorDominating = impostorWin;
         IsJackalDominating = jackalWin;
         IsPavlovsWin = pavlovWin;
-        IsOwlWin = owlWin;
     }
 
     // ExPlayerControl配列から生存しているプレイヤーを返すヘルパーメソッド
