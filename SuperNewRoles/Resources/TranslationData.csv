@@ -801,3 +801,13 @@ OwlNestButtonText,巣作り,Nest building,筑巢,築巢
 OwlTransportButton,運搬,Transport,搬运,搬運
 OwlHideDeadBodyButton,隠す,Hide,藏匿,隱藏
 OwlSpecialBlackoutButton,特殊停電,Special Blackout,紧急停电,黑幕降臨
+
+# SchrodingersCat Role and Options
+SchrodingersCat,シュレディンガーの猫,Schrödinger's Cat,薛定谔的猫,薛丁格的貓
+SchrodingersCat.Description,観測されるまで事象は確定しないんだ,Events remain undetermined until observed.,在被觀測前事象不確定。,在被觀測前事象不確定。
+SchrodingersCatHasKillAbility,キル能力を有する,Has kill ability,具有擊殺能力,具有擊殺能力
+SchrodingersCatKillCooldown,キルクールタイム,Kill Cool Time,擊殺冷卻時間,擊殺冷卻時間
+SchrodingersCatKillVictimSuicide,キル者が自殺する,Killer suicides,擊殺者自殺,擊殺者自殺
+SchrodingersCatSuicideTime,自殺までの時間,Time until suicide,自殺剩餘時間,自殺剩餘時間
+SchrodingersCatBeCrewOnExile,追放でクルー陣営になる,Become crew on exile,被逐出時變為船員陣營,被逐出時變為船員陣營
+SchrodingersCatCrewOnKillByNonSpecific,特定の役職以外からキルされたときクルー陣営になる,Become crew when killed by non specific role,被非特定角色擊殺時變為船員陣營,被非特定角色擊殺時變為船員陣營

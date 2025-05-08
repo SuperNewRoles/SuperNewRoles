@@ -410,7 +410,7 @@ public class ExPlayerControl
         return _exPlayerControlsArray[playerId];
     }
     public bool IsKiller()
-        => IsImpostor() || Role == RoleId.PavlovsDog || Role == RoleId.MadKiller || IsJackal() || HasCustomKillButton() || Role == RoleId.Hitman;
+        => IsImpostor() || IsPavlovsDog() || Role == RoleId.MadKiller || IsJackal() || HasCustomKillButton() || Role == RoleId.Hitman;
 
     public bool IsNonCrewKiller()
         => IsKiller() && !IsCrewmate();
@@ -420,19 +420,21 @@ public class ExPlayerControl
     public bool IsCrewmateOrMadRoles()
         => IsCrewmate() || IsMadRoles();
     public bool IsImpostor()
-        => Data.Role.IsImpostor;
+        => Data.Role.IsImpostor || GetAbility<SchrodingersCatAbility>()?.CurrentTeam == SchrodingersCatTeam.Impostor;
     public bool IsNeutral()
         => roleBase != null ? roleBase.AssignedTeam == AssignedTeamType.Neutral : false;
     public bool IsImpostorWinTeam()
         => IsImpostor() || IsMadRoles() || Role == RoleId.MadKiller || GhostRole == GhostRoleId.Revenant;
     public bool IsPavlovsTeam()
-        => Role is RoleId.PavlovsDog or RoleId.PavlovsOwner;
+        => Role is RoleId.PavlovsDog or RoleId.PavlovsOwner || GetAbility<SchrodingersCatAbility>()?.CurrentTeam is SchrodingersCatTeam.Pavlovs or SchrodingersCatTeam.PavlovFriends;
+    public bool IsPavlovsDog()
+        => Role == RoleId.PavlovsDog || GetAbility<SchrodingersCatAbility>()?.CurrentTeam == SchrodingersCatTeam.Pavlovs;
     public bool IsMadRoles()
         => HasAbility(nameof(MadmateAbility)) || GhostRole == GhostRoleId.Revenant;//|| HasAbility(nameof(ModifierMadmateAbility));
     public bool IsFriendRoles()
-        => roleBase?.Role == RoleId.JackalFriends;
+        => HasAbility(nameof(JFriendAbility));
     public bool IsJackal()
-        => HasAbility(nameof(JackalAbility));
+        => HasAbility(nameof(JackalAbility)) || GetAbility<SchrodingersCatAbility>()?.CurrentTeam == SchrodingersCatTeam.Jackal;
     public bool IsSidekick()
         => HasAbility(nameof(JSidekickAbility));
     public bool IsJackalTeam()
@@ -459,8 +461,12 @@ public class ExPlayerControl
     }
     public bool CanUseVent()
         => _customVentAbility != null ? _customVentAbility.CheckCanUseVent() : IsImpostor();
+    public bool ShowVanillaVentButton()
+        => IsImpostor() && IsAlive() && _customVentAbility == null;
     public bool CanSabotage()
         => _customSaboAbility != null ? _customSaboAbility.CheckCanSabotage() : IsImpostor();
+    public bool ShowVanillaSabotageButton()
+        => IsImpostor() && IsAlive() && _customSaboAbility == null;
     public AbilityBase GetAbility(ulong abilityId)
     {
         return PlayerAbilitiesDictionary.TryGetValue(abilityId, out var ability) ? ability : null;

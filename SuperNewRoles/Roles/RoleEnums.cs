@@ -67,6 +67,7 @@ public enum RoleId : short
     Bakery,
     God,
     Owl,
+    SchrodingersCat,
 }
 
 public enum GhostRoleId : short

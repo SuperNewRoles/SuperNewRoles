@@ -145,20 +145,11 @@ public class CustomVentAbility : CustomButtonBase
     }
     public override bool CheckHasButton()
     {
-        return ExPlayerControl.LocalPlayer.IsAlive() && CheckCanUseVent() && !ExPlayerControl.LocalPlayer.IsImpostor();
+        return ExPlayerControl.LocalPlayer.IsAlive() && CheckCanUseVent();
     }
 
     public override void AttachToLocalPlayer()
     {
-        if (CheckCanUseVent())
-        {
-            // ベント使用可能な場合の初期化処理
-            float? cooldown = VentCooldown?.Invoke();
-            if (cooldown.HasValue && cooldown.Value > 0)
-            {
-                PlayerControl.LocalPlayer.SetKillTimer(cooldown.Value);
-            }
-        }
         base.AttachToLocalPlayer();
     }
 

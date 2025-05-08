@@ -13,23 +13,29 @@ public class SaboAndVent
     }
     public static void SaboAndVentUpdate()
     {
-        bool ventActive = ExPlayerControl.LocalPlayer.CanUseVent();
-        bool saboActive = ExPlayerControl.LocalPlayer.CanSabotage();
+        bool canUseVent = ExPlayerControl.LocalPlayer.CanUseVent();
+        bool showVentButtonVanilla = ExPlayerControl.LocalPlayer.ShowVanillaVentButton();
+        bool canSabotage = ExPlayerControl.LocalPlayer.CanSabotage();
+        bool showSaboButtonVanilla = ExPlayerControl.LocalPlayer.ShowVanillaSabotageButton();
         bool isShowKillButton = ExPlayerControl.LocalPlayer.showKillButtonVanilla();
         bool killDisabled = ExPlayerControl.LocalPlayer.HasCustomKillButton() || !isShowKillButton;
-        SetVentActive(ventActive);
-        SetSaboActive(saboActive);
+        SetVentActive(canUseVent, showVentButtonVanilla);
+        SetSaboActive(canSabotage, showSaboButtonVanilla);
         SetKillActive(killDisabled, isShowKillButton);
     }
-    private static void SetVentActive(bool ventActive)
+    private static void SetVentActive(bool canUseVent, bool showVentButtonVanilla)
     {
-        if (!ventActive)
+        if (!canUseVent)
             HudManager.Instance.ImpostorVentButton.gameObject.SetActive(false);
+        else if (showVentButtonVanilla)
+            HudManager.Instance.ImpostorVentButton.gameObject.SetActive(true);
     }
-    private static void SetSaboActive(bool saboActive)
+    private static void SetSaboActive(bool canSabotage, bool showSaboButtonVanilla)
     {
-        if (!saboActive)
+        if (!canSabotage)
             HudManager.Instance.SabotageButton.gameObject.SetActive(false);
+        else if (showSaboButtonVanilla)
+            HudManager.Instance.SabotageButton.gameObject.SetActive(true);
     }
     private static void SetKillActive(bool killDisabled, bool isShowKillButton)
     {

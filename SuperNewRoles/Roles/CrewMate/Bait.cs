@@ -145,7 +145,7 @@ public class BaitAutoReportTrophy : SuperTrophyAbility<BaitAutoReportTrophy>
 
     private void HandleMurderEvent(MurderEventData data)
     {
-        Logger.Info("BaitAutoReportTrophy HandleMurderEvent: " + data.target.name + " " + data.killer.name);
+        Logger.Info("BaitAutoReportTrophy HandleMurderEvent: " + data.target.Player.name + " " + data.killer.Player.name);
         if (data.target != PlayerControl.LocalPlayer)
         {
             return;

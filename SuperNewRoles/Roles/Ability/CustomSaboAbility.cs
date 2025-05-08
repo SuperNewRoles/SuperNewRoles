@@ -60,7 +60,7 @@ public class CustomSaboAbility : CustomButtonBase
 
     public override bool CheckHasButton()
     {
-        return CanSabotage() && !ExPlayerControl.LocalPlayer.IsImpostor();
+        return CanSabotage();
     }
 
     public override void AttachToLocalPlayer()

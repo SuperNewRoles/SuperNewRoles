@@ -42,9 +42,9 @@ public static class PlayerControlRpcExtensions
         NameText.UpdateNameInfo(player);
     }
     [CustomRPC]
-    public static void RpcCustomReportDeadBody(this PlayerControl player, NetworkedPlayerInfo target)
+    public static void RpcCustomReportDeadBody(this ExPlayerControl player, NetworkedPlayerInfo target)
     {
-        player.ReportDeadBody(target);
+        player.Player.ReportDeadBody(target);
     }
     [CustomRPC]
     public static void RpcCustomMurderPlayer(this PlayerControl player, PlayerControl target, bool didSucceed)

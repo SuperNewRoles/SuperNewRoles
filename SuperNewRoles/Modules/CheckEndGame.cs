@@ -276,7 +276,7 @@ public class PlayerStatistics
         CrewAlive = alivePlayers.Count(player => player.IsCrewmate());
         TeamJackalAlive = alivePlayers.Count(player => player.IsJackalTeam());
 
-        PavlovsDogAlive = alivePlayers.Count(player => player.Role == RoleId.PavlovsDog);
+        PavlovsDogAlive = alivePlayers.Count(player => player.IsPavlovsDog());
         PavlovsOwnerAlive = alivePlayers.Count(player => player.Role == RoleId.PavlovsOwner);
         if (PavlovsDogAlive > 0)
             TeamPavlovsAlive = PavlovsDogAlive + PavlovsOwnerAlive;

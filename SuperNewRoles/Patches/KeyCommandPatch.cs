@@ -47,7 +47,6 @@ class ControllerManagerUpdatePatch
             if (ModHelpers.GetManyKeyDown(HaisonKeyCodes))
             {
                 Logger.Info("===================== 廃村 ======================", "End Game");
-                GameManager.Instance.RpcEndGame((GameOverReason)CustomGameOverReason.Haison, false);
                 EndGameManagerSetUpPatch.RpcEndGameWithCondition((GameOverReason)CustomGameOverReason.Haison, ExPlayerControl.ExPlayerControls.Select(x => x.PlayerId).ToList(), "廃 of the 村", [], Color.white, true);
                 ShipStatus.Instance.enabled = false;
             }

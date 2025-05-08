@@ -100,7 +100,7 @@ public static class NameText
             SetNameTextColor(player, Color.white);
         }
         UpdateVisiable(player);
-        NameTextUpdateEvent.Invoke(player);
+        NameTextUpdateEvent.Invoke(player, visiable);
         NameTextUpdateVisiableEvent.Invoke(player, visiable);
     }
     public static void SetCustomTaskCount(ExPlayerControl player, int completed, int total, bool showOnMeeting = false, bool showCompletedOnComms = false)
