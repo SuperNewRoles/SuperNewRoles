@@ -318,6 +318,21 @@ SerialKiller.Description,キルに関係する能力を有するインポスタ�
 SideKiller.Description,自陣営を増やす能力を有するインポスターです。\n「侵食する」ボタンを押すと、対象のプレイヤーの役職をマッドキラーに変更します。,An Impostor with the ability to expand its faction.\nBy pressing the "Infiltrate" button, it changes a target player's role to Mad Killer.,这是一个具有增加自身阵营人数能力的内鬼。\n按下"侵蚀"按钮后，会将目标玩家的角色更改为疯狂杀手。,這是一個具備擴充自身陣營能力的內鬼。\n按下「侵蝕」按鈕後，將會把目標玩家的角色變更為瘋狂殺手。
 MadKiller.Description,インポスター陣営に属する役職です。\n自身をマッドキラーに変化させたサイドキラーが死亡すると、インポスターへ昇格し、キル能力を有するようになります。\n昇格前はマッドメイト同様クルーメイト判定です。,A role within the Impostor faction.\nWhen the Sidekiller who transformed you into a Mad Killer dies, you are promoted to an Impostor and gain a kill ability.\nPrior to promotion, you are considered a Crewmate, similar to a Madmate.,这是一个隶属于内鬼阵营的角色。\n当将你变为疯狂杀手的边缘杀手死亡时，你将晋升为内鬼，并获得击杀能力。\n晋升前，你和疯友一样被视为船员。,這是一個隸屬於內鬼陣營的角色。\n當使你變成瘋狂殺手的邊緣殺手死亡時，你將晉升為內鬼，並獲得擊殺能力。\n晉升前，你將與瘋友同視為船員。
 EvilGambler.Description,キルに関係する能力を有するインポスターです。\nキルをした際、次のキルクールが確率で変動します。\nターンの最初のキルクールは、ゲーム全体のインポスターのキルクールタイムに準じます。,An Impostor with kill‐related abilities.\nAfter making a kill, the cooldown for the next kill changes probabilistically.\nThe initial kill cooldown of a turn follows the overall Impostor kill cooldown time in the game.,这是一个拥有与击杀相关能力的内鬼。\n在击杀后，下一次击杀的冷却时间会根据概率变化。\n一回合开始时的击杀冷却时间遵循整个游戏中内鬼的击杀冷却设置。,這是一個具備擊殺相關能力的內鬼。\n成功擊殺後，其下一次擊殺的冷卻時間會依機率變動。\n回合初的擊殺冷卻時間則依照整體遊戲中內鬼的設定。
+Penguin,ペンギン,Penguin,企鹅,企鵝
+Pusher,突き落と師,Pusher,推落者,推落者
+EvilHacker,イビルハッカー,Evil Hacker,邪恶黑客,邪惡黑客
+SuicideWisher,スーサイドウィッシャー,Suicide Wisher,自杀愿望者,自殺願望者
+NekoKabocha,ネコカボチャ,NekoKabocha,猫南瓜,貓南瓜
+Matryoshka,マトリョーシカ,Matryoshka
+Conjurer,魔術師,Conjurer,魔术师,魔術師
+Doppelganger,ドッペルゲンガー,Doppelganger
+EvilButtoner,イビルボタナー,Evil Buttoner
+Necromancer,ネクロマンサー,Necromancer
+Revenant,レヴェナント,Revenant
+Teleporter,テレポーター,Teleporter
+Pursuer,追跡者,Pursuer,追踪者,追蹤者
+
+
 
 # Descriptions_Neutral
 Jackal.Description,キル能力を有する第三陣営です。\n自陣営以外のキルが出来る陣営が全滅した上で、自陣営とクルーが同数以下になれば勝利します。\n設定次第で他のプレイヤーの役職を、自身の後継となるサイドキックや、手助けをしてくれるジャッカルフレンズに変更する能力を有することも出来ます。,A third‐faction role with a kill ability.\nIt wins if all factions capable of killing outside its own are eliminated and its faction and the Crewmates are equal in number or fewer.\nDepending on the settings, it can change other players' roles into a Sidekick (its successor) or Jackal Friends who assist it.,这是一个拥有击杀能力的第三阵营角色。\n当所有能够进行击杀的其他阵营被消灭，并且其阵营与船员人数相等或更少时，即可获胜。\n根据设定，它还可以将其他玩家的角色变更为边缘队员（其继任者）或协助的杰克朋友。,這是一個具備擊殺能力的第三陣營角色。\n當其他能進行擊殺的陣營全部被消滅，且其陣營與船員數量相等或更少時，即獲勝。\n根據設定，還可將其他玩家的角色變更為接班的邊翼或提供協助的傑克朋友。
@@ -331,6 +346,20 @@ Workperson.Description,キル能力を有さない独自の勝利条件を持つ
 PavlovsOwner.Description,キル能力を有さない第三陣営です。\n犬が生存した状態かつ、自陣営以外のキルが出来る陣営が全滅した上で、自陣営とクルーが同数以下になれば勝利します。\n「刷り込み」ボタンを押すと、対象のプレイヤーの役職をパブロフの犬に変更します。\n設定次第では、インポスターを犬にしようとすると自殺してしまいます。\n複数回使用出来る設定もありますが、犬は場に最大1人までしか存在出来ません。\n犬が死亡すると新しい犬を作成出来るようになります。\n常に犬の居場所が矢印で表示されます。\n\n生存した状態かつ、「刷り込み」の使用回数が残っている場合、キル陣営が全滅したり、この役職と他キル陣営が同数になってもゲームが継続します。,A third‐faction role without a kill ability.\nIt wins if a dog is alive and all factions capable of killing outside its own are eliminated, with its faction and the Crewmates in equal or fewer numbers.\nBy pressing the "Imprinting" button, it changes a target player's role to Pavlov's Dog.\nDepending on settings, attempting to turn an Impostor into a dog results in suicide.\nAlthough the ability can be used multiple times, only one dog may exist at a time.\nWhen the dog dies, a new one can be created.\nIts location is always indicated by an arrow.\n\nFurthermore, as long as the dog is alive and there are remaining uses of "Imprinting", the game continues even if the kill faction is eliminated or this role and other kill‐capable factions are equal in number.,这是一个没有击杀能力的第三阵营角色。\n获胜条件是：狗存活且所有能够击杀的其他阵营被消灭，同时其阵营与船员人数相等或更少。\n按下"刷印"按钮后，会将目标玩家的角色改为帕夫洛夫之犬。\n根据设定，如果试图将内鬼变成狗，则会自杀。\n此能力可多次使用，但场上最多只能存在一只狗。\n当狗死亡后，可以生成新的狗，并且狗的位置始终以箭头标示。\n此外，只要狗存活且"刷印"次数尚余，即使击杀阵营全部被消灭或本角色与其他具击杀能力的陣営人数相等，游戏亦会继续。,這是一個沒有擊殺能力的第三陣營角色。\n勝利條件為：狗存活且所有能夠擊殺的其他陣營被消滅，同時其陣營與船員數量相等或更少。\n按下「刷印」按鈕後，會將目標玩家的角色變更為帕夫洛夫之犬。\n根據設定，若嘗試將內鬼變成狗，則會自動自殺。\n此能力可多次使用，但場上最多僅能存在一隻狗。\n當狗死亡後，即可生成新的狗，且狗的位置將始終以箭頭標示。\n此外，只要狗存活且「刷印」的使用次數仍有餘，即使擊殺陣營全部被消滅或本角色與其他具擊殺能力的陣營數量相等，遊戲仍將繼續。
 PavlovsDog.Description,パブロフの犬陣営に属するキル能力を有する第三陣営です。\n自陣営以外のキルが出来る陣営が全滅した上で、自陣営とクルーが同数以下になれば勝利します。\nオーナーが死亡すると、キルクールタイムが短くなる代わりに、キルをしないと自殺してしまいます。,A third‐faction role belonging to the Pavlov's Dog faction with a kill ability.\nIt wins if all factions capable of killing outside its own are eliminated and its faction and the Crewmates are equal in number or fewer.\nWhen the Owner dies, its kill cooldown shortens, but if it fails to kill, it will commit suicide.,这是一个隶属于帕夫洛夫之犬阵营、具有击杀能力的第三阵营角色。\n当所有能够执行击杀的其他阵营被消灭，并且其阵营与船员人数相等或更少时，即可获胜。\n当犬主死亡时，击杀冷却时间会缩短，但如果未能击杀，则会自杀。,這是一個隸屬於帕夫洛夫之犬陣營、具備擊殺能力的第三陣營角色。\n當其他能夠擊殺的陣營全部被消滅，且其陣營與船員數量相等或更少時，即獲勝。\n當犬主死亡時，擊殺冷卻時間會縮短，但若未擊殺，則會自動自殺。
 Vulture.Description,キル能力を有さない独自の勝利条件を持つ第三陣営です。\n死体の近くで「喰らう」ボタンを押すと、その死体を食べることが出来ます。\n死体を設定個数食べると、その時点で単独勝利します。,A third‐faction role without a kill ability that has its own win condition.\nBy pressing the "Devour" button near a corpse, it can consume the body.\nOnce it consumes a set number of corpses, it wins the game immediately on its own.,这是一个没有击杀能力、拥有独特胜利条件的第三阵营角色。\n在尸体附近按下"吞噬"按钮即可吞食该尸体。\n当吞食达到设定数量后，即可立即单独获胜。,這是一個沒有擊殺能力且具備獨特勝利條件的第三陣營角色。\n在屍體附近按下「吞噬」按鈕，即可吞食該屍體。\n一旦吞噬達到設定數量，即可立即單獨獲勝。
+Arsonist.Description,\nキル能力を有さない独自の勝利条件を持つ第三陣営です。\n他プレイヤーの近くで「塗る」ボタンを押し、その後一定秒数近くにいると対象にオイルを塗ることが出来ます。\n生存者全員にオイルを塗った状態で、「燃やす」ボタンを押すと、その時点で単独勝利します。,This is a third-party role with a unique win condition and no killing ability．\nBy pressing the "Oil" button near another player and staying close for a certain amount of time afterward，you can cover them in oil．\nIf you successfully oil all surviving players and then press the "Ignite" button，you will instantly achieve a solo victory．,这是一个拥有独特胜利条件、但没有击杀能力的第三方阵营角色。\n靠近其他玩家并按下“涂抹”按钮，随后在一定时间内保持接近，即可将目标玩家涂上油。\n当所有生存者都被涂上油后，按下“燃烧”按钮即可立即获得单独胜利。,這是一個擁有獨特勝利條件、但沒有擊殺能力的第三方陣營角色。\n靠近其他玩家並按下「塗抹」按鈕，之後在一定時間內保持靠近，即可將對方塗上油。\n當所有生還者都被塗上油後，按下「燃燒」按鈕，即可立即獲得單獨勝利。
+Amnesiac.Description,キル能力を有さない第三陣営です。\nこの役職は勝利条件を持ちません。\n死体を通報すると、その死体のプレイヤーの役職を引き継ぎます。\n勝利条件は引き継いだ役職のものに変化します。,This is a third-party role with no killing ability．\nThis role does not have its own win condition．\nWhen you report a dead body，you inherit the role of the deceased player．\nYour win condition will change to match the role you inherited．,这是一个没有击杀能力的第三方阵营角色。\n该角色本身没有胜利条件。\n当你通报尸体时，会继承该尸体玩家的角色。\n你的胜利条件将变为继承角色的胜利条件。,這是一個沒有擊殺能力的第三方陣營角色。\n此角色本身沒有勝利條件。\n當你通報屍體時，會繼承該屍體玩家的角色。\n你的勝利條件將變為所繼承角色的勝利條件。
+FalseCharges.Description,キル能力を有さない独自の勝利条件を持つ第三陣営です。\n他プレイヤーに冤罪をかけることが出来、冤罪をかけた相手が一定ターン以内に追放されると単独勝利します。\nなお、冤罪をかけた際、自身は死亡してしまうため、能力は一度しか使うことが出来ません。,This is a third-party role with no killing ability and a unique win condition．\nYou can falsely accuse another player，and if that player is ejected within a certain number of turns，you will achieve a solo victory．\nHowever，you will die immediately after making the accusation，so you can only use this ability once．,这是一个没有击杀能力、拥有独特胜利条件的第三方阵营角色。\n你可以对其他玩家进行冤罪指控，如果该玩家在一定回合内被投票逐出，你将获得单独胜利。\n不过，在你发动冤罪时自己会死亡，因此该能力只能使用一次。,這是一個沒有擊殺能力、擁有獨特勝利條件的第三方陣營角色。\n你可以對其他玩家發動冤罪指控，若該玩家在一定回合內被投票逐出，你將獲得單獨勝利。\n不過，在你發動冤罪時自己會死亡，因此此能力僅能使用一次。
+Hitman.Description,キル能力を有する第三陣営です。\n指定数のターゲットをキルするとその時点で単独勝利します。\nターゲットは画面の左下に表示され、その居場所に向かって赤色の矢印も表示されます。\n設定によっては一定数失敗してしまうとその時点で死亡してしまいます。,This is a third-party role with killing ability．\nIf you successfully kill a set number of targets，you will achieve a solo victory at that moment．\nYour targets are displayed in the bottom-left corner of the screen，and a red arrow will point you toward their location．\nDepending on the settings，if you fail a certain number of times，you will die immediately．,这是一个拥有击杀能力的第三方阵营角色。\n当你成功击杀指定数量的目标后，将立即获得单独胜利。\n目标会显示在屏幕左下角，并有红色箭头指引其位置。\n根据设定，如果失败次数达到一定数量，你将立即死亡。,這是一個擁有擊殺能力的第三方陣營角色。\n當你成功擊殺指定數量的目標後，將立即獲得單獨勝利。\n目標會顯示在畫面左下角，並會有紅色箭頭指引其位置。\n根據設定，若失敗達到一定次數，你將立即死亡。
+God.Description,キル能力を有さない独自の勝利条件を持つ第三陣営です。\n全てのプレイヤーの役職が何かを見ることが出来ます。\nゲーム終了まで生存していると、一部役職の特殊勝利を除き、その勝利を横取りして勝利することが出来ます。,This is a third-party role with no killing ability and a unique win condition．\nYou can see the roles of all players．\nIf you survive until the end of the game，you will steal the victory from the actual winners and claim it as your own，except in cases where special roles have unique win conditions．,这是一个没有击杀能力、拥有独特胜利条件的第三方阵营角色。\n你可以查看所有玩家的角色。\n如果你能存活到游戏结束，除部分具有特殊胜利条件的角色外，你将窃取原本的胜利并获得胜利。,這是一個沒有擊殺能力、擁有獨特勝利條件的第三方陣營角色。\n你可以查看所有玩家的角色。\n如果你能存活到遊戲結束，除了部分具有特殊勝利條件的角色之外，你將竊取原本的勝利並獲得勝利。
+
+
+
+
+
+Owl,フクロウ,Owl
+
+
+
 
 # Descriptions_Crewmate
 BestFalseCharge.Description,特に能力を有さないクルーメイトです。\n死亡するまでこの役職だと自覚出来ません。\n最初の会議が終了すると、そのまま死亡します。,The ultimate red herring! A Crewmate with no abilities who lives in blissful ignorance.\nThey won't realize they have this role until they're dead—talk about a rude awakening!\nAfter the first meeting ends, they die faster than someone saying "I saw Blue vent!",这是一个没有特殊能力的船员。\n在死亡之前他们不会意识到自己拥有这个角色。\n第一场会议结束后，他们会直接死亡。,這是一個沒有特殊能力的船員。\n在死亡之前他們不會察覺自己擁有這個角色。\n第一場會議結束後，他們會直接死亡。
@@ -341,10 +370,39 @@ Seer.Description,タスクターンに発動する能力を有するクルーメ
 Balancer.Description,会議に関する能力を有するクルーメイトです。\n会議中に出現するボタン2つを押すと、対象のプレイヤー二人のどちらか片方は最低でも追放される特殊な会議を開くことが出来ます。\n投票が同数だった場合、二人同時に追放されます。,A Crewmate with a meeting‐focused ability.\nBy pressing the two buttons that appear during a meeting, a special meeting is initiated in which at least one of the two targeted players will be ejected.\nIn the event of a tie vote, both players are ejected simultaneously.,这是一个拥有会议相关能力的船员。\n在会议中按下出现的两个按钮后，便会发起一场特殊会议，确保目标的两名玩家中至少有一人被放逐。\n若投票数相同，则两人同时被放逐。,這是一個具備會議相關能力的船員。\n在會議中按下出現的兩個按鈕後，會啟動一個特殊會議，使目標的兩名玩家中至少有一人被逐出。\n若投票數相同，則兩人將同時被逐出。
 Celebrity.Description,特に能力を有さないクルーメイトです。\n全員視点で名前が役職色に変わっており、全員からスターだということがわかります。,A Crewmate with no special abilities.\nTheir name is displayed in the color of their role for everyone, making it clear to all that they are the Star.,这是一个没有特殊能力的船员。\n他们的名字以角色颜色显示在所有人的视角中，让大家都看出他们是明星。,這是一個沒有特殊能力的船員。\n他們的名字以角色顏色呈現在所有人眼中，讓大家都能看出他們是明星。
 Datahacker.Description,タスクターンに発動する能力を有するクルーメイトです。\nタスクを一定数こなすと、敵対する陣営のプレイヤーが誰かわかります。\nただし、それより少し前に敵対する陣営のプレイヤーから自身がデータハッカーとバレてしまいます。,A Crewmate with an ability that activates during task turns.\nAfter completing a certain number of tasks, they can identify the players from opposing factions.\nHowever, shortly before that, opposing faction players will realize that they are the Datahacker.,
+Santa.Description,タスクターンに使用出来る能力を有するクルーメイトです。\n「プレゼント」ボタンを押すと、対象のプレイヤーをランダムな役職に変更します。\nただし、対象のプレイヤーがクルーメイト以外だった場合、自殺してしまいます。,I am a Crewmate with the ability to use task turns.\nWhen I press the "Present" button， the target player is changed to a random role.\nHowever， if the target player is not a Crewmate， I will commit suicide.,我是一个可以使用任务轮次的船员。\n当我按下“礼物”按钮时，目标玩家将被随机更换为一个角色。\n但是，如果目标玩家不是船员，我就会自杀。,我是一名可以使用任務回合的船員。\n當我按下「禮物」按鈕時，目標玩家會被隨機更換為一個職業。\n但如果目標玩家不是船員，我就會自殺。
+JumpDancer,ジャンプダンサー,Jump Dancer,舞跳者,跳躍舞者
+Celebrity,スター,Celebrity,明星,明星
+WellBehaver,品行方正,WellBehaver
+NiceButtoner,ナイスボタナー,Nice Buttoner
+Mayor,メイヤー,Mayor
+Bakery,パン屋,Bakery
+Balancer,天秤,Balancer
+
+
+
 
 # Descriptions_MadRoles
 Madmate.Description,インポスターの味方のクルーメイトです。\nいわゆる狂人と呼ばれる役職です。\n勝利条件はクルーメイトの勝利ではなく、インポスターの勝利です。\nその勝利に自身の生死は問われないので、あの手この手でインポスターを勝利に導きましょう。,A Crewmate allied with the Impostors.\nOften known as the Madmate.\nTheir win condition is not for the Crewmates to win, but for the Impostors to win.\nTheir own survival is irrelevant, so use any means necessary to secure an Impostor victory.,这是一个支持内鬼的船员，也称为疯友角色。\n他们的胜利条件不是船员获胜，而是内鬼获胜，并且他们的生死并不影响胜利。\n所以，尽可能地采用各种手段促成内鬼获胜。,這是一個支持內鬼的船員，俗稱瘋友角色。\n其勝利條件並非船員勝利，而是內鬼勝利，且自身生死不影響結果。\n因此，請用一切手段助內鬼取勝。
 BlackCat.Description,インポスターの味方のクルーメイトです。\nいわゆる狂人と呼ばれる役職です。\n勝利条件はクルーメイトの勝利ではなく、インポスターの勝利です。\nその勝利に自身の生死は問われないので、あの手この手でインポスターを勝利に導きましょう。\nこの役職は、自身が追放された際、誰か一人を道連れにする能力を有します。,A Crewmate allied with the Impostors.\nKnown as the Black Cat—a type of madmate.\nTheir win condition is not a Crewmate victory but an Impostor victory.\nTheir own survival is irrelevant, so use any means necessary to ensure an Impostor win.\nAdditionally, when this role is ejected, it has the ability to take one other player with it.,这是一个支持内鬼的船员，也就是所谓的黑猫角色，一种狂人角色。\n他们的胜利条件不是船员获胜，而是内鬼获胜，而且他们的生死无关紧要。\n请用各种方法促使内鬼获胜。\n该角色在被逐出时，有能力带走一名玩家。,這是一個支持內鬼的船員，亦稱黑貓，屬於瘋友角色之一。\n其勝利條件並非船員勝利，而是內鬼勝利，且自身生死無關緊要。\n請採用各種手段助內鬼取勝。\n此角色在被逐出時，具備帶走一名玩家的能力。
+BlackSanta.Description,インポスターの味方のクルーメイトです。\nいわゆる狂人と呼ばれる役職です。\n勝利条件はクルーメイトの勝利ではなく、インポスターの勝利です。\nその勝利に自身の生死は問われないので、あの手この手でインポスターを勝利に導きましょう。\nこの役職は、「プレゼント」ボタンを押すと、対象のプレイヤーをランダムな役職に変更します。\nただし、対象のプレイヤーがインポスター以外だった場合、自殺してしまいます。,I am a Crewmate allied with the Impostors．\nThis role is commonly referred to as the “Madmate”．\nMy win condition is not the Crewmates’ victory，but the Impostors’ victory．\nWhether I live or die does not matter for that outcome，so use every trick in the book to help the Impostors win．\nThis role can press the "Present" button to change the target player into a random role．\nHowever，if the target player is not an Impostor，I will commit suicide．,我是一个站在内鬼一方的船员。\n这个角色也被称为“狂人”。\n我的胜利条件不是船员胜利，而是内鬼胜利。\n无论我生还是死，只要内鬼获胜我就算胜利，所以请想尽办法帮助内鬼取得胜利。\n这个角色按下“礼物”按钮后，会将目标玩家随机更换为一个角色。\n但如果目标玩家不是内鬼，我就会自杀。,我是一名站在內鬼一方的船員。\n這個角色也被稱為「狂人」。\n我的勝利條件不是船員的勝利，而是內鬼的勝利。\n不論我生或死，只要內鬼贏了，我就算獲勝，所以請千方百計協助內鬼取勝。\n這個角色按下「禮物」按鈕後，會將目標玩家隨機更換為一個職業。\n但如果目標玩家不是內鬼，我就會自殺。
+Worshiper,崇拝者,Worshiper,崇拜者,崇拜者
+MadRaccoon,化け狸,MadRaccoon
+
+
+
+JackalFriends,ジャッカルフレンズ,Jackal Friends
+
+# Descriptions_GhostRoles
+Cantera,カンテラ,Cantera
+Mirage,ミラージュ,Mirage
+
+
+
+# Descriptions_Modifier
+ModifierGuesser,モディファイアゲッサー,Modifier Guesser
+Lovers,ラバーズ,Lovers,恋爱,戀愛
+
 
 
 # wins
