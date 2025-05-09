@@ -131,7 +131,6 @@ public static class ModdedNetworkTransform
     private static void FixedUpdateOwner(PlayerControl player)
     {
         Vector2 currentVelocity = player.MyPhysics.body.velocity;
-        Logger.Info($"currentVelocity: {currentVelocity}");
         bool isCurrentlyStopped = currentVelocity.sqrMagnitude < VELOCITY_ZERO_THRESHOLD_SQR; // Use squared magnitude for efficiency
         bool wasMovingLastFrame = lastVelocity.sqrMagnitude >= VELOCITY_ZERO_THRESHOLD_SQR;
         bool isCountingDown = stopDetectionCounter.ContainsKey(player.PlayerId); // No need for TryGetValue here

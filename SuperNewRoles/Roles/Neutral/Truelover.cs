@@ -15,7 +15,7 @@ class Truelover : RoleBase<Truelover>
     public override RoleId Role { get; } = RoleId.Truelover;
     public override Color32 RoleColor { get; } = Lovers.Instance.RoleColor;
     public override List<Func<AbilityBase>> Abilities { get; } = [
-        () => new CreateLoversAbility(TrueLoverCoolTime, ModTranslation.GetString("TrueLoverCreateLovers"), AssetManager.GetAsset<Sprite>("TrueloverButton.png"), true)
+        () => new CreateLoversAbility(TrueLoverCoolTime, ModTranslation.GetString("TrueLoverCreateLovers"), AssetManager.GetAsset<Sprite>("trueloverloveButton.png"), true)
     ];
 
     public override QuoteMod QuoteMod { get; } = QuoteMod.SuperNewRoles;

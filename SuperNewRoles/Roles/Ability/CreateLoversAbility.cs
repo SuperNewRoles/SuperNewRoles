@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using SuperNewRoles.Modules;
 using SuperNewRoles.Roles.Ability.CustomButton;
 using SuperNewRoles.Roles.Modifiers;
@@ -12,6 +13,7 @@ public class CreateLoversAbility : TargetCustomButtonBase
     public string _buttonText { get; }
     public Sprite _sprite { get; }
     public bool _isLoversMe { get; }
+    public Action<List<ExPlayerControl>> _callback { get; }
     public override float DefaultTimer => CoolTime;
 
     public override string buttonText => _buttonText;
@@ -25,13 +27,14 @@ public class CreateLoversAbility : TargetCustomButtonBase
     public override Color32 OutlineColor => Lovers.Instance.RoleColor;
 
     public override bool OnlyCrewmates => false;
-    public override Func<ExPlayerControl, bool> IsTargetable => (player) => !player.IsLovers();
-    public CreateLoversAbility(float coolTime, string buttonText, Sprite sprite, bool IsLoversMe)
+    public override Func<ExPlayerControl, bool> IsTargetable => (player) => !player.IsLovers() && CurrentTarget != player;
+    public CreateLoversAbility(float coolTime, string buttonText, Sprite sprite, bool IsLoversMe, Action<List<ExPlayerControl>> callback = null)
     {
         CoolTime = coolTime;
         _buttonText = buttonText;
         _sprite = sprite;
         _isLoversMe = IsLoversMe;
+        _callback = callback;
     }
 
     public override bool CheckIsAvailable()
@@ -58,6 +61,9 @@ public class CreateLoversAbility : TargetCustomButtonBase
         if (CurrentTarget == null || CurrentTarget.IsDead() || CurrentTarget.IsLovers())
             CurrentTarget = Target;
         else
-            AssignRoles.RpcCustomSetLovers(CurrentTarget, Target, AssignRoles.LoversIndex);
+        {
+            AssignRoles.RpcCustomSetLovers(CurrentTarget, Target, AssignRoles.LoversIndex, true);
+            _callback?.Invoke([CurrentTarget, Target]);
+        }
     }
 }

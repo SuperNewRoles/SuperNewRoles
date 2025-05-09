@@ -69,6 +69,7 @@ public enum RoleId : short
     Owl,
     SchrodingersCat,
     Truelover,
+    Cupid,
 }
 
 public enum GhostRoleId : short
@@ -85,7 +86,7 @@ public enum ModifierRoleId : short
     None = 0,
     ModifierGuesser = 1 << 0,
     ModifierMadmate = 1 << 1,
-    MakeMadmateModifier = 1 << 2,
+    RulerModifier = 1 << 2,
     Lovers = 1 << 3,
 }
 

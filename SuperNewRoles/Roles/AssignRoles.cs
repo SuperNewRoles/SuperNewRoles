@@ -309,14 +309,14 @@ public static class AssignRoles
             }
 
             Logger.Info($"AssignLovers: カップル {i + 1} - プレイヤー {playerA.PlayerId} と {playerB.PlayerId}");
-            RpcCustomSetLovers(playerA, playerB, LoversIndex);
+            RpcCustomSetLovers(playerA, playerB, LoversIndex, false);
         }
 
         Logger.Info("AssignLovers() 終了: Loversのアサイン処理が完了しました。");
     }
 
     [CustomRPC]
-    public static void RpcCustomSetLovers(ExPlayerControl playerA, ExPlayerControl playerB, byte loversIndex)
+    public static void RpcCustomSetLovers(ExPlayerControl playerA, ExPlayerControl playerB, byte loversIndex, bool setNameText)
     {
         playerA.SetModifierRole(ModifierRoleId.Lovers);
         playerB.SetModifierRole(ModifierRoleId.Lovers);
@@ -325,6 +325,11 @@ public static class AssignRoles
         LoversCouple loversCouple = new([loversAbilityA, loversAbilityB], loversIndex);
         loversAbilityA.SetCouple(loversCouple);
         loversAbilityB.SetCouple(loversCouple);
+        if (setNameText)
+        {
+            NameText.UpdateNameInfo(playerA);
+            NameText.UpdateNameInfo(playerB);
+        }
         LoversIndex++;
     }
 

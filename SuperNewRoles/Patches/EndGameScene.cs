@@ -10,6 +10,9 @@ using SuperNewRoles.Roles.Neutral;
 using SuperNewRoles.SuperTrophies;
 using UnityEngine;
 using SuperNewRoles.Events;
+using SuperNewRoles.HelpMenus;
+using UnityEngine.UI;
+using BepInEx.Unity.IL2CPP.Utils.Collections;
 
 namespace SuperNewRoles.Patches;
 
@@ -162,14 +165,47 @@ public class EndGameManagerSetUpPatch
             reason: reason,
             winners: winners,
             UpperText: ModTranslation.TryGetString(UpperText, out var value) ? value : "<INVALID_TEXT>",
-            additionalWinTexts: additionalWinTexts.Select(x => ModTranslation.TryGetString(x, out var value) ? value : "<INVALID_TEXT>").ToList(),
+            additionalWinTexts: additionalWinTexts.Select(x => ModTranslation.TryGetString(x, out var val) ? val : "<INVALID_TEXT>").ToList(),
             UpperTextColor: UpperTextColor,
             IsHaison: IsHaison,
-            winText: ModTranslation.TryGetString(winText, out value) ? value : "<INVALID_TEXT>"
+            winText: ModTranslation.TryGetString(winText, out var winVal) ? winVal : "<INVALID_TEXT>"
         );
         EndGameManagerSetUpPatch.endGameCondition = newCond;
+
+        // 黒いフェードアウト用オブジェクトを作成
+        var fadeObject = new GameObject("FadeOutObject");
+        fadeObject.transform.SetParent(HudManager.Instance.transform, false); // HudManagerの子にする
+        fadeObject.layer = LayerMask.NameToLayer("UI"); // UIレイヤーに設定
+
+        var image = fadeObject.AddComponent<Image>();
+        image.color = new Color(0, 0, 0, 0); // 初期は透明な黒
+        image.rectTransform.anchorMin = Vector2.zero;
+        image.rectTransform.anchorMax = Vector2.one;
+        image.rectTransform.sizeDelta = Vector2.zero; // 画面全体を覆うように
+
+        HudManager.Instance.StartCoroutine(FadeOutCoroutine(image, 0.4f, () =>
+        {
+            UnityEngine.Object.Destroy(fadeObject); // フェードオブジェクトを破棄
+        }).WrapToIl2Cpp());
+
         if (AmongUsClient.Instance.AmHost)
-            new LateTask(() => GameManager.Instance.RpcEndGame(newCond.reason, false), 0.5f);
+            new LateTask(() => GameManager.Instance.RpcEndGame(newCond.reason, false), 0.3f);
+    }
+
+    // Imageのアルファ値を変更するコルーチン
+    public static System.Collections.IEnumerator FadeOutCoroutine(Image image, float duration, Action onComplete)
+    {
+        float elapsed = 0f;
+        image.color = new Color(0, 0, 0, 0); // 開始時は透明
+        while (elapsed < duration)
+        {
+            elapsed += Time.deltaTime;
+            float alpha = Mathf.Clamp01(elapsed / duration);
+            image.color = new Color(0, 0, 0, alpha); // 徐々に不透明に
+            yield return null;
+        }
+        image.color = new Color(0, 0, 0, 1); // 完全に不透明に
+        onComplete?.Invoke();
     }
 
     public static TMPro.TMP_Text textRenderer;
