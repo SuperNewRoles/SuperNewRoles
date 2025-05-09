@@ -70,6 +70,10 @@ public enum RoleId : short
     SchrodingersCat,
     Truelover,
     Cupid,
+    Crab,
+    VentTrapper,
+    SpeedBooster,
+    EvilSpeedBooster,
 }
 
 public enum GhostRoleId : short
