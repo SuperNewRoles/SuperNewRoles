@@ -8,6 +8,7 @@ using SuperNewRoles.Roles.Ability;
 using SuperNewRoles.Roles.Neutral;
 using UnityEngine;
 using SuperNewRoles.Roles.Modifiers;
+using Hazel;
 
 namespace SuperNewRoles.Modules;
 
@@ -39,6 +40,7 @@ public static class CoStartGamePatch
         CheckGameEndPatch.CouldCheckEndGame = true;
     }
 }
+
 [HarmonyPatch(typeof(LogicGameFlowNormal), nameof(LogicGameFlowNormal.CheckEndCriteria))]
 public static class CheckGameEndPatch
 {

@@ -68,6 +68,7 @@ public enum RoleId : short
     God,
     Owl,
     SchrodingersCat,
+    Truelover,
 }
 
 public enum GhostRoleId : short

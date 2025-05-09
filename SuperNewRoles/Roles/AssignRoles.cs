@@ -258,6 +258,8 @@ public static class AssignRoles
                 .Where(p => !p.IsNeutral());
         }
 
+        candidates = candidates.Where(p => p.Role != RoleId.Truelover);
+
         var candidatesList = candidates.ToList();
 
         // カップル数計算

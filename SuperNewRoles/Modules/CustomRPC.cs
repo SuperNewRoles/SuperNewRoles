@@ -31,6 +31,20 @@ public static class CustomRpcExts
         if (!AmongUsClient.Instance.AmHost) return;
         GameManager.Instance.RpcEndGame(reason, false);
     }
+
+    /*[CustomRPC(onlyOtherPlayer: true)]
+    public static void RpcApplyDeadBodyImpulse(byte parentId, float impulseX, float impulseY)
+    {
+        foreach (DeadBody deadBody in UnityEngine.Object.FindObjectsOfType<DeadBody>())
+        {
+            if (deadBody.ParentId == parentId)
+            {
+                // 小さなキックオフセットを適用
+                deadBody.transform.position += new UnityEngine.Vector3(impulseX, impulseY, 0f);
+                break;
+            }
+        }
+    }*/
 }
 /// <summary>
 /// カスタムRPCを管理するクラス

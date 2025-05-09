@@ -32,7 +32,7 @@ public class OwlAbility : AbilityBase
     private OwlNestAbility _nestAbility;
     private OwlDeadBodyTransportAbility _deadBodyTransportAbility;
     private OwlSpecialBlackoutAbility _specialBlackoutAbility;
-    
+
     public OwlAbility(OwlData data)
     {
         _data = data;
@@ -135,7 +135,7 @@ public class OwlDeadBodyTransportAbility : CustomButtonBase, IButtonEffect
 
     private DeadBody _candidateTarget;
     public DeadBody DeadBodyInTransport { get; private set; }
-    
+
     private EventListener _fixedUpdateListener;
 
     public OwlDeadBodyTransportAbility(Func<Vent> nestVent, Action deadBodyCountIncrement, Func<bool> canUse)
