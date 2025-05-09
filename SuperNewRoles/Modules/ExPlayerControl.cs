@@ -430,7 +430,9 @@ public class ExPlayerControl
     public bool IsPavlovsDog()
         => Role == RoleId.PavlovsDog || GetAbility<SchrodingersCatAbility>()?.CurrentTeam == SchrodingersCatTeam.Pavlovs;
     public bool IsMadRoles()
-        => HasAbility(nameof(MadmateAbility)) || GhostRole == GhostRoleId.Revenant;//|| HasAbility(nameof(ModifierMadmateAbility));
+        => HasAbility(nameof(MadmateAbility))
+           || GhostRole == GhostRoleId.Revenant
+           || (Role == RoleId.SatsumaAndImo && GetAbility<SatsumaAndImoAbility>()?.IsMadTeam == true);
     public bool IsFriendRoles()
         => HasAbility(nameof(JFriendAbility));
     public bool IsJackal()

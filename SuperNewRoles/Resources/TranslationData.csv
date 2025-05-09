@@ -304,6 +304,7 @@ Worshiper,崇拝者,Worshiper,崇拜者,崇拜者
 Necromancer,ネクロマンサー,Necromancer
 Revenant,レヴェナント,Revenant
 Teleporter,テレポーター,Teleporter
+NiceTeleporter,ナイステレポーター,Nice Teleporter
 Pursuer,追跡者,Pursuer,追踪者,追蹤者
 ModifierGuesser,モディファイアゲッサー,Modifier Guesser
 RulerModifier,ルーラー,Ruler[
@@ -314,12 +315,17 @@ MadRaccoon,化け狸,MadRaccoon
 Balancer,天秤,Balancer
 God,神,God
 Lovers,ラバーズ,Lovers,恋爱,戀愛
+LoversBreaker,爆ぜ師,LoversBreaker,爆破师,爆破師
 Owl,フクロウ,Owl
 Truelover,純愛者,Truelover
 Cupid,キューピット,Cupid
 Crab,カニ,Crab,螃蟹,螃蟹
-SpeedBooster,スピードブースター,SpeedBooster,
-EvilSpeedBooster,イビルスピードブースター,Evil SpeedBooster
+SpeedBooster,スピードブースター,SpeedBooster
+EvilSpeedBooster,イビルスピードブースター,EvilSpeedBooster
+SatsumaAndImo,さつまといも,SatsumaAndImo
+NiceNekomata,ナイス猫又,Nice Nekomata
+EvilNekomata,イビル猫又,Evil Nekomata
+
 
 # Descriptions
 BestFalseCharge.Description,特に能力を有さないクルーメイトです。\n死亡するまでこの役職だと自覚出来ません。\n最初の会議が終了すると、そのまま死亡します。,The ultimate red herring! A Crewmate with no abilities who lives in blissful ignorance.\nThey won't realize they have this role until they're dead—talk about a rude awakening!\nAfter the first meeting ends, they die faster than someone saying "I saw Blue vent!",这是一个没有特殊能力的船员。\n在死亡之前他们不会意识到自己拥有这个角色。\n第一场会议结束后，他们会直接死亡。,這是一個沒有特殊能力的船員。\n在死亡之前他們不會察覺自己擁有這個角色。\n第一場會議結束後，他們會直接死亡。
@@ -836,3 +842,6 @@ CrabButton,カニ!,Crab!,螃蟹!,螃蟹!
 # SpeedBooster
 SpeedBoosterButton,ブースト!,Boost!,加速!,加速!
 SpeedBoosterMultiplier,スピード倍率,Speed Multiplier,速度倍率,速度倍率
+
+# EvilNekomata
+EvilNekomataExcludeImpostor,インポスターを除外,Exclude Impostors,排除內鬼,排除內鬼

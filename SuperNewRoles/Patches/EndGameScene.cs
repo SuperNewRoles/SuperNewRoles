@@ -13,6 +13,7 @@ using SuperNewRoles.Events;
 using SuperNewRoles.HelpMenus;
 using UnityEngine.UI;
 using BepInEx.Unity.IL2CPP.Utils.Collections;
+using SuperNewRoles.Roles.Modifiers;
 
 namespace SuperNewRoles.Patches;
 
@@ -35,6 +36,8 @@ public enum WinCondition
     FalseChargesWin,
     HitmanWin,
     OwlWin,
+    LoversWin,
+    LoversBreakerWin,
 }
 public enum CustomGameOverReason
 {
@@ -52,6 +55,7 @@ public enum CustomGameOverReason
     HitmanWin,
     GodWin,
     LoversWin,
+    LoversBreakerWin,
     OwlWin,
 }
 
@@ -288,6 +292,14 @@ public class EndGameManagerSetUpPatch
             case WinCondition.OwlWin:
                 baseText = "Owl";
                 roleColor = Owl.Instance.RoleColor;
+                break;
+            case WinCondition.LoversWin:
+                baseText = "Lovers";
+                roleColor = Lovers.Instance.RoleColor;
+                break;
+            case WinCondition.LoversBreakerWin:
+                baseText = "LoversBreaker";
+                roleColor = LoversBreaker.Instance.RoleColor;
                 break;
             default:
                 baseText = "Unknown";
