@@ -129,6 +129,11 @@ SyncSpawn,スポーンを同期する(選択スポーンのみ),Sync Spawn (Sele
 AdvancedRandom,よりランダムな乱数を使用する,Use a more random random number,使用更随机的随机数,使用更隨機的隨機數
 DisableTaskWin,タスク勝利を無効にする,Can't task win
 DisableHijackTaskWin,第三陣営のタスク勝利横取りを無効にする,Disable hijack task win by third party
+HideGhostRoles,死亡時に他クルーの役職を表示しない,Hide ghost roles
+GhostVoteDisplay,死亡時の投票表示,Ghost vote display
+GhostVoteDisplayType.Vanilla,バニラ,Vanilla
+GhostVoteDisplayType.Show,表示,Show
+GhostVoteDisplayType.Hide,非表示,Hide
 
 # RequestInGame
 RequestInGameButtonText,バグ報告、要望、質問、感謝メールなどはこちらから,Bug reports, requests, questions, and thank you messages can be sent here
