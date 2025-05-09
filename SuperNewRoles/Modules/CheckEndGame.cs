@@ -9,6 +9,7 @@ using SuperNewRoles.Roles.Neutral;
 using UnityEngine;
 using SuperNewRoles.Roles.Modifiers;
 using Hazel;
+using SuperNewRoles.CustomOptions.Categories;
 
 namespace SuperNewRoles.Modules;
 
@@ -108,7 +109,7 @@ public static class CheckGameEndPatch
         if (state.IsSabotageActive())
             return VictoryType.ImpostorSabotage;
 
-        if (state.IsAllTasksCompleted())
+        if (state.IsAllTasksCompleted() && !GameSettingOptions.DisableTaskWin)
             return VictoryType.CrewmateTask;
 
         return null;

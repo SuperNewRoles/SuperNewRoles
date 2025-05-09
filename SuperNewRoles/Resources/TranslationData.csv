@@ -127,6 +127,7 @@ WaitingSpawnText,ロドー中... 残り:{0}/{1}クルー,Waiting... {0}/{1} Crew
 CannotTaskTrigger,タスクに関係ない役職の場合、タスクをできなくする,If the role is not related to the task, the task cannot be done,如果角色与任务无关，则无法完成任务,如果角色與任務無關，則無法完成任務
 SyncSpawn,スポーンを同期する(選択スポーンのみ),Sync Spawn (Selected Spawn Only),同步出生点(仅选择出生点),同步出生點(僅選擇出生點)
 AdvancedRandom,よりランダムな乱数を使用する,Use a more random random number,使用更随机的随机数,使用更隨機的隨機數
+DisableTaskWin,タスク勝利を無効にする,Can't task win
 
 # RequestInGame
 RequestInGameButtonText,バグ報告、要望、質問、感謝メールなどはこちらから,Bug reports, requests, questions, and thank you messages can be sent here
@@ -299,7 +300,7 @@ Revenant,レヴェナント,Revenant
 Teleporter,テレポーター,Teleporter
 Pursuer,追跡者,Pursuer,追踪者,追蹤者
 ModifierGuesser,モディファイアゲッサー,Modifier Guesser
-RulerModifier,ルーラー,Ruler
+RulerModifier,ルーラー,Ruler[
 Cantera,カンテラ,Cantera
 Mirage,ミラージュ,Mirage
 Bakery,パン屋,Bakery

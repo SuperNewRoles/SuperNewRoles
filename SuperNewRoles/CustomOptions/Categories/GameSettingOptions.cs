@@ -11,4 +11,6 @@ public static class GameSettingOptions
     public static bool VentAnimationPlaySetting;
     [CustomOptionBool("SyncSpawn", false, parentFieldName: nameof(Categories.GameSettings))]
     public static bool SyncSpawn;
+    [CustomOptionBool("DisableTaskWin", false, parentFieldName: nameof(Categories.GameSettings))]
+    public static bool DisableTaskWin;
 }
