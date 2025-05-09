@@ -5,6 +5,7 @@ using SuperNewRoles.Roles;
 using SuperNewRoles.Roles.Modifiers;
 using SuperNewRoles.Roles.Neutral;
 using UnityEngine;
+using SuperNewRoles.CustomOptions.Categories;
 
 namespace SuperNewRoles.Modules;
 
@@ -82,6 +83,8 @@ public static class EndGamer
     }
     private static void UpdateHijackers(ref GameOverReason reason, ref HashSet<ExPlayerControl> winners, ref Color32 color, ref string upperText, ref string winText, ref WinType winType)
     {
+        if (GameSettingOptions.DisableHijackTaskWin && reason == GameOverReason.CrewmatesByTask) return;
+
         foreach (ExPlayerControl player in ExPlayerControl.ExPlayerControls)
         {
             if (player.Role == RoleId.God && player.IsAlive())

@@ -13,4 +13,6 @@ public static class GameSettingOptions
     public static bool SyncSpawn;
     [CustomOptionBool("DisableTaskWin", false, parentFieldName: nameof(Categories.GameSettings))]
     public static bool DisableTaskWin;
+    [CustomOptionBool("DisableHijackTaskWin", false, parentFieldName: nameof(Categories.GameSettings))]
+    public static bool DisableHijackTaskWin;
 }
