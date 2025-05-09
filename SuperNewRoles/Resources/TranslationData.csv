@@ -325,6 +325,7 @@ EvilSpeedBooster,イビルスピードブースター,EvilSpeedBooster
 SatsumaAndImo,さつまといも,SatsumaAndImo
 NiceNekomata,ナイス猫又,Nice Nekomata
 EvilNekomata,イビル猫又,Evil Nekomata
+Taskmaster,タスクマスター,Taskmaster
 
 
 # Descriptions
@@ -845,3 +846,10 @@ SpeedBoosterMultiplier,スピード倍率,Speed Multiplier,速度倍率,速度�
 
 # EvilNekomata
 EvilNekomataExcludeImpostor,インポスターを除外,Exclude Impostors,排除內鬼,排除內鬼
+
+# Taskmaster
+TaskmasterEnableIndividualTasks,タスク数を個別で設定する,Set tasks individually,独立设置任务,獨立設置任務
+TaskmasterCanFixSabotageInstantly,サボタージュをすぐ直せる,Can fix sabotage immediately,可以立即修复破坏,可以立即修復破壞
+TaskmasterEnableReactorOxygenElevatorFix,原子炉/酸素/昇降機,Reactor/Oxygen/Elevator,反应堆/氧气/电梯,反應堆/氧氣/電梯
+TaskmasterEnableLightsFix,停電,Power Outage,停电,停電
+TaskmasterEnableCommsFix,コミュニケーション,Communications,通信,通訊

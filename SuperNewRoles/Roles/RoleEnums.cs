@@ -79,6 +79,7 @@ public enum RoleId : short
     EvilSpeedBooster,
     SatsumaAndImo,
     NiceTeleporter,
+    Taskmaster,
 }
 
 public enum GhostRoleId : short
