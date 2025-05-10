@@ -147,7 +147,7 @@ public static class SyncSpawn
             if (SpawnedPlayers.Count >= aliveCount && __instance != null && AmongUsClient.Instance.AmHost)
             {
                 new LateTask(() => RpcAllSelectedFromHost(), 0.5f);
-                break;
+                yield break;
             }
             __instance.Text.text = ModTranslation.GetString("WaitingSpawnText",
                 aliveCount - SpawnedPlayers.Count,
