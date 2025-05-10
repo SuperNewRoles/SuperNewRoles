@@ -85,7 +85,8 @@ public static class NameText
         if (player.MeetingInfoText != null)
             player.MeetingInfoText.text = meetingInfoText;
         player.cosmetics.nameText.text = player.Player.CurrentOutfit.PlayerName;
-        bool visiable = ExPlayerControl.LocalPlayer.PlayerId == player.PlayerId || ExPlayerControl.LocalPlayer.IsDead();
+        bool visiable = ExPlayerControl.LocalPlayer.PlayerId == player.PlayerId ||
+                        (ExPlayerControl.LocalPlayer.IsDead() && !GameSettingOptions.HideGhostRoles);
         if (visiable)
         {
             player.Data.Role.NameColor = player.roleBase.RoleColor;
