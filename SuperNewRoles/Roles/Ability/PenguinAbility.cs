@@ -26,7 +26,7 @@ public class PenguinAbility : TargetCustomButtonBase, IButtonEffect
     public bool effectCancellable => false;
     private bool meetingKill;
     private EventListener<MeetingStartEventData> _onMeetingStartEvent;
-    public override Sprite Sprite => AssetManager.GetAsset<Sprite>($"PenguinButton_{ModHelpers.GetRandomInt(min: 1, max: 2)}.png");
+    public override Sprite Sprite => _sprite;
     public override string buttonText => ModTranslation.GetString("PenguinButtonText");
     protected override KeyType keytype => KeyType.Ability1;
     public override float DefaultTimer => coolDown;
@@ -40,12 +40,14 @@ public class PenguinAbility : TargetCustomButtonBase, IButtonEffect
     private EventListener<WrapUpEventData> wrapUpEvent;
     private KillableAbility customKillButtonAbility;
     private bool CanKill;
+    private Sprite _sprite;
     public PenguinAbility(float coolDown, float effectDuration, bool meetingKill, bool CanKill)
     {
         this.coolDown = coolDown;
         this.effectDuration = effectDuration;
         this.meetingKill = meetingKill;
         this.CanKill = CanKill;
+        _sprite = AssetManager.GetAsset<Sprite>($"PenguinButton_{ModHelpers.GetRandomInt(min: 1, max: 2)}.png");
     }
 
     public override void OnClick()
