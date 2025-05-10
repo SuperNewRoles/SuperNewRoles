@@ -23,7 +23,6 @@ public enum VictoryType
     CrewmateVote,
     JackalDomination,
     PavlovsWin,
-    ArsonistWin,
     OwlWin,
 }
 
@@ -166,9 +165,11 @@ public static class CheckGameEndPatch
             case VictoryType.CrewmateVote:
                 return (ExPlayerControl.ExPlayerControls.Where(player => player.IsCrewmate()).ToHashSet(), Palette.CrewmateBlue, "CrewmateWin");
             case VictoryType.JackalDomination:
-                return (ExPlayerControl.ExPlayerControls.Where(player => player.IsJackalTeam()).ToHashSet(), Jackal.Instance.RoleColor, "JackalWin");
+                return (ExPlayerControl.ExPlayerControls.Where(player => player.IsJackalTeam()).ToHashSet(), Jackal.Instance.RoleColor, "Jackal");
             case VictoryType.PavlovsWin:
-                return (ExPlayerControl.ExPlayerControls.Where(player => player.IsPavlovsTeam()).ToHashSet(), PavlovsDog.Instance.RoleColor, "PavlovsWin");
+                return (ExPlayerControl.ExPlayerControls.Where(player => player.IsPavlovsTeam()).ToHashSet(), PavlovsDog.Instance.RoleColor, "Pavlovs");
+            case VictoryType.OwlWin:
+                return (ExPlayerControl.ExPlayerControls.Where(player => player.Role == RoleId.Owl).ToHashSet(), Owl.Instance.RoleColor, "Owl");
             default:
                 throw new ArgumentException($"Invalid victory type: {victoryType}");
         }
@@ -183,7 +184,6 @@ public static class CheckGameEndPatch
         VictoryType.CrewmateVote => GameOverReason.CrewmatesByVote,
         VictoryType.JackalDomination => (GameOverReason)CustomGameOverReason.JackalWin,
         VictoryType.PavlovsWin => (GameOverReason)CustomGameOverReason.PavlovsWin,
-        VictoryType.ArsonistWin => (GameOverReason)CustomGameOverReason.ArsonistWin,
         VictoryType.OwlWin => (GameOverReason)CustomGameOverReason.OwlWin,
         _ => throw new ArgumentException($"無効な勝利タイプ: {victoryType}")
     };

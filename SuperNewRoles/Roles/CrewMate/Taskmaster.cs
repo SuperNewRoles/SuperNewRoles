@@ -66,6 +66,7 @@ public static class TaskmasterPatch
         if (ModHelpers.IsSabotage(__instance.TaskTypes.FirstOrDefault()))
         {
             ModHelpers.RpcFixingSabotage(__instance.TaskTypes.FirstOrDefault());
+            Minigame.Instance.Close();
         }
         else
         {

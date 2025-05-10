@@ -162,10 +162,11 @@ public class EndGameCondition
 [HarmonyPatch(typeof(EndGameManager), nameof(EndGameManager.SetEverythingUp))]
 public class EndGameManagerSetUpPatch
 {
+    public static GameObject fadeObject;
     [CustomRPC]
     public static void RpcEndGameWithCondition(GameOverReason reason, List<byte> winners, string UpperText, List<string> additionalWinTexts, Color UpperTextColor, bool IsHaison, string winText = "WinText")
     {
-        if (ShipStatus.Instance?.enabled != true) return;
+        if (fadeObject != null) return;
         EndGameCondition newCond = new(
             reason: reason,
             winners: winners,
@@ -178,7 +179,7 @@ public class EndGameManagerSetUpPatch
         EndGameManagerSetUpPatch.endGameCondition = newCond;
 
         // 黒いフェードアウト用オブジェクトを作成
-        var fadeObject = GameObject.Instantiate(AssetManager.GetAsset<GameObject>("EndgameOverlay"), HudManager.Instance.transform);
+        fadeObject = GameObject.Instantiate(AssetManager.GetAsset<GameObject>("EndgameOverlay"), HudManager.Instance.transform);
         fadeObject.transform.localPosition = new(0, 0, -400f);
         HudManager.Instance.StartCoroutine(FadeOutCoroutine(fadeObject.GetComponent<SpriteRenderer>(), 0.5f, () =>
         {
@@ -186,7 +187,6 @@ public class EndGameManagerSetUpPatch
 
         if (AmongUsClient.Instance.AmHost)
             new LateTask(() => GameManager.Instance.RpcEndGame(newCond.reason, false), 0.3f);
-        ShipStatus.Instance.enabled = false;
     }
 
     // Imageのアルファ値を変更するコルーチン

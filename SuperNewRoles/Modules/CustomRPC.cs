@@ -25,13 +25,6 @@ public class CustomRPCAttribute : Attribute
 
 public static class CustomRpcExts
 {
-    [CustomRPC]
-    public static void RpcEndGameForHost(GameOverReason reason)
-    {
-        if (!AmongUsClient.Instance.AmHost) return;
-        GameManager.Instance.RpcEndGame(reason, false);
-    }
-
     /*[CustomRPC(onlyOtherPlayer: true)]
     public static void RpcApplyDeadBodyImpulse(byte parentId, float impulseX, float impulseY)
     {
