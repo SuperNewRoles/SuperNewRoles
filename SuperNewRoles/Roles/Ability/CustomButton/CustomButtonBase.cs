@@ -81,7 +81,7 @@ public abstract class CustomButtonBase : AbilityBase
     public virtual bool CheckDecreaseCoolCount()
     {
         var localPlayer = PlayerControl.LocalPlayer;
-        var moveable = localPlayer.CanMove;
+        var moveable = !PlayerControl.LocalPlayer.inVent && PlayerControl.LocalPlayer.moveable;
 
         return !localPlayer.inVent && moveable;
     }

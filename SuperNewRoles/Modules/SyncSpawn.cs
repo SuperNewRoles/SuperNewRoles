@@ -13,7 +13,6 @@ public static class SyncSpawn
 {
     public static HashSet<ExPlayerControl> SpawnedPlayers = new();
     public static SpawnInMinigame.SpawnLocation SpawnLocation;
-    public static SpawnInMinigame spawnInMinigame;
     public static bool spawnSuccess = false;
 
     [HarmonyPatch(typeof(SpawnInMinigame), nameof(SpawnInMinigame.SpawnAt))]
@@ -23,14 +22,11 @@ public static class SyncSpawn
         {
             if (!GameSettingOptions.SyncSpawn) return true;
             if (__instance.amClosing != Minigame.CloseState.None) return false;
-            {
-                __instance.gotButton = true;
-            }
+            __instance.gotButton = true;
             SpawnLocation = spawnPoint;
-            spawnInMinigame = __instance;
             RpcSpawnSelected(ExPlayerControl.LocalPlayer);
             __instance.StopAllCoroutines();
-            __instance.StartCoroutine(WaitForSpawn().WrapToIl2Cpp());
+            __instance.StartCoroutine(WaitForSpawn(__instance).WrapToIl2Cpp());
             return false;
         }
     }
@@ -48,13 +44,13 @@ public static class SyncSpawn
         }
     }
 
-    public static IEnumerator WaitForSpawn()
+    public static IEnumerator WaitForSpawn(SpawnInMinigame __instance)
     {
         const float EaseLevel = 0.55f; // 0~1の範囲で指定（1に近いほど最初が速く、後が遅くなる）
 
         float startTime = Time.time;
-        GameObject selectedButton = spawnInMinigame.LocationButtons.FirstOrDefault(x => x.GetComponent<ButtonAnimRolloverHandler>().StaticOutImage == SpawnLocation.Image).gameObject;
-        List<GameObject> notSelectedButtons = spawnInMinigame.LocationButtons
+        GameObject selectedButton = __instance.LocationButtons.FirstOrDefault(x => x.GetComponent<ButtonAnimRolloverHandler>().StaticOutImage == SpawnLocation.Image).gameObject;
+        List<GameObject> notSelectedButtons = __instance.LocationButtons
             .Where(x => x.GetComponent<ButtonAnimRolloverHandler>().StaticOutImage != SpawnLocation.Image)
             .Select(x => x.gameObject).ToList();
         yield return null;
@@ -138,7 +134,7 @@ public static class SyncSpawn
             // アニメーション完了後、全ボタンのOnMouseOutを呼び出し、無効化する
             if (fadeFinished && moveFinished && !animationFinished)
             {
-                foreach (var button in spawnInMinigame.LocationButtons)
+                foreach (var button in __instance.LocationButtons)
                 {
                     button.OnMouseOut?.Invoke();
                     button.enabled = false;
@@ -146,14 +142,14 @@ public static class SyncSpawn
                 animationFinished = true;
             }
 
-            if (spawnInMinigame == null) yield break;
+            if (__instance == null) yield break;
             int aliveCount = ExPlayerControl.ExPlayerControls.Count(x => x.IsAlive());
-            if (SpawnedPlayers.Count >= aliveCount && spawnInMinigame != null && AmongUsClient.Instance.AmHost)
+            if (SpawnedPlayers.Count >= aliveCount && __instance != null && AmongUsClient.Instance.AmHost)
             {
-                new LateTask(() => RpcAllSelectedFromHost(), 0f);
+                new LateTask(() => RpcAllSelectedFromHost(), 0.5f);
                 break;
             }
-            spawnInMinigame.Text.text = ModTranslation.GetString("WaitingSpawnText",
+            __instance.Text.text = ModTranslation.GetString("WaitingSpawnText",
                 aliveCount - SpawnedPlayers.Count,
                 aliveCount);
             yield return null;
@@ -162,8 +158,15 @@ public static class SyncSpawn
     [CustomRPC]
     public static void RpcSpawnSelected(ExPlayerControl source)
     {
-        if (!GameSettingOptions.SyncSpawn) return;
+        if (source.IsDead()) return;
         SpawnedPlayers.Add(source);
+        Logger.Info($"RpcSpawnSelected: {source.Player.name} が選択されました。");
+        Logger.Info($"RpcSpawnSelected: 選択中のプレイヤー数: {SpawnedPlayers.Count}");
+        foreach (var player in SpawnedPlayers)
+        {
+            Logger.Info($"RpcSpawnSelected: {player.Player.name} が選択中");
+        }
+        Logger.Info($"---------------------------------------");
     }
     [CustomRPC]
     public static void RpcAllSelectedFromHost()
