@@ -10,6 +10,7 @@ using UnityEngine;
 using SuperNewRoles.Modules.Events.Bases;
 using SuperNewRoles.Roles.Ability.CustomButton;
 using SuperNewRoles.Patches;
+using System.Linq;
 
 namespace SuperNewRoles.Roles.Neutral;
 
@@ -20,7 +21,8 @@ class LoversBreaker : RoleBase<LoversBreaker>
     public override List<Func<AbilityBase>> Abilities { get; } = [
         () => new LoversBreakerAbility(new LoversBreakerData(
             KillCooldown: LoversBreakerKillCooldown,
-            WinKillCount: LoversBreakerWinKillCount
+            WinKillCount: LoversBreakerWinKillCount,
+            IsDeathWin: LoversBreakerIsDeathWin
         ))
     ];
 
@@ -39,15 +41,19 @@ class LoversBreaker : RoleBase<LoversBreaker>
 
     [CustomOptionInt("LoversBreakerWinKillCount", 1, 10, 1, 3)]
     public static int LoversBreakerWinKillCount;
+
+    [CustomOptionBool("LoversBreakerIsDeathWin", false)]
+    public static bool LoversBreakerIsDeathWin;
 }
 
-public record LoversBreakerData(float KillCooldown, int WinKillCount);
+public record LoversBreakerData(float KillCooldown, int WinKillCount, bool IsDeathWin);
 
 public class LoversBreakerAbility : TargetCustomButtonBase
 {
     public LoversBreakerData Data { get; set; }
 
     private EventListener<NameTextUpdateEventData> _nameTextUpdateListener;
+    private EventListener _fixedUpdateListener;
 
     private int _successCount;
 
@@ -60,12 +66,14 @@ public class LoversBreakerAbility : TargetCustomButtonBase
     {
         base.AttachToAlls();
         _nameTextUpdateListener = NameTextUpdateEvent.Instance.AddListener(OnNameTextUpdate);
+        _fixedUpdateListener = FixedUpdateEvent.Instance.AddListener(OnFixedUpdate);
     }
 
     public override void DetachToAlls()
     {
         base.DetachToAlls();
         _nameTextUpdateListener?.RemoveListener();
+        _fixedUpdateListener?.RemoveListener();
     }
 
     public override Color32 OutlineColor => LoversBreaker.Instance.RoleColor;
@@ -83,6 +91,21 @@ public class LoversBreakerAbility : TargetCustomButtonBase
         return TargetIsExist && PlayerControl.LocalPlayer.CanMove && ExPlayerControl.LocalPlayer.IsDead();
     }
 
+    private int checkCounter = 0;
+
+    private void OnFixedUpdate()
+    {
+        if (!AmongUsClient.Instance.AmHost) return;
+        checkCounter++;
+        if (checkCounter % 10 != 0) return;
+        checkCounter = 0;
+        if (!Data.IsDeathWin && Player.IsDead()) return;
+        if (_successCount >= Data.WinKillCount && !ExPlayerControl.ExPlayerControls.Any(p => p.IsLovers() && p.IsAlive()))
+        {
+            EndGamer.RpcEndGameWithWinner(CustomGameOverReason.LoversBreakerWin, WinType.SingleNeutral, [ExPlayerControl.LocalPlayer], LoversBreaker.Instance.RoleColor, "LoversBreaker", string.Empty);
+        }
+    }
+
     public override void OnClick()
     {
         if (Target == null) return;
@@ -91,10 +114,6 @@ public class LoversBreakerAbility : TargetCustomButtonBase
             ExPlayerControl.LocalPlayer.RpcCustomDeath(Target, CustomDeathType.Kill);
             _successCount++;
             RpcSyncCount();
-            if (_successCount >= Data.WinKillCount)
-            {
-                EndGamer.RpcEndGameWithWinner(CustomGameOverReason.LoversBreakerWin, WinType.SingleNeutral, new ExPlayerControl[] { ExPlayerControl.LocalPlayer }, LoversBreaker.Instance.RoleColor, "LoversBreaker", string.Empty);
-            }
         }
         else
         {
