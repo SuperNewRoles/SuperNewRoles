@@ -803,6 +803,16 @@ GodNeededTask,勝利にタスクが必要,Required Tasks for Victory,胜利需�
 GodSeeVote,投票結果を見れる,See Vote Results,可以看投票结果,可以看投票結果
 GodDescends,降臨,Descends,降臨,降臨
 
+# ModifierGuesser
+ModifierGuesserCategory,ゲッサー,Guesser
+ModifierGuesserMaxImpostors,最大インポスター数,Max Impostors
+ModifierGuesserImpostorChance,インポスター排出確率,Impostor Spawn Chance
+ModifierGuesserMaxNeutrals,最大第三陣営数,Max Neutrals
+ModifierGuesserNeutralChance,第三陣営排出確率,Neutral Spawn Chance
+ModifierGuesserMaxCrewmates,最大船員数,Max Crewmates
+ModifierGuesserCrewmateChance,船員排出確率,Crewmate Spawn Chance
+
+
 # Lovers
 LoversCategory,<color=#FF69B4>ラバーズ</color>,<color=#FF69B4>Lovers</color>,<color=#FF69B4>恋爱</color>,<color=#FF69B4>戀愛</color>
 LoversMaxCoupleCount,最大カップル数,Max Couple Count

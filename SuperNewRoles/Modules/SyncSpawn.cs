@@ -151,6 +151,7 @@ public static class SyncSpawn
             if (SpawnedPlayers.Count >= aliveCount && spawnInMinigame != null && AmongUsClient.Instance.AmHost)
             {
                 new LateTask(() => RpcAllSelectedFromHost(), 0f);
+                break;
             }
             spawnInMinigame.Text.text = ModTranslation.GetString("WaitingSpawnText",
                 aliveCount - SpawnedPlayers.Count,
