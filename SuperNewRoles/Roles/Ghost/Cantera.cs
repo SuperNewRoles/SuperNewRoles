@@ -117,7 +117,7 @@ public class CanteraAbility : TargetCustomButtonBase, IButtonEffect
     }
     public override bool CheckHasButton()
     {
-        return Player.AmOwner && HasCount && !isEffectActive;
+        return Player.AmOwner && HasCount;
     }
 
     public override bool CheckIsAvailable()

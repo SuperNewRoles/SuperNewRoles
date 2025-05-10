@@ -26,4 +26,7 @@ public static class GeneralSettingOptions
 
     [CustomOptionSelect("NetworkTransformTypeLowLatencyLevel", typeof(NetworkTransformTypeLowLatencyLevel), "NetworkTransformTypeLowLatencyLevel.", parentFieldName: nameof(NetworkTransformType), parentActiveValue: NetworkTransformType.ModdedLowLatency, defaultValue: NetworkTransformTypeLowLatencyLevel.Medium)]
     public static NetworkTransformTypeLowLatencyLevel NetworkTransformTypeLowLatencyLevel;
+
+    [CustomOptionBool("SumouMode", false, parentFieldName: nameof(Categories.GeneralSettings))]
+    public static bool SumouMode;
 }

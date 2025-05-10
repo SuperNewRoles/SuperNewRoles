@@ -100,7 +100,7 @@ public class ExPlayerControl
         (int completed, int total) = ModHelpers.TaskCompletedData(Data);
         if (_customTaskAbility == null) return completed >= total;
         var (isTaskTrigger, all) = _customTaskAbility.CheckIsTaskTrigger() ?? (false, total);
-        return isTaskTrigger && completed >= all;
+        return isTaskTrigger && completed >= (all ?? total);
     }
     public void ResetKillCooldown()
     {
@@ -430,7 +430,9 @@ public class ExPlayerControl
     public bool IsPavlovsDog()
         => Role == RoleId.PavlovsDog || GetAbility<SchrodingersCatAbility>()?.CurrentTeam == SchrodingersCatTeam.Pavlovs;
     public bool IsMadRoles()
-        => HasAbility(nameof(MadmateAbility)) || GhostRole == GhostRoleId.Revenant;//|| HasAbility(nameof(ModifierMadmateAbility));
+        => HasAbility(nameof(MadmateAbility))
+           || GhostRole == GhostRoleId.Revenant
+           || (Role == RoleId.SatsumaAndImo && GetAbility<SatsumaAndImoAbility>()?.IsMadTeam == true);
     public bool IsFriendRoles()
         => HasAbility(nameof(JFriendAbility));
     public bool IsJackal()
@@ -457,7 +459,7 @@ public class ExPlayerControl
             return result;
         }
         var (isTaskTrigger, all) = _customTaskAbility.CheckIsTaskTrigger() ?? (false, result.all);
-        return (result.complete, all);
+        return (result.complete, all ?? result.all);
     }
     public bool CanUseVent()
         => _customVentAbility != null ? _customVentAbility.CheckCanUseVent() : IsImpostor();

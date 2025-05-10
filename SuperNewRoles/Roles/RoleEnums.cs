@@ -50,6 +50,8 @@ public enum RoleId : short
     SuicideWisher,
     WellBehaver,
     NekoKabocha,
+    NiceNekomata,
+    EvilNekomata,
     Matryoshka,
     Amnesiac,
     Conjurer,
@@ -57,6 +59,7 @@ public enum RoleId : short
     FalseCharges,
     Pteranodon,
     Hitman,
+    LoversBreaker,
     NiceButtoner,
     EvilButtoner,
     Mayor,
@@ -68,6 +71,15 @@ public enum RoleId : short
     God,
     Owl,
     SchrodingersCat,
+    Truelover,
+    Cupid,
+    Crab,
+    VentTrapper,
+    SpeedBooster,
+    EvilSpeedBooster,
+    SatsumaAndImo,
+    NiceTeleporter,
+    Taskmaster,
 }
 
 public enum GhostRoleId : short
@@ -84,7 +96,7 @@ public enum ModifierRoleId : short
     None = 0,
     ModifierGuesser = 1 << 0,
     ModifierMadmate = 1 << 1,
-    MakeMadmateModifier = 1 << 2,
+    RulerModifier = 1 << 2,
     Lovers = 1 << 3,
 }
 

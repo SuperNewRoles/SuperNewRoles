@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using System.Linq;
+using SuperNewRoles.CustomOptions.Categories;
 using SuperNewRoles.Events;
 using SuperNewRoles.Events.PCEvents;
 using SuperNewRoles.Roles;
@@ -145,7 +146,10 @@ public static class NameText
     {
         if (player == null || player.Player == null)
             return;
-        bool visiable = player.Player.Visible && (ExPlayerControl.LocalPlayer.PlayerId == player.PlayerId || ExPlayerControl.LocalPlayer.IsDead());
+        bool visiable = player.Player.Visible &&
+                        (ExPlayerControl.LocalPlayer.PlayerId == player.PlayerId ||
+                         (ExPlayerControl.LocalPlayer.IsDead() && !GameSettingOptions.HideGhostRoles)
+                        );
         UpdateVisiable(player, visiable);
     }
     public static void UpdateVisiable(ExPlayerControl player, bool visiable)

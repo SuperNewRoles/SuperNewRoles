@@ -69,6 +69,10 @@ public static class ModdedNetworkTransform
     private static Dictionary<byte, Vector2> smoothingVelocity;
     private static Dictionary<byte, int> syncPositionLimit;
     private static Dictionary<byte, int> stopDetectionCounter;
+    private static Dictionary<byte, Vector2> externalImpulses;
+
+    // 次のBatchMovementをスキップするプレイヤーIDセット
+    public static HashSet<byte> skipNextBatchPlayers = new HashSet<byte>();
 
     public static void Initialize()
     {
@@ -80,6 +84,7 @@ public static class ModdedNetworkTransform
         smoothingVelocity = new Dictionary<byte, Vector2>();
         syncPositionLimit = new Dictionary<byte, int>();
         stopDetectionCounter = new Dictionary<byte, int>();
+        externalImpulses = new Dictionary<byte, Vector2>();
         lastVelocity = Vector2.zero;
         // Ensure all players have queues initialized? Or handle dynamically.
     }
@@ -105,6 +110,7 @@ public static class ModdedNetworkTransform
             smoothingTimeLeft.Remove(player.PlayerId);
             smoothingVelocity.Remove(player.PlayerId);
             stopDetectionCounter.Remove(player.PlayerId);
+            externalImpulses.Remove(player.PlayerId);
             if (movementQueues.TryGetValue(player.PlayerId, out var queue))
             {
                 queue.Clear();
@@ -269,8 +275,9 @@ public static class ModdedNetworkTransform
 
     public static void ReceivedNetworkTransform(MessageReader reader)
     {
+        byte rpcType = reader.ReadByte();
         byte playerId;
-        switch (reader.ReadByte())
+        switch (rpcType)
         {
             case (byte)MovementRpcType.BatchMovement:
                 playerId = reader.ReadByte();
@@ -282,6 +289,8 @@ public static class ModdedNetworkTransform
                     positions[i] = new Vector3(reader.ReadSingle(), reader.ReadSingle(), reader.ReadSingle());
                     velocities[i] = new Vector2(reader.ReadSingle(), reader.ReadSingle());
                 }
+                // スキップフラグがあれば無視
+                if (skipNextBatchPlayers.Remove(playerId)) break;
                 RpcBatchMovement(playerId, positions, velocities);
                 break;
             case (byte)MovementRpcType.StartMovement:
@@ -295,11 +304,36 @@ public static class ModdedNetworkTransform
                 position = new Vector3(reader.ReadSingle(), reader.ReadSingle(), reader.ReadSingle());
                 RpcStopMovement(playerId, position);
                 break;
+            case (byte)MovementRpcType.ApplyExternalImpulse:
+                playerId = reader.ReadByte();
+                Vector2 impulse = new Vector2(reader.ReadSingle(), reader.ReadSingle());
+                externalImpulses[playerId] = externalImpulses.GetValueOrDefault(playerId, Vector2.zero) + impulse;
+                // 次のバッチ移動をスキップ
+                skipNextBatchPlayers.Add(playerId);
+                break;
         }
     }
 
     private static void FixedUpdateRemote(PlayerControl player)
     {
+        // Apply external impulses first if any
+        if (externalImpulses.TryGetValue(player.PlayerId, out var impulse) && impulse.sqrMagnitude > 0.0001f)
+        {
+            player.MyPhysics.body.velocity += impulse;
+            // インパルスの方向に少しだけ位置を補正
+            float adjustmentMagnitude = Mathf.Min(impulse.magnitude * Time.fixedDeltaTime * 2.0f, 0.1f);
+            Vector3 positionAdjustment = (Vector3)impulse.normalized * adjustmentMagnitude;
+            player.transform.position += positionAdjustment;
+
+            // ネットワーク同期のバッファをクリアして、即座に位置を固定
+            if (movementQueues.TryGetValue(player.PlayerId, out var queue)) queue.Clear();
+            finishedMovementPosition.Remove(player.PlayerId);
+            smoothingTimeLeft.Remove(player.PlayerId);
+            smoothingVelocity.Remove(player.PlayerId);
+
+            externalImpulses.Remove(player.PlayerId); // Apply once and remove
+        }
+
         // Priority 1: Handle smooth stop if a finish position is set
         if (HandleRemoteSmoothingStop(player))
         {
@@ -492,4 +526,5 @@ public enum MovementRpcType
     StartMovement,
     StopMovement,
     BatchMovement,
+    ApplyExternalImpulse
 }

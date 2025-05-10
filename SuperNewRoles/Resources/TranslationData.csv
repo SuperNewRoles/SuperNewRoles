@@ -119,7 +119,7 @@ NetworkTransformTypeLowLatencyLevel.Medium,中(推奨),Medium (Recommended),中(
 NetworkTransformTypeLowLatencyLevel.Low,低,Low,低,低
 NetworkTransformTypeLowLatencyLevel.SuperLow,超低,Super Low,超低,超低
 NetworkTransformTypeLowLatencyLevel.Bad,絶対ダメ(超高遅延),Bad (Very Very High Latency),差(超高延迟),差(超高延遲)
-
+SumouMode,相撲モード(ベータ),Sumo Mode (Beta),相扑模式(测试版),相撲模式(測試版)
 # SyncSpawn
 WaitingSpawnText,ロドー中... 残り:{0}/{1}クルー,Waiting... {0}/{1} Crewmates,等待中... {0}/{1} 船员,等待中... {0}/{1} 船員
 
@@ -127,6 +127,13 @@ WaitingSpawnText,ロドー中... 残り:{0}/{1}クルー,Waiting... {0}/{1} Crew
 CannotTaskTrigger,タスクに関係ない役職の場合、タスクをできなくする,If the role is not related to the task, the task cannot be done,如果角色与任务无关，则无法完成任务,如果角色與任務無關，則無法完成任務
 SyncSpawn,スポーンを同期する(選択スポーンのみ),Sync Spawn (Selected Spawn Only),同步出生点(仅选择出生点),同步出生點(僅選擇出生點)
 AdvancedRandom,よりランダムな乱数を使用する,Use a more random random number,使用更随机的随机数,使用更隨機的隨機數
+DisableTaskWin,タスク勝利を無効にする,Can't task win
+DisableHijackTaskWin,第三陣営のタスク勝利横取りを無効にする,Disable hijack task win by third party
+HideGhostRoles,死亡時に他クルーの役職を表示しない,Hide ghost roles
+GhostVoteDisplay,死亡時の投票表示,Ghost vote display
+GhostVoteDisplayType.Vanilla,バニラ,Vanilla
+GhostVoteDisplayType.Show,表示,Show
+GhostVoteDisplayType.Hide,非表示,Hide
 
 # RequestInGame
 RequestInGameButtonText,バグ報告、要望、質問、感謝メールなどはこちらから,Bug reports, requests, questions, and thank you messages can be sent here
@@ -244,7 +251,7 @@ SyncError_HashMismatch,{player}の実行ファイルが一致しません。, {p
 SyncError_NotInstalled,{player}にSuperNewRolesが導入されていません。, {player} does not have SuperNewRoles installed.,{player}没有安装SuperNewRoles.,{player}沒有安裝SuperNewRoles.
 
 # Role
-Bait,ベイト,Bait,餌,餌
+Bait,ベイト,Bait,餌,餤
 BestFalseCharge,ベスト冤罪ヤー,Best False Charge,最佳冤罪者,最佳冤罪者
 Sheriff,シェリフ,Sheriff,警长,警長
 NiceGuesser,ナイスゲッサー,Nice Guesser,好人猜疑者,好人猜疑者
@@ -297,8 +304,10 @@ Worshiper,崇拝者,Worshiper,崇拜者,崇拜者
 Necromancer,ネクロマンサー,Necromancer
 Revenant,レヴェナント,Revenant
 Teleporter,テレポーター,Teleporter
+NiceTeleporter,ナイステレポーター,Nice Teleporter
 Pursuer,追跡者,Pursuer,追踪者,追蹤者
 ModifierGuesser,モディファイアゲッサー,Modifier Guesser
+RulerModifier,ルーラー,Ruler[
 Cantera,カンテラ,Cantera
 Mirage,ミラージュ,Mirage
 Bakery,パン屋,Bakery
@@ -306,7 +315,18 @@ MadRaccoon,化け狸,MadRaccoon
 Balancer,天秤,Balancer
 God,神,God
 Lovers,ラバーズ,Lovers,恋爱,戀愛
+LoversBreaker,爆ぜ師,LoversBreaker,爆破师,爆破師
 Owl,フクロウ,Owl
+Truelover,純愛者,Truelover
+Cupid,キューピット,Cupid
+Crab,カニ,Crab,螃蟹,螃蟹
+SpeedBooster,スピードブースター,SpeedBooster
+EvilSpeedBooster,イビルスピードブースター,EvilSpeedBooster
+SatsumaAndImo,さつまといも,SatsumaAndImo
+NiceNekomata,ナイス猫又,Nice Nekomata
+EvilNekomata,イビル猫又,Evil Nekomata
+Taskmaster,タスクマスター,Taskmaster
+
 
 # Descriptions_Impostor
 EvilGuesser.Description,会議に関する能力を有するインポスターです。\n会議中に出現するボタンを押し、対象のプレイヤーの役職が何か当てると、そのプレイヤーをキルすることが出来ます。\nただし、外すと自身が死亡してしまいます。,An Impostor with a meeting‐based ability.\nDuring meetings, by pressing the appearing button and correctly guessing a target player's role, they can kill that player.\nHowever, an incorrect guess results in their own death.,这是一个拥有会议相关能力的内鬼。\n在会议中，点击出现的按钮后，如果猜中目标玩家的角色，就可以将其击杀。\n但如果猜错，自己会死亡。,這是一個具備會議相關能力的內鬼。\n在會議中，按下出現的按鈕後，若能正確猜出目標玩家的角色，便可將其擊殺。\n不過，若猜錯，則自己將會死亡。
@@ -337,7 +357,7 @@ Pursuer,追跡者,Pursuer,追踪者,追蹤者
 # Descriptions_Neutral
 Jackal.Description,キル能力を有する第三陣営です。\n自陣営以外のキルが出来る陣営が全滅した上で、自陣営とクルーが同数以下になれば勝利します。\n設定次第で他のプレイヤーの役職を、自身の後継となるサイドキックや、手助けをしてくれるジャッカルフレンズに変更する能力を有することも出来ます。,A third‐faction role with a kill ability.\nIt wins if all factions capable of killing outside its own are eliminated and its faction and the Crewmates are equal in number or fewer.\nDepending on the settings, it can change other players' roles into a Sidekick (its successor) or Jackal Friends who assist it.,这是一个拥有击杀能力的第三阵营角色。\n当所有能够进行击杀的其他阵营被消灭，并且其阵营与船员人数相等或更少时，即可获胜。\n根据设定，它还可以将其他玩家的角色变更为边缘队员（其继任者）或协助的杰克朋友。,這是一個具備擊殺能力的第三陣營角色。\n當其他能進行擊殺的陣營全部被消滅，且其陣營與船員數量相等或更少時，即獲勝。\n根據設定，還可將其他玩家的角色變更為接班的邊翼或提供協助的傑克朋友。
 Sidekick.Description,ジャッカル陣営に属する第三陣営です。\n自陣営以外のキルが出来る陣営が全滅した上で、自陣営とクルーが同数以下になれば勝利します。\n自身をサイドキックに変化させたジャッカルが死亡すると、自身がジャッカルへと昇格し、キル能力を有するようになります。,A third‐faction role belonging to the Jackal faction.\nIt wins when all factions capable of killing outside its own are eliminated and its faction and the Crewmates are equal in number or fewer.\nIf the Jackal who transformed you into a Sidekick dies, you are promoted to Jackal and gain a kill ability.,这是属于杰克阵营的第三阵营角色。\n当所有能够进行击杀的其他阵营被消灭，并且其阵营与船员人数相等或较少时，即可获胜。\n如果使你变为边缘队员的杰克死亡，你将晋升为杰克，并获得击杀能力。,這是一個隸屬於傑克陣營的第三陣營角色。\n當其他能進行擊殺的陣營全部被消滅，且其陣營與船員數量相等或更少時，即獲勝。\n若使你轉為邊翼的傑克死亡，你將晉升為杰克，並獲得擊殺能力。
-WaveCannonJackal.Description,キル能力を有する第三陣営です。\n自陣営以外のキルが出来る陣営が全滅した上で、自陣営とクルーが同数以下になれば勝利します。\n「波動砲」ボタンを押すことで、その時点で向いている方向に向かって、障害物を無視して一直線に飛んでいくビームを撃つことが出来ます。\nビームにあたったプレイヤーは陣営関係なく死亡します。\n\n設定によって様々なタイプのサイドキックを作成することが出来ます。,A third‐faction role with a kill ability.\nIt wins if all factions capable of killing outside its own are eliminated and its faction and Crewmates are equal in number or fewer.\nBy pressing the "Wave Cannon" button, it fires a beam in the direction it is facing that ignores obstacles and travels straight, killing any player it hits regardless of faction.\n\nAdditionally, various types of Sidekicks can be created based on the settings.,这是一个拥有击杀能力的第三阵营角色。\n当所有能进行击杀的其他阵营被消灭，并且其阵营与船员人数相等或更少时，即可获胜。\n按下"波动炮"按钮后，会向当前面向的方向发射一束无视障碍的直线光束，击中的玩家无论阵营都会死亡。\n此外，根据设定，还可以创建多种类型的边缘队员。,這是一個具備擊殺能力的第三陣營角色。\n當其他能進行擊殺的陣營全部被消滅，且其陣營與船員數量相等或更少時，即獲勝。\n按下「波動砲」按鈕後，會向當前所面向的方向發射無視障礙的直線光束，被擊中的玩家不論陣營皆會死亡。\n此外，依據設定，還可創建各種類型的邊翼。
+WaveCannonJackal.Description,キル能力を有する第三陣営です。\n自陣営以外のキルが出来る陣営が全滅した上で、自陣営とクルーが同数以下になれば勝利します。\n「波動砲」ボタンを押すことで、その時点で向いている方向に向かって、障害物を無視して一直線に飛んでいくビームを撃つことが出来ます。\nビームにあたったプレイヤーは陣営関係なく死亡します。\n\n設定によって様々なタイプのサイドキックを作成することが出来ます。,A third‐faction role with a kill ability.\nIt wins if all factions capable of killing outside its own are eliminated and its faction and the Crewmates are equal in number or fewer.\nBy pressing the "Wave Cannon" button, it fires a beam in the direction it is facing that ignores obstacles and travels straight, killing any player it hits regardless of faction.\n\nAdditionally, various types of Sidekicks can be created based on the settings.,这是一个拥有击杀能力的第三阵营角色。\n当所有能进行击杀的其他阵营被消灭，并且其阵营与船员人数相等或更少时，即可获胜。\n按下"波动炮"按钮后，会向当前面向的方向发射一束无视障碍的直线光束，击中的玩家无论阵营都会死亡。\n此外，根据设定，还可以创建多种类型的边缘队员。,這是一個具備擊殺能力的第三陣營角色。\n當其他能進行擊殺的陣營全部被消滅，且其陣營與船員數量相等或更少時，即獲勝。\n按下「波動砲」按鈕後，會向當前所面向的方向發射無視障礙的直線光束，被擊中的玩家不論陣營皆會死亡。\n此外，依據設定，還可創建各種類型的邊翼。
 WaveCannonSidekick.Description,ジャッカル陣営に属する第三陣営です。\n自陣営以外のキルが出来る陣営が全滅した上で、自陣営とクルーが同数以下になれば勝利します。\n自身をサイドキックに変化させた波動砲ジャッカルが死亡すると、自身が波動砲ジャッカルへと昇格し、キル能力を有するようになります。,A third‐faction role belonging to the Jackal faction.\nIt wins when all factions capable of killing outside its own are eliminated and its faction and the Crewmates are equal in number or fewer.\nIf the Wave Cannon Jackal who transformed you into a Sidekick dies, you are promoted to Wave Cannon Jackal, gaining a kill ability.,这是属于杰克阵营的第三阵营角色。\n当所有能够进行击杀的其他阵营被消灭，并且其阵营与船员人数相等或较少时，即可获胜。\n如果将你变为边缘队员的波动炮杰克死亡，你将晋升为波动炮杰克，并获得击杀能力。,這是一個隸屬於傑克陣營的第三陣營角色。\n當其他能進行擊殺的陣營全部被消滅，且其陣營與船員數量相等或更少時，即獲勝。\n若令你變為邊翼的波動砲傑克死亡，你將晉升為波動砲傑克，並獲得擊殺能力。
 Tuna.Description,キル能力を有さない第三陣営です。\n一定秒数立ち止まるとその場で死亡してしまいます。\nゲーム終了まで生存していると、一部役職の特殊勝利を除き、勝利することが出来ます。,A third‐faction role without a kill ability.\nIf they remain stationary for a set number of seconds, they die instantly.\nIf they survive until the end of the game, they win—except for roles with special win conditions.,这是一个没有击杀能力的第三阵营角色。\n如果原地不动达到一定秒数，将会立即死亡。\n只要存活到游戏结束（除了一些具有特殊胜利条件的角色），便可获胜。,這是一個沒有擊殺能力的第三陣營角色。\n若持續原地不動達到一定秒數，將會立即死亡。\n只要存活到遊戲結束，除去部分特殊勝利條件的角色，即可獲勝。
 Teruteru.Description,キル能力を有さない独自の勝利条件を持つ第三陣営です。\n会議にて追放されると、その時点で単独勝利します。,A third‐faction role without a kill ability that has its own win condition.\nIf ejected during a meeting, it wins immediately on its own.,这是一个没有击杀能力、拥有独特胜利条件的第三阵营角色。\n在会议中被逐出时，即可立即单独获胜。,這是一個沒有擊殺能力且具備獨特勝利條件的第三陣營角色。\n在會議中被逐出時，即可立即單獨獲勝。
@@ -876,3 +896,25 @@ SchrodingersCatKillVictimSuicide,キル者が自殺する,Killer suicides,擊殺
 SchrodingersCatSuicideTime,自殺までの時間,Time until suicide,自殺剩餘時間,自殺剩餘時間
 SchrodingersCatBeCrewOnExile,追放でクルー陣営になる,Become crew on exile,被逐出時變為船員陣營,被逐出時變為船員陣營
 SchrodingersCatCrewOnKillByNonSpecific,特定の役職以外からキルされたときクルー陣営になる,Become crew when killed by non specific role,被非特定角色擊殺時變為船員陣營,被非特定角色擊殺時變為船員陣營
+
+# Truelover
+TrueLoverCreateLovers,一目惚れ,One-sided Love,一見傾心,一見傾心
+
+#Cupid
+CupidLoveArrow,恋の矢,Love Arrow
+
+# Crab
+CrabButton,カニ!,Crab!,螃蟹!,螃蟹!
+# SpeedBooster
+SpeedBoosterButton,ブースト!,Boost!,加速!,加速!
+SpeedBoosterMultiplier,スピード倍率,Speed Multiplier,速度倍率,速度倍率
+
+# EvilNekomata
+EvilNekomataExcludeImpostor,インポスターを除外,Exclude Impostors,排除內鬼,排除內鬼
+
+# Taskmaster
+TaskmasterEnableIndividualTasks,タスク数を個別で設定する,Set tasks individually,独立设置任务,獨立設置任務
+TaskmasterCanFixSabotageInstantly,サボタージュをすぐ直せる,Can fix sabotage immediately,可以立即修复破坏,可以立即修復破壞
+TaskmasterEnableReactorOxygenElevatorFix,原子炉/酸素/昇降機,Reactor/Oxygen/Elevator,反应堆/氧气/电梯,反應堆/氧氣/電梯
+TaskmasterEnableLightsFix,停電,Power Outage,停电,停電
+TaskmasterEnableCommsFix,コミュニケーション,Communications,通信,通訊
