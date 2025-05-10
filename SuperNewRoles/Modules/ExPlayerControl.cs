@@ -198,6 +198,7 @@ public class ExPlayerControl
     private void DetachOldRole(RoleId roleId)
     {
         List<AbilityBase> abilitiesToDetach = new();
+        List<AbilityParentRole> abilitiesToDetachParentRole = new();
         foreach (var ability in PlayerAbilities)
         {
             if (ability.Parent == null) continue;
@@ -208,6 +209,7 @@ public class ExPlayerControl
                 {
                     case AbilityParentRole parentRole when parentRole.ParentRole.Role == roleId:
                         abilitiesToDetach.Add(ability);
+                        abilitiesToDetachParentRole.Add(parentRole);
                         parent = null;
                         break;
                     case AbilityParentAbility parentAbility:
@@ -220,9 +222,9 @@ public class ExPlayerControl
             }
         }
         foreach (var ability in abilitiesToDetach)
-        {
             DetachAbility(ability.AbilityId);
-        }
+        foreach (var parentRole in abilitiesToDetachParentRole)
+            parentRole.Player = null;
         if (AmOwner)
             SuperTrophyManager.DetachTrophy(abilitiesToDetach);
     }

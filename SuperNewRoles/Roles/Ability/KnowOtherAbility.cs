@@ -36,6 +36,7 @@ public class KnowOtherAbility : AbilityBase
 
     private void OnNameTextUpdateVisiable(NameTextUpdateVisiableEventData data)
     {
+        if (!CanKnowOther(data.Player)) return;
         if (IsShowRole())
             NameText.UpdateVisiable(data.Player, data.Visiable);
     }
