@@ -83,7 +83,6 @@ public static class CustomDeathExtensions
                 break;
             case CustomDeathType.Push:
                 player.Player.Exiled();
-                ExileEvent.Invoke(player);
                 FinalStatusManager.SetFinalStatus(player, FinalStatus.Push);
                 break;
             case CustomDeathType.Ignite:
