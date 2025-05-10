@@ -262,7 +262,6 @@ public class PlayerStatistics
     public int OwlAlive { get; }
 
     public bool IsKillerExist => TotalKiller > 0;
-
     public bool IsImpostorDominating { get; }
     public bool IsJackalDominating { get; }
     public bool IsPavlovsWin { get; }
@@ -271,41 +270,69 @@ public class PlayerStatistics
 
     public PlayerStatistics()
     {
-        // 生存中のプレイヤーのみを列挙（一度だけ）
-        var alivePlayers = GetAlivePlayers().ToList();
+        int teamImpostorsAlive = 0, crewAlive = 0, totalAlive = 0;
+        int teamJackalAlive = 0, jackalRoleAlive = 0;
+        int pavlovsDogAlive = 0, pavlovsOwnerAlive = 0, pavlovsOwnerRemaining = 0;
+        int arsonistAlive = 0, owlAlive = 0, totalKiller = 0;
+        bool hasLoversImpostorTeam = false, hasLoversJackalTeam = false, hasLoversPavlovsTeam = false;
 
-        // 各チームの生存者数をLINQで計算（条件が増えた場合もここを修正しやすい）
-        TeamImpostorsAlive = alivePlayers.Count(player => player.IsImpostor());
-        CrewAlive = alivePlayers.Count(player => player.IsCrewmate());
-        TeamJackalAlive = alivePlayers.Count(player => player.IsJackalTeam());
+        var players = ExPlayerControl.ExPlayerControls;
+        foreach (var player in players)
+        {
+            if (player == null || player.IsDead()) continue;
+            totalAlive++;
 
-        PavlovsDogAlive = alivePlayers.Count(player => player.IsPavlovsDog());
-        PavlovsOwnerAlive = alivePlayers.Count(player => player.Role == RoleId.PavlovsOwner);
-        if (PavlovsDogAlive > 0)
-            TeamPavlovsAlive = PavlovsDogAlive + PavlovsOwnerAlive;
-        else
-            TeamPavlovsAlive = alivePlayers.Count(player => player.Role == RoleId.PavlovsOwner && player.GetAbility<PavlovsOwnerAbility>()?.HasRemainingDogCount() == true);
-        ArsonistAlive = alivePlayers.Count(player => player.Role == RoleId.Arsonist);
-        OwlAlive = alivePlayers.Count(player => player.Role == RoleId.Owl);
-        TotalAlive = alivePlayers.Count();
-        TotalKiller = alivePlayers.Count(player => player.IsNonCrewKiller());
+            if (player.IsImpostor()) teamImpostorsAlive++;
+            if (player.IsCrewmate()) crewAlive++;
+            if (player.IsJackalTeam()) teamJackalAlive++;
+            if (player.IsJackal()) jackalRoleAlive++;
+            if (player.IsPavlovsDog()) pavlovsDogAlive++;
+            if (player.Role == RoleId.PavlovsOwner)
+            {
+                pavlovsOwnerAlive++;
+                var ability = player.GetAbility<PavlovsOwnerAbility>();
+                if (ability != null && ability.HasRemainingDogCount()) pavlovsOwnerRemaining++;
+            }
+            if (player.Role == RoleId.Arsonist) arsonistAlive++;
+            if (player.Role == RoleId.Owl) owlAlive++;
+            if (player.IsNonCrewKiller()) totalKiller++;
 
-        // キラー勝利判定を事前計算し、ラバーズ追加条件を適用
-        bool impostorWin = IsKillerWin(TeamImpostorsAlive);
-        bool jackalWin = IsKillerWin(TeamJackalAlive);
+            if (Lovers.LoversAdditionalWinCondition && player.IsLovers())
+            {
+                if (player.IsImpostorWinTeam()) hasLoversImpostorTeam = true;
+                if (player.IsJackalTeam()) hasLoversJackalTeam = true;
+                if (player.IsPavlovsTeam()) hasLoversPavlovsTeam = true;
+            }
+        }
+
+        TeamImpostorsAlive = teamImpostorsAlive;
+        CrewAlive = crewAlive;
+        TeamJackalAlive = teamJackalAlive;
+        PavlovsDogAlive = pavlovsDogAlive;
+        PavlovsOwnerAlive = pavlovsOwnerAlive;
+        TeamPavlovsAlive = pavlovsDogAlive > 0
+            ? pavlovsDogAlive + pavlovsOwnerAlive
+            : pavlovsOwnerRemaining;
+        ArsonistAlive = arsonistAlive;
+        OwlAlive = owlAlive;
+        TotalAlive = totalAlive;
+        TotalKiller = totalKiller;
+
+        bool impostorWin = IsKillerWin(teamImpostorsAlive);
+        bool jackalWin = IsKillerWin(jackalRoleAlive);
         bool pavlovWin = IsKillerWin(TeamPavlovsAlive);
 
-        if (Lovers.LoversAdditionalWinCondition && impostorWin && TeamImpostorsAlive > 1 && alivePlayers.Any(p => p.IsLovers() && p.IsImpostorWinTeam()))
+        if (Lovers.LoversAdditionalWinCondition && impostorWin && teamImpostorsAlive > 1 && hasLoversImpostorTeam)
         {
             Logger.Info("Lovers追加勝利判定（Impostor）: ラバーズを含むため勝利取消");
             impostorWin = false;
         }
-        if (Lovers.LoversAdditionalWinCondition && jackalWin && TeamJackalAlive > 1 && alivePlayers.Any(p => p.IsLovers() && p.IsJackalTeam()))
+        if (Lovers.LoversAdditionalWinCondition && jackalWin && teamJackalAlive > 1 && hasLoversJackalTeam)
         {
             Logger.Info("Lovers追加勝利判定（Jackal）: ラバーズを含むため勝利取消");
             jackalWin = false;
         }
-        if (Lovers.LoversAdditionalWinCondition && pavlovWin && TeamPavlovsAlive > 1 && alivePlayers.Any(p => p.IsLovers() && p.IsPavlovsTeam()))
+        if (Lovers.LoversAdditionalWinCondition && pavlovWin && TeamPavlovsAlive > 1 && hasLoversPavlovsTeam)
         {
             Logger.Info("Lovers追加勝利判定（Pavlovs）: ラバーズを含むため勝利取消");
             pavlovWin = false;
@@ -316,17 +343,11 @@ public class PlayerStatistics
         IsPavlovsWin = pavlovWin;
     }
 
-    // ExPlayerControl配列から生存しているプレイヤーを返すヘルパーメソッド
-    private static IEnumerable<ExPlayerControl> GetAlivePlayers()
-    {
-        return ExPlayerControl.ExPlayerControlsArray
-            .Where(player => player != null && !player.IsDead());
-    }
-
-    // 勝利条件の判定ロジックを切り出し、変更しやすいようにしている
-    // 対象チームのキラー数が、全体の半数以上かつ全キラーがそのチームである場合、勝利と判定
     private bool IsKillerWin(int teamAlive)
     {
-        return teamAlive >= TotalAlive - teamAlive && TotalKiller <= teamAlive && teamAlive != 0 && !(PavlovsDogAlive <= 0 && TeamPavlovsAlive > 0);
+        return teamAlive >= TotalAlive - teamAlive
+            && TotalKiller <= teamAlive
+            && teamAlive != 0
+            && !(PavlovsDogAlive <= 0 && TeamPavlovsAlive > 0);
     }
 }

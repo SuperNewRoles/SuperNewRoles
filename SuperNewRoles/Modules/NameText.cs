@@ -119,6 +119,12 @@ public static class NameText
         if (player.VoteArea != null)
             player.VoteArea.NameText.color = color;
     }
+    public static void AddNameText(ExPlayerControl player, string text)
+    {
+        player.Player.cosmetics.nameText.text += text;
+        if (player.VoteArea != null && player.VoteArea.PlayerIcon?.cosmetics?.nameText != null)
+            player.VoteArea.PlayerIcon.cosmetics.nameText.text += text;
+    }
     public static void RegisterNameTextUpdateEvent()
     {
         TaskCompleteEvent.Instance.AddListener(new(x => UpdateNameInfo(x.player)));

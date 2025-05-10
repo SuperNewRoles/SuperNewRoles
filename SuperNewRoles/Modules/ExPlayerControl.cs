@@ -19,7 +19,6 @@ public class ExPlayerControl
     private static List<ExPlayerControl> _exPlayerControls { get; } = new();
     public static IReadOnlyList<ExPlayerControl> ExPlayerControls => _exPlayerControls.AsReadOnly();
     private static ExPlayerControl[] _exPlayerControlsArray;
-    public static IReadOnlyCollection<ExPlayerControl> ExPlayerControlsArray => _exPlayerControlsArray;
     public PlayerControl Player { get; }
     public NetworkedPlayerInfo Data { get; }
     public PlayerPhysics MyPhysics => Player?.MyPhysics;

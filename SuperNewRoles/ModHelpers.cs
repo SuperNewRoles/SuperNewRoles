@@ -365,4 +365,13 @@ public static class ModHelpers
         pc.RawSetPet(outfit.PetId, outfit.ColorId);
         pc.RawSetSkin(outfit.SkinId, outfit.ColorId);
     }
+
+    [CustomRPC]
+    public static void RpcOpenToilet(PlayerControl pc)
+    {
+        foreach (byte i in new[] { 79, 80, 81, 82 })
+        {
+            ShipStatus.Instance.UpdateSystem(SystemTypes.Doors, pc, i);
+        }
+    }
 }

@@ -22,7 +22,6 @@ internal abstract class ModifierBase<T> : BaseSingleton<T>, IModifierBase where 
     public abstract QuoteMod QuoteMod { get; }
     public abstract List<AssignedTeamType> AssignedTeams { get; }
     public abstract WinnerTeamType WinnerTeam { get; }
-    public abstract TeamTag TeamTag { get; }
     public abstract RoleTag[] RoleTags { get; }
     public abstract short IntroNum { get; }
     public abstract Func<ExPlayerControl, string> ModifierMark { get; }
@@ -50,7 +49,6 @@ public interface IModifierBase
     public QuoteMod QuoteMod { get; }
     public List<AssignedTeamType> AssignedTeams { get; }
     public WinnerTeamType WinnerTeam { get; }
-    public TeamTag TeamTag { get; }
     public RoleTag[] RoleTags { get; }
     public short IntroNum { get; }
     public bool IsVanillaRole => QuoteMod == QuoteMod.Vanilla;

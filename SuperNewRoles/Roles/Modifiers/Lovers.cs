@@ -25,8 +25,6 @@ class Lovers : ModifierBase<Lovers>
 
     public override WinnerTeamType WinnerTeam => WinnerTeamType.Crewmate;
 
-    public override TeamTag TeamTag => TeamTag.Crewmate;
-
     public override RoleTag[] RoleTags => [];
 
     public override short IntroNum => 1;

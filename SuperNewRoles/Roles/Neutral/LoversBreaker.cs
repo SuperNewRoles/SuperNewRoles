@@ -80,7 +80,7 @@ public class LoversBreakerAbility : TargetCustomButtonBase
 
     public override bool CheckIsAvailable()
     {
-        return TargetIsExist && Timer <= 0f && PlayerControl.LocalPlayer.CanMove && !ExPlayerControl.LocalPlayer.IsDead();
+        return TargetIsExist && PlayerControl.LocalPlayer.CanMove && ExPlayerControl.LocalPlayer.IsDead();
     }
 
     public override void OnClick()
@@ -93,7 +93,7 @@ public class LoversBreakerAbility : TargetCustomButtonBase
             RpcSyncCount();
             if (_successCount >= Data.WinKillCount)
             {
-                EndGamer.RpcEndGameWithWinner(SuperNewRoles.Patches.CustomGameOverReason.LoversBreakerWin, WinType.SingleNeutral, new ExPlayerControl[] { ExPlayerControl.LocalPlayer }, LoversBreaker.Instance.RoleColor, "LoversBreaker", string.Empty);
+                EndGamer.RpcEndGameWithWinner(CustomGameOverReason.LoversBreakerWin, WinType.SingleNeutral, new ExPlayerControl[] { ExPlayerControl.LocalPlayer }, LoversBreaker.Instance.RoleColor, "LoversBreaker", string.Empty);
             }
         }
         else

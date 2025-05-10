@@ -113,10 +113,10 @@ public static class CustomRPCManager
         for (byte i = 0; i < methods.Count; i++)
         {
             var attribute = methods[i].GetCustomAttribute<CustomRPCAttribute>();
-            // staticメソッドのみ許可
-            if (!methods[i].IsStatic)
+            // staticメソッドはもちろん、AbilityBaseのインスタンスメソッドも許可
+            if (!methods[i].IsStatic && !typeof(AbilityBase).IsAssignableFrom(methods[i].DeclaringType))
             {
-                Logger.Error($"CustomRPC: {methods[i].Name} is not static");
+                Logger.Error($"CustomRPC: {methods[i].Name} is not static and not an AbilityBase instance method");
                 continue;
             }
             SuperNewRolesPlugin.Logger.LogInfo($"[Splash] Loading RPC method ({i + 1}/{methods.Count}): {methods[i].Name}");
@@ -147,6 +147,12 @@ public static class CustomRPCManager
             // RPC送信の準備
             MessageWriter writer = AmongUsClient.Instance.StartRpcImmediately(PlayerControl.LocalPlayer.NetId, SNRRpcId, SendOption.Reliable, -1);
             writer.Write(id);
+
+            // AbilityBaseインスタンスメソッドの場合、インスタンスを送信
+            if (__instance != null && __originalMethod.DeclaringType != null && typeof(AbilityBase).IsAssignableFrom(__originalMethod.DeclaringType))
+            {
+                writer.Write(__instance, __originalMethod.DeclaringType);
+            }
 
             // 引数を設定
             for (int i = 0; i < __args.Length; i++)
@@ -196,17 +202,22 @@ public static class CustomRPCManager
                     Logger.Info($"Received RPC: {id}");
                     if (!RpcMethods.TryGetValue(id, out var method))
                         return;
-
+                    // AbilityBaseのインスタンスメソッドならインスタンスを読み込む
+                    object? instance = null;
+                    if (!method.IsStatic && typeof(AbilityBase).IsAssignableFrom(method.DeclaringType))
+                    {
+                        instance = reader.ReadFromType(method.DeclaringType);
+                    }
                     // パラメーターを元にobject[]を作成
                     List<object> args = new();
                     for (int i = 0; i < method.GetParameters().Length; i++)
                     {
                         args.Add(reader.ReadFromType(method.GetParameters()[i].ParameterType));
                     }
-
                     IsRpcReceived = true;
                     Logger.Info($"Received RPC: {method.Name}");
-                    method.Invoke(null, args.ToArray());
+                    // インスタンスメソッドならinstanceを指定して呼び出し
+                    method.Invoke(instance, args.ToArray());
                     break;
                 case SNRSyncVersionRpc:
                     SyncVersion.ReceivedSyncVersion(reader);

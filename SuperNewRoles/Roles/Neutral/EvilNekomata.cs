@@ -26,11 +26,11 @@ class EvilNekomata : RoleBase<EvilNekomata>
     public override RoleTypes IntroSoundType { get; } = RoleTypes.Crewmate;
     public override short IntroNum { get; } = 1;
 
-    public override AssignedTeamType AssignedTeam { get; } = AssignedTeamType.Neutral;
-    public override WinnerTeamType WinnerTeam { get; } = WinnerTeamType.Neutral;
-    public override TeamTag TeamTag { get; } = TeamTag.Neutral;
+    public override AssignedTeamType AssignedTeam { get; } = AssignedTeamType.Impostor;
+    public override WinnerTeamType WinnerTeam { get; } = WinnerTeamType.Impostor;
+    public override TeamTag TeamTag { get; } = TeamTag.Impostor;
     public override RoleTag[] RoleTags { get; } = Array.Empty<RoleTag>();
-    public override RoleOptionMenuType OptionTeam { get; } = RoleOptionMenuType.Neutral;
+    public override RoleOptionMenuType OptionTeam { get; } = RoleOptionMenuType.Impostor;
 
     [CustomOptionBool("EvilNekomataExcludeImpostor", false)]
     public static bool EvilNekomataExcludeImpostor;

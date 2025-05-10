@@ -16,7 +16,9 @@ public enum WinType
     // 単独勝利
     SingleNeutral,
     // 乗っ取り勝利
-    Hijackers
+    Hijackers,
+    // ノー勝者
+    NoWinner
 }
 public static class EndGamer
 {/*
@@ -45,10 +47,14 @@ public static class EndGamer
     }*/
     public static void EndGame(GameOverReason reason, WinType winType, HashSet<ExPlayerControl> winners, Color32 color, string upperText, string winText = null)
     {
-        if (winType != WinType.SingleNeutral)
-            UpdateHijackers(ref reason, ref winners, ref color, ref upperText, ref winText, ref winType);
-        UpdateAdditionalWinners(out HashSet<ExPlayerControl> additionalWinners);
-        winners.UnionWith(additionalWinners);
+        HashSet<ExPlayerControl> additionalWinners = new();
+        if (winType != WinType.NoWinner)
+        {
+            if (winType != WinType.SingleNeutral)
+                UpdateHijackers(ref reason, ref winners, ref color, ref upperText, ref winText, ref winType);
+            UpdateAdditionalWinners(out additionalWinners);
+            winners.UnionWith(additionalWinners);
+        }
         Logger.Info("----------- Finished EndGame Start -----------");
         Logger.Info("reason: " + reason);
         Logger.Info("winners: " + winners.Count);
