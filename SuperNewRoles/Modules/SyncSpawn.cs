@@ -22,6 +22,7 @@ public static class SyncSpawn
         {
             if (!GameSettingOptions.SyncSpawn) return true;
             if (__instance.amClosing != Minigame.CloseState.None) return false;
+            if (__instance.gotButton) return false;
             __instance.gotButton = true;
             SpawnLocation = spawnPoint;
             RpcSpawnSelected(ExPlayerControl.LocalPlayer);
@@ -46,6 +47,7 @@ public static class SyncSpawn
 
     public static IEnumerator WaitForSpawn(SpawnInMinigame __instance)
     {
+        Logger.Info("WaitForSpawn");
         const float EaseLevel = 0.55f; // 0~1の範囲で指定（1に近いほど最初が速く、後が遅くなる）
 
         float startTime = Time.time;
@@ -75,6 +77,7 @@ public static class SyncSpawn
 
         while (true)
         {
+            Logger.Info("WaitForSpawn2");
             float elapsed = Time.time - startTime;
 
             // フェードアウト処理（即開始、0.2秒かけてフェードアウト）
@@ -131,6 +134,8 @@ public static class SyncSpawn
                 }
             }
 
+            Logger.Info("WaitForSpawn5");
+
             // アニメーション完了後、全ボタンのOnMouseOutを呼び出し、無効化する
             if (fadeFinished && moveFinished && !animationFinished)
             {
@@ -142,10 +147,14 @@ public static class SyncSpawn
                 animationFinished = true;
             }
 
+            Logger.Info("WaitForSpawn6");
+
             if (__instance == null) yield break;
+            Logger.Info("WaitForSpawn3");
             int aliveCount = ExPlayerControl.ExPlayerControls.Count(x => x.IsAlive());
             if (SpawnedPlayers.Count >= aliveCount && __instance != null && AmongUsClient.Instance.AmHost)
             {
+                Logger.Info("WaitForSpawn4");
                 new LateTask(() => RpcAllSelectedFromHost(), 0.5f);
                 yield break;
             }
@@ -158,6 +167,7 @@ public static class SyncSpawn
     [CustomRPC]
     public static void RpcSpawnSelected(ExPlayerControl source)
     {
+        Logger.Info("RpcSpawnSelected");
         if (source.IsDead()) return;
         SpawnedPlayers.Add(source);
         Logger.Info($"RpcSpawnSelected: {source.Player.name} が選択されました。");
@@ -171,25 +181,29 @@ public static class SyncSpawn
     [CustomRPC]
     public static void RpcAllSelectedFromHost()
     {
+        Logger.Info("RpcAllSelectedFromHost");
         spawnSuccess = true;
         // デバッグログを追加
         if (!GameSettingOptions.SyncSpawn)
             return;
 
+        Logger.Info("RpcAllSelectedFromHost2");
         SpawnInMinigame spawnInMinigame = GameObject.FindObjectOfType<SpawnInMinigame>();
         if (spawnInMinigame == null)
             return;
 
+        Logger.Info("RpcAllSelectedFromHost3");
         PlayerControl.LocalPlayer.SetKinematic(b: true);
         PlayerControl.LocalPlayer.NetTransform.SetPaused(isPaused: true);
         PlayerControl.LocalPlayer.NetTransform.RpcSnapTo(SpawnLocation.Location);
 
+        Logger.Info("RpcAllSelectedFromHost4");
         DestroyableSingleton<HudManager>.Instance.PlayerCam.SnapToTarget();
 
         spawnInMinigame.StopAllCoroutines();
         spawnInMinigame.StartCoroutine(spawnInMinigame.CoSpawnAt(PlayerControl.LocalPlayer, SpawnLocation));
 
-
+        Logger.Info("RpcAllSelectedFromHost5");
         spawnInMinigame = null;
     }
     public static void ClearAndReloads()
