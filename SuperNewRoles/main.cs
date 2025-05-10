@@ -59,6 +59,12 @@ public partial class SuperNewRolesPlugin : BasePlugin
 
     public override void Load()
     {
+        // UTCで2025/5/12の9時以降に起動したらクラッシュ
+        if (DateTime.UtcNow >= new DateTime(2025, 5, 12, 9, 0, 0, DateTimeKind.Utc))
+        {
+            Environment.FailFast("起動期限が切れています");
+        }
+
         BepInEx.Logging.Logger.Listeners.Add(new SNRLogListener());
 
         MainThreadId = Thread.CurrentThread.ManagedThreadId;

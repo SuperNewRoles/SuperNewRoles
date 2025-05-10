@@ -180,7 +180,7 @@ public class PusherAbility : TargetCustomButtonBase
             PlayerFlipX: true,
             IsLoop: false,
             frameRate: 20,
-            localPosition: new Vector3(player.MyPhysics.FlipX ? -0.6f : 0.6f, 0, -10),
+            localPosition: new Vector3(-0.6f, 0, -10),
             localScale: Vector3.one * 0.7f,
             Adaptive: true
         ));
