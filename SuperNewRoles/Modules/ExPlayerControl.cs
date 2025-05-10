@@ -313,10 +313,6 @@ public class ExPlayerControl
             if (ability != null && ability.Parent != null && ability.Parent is not AbilityParentPlayer)
             {
                 myAbilities.Add((ability, ability.AbilityId));
-                PlayerAbilities.Remove(ability);
-                PlayerAbilitiesDictionary.Remove(ability.AbilityId);
-                _abilityCache.Remove(ability.GetType().Name);
-                _hasAbilityCache.Remove(ability.GetType().Name);
             }
         }
 
@@ -325,10 +321,6 @@ public class ExPlayerControl
             if (ability != null && ability.Parent != null && ability.Parent is not AbilityParentPlayer)
             {
                 targetAbilities.Add((ability, ability.AbilityId));
-                target.PlayerAbilities.Remove(ability);
-                target.PlayerAbilitiesDictionary.Remove(ability.AbilityId);
-                target._abilityCache.Remove(ability.GetType().Name);
-                target._hasAbilityCache.Remove(ability.GetType().Name);
             }
         }
 
@@ -382,7 +374,7 @@ public class ExPlayerControl
                 (currentParent as AbilityParentRole).Player = Player;
             else if (currentParent is AbilityParentModifier parentModifier)
                 (currentParent as AbilityParentModifier).Player = Player;
-            target.AttachAbility(ability.ability, currentParent);
+            AttachAbility(ability.ability, currentParent);
         }
         // 名前情報を更新
         NameText.UpdateAllNameInfo();
@@ -530,10 +522,9 @@ public class ExPlayerControl
     }
     public void DetachAbility(ulong abilityId)
     {
-        if (PlayerAbilitiesDictionary.TryGetValue(abilityId, out var ability))
-        {
-            ability.Detach();
-        }
+        if (!PlayerAbilitiesDictionary.TryGetValue(abilityId, out var ability))
+            return;
+        ability.Detach();
         SuperTrophyManager.DetachTrophy(ability);
         switch (ability)
         {

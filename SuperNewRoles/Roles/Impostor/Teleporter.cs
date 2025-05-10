@@ -105,7 +105,7 @@ internal class TeleporterAbility : CustomButtonBase, IButtonEffect
         ExPlayerControl.LocalPlayer.RpcCustomSnapTo(position);
         if (CurrentMessage != null)
         {
-            GameObject.Destroy(CurrentMessage.text);
+            GameObject.Destroy(CurrentMessage.text.gameObject);
             CurrentMessage = null;
         }
         new LateTask(() => CurrentMessage = new CustomMessage(ModTranslation.GetString("TeleporterTeleportText", target.Data.PlayerName), 1, true), 0.1f);

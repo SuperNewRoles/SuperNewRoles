@@ -14,24 +14,16 @@ public class SatsumaAndImoAbility : AbilityBase
     private EventListener<WrapUpEventData> _wrapUpListener;
     private EventListener<NameTextUpdateEventData> _nameTextListener;
 
-    public override void AttachToLocalPlayer()
-    {
-        _wrapUpListener = WrapUpEvent.Instance.AddListener(OnWrapUp);
-    }
-
-    public override void DetachToLocalPlayer()
-    {
-        _wrapUpListener?.RemoveListener();
-    }
-
     public override void AttachToAlls()
     {
         _nameTextListener = NameTextUpdateEvent.Instance.AddListener(OnNameTextUpdate);
+        _wrapUpListener = WrapUpEvent.Instance.AddListener(OnWrapUp);
     }
 
     public override void DetachToAlls()
     {
         _nameTextListener?.RemoveListener();
+        _wrapUpListener?.RemoveListener();
     }
 
     private void OnWrapUp(WrapUpEventData data)
@@ -47,7 +39,7 @@ public class SatsumaAndImoAbility : AbilityBase
         if (data.Player != Player) return;
         if (!data.Visible) return;
         // 現在のチーム状態に応じてサフィックスを追加
-        string suffix = _teamState == SatsumaTeam.Madmate ? " (M)" : " (C)";
+        string suffix = _teamState == SatsumaTeam.Madmate ? ModHelpers.Cs(Madmate.Instance.RoleColor, " (M)") : ModHelpers.Cs(Palette.CrewmateBlue, " (C)");
         data.Player.PlayerInfoText.text += suffix;
         if (data.Player.MeetingInfoText != null)
             data.Player.MeetingInfoText.text += suffix;
