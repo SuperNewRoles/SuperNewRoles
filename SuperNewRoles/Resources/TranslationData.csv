@@ -866,3 +866,8 @@ JumboAssignToNeutral,第三陣営にも割り当てる,Assign to Neutral,分配�
 JumboSizeUpSpeed,成長スピード,Growth Speed,成長速度,成長速度
 JumboMaxSize,最大サイズ,Max Size,最大大小,最大大小
 JumboWalkSoundSize,歩行音量,Walk Sound Size,步行音量,步行音量
+
+# VentTrapper
+VentTrapperButtonText,トラップ!,Trap!
+VentTrapperSetupTime,トラップ設置時間,Setup Time,陷阱设置时间,陷阱設置時間
+VentTrapperStunTime,トラップ効果時間,Trap Effect Time,陷阱效果时间,陷阱效果時間

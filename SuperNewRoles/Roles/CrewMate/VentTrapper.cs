@@ -8,6 +8,7 @@ using SuperNewRoles.Roles.Ability;
 using SuperNewRoles.Roles.Ability.CustomButton;
 using SuperNewRoles.Modules.Events.Bases;
 using System.Linq;
+using SuperNewRoles.Events;
 
 namespace SuperNewRoles.Roles.CrewMate;
 
@@ -55,13 +56,14 @@ public record VentTrapperData(
     bool canUseVent
 );
 
-public class VentTrapperAbility : CustomButtonBase, IButtonEffect
+public class VentTrapperAbility : CustomButtonBase, IButtonEffect, IAbilityCount
 {
     private List<Vent> _trappedVents = new();
-    private List<Vent> _trappingVents = new();
+    private List<int> _trappingVents = new();
     private readonly VentTrapperData _data;
-    private int _remainingUses;
     private Vent _targetVent;
+
+    private EventListener<PlayerPhysicsRpcEnterVentPrefixEventData> _ventUsePrefixEvent;
     // IButtonEffect implementation for planting stun
     public bool isEffectActive { get; set; }
     public float EffectTimer { get; set; }
@@ -71,26 +73,48 @@ public class VentTrapperAbility : CustomButtonBase, IButtonEffect
     public VentTrapperAbility(VentTrapperData data)
     {
         _data = data;
-        _remainingUses = data.useLimit;
+        Count = data.useLimit;
     }
 
     public override Sprite Sprite => AssetManager.GetAsset<Sprite>("VentTrapperButton.png");
-    public override string buttonText => ModTranslation.GetString("VentTrapper.ButtonTitle");
+    public override string buttonText => ModTranslation.GetString("VentTrapperButtonText");
     protected override KeyType keytype => KeyType.Ability1;
     public override float DefaultTimer => _data.coolTime;
-
-    public override bool CheckHasButton() => base.CheckHasButton() && _remainingUses > 0;
+    public override ShowTextType showTextType => ShowTextType.ShowWithCount;
+    public override bool CheckHasButton() => base.CheckHasButton() && Count > 0;
     public override bool CheckIsAvailable()
     {
         if (isEffectActive) return false;
         if (!Player.Player.CanMove) return false;
-        if (_data.canUseVent)
-        {
-            // Vent内でのみ設置
-            return Player.Player.inVent && Vent.currentVent != null;
-        }
         // Ventの近傍でのみ設置
         return TryGetNearbyVent(ShipStatus.Instance.AllVents.Where(x => !_trappedVents.Contains(x)), out _targetVent);
+    }
+
+    public override void AttachToAlls()
+    {
+        _ventUsePrefixEvent = PlayerPhysicsRpcEnterVentPrefixEvent.Instance.AddListener(OnVentUsePrefix);
+    }
+
+    public override void DetachToAlls()
+    {
+        _ventUsePrefixEvent?.RemoveListener();
+    }
+
+    private void OnVentUsePrefix(PlayerPhysicsRpcEnterVentPrefixEventData data)
+    {
+        if (Player.AmOwner) return;
+        if (_trappingVents.Contains(data.ventId))
+        {
+            data.result = false;
+            PlayerControl.LocalPlayer.moveable = false;
+            PlayerControl.LocalPlayer.MyPhysics.body.velocity = Vector2.zero;
+            new LateTask(() =>
+            {
+                PlayerControl.LocalPlayer.moveable = true;
+            }, _data.stunTime, "VentTrapperAbility");
+            TrappedVentRPC(data.ventId);
+            ShipStatus.Instance.AllVents.FirstOrDefault(x => x.Id == data.ventId)?.SetButtons(false);
+        }
     }
 
     public override void OnClick()
@@ -109,10 +133,10 @@ public class VentTrapperAbility : CustomButtonBase, IButtonEffect
     private void FinishPlanting()
     {
         Player.Player.moveable = true;
-        _remainingUses--;
+        this.UseAbilityCount();
         GameObject batu = new("Batu");
         batu.transform.parent = _targetVent.transform;
-        batu.transform.position = _targetVent.transform.position - new Vector3(0, 0.1f, 0.1f);
+        batu.transform.position = _targetVent.transform.position - new Vector3(0, 0.05f, 0.1f);
         batu.AddComponent<SpriteRenderer>().sprite = AssetManager.GetAsset<Sprite>("DoorClosed.png");
         SetTrapRPC(_targetVent.Id);
         ResetTimer();
@@ -145,6 +169,12 @@ public class VentTrapperAbility : CustomButtonBase, IButtonEffect
             return;
         }
         _trappedVents.Add(vent);
-        _trappingVents.Add(vent);
+        _trappingVents.Add(ventId);
     }
+    [CustomRPC]
+    public void TrappedVentRPC(int ventId)
+    {
+        _trappingVents.Remove(ventId);
+    }
+
 }
