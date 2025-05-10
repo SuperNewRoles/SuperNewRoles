@@ -1,6 +1,7 @@
 using System;
 using System.Linq;
 using HarmonyLib;
+using SuperNewRoles.HelpMenus;
 using SuperNewRoles.Modules;
 using UnityEngine;
 
@@ -14,7 +15,7 @@ class ControllerManagerUpdatePatch
     static int resolutionIndex = 0;
     static AudioSource source;
 
-    static KeyCode[] HaisonKeyCodes = [KeyCode.H, KeyCode.LeftShift, KeyCode.RightShift];
+    public static KeyCode[] HaisonKeyCodes = [KeyCode.H, KeyCode.LeftShift, KeyCode.RightShift];
     static KeyCode[] ForceEndMeetingKeyCodes = [KeyCode.M, KeyCode.LeftShift, KeyCode.RightShift];
     static KeyCode[] LogKeyCodes = [KeyCode.S, KeyCode.LeftShift, KeyCode.RightShift];
 
@@ -37,8 +38,6 @@ class ControllerManagerUpdatePatch
             throw new NotImplementedException("LogKey not supported");
             // LoggerPlus.SaveLog(via, via);
         }
-
-
         if (!AmongUsClient.Instance.AmHost) return;
         //　ゲーム中
         if (AmongUsClient.Instance.GameState == AmongUsClient.GameStates.Started)

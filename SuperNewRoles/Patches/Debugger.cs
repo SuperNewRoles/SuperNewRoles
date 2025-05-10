@@ -21,7 +21,7 @@ public static class Debugger
         if (Input.GetKey(KeyCode.LeftShift) && Input.GetKey(KeyCode.LeftControl) && Input.GetKeyDown(KeyCode.D))
         {
         }
-        else if (Input.GetKeyDown(KeyCode.H))
+        else if (!ModHelpers.GetManyKeyDown(ControllerManagerUpdatePatch.HaisonKeyCodes) && Input.GetKeyDown(KeyCode.H))
         {
             HelpMenuObjectManager.ShowOrHideHelpMenu();
         }

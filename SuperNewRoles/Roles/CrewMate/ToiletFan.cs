@@ -12,7 +12,7 @@ namespace SuperNewRoles.Roles.Crewmate;
 class ToiletFan : RoleBase<ToiletFan>
 {
     public override RoleId Role { get; } = RoleId.ToiletFan;
-    public override Color32 RoleColor { get; } = new(16, 80, 48, byte.MaxValue);
+    public override Color32 RoleColor { get; } = new(116, 80, 48, byte.MaxValue);
     public override List<Func<AbilityBase>> Abilities { get; } = [() => new ToiletFanAbility(ToiletFanCoolTime)];
 
     public override QuoteMod QuoteMod { get; } = QuoteMod.SuperNewRoles;

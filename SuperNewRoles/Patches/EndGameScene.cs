@@ -165,6 +165,7 @@ public class EndGameManagerSetUpPatch
     [CustomRPC]
     public static void RpcEndGameWithCondition(GameOverReason reason, List<byte> winners, string UpperText, List<string> additionalWinTexts, Color UpperTextColor, bool IsHaison, string winText = "WinText")
     {
+        if (ShipStatus.Instance?.enabled != true) return;
         EndGameCondition newCond = new(
             reason: reason,
             winners: winners,
@@ -177,27 +178,19 @@ public class EndGameManagerSetUpPatch
         EndGameManagerSetUpPatch.endGameCondition = newCond;
 
         // 黒いフェードアウト用オブジェクトを作成
-        var fadeObject = new GameObject("FadeOutObject");
-        fadeObject.transform.SetParent(HudManager.Instance.transform, false); // HudManagerの子にする
-        fadeObject.layer = LayerMask.NameToLayer("UI"); // UIレイヤーに設定
-
-        var image = fadeObject.AddComponent<Image>();
-        image.color = new Color(0, 0, 0, 0); // 初期は透明な黒
-        image.rectTransform.anchorMin = Vector2.zero;
-        image.rectTransform.anchorMax = Vector2.one;
-        image.rectTransform.sizeDelta = Vector2.zero; // 画面全体を覆うように
-
-        HudManager.Instance.StartCoroutine(FadeOutCoroutine(image, 0.4f, () =>
+        var fadeObject = GameObject.Instantiate(AssetManager.GetAsset<GameObject>("EndgameOverlay"), HudManager.Instance.transform);
+        fadeObject.transform.localPosition = new(0, 0, -400f);
+        HudManager.Instance.StartCoroutine(FadeOutCoroutine(fadeObject.GetComponent<SpriteRenderer>(), 0.4f, () =>
         {
-            UnityEngine.Object.Destroy(fadeObject); // フェードオブジェクトを破棄
         }).WrapToIl2Cpp());
 
         if (AmongUsClient.Instance.AmHost)
             new LateTask(() => GameManager.Instance.RpcEndGame(newCond.reason, false), 0.3f);
+        ShipStatus.Instance.enabled = false;
     }
 
     // Imageのアルファ値を変更するコルーチン
-    public static System.Collections.IEnumerator FadeOutCoroutine(Image image, float duration, Action onComplete)
+    public static System.Collections.IEnumerator FadeOutCoroutine(SpriteRenderer image, float duration, Action onComplete)
     {
         float elapsed = 0f;
         image.color = new Color(0, 0, 0, 0); // 開始時は透明
