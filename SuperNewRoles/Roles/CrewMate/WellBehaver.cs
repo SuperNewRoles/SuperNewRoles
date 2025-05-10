@@ -157,6 +157,7 @@ public class WellBehaverAbility : AbilityBase
     private void OnFixedUpdate()
     {
         if (ExPlayerControl.LocalPlayer.IsDead()) return;
+        if (MeetingHud.Instance != null || ExileController.Instance != null || HudManager.Instance.IsIntroDisplayed) return;
         if (garbager == null || garbager.Data.IsDead)
             ReAssignGarbager();
         if (garbager == null) return;
