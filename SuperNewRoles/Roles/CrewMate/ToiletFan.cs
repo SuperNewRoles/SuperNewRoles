@@ -24,6 +24,7 @@ class ToiletFan : RoleBase<ToiletFan>
     public override TeamTag TeamTag { get; } = TeamTag.Crewmate;
     public override RoleTag[] RoleTags { get; } = [];
     public override RoleOptionMenuType OptionTeam { get; } = RoleOptionMenuType.Crewmate;
+    public override MapNames[] AvailableMaps { get; } = [MapNames.Airship];
 
     [CustomOptionFloat("ToiletFanCoolTime", 0f, 60f, 2.5f, 20f, translationName: "CoolTime")]
     public static float ToiletFanCoolTime;
