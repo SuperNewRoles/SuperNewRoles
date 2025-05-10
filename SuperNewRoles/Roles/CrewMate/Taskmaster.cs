@@ -63,9 +63,9 @@ public static class TaskmasterPatch
     public static void Postfix(Console __instance)
     {
         if (ExPlayerControl.LocalPlayer.Role != RoleId.Taskmaster) return;
-        if (__instance.TaskTypes.FirstOrDefault() is TaskTypes.FixLights or TaskTypes.FixComms or TaskTypes.ResetReactor or TaskTypes.RestoreOxy)
+        if (ModHelpers.IsSabotage(__instance.TaskTypes.FirstOrDefault()))
         {
-            Logger.Info("SABOTAGEEEEEEE");
+            ModHelpers.RpcFixingSabotage(__instance.TaskTypes.FirstOrDefault());
         }
         else
         {

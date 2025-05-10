@@ -374,4 +374,59 @@ public static class ModHelpers
             ShipStatus.Instance.UpdateSystem(SystemTypes.Doors, pc, i);
         }
     }
+
+    [CustomRPC]
+    public static void RpcFixingSabotage(TaskTypes taskType)
+    {
+        if (!AmongUsClient.Instance.AmHost) return;
+        FixingSabotage(taskType);
+    }
+
+    [CustomRPC]
+    public static void RpcFixLight()
+    {
+        if (!ShipStatus.Instance.Systems.TryGetValue(SystemTypes.Electrical, out ISystemType system))
+            return;
+        SwitchSystem switchSystem = system.TryCast<SwitchSystem>();
+        switchSystem.ActualSwitches = switchSystem.ExpectedSwitches;
+    }
+
+    public static bool IsSabotage(TaskTypes taskType)
+    {
+        return taskType is TaskTypes.FixLights or TaskTypes.RestoreOxy or TaskTypes.ResetReactor or TaskTypes.StopCharles or TaskTypes.ResetSeismic or TaskTypes.FixComms or TaskTypes.MushroomMixupSabotage;
+    }
+
+    private static void FixingSabotage(TaskTypes taskType)
+    {
+        switch (taskType)
+        {
+            case TaskTypes.FixLights:
+                RpcFixLight();
+                break;
+            case TaskTypes.RestoreOxy: // 酸素 (Skeld, Mira)
+                ShipStatus.Instance.RpcUpdateSystem(SystemTypes.LifeSupp, 0 | 64);
+                ShipStatus.Instance.RpcUpdateSystem(SystemTypes.LifeSupp, 1 | 64);
+                break;
+            case TaskTypes.ResetReactor: // リアクター (Skeld, Mira, Fungle)
+                ShipStatus.Instance.RpcUpdateSystem(SystemTypes.Reactor, 16);
+                break;
+            case TaskTypes.StopCharles: // 衝突回避 (Airship)
+                ShipStatus.Instance.RpcUpdateSystem(SystemTypes.HeliSabotage, 0 | 16);
+                ShipStatus.Instance.RpcUpdateSystem(SystemTypes.HeliSabotage, 1 | 16);
+                break;
+            case TaskTypes.ResetSeismic: // 耐震 (Polus)
+                ShipStatus.Instance.RpcUpdateSystem(SystemTypes.Laboratory, 16);
+                break;
+            case TaskTypes.FixComms:
+                ShipStatus.Instance.RpcUpdateSystem(SystemTypes.Comms, 16 | 0);
+                ShipStatus.Instance.RpcUpdateSystem(SystemTypes.Comms, 16 | 1);
+                break;
+            case TaskTypes.MushroomMixupSabotage:
+                ShipStatus.Instance.RpcUpdateSystem(SystemTypes.MushroomMixupSabotage, 16 | 1);
+                break;
+            default:
+                Logger.Info($"リペア処理が異常な呼び出しを受けました。", "Repair Process");
+                break;
+        }
+    }
 }

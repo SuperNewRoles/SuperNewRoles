@@ -26,7 +26,7 @@ public class PenguinAbility : TargetCustomButtonBase, IButtonEffect
     public bool effectCancellable => false;
     private bool meetingKill;
     private EventListener<MeetingStartEventData> _onMeetingStartEvent;
-    public override Sprite Sprite => AssetManager.GetAsset<Sprite>("PenguinButton.png");
+    public override Sprite Sprite => AssetManager.GetAsset<Sprite>($"PenguinButton_{ModHelpers.GetRandomInt(min: 1, max: 2)}.png");
     public override string buttonText => ModTranslation.GetString("PenguinButtonText");
     protected override KeyType keytype => KeyType.Ability1;
     public override float DefaultTimer => coolDown;

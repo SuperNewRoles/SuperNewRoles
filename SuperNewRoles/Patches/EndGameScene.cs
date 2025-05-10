@@ -180,7 +180,7 @@ public class EndGameManagerSetUpPatch
         // 黒いフェードアウト用オブジェクトを作成
         var fadeObject = GameObject.Instantiate(AssetManager.GetAsset<GameObject>("EndgameOverlay"), HudManager.Instance.transform);
         fadeObject.transform.localPosition = new(0, 0, -400f);
-        HudManager.Instance.StartCoroutine(FadeOutCoroutine(fadeObject.GetComponent<SpriteRenderer>(), 0.4f, () =>
+        HudManager.Instance.StartCoroutine(FadeOutCoroutine(fadeObject.GetComponent<SpriteRenderer>(), 0.5f, () =>
         {
         }).WrapToIl2Cpp());
 

@@ -25,16 +25,16 @@ public class SaboAndVent
     }
     private static void SetVentActive(bool canUseVent, bool showVentButtonVanilla)
     {
-        if (!canUseVent)
+        if (!canUseVent || !showVentButtonVanilla)
             HudManager.Instance.ImpostorVentButton.gameObject.SetActive(false);
-        else if (showVentButtonVanilla)
+        else
             HudManager.Instance.ImpostorVentButton.gameObject.SetActive(true);
     }
     private static void SetSaboActive(bool canSabotage, bool showSaboButtonVanilla)
     {
-        if (!canSabotage)
+        if (!canSabotage || !showSaboButtonVanilla)
             HudManager.Instance.SabotageButton.gameObject.SetActive(false);
-        else if (showSaboButtonVanilla)
+        else
             HudManager.Instance.SabotageButton.gameObject.SetActive(true);
     }
     private static void SetKillActive(bool killDisabled, bool isShowKillButton)
