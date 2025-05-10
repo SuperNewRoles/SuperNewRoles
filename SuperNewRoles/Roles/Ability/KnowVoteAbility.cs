@@ -38,7 +38,7 @@ public static class LogicOptionsNormalGetAnonymousVotesPatch
                     return true; // バニラの動作に従う
             }
         }
-        else if (ExPlayerControl.LocalPlayer.HasAbility(nameof(KnowVoteAbility))) // 生存していてKnowVoteAbilityを持つ場合
+        else if (ExPlayerControl.LocalPlayer.HasAbility<KnowVoteAbility>()) // 生存していてKnowVoteAbilityを持つ場合
         {
             __result = ExPlayerControl.LocalPlayer.PlayerAbilities.Any(x => x is KnowVoteAbility knowVoteAbility && knowVoteAbility.IsAnonymousVotes());
             return false;

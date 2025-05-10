@@ -41,7 +41,7 @@ class Worshiper : RoleBase<Worshiper>
     [CustomOptionBool("WorshiperCanKnowImpostors", false)]
     public static bool WorshiperCanKnowImpostors;
 
-    [CustomOptionInt("WorshiperNeededTaskCount", 0, 30, 1, 6, parentFieldName: nameof(WorshiperCanKnowImpostors))]
+    [CustomOptionInt("WorshiperNeededTaskCount", 0, 30, 1, 6, parentFieldName: nameof(WorshiperCanKnowImpostors), translationName: "MadmateNeededTaskCount")]
     public static int WorshiperNeededTaskCount;
 
     [CustomOptionBool("WorshiperIsSpecialTasks", false, translationName: "MadmateIsSpecialTasks")]

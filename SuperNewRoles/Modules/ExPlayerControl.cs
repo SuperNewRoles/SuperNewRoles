@@ -94,6 +94,17 @@ public class ExPlayerControl
         _hasAbilityCache[abilityName] = hasAbility;
         return hasAbility;
     }
+    public bool HasAbility<T>() where T : AbilityBase
+    {
+        if (_hasAbilityCache.TryGetValue(typeof(T).Name, out bool hasAbility))
+        {
+            return hasAbility;
+        }
+
+        hasAbility = PlayerAbilities.Any(x => x is T);
+        _hasAbilityCache[typeof(T).Name] = hasAbility;
+        return hasAbility;
+    }
     public bool IsTaskComplete()
     {
         (int completed, int total) = ModHelpers.TaskCompletedData(Data);

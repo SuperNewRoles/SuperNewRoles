@@ -24,6 +24,7 @@ public enum VictoryType
     JackalDomination,
     PavlovsWin,
     OwlWin,
+
     HitmanDomination
 }
 

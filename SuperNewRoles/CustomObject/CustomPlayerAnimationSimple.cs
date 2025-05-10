@@ -97,11 +97,6 @@ public class CustomPlayerAnimationSimple : MonoBehaviour
         spriteRenderer = null;
     }
 
-    // ==================================================
-    // static
-    // ==================================================
-    private static readonly Dictionary<string, Sprite[]> SpritesCache = new();
-
     public static CustomPlayerAnimationSimple Spawn(PlayerControl player, CustomPlayerAnimationSimpleOption option)
     {
         if (option.Sprites.Length == 0)
@@ -114,15 +109,6 @@ public class CustomPlayerAnimationSimple : MonoBehaviour
     }
     public static Sprite[] GetSprites(string name, int min, int max, int zeroPadding = 0)
     {
-        // キャッシュキーを生成
-        string cacheKey = $"{name}_{min}_{max}_{zeroPadding}";
-
-        // キャッシュにあれば再利用
-        if (SpritesCache.TryGetValue(cacheKey, out Sprite[] cachedSprites))
-        {
-            return cachedSprites;
-        }
-
         if (min > max)
             throw new ArgumentException("min must be less than max");
         Sprite[] sprites = new Sprite[max - min + 1];
@@ -133,9 +119,6 @@ public class CustomPlayerAnimationSimple : MonoBehaviour
             Logger.Info($"loading {string.Format(name, formattedIndex)}");
             sprites[i - min] = AssetManager.GetAsset<Sprite>(string.Format(name, formattedIndex));
         }
-
-        // キャッシュに保存
-        SpritesCache[cacheKey] = sprites;
 
         return sprites;
     }

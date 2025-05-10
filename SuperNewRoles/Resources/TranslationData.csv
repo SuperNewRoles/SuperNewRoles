@@ -791,8 +791,8 @@ BakeryExileText,パン屋がパンを焼いたようだ...,Bakery baked bread,�
 BakeryExileText2,パン屋がパンを焼いたようだ...,Bakery baked bread,面包屋烤了面包,麵包屋烤了麵包
 
 # MadRaccoon
-MadRaccoonShapeshiftCooldown,MadRaccoon Shapeshift Cooldown,シェイプシフトクールダウン
-MadRaccoonShapeshiftDuration,MadRaccoon Shapeshift Duration,シェイプシフト持続時間
+MadRaccoonShapeshiftCooldown,シェイプシフトクールダウン,MadRaccoon Shapeshift Cooldown,變身冷卻時間
+MadRaccoonShapeshiftDuration,シェイプシフト持続時間,MadRaccoon Shapeshift Duration,變身持續時間
 
 # Worshiper Options
 WorshiperCanKnowImpostors,インポスターが分かる,Can Know Impostors,可以知道内鬼,可以知道內鬼

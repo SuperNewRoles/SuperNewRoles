@@ -15,7 +15,7 @@ class God : RoleBase<God>
     public override Color32 RoleColor { get; } = Color.yellow;
     public override List<Func<AbilityBase>> Abilities { get; } = [
         () => new KnowOtherAbility(x => MeetingHud.Instance != null ? true : x.IsAlive(), () => true),
-        () => new KnowVoteAbility(() => GodSeeVote),
+        () => new KnowVoteAbility(() => !GodSeeVote),
         () => new CustomTaskAbility(() => (GodNeededTask, GodTaskOption.Total), GodNeededTask ? GodTaskOption : null)
     ];
 

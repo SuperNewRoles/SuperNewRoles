@@ -41,7 +41,7 @@ public class SaboAndVent
     {
         if (killDisabled)
             HudManager.Instance.KillButton.gameObject.SetActive(false);
-        else if (isShowKillButton && HudManager.Instance.UseButton.gameObject.activeSelf)
+        else if (isShowKillButton && (HudManager.Instance.UseButton.gameObject.activeSelf || HudManager.Instance.PetButton.gameObject.activeSelf))
             HudManager.Instance.KillButton.gameObject.SetActive(true);
     }
     [HarmonyPatch(typeof(MapBehaviour), nameof(MapBehaviour.ShowNormalMap))]

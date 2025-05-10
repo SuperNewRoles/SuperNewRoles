@@ -53,8 +53,8 @@ public class PenguinAbility : TargetCustomButtonBase, IButtonEffect
     public override void OnClick()
     {
         targetPlayer = Target;
-        RpcStartPenguin(PlayerControl.LocalPlayer, Target, AbilityId);
-        ExPlayerControl.LocalPlayer.SetKillTimerUnchecked(0.00001f, 0.00001f);
+        RpcStartPenguin(Target);
+        new LateTask(() => ExPlayerControl.LocalPlayer.SetKillTimerUnchecked(0.00001f, 0.00001f), 0f);
         ResetTimer();
     }
     public override void DetachToAlls()
@@ -85,13 +85,17 @@ public class PenguinAbility : TargetCustomButtonBase, IButtonEffect
 
     private void OnMeetingStart(MeetingStartEventData data)
     {
-        if (isEffectActive && targetPlayer != null && targetPlayer.IsAlive() && meetingKill && Player.AmOwner)
+        if (targetPlayer != null && targetPlayer.IsAlive() && meetingKill)
         {
-            RpcKillPenguinTarget(Player, this, targetPlayer);
+            if (targetPlayer != null && targetPlayer.IsAlive())
+            {
+                targetPlayer.CustomDeath(CustomDeathType.Kill, source: Player);
+            }
+            targetPlayer = null;
         }
         else if (isEffectActive && Player.AmOwner)
         {
-            RpcEndPenguin(Player, this);
+            RpcEndPenguin();
         }
     }
     private void OnWrapUp(WrapUpEventData data)
@@ -105,19 +109,15 @@ public class PenguinAbility : TargetCustomButtonBase, IButtonEffect
         }
     }
     [CustomRPC]
-    public static void RpcStartPenguin(ExPlayerControl source, PlayerControl target, ulong abilityId)
+    public void RpcStartPenguin(PlayerControl target)
     {
-        var ability = source.GetAbility<PenguinAbility>(abilityId);
-        if (ability != null)
-        {
-            ability.targetPlayer = target;
-        }
+        targetPlayer = target;
     }
 
     [CustomRPC]
-    public static void RpcEndPenguin(ExPlayerControl source, PenguinAbility ability)
+    public void RpcEndPenguin()
     {
-        ability.targetPlayer = null;
+        targetPlayer = null;
     }
 
     [CustomRPC]
