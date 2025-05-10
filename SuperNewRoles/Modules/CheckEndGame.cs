@@ -24,6 +24,7 @@ public enum VictoryType
     JackalDomination,
     PavlovsWin,
     OwlWin,
+    HitmanDomination
 }
 
 public enum SabotageSystemType
@@ -131,6 +132,10 @@ public static class CheckGameEndPatch
         if (stats.IsPavlovsWin)
             return VictoryType.PavlovsWin;
 
+        // 殺し屋勝利
+        if (stats.IsHitmanDominating)
+            return VictoryType.HitmanDomination;
+
         // クルーメイト勝利
         if (stats.IsCrewmateVictory)
             return VictoryType.CrewmateVote;
@@ -170,6 +175,8 @@ public static class CheckGameEndPatch
                 return (ExPlayerControl.ExPlayerControls.Where(player => player.IsPavlovsTeam()).ToHashSet(), PavlovsDog.Instance.RoleColor, "Pavlovs");
             case VictoryType.OwlWin:
                 return (ExPlayerControl.ExPlayerControls.Where(player => player.Role == RoleId.Owl).ToHashSet(), Owl.Instance.RoleColor, "Owl");
+            case VictoryType.HitmanDomination:
+                return (ExPlayerControl.ExPlayerControls.Where(player => player.Role == RoleId.Hitman).ToHashSet(), Hitman.Instance.RoleColor, "Hitman");
             default:
                 throw new ArgumentException($"Invalid victory type: {victoryType}");
         }
@@ -185,6 +192,7 @@ public static class CheckGameEndPatch
         VictoryType.JackalDomination => (GameOverReason)CustomGameOverReason.JackalWin,
         VictoryType.PavlovsWin => (GameOverReason)CustomGameOverReason.PavlovsWin,
         VictoryType.OwlWin => (GameOverReason)CustomGameOverReason.OwlWin,
+        VictoryType.HitmanDomination => (GameOverReason)CustomGameOverReason.HitmanWin,
         _ => throw new ArgumentException($"無効な勝利タイプ: {victoryType}")
     };
 }
@@ -260,11 +268,13 @@ public class PlayerStatistics
     public int TotalKiller { get; }
     public int ArsonistAlive { get; }
     public int OwlAlive { get; }
+    public int HitmanAlive { get; }
 
     public bool IsKillerExist => TotalKiller > 0;
     public bool IsImpostorDominating { get; }
     public bool IsJackalDominating { get; }
     public bool IsPavlovsWin { get; }
+    public bool IsHitmanDominating { get; }
     public bool IsCrewmateVictory => !IsKillerExist;
     public bool IsOwlWin => IsKillerWin(OwlAlive) && OwlAlive == 1;
 
@@ -273,8 +283,8 @@ public class PlayerStatistics
         int teamImpostorsAlive = 0, crewAlive = 0, totalAlive = 0;
         int teamJackalAlive = 0, jackalRoleAlive = 0;
         int pavlovsDogAlive = 0, pavlovsOwnerAlive = 0, pavlovsOwnerRemaining = 0;
-        int arsonistAlive = 0, owlAlive = 0, totalKiller = 0;
-        bool hasLoversImpostorTeam = false, hasLoversJackalTeam = false, hasLoversPavlovsTeam = false;
+        int arsonistAlive = 0, owlAlive = 0, hitmanAlive = 0, totalKiller = 0;
+        bool hasLoversImpostorTeam = false, hasLoversJackalTeam = false, hasLoversPavlovsTeam = false, hasLoversHitmanTeam = false;
 
         var players = ExPlayerControl.ExPlayerControls;
         foreach (var player in players)
@@ -295,6 +305,7 @@ public class PlayerStatistics
             }
             if (player.Role == RoleId.Arsonist) arsonistAlive++;
             if (player.Role == RoleId.Owl) owlAlive++;
+            if (player.Role == RoleId.Hitman) hitmanAlive++;
             if (player.IsNonCrewKiller()) totalKiller++;
 
             if (Lovers.LoversAdditionalWinCondition && player.IsLovers())
@@ -302,6 +313,7 @@ public class PlayerStatistics
                 if (player.IsImpostorWinTeam()) hasLoversImpostorTeam = true;
                 if (player.IsJackalTeam()) hasLoversJackalTeam = true;
                 if (player.IsPavlovsTeam()) hasLoversPavlovsTeam = true;
+                if (player.Role == RoleId.Hitman) hasLoversHitmanTeam = true;
             }
         }
 
@@ -315,12 +327,14 @@ public class PlayerStatistics
             : pavlovsOwnerRemaining;
         ArsonistAlive = arsonistAlive;
         OwlAlive = owlAlive;
+        HitmanAlive = hitmanAlive;
         TotalAlive = totalAlive;
         TotalKiller = totalKiller;
 
         bool impostorWin = IsKillerWin(teamImpostorsAlive);
         bool jackalWin = IsKillerWin(jackalRoleAlive);
         bool pavlovWin = IsKillerWin(TeamPavlovsAlive);
+        bool hitmanWin = IsKillerWin(hitmanAlive);
 
         if (Lovers.LoversAdditionalWinCondition && impostorWin && teamImpostorsAlive > 1 && hasLoversImpostorTeam)
         {
@@ -337,10 +351,16 @@ public class PlayerStatistics
             Logger.Info("Lovers追加勝利判定（Pavlovs）: ラバーズを含むため勝利取消");
             pavlovWin = false;
         }
+        if (Lovers.LoversAdditionalWinCondition && hitmanWin && hitmanAlive > 1 && hasLoversHitmanTeam)
+        {
+            Logger.Info("Lovers追加勝利判定（Hitman）: ラバーズを含むため勝利取消");
+            hitmanWin = false;
+        }
 
         IsImpostorDominating = impostorWin;
         IsJackalDominating = jackalWin;
         IsPavlovsWin = pavlovWin;
+        IsHitmanDominating = hitmanWin;
     }
 
     private bool IsKillerWin(int teamAlive)

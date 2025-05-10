@@ -328,6 +328,7 @@ EvilNekomata,イビル猫又,Evil Nekomata
 Taskmaster,タスクマスター,Taskmaster
 ToiletFan,トイレファン,ToiletFan
 JumboModifier,ジャンボ,Jumbo
+VentTrapper,ベントトラッパー,Vent Trapper
 
 # Descriptions
 BestFalseCharge.Description,特に能力を有さないクルーメイトです。\n死亡するまでこの役職だと自覚出来ません。\n最初の会議が終了すると、そのまま死亡します。,The ultimate red herring! A Crewmate with no abilities who lives in blissful ignorance.\nThey won't realize they have this role until they're dead—talk about a rude awakening!\nAfter the first meeting ends, they die faster than someone saying "I saw Blue vent!",这是一个没有特殊能力的船员。\n在死亡之前他们不会意识到自己拥有这个角色。\n第一场会议结束后，他们会直接死亡。,這是一個沒有特殊能力的船員。\n在死亡之前他們不會察覺自己擁有這個角色。\n第一場會議結束後，他們會直接死亡。
@@ -651,6 +652,7 @@ PenguinHundredKillDescription,ペンギンの能力で累計100人キルした,K
 
 # Pusher
 PusherButtonName,ドン！,Push!
+PusherRevengeRole,突き落とした相手が猫又系の役職だった場合、ランダムに道連れする,If the player you pushed is a nekomata role, randomly pull along,如果被推的玩家是疯友角色,随机道连,如果被推的玩家是瘋友角色,隨機道連
 
 # EvilHacker Settings
 EvilHackerCanMoveWhileUsingAdmin,アドミン使用中に移動出来る,Can Move While Using Admin,使用管理地图时可以移动,使用管理地圖時可以移動

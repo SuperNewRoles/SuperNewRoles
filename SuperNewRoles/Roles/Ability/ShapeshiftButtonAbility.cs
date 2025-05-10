@@ -48,12 +48,15 @@ public class ShapeshiftButtonAbility : CustomButtonBase, IButtonEffect
     public override void OnClick()
     {
         RoleTypes baseRole = ExPlayerControl.LocalPlayer.Data.Role.Role;
+        float killTimer = PlayerControl.LocalPlayer.killTimer;
         RoleManager.Instance.SetRole(Player, RoleTypes.Shapeshifter);
         ExPlayerControl.LocalPlayer.Data.Role.TryCast<ShapeshifterRole>()?.UseAbility();
         RoleManager.Instance.SetRole(Player, baseRole);
+        PlayerControl.LocalPlayer.killTimer = killTimer;
         new LateTask(() =>
         {
             isEffectActive = false;
+            Timer = 0.0001f;
             actionButton.cooldownTimerText.color = Palette.EnabledColor;
         }, 0.1f, "ShapeshiftButtonAbility");
     }
@@ -77,6 +80,7 @@ public class ShapeshiftButtonAbility : CustomButtonBase, IButtonEffect
 
         _shapeTarget = data.target;
         if (!Player.AmOwner) return;
+        ResetTimer();
         isEffectActive = true;
         EffectTimer = DurationTime;
         actionButton.cooldownTimerText.color = IButtonEffect.color;
@@ -90,8 +94,8 @@ public class ShapeshiftButtonAbility : CustomButtonBase, IButtonEffect
             isEffectActive = false;
             _shapeTarget = null;
             EffectTimer = 0;
-            PlayerControl.LocalPlayer.RpcShapeshiftModded(ExPlayerControl.LocalPlayer, false);
         }
+        PlayerControl.LocalPlayer.RpcShapeshiftModded(ExPlayerControl.LocalPlayer, false);
         ResetTimer(); // Reset cooldown for next round
     }
 

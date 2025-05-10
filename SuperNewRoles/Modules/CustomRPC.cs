@@ -53,6 +53,22 @@ public static class CustomRPCManager
     /// RPC メソッドを保存するディクショナリ
     /// </summary>
     public static Dictionary<string, byte> RpcMethodIds = new();
+    /// <summary>
+    /// キャッシュ用：メソッドからRPC IDを高速取得
+    /// </summary>
+    private static Dictionary<MethodBase, byte> RpcIdsByMethod = new();
+    /// <summary>
+    /// キャッシュ用：メソッドからOnlyOtherPlayerフラグを高速取得
+    /// </summary>
+    private static Dictionary<MethodBase, bool> OnlyOtherFlagsByMethod = new();
+    /// <summary>
+    /// キャッシュ用：メソッドからパラメータ型配列を高速取得
+    /// </summary>
+    private static Dictionary<MethodBase, Type[]> ParamTypesByMethod = new();
+    /// <summary>
+    /// キャッシュ用：インスタンスメソッドかどうか
+    /// </summary>
+    private static HashSet<MethodBase> InstanceMethodSet = new();
 
     /// <summary>
     /// SuperNewRoles専用のRPC識別子
@@ -126,6 +142,14 @@ public static class CustomRPCManager
     /// <param name="attribute">CustomRPCAttribute</param>
     private static void RegisterRPC(MethodInfo method, CustomRPCAttribute attribute, byte id)
     {
+        // キャッシュにメソッド情報を登録
+        RpcIdsByMethod[method] = id;
+        OnlyOtherFlagsByMethod[method] = attribute.OnlyOtherPlayer;
+        ParamTypesByMethod[method] = method.GetParameters().Select(p => p.ParameterType).ToArray();
+        if (!method.IsStatic && typeof(AbilityBase).IsAssignableFrom(method.DeclaringType))
+        {
+            InstanceMethodSet.Add(method);
+        }
         // RPC送信用の新しいメソッドを定義
         static bool NewMethod(object? __instance, object[] __args, MethodBase __originalMethod)
         {
@@ -136,28 +160,30 @@ public static class CustomRPCManager
                 return true;
             }
 
-            var id = RpcMethodIds[RpcHashGenerate(__originalMethod)];
+            // RPC ID をキャッシュから取得
+            var id = RpcIdsByMethod[__originalMethod];
+            var onlyOther = OnlyOtherFlagsByMethod[__originalMethod];
             // RPC送信の準備
-            MessageWriter writer = AmongUsClient.Instance.StartRpcImmediately(PlayerControl.LocalPlayer.NetId, SNRRpcId, SendOption.Reliable, -1);
+            var writer = AmongUsClient.Instance.StartRpcImmediately(PlayerControl.LocalPlayer.NetId, SNRRpcId, SendOption.Reliable, -1);
             writer.Write(id);
 
-            // AbilityBaseインスタンスメソッドの場合、インスタンスを送信
-            if (__instance != null && __originalMethod.DeclaringType != null && typeof(AbilityBase).IsAssignableFrom(__originalMethod.DeclaringType))
+            // インスタンスメソッドならインスタンスを送信
+            if (__instance != null && InstanceMethodSet.Contains(__originalMethod))
             {
                 writer.Write(__instance, __originalMethod.DeclaringType);
             }
 
-            // 引数を設定
+            // 引数を書き込み
+            var paramTypes = ParamTypesByMethod[__originalMethod];
             for (int i = 0; i < __args.Length; i++)
             {
-                writer.Write(__args[i], __originalMethod.GetParameters()[i].ParameterType);
+                writer.Write(__args[i], paramTypes[i]);
             }
 
             // RPC送信
             AmongUsClient.Instance.FinishRpcImmediately(writer);
-            var attr = __originalMethod.GetCustomAttribute<CustomRPCAttribute>();
-            Logger.Info($"Sent RPC: {__originalMethod.Name} {attr?.OnlyOtherPlayer}");
-            return !attr?.OnlyOtherPlayer ?? true;
+            Logger.Info($"Sent RPC: {__originalMethod.Name} OnlyOther={onlyOther}");
+            return !onlyOther;
         }
         Logger.Info($"Registering RPC: {method.Name} {id}");
         var newMethod = NewMethod;
@@ -193,24 +219,23 @@ public static class CustomRPCManager
                 case SNRRpcId:
                     byte id = reader.ReadByte();
                     Logger.Info($"Received RPC: {id}");
-                    if (!RpcMethods.TryGetValue(id, out var method))
-                        return;
-                    // AbilityBaseのインスタンスメソッドならインスタンスを読み込む
+                    if (!RpcMethods.TryGetValue(id, out var method)) return;
+                    // インスタンスメソッドならインスタンスを読み込む
                     object? instance = null;
-                    if (!method.IsStatic && typeof(AbilityBase).IsAssignableFrom(method.DeclaringType))
+                    if (InstanceMethodSet.Contains(method))
                     {
                         instance = reader.ReadFromType(method.DeclaringType);
                     }
-                    // パラメーターを元にobject[]を作成
-                    List<object> args = new();
-                    for (int i = 0; i < method.GetParameters().Length; i++)
+                    // パラメータを読み込み
+                    var paramTypesRecv = ParamTypesByMethod[method];
+                    var argsRecv = new object[paramTypesRecv.Length];
+                    for (int i = 0; i < paramTypesRecv.Length; i++)
                     {
-                        args.Add(reader.ReadFromType(method.GetParameters()[i].ParameterType));
+                        argsRecv[i] = reader.ReadFromType(paramTypesRecv[i]);
                     }
                     IsRpcReceived = true;
                     Logger.Info($"Received RPC: {method.Name}");
-                    // インスタンスメソッドならinstanceを指定して呼び出し
-                    method.Invoke(instance, args.ToArray());
+                    method.Invoke(instance, argsRecv);
                     break;
                 case SNRSyncVersionRpc:
                     SyncVersion.ReceivedSyncVersion(reader);

@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using System.Linq;
+using HarmonyLib;
 using SuperNewRoles.CustomOptions.Categories;
 using SuperNewRoles.Events;
 using SuperNewRoles.Events.PCEvents;
@@ -138,6 +139,20 @@ public static class NameText
         MeetingStartEvent.Instance.AddListener(x => UpdateAllNameInfo());
         FixedUpdateEvent.Instance.AddListener(UpdateAllVisiable);
         _lastDead = new();
+    }
+    [HarmonyPatch(typeof(HudOverrideSystemType), nameof(HudOverrideSystemType.UpdateSystem))]
+    public static class HudOverrideSystemTypePatch
+    {
+        private static bool _lastActive = false;
+        public static void Prefix(HudOverrideSystemType __instance)
+        {
+            _lastActive = __instance.IsActive;
+        }
+        public static void Postfix(HudOverrideSystemType __instance)
+        {
+            if (__instance.IsActive && !_lastActive)
+                UpdateAllNameInfo();
+        }
     }
     private static Dictionary<ExPlayerControl, bool> _lastDead = new();
     private static void UpdateAllVisiable()

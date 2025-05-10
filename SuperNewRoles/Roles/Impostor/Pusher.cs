@@ -9,6 +9,7 @@ using SuperNewRoles.Modules;
 using SuperNewRoles.Modules.Events.Bases;
 using SuperNewRoles.Roles.Ability;
 using SuperNewRoles.Roles.Ability.CustomButton;
+using SuperNewRoles.Roles.Madmates;
 using UnityEngine;
 
 namespace SuperNewRoles.Roles.Impostor;
@@ -18,7 +19,7 @@ class Pusher : RoleBase<Pusher>
     public override RoleId Role { get; } = RoleId.Pusher;
     public override Color32 RoleColor { get; } = Palette.ImpostorRed;
     public override List<Func<AbilityBase>> Abilities { get; } = [
-        () => new PusherAbility(PusherCooldown)
+        () => new PusherAbility(PusherCooldown, PusherRevengeRole)
     ];
 
     public override QuoteMod QuoteMod { get; } = QuoteMod.SuperNewRoles;
@@ -33,6 +34,8 @@ class Pusher : RoleBase<Pusher>
     public override MapNames[] AvailableMaps { get; } = [MapNames.Airship];
     [CustomOptionFloat("PusherCooldown", 0f, 180f, 2.5f, 15f, translationName: "CoolTime")]
     public static float PusherCooldown;
+    [CustomOptionBool("PusherRevengeRole", false)]
+    public static bool PusherRevengeRole;
 }
 public class PusherAbility : TargetCustomButtonBase
 {
@@ -69,6 +72,7 @@ public class PusherAbility : TargetCustomButtonBase
 
     private float coolDown;
     private float effectTimer;
+    private bool _revengeRole;
     private List<PlayerControl> _untargetPlayers = new();
     private float updateUntargetPlayersTimer;
     private EventListener fixedUpdateEvent;
@@ -83,10 +87,11 @@ public class PusherAbility : TargetCustomButtonBase
     public override bool OnlyCrewmates => true;
     public override IEnumerable<PlayerControl> UntargetablePlayers => _untargetPlayers;
 
-    public PusherAbility(float coolDown)
+    public PusherAbility(float coolDown, bool revengeRole)
     {
         this.coolDown = coolDown;
         _untargetPlayers = new();
+        _revengeRole = revengeRole;
     }
 
     public override void OnClick()
@@ -114,11 +119,11 @@ public class PusherAbility : TargetCustomButtonBase
     }
 
     [CustomRPC]
-    public static void RpcPushPlayer(ExPlayerControl source, ExPlayerControl target, bool isLadder, int targetPositionDetailIndex)
+    public void RpcPushPlayer(ExPlayerControl source, ExPlayerControl target, bool isLadder, int targetPositionDetailIndex)
     {
         Ladder targetLadder = isLadder ? ShipStatus.Instance.Ladders.FirstOrDefault(x => x.Id == (byte)targetPositionDetailIndex) : null;
         if (isLadder ? targetLadder == null : PusherPushPositions.Length <= targetPositionDetailIndex)
-            throw new System.Exception($"TargetPositionDetailIndex is out of range, IsLadder:{isLadder}, Id:{targetPositionDetailIndex}");
+            throw new Exception($"TargetPositionDetailIndex is out of range, IsLadder:{isLadder}, Id:{targetPositionDetailIndex}");
 
         Vector2 pushPosition = new();
         PushTarget pushTarget = PushTarget.Down;
@@ -164,6 +169,8 @@ public class PusherAbility : TargetCustomButtonBase
         pushedPlayerDeadbody.Init(source, target, pushTarget, deadBody, deadBodyPosition);
 
         target.CustomDeath(CustomDeathType.Push, source: source);
+        if (_revengeRole)
+            target.GetAbilities<RevengeExileAbility>().ForEach(x => x.RandomExile());
     }
 
     private static void PushAnimation(PlayerControl player)

@@ -89,6 +89,7 @@ public class JumboAbility : AbilityBase
         _fixedUpdateListener?.RemoveListener();
         _nameTextUpdateListener?.RemoveListener();
         _wrapUpListener?.RemoveListener();
+        _murderListener?.RemoveListener();
     }
     private void OnWrapUp(WrapUpEventData data)
     {
@@ -116,9 +117,9 @@ public class JumboAbility : AbilityBase
         NameText.AddNameText(data.Player, $" ({normalizedSize})");
     }
     [CustomRPC]
-    private static void RpcSyncJumboSize(JumboAbility ability, float size)
+    private void RpcSyncJumboSize(float size)
     {
-        ability._currentSize = size;
+        _currentSize = size;
     }
     private void OnFixedUpdate()
     {
@@ -185,10 +186,10 @@ public class JumboAbility : AbilityBase
         if (Player.AmOwner)
         {
             syncTimer += Time.fixedDeltaTime;
-            if (syncTimer >= 5f)
+            if (syncTimer >= 5f && _currentSize < Data.MaxSize)
             {
                 syncTimer = 0f;
-                RpcSyncJumboSize(this, _currentSize);
+                RpcSyncJumboSize(_currentSize);
             }
         }
     }

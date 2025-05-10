@@ -554,6 +554,10 @@ public class ExPlayerControl
     {
         return _abilityCache.TryGetValue(typeof(T).Name, out var ability) ? ability as T : null;
     }
+    public List<T> GetAbilities<T>() where T : AbilityBase
+    {
+        return PlayerAbilities.Where(x => x is T).Cast<T>().ToList();
+    }
     public override string ToString()
     {
         return $"{Data?.PlayerName}({PlayerId}): {Role} {PlayerAbilities.Count}";

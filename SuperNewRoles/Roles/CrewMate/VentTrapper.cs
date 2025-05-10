@@ -7,6 +7,7 @@ using SuperNewRoles.Modules;
 using SuperNewRoles.Roles.Ability;
 using SuperNewRoles.Roles.Ability.CustomButton;
 using SuperNewRoles.Modules.Events.Bases;
+using System.Linq;
 
 namespace SuperNewRoles.Roles.CrewMate;
 
@@ -54,13 +55,18 @@ public record VentTrapperData(
     bool canUseVent
 );
 
-public class VentTrapperAbility : CustomButtonBase
+public class VentTrapperAbility : CustomButtonBase, IButtonEffect
 {
+    private List<Vent> _trappedVents = new();
+    private List<Vent> _trappingVents = new();
     private readonly VentTrapperData _data;
     private int _remainingUses;
     private Vent _targetVent;
-    private bool _isPlanting;
-    private float _plantTimer;
+    // IButtonEffect implementation for planting stun
+    public bool isEffectActive { get; set; }
+    public float EffectTimer { get; set; }
+    public Action OnEffectEnds => FinishPlanting;
+    public float EffectDuration => _data.setupTime;
 
     public VentTrapperAbility(VentTrapperData data)
     {
@@ -73,10 +79,10 @@ public class VentTrapperAbility : CustomButtonBase
     protected override KeyType keytype => KeyType.Ability1;
     public override float DefaultTimer => _data.coolTime;
 
-    public override bool CheckHasButton() => Player.AmOwner && _remainingUses > 0;
+    public override bool CheckHasButton() => base.CheckHasButton() && _remainingUses > 0;
     public override bool CheckIsAvailable()
     {
-        if (_isPlanting) return false;
+        if (isEffectActive) return false;
         if (!Player.Player.CanMove) return false;
         if (_data.canUseVent)
         {
@@ -84,55 +90,38 @@ public class VentTrapperAbility : CustomButtonBase
             return Player.Player.inVent && Vent.currentVent != null;
         }
         // Ventの近傍でのみ設置
-        return TryGetNearbyVent(out _targetVent);
+        return TryGetNearbyVent(ShipStatus.Instance.AllVents.Where(x => !_trappedVents.Contains(x)), out _targetVent);
     }
 
     public override void OnClick()
     {
-        if (_isPlanting) return;
         if (_data.canUseVent && Player.Player.inVent)
         {
             // Ventから退出
             Player.Player.MyPhysics?.RpcExitVent(Vent.currentVent.Id);
             return;
         }
-        if (!TryGetNearbyVent(out _targetVent)) return;
-        _isPlanting = true;
+        if (!TryGetNearbyVent(ShipStatus.Instance.AllVents.Where(x => !_trappedVents.Contains(x)), out _targetVent)) return;
         Player.Player.moveable = false;
-        _plantTimer = _data.setupTime;
-    }
-
-    public override void OnUpdate()
-    {
-        // UI update and cooldown handled by base
-        base.OnUpdate();
-        // handle planting timer
-        if (!_isPlanting) return;
-        if (MeetingHud.Instance != null)
-        {
-            _isPlanting = false;
-            return;
-        }
-        _plantTimer -= Time.deltaTime;
-        if (_plantTimer <= 0)
-        {
-            FinishPlanting();
-        }
+        Player.MyPhysics.body.velocity = Vector2.zero;
     }
 
     private void FinishPlanting()
     {
-        _isPlanting = false;
         Player.Player.moveable = true;
         _remainingUses--;
-        SetTrapRPC(this, _targetVent.Id, _data.stunTime);
+        GameObject batu = new("Batu");
+        batu.transform.parent = _targetVent.transform;
+        batu.transform.position = _targetVent.transform.position - new Vector3(0, 0.1f, 0.1f);
+        batu.AddComponent<SpriteRenderer>().sprite = AssetManager.GetAsset<Sprite>("DoorClosed.png");
+        SetTrapRPC(_targetVent.Id);
         ResetTimer();
     }
 
-    private bool TryGetNearbyVent(out Vent vent)
+    private bool TryGetNearbyVent(IEnumerable<Vent> vents, out Vent vent)
     {
         Vector3 center = Player.Player.Collider.bounds.center;
-        foreach (Vent v in ShipStatus.Instance.AllVents)
+        foreach (Vent v in vents)
         {
             if (Vector2.Distance(center, v.transform.position) <= v.UsableDistance &&
                 !PhysicsHelpers.AnythingBetween(Player.Player.Collider, center, v.transform.position, Constants.ShipOnlyMask, useTriggers: false))
@@ -146,9 +135,16 @@ public class VentTrapperAbility : CustomButtonBase
     }
 
     [CustomRPC]
-    public static void SetTrapRPC(VentTrapperAbility ability, int ventId, float stunTime)
+    public void SetTrapRPC(int ventId)
     {
         // TODO: トラップ登録と拘束処理を実装
-        Logger.Info("SET TRAP!!!!!!!!");
+        Vent vent = ShipStatus.Instance.AllVents.First(x => x.Id == ventId);
+        if (vent == null)
+        {
+            Logger.Error($"Vent not found: {ventId}");
+            return;
+        }
+        _trappedVents.Add(vent);
+        _trappingVents.Add(vent);
     }
 }

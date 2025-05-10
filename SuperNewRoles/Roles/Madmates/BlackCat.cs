@@ -63,12 +63,13 @@ public class RevengeExileAbility : AbilityBase
 
     public override void AttachToLocalPlayer()
     {
-        exileEvent = ExileEvent.Instance.AddListener(OnExile);
+        exileEvent = ExileEvent.Instance.AddListener(data =>
+        {
+            if (data.exiled?.PlayerId == PlayerControl.LocalPlayer.Data.PlayerId) RandomExile();
+        });
     }
-    private void OnExile(ExileEventData data)
+    public void RandomExile()
     {
-        if (data.exiled?.PlayerId != PlayerControl.LocalPlayer.Data.PlayerId) return;
-
         // 生きているプレイヤーをリストアップ
         var alivePlayers = ExPlayerControl.ExPlayerControls
             .Where(p => p != null && p.IsAlive() && (!IsNotImpostor || !p.IsImpostor()))
