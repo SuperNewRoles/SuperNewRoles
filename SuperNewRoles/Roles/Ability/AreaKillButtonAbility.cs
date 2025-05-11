@@ -99,7 +99,6 @@ public class AreaKillButtonAbility : CustomButtonBase
                 Constants.ShipAndObjectsMask)))
             {
                 // キルを実行
-                localPlayer.RpcCustomDeath(player, CustomDeathType);
                 killedPlayers.Add(player);
 
                 // 最大キル数に達したらループを抜ける
@@ -107,17 +106,25 @@ public class AreaKillButtonAbility : CustomButtonBase
             }
         }
         IsUsed = true;
-        KilledCallback?.Invoke(killedPlayers);
-
-        if (killedPlayers.Count > 0)
-        {
-            AreaKillEvent.Invoke(localPlayer, killedPlayers, CustomDeathType);
-        }
-
-        if (ExPlayerControl.ExPlayerControls.Count(x => x.IsAlive()) == 0)
-            EndGamer.RpcEndGameImpostorWin();
+        RpcAreaKill(killedPlayers, CustomDeathType);
         ResetTimer();
         Callback?.Invoke();
+    }
+
+    [CustomRPC]
+    public void RpcAreaKill(List<ExPlayerControl> killedPlayers, CustomDeathType customDeathType)
+    {
+        if (killedPlayers.Count == 0) return;
+        var localPlayer = ExPlayerControl.LocalPlayer;
+        foreach (var player in killedPlayers)
+        {
+            player.CustomDeath(customDeathType, source: localPlayer);
+        }
+        if (AmongUsClient.Instance.AmHost && ExPlayerControl.ExPlayerControls.Count(x => x.IsAlive()) == 0)
+            EndGamer.RpcEndGameImpostorWin();
+        KilledCallback?.Invoke(killedPlayers);
+        if (killedPlayers.Count > 0)
+            AreaKillEvent.Invoke(localPlayer, killedPlayers, CustomDeathType);
     }
 
     public override bool CheckIsAvailable()

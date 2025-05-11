@@ -181,30 +181,25 @@ public static class SyncSpawn
     [CustomRPC]
     public static void RpcAllSelectedFromHost()
     {
-        Logger.Info("RpcAllSelectedFromHost");
+        Logger.Info($"[SyncSpawn] RpcAllSelectedFromHost executed on client {PlayerControl.LocalPlayer.name}({PlayerControl.LocalPlayer.PlayerId}). SpawnLocation: {SpawnLocation?.Name.ToString() ?? "null"}. Current SpawnedPlayers.Count on this client: {SpawnedPlayers.Count}. Players: {string.Join(", ", SpawnedPlayers.Select(p => p.Player.name))}");
         spawnSuccess = true;
-        // デバッグログを追加
         if (!GameSettingOptions.SyncSpawn)
+        {
+            Logger.Info("[SyncSpawn] SyncSpawn option is disabled, RpcAllSelectedFromHost doing nothing further.");
             return;
+        }
 
-        Logger.Info("RpcAllSelectedFromHost2");
         SpawnInMinigame spawnInMinigame = GameObject.FindObjectOfType<SpawnInMinigame>();
         if (spawnInMinigame == null)
+        {
+            Logger.Error("[SyncSpawn] SpawnInMinigame instance not found in RpcAllSelectedFromHost. Aborting.");
             return;
-
-        Logger.Info("RpcAllSelectedFromHost3");
-        PlayerControl.LocalPlayer.SetKinematic(b: true);
-        PlayerControl.LocalPlayer.NetTransform.SetPaused(isPaused: true);
-        PlayerControl.LocalPlayer.NetTransform.RpcSnapTo(SpawnLocation.Location);
-
-        Logger.Info("RpcAllSelectedFromHost4");
-        DestroyableSingleton<HudManager>.Instance.PlayerCam.SnapToTarget();
+        }
 
         spawnInMinigame.StopAllCoroutines();
         spawnInMinigame.StartCoroutine(spawnInMinigame.CoSpawnAt(PlayerControl.LocalPlayer, SpawnLocation));
 
-        Logger.Info("RpcAllSelectedFromHost5");
-        spawnInMinigame = null;
+        Logger.Info($"[SyncSpawn] RpcAllSelectedFromHost finished for {PlayerControl.LocalPlayer.name}({PlayerControl.LocalPlayer.PlayerId})");
     }
     public static void ClearAndReloads()
     {

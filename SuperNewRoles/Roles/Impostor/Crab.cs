@@ -82,7 +82,6 @@ namespace SuperNewRoles.Roles.Impostor
 
         private void OnPhysicsFixedUpdate(PlayerPhysicsFixedUpdateEventData data)
         {
-            Logger.Info("OnPhysicsFixedUpdate");
             if (!data.Instance.AmOwner) return;
 
             if (MeetingHud.Instance != null)
@@ -92,7 +91,6 @@ namespace SuperNewRoles.Roles.Impostor
             }
             if (IsCrabActive)
             {
-                Logger.Info("OnPhysicsFixedUpdate: isEffectActive");
                 var vel = data.Instance.body.velocity;
                 data.Instance.body.velocity = new Vector2(vel.x, 0f);
             }

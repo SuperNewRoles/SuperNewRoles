@@ -579,6 +579,23 @@ public static class CustomRPCManager
                         }
                     }
                 }
+                else if (type == typeof(List<ExPlayerControl>))
+                {
+                    if (obj == null)
+                        writer.Write(0);
+                    else
+                    {
+                        var exPcList = obj as List<ExPlayerControl>;
+                        writer.Write(exPcList.Count);
+                        foreach (var exPlayerControl in exPcList)
+                        {
+                            if (exPlayerControl == null)
+                                writer.Write(byte.MaxValue);
+                            else
+                                writer.Write(exPlayerControl.PlayerId);
+                        }
+                    }
+                }
                 else
                 {
                     throw new Exception($"Invalid type: {obj.GetType()}");
@@ -633,6 +650,7 @@ public static class CustomRPCManager
             Type t when t == typeof(Color) => new Color(reader.ReadSingle(), reader.ReadSingle(), reader.ReadSingle(), reader.ReadSingle()),
             Type t when t == typeof(Color32) => new Color32(reader.ReadByte(), reader.ReadByte(), reader.ReadByte(), reader.ReadByte()),
             Type t when t == typeof(List<byte>) => ReadByteList(reader),
+            Type t when t == typeof(List<ExPlayerControl>) => ReadExPlayerControlList(reader),
             Type t when t == typeof(Vector2) => new Vector2(reader.ReadSingle(), reader.ReadSingle()),
             Type t when t == typeof(Vector3) => new Vector3(reader.ReadSingle(), reader.ReadSingle(), reader.ReadSingle()),
             Type t when t == typeof(Vector2[]) => ReadVector2Array(reader),
@@ -725,6 +743,20 @@ public static class CustomRPCManager
             array[i] = ExPlayerControl.ById(reader.ReadByte());
         }
         return array;
+    }
+
+    /// <summary>
+    /// List<ExPlayerControl>を読み取る
+    /// </summary>
+    private static List<ExPlayerControl> ReadExPlayerControlList(MessageReader reader)
+    {
+        int count = reader.ReadInt32();
+        List<ExPlayerControl> list = new(count);
+        for (int i = 0; i < count; i++)
+        {
+            list.Add(ExPlayerControl.ById(reader.ReadByte()));
+        }
+        return list;
     }
 
     /// <summary>

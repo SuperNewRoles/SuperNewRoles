@@ -44,15 +44,15 @@ public class SpeedBoosterAbility : CustomButtonBase, IButtonEffect
         ability.SpeedBoosterActive = isSpeedBoosterActive;
     }
 
-    public override void AttachToAlls()
+    public override void AttachToLocalPlayer()
     {
-        base.AttachToAlls();
+        base.AttachToLocalPlayer();
         _physicsUpdateListener = PlayerPhysicsFixedUpdateEvent.Instance.AddListener(OnPhysicsFixedUpdate);
     }
 
-    public override void DetachToAlls()
+    public override void DetachToLocalPlayer()
     {
-        base.DetachToAlls();
+        base.DetachToLocalPlayer();
         _physicsUpdateListener?.RemoveListener();
     }
 

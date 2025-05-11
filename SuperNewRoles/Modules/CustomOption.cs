@@ -1007,15 +1007,69 @@ public static class CustomOptionSaver
         try
         {
             Storage.EnsureStorageExists();
-            ReadAndApplyOptions();
+            // ReadAndApplyLoadedOptionsAndGetPresetIdから、読み込み成功の可否と、成功した場合のプリセット番号を取得
+            var (loadSuccessful, loadedPresetId) = ReadAndApplyLoadedOptionsAndGetPresetId();
+            if (loadSuccessful)
+            {
+                CurrentPreset = loadedPresetId; // 正常にロードできた場合のみCurrentPresetを更新
+            }
+            else
+            {
+                // Options.data の読み込みに失敗した場合
+                // CurrentPreset は初期値の 0 のまま。
+                // この時、オプションはデフォルト値にリセットされている。
+                // この状態でSave()が実行されると、プリセット0がデフォルト値で上書きされる。
+                // これがユーザーの指摘する問題の可能性が高い。
+                // TODO: この場合の挙動をより安全にするには、CurrentPreset を -1 (未選択状態) にする等を検討。
+                //       その場合、Save() メソッド側での対応も必要になる。
+            }
+
+            // presetNamesのロードは、Storage.LoadOptionDataが呼ばれた後に行う必要がある
+            // なぜなら、FileOptionStorage.LoadOptionData内でpresetNamesが設定されるため
             LoadPresetNames();
             IsLoaded = true;
         }
         catch (Exception ex)
         {
             Logger.Error($"Option loading failed: {ex.Message}");
+            IsLoaded = true; // 元のコードに合わせてtrueにするが、falseの方が安全かもしれない
+        }
+    }
+
+    // 元の ReadAndApplyOptions を改名し、戻り値で成功/失敗と読み込んだプリセットIDを返す
+    // (bool success, int loadedPresetId)
+    private static (bool, int) ReadAndApplyLoadedOptionsAndGetPresetId()
+    {
+        var (optionDataSuccess, version, presetIdFromOptionData) = Storage.LoadOptionData();
+
+        if (!optionDataSuccess) // LoadOptionData自体が失敗 (ファイルなし、チェックサムエラーなど)
+        {
+            Logger.Warning($"Loading OptionData failed. Using default settings.");
+            ApplyLoadedOptions(new Dictionary<string, byte>()); // 全オプションをデフォルトに
+            // presetNames は Storage.LoadOptionData 内でクリアされているはず
+            return (false, 0); // 失敗。返すプリセットIDは便宜上0 (CurrentPresetの初期値と同じ)
+        }
+        if (version != CurrentVersion) // バージョン不一致
+        {
+            Logger.Warning($"Invalid option data version: {version}. Expected: {CurrentVersion}. Using default settings.");
+            ApplyLoadedOptions(new Dictionary<string, byte>()); // 全オプションをデフォルトに
+            // presetNames は Storage.LoadOptionData 内で読み込めているかもしれないが、バージョンが違うので使わない方が安全か。
+            // Storage.LoadOptionData は version が違っても presetIdFromOptionData と presetNames を返すが、
+            // ここではバージョン不一致の場合はプリセットデータも読まず、失敗扱いとする。
+            return (false, presetIdFromOptionData); // 失敗。読み込もうとしたプリセットIDは返す。
         }
 
+        // Options.data は正常に読み込めた。次に、記録されていたプリセットのデータを読み込む。
+        var (presetDataSuccess, options) = Storage.LoadPresetData(presetIdFromOptionData);
+        if (!presetDataSuccess)
+        {
+            Logger.Warning($"Preset data loading failed for preset {presetIdFromOptionData}. Using default settings.");
+            ApplyLoadedOptions(new Dictionary<string, byte>()); // 該当プリセットのデータが読めなかったのでデフォルトに
+            return (false, presetIdFromOptionData); // 失敗。読み込もうとしたプリセットIDは返す。
+        }
+
+        ApplyLoadedOptions(options); // 正常に読み込めたオプションを適用
+        return (true, presetIdFromOptionData); // 成功。読み込んだプリセットIDを返す。
     }
 
     private static void LoadPresetNames()
@@ -1046,25 +1100,6 @@ public static class CustomOptionSaver
         {
             Logger.Error($"Preset loading failed: {ex.Message}");
         }
-    }
-
-    private static void ReadAndApplyOptions()
-    {
-        var (success, version, preset) = Storage.LoadOptionData();
-        if (!success || version != CurrentVersion)
-        {
-            Logger.Warning($"Invalid option data version: {version}. Using default settings.");
-            return;
-        }
-
-        var (optionsSuccess, options) = Storage.LoadPresetData(preset);
-        if (!optionsSuccess)
-        {
-            Logger.Warning("Preset data loading failed. Using default settings.");
-            return;
-        }
-
-        ApplyLoadedOptions(options);
     }
 
     private static void ApplyLoadedOptions(Dictionary<string, byte> options)
@@ -1143,6 +1178,7 @@ public class FileOptionStorage : IOptionStorage
         {
             if (!File.Exists(_optionFileName))
             {
+                this.presetNames.Clear(); // ファイルがない場合は内部のpresetNamesもクリア
                 return (false, 0, 0);
             }
 
@@ -1152,19 +1188,20 @@ public class FileOptionStorage : IOptionStorage
             byte version = reader.ReadByte();
             if (!ValidateChecksum(reader))
             {
+                this.presetNames.Clear(); // チェックサム不正でも内部のpresetNamesをクリア
                 return (false, version, 0);
             }
 
             int preset = reader.ReadInt32();
 
-            // プリセット名を読み込む
-            presetNames.Clear();
+            // プリセット名を読み込む (this.presetNames を更新)
+            this.presetNames.Clear();
             int nameCount = reader.ReadInt32();
             for (int i = 0; i < nameCount; i++)
             {
                 int presetId = reader.ReadInt32();
                 string name = reader.ReadString();
-                presetNames[presetId] = name;
+                this.presetNames[presetId] = name;
             }
 
             return (true, version, preset);
@@ -1275,7 +1312,11 @@ public class FileOptionStorage : IOptionStorage
 
     public (bool success, Dictionary<int, string> names) LoadPresetNames()
     {
-        return (true, presetNames);
+        // LoadOptionData() によって更新された可能性のある内部の presetNames フィールドのコピーを返す
+        lock (FileLocker) // presetNamesへのアクセスを保護
+        {
+            return (true, new Dictionary<int, string>(this.presetNames));
+        }
     }
 
     public void SaveOptionData(byte version, int preset)

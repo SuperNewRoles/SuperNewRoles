@@ -207,6 +207,7 @@ public class DouseButtonAbility : TargetCustomButtonBase, IButtonEffect
             if (_currentTarget.IsDead() || Target != _currentTarget)
             {
                 isEffectActive = false;
+                EffectTimer = EffectDuration;
                 actionButton.cooldownTimerText.color = Palette.EnabledColor;
                 Timer = 0.0001f;
                 return;
