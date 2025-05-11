@@ -155,10 +155,6 @@ public class EatDeadBodyAbility : CustomButtonBase
         }
     }
 
-    public override void AttachToLocalPlayer()
-    {
-    }
-
     [CustomRPC]
     public static void RpcEatDeadBody(int parentId, EatDeadBodyAbility ability)
     {

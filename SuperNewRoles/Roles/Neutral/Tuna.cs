@@ -75,6 +75,8 @@ class Tuna : RoleBase<Tuna>
             }
             if (isMeeting)
                 return;
+            if (Minigame.Instance != null && Minigame.Instance is SpawnInMinigame)
+                return;
 
             // 現在の位置を取得
             Vector2 currentPosition = Player.transform.position;

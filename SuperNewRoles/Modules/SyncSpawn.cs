@@ -22,7 +22,6 @@ public static class SyncSpawn
         {
             if (!GameSettingOptions.SyncSpawn) return true;
             if (__instance.amClosing != Minigame.CloseState.None) return false;
-            if (__instance.gotButton) return false;
             __instance.gotButton = true;
             SpawnLocation = spawnPoint;
             RpcSpawnSelected(ExPlayerControl.LocalPlayer);
@@ -195,6 +194,13 @@ public static class SyncSpawn
             Logger.Error("[SyncSpawn] SpawnInMinigame instance not found in RpcAllSelectedFromHost. Aborting.");
             return;
         }
+
+        PlayerControl.LocalPlayer.SetKinematic(b: true);
+        PlayerControl.LocalPlayer.NetTransform.SetPaused(isPaused: true);
+        PlayerControl.LocalPlayer.NetTransform.RpcSnapTo(SpawnLocation.Location);
+
+        Logger.Info("RpcAllSelectedFromHost4");
+        DestroyableSingleton<HudManager>.Instance.PlayerCam.SnapToTarget();
 
         spawnInMinigame.StopAllCoroutines();
         spawnInMinigame.StartCoroutine(spawnInMinigame.CoSpawnAt(PlayerControl.LocalPlayer, SpawnLocation));
