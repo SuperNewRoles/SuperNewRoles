@@ -270,25 +270,14 @@ public static class HelpMenuObjectManager
         public static void Postfix()
         {
             GhostAssignRole.ClearAndReloads();
-            // ヘルプメニューが表示されている場合は自分の役職情報カテゴリに戻す
-            if (helpMenuObject != null && fadeCoroutine != null && fadeCoroutine.isAvtive)
+            // ヘルプメニューが表示されている場合は破棄する
+            if (helpMenuObject != null)
             {
-                var rightContainer = helpMenuObject.transform.Find("RightContainer").gameObject;
-                if (CurrentCategory != null && CurrentCategory.Category != DEFAULT_MENU_GAME)
-                {
-                    CurrentCategory.Hide(rightContainer);
-                    if (selectedButtons.TryGetValue(CurrentCategory.Name, out var oldSelectedObject))
-                        oldSelectedObject.SetActive(false);
-
-                    CurrentCategory = categories.FirstOrDefault(c => c.Category == DEFAULT_MENU_GAME);
-                    if (CurrentCategory != null)
-                    {
-                        CurrentCategory.Show(rightContainer);
-                        if (selectedButtons.TryGetValue(CurrentCategory.Name, out var newSelectedObject))
-                            newSelectedObject.SetActive(true);
-                        CurrentCategory.UpdateShow();
-                    }
-                }
+                GameObject.Destroy(helpMenuObject);
+                helpMenuObject = null;
+                fadeCoroutine = null;
+                CurrentCategory = null;
+                selectedButtons?.Clear();
             }
         }
     }

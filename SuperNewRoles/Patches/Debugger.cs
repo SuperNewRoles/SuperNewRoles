@@ -15,13 +15,13 @@ namespace SuperNewRoles.Patches;
 [HarmonyPatch(typeof(HudManager), nameof(HudManager.Update))]
 public static class Debugger
 {
-    public static void Postfix()
+    public static void Postfix(HudManager __instance)
     {
         // Shift Ctrl + D
         if (Input.GetKey(KeyCode.LeftShift) && Input.GetKey(KeyCode.LeftControl) && Input.GetKeyDown(KeyCode.D))
         {
         }
-        else if (!ModHelpers.GetManyKeyDown(ControllerManagerUpdatePatch.HaisonKeyCodes) && Input.GetKeyDown(KeyCode.H))
+        else if (!__instance.IsIntroDisplayed && !ModHelpers.GetManyKeyDown(ControllerManagerUpdatePatch.HaisonKeyCodes) && Input.GetKeyDown(KeyCode.H))
         {
             HelpMenuObjectManager.ShowOrHideHelpMenu();
         }
