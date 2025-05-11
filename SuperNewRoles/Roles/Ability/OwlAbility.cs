@@ -42,9 +42,10 @@ public class OwlAbility : AbilityBase
     public override void AttachToAlls()
     {
         _customKillButtonAbility = new(
-            () => _data.CanKillOutsideOfBlackout || ModHelpers.IsElectrical(),
+            () => _nestVent,
             () => _data.KillCooldown,
-            () => false
+            () => false,
+            isTargetable: target => _data.CanKillOutsideOfBlackout || ModHelpers.IsElectrical()
         );
         _customVentAbility = new(
             () => _data.CanUseVent
