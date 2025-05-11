@@ -1013,16 +1013,6 @@ public static class CustomOptionSaver
             {
                 CurrentPreset = loadedPresetId; // 正常にロードできた場合のみCurrentPresetを更新
             }
-            else
-            {
-                // Options.data の読み込みに失敗した場合
-                // CurrentPreset は初期値の 0 のまま。
-                // この時、オプションはデフォルト値にリセットされている。
-                // この状態でSave()が実行されると、プリセット0がデフォルト値で上書きされる。
-                // これがユーザーの指摘する問題の可能性が高い。
-                // TODO: この場合の挙動をより安全にするには、CurrentPreset を -1 (未選択状態) にする等を検討。
-                //       その場合、Save() メソッド側での対応も必要になる。
-            }
 
             // presetNamesのロードは、Storage.LoadOptionDataが呼ばれた後に行う必要がある
             // なぜなら、FileOptionStorage.LoadOptionData内でpresetNamesが設定されるため
@@ -1228,85 +1218,102 @@ public class FileOptionStorage : IOptionStorage
 
             Dictionary<string, byte> options = ReadOptions(reader);
 
-            // RoleOptionの情報が存在すれば読み込む
+            // RoleOption, Exclusivity, ModifierRole, GhostRoleの情報を読み込む
             if (fileStream.Position < fileStream.Length)
             {
-                int roleOptionCount = reader.ReadInt32();
-                for (int i = 0; i < roleOptionCount; i++)
-                {
-                    string roleIdStr = reader.ReadString();
-                    byte numberOfCrews = reader.ReadByte();
-                    int percentage = reader.ReadInt32();
-
-                    // RoleIdの文字列から RoleId 列挙体へ変換
-                    if (Enum.TryParse(typeof(RoleId), roleIdStr, out var roleIdObj) && roleIdObj is RoleId roleId)
-                    {
-                        var roleOption = RoleOptionManager.RoleOptions.FirstOrDefault(x => x.RoleId == roleId);
-                        if (roleOption != null)
-                        {
-                            roleOption.NumberOfCrews = numberOfCrews;
-                            roleOption.Percentage = percentage;
-                        }
-                    }
-                }
-
-                // 排他設定の読み込み
+                LoadRoleOptionsData(reader);
                 if (fileStream.Position < fileStream.Length)
                 {
-                    int exclusivityCount = reader.ReadInt32();
-                    RoleOptionManager.ClearExclusivitySettings();
-                    for (int i = 0; i < exclusivityCount; i++)
-                    {
-                        int maxAssign = reader.ReadInt32();
-                        int rolesCount = reader.ReadInt32();
-                        string[] roles = new string[rolesCount];
-                        for (int j = 0; j < rolesCount; j++)
-                        {
-                            roles[j] = reader.ReadString();
-                        }
-                        RoleOptionManager.AddExclusivitySetting(maxAssign, roles);
-                    }
+                    LoadExclusivitySettingsData(reader);
                     if (fileStream.Position < fileStream.Length)
                     {
-                        int modifierRoleCount = reader.ReadInt32();
-                        for (int i = 0; i < modifierRoleCount; i++)
-                        {
-                            string modifierRoleIdStr = reader.ReadString();
-                            byte numberOfCrews = reader.ReadByte();
-                            int percentage = reader.ReadInt32();
-                            if (Enum.TryParse(typeof(ModifierRoleId), modifierRoleIdStr, out var modifierRoleIdObj) && modifierRoleIdObj is ModifierRoleId modifierRoleId)
-                            {
-                                var modifierRoleOption = RoleOptionManager.ModifierRoleOptions.FirstOrDefault(x => x.ModifierRoleId == modifierRoleId);
-                                if (modifierRoleOption != null)
-                                {
-                                    modifierRoleOption.NumberOfCrews = numberOfCrews;
-                                    modifierRoleOption.Percentage = percentage;
-                                }
-                            }
-                        }
+                        LoadModifierRoleOptionsData(reader);
                         if (fileStream.Position < fileStream.Length)
                         {
-                            int ghostRoleCount = reader.ReadInt32();
-                            for (int i = 0; i < ghostRoleCount; i++)
-                            {
-                                string ghostRoleIdStr = reader.ReadString();
-                                byte numberOfCrews = reader.ReadByte();
-                                int percentage = reader.ReadInt32();
-                                if (Enum.TryParse(typeof(GhostRoleId), ghostRoleIdStr, out var ghostRoleIdObj) && ghostRoleIdObj is GhostRoleId ghostRoleId)
-                                {
-                                    var ghostRoleOption = RoleOptionManager.GhostRoleOptions.FirstOrDefault(x => x.RoleId == ghostRoleId);
-                                    if (ghostRoleOption != null)
-                                    {
-                                        ghostRoleOption.NumberOfCrews = numberOfCrews;
-                                        ghostRoleOption.Percentage = percentage;
-                                    }
-                                }
-                            }
+                            LoadGhostRoleOptionsData(reader);
                         }
                     }
                 }
             }
             return (true, options);
+        }
+    }
+
+    private void LoadRoleOptionsData(BinaryReader reader)
+    {
+        int roleOptionCount = reader.ReadInt32();
+        for (int i = 0; i < roleOptionCount; i++)
+        {
+            string roleIdStr = reader.ReadString();
+            byte numberOfCrews = reader.ReadByte();
+            int percentage = reader.ReadInt32();
+
+            if (Enum.TryParse(typeof(RoleId), roleIdStr, out var roleIdObj) && roleIdObj is RoleId roleId)
+            {
+                var roleOption = RoleOptionManager.RoleOptions.FirstOrDefault(x => x.RoleId == roleId);
+                if (roleOption != null)
+                {
+                    roleOption.NumberOfCrews = numberOfCrews;
+                    roleOption.Percentage = percentage;
+                }
+            }
+        }
+    }
+
+    private void LoadExclusivitySettingsData(BinaryReader reader)
+    {
+        int exclusivityCount = reader.ReadInt32();
+        RoleOptionManager.ClearExclusivitySettings();
+        for (int i = 0; i < exclusivityCount; i++)
+        {
+            int maxAssign = reader.ReadInt32();
+            int rolesCount = reader.ReadInt32();
+            string[] roles = new string[rolesCount];
+            for (int j = 0; j < rolesCount; j++)
+            {
+                roles[j] = reader.ReadString();
+            }
+            RoleOptionManager.AddExclusivitySetting(maxAssign, roles);
+        }
+    }
+
+    private void LoadModifierRoleOptionsData(BinaryReader reader)
+    {
+        int modifierRoleCount = reader.ReadInt32();
+        for (int i = 0; i < modifierRoleCount; i++)
+        {
+            string modifierRoleIdStr = reader.ReadString();
+            byte numberOfCrews = reader.ReadByte();
+            int percentage = reader.ReadInt32();
+            if (Enum.TryParse(typeof(ModifierRoleId), modifierRoleIdStr, out var modifierRoleIdObj) && modifierRoleIdObj is ModifierRoleId modifierRoleId)
+            {
+                var modifierRoleOption = RoleOptionManager.ModifierRoleOptions.FirstOrDefault(x => x.ModifierRoleId == modifierRoleId);
+                if (modifierRoleOption != null)
+                {
+                    modifierRoleOption.NumberOfCrews = numberOfCrews;
+                    modifierRoleOption.Percentage = percentage;
+                }
+            }
+        }
+    }
+
+    private void LoadGhostRoleOptionsData(BinaryReader reader)
+    {
+        int ghostRoleCount = reader.ReadInt32();
+        for (int i = 0; i < ghostRoleCount; i++)
+        {
+            string ghostRoleIdStr = reader.ReadString();
+            byte numberOfCrews = reader.ReadByte();
+            int percentage = reader.ReadInt32();
+            if (Enum.TryParse(typeof(GhostRoleId), ghostRoleIdStr, out var ghostRoleIdObj) && ghostRoleIdObj is GhostRoleId ghostRoleId)
+            {
+                var ghostRoleOption = RoleOptionManager.GhostRoleOptions.FirstOrDefault(x => x.RoleId == ghostRoleId);
+                if (ghostRoleOption != null)
+                {
+                    ghostRoleOption.NumberOfCrews = numberOfCrews;
+                    ghostRoleOption.Percentage = percentage;
+                }
+            }
         }
     }
 
@@ -1351,49 +1358,62 @@ public class FileOptionStorage : IOptionStorage
             WriteChecksum(writer);
             WriteOptions(writer, options);
 
-            // RoleOptionのデータを書き出す
-            var roleOptions = RoleOptionManager.RoleOptions;
-            writer.Write(roleOptions.Length);
+            WriteRoleOptionsData(writer);
+            WriteExclusivitySettingsData(writer);
+            WriteModifierRoleOptionsData(writer);
+            WriteGhostRoleOptionsData(writer);
+        }
+    }
 
-            foreach (var roleOption in roleOptions)
-            {
-                writer.Write(roleOption.RoleId.ToString());
-                writer.Write(roleOption.NumberOfCrews);
-                writer.Write(roleOption.Percentage);
-            }
+    private void WriteRoleOptionsData(BinaryWriter writer)
+    {
+        var roleOptions = RoleOptionManager.RoleOptions;
+        writer.Write(roleOptions.Length);
 
-            // 排他設定の書き出し
-            var exclusivitySettings = RoleOptionManager.ExclusivitySettings;
-            writer.Write(exclusivitySettings.Count);
-            foreach (var setting in exclusivitySettings)
-            {
-                writer.Write(setting.MaxAssign);
-                writer.Write(setting.Roles.Count);
-                foreach (var role in setting.Roles)
-                {
-                    writer.Write(role.ToString());
-                }
-            }
+        foreach (var roleOption in roleOptions)
+        {
+            writer.Write(roleOption.RoleId.ToString());
+            writer.Write(roleOption.NumberOfCrews);
+            writer.Write(roleOption.Percentage);
+        }
+    }
 
-            // ModifierRoleOptionのデータを書き出す
-            var modifierRoleOptions = RoleOptionManager.ModifierRoleOptions;
-            writer.Write(modifierRoleOptions.Length);
-            foreach (var modifierRoleOption in modifierRoleOptions)
+    private void WriteExclusivitySettingsData(BinaryWriter writer)
+    {
+        var exclusivitySettings = RoleOptionManager.ExclusivitySettings;
+        writer.Write(exclusivitySettings.Count);
+        foreach (var setting in exclusivitySettings)
+        {
+            writer.Write(setting.MaxAssign);
+            writer.Write(setting.Roles.Count);
+            foreach (var role in setting.Roles)
             {
-                writer.Write(modifierRoleOption.ModifierRoleId.ToString());
-                writer.Write(modifierRoleOption.NumberOfCrews);
-                writer.Write(modifierRoleOption.Percentage);
+                writer.Write(role.ToString());
             }
+        }
+    }
 
-            // GhostRoleOptionのデータを書き出す
-            var ghostRoleOptions = RoleOptionManager.GhostRoleOptions;
-            writer.Write(ghostRoleOptions.Length);
-            foreach (var ghostRoleOption in ghostRoleOptions)
-            {
-                writer.Write(ghostRoleOption.RoleId.ToString());
-                writer.Write(ghostRoleOption.NumberOfCrews);
-                writer.Write(ghostRoleOption.Percentage);
-            }
+    private void WriteModifierRoleOptionsData(BinaryWriter writer)
+    {
+        var modifierRoleOptions = RoleOptionManager.ModifierRoleOptions;
+        writer.Write(modifierRoleOptions.Length);
+        foreach (var modifierRoleOption in modifierRoleOptions)
+        {
+            writer.Write(modifierRoleOption.ModifierRoleId.ToString());
+            writer.Write(modifierRoleOption.NumberOfCrews);
+            writer.Write(modifierRoleOption.Percentage);
+        }
+    }
+
+    private void WriteGhostRoleOptionsData(BinaryWriter writer)
+    {
+        var ghostRoleOptions = RoleOptionManager.GhostRoleOptions;
+        writer.Write(ghostRoleOptions.Length);
+        foreach (var ghostRoleOption in ghostRoleOptions)
+        {
+            writer.Write(ghostRoleOption.RoleId.ToString());
+            writer.Write(ghostRoleOption.NumberOfCrews);
+            writer.Write(ghostRoleOption.Percentage);
         }
     }
 
