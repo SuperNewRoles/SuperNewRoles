@@ -61,7 +61,7 @@ public class CustomCosmeticsLayer
 
         ModdedCosmetics = new GameObject("ModdedCosmetics");
         ModdedCosmetics.transform.parent = cosmeticsLayer.transform;
-        ModdedCosmetics.transform.localPosition = Vector3.zero;
+        ModdedCosmetics.transform.localPosition = new(0, 0, -0.0001f);
         ModdedCosmetics.transform.localScale = Vector3.one;
         ModdedCosmetics.transform.localRotation = Quaternion.identity;
         ModdedCosmetics.layer = cosmeticsLayer.gameObject.layer;

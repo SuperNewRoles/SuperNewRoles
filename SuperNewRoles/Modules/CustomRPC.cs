@@ -110,26 +110,39 @@ public static class CustomRPCManager
     public static void Load()
     {
         // すべてのRPCメソッドのハッシュ値を収集
-        var methods = Assembly.GetExecutingAssembly()
+        var methodsWithDetails = Assembly.GetExecutingAssembly()
             .GetTypes()
             .SelectMany(t => t.GetMethods(BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance | BindingFlags.Static))
-            .Where(m => m.GetCustomAttribute<CustomRPCAttribute>() != null)
-            .OrderBy(m => RpcHashGenerate(m))
+            .Select(m => new
+            {
+                Method = m,
+                Attribute = m.GetCustomAttribute<CustomRPCAttribute>(),
+                Hash = RpcHashGenerate(m), // RpcHashGenerateを一度だけ呼び出す
+                ParamTypes = m.GetParameters().Select(p => p.ParameterType).ToArray() // パラメータ型もここで取得
+            })
+            .Where(m => m.Attribute != null)
+            .OrderBy(m => m.Hash) // 事前に計算したハッシュでソート
             .ToList();
-        SuperNewRolesPlugin.Logger.LogInfo($"[Splash] Start loading {methods.Count} RPC methods");
+
+        SuperNewRolesPlugin.Logger.LogInfo($"[Splash] Start loading {methodsWithDetails.Count} RPC methods");
 
         // ソートされたハッシュ値に基づいてIDを割り当て
-        for (byte i = 0; i < methods.Count; i++)
+        for (byte i = 0; i < methodsWithDetails.Count; i++)
         {
-            var attribute = methods[i].GetCustomAttribute<CustomRPCAttribute>();
+            var methodDetail = methodsWithDetails[i];
+            var method = methodDetail.Method;
+            var attribute = methodDetail.Attribute;
+            var hash = methodDetail.Hash; // 事前計算したハッシュ
+            var paramTypes = methodDetail.ParamTypes; // 事前取得したパラメータ型
+
             // staticメソッドはもちろん、AbilityBaseのインスタンスメソッドも許可
-            if (!methods[i].IsStatic && !typeof(AbilityBase).IsAssignableFrom(methods[i].DeclaringType))
+            if (!method.IsStatic && !typeof(AbilityBase).IsAssignableFrom(method.DeclaringType))
             {
-                Logger.Error($"CustomRPC: {methods[i].Name} is not static and not an AbilityBase instance method");
+                Logger.Error($"CustomRPC: {method.Name} is not static and not an AbilityBase instance method");
                 continue;
             }
-            SuperNewRolesPlugin.Logger.LogInfo($"[Splash] Loading RPC method ({i + 1}/{methods.Count}): {methods[i].Name}");
-            RegisterRPC(methods[i], attribute, i);
+            SuperNewRolesPlugin.Logger.LogInfo($"[Splash] Loading RPC method ({i + 1}/{methodsWithDetails.Count}): {method.Name}");
+            RegisterRPC(method, attribute, i, hash, paramTypes); // ハッシュとパラメータ型を渡す
         }
         SuperNewRolesPlugin.Logger.LogInfo($"[Splash] Registered {RpcMethods.Count} RPC methods");
     }
@@ -140,12 +153,15 @@ public static class CustomRPCManager
     /// </summary>
     /// <param name="method">登録するメソッド</param>
     /// <param name="attribute">CustomRPCAttribute</param>
-    private static void RegisterRPC(MethodInfo method, CustomRPCAttribute attribute, byte id)
+    /// <param name="id">RPC ID</param>
+    /// <param name="hash">メソッドのハッシュ値</param>
+    /// <param name="paramTypes">メソッドのパラメータ型配列</param>
+    private static void RegisterRPC(MethodInfo method, CustomRPCAttribute attribute, byte id, string hash, Type[] paramTypes)
     {
         // キャッシュにメソッド情報を登録
         RpcIdsByMethod[method] = id;
         OnlyOtherFlagsByMethod[method] = attribute.OnlyOtherPlayer;
-        ParamTypesByMethod[method] = method.GetParameters().Select(p => p.ParameterType).ToArray();
+        ParamTypesByMethod[method] = paramTypes; // 事前取得したパラメータ型を使用
         if (!method.IsStatic && typeof(AbilityBase).IsAssignableFrom(method.DeclaringType))
         {
             InstanceMethodSet.Add(method);
@@ -161,11 +177,11 @@ public static class CustomRPCManager
             }
 
             // RPC ID をキャッシュから取得
-            var id = RpcIdsByMethod[__originalMethod];
+            var rpcId = RpcIdsByMethod[__originalMethod];
             var onlyOther = OnlyOtherFlagsByMethod[__originalMethod];
             // RPC送信の準備
             var writer = AmongUsClient.Instance.StartRpcImmediately(PlayerControl.LocalPlayer.NetId, SNRRpcId, SendOption.Reliable, -1);
-            writer.Write(id);
+            writer.Write(rpcId);
 
             // インスタンスメソッドならインスタンスを送信
             if (__instance != null && InstanceMethodSet.Contains(__originalMethod))
@@ -174,10 +190,10 @@ public static class CustomRPCManager
             }
 
             // 引数を書き込み
-            var paramTypes = ParamTypesByMethod[__originalMethod];
+            var originalParamTypes = ParamTypesByMethod[__originalMethod];
             for (int i = 0; i < __args.Length; i++)
             {
-                writer.Write(__args[i], paramTypes[i]);
+                writer.Write(__args[i], originalParamTypes[i]);
             }
 
             // RPC送信
@@ -186,12 +202,12 @@ public static class CustomRPCManager
             return !onlyOther;
         }
         Logger.Info($"Registering RPC: {method.Name} {id}");
-        var newMethod = NewMethod;
+        var newHarmonyMethod = NewMethod;
         RpcMethods[id] = method;
-        RpcMethodIds[RpcHashGenerate(method)] = id;
+        RpcMethodIds[hash] = id; // 事前計算したハッシュを使用
 
         // メソッドの中身をRPCを送信するものに入れ替える
-        SuperNewRolesPlugin.Instance.Harmony.Patch(method, new HarmonyMethod(newMethod.Method));
+        SuperNewRolesPlugin.Instance.Harmony.Patch(method, new HarmonyMethod(newHarmonyMethod.Method));
     }
     private static string GetMethodFullName(MethodInfo method)
     {

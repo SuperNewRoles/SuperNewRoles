@@ -3,6 +3,8 @@ using UnityEngine;
 using TMPro;
 using SuperNewRoles.Roles;
 using SuperNewRoles.Modules;
+using System;
+using System.Linq;
 
 namespace SuperNewRoles.CustomOptions.Data;
 public class ModifierOptionMenuObjectData : OptionMenuBase
@@ -66,6 +68,14 @@ public class ModifierOptionMenuObjectData : OptionMenuBase
     public Dictionary<string, List<GameObject>> CategoryModifierOptionGameObjects { get; private set; }
     public GameObject ModeMenu { get; set; }
 
+    // AssignFilter Edit Menu related properties
+    public GameObject AssignFilterEditMenu { get; set; }
+    public Scroller AssignFilterEditRightAreaScroller { get; set; }
+    public GameObject AssignFilterEditRightAreaInner { get; set; }
+    public GameObject AssignFilterRoleDetailButtonContainer { get; set; }
+    public ModifierCategoryDataBase CurrentEditingModifierForAssignFilter { get; set; }
+    public string CurrentAssignFilterEditingRoleType { get; set; }
+
     public ModifierOptionMenuObjectData(GameObject standardOptionMenu) : base()
     {
         Instance = this;
@@ -109,6 +119,8 @@ public class ModifierOptionMenuObjectData : OptionMenuBase
     {
         if (StandardOptionMenu != null)
             StandardOptionMenu.SetActive(false);
+        if (AssignFilterEditMenu != null)
+            AssignFilterEditMenu.SetActive(false);
     }
 
     public override void UpdateOptionDisplay()
@@ -173,23 +185,63 @@ public class ModifierOptionMenuObjectData : OptionMenuBase
         public string Name { get; set; }
         public IEnumerable<CustomOption> Options { get; set; }
         public bool HiddenOption { get; set; } = false;
+        public bool AssignFilter { get; set; } = false;
+        public virtual Func<List<RoleId>> AssignFilterList { get; } = () => [];
+        public virtual Action<List<RoleId>> OnUpdateAssignFilter { get; } = (_) => { };
     }
     public class ModifierCategoryDataCategory : ModifierCategoryDataBase
     {
+        private List<RoleId> _assignFilterList;
+        public override Func<List<RoleId>> AssignFilterList { get; }
+        public override Action<List<RoleId>> OnUpdateAssignFilter { get; }
         public ModifierCategoryDataCategory(CustomOptionCategory category)
         {
             Name = category.Name;
             Options = category.Options;
+            Logger.Info(category.GetType().Name);
+            AssignFilter = category.HasModifierAssignFilter;
+            _assignFilterList = category.ModifierAssignFilter;
+            AssignFilterList = () => _assignFilterList;
+            OnUpdateAssignFilter = (list) =>
+            {
+                _assignFilterList = list;
+                category.ModifierAssignFilter = list;
+            };
         }
     }
     public class ModifierCategoryDataModifier : ModifierCategoryDataBase
     {
         public RoleOptionManager.ModifierRoleOption ModifierOption { get; }
+        private List<RoleId> _assignFilterList;
+        public override Func<List<RoleId>> AssignFilterList { get; }
+        public override Action<List<RoleId>> OnUpdateAssignFilter { get; }
+
         public ModifierCategoryDataModifier(RoleOptionManager.ModifierRoleOption modifier)
         {
             ModifierOption = modifier;
             Name = ModHelpers.CsWithTranslation(ModifierOption.RoleColor, modifier.ModifierRoleId.ToString());
             Options = modifier.Options;
+            if (CustomRoleManager.TryGetModifierById(modifier.ModifierRoleId, out var modifierData))
+            {
+                AssignFilter = modifierData.AssignFilter;
+                _assignFilterList = RoleOptionManager.ModifierRoleOptions.FirstOrDefault(x => x.ModifierRoleId == modifier.ModifierRoleId)?.AssignFilterList ?? new List<RoleId>();
+            }
+            else
+            {
+                AssignFilter = false;
+                _assignFilterList = new List<RoleId>();
+            }
+
+            AssignFilterList = () => _assignFilterList;
+            OnUpdateAssignFilter = (list) =>
+            {
+                _assignFilterList = list;
+                // CustomRoleManager にも変更を反映する必要があるか確認
+                if (CustomRoleManager.TryGetModifierById(modifier.ModifierRoleId, out var modDataToUpdate))
+                {
+                    RoleOptionManager.ModifierRoleOptions.FirstOrDefault(x => x.ModifierRoleId == modifier.ModifierRoleId).AssignFilterList = list;
+                }
+            };
         }
     }
 }

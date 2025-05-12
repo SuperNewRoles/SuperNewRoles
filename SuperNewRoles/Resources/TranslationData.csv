@@ -153,6 +153,10 @@ RoleOptionMenuType.Crewmate,クルーメイト,Crewmate,船员,船員
 RoleOptionMenuType.Neutral,第三陣営,Neutral,第三阵营,第三陣營
 RoleOptionMenuType.Ghost,幽霊役職,Ghost Role,幽灵角色,幽靈角色
 
+# ModifierOptionMenu
+EditAssignFilterButtonText,アサインフィルターを編集,Edit Assign Filter,编辑分配过滤器,編輯分配過濾器
+AssignFilterEditMenuTitle,アサインフィルターの設定,Assign Filter Settings,分配过滤器设置,分配過濾器設置
+
 # MadRolesOption
 MadRolesOptionCategory,<b><color=red>マッド役職共通設定</color></b>,<b><color=red>Mad Roles Common Settings</color></b>,<b><color=red>疯狂角色共通设置</color></b>,<b><color=red>瘋狂角色共通設置</color></b>
 MadRolesTest,マッド役職テスト,Mad Roles Test,疯狂角色测试,瘋狂角色測試
@@ -214,7 +218,7 @@ FinalStatus.Alive,生存,Alive,生存,生存
 FinalStatus.Kill,キル,Kill,击杀,擊殺
 FinalStatus.Exiled,追放,Exiled,追放,追放
 FinalStatus.Sabotage,サボタージュ,Sabotage,破坏,破壞
-FinalStatus.Disonnected,切断,Disonnected,切断,切斷
+FinalStatus.Disonnect,切断,Disonnected,切断,切斷
 FinalStatus.WaveCannon,蒸発,Vaporize,蒸发,蒸發
 FinalStatus.FalseCharge,冤罪,False Charge,冤罪,冤罪
 FinalStatus.Revange,道連れ,Revange,道連れ,道連れ
@@ -307,7 +311,7 @@ Teleporter,テレポーター,Teleporter
 NiceTeleporter,ナイステレポーター,Nice Teleporter
 Pursuer,追跡者,Pursuer,追踪者,追蹤者
 ModifierGuesser,モディファイアゲッサー,Modifier Guesser
-RulerModifier,ルーラー,Ruler[
+RulerModifier,ルーラー,Ruler
 Cantera,カンテラ,Cantera
 Mirage,ミラージュ,Mirage
 Bakery,パン屋,Bakery
@@ -809,8 +813,8 @@ ModifierGuesserMaxImpostors,最大インポスター数,Max Impostors
 ModifierGuesserImpostorChance,インポスター排出確率,Impostor Spawn Chance
 ModifierGuesserMaxNeutrals,最大第三陣営数,Max Neutrals
 ModifierGuesserNeutralChance,第三陣営排出確率,Neutral Spawn Chance
-ModifierGuesserMaxCrewmates,最大船員数,Max Crewmates
-ModifierGuesserCrewmateChance,船員排出確率,Crewmate Spawn Chance
+ModifierGuesserMaxCrewmates,最大クルーメイト数,Max Crewmates
+ModifierGuesserCrewmateChance,クルーメイト排出確率,Crewmate Spawn Chance
 
 
 # Lovers

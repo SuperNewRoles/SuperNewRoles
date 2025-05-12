@@ -27,6 +27,7 @@ internal abstract class ModifierBase<T> : BaseSingleton<T>, IModifierBase where 
     public abstract Func<ExPlayerControl, string> ModifierMark { get; }
     public virtual RoleId[] RelatedRoleIds { get; } = [];
     public virtual bool HiddenOption { get; } = false;
+    public virtual bool AssignFilter { get; } = false;
     public int OptionIdBase
     {
         get
@@ -54,7 +55,7 @@ public interface IModifierBase
     public bool IsVanillaRole => QuoteMod == QuoteMod.Vanilla;
     public Func<ExPlayerControl, string> ModifierMark { get; }
     public bool HiddenOption { get; }
-
+    public bool AssignFilter { get; }
     public RoleId[] RelatedRoleIds { get; }
 
     /// <summary>

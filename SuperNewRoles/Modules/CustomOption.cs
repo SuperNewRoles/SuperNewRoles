@@ -124,7 +124,7 @@ public static class CustomOptionManager
                 {
                     if (!fieldNames.Add(field.Name))
                         throw new InvalidOperationException($"Category field name is duplicated: {field.Name}");
-                    var category = new CustomOptionCategory(field.Name, isModifier: field.GetCustomAttribute<ModifierAttribute>() != null);
+                    var category = new CustomOptionCategory(field.Name, isModifier: field.GetCustomAttribute<ModifierAttribute>() != null, hasModifierAssignFilter: field.GetCustomAttribute<AssignFilterAttribute>() != null);
                     field.SetValue(null, category);
                     CategoryByFieldName[field.Name] = category;
                     continue;
@@ -542,6 +542,7 @@ public static class RoleOptionManager
         }
         public CustomOption[] Options { get; }
         public Color32 RoleColor { get; }
+        public List<RoleId> AssignFilterList { get; set; } = new();
         public ModifierRoleOption(ModifierRoleId modifierRoleId, byte numberOfCrews, int percentage, CustomOption[] options)
         {
             ModifierRoleId = modifierRoleId;
@@ -553,6 +554,11 @@ public static class RoleOptionManager
             if (roleBase == null)
                 throw new Exception($"Role {modifierRoleId} not found");
             RoleColor = roleBase?.RoleColor ?? new Color32(255, 255, 255, 255);
+            // AssignFilterが有効な場合は初期値をセット
+            if (roleBase != null && roleBase.AssignFilter)
+            {
+                AssignFilterList = new List<RoleId>();
+            }
         }
 
         public void UpdateValues(byte numberOfCrews, int percentage)
@@ -1231,6 +1237,10 @@ public class FileOptionStorage : IOptionStorage
                         if (fileStream.Position < fileStream.Length)
                         {
                             LoadGhostRoleOptionsData(reader);
+                            if (fileStream.Position < fileStream.Length)
+                            {
+                                LoadCategoryAssignFilterData(reader);
+                            }
                         }
                     }
                 }
@@ -1292,6 +1302,21 @@ public class FileOptionStorage : IOptionStorage
                 {
                     modifierRoleOption.NumberOfCrews = numberOfCrews;
                     modifierRoleOption.Percentage = percentage;
+                    // AssignFilterListの復元
+                    var roleBase = CustomRoleManager.AllModifiers.FirstOrDefault(r => r.ModifierRole == modifierRoleId);
+                    if (roleBase != null && roleBase.AssignFilter)
+                    {
+                        int assignFilterCount = reader.ReadInt32();
+                        modifierRoleOption.AssignFilterList.Clear();
+                        for (int j = 0; j < assignFilterCount; j++)
+                        {
+                            string roleIdStr = reader.ReadString();
+                            if (Enum.TryParse(typeof(RoleId), roleIdStr, out var roleIdObj) && roleIdObj is RoleId roleId)
+                            {
+                                modifierRoleOption.AssignFilterList.Add(roleId);
+                            }
+                        }
+                    }
                 }
             }
         }
@@ -1312,6 +1337,37 @@ public class FileOptionStorage : IOptionStorage
                 {
                     ghostRoleOption.NumberOfCrews = numberOfCrews;
                     ghostRoleOption.Percentage = percentage;
+                }
+            }
+        }
+    }
+
+    private void LoadCategoryAssignFilterData(BinaryReader reader)
+    {
+        int categoryCount = reader.ReadInt32();
+        for (int i = 0; i < categoryCount; i++)
+        {
+            string categoryName = reader.ReadString();
+            int assignFilterCount = reader.ReadInt32();
+            var category = CustomOptionManager.OptionCategories.FirstOrDefault(c => c.Name == categoryName && c.HasModifierAssignFilter);
+            if (category != null)
+            {
+                category.ModifierAssignFilter.Clear();
+                for (int j = 0; j < assignFilterCount; j++)
+                {
+                    string roleIdStr = reader.ReadString();
+                    if (Enum.TryParse(typeof(RoleId), roleIdStr, out var roleIdObj) && roleIdObj is RoleId roleId)
+                    {
+                        category.ModifierAssignFilter.Add(roleId);
+                    }
+                }
+            }
+            else
+            {
+                // 読み飛ばし
+                for (int j = 0; j < assignFilterCount; j++)
+                {
+                    reader.ReadString();
                 }
             }
         }
@@ -1362,6 +1418,7 @@ public class FileOptionStorage : IOptionStorage
             WriteExclusivitySettingsData(writer);
             WriteModifierRoleOptionsData(writer);
             WriteGhostRoleOptionsData(writer);
+            WriteCategoryAssignFilterData(writer);
         }
     }
 
@@ -1397,11 +1454,21 @@ public class FileOptionStorage : IOptionStorage
     {
         var modifierRoleOptions = RoleOptionManager.ModifierRoleOptions;
         writer.Write(modifierRoleOptions.Length);
-        foreach (var modifierRoleOption in modifierRoleOptions)
+        foreach (var roleOption in modifierRoleOptions)
         {
-            writer.Write(modifierRoleOption.ModifierRoleId.ToString());
-            writer.Write(modifierRoleOption.NumberOfCrews);
-            writer.Write(modifierRoleOption.Percentage);
+            writer.Write(roleOption.ModifierRoleId.ToString());
+            writer.Write(roleOption.NumberOfCrews);
+            writer.Write(roleOption.Percentage);
+            // AssignFilterListの保存
+            var roleBase = CustomRoleManager.AllModifiers.FirstOrDefault(r => r.ModifierRole == roleOption.ModifierRoleId);
+            if (roleBase != null && roleBase.AssignFilter)
+            {
+                writer.Write(roleOption.AssignFilterList.Count);
+                foreach (var roleId in roleOption.AssignFilterList)
+                {
+                    writer.Write(roleId.ToString());
+                }
+            }
         }
     }
 
@@ -1409,11 +1476,26 @@ public class FileOptionStorage : IOptionStorage
     {
         var ghostRoleOptions = RoleOptionManager.GhostRoleOptions;
         writer.Write(ghostRoleOptions.Length);
-        foreach (var ghostRoleOption in ghostRoleOptions)
+        foreach (var roleOption in ghostRoleOptions)
         {
-            writer.Write(ghostRoleOption.RoleId.ToString());
-            writer.Write(ghostRoleOption.NumberOfCrews);
-            writer.Write(ghostRoleOption.Percentage);
+            writer.Write(roleOption.RoleId.ToString());
+            writer.Write(roleOption.NumberOfCrews);
+            writer.Write(roleOption.Percentage);
+        }
+    }
+
+    private void WriteCategoryAssignFilterData(BinaryWriter writer)
+    {
+        var categories = CustomOptionManager.OptionCategories.Where(c => c.HasModifierAssignFilter).ToList();
+        writer.Write(categories.Count);
+        foreach (var category in categories)
+        {
+            writer.Write(category.Name);
+            writer.Write(category.ModifierAssignFilter.Count);
+            foreach (var roleId in category.ModifierAssignFilter)
+            {
+                writer.Write(roleId.ToString());
+            }
         }
     }
 
@@ -1651,19 +1733,28 @@ public class ModifierAttribute : Attribute
 {
     public ModifierAttribute() { }
 }
+[AttributeUsage(AttributeTargets.Field)]
+public class AssignFilterAttribute : Attribute
+{
+    public AssignFilterAttribute() { }
+}
 public class CustomOptionCategory
 {
     public string Id { get; }
     public string Name { get; }
     public List<CustomOption> Options { get; } = new();
     public bool IsModifier { get; }
+    public bool HasModifierAssignFilter { get; }
+    public List<RoleId> ModifierAssignFilter { get; set; } = new();
 
-    public CustomOptionCategory(string name, bool isModifier = false)
+    public CustomOptionCategory(string name, bool isModifier = false, bool hasModifierAssignFilter = false, List<RoleId> modifierAssignFilter = null)
     {
         Id = ComputeMD5Hash.Compute(name);
         Name = name; // 後でTranslationを使用して翻訳する
         RegisterCategory(this);
         IsModifier = isModifier;
+        HasModifierAssignFilter = hasModifierAssignFilter;
+        ModifierAssignFilter = modifierAssignFilter ?? new();
     }
 
     private static void RegisterCategory(CustomOptionCategory category)

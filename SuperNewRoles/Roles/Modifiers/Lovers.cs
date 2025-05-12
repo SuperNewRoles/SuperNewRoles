@@ -32,6 +32,7 @@ class Lovers : ModifierBase<Lovers>
     public override bool HiddenOption => true;
 
     [Modifier]
+    [AssignFilter]
     public static CustomOptionCategory LoversCategory;
 
     [CustomOptionFloat("LoversMaxCoupleCount", 0f, 15f, 1f, 0f, parentFieldName: nameof(LoversCategory))]
