@@ -333,6 +333,7 @@ Taskmaster,タスクマスター,Taskmaster
 ToiletFan,トイレファン,ToiletFan
 JumboModifier,ジャンボ,Jumbo
 VentTrapper,ベントトラッパー,Vent Trapper
+Rocket,ロケット,Rocket
 
 # Descriptions
 BestFalseCharge.Description,特に能力を有さないクルーメイトです。\n死亡するまでこの役職だと自覚出来ません。\n最初の会議が終了すると、そのまま死亡します。,The ultimate red herring! A Crewmate with no abilities who lives in blissful ignorance.\nThey won't realize they have this role until they're dead—talk about a rude awakening!\nAfter the first meeting ends, they die faster than someone saying "I saw Blue vent!",这是一个没有特殊能力的船员。\n在死亡之前他们不会意识到自己拥有这个角色。\n第一场会议结束后，他们会直接死亡。,這是一個沒有特殊能力的船員。\n在死亡之前他們不會察覺自己擁有這個角色。\n第一場會議結束後，他們會直接死亡。
@@ -885,3 +886,10 @@ JumboWalkSoundSize,歩行音量,Walk Sound Size,步行音量,步行音量
 VentTrapperButtonText,トラップ!,Trap!
 VentTrapperSetupTime,トラップ設置時間,Setup Time,陷阱设置时间,陷阱設置時間
 VentTrapperStunTime,トラップ効果時間,Trap Effect Time,陷阱效果时间,陷阱效果時間
+
+# Rocket Options
+RocketGrabCooldown,「掴む」のクールタイム,Grab Cooldown,「掴む」のクールタイム,「掴む」のクールタイム
+RocketSubsequentGrabCooldown,二人目を掴めるようになるまでの時間,Subsequent Grab Cooldown,二人目を掴めるようになるまでの時間,二人目を掴めるようになるまでの時間
+RocketLaunchChargeTime,チャージタイム,Launch Charge Time,チャージタイム,チャージタイム
+RocketGrabButtonText,掴む,Grab,掴む,掴む
+RocketLaunchButtonText,ドッカーン!,Launch!

@@ -3,6 +3,7 @@ using System.Linq;
 using SuperNewRoles.Events;
 using SuperNewRoles.Events.PCEvents;
 using UnityEngine;
+using UnityEngine.Rendering;
 
 namespace SuperNewRoles.Modules;
 
@@ -93,6 +94,10 @@ public static class CustomDeathExtensions
                 source.Player.MurderPlayer(player.Player, MurderResultFlags.Succeeded);
                 FinalStatusManager.SetFinalStatus(player, FinalStatus.FalseCharges);
                 break;
+            case CustomDeathType.LaunchByRocket:
+                player.Player.Exiled();
+                FinalStatusManager.SetFinalStatus(player, FinalStatus.LaunchByRocket);
+                break;
             default:
                 throw new Exception($"Invalid death type: {deathType}");
         }
@@ -125,4 +130,5 @@ public enum CustomDeathType
     FalseCharges,
     LoversSuicide,
     LoversSuicideMurderWithoutDeadbody,
+    LaunchByRocket,
 }
