@@ -334,6 +334,8 @@ ToiletFan,トイレファン,ToiletFan
 JumboModifier,ジャンボ,Jumbo
 VentTrapper,ベントトラッパー,Vent Trapper
 Rocket,ロケット,Rocket
+Vampire,ヴァンパイア,Vampire,吸血鬼,吸血鬼
+VampireDependent,眷属,Dependent,眷属,眷屬
 
 # Descriptions
 BestFalseCharge.Description,特に能力を有さないクルーメイトです。\n死亡するまでこの役職だと自覚出来ません。\n最初の会議が終了すると、そのまま死亡します。,The ultimate red herring! A Crewmate with no abilities who lives in blissful ignorance.\nThey won't realize they have this role until they're dead—talk about a rude awakening!\nAfter the first meeting ends, they die faster than someone saying "I saw Blue vent!",这是一个没有特殊能力的船员。\n在死亡之前他们不会意识到自己拥有这个角色。\n第一场会议结束后，他们会直接死亡。,這是一個沒有特殊能力的船員。\n在死亡之前他們不會察覺自己擁有這個角色。\n第一場會議結束後，他們會直接死亡。
@@ -893,3 +895,18 @@ RocketSubsequentGrabCooldown,二人目を掴めるようになるまでの時間
 RocketLaunchChargeTime,チャージタイム,Launch Charge Time,チャージタイム,チャージタイム
 RocketGrabButtonText,掴む,Grab,掴む,掴む
 RocketLaunchButtonText,ドッカーン!,Launch!
+
+# Vampire
+VampireAbsorptionCooldown,吸血クールダウン,Absorption Cooldown,吸血冷却时间,吸血冷卻時間
+VampireKillDelay,キル遅延,Kill Delay,杀人延迟,殺人延遲
+VampireBloodstainDuration,血痕持続ターン数,Bloodstain Duration (Turns),血迹持续回合数,血跡持續回合數
+VampireBlackBloodstains,黒色血痕,Black Bloodstains,黑色血迹,黑色血跡
+VampireCreateDependents,眷属を作成できる,Can Create Dependents,可以创建眷属,可以創建眷屬
+VampireNightFallCooldown,夜に堕とすクールダウン,Night Fall Cooldown,墮夜冷卻時間,墮夜冷卻時間
+VampireDependentKillCooldown,眷属キルクールダウン,Dependent Kill Cooldown,眷属击杀冷却时间,眷屬擊殺冷卻時間
+VampireDependentCanUseVent,眷属ベント使用可,Dependent Can Use Vents,眷属可使用通风口,眷屬可使用通風口
+VampireDependentImpostorVisionOnSabotage,眷属停電時インポスター視界,Dependent Impostor Vision on Sabotage,眷属停电时内鬼视野,眷屬停電時內鬼視野
+VampireCannotFixSabotage,サボタージュ修復不可,Cannot Fix Sabotage,无法修复破坏,無法修復破壞
+VampireInvisibleOnAdmin,管理マップ非表示,Invisible on Admin Map,管理地图不可见,管理地圖不可見
+VampireNoDeathOnVitals,バイタル死亡表示なし,No Death on Vitals,生命体征不显示死亡,生命徵象不顯示死亡
+VampireCannotUseDevice,情報機器使用不可,Cannot Use Device,无法使用设备,無法使用裝置

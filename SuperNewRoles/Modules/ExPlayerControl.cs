@@ -477,6 +477,14 @@ public class ExPlayerControl
     {
         return PlayerAbilitiesDictionary.TryGetValue(abilityId, out var ability) ? ability : null;
     }
+    public bool TryGetAbility<T>(out T result) where T : AbilityBase
+    {
+        result = null;
+        if (!_abilityCache.TryGetValue(typeof(T).Name, out var ability))
+            return false;
+        result = (T)ability;
+        return true;
+    }
     public T GetAbility<T>(ulong abilityId) where T : AbilityBase
     {
         return GetAbility(abilityId) as T;

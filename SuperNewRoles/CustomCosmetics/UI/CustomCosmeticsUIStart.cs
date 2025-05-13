@@ -46,6 +46,12 @@ public static class CustomCosmeticsUIStart
     }
     public static void Update(PlayerCustomizationMenu menu)
     {
+        (int width, int height) = ModHelpers.GetAspectRatio(Screen.width, Screen.height);
+        if (Math.Abs(width - height) <= 2)
+            menu.transform.localScale = Vector3.one * 0.82f;
+        else
+            menu.transform.localScale = Vector3.one;
+
         // 現在のメニューが存在する場合は更新
         CurrentMenu?.Update();
 

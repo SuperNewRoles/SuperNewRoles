@@ -16,22 +16,17 @@ public class MadmateAbility : AbilityBase
     {
         MadData = madData;
     }
-    public override void Attach(PlayerControl player, ulong abilityId, AbilityParentBase parent)
+    public override void AttachToAlls()
     {
-
         VentAbility = new CustomVentAbility(() => MadData.CouldUseVent);
         KnowImpostorAbility = new KnowImpostorAbility(MadData.CouldKnowImpostors);
         ImpostorVisionAbility = new ImpostorVisionAbility(() => MadData.HasImpostorVision);
         CustomTaskAbility = new CustomTaskAbility(() => (true, MadData.TaskNeeded), MadData.SpecialTasks);
-        ExPlayerControl exPlayer = (ExPlayerControl)player;
 
-        AbilityParentAbility parentAbility = new(this);
-        exPlayer.AttachAbility(VentAbility, parentAbility);
-        exPlayer.AttachAbility(KnowImpostorAbility, parentAbility);
-        exPlayer.AttachAbility(ImpostorVisionAbility, parentAbility);
-        exPlayer.AttachAbility(CustomTaskAbility, parentAbility);
-
-        base.Attach(player, abilityId, parent);
+        Player.AttachAbility(VentAbility, new AbilityParentAbility(this));
+        Player.AttachAbility(KnowImpostorAbility, new AbilityParentAbility(this));
+        Player.AttachAbility(ImpostorVisionAbility, new AbilityParentAbility(this));
+        Player.AttachAbility(CustomTaskAbility, new AbilityParentAbility(this));
     }
 
     public override void AttachToLocalPlayer()

@@ -82,6 +82,8 @@ public enum RoleId : short
     Taskmaster,
     ToiletFan,
     Rocket,
+    Vampire,
+    VampireDependent,
 }
 
 public enum GhostRoleId : short

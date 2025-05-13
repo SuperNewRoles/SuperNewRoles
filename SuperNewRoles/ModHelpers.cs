@@ -429,4 +429,22 @@ public static class ModHelpers
                 break;
         }
     }
+    // ユークリッドの互除法で最大公約数を求める
+    private static int Gcd(int a, int b)
+    {
+        while (b != 0)
+        {
+            int tmp = b;
+            b = a % b;
+            a = tmp;
+        }
+        return a;
+    }
+
+    // 画面サイズからアスペクト比を計算
+    public static (int, int) GetAspectRatio(int width, int height)
+    {
+        int gcd = Gcd(width, height);
+        return (width / gcd, height / gcd);
+    }
 }
