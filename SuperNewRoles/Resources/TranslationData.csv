@@ -913,3 +913,14 @@ VampireCannotFixSabotage,サボタージュ修復不可,Cannot Fix Sabotage,无�
 VampireInvisibleOnAdmin,管理マップ非表示,Invisible on Admin Map,管理地图不可见,管理地圖不可見
 VampireNoDeathOnVitals,バイタル死亡表示なし,No Death on Vitals,生命体征不显示死亡,生命徵象不顯示死亡
 VampireCannotUseDevice,情報機器使用不可,Cannot Use Device,无法使用设备,無法使用裝置
+
+# 新しい情報機器制限の翻訳
+RestrictionMode,制限の方式,Restriction Mode,限制方式,限制方式
+DeviceRestrictionModeType.OnOff,ON/OFF,ON/OFF,开关,開關
+DeviceRestrictionModeType.TimeLimit,時間制限,Time Limit,时间限制,時間限制
+DeviceAdminEnabled,アドミン設定,Admin Setting,管理地图设置,管理地圖設定
+DeviceVitalEnabled,バイタル・ドアログ設定,Vital/DoorLog Setting,生命体征/门禁记录设置,生命體徵/門禁記錄設定
+DeviceCameraEnabled,カメラ設定,Camera Setting,摄像头设置,攝像頭設定
+DeviceAdminTimeLimit,アドミンの制限時間,Admin Time Limit,管理地图限制时间,管理地圖限制時間
+DeviceVitalTimeLimit,バイタル・ドアログの制限時間,Vital/DoorLog Time Limit,生命体征/门禁记录限制时间,生命體徵/門禁記錄限制時間
+DeviceCameraTimeLimit,カメラの制限時間,Camera Time Limit,摄像头限制时间,攝像頭限制時間
