@@ -295,12 +295,26 @@ public static class DevicesPatch
     [HarmonyPatch(typeof(VitalsMinigame), nameof(VitalsMinigame.Begin))]
     class VitalsMinigameBeginPatch
     {
-        static void Postfix(VitalsMinigame __instance)
+        static bool Prefix(VitalsMinigame __instance)
         {
             if (MapSettingOptions.DeviceOptions && MapSettingOptions.DeviceVitalOrDoorLogOption == DeviceOptionType.CantUse)
+            {
+                foreach (var vital in __instance.vitals)
+                {
+                    vital.gameObject.SetActive(false);
+                }
                 __instance.Close();
+                return false;
+            }
             else if (IsVitalRestrict && DeviceTimers[DeviceType.Vital.ToString()] <= 0)
+            {
+                foreach (var vital in __instance.vitals)
+                {
+                    vital.gameObject.SetActive(false);
+                }
                 __instance.Close();
+                return false;
+            }
             else if (IsVitalRestrict)
             {
                 if (TimeRemaining == null)
@@ -315,6 +329,7 @@ public static class DevicesPatch
                 }
                 RpcSetDeviceUseStatus(DeviceType.Vital, PlayerControl.LocalPlayer.PlayerId, true);
             }
+            return true;
         }
     }
 
