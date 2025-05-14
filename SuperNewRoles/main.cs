@@ -53,7 +53,8 @@ public partial class SuperNewRolesPlugin : BasePlugin
     private readonly object _mainThreadActionsLock = new();
 
     public static bool IsEpic => Constants.GetPurchasingPlatformType() == PlatformConfig.EpicGamesStoreName;
-
+    public static string BaseDirectory => Path.GetFullPath(Path.Combine(BepInEx.Paths.BepInExRootPath, "../SuperNewRolesNext"));
+    public static string SecretDirectory => Path.GetFullPath(Path.Combine(UnityEngine.Application.persistentDataPath, "SuperNewRolesNextSecrets"));
     // 複数起動中の場合に絶対に重複しない数
     private static int ProcessNumber = 0;
 
@@ -63,14 +64,18 @@ public partial class SuperNewRolesPlugin : BasePlugin
 
         MainThreadId = Thread.CurrentThread.ManagedThreadId;
         Logger = Log;
+
+        SuperNewRolesPlugin.Logger.LogInfo($"BaseDirectory: {BaseDirectory}");
+        SuperNewRolesPlugin.Logger.LogInfo($"SecretDirectory: {SecretDirectory}");
+
         Instance = this;
         RegisterCustomObjects();
         Task task = Task.Run(() => Harmony.PatchAll());
 
-        if (!Directory.Exists("./SuperNewRolesNext"))
-        {
-            Directory.CreateDirectory("./SuperNewRolesNext");
-        }
+        if (!Directory.Exists(BaseDirectory))
+            Directory.CreateDirectory(BaseDirectory);
+        if (!Directory.Exists(SecretDirectory))
+            Directory.CreateDirectory(SecretDirectory);
 
         CustomRoleManager.Load();
         AssetManager.Load();
@@ -102,7 +107,7 @@ public partial class SuperNewRolesPlugin : BasePlugin
     private static void CheckStarts()
     {
         // SuperNewRolesNext/Startsディレクトリのパスを取得
-        string startsDir = Path.Combine(".", "SuperNewRolesNext", "Starts");
+        string startsDir = BaseDirectory + "/Starts";
         // ディレクトリが存在しなければ作成
         if (!Directory.Exists(startsDir))
         {

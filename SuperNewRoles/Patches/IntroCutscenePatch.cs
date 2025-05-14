@@ -15,6 +15,18 @@ namespace SuperNewRoles.Patches;
 
 public static class IntroCutscenePatch
 {
+    [HarmonyPatch(typeof(IntroCutscene), nameof(IntroCutscene.CoBegin))]
+    class CoBeginPatch
+    {
+        public static void Postfix(IntroCutscene __instance)
+        {
+            PoolablePrefabManager.OnIntroCutsceneDestroy(__instance);
+            new LateTask(() =>
+            {
+                Initialize();
+            }, 3f, "Initialize");
+        }
+    }
     [HarmonyPatch(typeof(IntroCutscene), nameof(IntroCutscene.ShowRole))]
     class SetUpRoleTextPatch
     {
@@ -186,60 +198,57 @@ public static class IntroCutscenePatch
         __instance.BackgroundBar.material.color = color;
         __instance.TeamTitle.color = color;
     }
-    [HarmonyPatch(typeof(IntroCutscene), nameof(IntroCutscene.OnDestroy))]
-    class OnDestroyPatch
+    // IntroCutscene.OnDestroyのかわり
+    public static void Initialize()
     {
-        public static void Postfix(IntroCutscene __instance)
+        if (AmongUsClient.Instance.NetworkMode == NetworkModes.FreePlay) return;
+        foreach (var player in ExPlayerControl.ExPlayerControls)
+        {
+            NameText.UpdateNameInfo(player);
+        }
+        NameText.RegisterNameTextUpdateEvent();
+        SaboAndVent.RegisterListener();
+        FinalStatusListener.LoadListener();
+        CustomDeathExtensions.Register();
+        SetTargetPatch.Register();
+
+        FungleAdditionalAdmin.AddAdmin();
+        FungleAdditionalElectrical.CreateElectrical();
+
+        ReAssignTasks();
+
+        NameText.UpdateAllNameInfo();
+
+        if (GeneralSettingOptions.PetOnlyMe)
         {
             foreach (var player in ExPlayerControl.ExPlayerControls)
             {
-                NameText.UpdateNameInfo(player);
-            }
-            NameText.RegisterNameTextUpdateEvent();
-            SaboAndVent.RegisterListener();
-            FinalStatusListener.LoadListener();
-            CustomDeathExtensions.Register();
-            PoolablePrefabManager.OnIntroCutsceneDestroy(__instance);
-            SetTargetPatch.Register();
-
-            FungleAdditionalAdmin.AddAdmin();
-            FungleAdditionalElectrical.CreateElectrical();
-
-            ReAssignTasks();
-
-            NameText.UpdateAllNameInfo();
-
-            if (GeneralSettingOptions.PetOnlyMe)
-            {
-                foreach (var player in ExPlayerControl.ExPlayerControls)
-                {
-                    if (player.AmOwner) continue;
-                    if (player.IsDead() || player.Player == null || player.cosmetics == null) continue;
-                    player.Player.SetPet("");
-                }
-            }
-
-            // 情報機器制限の設定を初期化
-            if (MapSettingOptions.DeviceOptions)
-            {
-                DevicesPatch.ClearAndReload();
-            }
-            foreach (var ability in ExPlayerControl.LocalPlayer.PlayerAbilities)
-            {
-                if (ability is CustomButtonBase customButtonBase && customButtonBase.IsFirstCooldownTenSeconds)
-                {
-                    customButtonBase.SetCoolTenSeconds();
-                }
+                if (player.AmOwner) continue;
+                if (player.IsDead() || player.Player == null || player.cosmetics == null) continue;
+                player.Player.SetPet("");
             }
         }
-        private static void ReAssignTasks()
+
+        // 情報機器制限の設定を初期化
+        if (MapSettingOptions.DeviceOptions)
         {
-            // ローカルプレイヤーのみがタスクを再割り当てする
-            var localPlayer = ExPlayerControl.LocalPlayer;
-            if (localPlayer != null && localPlayer.CustomTaskAbility != null && localPlayer.CustomTaskAbility.assignTaskData != null)
+            DevicesPatch.ClearAndReload();
+        }
+        foreach (var ability in ExPlayerControl.LocalPlayer.PlayerAbilities)
+        {
+            if (ability is CustomButtonBase customButtonBase && customButtonBase.IsFirstCooldownTenSeconds)
             {
-                localPlayer.CustomTaskAbility.AssignTasks();
+                customButtonBase.SetCoolTenSeconds();
             }
+        }
+    }
+    private static void ReAssignTasks()
+    {
+        // ローカルプレイヤーのみがタスクを再割り当てする
+        var localPlayer = ExPlayerControl.LocalPlayer;
+        if (localPlayer != null && localPlayer.CustomTaskAbility != null && localPlayer.CustomTaskAbility.assignTaskData != null)
+        {
+            localPlayer.CustomTaskAbility.AssignTasks();
         }
     }
 }

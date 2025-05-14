@@ -106,7 +106,10 @@ DeviceTimeSettingCamera,カメラの制限時間,Camera Limit Time,摄像头限�
 NeutralSubIntro,自分の事だけ考えろ。他人の事は利用せよ。,Think only about yourself. Use others.,只考虑自己。利用他人。,只考慮自己。利用他人。
 
 # GeneralSettings
-KickNonPCPlayers,PC以外をキックする,Kick Non-PC Players,踢出非PC玩家,踢出非PC玩家
+KickPlatformPlayers,特定の機種をキックする,Kick Platform Players,踢出平台玩家,踢出平台玩家
+KickPCPlayers,PCをキックする,Kick PC Players,踢出PC玩家,踢出PC玩家
+KickAndroidPlayers,Androidをキックする,Kick Android Players,踢出Android玩家,踢出Android玩家
+KickOtherPlayers,その他をキックする,Kick Other Players,踢出其他玩家,踢出其他玩家
 BanNoFriendCodePlayers,フレンドコードを持っていない人をBANする,Ban Players Without Friend Code,封禁没有好友代码的玩家,封禁沒有好友代碼的玩家
 PetOnlyMe,ペットを自分のみに表示する,Show only my pet,只显示我的宠物,只顯示我的寵物
 NetworkTransformType,歩行通信タイプ,Walking Network type,步行通信类型,步行通信類型

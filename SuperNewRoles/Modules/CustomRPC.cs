@@ -228,7 +228,8 @@ public static class CustomRPCManager
         /// </summary>
         public static void Postfix(byte callId, MessageReader reader)
         {
-            Logger.Info($"Received RPC: {callId}");
+            if (callId != 253)
+                Logger.Info($"Received RPC: {callId}");
             // SuperNewRoles専用のRPCの場合
             switch (callId)
             {

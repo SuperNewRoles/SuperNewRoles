@@ -1002,7 +1002,7 @@ public static class CustomOptionSaver
     static CustomOptionSaver()
     {
         Storage = new FileOptionStorage(
-            new DirectoryInfo("./SuperNewRolesNext/SaveData/"),
+            new DirectoryInfo(SuperNewRolesPlugin.BaseDirectory + "/SaveData/"),
             "Options.data",
             "PresetOptions_"
         );

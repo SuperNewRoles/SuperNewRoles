@@ -1,3 +1,4 @@
+using BepInEx.Unity.IL2CPP.Utils.Collections;
 using SuperNewRoles.Modules;
 using TMPro;
 using UnityEngine;
@@ -13,11 +14,11 @@ public class MessageListUI
         messageListUI.transform.localPosition = new(0f, 0f, -10f);
         bool active = true;
         LoadingUI.ShowLoadingUI(parent, () => "Loading...", () => active);
-        RequestInGameManager.GetThreads(unreadOnly: true).ContinueWith((task) =>
+        AmongUsClient.Instance.StartCoroutine(RequestInGameManager.GetThreads(threads =>
         {
-            if (task.IsFaulted)
+            if (threads == null)
             {
-                Logger.Error($"Failed to get threads: {task.Exception}");
+                Logger.Error($"Failed to get threads");
                 active = false;
             }
             else
@@ -26,7 +27,7 @@ public class MessageListUI
                 new LateTask(() =>
                 {
                     int index = 0;
-                    foreach (var thread in task.Result)
+                    foreach (var thread in threads)
                     {
                         GameObject messageTitleButton = GameObject.Instantiate(AssetManager.GetAsset<GameObject>("MessageTitleButton"), messageListUI.transform);
                         messageTitleButton.transform.localPosition = new(0f, 3f - 1.5f * index, -10f);
@@ -59,6 +60,6 @@ public class MessageListUI
                     }
                 }, 0f, "MessageListUI");
             }
-        });
+        }, unreadOnly: true).WrapToIl2Cpp());
     }
 }

@@ -1,14 +1,17 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
 using System.Security.Cryptography;
 using System.Text;
+using System.Threading.Tasks;
 using BepInEx.Unity.IL2CPP.Utils.Collections;
 using Hazel;
 using SuperNewRoles.Modules;
 using SuperNewRoles.Roles.Ability;
 using UnityEngine;
+using UnityEngine.Networking;
 
 namespace SuperNewRoles;
 public static class ModHelpers
@@ -446,5 +449,23 @@ public static class ModHelpers
     {
         int gcd = Gcd(width, height);
         return (width / gcd, height / gcd);
+    }
+
+    // SendWebRequest が返す UnityWebRequestAsyncOperation を await 可能にする
+    public static TaskAwaiter<UnityWebRequest> GetAwaiter(
+        this UnityWebRequestAsyncOperation asyncOp)
+    {
+        var tcs = new TaskCompletionSource<UnityWebRequest>();
+
+        asyncOp.add_completed((Il2CppSystem.Action<AsyncOperation>)((op) =>
+        {
+            var req = asyncOp.webRequest;
+            if (req.result == UnityWebRequest.Result.Success)
+                tcs.SetResult(req);
+            else
+                tcs.SetException(new Exception(req.error));
+        }));
+
+        return tcs.Task.GetAwaiter();
     }
 }
