@@ -469,5 +469,14 @@ public static class ModHelpers
         return tcs.Task.GetAwaiter();
     }
 
+    public static bool IsWaitingSpawn(this PlayerControl player)
+    {
+        return Vector2.Distance(player.transform.position, new Vector2(3, 6)) <= 0.5f ||
+               Vector2.Distance(player.transform.position, new Vector2(-25, 40)) <= 0.5f ||
+               Vector2.Distance(player.transform.position, new Vector2(-1.4f, 2.3f)) <= 0.5f;
+    }
+    public static bool IsWaitingSpawn(this ExPlayerControl player)
+        => player.Player.IsWaitingSpawn();
+
     public static bool Not(bool b) => !b;
 }

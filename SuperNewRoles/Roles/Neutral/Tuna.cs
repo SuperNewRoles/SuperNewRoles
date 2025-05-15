@@ -75,7 +75,7 @@ class Tuna : RoleBase<Tuna>
             }
             if (isMeeting)
                 return;
-            if (Minigame.Instance != null && Minigame.Instance is SpawnInMinigame)
+            if (Player.IsWaitingSpawn())
                 return;
 
             // 現在の位置を取得
