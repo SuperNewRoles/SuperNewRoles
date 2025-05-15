@@ -38,12 +38,9 @@ public class PromoteOnParentDeathAbility : AbilityBase
     private void OnFixedUpdate()
     {
         if (_hasPromoted) return;
-        if (Owner.Player == null) return;
-        if (Owner.Player.IsDead())
-        {
-            Promote();
-            _hasPromoted = true;
-        }
+        if (Owner.Player != null && Owner.Player.IsAlive()) return;
+        Promote();
+        _hasPromoted = true;
     }
     private void Promote()
     {
