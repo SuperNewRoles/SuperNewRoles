@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
+using System.Threading.Tasks;
 using HarmonyLib;
 using Hazel;
 using InnerNet;
@@ -107,7 +108,7 @@ public static class CustomRPCManager
     /// <summary>
     /// すべてのRPCメソッドを読み込み、登録する
     /// </summary>
-    public static void Load()
+    public static List<Action> Load()
     {
         // すべてのRPCメソッドのハッシュ値を収集
         var methodsWithDetails = Assembly.GetExecutingAssembly()
@@ -123,6 +124,8 @@ public static class CustomRPCManager
             .Where(m => m.Attribute != null)
             .OrderBy(m => m.Hash) // 事前に計算したハッシュでソート
             .ToList();
+
+        List<Action> tasks = new();
 
         SuperNewRolesPlugin.Logger.LogInfo($"[Splash] Start loading {methodsWithDetails.Count} RPC methods");
 
@@ -142,9 +145,10 @@ public static class CustomRPCManager
                 continue;
             }
             SuperNewRolesPlugin.Logger.LogInfo($"[Splash] Loading RPC method ({i + 1}/{methodsWithDetails.Count}): {method.Name}");
-            RegisterRPC(method, attribute, i, hash, paramTypes); // ハッシュとパラメータ型を渡す
+            tasks.Add(RegisterRPC(method, attribute, i, hash, paramTypes)); // ハッシュとパラメータ型を渡す
         }
         SuperNewRolesPlugin.Logger.LogInfo($"[Splash] Registered {RpcMethods.Count} RPC methods");
+        return tasks;
     }
 
 
@@ -156,7 +160,7 @@ public static class CustomRPCManager
     /// <param name="id">RPC ID</param>
     /// <param name="hash">メソッドのハッシュ値</param>
     /// <param name="paramTypes">メソッドのパラメータ型配列</param>
-    private static void RegisterRPC(MethodInfo method, CustomRPCAttribute attribute, byte id, string hash, Type[] paramTypes)
+    private static Action RegisterRPC(MethodInfo method, CustomRPCAttribute attribute, byte id, string hash, Type[] paramTypes)
     {
         // キャッシュにメソッド情報を登録
         RpcIdsByMethod[method] = id;
@@ -207,7 +211,7 @@ public static class CustomRPCManager
         RpcMethodIds[hash] = id; // 事前計算したハッシュを使用
 
         // メソッドの中身をRPCを送信するものに入れ替える
-        SuperNewRolesPlugin.Instance.Harmony.Patch(method, new HarmonyMethod(newHarmonyMethod.Method));
+        return () => SuperNewRolesPlugin.Instance.Harmony.Patch(method, new HarmonyMethod(newHarmonyMethod.Method));
     }
     private static string GetMethodFullName(MethodInfo method)
     {

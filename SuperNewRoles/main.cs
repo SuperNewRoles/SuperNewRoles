@@ -31,6 +31,7 @@ using SuperNewRoles.CustomObject;
 using SuperNewRoles.API;
 using AmongUs.Data.Player;
 using SuperNewRoles.RequestInGame;
+using System.Diagnostics;
 
 namespace SuperNewRoles;
 
@@ -55,8 +56,22 @@ public partial class SuperNewRolesPlugin : BasePlugin
     public static bool IsEpic => Constants.GetPurchasingPlatformType() == PlatformConfig.EpicGamesStoreName;
     public static string BaseDirectory => Path.GetFullPath(Path.Combine(BepInEx.Paths.BepInExRootPath, "../SuperNewRolesNext"));
     public static string SecretDirectory => Path.GetFullPath(Path.Combine(UnityEngine.Application.persistentDataPath, "SuperNewRolesNextSecrets"));
+    private static Task TaskRunIfWindows(Action action)
+    {
+        // AndroidでTask.Runを使わないか
+        bool needed = false;
+        if (needed && Constants.GetPlatformType() == Platforms.Android)
+            action();
+        else
+            return Task.Run(action);
+        return Task.Run(() => { });
+
+    }
     // 複数起動中の場合に絶対に重複しない数
     private static int ProcessNumber = 0;
+
+    public static Task HarmonyPatchAllTask;
+    public static Task CustomRPCManagerLoadTask;
 
     public override void Load()
     {
@@ -70,7 +85,8 @@ public partial class SuperNewRolesPlugin : BasePlugin
 
         Instance = this;
         RegisterCustomObjects();
-        Task task = Task.Run(() => Harmony.PatchAll());
+        CustomLoadingScreen.Patch(Harmony);
+        HarmonyPatchAllTask = TaskRunIfWindows(() => PatchAll(Harmony));
 
         if (!Directory.Exists(BaseDirectory))
             Directory.CreateDirectory(BaseDirectory);
@@ -80,7 +96,7 @@ public partial class SuperNewRolesPlugin : BasePlugin
         CustomRoleManager.Load();
         AssetManager.Load();
         ModTranslation.Load();
-        CustomRPCManager.Load();
+        var tasks = CustomRPCManager.Load();
         CustomOptionManager.Load();
         SyncVersion.Load();
         EventListenerManager.Load();
@@ -94,12 +110,33 @@ public partial class SuperNewRolesPlugin : BasePlugin
 
         CheckStarts();
 
+        CustomRPCManagerLoadTask = TaskRunIfWindows(() =>
+        {
+            foreach (var task in tasks)
+            {
+                task();
+            }
+        });
+
         Logger.LogInfo("Waiting for Harmony patch");
-        task.Wait();
+        if (Constants.GetPlatformType() == Platforms.Android)
+        {
+            HarmonyPatchAllTask?.Wait();
+            CustomRPCManagerLoadTask?.Wait();
+        }
         Logger.LogInfo("SuperNewRoles loaded");
         Logger.LogInfo("--------------------------------");
         Logger.LogInfo(ModTranslation.GetString("WelcomeNextSuperNewRoles"));
         Logger.LogInfo("--------------------------------");
+    }
+    public void PatchAll(Harmony harmony)
+    {
+        List<Task> tasks = new();
+        AccessTools.GetTypesFromAssembly(Assembly.GetExecutingAssembly()).Do(delegate (Type type)
+        {
+            tasks.Add(Task.Run(() => harmony.CreateClassProcessor(type).Patch()));
+        });
+        Task.WaitAll(tasks.ToArray());
     }
 
     private static FileStream _fs;

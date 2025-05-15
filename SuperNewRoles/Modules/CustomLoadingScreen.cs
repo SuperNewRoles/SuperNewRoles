@@ -1,0 +1,60 @@
+using System.Threading.Tasks;
+using BepInEx.Unity.IL2CPP.Utils.Collections;
+using HarmonyLib;
+using SuperNewRoles.CustomCosmetics;
+
+namespace SuperNewRoles.Modules;
+
+public static class CustomLoadingScreen
+{
+    public static bool IsLoading = true;
+    public static bool PleaseDoWillLoad = false;
+    public static bool Inited = false;
+
+    public static bool SplashManagerUpdatePrefixPatch()
+    {
+        if (PleaseDoWillLoad)
+        {
+            // メインスレッドで読むこむ必要あり
+            IsLoading = false;
+            PleaseDoWillLoad = false;
+            CustomCosmeticsLoader.willLoad?.Invoke();
+            Logger.Info("Loading done");
+            return false;
+        }
+        if (IsLoading)
+            return false;
+        return true;
+    }
+
+    public static void Patch(Harmony harmony)
+    {
+        harmony.Patch(typeof(SplashManager).GetMethod(nameof(SplashManager.Start)), postfix: new HarmonyMethod(typeof(CustomLoadingScreen).GetMethod(nameof(SplashManagerStartPostfix))));
+        harmony.Patch(typeof(SplashManager).GetMethod(nameof(SplashManager.Update)), prefix: new HarmonyMethod(typeof(CustomLoadingScreen).GetMethod(nameof(SplashManagerUpdatePrefixPatch))));
+    }
+
+    public static void SplashManagerStartPostfix(SplashManager __instance)
+    {
+        if (Inited)
+            return;
+        Logger.Info("SplashManagerStartPostfix");
+        AssetManager.Instantiate("LoadingText", __instance.transform);
+        Inited = true;
+        // if (Constants.GetPlatformType() != Platforms.Android)
+        __instance.StartCoroutine(CustomCosmeticsLoader.LoadCosmeticsTaskAsync((c) => __instance.StartCoroutine(c.WrapToIl2Cpp())).WrapToIl2Cpp());
+        Task.Run(() =>
+        {
+            Logger.Info("Started");
+            IsLoading = true;
+            Logger.Info("Waiting load");
+            SuperNewRolesPlugin.CustomRPCManagerLoadTask?.Wait();
+            Logger.Info("CustomRPCManagerLoadTask done");
+            SuperNewRolesPlugin.HarmonyPatchAllTask?.Wait();
+            Logger.Info("HarmonyPatchAllTask done");
+            while (!CustomCosmeticsLoader.runned)
+                Task.Delay(100).Wait();
+            Logger.Info("CustomCosmeticsLoaderSplashManagerStartPatch done");
+            PleaseDoWillLoad = true;
+        });
+    }
+}
