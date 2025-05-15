@@ -468,4 +468,6 @@ public static class ModHelpers
 
         return tcs.Task.GetAwaiter();
     }
+
+    public static bool Not(bool b) => !b;
 }

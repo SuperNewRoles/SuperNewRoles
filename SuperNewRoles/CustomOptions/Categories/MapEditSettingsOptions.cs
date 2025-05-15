@@ -59,4 +59,55 @@ public static class MapEditSettingsOptions
 
     [CustomOptionBool("TheFungleHideSporeMaskOnlyImpostor", false, parentFieldName: nameof(TheFungleHideSporeMask))]
     public static bool TheFungleHideSporeMaskOnlyImpostor;
+
+    [CustomOptionBool("TheFungleZiplineOption", false, parentFieldName: nameof(TheFungleSetting))]
+    public static bool TheFungleZiplineOption;
+
+    [CustomOptionBool("TheFungleCanUseZiplineOption", true, parentFieldName: nameof(TheFungleZiplineOption))]
+    public static bool TheFungleCanUseZiplineOption;
+
+    [CustomOptionFloat("TheFungleZiplineUpTime", 0.5f, 12f, 0.5f, 4f, parentFieldName: nameof(TheFungleCanUseZiplineOption))]
+    public static float TheFungleZiplineUpTime;
+
+    [CustomOptionFloat("TheFungleZiplineDownTime", 0.5f, 12f, 0.5f, 1.75f, parentFieldName: nameof(TheFungleCanUseZiplineOption))]
+    public static float TheFungleZiplineDownTime;
+
+    [CustomOptionSelect("TheFungleZiplineUpOrDown", typeof(FungleZiplineDirectionOptions), "FungleZiplineDirectionOptions.", parentFieldName: nameof(TheFungleCanUseZiplineOption))]
+    public static FungleZiplineDirectionOptions TheFungleZiplineUpOrDown;
+
+    [CustomOptionBool("TheFungleCameraOption", false, parentFieldName: nameof(TheFungleSetting))]
+    public static bool TheFungleCameraOption;
+
+    /* TODO
+
+    [CustomOptionFloat("TheFungleCameraChangeRange", 0.5f, 15f, 0.5f, 7.5f, parentFieldName: nameof(TheFungleCameraOption))]
+    public static float TheFungleCameraChangeRange;
+
+    [CustomOptionFloat("TheFungleCameraSpeed", 0f, 10f, 0.25f, 1f, parentFieldName: nameof(TheFungleCameraOption))]
+    public static float TheFungleCameraSpeed;*/
+
+    [CustomOptionBool("TheFungleMushroomMixupOption", false, parentFieldName: nameof(TheFungleSetting))]
+    public static bool TheFungleMushroomMixupOption;
+
+    /* TODO
+        [CustomOptionBool("TheFungleMushroomMixupCantOpenMeeting", false, parentFieldName: nameof(TheFungleMushroomMixupOption))]
+        public static bool TheFungleMushroomMixupCantOpenMeeting;*/
+
+    [CustomOptionFloat("TheFungleMushroomMixupTime", 1f, 30f, 0.5f, 10f, parentFieldName: nameof(TheFungleMushroomMixupOption))]
+    public static float TheFungleMushroomMixupTime;
+
+}
+
+public enum FungleSpawnTypeOptions
+{
+    TheFungleSpawnTypeNormal,
+    RandomSpawnOption,
+    TheFungleSpawnTypeSelect
+}
+
+public enum FungleZiplineDirectionOptions
+{
+    TheFungleZiplineAlways,
+    TheFungleZiplineOnlyUp,
+    TheFungleZiplineOnlyDown
 }

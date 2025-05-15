@@ -924,3 +924,24 @@ DeviceCameraEnabled,カメラ設定,Camera Setting,摄像头设置,攝像頭設�
 DeviceAdminTimeLimit,アドミンの制限時間,Admin Time Limit,管理地图限制时间,管理地圖限制時間
 DeviceVitalTimeLimit,バイタル・ドアログの制限時間,Vital/DoorLog Time Limit,生命体征/门禁记录限制时间,生命體徵/門禁記錄限制時間
 DeviceCameraTimeLimit,カメラの制限時間,Camera Time Limit,摄像头限制时间,攝像頭限制時間
+
+# The Fungle マップオプション
+TheFungleZiplineOption,ジップライン設定,Zipline Settings,滑索设置,滑索設置
+TheFungleCanUseZiplineOption,ジップライン使用可能,Can Use Zipline,可以使用滑索,可以使用滑索
+TheFungleZiplineUpTime,ジップライン上り時間,Zipline Up Time,滑索上行时间,滑索上行時間
+TheFungleZiplineDownTime,ジップライン下り時間,Zipline Down Time,滑索下行时间,滑索下行時間
+TheFungleZiplineUpOrDown,ジップライン昇降方向,Zipline Direction,滑索方向,滑索方向
+TheFungleCameraOption,カメラ設定,Camera Settings,摄像头设置,攝像頭設置
+TheFungleCameraChangeRange,カメラ範囲変更,Camera Range Change,摄像头范围改变,攝像頭範圍改變
+TheFungleCameraSpeed,カメラスピード,Camera Speed,摄像头速度,攝像頭速度
+TheFungleMushroomMixupOption,マッシュルームミックスアップ,Mushroom Mixup,蘑菇混合,蘑菇混合
+TheFungleMushroomMixupCantOpenMeeting,ミックスアップ中会議不可,Cannot Open Meeting During Mixup,混合时不能开会,混合時不能開會
+TheFungleMushroomMixupTime,ミックスアップ継続時間,Mushroom Mixup Duration,蘑菇混合持续时间,蘑菇混合持續時間
+
+FungleSpawnTypeOptions.TheFungleSpawnTypeNormal,通常,Normal,通常,通常
+FungleSpawnTypeOptions.RandomSpawnOption,ランダムスポーン,Random Spawn,随机出生点,隨機出生點
+FungleSpawnTypeOptions.TheFungleSpawnTypeSelect,選択スポーン,Select Spawn,选择出生点,選擇出生點
+
+FungleZiplineDirectionOptions.TheFungleZiplineAlways,常時使用可能,Always Available,随时可用,隨時可用
+FungleZiplineDirectionOptions.TheFungleZiplineOnlyUp,上りのみ使用可能,Up Only,仅上行可用,僅上行可用
+FungleZiplineDirectionOptions.TheFungleZiplineOnlyDown,下りのみ使用可能,Down Only,仅下行可用,僅下行可用

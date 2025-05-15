@@ -214,6 +214,8 @@ public static class IntroCutscenePatch
 
         FungleAdditionalAdmin.AddAdmin();
         FungleAdditionalElectrical.CreateElectrical();
+        MushroomMixup.Initialize();
+        ZiplineUpdown.Initialize();
 
         ReAssignTasks();
 
