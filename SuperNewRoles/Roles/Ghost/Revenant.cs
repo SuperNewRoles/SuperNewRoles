@@ -24,8 +24,8 @@ class Revenant : GhostRoleBase<Revenant>
             HauntDuration: Necromancer.RevenantHauntDuration,
             HauntVision: Necromancer.RevenantHauntVision,
             CannotReportWhileHaunted: Necromancer.RevenantCannotReportWhileHaunted
-        )
-    )];
+        )),
+    ];
 
     public override QuoteMod QuoteMod { get; } = QuoteMod.SuperNewRoles;
     public override short IntroNum { get; } = 1;
@@ -91,7 +91,7 @@ class RevenantAbility : TargetCustomButtonBase
         base.AttachToAlls();
 
         customTaskAbility = new CustomTaskAbility(
-            () => (true, Data.RequiredTasks),
+            () => (false, Data.RequiredTasks),
             taskOptionData
         );
         customHauntToAbility = new CustomHauntToAbility(() => HauntedPlayers?.FirstOrDefault().player);
