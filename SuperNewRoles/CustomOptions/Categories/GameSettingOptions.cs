@@ -20,6 +20,11 @@ public static class GameSettingOptions
     public static bool HideGhostRoles;
     [CustomOptionSelect("GhostVoteDisplay", typeof(GhostVoteDisplayType), "GhostVoteDisplayType.", parentFieldName: nameof(Categories.GameSettings), defaultValue: GhostVoteDisplayType.Vanilla)]
     public static GhostVoteDisplayType GhostVoteDisplay;
+
+    [CustomOptionBool("ChangeReportDistance", false, parentFieldName: nameof(Categories.GameSettings))]
+    public static bool ChangeReportDistance;
+    [CustomOptionFloat("ReportDistanceOption", 0.5f, 10f, 0.2f, 5f, parentFieldName: nameof(Categories.GameSettings))]
+    public static float ReportDistanceOption;
 }
 
 public enum GhostVoteDisplayType

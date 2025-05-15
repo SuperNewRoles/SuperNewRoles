@@ -53,14 +53,16 @@ public static class ZiplineConsolePatch
 
     [HarmonyPatch(nameof(ZiplineConsole.CanUse))]
     [HarmonyPrefix]
-    public static bool CanUsePrefix(ZiplineConsole __instance, ref bool __result, PlayerControl pc, ref bool canUse, ref bool couldUse)
+    public static bool CanUsePrefix(ZiplineConsole __instance, ref float __result, PlayerControl pc, out bool canUse, out bool couldUse)
     {
+        canUse = true;
+        couldUse = true;
         if (ModHelpers.Not(IsFungleMap() && TheFungleSetting && TheFungleZiplineOption)) return true;
         if (!TheFungleCanUseZiplineOption)
         {
             canUse = false;
             couldUse = false;
-            __result = false;
+            __result = float.MaxValue;
             return false; // Useメソッドの実行を止める
         }
 
@@ -76,7 +78,7 @@ public static class ZiplineConsolePatch
                 // 上昇しようとしているが、下降のみ許可されている場合
                 canUse = false;
                 couldUse = false;
-                __result = false;
+                __result = float.MaxValue;
                 return false;
             }
             else if (isMovingDown && TheFungleZiplineUpOrDown == FungleZiplineDirectionOptions.TheFungleZiplineOnlyUp)
@@ -84,7 +86,7 @@ public static class ZiplineConsolePatch
                 // 下降しようとしているが、上昇のみ許可されている場合
                 canUse = false;
                 couldUse = false;
-                __result = false;
+                __result = float.MaxValue;
                 return false;
             }
         }

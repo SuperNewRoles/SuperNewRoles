@@ -216,6 +216,7 @@ public static class IntroCutscenePatch
         FungleAdditionalElectrical.CreateElectrical();
         MushroomMixup.Initialize();
         ZiplineUpdown.Initialize();
+        ReportDistancePatch.Init();
 
         ReAssignTasks();
 

@@ -16,7 +16,7 @@ public static class HelpMenusHUuManagerStartPatch
         // ヘルプメニュー自体と被らないように-499
         var aspectPosition = obj.AddComponent<AspectPosition>();
         aspectPosition.Alignment = AspectPosition.EdgeAlignments.RightTop;
-        aspectPosition.DistanceFromEdge = new(2.68f, 0.49f, -499f);
+        aspectPosition.DistanceFromEdge = new(2.68f, 0.49f, -299f);
         aspectPosition.OnEnable();
         PassiveButton passiveButton = obj.AddComponent<PassiveButton>();
         passiveButton.Colliders = new Collider2D[] { obj.GetComponent<Collider2D>() };

@@ -5,6 +5,7 @@ using System.IO;
 using System.Linq;
 using System.Reflection;
 using System.Security.Cryptography;
+using AmongUs.GameOptions;
 using HarmonyLib;
 using SuperNewRoles.CustomOptions;
 using SuperNewRoles.CustomOptions.Categories;
@@ -59,6 +60,23 @@ public static class CustomOptionManager
             if (!AmongUsClient.Instance.AmHost) return;
             RpcSyncOptionsAll();
             RoleOptionManager.RpcSyncRoleOptionsAll();
+        }
+    }
+    [HarmonyPatch(typeof(AmongUsClient), nameof(AmongUsClient.Awake))]
+    public static class FixMaxImpostorsPatch
+    {
+        public static void Postfix()
+        {
+            // 0を150個
+            int[] MaxImpostors = new int[150];
+            for (int i = 0; i < 150; i++)
+                MaxImpostors[i] = 0;
+            NormalGameOptionsV07.MaxImpostors = MaxImpostors;
+            NormalGameOptionsV08.MaxImpostors = MaxImpostors;
+            NormalGameOptionsV09.MaxImpostors = MaxImpostors;
+            HideNSeekGameOptionsV07.MaxImpostors = MaxImpostors;
+            HideNSeekGameOptionsV08.MaxImpostors = MaxImpostors;
+            HideNSeekGameOptionsV09.MaxImpostors = MaxImpostors;
         }
     }
     [CustomRPC]
