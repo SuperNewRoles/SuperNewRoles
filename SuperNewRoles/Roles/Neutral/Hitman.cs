@@ -192,6 +192,7 @@ public class HitmanAbility : AbilityBase
     public void OnMurder(MurderEventData data)
     {
         if (ExPlayerControl.LocalPlayer.IsDead()) return;
+        if (data.killer != Player) return;
         if (_currentTarget == data.target)
             SuccessfulKill();
         else
