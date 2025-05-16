@@ -353,27 +353,15 @@ public class ExPlayerControl
         foreach (var ability in myAbilities)
         {
             var currentParent = ability.ability.Parent;
-            while (currentParent != null && currentParent is AbilityParentAbility)
-            {
-                currentParent = (currentParent as AbilityParentAbility).ParentAbility.Parent;
-            }
-            if (currentParent is AbilityParentRole parentRole)
-                (currentParent as AbilityParentRole).Player = target;
-            if (currentParent is AbilityParentModifier parentModifier)
-                (currentParent as AbilityParentModifier).Player = target;
+            if (currentParent is AbilityParentAbility)
+                continue;
             target.AttachAbility(ability.ability, currentParent);
         }
         foreach (var ability in targetAbilities)
         {
             var currentParent = ability.ability.Parent;
-            while (currentParent != null && currentParent is AbilityParentAbility)
-            {
-                currentParent = (currentParent as AbilityParentAbility).ParentAbility.Parent;
-            }
-            if (currentParent is AbilityParentRole parentRole)
-                (currentParent as AbilityParentRole).Player = Player;
-            else if (currentParent is AbilityParentModifier parentModifier)
-                (currentParent as AbilityParentModifier).Player = Player;
+            if (currentParent is AbilityParentAbility)
+                continue;
             AttachAbility(ability.ability, currentParent);
         }
         // 名前情報を更新
