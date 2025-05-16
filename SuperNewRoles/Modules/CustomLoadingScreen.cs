@@ -3,6 +3,7 @@ using System.Threading.Tasks;
 using BepInEx.Unity.IL2CPP.Utils.Collections;
 using HarmonyLib;
 using SuperNewRoles.CustomCosmetics;
+using TMPro;
 using UnityEngine;
 
 namespace SuperNewRoles.Modules;
@@ -25,7 +26,13 @@ public static class CustomLoadingScreen
             return false;
         }
         if (IsLoading)
+        {
+            if (CustomCosmeticsLoader.AssetBundlesDownloading)
+                LoadingText.text = $"Loading... {CustomCosmeticsLoader.AssetBundlesDownloadedCount}/{CustomCosmeticsLoader.AssetBundlesAllCount}\nSprites: {CustomCosmeticsLoader.SpritesDownloadingCount}/{CustomCosmeticsLoader.SpritesAllCount}";
+            else
+                LoadingText.text = $"Loading... {(CustomCosmeticsLoader.SpritesAllCount - CustomCosmeticsLoader.SpritesDownloadingCount)}/{CustomCosmeticsLoader.SpritesAllCount}";
             return false;
+        }
         return true;
     }
 
@@ -35,6 +42,8 @@ public static class CustomLoadingScreen
         harmony.Patch(typeof(SplashManager).GetMethod(nameof(SplashManager.Update)), prefix: new HarmonyMethod(typeof(CustomLoadingScreen).GetMethod(nameof(SplashManagerUpdatePrefixPatch))));
     }
 
+    public static TextMeshPro LoadingText;
+
     public static void SplashManagerStartPostfix(SplashManager __instance)
     {
         if (Inited)
@@ -43,6 +52,7 @@ public static class CustomLoadingScreen
         Transform text = AssetManager.Instantiate("LoadingText", __instance.transform).transform;
         text.localPosition = new(3.82f, -4.63f, -1f);
         text.localScale = Vector3.one * 0.15f;
+        LoadingText = text.GetComponent<TextMeshPro>();
         Inited = true;
         // if (Constants.GetPlatformType() != Platforms.Android)
         __instance.StartCoroutine(CustomCosmeticsLoader.LoadCosmeticsTaskAsync((c) => __instance.StartCoroutine(c.WrapToIl2Cpp())).WrapToIl2Cpp());

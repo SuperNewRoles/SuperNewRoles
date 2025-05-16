@@ -19,7 +19,18 @@ namespace SuperNewRoles.Modules
     public class SNRDownloadHandler
     {
         public byte[] data { get; internal set; }
-        public string text => data != null ? Encoding.UTF8.GetString(data) : null; // デフォルトエンコーディングはUTF-8
+        private string _textCache = null; // textプロパティのキャッシュ用
+        public string text
+        {
+            get
+            {
+                if (_textCache == null && data != null)
+                {
+                    _textCache = Encoding.UTF8.GetString(data);
+                }
+                return _textCache;
+            }
+        }
     }
 
     // HTTPレスポンスの詳細を保持する内部クラス
@@ -266,40 +277,50 @@ namespace SuperNewRoles.Modules
                             if (bodyStartIndex <= fullResponseMessage.Length) // bodyStartIndex == length の場合は空ボディ
                             {
                                 int bodyLen = fullResponseMessage.Length - bodyStartIndex;
-                                byte[] rawBody = new byte[bodyLen];
-                                if (bodyLen > 0)
-                                {
-                                    Array.Copy(fullResponseMessage, bodyStartIndex, rawBody, 0, bodyLen);
-                                }
+                                // byte[] rawBody = new byte[bodyLen]; // 削除
+                                // if (bodyLen > 0) // 削除
+                                // { // 削除
+                                // Array.Copy(fullResponseMessage, bodyStartIndex, rawBody, 0, bodyLen); // 削除
+                                // } // 削除
 
                                 // Content-Encodingに基づいて解凍処理
                                 string contentEncoding = currentResponse.Headers["Content-Encoding"]?.ToLowerInvariant();
                                 if (contentEncoding == "gzip")
                                 {
-                                    using (var compressedStream = new MemoryStream(rawBody))
+                                    using (var compressedStream = new MemoryStream(fullResponseMessage, bodyStartIndex, bodyLen, false))
                                     using (var gzipStream = new GZipStream(compressedStream, CompressionMode.Decompress))
                                     using (var decompressedStream = new MemoryStream())
                                     {
-                                        gzipStream.CopyTo(decompressedStream);
+                                        await gzipStream.CopyToAsync(decompressedStream);
                                         currentResponse.Body = decompressedStream.ToArray();
                                     }
                                 }
                                 else if (contentEncoding == "deflate")
                                 {
-                                    using (var compressedStream = new MemoryStream(rawBody))
+                                    using (var compressedStream = new MemoryStream(fullResponseMessage, bodyStartIndex, bodyLen, false))
                                     // DeflateStreamはヘッダーなしの生deflateデータ用。zlibヘッダー(RFC 1950)やgzipヘッダー(RFC 1952)付きの場合は注意が必要
                                     // 一般的なHTTPのdeflateはzlibヘッダーを持つことが多いが、ここではヘッダーなしと仮定
                                     // もしzlibヘッダー付きdeflateに対応するなら、ヘッダーをスキップするか、より高度なライブラリが必要
                                     using (var deflateStream = new DeflateStream(compressedStream, CompressionMode.Decompress))
                                     using (var decompressedStream = new MemoryStream())
                                     {
-                                        deflateStream.CopyTo(decompressedStream);
+                                        await deflateStream.CopyToAsync(decompressedStream);
                                         currentResponse.Body = decompressedStream.ToArray();
                                     }
                                 }
                                 else
                                 {
-                                    currentResponse.Body = rawBody; // 解凍不要
+                                    // currentResponse.Body = rawBody; // 解凍不要。rawBodyはもうない。
+                                    if (bodyLen > 0)
+                                    {
+                                        byte[] bodyData = new byte[bodyLen];
+                                        Buffer.BlockCopy(fullResponseMessage, bodyStartIndex, bodyData, 0, bodyLen);
+                                        currentResponse.Body = bodyData;
+                                    }
+                                    else
+                                    {
+                                        currentResponse.Body = Array.Empty<byte>(); // 空のボディ
+                                    }
                                 }
                             }
                             // else ボディがない (またはパースエラーでここまで来ない)

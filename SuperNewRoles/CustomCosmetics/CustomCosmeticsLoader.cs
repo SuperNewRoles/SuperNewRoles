@@ -60,8 +60,19 @@ public class CustomCosmeticsLoader
     public static readonly Dictionary<string, CustomCosmeticsNamePlate> moddedNamePlates = new();
     private static readonly Dictionary<string, List<(string, string)>> willDownloads = new();
     private static readonly Dictionary<string, byte[]> downloadedSprites = new();
+
+    public static int AssetBundlesDownloadedCount;
+    public static int AssetBundlesAllCount;
+    public static bool AssetBundlesDownloading = false;
+
+    public static int SpritesDownloadingCount;
+    public static int SpritesAllCount;
+    public static bool SpritesDownloading = false;
+
+    public const int MAX_CONCURRENT_DOWNLOADS = 60;
     public static IEnumerator LoadAsync(Func<IEnumerator, Coroutine> startCoroutine)
     {
+        AssetBundlesDownloading = true;
         client.Timeout = TimeSpan.FromSeconds(5);
         List<(string url, string content)> fetchTasks = new();
         List<Task> waitTasks = new();
@@ -120,8 +131,13 @@ public class CustomCosmeticsLoader
 
                         string currentUrl = isAndroid ? assetBundleAndroidUrl : assetBundleUrl;
                         string currentExpectedHash = isAndroid ? expectedHashAndroid : expectedHash;
-                        startCoroutine(DownloadAssetBundleWithRetryAsync(currentUrl, currentExpectedHash, () => assetBundleLoadingCount--));
+                        startCoroutine(DownloadAssetBundleWithRetryAsync(currentUrl, currentExpectedHash, () =>
+                        {
+                            assetBundleLoadingCount--;
+                            AssetBundlesDownloadedCount++;
+                        }));
                         assetBundleLoadingCount++;
+                        AssetBundlesAllCount++;
                     }
                 }
                 else
@@ -317,12 +333,14 @@ public class CustomCosmeticsLoader
         Logger.Info("DownloadSpritesAsync done");
         // Wait for asset bundles to finish loading
         yield return new WaitUntil((Il2CppSystem.Func<bool>)(() => assetBundleLoadingCount <= 0));
+        AssetBundlesDownloading = false;
         Logger.Info("assetBundleLoadingCount done");
         // After asset bundles are done, wait for sprite downloads to complete
         if (spriteDownloadCoroutine != null)
         {
             yield return spriteDownloadCoroutine;
         }
+        SpritesDownloading = false;
         Logger.Info("spriteDownloadCoroutine done");
         willLoad = () =>
         {
@@ -794,10 +812,9 @@ public class CustomCosmeticsLoader
     public static IEnumerator DownloadSpritesAsync(Func<IEnumerator, Coroutine> startCoroutine)
     {
         string basePath = $"{SuperNewRolesPlugin.BaseDirectory}/CustomCosmetics/";
-        const int MAX_CONCURRENT_DOWNLOADS = 20;
         int activeDownloads = 0;
         Queue<(string spriteName, string spritePath, string packageKey, string packagePath)> downloadQueue = new();
-
+        SpritesAllCount = willDownloads.Sum(x => x.Value.Count);
         try // Setup phase
         {
             if (!willDownloads.Any())
@@ -841,6 +858,7 @@ public class CustomCosmeticsLoader
                 // SuperNewRolesPlugin.Instance が MonoBehaviour を継承していると仮定
                 // そうでない場合は、適切なコルーチン開始方法に置き換える必要があります。
                 Coroutine downloadCoroutine = startCoroutine(DownloadSingleSprite(item.spriteName, item.spritePath, item.packagePath, () => activeDownloads--));
+                SpritesDownloadingCount = downloadQueue.Count;
                 if (downloadCoroutine != null) // Check if StartCoroutine succeeded
                 {
                     runningCoroutines.Add(downloadCoroutine);
