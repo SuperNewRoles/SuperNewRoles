@@ -788,6 +788,7 @@ public class CustomCosmeticsCostumeMenu : CustomCosmeticsMenuBase<CustomCosmetic
                     selectedButton = slot.button;
                     selectedButton.transform.Find("Selected").gameObject.SetActive(true);
                     SetCosmetic(package.Value[index], onSet);
+                    PreviewCosmetic(package.Value[index], obj, onPreview);
                 }));
                 slot.button.OnMouseOver = new();
                 slot.button.OnMouseOver.AddListener((UnityAction)(() =>
