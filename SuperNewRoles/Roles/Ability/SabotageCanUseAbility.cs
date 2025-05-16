@@ -60,3 +60,18 @@ public static class ConsolsUsePatch
         return true;
     }
 }
+[HarmonyPatch(typeof(Console), nameof(Console.CanUse))]
+public static class ConsolsCanUsePatch
+{
+    public static bool Prefix(Console __instance, out float __result, out bool canUse, out bool couldUse)
+    {
+        canUse = false;
+        couldUse = false;
+        __result = 0;
+        if (!ExPlayerControl.LocalPlayer.TryGetAbility<SabotageCanUseAbility>(out var ability))
+            return true;
+        __instance.CanUse(PlayerControl.LocalPlayer.Data, out canUse, out couldUse);
+        if (canUse) return ability.TryUse(__instance.TaskTypes.FirstOrDefault());
+        return true;
+    }
+}

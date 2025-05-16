@@ -819,7 +819,10 @@ WorshiperAbilitySuicideCoolTime,自殺クールタイム,Suicide Cooldown,自殺
 GodNeededTask,勝利にタスクが必要,Required Tasks for Victory,胜利需要任务,勝利需要任務
 GodSeeVote,投票結果を見れる,See Vote Results,可以看投票结果,可以看投票結果
 GodDescends,降臨,Descends,降臨,降臨
-
+GodCannotFixReactor,リアクターを直せない,Cannot fix reactor,无法修复反应堆,無法修復反應堆
+GodCannotFixComms,コミュサボを直せない,Cannot fix comms,无法修复通讯,無法修復通訊
+GodCannotFixLights,停電を直せない,Cannot fix lights,无法修复停电,無法修復停電
+GodCannotUseReportButton,死体を通報できない,Cannot report dead bodies,无法通報死體,無法通報死體
 # ModifierGuesser
 ModifierGuesserCategory,ゲッサー,Guesser
 ModifierGuesserMaxImpostors,最大インポスター数,Max Impostors
