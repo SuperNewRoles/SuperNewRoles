@@ -87,8 +87,8 @@ internal class TeleporterAbility : CustomButtonBase, IButtonEffect
 
     private void ShowTeleportWaitingEffect(ExPlayerControl player, float waitingTime)
     {
-        CurrentMessage = new CustomMessage(ModTranslation.GetString("TeleporterWaitingText", waitingTime), 1, true);
-        if (waitingTime > 0 && player.IsAlive())
+        CurrentMessage = new CustomMessage(ModTranslation.GetString("TeleporterWaitingText", waitingTime), waitingTime == 1 ? 2 : 1, true);
+        if (waitingTime > 1 && player.IsAlive())
         {
             new LateTask(() =>
             {
