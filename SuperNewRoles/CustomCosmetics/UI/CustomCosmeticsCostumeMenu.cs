@@ -462,7 +462,7 @@ public class CustomCosmeticsCostumeMenu : CustomCosmeticsMenuBase<CustomCosmetic
             }, (cosmetic) =>
             {
                 CustomCosmeticsLayers.ExistsOrInitialize(obj.PreviewArea.cosmetics).visor1.SetVisor(cosmetic.ProdId, PlayerControl.LocalPlayer != null ? PlayerControl.LocalPlayer.Data.DefaultOutfit.ColorId : DataManager.Player.Customization.Color);
-            });
+            }, () => new CosmeticDataWrapperVisor(FastDestroyableSingleton<HatManager>.Instance.GetVisorById(VisorData.EmptyId)));
         });
 
         // HatButton01のセットアップ
@@ -501,7 +501,7 @@ public class CustomCosmeticsCostumeMenu : CustomCosmeticsMenuBase<CustomCosmetic
             }, (cosmetic) =>
             {
                 CustomCosmeticsLayers.ExistsOrInitialize(obj.PreviewArea.cosmetics).hat1.SetHat(cosmetic.ProdId, PlayerControl.LocalPlayer != null ? PlayerControl.LocalPlayer.Data.DefaultOutfit.ColorId : DataManager.Player.Customization.Color);
-            });
+            }, () => new CosmeticDataWrapperHat(FastDestroyableSingleton<HatManager>.Instance.GetHatById(HatData.EmptyId)));
         });
 
         // VisorButton02のセットアップ
@@ -548,7 +548,7 @@ public class CustomCosmeticsCostumeMenu : CustomCosmeticsMenuBase<CustomCosmetic
             }, (cosmetic) =>
             {
                 CustomCosmeticsLayers.ExistsOrInitialize(obj.PreviewArea.cosmetics).visor2.SetVisor(cosmetic.ProdId, PlayerControl.LocalPlayer != null ? PlayerControl.LocalPlayer.Data.DefaultOutfit.ColorId : DataManager.Player.Customization.Color);
-            });
+            }, () => new CosmeticDataWrapperVisor(FastDestroyableSingleton<HatManager>.Instance.GetVisorById(VisorData.EmptyId)));
         });
 
         // HatButton02のセットアップ
@@ -598,7 +598,7 @@ public class CustomCosmeticsCostumeMenu : CustomCosmeticsMenuBase<CustomCosmetic
                 }, (cosmetic) =>
                 {
                     CustomCosmeticsLayers.ExistsOrInitialize(obj.PreviewArea.cosmetics).hat2.SetHat(cosmetic.ProdId, PlayerControl.LocalPlayer != null ? PlayerControl.LocalPlayer.Data.DefaultOutfit.ColorId : DataManager.Player.Customization.Color);
-                });
+                }, () => new CosmeticDataWrapperHat(FastDestroyableSingleton<HatManager>.Instance.GetHatById(HatData.EmptyId)));
         });
 
         // SkinButtonのセットアップ
@@ -616,7 +616,7 @@ public class CustomCosmeticsCostumeMenu : CustomCosmeticsMenuBase<CustomCosmetic
             }, (cosmetic) =>
             {
                 obj.PreviewArea.SetSkin(cosmetic.ProdId, PlayerControl.LocalPlayer != null ? PlayerControl.LocalPlayer.Data.DefaultOutfit.ColorId : DataManager.Player.Customization.Color);
-            });
+            }, () => new CosmeticDataWrapperSkin(FastDestroyableSingleton<HatManager>.Instance.GetSkinById(SkinData.EmptyId)));
         });
 
         ControllerManager.Instance.SetCurrentSelected(visorButton02.GetComponent<PassiveButton>());
@@ -678,7 +678,7 @@ public class CustomCosmeticsCostumeMenu : CustomCosmeticsMenuBase<CustomCosmetic
     private Scroller scroller;
     private float lastInnerY;
     private List<Transform> activeSlots;
-    private void ShowCostumeTab(CostumeTabType tabType, PlayerCustomizationMenu obj, List<ICosmeticData> unlockedCosmetics, Func<ICosmeticData> currentCosmeticFunc, Action<ICosmeticData> onSet, Action<ICosmeticData> onPreview)
+    private void ShowCostumeTab(CostumeTabType tabType, PlayerCustomizationMenu obj, List<ICosmeticData> unlockedCosmetics, Func<ICosmeticData> currentCosmeticFunc, Action<ICosmeticData> onSet, Action<ICosmeticData> onPreview, Func<ICosmeticData> emptyCosmeticFunc)
     {
         if (tabType != CostumeTabType.Skin)
         {
@@ -750,6 +750,64 @@ public class CustomCosmeticsCostumeMenu : CustomCosmeticsMenuBase<CustomCosmetic
             // パッケージテキストの位置を設定
             int row = allI / itemsPerRow;
             packageText.transform.localPosition = new(tabType != CostumeTabType.Skin ? -5.8f : -6.7f, 2.63f - row * (tabType != CostumeTabType.Skin ? 2.68f : 2.6f) + 2.4f + offSetY, -10);
+
+            // Emptyスロットを追加
+            var emptyCosmetic = emptyCosmeticFunc();
+            var emptySlot = GameObject.Instantiate(costumeSlot, inner);
+            slots.Add(emptySlot.transform);
+            emptySlot.Awake();
+
+            // Emptyスロットの設定
+            int emptyCol = allI % itemsPerRow;
+            int emptyRow = allI / itemsPerRow;
+            emptySlot.transform.localPosition = tabType != CostumeTabType.Skin ? new(-15.69f + emptyCol * 2.77f, 2.63f - emptyRow * 2.68f + offSetY, -10) : new(-15.78f + emptyCol * 2.63f, 2.63f - emptyRow * 2.6f + offSetY, -10);
+            emptySlot.transform.localScale = Vector3.one * (tabType != CostumeTabType.Skin ? 0.85f : 0.8f);
+            emptySlot.button.Colliders = new Collider2D[] { emptySlot.GetComponent<BoxCollider2D>() };
+            emptySlot.button.OnClick = new();
+            emptySlot.button.OnClick.AddListener((UnityAction)(() =>
+            {
+                Logger.Info("Empty Slot clicked");
+                if (selectedButton != null)
+                {
+                    selectedButton.SelectButton(false);
+                    selectedButton.transform.Find("Selected").gameObject.SetActive(false);
+                }
+                emptySlot.button.SelectButton(true);
+                selectedButton = emptySlot.button;
+                selectedButton.transform.Find("Selected").gameObject.SetActive(true);
+                SetCosmetic(emptyCosmetic, onSet);
+                PreviewCosmetic(emptyCosmetic, obj, onPreview);
+            }));
+            emptySlot.button.OnMouseOver = new();
+            emptySlot.button.OnMouseOver.AddListener((UnityAction)(() =>
+            {
+                if (selectedButton != emptySlot.button)
+                    emptySlot.transform.Find("Selected").gameObject.SetActive(true);
+                PreviewCosmetic(emptyCosmetic, obj, onPreview);
+            }));
+            emptySlot.button.OnMouseOut = new();
+            emptySlot.button.OnMouseOut.AddListener((UnityAction)(() =>
+            {
+                if (selectedButton != emptySlot.button)
+                    emptySlot.transform.Find("Selected").gameObject.SetActive(false); // Empty slot preview is always empty
+                PreviewCosmetic(currentCosmeticFunc(), obj, onPreview);
+            }));
+            emptySlot.gameObject.SetActive(true);
+            Logger.Info($"Empty cosmetic: {emptyCosmetic.ProdId}");
+            // Empty cosmetic doesn't need LoadAsync or explicit preview setup
+            // emptySlot.spriteRenderer.sprite = null; // Clear sprite
+            // Handle translation for "None" or "Empty"
+            // For now, leave sprite blank, name will be handled by GetItemName of the empty wrapper
+
+            if (emptyCosmetic.ProdId == currentCosmeticId) // Check if the current selected item is the empty one
+            {
+                emptySlot.button.SelectButton(true);
+                selectedButton = emptySlot.button;
+                selectedButton.transform.Find("Selected").gameObject.SetActive(true);
+            }
+            ControllerManager.Instance.AddSelectableUiElement(emptySlot.button);
+            allI++;
+            //
 
             for (int i = 0; i < package.Value.Count; i++)
             {

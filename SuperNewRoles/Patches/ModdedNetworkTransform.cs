@@ -100,21 +100,23 @@ public static class ModdedNetworkTransform
         return queue;
     }
 
-
+    public static void ResetState(PlayerControl player)
+    {
+        finishedMovementPosition.Remove(player.PlayerId);
+        smoothingTimeLeft.Remove(player.PlayerId);
+        smoothingVelocity.Remove(player.PlayerId);
+        stopDetectionCounter.Remove(player.PlayerId);
+        externalImpulses.Remove(player.PlayerId);
+        if (movementQueues.TryGetValue(player.PlayerId, out var queue))
+        {
+            queue.Clear();
+        }
+    }
     public static void FixedUpdate(PlayerControl player)
     {
         if (player.NetTransform.isPaused || player.onLadder || (ShipStatus.Instance.Type == ShipStatus.MapType.Fungle && ShipStatus.Instance is FungleShipStatus fungleShipStatus && fungleShipStatus.Zipline.playerIdHands.ContainsKey(player.PlayerId)))
         {
             // Clear state for paused players
-            finishedMovementPosition.Remove(player.PlayerId);
-            smoothingTimeLeft.Remove(player.PlayerId);
-            smoothingVelocity.Remove(player.PlayerId);
-            stopDetectionCounter.Remove(player.PlayerId);
-            externalImpulses.Remove(player.PlayerId);
-            if (movementQueues.TryGetValue(player.PlayerId, out var queue))
-            {
-                queue.Clear();
-            }
             return;
         }
 
@@ -494,6 +496,14 @@ public static class ModdedNetworkTransform
         for (int i = 0; i < positions.Length; i++)
         {
             queue.Enqueue(new MovementData { position = positions[i], velocity = velocities[i] });
+        }
+    }
+    [HarmonyPatch(typeof(CustomNetworkTransform), nameof(CustomNetworkTransform.OnEnable))]
+    public static class CustomNetworkTransformOnEnablePatch
+    {
+        public static void Postfix(CustomNetworkTransform __instance)
+        {
+            ResetState(__instance.myPlayer);
         }
     }
     [HarmonyPatch(typeof(CustomNetworkTransform), nameof(CustomNetworkTransform.FixedUpdate))]
