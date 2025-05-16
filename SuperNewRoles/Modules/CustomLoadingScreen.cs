@@ -1,7 +1,9 @@
+using System;
 using System.Threading.Tasks;
 using BepInEx.Unity.IL2CPP.Utils.Collections;
 using HarmonyLib;
 using SuperNewRoles.CustomCosmetics;
+using UnityEngine;
 
 namespace SuperNewRoles.Modules;
 
@@ -38,7 +40,9 @@ public static class CustomLoadingScreen
         if (Inited)
             return;
         Logger.Info("SplashManagerStartPostfix");
-        AssetManager.Instantiate("LoadingText", __instance.transform);
+        Transform text = AssetManager.Instantiate("LoadingText", __instance.transform).transform;
+        text.localPosition = new(3.82f, -4.63f, -1f);
+        text.localScale = Vector3.one * 0.15f;
         Inited = true;
         // if (Constants.GetPlatformType() != Platforms.Android)
         __instance.StartCoroutine(CustomCosmeticsLoader.LoadCosmeticsTaskAsync((c) => __instance.StartCoroutine(c.WrapToIl2Cpp())).WrapToIl2Cpp());

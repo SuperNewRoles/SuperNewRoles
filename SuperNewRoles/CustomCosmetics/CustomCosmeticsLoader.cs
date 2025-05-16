@@ -19,6 +19,8 @@ using System.Threading;
 using UnityEngine.ProBuilder;
 using System.Collections;
 using UnityEngine.Networking;
+using UnityEngine.Scripting;
+using Unity.Collections;
 
 namespace SuperNewRoles.CustomCosmetics;
 public class CustomCosmeticsData
@@ -34,14 +36,13 @@ public class CustomCosmeticsLoader
             // "https://example.com/custom_cosmetics.json",
             "https://raw.githubusercontent.com/ykundesu/SuperNewCosmeticsAssetBundlesPreview/refs/heads/main/debug_assets.json",
             // $"{SuperNewRolesPlugin.BaseDirectory}/debug_assets.json",
-            /*
             "https://raw.githubusercontent.com/hinakkyu/TheOtherHats/refs/heads/master/CustomHats.json",
             "https://raw.githubusercontent.com/catudon1276/CatudonCostume/refs/heads/main/CustomHats.json",
             "https://raw.githubusercontent.com/catudon1276/Mememura-Hats/refs/heads/main/CustomHats.json",
-            // "https://raw.githubusercontent.com/Ujet222/TOPHats/refs/heads/main/CustomHats.json",
+            "https://raw.githubusercontent.com/Ujet222/TOPHats/refs/heads/main/CustomHats.json",
             // "https://raw.githubusercontent.com/SuperNewRoles/SuperNewCosmetics/refs/heads/main/CustomHats.json",
             // "https://raw.githubusercontent.com/SuperNewRoles/SuperNewCosmetics/refs/heads/main/CustomVisors.json",
-            "https://raw.githubusercontent.com/Ujet222/TOPVisors/refs/heads/main/CustomVisors.json",*/
+            "https://raw.githubusercontent.com/Ujet222/TOPVisors/refs/heads/main/CustomVisors.json",
     };
     public static Action willLoad;
     public static bool runned = false;
@@ -50,6 +51,7 @@ public class CustomCosmeticsLoader
     private static readonly int maxRetryAttempts = 1;
     private static readonly TimeSpan retryDelay = TimeSpan.FromSeconds(5);
     private static readonly MD5 md5 = MD5.Create();
+    public static DownloadHandlerBuffer DEBUGdownloadHandlerBuffer = new();
     private static readonly List<string> notLoadedAssetBundles = new();
     private static readonly List<CustomCosmeticsPackage> loadedPackages = new();
     public static List<CustomCosmeticsPackage> LoadedPackages => loadedPackages;
@@ -362,7 +364,7 @@ public class CustomCosmeticsLoader
         }
         else
         {
-            Logger.Error($"カスタムコスメティックの読み込みに失敗しました: {url}");
+            Logger.Error($"カスタムコスメティックの読み込みに失敗しました: {url} {request.error}");
             onError(request.error);
         }
         request.Dispose();
@@ -632,7 +634,7 @@ public class CustomCosmeticsLoader
         {
             byte[] assetBundleData = null;
             bool successThisAttempt = false;
-            UnityWebRequest request = null;
+            SNRHttpClient request = null;
 
             bool isLocal = assetBundleUrl.StartsWith("./", StringComparison.Ordinal) ||
                            assetBundleUrl.StartsWith("../", StringComparison.Ordinal) ||
@@ -661,11 +663,11 @@ public class CustomCosmeticsLoader
             }
             else // Remote
             {
-                request = UnityWebRequest.Get(assetBundleUrl);
+                request = SNRHttpClient.Get(assetBundleUrl);
                 // ユーザーが設定したタイムアウト値を使用
                 request.timeout = 60;
 
-                IEnumerator webRequestEnumerator = SendUnityWebRequestHelper(request);
+                IEnumerator webRequestEnumerator = SendSNRHttpClientHelper(request);
                 bool moveNextSuccess = true;
                 bool webRequestFailedMidExecution = false;
 
@@ -699,9 +701,9 @@ public class CustomCosmeticsLoader
                 // ループ後 (リクエスト完了または MoveNext エラー後) に結果を処理
                 try
                 {
-                    if (!webRequestFailedMidExecution && request.result == UnityWebRequest.Result.Success)
+                    if (!webRequestFailedMidExecution && string.IsNullOrEmpty(request.error))
                     {
-                        assetBundleData = request.downloadHandler.GetData();
+                        assetBundleData = request.downloadHandler.data;
                     }
                     else if (!webRequestFailedMidExecution) // webRequestFailedMidExecution が true の場合、request.result は信頼できない可能性
                     {
@@ -716,7 +718,6 @@ public class CustomCosmeticsLoader
                 }
                 finally
                 {
-                    request?.Dispose();
                 }
             }
 
@@ -785,7 +786,7 @@ public class CustomCosmeticsLoader
         yield break;
     }
 
-    private static IEnumerator SendUnityWebRequestHelper(UnityWebRequest request)
+    private static IEnumerator SendSNRHttpClientHelper(SNRHttpClient request)
     {
         yield return request.SendWebRequest();
     }
@@ -860,16 +861,17 @@ public class CustomCosmeticsLoader
     private static IEnumerator DownloadSingleSprite(string spriteName, string spriteUrl, string packageSavePath, Action onComplete)
     {
         Logger.Info($"Downloading sprite {spriteName} from {spriteUrl}");
-        UnityWebRequest request = UnityWebRequest.Get(spriteUrl);
+        SNRHttpClient request = SNRHttpClient.Get(spriteUrl);
         request.timeout = 30; // 30 seconds timeout
+        request.ignoreSslErrors = true;
 
         yield return request.SendWebRequest();
 
         string filePath = Path.Combine(packageSavePath, $"{spriteName}.png").Replace("\\", "/");
 
-        if (request.result == UnityWebRequest.Result.Success)
+        if (string.IsNullOrEmpty(request.error))
         {
-            DownloadHandler handler = request.downloadHandler; // DownloadHandlerを明示的に保持
+            SNRDownloadHandler handler = request.downloadHandler; // DownloadHandlerを明示的に保持
             byte[] data = null;
             try
             {
@@ -907,7 +909,6 @@ public class CustomCosmeticsLoader
         {
             Logger.Error($"Failed to download sprite {spriteName} from {spriteUrl}. Error: {request.error}, Code: {request.responseCode}");
         }
-        request.Dispose(); // Ensure a Non-Disposable UWR isn't made by the user removing the using block
         onComplete?.Invoke();
     }
 
