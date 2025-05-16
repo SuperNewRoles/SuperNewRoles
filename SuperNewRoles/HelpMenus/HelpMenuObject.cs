@@ -15,7 +15,7 @@ namespace SuperNewRoles.HelpMenus;
 public static class HelpMenuObjectManager
 {
     private static GameObject helpMenuObject;
-    private static FadeCoroutine fadeCoroutine;
+    public static FadeCoroutine fadeCoroutine;
     public static HelpMenuCategoryBase[] categories;
     public static Dictionary<string, GameObject> selectedButtons;
     public static HelpMenuCategoryBase? CurrentCategory;
@@ -216,6 +216,7 @@ public static class HelpMenuObjectManager
         {
             CurrentCategory?.UpdateShow();
         }
+        HelpMenusHudManagerStartPatch.helpMenuButton?.transform.Find("active").gameObject.SetActive(fadeCoroutine.isAvtive);
     }
     public static void HideHelpMenu()
     {

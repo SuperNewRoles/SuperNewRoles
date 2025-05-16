@@ -13,14 +13,22 @@ public static class CustomLoadingScreen
     public static bool IsLoading = true;
     public static bool PleaseDoWillLoad = false;
     public static bool Inited = false;
+    public static bool waitOneFrame = false;
 
     public static bool SplashManagerUpdatePrefixPatch()
     {
         if (PleaseDoWillLoad)
         {
-            // メインスレッドで読むこむ必要あり
+            // メインスレッドで読み込む必要あり
             IsLoading = false;
             PleaseDoWillLoad = false;
+            LoadingText.text = "Loading AssetBundles...";
+            waitOneFrame = true;
+            return false;
+        }
+        if (waitOneFrame)
+        {
+            waitOneFrame = false;
             CustomCosmeticsLoader.willLoad?.Invoke();
             Logger.Info("Loading done");
             return false;
@@ -55,7 +63,8 @@ public static class CustomLoadingScreen
         LoadingText = text.GetComponent<TextMeshPro>();
         Inited = true;
         // if (Constants.GetPlatformType() != Platforms.Android)
-        __instance.StartCoroutine(CustomCosmeticsLoader.LoadCosmeticsTaskAsync((c) => __instance.StartCoroutine(c.WrapToIl2Cpp())).WrapToIl2Cpp());
+        // __instance.StartCoroutine(CustomCosmeticsLoader.LoadCosmeticsTaskAsync((c) => __instance.StartCoroutine(c.WrapToIl2Cpp())).WrapToIl2Cpp());
+        // CustomCosmeticsLoader.runned = false;
         Task.Run(() =>
         {
             Logger.Info("Started");

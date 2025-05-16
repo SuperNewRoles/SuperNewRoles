@@ -1123,8 +1123,8 @@ public class CustomCosmeticsCostumeMenu : CustomCosmeticsMenuBase<CustomCosmetic
         if (totalPotentialItems > 35)
         {
             int extraRows = Mathf.CeilToInt((totalPotentialItems - 35) / (float)itemsPerRow);
-            float rowHeight = (CurrentCostumeTabType != CostumeTabType.Skin ? 2.68f : 2.6f);
-            contentYBounds = extraRows * rowHeight;
+            float rowHeight = (CurrentCostumeTabType != CostumeTabType.Skin ? 2.7f : 2.6f);
+            contentYBounds = extraRows * rowHeight - 1f;
         }
         scroller.ContentYBounds = new(0, contentYBounds > 0 ? contentYBounds : 0);
     }

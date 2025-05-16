@@ -45,7 +45,7 @@ public class CustomCosmeticsLoader
             "https://raw.githubusercontent.com/Ujet222/TOPVisors/refs/heads/main/CustomVisors.json",
     };
     public static Action willLoad;
-    public static bool runned = false;
+    public static bool runned = true;
     public const string ModdedPrefix = "Modded_";
     private static readonly HttpClient client = new();
     private static readonly int maxRetryAttempts = 1;
@@ -72,6 +72,7 @@ public class CustomCosmeticsLoader
     public const int MAX_CONCURRENT_DOWNLOADS = 60;
     public static IEnumerator LoadAsync(Func<IEnumerator, Coroutine> startCoroutine)
     {
+        runned = false;
         AssetBundlesDownloading = true;
         client.Timeout = TimeSpan.FromSeconds(5);
         List<(string url, string content)> fetchTasks = new();

@@ -503,7 +503,11 @@ public static class ModdedNetworkTransform
     {
         public static void Postfix(CustomNetworkTransform __instance)
         {
-            ResetState(__instance.myPlayer);
+            if (AmongUsClient.Instance.GameState != InnerNet.InnerNetClient.GameStates.Started) return;
+            if (CustomNetworkTransformPatch.IsVanillaServer()) return;
+            if (GeneralSettingOptions.NetworkTransformType == NetworkTransformType.ModdedLowLatency)
+                ResetState(__instance.myPlayer);
+
         }
     }
     [HarmonyPatch(typeof(CustomNetworkTransform), nameof(CustomNetworkTransform.FixedUpdate))]
@@ -511,7 +515,7 @@ public static class ModdedNetworkTransform
     {
         private static bool IsVanillaServerCache;
         private static int lastShipStatusInstanceId;
-        private static bool IsVanillaServer()
+        public static bool IsVanillaServer()
             => ShipStatus.Instance != null && lastShipStatusInstanceId == ShipStatus.Instance.GetInstanceID() ? IsVanillaServerCache : (IsVanillaServerCache = AmongUsClient.Instance.NetworkMode != NetworkModes.LocalGame && !ModHelpers.IsCustomServer());
         public static bool Prefix(CustomNetworkTransform __instance)
         {
