@@ -108,6 +108,6 @@ internal class TeleporterAbility : CustomButtonBase, IButtonEffect
             GameObject.Destroy(CurrentMessage.text.gameObject);
             CurrentMessage = null;
         }
-        new LateTask(() => CurrentMessage = new CustomMessage(ModTranslation.GetString("TeleporterTeleportText", target.Data.PlayerName), 1, true), 0.1f);
+        CurrentMessage = new CustomMessage(ModTranslation.GetString("TeleporterTeleportText", target.Data.PlayerName), 1, true);
     }
 }

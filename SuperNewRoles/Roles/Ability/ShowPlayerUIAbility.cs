@@ -58,10 +58,10 @@ public class ShowPlayerUIAbility : AbilityBase
         _playerUIContainer = new GameObject("PlayerUIContainer");
         _playerUIContainer.transform.SetParent(FastDestroyableSingleton<HudManager>.Instance.transform);
         _playerUIContainer.transform.localPosition = new(-4.19f, -2.4f, 0f);
-        _playerUIContainer.transform.localScale = Vector3.one * 0.5f;
+        _playerUIContainer.transform.localScale = Vector3.one * 0.3f;
         var aspectPosition = _playerUIContainer.gameObject.AddComponent<AspectPosition>();
-        aspectPosition.Alignment = AspectPosition.EdgeAlignments.Left;
-        aspectPosition.DistanceFromEdge = new(0.5f, -2.45f);
+        aspectPosition.Alignment = AspectPosition.EdgeAlignments.LeftBottom;
+        aspectPosition.DistanceFromEdge = new(0.35f, 0.35f);
         aspectPosition.OnEnable();
         var playerUIObjectPrefab = FastDestroyableSingleton<HudManager>.Instance.IntroPrefab.PlayerPrefab;
         int index = 0;
