@@ -55,7 +55,7 @@ public class MadKillerAbility : AbilityBase
         _nameTextUpdateEventListener = NameTextUpdateEvent.Instance.AddListener(OnNameTextUpdate);
         _ventAbility = new CustomVentAbility(() => _data.couldUseVent);
         _visionAbility = new ImpostorVisionAbility(() => _data.hasImpostorVision);
-        _knowImpostorAbility = new KnowImpostorAbility(() => !(_cannotBeSeenBeforePromotion || _data.cannotSeeImpostorBeforePromotion));
+        _knowImpostorAbility = new KnowImpostorAbility(() => !_cannotBeSeenBeforePromotion && !_data.cannotSeeImpostorBeforePromotion);
         _killButtonAbility = new CustomKillButtonAbility(() => _isAwakened, () => _currentKillCooldown, () => true, isTargetable: (player) => SetTargetPatch.ValidMadkiller(player));
 
         AbilityParentAbility parentAbility = new(this);

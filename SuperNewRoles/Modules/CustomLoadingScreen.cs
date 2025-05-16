@@ -63,8 +63,9 @@ public static class CustomLoadingScreen
         LoadingText = text.GetComponent<TextMeshPro>();
         Inited = true;
         // if (Constants.GetPlatformType() != Platforms.Android)
-        // __instance.StartCoroutine(CustomCosmeticsLoader.LoadCosmeticsTaskAsync((c) => __instance.StartCoroutine(c.WrapToIl2Cpp())).WrapToIl2Cpp());
-        // CustomCosmeticsLoader.runned = false;
+        __instance.StartCoroutine(CustomCosmeticsLoader.LoadCosmeticsTaskAsync((c) => __instance.StartCoroutine(c.WrapToIl2Cpp())).WrapToIl2Cpp());
+        CustomCosmeticsLoader.runned = false;
+
         Task.Run(() =>
         {
             Logger.Info("Started");

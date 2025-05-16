@@ -1063,6 +1063,7 @@ public class CustomCosmeticsCostumeMenu : CustomCosmeticsMenuBase<CustomCosmetic
 
                         if (scroller.Inner.transform.localPosition.y > -(2.63f - (estimatedRowForScrollCheck) * (CurrentCostumeTabType != CostumeTabType.Skin ? 2.68f : 2.6f) + offSetY) + 3.5f - 18f)
                         {
+                            Logger.Info("Trying to generate categories: " + categoryToGenerate);
                             // Capture the starting index for *this* category's coroutine
                             int startIndexForThisCategoryCoroutine = this.allISTATIC;
 

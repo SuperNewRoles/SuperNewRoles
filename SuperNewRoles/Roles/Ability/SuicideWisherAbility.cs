@@ -6,10 +6,15 @@ namespace SuperNewRoles.Roles.Ability;
 
 public class SuicideWisherAbility : CustomButtonBase
 {
+    public float CoolTime;
+    public SuicideWisherAbility(float coolTime)
+    {
+        CoolTime = coolTime;
+    }
     public override Sprite Sprite => AssetManager.GetAsset<Sprite>("SuicideWisherButton.png");
     public override string buttonText => ModTranslation.GetString("SuicideWisherButtonText");
     protected override KeyType keytype => KeyType.Ability1;
-    public override float DefaultTimer => 0f;
+    public override float DefaultTimer => CoolTime;
 
     public override bool CheckIsAvailable()
     {

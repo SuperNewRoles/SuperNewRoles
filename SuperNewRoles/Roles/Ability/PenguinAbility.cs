@@ -93,10 +93,6 @@ public class PenguinAbility : TargetCustomButtonBase, IButtonEffect
             }
             targetPlayer = null;
         }
-        else if (isEffectActive && Player.AmOwner)
-        {
-            RpcEndPenguin();
-        }
     }
     private void OnWrapUp(WrapUpEventData data)
     {
