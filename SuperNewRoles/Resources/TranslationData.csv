@@ -135,6 +135,20 @@ GhostVoteDisplayType.Hide,非表示,Hide
 ChangeReportDistance,レポート距離を変更する,Change report distance
 ReportDistanceOption,レポート距離,Report distance
 
+# VersionUpdates
+VersionUpdateType.stability,安定版,Stability,稳定版,穩定版
+VersionUpdateType.all,全て,All,全部,全部
+VersionUpdateType.static,固定,Static,固定版,固定版
+VersionUpdateType.disable,無効,Disable,禁用,禁用
+VersionUpdateLoading,バージョンリストを取得中...,Loading version list...
+VersionUpdateGet,変更,Change,變更,變更
+VersionCurrent,選択中,Current,選擇中,選擇中
+VersionWillUpdate,再起動後適用,Apply after restart
+VersionLoaded,適用済み,Applied,已適用,已適用
+VersionUpdateReleaseNoteLoading,リリースノートを読み込み中...,Loading release note...
+VersionUpdateReleaseNoteLoadingError,リリースノートの読み込みに失敗しました。,Failed to load release note..
+VersionUpdateReleaseNoteNotFound,リリースノートが見つかりませんでした。,Release note not found.
+
 # RequestInGame
 RequestInGameButtonText,バグ報告、要望、質問、感謝メールなどはこちらから,Bug reports, requests, questions, and thank you messages can be sent here
 RequestInGameDiscordText,Discordはこちら,Discord is this,Discord 是這裡,Discord 是這裡

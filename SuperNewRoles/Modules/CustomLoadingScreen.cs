@@ -30,6 +30,7 @@ public static class CustomLoadingScreen
         {
             waitOneFrame = false;
             CustomCosmeticsLoader.willLoad?.Invoke();
+            LoadingText.text = "";
             Logger.Info("Loading done");
             return false;
         }
@@ -64,6 +65,7 @@ public static class CustomLoadingScreen
         Inited = true;
         // if (Constants.GetPlatformType() != Platforms.Android)
         __instance.StartCoroutine(CustomCosmeticsLoader.LoadCosmeticsTaskAsync((c) => __instance.StartCoroutine(c.WrapToIl2Cpp())).WrapToIl2Cpp());
+        PatcherUpdater.Initialize(__instance);
         CustomCosmeticsLoader.runned = false;
 
         Task.Run(() =>

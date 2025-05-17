@@ -12,10 +12,10 @@ public class FadeCoroutine : MonoBehaviour
     private bool isFadeIn = false; // フェードイン中かどうか
     private bool isFadeOut = false; // フェードアウト中かどうか
     private GameObject parent; // フェード対象のGameObject
-    public bool isAvtive { get; private set; }
+    public bool isActive { get; private set; }
     private float duration; // フェードにかける時間
     private float elapsed; // 経過時間
-
+    private bool destroyOnFinish = false;
     private SpriteRenderer[] _renderers;
     private TextMeshPro[] _textRenderers;
 
@@ -42,7 +42,7 @@ public class FadeCoroutine : MonoBehaviour
         {
             _defaultAlpha.TryAdd(textRenderer.GetInstanceID(), textRenderer.color.a);
         }
-        isAvtive = true;
+        isActive = true;
         ApplyAlphaToRenderers(0f);
     }
 
@@ -51,13 +51,14 @@ public class FadeCoroutine : MonoBehaviour
     /// </summary>
     /// <param name="renderers">フェード対象のSpriteRenderer配列</param>
     /// <param name="duration">フェードにかける時間</param>
-    public void StartFadeOut(GameObject parent, float duration)
+    public void StartFadeOut(GameObject parent, float duration, bool destroyOnFinish = false)
     {
         gameObject.SetActive(true);
         isFadeOut = true;
         isFadeIn = false;
         this.parent = parent;
         this.duration = duration;
+        this.destroyOnFinish = destroyOnFinish;
         elapsed = 0f;
         _renderers = parent.GetComponentsInChildren<SpriteRenderer>();
         _textRenderers = parent.GetComponentsInChildren<TextMeshPro>();
@@ -81,7 +82,7 @@ public class FadeCoroutine : MonoBehaviour
                               (_textRenderers.Length > 0 ? _textRenderers[0].color.a : 1f);
         ApplyAlphaToRenderers(currentAlpha);
 
-        isAvtive = false;
+        isActive = false;
     }
 
     /// <summary>
@@ -125,6 +126,10 @@ public class FadeCoroutine : MonoBehaviour
         bool active = alpha > 0f;
         if (gameObject.activeSelf != active)
             gameObject.SetActive(active);
+        if (destroyOnFinish && progress >= 1f)
+        {
+            Destroy(gameObject);
+        }
     }
 
     /// <summary>

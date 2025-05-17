@@ -858,7 +858,14 @@ public class CustomCosmeticsLoader
                 activeDownloads++;
                 // SuperNewRolesPlugin.Instance が MonoBehaviour を継承していると仮定
                 // そうでない場合は、適切なコルーチン開始方法に置き換える必要があります。
-                Coroutine downloadCoroutine = startCoroutine(DownloadSingleSprite(item.spriteName, item.spritePath, item.packagePath, () => activeDownloads--));
+                string filePath = Path.Combine(item.packagePath, $"{item.spriteName}.png").Replace("\\", "/");
+                if (File.Exists(filePath))
+                {
+                    Logger.Info($"Sprite already exists: {filePath}");
+                    activeDownloads--;
+                    continue;
+                }
+                Coroutine downloadCoroutine = startCoroutine(DownloadSingleSprite(item.spriteName, item.spritePath, item.packagePath, filePath, () => activeDownloads--));
                 SpritesDownloadingCount = downloadQueue.Count;
                 if (downloadCoroutine != null) // Check if StartCoroutine succeeded
                 {
@@ -877,7 +884,7 @@ public class CustomCosmeticsLoader
         Logger.Info("Finished all sprite download tasks.");
     }
 
-    private static IEnumerator DownloadSingleSprite(string spriteName, string spriteUrl, string packageSavePath, Action onComplete)
+    private static IEnumerator DownloadSingleSprite(string spriteName, string spriteUrl, string packageSavePath, string filePath, Action onComplete)
     {
         Logger.Info($"Downloading sprite {spriteName} from {spriteUrl}");
         SNRHttpClient request = SNRHttpClient.Get(spriteUrl);
@@ -885,8 +892,6 @@ public class CustomCosmeticsLoader
         request.ignoreSslErrors = true;
 
         yield return request.SendWebRequest();
-
-        string filePath = Path.Combine(packageSavePath, $"{spriteName}.png").Replace("\\", "/");
 
         if (string.IsNullOrEmpty(request.error))
         {

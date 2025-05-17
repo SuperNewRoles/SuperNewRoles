@@ -46,6 +46,7 @@ public static class ModHelpers
         return RandomNumberGenerator.GetInt32(min, max + 1);
     }
     private static MD5 md5 = MD5.Create();
+    private static SHA256 sha256 = SHA256.Create();
     public static string HashMD5(string str)
     {
         byte[] bytes = Encoding.UTF8.GetBytes(str);
@@ -54,6 +55,15 @@ public static class ModHelpers
     public static string HashMD5(byte[] bytes)
     {
         return BitConverter.ToString(md5.ComputeHash(bytes)).Replace("-", "").ToLowerInvariant();
+    }
+    public static string HashSHA256(string str)
+    {
+        byte[] bytes = Encoding.UTF8.GetBytes(str);
+        return HashSHA256(bytes);
+    }
+    public static string HashSHA256(byte[] bytes)
+    {
+        return BitConverter.ToString(sha256.ComputeHash(bytes)).Replace("-", "").ToLowerInvariant();
     }
 
     // MeetingHudのMaskAreaを更新するヘルパーメソッド

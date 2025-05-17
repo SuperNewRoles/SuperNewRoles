@@ -31,7 +31,7 @@ public static class HelpMenusHudManagerStartPatch
         }));
         passiveButton.OnMouseOut.AddListener((UnityAction)(() =>
         {
-            if (HelpMenuObjectManager.fadeCoroutine == null || !HelpMenuObjectManager.fadeCoroutine.isAvtive)
+            if (HelpMenuObjectManager.fadeCoroutine == null || !HelpMenuObjectManager.fadeCoroutine.isActive)
                 passiveButton.transform.Find("active").gameObject.SetActive(false);
         }));
         passiveButton.OnMouseOver.AddListener((UnityAction)(() =>
