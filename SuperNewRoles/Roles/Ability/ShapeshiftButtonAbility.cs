@@ -20,8 +20,8 @@ public class ShapeshiftButtonAbility : CustomButtonBase, IButtonEffect
     protected override KeyType keytype => KeyType.Ability1;
     public override float DefaultTimer => CoolTime;
 
-    public override ShowTextType showTextType => ShowTextType.Show;
-    public override string showText => isEffectActive ? string.Format(ModTranslation.GetString("ShapeshiftDurationTimerText"), (int)EffectTimer) : "";
+    public override ShowTextType showTextType => isEffectActive ? ShowTextType.Show : ShowTextType.Hidden;
+    public override string showText => ModTranslation.GetString("ShapeshiftDurationTimerText", (int)EffectTimer);
 
     public bool isEffectActive { get; set; }
 
