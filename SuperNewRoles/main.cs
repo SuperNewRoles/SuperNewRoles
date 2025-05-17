@@ -196,6 +196,7 @@ public partial class SuperNewRolesPlugin : BasePlugin
         ClassInjector.RegisterTypeInIl2Cpp<RocketDeadbody>();
         ClassInjector.RegisterTypeInIl2Cpp<VersionUpdatesComponent>();
         ClassInjector.RegisterTypeInIl2Cpp<ReleaseNoteComponent>();
+        ClassInjector.RegisterTypeInIl2Cpp<PatcherUpdaterComponent>();
     }
 
     public void ExecuteInMainThread(Action action)

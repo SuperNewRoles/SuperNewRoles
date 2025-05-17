@@ -208,6 +208,7 @@ public static class VersionUpdatesUI
             releaseNamePassiveButton.OnClick = new();
             releaseNamePassiveButton.OnClick.AddListener((UnityAction)(() =>
             {
+                Logger.Info("ReleaseNameButton clicked: " + version);
                 ShowReleaseNote(version);
             }));
             releaseNamePassiveButton.OnMouseOver = new();
