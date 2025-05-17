@@ -955,3 +955,6 @@ FungleSpawnTypeOptions.TheFungleSpawnTypeSelect,選択スポーン,Select Spawn,
 FungleZiplineDirectionOptions.TheFungleZiplineAlways,常時使用可能,Always Available,随时可用,隨時可用
 FungleZiplineDirectionOptions.TheFungleZiplineOnlyUp,上りのみ使用可能,Up Only,仅上行可用,僅上行可用
 FungleZiplineDirectionOptions.TheFungleZiplineOnlyDown,下りのみ使用可能,Down Only,仅下行可用,僅下行可用
+
+# Mirage
+MirageButtonText,複製,Copy,复制,複製
