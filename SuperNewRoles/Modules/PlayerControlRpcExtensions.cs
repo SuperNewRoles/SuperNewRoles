@@ -57,7 +57,7 @@ public static class PlayerControlRpcExtensions
         player.NetTransform.SnapTo(pos);
     }
     [CustomRPC]
-    public static void RpcCustomSetCosmetics(this byte playerId, CostumeTabType menuType, string cosmeticsId, int colorId)
+    public static void RpcCustomSetCosmetics(byte playerId, CostumeTabType menuType, string cosmeticsId, int colorId)
         => PlayerControl.AllPlayerControls.ToArray().FirstOrDefault(p => p.PlayerId == playerId)?.CustomSetCosmetics(menuType, cosmeticsId, colorId);
     public static void CustomSetCosmetics(this PlayerControl player, CostumeTabType menuType, string cosmeticsId, int colorId)
     {
