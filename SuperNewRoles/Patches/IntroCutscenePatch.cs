@@ -188,8 +188,14 @@ public static class IntroCutscenePatch
         else if (ExPlayerControl.LocalPlayer.IsMadRoles())
         {
             color = Palette.ImpostorRed;
-            TeamTitle = ModTranslation.GetString("MadmateName");
+            TeamTitle = ModTranslation.GetString("Madmate");
             ImpostorText = ModTranslation.GetString("MadRolesSubIntro");
+        }
+        else if (ExPlayerControl.LocalPlayer.IsFriendRoles())
+        {
+            color = Palette.CrewmateBlue;
+            TeamTitle = ModTranslation.GetString("JackalFriends");
+            ImpostorText = ModTranslation.GetString("FriendSubIntro");
         }
         __instance.TeamTitle.text = TeamTitle;
         __instance.ImpostorText.text = ImpostorText;

@@ -246,6 +246,9 @@ HelpMenu.RoleDictionary,役職辞典,Role Dictionary,角色辞典,角色辭典
 HelpMenu.NoneOptions1,204: Not content: この役職に設定がありませんでした。,204: Not content: This role has no settings.,204: Not content: 此角色没有设置。,204: Not content: 此角色沒有設定。
 HelpMenu.NoneOptions2,役職の設定が見つかりませんでした。おにぎりでも食べて落ち着きましょう。,We couldn't find the role setting. Take a break and have a rice ball.,我们找不到角色设置。吃个饭冷静一下吧。,我們找不到角色設定。吃個飯冷靜一下吧。
 
+# MadFriendsIntro
+MadRolesSubIntro,この命は我が主たるインポスターのために,This life is for my mastert，the Impostor.,为内鬼献出生命,背叛船員，為吾主內鬼而戰。
+FriendRolesSubIntro,ジャッカルに寄り添いし者,One who stands by the jackal.,帮助豺狼获得胜利,豺狼之友，同生共死。
 
 # AssignRoles
 AssignRoles_MaxImpostors,最大 インポスター 選出数,Max Impostors,最大内鬼数,最大內鬼數
