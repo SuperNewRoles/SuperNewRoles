@@ -173,17 +173,17 @@ public class CustomCosmeticsLoader
                         if (resource_bounce)
                             front |= HatOptionType.Bounce;
                         var front_left = HatOptionType.None;
-                        var back = adaptive ? HatOptionType.Adaptive : hat["backresource"] != null ? HatOptionType.NoAdaptive : HatOptionType.None;
+                        var back = hat["backresource"] != null ? adaptive ? HatOptionType.Adaptive : HatOptionType.NoAdaptive : HatOptionType.None;
                         if (resource_bounce)
                             back |= HatOptionType.Bounce;
                         var back_left = HatOptionType.None;
-                        var backflip = adaptive ? HatOptionType.Adaptive : hat["backflipresource"] != null ? HatOptionType.NoAdaptive : HatOptionType.None;
+                        var backflip = hat["backflipresource"] != null ? adaptive ? HatOptionType.Adaptive : HatOptionType.NoAdaptive : HatOptionType.None;
                         if (resource_bounce)
                             backflip |= HatOptionType.Bounce;
-                        var flip = adaptive ? HatOptionType.Adaptive : hat["flipresource"] != null ? HatOptionType.NoAdaptive : HatOptionType.None;
+                        var flip = hat["flipresource"] != null ? adaptive ? HatOptionType.Adaptive : HatOptionType.NoAdaptive : HatOptionType.None;
                         if (resource_bounce)
                             flip |= HatOptionType.Bounce;
-                        var climb = adaptive ? HatOptionType.Adaptive : hat["climbresource"] != null ? HatOptionType.NoAdaptive : HatOptionType.None;
+                        var climb = hat["climbresource"] != null ? adaptive ? HatOptionType.Adaptive : HatOptionType.NoAdaptive : HatOptionType.None;
                         if (resource_bounce)
                             climb |= HatOptionType.Bounce;
 

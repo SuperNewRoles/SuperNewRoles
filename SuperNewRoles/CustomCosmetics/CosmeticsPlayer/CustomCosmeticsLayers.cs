@@ -65,7 +65,12 @@ public class CustomCosmeticsLayer
         ModdedCosmetics.transform.localScale = Vector3.one;
         ModdedCosmetics.transform.localRotation = Quaternion.identity;
         ModdedCosmetics.layer = cosmeticsLayer.gameObject.layer;
-        ModdedCosmetics.AddComponent<SortingGroup>();
+
+        cosmeticsLayer.gameObject.AddComponent<SortingGroup>();
+        cosmeticsLayer.transform.localPosition = new(0, 0, -0.0001f);
+
+        var skin = cosmeticsLayer.skin.GetComponent<SpriteRenderer>();
+        skin.sortingOrder = 0;
 
         var hat = cosmeticsLayer.hat;
         visor1 = CreateVisorLayer(cosmeticsLayer, "visor1", -0.8f, 20);
