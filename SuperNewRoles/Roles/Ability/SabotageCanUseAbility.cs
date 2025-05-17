@@ -70,8 +70,6 @@ public static class ConsolsCanUsePatch
         __result = 0;
         if (!ExPlayerControl.LocalPlayer.TryGetAbility<SabotageCanUseAbility>(out var ability))
             return true;
-        __instance.CanUse(PlayerControl.LocalPlayer.Data, out canUse, out couldUse);
-        if (canUse) return ability.TryUse(__instance.TaskTypes.FirstOrDefault());
-        return true;
+        return ability.TryUse(__instance.TaskTypes.FirstOrDefault());
     }
 }
