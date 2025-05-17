@@ -23,7 +23,7 @@ public static class GameSettingOptions
 
     [CustomOptionBool("ChangeReportDistance", false, parentFieldName: nameof(Categories.GameSettings))]
     public static bool ChangeReportDistance;
-    [CustomOptionFloat("ReportDistanceOption", 0.5f, 10f, 0.2f, 5f, parentFieldName: nameof(Categories.GameSettings))]
+    [CustomOptionFloat("ReportDistanceOption", 0.4f, 10f, 0.2f, 5f, parentFieldName: nameof(Categories.GameSettings))]
     public static float ReportDistanceOption;
 }
 
