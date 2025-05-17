@@ -3,13 +3,6 @@ creditsMain,Created by ykundesu,Created by ykundesu,由 ykundesu 制作,由 ykun
 WelcomeNextSuperNewRoles,新しいSuperNewRolesへ、ようこそ！,Welcome to the new SuperNewRoles!,欢迎来到全新的 SuperNewRoles!,歡迎來到全新的 SuperNewRoles!
 Close,閉じる,Close,关闭,關閉
 
-# マトリョーシカ関連
-Matryoshka.Report,死体を着用中に報告可能にする,Allow reporting while wearing a dead body,允许在穿戴尸体时举报,允許在穿戴屍體時舉報
-MatryoshkaButtonText,死体を着る/脱ぐ,Wear/Remove Body,穿戴/脱下尸体,穿戴/脫下屍體
-
-# 忘却者関連
-Amnesiac.RoleChangeNotification,あなたは次の役職になりました: ,You have become the following role: ,你现在的职业变为: ,你現在的職業變為: 
-
 Impostor,インポスター,Impostor,内鬼,內鬼
 Crewmate,クルーメイト,Crewmate,船员,船員
 Neutral,第三陣営,Neutral,第三阵营,第三陣營
@@ -961,3 +954,11 @@ FungleZiplineDirectionOptions.TheFungleZiplineOnlyDown,下りのみ使用可能,
 
 # Mirage
 MirageButtonText,複製,Copy,复制,複製
+
+
+# マトリョーシカ関連
+Matryoshka.Report,死体を着用中に報告可能にする,Allow reporting while wearing a dead body,允许在穿戴尸体时举报,允許在穿戴屍體時舉報
+MatryoshkaButtonText,死体を着る/脱ぐ,Wear/Remove Body,穿戴/脱下尸体,穿戴/脫下屍體
+
+# 忘却者関連
+Amnesiac.RoleChangeNotification,あなたは次の役職になりました: ,You have become the following role: ,你现在的职业变为: ,你現在的職業變為: 
