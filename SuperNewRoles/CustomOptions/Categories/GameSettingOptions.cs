@@ -18,12 +18,14 @@ public static class GameSettingOptions
     public static bool DisableHijackTaskWin;
     [CustomOptionBool("HideGhostRoles", false, parentFieldName: nameof(Categories.GameSettings))]
     public static bool HideGhostRoles;
+    [CustomOptionBool("ShowGhostRolesToImpostor", false, parentFieldName: nameof(HideGhostRoles))]
+    public static bool ShowGhostRolesToImpostor;
     [CustomOptionSelect("GhostVoteDisplay", typeof(GhostVoteDisplayType), "GhostVoteDisplayType.", parentFieldName: nameof(Categories.GameSettings), defaultValue: GhostVoteDisplayType.Vanilla)]
     public static GhostVoteDisplayType GhostVoteDisplay;
 
     [CustomOptionBool("ChangeReportDistance", false, parentFieldName: nameof(Categories.GameSettings))]
     public static bool ChangeReportDistance;
-    [CustomOptionFloat("ReportDistanceOption", 0.4f, 10f, 0.2f, 5f, parentFieldName: nameof(Categories.GameSettings))]
+    [CustomOptionFloat("ReportDistanceOption", 0.4f, 10f, 0.2f, 5f, parentFieldName: nameof(ChangeReportDistance))]
     public static float ReportDistanceOption;
 }
 

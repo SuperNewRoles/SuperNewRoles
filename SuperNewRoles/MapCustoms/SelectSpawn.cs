@@ -103,7 +103,7 @@ public static class SelectSpawn
 
     public static IEnumerator SelectSpawnCoroutine(ShipStatus currentShip, MapSpawnData mapData)
     {
-        SpawnInMinigame spawnInMinigame = GameObject.Instantiate<SpawnInMinigame>(currentShip.TryCast<AirshipStatus>().SpawnInGame);
+        SpawnInMinigame spawnInMinigame = GameObject.Instantiate<SpawnInMinigame>(MapLoader.Airship.TryCast<AirshipStatus>().SpawnInGame);
         spawnInMinigame.transform.SetParent(Camera.main.transform, false);
         spawnInMinigame.transform.localPosition = new Vector3(0f, 0f, -600f);
 
