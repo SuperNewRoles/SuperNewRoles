@@ -89,7 +89,7 @@ public static class VersionUpdatesUI
         fadeCoroutine.StartFadeIn(versionSelect, FadeDuration);
 
         VersionUpdatesComponent versionUpdatesComponent = versionSelect.AddComponent<VersionUpdatesComponent>();
-        versionUpdatesComponent.StartCoroutine(GenerateVersionList(versionListScroller.GetComponent<Scroller>().Inner.gameObject, updateTypeButton.transform.Find("Text").GetComponent<TextMeshPro>()).WrapToIl2Cpp());
+        versionUpdatesComponent.StartCoroutine(GenerateVersionList(versionListScroller.GetComponent<Scroller>(), updateTypeButton.transform.Find("Text").GetComponent<TextMeshPro>()).WrapToIl2Cpp());
 
         // 閉じれるように
 
@@ -99,6 +99,13 @@ public static class VersionUpdatesUI
         closeBoxPassiveButton.OnClick.AddListener((UnityAction)(() => fadeCoroutine.StartFadeOut(versionSelect, FadeDuration, true)));
         closeBoxPassiveButton.OnMouseOver = new();
         closeBoxPassiveButton.OnMouseOut = new();
+
+        PassiveButton closeButtonPassiveButton = versionSelect.transform.Find("CloseButton").gameObject.AddComponent<PassiveButton>();
+        closeButtonPassiveButton.Colliders = new Collider2D[] { closeButtonPassiveButton.GetComponent<Collider2D>() };
+        closeButtonPassiveButton.OnClick = new();
+        closeButtonPassiveButton.OnClick.AddListener((UnityAction)(() => fadeCoroutine.StartFadeOut(versionSelect, FadeDuration, true)));
+        closeButtonPassiveButton.OnMouseOver = new();
+        closeButtonPassiveButton.OnMouseOut = new();
     }
     public static void ConfigureVersionListScroller(GameObject versionListScroller)
     {
@@ -152,10 +159,10 @@ public static class VersionUpdatesUI
             button.GetComponent<SpriteRenderer>().color = defaultButtonColor;
         }));
     }
-    private static IEnumerator GenerateVersionList(GameObject Inner, TextMeshPro selectText)
+    private static IEnumerator GenerateVersionList(Scroller scroller, TextMeshPro selectText)
     {
         bool active = true;
-        LoadingUI.ShowLoadingUI(Inner.transform, () => ModTranslation.GetString("VersionUpdateLoading"), () => active);
+        LoadingUI.ShowLoadingUI(scroller.Inner.transform, () => ModTranslation.GetString("VersionUpdateLoading"), () => active);
         UnityWebRequest request = UnityWebRequest.Get(VersionListUrl);
         yield return request.SendWebRequest();
         if (request.result != UnityWebRequest.Result.Success)
@@ -188,7 +195,7 @@ public static class VersionUpdatesUI
         {
             if (string.IsNullOrEmpty(version))
                 continue;
-            GameObject versionObject = AssetManager.Instantiate(VersionSelecterPrefab, Inner.transform);
+            GameObject versionObject = AssetManager.Instantiate(VersionSelecterPrefab, scroller.Inner.transform);
             versionObject.transform.localPosition = new(VersionObjectX, VersionObjectInitialY + index * VersionObjectYOffset, 0);
             versionObject.transform.localScale = Vector3.one;
 
@@ -251,6 +258,7 @@ public static class VersionUpdatesUI
                     Logger.Info("Already loaded version: " + version);
                     return;
                 }
+                //
                 Logger.Info("Loading version: " + version);
                 VersionConfigManager.SetVersionType("static");
                 selectText.text = ModTranslation.GetString("VersionUpdateType.static");
@@ -279,6 +287,7 @@ public static class VersionUpdatesUI
 
             index++;
         }
+        scroller.ContentYBounds.max = index <= 5 ? 0 : (index - 5) * 1.5f - 0.2f;
     }
 
     private static List<string> VersionTypeList = new()
@@ -315,6 +324,13 @@ public static class VersionUpdatesUI
         closeBoxPassiveButton.OnClick.AddListener((UnityAction)(() => fadeCoroutine.StartFadeOut(releaseNote, FadeDuration, true)));
         closeBoxPassiveButton.OnMouseOver = new();
         closeBoxPassiveButton.OnMouseOut = new();
+
+        PassiveButton closeButtonPassiveButton = releaseNote.transform.Find("CloseButton").gameObject.AddComponent<PassiveButton>();
+        closeButtonPassiveButton.Colliders = new Collider2D[] { closeButtonPassiveButton.GetComponent<Collider2D>() };
+        closeButtonPassiveButton.OnClick = new();
+        closeButtonPassiveButton.OnClick.AddListener((UnityAction)(() => fadeCoroutine.StartFadeOut(releaseNote, FadeDuration, true)));
+        closeButtonPassiveButton.OnMouseOver = new();
+        closeButtonPassiveButton.OnMouseOut = new();
 
         releaseNoteComponent.StartCoroutine(GenerateReleaseNote(releaseNoteContainer.transform.Find("ReleaseNoteScroller").GetComponent<Scroller>(), version).WrapToIl2Cpp());
     }
@@ -405,13 +421,17 @@ public class VersionUpdatesComponent : MonoBehaviour
     public void Start()
     {
         fadeCoroutine = gameObject.GetComponent<FadeCoroutine>();
+        fadeCoroutine.onFadeOut += OnFadeOut;
+        GameObject.Find("MainMenuManager/MainUI/AspectScaler/RightPanel/ScreenMask")?.SetActive(false);
     }
     public void Update()
     {
-        if (Input.GetKeyDown(KeyCode.Escape))
-        {
+        if (Input.GetKeyDown(KeyCode.Escape) && GameObject.FindObjectOfType<ReleaseNoteComponent>() == null)
             fadeCoroutine.StartFadeOut(gameObject, VersionUpdatesUI.FadeDuration, true);
-        }
+    }
+    private void OnFadeOut()
+    {
+        GameObject.Find("MainMenuManager/MainUI/AspectScaler/RightPanel/ScreenMask")?.SetActive(true);
     }
 }
 public class ReleaseNoteComponent : MonoBehaviour
@@ -420,20 +440,17 @@ public class ReleaseNoteComponent : MonoBehaviour
     public void Start()
     {
         fadeCoroutine = gameObject.GetComponent<FadeCoroutine>();
+        fadeCoroutine.onFadeOut += OnFadeOut;
         Logger.Info("VersionUpdatesComponent Start");
-        GameObject.Find("MainMenuManager/MainUI/AspectScaler/RightPanel/ScreenMask")?.SetActive(false);
         GameObject.Find("VersionUpBG(Clone)/VersionContainer(Clone)/VersionListMask")?.SetActive(false);
     }
     public void Update()
     {
         if (Input.GetKeyDown(KeyCode.Escape))
-        {
             fadeCoroutine.StartFadeOut(gameObject, VersionUpdatesUI.FadeDuration, true);
-        }
     }
-    public void OnDestroy()
+    private void OnFadeOut()
     {
-        GameObject.Find("MainMenuManager/MainUI/AspectScaler/RightPanel/ScreenMask")?.SetActive(true);
         GameObject.Find("VersionUpBG(Clone)/VersionContainer(Clone)/VersionListMask")?.SetActive(true);
     }
 }

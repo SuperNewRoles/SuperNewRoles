@@ -50,16 +50,16 @@ public class CustomCosmeticsLoader
     private static readonly HttpClient client = new();
     private static readonly int maxRetryAttempts = 1;
     private static readonly TimeSpan retryDelay = TimeSpan.FromSeconds(5);
-    private static readonly MD5 md5 = MD5.Create();
-    public static DownloadHandlerBuffer DEBUGdownloadHandlerBuffer = new();
     private static readonly List<string> notLoadedAssetBundles = new();
     private static readonly List<CustomCosmeticsPackage> loadedPackages = new();
     public static List<CustomCosmeticsPackage> LoadedPackages => loadedPackages;
     public static readonly Dictionary<string, CustomCosmeticsHat> moddedHats = new();
     public static readonly Dictionary<string, CustomCosmeticsVisor> moddedVisors = new();
     public static readonly Dictionary<string, CustomCosmeticsNamePlate> moddedNamePlates = new();
-    private static readonly Dictionary<string, List<(string, string)>> willDownloads = new();
-    private static readonly Dictionary<string, byte[]> downloadedSprites = new();
+    private static Dictionary<string, List<(string, string)>> willDownloads = new();
+
+    // Android版はメモリ節約のため、ダウンロードしたバイト列を保持しない
+    private static readonly Dictionary<string, byte[]> downloadedSprites = Constants.GetPlatformType() == Platforms.Android ? null : new();
 
     public static int AssetBundlesDownloadedCount;
     public static int AssetBundlesAllCount;
@@ -69,7 +69,7 @@ public class CustomCosmeticsLoader
     public static int SpritesAllCount;
     public static bool SpritesDownloading = false;
 
-    public const int MAX_CONCURRENT_DOWNLOADS = 60;
+    public static readonly int MAX_CONCURRENT_DOWNLOADS = Constants.GetPlatformType() == Platforms.Android ? 10 : 30;
     public static IEnumerator LoadAsync(Func<IEnumerator, Coroutine> startCoroutine)
     {
         runned = false;
@@ -841,6 +841,7 @@ public class CustomCosmeticsLoader
                     downloadQueue.Enqueue((spriteName, spritePath, packageKey, packageDir));
                 }
             }
+            willDownloads = null;
         }
         catch (Exception e)
         {
@@ -913,7 +914,8 @@ public class CustomCosmeticsLoader
 
             if (data != null)
             {
-                downloadedSprites[filePath] = data;
+                if (downloadedSprites != null)
+                    downloadedSprites[filePath] = data;
                 try
                 {
                     File.WriteAllBytes(filePath, data);
@@ -972,10 +974,13 @@ public class CustomCosmeticsLoader
     {
         Texture2D texture = new(2, 2, TextureFormat.ARGB32, true);
         byte[] byteTexture;
-        if (!downloadedSprites.TryGetValue(path, out byteTexture))
+        if (downloadedSprites == null || !downloadedSprites.TryGetValue(path, out byteTexture))
             byteTexture = File.ReadAllBytes(path);
         else
+        {
             Logger.Warning("Used Sprites");
+            downloadedSprites.Remove(path);
+        }
         LoadImage(texture, byteTexture, false);
         if (texture == null)
             return null;

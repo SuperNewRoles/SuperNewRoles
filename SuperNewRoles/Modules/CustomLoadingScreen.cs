@@ -30,6 +30,7 @@ public static class CustomLoadingScreen
         {
             waitOneFrame = false;
             CustomCosmeticsLoader.willLoad?.Invoke();
+            CustomCosmeticsLoader.willLoad = null;
             LoadingText.text = "";
             Logger.Info("Loading done");
             return false;

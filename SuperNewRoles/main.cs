@@ -42,7 +42,6 @@ namespace SuperNewRoles;
 [BepInIncompatibility("me.yukieiji.extremeroles")]
 [BepInIncompatibility("com.tugaru.TownOfPlus")]
 [BepInIncompatibility("com.emptybottle.townofhost")]
-// [BepInIncompatibility("jp.ykundesu.agartha")]
 public partial class SuperNewRolesPlugin : BasePlugin
 {
     public Harmony Harmony { get; } = new Harmony(PluginConfig.Id);
@@ -128,17 +127,28 @@ public partial class SuperNewRolesPlugin : BasePlugin
         Logger.LogInfo("--------------------------------");
         Logger.LogInfo(ModTranslation.GetString("WelcomeNextSuperNewRoles"));
         Logger.LogInfo("--------------------------------");
+
+        // メモリ使用量削減のため、未使用のアセットをアンロード
+        GC.Collect();
     }
     public void PatchAll(Harmony harmony)
     {
-        List<Task> tasks = new();
-        AccessTools.GetTypesFromAssembly(Assembly.GetExecutingAssembly()).Do(delegate (Type type)
+        if (Constants.GetPlatformType() == Platforms.Android)
         {
-            tasks.Add(Task.Run(() => harmony.CreateClassProcessor(type).Patch()));
-        });
-        Task.WaitAll(tasks.ToArray());
+            harmony.PatchAll(Assembly.GetExecutingAssembly());
+        }
+        else
+        {
+            List<Task> tasks = new();
+            AccessTools.GetTypesFromAssembly(Assembly.GetExecutingAssembly()).Do(delegate (Type type)
+            {
+                tasks.Add(Task.Run(() => harmony.CreateClassProcessor(type).Patch()));
+            });
+            Task.WaitAll(tasks.ToArray());
+        }
     }
 
+    // 起動中に他クライアントに上書きされないようにDisposeせずに持っておく
     private static FileStream _fs;
 
     private static void CheckStarts()

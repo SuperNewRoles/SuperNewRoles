@@ -12,12 +12,19 @@ namespace SuperNewRoles.Modules;
 
 public static class PatcherUpdater
 {
-    private static List<string> patchers =
+    private static readonly List<string> patchers =
     [
         "SuperNewRolesUpdatePatcher.dll",
         "BepInEx.SplashScreen.Patcher.BepInEx6.dll",
         "BepInEx.SplashScreen.GUI.exe"
     ];
+    private static readonly List<string> patchers_android =
+    [
+        "SuperNewRolesUpdatePatcher.dll",
+        "BepInEx.SplashScreen.Patcher.BepInEx6.dll",
+        "BepInEx.SplashScreen.GUI.exe"
+    ];
+    private static readonly List<string> currentPatchers = Constants.GetPlatformType() == Platforms.Android ? patchers_android : patchers;
     public static void Initialize()
     {
         GameObject gameObject = new("PatcherUpdater");
@@ -26,6 +33,22 @@ public static class PatcherUpdater
     }
     private static IEnumerator CheckAndDownloadPatcher(GameObject gameObject)
     {
+        Logger.Info("Removing old patcher");
+        foreach (string patcher in currentPatchers)
+        {
+            string nowFileName = BepInEx.Paths.PatcherPluginPath + "/" + patcher + ".old";
+            try
+            {
+                if (File.Exists(nowFileName))
+                    File.Delete(nowFileName);
+            }
+            catch (Exception e)
+            {
+                Logger.Error("Failed to delete old patcher: " + e.Message);
+            }
+        }
+
+        Logger.Info("Old patcher removed");
         Logger.Info("Checking and downloading patcher");
         UnityWebRequest request = UnityWebRequest.Get($"{VersionUpdatesUI.ApiUrl}patchers/data.json");
         yield return request.SendWebRequest();
@@ -38,7 +61,7 @@ public static class PatcherUpdater
         string data = request.downloadHandler.text;
         Dictionary<string, object> patchersData = JsonParser.Parse(data) as Dictionary<string, object>;
         MD5 md5 = MD5.Create();
-        foreach (string patcher in patchers)
+        foreach (string patcher in currentPatchers)
         {
             if (File.Exists(BepInEx.Paths.PatcherPluginPath + "/" + patcher))
             {
@@ -65,15 +88,20 @@ public static class PatcherUpdater
     private static IEnumerator DownloadPatcher(string fileName)
     {
         string url = $"{VersionUpdatesUI.ApiUrl}patchers/{fileName}";
-        UnityWebRequest request = UnityWebRequest.Get(url);
+        SNRHttpClient request = SNRHttpClient.Get(url);
+        request.ignoreSslErrors = true;
         yield return request.SendWebRequest();
-        if (request.result != UnityWebRequest.Result.Success)
+        if (request.error != null)
         {
             Logger.Error("Failed to download patcher: " + request.error);
             yield break;
         }
         Logger.Info("Patcher downloaded");
-        File.WriteAllBytes(BepInEx.Paths.PatcherPluginPath + "/" + fileName, request.downloadHandler.data);
+        string nowFileName = BepInEx.Paths.PatcherPluginPath + "/" + fileName;
+        // ファイルが存在する場合はリネームしてから保存(これで次回起動時に適用される)
+        if (File.Exists(nowFileName))
+            File.Move(nowFileName, nowFileName + ".old");
+        File.WriteAllBytes(nowFileName, request.downloadHandler.data);
     }
 }
 

@@ -1,6 +1,7 @@
 using UnityEngine;
 using TMPro;
 using System.Collections.Generic;
+using System;
 
 namespace SuperNewRoles.HelpMenus;
 
@@ -12,6 +13,8 @@ public class FadeCoroutine : MonoBehaviour
     private bool isFadeIn = false; // フェードイン中かどうか
     private bool isFadeOut = false; // フェードアウト中かどうか
     private GameObject parent; // フェード対象のGameObject
+    public Action onFadeOut = () => { };
+    // 画面を表示中か
     public bool isActive { get; private set; }
     private float duration; // フェードにかける時間
     private float elapsed; // 経過時間
@@ -82,7 +85,9 @@ public class FadeCoroutine : MonoBehaviour
                               (_textRenderers.Length > 0 ? _textRenderers[0].color.a : 1f);
         ApplyAlphaToRenderers(currentAlpha);
 
+        // 画面を閉じているのでactiveではない
         isActive = false;
+        this.onFadeOut?.Invoke();
     }
 
     /// <summary>
