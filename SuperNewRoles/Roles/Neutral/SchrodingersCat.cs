@@ -21,7 +21,7 @@ class SchrodingersCat : RoleBase<SchrodingersCat>
             SuicideTime: SchrodingersCatSuicideTime,
             BeCrewOnExile: SchrodingersCatBeCrewOnExile,
             CrewOnKillByNonSpecific: SchrodingersCatCrewOnKillByNonSpecific
-        )), () => new CustomTaskAbility(() => (false, 0))
+        )), () => new CustomTaskAbility(() => (false, false, 0))
     };
 
     public override QuoteMod QuoteMod { get; } = QuoteMod.SuperNewRoles;

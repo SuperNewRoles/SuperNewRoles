@@ -925,7 +925,7 @@ RocketLaunchButtonText,ドッカーン!,Launch!
 VampireAbsorptionCooldown,吸血クールダウン,Absorption Cooldown,吸血冷却时间,吸血冷卻時間
 VampireKillDelay,キル遅延,Kill Delay,杀人延迟,殺人延遲
 VampireBloodstainDuration,血痕持続ターン数,Bloodstain Duration (Turns),血迹持续回合数,血跡持續回合數
-VampireBlackBloodstains,黒色血痕,Black Bloodstains,黑色血迹,黑色血跡
+VampireBlackBloodstains,血痕を黒色にする,Black Bloodstains,黑色血迹,黑色血跡
 VampireCreateDependents,眷属を作成できる,Can Create Dependents,可以创建眷属,可以創建眷屬
 VampireNightFallCooldown,夜に堕とすクールダウン,Night Fall Cooldown,墮夜冷卻時間,墮夜冷卻時間
 VampireDependentKillCooldown,眷属キルクールダウン,Dependent Kill Cooldown,眷属击杀冷却时间,眷屬擊殺冷卻時間

@@ -68,7 +68,7 @@ public class TeruteruAbility : AbilityBase
     {
         // ベント使用可能設定
         _ventAbility = new CustomVentAbility(() => _data.CanUseVent);
-        _customTaskAbility = new CustomTaskAbility(() => (_data.RequireTaskCompletion, _data.RequiredTaskCount), _data.CustomTaskCount ? _data.TeruteruTaskOption : null);
+        _customTaskAbility = new CustomTaskAbility(() => (_data.RequireTaskCompletion, false, _data.RequiredTaskCount), _data.CustomTaskCount ? _data.TeruteruTaskOption : null);
 
         ExPlayerControl exPlayer = Player;
         exPlayer.AttachAbility(_ventAbility, new AbilityParentAbility(this));

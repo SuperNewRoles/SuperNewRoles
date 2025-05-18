@@ -11,15 +11,15 @@ namespace SuperNewRoles.Roles.Ability;
 
 public class CustomTaskAbility : AbilityBase
 {
-    public Func<(bool isTaskTrigger, int? all)> IsTaskTrigger { get; }
+    public Func<(bool isTaskTrigger, bool? countTask, int? all)> IsTaskTrigger { get; }
     public TaskOptionData? assignTaskData { get; }
-    public CustomTaskAbility(Func<(bool isTaskTrigger, int? all)> isTaskTrigger, TaskOptionData? assignTaskData = null)
+    public CustomTaskAbility(Func<(bool isTaskTrigger, bool? countTask, int? all)> isTaskTrigger, TaskOptionData? assignTaskData = null)
     {
         IsTaskTrigger = isTaskTrigger;
         this.assignTaskData = assignTaskData;
     }
 
-    public (bool isTaskTrigger, int? all)? CheckIsTaskTrigger()
+    public (bool isTaskTrigger, bool? countTask, int? all)? CheckIsTaskTrigger()
     {
         return IsTaskTrigger?.Invoke();
     }

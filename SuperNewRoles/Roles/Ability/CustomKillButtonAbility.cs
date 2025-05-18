@@ -30,9 +30,20 @@ public class CustomKillButtonAbility : TargetCustomButtonBase
     public override string showText => _showText?.Invoke() ?? "";
     private Func<ShowTextType> _showTextType { get; } = () => ShowTextType.Hidden;
     private Func<string> _showText { get; } = () => "";
+    // キルボタンの処理をカスタムできる。
+    private Func<ExPlayerControl, bool> _customKillHandler { get; } = null;
 
     private EventListener<MurderEventData> _murderListener;
-    public CustomKillButtonAbility(Func<bool> canKill, Func<float?> killCooldown, Func<bool> onlyCrewmates, Func<bool> targetPlayersInVents = null, Func<ExPlayerControl, bool> isTargetable = null, Action<ExPlayerControl> killedCallback = null, Func<ShowTextType> showTextType = null, Func<string> showText = null)
+    public CustomKillButtonAbility(
+        Func<bool> canKill,
+        Func<float?> killCooldown,
+        Func<bool> onlyCrewmates,
+        Func<bool> targetPlayersInVents = null,
+        Func<ExPlayerControl, bool> isTargetable = null,
+        Action<ExPlayerControl> killedCallback = null,
+        Func<ShowTextType> showTextType = null,
+        Func<string> showText = null,
+        Func<ExPlayerControl, bool> customKillHandler = null)
     {
         CanKill = canKill;
         KillCooldown = killCooldown;
@@ -42,6 +53,7 @@ public class CustomKillButtonAbility : TargetCustomButtonBase
         KilledCallback = killedCallback;
         _showTextType = showTextType;
         _showText = showText;
+        _customKillHandler = customKillHandler;
     }
 
     public override void AttachToLocalPlayer()
@@ -66,8 +78,10 @@ public class CustomKillButtonAbility : TargetCustomButtonBase
     {
         if (Target == null) return;
         if (!CanKill()) return;
-
-        ExPlayerControl.LocalPlayer.RpcCustomDeath(Target, CustomDeathType.Kill);
+        PlayerControl target = Target;
+        bool customKilled = _customKillHandler?.Invoke(target) ?? false;
+        if (!customKilled)
+            ExPlayerControl.LocalPlayer.RpcCustomDeath(target, CustomDeathType.Kill);
         ResetTimer();
         KilledCallback?.Invoke(Target);
         OnCooldownStarted?.Invoke(DefaultTimer);

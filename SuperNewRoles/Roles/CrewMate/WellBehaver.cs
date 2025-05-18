@@ -106,7 +106,7 @@ public class WellBehaverAbility : AbilityBase
     public override void AttachToAlls()
     {
         button = new WellBehaverButtonAbility();
-        customTaskAbility = new CustomTaskAbility(() => (false, 0));
+        customTaskAbility = new CustomTaskAbility(() => (false, false, 0));
 
         Player.AttachAbility(button, new AbilityParentAbility(this));
         Player.AttachAbility(customTaskAbility, new AbilityParentAbility(this));

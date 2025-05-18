@@ -191,6 +191,7 @@ public static class VersionUpdatesUI
         string currentVersion = VersionConfigManager.GetVersion();
         string currentType = VersionConfigManager.GetVersionType();
         SpriteRenderer currentSelectedButtonRenderer = null;
+        TextMeshPro currentSelectedText = null;
         foreach ((string version, string hash) in versionPairs)
         {
             if (string.IsNullOrEmpty(version))
@@ -233,13 +234,13 @@ public static class VersionUpdatesUI
             if (currentHash == hash)
             {
                 getButtonRenderer.color = loadedButtonColor;
-                currentSelectedButtonRenderer = getButtonRenderer;
                 getButtonText.text = ModTranslation.GetString("VersionLoaded"); // Assuming you have a key for this
             }
             else if (currentType == "static" && currentVersion == version)
             {
                 getButtonRenderer.color = loadedButtonColor;
                 currentSelectedButtonRenderer = getButtonRenderer;
+                currentSelectedText = getButtonText;
                 getButtonText.text = ModTranslation.GetString("VersionWillUpdate");
             }
             else
@@ -287,7 +288,7 @@ public static class VersionUpdatesUI
 
             index++;
         }
-        scroller.ContentYBounds.max = index <= 5 ? 0 : (index - 5) * 1.5f - 0.2f;
+        scroller.ContentYBounds.max = index <= 5 ? 0 : (index - 5) * 1.4f - 0.1f;
     }
 
     private static List<string> VersionTypeList = new()

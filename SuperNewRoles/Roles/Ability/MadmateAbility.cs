@@ -21,7 +21,7 @@ public class MadmateAbility : AbilityBase
         VentAbility = new CustomVentAbility(() => MadData.CouldUseVent);
         KnowImpostorAbility = new KnowImpostorAbility(MadData.CouldKnowImpostors);
         ImpostorVisionAbility = new ImpostorVisionAbility(() => MadData.HasImpostorVision);
-        CustomTaskAbility = new CustomTaskAbility(() => (true, MadData.TaskNeeded), MadData.SpecialTasks);
+        CustomTaskAbility = new CustomTaskAbility(() => (true, false, MadData.TaskNeeded), MadData.SpecialTasks);
 
         Player.AttachAbility(VentAbility, new AbilityParentAbility(this));
         Player.AttachAbility(KnowImpostorAbility, new AbilityParentAbility(this));
