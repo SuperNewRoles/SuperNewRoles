@@ -15,7 +15,7 @@ class Truelover : RoleBase<Truelover>
     public override RoleId Role { get; } = RoleId.Truelover;
     public override Color32 RoleColor { get; } = Lovers.Instance.RoleColor;
     public override List<Func<AbilityBase>> Abilities { get; } = [
-        () => new CreateLoversAbility(TrueLoverCoolTime, ModTranslation.GetString("TrueLoverCreateLovers"), AssetManager.GetAsset<Sprite>("trueloverloveButton.png"), true)
+        () => new CreateLoversAbility(TrueLoverCoolTime, ModTranslation.GetString("TrueLoverCreateLovers"), AssetManager.GetAsset<Sprite>("trueloverloveButton.png"), true, enabledTimeLimit: TrueloverEnabledTimeLimit, timeLimit: TrueloverTimeLimit)
     ];
 
     public override QuoteMod QuoteMod { get; } = QuoteMod.SuperNewRoles;
@@ -30,6 +30,10 @@ class Truelover : RoleBase<Truelover>
     public override RoleId[] RelatedRoleIds { get; } = [];
     [CustomOptionFloat("TrueLoverCoolTime", 0f, 180f, 2.5f, 0f, translationName: "CoolTime")]
     public static float TrueLoverCoolTime;
+    [CustomOptionBool("TrueloverEnabledTimeLimit", true)]
+    public static bool TrueloverEnabledTimeLimit;
+    [CustomOptionFloat("TrueloverTimeLimit", 30f, 600f, 15f, 120f, parentFieldName: nameof(TrueloverEnabledTimeLimit))]
+    public static float TrueloverTimeLimit;
 }
 
 // TODO: リワーク

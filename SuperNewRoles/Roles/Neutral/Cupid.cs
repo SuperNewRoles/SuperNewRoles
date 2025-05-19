@@ -16,7 +16,7 @@ class Cupid : RoleBase<Cupid>
     public override RoleId Role { get; } = RoleId.Cupid; // RoleId.Cupid が enum に存在すると仮定
     public override Color32 RoleColor { get; } = Lovers.Instance.RoleColor;
     public override List<Func<AbilityBase>> Abilities { get; } = [
-        () => new CupidAbility(CupidCoolTime)
+        () => new CupidAbility(CupidCoolTime, CupidEnabledTimeLimit, CupidTimeLimit)
     ];
 
     public override QuoteMod QuoteMod { get; } = QuoteMod.SuperNewRoles;
@@ -31,6 +31,10 @@ class Cupid : RoleBase<Cupid>
     public override RoleId[] RelatedRoleIds { get; } = [];
     [CustomOptionFloat("CupidCoolTime", 0f, 180f, 2.5f, 0f, translationName: "CoolTime")]
     public static float CupidCoolTime;
+    [CustomOptionBool("CupidEnabledTimeLimit", true)]
+    public static bool CupidEnabledTimeLimit;
+    [CustomOptionFloat("CupidTimeLimit", 30f, 600f, 15f, 120f, parentFieldName: nameof(CupidEnabledTimeLimit))]
+    public static float CupidTimeLimit;
 }
 
 public class CupidAbility : AbilityBase
@@ -40,9 +44,14 @@ public class CupidAbility : AbilityBase
     private byte lovers1;
     private byte lovers2;
 
-    public CupidAbility(float coolTime)
+    public bool EnabledTimeLimit { get; }
+    public float TimeLimit { get; }
+
+    public CupidAbility(float coolTime, bool enabledTimeLimit, float timeLimit)
     {
         CoolTime = coolTime;
+        EnabledTimeLimit = enabledTimeLimit;
+        TimeLimit = timeLimit;
     }
     public override void AttachToAlls()
     {
@@ -57,7 +66,10 @@ public class CupidAbility : AbilityBase
             {
                 lovers1 = players[0].PlayerId;
                 lovers2 = players[1].PlayerId;
-            });
+            },
+            EnabledTimeLimit,
+            TimeLimit
+        );
         Player.AttachAbility(createLoversAbility, new AbilityParentAbility(this));
 
         _nameTextUpdateEvent = NameTextUpdateEvent.Instance.AddListener(OnNameTextUpdate);
