@@ -33,6 +33,8 @@ class Tuna : RoleBase<Tuna>
 
     [CustomOptionFloat("TunaStopTimeLimit", 1f, 3f, 0.5f, 2f)]
     public static float TunaStopTimeLimit;
+    [CustomOptionBool("EnableTunaSoloWin", false)]
+    public static bool EnableTunaSoloWin;
 
     public class DeathIfIdlingAbility : AbilityBase
     {

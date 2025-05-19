@@ -497,6 +497,7 @@ WaveCannonJackalWaveCannonType,波動砲タイプ,Wave Cannon Type,波动炮类�
 
 # Tuna
 TunaStopTimeLimit,停止可能時間,Tuna Stop Time Limit,金枪鱼停止时间,金槍魚停止時間
+EnableTunaSoloWin,マグロの単独勝利,Enable Tuna Solo Win,启用金枪鱼单人胜利,啟用金槍魚單人勝利
 
 # Teruteru
 TeruteruRequireTaskCompletion,タスク完了が必要,Require Task Completion,需要完成任务,需要完成任務

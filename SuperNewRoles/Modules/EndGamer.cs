@@ -75,7 +75,7 @@ public static class EndGamer
         Logger.Info("winText: " + winText);
         Logger.Info("----------- Finished EndGame End -----------");
         RpcSyncAlive(ExPlayerControl.ExPlayerControls.ToDictionary(x => x.PlayerId, x => x.IsDead()));
-        EndGameManagerSetUpPatch.RpcEndGameWithCondition(reason, winners.Select(x => x.PlayerId).ToList(), upperText ?? reason.ToString(), additionalWinners.Select(x => x.Role.ToString()).ToList(), color, false, winText ?? "WinText");
+        EndGameManagerSetUpPatch.RpcEndGameWithCondition(reason, winners.Select(x => x.PlayerId).ToList(), upperText ?? reason.ToString(), additionalWinners.Select(x => x.Role.ToString()).ToHashSet().ToList(), color, false, winText ?? "WinText");
     }
     [CustomRPC]
     public static void RpcSyncAlive(Dictionary<byte, bool> dead)
@@ -116,15 +116,18 @@ public static class EndGamer
                 winType = WinType.Hijackers;
             }
         }
-        foreach (ExPlayerControl player in ExPlayerControl.ExPlayerControls)
+        if (Tuna.EnableTunaSoloWin)
         {
-            if (player.Role == RoleId.Tuna && player.IsAlive())
+            foreach (ExPlayerControl player in ExPlayerControl.ExPlayerControls)
             {
-                reason = (GameOverReason)CustomGameOverReason.TunaWin;
-                winners = [player];
-                color = Tuna.Instance.RoleColor;
-                upperText = "TunaWin";
-                winType = WinType.Hijackers;
+                if (player.Role == RoleId.Tuna && player.IsAlive())
+                {
+                    reason = (GameOverReason)CustomGameOverReason.TunaWin;
+                    winners = [player];
+                    color = Tuna.Instance.RoleColor;
+                    upperText = "TunaWin";
+                    winType = WinType.Hijackers;
+                }
             }
         }
     }
@@ -151,6 +154,9 @@ public static class EndGamer
                     case RoleId.Opportunist:
                         if (player.IsAlive())
                             winners.Add(player);
+                        break;
+                    case RoleId.Tuna when !Tuna.EnableTunaSoloWin:
+                        winners.Add(player);
                         break;
                 }
             }
