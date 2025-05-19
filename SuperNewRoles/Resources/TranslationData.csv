@@ -956,9 +956,9 @@ TheFungleZiplineUpOrDown,ジップライン昇降方向,Zipline Direction,滑索
 TheFungleCameraOption,カメラ設定,Camera Settings,摄像头设置,攝像頭設置
 TheFungleCameraChangeRange,カメラ範囲変更,Camera Range Change,摄像头范围改变,攝像頭範圍改變
 TheFungleCameraSpeed,カメラスピード,Camera Speed,摄像头速度,攝像頭速度
-TheFungleMushroomMixupOption,マッシュルームミックスアップ,Mushroom Mixup,蘑菇混合,蘑菇混合
-TheFungleMushroomMixupCantOpenMeeting,ミックスアップ中会議不可,Cannot Open Meeting During Mixup,混合时不能开会,混合時不能開會
-TheFungleMushroomMixupTime,ミックスアップ継続時間,Mushroom Mixup Duration,蘑菇混合持续时间,蘑菇混合持續時間
+TheFungleMushroomMixupOption,キノコカオスの設定,Mushroom Mixup,蘑菇混合,蘑菇混合
+TheFungleMushroomMixupCantOpenMeeting,キノコカオス中は会議できない,Cannot Open Meeting During Mixup,混合时不能开会,混合時不能開會
+TheFungleMushroomMixupTime,キノコカオス継続時間,Mushroom Mixup Duration,蘑菇混合持续时间,蘑菇混合持續時間
 
 FungleSpawnTypeOptions.TheFungleSpawnTypeNormal,通常,Normal,通常,通常
 FungleSpawnTypeOptions.RandomSpawnOption,ランダムスポーン,Random Spawn,随机出生点,隨機出生點
