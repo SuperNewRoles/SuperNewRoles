@@ -1068,6 +1068,8 @@ public static class ModifierOptionMenu
             var roleInfo = CustomRoleManager.AllRoles.FirstOrDefault(r => r.Role == x.RoleId);
             // ダミー実装: IsHiddenは常にfalseとして扱う
             if (roleInfo == null /* || roleInfo.IsHidden */) return false;
+            if (menuData.CurrentEditingModifierForAssignFilter.ModifierAssignFilterTeam.Length > 0 && !menuData.CurrentEditingModifierForAssignFilter.ModifierAssignFilterTeam.Contains(roleInfo.AssignedTeam)) return false;
+            if (menuData.CurrentEditingModifierForAssignFilter.ModifierDoNotAssignRoles.Length > 0 && menuData.CurrentEditingModifierForAssignFilter.ModifierDoNotAssignRoles.Contains(roleInfo.Role)) return false;
             return roleType switch
             {
                 "Impostor" => roleInfo.AssignedTeam == AssignedTeamType.Impostor,

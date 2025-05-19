@@ -142,7 +142,13 @@ public static class CustomOptionManager
                 {
                     if (!fieldNames.Add(field.Name))
                         throw new InvalidOperationException($"Category field name is duplicated: {field.Name}");
-                    var category = new CustomOptionCategory(field.Name, isModifier: field.GetCustomAttribute<ModifierAttribute>() != null, hasModifierAssignFilter: field.GetCustomAttribute<AssignFilterAttribute>() != null);
+                    var assignFilter = field.GetCustomAttribute<AssignFilterAttribute>();
+                    var category = new CustomOptionCategory(
+                        field.Name,
+                        isModifier: field.GetCustomAttribute<ModifierAttribute>() != null,
+                        hasModifierAssignFilter: assignFilter != null,
+                        modifierAssignFilterTeam: assignFilter?.AssignedTeamTypes,
+                        modifierDoNotAssignRoles: assignFilter?.HiddenRoleIds);
                     field.SetValue(null, category);
                     CategoryByFieldName[field.Name] = category;
                     continue;
@@ -1754,7 +1760,13 @@ public class ModifierAttribute : Attribute
 [AttributeUsage(AttributeTargets.Field)]
 public class AssignFilterAttribute : Attribute
 {
-    public AssignFilterAttribute() { }
+    public AssignedTeamType[] AssignedTeamTypes { get; }
+    public RoleId[] HiddenRoleIds { get; }
+    public AssignFilterAttribute(AssignedTeamType[] assignedTeamTypes, RoleId[] hiddenRoleIds)
+    {
+        AssignedTeamTypes = assignedTeamTypes;
+        HiddenRoleIds = hiddenRoleIds;
+    }
 }
 public class CustomOptionCategory
 {
@@ -1764,8 +1776,10 @@ public class CustomOptionCategory
     public bool IsModifier { get; }
     public bool HasModifierAssignFilter { get; }
     public List<RoleId> ModifierAssignFilter { get; set; } = new();
+    public AssignedTeamType[] ModifierAssignFilterTeam { get; set; } = Array.Empty<AssignedTeamType>();
+    public RoleId[] ModifierDoNotAssignRoles { get; set; } = Array.Empty<RoleId>();
 
-    public CustomOptionCategory(string name, bool isModifier = false, bool hasModifierAssignFilter = false, List<RoleId> modifierAssignFilter = null)
+    public CustomOptionCategory(string name, bool isModifier = false, bool hasModifierAssignFilter = false, List<RoleId> modifierAssignFilter = null, AssignedTeamType[] modifierAssignFilterTeam = null, RoleId[] modifierDoNotAssignRoles = null)
     {
         Id = ComputeMD5Hash.Compute(name);
         Name = name; // 後でTranslationを使用して翻訳する
@@ -1773,6 +1787,8 @@ public class CustomOptionCategory
         IsModifier = isModifier;
         HasModifierAssignFilter = hasModifierAssignFilter;
         ModifierAssignFilter = modifierAssignFilter ?? new();
+        ModifierAssignFilterTeam = modifierAssignFilterTeam ?? Array.Empty<AssignedTeamType>();
+        ModifierDoNotAssignRoles = modifierDoNotAssignRoles ?? Array.Empty<RoleId>();
     }
 
     private static void RegisterCategory(CustomOptionCategory category)

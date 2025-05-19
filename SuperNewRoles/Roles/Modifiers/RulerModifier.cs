@@ -38,6 +38,8 @@ class RulerModifier : ModifierBase<RulerModifier>
 
     public override bool AssignFilter => true;
 
+    public override RoleId[] DoNotAssignRoles => [];
+
     [CustomOptionFloat("RulerModifierCooldown", 0f, 180f, 2.5f, 30f, translationName: "CoolTime")]
     public static float Cooldown;
 

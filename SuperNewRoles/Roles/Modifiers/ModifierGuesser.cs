@@ -27,8 +27,10 @@ class ModifierGuesser : ModifierBase<ModifierGuesser>
     public override short IntroNum => 1;
     public override Func<ExPlayerControl, string> ModifierMark => (player) => "{0}" + ModHelpers.Cs(RoleColor, "⊕");
 
+    public override RoleId[] DoNotAssignRoles => [RoleId.God, RoleId.NiceGuesser, RoleId.EvilGuesser, RoleId.Balancer];
+
     [Modifier]
-    [AssignFilter]
+    [AssignFilter([], [RoleId.God, RoleId.NiceGuesser, RoleId.EvilGuesser, RoleId.Balancer])]
     public static CustomOptionCategory ModifierGuesserCategory;
 
     [CustomOptionInt("ModifierGuesserMaxImpostors", 0, 15, 1, 0, translationName: "ModifierGuesserMaxImpostors", parentFieldName: nameof(ModifierGuesserCategory))]

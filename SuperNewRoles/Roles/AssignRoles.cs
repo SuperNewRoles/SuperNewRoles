@@ -205,7 +205,9 @@ public static class AssignRoles
 
             List<ExPlayerControl> targetPlayers = ExPlayerControl.ExPlayerControls
                 .Where(x => modifierBase.AssignedTeams.Count <= 0 || modifierBase.AssignedTeams.Contains(x.roleBase.AssignedTeam))
-                .Where(x => ModifierGuesser.ModifierGuesserCategory.ModifierAssignFilter.Count == 0 || ModifierGuesser.ModifierGuesserCategory.ModifierAssignFilter.Contains(x.Role))
+                .Where(x => ModifierGuesser.ModifierGuesserCategory.ModifierAssignFilter.Count == 0 || !ModifierGuesser.ModifierGuesserCategory.ModifierAssignFilter.Contains(x.Role))
+                .Where(x => ModifierGuesser.ModifierGuesserCategory.ModifierDoNotAssignRoles.Length == 0 || !ModifierGuesser.ModifierGuesserCategory.ModifierDoNotAssignRoles.Contains(x.Role))
+                .Where(x => ModifierGuesser.ModifierGuesserCategory.ModifierAssignFilterTeam.Length == 0 || ModifierGuesser.ModifierGuesserCategory.ModifierAssignFilterTeam.Contains(x.roleBase.AssignedTeam))
                 .ToList();
             Logger.Info($"AssignModifiers: ModifierRole {modifierRoleId} に適用可能なプレイヤー数 = {targetPlayers.Count}");
 
@@ -245,7 +247,7 @@ public static class AssignRoles
         var modifierRoleId = ModifierRoleId.ModifierGuesser;
 
         // インポスターへの割当
-        var impostors = allPlayers.Where(x => x.IsImpostor() && !x.ModifierRole.HasFlag(modifierRoleId) && !ModifierGuesser.ModifierGuesserCategory.ModifierAssignFilter.Contains(x.Role)).ToList();
+        var impostors = allPlayers.Where(x => x.IsImpostor() && !x.ModifierRole.HasFlag(modifierRoleId) && !ModifierGuesser.ModifierGuesserCategory.ModifierAssignFilter.Contains(x.Role) && !ModifierGuesser.ModifierGuesserCategory.ModifierDoNotAssignRoles.Contains(x.Role)).ToList();
         for (int i = 0; i < ModifierGuesser.ModifierGuesserMaxImpostors; i++)
         {
             int roll = ModHelpers.GetRandomInt(0, 100);
@@ -257,7 +259,7 @@ public static class AssignRoles
             }
         }
         // 第三陣営への割当
-        var neutrals = allPlayers.Where(x => x.IsNeutral() && !x.ModifierRole.HasFlag(modifierRoleId) && !ModifierGuesser.ModifierGuesserCategory.ModifierAssignFilter.Contains(x.Role)).ToList();
+        var neutrals = allPlayers.Where(x => x.IsNeutral() && !x.ModifierRole.HasFlag(modifierRoleId) && !ModifierGuesser.ModifierGuesserCategory.ModifierAssignFilter.Contains(x.Role) && !ModifierGuesser.ModifierGuesserCategory.ModifierDoNotAssignRoles.Contains(x.Role)).ToList();
         for (int i = 0; i < ModifierGuesser.ModifierGuesserMaxNeutrals; i++)
         {
             int roll = ModHelpers.GetRandomInt(0, 100);
@@ -269,7 +271,7 @@ public static class AssignRoles
             }
         }
         // クルーメイトへの割当
-        var crewmates = allPlayers.Where(x => x.IsCrewmate() && !x.ModifierRole.HasFlag(modifierRoleId) && !ModifierGuesser.ModifierGuesserCategory.ModifierAssignFilter.Contains(x.Role)).ToList();
+        var crewmates = allPlayers.Where(x => x.IsCrewmate() && !x.ModifierRole.HasFlag(modifierRoleId) && !ModifierGuesser.ModifierGuesserCategory.ModifierAssignFilter.Contains(x.Role) && !ModifierGuesser.ModifierGuesserCategory.ModifierDoNotAssignRoles.Contains(x.Role)).ToList();
         for (int i = 0; i < ModifierGuesser.ModifierGuesserMaxCrewmates; i++)
         {
             int roll = ModHelpers.GetRandomInt(0, 100);
@@ -312,7 +314,12 @@ public static class AssignRoles
         if (ModifierGuesser.ModifierGuesserCategory.ModifierAssignFilter.Count > 0)
         {
             candidates = candidates
-                .Where(p => ModifierGuesser.ModifierGuesserCategory.ModifierAssignFilter.Contains(p.Role));
+                .Where(p => !ModifierGuesser.ModifierGuesserCategory.ModifierAssignFilter.Contains(p.Role));
+        }
+        if (ModifierGuesser.ModifierGuesserCategory.ModifierDoNotAssignRoles.Length > 0)
+        {
+            candidates = candidates
+                .Where(p => !ModifierGuesser.ModifierGuesserCategory.ModifierDoNotAssignRoles.Contains(p.Role));
         }
 
         candidates = candidates.Where(p => p.Role != RoleId.Truelover);
