@@ -175,6 +175,7 @@ public class ExPlayerControl
     public void SetRole(RoleId roleId)
     {
         if (Role == roleId) return;
+        RoleId oldRole = Role;
         DetachOldRole(Role);
         if (AmOwner)
             SuperTrophyManager.DetachTrophy(Role);
@@ -195,6 +196,7 @@ public class ExPlayerControl
         {
             Logger.Error($"Role {roleId} not found");
         }
+        SetRoleEvent.Invoke(this, oldRole, roleId);
     }
 
     public bool HasCustomKillButton()

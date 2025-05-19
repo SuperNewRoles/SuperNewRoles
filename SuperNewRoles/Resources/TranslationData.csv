@@ -196,8 +196,8 @@ AirshipRandomSpawn,ランダムスポーン,Random Spawn,随机出生点,隨機�
 RecordsAdminDestroy,アーカイブアドミン封印,Seal Records Admin,封印档案室管理地图,封印檔案室管理地圖
 AntiTaskOverWall,壁越しタスク禁止,Disable Tasks Through Walls,禁止隔墙任务,禁止隔牆任務
 ModifyGapRoomOneWayShadow,昇降機の影変更,Modify Gap Room Shadow,修改升降机阴影,修改升降機陰影
-GapRoomShadowIgnoresImpostors,インポスターは下から上を見れる,Impostors Can See Up From Below,内鬼可以从下方看到上方,內鬼可以從下方看到上方
-DisableGapRoomShadowForNonImpostor,インポスターは上から下を見れる,Impostors Can See Down From Above,内鬼可以从上方看到下方,內鬼可以從上方看到下方
+GapRoomShadowIgnoresImpostors,インポスター視界のプレイヤーは下から上を見れる,Impostors Can See Up From Below,内鬼可以看见下方玩家,內鬼可以看見下方玩家
+DisableGapRoomShadowForNonImpostor,インポスター視界のプレイヤー以外が上から下を見られなくする,Disable Gap Room Shadow For Non Impostor,禁止非内鬼从上方看到下方,禁止非內鬼從上方看到下方
 PresetDefault,プリセット {0},Preset {0},预设 {0},預設 {0}
 PresetSelected,プリセット {0},Preset {0},预设 {0},預設 {0}
 AddPreset,プリセットを追加,Add Preset,新增预设,新增預設
