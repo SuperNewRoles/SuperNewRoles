@@ -207,7 +207,7 @@ public static class AssetManager
             foreach (var asset in typeCache)
             {
                 if (asset.Value != null)
-                    Resources.UnloadAsset(asset.Value);
+                    asset.Value.hideFlags &= ~HideFlags.DontUnloadUnusedAsset;
             }
         }
         _cachedAssets.Clear();
