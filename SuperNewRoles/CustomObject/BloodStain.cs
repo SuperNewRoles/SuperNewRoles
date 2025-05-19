@@ -22,7 +22,7 @@ public class BloodStain
     public static Sprite getBloodStainSprite()
     {
         if (sprite) return sprite;
-        sprite = AssetManager.GetAsset<Sprite>("SuperNewRoles.Resources.BloodStain.png");
+        sprite = AssetManager.GetAsset<Sprite>("BloodStain.png");
         return sprite;
     }
     public BloodStain(PlayerControl player, bool isBlack = false, Transform? parent = null, Vector3? pos = null)

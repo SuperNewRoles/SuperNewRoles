@@ -24,7 +24,7 @@ public static class IntroCutscenePatch
             new LateTask(() =>
             {
                 Initialize();
-            }, 3f, "Initialize");
+            }, 5f, "Initialize");
         }
     }
     [HarmonyPatch(typeof(IntroCutscene), nameof(IntroCutscene.ShowRole))]

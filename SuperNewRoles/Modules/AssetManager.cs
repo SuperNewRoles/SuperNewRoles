@@ -69,23 +69,53 @@ public static class AssetManager
         {
             SuperNewRolesPlugin.Logger.LogInfo($"[Splash] Loading AssetBundle: {data.Type}");
             string platform = Constants.GetPlatformType() == Platforms.Android ? "_android" : "";
+            AssetBundle assetBundle = null;
             try
             {
-                //AssemblyからAssetBundleファイルを読み込む
-                var BundleStream = ExcAssembly.
-                    GetManifestResourceStream(
-                    $"SuperNewRoles.Resources.{data.Path}{platform}.bundle"
-                    );
-                // SuperNewRolesNext/snrsprites.bundleに保存する
-                AssetBundle assetBundle = null;
-                assetBundle = AssetBundle.LoadFromMemory(BundleStream.ReadFully());
+                // AssemblyからAssetBundleファイルを読み込む
+                string resourceName = $"SuperNewRoles.Resources.{data.Path}{platform}.bundle";
+                if (Constants.GetPlatformType() == Platforms.Android)
+                {
+                    // メモリ量削減の為Androidはファイルから読み込む
+                    using (var bundleStream = ExcAssembly.GetManifestResourceStream(resourceName))
+                    {
+                        if (bundleStream == null)
+                        {
+                            Logger.Error($"Could not find embedded resource: {resourceName}", "LoadAssetBundle");
+                            continue;
+                        }
+
+                        string assetBundlesDirectory = Path.GetFullPath(Path.Combine(SuperNewRolesPlugin.BaseDirectory, "AssetBundles"));
+                        Directory.CreateDirectory(assetBundlesDirectory); // ディレクトリが存在しない場合は作成
+
+                        string fileName = $"{data.Path}{platform}.bundle"; // 例: snrsprites.bundle または snrsprites_android.bundle
+                        string filePath = Path.GetFullPath(Path.Combine(assetBundlesDirectory, fileName));
+
+                        // Streamの内容を一時ファイルに保存
+                        using (var fileStream = new FileStream(filePath, FileMode.Create, FileAccess.Write))
+                        {
+                            bundleStream.CopyTo(fileStream);
+                        }
+
+                        // 一時ファイルからAssetBundleを読み込む
+                        assetBundle = AssetBundle.LoadFromFile(filePath);
+                        if (assetBundle == null)
+                        {
+                            Logger.Error($"Failed to load AssetBundle from file: {filePath}", "LoadAssetBundle");
+                            continue;
+                        }
+                        Logger.Info($"Loaded AssetBundle: {data.Type} from {filePath}");
+                    } // bundleStream は using ステートメントにより自動的に破棄されます
+                }
+                else
+                {
+                    assetBundle = AssetBundle.LoadFromMemory(ExcAssembly.GetManifestResourceStream(resourceName).ReadFully());
+                }
+
                 //読み込んだAssetBundleを保存
                 Bundles[TypeToByte[data.Type]] = assetBundle;
                 //キャッシュ用のDictionaryを作成
                 _cachedAssets[TypeToByte[data.Type]] = new(EqualityComparer<AssetCacheKey>.Default);
-
-                BundleStream.Dispose();
-                Logger.Info($"Loaded AssetBundle: {data.Type}");
             }
             catch (Exception e)
             {
@@ -170,5 +200,22 @@ public static class AssetManager
     public static void Unload(this UnityEngine.Object obj)
     {
         obj.hideFlags &= ~HideFlags.DontUnloadUnusedAsset;
+    }
+
+    public static void UnloadAllAssets()
+    {
+        SuperNewRolesPlugin.Logger.LogInfo("[AssetManager] Unloading all cached assets...");
+        foreach (var typeCache in _cachedAssets.Values)
+        {
+            foreach (var asset in typeCache.Values)
+            {
+                if (asset != null)
+                    asset.Unload();
+            }
+            typeCache.Clear();
+        }
+        // Optionally, if you also want to clear the Bundles dictionary (though this might not be what you want if bundles are meant to persist across scenes)
+        // Bundles.Clear();
+        SuperNewRolesPlugin.Logger.LogInfo("[AssetManager] All cached assets unloaded.");
     }
 }

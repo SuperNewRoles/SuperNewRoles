@@ -72,6 +72,17 @@ public class CustomCosmeticsLoader
     public static readonly int MAX_CONCURRENT_DOWNLOADS = Constants.GetPlatformType() == Platforms.Android ? 10 : 30;
     public static IEnumerator LoadAsync(Func<IEnumerator, Coroutine> startCoroutine)
     {
+        switch (Application.internetReachability)
+        {
+            case NetworkReachability.NotReachable:
+                Logger.Error("インターネットに接続されていません");
+                yield break;
+            case NetworkReachability.ReachableViaCarrierDataNetwork when !ConfigRoles.CanUseDataConnection.Value:
+                Logger.Error("データ通信ではダウンロードしない設定です。");
+                yield break;
+            default:
+                break;
+        }
         runned = false;
         AssetBundlesDownloading = true;
         client.Timeout = TimeSpan.FromSeconds(5);
@@ -333,14 +344,14 @@ public class CustomCosmeticsLoader
         Coroutine spriteDownloadCoroutine = startCoroutine(DownloadSpritesAsync(startCoroutine));
         Logger.Info("DownloadSpritesAsync done");
         // Wait for asset bundles to finish loading
-        yield return new WaitUntil((Il2CppSystem.Func<bool>)(() => assetBundleLoadingCount <= 0));
-        AssetBundlesDownloading = false;
-        Logger.Info("assetBundleLoadingCount done");
-        // After asset bundles are done, wait for sprite downloads to complete
         if (spriteDownloadCoroutine != null)
         {
             yield return spriteDownloadCoroutine;
         }
+        yield return new WaitUntil((Il2CppSystem.Func<bool>)(() => assetBundleLoadingCount <= 0));
+        AssetBundlesDownloading = false;
+        Logger.Info("assetBundleLoadingCount done");
+        // After asset bundles are done, wait for sprite downloads to complete
         SpritesDownloading = false;
         Logger.Info("spriteDownloadCoroutine done");
         willLoad = () =>
@@ -634,6 +645,19 @@ public class CustomCosmeticsLoader
 
     private static IEnumerator DownloadAssetBundleWithRetryAsync(string assetBundleUrl, string expectedHash, Action onFinish)
     {
+        switch (Application.internetReachability)
+        {
+            case NetworkReachability.NotReachable:
+                Logger.Error("インターネットに接続されていません");
+                onFinish();
+                yield break;
+            case NetworkReachability.ReachableViaCarrierDataNetwork when !ConfigRoles.CanUseDataConnection.Value:
+                Logger.Error("データ通信ではダウンロードしない設定です。");
+                onFinish();
+                yield break;
+            default:
+                break;
+        }
         string fileNameFromUrl = Path.GetFileName(assetBundleUrl);
         string bundleStorageDir = Path.Combine(SuperNewRolesPlugin.BaseDirectory, "CustomCosmetics", fileNameFromUrl);
         string targetPath = Path.Combine(bundleStorageDir, $"{expectedHash}.bundle");
@@ -685,6 +709,7 @@ public class CustomCosmeticsLoader
                 request = SNRHttpClient.Get(assetBundleUrl);
                 // ユーザーが設定したタイムアウト値を使用
                 request.timeout = 60;
+                request.ignoreSslErrors = true;
 
                 IEnumerator webRequestEnumerator = SendSNRHttpClientHelper(request);
                 bool moveNextSuccess = true;
@@ -812,6 +837,17 @@ public class CustomCosmeticsLoader
 
     public static IEnumerator DownloadSpritesAsync(Func<IEnumerator, Coroutine> startCoroutine)
     {
+        switch (Application.internetReachability)
+        {
+            case NetworkReachability.NotReachable:
+                Logger.Error("インターネットに接続されていません");
+                yield break;
+            case NetworkReachability.ReachableViaCarrierDataNetwork when !ConfigRoles.CanUseDataConnection.Value:
+                Logger.Error("データ通信ではダウンロードしない設定です。");
+                yield break;
+            default:
+                break;
+        }
         string basePath = $"{SuperNewRolesPlugin.BaseDirectory}/CustomCosmetics/";
         int activeDownloads = 0;
         Queue<(string spriteName, string spritePath, string packageKey, string packagePath)> downloadQueue = new();

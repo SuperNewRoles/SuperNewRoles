@@ -80,6 +80,10 @@ public abstract class CustomButtonBase : AbilityBase
     /// <returns>trueならカウントが進む</returns>
     public virtual bool CheckDecreaseCoolCount()
     {
+        // イントロ中はカウントしない
+        if (DestroyableSingleton<HudManager>.Instance.IsIntroDisplayed)
+            return false;
+
         var localPlayer = PlayerControl.LocalPlayer;
         var moveable = !PlayerControl.LocalPlayer.inVent && PlayerControl.LocalPlayer.moveable;
 

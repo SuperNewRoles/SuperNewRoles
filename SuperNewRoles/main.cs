@@ -32,6 +32,7 @@ using SuperNewRoles.API;
 using AmongUs.Data.Player;
 using SuperNewRoles.RequestInGame;
 using System.Diagnostics;
+using UnityEngine.SceneManagement;
 
 namespace SuperNewRoles;
 
@@ -51,6 +52,8 @@ public partial class SuperNewRolesPlugin : BasePlugin
     public static int MainThreadId { get; private set; }
     private readonly List<Action> _mainThreadActions = new();
     private readonly object _mainThreadActionsLock = new();
+
+    private static string _currentSceneName;
 
     public static bool IsEpic => Constants.GetPurchasingPlatformType() == PlatformConfig.EpicGamesStoreName;
     public static string BaseDirectory => Path.GetFullPath(Path.Combine(BepInEx.Paths.BepInExRootPath, "../SuperNewRolesNext"));
@@ -92,6 +95,7 @@ public partial class SuperNewRolesPlugin : BasePlugin
         if (!Directory.Exists(SecretDirectory))
             Directory.CreateDirectory(SecretDirectory);
 
+        ConfigRoles.Init();
         CustomRoleManager.Load();
         AssetManager.Load();
         ModTranslation.Load();
@@ -127,9 +131,6 @@ public partial class SuperNewRolesPlugin : BasePlugin
         Logger.LogInfo("--------------------------------");
         Logger.LogInfo(ModTranslation.GetString("WelcomeNextSuperNewRoles"));
         Logger.LogInfo("--------------------------------");
-
-        // メモリ使用量削減のため、未使用のアセットをアンロード
-        GC.Collect();
     }
     public void PatchAll(Harmony harmony)
     {
@@ -153,6 +154,12 @@ public partial class SuperNewRolesPlugin : BasePlugin
 
     private static void CheckStarts()
     {
+        // Androidはよっぽどのことがない限り1起動で済むので
+        if (Constants.GetPlatformType() == Platforms.Android)
+        {
+            ProcessNumber = 0;
+            return;
+        }
         // SuperNewRolesNext/Startsディレクトリのパスを取得
         string startsDir = BaseDirectory + "/Starts";
         // ディレクトリが存在しなければ作成
@@ -207,6 +214,7 @@ public partial class SuperNewRolesPlugin : BasePlugin
         ClassInjector.RegisterTypeInIl2Cpp<VersionUpdatesComponent>();
         ClassInjector.RegisterTypeInIl2Cpp<ReleaseNoteComponent>();
         ClassInjector.RegisterTypeInIl2Cpp<PatcherUpdaterComponent>();
+        ClassInjector.RegisterTypeInIl2Cpp<AddressableReleaseOnDestroy>();
     }
 
     public void ExecuteInMainThread(Action action)
@@ -226,6 +234,14 @@ public partial class SuperNewRolesPlugin : BasePlugin
 
     public void Update()
     {
+        string activeSceneName = SceneManager.GetActiveScene().name;
+        if (_currentSceneName != activeSceneName)
+        {
+            SuperNewRolesPlugin.Logger.LogInfo($"Scene changed from {_currentSceneName} to {activeSceneName}. Unloading assets.");
+            AssetManager.UnloadAllAssets();
+            _currentSceneName = activeSceneName;
+        }
+
         if (_mainThreadActions.Count > 0)
         {
             List<Action> actionsToExecute;

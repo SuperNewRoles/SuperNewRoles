@@ -203,9 +203,10 @@ public class VampireAbility : AbilityBase
         if (delayTimer <= 0)
         {
             delayTimer = 0;
-            TargetingPlayer.CustomDeath(CustomDeathType.VampireKill, source: Player);
             new BloodStain(TargetingPlayer, isBlack: kill.blackBloodstains, parent: bloodStainsParentTargeting);
+            TargetingPlayer.CustomDeath(CustomDeathType.VampireKill, source: Player);
             TargetingPlayer = null;
+            return;
         }
         bloodStainTimer -= Time.fixedDeltaTime;
         if (bloodStainTimer <= 0)

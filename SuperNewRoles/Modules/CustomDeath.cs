@@ -111,11 +111,10 @@ public static class CustomDeathExtensions
                 FinalStatusManager.SetFinalStatus(player, FinalStatus.LaunchByRocket);
                 break;
             case CustomDeathType.VampireKill:
-                var pos3 = source.Player.transform.position;
+                var pos3 = source.Player.GetTruePosition();
                 source.Player.MurderPlayer(player.Player, MurderResultFlags.Succeeded);
                 FinalStatusManager.SetFinalStatus(player, FinalStatus.VampireKill);
-                source.Player.transform.position = pos3;
-                source.Player.MyPhysics.body.velocity = Vector2.zero;
+                source.Player.NetTransform.SnapTo(pos3);
                 break;
             case CustomDeathType.VampireWithDead:
                 player.Player.MurderPlayer(player.Player, MurderResultFlags.Succeeded);
