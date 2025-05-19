@@ -76,7 +76,7 @@ public static class IntroCutscenePatch
                 foreach (var modifier in player.ModifierRoleBases)
                 {
                     var randomIntroNum = Random.Range(1, modifier.IntroNum + 1);
-                    __instance.RoleBlurbText.text += "\n" + ModTranslation.GetString($"{modifier.ModifierRole}Intro{randomIntroNum}");
+                    __instance.RoleBlurbText.text += "\n" + ModHelpers.CsWithTranslation(modifier.RoleColor, $"{modifier.ModifierRole}Intro{randomIntroNum}");
                 }
 
                 //プレイヤーを作成&位置変更
