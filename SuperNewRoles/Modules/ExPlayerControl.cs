@@ -355,14 +355,14 @@ public class ExPlayerControl
         foreach (var ability in myAbilities)
         {
             var currentParent = ability.ability.Parent;
-            if (currentParent is AbilityParentAbility)
+            if (currentParent is not AbilityParentRole)
                 continue;
             target.AttachAbility(ability.ability, currentParent);
         }
         foreach (var ability in targetAbilities)
         {
             var currentParent = ability.ability.Parent;
-            if (currentParent is AbilityParentAbility)
+            if (currentParent is not AbilityParentRole)
                 continue;
             AttachAbility(ability.ability, currentParent);
         }
