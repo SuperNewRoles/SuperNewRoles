@@ -22,7 +22,7 @@ class Taskmaster : RoleBase<Taskmaster>
     public override Color32 RoleColor { get; } = new(64, 181, 255, 255);
     public override List<Func<AbilityBase>> Abilities { get; } = [
         () => new CustomTaskAbility(
-            () => (true, TaskmasterEnableIndividualTasks ? TaskmasterTaskCount.Total : null),
+            () => (true, TaskmasterEnableIndividualTasks ? true : null, TaskmasterEnableIndividualTasks ? TaskmasterTaskCount.Total : null),
             TaskmasterEnableIndividualTasks ? TaskmasterTaskCount : null
     )];
 

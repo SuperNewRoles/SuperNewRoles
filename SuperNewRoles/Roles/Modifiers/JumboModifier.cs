@@ -31,6 +31,8 @@ class JumboModifier : ModifierBase<JumboModifier>
 
     public override Func<ExPlayerControl, string> ModifierMark => _ => "{0} Ⓙ";
 
+    public override bool AssignFilter => true;
+
     [CustomOptionBool("JumboAssignToImpostor", true)]
     public static bool JumboAssignToImpostor;
     [CustomOptionBool("JumboAssignToNeutral", true)]

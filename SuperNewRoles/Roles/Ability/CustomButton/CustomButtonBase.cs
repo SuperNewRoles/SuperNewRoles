@@ -93,7 +93,7 @@ public abstract class CustomButtonBase : AbilityBase
             KeyType.None => KeyCode.None,
             KeyType.Kill => KeyCode.Q,
             KeyType.Ability1 => KeyCode.F,
-            KeyType.Ability2 => KeyCode.F,
+            KeyType.Ability2 => KeyCode.None,
             KeyType.Vent => KeyCode.V,
             _ => throw new Exception($"keyTypeが{keyType}の場合はGetKeyCodeを実装してください"),
         };

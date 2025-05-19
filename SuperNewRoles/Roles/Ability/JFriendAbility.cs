@@ -35,7 +35,7 @@ public class JFriendAbility : AbilityBase
             () => Data.IsImpostorVision
         );
         CustomTaskAbility = new CustomTaskAbility(
-            () => (true, Data.TaskNeeded),
+            () => (true, false, Data.TaskNeeded),
             Data.SpecialTasks
         );
 

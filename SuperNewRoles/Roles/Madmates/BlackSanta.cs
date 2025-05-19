@@ -54,14 +54,6 @@ class BlackSanta : RoleBase<BlackSanta>
     [CustomOptionBool("BlackSantaCanKnowImpostors", true, translationName: "MadmateCanKnowImpostors")]
     public static bool BlackSantaCanKnowImpostors;
 
-    [CustomOptionInt("BlackSantaNeededTaskCount", 0, 10, 1, 1, translationName: "MadmateNeededTaskCount", parentFieldName: nameof(BlackSantaCanKnowImpostors))]
-    public static int BlackSantaNeededTaskCount;
-
-    [CustomOptionBool("BlackSantaIsSpecialTasks", false, translationName: "MadmateIsSpecialTasks")]
-    public static bool BlackSantaIsSpecialTasks;
-    [CustomOptionTask("BlackSantaSpecialTasks", 1, 1, 1, translationName: "MadmateSpecialTasks", parentFieldName: nameof(BlackSantaIsSpecialTasks))]
-    public static TaskOptionData BlackSantaSpecialTasks;
-
     // サンタ機能
     [CustomOptionFloat("BlackSantaAbilityCooldown", 0f, 180f, 2.5f, 25f, translationName: "SantaAbilityCooldown")]
     public static float BlackSantaAbilityCooldown;
@@ -83,4 +75,13 @@ class BlackSanta : RoleBase<BlackSanta>
     public static int BlackSantaPenguinPercentage;
     [CustomOptionInt("BlackSantaWaveCannonPercentage", 0, 100, 5, 0)]
     public static int BlackSantaWaveCannonPercentage;
+
+    // 狂信
+    [CustomOptionInt("BlackSantaNeededTaskCount", 0, 10, 1, 1, translationName: "MadmateNeededTaskCount", parentFieldName: nameof(BlackSantaCanKnowImpostors))]
+    public static int BlackSantaNeededTaskCount;
+
+    [CustomOptionBool("BlackSantaIsSpecialTasks", false, translationName: "MadmateIsSpecialTasks")]
+    public static bool BlackSantaIsSpecialTasks;
+    [CustomOptionTask("BlackSantaSpecialTasks", 1, 1, 1, translationName: "MadmateSpecialTasks", parentFieldName: nameof(BlackSantaIsSpecialTasks))]
+    public static TaskOptionData BlackSantaSpecialTasks;
 }

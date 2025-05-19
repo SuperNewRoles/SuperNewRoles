@@ -43,6 +43,7 @@ public class MirageAbility : CustomButtonBase, IAbilityCount
     {
         LimitUse = limitUse;
         LimitCount = limitCount;
+        Count = LimitCount;
     }
     public override float DefaultTimer => 0f;
     public override string buttonText => ModTranslation.GetString("MirageButtonText");
@@ -52,19 +53,16 @@ public class MirageAbility : CustomButtonBase, IAbilityCount
 
     public override ShowTextType showTextType => LimitUse && HasCount ? ShowTextType.ShowWithCount : ShowTextType.Hidden;
 
-    public override void AttachToAlls()
-    {
-        base.AttachToAlls();
-        Count = LimitCount;
-    }
     public override void AttachToLocalPlayer()
     {
+        base.AttachToLocalPlayer();
         dieEventListener = DieEvent.Instance.AddListener(OnPlayerDead);
     }
 
     public override void DetachToLocalPlayer()
     {
-        dieEventListener.RemoveListener();
+        base.DetachToLocalPlayer();
+        dieEventListener?.RemoveListener();
     }
     public override bool CheckIsAvailable()
     {

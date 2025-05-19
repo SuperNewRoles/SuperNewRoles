@@ -61,18 +61,23 @@ public class CustomCosmeticsLayer
 
         ModdedCosmetics = new GameObject("ModdedCosmetics");
         ModdedCosmetics.transform.parent = cosmeticsLayer.transform;
-        ModdedCosmetics.transform.localPosition = Vector3.zero;
+        ModdedCosmetics.transform.localPosition = new(0, 0, -0.0001f);
         ModdedCosmetics.transform.localScale = Vector3.one;
         ModdedCosmetics.transform.localRotation = Quaternion.identity;
         ModdedCosmetics.layer = cosmeticsLayer.gameObject.layer;
-        ModdedCosmetics.AddComponent<SortingGroup>();
+
+        cosmeticsLayer.gameObject.AddComponent<SortingGroup>();
+        cosmeticsLayer.transform.localPosition = new(0, 0, -0.0001f);
+
+        var skin = cosmeticsLayer.skin.GetComponent<SpriteRenderer>();
+        skin.sortingOrder = 0;
 
         var hat = cosmeticsLayer.hat;
-        visor1 = CreateVisorLayer(cosmeticsLayer, "visor1", -0.8f, 0);
-        hat1 = CreateHatLayer(cosmeticsLayer, hat, "hat1", new Vector3(0f, 0f, 0), new Vector3(0f, 0f, 0.7f), 10);
+        visor1 = CreateVisorLayer(cosmeticsLayer, "visor1", -0.8f, 20);
+        hat1 = CreateHatLayer(cosmeticsLayer, hat, "hat1", new Vector3(0f, 0f, 0), new Vector3(0f, 0f, 0.7f), 30);
         hat1.LayerNumber = 1;
-        visor2 = CreateVisorLayer(cosmeticsLayer, "visor2", -0.51f, 20);
-        hat2 = CreateHatLayer(cosmeticsLayer, hat, "hat2", new Vector3(0f, 0f, 0), new Vector3(0f, 0f, 0.6f), 30);
+        visor2 = CreateVisorLayer(cosmeticsLayer, "visor2", -0.51f, 1);
+        hat2 = CreateHatLayer(cosmeticsLayer, hat, "hat2", new Vector3(0f, 0f, 0), new Vector3(0f, 0f, 0.6f), 10);
         hat2.LayerNumber = 2;
 
         CustomCosmeticsLayers.visorLayer1s[cosmeticsLayer.visor.GetInstanceID()] = visor1;

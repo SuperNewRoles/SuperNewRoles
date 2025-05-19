@@ -8,6 +8,7 @@ using TMPro;
 using UnityEngine;
 using Il2CppInterop.Runtime.InteropTypes.Arrays;
 using SuperNewRoles.Roles.Ability;
+using static SuperNewRoles.CustomOptions.Categories.MapSettingOptions;
 
 namespace SuperNewRoles.Patches;
 
@@ -18,9 +19,13 @@ public static class DevicesPatch
 {
     public static bool DontCountBecausePortableAdmin;
     private static bool isAdminRestrictOption;
+    private static bool isAdminDisabledOption;
     public static bool IsAdminRestrict => DontCountBecausePortableAdmin ? false : isAdminRestrictOption;
+    public static bool IsAdminDisabled => isAdminDisabledOption;
     public static bool IsVitalRestrict;
+    public static bool IsVitalDisabled;
     public static bool IsCameraRestrict;
+    public static bool IsCameraDisabled;
     public static TextMeshPro TimeRemaining;
     static HashSet<string> DeviceTypes = new();
     public static Dictionary<string, HashSet<byte>> UsePlayers = new();
@@ -40,26 +45,42 @@ public static class DevicesPatch
         DeviceTypes = new();
         DeviceTimers = new();
 
-        isAdminRestrictOption = MapSettingOptions.DeviceOptions && MapSettingOptions.DeviceAdminOption == DeviceOptionType.Restrict;
-        IsCameraRestrict = MapSettingOptions.DeviceOptions && MapSettingOptions.DeviceCameraOption == DeviceOptionType.Restrict;
-        IsVitalRestrict = MapSettingOptions.DeviceOptions && MapSettingOptions.DeviceVitalOrDoorLogOption == DeviceOptionType.Restrict;
+        isAdminRestrictOption = false;
+        isAdminDisabledOption = false;
+        IsCameraRestrict = false;
+        IsCameraDisabled = false;
+        IsVitalRestrict = false;
+        IsVitalDisabled = false;
 
         if (MapSettingOptions.DeviceOptions)
         {
-            if (IsAdminRestrict)
+            if (MapSettingOptions.RestrictionMode == DeviceRestrictionModeType.TimeLimit)
             {
-                DeviceTypes.Add(DeviceType.Admin.ToString());
-                DeviceTimers[DeviceType.Admin.ToString()] = MapSettingOptions.DeviceUseAdminTime;
+                isAdminRestrictOption = MapSettingOptions.DeviceAdminTimeLimit > 0;
+                IsCameraRestrict = MapSettingOptions.DeviceCameraTimeLimit > 0;
+                IsVitalRestrict = MapSettingOptions.DeviceVitalTimeLimit > 0;
+
+                if (isAdminRestrictOption)
+                {
+                    DeviceTypes.Add(DeviceType.Admin.ToString());
+                    DeviceTimers[DeviceType.Admin.ToString()] = MapSettingOptions.DeviceAdminTimeLimit;
+                }
+                if (IsCameraRestrict)
+                {
+                    DeviceTypes.Add(DeviceType.Camera.ToString());
+                    DeviceTimers[DeviceType.Camera.ToString()] = MapSettingOptions.DeviceCameraTimeLimit;
+                }
+                if (IsVitalRestrict)
+                {
+                    DeviceTypes.Add(DeviceType.Vital.ToString());
+                    DeviceTimers[DeviceType.Vital.ToString()] = MapSettingOptions.DeviceVitalTimeLimit;
+                }
             }
-            if (IsCameraRestrict)
+            else if (MapSettingOptions.RestrictionMode == DeviceRestrictionModeType.OnOff)
             {
-                DeviceTypes.Add(DeviceType.Camera.ToString());
-                DeviceTimers[DeviceType.Camera.ToString()] = MapSettingOptions.DeviceUseCameraTime;
-            }
-            if (IsVitalRestrict)
-            {
-                DeviceTypes.Add(DeviceType.Vital.ToString());
-                DeviceTimers[DeviceType.Vital.ToString()] = MapSettingOptions.DeviceUseVitalOrDoorLogTime;
+                isAdminDisabledOption = !MapSettingOptions.DeviceAdminEnabled;
+                IsCameraDisabled = !MapSettingOptions.DeviceCameraEnabled;
+                IsVitalDisabled = !MapSettingOptions.DeviceVitalEnabled;
             }
         }
         SyncTimer = 0f;
@@ -115,8 +136,10 @@ public static class DevicesPatch
         public static bool Prefix(MapConsole __instance)
         {
             DontCountBecausePortableAdmin = false;
-            bool IsUse = !MapSettingOptions.DeviceOptions || MapSettingOptions.DeviceAdminOption != DeviceOptionType.CantUse;
-            return IsUse;
+            bool canUse = !(MapSettingOptions.DeviceOptions &&
+                            ((MapSettingOptions.RestrictionMode == DeviceRestrictionModeType.OnOff && IsAdminDisabled) ||
+                             (MapSettingOptions.RestrictionMode == DeviceRestrictionModeType.TimeLimit && IsAdminRestrict && DeviceTimers[DeviceType.Admin.ToString()] <= 0)));
+            return canUse;
         }
     }
 
@@ -137,10 +160,6 @@ public static class DevicesPatch
                 Logger.Info($"[Admin Open] RpcSetDeviceUseStatus Called: Player={PlayerControl.LocalPlayer.PlayerId}, IsOpen=true");
                 RpcSetDeviceUseStatus(DeviceType.Admin, PlayerControl.LocalPlayer.PlayerId, true);
             }
-            else if (MapSettingOptions.DeviceOptions && MapSettingOptions.DeviceAdminOption == DeviceOptionType.CantUse)
-            {
-                MapBehaviour.Instance.Close();
-            }
         }
     }
 
@@ -149,15 +168,18 @@ public static class DevicesPatch
     {
         public static bool Prefix(MapCountOverlay __instance)
         {
-            if (IsAdminRestrict && DeviceTimers[DeviceType.Admin.ToString()] <= 0)
+            if (MapSettingOptions.DeviceOptions)
             {
-                MapBehaviour.Instance.Close();
-                return false;
-            }
-            else if (MapSettingOptions.DeviceOptions && MapSettingOptions.DeviceCameraOption == DeviceOptionType.CantUse)
-            {
-                MapBehaviour.Instance.Close();
-                return false;
+                if (MapSettingOptions.RestrictionMode == DeviceRestrictionModeType.OnOff && IsAdminDisabled)
+                {
+                    MapBehaviour.Instance.Close();
+                    return false;
+                }
+                if (MapSettingOptions.RestrictionMode == DeviceRestrictionModeType.TimeLimit && IsAdminRestrict && DeviceTimers[DeviceType.Admin.ToString()] <= 0)
+                {
+                    MapBehaviour.Instance.Close();
+                    return false;
+                }
             }
             CreateAdmins(__instance);
             return false;
@@ -183,7 +205,6 @@ public static class DevicesPatch
                 __instance.SabotageText.gameObject.SetActive(false);
             }
 
-            // インポスターや死体の色が変わる役職等が増えたらここに条件を追加
             bool canSeeImpostorIcon = advancedAdminAbility?.Data.distinctionImpostor ?? false;
             bool canSeeDeadIcon = advancedAdminAbility?.Data.distinctionDead ?? false;
 
@@ -191,7 +212,6 @@ public static class DevicesPatch
             {
                 CounterArea counterArea = __instance.CountAreas[i];
 
-                // ロミジュリと絵画の部屋をアドミンの対象から外す
                 if (!commsActive && counterArea.RoomType > SystemTypes.Hallway)
                 {
                     PlainShipRoom plainShipRoom = ShipStatus.Instance.FastRooms.TryGetValue(counterArea.RoomType, out var room) ? room : null;
@@ -202,9 +222,7 @@ public static class DevicesPatch
                         int num = plainShipRoom.roomArea.OverlapCollider(__instance.filter, __instance.buffer);
                         int count = 0;
                         List<int> colors = new();
-                        // 死体の色で表示する数
                         int numDeadIcons = 0;
-                        // インポスターの色で表示する数
                         int numImpostorIcons = 0;
 
                         for (int j = 0; j < num; j++)
@@ -295,26 +313,44 @@ public static class DevicesPatch
     [HarmonyPatch(typeof(VitalsMinigame), nameof(VitalsMinigame.Begin))]
     class VitalsMinigameBeginPatch
     {
-        static void Postfix(VitalsMinigame __instance)
+        static bool Prefix(VitalsMinigame __instance)
         {
-            if (MapSettingOptions.DeviceOptions && MapSettingOptions.DeviceVitalOrDoorLogOption == DeviceOptionType.CantUse)
-                __instance.Close();
-            else if (IsVitalRestrict && DeviceTimers[DeviceType.Vital.ToString()] <= 0)
-                __instance.Close();
-            else if (IsVitalRestrict)
+            if (MapSettingOptions.DeviceOptions)
             {
-                if (TimeRemaining == null)
+                if (MapSettingOptions.RestrictionMode == DeviceRestrictionModeType.OnOff && IsVitalDisabled)
                 {
-                    TimeRemaining = UnityEngine.Object.Instantiate(FastDestroyableSingleton<HudManager>.Instance.TaskPanel.taskText, __instance.transform);
-                    TimeRemaining.alignment = TextAlignmentOptions.BottomRight;
-                    TimeRemaining.transform.position = Vector3.zero;
-                    TimeRemaining.transform.localPosition = new Vector3(1.7f, 4.45f);
-                    TimeRemaining.transform.localScale *= 1.8f;
-                    TimeRemaining.color = Palette.White;
-                    TimeRemaining.text = "";
+                    foreach (var vital in __instance.vitals)
+                    {
+                        vital.gameObject.SetActive(false);
+                    }
+                    __instance.Close();
+                    return false;
                 }
-                RpcSetDeviceUseStatus(DeviceType.Vital, PlayerControl.LocalPlayer.PlayerId, true);
+                if (MapSettingOptions.RestrictionMode == DeviceRestrictionModeType.TimeLimit && IsVitalRestrict)
+                {
+                    if (DeviceTimers[DeviceType.Vital.ToString()] <= 0)
+                    {
+                        foreach (var vital in __instance.vitals)
+                        {
+                            vital.gameObject.SetActive(false);
+                        }
+                        __instance.Close();
+                        return false;
+                    }
+                    if (TimeRemaining == null)
+                    {
+                        TimeRemaining = UnityEngine.Object.Instantiate(FastDestroyableSingleton<HudManager>.Instance.TaskPanel.taskText, __instance.transform);
+                        TimeRemaining.alignment = TextAlignmentOptions.BottomRight;
+                        TimeRemaining.transform.position = Vector3.zero;
+                        TimeRemaining.transform.localPosition = new Vector3(1.7f, 4.45f);
+                        TimeRemaining.transform.localScale *= 1.8f;
+                        TimeRemaining.color = Palette.White;
+                        TimeRemaining.text = "";
+                    }
+                    RpcSetDeviceUseStatus(DeviceType.Vital, PlayerControl.LocalPlayer.PlayerId, true);
+                }
             }
+            return true;
         }
     }
 
@@ -323,7 +359,7 @@ public static class DevicesPatch
     {
         static void Postfix(Minigame __instance)
         {
-            if (__instance is not VitalsMinigame || !IsVitalRestrict)
+            if (__instance is not VitalsMinigame || !(MapSettingOptions.DeviceOptions && MapSettingOptions.RestrictionMode == DeviceRestrictionModeType.TimeLimit && IsVitalRestrict))
                 return;
             RpcSetDeviceUseStatus(DeviceType.Vital, PlayerControl.LocalPlayer.PlayerId, false);
         }
@@ -334,18 +370,21 @@ public static class DevicesPatch
     {
         static void Postfix(VitalsMinigame __instance)
         {
-            if (IsVitalRestrict && DeviceTimers[DeviceType.Vital.ToString()] <= 0)
+            if (MapSettingOptions.DeviceOptions)
             {
-                __instance.Close();
-                return;
-            }
-            else if (MapSettingOptions.DeviceOptions && MapSettingOptions.DeviceVitalOrDoorLogOption == DeviceOptionType.CantUse)
-            {
-                __instance.Close();
-                return;
+                if (MapSettingOptions.RestrictionMode == DeviceRestrictionModeType.OnOff && IsVitalDisabled)
+                {
+                    __instance.Close();
+                    return;
+                }
+                if (MapSettingOptions.RestrictionMode == DeviceRestrictionModeType.TimeLimit && IsVitalRestrict && DeviceTimers[DeviceType.Vital.ToString()] <= 0)
+                {
+                    __instance.Close();
+                    return;
+                }
             }
 
-            if (!IsVitalRestrict) return;
+            if (!(MapSettingOptions.DeviceOptions && MapSettingOptions.RestrictionMode == DeviceRestrictionModeType.TimeLimit && IsVitalRestrict)) return;
             if (PlayerControl.LocalPlayer.Data.IsDead)
             {
                 if (TimeRemaining != null) GameObject.Destroy(TimeRemaining.gameObject);
@@ -364,18 +403,27 @@ public static class DevicesPatch
     static void CameraClose()
     {
         IsCameraCloseNow = true;
-        if (!IsCameraRestrict)
+        if (!(MapSettingOptions.DeviceOptions && MapSettingOptions.RestrictionMode == DeviceRestrictionModeType.TimeLimit && IsCameraRestrict))
             return;
         RpcSetDeviceUseStatus(DeviceType.Camera, PlayerControl.LocalPlayer.PlayerId, false);
     }
 
     static void CameraOpen(Transform instance)
     {
-        if (MapSettingOptions.DeviceOptions && MapSettingOptions.DeviceCameraOption != DeviceOptionType.CantUse)
+        if (MapSettingOptions.DeviceOptions)
         {
-            IsCameraCloseNow = false;
-            if (IsCameraRestrict)
+            if (MapSettingOptions.RestrictionMode == DeviceRestrictionModeType.OnOff && IsCameraDisabled)
             {
+                return;
+            }
+
+            IsCameraCloseNow = false;
+            if (MapSettingOptions.RestrictionMode == DeviceRestrictionModeType.TimeLimit && IsCameraRestrict)
+            {
+                if (DeviceTimers[DeviceType.Camera.ToString()] <= 0)
+                {
+                    return;
+                }
                 if (TimeRemaining == null)
                 {
                     TimeRemaining = UnityEngine.Object.Instantiate(FastDestroyableSingleton<HudManager>.Instance.TaskPanel.taskText, instance);
@@ -432,17 +480,21 @@ public static class DevicesPatch
 
     private static void UpdateCameraTimer(Transform targetTransform, Action closeAction, Vector3 taskTextLocalPosition)
     {
-        if (IsCameraRestrict && DeviceTimers[DeviceType.Camera.ToString()] <= 0)
+        if (MapSettingOptions.DeviceOptions)
         {
-            closeAction();
-            return;
+            if (MapSettingOptions.RestrictionMode == DeviceRestrictionModeType.OnOff && IsCameraDisabled)
+            {
+                closeAction();
+                return;
+            }
+            if (MapSettingOptions.RestrictionMode == DeviceRestrictionModeType.TimeLimit && IsCameraRestrict && DeviceTimers[DeviceType.Camera.ToString()] <= 0)
+            {
+                closeAction();
+                return;
+            }
         }
-        if (MapSettingOptions.DeviceOptions && MapSettingOptions.DeviceCameraOption == DeviceOptionType.CantUse)
-        {
-            closeAction();
-            return;
-        }
-        if (!IsCameraRestrict)
+
+        if (!(MapSettingOptions.DeviceOptions && MapSettingOptions.RestrictionMode == DeviceRestrictionModeType.TimeLimit && IsCameraRestrict))
             return;
         if (PlayerControl.LocalPlayer.Data.IsDead)
         {

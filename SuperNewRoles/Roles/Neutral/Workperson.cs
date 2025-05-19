@@ -16,14 +16,7 @@ class Workperson : RoleBase<Workperson>
     public override RoleId Role { get; } = RoleId.Workperson;
     public override Color32 RoleColor { get; } = new(210, 180, 140, byte.MaxValue);
     public override List<Func<AbilityBase>> Abilities { get; } = [() => new CustomTaskAbility(
-        () => {
-            var exPlayer = ExPlayerControl.LocalPlayer;
-            if (exPlayer.PlayerId != PlayerControl.LocalPlayer.PlayerId) return (false, 0);
-            var taskData = ModHelpers.TaskCompletedData(exPlayer.Data);
-            if (taskData.completed == -1 || taskData.total == -1) return (false, 0);
-
-            return (true, taskData.total);
-        },
+        () => (true, false, WorkpersonTaskData.Total),
         WorkpersonTaskData
     ),
     () => new WorkpersonAbility(WorkpersonNeedAliveToWin),

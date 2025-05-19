@@ -68,12 +68,13 @@ public static class AssetManager
         foreach (var data in AssetPathes)
         {
             SuperNewRolesPlugin.Logger.LogInfo($"[Splash] Loading AssetBundle: {data.Type}");
+            string platform = Constants.GetPlatformType() == Platforms.Android ? "_android" : "";
             try
             {
                 //AssemblyからAssetBundleファイルを読み込む
                 var BundleStream = ExcAssembly.
                     GetManifestResourceStream(
-                    $"SuperNewRoles.Resources.{data.Path}.bundle"
+                    $"SuperNewRoles.Resources.{data.Path}{platform}.bundle"
                     );
                 // SuperNewRolesNext/snrsprites.bundleに保存する
                 AssetBundle assetBundle = null;

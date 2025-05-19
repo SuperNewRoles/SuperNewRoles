@@ -87,8 +87,8 @@ internal class TeleporterAbility : CustomButtonBase, IButtonEffect
 
     private void ShowTeleportWaitingEffect(ExPlayerControl player, float waitingTime)
     {
-        CurrentMessage = new CustomMessage(ModTranslation.GetString("TeleporterWaitingText", waitingTime), 1, true);
-        if (waitingTime > 0 && player.IsAlive())
+        CurrentMessage = new CustomMessage(ModTranslation.GetString("TeleporterWaitingText", waitingTime), waitingTime == 1 ? 2 : 1, true);
+        if (waitingTime > 1 && player.IsAlive())
         {
             new LateTask(() =>
             {
@@ -108,6 +108,6 @@ internal class TeleporterAbility : CustomButtonBase, IButtonEffect
             GameObject.Destroy(CurrentMessage.text.gameObject);
             CurrentMessage = null;
         }
-        new LateTask(() => CurrentMessage = new CustomMessage(ModTranslation.GetString("TeleporterTeleportText", target.Data.PlayerName), 1, true), 0.1f);
+        CurrentMessage = new CustomMessage(ModTranslation.GetString("TeleporterTeleportText", target.Data.PlayerName), 1, true);
     }
 }

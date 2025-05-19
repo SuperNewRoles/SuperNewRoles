@@ -20,7 +20,7 @@ public class PenguinAbility : TargetCustomButtonBase, IButtonEffect
     // IButtonEffect
     private float effectDuration;
     public float EffectDuration => effectDuration;
-    public Action OnEffectEnds => () => { RpcKillPenguinTarget(PlayerControl.LocalPlayer, this, targetPlayer); };
+    public Action OnEffectEnds => () => { RpcKillPenguinTarget(PlayerControl.LocalPlayer, this, targetPlayer, false); };
     public bool isEffectActive { get; set; }
     public float EffectTimer { get; set; }
     public bool effectCancellable => false;
@@ -93,10 +93,6 @@ public class PenguinAbility : TargetCustomButtonBase, IButtonEffect
             }
             targetPlayer = null;
         }
-        else if (isEffectActive && Player.AmOwner)
-        {
-            RpcEndPenguin();
-        }
     }
     private void OnWrapUp(WrapUpEventData data)
     {
@@ -105,7 +101,7 @@ public class PenguinAbility : TargetCustomButtonBase, IButtonEffect
             targetPlayer = null;
         else if (Player.AmOwner)
         {
-            RpcKillPenguinTarget(Player, this, targetPlayer);
+            RpcKillPenguinTarget(Player, this, targetPlayer, true);
         }
     }
     [CustomRPC]
@@ -121,11 +117,14 @@ public class PenguinAbility : TargetCustomButtonBase, IButtonEffect
     }
 
     [CustomRPC]
-    public static void RpcKillPenguinTarget(ExPlayerControl source, PenguinAbility ability, ExPlayerControl target)
+    public static void RpcKillPenguinTarget(ExPlayerControl source, PenguinAbility ability, ExPlayerControl target, bool afterMeeting)
     {
         if (target != null && target.IsAlive())
         {
-            target.CustomDeath(CustomDeathType.Kill, source: source);
+            if (afterMeeting)
+                target.CustomDeath(CustomDeathType.Kill, source: source);
+            else
+                target.CustomDeath(CustomDeathType.KilLWithoutDeadbodyAndTeleport, source: source);
         }
         ability.targetPlayer = null;
     }

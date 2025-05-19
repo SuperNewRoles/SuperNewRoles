@@ -49,6 +49,15 @@ public static class AmongUsClient_OnPlayerJoined
         }
     }
 }
+[HarmonyPatch(typeof(AmongUsClient), nameof(AmongUsClient.CoStartGame))]
+public static class AmongUsClient_CoStartGame
+{
+    public static void Postfix()
+    {
+        PlayerControlRpcExtensions.RpcCustomSetCosmetics(PlayerControl.LocalPlayer.PlayerId, CostumeTabType.Hat2, CustomCosmeticsSaver.CurrentHat2Id, (PlayerControl.LocalPlayer.Data?.DefaultOutfit?.ColorId).GetValueOrDefault());
+        PlayerControlRpcExtensions.RpcCustomSetCosmetics(PlayerControl.LocalPlayer.PlayerId, CostumeTabType.Visor2, CustomCosmeticsSaver.CurrentVisor2Id, (PlayerControl.LocalPlayer.Data?.DefaultOutfit?.ColorId).GetValueOrDefault());
+    }
+}
 [HarmonyPatch(typeof(VisorLayer), nameof(VisorLayer.SetFlipX))]
 public static class VisorLayer_SetFlipX
 {
@@ -130,6 +139,7 @@ public static class PoolablePlayer_SetVisor_String
     public static void Postfix(CosmeticsLayer __instance, string visorId, int color)
     {
         CustomCosmeticsLayer customCosmeticsLayer = CustomCosmeticsLayers.ExistsOrInitialize(__instance);
+        Logger.Info("PoolablePlayer_SetVisor_String.Postfix: " + visorId);
         customCosmeticsLayer?.visor1?.SetVisor(visorId, color);
         __instance.OnCosmeticSet?.Invoke(visorId, color, CosmeticKind.VISOR);
     }
@@ -263,5 +273,25 @@ public static class HatParent_LateUpdate
             __instance.FrontLayer.enabled = false;
         if (__instance.BackLayer != null)
             __instance.BackLayer.enabled = false;
+    }
+}
+[HarmonyPatch(typeof(MeetingHud), nameof(MeetingHud.PopulateButtons))]
+public static class MeetingHud_PopulateButtons
+{
+    public static void Postfix(MeetingHud __instance)
+    {
+        Logger.Info("MeetingHud_PopulateButtons.Postfix");
+        new LateTask(() =>
+        {
+            foreach (var playerState in __instance.playerStates)
+            {
+                ExPlayerControl player = ExPlayerControl.ById(playerState.TargetPlayerId);
+                CustomCosmeticsLayer customCosmeticsLayer = CustomCosmeticsLayers.ExistsOrInitialize(player.cosmetics);
+                CustomCosmeticsLayer pcLayer = CustomCosmeticsLayers.ExistsOrInitialize(player.cosmetics);
+                Logger.Info($"{player.Data.PlayerId} : {pcLayer.hat2.Hat?.ProdId} {pcLayer.visor2.Visor?.ProdId}");
+                customCosmeticsLayer?.hat2?.SetHat(pcLayer.hat2.Hat?.ProdId ?? "", player.Data.DefaultOutfit.ColorId);
+                customCosmeticsLayer?.visor2?.SetVisor(pcLayer.visor2.Visor?.ProdId ?? "", player.Data.DefaultOutfit.ColorId);
+            }
+        }, 3f, "MeetingHud_PopulateButtons");
     }
 }

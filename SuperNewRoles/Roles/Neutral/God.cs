@@ -16,7 +16,9 @@ class God : RoleBase<God>
     public override List<Func<AbilityBase>> Abilities { get; } = [
         () => new KnowOtherAbility(x => MeetingHud.Instance != null ? true : x.IsAlive(), () => true),
         () => new KnowVoteAbility(() => !GodSeeVote),
-        () => new CustomTaskAbility(() => (GodNeededTask, GodTaskOption.Total), GodNeededTask ? GodTaskOption : null)
+        () => new CustomTaskAbility(() => (GodNeededTask, false, GodTaskOption.Total), GodNeededTask ? GodTaskOption : null),
+        () => new SabotageCanUseAbility(() => sabotageCanUse()),
+        () => new CanUseReportButtonAbility(() => !GodCannotUseReportButton)
     ];
 
     public override QuoteMod QuoteMod { get; } = QuoteMod.SuperNewRoles;
@@ -36,4 +38,31 @@ class God : RoleBase<God>
     public static bool GodNeededTask;
     [CustomOptionTask("GodTaskOption", 1, 1, 1, parentFieldName: nameof(GodNeededTask))]
     public static TaskOptionData GodTaskOption;
+    [CustomOptionBool("GodCannotFixReactor", true)]
+    public static bool GodCannotFixReactor;
+    [CustomOptionBool("GodCannotFixComms", true)]
+    public static bool GodCannotFixComms;
+    [CustomOptionBool("GodCannotFixLights", true)]
+    public static bool GodCannotFixLights;
+    [CustomOptionBool("GodCannotUseReportButton", true)]
+    public static bool GodCannotUseReportButton;
+
+
+    private static SabotageType sabotageCanUse()
+    {
+        var sabotageCanUse = SabotageType.None;
+        if (GodCannotFixReactor)
+        {
+            sabotageCanUse |= SabotageType.Reactor;
+        }
+        if (GodCannotFixComms)
+        {
+            sabotageCanUse |= SabotageType.Comms;
+        }
+        if (GodCannotFixLights)
+        {
+            sabotageCanUse |= SabotageType.Lights;
+        }
+        return sabotageCanUse;
+    }
 }

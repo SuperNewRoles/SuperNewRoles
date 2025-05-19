@@ -109,7 +109,7 @@ public class ExPlayerControl
     {
         (int completed, int total) = ModHelpers.TaskCompletedData(Data);
         if (_customTaskAbility == null) return completed >= total;
-        var (isTaskTrigger, all) = _customTaskAbility.CheckIsTaskTrigger() ?? (false, total);
+        var (isTaskTrigger, countTask, all) = _customTaskAbility.CheckIsTaskTrigger() ?? (false, false, total);
         return isTaskTrigger && completed >= (all ?? total);
     }
     public void ResetKillCooldown()
@@ -353,27 +353,15 @@ public class ExPlayerControl
         foreach (var ability in myAbilities)
         {
             var currentParent = ability.ability.Parent;
-            while (currentParent != null && currentParent is AbilityParentAbility)
-            {
-                currentParent = (currentParent as AbilityParentAbility).ParentAbility.Parent;
-            }
-            if (currentParent is AbilityParentRole parentRole)
-                (currentParent as AbilityParentRole).Player = target;
-            if (currentParent is AbilityParentModifier parentModifier)
-                (currentParent as AbilityParentModifier).Player = target;
+            if (currentParent is AbilityParentAbility)
+                continue;
             target.AttachAbility(ability.ability, currentParent);
         }
         foreach (var ability in targetAbilities)
         {
             var currentParent = ability.ability.Parent;
-            while (currentParent != null && currentParent is AbilityParentAbility)
-            {
-                currentParent = (currentParent as AbilityParentAbility).ParentAbility.Parent;
-            }
-            if (currentParent is AbilityParentRole parentRole)
-                (currentParent as AbilityParentRole).Player = Player;
-            else if (currentParent is AbilityParentModifier parentModifier)
-                (currentParent as AbilityParentModifier).Player = Player;
+            if (currentParent is AbilityParentAbility)
+                continue;
             AttachAbility(ability.ability, currentParent);
         }
         // 名前情報を更新
@@ -455,6 +443,8 @@ public class ExPlayerControl
         => !IsDead();
     public bool IsTaskTriggerRole()
         => _customTaskAbility != null ? _customTaskAbility.CheckIsTaskTrigger()?.isTaskTrigger ?? IsCrewmate() : IsCrewmate();
+    public bool IsCountTask()
+        => _customTaskAbility != null ? _customTaskAbility.CheckIsTaskTrigger()?.countTask ?? IsCrewmate() : IsCrewmate();
     public (int complete, int all) GetAllTaskForShowProgress()
     {
         (int complete, int all) result = ModHelpers.TaskCompletedData(Data);
@@ -462,7 +452,7 @@ public class ExPlayerControl
         {
             return result;
         }
-        var (isTaskTrigger, all) = _customTaskAbility.CheckIsTaskTrigger() ?? (false, result.all);
+        var (isTaskTrigger, countTask, all) = _customTaskAbility.CheckIsTaskTrigger() ?? (false, false, result.all);
         return (result.complete, all ?? result.all);
     }
     public bool CanUseVent()
@@ -476,6 +466,14 @@ public class ExPlayerControl
     public AbilityBase GetAbility(ulong abilityId)
     {
         return PlayerAbilitiesDictionary.TryGetValue(abilityId, out var ability) ? ability : null;
+    }
+    public bool TryGetAbility<T>(out T result) where T : AbilityBase
+    {
+        result = null;
+        if (!_abilityCache.TryGetValue(typeof(T).Name, out var ability))
+            return false;
+        result = (T)ability;
+        return true;
     }
     public T GetAbility<T>(ulong abilityId) where T : AbilityBase
     {

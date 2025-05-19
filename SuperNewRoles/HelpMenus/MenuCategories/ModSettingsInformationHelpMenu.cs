@@ -104,7 +104,7 @@ public class ModSettingsInformationHelpMenu : HelpMenuCategoryBase
             item.SetActive(true);
             optionYPos -= optionYOffset;
             lastYRef -= textYOffset;
-            bounds += textYOffset * 0.55f;
+            bounds += textYOffset * 0.45f;
             return item;
         }
 
@@ -113,6 +113,7 @@ public class ModSettingsInformationHelpMenu : HelpMenuCategoryBase
         {
             // カテゴリ内にオプションが存在しなければスキップ
             if (category.Options.Count == 0) continue;
+            if (category.IsModifier) continue;
 
             // ヘッダー用のOptionBaseを複製して配置
             var header = GameObject.Instantiate(optionBaseTemplate.gameObject, settingsInformation);
@@ -178,8 +179,7 @@ public class ModSettingsInformationHelpMenu : HelpMenuCategoryBase
             optionsTemplate.SetActive(false);
         }
 
-        Logger.Info($"ContentYBoundsMax: {contentYBoundsMax}");
-        scroller.ContentYBounds.max = contentYBoundsMax / 1.3f + 0.2f;  // スクロール領域の調整値
+        scroller.ContentYBounds.max = contentYBoundsMax / 0.9f + 0.2f;  // スクロール領域の調整値
     }
 
     public override void Hide(GameObject Container)

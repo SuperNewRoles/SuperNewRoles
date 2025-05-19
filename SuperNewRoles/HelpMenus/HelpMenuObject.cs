@@ -15,7 +15,7 @@ namespace SuperNewRoles.HelpMenus;
 public static class HelpMenuObjectManager
 {
     private static GameObject helpMenuObject;
-    private static FadeCoroutine fadeCoroutine;
+    public static FadeCoroutine fadeCoroutine;
     public static HelpMenuCategoryBase[] categories;
     public static Dictionary<string, GameObject> selectedButtons;
     public static HelpMenuCategoryBase? CurrentCategory;
@@ -208,14 +208,15 @@ public static class HelpMenuObjectManager
 
             // ヘルプメニューの表示状態によってマスクエリアの表示を切り替える
             // fadeCoroutine.isActiveが反転する前に呼ばれるため、現在の状態の逆を設定
-            bool shouldShowMaskAreas = !fadeCoroutine.isAvtive;
+            bool shouldShowMaskAreas = !fadeCoroutine.isActive;
             RoleOptionMenu.UpdateHostInfoMaskArea(shouldShowMaskAreas);
             ModHelpers.UpdateMeetingHudMaskAreas(shouldShowMaskAreas);
         }
-        if (fadeCoroutine.isAvtive)
+        if (fadeCoroutine.isActive)
         {
             CurrentCategory?.UpdateShow();
         }
+        HelpMenusHudManagerStartPatch.helpMenuButton?.transform.Find("active").gameObject.SetActive(fadeCoroutine.isActive);
     }
     public static void HideHelpMenu()
     {
@@ -233,7 +234,7 @@ public static class HelpMenuObjectManager
         public static void Postfix(KeyboardJoystick __instance)
         {
             // Overlayが非表示なら処理を省略する
-            if (helpMenuObject == null || fadeCoroutine == null || !fadeCoroutine.isAvtive)
+            if (helpMenuObject == null || fadeCoroutine == null || !fadeCoroutine.isActive)
             {
                 return;
             }
@@ -253,7 +254,7 @@ public static class HelpMenuObjectManager
     {
         public static void Postfix(GameStartManager __instance)
         {
-            bool enabled = helpMenuObject == null || fadeCoroutine == null || !fadeCoroutine.isAvtive;
+            bool enabled = helpMenuObject == null || fadeCoroutine == null || !fadeCoroutine.isActive;
             __instance.StartButton.enabled = enabled;
             __instance.LobbyInfoPane.EditButton.enabled = enabled;
             PassiveButton p = null;

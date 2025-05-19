@@ -27,6 +27,9 @@ public enum FinalStatus
     SheriffSelfDeath,
     SheriffKill,
     LoversSuicide,
+    LaunchByRocket,
+    VampireKill,
+    VampireWithDead,
 }
 
 public static class FinalStatusListener

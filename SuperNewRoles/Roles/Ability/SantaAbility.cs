@@ -17,6 +17,7 @@ public class SantaAbility : AbilityBase
     private List<RoleId> _tickets;
     private RoleId _selectedRole;
     private Sprite _buttonSprite;
+    public int _count;
     public SantaAbility(SantaAbilityData data, string buttonSpritePath)
     {
         _data = data;
@@ -31,10 +32,7 @@ public class SantaAbility : AbilityBase
         if (_tickets.Count == 0)
             data.Roles.ForEach(role => _tickets.Add(role.role));
         _buttonSprite = AssetManager.GetAsset<Sprite>(buttonSpritePath);
-    }
-
-    public override void AttachToLocalPlayer()
-    {
+        _count = data.InitialCount;
     }
 
     public override void AttachToAlls()
@@ -46,7 +44,7 @@ public class SantaAbility : AbilityBase
             sidekickRoleVanilla: () => CustomRoleManager.GetRoleById(_selectedRole)?.AssignedTeam == AssignedTeamType.Impostor ? (RoleTypes?)null : RoleTypes.Crewmate,
             sidekickSprite: _buttonSprite,
             sidekickText: ModTranslation.GetString("SantaButtonText"),
-            sidekickCount: () => _data.InitialCount,
+            sidekickCount: () => _count,
             isTargetable: (player) => player.IsAlive(),
             sidekickSuccess: (player) =>
             {
@@ -83,7 +81,7 @@ public class SantaAbility : AbilityBase
         return _selectedRole = _tickets[Random.Range(0, _tickets.Count)];
     }
     [CustomRPC]
-    public static void RpcSantaAssigndRole(ExPlayerControl source, ExPlayerControl target, bool successed)
+    public void RpcSantaAssigndRole(ExPlayerControl source, ExPlayerControl target, bool successed)
     {
         if (!successed)
         {
@@ -91,5 +89,6 @@ public class SantaAbility : AbilityBase
             source.CustomDeath(CustomDeathType.Suicide);
             return;
         }
+        _count--;
     }
 }

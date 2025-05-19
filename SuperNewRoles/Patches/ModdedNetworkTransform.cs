@@ -100,21 +100,23 @@ public static class ModdedNetworkTransform
         return queue;
     }
 
-
+    public static void ResetState(PlayerControl player)
+    {
+        finishedMovementPosition.Remove(player.PlayerId);
+        smoothingTimeLeft.Remove(player.PlayerId);
+        smoothingVelocity.Remove(player.PlayerId);
+        stopDetectionCounter.Remove(player.PlayerId);
+        externalImpulses.Remove(player.PlayerId);
+        if (movementQueues.TryGetValue(player.PlayerId, out var queue))
+        {
+            queue.Clear();
+        }
+    }
     public static void FixedUpdate(PlayerControl player)
     {
-        if (player.NetTransform.isPaused)
+        if (player.NetTransform.isPaused || player.onLadder || (ShipStatus.Instance.Type == ShipStatus.MapType.Fungle && ShipStatus.Instance is FungleShipStatus fungleShipStatus && fungleShipStatus.Zipline.playerIdHands.ContainsKey(player.PlayerId)))
         {
             // Clear state for paused players
-            finishedMovementPosition.Remove(player.PlayerId);
-            smoothingTimeLeft.Remove(player.PlayerId);
-            smoothingVelocity.Remove(player.PlayerId);
-            stopDetectionCounter.Remove(player.PlayerId);
-            externalImpulses.Remove(player.PlayerId);
-            if (movementQueues.TryGetValue(player.PlayerId, out var queue))
-            {
-                queue.Clear();
-            }
             return;
         }
 
@@ -496,12 +498,24 @@ public static class ModdedNetworkTransform
             queue.Enqueue(new MovementData { position = positions[i], velocity = velocities[i] });
         }
     }
+    [HarmonyPatch(typeof(CustomNetworkTransform), nameof(CustomNetworkTransform.OnEnable))]
+    public static class CustomNetworkTransformOnEnablePatch
+    {
+        public static void Postfix(CustomNetworkTransform __instance)
+        {
+            if (AmongUsClient.Instance.GameState != InnerNet.InnerNetClient.GameStates.Started) return;
+            if (CustomNetworkTransformPatch.IsVanillaServer()) return;
+            if (GeneralSettingOptions.NetworkTransformType == NetworkTransformType.ModdedLowLatency)
+                ResetState(__instance.myPlayer);
+
+        }
+    }
     [HarmonyPatch(typeof(CustomNetworkTransform), nameof(CustomNetworkTransform.FixedUpdate))]
     public static class CustomNetworkTransformPatch
     {
         private static bool IsVanillaServerCache;
         private static int lastShipStatusInstanceId;
-        private static bool IsVanillaServer()
+        public static bool IsVanillaServer()
             => ShipStatus.Instance != null && lastShipStatusInstanceId == ShipStatus.Instance.GetInstanceID() ? IsVanillaServerCache : (IsVanillaServerCache = AmongUsClient.Instance.NetworkMode != NetworkModes.LocalGame && !ModHelpers.IsCustomServer());
         public static bool Prefix(CustomNetworkTransform __instance)
         {

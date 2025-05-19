@@ -512,18 +512,47 @@ public static class OnGameEndPatch
 
     private static bool IsValidPlayer(NetworkedPlayerInfo player)
     {
-        return player != null && player.Object != null;
+        return player != null && (player.Object != null || player.Disconnected);
     }
 
     private static AdditionalTempData.PlayerRoleInfo CreatePlayerInfo(NetworkedPlayerInfo player, GameOverReason gameOverReason)
     {
-        ExPlayerControl exPlayer = player;
-        var (tasksCompleted, tasksTotal) = GetPlayerTaskInfo(exPlayer);
-        UpdatePlayerStatusForSabotage(player, exPlayer, gameOverReason);
+        (int tasksCompleted, int tasksTotal) = (0, 0);
+        RoleId roleId = RoleId.None;
+        ModifierRoleId modifierRoleId = ModifierRoleId.None;
+        GhostRoleId ghostRoleId = GhostRoleId.None;
+        bool isImpostor = false;
+        FinalStatus status = FinalStatus.Alive;
+        string hat2Id = "";
+        string visor2Id = "";
 
-        CustomCosmeticsLayer customCosmeticsLayer = CustomCosmeticsLayers.ExistsOrInitialize(player.Object.cosmetics);
-        string hat2Id = customCosmeticsLayer?.hat2?.Hat?.ProdId ?? "";
-        string visor2Id = customCosmeticsLayer?.visor2?.Visor?.ProdId ?? "";
+        if (player.Disconnected)
+        {
+            DisconnectedResultSaver.DisconnectedData data = DisconnectedResultSaver.Instance.GetDisconnectedData(player.PlayerId);
+            (tasksCompleted, tasksTotal) = data.Tasks;
+            roleId = data.RoleId;
+            modifierRoleId = data.ModifierRoleId;
+            ghostRoleId = data.GhostRoleId;
+            isImpostor = data.IsImpostor;
+            status = FinalStatus.Disconnect;
+            hat2Id = data.Hat2Id;
+            visor2Id = data.Visor2Id;
+        }
+        else
+        {
+            ExPlayerControl exPlayer = player;
+            (tasksCompleted, tasksTotal) = GetPlayerTaskInfo(exPlayer);
+            UpdatePlayerStatusForSabotage(player, exPlayer, gameOverReason);
+            roleId = exPlayer.Role;
+            modifierRoleId = exPlayer.ModifierRole;
+            ghostRoleId = exPlayer.GhostRole;
+            isImpostor = exPlayer.IsImpostor();
+            status = exPlayer.FinalStatus;
+            CustomCosmeticsLayer customCosmeticsLayer = CustomCosmeticsLayers.ExistsOrInitialize(player.Object.cosmetics);
+            hat2Id = customCosmeticsLayer?.hat2?.Hat?.ProdId ?? "";
+            visor2Id = customCosmeticsLayer?.visor2?.Visor?.ProdId ?? "";
+        }
+
         return new AdditionalTempData.PlayerRoleInfo()
         {
             PlayerName = player.DefaultOutfit.PlayerName,
@@ -532,15 +561,15 @@ public static class OnGameEndPatch
             ColorId = player.DefaultOutfit.ColorId,
             TasksTotal = tasksTotal,
             TasksCompleted = tasksCompleted,
-            RoleId = exPlayer.Role,
-            GhostRoleId = exPlayer.GhostRole,
-            ModifierRoleId = exPlayer.ModifierRole,
-            isImpostor = exPlayer.IsImpostor(),
-            Status = exPlayer.FinalStatus,
-            roleBase = exPlayer.roleBase,
-            ghostRoleBase = exPlayer.GhostRoleBase,
-            modifierRoleBases = exPlayer.ModifierRoleBases,
-            modifierMarks = exPlayer.ModifierRoleBases.Select(x => x.ModifierMark(exPlayer)).ToList(),
+            RoleId = roleId,
+            GhostRoleId = ghostRoleId,
+            ModifierRoleId = modifierRoleId,
+            isImpostor = isImpostor,
+            Status = status,
+            roleBase = CustomRoleManager.TryGetRoleById(roleId, out var role) ? role : null,
+            ghostRoleBase = CustomRoleManager.TryGetGhostRoleById(ghostRoleId, out var ghostRole) ? ghostRole : null,
+            modifierRoleBases = modifierRoleId != ModifierRoleId.None ? CustomRoleManager.TryGetModifierById(modifierRoleId, out var modifierRole) ? new List<IModifierBase> { modifierRole } : new List<IModifierBase>() : new List<IModifierBase>(),
+            modifierMarks = player.Object == null ? [] : modifierRoleId != ModifierRoleId.None ? CustomRoleManager.TryGetModifierById(modifierRoleId, out var modifierRole2) ? new List<string> { modifierRole2.ModifierMark(player) } : new List<string>() : new List<string>(),
             Hat2Id = hat2Id,
             Visor2Id = visor2Id,
         };

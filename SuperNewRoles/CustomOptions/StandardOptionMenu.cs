@@ -467,6 +467,7 @@ public static class StandardOptionMenu
         GenerateOptionsForCategory(category, defaultMenu.transform);
         UpdateOptionsActive();
         RecalculateOptionsPosition(defaultMenu.transform, menuData.RightAreaScroller);
+        menuData.RightAreaInner.transform.localPosition = new(menuData.RightAreaInner.transform.localPosition.x, 0, menuData.RightAreaInner.transform.localPosition.z);
 
         menuData.StandardOptionMenus.Add(category.Name, defaultMenu);
         menuData.CurrentOptionMenu = defaultMenu;
@@ -727,6 +728,7 @@ public static class StandardOptionMenu
         existingMenu.SetActive(true);
         menuData.UpdateOptionDisplay();
         RecalculateOptionsPosition(existingMenu.transform, menuData.RightAreaScroller);
+        menuData.RightAreaInner.transform.localPosition = new Vector3(menuData.RightAreaInner.transform.localPosition.x, 0, menuData.RightAreaInner.transform.localPosition.z);
     }
 
     private static GameObject CreateDefaultMenu(string categoryName, Transform parent)

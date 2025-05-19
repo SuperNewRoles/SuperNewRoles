@@ -68,12 +68,15 @@ public class CustomVisorLayer : MonoBehaviour
                 visor = CustomCosmeticsLoader.GetModdedVisorData(visorId);
             else
                 visor = new CosmeticDataWrapperVisor(FastDestroyableSingleton<HatManager>.Instance.GetVisorById(visorId));
+            if (visor == null)
+                visor = new CosmeticDataWrapperVisor(FastDestroyableSingleton<HatManager>.Instance.GetVisorById(HatData.EmptyId));
             SetVisor(visor, colorId);
         }
     }
 
     public void SetVisor(ICosmeticData data, int color)
     {
+        Logger.Info($"SetVisor: {data.ProdId}");
         if (data == null || data != Visor)
         {
             Image.sprite = null;

@@ -111,6 +111,7 @@ public class PushedPlayerDeadbody : MonoBehaviour
             PusherAbility.PushTarget.Right => new Vector3(16f, 0, 0),
             PusherAbility.PushTarget.Left => new Vector3(-16f, 0, 0),
             PusherAbility.PushTarget.Down => new Vector3(0, -9f, 0),
+            PusherAbility.PushTarget.Up => new Vector3(0, 9f, 0),
             _ => throw new Exception("PushedPlayerDeadbody: Invalid PushTarget")
         } * Time.deltaTime;
         transform.position += addposition;

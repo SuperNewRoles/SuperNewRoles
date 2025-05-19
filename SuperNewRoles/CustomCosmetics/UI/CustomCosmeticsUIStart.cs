@@ -46,6 +46,12 @@ public static class CustomCosmeticsUIStart
     }
     public static void Update(PlayerCustomizationMenu menu)
     {
+        (int width, int height) = ModHelpers.GetAspectRatio(Screen.width, Screen.height);
+        if (Math.Abs(width - height) <= 2)
+            menu.transform.localScale = Vector3.one * 0.82f;
+        else
+            menu.transform.localScale = Vector3.one;
+
         // 現在のメニューが存在する場合は更新
         CurrentMenu?.Update();
 
@@ -277,6 +283,18 @@ public static class CustomCosmeticsUIStart
             aspectPosition.Alignment = AspectPosition.EdgeAlignments.Center;
             aspectPosition.DistanceFromEdge = new(0, -0.1f, -11.5f);
             aspectPosition.OnEnable();
+
+            var closeButton = frame.transform.Find("CloseButtonCosmetics");
+            PassiveButton closeButtonButton = closeButton.gameObject.AddComponent<PassiveButton>();
+            closeButtonButton.Colliders = new Collider2D[] { closeButton.gameObject.GetComponent<Collider2D>() };
+            closeButtonButton.OnClick = new();
+            closeButtonButton.OnMouseOut = new();
+            closeButtonButton.OnMouseOver = new();
+            closeButtonButton.OnClick.AddListener((UnityAction)(() =>
+            {
+                menu.Close(true);
+            }));
+
             frame.SetActive(false);
             FrameObjects[frameType] = frame;
         }

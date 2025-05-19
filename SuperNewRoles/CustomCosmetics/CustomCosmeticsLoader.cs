@@ -17,6 +17,10 @@ using Il2CppInterop.Runtime;
 using Il2CppInterop.Runtime.InteropTypes.Arrays;
 using System.Threading;
 using UnityEngine.ProBuilder;
+using System.Collections;
+using UnityEngine.Networking;
+using UnityEngine.Scripting;
+using Unity.Collections;
 
 namespace SuperNewRoles.CustomCosmetics;
 public class CustomCosmeticsData
@@ -30,52 +34,85 @@ public class CustomCosmeticsLoader
     public static string[] CustomCosmeticsURLs = new string[]
     {
             // "https://example.com/custom_cosmetics.json",
-            "./SuperNewRolesNext/debug_assets.json",
+            "https://raw.githubusercontent.com/ykundesu/SuperNewCosmeticsAssetBundlesPreview/refs/heads/main/debug_assets.json",
+            // $"{SuperNewRolesPlugin.BaseDirectory}/debug_assets.json",
             "https://raw.githubusercontent.com/hinakkyu/TheOtherHats/refs/heads/master/CustomHats.json",
             "https://raw.githubusercontent.com/catudon1276/CatudonCostume/refs/heads/main/CustomHats.json",
             "https://raw.githubusercontent.com/catudon1276/Mememura-Hats/refs/heads/main/CustomHats.json",
-            // "https://raw.githubusercontent.com/Ujet222/TOPHats/refs/heads/main/CustomHats.json",
+            "https://raw.githubusercontent.com/Ujet222/TOPHats/refs/heads/main/CustomHats.json",
             // "https://raw.githubusercontent.com/SuperNewRoles/SuperNewCosmetics/refs/heads/main/CustomHats.json",
             // "https://raw.githubusercontent.com/SuperNewRoles/SuperNewCosmetics/refs/heads/main/CustomVisors.json",
             "https://raw.githubusercontent.com/Ujet222/TOPVisors/refs/heads/main/CustomVisors.json",
     };
+    public static Action willLoad;
+    public static bool runned = true;
     public const string ModdedPrefix = "Modded_";
     private static readonly HttpClient client = new();
     private static readonly int maxRetryAttempts = 1;
     private static readonly TimeSpan retryDelay = TimeSpan.FromSeconds(5);
-    private static readonly MD5 md5 = MD5.Create();
     private static readonly List<string> notLoadedAssetBundles = new();
     private static readonly List<CustomCosmeticsPackage> loadedPackages = new();
     public static List<CustomCosmeticsPackage> LoadedPackages => loadedPackages;
     public static readonly Dictionary<string, CustomCosmeticsHat> moddedHats = new();
     public static readonly Dictionary<string, CustomCosmeticsVisor> moddedVisors = new();
     public static readonly Dictionary<string, CustomCosmeticsNamePlate> moddedNamePlates = new();
-    private static readonly Dictionary<string, List<(string, string)>> willDownloads = new();
-    private static readonly Dictionary<string, byte[]> downloadedSprites = new();
-    public static void Load()
-    {
-        client.Timeout = TimeSpan.FromSeconds(5);
+    private static Dictionary<string, List<(string, string)>> willDownloads = new();
 
-        // JSONコンテンツを一括取得
-        var fetchTasks = CustomCosmeticsURLs.Select(url =>
-            new
+    // Android版はメモリ節約のため、ダウンロードしたバイト列を保持しない
+    private static readonly Dictionary<string, byte[]> downloadedSprites = Constants.GetPlatformType() == Platforms.Android ? null : new();
+
+    public static int AssetBundlesDownloadedCount;
+    public static int AssetBundlesAllCount;
+    public static bool AssetBundlesDownloading = false;
+
+    public static int SpritesDownloadingCount;
+    public static int SpritesAllCount;
+    public static bool SpritesDownloading = false;
+
+    public static readonly int MAX_CONCURRENT_DOWNLOADS = Constants.GetPlatformType() == Platforms.Android ? 10 : 30;
+    public static IEnumerator LoadAsync(Func<IEnumerator, Coroutine> startCoroutine)
+    {
+        runned = false;
+        AssetBundlesDownloading = true;
+        client.Timeout = TimeSpan.FromSeconds(5);
+        List<(string url, string content)> fetchTasks = new();
+        List<Task> waitTasks = new();
+        int waiting = 0;
+        foreach (var url in CustomCosmeticsURLs)
+        {
+            bool isLocalFile = Path.IsPathRooted(url) || File.Exists(url);
+            if (isLocalFile)
             {
-                Url = url,
-                ContentTask = url.StartsWith("./") || url.StartsWith("../")
-                    ? Task.FromResult(File.ReadAllText(url))
-                    : client.GetStringAsync(url)
+                if (File.Exists(url))
+                    fetchTasks.Add((url, File.ReadAllText(url)));
             }
-        ).ToArray();
+            else
+            {
+                startCoroutine(GetStringAsync(url, (string content) =>
+                {
+                    fetchTasks.Add((url, content));
+                    waiting--;
+                }, (string error) =>
+                {
+                    Logger.Error($"カスタムコスメティックの読み込みに失敗しました: {url}");
+                    waiting--;
+                }));
+                waiting++;
+            }
+        }
         // 全タスクを待機
-        Task.WaitAll(fetchTasks.Select(ft => ft.ContentTask).ToArray());
+        yield return new WaitUntil((Il2CppSystem.Func<bool>)(() => waiting <= 0));
 
         // 置き換え: foreach (string url in CustomCosmeticsURLs) から始まるループを以下に変更:
+        int assetBundleLoadingCount = 0;
+        Dictionary<string, CustomCosmeticsPackage> packageMap = loadedPackages.ToDictionary(p => p.name);
+
         foreach (var ft in fetchTasks)
         {
-            string url = ft.Url;
+            string url = ft.url;
             try
             {
-                string jsonContent = ft.ContentTask.Result;
+                string jsonContent = ft.content;
 
                 // JSONをパース
                 JObject json = JObject.Parse(jsonContent);
@@ -87,12 +124,21 @@ public class CustomCosmeticsLoader
                     for (var assetBundle = assetBundlesToken.First; assetBundle != null; assetBundle = assetBundle.Next)
                     {
                         string assetBundleUrl = assetBundle["url"]?.ToString() ?? "";
+                        string assetBundleAndroidUrl = assetBundle["url_android"]?.ToString() ?? "";
                         string expectedHash = assetBundle["hash"]?.ToString() ?? "";
-                        string? savedPath = DownloadAssetBundleWithRetry(assetBundleUrl, expectedHash).Result;
-                        if (!string.IsNullOrEmpty(savedPath))
+                        string expectedHashAndroid = assetBundle["hash_android"]?.ToString() ?? "";
+
+                        bool isAndroid = Constants.GetPlatformType() == Platforms.Android;
+
+                        string currentUrl = isAndroid ? assetBundleAndroidUrl : assetBundleUrl;
+                        string currentExpectedHash = isAndroid ? expectedHashAndroid : expectedHash;
+                        startCoroutine(DownloadAssetBundleWithRetryAsync(currentUrl, currentExpectedHash, () =>
                         {
-                            notLoadedAssetBundles.Add(savedPath);
-                        }
+                            assetBundleLoadingCount--;
+                            AssetBundlesDownloadedCount++;
+                        }));
+                        assetBundleLoadingCount++;
+                        AssetBundlesAllCount++;
                     }
                 }
                 else
@@ -103,18 +149,18 @@ public class CustomCosmeticsLoader
                 JToken hatsToken = json["hats"];
                 if (hatsToken != null)
                 {
-                    Dictionary<string, CustomCosmeticsPackage> customCosmeticsPackages = new();
                     for (var hat = hatsToken.First; hat != null; hat = hat.Next)
                     {
                         string packageName = hat["package"]?.ToString() ?? "NONE_PACKAGE";
-                        if (!customCosmeticsPackages.ContainsKey(packageName))
+                        if (!packageMap.TryGetValue(packageName, out var currentPackage))
                         {
-                            customCosmeticsPackages[packageName] = new CustomCosmeticsPackage(
+                            currentPackage = new CustomCosmeticsPackage(
                                 packageName,
                                 packageName,
                                 0
                             );
-                            loadedPackages.Add(customCosmeticsPackages[packageName]);
+                            packageMap[packageName] = currentPackage;
+                            loadedPackages.Add(currentPackage);
                         }
                         bool adaptive = hat["adaptive"] != null ? (bool)hat["adaptive"] : false;
                         bool resource_bounce = hat["resource"]?.ToString().Contains("bounce") ?? false;
@@ -127,17 +173,17 @@ public class CustomCosmeticsLoader
                         if (resource_bounce)
                             front |= HatOptionType.Bounce;
                         var front_left = HatOptionType.None;
-                        var back = adaptive ? HatOptionType.Adaptive : hat["backresource"] != null ? HatOptionType.NoAdaptive : HatOptionType.None;
+                        var back = hat["backresource"] != null ? adaptive ? HatOptionType.Adaptive : HatOptionType.NoAdaptive : HatOptionType.None;
                         if (resource_bounce)
                             back |= HatOptionType.Bounce;
                         var back_left = HatOptionType.None;
-                        var backflip = adaptive ? HatOptionType.Adaptive : hat["backflipresource"] != null ? HatOptionType.NoAdaptive : HatOptionType.None;
+                        var backflip = hat["backflipresource"] != null ? adaptive ? HatOptionType.Adaptive : HatOptionType.NoAdaptive : HatOptionType.None;
                         if (resource_bounce)
                             backflip |= HatOptionType.Bounce;
-                        var flip = adaptive ? HatOptionType.Adaptive : hat["flipresource"] != null ? HatOptionType.NoAdaptive : HatOptionType.None;
+                        var flip = hat["flipresource"] != null ? adaptive ? HatOptionType.Adaptive : HatOptionType.NoAdaptive : HatOptionType.None;
                         if (resource_bounce)
                             flip |= HatOptionType.Bounce;
-                        var climb = adaptive ? HatOptionType.Adaptive : hat["climbresource"] != null ? HatOptionType.NoAdaptive : HatOptionType.None;
+                        var climb = hat["climbresource"] != null ? adaptive ? HatOptionType.Adaptive : HatOptionType.NoAdaptive : HatOptionType.None;
                         if (resource_bounce)
                             climb |= HatOptionType.Bounce;
 
@@ -155,16 +201,16 @@ public class CustomCosmeticsLoader
                             hat["name"].ToString(),
                             hat["name"]?.ToString(),
                             hat["name"].ToString(),
-                            $"./SuperNewRolesNext/CustomCosmetics/{customCosmeticsPackages[packageName].name}/{hat["name"].ToString()}_",
+                            $"{SuperNewRolesPlugin.BaseDirectory}/CustomCosmetics/{currentPackage.name}/{hat["name"].ToString()}_",
                             hat["author"].ToString(),
-                            customCosmeticsPackages[packageName],
+                            currentPackage,
                             hatOption,
                             null
                         );
-                        customCosmeticsPackages[packageName].hats.Add(customCosmeticsHat);
+                        currentPackage.hats.Add(customCosmeticsHat);
                         moddedHats[customCosmeticsHat.ProdId] = customCosmeticsHat;
 
-                        string packagenamed = customCosmeticsPackages[packageName].name;
+                        string packagenamed = currentPackage.name;
                         if (!willDownloads.ContainsKey(packagenamed))
                             willDownloads.Add(packagenamed, []);
                         willDownloads[packagenamed].Add((hat["name"].ToString() + "_front", getpath(url, "hats/" + hat["resource"]?.ToString())));
@@ -189,18 +235,18 @@ public class CustomCosmeticsLoader
                 JToken visorsToken = json["visors"] ?? json["Visors"];
                 if (visorsToken != null)
                 {
-                    Dictionary<string, CustomCosmeticsPackage> customCosmeticsPackages = loadedPackages.ToDictionary(p => p.name);
                     for (var visor = visorsToken.First; visor != null; visor = visor.Next)
                     {
                         string packageName = visor["package"]?.ToString() ?? "NONE_PACKAGE";
-                        if (!customCosmeticsPackages.ContainsKey(packageName))
+                        if (!packageMap.TryGetValue(packageName, out var currentPackage))
                         {
-                            customCosmeticsPackages[packageName] = new CustomCosmeticsPackage(
+                            currentPackage = new CustomCosmeticsPackage(
                                 packageName,
                                 packageName,
                                 0
                             );
-                            loadedPackages.Add(customCosmeticsPackages[packageName]);
+                            packageMap[packageName] = currentPackage;
+                            loadedPackages.Add(currentPackage);
                         }
                         bool adaptive = visor["adaptive"] != null ? (bool)visor["adaptive"] : false;
 
@@ -214,16 +260,16 @@ public class CustomCosmeticsLoader
                             visor["name"].ToString(),
                             visor["name"]?.ToString(),
                             visor["name"].ToString(),
-                            $"./SuperNewRolesNext/CustomCosmetics/{customCosmeticsPackages[packageName].name}/{visor["name"].ToString()}_",
+                            $"{SuperNewRolesPlugin.BaseDirectory}/CustomCosmetics/{currentPackage.name}/{visor["name"].ToString()}_",
                             visor["author"].ToString(),
-                            customCosmeticsPackages[packageName],
+                            currentPackage,
                             visorOption,
                             null
                         );
-                        customCosmeticsPackages[packageName].visors.Add(customCosmeticsVisor);
+                        currentPackage.visors.Add(customCosmeticsVisor);
                         moddedVisors[customCosmeticsVisor.ProdId] = customCosmeticsVisor;
 
-                        string packagenamed = customCosmeticsPackages[packageName].name;
+                        string packagenamed = currentPackage.name;
                         if (!willDownloads.ContainsKey(packagenamed))
                             willDownloads.Add(packagenamed, []);
                         willDownloads[packagenamed].Add((visor["name"].ToString() + "_idle", getpath(url, json["visors"] != null ? "visors/" : "Visors/" + visor["resource"]?.ToString())));
@@ -240,33 +286,33 @@ public class CustomCosmeticsLoader
                 JToken namePlatesToken = json["nameplates"];
                 if (namePlatesToken != null)
                 {
-                    Dictionary<string, CustomCosmeticsPackage> customCosmeticsPackages = loadedPackages.ToDictionary(p => p.name);
                     for (var namePlate = namePlatesToken.First; namePlate != null; namePlate = namePlate.Next)
                     {
                         string packageName = namePlate["package"]?.ToString() ?? "NONE_PACKAGE";
-                        if (!customCosmeticsPackages.ContainsKey(packageName))
+                        if (!packageMap.TryGetValue(packageName, out var currentPackage))
                         {
-                            customCosmeticsPackages[packageName] = new CustomCosmeticsPackage(
+                            currentPackage = new CustomCosmeticsPackage(
                                 packageName,
                                 packageName,
                                 0
                             );
-                            loadedPackages.Add(customCosmeticsPackages[packageName]);
+                            packageMap[packageName] = currentPackage;
+                            loadedPackages.Add(currentPackage);
                         }
 
                         CustomCosmeticsNamePlate customCosmeticsNamePlate = new(
                             namePlate["name"].ToString(),
                             namePlate["name"]?.ToString(),
                             namePlate["name"].ToString(),
-                            $"./SuperNewRolesNext/CustomCosmetics/{customCosmeticsPackages[packageName].name}/{namePlate["name"].ToString()}_",
+                            $"{SuperNewRolesPlugin.BaseDirectory}/CustomCosmetics/{currentPackage.name}/{namePlate["name"].ToString()}_",
                             namePlate["author"].ToString(),
-                            customCosmeticsPackages[packageName],
+                            currentPackage,
                             null
                         );
-                        customCosmeticsPackages[packageName].namePlates.Add(customCosmeticsNamePlate);
+                        currentPackage.namePlates.Add(customCosmeticsNamePlate);
                         moddedNamePlates[customCosmeticsNamePlate.ProdId] = customCosmeticsNamePlate;
 
-                        string packagenamed = customCosmeticsPackages[packageName].name;
+                        string packagenamed = currentPackage.name;
                         if (!willDownloads.ContainsKey(packagenamed))
                             willDownloads.Add(packagenamed, []);
                         willDownloads[packagenamed].Add((namePlate["name"].ToString() + "_plate", getpath(url, "nameplates/" + namePlate["resource"]?.ToString())));
@@ -283,31 +329,64 @@ public class CustomCosmeticsLoader
             }
         }
 
-        Task.Run(DownloadSprites);
-
-        // ダウンロードされたアセットバンドルを順次読み込みパッケージを取り出す
-        try
+        // Start sprite downloads
+        Coroutine spriteDownloadCoroutine = startCoroutine(DownloadSpritesAsync(startCoroutine));
+        Logger.Info("DownloadSpritesAsync done");
+        // Wait for asset bundles to finish loading
+        yield return new WaitUntil((Il2CppSystem.Func<bool>)(() => assetBundleLoadingCount <= 0));
+        AssetBundlesDownloading = false;
+        Logger.Info("assetBundleLoadingCount done");
+        // After asset bundles are done, wait for sprite downloads to complete
+        if (spriteDownloadCoroutine != null)
         {
-            while (notLoadedAssetBundles.Count > 0)
+            yield return spriteDownloadCoroutine;
+        }
+        SpritesDownloading = false;
+        Logger.Info("spriteDownloadCoroutine done");
+        willLoad = () =>
+        {
+            // ダウンロードされたアセットバンドルを順次読み込みパッケージを取り出す
+            try
             {
-                string bundlePath = notLoadedAssetBundles[0];
-                AssetBundle assetBundle = LoadAssetBundle(bundlePath);
-                string[] packagesHats = GetPackages(assetBundle, "Hats");
-                string[] packagesVisors = GetPackages(assetBundle, "Visors");
-                string[] packagesNamePlates = GetPackages(assetBundle, "NamePlates");
-                foreach (string package in packagesHats)
+                while (notLoadedAssetBundles.Count > 0)
                 {
-                    Logger.Info($"パッケージ: {package}");
+                    string bundlePath = notLoadedAssetBundles[0];
+                    AssetBundle assetBundle = LoadAssetBundle(bundlePath);
+                    string[] packagesHats = GetPackages(assetBundle, "Hats");
+                    string[] packagesVisors = GetPackages(assetBundle, "Visors");
+                    string[] packagesNamePlates = GetPackages(assetBundle, "NamePlates");
+                    foreach (string package in packagesHats)
+                    {
+                        Logger.Info($"パッケージ: {package}");
+                    }
+                    LoadPackages(assetBundle, packagesHats, packagesVisors, packagesNamePlates);
+                    notLoadedAssetBundles.RemoveAt(0);
                 }
-                LoadPackages(assetBundle, packagesHats, packagesVisors, packagesNamePlates);
-                notLoadedAssetBundles.RemoveAt(0);
             }
-        }
-        catch (Exception e)
-        {
-            Logger.Error($"カスタムコスメティックの読み込みに失敗しました: {e}");
-        }
+            catch (Exception e)
+            {
+                Logger.Error($"カスタムコスメティックの読み込みに失敗しました: {e}");
+            }
+        };
+        runned = true;
+        Logger.Info("CustomCosmeticsLoader willLoad done");
+    }
+    public static IEnumerator GetStringAsync(string url, Action<string> onSuccess, Action<string> onError)
+    {
+        // UnityWebRequestを使用して非同期でデータを取得
+        UnityWebRequest request = UnityWebRequest.Get(url);
+        yield return request.SendWebRequest();
 
+        if (request.result == UnityWebRequest.Result.Success)
+        {
+            onSuccess(request.downloadHandler.text);
+        }
+        else
+        {
+            Logger.Error($"カスタムコスメティックの読み込みに失敗しました: {url} {request.error}");
+            onError(request.error);
+        }
+        request.Dispose();
     }
     private static string getpath(string url, string path)
     {
@@ -553,135 +632,312 @@ public class CustomCosmeticsLoader
         return assetBundle;
     }
 
-    private static async Task<string?> DownloadAssetBundleWithRetry(string assetBundleUrl, string expectedHash)
+    private static IEnumerator DownloadAssetBundleWithRetryAsync(string assetBundleUrl, string expectedHash, Action onFinish)
     {
-        string fileName = Path.GetFileName(assetBundleUrl);
-        string targetPath = $"./SuperNewRolesNext/CustomCosmetics/{fileName}/{expectedHash}.bundle";
+        string fileNameFromUrl = Path.GetFileName(assetBundleUrl);
+        string bundleStorageDir = Path.Combine(SuperNewRolesPlugin.BaseDirectory, "CustomCosmetics", fileNameFromUrl);
+        string targetPath = Path.Combine(bundleStorageDir, $"{expectedHash}.bundle");
+
         if (File.Exists(targetPath))
         {
             Logger.Info($"アセットバンドルが既に存在します: {targetPath}");
-            return targetPath;
+            if (!notLoadedAssetBundles.Contains(targetPath))
+            {
+                notLoadedAssetBundles.Add(targetPath);
+            }
+            onFinish();
+            yield break;
         }
 
         for (int attempt = 0; attempt < maxRetryAttempts; attempt++)
         {
-            try
+            byte[] assetBundleData = null;
+            bool successThisAttempt = false;
+            SNRHttpClient request = null;
+
+            bool isLocal = assetBundleUrl.StartsWith("./", StringComparison.Ordinal) ||
+                           assetBundleUrl.StartsWith("../", StringComparison.Ordinal) ||
+                           (Path.IsPathRooted(assetBundleUrl) && File.Exists(assetBundleUrl));
+
+            if (isLocal)
             {
-                byte[] assetBundleData = assetBundleUrl.StartsWith("./") || assetBundleUrl.StartsWith("../")
-                    ? File.ReadAllBytes(assetBundleUrl)
-                    : await client.GetByteArrayAsync(assetBundleUrl);
+                try
+                {
+                    string localPath = Path.GetFullPath(assetBundleUrl);
+                    Logger.Info($"ローカルアセットバンドルを読み込みます: {localPath}");
+                    if (File.Exists(localPath))
+                    {
+                        assetBundleData = File.ReadAllBytes(localPath);
+                    }
+                    else
+                    {
+                        Logger.Error($"ローカルアセットバンドルが見つかりません: {localPath}");
+                    }
+                }
+                catch (Exception e)
+                {
+                    Logger.Error($"ローカルアセットバンドルの読み込み中にエラーが発生しました (Attempt {attempt + 1}): {assetBundleUrl}\n{e}");
+                    // assetBundleData は null のまま
+                }
+            }
+            else // Remote
+            {
+                request = SNRHttpClient.Get(assetBundleUrl);
+                // ユーザーが設定したタイムアウト値を使用
+                request.timeout = 60;
 
-                // MD5ハッシュを計算
-                string fileHash = BitConverter.ToString(md5.ComputeHash(assetBundleData))
-                    .Replace("-", "")
-                    .ToLower();
-                string savePath = $"./SuperNewRolesNext/CustomCosmetics/{fileName}/{fileHash}.bundle";
+                IEnumerator webRequestEnumerator = SendSNRHttpClientHelper(request);
+                bool moveNextSuccess = true;
+                bool webRequestFailedMidExecution = false;
 
-                // ディレクトリ作成と古いファイルの削除
-                string directory = Path.GetDirectoryName(savePath) ?? "";
-                Directory.CreateDirectory(directory);
-                foreach (string file in Directory.GetFiles(directory))
+                // このループが yield を含みます。このループ自体は try-catch で囲みません。
+                // try-catch は MoveNext() の呼び出しのみを囲みます。
+                while (moveNextSuccess)
                 {
                     try
                     {
-                        File.Delete(file);
+                        moveNextSuccess = webRequestEnumerator.MoveNext();
                     }
-                    catch (Exception ex)
+                    catch (Exception ex) // MoveNext() 自体から例外が発生した場合
                     {
-                        Logger.Error($"アセットバンドルの削除に失敗しました: {file}\n{ex}");
+                        Logger.Error($"Webリクエストの実行中にエラー (MoveNext failed): {assetBundleUrl}\n{ex}");
+                        webRequestFailedMidExecution = true;
+                        moveNextSuccess = false; // ループを停止
+                    }
+
+                    if (webRequestFailedMidExecution) break;
+
+                    if (moveNextSuccess)
+                    {
+                        yield return webRequestEnumerator.Current; // ここが yield return
+                    }
+                    else // IEnumerator が終了した場合
+                    {
+                        break; // ループを抜けて結果を処理
                     }
                 }
 
-                // アセットバンドルの保存
-                File.WriteAllBytes(savePath, assetBundleData);
-                Logger.Info($"アセットバンドルをダウンロードしました: {assetBundleUrl} -> {savePath}");
-                return savePath;
-            }
-            catch (HttpRequestException e)
-            {
-                Logger.Error($"アセットバンドルのダウンロードに失敗しました: {assetBundleUrl}\nHTTPリクエストエラー: {e.StatusCode}\n{e}");
-            }
-            catch (Exception e)
-            {
-                Logger.Error($"アセットバンドルのダウンロードに失敗しました: {assetBundleUrl}\n{e}");
+                // ループ後 (リクエスト完了または MoveNext エラー後) に結果を処理
+                try
+                {
+                    if (!webRequestFailedMidExecution && string.IsNullOrEmpty(request.error))
+                    {
+                        assetBundleData = request.downloadHandler.data;
+                    }
+                    else if (!webRequestFailedMidExecution) // webRequestFailedMidExecution が true の場合、request.result は信頼できない可能性
+                    {
+                        Logger.Error($"アセットバンドルのダウンロードに失敗しました: {assetBundleUrl}\nError: {request.error} Code: {request.responseCode}");
+                    }
+                    // webRequestFailedMidExecution が true の場合、エラーは既にログ記録済みで assetBundleData は null
+                }
+                catch (Exception ex) // request.result や request.downloadHandler.data アクセス時のエラーをキャッチ
+                {
+                    Logger.Error($"Webリクエスト結果の処理中にエラー: {assetBundleUrl}\n{ex}");
+                    // assetBundleData は null のまま
+                }
+                finally
+                {
+                }
             }
 
-            Logger.Warning($"リトライします ({attempt + 1}/{maxRetryAttempts}) ... URL: {assetBundleUrl}");
-            await Task.Delay(retryDelay);
+            // ローカルおよびリモートデータの共通処理 (assetBundleData が null でない場合)
+            if (assetBundleData != null)
+            {
+                try
+                {
+                    string actualFileHash;
+                    using (var localMd5 = MD5.Create())
+                    {
+                        actualFileHash = BitConverter.ToString(localMd5.ComputeHash(assetBundleData))
+                            .Replace("-", "")
+                            .ToLowerInvariant();
+                    }
+
+                    if (!string.IsNullOrEmpty(expectedHash) && !actualFileHash.Equals(expectedHash, StringComparison.OrdinalIgnoreCase))
+                    {
+                        Logger.Error($"ハッシュミスマッチ。URL: {assetBundleUrl}, Expected: {expectedHash}, Actual: {actualFileHash}");
+                    }
+                    Directory.CreateDirectory(bundleStorageDir);
+                    foreach (string existingBundleFile in Directory.GetFiles(bundleStorageDir, "*.bundle"))
+                    {
+                        if (!Path.GetFullPath(existingBundleFile).Equals(Path.GetFullPath(targetPath), StringComparison.OrdinalIgnoreCase))
+                        {
+                            try
+                            {
+                                File.Delete(existingBundleFile);
+                                Logger.Info($"古い/異なるハッシュのアセットバンドルを削除しました: {existingBundleFile}");
+                            }
+                            catch (Exception ex)
+                            {
+                                Logger.Error($"古いアセットバンドルの削除に失敗しました: {existingBundleFile}\n{ex}");
+                            }
+                        }
+                    }
+                    File.WriteAllBytes(targetPath, assetBundleData);
+                    Logger.Info($"アセットバンドルをダウンロード/検証し保存しました: {assetBundleUrl} -> {targetPath}");
+                    if (!notLoadedAssetBundles.Contains(targetPath))
+                    {
+                        notLoadedAssetBundles.Add(targetPath);
+                    }
+                    successThisAttempt = true;
+                }
+                catch (Exception e)
+                {
+                    Logger.Error($"アセットバンドルの処理中にエラーが発生しました (Attempt {attempt + 1}): {assetBundleUrl}\n{e}");
+                }
+            }
+
+            if (successThisAttempt)
+            {
+                onFinish();
+                yield break;
+            }
+
+            if (attempt < maxRetryAttempts - 1)
+            {
+                Logger.Warning($"リトライします ({attempt + 2}/{maxRetryAttempts}) ... URL: {assetBundleUrl}");
+                yield return new WaitForSeconds((float)retryDelay.TotalSeconds);
+            }
         }
 
         Logger.Error($"アセットバンドルのダウンロードに最大リトライ回数({maxRetryAttempts})を超えました: {assetBundleUrl}");
-        return null;
+        onFinish();
+        yield break;
     }
-    public static void DownloadSprites()
-    {
-        using HttpClient client = new();
-        string basePath = "./SuperNewRolesNext/CustomCosmetics/";
-        const int MAX_CONCURRENT_DOWNLOADS = 20; // 同時に処理する定数個数
-        using SemaphoreSlim semaphore = new(MAX_CONCURRENT_DOWNLOADS);
-        List<Task> downloadTasks = new();
 
-        try
+    private static IEnumerator SendSNRHttpClientHelper(SNRHttpClient request)
+    {
+        yield return request.SendWebRequest();
+    }
+
+    public static IEnumerator DownloadSpritesAsync(Func<IEnumerator, Coroutine> startCoroutine)
+    {
+        string basePath = $"{SuperNewRolesPlugin.BaseDirectory}/CustomCosmetics/";
+        int activeDownloads = 0;
+        Queue<(string spriteName, string spritePath, string packageKey, string packagePath)> downloadQueue = new();
+        SpritesAllCount = willDownloads.Sum(x => x.Value.Count);
+        try // Setup phase
         {
-            // ベースディレクトリが存在することを確認
+            if (!willDownloads.Any())
+            {
+                Logger.Info("No sprites to download.");
+                yield break;
+            }
+
             Directory.CreateDirectory(basePath);
 
-            foreach (var package in willDownloads)
+            foreach (var packageEntry in willDownloads)
             {
-                Logger.Info($"Downloading sprites for {package.Key}");
-
-                // パッケージディレクトリの作成
-                string packagePath = Path.Combine(basePath, package.Key);
-                Directory.CreateDirectory(packagePath);
-
-                foreach (var (spriteName, spritePath) in package.Value)
+                string packageKey = packageEntry.Key;
+                string packageDir = Path.Combine(basePath, packageKey);
+                Directory.CreateDirectory(packageDir);
+                foreach (var (spriteName, spritePath) in packageEntry.Value)
                 {
                     if (string.IsNullOrEmpty(spritePath))
                     {
-                        Logger.Error($"Invalid sprite path for {spriteName}");
+                        Logger.Error($"Invalid sprite path for {spriteName} in package {packageKey}");
                         continue;
                     }
-
-                    downloadTasks.Add(Task.Run(() =>
-                    {
-                        semaphore.Wait();
-                        try
-                        {
-                            Logger.Info($"Downloading sprite {spriteName} from {spritePath}");
-                            var response = client.GetAsync(spritePath, HttpCompletionOption.ResponseContentRead);
-                            response.Wait();
-                            if (response.Result.StatusCode != HttpStatusCode.OK)
-                            {
-                                Logger.Error($"Failed to download sprite {spriteName} from {spritePath} ({response.Result.StatusCode})");
-                                return;
-                            }
-
-                            string filePath = Path.Combine(packagePath, $"{spriteName}.png").Replace("\\", "/");
-                            using var responseStream = response.Result.Content.ReadAsStreamAsync().Result;
-                            downloadedSprites[filePath] = responseStream.ReadFully();
-                            using var fileStream = File.Create(filePath);
-                            fileStream.Write(downloadedSprites[filePath]);
-                            Logger.Info($"Downloaded sprite {spriteName} to {filePath}");
-                        }
-                        catch (Exception e)
-                        {
-                            Logger.Error($"Error downloading sprite {spriteName} from {spritePath}: {e.Message}");
-                        }
-                        finally
-                        {
-                            semaphore.Release();
-                        }
-                    }));
+                    downloadQueue.Enqueue((spriteName, spritePath, packageKey, packageDir));
                 }
             }
+            willDownloads = null;
         }
         catch (Exception e)
         {
-            Logger.Error($"Error in DownloadSprites: {e}");
+            Logger.Error($"Error in DownloadSpritesAsync setup: {e}\\n{e.StackTrace}");
+            yield break; // Stop if setup fails
         }
 
-        Task.WhenAll(downloadTasks).Wait();
+        // Main download loop - outside the initial try-catch for yield compatibility
+        List<Coroutine> runningCoroutines = new List<Coroutine>();
+        while (downloadQueue.Count > 0 || activeDownloads > 0)
+        {
+            while (downloadQueue.Count > 0 && activeDownloads < MAX_CONCURRENT_DOWNLOADS)
+            {
+                var item = downloadQueue.Dequeue();
+                activeDownloads++;
+                // SuperNewRolesPlugin.Instance が MonoBehaviour を継承していると仮定
+                // そうでない場合は、適切なコルーチン開始方法に置き換える必要があります。
+                string filePath = Path.Combine(item.packagePath, $"{item.spriteName}.png").Replace("\\", "/");
+                if (File.Exists(filePath))
+                {
+                    Logger.Info($"Sprite already exists: {filePath}");
+                    activeDownloads--;
+                    continue;
+                }
+                Coroutine downloadCoroutine = startCoroutine(DownloadSingleSprite(item.spriteName, item.spritePath, item.packagePath, filePath, () => activeDownloads--));
+                SpritesDownloadingCount = downloadQueue.Count;
+                if (downloadCoroutine != null) // Check if StartCoroutine succeeded
+                {
+                    runningCoroutines.Add(downloadCoroutine);
+                }
+                else
+                {
+                    Logger.Error($"Failed to start download coroutine for {item.spriteName}");
+                    activeDownloads--; // Decrement since it didn't start
+                }
+            }
+            yield return null; // 次のフレームまで待機
+        }
+
+
+        Logger.Info("Finished all sprite download tasks.");
     }
+
+    private static IEnumerator DownloadSingleSprite(string spriteName, string spriteUrl, string packageSavePath, string filePath, Action onComplete)
+    {
+        Logger.Info($"Downloading sprite {spriteName} from {spriteUrl}");
+        SNRHttpClient request = SNRHttpClient.Get(spriteUrl);
+        request.timeout = 30; // 30 seconds timeout
+        request.ignoreSslErrors = true;
+
+        yield return request.SendWebRequest();
+
+        if (string.IsNullOrEmpty(request.error))
+        {
+            SNRDownloadHandler handler = request.downloadHandler; // DownloadHandlerを明示的に保持
+            byte[] data = null;
+            try
+            {
+                data = handler.data; // handlerからdataを取得
+            }
+            catch (ObjectCollectedException oce)
+            {
+                Logger.Error($"ObjectCollectedException while accessing handler.data for {spriteName} from {spriteUrl}. Error: {oce.Message}\n{oce.StackTrace}");
+                // 可能であれば、ここでリトライ処理やエラー報告を行う
+            }
+            catch (Exception ex)
+            {
+                Logger.Error($"Exception while accessing handler.data for {spriteName} from {spriteUrl}. Error: {ex.Message}\n{ex.StackTrace}");
+            }
+
+            if (data != null)
+            {
+                if (downloadedSprites != null)
+                    downloadedSprites[filePath] = data;
+                try
+                {
+                    File.WriteAllBytes(filePath, data);
+                    Logger.Info($"Downloaded sprite {spriteName} to {filePath}");
+                }
+                catch (Exception ex)
+                {
+                    Logger.Error($"Error writing sprite {spriteName} to {filePath}: {ex.Message}\n{ex.StackTrace}");
+                }
+            }
+            else
+            {
+                Logger.Error($"Failed to get data for sprite {spriteName} from {spriteUrl} (data was null after download attempt).");
+            }
+        }
+        else
+        {
+            Logger.Error($"Failed to download sprite {spriteName} from {spriteUrl}. Error: {request.error}, Code: {request.responseCode}");
+        }
+        onComplete?.Invoke();
+    }
+
     public static Sprite LoadSpriteFromPath(string path)
     {
         Logger.Info($"LoadSpriteFromPath: {path}");
@@ -718,10 +974,13 @@ public class CustomCosmeticsLoader
     {
         Texture2D texture = new(2, 2, TextureFormat.ARGB32, true);
         byte[] byteTexture;
-        if (!downloadedSprites.TryGetValue(path, out byteTexture))
+        if (downloadedSprites == null || !downloadedSprites.TryGetValue(path, out byteTexture))
             byteTexture = File.ReadAllBytes(path);
         else
+        {
             Logger.Warning("Used Sprites");
+            downloadedSprites.Remove(path);
+        }
         LoadImage(texture, byteTexture, false);
         if (texture == null)
             return null;
@@ -803,27 +1062,51 @@ public class CustomCosmeticsLoader
         catch { }
         return null;
     }
-}
 
-[HarmonyPatch(typeof(SplashManager), nameof(SplashManager.Start))]
-public static class SplashManagerStartPatch
-{
-    public static void Postfix(SplashManager __instance)
+    public static IEnumerator LoadCosmeticsTaskAsync(Func<IEnumerator, Coroutine> startCoroutine)
     {
-        // メインスレッドで非同期処理を開始
-        LoadCosmeticsAsync();
-        Logger.Info("SplashManagerStartPatch");
-    }
-
-    private static void LoadCosmeticsAsync()
-    {
+        IEnumerator loadAsyncEnumerator = null;
         try
         {
-            CustomCosmeticsLoader.Load();
+            // LoadAsyncの呼び出し自体が例外を投げる可能性を考慮
+            loadAsyncEnumerator = LoadAsync(startCoroutine);
         }
-        catch (Exception e)
+        catch (Exception setupEx)
         {
-            Logger.Error($"カスタムコスメティックのロード中にエラーが発生しました: {e}");
+            Logger.Error($"LoadAsyncのセットアップ中にエラーが発生しました: {setupEx}");
+            yield break;
+        }
+
+        if (loadAsyncEnumerator == null)
+        {
+            // 基本的に上記catchで捕捉されるはずだが念のため
+            Logger.Error("LoadAsyncEnumeratorの取得に失敗しました。");
+            yield break;
+        }
+
+        while (true)
+        {
+            object currentYieldedValue = null;
+            bool hasMore;
+            try
+            {
+                hasMore = loadAsyncEnumerator.MoveNext();
+                if (hasMore)
+                {
+                    currentYieldedValue = loadAsyncEnumerator.Current;
+                }
+                else
+                {
+                    // Inner coroutine finished
+                    yield break;
+                }
+            }
+            catch (Exception runEx)
+            {
+                Logger.Error($"カスタムコスメティックのロード中にエラーが発生しました (LoadAsync実行中): {runEx}");
+                yield break; // Stop on error from inner coroutine
+            }
+            yield return currentYieldedValue; // Yield what the sub-coroutine yielded
         }
     }
 }
