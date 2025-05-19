@@ -14,6 +14,7 @@ public record CelebrityData
 {
     public bool EnableGlowEffect;
     public bool GlowOnlyWhileAlive;
+    public bool YellowChangedRole;
 }
 public class CelebrityAbility : AbilityBase
 {
@@ -36,6 +37,10 @@ public class CelebrityAbility : AbilityBase
         _nameTextUpdateEvent = NameTextUpdateEvent.Instance.AddListener(OnNameTextUpdate);
         _meetingStartEvent = MeetingStartEvent.Instance.AddListener(OnMeetingStart);
         _isAlive = ExPlayerControl.LocalPlayer.IsAlive();
+        if (Data.YellowChangedRole)
+        {
+            Player.AttachAbility(new AlwaysCelebrityAbility(), new AbilityParentPlayer(Player));
+        }
     }
     private void OnMeetingStart(MeetingStartEventData data)
     {
@@ -82,35 +87,32 @@ public class CelebrityAbility : AbilityBase
     private void UpdateCelebrityNameColor(NameTextUpdateEventData data)
     {
         if (data.Player.Role == RoleId.Celebrity)
-            UpdatePlayerNameColor(data.Player, Celebrity.Instance.RoleColor);
-    }
-
-    // プレイヤーの名前の色を更新
-    private void UpdatePlayerNameColor(ExPlayerControl player, Color color)
-    {
-        if (player.Data != null)
-            player.Data.Role.NameColor = color;
-
-        if (player.Player != null && player.Player.cosmetics != null && player.Player.cosmetics.nameText != null)
-            player.Player.cosmetics.nameText.color = color;
-        if (player.VoteArea != null)
-        {
-            player.VoteArea.NameText.color = color;
-        }
+            NameText.SetNameTextColor(data.Player, Celebrity.Instance.RoleColor);
     }
 
     public override void DetachToLocalPlayer()
     {
         base.DetachToLocalPlayer();
-        if (_fixedUpdateEvent != null)
-            FixedUpdateEvent.Instance.RemoveListener(_fixedUpdateEvent);
+        _fixedUpdateEvent?.RemoveListener();
     }
-    public override void Detach()
+    public override void DetachToAlls()
     {
-        base.Detach();
-        if (_nameTextUpdateEvent != null)
-            NameTextUpdateEvent.Instance.RemoveListener(_nameTextUpdateEvent);
-        if (_meetingStartEvent != null)
-            MeetingStartEvent.Instance.RemoveListener(_meetingStartEvent);
+        base.DetachToAlls();
+        _nameTextUpdateEvent?.RemoveListener();
+        _meetingStartEvent?.RemoveListener();
+    }
+}
+public class AlwaysCelebrityAbility : AbilityBase
+{
+    private EventListener<NameTextUpdateEventData> _nameTextUpdateEvent;
+    public override void AttachToLocalPlayer()
+    {
+        base.AttachToLocalPlayer();
+        _nameTextUpdateEvent = NameTextUpdateEvent.Instance.AddListener(OnNameTextUpdate);
+    }
+    private void OnNameTextUpdate(NameTextUpdateEventData data)
+    {
+        if (data.Player.Role == RoleId.Celebrity)
+            NameText.SetNameTextColor(data.Player, Celebrity.Instance.RoleColor);
     }
 }

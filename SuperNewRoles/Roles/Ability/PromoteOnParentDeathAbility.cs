@@ -33,7 +33,7 @@ public class PromoteOnParentDeathAbility : AbilityBase
     public override void DetachToLocalPlayer()
     {
         base.DetachToLocalPlayer();
-        FixedUpdateEvent.Instance.RemoveListener(_fixedUpdateEventListener);
+        _fixedUpdateEventListener?.RemoveListener();
     }
     private void OnFixedUpdate()
     {
