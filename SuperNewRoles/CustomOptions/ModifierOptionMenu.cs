@@ -7,6 +7,7 @@ using UnityEngine.Events;
 using SuperNewRoles.CustomOptions.Data;
 using TMPro;
 using SuperNewRoles.Roles;
+using UnityEngine.PlayerLoop;
 
 namespace SuperNewRoles.CustomOptions;
 
@@ -19,6 +20,9 @@ public static class ModifierOptionMenu
         public const float InitialYPosition = 1.4f;
         public const float InitialXPosition = -3.614f;
     }
+
+    private static List<GameObject> assignFilterEditMenuLeftButtons = new();
+    private static readonly string[] ButtonRoleTypes = { "Impostor", "Neutral", "Crewmate" };
 
     public static void ShowModifierOptionMenu()
     {
@@ -941,6 +945,9 @@ public static class ModifierOptionMenu
 
         menuData.AssignFilterEditMenu.SetActive(true);
 
+        // ボタンの表示状態を更新
+        UpdateAssignFilterEditMenuLeftButtons(menuData);
+
         // 現在の編集対象に基づいてタイトルなどを更新
         var titleText = menuData.AssignFilterEditMenu.transform.Find("TitleText")?.GetComponent<TextMeshPro>();
         if (titleText != null)
@@ -951,6 +958,36 @@ public static class ModifierOptionMenu
 
         // デフォルトで表示するロールタイプ（例：Impostor）
         GenerateAssignFilterRoleDetailButtons(menuData.CurrentAssignFilterEditingRoleType ?? "Impostor");
+    }
+
+    private static void UpdateAssignFilterEditMenuLeftButtons(ModifierOptionMenuObjectData menuData)
+    {
+        if (menuData.CurrentEditingModifierForAssignFilter == null || assignFilterEditMenuLeftButtons == null)
+            return;
+        for (int i = 0; i < assignFilterEditMenuLeftButtons.Count; i++)
+        {
+            var buttonObj = assignFilterEditMenuLeftButtons[i];
+            if (buttonObj == null) continue;
+
+            // InitializeAssignFilterEditMenuLeftButtons と同じロジックで表示状態を決定
+            bool isActive = true;
+            if (menuData.CurrentEditingModifierForAssignFilter.ModifierAssignFilterTeam.Length > 0)
+            {
+                // assignFilterEditMenuLeftButtons のインデックスと ButtonRoleTypes のインデックスが対応している前提
+                if (i < ButtonRoleTypes.Length)
+                {
+                    string buttonType = ButtonRoleTypes[i];
+                    isActive = menuData.CurrentEditingModifierForAssignFilter.ModifierAssignFilterTeam.Any(x => x.ToString() == buttonType);
+                }
+                else
+                {
+                    // ボタンの数が想定と異なる場合はログを出力するか、デフォルトで表示するなど検討
+                    Logger.Warning($"Button index {i} is out of range for buttonRoleTypes.");
+                    isActive = false; // 安全のため非表示
+                }
+            }
+            buttonObj.SetActive(isActive);
+        }
     }
 
     private static void InitializeAssignFilterEditMenu()
@@ -1021,14 +1058,22 @@ public static class ModifierOptionMenu
     private static void InitializeAssignFilterEditMenuLeftButtons(GameObject menu)
     {
         // ExclusivityOptionMenuのInitializeEditMenuLeftButtonsを参考にする
-        string[] buttons = ["Impostor", "Neutral", "Crewmate"]; // TODO: RoleManagerなどから動的に取得する方が良いかも
+        // string[] buttons = ["Impostor", "Neutral", "Crewmate"]; // TODO: RoleManagerなどから動的に取得する方が良いかも
         var leftButtonsContainer = menu.transform.Find("LeftButtons")?.gameObject; // "?" を追加
         if (leftButtonsContainer == null) return;
+        assignFilterEditMenuLeftButtons.Clear(); // リストをクリア
 
-        for (int i = 0; i < buttons.Length; i++)
+        for (int i = 0; i < ButtonRoleTypes.Length; i++)
         {
-            var buttonObj = leftButtonsContainer.transform.Find($"{buttons[i]}Button")?.gameObject; // "?" を追加
+            var buttonObj = leftButtonsContainer.transform.Find($"{ButtonRoleTypes[i]}Button")?.gameObject; // "?" を追加
             if (buttonObj == null) continue;
+            assignFilterEditMenuLeftButtons.Add(buttonObj); // ボタンをリストに追加
+
+            foreach (AssignedTeamType teamType in ModifierOptionMenuObjectData.Instance.CurrentEditingModifierForAssignFilter.ModifierAssignFilterTeam)
+            {
+                Logger.Info("TEAMTYPE:" + teamType.ToString());
+                Logger.Info("BUTTONSI:" + ButtonRoleTypes[i]);
+            }
 
             var passiveButton = buttonObj.AddComponent<PassiveButton>();
             passiveButton.Colliders = new Collider2D[] { buttonObj.GetComponent<BoxCollider2D>() };
@@ -1036,11 +1081,10 @@ public static class ModifierOptionMenu
             if (spriteRenderer == null) spriteRenderer = buttonObj.transform.Find("Background")?.GetComponent<SpriteRenderer>();
 
 
-            UIHelper.SetText(buttonObj, ModTranslation.GetString(buttons[i]));
-            var buttonType = buttons[i]; // キャプチャ用
+            UIHelper.SetText(buttonObj, ModTranslation.GetString(ButtonRoleTypes[i]));
+            var buttonType = ButtonRoleTypes[i]; // キャプチャ用
             UIHelper.ConfigurePassiveButton(passiveButton, (UnityAction)(() =>
             {
-                ModifierOptionMenuObjectData.Instance.CurrentAssignFilterEditingRoleType = buttonType;
                 GenerateAssignFilterRoleDetailButtons(buttonType);
             }), spriteRenderer);
         }

@@ -373,6 +373,7 @@ public class CustomCosmeticsLoader
                     LoadPackages(assetBundle, packagesHats, packagesVisors, packagesNamePlates);
                     notLoadedAssetBundles.RemoveAt(0);
                 }
+                LoadedPackages.Sort((a, b) => a.name.CompareTo(b.name));
             }
             catch (Exception e)
             {
