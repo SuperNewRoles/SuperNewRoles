@@ -357,6 +357,7 @@ public class ExPlayerControl
             var currentParent = ability.ability.Parent;
             if (currentParent is not AbilityParentRole)
                 continue;
+            currentParent.Player = Player;
             target.AttachAbility(ability.ability, currentParent);
         }
         foreach (var ability in targetAbilities)
@@ -364,6 +365,7 @@ public class ExPlayerControl
             var currentParent = ability.ability.Parent;
             if (currentParent is not AbilityParentRole)
                 continue;
+            currentParent.Player = Player;
             AttachAbility(ability.ability, currentParent);
         }
         // 名前情報を更新

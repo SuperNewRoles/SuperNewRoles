@@ -46,6 +46,7 @@ public class AmnesiacAbility : AbilityBase
     private void OnMeetingClose(MeetingCloseEventData data)
     {
         if (_willChangeRole == null) return;
+        if (Player.IsDead()) return;
         RpcChangeRole(Player, _willChangeRole);
         _willChangeRole = null;
     }
