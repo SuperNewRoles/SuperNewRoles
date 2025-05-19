@@ -1124,18 +1124,7 @@ public static class ModifierOptionMenu
         var spriteRenderer = button.GetComponent<SpriteRenderer>();
         GameObject selectedObject = button.transform.Find("Selected")?.gameObject; // "?" を追加
 
-        // AssignFilterRoles プロパティが ModifierRoleOption にあると仮定
-        // currentModifier.AssignFilterRoles が List<RoleIdType> のようなものとする
-        // RoleIdType は roleOption.RoleId の型
-
-        // TODO: RoleOptionManager.ModifierRoleOption に AssignFilterRoles (仮) のようなプロパティを追加する必要がある
-        // ここではダミーのリストを使う
         List<RoleId> assignFilterRoles = currentModifier.AssignFilterList();
-        if (currentModifier != null)
-        {
-            // 本来は currentModifier.AssignFilterRoles を使うが、ダミー実装なので何もしないか、
-            // もし currentModifier に一時的に値を保持できるならそれを使う（今回はローカルダミーを使用）
-        }
 
 
         passiveButton.OnClick = new UnityEngine.UI.Button.ButtonClickedEvent(); // ButtonClickedEvent型で初期化
@@ -1147,15 +1136,16 @@ public static class ModifierOptionMenu
 
             var roleId = roleOption.RoleId; // RoleIdentifier型であると仮定し、stringに変換
 
+            // 入っている時は削除して、明るくする
             if (assignFilterRoles.Contains(roleId)) // ダミーリストで確認
             {
                 assignFilterRoles.Remove(roleId); // ダミーリストから削除
-                spriteRenderer.color = new Color(1f, 1f, 1f, 0.6f); // 非選択時の色
+                spriteRenderer.color = Color.white; // 選択時の色
             }
             else
             {
                 assignFilterRoles.Add(roleId); // ダミーリストに追加
-                spriteRenderer.color = Color.white; // 選択時の色
+                spriteRenderer.color = new Color(1f, 1f, 1f, 0.6f); // 非選択時の色
             }
             // 変更を保存する処理が必要な場合はここに追加
             // RoleOptionManager.Save(); など
@@ -1178,7 +1168,7 @@ public static class ModifierOptionMenu
 
         // 初期の選択状態を設定
         // bool isSelected = currentModifier != null && currentModifier.AssignFilterRoles != null && currentModifier.AssignFilterRoles.Contains(roleOption.RoleId);
-        bool isSelected = currentModifier != null && assignFilterRoles.Contains(roleOption.RoleId); // ダミーリストで確認
+        bool isSelected = currentModifier != null && !assignFilterRoles.Contains(roleOption.RoleId); // ダミーリストで確認
         spriteRenderer.color = isSelected ? Color.white : new Color(1f, 1f, 1f, 0.6f);
         if (selectedObject != null) selectedObject.SetActive(false); // 初期は非表示が良いかも
     }

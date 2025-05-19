@@ -245,7 +245,7 @@ public static class AssignRoles
         var modifierRoleId = ModifierRoleId.ModifierGuesser;
 
         // インポスターへの割当
-        var impostors = allPlayers.Where(x => x.IsImpostor() && !x.ModifierRole.HasFlag(modifierRoleId) && (ModifierGuesser.ModifierGuesserCategory.ModifierAssignFilter.Count == 0 || ModifierGuesser.ModifierGuesserCategory.ModifierAssignFilter.Contains(x.Role))).ToList();
+        var impostors = allPlayers.Where(x => x.IsImpostor() && !x.ModifierRole.HasFlag(modifierRoleId) && !ModifierGuesser.ModifierGuesserCategory.ModifierAssignFilter.Contains(x.Role)).ToList();
         for (int i = 0; i < ModifierGuesser.ModifierGuesserMaxImpostors; i++)
         {
             int roll = ModHelpers.GetRandomInt(0, 100);
@@ -257,7 +257,7 @@ public static class AssignRoles
             }
         }
         // 第三陣営への割当
-        var neutrals = allPlayers.Where(x => x.IsNeutral() && !x.ModifierRole.HasFlag(modifierRoleId) && (ModifierGuesser.ModifierGuesserCategory.ModifierAssignFilter.Count == 0 || ModifierGuesser.ModifierGuesserCategory.ModifierAssignFilter.Contains(x.Role))).ToList();
+        var neutrals = allPlayers.Where(x => x.IsNeutral() && !x.ModifierRole.HasFlag(modifierRoleId) && !ModifierGuesser.ModifierGuesserCategory.ModifierAssignFilter.Contains(x.Role)).ToList();
         for (int i = 0; i < ModifierGuesser.ModifierGuesserMaxNeutrals; i++)
         {
             int roll = ModHelpers.GetRandomInt(0, 100);
@@ -269,7 +269,7 @@ public static class AssignRoles
             }
         }
         // クルーメイトへの割当
-        var crewmates = allPlayers.Where(x => x.IsCrewmate() && !x.ModifierRole.HasFlag(modifierRoleId) && (ModifierGuesser.ModifierGuesserCategory.ModifierAssignFilter.Count == 0 || ModifierGuesser.ModifierGuesserCategory.ModifierAssignFilter.Contains(x.Role))).ToList();
+        var crewmates = allPlayers.Where(x => x.IsCrewmate() && !x.ModifierRole.HasFlag(modifierRoleId) && !ModifierGuesser.ModifierGuesserCategory.ModifierAssignFilter.Contains(x.Role)).ToList();
         for (int i = 0; i < ModifierGuesser.ModifierGuesserMaxCrewmates; i++)
         {
             int roll = ModHelpers.GetRandomInt(0, 100);
