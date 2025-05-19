@@ -234,14 +234,6 @@ public partial class SuperNewRolesPlugin : BasePlugin
 
     public void Update()
     {
-        string activeSceneName = SceneManager.GetActiveScene().name;
-        if (_currentSceneName != activeSceneName)
-        {
-            SuperNewRolesPlugin.Logger.LogInfo($"Scene changed from {_currentSceneName} to {activeSceneName}. Unloading assets.");
-            AssetManager.UnloadAllAssets();
-            _currentSceneName = activeSceneName;
-        }
-
         if (_mainThreadActions.Count > 0)
         {
             List<Action> actionsToExecute;

@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Reflection;
+using HarmonyLib;
 using Il2CppInterop.Runtime;
 using UnityEngine;
 
@@ -197,25 +198,30 @@ public static class AssetManager
 
         return obj;
     }
-    public static void Unload(this UnityEngine.Object obj)
-    {
-        obj.hideFlags &= ~HideFlags.DontUnloadUnusedAsset;
-    }
 
     public static void UnloadAllAssets()
     {
         SuperNewRolesPlugin.Logger.LogInfo("[AssetManager] Unloading all cached assets...");
         foreach (var typeCache in _cachedAssets.Values)
         {
-            foreach (var asset in typeCache.Values)
+            foreach (var asset in typeCache)
             {
-                if (asset != null)
-                    asset.Unload();
+                if (asset.Value != null)
+                    Resources.UnloadAsset(asset.Value);
             }
-            typeCache.Clear();
         }
+        _cachedAssets.Clear();
         // Optionally, if you also want to clear the Bundles dictionary (though this might not be what you want if bundles are meant to persist across scenes)
         // Bundles.Clear();
+        Resources.UnloadUnusedAssets();
         SuperNewRolesPlugin.Logger.LogInfo("[AssetManager] All cached assets unloaded.");
+    }
+    [HarmonyPatch(typeof(AmongUsClient), nameof(AmongUsClient.OnActiveSceneChange))]
+    public static class OnActiveSceneChangePatch
+    {
+        public static void Postfix()
+        {
+            UnloadAllAssets();
+        }
     }
 }

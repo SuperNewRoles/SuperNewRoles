@@ -73,7 +73,7 @@ public class CustomCosmeticsHat
             if (assetBundle == null)
                 _loadFrontSprite = CustomCosmeticsLoader.LoadSpriteFromPath(path_base + "front.png");
             else
-                _loadFrontSprite = assetBundle.LoadAsset<Sprite>(path_base + "front.png")?.DontUnload();
+                _loadFrontSprite = assetBundle.LoadAsset<Sprite>(path_base + "front.png");
         }
         return _loadFrontSprite;
     }
@@ -86,7 +86,7 @@ public class CustomCosmeticsHat
             if (assetBundle == null)
                 _loadClimbSprite = CustomCosmeticsLoader.LoadSpriteFromPath(path_base + "climb.png");
             else
-                _loadClimbSprite = assetBundle.LoadAsset<Sprite>(path_base + "climb.png")?.DontUnload();
+                _loadClimbSprite = assetBundle.LoadAsset<Sprite>(path_base + "climb.png");
         }
         return _loadClimbSprite;
     }
@@ -99,7 +99,7 @@ public class CustomCosmeticsHat
             if (assetBundle == null)
                 _loadBackSprite = CustomCosmeticsLoader.LoadSpriteFromPath(path_base + "back.png");
             else
-                _loadBackSprite = assetBundle.LoadAsset<Sprite>(path_base + "back.png")?.DontUnload();
+                _loadBackSprite = assetBundle.LoadAsset<Sprite>(path_base + "back.png");
         }
         return _loadBackSprite;
     }
@@ -112,7 +112,7 @@ public class CustomCosmeticsHat
             if (assetBundle == null)
                 _loadFlipSprite = CustomCosmeticsLoader.LoadSpriteFromPath(path_base + "flip.png");
             else
-                _loadFlipSprite = assetBundle.LoadAsset<Sprite>(path_base + "flip.png")?.DontUnload();
+                _loadFlipSprite = assetBundle.LoadAsset<Sprite>(path_base + "flip.png");
         }
         return _loadFlipSprite;
     }
@@ -125,7 +125,7 @@ public class CustomCosmeticsHat
             if (assetBundle == null)
                 _loadFlipBackSprite = CustomCosmeticsLoader.LoadSpriteFromPath(path_base + "flip_back.png");
             else
-                _loadFlipBackSprite = assetBundle.LoadAsset<Sprite>(path_base + "flip_back.png")?.DontUnload();
+                _loadFlipBackSprite = assetBundle.LoadAsset<Sprite>(path_base + "flip_back.png");
         }
         return _loadFlipBackSprite;
     }
@@ -138,9 +138,100 @@ public class CustomCosmeticsHat
             if (assetBundle == null)
                 _loadClimbLeftSprite = CustomCosmeticsLoader.LoadSpriteFromPath(path_base + "climb_left.png");
             else
-                _loadClimbLeftSprite = assetBundle.LoadAsset<Sprite>(path_base + "climb_left.png")?.DontUnload();
+                _loadClimbLeftSprite = assetBundle.LoadAsset<Sprite>(path_base + "climb_left.png");
         }
         return _loadClimbLeftSprite;
+    }
+    public void UnloadSprites()
+    {
+        if (_loadFrontSprite != null)
+        {
+            if (assetBundle != null)
+                Resources.UnloadAsset(_loadFrontSprite);
+            else
+            {
+                GameObject.Destroy(_loadFrontSprite.texture);
+                GameObject.Destroy(_loadFrontSprite);
+            }
+            _loadFrontSprite = null;
+        }
+        if (_loadFrontLeftSprite != null)
+        {
+            if (assetBundle != null)
+                Resources.UnloadAsset(_loadFrontLeftSprite);
+            else
+            {
+                GameObject.Destroy(_loadFrontLeftSprite.texture);
+                GameObject.Destroy(_loadFrontLeftSprite);
+            }
+            _loadFrontLeftSprite = null;
+        }
+        if (_loadClimbSprite != null)
+        {
+            if (assetBundle != null)
+                Resources.UnloadAsset(_loadClimbSprite);
+            else
+            {
+                GameObject.Destroy(_loadClimbSprite.texture);
+                GameObject.Destroy(_loadClimbSprite);
+            }
+            _loadClimbSprite = null;
+        }
+        if (_loadBackSprite != null)
+        {
+            if (assetBundle != null)
+                Resources.UnloadAsset(_loadBackSprite);
+            else
+            {
+                GameObject.Destroy(_loadBackSprite.texture);
+                GameObject.Destroy(_loadBackSprite);
+            }
+            _loadBackSprite = null;
+        }
+        if (_loadBackLeftSprite != null)
+        {
+            if (assetBundle != null)
+                Resources.UnloadAsset(_loadBackLeftSprite);
+            else
+            {
+                GameObject.Destroy(_loadBackLeftSprite.texture);
+                GameObject.Destroy(_loadBackLeftSprite);
+            }
+            _loadBackLeftSprite = null;
+        }
+        if (_loadFlipSprite != null)
+        {
+            if (assetBundle != null)
+                Resources.UnloadAsset(_loadFlipSprite);
+            else
+            {
+                GameObject.Destroy(_loadFlipSprite.texture);
+                GameObject.Destroy(_loadFlipSprite);
+            }
+            _loadFlipSprite = null;
+        }
+        if (_loadFlipBackSprite != null)
+        {
+            if (assetBundle != null)
+                Resources.UnloadAsset(_loadFlipBackSprite);
+            else
+            {
+                GameObject.Destroy(_loadFlipBackSprite.texture);
+                GameObject.Destroy(_loadFlipBackSprite);
+            }
+            _loadFlipBackSprite = null;
+        }
+        if (_loadClimbLeftSprite != null)
+        {
+            if (assetBundle != null)
+                Resources.UnloadAsset(_loadClimbLeftSprite);
+            else
+            {
+                GameObject.Destroy(_loadClimbLeftSprite.texture);
+                GameObject.Destroy(_loadClimbLeftSprite);
+            }
+            _loadClimbLeftSprite = null;
+        }
     }
 }
 
@@ -185,7 +276,7 @@ public class CustomCosmeticsVisor
             if (assetBundle == null)
                 _loadIdleSprite = CustomCosmeticsLoader.CreateVisorSprite(path_base + "idle.png", options.isSNR);
             else
-                _loadIdleSprite = assetBundle.LoadAsset<Sprite>(path_base + "idle.png")?.DontUnload();
+                _loadIdleSprite = assetBundle.LoadAsset<Sprite>(path_base + "idle.png");
         }
         return _loadIdleSprite;
     }
@@ -198,7 +289,7 @@ public class CustomCosmeticsVisor
             if (assetBundle == null)
                 _loadLeftIdleSprite = CustomCosmeticsLoader.CreateVisorSprite(path_base + "flip.png", options.isSNR);
             else
-                _loadLeftIdleSprite = assetBundle.LoadAsset<Sprite>(path_base + "flip.png")?.DontUnload();
+                _loadLeftIdleSprite = assetBundle.LoadAsset<Sprite>(path_base + "flip.png");
         }
         return _loadLeftIdleSprite;
     }
@@ -211,9 +302,45 @@ public class CustomCosmeticsVisor
             if (assetBundle == null)
                 _loadClimbSprite = CustomCosmeticsLoader.CreateVisorSprite(path_base + "climb.png", options.isSNR);
             else
-                _loadClimbSprite = assetBundle.LoadAsset<Sprite>(path_base + "climb.png")?.DontUnload();
+                _loadClimbSprite = assetBundle.LoadAsset<Sprite>(path_base + "climb.png");
         }
         return _loadClimbSprite;
+    }
+    public void UnloadSprites()
+    {
+        if (_loadIdleSprite != null)
+        {
+            if (assetBundle != null)
+                Resources.UnloadAsset(_loadIdleSprite);
+            else
+            {
+                GameObject.Destroy(_loadIdleSprite.texture);
+                GameObject.Destroy(_loadIdleSprite);
+            }
+            _loadIdleSprite = null;
+        }
+        if (_loadLeftIdleSprite != null)
+        {
+            if (assetBundle != null)
+                Resources.UnloadAsset(_loadLeftIdleSprite);
+            else
+            {
+                GameObject.Destroy(_loadLeftIdleSprite.texture);
+                GameObject.Destroy(_loadLeftIdleSprite);
+            }
+            _loadLeftIdleSprite = null;
+        }
+        if (_loadClimbSprite != null)
+        {
+            if (assetBundle != null)
+                Resources.UnloadAsset(_loadClimbSprite);
+            else
+            {
+                GameObject.Destroy(_loadClimbSprite.texture);
+                GameObject.Destroy(_loadClimbSprite);
+            }
+            _loadClimbSprite = null;
+        }
     }
 }
 
@@ -254,9 +381,23 @@ public class CustomCosmeticsNamePlate
             if (assetBundle == null)
                 _loadSprite = CustomCosmeticsLoader.LoadSpriteFromPath(path_base + "plate.png");
             else
-                _loadSprite = assetBundle.LoadAsset<Sprite>(path_base + "plate.png")?.DontUnload();
+                _loadSprite = assetBundle.LoadAsset<Sprite>(path_base + "plate.png");
         }
         return _loadSprite;
+    }
+    public void UnloadSprites()
+    {
+        if (_loadSprite != null)
+        {
+            if (assetBundle != null)
+                Resources.UnloadAsset(_loadSprite);
+            else
+            {
+                GameObject.Destroy(_loadSprite.texture);
+                GameObject.Destroy(_loadSprite);
+            }
+            _loadSprite = null;
+        }
     }
 }
 

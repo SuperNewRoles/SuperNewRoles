@@ -488,6 +488,7 @@ public class CustomCosmeticsLoader
             }
             else
                 Logger.Error($"パッケージ: {package} に hats が見つかりません");
+
         }
         foreach (string package in packagesVisors)
         {
@@ -624,15 +625,69 @@ public class CustomCosmeticsLoader
 
     private static string[] GetPackages(AssetBundle assetBundle, string type)
     {
-        return assetBundle.GetAllAssetNames()
-            .Select(path => path.Split('/'))
-            .Where(segments => segments.Length >= 4 &&
-                               string.Equals(segments[0], "Assets", StringComparison.OrdinalIgnoreCase) &&
-                               string.Equals(segments[1], type, StringComparison.OrdinalIgnoreCase) &&
-                               !string.IsNullOrEmpty(segments[2]))
-            .Select(segments => segments[2])
-            .Distinct()
-            .ToArray();
+        var packageNames = new HashSet<string>(StringComparer.OrdinalIgnoreCase);
+
+        // AssetBundle.GetAllAssetNames()から返されるパスは通常 "assets/" で始まります (小文字)。
+        // 元のコードでは segments[0] を "Assets" (大文字) と OrdinalIgnoreCase で比較していました。
+        // また segments[1] を type (渡された引数のケース) と OrdinalIgnoreCase で比較していました。
+        // そのため、先頭の "assets/" (または "Assets/") と、それに続く type + "/" を大文字・小文字を区別せずに照合します。
+
+        foreach (string assetPath in assetBundle.GetAllAssetNames())
+        {
+            // segments.Length >= 4 の条件に相当: パスには少なくとも3つのスラッシュが含まれている必要があります。
+            // 例: "assets/hats/packagename/resource.png"
+
+            // 1. "assets/" プレフィックスの確認 (大文字・小文字区別なし)
+            string assetsPrefix = "assets/";
+            if (!assetPath.StartsWith(assetsPrefix, StringComparison.OrdinalIgnoreCase))
+            {
+                continue;
+            }
+
+            // 2. typeフォルダの開始インデックス
+            int startOfTypeIndex = assetsPrefix.Length; // assetPath は "assets/TYPE/PACKAGE/REST" のような形式
+
+            // 3. typeフォルダの確認 (大文字・小文字区別なし)
+            // "assets/[type]/" で始まるパスを探します
+            string typeFolderWithSlash = type + "/";
+            if (assetPath.Length <= startOfTypeIndex + typeFolderWithSlash.Length - 1 || // -1 because StartsWith includes the slash
+                !assetPath.Substring(startOfTypeIndex).StartsWith(typeFolderWithSlash, StringComparison.OrdinalIgnoreCase))
+            {
+                continue;
+            }
+
+            // パスは "assets/TYPE/PACKAGE/REST" のような形式です
+            // package名の開始インデックスは "assets/TYPE/" の後です
+            int startOfPackageIndex = startOfTypeIndex + typeFolderWithSlash.Length;
+
+            // 4. package名の抽出 (segments[2] に相当)
+            // package名は "assets/TYPE/" と次のスラッシュの間にあります
+            if (startOfPackageIndex >= assetPath.Length) // パスが "assets/TYPE/" またはそれより短い場合、package名はありません
+            {
+                continue;
+            }
+
+            int endOfPackageIndex = assetPath.IndexOf('/', startOfPackageIndex);
+
+            if (endOfPackageIndex == -1)
+            {
+                // パスが "assets/TYPE/PACKAGENAME" のような形式 (末尾にスラッシュなし)
+                // この場合、segments は ["assets", "TYPE", "PACKAGENAME"] となり、長さは3です。
+                // 元の `segments.Length >= 4` 条件ではこれは除外されるため、continueします。
+                continue;
+            }
+
+            // これでパスは "assets/TYPE/PACKAGENAME/..." であることが保証されます。
+            // これにより、segments.Length >= 4 の条件が満たされます。
+            string packageName = assetPath.Substring(startOfPackageIndex, endOfPackageIndex - startOfPackageIndex);
+
+            // 5. package名が空でないことを確認
+            if (!string.IsNullOrEmpty(packageName))
+            {
+                packageNames.Add(packageName);
+            }
+        }
+        return packageNames.ToArray();
     }
 
     private static AssetBundle LoadAssetBundle(string assetBundlePath)

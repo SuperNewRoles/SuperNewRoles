@@ -46,5 +46,4 @@ public class CustomCosmeticsSaver
         CurrentVisor2Id = visorId;
         Save();
     }
-
 }

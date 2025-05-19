@@ -249,12 +249,6 @@ public class ModdedHatDataWrapper : ICosmeticData, ICustomCosmeticHat
     }
     public void SetDontUnload()
     {
-        _data.LoadFrontSprite()?.DontUnload();
-        _data.LoadBackSprite()?.DontUnload();
-        _data.LoadClimbSprite()?.DontUnload();
-        _data.LoadClimbLeftSprite()?.DontUnload();
-        _data.LoadFlipSprite()?.DontUnload();
-        _data.LoadFlipBackSprite()?.DontUnload();
     }
     public void SetDoUnload()
     {/*
@@ -268,12 +262,12 @@ public class ModdedHatDataWrapper : ICosmeticData, ICustomCosmeticHat
         _data.LoadFlipBackSprite()?.Unload();*/
     }
     public bool BlocksVisors => Options.blockVisors;
-    public Sprite Climb => _data.LoadClimbSprite()?.DontUnload();
-    public Sprite ClimbLeft => _data.LoadClimbLeftSprite()?.DontUnload();
-    public Sprite Front => _data.LoadFrontSprite()?.DontUnload();
-    public Sprite Back => _data.LoadBackSprite()?.DontUnload();
-    public Sprite Flip => _data.LoadFlipSprite()?.DontUnload();
-    public Sprite FlipBack => _data.LoadFlipBackSprite()?.DontUnload();
+    public Sprite Climb => _data.LoadClimbSprite();
+    public Sprite ClimbLeft => _data.LoadClimbLeftSprite();
+    public Sprite Front => _data.LoadFrontSprite();
+    public Sprite Back => _data.LoadBackSprite();
+    public Sprite Flip => _data.LoadFlipSprite();
+    public Sprite FlipBack => _data.LoadFlipBackSprite();
 
     public string ProdId => _data.ProdId;
     public bool PreviewCrewmateColor => _data.options.front == HatOptionType.Adaptive; // 通常はハットはクルーメイトの色を反映する
@@ -970,10 +964,7 @@ public class CustomCosmeticsCostumeMenu : CustomCosmeticsMenuBase<CustomCosmetic
                 PreviewCosmetic(currentCosmeticFunc(), PlayerCustomizationMenu.Instance, onPreview);
             }));
             slot.gameObject.SetActive(true);
-            cosmeticData.LoadAsync(() =>
-            {
-                cosmeticData.SetPreview(slot.spriteRenderer, PlayerControl.LocalPlayer != null ? PlayerControl.LocalPlayer.Data.DefaultOutfit.ColorId : DataManager.Player.Customization.Color);
-            });
+            cosmeticData.SetPreview(slot.spriteRenderer, PlayerControl.LocalPlayer != null ? PlayerControl.LocalPlayer.Data.DefaultOutfit.ColorId : DataManager.Player.Customization.Color);
             if (cosmeticData.ProdId == currentCosmeticId)
             {
                 slot.button.SelectButton(true);
