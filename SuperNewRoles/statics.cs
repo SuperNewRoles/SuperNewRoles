@@ -60,11 +60,6 @@ public static class Statics
     public const string ModUrl = "SuperNewRoles/SuperNewRoles";
     public static string ModName => PluginConfig.Name;
 
-    // プラグイン情報
-    public const string PluginId = "jp.ykundesu.supernewroles";
-    public const string PluginName = "SuperNewRoles";
-    public const string PluginProcessName = "Among Us.exe";
-
     // バージョン情報
     public static Version Version => VersionInfo.Current;
     public static readonly string VersionString = VersionInfo.VersionString;

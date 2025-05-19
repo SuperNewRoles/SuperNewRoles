@@ -16,7 +16,9 @@ public enum WinType
     // 単独勝利
     SingleNeutral,
     // 乗っ取り勝利
-    Hijackers
+    Hijackers,
+    // ノー勝者
+    NoWinner
 }
 public static class EndGamer
 {/*
@@ -45,10 +47,26 @@ public static class EndGamer
     }*/
     public static void EndGame(GameOverReason reason, WinType winType, HashSet<ExPlayerControl> winners, Color32 color, string upperText, string winText = null)
     {
-        if (winType != WinType.SingleNeutral)
-            UpdateHijackers(ref reason, ref winners, ref color, ref upperText, ref winText, ref winType);
-        UpdateAdditionalWinners(out HashSet<ExPlayerControl> additionalWinners);
-        winners.UnionWith(additionalWinners);
+        HashSet<ExPlayerControl> additionalWinners = new();
+
+        // サボタージュ勝ちの時はインポスター以外死んだ判定で判定していく
+        if (reason == GameOverReason.ImpostorsBySabotage)
+        {
+            foreach (ExPlayerControl player in ExPlayerControl.ExPlayerControls)
+            {
+                if (!player.IsImpostorWinTeam())
+                    player.Data.IsDead = true;
+            }
+        }
+
+        if (winType != WinType.NoWinner)
+        {
+            if (winType != WinType.SingleNeutral)
+                UpdateHijackers(ref reason, ref winners, ref color, ref upperText, ref winText, ref winType);
+            // 独自単独勝利とは同時勝利できない
+            UpdateAdditionalWinners(out additionalWinners, winType == WinType.SingleNeutral);
+            winners.UnionWith(additionalWinners);
+        }
         Logger.Info("----------- Finished EndGame Start -----------");
         Logger.Info("reason: " + reason);
         Logger.Info("winners: " + winners.Count);
@@ -110,7 +128,7 @@ public static class EndGamer
             }
         }
     }
-    private static void UpdateAdditionalWinners(out HashSet<ExPlayerControl> winners)
+    private static void UpdateAdditionalWinners(out HashSet<ExPlayerControl> winners, bool cantWinSixAdditionalWinners)
     {
         winners = new();
         // ラバーズじゃない人がいる場合
@@ -124,14 +142,17 @@ public static class EndGamer
                 }
             }
         }
-        foreach (ExPlayerControl player in ExPlayerControl.ExPlayerControls)
+        if (!cantWinSixAdditionalWinners)
         {
-            switch (player.Role)
+            foreach (ExPlayerControl player in ExPlayerControl.ExPlayerControls)
             {
-                case RoleId.Opportunist:
-                    if (player.IsAlive())
-                        winners.Add(player);
-                    break;
+                switch (player.Role)
+                {
+                    case RoleId.Opportunist:
+                        if (player.IsAlive())
+                            winners.Add(player);
+                        break;
+                }
             }
         }
         foreach (ExPlayerControl winner in winners)

@@ -1,14 +1,19 @@
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
+using System.IO;
 using System.Linq;
+using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
 using System.Security.Cryptography;
 using System.Text;
+using System.Threading.Tasks;
 using BepInEx.Unity.IL2CPP.Utils.Collections;
 using Hazel;
 using SuperNewRoles.Modules;
 using SuperNewRoles.Roles.Ability;
 using UnityEngine;
+using UnityEngine.Networking;
 
 namespace SuperNewRoles;
 public static class ModHelpers
@@ -43,6 +48,7 @@ public static class ModHelpers
         return RandomNumberGenerator.GetInt32(min, max + 1);
     }
     private static MD5 md5 = MD5.Create();
+    private static SHA256 sha256 = SHA256.Create();
     public static string HashMD5(string str)
     {
         byte[] bytes = Encoding.UTF8.GetBytes(str);
@@ -51,6 +57,15 @@ public static class ModHelpers
     public static string HashMD5(byte[] bytes)
     {
         return BitConverter.ToString(md5.ComputeHash(bytes)).Replace("-", "").ToLowerInvariant();
+    }
+    public static string HashSHA256(string str)
+    {
+        byte[] bytes = Encoding.UTF8.GetBytes(str);
+        return HashSHA256(bytes);
+    }
+    public static string HashSHA256(byte[] bytes)
+    {
+        return BitConverter.ToString(sha256.ComputeHash(bytes)).Replace("-", "").ToLowerInvariant();
     }
 
     // MeetingHudのMaskAreaを更新するヘルパーメソッド
@@ -365,4 +380,115 @@ public static class ModHelpers
         pc.RawSetPet(outfit.PetId, outfit.ColorId);
         pc.RawSetSkin(outfit.SkinId, outfit.ColorId);
     }
+
+    [CustomRPC]
+    public static void RpcOpenToilet(PlayerControl pc)
+    {
+        foreach (byte i in new[] { 79, 80, 81, 82 })
+        {
+            ShipStatus.Instance.UpdateSystem(SystemTypes.Doors, pc, i);
+        }
+    }
+
+    [CustomRPC]
+    public static void RpcFixingSabotage(TaskTypes taskType)
+    {
+        if (!AmongUsClient.Instance.AmHost) return;
+        FixingSabotage(taskType);
+    }
+
+    [CustomRPC]
+    public static void RpcFixLight()
+    {
+        if (!ShipStatus.Instance.Systems.TryGetValue(SystemTypes.Electrical, out ISystemType system))
+            return;
+        SwitchSystem switchSystem = system.TryCast<SwitchSystem>();
+        switchSystem.ActualSwitches = switchSystem.ExpectedSwitches;
+    }
+
+    public static bool IsSabotage(TaskTypes taskType)
+    {
+        return taskType is TaskTypes.FixLights or TaskTypes.RestoreOxy or TaskTypes.ResetReactor or TaskTypes.StopCharles or TaskTypes.ResetSeismic or TaskTypes.FixComms or TaskTypes.MushroomMixupSabotage;
+    }
+
+    private static void FixingSabotage(TaskTypes taskType)
+    {
+        switch (taskType)
+        {
+            case TaskTypes.FixLights:
+                RpcFixLight();
+                break;
+            case TaskTypes.RestoreOxy: // 酸素 (Skeld, Mira)
+                ShipStatus.Instance.RpcUpdateSystem(SystemTypes.LifeSupp, 0 | 64);
+                ShipStatus.Instance.RpcUpdateSystem(SystemTypes.LifeSupp, 1 | 64);
+                break;
+            case TaskTypes.ResetReactor: // リアクター (Skeld, Mira, Fungle)
+                ShipStatus.Instance.RpcUpdateSystem(SystemTypes.Reactor, 16);
+                break;
+            case TaskTypes.StopCharles: // 衝突回避 (Airship)
+                ShipStatus.Instance.RpcUpdateSystem(SystemTypes.HeliSabotage, 0 | 16);
+                ShipStatus.Instance.RpcUpdateSystem(SystemTypes.HeliSabotage, 1 | 16);
+                break;
+            case TaskTypes.ResetSeismic: // 耐震 (Polus)
+                ShipStatus.Instance.RpcUpdateSystem(SystemTypes.Laboratory, 16);
+                break;
+            case TaskTypes.FixComms:
+                ShipStatus.Instance.RpcUpdateSystem(SystemTypes.Comms, 16 | 0);
+                ShipStatus.Instance.RpcUpdateSystem(SystemTypes.Comms, 16 | 1);
+                break;
+            case TaskTypes.MushroomMixupSabotage:
+                ShipStatus.Instance.RpcUpdateSystem(SystemTypes.MushroomMixupSabotage, 16 | 1);
+                break;
+            default:
+                Logger.Info($"リペア処理が異常な呼び出しを受けました。", "Repair Process");
+                break;
+        }
+    }
+    // ユークリッドの互除法で最大公約数を求める
+    private static int Gcd(int a, int b)
+    {
+        while (b != 0)
+        {
+            int tmp = b;
+            b = a % b;
+            a = tmp;
+        }
+        return a;
+    }
+
+    // 画面サイズからアスペクト比を計算
+    public static (int, int) GetAspectRatio(int width, int height)
+    {
+        int gcd = Gcd(width, height);
+        return (width / gcd, height / gcd);
+    }
+
+    // SendWebRequest が返す UnityWebRequestAsyncOperation を await 可能にする
+    public static TaskAwaiter<UnityWebRequest> GetAwaiter(
+        this UnityWebRequestAsyncOperation asyncOp)
+    {
+        var tcs = new TaskCompletionSource<UnityWebRequest>();
+
+        asyncOp.add_completed((Il2CppSystem.Action<AsyncOperation>)((op) =>
+        {
+            var req = asyncOp.webRequest;
+            if (req.result == UnityWebRequest.Result.Success)
+                tcs.SetResult(req);
+            else
+                tcs.SetException(new Exception(req.error));
+        }));
+
+        return tcs.Task.GetAwaiter();
+    }
+
+    public static bool IsWaitingSpawn(this PlayerControl player)
+    {
+        return Vector2.Distance(player.transform.position, new Vector2(3, 6)) <= 0.5f ||
+               Vector2.Distance(player.transform.position, new Vector2(-25, 40)) <= 0.5f ||
+               Vector2.Distance(player.transform.position, new Vector2(-1.4f, 2.3f)) <= 0.5f;
+    }
+    public static bool IsWaitingSpawn(this ExPlayerControl player)
+        => player.Player.IsWaitingSpawn();
+
+    public static bool Not(bool b) => !b;
 }

@@ -13,7 +13,6 @@ public static class SyncSpawn
 {
     public static HashSet<ExPlayerControl> SpawnedPlayers = new();
     public static SpawnInMinigame.SpawnLocation SpawnLocation;
-    public static SpawnInMinigame spawnInMinigame;
     public static bool spawnSuccess = false;
 
     [HarmonyPatch(typeof(SpawnInMinigame), nameof(SpawnInMinigame.SpawnAt))]
@@ -23,14 +22,10 @@ public static class SyncSpawn
         {
             if (!GameSettingOptions.SyncSpawn) return true;
             if (__instance.amClosing != Minigame.CloseState.None) return false;
-            {
-                __instance.gotButton = true;
-            }
+            __instance.gotButton = true;
             SpawnLocation = spawnPoint;
-            spawnInMinigame = __instance;
             RpcSpawnSelected(ExPlayerControl.LocalPlayer);
-            __instance.StopAllCoroutines();
-            __instance.StartCoroutine(WaitForSpawn().WrapToIl2Cpp());
+            __instance.StartCoroutine(WaitForSpawn(__instance).WrapToIl2Cpp());
             return false;
         }
     }
@@ -48,13 +43,14 @@ public static class SyncSpawn
         }
     }
 
-    public static IEnumerator WaitForSpawn()
+    public static IEnumerator WaitForSpawn(SpawnInMinigame __instance)
     {
+        Logger.Info("WaitForSpawn");
         const float EaseLevel = 0.55f; // 0~1の範囲で指定（1に近いほど最初が速く、後が遅くなる）
 
         float startTime = Time.time;
-        GameObject selectedButton = spawnInMinigame.LocationButtons.FirstOrDefault(x => x.GetComponent<ButtonAnimRolloverHandler>().StaticOutImage == SpawnLocation.Image).gameObject;
-        List<GameObject> notSelectedButtons = spawnInMinigame.LocationButtons
+        GameObject selectedButton = __instance.LocationButtons.FirstOrDefault(x => x.GetComponent<ButtonAnimRolloverHandler>().StaticOutImage == SpawnLocation.Image).gameObject;
+        List<GameObject> notSelectedButtons = __instance.LocationButtons
             .Where(x => x.GetComponent<ButtonAnimRolloverHandler>().StaticOutImage != SpawnLocation.Image)
             .Select(x => x.gameObject).ToList();
         yield return null;
@@ -79,6 +75,7 @@ public static class SyncSpawn
 
         while (true)
         {
+            Logger.Info("WaitForSpawn2");
             float elapsed = Time.time - startTime;
 
             // フェードアウト処理（即開始、0.2秒かけてフェードアウト）
@@ -135,10 +132,12 @@ public static class SyncSpawn
                 }
             }
 
+            Logger.Info("WaitForSpawn5");
+
             // アニメーション完了後、全ボタンのOnMouseOutを呼び出し、無効化する
             if (fadeFinished && moveFinished && !animationFinished)
             {
-                foreach (var button in spawnInMinigame.LocationButtons)
+                foreach (var button in __instance.LocationButtons)
                 {
                     button.OnMouseOut?.Invoke();
                     button.enabled = false;
@@ -146,13 +145,18 @@ public static class SyncSpawn
                 animationFinished = true;
             }
 
-            if (spawnInMinigame == null) yield break;
+            Logger.Info("WaitForSpawn6");
+
+            if (__instance == null) yield break;
+            Logger.Info("WaitForSpawn3");
             int aliveCount = ExPlayerControl.ExPlayerControls.Count(x => x.IsAlive());
-            if (SpawnedPlayers.Count >= aliveCount && spawnInMinigame != null && AmongUsClient.Instance.AmHost)
+            if (SpawnedPlayers.Count >= aliveCount && __instance != null && AmongUsClient.Instance.AmHost)
             {
-                new LateTask(() => RpcAllSelectedFromHost(), 0f);
+                Logger.Info("WaitForSpawn4");
+                new LateTask(() => RpcAllSelectedFromHost(), 0.5f);
+                yield break;
             }
-            spawnInMinigame.Text.text = ModTranslation.GetString("WaitingSpawnText",
+            __instance.Text.text = ModTranslation.GetString("WaitingSpawnText",
                 aliveCount - SpawnedPlayers.Count,
                 aliveCount);
             yield return null;
@@ -161,32 +165,46 @@ public static class SyncSpawn
     [CustomRPC]
     public static void RpcSpawnSelected(ExPlayerControl source)
     {
-        if (!GameSettingOptions.SyncSpawn) return;
+        Logger.Info("RpcSpawnSelected");
+        if (source.IsDead()) return;
         SpawnedPlayers.Add(source);
+        Logger.Info($"RpcSpawnSelected: {source.Player.name} が選択されました。");
+        Logger.Info($"RpcSpawnSelected: 選択中のプレイヤー数: {SpawnedPlayers.Count}");
+        foreach (var player in SpawnedPlayers)
+        {
+            Logger.Info($"RpcSpawnSelected: {player.Player.name} が選択中");
+        }
+        Logger.Info($"---------------------------------------");
     }
     [CustomRPC]
     public static void RpcAllSelectedFromHost()
     {
+        Logger.Info($"[SyncSpawn] RpcAllSelectedFromHost executed on client {PlayerControl.LocalPlayer.name}({PlayerControl.LocalPlayer.PlayerId}). SpawnLocation: {SpawnLocation?.Name.ToString() ?? "null"}. Current SpawnedPlayers.Count on this client: {SpawnedPlayers.Count}. Players: {string.Join(", ", SpawnedPlayers.Select(p => p.Player.name))}");
         spawnSuccess = true;
-        // デバッグログを追加
         if (!GameSettingOptions.SyncSpawn)
+        {
+            Logger.Info("[SyncSpawn] SyncSpawn option is disabled, RpcAllSelectedFromHost doing nothing further.");
             return;
+        }
 
         SpawnInMinigame spawnInMinigame = GameObject.FindObjectOfType<SpawnInMinigame>();
         if (spawnInMinigame == null)
+        {
+            Logger.Error("[SyncSpawn] SpawnInMinigame instance not found in RpcAllSelectedFromHost. Aborting.");
             return;
+        }
 
         PlayerControl.LocalPlayer.SetKinematic(b: true);
         PlayerControl.LocalPlayer.NetTransform.SetPaused(isPaused: true);
         PlayerControl.LocalPlayer.NetTransform.RpcSnapTo(SpawnLocation.Location);
 
+        Logger.Info("RpcAllSelectedFromHost4");
         DestroyableSingleton<HudManager>.Instance.PlayerCam.SnapToTarget();
 
         spawnInMinigame.StopAllCoroutines();
         spawnInMinigame.StartCoroutine(spawnInMinigame.CoSpawnAt(PlayerControl.LocalPlayer, SpawnLocation));
 
-
-        spawnInMinigame = null;
+        Logger.Info($"[SyncSpawn] RpcAllSelectedFromHost finished for {PlayerControl.LocalPlayer.name}({PlayerControl.LocalPlayer.PlayerId})");
     }
     public static void ClearAndReloads()
     {

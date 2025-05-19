@@ -106,7 +106,7 @@ public class WellBehaverAbility : AbilityBase
     public override void AttachToAlls()
     {
         button = new WellBehaverButtonAbility();
-        customTaskAbility = new CustomTaskAbility(() => (false, 0));
+        customTaskAbility = new CustomTaskAbility(() => (false, false, 0));
 
         Player.AttachAbility(button, new AbilityParentAbility(this));
         Player.AttachAbility(customTaskAbility, new AbilityParentAbility(this));
@@ -133,13 +133,6 @@ public class WellBehaverAbility : AbilityBase
         _fixedUpdateEventListener?.RemoveListener();
     }
 
-    public static bool IsWaitSpawn(PlayerControl player)
-    {
-        return Vector2.Distance(player.transform.position, new Vector2(3, 6)) <= 0.5f ||
-               Vector2.Distance(player.transform.position, new Vector2(-25, 40)) <= 0.5f ||
-               Vector2.Distance(player.transform.position, new Vector2(-1.4f, 2.3f)) <= 0.5f;
-    }
-
     private void OnNameTextUpdate(NameTextUpdateEventData data)
     {
         if (data.Player != Player) return;
@@ -157,11 +150,12 @@ public class WellBehaverAbility : AbilityBase
     private void OnFixedUpdate()
     {
         if (ExPlayerControl.LocalPlayer.IsDead()) return;
+        if (MeetingHud.Instance != null || ExileController.Instance != null || HudManager.Instance.IsIntroDisplayed) return;
         if (garbager == null || garbager.Data.IsDead)
             ReAssignGarbager();
         if (garbager == null) return;
         // スポーン待ちの場合はスキップ
-        if (IsWaitSpawn(garbager)) return;
+        if (garbager.IsWaitingSpawn()) return;
         timer += Time.fixedDeltaTime;
 
         // ゴミ投棄頻度に達したらゴミを投げる

@@ -11,7 +11,4 @@ public class KillableAbility : AbilityBase
     {
         this.canKill = canKill;
     }
-    public override void AttachToLocalPlayer()
-    {
-    }
 }

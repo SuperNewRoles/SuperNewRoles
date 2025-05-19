@@ -5,8 +5,14 @@ namespace SuperNewRoles.CustomOptions.Categories;
 
 public static class GeneralSettingOptions
 {
-    [CustomOptionBool("KickNonPCPlayers", false, parentFieldName: nameof(Categories.GeneralSettings))]
-    public static bool KickNonPCPlayers;
+    [CustomOptionBool("KickPlatformPlayers", false, parentFieldName: nameof(Categories.GeneralSettings))]
+    public static bool KickPlatformPlayers;
+    [CustomOptionBool("KickPCPlayers", false, parentFieldName: nameof(KickPlatformPlayers))]
+    public static bool KickPCPlayers;
+    [CustomOptionBool("KickAndroidPlayers", false, parentFieldName: nameof(KickPlatformPlayers))]
+    public static bool KickAndroidPlayers;
+    [CustomOptionBool("KickOtherPlayers", false, parentFieldName: nameof(KickPlatformPlayers))]
+    public static bool KickOtherPlayers;
 
     [CustomOptionBool("BanNoFriendCodePlayers", false, parentFieldName: nameof(Categories.GeneralSettings))]
     public static bool BanNoFriendCodePlayers;

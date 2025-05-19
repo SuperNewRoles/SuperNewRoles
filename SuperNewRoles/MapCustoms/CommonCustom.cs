@@ -4,6 +4,7 @@ using HarmonyLib;
 using UnityEngine;
 using SuperNewRoles.CustomOptions.Categories;
 using System.Linq;
+using SuperNewRoles.CustomCosmetics;
 
 namespace SuperNewRoles.MapCustoms;
 
@@ -42,7 +43,7 @@ public static class CommonCustom
                 return true;
 
             // MODカラーを禁止
-            if (bodyColor >= Palette.PlayerColors.Length)
+            if (bodyColor >= CustomColors.DefaultPickAbleColors)
             {
                 return false;
             }

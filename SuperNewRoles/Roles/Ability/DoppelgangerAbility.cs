@@ -39,7 +39,7 @@ public class DoppelgangerAbility : AbilityBase
         float timer = data.target == currentTarget ?
                          SucCool :
                          NotSucCool;
-        ExPlayerControl.LocalPlayer.SetKillTimerUnchecked(timer, timer);
+        new LateTask(() => ExPlayerControl.LocalPlayer.SetKillTimerUnchecked(timer, timer), 0.02f, "DoppelgangerAbility");
     }
 
     private EventListener<MurderEventData> _murderEvent;

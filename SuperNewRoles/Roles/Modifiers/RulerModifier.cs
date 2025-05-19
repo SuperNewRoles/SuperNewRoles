@@ -31,12 +31,12 @@ class RulerModifier : ModifierBase<RulerModifier>
 
     public override WinnerTeamType WinnerTeam => WinnerTeamType.Crewmate;
 
-    public override TeamTag TeamTag => TeamTag.Crewmate;
-
     public override RoleTag[] RoleTags => [];
 
     public override short IntroNum => 1;
     public override Func<ExPlayerControl, string> ModifierMark => (player) => ModHelpers.Cs(RoleColor, "狂わせる{0}");
+
+    public override bool AssignFilter => true;
 
     [CustomOptionFloat("RulerModifierCooldown", 0f, 180f, 2.5f, 30f, translationName: "CoolTime")]
     public static float Cooldown;

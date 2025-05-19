@@ -75,6 +75,8 @@ class Tuna : RoleBase<Tuna>
             }
             if (isMeeting)
                 return;
+            if (Player.IsWaitingSpawn())
+                return;
 
             // 現在の位置を取得
             Vector2 currentPosition = Player.transform.position;

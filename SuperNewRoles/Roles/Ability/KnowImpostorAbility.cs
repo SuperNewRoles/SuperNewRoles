@@ -32,14 +32,8 @@ public class KnowImpostorAbility : AbilityBase
         foreach (var player in ExPlayerControl.ExPlayerControls)
         {
             if (player.IsImpostor())
-                UpdatePlayerNameColor(player, color);
+                NameText.SetNameTextColor(player, color);
         }
-    }
-
-    private void UpdatePlayerNameColor(ExPlayerControl player, Color color)
-    {
-        player.Data.Role.NameColor = color;
-        player.Player.cosmetics.nameText.color = color;
     }
 
     public override void DetachToLocalPlayer()

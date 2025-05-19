@@ -80,6 +80,10 @@ public enum RoleId : short
     SatsumaAndImo,
     NiceTeleporter,
     Taskmaster,
+    ToiletFan,
+    Rocket,
+    Vampire,
+    VampireDependent,
 }
 
 public enum GhostRoleId : short
@@ -98,6 +102,7 @@ public enum ModifierRoleId : short
     ModifierMadmate = 1 << 1,
     RulerModifier = 1 << 2,
     Lovers = 1 << 3,
+    JumboModifier = 1 << 4,
 }
 
 public enum QuoteMod : byte
@@ -124,6 +129,7 @@ public enum TeamTag : byte
 
 public enum WinnerTeamType : byte
 {
+    None,
     Crewmate,
     Impostor,
     Neutral,

@@ -26,9 +26,9 @@ class NiceNekomata : RoleBase<NiceNekomata>
     public override RoleTypes IntroSoundType { get; } = RoleTypes.Crewmate;
     public override short IntroNum { get; } = 1;
 
-    public override AssignedTeamType AssignedTeam { get; } = AssignedTeamType.Neutral;
-    public override WinnerTeamType WinnerTeam { get; } = WinnerTeamType.Neutral;
-    public override TeamTag TeamTag { get; } = TeamTag.Neutral;
+    public override AssignedTeamType AssignedTeam { get; } = AssignedTeamType.Crewmate;
+    public override WinnerTeamType WinnerTeam { get; } = WinnerTeamType.Crewmate;
+    public override TeamTag TeamTag { get; } = TeamTag.Crewmate;
     public override RoleTag[] RoleTags { get; } = Array.Empty<RoleTag>();
-    public override RoleOptionMenuType OptionTeam { get; } = RoleOptionMenuType.Neutral;
+    public override RoleOptionMenuType OptionTeam { get; } = RoleOptionMenuType.Crewmate;
 }

@@ -9,6 +9,9 @@ using System.Threading.Tasks;
 using Il2CppInterop.Runtime;
 using BepInEx.Unity.IL2CPP.Utils.Collections;
 using SuperNewRoles.Modules;
+using UnityEngine.Networking;
+using System.Text;
+using System.Collections;
 
 namespace SuperNewRoles.RequestInGame;
 
@@ -52,58 +55,75 @@ public class RequestInGameManager
     }
     private static string Token = string.Empty;
     private static bool ValidatedToken = false;
-    private static string FilePath = Path.Combine(System.Environment.GetFolderPath(System.Environment.SpecialFolder.UserProfile), "AppData", "LocalLow", "Innersloth", "SuperNewRoles", "RequestInGame.token");
+    private static string FilePath = Path.Combine(SuperNewRolesPlugin.SecretDirectory, "RequestInGame.token");
     public static void Load()
     {
-        Directory.CreateDirectory(Path.Combine(System.Environment.GetFolderPath(System.Environment.SpecialFolder.UserProfile), "AppData", "LocalLow", "Innersloth", "SuperNewRoles"));
         if (File.Exists(FilePath))
         {
             Token = File.ReadAllText(FilePath);
             ValidatedToken = false;
         }
     }
-    public static async Task<string> GetOrCreateToken()
+    public static IEnumerator GetOrCreateToken(Action<string> callback)
     {
         if (!string.IsNullOrEmpty(Token))
         {
             if (!ValidatedToken)
             {
-                using (HttpClient client = await CreateHttpClient(dontValidate: true))
-                {
-                    var response = await client.GetAsync("https://reports-api.supernewroles.com/validateToken/");
-                    if (response.IsSuccessStatusCode)
-                        ValidatedToken = true;
-                    else
-                        Logger.Error($"Failed to validate token: {response.StatusCode} {await response.Content.ReadAsStringAsync()}");
-                }
+                var validateUrl = "https://reports-api.supernewroles.com/validateToken/";
+                var validateRequest = UnityWebRequest.Get(validateUrl);
+                validateRequest.SetRequestHeader("Authorization", $"Bearer {Token}");
+                yield return validateRequest.SendWebRequest();
+                if (validateRequest.result == UnityWebRequest.Result.Success && validateRequest.responseCode == 200)
+                    ValidatedToken = true;
+                else
+                    Logger.Error($"Failed to validate token: {validateRequest.responseCode} {validateRequest.error}");
+                validateRequest.Dispose();
             }
             if (ValidatedToken)
-                return Token;
+            {
+                callback(Token);
+                yield break;
+            }
         }
 
-        using (HttpClient client = new())
+        var createUrl = "https://reports-api.supernewroles.com/createAccount/";
+        var createRequest = new UnityWebRequest(createUrl, "POST");
+        createRequest.downloadHandler = new DownloadHandlerBuffer();
+        yield return createRequest.SendWebRequest();
+        if (createRequest.result == UnityWebRequest.Result.Success && createRequest.responseCode == 200)
         {
-            var response = await client.PostAsync("https://reports-api.supernewroles.com/createAccount/", new StringContent(""));
-            var content = await response.Content.ReadAsStringAsync();
-            var jsonObj = JsonParser.Parse(content) as Dictionary<string, object>;
+            var createContent = createRequest.downloadHandler.text;
+            var jsonObj = JsonParser.Parse(createContent) as Dictionary<string, object>;
             Token = (jsonObj != null && jsonObj.TryGetValue("token", out var tokenVal) && tokenVal is string tokenStr) ? tokenStr : string.Empty;
             File.WriteAllText(FilePath, Token);
             ValidatedToken = true;
+            callback(Token);
         }
-        return Token;
-    }
-    public static async Task<List<Thread>> GetThreads(bool unreadOnly = false)
-    {
-        using (HttpClient client = await CreateHttpClient())
+        else
         {
-            var response = await client.GetAsync($"https://reports-api.supernewroles.com/getThreads/");
-            if (!response.IsSuccessStatusCode)
-            {
-                Logger.Error($"Failed to get threads: {response.StatusCode}");
-                return new List<Thread>();
-            }
-            var content = await response.Content.ReadAsStringAsync();
-            List<Thread> threads = new();
+            Logger.Error($"Failed to create account: {createRequest.responseCode}");
+            callback(null);
+        }
+        createRequest.Dispose();
+    }
+    public static IEnumerator GetThreads(Action<List<Thread>> callback, bool unreadOnly = false)
+    {
+        string url = "https://reports-api.supernewroles.com/getThreads/";
+        var request = UnityWebRequest.Get(url);
+        string token = string.Empty;
+        yield return GetOrCreateToken(t => token = t);
+        request.SetRequestHeader("Authorization", $"Bearer {token}");
+        yield return request.SendWebRequest();
+        List<Thread> threads = new List<Thread>();
+        if (request.result != UnityWebRequest.Result.Success)
+        {
+            Logger.Error($"Failed to get threads: {request.responseCode}");
+            callback(null);
+        }
+        else
+        {
+            var content = request.downloadHandler.text;
             var root = JsonParser.Parse(content) as Dictionary<string, object>;
             if (root != null && root.TryGetValue("threads", out var threadsValue) && threadsValue is List<object> threadsList)
             {
@@ -119,21 +139,27 @@ public class RequestInGameManager
                     }
                 }
             }
-            return threads;
+            callback(threads);
         }
+        request.Dispose();
     }
-    public static async Task<List<Message>> GetMessages(string thread_id)
+    public static IEnumerator GetMessages(string thread_id, Action<List<Message>> callback)
     {
-        using (HttpClient client = await CreateHttpClient())
+        string url = $"https://reports-api.supernewroles.com/getMessages/{thread_id}";
+        var request = UnityWebRequest.Get(url);
+        string token = string.Empty;
+        yield return GetOrCreateToken(t => token = t);
+        request.SetRequestHeader("Authorization", $"Bearer {token}");
+        yield return request.SendWebRequest();
+        List<Message> messages = new List<Message>();
+        if (request.result != UnityWebRequest.Result.Success)
         {
-            var response = await client.GetAsync($"https://reports-api.supernewroles.com/getMessages/{thread_id}");
-            if (!response.IsSuccessStatusCode)
-            {
-                Logger.Error($"Failed to get messages: {response.StatusCode}");
-                return new List<Message>();
-            }
-            var content = await response.Content.ReadAsStringAsync();
-            List<Message> messages = new();
+            Logger.Error($"Failed to get messages: {request.responseCode}");
+            callback(null);
+        }
+        else
+        {
+            var content = request.downloadHandler.text;
             var root2 = JsonParser.Parse(content) as Dictionary<string, object>;
             if (root2 != null && root2.TryGetValue("messages", out var msgsValue) && msgsValue is List<object> msgsList)
             {
@@ -149,59 +175,71 @@ public class RequestInGameManager
                     }
                 }
             }
-            return messages;
+            callback(messages);
         }
+        request.Dispose();
     }
-    public static async Task<bool> SendMessage(string thread_id, string text)
+    public static IEnumerator SendMessage(string thread_id, string text, Action<bool> callback)
     {
-        using (HttpClient client = await CreateHttpClient())
+        Dictionary<string, string> data = new()
         {
-            Dictionary<string, string> data = new()
-            {
-                { "thread_id", thread_id },
-                { "content", text }
-            };
-            var content = new StringContent(JsonConvert.SerializeObject(data.Wrap()), System.Text.Encoding.UTF8, "application/json");
-            var response = await client.PostAsync($"https://reports-api.supernewroles.com/sendMessage/{thread_id}", content);
-            if (response.IsSuccessStatusCode)
-            {
-                Logger.Info($"Message sent: {text}");
-                return true;
-            }
-            else
-            {
-                var errorDetail = await response.Content.ReadAsStringAsync();
-                Logger.Error($"Message failed: {response.StatusCode} - {errorDetail} - {text}");
-                return false;
-            }
-        }
-    }
-    public static async Task<bool> SendReport(string description, string title, string type, Dictionary<string, string> additionalInfo)
-    {
-        using (HttpClient client = await CreateHttpClient())
+            { "thread_id", thread_id },
+            { "content", text }
+        };
+        var bodyBytes = Encoding.UTF8.GetBytes(JsonConvert.SerializeObject(data.Wrap()));
+        string url = $"https://reports-api.supernewroles.com/sendMessage/{thread_id}";
+        var request = new UnityWebRequest(url, "POST")
         {
-            additionalInfo["message"] = description;
-            additionalInfo["title"] = title;
-            var content = new StringContent(JsonConvert.SerializeObject(additionalInfo.Wrap()), System.Text.Encoding.UTF8, "application/json");
-            var response = await client.PostAsync($"https://reports-api.supernewroles.com/sendRequest/{type}", content);
-            if (response.IsSuccessStatusCode)
-            {
-                Logger.Info($"Report sent: {title} - {description}");
-                return true;
-            }
-            else
-            {
-                var errorDetail = await response.Content.ReadAsStringAsync();
-                Logger.Error($"Report failed: {response.StatusCode} - {errorDetail} - {title} - {description}");
-                return false;
-            }
+            uploadHandler = new UploadHandlerRaw(bodyBytes),
+            downloadHandler = new DownloadHandlerBuffer()
+        };
+        string token = string.Empty;
+        yield return GetOrCreateToken(t => token = t);
+        request.SetRequestHeader("Content-Type", "application/json");
+        request.SetRequestHeader("Authorization", $"Bearer {token}");
+        yield return request.SendWebRequest();
+        bool success = false;
+        if (request.result == UnityWebRequest.Result.Success && request.responseCode >= 200 && request.responseCode < 300)
+        {
+            Logger.Info($"Message sent: {text}");
+            success = true;
         }
+        else
+        {
+            var errorDetail = request.error ?? request.downloadHandler.text;
+            Logger.Error($"Message failed: {request.responseCode} - {errorDetail} - {text}");
+        }
+        request.Dispose();
+        callback(success);
     }
-    private static async Task<HttpClient> CreateHttpClient(bool dontValidate = false)
+    public static IEnumerator SendReport(string description, string title, string type, Dictionary<string, string> additionalInfo, Action<bool> callback)
     {
-        var client = new HttpClient();
-        string token = dontValidate ? Token : await GetOrCreateToken();
-        client.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", token);
-        return client;
+        additionalInfo["message"] = description;
+        additionalInfo["title"] = title;
+        string data = JsonConvert.SerializeObject(additionalInfo.Wrap());
+        string url = $"https://reports-api.supernewroles.com/sendRequest/{type}";
+        var request = new UnityWebRequest(url, "POST")
+        {
+            uploadHandler = new UploadHandlerRaw(Encoding.UTF8.GetBytes(data)),
+            downloadHandler = new DownloadHandlerBuffer()
+        };
+        string token = string.Empty;
+        yield return GetOrCreateToken(t => token = t);
+        request.SetRequestHeader("Content-Type", "application/json");
+        request.SetRequestHeader("Authorization", $"Bearer {token}");
+        yield return request.SendWebRequest();
+        bool success = false;
+        if (request.result == UnityWebRequest.Result.Success && request.responseCode >= 200 && request.responseCode < 300)
+        {
+            Logger.Info($"Report sent: {title} - {description}");
+            success = true;
+        }
+        else
+        {
+            var errorDetail = request.error ?? request.downloadHandler.text;
+            Logger.Error($"Report failed: {request.responseCode} - {errorDetail} - {title} - {description}");
+        }
+        request.Dispose();
+        callback(success);
     }
 }

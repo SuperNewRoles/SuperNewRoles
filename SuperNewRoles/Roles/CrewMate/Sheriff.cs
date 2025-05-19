@@ -94,6 +94,7 @@ public class SheriffAbility : CustomKillButtonAbility, IAbilityCount
     public SheriffAbilityData SheriffAbilityData { get; set; }
     public override Sprite Sprite => AssetManager.GetAsset<Sprite>("SheriffKillButton.png");
     public override float DefaultTimer => SheriffAbilityData.KillCooldown;
+    public override ShowTextType showTextType => ShowTextType.ShowWithCount;
     public SheriffAbility(SheriffAbilityData sheriffAbilityData) : base(
         canKill: () => sheriffAbilityData.KillCount > 0,
         killCooldown: () => sheriffAbilityData.KillCooldown,

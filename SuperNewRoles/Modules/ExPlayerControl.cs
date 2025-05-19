@@ -19,7 +19,6 @@ public class ExPlayerControl
     private static List<ExPlayerControl> _exPlayerControls { get; } = new();
     public static IReadOnlyList<ExPlayerControl> ExPlayerControls => _exPlayerControls.AsReadOnly();
     private static ExPlayerControl[] _exPlayerControlsArray;
-    public static IReadOnlyCollection<ExPlayerControl> ExPlayerControlsArray => _exPlayerControlsArray;
     public PlayerControl Player { get; }
     public NetworkedPlayerInfo Data { get; }
     public PlayerPhysics MyPhysics => Player?.MyPhysics;
@@ -95,11 +94,22 @@ public class ExPlayerControl
         _hasAbilityCache[abilityName] = hasAbility;
         return hasAbility;
     }
+    public bool HasAbility<T>() where T : AbilityBase
+    {
+        if (_hasAbilityCache.TryGetValue(typeof(T).Name, out bool hasAbility))
+        {
+            return hasAbility;
+        }
+
+        hasAbility = PlayerAbilities.Any(x => x is T);
+        _hasAbilityCache[typeof(T).Name] = hasAbility;
+        return hasAbility;
+    }
     public bool IsTaskComplete()
     {
         (int completed, int total) = ModHelpers.TaskCompletedData(Data);
         if (_customTaskAbility == null) return completed >= total;
-        var (isTaskTrigger, all) = _customTaskAbility.CheckIsTaskTrigger() ?? (false, total);
+        var (isTaskTrigger, countTask, all) = _customTaskAbility.CheckIsTaskTrigger() ?? (false, false, total);
         return isTaskTrigger && completed >= (all ?? total);
     }
     public void ResetKillCooldown()
@@ -198,6 +208,7 @@ public class ExPlayerControl
     private void DetachOldRole(RoleId roleId)
     {
         List<AbilityBase> abilitiesToDetach = new();
+        List<AbilityParentRole> abilitiesToDetachParentRole = new();
         foreach (var ability in PlayerAbilities)
         {
             if (ability.Parent == null) continue;
@@ -208,6 +219,7 @@ public class ExPlayerControl
                 {
                     case AbilityParentRole parentRole when parentRole.ParentRole.Role == roleId:
                         abilitiesToDetach.Add(ability);
+                        abilitiesToDetachParentRole.Add(parentRole);
                         parent = null;
                         break;
                     case AbilityParentAbility parentAbility:
@@ -220,9 +232,9 @@ public class ExPlayerControl
             }
         }
         foreach (var ability in abilitiesToDetach)
-        {
             DetachAbility(ability.AbilityId);
-        }
+        foreach (var parentRole in abilitiesToDetachParentRole)
+            parentRole.Player = null;
         if (AmOwner)
             SuperTrophyManager.DetachTrophy(abilitiesToDetach);
     }
@@ -301,10 +313,6 @@ public class ExPlayerControl
             if (ability != null && ability.Parent != null && ability.Parent is not AbilityParentPlayer)
             {
                 myAbilities.Add((ability, ability.AbilityId));
-                PlayerAbilities.Remove(ability);
-                PlayerAbilitiesDictionary.Remove(ability.AbilityId);
-                _abilityCache.Remove(ability.GetType().Name);
-                _hasAbilityCache.Remove(ability.GetType().Name);
             }
         }
 
@@ -313,10 +321,6 @@ public class ExPlayerControl
             if (ability != null && ability.Parent != null && ability.Parent is not AbilityParentPlayer)
             {
                 targetAbilities.Add((ability, ability.AbilityId));
-                target.PlayerAbilities.Remove(ability);
-                target.PlayerAbilitiesDictionary.Remove(ability.AbilityId);
-                target._abilityCache.Remove(ability.GetType().Name);
-                target._hasAbilityCache.Remove(ability.GetType().Name);
             }
         }
 
@@ -349,28 +353,16 @@ public class ExPlayerControl
         foreach (var ability in myAbilities)
         {
             var currentParent = ability.ability.Parent;
-            while (currentParent != null && currentParent is AbilityParentAbility)
-            {
-                currentParent = (currentParent as AbilityParentAbility).ParentAbility.Parent;
-            }
-            if (currentParent is AbilityParentRole parentRole)
-                (currentParent as AbilityParentRole).Player = target;
-            if (currentParent is AbilityParentModifier parentModifier)
-                (currentParent as AbilityParentModifier).Player = target;
+            if (currentParent is AbilityParentAbility)
+                continue;
             target.AttachAbility(ability.ability, currentParent);
         }
         foreach (var ability in targetAbilities)
         {
             var currentParent = ability.ability.Parent;
-            while (currentParent != null && currentParent is AbilityParentAbility)
-            {
-                currentParent = (currentParent as AbilityParentAbility).ParentAbility.Parent;
-            }
-            if (currentParent is AbilityParentRole parentRole)
-                (currentParent as AbilityParentRole).Player = Player;
-            else if (currentParent is AbilityParentModifier parentModifier)
-                (currentParent as AbilityParentModifier).Player = Player;
-            target.AttachAbility(ability.ability, currentParent);
+            if (currentParent is AbilityParentAbility)
+                continue;
+            AttachAbility(ability.ability, currentParent);
         }
         // 名前情報を更新
         NameText.UpdateAllNameInfo();
@@ -451,6 +443,8 @@ public class ExPlayerControl
         => !IsDead();
     public bool IsTaskTriggerRole()
         => _customTaskAbility != null ? _customTaskAbility.CheckIsTaskTrigger()?.isTaskTrigger ?? IsCrewmate() : IsCrewmate();
+    public bool IsCountTask()
+        => _customTaskAbility != null ? _customTaskAbility.CheckIsTaskTrigger()?.countTask ?? IsCrewmate() : IsCrewmate();
     public (int complete, int all) GetAllTaskForShowProgress()
     {
         (int complete, int all) result = ModHelpers.TaskCompletedData(Data);
@@ -458,7 +452,7 @@ public class ExPlayerControl
         {
             return result;
         }
-        var (isTaskTrigger, all) = _customTaskAbility.CheckIsTaskTrigger() ?? (false, result.all);
+        var (isTaskTrigger, countTask, all) = _customTaskAbility.CheckIsTaskTrigger() ?? (false, false, result.all);
         return (result.complete, all ?? result.all);
     }
     public bool CanUseVent()
@@ -472,6 +466,14 @@ public class ExPlayerControl
     public AbilityBase GetAbility(ulong abilityId)
     {
         return PlayerAbilitiesDictionary.TryGetValue(abilityId, out var ability) ? ability : null;
+    }
+    public bool TryGetAbility<T>(out T result) where T : AbilityBase
+    {
+        result = null;
+        if (!_abilityCache.TryGetValue(typeof(T).Name, out var ability))
+            return false;
+        result = (T)ability;
+        return true;
     }
     public T GetAbility<T>(ulong abilityId) where T : AbilityBase
     {
@@ -518,10 +520,9 @@ public class ExPlayerControl
     }
     public void DetachAbility(ulong abilityId)
     {
-        if (PlayerAbilitiesDictionary.TryGetValue(abilityId, out var ability))
-        {
-            ability.Detach();
-        }
+        if (!PlayerAbilitiesDictionary.TryGetValue(abilityId, out var ability))
+            return;
+        ability.Detach();
         SuperTrophyManager.DetachTrophy(ability);
         switch (ability)
         {
@@ -552,6 +553,10 @@ public class ExPlayerControl
     public T GetAbility<T>() where T : AbilityBase
     {
         return _abilityCache.TryGetValue(typeof(T).Name, out var ability) ? ability as T : null;
+    }
+    public List<T> GetAbilities<T>() where T : AbilityBase
+    {
+        return PlayerAbilities.Where(x => x is T).Cast<T>().ToList();
     }
     public override string ToString()
     {

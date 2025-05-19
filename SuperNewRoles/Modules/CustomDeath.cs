@@ -3,6 +3,7 @@ using System.Linq;
 using SuperNewRoles.Events;
 using SuperNewRoles.Events.PCEvents;
 using UnityEngine;
+using UnityEngine.Rendering;
 
 namespace SuperNewRoles.Modules;
 
@@ -43,6 +44,18 @@ public static class CustomDeathExtensions
                 source.Player.MurderPlayer(player.Player, MurderResultFlags.Succeeded);
                 FinalStatusManager.SetFinalStatus(player, FinalStatus.Kill);
                 break;
+            case CustomDeathType.KilLWithoutDeadbodyAndTeleport:
+                if (source == null)
+                    throw new Exception("Source is null");
+                Vector2 pos = player.Player.GetTruePosition();
+                source.Player.MurderPlayer(player.Player, MurderResultFlags.Succeeded);
+                FinalStatusManager.SetFinalStatus(player, FinalStatus.Kill);
+                DeadBody deadBody = GameObject.FindObjectsOfType<DeadBody>().FirstOrDefault(x => x.ParentId == player.PlayerId);
+                if (deadBody != null)
+                    GameObject.Destroy(deadBody.gameObject);
+                player.Player.NetTransform.SnapTo(pos);
+                player.Player.MyPhysics.body.velocity = Vector2.zero;
+                break;
             case CustomDeathType.Suicide:
                 player.Player.MurderPlayer(player.Player, MurderResultFlags.Succeeded);
                 FinalStatusManager.SetFinalStatus(player, FinalStatus.Suicide);
@@ -53,9 +66,9 @@ public static class CustomDeathExtensions
                 break;
             case CustomDeathType.LoversSuicideMurderWithoutDeadbody:
                 player.Player.MurderPlayer(player.Player, MurderResultFlags.Succeeded);
-                DeadBody deadBody = GameObject.FindObjectsOfType<DeadBody>().FirstOrDefault(x => x.ParentId == player.PlayerId);
-                if (deadBody != null)
-                    GameObject.Destroy(deadBody.gameObject);
+                DeadBody deadBody2 = GameObject.FindObjectsOfType<DeadBody>().FirstOrDefault(x => x.ParentId == player.PlayerId);
+                if (deadBody2 != null)
+                    GameObject.Destroy(deadBody2.gameObject);
                 FinalStatusManager.SetFinalStatus(player, FinalStatus.LoversSuicide);
                 break;
             case CustomDeathType.WaveCannon:
@@ -63,9 +76,9 @@ public static class CustomDeathExtensions
                 FinalStatusManager.SetFinalStatus(player, FinalStatus.WaveCannon);
                 break;
             case CustomDeathType.Samurai:
-                var pos = player.Player.GetTruePosition();
+                var pos2 = player.Player.GetTruePosition();
                 player.Player.MurderPlayer(player.Player, MurderResultFlags.Succeeded);
-                player.Player.NetTransform.SnapTo(pos);
+                player.Player.NetTransform.SnapTo(pos2);
                 player.Player.MyPhysics.body.velocity = Vector2.zero;
                 FinalStatusManager.SetFinalStatus(player, FinalStatus.Samurai);
                 break;
@@ -83,7 +96,6 @@ public static class CustomDeathExtensions
                 break;
             case CustomDeathType.Push:
                 player.Player.Exiled();
-                ExileEvent.Invoke(player);
                 FinalStatusManager.SetFinalStatus(player, FinalStatus.Push);
                 break;
             case CustomDeathType.Ignite:
@@ -93,6 +105,21 @@ public static class CustomDeathExtensions
             case CustomDeathType.FalseCharges:
                 source.Player.MurderPlayer(player.Player, MurderResultFlags.Succeeded);
                 FinalStatusManager.SetFinalStatus(player, FinalStatus.FalseCharges);
+                break;
+            case CustomDeathType.LaunchByRocket:
+                player.Player.Exiled();
+                FinalStatusManager.SetFinalStatus(player, FinalStatus.LaunchByRocket);
+                break;
+            case CustomDeathType.VampireKill:
+                var pos3 = source.Player.transform.position;
+                source.Player.MurderPlayer(player.Player, MurderResultFlags.Succeeded);
+                FinalStatusManager.SetFinalStatus(player, FinalStatus.VampireKill);
+                source.Player.transform.position = pos3;
+                source.Player.MyPhysics.body.velocity = Vector2.zero;
+                break;
+            case CustomDeathType.VampireWithDead:
+                player.Player.MurderPlayer(player.Player, MurderResultFlags.Succeeded);
+                FinalStatusManager.SetFinalStatus(player, FinalStatus.VampireWithDead);
                 break;
             default:
                 throw new Exception($"Invalid death type: {deathType}");
@@ -126,4 +153,8 @@ public enum CustomDeathType
     FalseCharges,
     LoversSuicide,
     LoversSuicideMurderWithoutDeadbody,
+    LaunchByRocket,
+    VampireKill,
+    VampireWithDead,
+    KilLWithoutDeadbodyAndTeleport,
 }

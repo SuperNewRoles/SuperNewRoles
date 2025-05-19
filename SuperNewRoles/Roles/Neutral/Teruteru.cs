@@ -64,17 +64,15 @@ public class TeruteruAbility : AbilityBase
         _data = data;
     }
 
-    public override void Attach(PlayerControl player, ulong abilityId, AbilityParentBase parent)
+    public override void AttachToAlls()
     {
-        base.Attach(player, abilityId, parent);
         // ベント使用可能設定
         _ventAbility = new CustomVentAbility(() => _data.CanUseVent);
-        _customTaskAbility = new CustomTaskAbility(() => (_data.RequireTaskCompletion, _data.RequiredTaskCount), _data.CustomTaskCount ? _data.TeruteruTaskOption : null);
+        _customTaskAbility = new CustomTaskAbility(() => (_data.RequireTaskCompletion, false, _data.RequiredTaskCount), _data.CustomTaskCount ? _data.TeruteruTaskOption : null);
 
-        ExPlayerControl exPlayer = (ExPlayerControl)player;
-        AbilityParentAbility parentAbility = new(this);
-        exPlayer.AttachAbility(_ventAbility, parentAbility);
-        exPlayer.AttachAbility(_customTaskAbility, parentAbility);
+        ExPlayerControl exPlayer = Player;
+        exPlayer.AttachAbility(_ventAbility, new AbilityParentAbility(this));
+        exPlayer.AttachAbility(_customTaskAbility, new AbilityParentAbility(this));
 
         // イベントリスナーを設定
         _playerExiledListener = ExileEvent.Instance.AddListener(OnPlayerExiled);
@@ -102,18 +100,14 @@ public class TeruteruAbility : AbilityBase
             }
 
             // 勝利条件を満たした場合、ゲーム終了
-            GameManager.Instance.RpcEndGame((GameOverReason)CustomGameOverReason.TeruteruWin, false);
+            EndGamer.RpcEndGameWithWinner(CustomGameOverReason.TeruteruWin, WinType.SingleNeutral, [Player], Palette.CrewmateBlue, "Teruteru");
         }
     }
 
-    public override void DetachToLocalPlayer()
+    public override void DetachToAlls()
     {
         // イベントリスナーを削除
-        ExileEvent.Instance.RemoveListener(_playerExiledListener);
-    }
-
-    public override void AttachToLocalPlayer()
-    {
+        _playerExiledListener?.RemoveListener();
     }
 }
 

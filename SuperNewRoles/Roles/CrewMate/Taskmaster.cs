@@ -22,7 +22,7 @@ class Taskmaster : RoleBase<Taskmaster>
     public override Color32 RoleColor { get; } = new(64, 181, 255, 255);
     public override List<Func<AbilityBase>> Abilities { get; } = [
         () => new CustomTaskAbility(
-            () => (true, TaskmasterEnableIndividualTasks ? TaskmasterTaskCount.Total : null),
+            () => (true, TaskmasterEnableIndividualTasks ? true : null, TaskmasterEnableIndividualTasks ? TaskmasterTaskCount.Total : null),
             TaskmasterEnableIndividualTasks ? TaskmasterTaskCount : null
     )];
 
@@ -63,9 +63,10 @@ public static class TaskmasterPatch
     public static void Postfix(Console __instance)
     {
         if (ExPlayerControl.LocalPlayer.Role != RoleId.Taskmaster) return;
-        if (__instance.TaskTypes.FirstOrDefault() is TaskTypes.FixLights or TaskTypes.FixComms or TaskTypes.ResetReactor or TaskTypes.RestoreOxy)
+        if (ModHelpers.IsSabotage(__instance.TaskTypes.FirstOrDefault()))
         {
-            Logger.Info("SABOTAGEEEEEEE");
+            ModHelpers.RpcFixingSabotage(__instance.TaskTypes.FirstOrDefault());
+            Minigame.Instance.Close();
         }
         else
         {

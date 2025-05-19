@@ -17,7 +17,7 @@ class SatsumaAndImo : RoleBase<SatsumaAndImo>
     public override Color32 RoleColor => new(153, 0, 68, byte.MaxValue);
     public override List<Func<AbilityBase>> Abilities => new() {
         () => new SatsumaAndImoAbility(),
-        () => new CustomTaskAbility(() => (false, 0))
+        () => new CustomTaskAbility(() => (false, null, 0))
     };
 
     public override QuoteMod QuoteMod => QuoteMod.SuperNewRoles;

@@ -71,14 +71,15 @@ public class CustomHatLayer : MonoBehaviour
 
     public void SetHat(string hatId, int color)
     {
-        Logger.Info($"SetHat: {hatId}, {color}");
         if (DestroyableSingleton<HatManager>.InstanceExists)
         {
             ICosmeticData hat;
             if (hatId.StartsWith(CustomCosmeticsLoader.ModdedPrefix))
                 hat = CustomCosmeticsLoader.GetModdedHatData(hatId);
             else
-                hat = new CosmeticDataWrapperHat(DestroyableSingleton<HatManager>.Instance.GetHatById(hatId));
+                hat = new CosmeticDataWrapperHat(FastDestroyableSingleton<HatManager>.Instance.GetHatById(hatId));
+            if (hat == null)
+                hat = new CosmeticDataWrapperHat(FastDestroyableSingleton<HatManager>.Instance.GetHatById(HatData.EmptyId));
             SetHat(hat, color);
         }
     }
@@ -91,6 +92,7 @@ public class CustomHatLayer : MonoBehaviour
             FrontLayer.sprite = null;
         }
         CustomCosmeticHat = hat as ICustomCosmeticHat;
+        Logger.Info($"SetHat: {hat.ProdId}");
         SetHat(color);
     }
 

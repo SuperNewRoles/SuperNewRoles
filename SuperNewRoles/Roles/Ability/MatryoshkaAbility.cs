@@ -28,7 +28,7 @@ public class MatryoshkaAbility : CustomButtonBase, IButtonEffect, IAbilityCount
 
     public bool isEffectActive { get; set; }
 
-    public Action OnEffectEnds => () => RpcSetMatryoshkaDeadBody(this, null, false);
+    public Action OnEffectEnds => () => RpcSetMatryoshkaDeadBody(this, null, false, Player.transform.position);
     public float EffectDuration => Data.WearTime;
     public virtual bool effectCancellable => true;
 
@@ -73,7 +73,7 @@ public class MatryoshkaAbility : CustomButtonBase, IButtonEffect, IAbilityCount
 
     public override void DetachToAlls()
     {
-        UnlockMatryoshka(this);
+        UnlockMatryoshka(this, Player.transform.position);
         base.DetachToAlls();
         _fixedUpdateListener?.RemoveListener();
         _dieEventListener?.RemoveListener();
@@ -91,13 +91,13 @@ public class MatryoshkaAbility : CustomButtonBase, IButtonEffect, IAbilityCount
     {
         if (!Player.AmOwner || data.player?.PlayerId != Player.PlayerId) return;
         if (currentWearingBody != null)
-            RpcSetMatryoshkaDeadBody(this, null, false);
+            RpcSetMatryoshkaDeadBody(this, null, false, Player.transform.position);
     }
 
     private void OnCalledMeeting(CalledMeetingEventData data)
     {
         if (Player.AmOwner && currentWearingBody != null)
-            RpcSetMatryoshkaDeadBody(this, null, false);
+            RpcSetMatryoshkaDeadBody(this, null, false, Vector3.zero);
     }
     public override void OnClick()
     {
@@ -109,14 +109,14 @@ public class MatryoshkaAbility : CustomButtonBase, IButtonEffect, IAbilityCount
         if (isWearing)
         {
             // 着用している死体を脱ぐ
-            RpcSetMatryoshkaDeadBody(this, null, false);
+            RpcSetMatryoshkaDeadBody(this, null, false, localPlayer.transform.position);
         }
         else
         {
             // 新しい死体を着る
             DeadBody targetBody = GetBodyByPlayerId(targetPlayer.PlayerId);
             if (targetBody != null)
-                RpcSetMatryoshkaDeadBody(this, targetPlayer, true);
+                RpcSetMatryoshkaDeadBody(this, targetPlayer, true, Vector3.zero);
             Counter++;
             this.UseAbilityCount();
         }
@@ -168,7 +168,7 @@ public class MatryoshkaAbility : CustomButtonBase, IButtonEffect, IAbilityCount
         return null;
     }
 
-    private static void UnlockMatryoshka(MatryoshkaAbility source)
+    private static void UnlockMatryoshka(MatryoshkaAbility source, Vector3 position)
     {
         DeadBody deadBody = source.currentWearingBody;
         // 着用解除
@@ -187,18 +187,19 @@ public class MatryoshkaAbility : CustomButtonBase, IButtonEffect, IAbilityCount
             }
 
             deadBody.myCollider.enabled = true;
+            deadBody.transform.position = position;
         }
         source.currentWearingBody = null;
     }
 
     [CustomRPC]
-    public static void RpcSetMatryoshkaDeadBody(MatryoshkaAbility source, ExPlayerControl target, bool isWearing)
+    public static void RpcSetMatryoshkaDeadBody(MatryoshkaAbility source, ExPlayerControl target, bool isWearing, Vector3 position)
     {
         if (source == null) return;
 
         if (!isWearing)
         {
-            UnlockMatryoshka(source);
+            UnlockMatryoshka(source, position);
         }
         else
         {
@@ -243,7 +244,7 @@ public class MatryoshkaAbility : CustomButtonBase, IButtonEffect, IAbilityCount
         // 会議終了時に自動的に死体を脱ぐ
         if (currentWearingBody != null)
         {
-            RpcSetMatryoshkaDeadBody(this, null, false);
+            RpcSetMatryoshkaDeadBody(this, null, false, Vector3.zero);
         }
     }
 }

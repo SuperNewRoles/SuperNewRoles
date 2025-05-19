@@ -5,6 +5,7 @@ using System.IO;
 using System.Linq;
 using System.Reflection;
 using System.Security.Cryptography;
+using AmongUs.GameOptions;
 using HarmonyLib;
 using SuperNewRoles.CustomOptions;
 using SuperNewRoles.CustomOptions.Categories;
@@ -59,6 +60,23 @@ public static class CustomOptionManager
             if (!AmongUsClient.Instance.AmHost) return;
             RpcSyncOptionsAll();
             RoleOptionManager.RpcSyncRoleOptionsAll();
+        }
+    }
+    [HarmonyPatch(typeof(AmongUsClient), nameof(AmongUsClient.Awake))]
+    public static class FixMaxImpostorsPatch
+    {
+        public static void Postfix()
+        {
+            // 0を150個
+            int[] MaxImpostors = new int[150];
+            for (int i = 0; i < 150; i++)
+                MaxImpostors[i] = 0;
+            NormalGameOptionsV07.MaxImpostors = MaxImpostors;
+            NormalGameOptionsV08.MaxImpostors = MaxImpostors;
+            NormalGameOptionsV09.MaxImpostors = MaxImpostors;
+            HideNSeekGameOptionsV07.MaxImpostors = MaxImpostors;
+            HideNSeekGameOptionsV08.MaxImpostors = MaxImpostors;
+            HideNSeekGameOptionsV09.MaxImpostors = MaxImpostors;
         }
     }
     [CustomRPC]
@@ -124,7 +142,7 @@ public static class CustomOptionManager
                 {
                     if (!fieldNames.Add(field.Name))
                         throw new InvalidOperationException($"Category field name is duplicated: {field.Name}");
-                    var category = new CustomOptionCategory(field.Name, isModifier: field.GetCustomAttribute<ModifierAttribute>() != null);
+                    var category = new CustomOptionCategory(field.Name, isModifier: field.GetCustomAttribute<ModifierAttribute>() != null, hasModifierAssignFilter: field.GetCustomAttribute<AssignFilterAttribute>() != null);
                     field.SetValue(null, category);
                     CategoryByFieldName[field.Name] = category;
                     continue;
@@ -542,6 +560,7 @@ public static class RoleOptionManager
         }
         public CustomOption[] Options { get; }
         public Color32 RoleColor { get; }
+        public List<RoleId> AssignFilterList { get; set; } = new();
         public ModifierRoleOption(ModifierRoleId modifierRoleId, byte numberOfCrews, int percentage, CustomOption[] options)
         {
             ModifierRoleId = modifierRoleId;
@@ -553,6 +572,11 @@ public static class RoleOptionManager
             if (roleBase == null)
                 throw new Exception($"Role {modifierRoleId} not found");
             RoleColor = roleBase?.RoleColor ?? new Color32(255, 255, 255, 255);
+            // AssignFilterが有効な場合は初期値をセット
+            if (roleBase != null && roleBase.AssignFilter)
+            {
+                AssignFilterList = new List<RoleId>();
+            }
         }
 
         public void UpdateValues(byte numberOfCrews, int percentage)
@@ -996,7 +1020,7 @@ public static class CustomOptionSaver
     static CustomOptionSaver()
     {
         Storage = new FileOptionStorage(
-            new DirectoryInfo("./SuperNewRolesNext/SaveData/"),
+            new DirectoryInfo(SuperNewRolesPlugin.BaseDirectory + "/SaveData/"),
             "Options.data",
             "PresetOptions_"
         );
@@ -1007,15 +1031,59 @@ public static class CustomOptionSaver
         try
         {
             Storage.EnsureStorageExists();
-            ReadAndApplyOptions();
+            // ReadAndApplyLoadedOptionsAndGetPresetIdから、読み込み成功の可否と、成功した場合のプリセット番号を取得
+            var (loadSuccessful, loadedPresetId) = ReadAndApplyLoadedOptionsAndGetPresetId();
+            if (loadSuccessful)
+            {
+                CurrentPreset = loadedPresetId; // 正常にロードできた場合のみCurrentPresetを更新
+            }
+
+            // presetNamesのロードは、Storage.LoadOptionDataが呼ばれた後に行う必要がある
+            // なぜなら、FileOptionStorage.LoadOptionData内でpresetNamesが設定されるため
             LoadPresetNames();
             IsLoaded = true;
         }
         catch (Exception ex)
         {
             Logger.Error($"Option loading failed: {ex.Message}");
+            IsLoaded = true; // 元のコードに合わせてtrueにするが、falseの方が安全かもしれない
+        }
+    }
+
+    // 元の ReadAndApplyOptions を改名し、戻り値で成功/失敗と読み込んだプリセットIDを返す
+    // (bool success, int loadedPresetId)
+    private static (bool, int) ReadAndApplyLoadedOptionsAndGetPresetId()
+    {
+        var (optionDataSuccess, version, presetIdFromOptionData) = Storage.LoadOptionData();
+
+        if (!optionDataSuccess) // LoadOptionData自体が失敗 (ファイルなし、チェックサムエラーなど)
+        {
+            Logger.Warning($"Loading OptionData failed. Using default settings.");
+            ApplyLoadedOptions(new Dictionary<string, byte>()); // 全オプションをデフォルトに
+            // presetNames は Storage.LoadOptionData 内でクリアされているはず
+            return (false, 0); // 失敗。返すプリセットIDは便宜上0 (CurrentPresetの初期値と同じ)
+        }
+        if (version != CurrentVersion) // バージョン不一致
+        {
+            Logger.Warning($"Invalid option data version: {version}. Expected: {CurrentVersion}. Using default settings.");
+            ApplyLoadedOptions(new Dictionary<string, byte>()); // 全オプションをデフォルトに
+            // presetNames は Storage.LoadOptionData 内で読み込めているかもしれないが、バージョンが違うので使わない方が安全か。
+            // Storage.LoadOptionData は version が違っても presetIdFromOptionData と presetNames を返すが、
+            // ここではバージョン不一致の場合はプリセットデータも読まず、失敗扱いとする。
+            return (false, presetIdFromOptionData); // 失敗。読み込もうとしたプリセットIDは返す。
         }
 
+        // Options.data は正常に読み込めた。次に、記録されていたプリセットのデータを読み込む。
+        var (presetDataSuccess, options) = Storage.LoadPresetData(presetIdFromOptionData);
+        if (!presetDataSuccess)
+        {
+            Logger.Warning($"Preset data loading failed for preset {presetIdFromOptionData}. Using default settings.");
+            ApplyLoadedOptions(new Dictionary<string, byte>()); // 該当プリセットのデータが読めなかったのでデフォルトに
+            return (false, presetIdFromOptionData); // 失敗。読み込もうとしたプリセットIDは返す。
+        }
+
+        ApplyLoadedOptions(options); // 正常に読み込めたオプションを適用
+        return (true, presetIdFromOptionData); // 成功。読み込んだプリセットIDを返す。
     }
 
     private static void LoadPresetNames()
@@ -1046,25 +1114,6 @@ public static class CustomOptionSaver
         {
             Logger.Error($"Preset loading failed: {ex.Message}");
         }
-    }
-
-    private static void ReadAndApplyOptions()
-    {
-        var (success, version, preset) = Storage.LoadOptionData();
-        if (!success || version != CurrentVersion)
-        {
-            Logger.Warning($"Invalid option data version: {version}. Using default settings.");
-            return;
-        }
-
-        var (optionsSuccess, options) = Storage.LoadPresetData(preset);
-        if (!optionsSuccess)
-        {
-            Logger.Warning("Preset data loading failed. Using default settings.");
-            return;
-        }
-
-        ApplyLoadedOptions(options);
     }
 
     private static void ApplyLoadedOptions(Dictionary<string, byte> options)
@@ -1143,6 +1192,7 @@ public class FileOptionStorage : IOptionStorage
         {
             if (!File.Exists(_optionFileName))
             {
+                this.presetNames.Clear(); // ファイルがない場合は内部のpresetNamesもクリア
                 return (false, 0, 0);
             }
 
@@ -1152,19 +1202,20 @@ public class FileOptionStorage : IOptionStorage
             byte version = reader.ReadByte();
             if (!ValidateChecksum(reader))
             {
+                this.presetNames.Clear(); // チェックサム不正でも内部のpresetNamesをクリア
                 return (false, version, 0);
             }
 
             int preset = reader.ReadInt32();
 
-            // プリセット名を読み込む
-            presetNames.Clear();
+            // プリセット名を読み込む (this.presetNames を更新)
+            this.presetNames.Clear();
             int nameCount = reader.ReadInt32();
             for (int i = 0; i < nameCount; i++)
             {
                 int presetId = reader.ReadInt32();
                 string name = reader.ReadString();
-                presetNames[presetId] = name;
+                this.presetNames[presetId] = name;
             }
 
             return (true, version, preset);
@@ -1191,79 +1242,22 @@ public class FileOptionStorage : IOptionStorage
 
             Dictionary<string, byte> options = ReadOptions(reader);
 
-            // RoleOptionの情報が存在すれば読み込む
+            // RoleOption, Exclusivity, ModifierRole, GhostRoleの情報を読み込む
             if (fileStream.Position < fileStream.Length)
             {
-                int roleOptionCount = reader.ReadInt32();
-                for (int i = 0; i < roleOptionCount; i++)
-                {
-                    string roleIdStr = reader.ReadString();
-                    byte numberOfCrews = reader.ReadByte();
-                    int percentage = reader.ReadInt32();
-
-                    // RoleIdの文字列から RoleId 列挙体へ変換
-                    if (Enum.TryParse(typeof(RoleId), roleIdStr, out var roleIdObj) && roleIdObj is RoleId roleId)
-                    {
-                        var roleOption = RoleOptionManager.RoleOptions.FirstOrDefault(x => x.RoleId == roleId);
-                        if (roleOption != null)
-                        {
-                            roleOption.NumberOfCrews = numberOfCrews;
-                            roleOption.Percentage = percentage;
-                        }
-                    }
-                }
-
-                // 排他設定の読み込み
+                LoadRoleOptionsData(reader);
                 if (fileStream.Position < fileStream.Length)
                 {
-                    int exclusivityCount = reader.ReadInt32();
-                    RoleOptionManager.ClearExclusivitySettings();
-                    for (int i = 0; i < exclusivityCount; i++)
-                    {
-                        int maxAssign = reader.ReadInt32();
-                        int rolesCount = reader.ReadInt32();
-                        string[] roles = new string[rolesCount];
-                        for (int j = 0; j < rolesCount; j++)
-                        {
-                            roles[j] = reader.ReadString();
-                        }
-                        RoleOptionManager.AddExclusivitySetting(maxAssign, roles);
-                    }
+                    LoadExclusivitySettingsData(reader);
                     if (fileStream.Position < fileStream.Length)
                     {
-                        int modifierRoleCount = reader.ReadInt32();
-                        for (int i = 0; i < modifierRoleCount; i++)
-                        {
-                            string modifierRoleIdStr = reader.ReadString();
-                            byte numberOfCrews = reader.ReadByte();
-                            int percentage = reader.ReadInt32();
-                            if (Enum.TryParse(typeof(ModifierRoleId), modifierRoleIdStr, out var modifierRoleIdObj) && modifierRoleIdObj is ModifierRoleId modifierRoleId)
-                            {
-                                var modifierRoleOption = RoleOptionManager.ModifierRoleOptions.FirstOrDefault(x => x.ModifierRoleId == modifierRoleId);
-                                if (modifierRoleOption != null)
-                                {
-                                    modifierRoleOption.NumberOfCrews = numberOfCrews;
-                                    modifierRoleOption.Percentage = percentage;
-                                }
-                            }
-                        }
+                        LoadModifierRoleOptionsData(reader);
                         if (fileStream.Position < fileStream.Length)
                         {
-                            int ghostRoleCount = reader.ReadInt32();
-                            for (int i = 0; i < ghostRoleCount; i++)
+                            LoadGhostRoleOptionsData(reader);
+                            if (fileStream.Position < fileStream.Length)
                             {
-                                string ghostRoleIdStr = reader.ReadString();
-                                byte numberOfCrews = reader.ReadByte();
-                                int percentage = reader.ReadInt32();
-                                if (Enum.TryParse(typeof(GhostRoleId), ghostRoleIdStr, out var ghostRoleIdObj) && ghostRoleIdObj is GhostRoleId ghostRoleId)
-                                {
-                                    var ghostRoleOption = RoleOptionManager.GhostRoleOptions.FirstOrDefault(x => x.RoleId == ghostRoleId);
-                                    if (ghostRoleOption != null)
-                                    {
-                                        ghostRoleOption.NumberOfCrews = numberOfCrews;
-                                        ghostRoleOption.Percentage = percentage;
-                                    }
-                                }
+                                LoadCategoryAssignFilterData(reader);
                             }
                         }
                     }
@@ -1273,9 +1267,137 @@ public class FileOptionStorage : IOptionStorage
         }
     }
 
+    private void LoadRoleOptionsData(BinaryReader reader)
+    {
+        int roleOptionCount = reader.ReadInt32();
+        for (int i = 0; i < roleOptionCount; i++)
+        {
+            string roleIdStr = reader.ReadString();
+            byte numberOfCrews = reader.ReadByte();
+            int percentage = reader.ReadInt32();
+
+            if (Enum.TryParse(typeof(RoleId), roleIdStr, out var roleIdObj) && roleIdObj is RoleId roleId)
+            {
+                var roleOption = RoleOptionManager.RoleOptions.FirstOrDefault(x => x.RoleId == roleId);
+                if (roleOption != null)
+                {
+                    roleOption.NumberOfCrews = numberOfCrews;
+                    roleOption.Percentage = percentage;
+                }
+            }
+        }
+    }
+
+    private void LoadExclusivitySettingsData(BinaryReader reader)
+    {
+        int exclusivityCount = reader.ReadInt32();
+        RoleOptionManager.ClearExclusivitySettings();
+        for (int i = 0; i < exclusivityCount; i++)
+        {
+            int maxAssign = reader.ReadInt32();
+            int rolesCount = reader.ReadInt32();
+            string[] roles = new string[rolesCount];
+            for (int j = 0; j < rolesCount; j++)
+            {
+                roles[j] = reader.ReadString();
+            }
+            RoleOptionManager.AddExclusivitySetting(maxAssign, roles);
+        }
+    }
+
+    private void LoadModifierRoleOptionsData(BinaryReader reader)
+    {
+        int modifierRoleCount = reader.ReadInt32();
+        for (int i = 0; i < modifierRoleCount; i++)
+        {
+            string modifierRoleIdStr = reader.ReadString();
+            byte numberOfCrews = reader.ReadByte();
+            int percentage = reader.ReadInt32();
+            if (Enum.TryParse(typeof(ModifierRoleId), modifierRoleIdStr, out var modifierRoleIdObj) && modifierRoleIdObj is ModifierRoleId modifierRoleId)
+            {
+                var modifierRoleOption = RoleOptionManager.ModifierRoleOptions.FirstOrDefault(x => x.ModifierRoleId == modifierRoleId);
+                if (modifierRoleOption != null)
+                {
+                    modifierRoleOption.NumberOfCrews = numberOfCrews;
+                    modifierRoleOption.Percentage = percentage;
+                    // AssignFilterListの復元
+                    var roleBase = CustomRoleManager.AllModifiers.FirstOrDefault(r => r.ModifierRole == modifierRoleId);
+                    if (roleBase != null && roleBase.AssignFilter)
+                    {
+                        int assignFilterCount = reader.ReadInt32();
+                        modifierRoleOption.AssignFilterList.Clear();
+                        for (int j = 0; j < assignFilterCount; j++)
+                        {
+                            string roleIdStr = reader.ReadString();
+                            if (Enum.TryParse(typeof(RoleId), roleIdStr, out var roleIdObj) && roleIdObj is RoleId roleId)
+                            {
+                                modifierRoleOption.AssignFilterList.Add(roleId);
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    private void LoadGhostRoleOptionsData(BinaryReader reader)
+    {
+        int ghostRoleCount = reader.ReadInt32();
+        for (int i = 0; i < ghostRoleCount; i++)
+        {
+            string ghostRoleIdStr = reader.ReadString();
+            byte numberOfCrews = reader.ReadByte();
+            int percentage = reader.ReadInt32();
+            if (Enum.TryParse(typeof(GhostRoleId), ghostRoleIdStr, out var ghostRoleIdObj) && ghostRoleIdObj is GhostRoleId ghostRoleId)
+            {
+                var ghostRoleOption = RoleOptionManager.GhostRoleOptions.FirstOrDefault(x => x.RoleId == ghostRoleId);
+                if (ghostRoleOption != null)
+                {
+                    ghostRoleOption.NumberOfCrews = numberOfCrews;
+                    ghostRoleOption.Percentage = percentage;
+                }
+            }
+        }
+    }
+
+    private void LoadCategoryAssignFilterData(BinaryReader reader)
+    {
+        int categoryCount = reader.ReadInt32();
+        for (int i = 0; i < categoryCount; i++)
+        {
+            string categoryName = reader.ReadString();
+            int assignFilterCount = reader.ReadInt32();
+            var category = CustomOptionManager.OptionCategories.FirstOrDefault(c => c.Name == categoryName && c.HasModifierAssignFilter);
+            if (category != null)
+            {
+                category.ModifierAssignFilter.Clear();
+                for (int j = 0; j < assignFilterCount; j++)
+                {
+                    string roleIdStr = reader.ReadString();
+                    if (Enum.TryParse(typeof(RoleId), roleIdStr, out var roleIdObj) && roleIdObj is RoleId roleId)
+                    {
+                        category.ModifierAssignFilter.Add(roleId);
+                    }
+                }
+            }
+            else
+            {
+                // 読み飛ばし
+                for (int j = 0; j < assignFilterCount; j++)
+                {
+                    reader.ReadString();
+                }
+            }
+        }
+    }
+
     public (bool success, Dictionary<int, string> names) LoadPresetNames()
     {
-        return (true, presetNames);
+        // LoadOptionData() によって更新された可能性のある内部の presetNames フィールドのコピーを返す
+        lock (FileLocker) // presetNamesへのアクセスを保護
+        {
+            return (true, new Dictionary<int, string>(this.presetNames));
+        }
     }
 
     public void SaveOptionData(byte version, int preset)
@@ -1310,48 +1432,87 @@ public class FileOptionStorage : IOptionStorage
             WriteChecksum(writer);
             WriteOptions(writer, options);
 
-            // RoleOptionのデータを書き出す
-            var roleOptions = RoleOptionManager.RoleOptions;
-            writer.Write(roleOptions.Length);
+            WriteRoleOptionsData(writer);
+            WriteExclusivitySettingsData(writer);
+            WriteModifierRoleOptionsData(writer);
+            WriteGhostRoleOptionsData(writer);
+            WriteCategoryAssignFilterData(writer);
+        }
+    }
 
-            foreach (var roleOption in roleOptions)
+    private void WriteRoleOptionsData(BinaryWriter writer)
+    {
+        var roleOptions = RoleOptionManager.RoleOptions;
+        writer.Write(roleOptions.Length);
+
+        foreach (var roleOption in roleOptions)
+        {
+            writer.Write(roleOption.RoleId.ToString());
+            writer.Write(roleOption.NumberOfCrews);
+            writer.Write(roleOption.Percentage);
+        }
+    }
+
+    private void WriteExclusivitySettingsData(BinaryWriter writer)
+    {
+        var exclusivitySettings = RoleOptionManager.ExclusivitySettings;
+        writer.Write(exclusivitySettings.Count);
+        foreach (var setting in exclusivitySettings)
+        {
+            writer.Write(setting.MaxAssign);
+            writer.Write(setting.Roles.Count);
+            foreach (var role in setting.Roles)
             {
-                writer.Write(roleOption.RoleId.ToString());
-                writer.Write(roleOption.NumberOfCrews);
-                writer.Write(roleOption.Percentage);
+                writer.Write(role.ToString());
             }
+        }
+    }
 
-            // 排他設定の書き出し
-            var exclusivitySettings = RoleOptionManager.ExclusivitySettings;
-            writer.Write(exclusivitySettings.Count);
-            foreach (var setting in exclusivitySettings)
+    private void WriteModifierRoleOptionsData(BinaryWriter writer)
+    {
+        var modifierRoleOptions = RoleOptionManager.ModifierRoleOptions;
+        writer.Write(modifierRoleOptions.Length);
+        foreach (var roleOption in modifierRoleOptions)
+        {
+            writer.Write(roleOption.ModifierRoleId.ToString());
+            writer.Write(roleOption.NumberOfCrews);
+            writer.Write(roleOption.Percentage);
+            // AssignFilterListの保存
+            var roleBase = CustomRoleManager.AllModifiers.FirstOrDefault(r => r.ModifierRole == roleOption.ModifierRoleId);
+            if (roleBase != null && roleBase.AssignFilter)
             {
-                writer.Write(setting.MaxAssign);
-                writer.Write(setting.Roles.Count);
-                foreach (var role in setting.Roles)
+                writer.Write(roleOption.AssignFilterList.Count);
+                foreach (var roleId in roleOption.AssignFilterList)
                 {
-                    writer.Write(role.ToString());
+                    writer.Write(roleId.ToString());
                 }
             }
+        }
+    }
 
-            // ModifierRoleOptionのデータを書き出す
-            var modifierRoleOptions = RoleOptionManager.ModifierRoleOptions;
-            writer.Write(modifierRoleOptions.Length);
-            foreach (var modifierRoleOption in modifierRoleOptions)
-            {
-                writer.Write(modifierRoleOption.ModifierRoleId.ToString());
-                writer.Write(modifierRoleOption.NumberOfCrews);
-                writer.Write(modifierRoleOption.Percentage);
-            }
+    private void WriteGhostRoleOptionsData(BinaryWriter writer)
+    {
+        var ghostRoleOptions = RoleOptionManager.GhostRoleOptions;
+        writer.Write(ghostRoleOptions.Length);
+        foreach (var roleOption in ghostRoleOptions)
+        {
+            writer.Write(roleOption.RoleId.ToString());
+            writer.Write(roleOption.NumberOfCrews);
+            writer.Write(roleOption.Percentage);
+        }
+    }
 
-            // GhostRoleOptionのデータを書き出す
-            var ghostRoleOptions = RoleOptionManager.GhostRoleOptions;
-            writer.Write(ghostRoleOptions.Length);
-            foreach (var ghostRoleOption in ghostRoleOptions)
+    private void WriteCategoryAssignFilterData(BinaryWriter writer)
+    {
+        var categories = CustomOptionManager.OptionCategories.Where(c => c.HasModifierAssignFilter).ToList();
+        writer.Write(categories.Count);
+        foreach (var category in categories)
+        {
+            writer.Write(category.Name);
+            writer.Write(category.ModifierAssignFilter.Count);
+            foreach (var roleId in category.ModifierAssignFilter)
             {
-                writer.Write(ghostRoleOption.RoleId.ToString());
-                writer.Write(ghostRoleOption.NumberOfCrews);
-                writer.Write(ghostRoleOption.Percentage);
+                writer.Write(roleId.ToString());
             }
         }
     }
@@ -1590,19 +1751,28 @@ public class ModifierAttribute : Attribute
 {
     public ModifierAttribute() { }
 }
+[AttributeUsage(AttributeTargets.Field)]
+public class AssignFilterAttribute : Attribute
+{
+    public AssignFilterAttribute() { }
+}
 public class CustomOptionCategory
 {
     public string Id { get; }
     public string Name { get; }
     public List<CustomOption> Options { get; } = new();
     public bool IsModifier { get; }
+    public bool HasModifierAssignFilter { get; }
+    public List<RoleId> ModifierAssignFilter { get; set; } = new();
 
-    public CustomOptionCategory(string name, bool isModifier = false)
+    public CustomOptionCategory(string name, bool isModifier = false, bool hasModifierAssignFilter = false, List<RoleId> modifierAssignFilter = null)
     {
         Id = ComputeMD5Hash.Compute(name);
         Name = name; // 後でTranslationを使用して翻訳する
         RegisterCategory(this);
         IsModifier = isModifier;
+        HasModifierAssignFilter = hasModifierAssignFilter;
+        ModifierAssignFilter = modifierAssignFilter ?? new();
     }
 
     private static void RegisterCategory(CustomOptionCategory category)

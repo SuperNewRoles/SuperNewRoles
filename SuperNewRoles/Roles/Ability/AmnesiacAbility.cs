@@ -11,6 +11,8 @@ namespace SuperNewRoles.Roles.Ability;
 public class AmnesiacAbility : AbilityBase
 {
     private EventListener<CalledMeetingEventData> _calledMeetingListener;
+    private EventListener<MeetingCloseEventData> _meetingCloseListener;
+    private ExPlayerControl _willChangeRole;
 
     public AmnesiacAbility()
     {
@@ -19,6 +21,7 @@ public class AmnesiacAbility : AbilityBase
     public override void AttachToLocalPlayer()
     {
         _calledMeetingListener = CalledMeetingEvent.Instance.AddListener(OnCalledMeeting);
+        _meetingCloseListener = MeetingCloseEvent.Instance.AddListener(OnMeetingClose);
     }
 
     private void OnCalledMeeting(CalledMeetingEventData data)
@@ -37,7 +40,14 @@ public class AmnesiacAbility : AbilityBase
         if (deadPlayer == null) return;
 
         // 役職変更のRPCを呼び出す
-        RpcChangeRole(Player, deadPlayer);
+        _willChangeRole = deadPlayer;
+    }
+
+    private void OnMeetingClose(MeetingCloseEventData data)
+    {
+        if (_willChangeRole == null) return;
+        RpcChangeRole(Player, _willChangeRole);
+        _willChangeRole = null;
     }
 
     [CustomRPC]
@@ -62,10 +72,7 @@ public class AmnesiacAbility : AbilityBase
     public override void DetachToLocalPlayer()
     {
         base.DetachToLocalPlayer();
-        if (_calledMeetingListener != null)
-        {
-            CalledMeetingEvent.Instance.RemoveListener(_calledMeetingListener);
-            _calledMeetingListener = null;
-        }
+        _calledMeetingListener?.RemoveListener();
+        _meetingCloseListener?.RemoveListener();
     }
 }

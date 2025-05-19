@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using BepInEx;
+using BepInEx.Unity.IL2CPP.Utils.Collections;
 using SuperNewRoles.CustomOptions;
 using SuperNewRoles.CustomOptions.Categories;
 using SuperNewRoles.Modules;
@@ -78,11 +79,11 @@ public class ReportUIMenu
         switch (requestInGameType)
         {
             case RequestInGameType.Bug:
-                RequestInGameManager.GetOrCreateToken().ContinueWith(task =>
+                AmongUsClient.Instance.StartCoroutine(RequestInGameManager.GetOrCreateToken(token =>
                 {
-                    if (task.IsFaulted)
+                    if (token == null)
                     {
-                        Logger.Error($"Failed to get token: {task.Exception}");
+                        Logger.Error($"Failed to get token");
                         isActive = false;
                     }
                     else
@@ -92,11 +93,11 @@ public class ReportUIMenu
                         additionalInfo["version"] = Application.version;
                         additionalInfo["mode"] = Categories.ModeOption.ToString();
                         additionalInfo["log"] = SNRLogListener.Instance.logBuilder.ToString();
-                        RequestInGameManager.SendReport(description, title, RequestInGameType.Bug.ToString(), additionalInfo).ContinueWith(task =>
+                        AmongUsClient.Instance.StartCoroutine(RequestInGameManager.SendReport(description, title, RequestInGameType.Bug.ToString(), additionalInfo, success =>
                         {
-                            if (task.IsFaulted)
+                            if (!success)
                             {
-                                Logger.Error($"Failed to send report: {task.Exception}");
+                                Logger.Error($"Failed to send report");
                             }
                             else
                             {
@@ -108,27 +109,27 @@ public class ReportUIMenu
                                     GameObject.Destroy(parent.gameObject);
                                 }, 0f);
                             }
-                        });
+                        }).WrapToIl2Cpp());
                     }
-                });
+                }).WrapToIl2Cpp());
                 break;
             default:
-                RequestInGameManager.GetOrCreateToken().ContinueWith(task =>
+                AmongUsClient.Instance.StartCoroutine(RequestInGameManager.GetOrCreateToken(token =>
                 {
-                    if (task.IsFaulted)
+                    if (token == null)
                     {
-                        Logger.Error($"Failed to get token: {task.Exception}");
+                        Logger.Error($"Failed to get token");
                         isActive = false;
                     }
                     else
                     {
                         text = "レポートを送信中";
                         Dictionary<string, string> additionalInfo = new();
-                        RequestInGameManager.SendReport(description, title, requestInGameType.ToString(), additionalInfo).ContinueWith(task =>
+                        AmongUsClient.Instance.StartCoroutine(RequestInGameManager.SendReport(description, title, requestInGameType.ToString(), additionalInfo, success =>
                         {
-                            if (task.IsFaulted)
+                            if (!success)
                             {
-                                Logger.Error($"Failed to send report: {task.Exception}");
+                                Logger.Error($"Failed to send report");
                             }
                             else
                             {
@@ -140,9 +141,9 @@ public class ReportUIMenu
                                     GameObject.Destroy(parent.gameObject);
                                 }, 0f);
                             }
-                        });
+                        }).WrapToIl2Cpp());
                     }
-                });
+                }).WrapToIl2Cpp());
                 break;
         }
     }

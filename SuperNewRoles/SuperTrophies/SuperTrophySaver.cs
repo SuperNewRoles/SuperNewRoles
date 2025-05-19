@@ -10,7 +10,7 @@ namespace SuperNewRoles.SuperTrophies;
 
 public static class SuperTrophySaver
 {
-    private static readonly string SaveFilePath = Path.Combine(Path.GetDirectoryName(Application.dataPath), "SuperNewRolesNext", "SaveData", "SuperTrophyData.dat");
+    private static readonly string SaveFilePath = SuperNewRolesPlugin.BaseDirectory + "/SaveData/SuperTrophyData.dat";
     private static readonly Dictionary<string, TrophySaveData> SavedTrophies = new();
 
     [Serializable]

@@ -56,6 +56,7 @@ internal class TeleporterAbility : CustomButtonBase, IButtonEffect
     public float EffectDuration => Data.waitingTime;
 
     public float EffectTimer { get; set; }
+    private CustomMessage CurrentMessage;
 
     public TeleporterAbility(TeleporterAbilityData data)
     {
@@ -74,20 +75,20 @@ internal class TeleporterAbility : CustomButtonBase, IButtonEffect
 
     private void Teleport()
     {
-        ExPlayerControl targetPlayer = ExPlayerControl.ExPlayerControls.Where(p => p.IsAlive()).ToList().GetRandom();
+        ExPlayerControl targetPlayer = ExPlayerControl.ExPlayerControls.Where(p => p.IsAlive() && p.moveable).ToList().GetRandom();
         RpcAllTeleportTo(targetPlayer.GetTruePosition(), targetPlayer);
     }
 
     [CustomRPC]
-    public static void RpcShowTeleportWaitingEffect(ExPlayerControl player, float waitingTime)
+    public void RpcShowTeleportWaitingEffect(ExPlayerControl player, float waitingTime)
     {
         ShowTeleportWaitingEffect(player, waitingTime);
     }
 
-    private static void ShowTeleportWaitingEffect(ExPlayerControl player, float waitingTime)
+    private void ShowTeleportWaitingEffect(ExPlayerControl player, float waitingTime)
     {
-        new CustomMessage(ModTranslation.GetString("TeleporterWaitingText", waitingTime), 1, true);
-        if (waitingTime > 0 && player.IsAlive())
+        CurrentMessage = new CustomMessage(ModTranslation.GetString("TeleporterWaitingText", waitingTime), waitingTime == 1 ? 2 : 1, true);
+        if (waitingTime > 1 && player.IsAlive())
         {
             new LateTask(() =>
             {
@@ -97,11 +98,16 @@ internal class TeleporterAbility : CustomButtonBase, IButtonEffect
     }
 
     [CustomRPC]
-    public static void RpcAllTeleportTo(Vector2 position, ExPlayerControl target)
+    public void RpcAllTeleportTo(Vector2 position, ExPlayerControl target)
     {
         foreach (var player in ExPlayerControl.ExPlayerControls)
             player.NetTransform.SnapTo(position);
         ExPlayerControl.LocalPlayer.RpcCustomSnapTo(position);
-        new LateTask(() => new CustomMessage(ModTranslation.GetString("TeleporterTeleportText", target.Data.PlayerName), 1, true), 0.1f);
+        if (CurrentMessage != null)
+        {
+            GameObject.Destroy(CurrentMessage.text.gameObject);
+            CurrentMessage = null;
+        }
+        CurrentMessage = new CustomMessage(ModTranslation.GetString("TeleporterTeleportText", target.Data.PlayerName), 1, true);
     }
 }

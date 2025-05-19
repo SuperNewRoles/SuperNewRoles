@@ -100,21 +100,23 @@ public static class ModdedNetworkTransform
         return queue;
     }
 
-
+    public static void ResetState(PlayerControl player)
+    {
+        finishedMovementPosition.Remove(player.PlayerId);
+        smoothingTimeLeft.Remove(player.PlayerId);
+        smoothingVelocity.Remove(player.PlayerId);
+        stopDetectionCounter.Remove(player.PlayerId);
+        externalImpulses.Remove(player.PlayerId);
+        if (movementQueues.TryGetValue(player.PlayerId, out var queue))
+        {
+            queue.Clear();
+        }
+    }
     public static void FixedUpdate(PlayerControl player)
     {
-        if (player.NetTransform.isPaused)
+        if (player.NetTransform.isPaused || player.onLadder || (ShipStatus.Instance.Type == ShipStatus.MapType.Fungle && ShipStatus.Instance is FungleShipStatus fungleShipStatus && fungleShipStatus.Zipline.playerIdHands.ContainsKey(player.PlayerId)))
         {
             // Clear state for paused players
-            finishedMovementPosition.Remove(player.PlayerId);
-            smoothingTimeLeft.Remove(player.PlayerId);
-            smoothingVelocity.Remove(player.PlayerId);
-            stopDetectionCounter.Remove(player.PlayerId);
-            externalImpulses.Remove(player.PlayerId);
-            if (movementQueues.TryGetValue(player.PlayerId, out var queue))
-            {
-                queue.Clear();
-            }
             return;
         }
 
@@ -281,17 +283,23 @@ public static class ModdedNetworkTransform
         {
             case (byte)MovementRpcType.BatchMovement:
                 playerId = reader.ReadByte();
-                int count = reader.ReadInt32();
-                var positions = new Vector3[count];
-                var velocities = new Vector2[count];
+                int count = Mathf.Min(reader.ReadInt32(), 20); // Read count, capped at 20
+                if (skipNextBatchPlayers.Remove(playerId))
+                {
+                    reader.Position += count * 4 * 5;
+                    break;
+                }
+
+                var queue = GetOrCreateQueue(playerId);
                 for (int i = 0; i < count; i++)
                 {
-                    positions[i] = new Vector3(reader.ReadSingle(), reader.ReadSingle(), reader.ReadSingle());
-                    velocities[i] = new Vector2(reader.ReadSingle(), reader.ReadSingle());
+                    float x = reader.ReadSingle();
+                    float y = reader.ReadSingle();
+                    float z = reader.ReadSingle();
+                    float vx = reader.ReadSingle();
+                    float vy = reader.ReadSingle();
+                    queue.Enqueue(new MovementData { position = new Vector3(x, y, z), velocity = new Vector2(vx, vy) });
                 }
-                // スキップフラグがあれば無視
-                if (skipNextBatchPlayers.Remove(playerId)) break;
-                RpcBatchMovement(playerId, positions, velocities);
                 break;
             case (byte)MovementRpcType.StartMovement:
                 playerId = reader.ReadByte();
@@ -317,7 +325,7 @@ public static class ModdedNetworkTransform
     private static void FixedUpdateRemote(PlayerControl player)
     {
         // Apply external impulses first if any
-        if (externalImpulses.TryGetValue(player.PlayerId, out var impulse) && impulse.sqrMagnitude > 0.0001f)
+        if (externalImpulses.Remove(player.PlayerId, out var impulse) && impulse.sqrMagnitude > 0.0001f) // C# 7.0+
         {
             player.MyPhysics.body.velocity += impulse;
             // インパルスの方向に少しだけ位置を補正
@@ -330,8 +338,7 @@ public static class ModdedNetworkTransform
             finishedMovementPosition.Remove(player.PlayerId);
             smoothingTimeLeft.Remove(player.PlayerId);
             smoothingVelocity.Remove(player.PlayerId);
-
-            externalImpulses.Remove(player.PlayerId); // Apply once and remove
+            // externalImpulses.Remove(player.PlayerId); // Already removed by .Remove(key, out value)
         }
 
         // Priority 1: Handle smooth stop if a finish position is set
@@ -351,37 +358,55 @@ public static class ModdedNetworkTransform
     }
     private static bool HandleRemoteSmoothingStop(PlayerControl player)
     {
-        if (finishedMovementPosition.TryGetValue(player.PlayerId, out var target) && target.HasValue)
+        if (!finishedMovementPosition.TryGetValue(player.PlayerId, out var target) || !target.HasValue)
         {
-            // Calculate velocity for smoothing only once
-            if (!smoothingVelocity.TryGetValue(player.PlayerId, out var vel))
-            {
-                smoothingTimeLeft[player.PlayerId] = SMOOTHING_TOTAL_TIME;
-                var currPos = (Vector2)player.transform.position;
-                // Avoid division by zero if totalTime is very small
-                vel = (SMOOTHING_TOTAL_TIME > 0.001f) ? (target.Value - currPos) / SMOOTHING_TOTAL_TIME : Vector2.zero;
-                smoothingVelocity[player.PlayerId] = vel;
-            }
-
-            var remaining = smoothingTimeLeft.TryGetValue(player.PlayerId, out var time) ? time : 0f;
-
-            if (remaining > 0)
-            {
-                player.MyPhysics.body.velocity = vel;
-                smoothingTimeLeft[player.PlayerId] = remaining - Time.fixedDeltaTime;
-            }
-            else // Smoothing finished
-            {
-                player.transform.position = new Vector3(target.Value.x, target.Value.y, player.transform.position.z);
-                player.MyPhysics.body.velocity = Vector2.zero;
-                // Clean up state
-                finishedMovementPosition.Remove(player.PlayerId);
-                smoothingTimeLeft.Remove(player.PlayerId);
-                smoothingVelocity.Remove(player.PlayerId);
-            }
-            return true; // Is handling smoothing stop
+            return false; // Not handling smoothing stop
         }
-        return false; // Not handling smoothing stop
+
+        // Target position exists, proceed with smoothing logic
+        if (!smoothingTimeLeft.TryGetValue(player.PlayerId, out float remainingTime))
+        {
+            // This case should ideally not happen if RpcStopMovement initializes smoothingTimeLeft correctly.
+            // However, as a fallback, or if initialization logic changes, we can set it here.
+            remainingTime = STOP_SMOOTHING_TIME; // Or SMOOTHING_TOTAL_TIME depending on desired behavior on first entry
+            smoothingTimeLeft[player.PlayerId] = remainingTime;
+        }
+
+        if (!smoothingVelocity.TryGetValue(player.PlayerId, out Vector2 vel)) // Calculate velocity only once or if not present
+        {
+            var currPos = (Vector2)player.transform.position;
+            // Avoid division by zero if totalTime is very small. Use remainingTime if it's the first setup.
+            float timeForCalc = (remainingTime > 0.001f) ? remainingTime : STOP_SMOOTHING_TIME; // Fallback to STOP_SMOOTHING_TIME
+            if (timeForCalc <= 0.001f && SMOOTHING_TOTAL_TIME > 0.001f) timeForCalc = SMOOTHING_TOTAL_TIME; // Prefer total time if available for initial calc
+
+            vel = (timeForCalc > 0.001f) ? (target.Value - currPos) / timeForCalc : Vector2.zero;
+            smoothingVelocity[player.PlayerId] = vel;
+            // If we just calculated velocity, and smoothingTimeLeft was not set by RpcStopMovement (e.g. from an older state),
+            // ensure it's set to a full duration for this new smoothing action.
+            // This aligns with the original logic of setting SMOOTHING_TOTAL_TIME when vel was first calculated.
+            if (!smoothingTimeLeft.ContainsKey(player.PlayerId) || smoothingTimeLeft[player.PlayerId] <= 0)
+            { // Check if it was not properly set or expired
+                smoothingTimeLeft[player.PlayerId] = SMOOTHING_TOTAL_TIME;
+                remainingTime = SMOOTHING_TOTAL_TIME;
+            }
+        }
+
+
+        if (remainingTime > 0)
+        {
+            player.MyPhysics.body.velocity = vel;
+            smoothingTimeLeft[player.PlayerId] = remainingTime - Time.fixedDeltaTime;
+        }
+        else // Smoothing finished
+        {
+            player.transform.position = new Vector3(target.Value.x, target.Value.y, player.transform.position.z);
+            player.MyPhysics.body.velocity = Vector2.zero;
+            // Clean up state
+            finishedMovementPosition.Remove(player.PlayerId);
+            smoothingTimeLeft.Remove(player.PlayerId);
+            smoothingVelocity.Remove(player.PlayerId);
+        }
+        return true; // Is handling smoothing stop
     }
     private static bool HandleRemoteMovementPlayback(PlayerControl player)
     {
@@ -473,12 +498,24 @@ public static class ModdedNetworkTransform
             queue.Enqueue(new MovementData { position = positions[i], velocity = velocities[i] });
         }
     }
+    [HarmonyPatch(typeof(CustomNetworkTransform), nameof(CustomNetworkTransform.OnEnable))]
+    public static class CustomNetworkTransformOnEnablePatch
+    {
+        public static void Postfix(CustomNetworkTransform __instance)
+        {
+            if (AmongUsClient.Instance.GameState != InnerNet.InnerNetClient.GameStates.Started) return;
+            if (CustomNetworkTransformPatch.IsVanillaServer()) return;
+            if (GeneralSettingOptions.NetworkTransformType == NetworkTransformType.ModdedLowLatency)
+                ResetState(__instance.myPlayer);
+
+        }
+    }
     [HarmonyPatch(typeof(CustomNetworkTransform), nameof(CustomNetworkTransform.FixedUpdate))]
     public static class CustomNetworkTransformPatch
     {
         private static bool IsVanillaServerCache;
         private static int lastShipStatusInstanceId;
-        private static bool IsVanillaServer()
+        public static bool IsVanillaServer()
             => ShipStatus.Instance != null && lastShipStatusInstanceId == ShipStatus.Instance.GetInstanceID() ? IsVanillaServerCache : (IsVanillaServerCache = AmongUsClient.Instance.NetworkMode != NetworkModes.LocalGame && !ModHelpers.IsCustomServer());
         public static bool Prefix(CustomNetworkTransform __instance)
         {

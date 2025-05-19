@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using System.Linq;
+using HarmonyLib;
 using SuperNewRoles.CustomOptions.Categories;
 using SuperNewRoles.Events;
 using SuperNewRoles.Events.PCEvents;
@@ -84,7 +85,8 @@ public static class NameText
         if (player.MeetingInfoText != null)
             player.MeetingInfoText.text = meetingInfoText;
         player.cosmetics.nameText.text = player.Player.CurrentOutfit.PlayerName;
-        bool visiable = ExPlayerControl.LocalPlayer.PlayerId == player.PlayerId || ExPlayerControl.LocalPlayer.IsDead();
+        bool visiable = ExPlayerControl.LocalPlayer.PlayerId == player.PlayerId ||
+                        (ExPlayerControl.LocalPlayer.IsDead() && !GameSettingOptions.HideGhostRoles);
         if (visiable)
         {
             player.Data.Role.NameColor = player.roleBase.RoleColor;
@@ -119,6 +121,12 @@ public static class NameText
         if (player.VoteArea != null)
             player.VoteArea.NameText.color = color;
     }
+    public static void AddNameText(ExPlayerControl player, string text)
+    {
+        player.Player.cosmetics.nameText.text += text;
+        if (player.VoteArea != null && player.VoteArea.PlayerIcon?.cosmetics?.nameText != null)
+            player.VoteArea.PlayerIcon.cosmetics.nameText.text += text;
+    }
     public static void RegisterNameTextUpdateEvent()
     {
         TaskCompleteEvent.Instance.AddListener(new(x => UpdateNameInfo(x.player)));
@@ -132,6 +140,20 @@ public static class NameText
         MeetingStartEvent.Instance.AddListener(x => UpdateAllNameInfo());
         FixedUpdateEvent.Instance.AddListener(UpdateAllVisiable);
         _lastDead = new();
+    }
+    [HarmonyPatch(typeof(HudOverrideSystemType), nameof(HudOverrideSystemType.UpdateSystem))]
+    public static class HudOverrideSystemTypePatch
+    {
+        private static bool _lastActive = false;
+        public static void Prefix(HudOverrideSystemType __instance)
+        {
+            _lastActive = __instance.IsActive;
+        }
+        public static void Postfix(HudOverrideSystemType __instance)
+        {
+            if (__instance.IsActive && !_lastActive)
+                UpdateAllNameInfo();
+        }
     }
     private static Dictionary<ExPlayerControl, bool> _lastDead = new();
     private static void UpdateAllVisiable()
@@ -148,7 +170,8 @@ public static class NameText
             return;
         bool visiable = player.Player.Visible &&
                         (ExPlayerControl.LocalPlayer.PlayerId == player.PlayerId ||
-                         (ExPlayerControl.LocalPlayer.IsDead() && !GameSettingOptions.HideGhostRoles)
+                         (ExPlayerControl.LocalPlayer.IsDead() &&
+                            (!GameSettingOptions.HideGhostRoles || (ExPlayerControl.LocalPlayer.IsImpostor() && GameSettingOptions.ShowGhostRolesToImpostor)))
                         );
         UpdateVisiable(player, visiable);
     }

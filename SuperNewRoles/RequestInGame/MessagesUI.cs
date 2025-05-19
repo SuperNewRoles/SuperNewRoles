@@ -1,4 +1,5 @@
 using System.Threading;
+using BepInEx.Unity.IL2CPP.Utils.Collections;
 using SuperNewRoles.Modules;
 using TMPro;
 using UnityEngine;
@@ -30,11 +31,11 @@ public class MessagesUI
                 chatUI.transform.Find("ErrorText").GetComponent<TextMeshPro>().text = ModTranslation.GetString("RequestInGame_MessageTooShort");
                 return;
             }
-            RequestInGameManager.SendMessage(thread.thread_id, textBox.text).ContinueWith(task =>
+            AmongUsClient.Instance.StartCoroutine(RequestInGameManager.SendMessage(thread.thread_id, textBox.text, success =>
             {
-                if (task.IsFaulted || !task.Result)
+                if (!success)
                 {
-                    Logger.Error($"Failed to send message: {task.Exception}");
+                    Logger.Error($"Failed to send message");
                 }
                 else
                 {
@@ -46,7 +47,7 @@ public class MessagesUI
                         UpdateScrollerMax(scroller);
                     }, 0f, "MessagesUI");
                 }
-            });
+            }).WrapToIl2Cpp());
         }));
         sendButton.OnMouseOut = new();
         sendButton.OnMouseOut.AddListener((UnityAction)(() =>
@@ -60,25 +61,23 @@ public class MessagesUI
         }));
         bool active = true;
         LoadingUI.ShowLoadingUI(chatUI.transform, () => "Loading...", () => active);
-        RequestInGameManager.GetOrCreateToken().ContinueWith(task =>
+        AmongUsClient.Instance.StartCoroutine(RequestInGameManager.GetOrCreateToken(token =>
         {
-            if (task.IsFaulted)
+            if (token == null)
             {
-                Logger.Error($"Failed to get token: {task.Exception}");
+                Logger.Error($"Failed to get token");
             }
             else
             {
-                string token = task.Result;
-                RequestInGameManager.GetMessages(thread.thread_id).ContinueWith(task =>
+                AmongUsClient.Instance.StartCoroutine(RequestInGameManager.GetMessages(thread.thread_id, messages =>
                 {
                     active = false;
-                    if (task.IsFaulted)
+                    if (messages == null)
                     {
-                        Logger.Error($"Failed to get messages: {task.Exception}");
+                        Logger.Error($"Failed to get messages");
                     }
                     else
                     {
-                        var messages = task.Result;
                         new LateTask(() =>
                         {
                             string lastSender = "";
@@ -98,9 +97,9 @@ public class MessagesUI
                             UpdateScrollerMax(scroller);
                         }, 0f, "MessagesUI");
                     }
-                });
+                }).WrapToIl2Cpp());
             }
-        });
+        }).WrapToIl2Cpp());
         return chatUI;
     }
     private static void UpdateScrollerMax(Scroller scroller)

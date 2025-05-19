@@ -31,6 +31,7 @@ using SuperNewRoles.CustomObject;
 using SuperNewRoles.API;
 using AmongUs.Data.Player;
 using SuperNewRoles.RequestInGame;
+using System.Diagnostics;
 
 namespace SuperNewRoles;
 
@@ -41,7 +42,6 @@ namespace SuperNewRoles;
 [BepInIncompatibility("me.yukieiji.extremeroles")]
 [BepInIncompatibility("com.tugaru.TownOfPlus")]
 [BepInIncompatibility("com.emptybottle.townofhost")]
-// [BepInIncompatibility("jp.ykundesu.agartha")]
 public partial class SuperNewRolesPlugin : BasePlugin
 {
     public Harmony Harmony { get; } = new Harmony(PluginConfig.Id);
@@ -53,9 +53,24 @@ public partial class SuperNewRolesPlugin : BasePlugin
     private readonly object _mainThreadActionsLock = new();
 
     public static bool IsEpic => Constants.GetPurchasingPlatformType() == PlatformConfig.EpicGamesStoreName;
+    public static string BaseDirectory => Path.GetFullPath(Path.Combine(BepInEx.Paths.BepInExRootPath, "../SuperNewRolesNext"));
+    public static string SecretDirectory => Path.GetFullPath(Path.Combine(UnityEngine.Application.persistentDataPath, "SuperNewRolesNextSecrets"));
+    private static Task TaskRunIfWindows(Action action)
+    {
+        // AndroidでTask.Runを使わないか
+        bool needed = false;
+        if (needed && Constants.GetPlatformType() == Platforms.Android)
+            action();
+        else
+            return Task.Run(action);
+        return Task.Run(() => { });
 
+    }
     // 複数起動中の場合に絶対に重複しない数
     private static int ProcessNumber = 0;
+
+    public static Task HarmonyPatchAllTask;
+    public static Task CustomRPCManagerLoadTask;
 
     public override void Load()
     {
@@ -63,19 +78,24 @@ public partial class SuperNewRolesPlugin : BasePlugin
 
         MainThreadId = Thread.CurrentThread.ManagedThreadId;
         Logger = Log;
+
+        SuperNewRolesPlugin.Logger.LogInfo($"BaseDirectory: {BaseDirectory}");
+        SuperNewRolesPlugin.Logger.LogInfo($"SecretDirectory: {SecretDirectory}");
+
         Instance = this;
         RegisterCustomObjects();
-        Task task = Task.Run(() => Harmony.PatchAll());
+        CustomLoadingScreen.Patch(Harmony);
+        HarmonyPatchAllTask = TaskRunIfWindows(() => PatchAll(Harmony));
 
-        if (!Directory.Exists("./SuperNewRolesNext"))
-        {
-            Directory.CreateDirectory("./SuperNewRolesNext");
-        }
+        if (!Directory.Exists(BaseDirectory))
+            Directory.CreateDirectory(BaseDirectory);
+        if (!Directory.Exists(SecretDirectory))
+            Directory.CreateDirectory(SecretDirectory);
 
         CustomRoleManager.Load();
         AssetManager.Load();
         ModTranslation.Load();
-        CustomRPCManager.Load();
+        var tasks = CustomRPCManager.Load();
         CustomOptionManager.Load();
         SyncVersion.Load();
         EventListenerManager.Load();
@@ -89,20 +109,52 @@ public partial class SuperNewRolesPlugin : BasePlugin
 
         CheckStarts();
 
+        CustomRPCManagerLoadTask = TaskRunIfWindows(() =>
+        {
+            foreach (var task in tasks)
+            {
+                task();
+            }
+        });
+
         Logger.LogInfo("Waiting for Harmony patch");
-        task.Wait();
+        if (Constants.GetPlatformType() == Platforms.Android)
+        {
+            HarmonyPatchAllTask?.Wait();
+            CustomRPCManagerLoadTask?.Wait();
+        }
         Logger.LogInfo("SuperNewRoles loaded");
         Logger.LogInfo("--------------------------------");
         Logger.LogInfo(ModTranslation.GetString("WelcomeNextSuperNewRoles"));
         Logger.LogInfo("--------------------------------");
+
+        // メモリ使用量削減のため、未使用のアセットをアンロード
+        GC.Collect();
+    }
+    public void PatchAll(Harmony harmony)
+    {
+        if (Constants.GetPlatformType() == Platforms.Android)
+        {
+            harmony.PatchAll(Assembly.GetExecutingAssembly());
+        }
+        else
+        {
+            List<Task> tasks = new();
+            AccessTools.GetTypesFromAssembly(Assembly.GetExecutingAssembly()).Do(delegate (Type type)
+            {
+                tasks.Add(Task.Run(() => harmony.CreateClassProcessor(type).Patch()));
+            });
+            Task.WaitAll(tasks.ToArray());
+        }
     }
 
+    // 起動中に他クライアントに上書きされないようにDisposeせずに持っておく
     private static FileStream _fs;
 
     private static void CheckStarts()
     {
         // SuperNewRolesNext/Startsディレクトリのパスを取得
-        string startsDir = Path.Combine(".", "SuperNewRolesNext", "Starts");
+        string startsDir = BaseDirectory + "/Starts";
         // ディレクトリが存在しなければ作成
         if (!Directory.Exists(startsDir))
         {
@@ -151,6 +203,10 @@ public partial class SuperNewRolesPlugin : BasePlugin
         ClassInjector.RegisterTypeInIl2Cpp<SelectButtonsMenuOpenAnimation>();
         ClassInjector.RegisterTypeInIl2Cpp<LoadingUIComponent>();
         ClassInjector.RegisterTypeInIl2Cpp<ActionOnEsc>();
+        ClassInjector.RegisterTypeInIl2Cpp<RocketDeadbody>();
+        ClassInjector.RegisterTypeInIl2Cpp<VersionUpdatesComponent>();
+        ClassInjector.RegisterTypeInIl2Cpp<ReleaseNoteComponent>();
+        ClassInjector.RegisterTypeInIl2Cpp<PatcherUpdaterComponent>();
     }
 
     public void ExecuteInMainThread(Action action)

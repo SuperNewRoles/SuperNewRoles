@@ -20,13 +20,13 @@ public class PenguinAbility : TargetCustomButtonBase, IButtonEffect
     // IButtonEffect
     private float effectDuration;
     public float EffectDuration => effectDuration;
-    public Action OnEffectEnds => () => { RpcKillPenguinTarget(PlayerControl.LocalPlayer, this, targetPlayer); };
+    public Action OnEffectEnds => () => { RpcKillPenguinTarget(PlayerControl.LocalPlayer, this, targetPlayer, false); };
     public bool isEffectActive { get; set; }
     public float EffectTimer { get; set; }
     public bool effectCancellable => false;
     private bool meetingKill;
     private EventListener<MeetingStartEventData> _onMeetingStartEvent;
-    public override Sprite Sprite => AssetManager.GetAsset<Sprite>("PenguinButton.png");
+    public override Sprite Sprite => _sprite;
     public override string buttonText => ModTranslation.GetString("PenguinButtonText");
     protected override KeyType keytype => KeyType.Ability1;
     public override float DefaultTimer => coolDown;
@@ -40,19 +40,21 @@ public class PenguinAbility : TargetCustomButtonBase, IButtonEffect
     private EventListener<WrapUpEventData> wrapUpEvent;
     private KillableAbility customKillButtonAbility;
     private bool CanKill;
+    private Sprite _sprite;
     public PenguinAbility(float coolDown, float effectDuration, bool meetingKill, bool CanKill)
     {
         this.coolDown = coolDown;
         this.effectDuration = effectDuration;
         this.meetingKill = meetingKill;
         this.CanKill = CanKill;
+        _sprite = AssetManager.GetAsset<Sprite>($"PenguinButton_{ModHelpers.GetRandomInt(min: 1, max: 2)}.png");
     }
 
     public override void OnClick()
     {
         targetPlayer = Target;
-        RpcStartPenguin(PlayerControl.LocalPlayer, Target, AbilityId);
-        ExPlayerControl.LocalPlayer.SetKillTimerUnchecked(0.00001f, 0.00001f);
+        RpcStartPenguin(Target);
+        new LateTask(() => ExPlayerControl.LocalPlayer.SetKillTimerUnchecked(0.00001f, 0.00001f), 0f);
         ResetTimer();
     }
     public override void DetachToAlls()
@@ -83,13 +85,13 @@ public class PenguinAbility : TargetCustomButtonBase, IButtonEffect
 
     private void OnMeetingStart(MeetingStartEventData data)
     {
-        if (isEffectActive && targetPlayer != null && targetPlayer.IsAlive() && meetingKill && Player.AmOwner)
+        if (targetPlayer != null && targetPlayer.IsAlive() && meetingKill)
         {
-            RpcKillPenguinTarget(Player, this, targetPlayer);
-        }
-        else if (isEffectActive && Player.AmOwner)
-        {
-            RpcEndPenguin(Player, this);
+            if (targetPlayer != null && targetPlayer.IsAlive())
+            {
+                targetPlayer.CustomDeath(CustomDeathType.Kill, source: Player);
+            }
+            targetPlayer = null;
         }
     }
     private void OnWrapUp(WrapUpEventData data)
@@ -99,31 +101,30 @@ public class PenguinAbility : TargetCustomButtonBase, IButtonEffect
             targetPlayer = null;
         else if (Player.AmOwner)
         {
-            RpcKillPenguinTarget(Player, this, targetPlayer);
+            RpcKillPenguinTarget(Player, this, targetPlayer, true);
         }
     }
     [CustomRPC]
-    public static void RpcStartPenguin(ExPlayerControl source, PlayerControl target, ulong abilityId)
+    public void RpcStartPenguin(PlayerControl target)
     {
-        var ability = source.GetAbility<PenguinAbility>(abilityId);
-        if (ability != null)
-        {
-            ability.targetPlayer = target;
-        }
+        targetPlayer = target;
     }
 
     [CustomRPC]
-    public static void RpcEndPenguin(ExPlayerControl source, PenguinAbility ability)
+    public void RpcEndPenguin()
     {
-        ability.targetPlayer = null;
+        targetPlayer = null;
     }
 
     [CustomRPC]
-    public static void RpcKillPenguinTarget(ExPlayerControl source, PenguinAbility ability, ExPlayerControl target)
+    public static void RpcKillPenguinTarget(ExPlayerControl source, PenguinAbility ability, ExPlayerControl target, bool afterMeeting)
     {
         if (target != null && target.IsAlive())
         {
-            target.CustomDeath(CustomDeathType.Kill, source: source);
+            if (afterMeeting)
+                target.CustomDeath(CustomDeathType.Kill, source: source);
+            else
+                target.CustomDeath(CustomDeathType.KilLWithoutDeadbodyAndTeleport, source: source);
         }
         ability.targetPlayer = null;
     }

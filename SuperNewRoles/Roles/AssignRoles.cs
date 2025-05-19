@@ -69,6 +69,7 @@ public static class AssignRoles
 
         // Assign Modifiers
         AssignModifiers();
+        AssignGuesser();
 
         // Assign Lovers
         AssignLovers();
@@ -196,9 +197,15 @@ public static class AssignRoles
                 Logger.Info($"AssignModifiers: ModifierRoleOptionのパーセンテージが0以下のため、ModifierRole {modifierRoleId} をスキップします。");
                 continue;
             }
+            if (modifierBase.HiddenOption)
+            {
+                Logger.Info($"AssignModifiers: ModifierRole {modifierRoleId} は非表示のためスキップします。");
+                continue;
+            }
 
             List<ExPlayerControl> targetPlayers = ExPlayerControl.ExPlayerControls
                 .Where(x => modifierBase.AssignedTeams.Count <= 0 || modifierBase.AssignedTeams.Contains(x.roleBase.AssignedTeam))
+                .Where(x => ModifierGuesser.ModifierGuesserCategory.ModifierAssignFilter.Count == 0 || ModifierGuesser.ModifierGuesserCategory.ModifierAssignFilter.Contains(x.Role))
                 .ToList();
             Logger.Info($"AssignModifiers: ModifierRole {modifierRoleId} に適用可能なプレイヤー数 = {targetPlayers.Count}");
 
@@ -231,6 +238,51 @@ public static class AssignRoles
         Logger.Info("AssignModifiers() 終了: 全てのModifier処理が完了しました。");
     }
 
+    private static void AssignGuesser()
+    {
+        Logger.Info("AssignGuesser() 開始: GuesserModifierのアサイン処理を開始します。");
+        var allPlayers = ExPlayerControl.ExPlayerControls;
+        var modifierRoleId = ModifierRoleId.ModifierGuesser;
+
+        // インポスターへの割当
+        var impostors = allPlayers.Where(x => x.IsImpostor() && !x.ModifierRole.HasFlag(modifierRoleId) && (ModifierGuesser.ModifierGuesserCategory.ModifierAssignFilter.Count == 0 || ModifierGuesser.ModifierGuesserCategory.ModifierAssignFilter.Contains(x.Role))).ToList();
+        for (int i = 0; i < ModifierGuesser.ModifierGuesserMaxImpostors; i++)
+        {
+            int roll = ModHelpers.GetRandomInt(0, 100);
+            if (roll <= ModifierGuesser.ModifierGuesserImpostorChance && impostors.Count > 0)
+            {
+                var exPlayer = impostors[impostors.GetRandomIndex()];
+                impostors.Remove(exPlayer);
+                AssignModifier(exPlayer.Player, modifierRoleId);
+            }
+        }
+        // 第三陣営への割当
+        var neutrals = allPlayers.Where(x => x.IsNeutral() && !x.ModifierRole.HasFlag(modifierRoleId) && (ModifierGuesser.ModifierGuesserCategory.ModifierAssignFilter.Count == 0 || ModifierGuesser.ModifierGuesserCategory.ModifierAssignFilter.Contains(x.Role))).ToList();
+        for (int i = 0; i < ModifierGuesser.ModifierGuesserMaxNeutrals; i++)
+        {
+            int roll = ModHelpers.GetRandomInt(0, 100);
+            if (roll <= ModifierGuesser.ModifierGuesserNeutralChance && neutrals.Count > 0)
+            {
+                var exPlayer = neutrals[neutrals.GetRandomIndex()];
+                neutrals.Remove(exPlayer);
+                AssignModifier(exPlayer.Player, modifierRoleId);
+            }
+        }
+        // クルーメイトへの割当
+        var crewmates = allPlayers.Where(x => x.IsCrewmate() && !x.ModifierRole.HasFlag(modifierRoleId) && (ModifierGuesser.ModifierGuesserCategory.ModifierAssignFilter.Count == 0 || ModifierGuesser.ModifierGuesserCategory.ModifierAssignFilter.Contains(x.Role))).ToList();
+        for (int i = 0; i < ModifierGuesser.ModifierGuesserMaxCrewmates; i++)
+        {
+            int roll = ModHelpers.GetRandomInt(0, 100);
+            if (roll <= ModifierGuesser.ModifierGuesserCrewmateChance && crewmates.Count > 0)
+            {
+                var exPlayer = crewmates[crewmates.GetRandomIndex()];
+                crewmates.Remove(exPlayer);
+                AssignModifier(exPlayer.Player, modifierRoleId);
+            }
+        }
+        Logger.Info("AssignGuesser() 終了: GuesserModifierのアサイン処理が完了しました。");
+    }
+
     private static void AssignLovers()
     {
         LoversIndex = 0;
@@ -256,6 +308,11 @@ public static class AssignRoles
         {
             candidates = candidates
                 .Where(p => !p.IsNeutral());
+        }
+        if (ModifierGuesser.ModifierGuesserCategory.ModifierAssignFilter.Count > 0)
+        {
+            candidates = candidates
+                .Where(p => ModifierGuesser.ModifierGuesserCategory.ModifierAssignFilter.Contains(p.Role));
         }
 
         candidates = candidates.Where(p => p.Role != RoleId.Truelover);

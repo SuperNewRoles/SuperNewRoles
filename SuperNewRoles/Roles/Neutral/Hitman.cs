@@ -162,7 +162,7 @@ public class HitmanAbility : AbilityBase
     private void OnFixedUpdate()
     {
         if (ExPlayerControl.LocalPlayer.IsDead()) return;
-        if (IntroCutscene.Instance != null || MeetingHud.Instance != null || ExileController.Instance != null) return;
+        if (FastDestroyableSingleton<HudManager>.Instance.IsIntroDisplayed || MeetingHud.Instance != null || ExileController.Instance != null) return;
         _timer -= Time.fixedDeltaTime;
         if (_currentTarget == null || _currentTarget.IsDead())
         {
@@ -192,6 +192,7 @@ public class HitmanAbility : AbilityBase
     public void OnMurder(MurderEventData data)
     {
         if (ExPlayerControl.LocalPlayer.IsDead()) return;
+        if (data.killer != Player) return;
         if (_currentTarget == data.target)
             SuccessfulKill();
         else

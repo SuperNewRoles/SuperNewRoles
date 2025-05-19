@@ -20,20 +20,42 @@ class ModifierGuesser : ModifierBase<ModifierGuesser>
 
     public override WinnerTeamType WinnerTeam => WinnerTeamType.Crewmate;
 
-    public override TeamTag TeamTag => TeamTag.Crewmate;
-
     public override RoleTag[] RoleTags => [];
+
+    public override bool HiddenOption => true;
 
     public override short IntroNum => 1;
     public override Func<ExPlayerControl, string> ModifierMark => (player) => "{0}" + ModHelpers.Cs(RoleColor, "⊕");
 
-    [CustomOptionInt("ModifierGuesserMaxShots", 1, 15, 1, 3, translationName: "EvilGuesserMaxShots")]
+    [Modifier]
+    [AssignFilter]
+    public static CustomOptionCategory ModifierGuesserCategory;
+
+    [CustomOptionInt("ModifierGuesserMaxImpostors", 0, 15, 1, 0, translationName: "ModifierGuesserMaxImpostors", parentFieldName: nameof(ModifierGuesserCategory))]
+    public static int ModifierGuesserMaxImpostors = 0;
+
+    [CustomOptionInt("ModifierGuesserImpostorChance", 5, 100, 5, 100, translationName: "ModifierGuesserImpostorChance", parentFieldName: nameof(ModifierGuesserCategory))]
+    public static int ModifierGuesserImpostorChance = 100;
+
+    [CustomOptionInt("ModifierGuesserMaxNeutrals", 0, 15, 1, 0, translationName: "ModifierGuesserMaxNeutrals", parentFieldName: nameof(ModifierGuesserCategory))]
+    public static int ModifierGuesserMaxNeutrals = 0;
+
+    [CustomOptionInt("ModifierGuesserNeutralChance", 5, 100, 5, 100, translationName: "ModifierGuesserNeutralChance", parentFieldName: nameof(ModifierGuesserCategory))]
+    public static int ModifierGuesserNeutralChance = 100;
+
+    [CustomOptionInt("ModifierGuesserMaxCrewmates", 0, 15, 1, 0, translationName: "ModifierGuesserMaxCrewmates", parentFieldName: nameof(ModifierGuesserCategory))]
+    public static int ModifierGuesserMaxCrewmates = 0;
+
+    [CustomOptionInt("ModifierGuesserCrewmateChance", 5, 100, 5, 100, translationName: "ModifierGuesserCrewmateChance", parentFieldName: nameof(ModifierGuesserCategory))]
+    public static int ModifierGuesserCrewmateChance = 100;
+
+    [CustomOptionInt("ModifierGuesserMaxShots", 1, 15, 1, 3, translationName: "EvilGuesserMaxShots", parentFieldName: nameof(ModifierGuesserCategory))]
     public static int ModifierGuesserMaxShots = 3;
 
-    [CustomOptionInt("ModifierGuesserShotsPerMeeting", 1, 15, 1, 3, translationName: "EvilGuesserShotsPerMeeting")]
+    [CustomOptionInt("ModifierGuesserShotsPerMeeting", 1, 15, 1, 3, translationName: "EvilGuesserShotsPerMeeting", parentFieldName: nameof(ModifierGuesserCategory))]
     public static int ModifierGuesserShotsPerMeeting = 3;
 
-    [CustomOptionBool("ModifierGuesserCannotShootStar", true, translationName: "EvilGuesserCannotShootStar")]
+    [CustomOptionBool("ModifierGuesserCannotShootStar", true, translationName: "EvilGuesserCannotShootStar", parentFieldName: nameof(ModifierGuesserCategory))]
     public static bool ModifierGuesserCannotShootStar = true;
 
     [CustomOptionBool("ModifierGuesserLimitedTurns", true, parentFieldName: nameof(ModifierGuesserCannotShootStar), translationName: "EvilGuesserLimitedTurns")]
@@ -42,6 +64,6 @@ class ModifierGuesser : ModifierBase<ModifierGuesser>
     [CustomOptionInt("ModifierGuesserLimitedTurnsCount", 1, 15, 1, 3, parentFieldName: nameof(ModifierGuesserLimitedTurns), translationName: "EvilGuesserLimitedTurnsCount")]
     public static int ModifierGuesserLimitedTurnsCount = 3;
 
-    [CustomOptionBool("ModifierGuesserCannotShootCrewmate", true, translationName: "EvilGuesserCannotShootCrewmate")]
+    [CustomOptionBool("ModifierGuesserCannotShootCrewmate", true, translationName: "EvilGuesserCannotShootCrewmate", parentFieldName: nameof(ModifierGuesserCategory))]
     public static bool ModifierGuesserCannotShootCrewmate = true;
 }

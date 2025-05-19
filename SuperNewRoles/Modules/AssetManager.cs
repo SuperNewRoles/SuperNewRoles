@@ -68,12 +68,13 @@ public static class AssetManager
         foreach (var data in AssetPathes)
         {
             SuperNewRolesPlugin.Logger.LogInfo($"[Splash] Loading AssetBundle: {data.Type}");
+            string platform = Constants.GetPlatformType() == Platforms.Android ? "_android" : "";
             try
             {
                 //AssemblyからAssetBundleファイルを読み込む
                 var BundleStream = ExcAssembly.
                     GetManifestResourceStream(
-                    $"SuperNewRoles.Resources.{data.Path}.bundle"
+                    $"SuperNewRoles.Resources.{data.Path}{platform}.bundle"
                     );
                 // SuperNewRolesNext/snrsprites.bundleに保存する
                 AssetBundle assetBundle = null;
@@ -82,8 +83,6 @@ public static class AssetManager
                 Bundles[TypeToByte[data.Type]] = assetBundle;
                 //キャッシュ用のDictionaryを作成
                 _cachedAssets[TypeToByte[data.Type]] = new(EqualityComparer<AssetCacheKey>.Default);
-
-                assetBundle.DontUnload();
 
                 BundleStream.Dispose();
                 Logger.Info($"Loaded AssetBundle: {data.Type}");
@@ -111,7 +110,7 @@ public static class AssetManager
             return null;
 
         var cacheKey = new AssetCacheKey(path, Il2CppType.Of<T>());
-        if (typeCache.TryGetValue(cacheKey, out var cached))
+        if (typeCache.TryGetValue(cacheKey, out var cached) && cached != null)
             return cached?.TryCast<T>();
 
         var bundle = Bundles[typeKey];
@@ -122,7 +121,7 @@ public static class AssetManager
             typeCache[cacheKey] = null;
             return null;
         }
-        var asset = loadedAsset.DontUnload();
+        var asset = loadedAsset;
         typeCache[cacheKey] = asset;
         return asset;
     }

@@ -31,19 +31,14 @@ public class KnowOtherAbility : AbilityBase
     {
         if (!CanKnowOther(data.Player)) return;
         Color32 color = Color?.Invoke(data.Player) ?? data.Player.roleBase.RoleColor;
-        UpdatePlayerNameColor(data.Player, color);
+        NameText.SetNameTextColor(data.Player, color);
     }
 
     private void OnNameTextUpdateVisiable(NameTextUpdateVisiableEventData data)
     {
+        if (!CanKnowOther(data.Player)) return;
         if (IsShowRole())
             NameText.UpdateVisiable(data.Player, data.Visiable);
-    }
-
-    private void UpdatePlayerNameColor(ExPlayerControl player, Color color)
-    {
-        player.Data.Role.NameColor = color;
-        player.Player.cosmetics.nameText.color = color;
     }
 
     public override void DetachToLocalPlayer()

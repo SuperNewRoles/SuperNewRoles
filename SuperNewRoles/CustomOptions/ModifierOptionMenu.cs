@@ -470,9 +470,18 @@ public static class ModifierOptionMenu
             foreach (var gameObject in modifierGameObjects)
             {
                 if (!gameObject.activeSelf) continue; // Assuming these can also be deactivated
-                gameObject.transform.localPosition = new Vector3(3.42f, lastY, -0.21f);
-                lastY -= 0.7f;
-                activeCount++;
+                if (gameObject.name == "AssignFilterEditButton")
+                {
+                    gameObject.transform.localPosition = new Vector3(-0.91f, lastY, -0.21f);
+                    lastY -= 0.7f;
+                    activeCount++;
+                }
+                else
+                {
+                    gameObject.transform.localPosition = new Vector3(3.42f, lastY, -0.21f);
+                    lastY -= 0.7f;
+                    activeCount++;
+                }
             }
         }
 
@@ -505,6 +514,13 @@ public static class ModifierOptionMenu
         var optionObjects = new List<(CustomOption, GameObject)>();
         var modifierGameObjects = new List<GameObject>(); // List for modifier-specific GameObjects
 
+        // AssignFilterが有効な場合、編集ボタンを生成
+        if (category.AssignFilter) // 型チェックとキャスト
+        {
+            var assignFilterButton = GenerateAssignFilterEditButton(category, menuTransform);
+            modifierGameObjects.Add(assignFilterButton);
+        }
+
         if (category is ModifierOptionMenuObjectData.ModifierCategoryDataModifier modifierCategoryData)
         {
             // Generate UI for NumOfCrews
@@ -528,9 +544,8 @@ public static class ModifierOptionMenu
                 0, 100, 5, "%", false // isChild = false
             );
             modifierGameObjects.Add(percentageObj);
-
-            menuData.CategoryModifierOptionGameObjects[category.Name] = modifierGameObjects; // Store modifier GameObjects
         }
+        menuData.CategoryModifierOptionGameObjects[category.Name] = modifierGameObjects; // Store modifier GameObjects
 
         // Generate regular CustomOptions
         foreach (var option in category.Options)
@@ -852,5 +867,319 @@ public static class ModifierOptionMenu
         {
             RoleOptionManager.RpcSyncModifierRoleOption(modifierOption.ModifierRoleId, modifierOption.NumberOfCrews, modifierOption.Percentage);
         }
+    }
+
+    private static GameObject GenerateAssignFilterEditButton(ModifierOptionMenuObjectData.ModifierCategoryDataBase modifierOption, Transform parent)
+    {
+        // BulkRoleSettings.InitializeBulkRoleButton を参考にボタンを作成
+        var button = GameObject.Instantiate(AssetManager.GetAsset<GameObject>("BulkRoleButton")); // BulkRoleButtonアセットを使用
+        button.name = "AssignFilterEditButton";
+        button.transform.SetParent(parent); // 親を適切に設定
+
+        // 位置とスケールは、Modifierオプションリスト内の他の要素に合わせる必要がある
+        // 例えば、StandardOption_Check や StandardOption_Select と同じようなY座標になるように調整
+        // X座標も同様。ここでは仮の値を設定。具体的な値は要調整。
+        button.transform.localPosition = new Vector3(0f, 0f, -0.1f); // X,Yは他のオプションに合わせて調整が必要
+        button.transform.localScale = Vector3.one * 0.5f; // スケールも他のオプションに合わせる
+
+        // "Text"という名前の子オブジェクトがある前提。なければプレハブかコードを修正。
+        var textMeshPro = button.transform.Find("Text")?.GetComponent<TextMeshPro>();
+        if (textMeshPro != null)
+        {
+            textMeshPro.text = ModTranslation.GetString("EditAssignFilterButtonText");
+        }
+        else
+        {
+            // Textオブジェクトがない場合、ボタン自体にテキストを設定しようと試みる (UIHelper.SetTextなど)
+            // ただし、BulkRoleButtonのプレハブ構造に依存する
+            Logger.Warning("[ModifierOptionMenu] BulkRoleButton prefab does not have a Text child for AssignFilter button.");
+            // フォールバックとしてボタンのゲームオブジェクト名を設定（デバッグ用）
+            button.name = ModTranslation.GetString("EditAssignFilterButtonText");
+        }
+
+        var passiveButton = button.AddComponent<PassiveButton>();
+        passiveButton.Colliders = new Collider2D[] { button.GetComponent<BoxCollider2D>() }; // BoxCollider2Dが付いている前提
+
+        GameObject selectedObject = button.transform.Find("Selected")?.gameObject; // "Selected"の子オブジェクトがある前提
+        if (selectedObject != null) selectedObject.SetActive(false); // 初期状態は非表示
+
+        passiveButton.OnClick = new UnityEngine.UI.Button.ButtonClickedEvent();
+        passiveButton.OnClick.AddListener((UnityAction)(() =>
+        {
+            ShowAssignFilterEditMenu(modifierOption);
+        }));
+
+        passiveButton.OnMouseOver = new UnityEvent();
+        passiveButton.OnMouseOver.AddListener((UnityAction)(() =>
+        {
+            if (selectedObject != null) selectedObject.SetActive(true);
+        }));
+
+        passiveButton.OnMouseOut = new UnityEvent();
+        passiveButton.OnMouseOut.AddListener((UnityAction)(() =>
+        {
+            if (selectedObject != null) selectedObject.SetActive(false);
+        }));
+
+        return button;
+    }
+
+    private static void ShowAssignFilterEditMenu(ModifierOptionMenuObjectData.ModifierCategoryDataBase modifierOption)
+    {
+        var menuData = ModifierOptionMenuObjectData.Instance;
+
+        // Modifier設定画面メインパネルを非表示にする
+        if (menuData.StandardOptionMenu != null)
+            menuData.StandardOptionMenu.SetActive(false);
+
+        menuData.CurrentEditingModifierForAssignFilter = modifierOption;
+
+        if (menuData.AssignFilterEditMenu == null)
+        {
+            InitializeAssignFilterEditMenu();
+        }
+
+        menuData.AssignFilterEditMenu.SetActive(true);
+
+        // 現在の編集対象に基づいてタイトルなどを更新
+        var titleText = menuData.AssignFilterEditMenu.transform.Find("TitleText")?.GetComponent<TextMeshPro>();
+        if (titleText != null)
+        {
+            // Modifier名をタイトルに入れるなど
+            titleText.text = $"<b>{ModTranslation.GetString("AssignFilterEditMenuTitle")}</b>"; // 新しい翻訳キー
+        }
+
+        // デフォルトで表示するロールタイプ（例：Impostor）
+        GenerateAssignFilterRoleDetailButtons(menuData.CurrentAssignFilterEditingRoleType ?? "Impostor");
+    }
+
+    private static void InitializeAssignFilterEditMenu()
+    {
+        var menuData = ModifierOptionMenuObjectData.Instance;
+        // ExclusivityOptionMenuのInitializeEditMenuを参考にする
+        // 親はRoleOptionMenu.GetGameSettingMenu().transformが良いか、
+        // ModifierOptionMenuObjectData.Instance.StandardOptionMenu の子として生成し、
+        // 右側エリア(RightAreaInner)を置き換える形にするか。
+        // ここではExclusivityOptionMenuと同様に、GameSettingMenuの直下に生成する想定で進める。
+        var menu = UIHelper.InstantiateUIElement(
+            "ExclusivityEditMenu", // ExclusivityOptionMenuのプレハブを流用（後で専用プレハブを作るか検討）
+            RoleOptionMenu.GetGameSettingMenu().transform, // 親を修正
+            new Vector3(0, 0, -3f), // Z座標を調整して手前に表示
+            Vector3.one * 0.2f); // スケールを調整
+
+        menuData.AssignFilterEditMenu = menu;
+        menuData.AssignFilterEditRightAreaScroller = menu.transform.Find("RightArea")?.GetComponent<Scroller>(); // "?" を追加
+        var rightArea = menu.transform.Find("RightArea");
+        if (rightArea != null)
+        {
+            menuData.AssignFilterEditRightAreaInner = rightArea.transform.Find("Inner")?.gameObject; // "?" を追加
+        }
+
+
+        // タイトルテキストオブジェクトを探して設定 (プレハブ構造に依存)
+        var titleTextObj = menu.transform.Find("TitleText");
+        if (titleTextObj != null)
+        {
+            UIHelper.SetText(titleTextObj.gameObject, ModTranslation.GetString("AssignFilterEditMenuTitleDefault")); // 新しい翻訳キー
+        }
+
+
+        var closeButtonObj = menu.transform.Find("CloseButton")?.gameObject; // "?" を追加
+        if (closeButtonObj != null)
+        {
+            UIHelper.SetText(closeButtonObj, ModTranslation.GetString("Close"));
+            var closePassiveButton = closeButtonObj.AddComponent<PassiveButton>();
+            closePassiveButton.Colliders = new Collider2D[] { closeButtonObj.GetComponent<BoxCollider2D>() };
+            // var selectedObject = closeButtonObj.transform.Find("Selected")?.gameObject; // "?" を追加
+            var sr = closeButtonObj.GetComponent<SpriteRenderer>();
+            if (sr == null) sr = closeButtonObj.transform.Find("Background")?.GetComponent<SpriteRenderer>();
+
+
+            UIHelper.ConfigurePassiveButton(closePassiveButton, (UnityAction)(() =>
+            {
+                menuData.AssignFilterEditMenu.SetActive(false);
+
+                // Modifier設定画面メインパネルを再表示
+                if (menuData.StandardOptionMenu != null)
+                    menuData.StandardOptionMenu.SetActive(true);
+
+                // 元のModifierオプションメニュー（特定のカテゴリ）を再表示する必要がある
+                if (menuData.CurrentCategory != null)
+                {
+                    ShowDefaultOptionMenu(menuData.CurrentCategory, menuData.RightAreaInner.transform);
+                }
+                menuData.CurrentEditingModifierForAssignFilter = null;
+                // 必要なら RecalculateOptionsPosition なども呼び出す (ShowDefaultOptionMenu内で呼ばれるはず)
+            }), sr); // selectedObject の代わりに sr を渡す（アセット構造による）
+        }
+
+        InitializeAssignFilterEditMenuLeftButtons(menu);
+        // 初期表示のロールタイプを設定
+        menuData.CurrentAssignFilterEditingRoleType = "Impostor";
+    }
+
+    private static void InitializeAssignFilterEditMenuLeftButtons(GameObject menu)
+    {
+        // ExclusivityOptionMenuのInitializeEditMenuLeftButtonsを参考にする
+        string[] buttons = ["Impostor", "Neutral", "Crewmate"]; // TODO: RoleManagerなどから動的に取得する方が良いかも
+        var leftButtonsContainer = menu.transform.Find("LeftButtons")?.gameObject; // "?" を追加
+        if (leftButtonsContainer == null) return;
+
+        for (int i = 0; i < buttons.Length; i++)
+        {
+            var buttonObj = leftButtonsContainer.transform.Find($"{buttons[i]}Button")?.gameObject; // "?" を追加
+            if (buttonObj == null) continue;
+
+            var passiveButton = buttonObj.AddComponent<PassiveButton>();
+            passiveButton.Colliders = new Collider2D[] { buttonObj.GetComponent<BoxCollider2D>() };
+            var spriteRenderer = buttonObj.GetComponent<SpriteRenderer>(); // ボタン自身のSpriteRendererを想定
+            if (spriteRenderer == null) spriteRenderer = buttonObj.transform.Find("Background")?.GetComponent<SpriteRenderer>();
+
+
+            UIHelper.SetText(buttonObj, ModTranslation.GetString(buttons[i]));
+            var buttonType = buttons[i]; // キャプチャ用
+            UIHelper.ConfigurePassiveButton(passiveButton, (UnityAction)(() =>
+            {
+                ModifierOptionMenuObjectData.Instance.CurrentAssignFilterEditingRoleType = buttonType;
+                GenerateAssignFilterRoleDetailButtons(buttonType);
+            }), spriteRenderer);
+        }
+    }
+
+    private static void GenerateAssignFilterRoleDetailButtons(string roleType)
+    {
+        var menuData = ModifierOptionMenuObjectData.Instance;
+        if (menuData.AssignFilterEditRightAreaInner == null) return;
+
+        if (menuData.AssignFilterRoleDetailButtonContainer != null)
+            GameObject.Destroy(menuData.AssignFilterRoleDetailButtonContainer);
+
+        var container = new GameObject("AssignFilterRoleDetailButtonContainer");
+        container.transform.SetParent(menuData.AssignFilterEditRightAreaInner.transform);
+        container.transform.localPosition = Vector3.zero;
+        container.transform.localScale = Vector3.one;
+        menuData.AssignFilterRoleDetailButtonContainer = container;
+
+        // ExclusivityOptionMenuのGenerateRoleDetailButtonsを参考にする
+        // var roles = RoleOptionManager.RoleOptions.Where(...) // フィルタリングロジック
+        // 仮のロールリスト
+        var roles = RoleOptionManager.RoleOptions.Where(x =>
+        {
+            var roleInfo = CustomRoleManager.AllRoles.FirstOrDefault(r => r.Role == x.RoleId);
+            // ダミー実装: IsHiddenは常にfalseとして扱う
+            if (roleInfo == null /* || roleInfo.IsHidden */) return false;
+            return roleType switch
+            {
+                "Impostor" => roleInfo.AssignedTeam == AssignedTeamType.Impostor,
+                "Neutral" => roleInfo.AssignedTeam == AssignedTeamType.Neutral,
+                "Crewmate" => roleInfo.AssignedTeam == AssignedTeamType.Crewmate,
+                _ => false,
+            };
+        }).ToList();
+
+
+        int index = 0;
+        foreach (var roleOption in roles)
+        {
+            var roleInfo = CustomRoleManager.AllRoles.FirstOrDefault(r => r.Role == roleOption.RoleId);
+            // ダミー実装: IsHiddenは常にfalseとして扱う (roleInfoがnullでないことは上で確認済み)
+            if (roleInfo == null /*|| roleInfo.IsHidden*/) continue;
+
+            string roleName = ModTranslation.GetString($"{roleInfo.Role}");
+            // ExclusivityOptionMenuのGenerateRoleDetailButtonを参考にする
+            var button = GenerateAssignFilterSingleRoleDetailButton(roleName, container.transform, index, roleOption);
+            ConfigureAssignFilterRoleDetailButton(button, roleOption, menuData.CurrentEditingModifierForAssignFilter);
+            index++;
+        }
+
+        if (menuData.AssignFilterEditRightAreaScroller != null)
+        {
+            menuData.AssignFilterEditRightAreaScroller.ContentYBounds.max = index < 25 ? 0f : (0.38f * ((index - 24) / 4 + 1)) - 0.5f; // ExclusivityOptionMenuから流用
+        }
+    }
+
+    private static GameObject GenerateAssignFilterSingleRoleDetailButton(string roleName, Transform parent, int index, RoleOptionManager.RoleOption roleOption)
+    {
+        // ExclusivityOptionMenuのGenerateRoleDetailButtonをほぼ流用
+        var obj = GameObject.Instantiate(AssetManager.GetAsset<GameObject>(RoleOptionMenu.ROLE_DETAIL_BUTTON_ASSET_NAME));
+        obj.transform.SetParent(parent);
+        obj.transform.localScale = Vector3.one * 1.45f;
+
+        int col = index % 5; // 1行に表示するボタン数に応じて調整
+        int row = index / 5;
+        float posX = -10.65f + col * 7.725f; // ExclusivityOptionMenuの値を流用、要調整
+        float posY = 5.85f - row * 1.85f;  // ExclusivityOptionMenuの値を流用、要調整
+        obj.transform.localPosition = new Vector3(posX, posY, -0.21f);
+
+        obj.transform.Find("Text").GetComponent<TextMeshPro>().text = $"<b><color=#{ColorUtility.ToHtmlStringRGB(roleOption.RoleColor)}>{roleName}</color></b>";
+        return obj;
+    }
+
+
+    private static void ConfigureAssignFilterRoleDetailButton(GameObject button, RoleOptionManager.RoleOption roleOption, ModifierOptionMenuObjectData.ModifierCategoryDataBase currentModifier)
+    {
+        // ExclusivityOptionMenuのConfigureRoleDetailButtonを参考にする
+        var passiveButton = button.AddComponent<PassiveButton>();
+        passiveButton.Colliders = new Collider2D[] { button.GetComponent<BoxCollider2D>() };
+        var spriteRenderer = button.GetComponent<SpriteRenderer>();
+        GameObject selectedObject = button.transform.Find("Selected")?.gameObject; // "?" を追加
+
+        // AssignFilterRoles プロパティが ModifierRoleOption にあると仮定
+        // currentModifier.AssignFilterRoles が List<RoleIdType> のようなものとする
+        // RoleIdType は roleOption.RoleId の型
+
+        // TODO: RoleOptionManager.ModifierRoleOption に AssignFilterRoles (仮) のようなプロパティを追加する必要がある
+        // ここではダミーのリストを使う
+        List<RoleId> assignFilterRoles = currentModifier.AssignFilterList();
+        if (currentModifier != null)
+        {
+            // 本来は currentModifier.AssignFilterRoles を使うが、ダミー実装なので何もしないか、
+            // もし currentModifier に一時的に値を保持できるならそれを使う（今回はローカルダミーを使用）
+        }
+
+
+        passiveButton.OnClick = new UnityEngine.UI.Button.ButtonClickedEvent(); // ButtonClickedEvent型で初期化
+        passiveButton.OnClick.AddListener((UnityAction)(() =>
+        {
+            if (currentModifier == null) return;
+
+            assignFilterRoles = currentModifier.AssignFilterList();
+
+            var roleId = roleOption.RoleId; // RoleIdentifier型であると仮定し、stringに変換
+
+            if (assignFilterRoles.Contains(roleId)) // ダミーリストで確認
+            {
+                assignFilterRoles.Remove(roleId); // ダミーリストから削除
+                spriteRenderer.color = new Color(1f, 1f, 1f, 0.6f); // 非選択時の色
+            }
+            else
+            {
+                assignFilterRoles.Add(roleId); // ダミーリストに追加
+                spriteRenderer.color = Color.white; // 選択時の色
+            }
+            // 変更を保存する処理が必要な場合はここに追加
+            // RoleOptionManager.Save(); など
+            currentModifier.OnUpdateAssignFilter(assignFilterRoles);
+
+            Logger.Info($"Clicked role {roleId}, selected: {assignFilterRoles.Contains(roleId)}"); // 動作確認用ログ
+        }));
+
+        passiveButton.OnMouseOver = new UnityEvent();
+        passiveButton.OnMouseOver.AddListener((UnityAction)(() =>
+        {
+            if (selectedObject != null) selectedObject.SetActive(true);
+        }));
+
+        passiveButton.OnMouseOut = new UnityEvent();
+        passiveButton.OnMouseOut.AddListener((UnityAction)(() =>
+        {
+            if (selectedObject != null) selectedObject.SetActive(false);
+        }));
+
+        // 初期の選択状態を設定
+        // bool isSelected = currentModifier != null && currentModifier.AssignFilterRoles != null && currentModifier.AssignFilterRoles.Contains(roleOption.RoleId);
+        bool isSelected = currentModifier != null && assignFilterRoles.Contains(roleOption.RoleId); // ダミーリストで確認
+        spriteRenderer.color = isSelected ? Color.white : new Color(1f, 1f, 1f, 0.6f);
+        if (selectedObject != null) selectedObject.SetActive(false); // 初期は非表示が良いかも
     }
 }

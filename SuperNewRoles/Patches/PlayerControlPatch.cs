@@ -1,4 +1,5 @@
 using HarmonyLib;
+using UnityEngine;
 
 namespace SuperNewRoles.Patches;
 
@@ -34,5 +35,16 @@ class CheckShapeshiftPatch
         }
         __instance.RpcShapeshift(target, shouldAnimate);
         return false;
+    }
+}
+
+
+[HarmonyPatch(typeof(PlayerControl), nameof(PlayerControl.Awake))]
+public static class PlayerControlAwakePatch
+{
+    public static void Postfix(PlayerControl __instance)
+    {
+        // バニラ側の当たり判定が60Collider限定なのでとりま180限定にする
+        __instance.hitBuffer = new Collider2D[120];
     }
 }

@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
+using System.Threading.Tasks;
 using HarmonyLib;
 using Hazel;
 using InnerNet;
@@ -25,13 +26,6 @@ public class CustomRPCAttribute : Attribute
 
 public static class CustomRpcExts
 {
-    [CustomRPC]
-    public static void RpcEndGameForHost(GameOverReason reason)
-    {
-        if (!AmongUsClient.Instance.AmHost) return;
-        GameManager.Instance.RpcEndGame(reason, false);
-    }
-
     /*[CustomRPC(onlyOtherPlayer: true)]
     public static void RpcApplyDeadBodyImpulse(byte parentId, float impulseX, float impulseY)
     {
@@ -60,6 +54,22 @@ public static class CustomRPCManager
     /// RPC メソッドを保存するディクショナリ
     /// </summary>
     public static Dictionary<string, byte> RpcMethodIds = new();
+    /// <summary>
+    /// キャッシュ用：メソッドからRPC IDを高速取得
+    /// </summary>
+    private static Dictionary<MethodBase, byte> RpcIdsByMethod = new();
+    /// <summary>
+    /// キャッシュ用：メソッドからOnlyOtherPlayerフラグを高速取得
+    /// </summary>
+    private static Dictionary<MethodBase, bool> OnlyOtherFlagsByMethod = new();
+    /// <summary>
+    /// キャッシュ用：メソッドからパラメータ型配列を高速取得
+    /// </summary>
+    private static Dictionary<MethodBase, Type[]> ParamTypesByMethod = new();
+    /// <summary>
+    /// キャッシュ用：インスタンスメソッドかどうか
+    /// </summary>
+    private static HashSet<MethodBase> InstanceMethodSet = new();
 
     /// <summary>
     /// SuperNewRoles専用のRPC識別子
@@ -98,31 +108,47 @@ public static class CustomRPCManager
     /// <summary>
     /// すべてのRPCメソッドを読み込み、登録する
     /// </summary>
-    public static void Load()
+    public static List<Action> Load()
     {
         // すべてのRPCメソッドのハッシュ値を収集
-        var methods = Assembly.GetExecutingAssembly()
+        var methodsWithDetails = Assembly.GetExecutingAssembly()
             .GetTypes()
             .SelectMany(t => t.GetMethods(BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance | BindingFlags.Static))
-            .Where(m => m.GetCustomAttribute<CustomRPCAttribute>() != null)
-            .OrderBy(m => RpcHashGenerate(m))
+            .Select(m => new
+            {
+                Method = m,
+                Attribute = m.GetCustomAttribute<CustomRPCAttribute>(),
+                Hash = RpcHashGenerate(m), // RpcHashGenerateを一度だけ呼び出す
+                ParamTypes = m.GetParameters().Select(p => p.ParameterType).ToArray() // パラメータ型もここで取得
+            })
+            .Where(m => m.Attribute != null)
+            .OrderBy(m => m.Hash) // 事前に計算したハッシュでソート
             .ToList();
-        SuperNewRolesPlugin.Logger.LogInfo($"[Splash] Start loading {methods.Count} RPC methods");
+
+        List<Action> tasks = new();
+
+        SuperNewRolesPlugin.Logger.LogInfo($"[Splash] Start loading {methodsWithDetails.Count} RPC methods");
 
         // ソートされたハッシュ値に基づいてIDを割り当て
-        for (byte i = 0; i < methods.Count; i++)
+        for (byte i = 0; i < methodsWithDetails.Count; i++)
         {
-            var attribute = methods[i].GetCustomAttribute<CustomRPCAttribute>();
-            // staticメソッドのみ許可
-            if (!methods[i].IsStatic)
+            var methodDetail = methodsWithDetails[i];
+            var method = methodDetail.Method;
+            var attribute = methodDetail.Attribute;
+            var hash = methodDetail.Hash; // 事前計算したハッシュ
+            var paramTypes = methodDetail.ParamTypes; // 事前取得したパラメータ型
+
+            // staticメソッドはもちろん、AbilityBaseのインスタンスメソッドも許可
+            if (!method.IsStatic && !typeof(AbilityBase).IsAssignableFrom(method.DeclaringType))
             {
-                Logger.Error($"CustomRPC: {methods[i].Name} is not static");
+                Logger.Error($"CustomRPC: {method.Name} is not static and not an AbilityBase instance method");
                 continue;
             }
-            SuperNewRolesPlugin.Logger.LogInfo($"[Splash] Loading RPC method ({i + 1}/{methods.Count}): {methods[i].Name}");
-            RegisterRPC(methods[i], attribute, i);
+            SuperNewRolesPlugin.Logger.LogInfo($"[Splash] Loading RPC method ({i + 1}/{methodsWithDetails.Count}): {method.Name}");
+            tasks.Add(RegisterRPC(method, attribute, i, hash, paramTypes)); // ハッシュとパラメータ型を渡す
         }
         SuperNewRolesPlugin.Logger.LogInfo($"[Splash] Registered {RpcMethods.Count} RPC methods");
+        return tasks;
     }
 
 
@@ -131,8 +157,19 @@ public static class CustomRPCManager
     /// </summary>
     /// <param name="method">登録するメソッド</param>
     /// <param name="attribute">CustomRPCAttribute</param>
-    private static void RegisterRPC(MethodInfo method, CustomRPCAttribute attribute, byte id)
+    /// <param name="id">RPC ID</param>
+    /// <param name="hash">メソッドのハッシュ値</param>
+    /// <param name="paramTypes">メソッドのパラメータ型配列</param>
+    private static Action RegisterRPC(MethodInfo method, CustomRPCAttribute attribute, byte id, string hash, Type[] paramTypes)
     {
+        // キャッシュにメソッド情報を登録
+        RpcIdsByMethod[method] = id;
+        OnlyOtherFlagsByMethod[method] = attribute.OnlyOtherPlayer;
+        ParamTypesByMethod[method] = paramTypes; // 事前取得したパラメータ型を使用
+        if (!method.IsStatic && typeof(AbilityBase).IsAssignableFrom(method.DeclaringType))
+        {
+            InstanceMethodSet.Add(method);
+        }
         // RPC送信用の新しいメソッドを定義
         static bool NewMethod(object? __instance, object[] __args, MethodBase __originalMethod)
         {
@@ -143,30 +180,38 @@ public static class CustomRPCManager
                 return true;
             }
 
-            var id = RpcMethodIds[RpcHashGenerate(__originalMethod)];
+            // RPC ID をキャッシュから取得
+            var rpcId = RpcIdsByMethod[__originalMethod];
+            var onlyOther = OnlyOtherFlagsByMethod[__originalMethod];
             // RPC送信の準備
-            MessageWriter writer = AmongUsClient.Instance.StartRpcImmediately(PlayerControl.LocalPlayer.NetId, SNRRpcId, SendOption.Reliable, -1);
-            writer.Write(id);
+            var writer = AmongUsClient.Instance.StartRpcImmediately(PlayerControl.LocalPlayer.NetId, SNRRpcId, SendOption.Reliable, -1);
+            writer.Write(rpcId);
 
-            // 引数を設定
+            // インスタンスメソッドならインスタンスを送信
+            if (__instance != null && InstanceMethodSet.Contains(__originalMethod))
+            {
+                writer.Write(__instance, __originalMethod.DeclaringType);
+            }
+
+            // 引数を書き込み
+            var originalParamTypes = ParamTypesByMethod[__originalMethod];
             for (int i = 0; i < __args.Length; i++)
             {
-                writer.Write(__args[i], __originalMethod.GetParameters()[i].ParameterType);
+                writer.Write(__args[i], originalParamTypes[i]);
             }
 
             // RPC送信
             AmongUsClient.Instance.FinishRpcImmediately(writer);
-            var attr = __originalMethod.GetCustomAttribute<CustomRPCAttribute>();
-            Logger.Info($"Sent RPC: {__originalMethod.Name} {attr?.OnlyOtherPlayer}");
-            return !attr?.OnlyOtherPlayer ?? true;
+            Logger.Info($"Sent RPC: {__originalMethod.Name} OnlyOther={onlyOther}");
+            return !onlyOther;
         }
         Logger.Info($"Registering RPC: {method.Name} {id}");
-        var newMethod = NewMethod;
+        var newHarmonyMethod = NewMethod;
         RpcMethods[id] = method;
-        RpcMethodIds[RpcHashGenerate(method)] = id;
+        RpcMethodIds[hash] = id; // 事前計算したハッシュを使用
 
         // メソッドの中身をRPCを送信するものに入れ替える
-        SuperNewRolesPlugin.Instance.Harmony.Patch(method, new HarmonyMethod(newMethod.Method));
+        return () => SuperNewRolesPlugin.Instance.Harmony.Patch(method, new HarmonyMethod(newHarmonyMethod.Method));
     }
     private static string GetMethodFullName(MethodInfo method)
     {
@@ -187,26 +232,31 @@ public static class CustomRPCManager
         /// </summary>
         public static void Postfix(byte callId, MessageReader reader)
         {
-            Logger.Info($"Received RPC: {callId}");
+            if (callId != 253)
+                Logger.Info($"Received RPC: {callId}");
             // SuperNewRoles専用のRPCの場合
             switch (callId)
             {
                 case SNRRpcId:
                     byte id = reader.ReadByte();
                     Logger.Info($"Received RPC: {id}");
-                    if (!RpcMethods.TryGetValue(id, out var method))
-                        return;
-
-                    // パラメーターを元にobject[]を作成
-                    List<object> args = new();
-                    for (int i = 0; i < method.GetParameters().Length; i++)
+                    if (!RpcMethods.TryGetValue(id, out var method)) return;
+                    // インスタンスメソッドならインスタンスを読み込む
+                    object? instance = null;
+                    if (InstanceMethodSet.Contains(method))
                     {
-                        args.Add(reader.ReadFromType(method.GetParameters()[i].ParameterType));
+                        instance = reader.ReadFromType(method.DeclaringType);
                     }
-
+                    // パラメータを読み込み
+                    var paramTypesRecv = ParamTypesByMethod[method];
+                    var argsRecv = new object[paramTypesRecv.Length];
+                    for (int i = 0; i < paramTypesRecv.Length; i++)
+                    {
+                        argsRecv[i] = reader.ReadFromType(paramTypesRecv[i]);
+                    }
                     IsRpcReceived = true;
                     Logger.Info($"Received RPC: {method.Name}");
-                    method.Invoke(null, args.ToArray());
+                    method.Invoke(instance, argsRecv);
                     break;
                 case SNRSyncVersionRpc:
                     SyncVersion.ReceivedSyncVersion(reader);
@@ -550,6 +600,23 @@ public static class CustomRPCManager
                         }
                     }
                 }
+                else if (type == typeof(List<ExPlayerControl>))
+                {
+                    if (obj == null)
+                        writer.Write(0);
+                    else
+                    {
+                        var exPcList = obj as List<ExPlayerControl>;
+                        writer.Write(exPcList.Count);
+                        foreach (var exPlayerControl in exPcList)
+                        {
+                            if (exPlayerControl == null)
+                                writer.Write(byte.MaxValue);
+                            else
+                                writer.Write(exPlayerControl.PlayerId);
+                        }
+                    }
+                }
                 else
                 {
                     throw new Exception($"Invalid type: {obj.GetType()}");
@@ -604,6 +671,7 @@ public static class CustomRPCManager
             Type t when t == typeof(Color) => new Color(reader.ReadSingle(), reader.ReadSingle(), reader.ReadSingle(), reader.ReadSingle()),
             Type t when t == typeof(Color32) => new Color32(reader.ReadByte(), reader.ReadByte(), reader.ReadByte(), reader.ReadByte()),
             Type t when t == typeof(List<byte>) => ReadByteList(reader),
+            Type t when t == typeof(List<ExPlayerControl>) => ReadExPlayerControlList(reader),
             Type t when t == typeof(Vector2) => new Vector2(reader.ReadSingle(), reader.ReadSingle()),
             Type t when t == typeof(Vector3) => new Vector3(reader.ReadSingle(), reader.ReadSingle(), reader.ReadSingle()),
             Type t when t == typeof(Vector2[]) => ReadVector2Array(reader),
@@ -696,6 +764,20 @@ public static class CustomRPCManager
             array[i] = ExPlayerControl.ById(reader.ReadByte());
         }
         return array;
+    }
+
+    /// <summary>
+    /// List<ExPlayerControl>を読み取る
+    /// </summary>
+    private static List<ExPlayerControl> ReadExPlayerControlList(MessageReader reader)
+    {
+        int count = reader.ReadInt32();
+        List<ExPlayerControl> list = new(count);
+        for (int i = 0; i < count; i++)
+        {
+            list.Add(ExPlayerControl.ById(reader.ReadByte()));
+        }
+        return list;
     }
 
     /// <summary>
