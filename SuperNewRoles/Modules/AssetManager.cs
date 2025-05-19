@@ -209,8 +209,8 @@ public static class AssetManager
                 if (asset.Value != null)
                     asset.Value.hideFlags &= ~HideFlags.DontUnloadUnusedAsset;
             }
+            typeCache.Clear();
         }
-        _cachedAssets.Clear();
         // Optionally, if you also want to clear the Bundles dictionary (though this might not be what you want if bundles are meant to persist across scenes)
         // Bundles.Clear();
         Resources.UnloadUnusedAssets();
