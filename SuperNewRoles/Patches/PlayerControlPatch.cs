@@ -38,7 +38,7 @@ public class UsePlatformPlayerControlPatch
     {
         if (!AmongUsClient.Instance.AmHost)
         {
-            AmongUsClient.Instance.StartRpc(__instance.NetId, 32, SendOption.Reliable)
+            AmongUsClient.Instance.StartRpcImmediately(__instance.NetId, 32, SendOption.Reliable)
                 .EndMessage();
             return false;
         }
