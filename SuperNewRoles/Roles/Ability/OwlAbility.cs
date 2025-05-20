@@ -299,6 +299,7 @@ public class OwlSpecialBlackoutAbility : CustomButtonBase, IButtonEffect
     public bool IsSpecialBlackout;
     private float _contractionTimer;
 
+    private EventListener<MeetingStartEventData> _meetingStartListener;
     private EventListener _fixedUpdateListener;
     private EventListener<ShipStatusLightEventData> _shipStatusLightListener;
 
@@ -309,6 +310,18 @@ public class OwlSpecialBlackoutAbility : CustomButtonBase, IButtonEffect
         _canUse = canUse;
         IsSpecialBlackout = false;
         _contractionTimer = 1;
+    }
+
+    public override void AttachToLocalPlayer()
+    {
+        base.AttachToLocalPlayer();
+        _meetingStartListener = MeetingStartEvent.Instance.AddListener(OnMeetingStart);
+    }
+
+    public override void DetachToLocalPlayer()
+    {
+        base.DetachToLocalPlayer();
+        _meetingStartListener?.RemoveListener();
     }
 
     public override void AttachToOthers()
@@ -331,13 +344,9 @@ public class OwlSpecialBlackoutAbility : CustomButtonBase, IButtonEffect
 
     public override void OnClick() => RpcSpecialBlackout(this, true);
 
-    public override void OnMeetingEnds()
-    {
-        base.OnMeetingEnds();
-        OnEffectEnds();
-    }
-
     private void OnEffectEnds() => RpcSpecialBlackout(this, false);
+
+    private void OnMeetingStart(MeetingStartEventData data) => OnEffectEnds();
 
     private void OnFixedUpdate()
     {
