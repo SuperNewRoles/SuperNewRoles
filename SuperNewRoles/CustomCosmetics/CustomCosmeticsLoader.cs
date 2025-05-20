@@ -340,14 +340,9 @@ public class CustomCosmeticsLoader
             }
         }
 
-        // Start sprite downloads
-        Coroutine spriteDownloadCoroutine = startCoroutine(DownloadSpritesAsync(startCoroutine));
         Logger.Info("DownloadSpritesAsync done");
         // Wait for asset bundles to finish loading
-        if (spriteDownloadCoroutine != null)
-        {
-            yield return spriteDownloadCoroutine;
-        }
+        yield return DownloadSpritesAsync(startCoroutine);
         yield return new WaitUntil((Il2CppSystem.Func<bool>)(() => assetBundleLoadingCount <= 0));
         AssetBundlesDownloading = false;
         Logger.Info("assetBundleLoadingCount done");
@@ -704,10 +699,12 @@ public class CustomCosmeticsLoader
         switch (Application.internetReachability)
         {
             case NetworkReachability.NotReachable:
+                yield return null;
                 Logger.Error("インターネットに接続されていません");
                 onFinish();
                 yield break;
             case NetworkReachability.ReachableViaCarrierDataNetwork when !ConfigRoles.CanUseDataConnection.Value:
+                yield return null;
                 Logger.Error("データ通信ではダウンロードしない設定です。");
                 onFinish();
                 yield break;
@@ -896,9 +893,11 @@ public class CustomCosmeticsLoader
         switch (Application.internetReachability)
         {
             case NetworkReachability.NotReachable:
+                yield return null;
                 Logger.Error("インターネットに接続されていません");
                 yield break;
             case NetworkReachability.ReachableViaCarrierDataNetwork when !ConfigRoles.CanUseDataConnection.Value:
+                yield return null;
                 Logger.Error("データ通信ではダウンロードしない設定です。");
                 yield break;
             default:

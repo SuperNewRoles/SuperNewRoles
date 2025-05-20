@@ -94,7 +94,7 @@ public class RocketGrabAbility : TargetCustomButtonBase
     public override Color32 OutlineColor => Rocket.Instance.RoleColor;
     // Implement required abstract member
     public override bool OnlyCrewmates => true; // Can grab Crewmates/Neutrals, adjust if Impostors should be grabbable
-    public override Func<ExPlayerControl, bool> IsTargetable => (player) => GrabbedPlayers.Contains(player);
+    public override Func<ExPlayerControl, bool> IsTargetable => (player) => !GrabbedPlayers.Contains(player);
 
     public override float DefaultTimer => GrabbedPlayers.Count == 0 ? initialCooldown : subsequentCooldown;
 
