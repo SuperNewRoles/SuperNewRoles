@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using Il2CppInterop.Runtime;
 using PowerTools;
 using SuperNewRoles.Modules;
@@ -114,8 +115,9 @@ public class CustomCosmeticsLayer
             nodeSync.Renderer = cosmeticsLayer.currentBodySprite.BodySprite;
             nodeSync.NodeId = 1;
             anims.group.NodeSyncs.Add(nodeSync);
+            visorLayer.nodeSync = nodeSync;
         }
-
+        visorLayer.vanillaNodeSyncs = cosmeticsLayer.visor.GetComponents<SpriteAnimNodeSync>().ToList();
         // if (cosmeticsLayer.visor)
         return visorLayer;
     }
@@ -145,6 +147,7 @@ public class CustomCosmeticsLayer
         }
         else
             Logger.Info("NULLLLLLLLLLLLLLLLLLLLLL");
+        hatLayer.vanillaNodeSyncs = cosmeticsLayer.hat.GetComponents<SpriteAnimNodeSync>().ToList();
 
         // バックレイヤーの作成と設定
         hatLayer.BackLayer = new GameObject("back").AddComponent<SpriteRenderer>();

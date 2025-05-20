@@ -491,4 +491,9 @@ public static class ModHelpers
         => player.Player.IsWaitingSpawn();
 
     public static bool Not(bool b) => !b;
+
+    public static bool IsHnS()
+    {
+        return GameOptionsManager.Instance.CurrentGameOptions.GameMode is AmongUs.GameOptions.GameModes.HideNSeek or AmongUs.GameOptions.GameModes.SeekFools;
+    }
 }

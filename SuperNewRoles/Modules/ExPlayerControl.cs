@@ -460,13 +460,13 @@ public class ExPlayerControl
         return (result.complete, all ?? result.all);
     }
     public bool CanUseVent()
-        => _customVentAbility != null ? _customVentAbility.CheckCanUseVent() : IsImpostor();
+        => _customVentAbility != null ? _customVentAbility.CheckCanUseVent() : (IsImpostor() && !ModHelpers.IsHnS()) || Data.Role.Role == RoleTypes.Engineer;
     public bool ShowVanillaVentButton()
-        => IsImpostor() && IsAlive() && _customVentAbility == null;
+        => (IsImpostor() && !ModHelpers.IsHnS()) && IsAlive() && _customVentAbility == null;
     public bool CanSabotage()
-        => _customSaboAbility != null ? _customSaboAbility.CheckCanSabotage() : IsImpostor();
+        => _customSaboAbility != null ? _customSaboAbility.CheckCanSabotage() : (IsImpostor() && !ModHelpers.IsHnS());
     public bool ShowVanillaSabotageButton()
-        => IsImpostor() && IsAlive() && _customSaboAbility == null;
+        => (IsImpostor() && !ModHelpers.IsHnS()) && IsAlive() && _customSaboAbility == null;
     public AbilityBase GetAbility(ulong abilityId)
     {
         return PlayerAbilitiesDictionary.TryGetValue(abilityId, out var ability) ? ability : null;

@@ -2,6 +2,7 @@ using System.Collections;
 using System.Linq;
 using BepInEx.Unity.IL2CPP.Utils.Collections;
 using HarmonyLib;
+using SuperNewRoles.CustomCosmetics.CosmeticsPlayer;
 using SuperNewRoles.CustomOptions.Categories;
 using SuperNewRoles.Events;
 using SuperNewRoles.MapCustoms;
@@ -20,6 +21,14 @@ public static class IntroCutscenePatch
     {
         public static void Postfix(IntroCutscene __instance)
         {
+            // なんかバグるからとりあえず
+            if (ModHelpers.IsHnS())
+            {
+                __instance.FrontMost.gameObject.SetActive(false);
+                __instance.BackgroundBar.gameObject.SetActive(false);
+                __instance.Foreground.gameObject.SetActive(false);
+                __instance.transform.Find("BackgroundLayer")?.gameObject.SetActive(false);
+            }
             PoolablePrefabManager.OnIntroCutsceneDestroy(__instance);
             new LateTask(() =>
             {
@@ -211,6 +220,12 @@ public static class IntroCutscenePatch
         foreach (var player in ExPlayerControl.ExPlayerControls)
         {
             NameText.UpdateNameInfo(player);
+            GameObject moddedCosmetics = CustomCosmeticsLayers.ExistsOrInitialize(player.cosmetics)?.ModdedCosmetics;
+            if (moddedCosmetics != null)
+            {
+                moddedCosmetics.SetActive(false);
+                new LateTask(() => moddedCosmetics.SetActive(true), 0.1f);
+            }
         }
         NameText.RegisterNameTextUpdateEvent();
         SaboAndVent.RegisterListener();
