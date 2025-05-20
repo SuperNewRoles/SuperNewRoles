@@ -13,7 +13,7 @@ public class CanUseReportButtonAbility : AbilityBase
     private EventListener _hudUpdateListener;
     private EventListener<DieEventData> _dieListener;
     private bool _lastCanUseReportButton;
-    public CanUseReportButtonAbility(Func<bool> canUseReportButton,)
+    public CanUseReportButtonAbility(Func<bool> canUseReportButton)
     {
         _canUseReportButton = canUseReportButton;
     }
