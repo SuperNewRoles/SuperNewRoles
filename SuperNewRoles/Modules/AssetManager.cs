@@ -65,7 +65,7 @@ public static class AssetManager
     {
         SuperNewRolesPlugin.Logger.LogInfo("[Splash] Loading AssetBundles...");
         Logger.Info("-------Start AssetBundle-------");
-        var ExcAssembly = Assembly.GetExecutingAssembly();
+        var ExcAssembly = SuperNewRolesPlugin.Assembly;
         foreach (var data in AssetPathes)
         {
             SuperNewRolesPlugin.Logger.LogInfo($"[Splash] Loading AssetBundle: {data.Type}");

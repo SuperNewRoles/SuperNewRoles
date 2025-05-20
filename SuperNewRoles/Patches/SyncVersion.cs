@@ -46,7 +46,7 @@ public static class SyncVersion
 
     public static void Load()
     {
-        string dllPath = Assembly.GetExecutingAssembly().Location;
+        string dllPath = SuperNewRolesPlugin.Assembly.Location;
         byte[] bytes = File.ReadAllBytes(dllPath);
         string hash = ModHelpers.HashMD5(bytes);
         string rpcMap = GenerateRpcMap();

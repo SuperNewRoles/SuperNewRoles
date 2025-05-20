@@ -133,7 +133,7 @@ public static class CustomOptionManager
     {
         var fieldNames = new HashSet<string>();
         SuperNewRolesPlugin.Logger.LogInfo("[Splash] Loading CustomOptions...");
-        foreach (var type in Assembly.GetExecutingAssembly().GetTypes())
+        foreach (var type in SuperNewRolesPlugin.Assembly.GetTypes())
         {
             foreach (var field in type.GetFields(BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Static))
             {

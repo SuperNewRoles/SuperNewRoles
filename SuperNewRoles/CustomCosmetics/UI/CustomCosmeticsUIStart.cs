@@ -99,7 +99,7 @@ public static class CustomCosmeticsUIStart
         }
 
         // AssemblyからCustomCosmeticsMenuBase<>を継承しているクラスを探す
-        var customMenuTypes = Assembly.GetExecutingAssembly()
+        var customMenuTypes = SuperNewRolesPlugin.Assembly
             .GetTypes()
             .Where(t => typeof(ICustomCosmeticsMenu).IsAssignableFrom(t)
                         && t != typeof(CustomCosmeticsMenuBase<>)

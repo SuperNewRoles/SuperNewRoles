@@ -57,7 +57,7 @@ public static class HelpMenuObjectManager
     private static void SetUpCategories()
     {
         // HelpMenuCategoryBaseを継承した全ての型を取得
-        var categoryTypes = Assembly.GetExecutingAssembly().GetTypes()
+        var categoryTypes = SuperNewRolesPlugin.Assembly.GetTypes()
             .Where(type => type.IsSubclassOf(typeof(HelpMenuCategoryBase)) && !type.IsAbstract)
             .ToArray();
 
