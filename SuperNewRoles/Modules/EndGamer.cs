@@ -126,7 +126,7 @@ public static class EndGamer
                     reason = (GameOverReason)CustomGameOverReason.TunaWin;
                     winners = [player];
                     color = Tuna.Instance.RoleColor;
-                    upperText = "TunaWin";
+                    upperText = "Tuna";
                     winType = WinType.Hijackers;
                 }
             }
