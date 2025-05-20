@@ -87,11 +87,11 @@ public static class EndGamer
         }
     }
     [CustomRPC]
-    public static void RpcEndGameWithWinner(CustomGameOverReason reason, WinType winType, ExPlayerControl[] winners, Color32 color, string upperText, string winText = null)
+    public static void RpcEndGameWithWinner(CustomGameOverReason reason, WinType winType, ExPlayerControl[] winners, Color32 color, string upperText, string winText = "")
     {
         ShipStatus.Instance.enabled = false;
         if (!AmongUsClient.Instance.AmHost) return;
-        EndGame((GameOverReason)reason, winType, winners.ToHashSet(), color, upperText, string.IsNullOrEmpty(winText) ? null : winText);
+        EndGame((GameOverReason)reason, winType, winners.ToHashSet(), color, upperText, string.IsNullOrEmpty(winText) || winText == "" ? null : winText);
     }
     [CustomRPC]
     public static void RpcEndGameImpostorWin()

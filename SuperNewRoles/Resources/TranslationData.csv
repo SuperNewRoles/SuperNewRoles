@@ -921,6 +921,7 @@ VentTrapperSetupTime,トラップ設置時間,Setup Time,陷阱设置时间,陷�
 VentTrapperStunTime,トラップ効果時間,Trap Effect Time,陷阱效果时间,陷阱效果時間
 
 # Rocket Options
+RocketInitialGrabCooldown,初回「掴む」のクールタイム,Initial Grab Cooldown,初回掴むのクールタイム,初回掴む的冷卻時間
 RocketGrabCooldown,「掴む」のクールタイム,Grab Cooldown,「掴む」のクールタイム,「掴む」のクールタイム
 RocketSubsequentGrabCooldown,二人目を掴めるようになるまでの時間,Subsequent Grab Cooldown,二人目を掴めるようになるまでの時間,二人目を掴めるようになるまでの時間
 RocketLaunchAfterMeeting,会議中に掴んでいる場合、会議後にエフェクトと音を出して打ち上げる,If it's being held during the meeting，launch it with effects and sound after the meeting.

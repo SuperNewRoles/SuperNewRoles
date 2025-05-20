@@ -349,32 +349,48 @@ public class CustomCosmeticsLoader
         // After asset bundles are done, wait for sprite downloads to complete
         SpritesDownloading = false;
         Logger.Info("spriteDownloadCoroutine done");
-        willLoad = () =>
+
+        while (notLoadedAssetBundles.Count > 0)
         {
-            // ダウンロードされたアセットバンドルを順次読み込みパッケージを取り出す
-            try
+            string bundlePath = notLoadedAssetBundles[0];
+            AssetBundle loadedBundleInstance = null;
+            bool loadBundleFinished = false;
+            Logger.Info("Loading asset bundle: " + bundlePath);
+
+            // LoadAssetBundleコルーチンをstartCoroutineで実行し、完了を待機
+            startCoroutine(LoadAssetBundle(bundlePath, (assetBundle) =>
             {
-                while (notLoadedAssetBundles.Count > 0)
-                {
-                    string bundlePath = notLoadedAssetBundles[0];
-                    AssetBundle assetBundle = LoadAssetBundle(bundlePath);
-                    string[] packagesHats = GetPackages(assetBundle, "Hats");
-                    string[] packagesVisors = GetPackages(assetBundle, "Visors");
-                    string[] packagesNamePlates = GetPackages(assetBundle, "NamePlates");
-                    foreach (string package in packagesHats)
-                    {
-                        Logger.Info($"パッケージ: {package}");
-                    }
-                    LoadPackages(assetBundle, packagesHats, packagesVisors, packagesNamePlates);
-                    notLoadedAssetBundles.RemoveAt(0);
-                }
-                LoadedPackages.Sort((a, b) => a.name.CompareTo(b.name));
-            }
-            catch (Exception e)
+                loadedBundleInstance = assetBundle;
+                loadBundleFinished = true;
+            }));
+
+            // 完了通知フラグが立つまで待機
+            yield return new WaitUntil((Il2CppSystem.Func<bool>)(() => loadBundleFinished));
+            Logger.Info("Loaded AssetBundle");
+
+            if (loadedBundleInstance != null)
             {
-                Logger.Error($"カスタムコスメティックの読み込みに失敗しました: {e}");
+                Logger.Info("Loading Packages");
+                var allPackages = GetAllPackagesByType(loadedBundleInstance);
+                string[] packagesHats = allPackages["Hats"];
+                string[] packagesVisors = allPackages["Visors"];
+                string[] packagesNamePlates = allPackages["NamePlates"];
+
+                // LoadPackages は IEnumerator を返すように変更される
+                // startCoroutine を使って実行し、完了を待つ
+                Logger.Info("Loading Packages");
+                yield return LoadPackages(loadedBundleInstance, packagesHats, packagesVisors, packagesNamePlates, startCoroutine);
+                Logger.Info("Loaded Packages");
+                notLoadedAssetBundles.RemoveAt(0);
             }
-        };
+            else
+            {
+                Logger.Error($"アセットバンドルのロードに失敗しました: {bundlePath}。キューから削除します。");
+                notLoadedAssetBundles.RemoveAt(0); // エラー時もキューから削除して無限ループを防ぐ
+            }
+        }
+        LoadedPackages.Sort((a, b) => a.name.CompareTo(b.name));
+
         runned = true;
         Logger.Info("CustomCosmeticsLoader willLoad done");
     }
@@ -436,13 +452,15 @@ public class CustomCosmeticsLoader
         }
     }
 
-    private static void LoadPackages(AssetBundle assetBundle, string[] packagesHats, string[] packagesVisors, string[] packagesNamePlates)
+    private static IEnumerator LoadPackages(AssetBundle assetBundle, string[] packagesHats, string[] packagesVisors, string[] packagesNamePlates, Func<IEnumerator, Coroutine> startCoroutine)
     {
         foreach (string package in packagesHats)
         {
+            Logger.Info("Loading PackagesLoadAssetASync");
             // package.jsonをロードするパスを組み立て、読み込み
             string packageJsonPath = $"assets/hats/{package}/package.json";
-            TextAsset packageTextAsset = assetBundle.LoadAsset<TextAsset>(packageJsonPath);
+            var packageTextAsset = assetBundle.LoadAsset<TextAsset>(packageJsonPath);
+
             if (packageTextAsset == null)
             {
                 Logger.Error($"パッケージ: {package} の package.json が読み込めません(Hats)");
@@ -484,12 +502,13 @@ public class CustomCosmeticsLoader
             }
             else
                 Logger.Error($"パッケージ: {package} に hats が見つかりません");
-
+            GameObject.Destroy(packageTextAsset);
         }
         foreach (string package in packagesVisors)
         {
             string visorsPath = $"assets/visors/{package}/package.json";
-            TextAsset visorsTextAsset = assetBundle.LoadAsset<TextAsset>(visorsPath);
+            var visorsTextAsset = assetBundle.LoadAsset<TextAsset>(visorsPath);
+
             if (visorsTextAsset == null)
             {
                 Logger.Error($"パッケージ: {package} の package.json が読み込めません(Visors)");
@@ -538,11 +557,13 @@ public class CustomCosmeticsLoader
             {
                 cosmeticsPackage.visors = [];
             }
+            GameObject.Destroy(visorsTextAsset);
         }
         foreach (string package in packagesNamePlates)
         {
             string namePlatesPath = $"assets/nameplates/{package}/package.json";
-            TextAsset namePlatesTextAsset = assetBundle.LoadAsset<TextAsset>(namePlatesPath);
+            var namePlatesTextAsset = assetBundle.LoadAsset<TextAsset>(namePlatesPath);
+
             if (namePlatesTextAsset == null)
             {
                 Logger.Error($"パッケージ: {package} の package.json が読み込めません(NamePlates)");
@@ -589,7 +610,9 @@ public class CustomCosmeticsLoader
             {
                 cosmeticsPackage.namePlates = [];
             }
+            GameObject.Destroy(namePlatesTextAsset);
         }
+        yield break;
     }
     public static CustomCosmeticsHat? GetModdedHat(string hatId)
     {
@@ -619,79 +642,88 @@ public class CustomCosmeticsLoader
         return moddedNamePlates.TryGetValue(namePlateId, out var namePlate) ? new ModdedNamePlateDataWrapper(namePlate) : null;
     }
 
-    private static string[] GetPackages(AssetBundle assetBundle, string type)
+    private static Dictionary<string, string[]> GetAllPackagesByType(AssetBundle assetBundle)
     {
-        var packageNames = new HashSet<string>(StringComparer.OrdinalIgnoreCase);
+        var categorizedPackagesSet = new Dictionary<string, HashSet<string>>(StringComparer.OrdinalIgnoreCase)
+        {
+            { "Hats", new HashSet<string>(StringComparer.OrdinalIgnoreCase) },
+            { "Visors", new HashSet<string>(StringComparer.OrdinalIgnoreCase) },
+            { "NamePlates", new HashSet<string>(StringComparer.OrdinalIgnoreCase) }
+        };
 
-        // AssetBundle.GetAllAssetNames()から返されるパスは通常 "assets/" で始まります (小文字)。
-        // 元のコードでは segments[0] を "Assets" (大文字) と OrdinalIgnoreCase で比較していました。
-        // また segments[1] を type (渡された引数のケース) と OrdinalIgnoreCase で比較していました。
-        // そのため、先頭の "assets/" (または "Assets/") と、それに続く type + "/" を大文字・小文字を区別せずに照合します。
+        string assetsPrefix = "assets/";
+        // Dictionary keys are "Hats", "Visors", "NamePlates". Subdirectory names are lowercase.
+        string[] typeSubdirectories = new string[] { "hats", "visors", "nameplates" };
+        string[] typeKeys = new string[] { "Hats", "Visors", "NamePlates" };
 
         foreach (string assetPath in assetBundle.GetAllAssetNames())
         {
-            // segments.Length >= 4 の条件に相当: パスには少なくとも3つのスラッシュが含まれている必要があります。
-            // 例: "assets/hats/packagename/resource.png"
-
-            // 1. "assets/" プレフィックスの確認 (大文字・小文字区別なし)
-            string assetsPrefix = "assets/";
             if (!assetPath.StartsWith(assetsPrefix, StringComparison.OrdinalIgnoreCase))
             {
                 continue;
             }
 
-            // 2. typeフォルダの開始インデックス
-            int startOfTypeIndex = assetsPrefix.Length; // assetPath は "assets/TYPE/PACKAGE/REST" のような形式
+            // e.g., assetPath = "assets/hats/packagename/resource.png"
+            // pathAfterAssets = "hats/packagename/resource.png"
+            string pathAfterAssets = assetPath.Substring(assetsPrefix.Length);
 
-            // 3. typeフォルダの確認 (大文字・小文字区別なし)
-            // "assets/[type]/" で始まるパスを探します
-            string typeFolderWithSlash = type + "/";
-            if (assetPath.Length <= startOfTypeIndex + typeFolderWithSlash.Length - 1 || // -1 because StartsWith includes the slash
-                !assetPath.Substring(startOfTypeIndex).StartsWith(typeFolderWithSlash, StringComparison.OrdinalIgnoreCase))
+            for (int i = 0; i < typeSubdirectories.Length; i++)
             {
-                continue;
-            }
+                string currentTypeSubdirectory = typeSubdirectories[i] + "/"; // e.g., "hats/"
+                if (pathAfterAssets.StartsWith(currentTypeSubdirectory, StringComparison.OrdinalIgnoreCase))
+                {
+                    string determinedTypeKey = typeKeys[i]; // e.g., "Hats"
 
-            // パスは "assets/TYPE/PACKAGE/REST" のような形式です
-            // package名の開始インデックスは "assets/TYPE/" の後です
-            int startOfPackageIndex = startOfTypeIndex + typeFolderWithSlash.Length;
+                    // packagePathInTypeFolder = "packagename/resource.png"
+                    string packagePathInTypeFolder = pathAfterAssets.Substring(currentTypeSubdirectory.Length);
 
-            // 4. package名の抽出 (segments[2] に相当)
-            // package名は "assets/TYPE/" と次のスラッシュの間にあります
-            if (startOfPackageIndex >= assetPath.Length) // パスが "assets/TYPE/" またはそれより短い場合、package名はありません
-            {
-                continue;
-            }
+                    if (string.IsNullOrEmpty(packagePathInTypeFolder))
+                    {
+                        continue;
+                    }
 
-            int endOfPackageIndex = assetPath.IndexOf('/', startOfPackageIndex);
+                    int endOfPackageNameIndex = packagePathInTypeFolder.IndexOf('/');
+                    // If no further '/', it means path is like "assets/type/packagename"
+                    // Original GetPackages logic (segments.Length >= 4) would skip this.
+                    if (endOfPackageNameIndex == -1)
+                    {
+                        continue;
+                    }
 
-            if (endOfPackageIndex == -1)
-            {
-                // パスが "assets/TYPE/PACKAGENAME" のような形式 (末尾にスラッシュなし)
-                // この場合、segments は ["assets", "TYPE", "PACKAGENAME"] となり、長さは3です。
-                // 元の `segments.Length >= 4` 条件ではこれは除外されるため、continueします。
-                continue;
-            }
+                    string packageName = packagePathInTypeFolder.Substring(0, endOfPackageNameIndex);
 
-            // これでパスは "assets/TYPE/PACKAGENAME/..." であることが保証されます。
-            // これにより、segments.Length >= 4 の条件が満たされます。
-            string packageName = assetPath.Substring(startOfPackageIndex, endOfPackageIndex - startOfPackageIndex);
-
-            // 5. package名が空でないことを確認
-            if (!string.IsNullOrEmpty(packageName))
-            {
-                packageNames.Add(packageName);
+                    if (!string.IsNullOrEmpty(packageName))
+                    {
+                        categorizedPackagesSet[determinedTypeKey].Add(packageName);
+                    }
+                    // Found type for this assetPath, move to next assetPath
+                    break;
+                }
             }
         }
-        return packageNames.ToArray();
+
+        var result = new Dictionary<string, string[]>(StringComparer.OrdinalIgnoreCase);
+        foreach (var kvp in categorizedPackagesSet)
+        {
+            result[kvp.Key] = kvp.Value.ToArray();
+        }
+        return result;
     }
 
-    private static AssetBundle LoadAssetBundle(string assetBundlePath)
+    private static IEnumerator LoadAssetBundle(string assetBundlePath, Action<AssetBundle> onFinish)
     {
-        AssetBundle assetBundle = AssetBundle.LoadFromFile(assetBundlePath);
+        Logger.Info("Loading!!! AssetBundle");
+        // var assetBundleRequest = AssetBundle.LoadFromFileAsync(assetBundlePath);
+        var assetBundle = AssetBundle.LoadFromFile(assetBundlePath);
         assetBundle.DontUnload();
+        onFinish(assetBundle);
+        yield break;
+        /*
+        yield return assetBundle;
+        Logger.Info("Loaded!!! AssetBunde");
+        assetBundle.assetBundle.DontUnload();
         Logger.Info($"アセットバンドルをロードしました: {assetBundlePath} {assetBundle != null}");
-        return assetBundle;
+        onFinish(assetBundle.assetBundle);*/
     }
 
     private static IEnumerator DownloadAssetBundleWithRetryAsync(string assetBundleUrl, string expectedHash, Action onFinish)
@@ -946,6 +978,7 @@ public class CustomCosmeticsLoader
         {
             while (downloadQueue.Count > 0 && activeDownloads < MAX_CONCURRENT_DOWNLOADS)
             {
+                Logger.Info("Downloading sprite: " + downloadQueue.Count);
                 var item = downloadQueue.Dequeue();
                 activeDownloads++;
                 // SuperNewRolesPlugin.Instance が MonoBehaviour を継承していると仮定

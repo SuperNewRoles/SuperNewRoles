@@ -213,7 +213,8 @@ public static class AssetManager
         }
         // Optionally, if you also want to clear the Bundles dictionary (though this might not be what you want if bundles are meant to persist across scenes)
         // Bundles.Clear();
-        Resources.UnloadUnusedAssets();
+        if (Constants.GetPlatformType() != Platforms.Android)
+            Resources.UnloadUnusedAssets();
         SuperNewRolesPlugin.Logger.LogInfo("[AssetManager] All cached assets unloaded.");
     }
     [HarmonyPatch(typeof(AmongUsClient), nameof(AmongUsClient.OnActiveSceneChange))]

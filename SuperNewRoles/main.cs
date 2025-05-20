@@ -134,18 +134,20 @@ public partial class SuperNewRolesPlugin : BasePlugin
     }
     public void PatchAll(Harmony harmony)
     {
+        var assembly = Assembly.GetExecutingAssembly();
         if (Constants.GetPlatformType() == Platforms.Android)
         {
-            harmony.PatchAll(Assembly.GetExecutingAssembly());
+            harmony.PatchAll(assembly);
         }
         else
         {
             List<Task> tasks = new();
-            AccessTools.GetTypesFromAssembly(Assembly.GetExecutingAssembly()).Do(delegate (Type type)
+            AccessTools.GetTypesFromAssembly(assembly).Do(delegate (Type type)
             {
-                tasks.Add(Task.Run(() => harmony.CreateClassProcessor(type).Patch()));
+                //tasks.Add(Task.Run(() => ));
+                harmony.CreateClassProcessor(type).Patch();
             });
-            Task.WaitAll(tasks.ToArray());
+            Task.WhenAll(tasks.ToArray()).Wait();
         }
     }
 

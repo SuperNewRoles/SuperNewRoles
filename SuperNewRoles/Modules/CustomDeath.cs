@@ -49,13 +49,16 @@ public static class CustomDeathExtensions
                 if (source == null)
                     throw new Exception("Source is null");
                 Vector2 pos = source.Player.GetTruePosition();
-                source.Player.MurderPlayer(source.Player, MurderResultFlags.Succeeded);
+                source.Player.MurderPlayer(player.Player, MurderResultFlags.Succeeded);
                 FinalStatusManager.SetFinalStatus(source, FinalStatus.Kill);
-                DeadBody deadBody = GameObject.FindObjectsOfType<DeadBody>().FirstOrDefault(x => x.ParentId == source.PlayerId);
-                if (deadBody != null)
-                    GameObject.Destroy(deadBody.gameObject);
-                source.Player.NetTransform.SnapTo(pos);
-                source.Player.MyPhysics.body.velocity = Vector2.zero;
+                new LateTask(() =>
+                {
+                    DeadBody deadBody = GameObject.FindObjectsOfType<DeadBody>().FirstOrDefault(x => x.ParentId == source.PlayerId);
+                    if (deadBody != null)
+                        GameObject.Destroy(deadBody.gameObject);
+                    source.Player.NetTransform.SnapTo(pos);
+                    source.Player.MyPhysics.body.velocity = Vector2.zero;
+                }, 0.1f);
                 break;
             case CustomDeathType.Suicide:
                 player.Player.MurderPlayer(player.Player, MurderResultFlags.Succeeded);
