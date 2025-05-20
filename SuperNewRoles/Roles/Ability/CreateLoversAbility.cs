@@ -37,7 +37,7 @@ public class CreateLoversAbility : TargetCustomButtonBase
     private float _currentTimer = 0f;
     public override Func<ExPlayerControl, bool> IsTargetable => (player) => !player.IsLovers() && CurrentTarget != player;
     public override ShowTextType showTextType => _enabledTimeLimit ? ShowTextType.Show : ShowTextType.Hidden;
-    public override string showText => _enabledTimeLimit ? ModTranslation.GetString("DurationTimerText", (int)_timeLimit) : string.Empty;
+    public override string showText => _enabledTimeLimit ? ModTranslation.GetString("DurationTimerText", (int)(_timeLimit - _currentTimer) + 1) : string.Empty;
     public CreateLoversAbility(float coolTime, string buttonText, Sprite sprite, bool IsLoversMe, Action<List<ExPlayerControl>> callback = null, bool enabledTimeLimit = false, float timeLimit = 0f)
     {
         CoolTime = coolTime;
