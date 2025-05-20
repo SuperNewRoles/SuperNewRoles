@@ -20,8 +20,8 @@ public static partial class ModTranslation
     }
     private static Dictionary<SupportedLangs, Dictionary<string, string>> LoadTranslation(SupportedLangs? lang = null)
     {
-        var stream = Assembly.GetExecutingAssembly().GetManifestResourceStream("SuperNewRoles.Resources.TranslationData.csv");
-        var reader = new StreamReader(stream);
+        using var stream = SuperNewRolesPlugin.Assembly.GetManifestResourceStream("SuperNewRoles.Resources.TranslationData.csv");
+        using var reader = new StreamReader(stream);
         Dictionary<string, string> japaneseTranslation = new();
         Dictionary<string, string> englishTranslation = new();
         Dictionary<string, string> sChineseTranslation = new();

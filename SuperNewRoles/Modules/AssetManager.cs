@@ -110,7 +110,10 @@ public static class AssetManager
                 }
                 else
                 {
-                    assetBundle = AssetBundle.LoadFromMemory(ExcAssembly.GetManifestResourceStream(resourceName).ReadFully());
+                    using (var bundleStream = ExcAssembly.GetManifestResourceStream(resourceName))
+                    {
+                        assetBundle = AssetBundle.LoadFromMemory(bundleStream.ReadFully());
+                    }
                 }
 
                 //読み込んだAssetBundleを保存
