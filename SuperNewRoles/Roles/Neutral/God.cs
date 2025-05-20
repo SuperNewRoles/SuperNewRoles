@@ -48,12 +48,12 @@ class God : RoleBase<God>
     public static bool GodCannotUseReportButton;
 
 
-    private static SabotageType sabotageCanUse()
+    private static SabotageType sabotageCantUse()
     {
         var sabotageCanUse = SabotageType.None;
         if (GodCannotFixReactor)
         {
-            sabotageCanUse |= SabotageType.Reactor;
+            sabotageCanUse |= SabotageType.Reactor | SabotageType.O2;
         }
         if (GodCannotFixComms)
         {
