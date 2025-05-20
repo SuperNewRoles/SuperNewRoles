@@ -21,6 +21,7 @@ public static class CustomDeathExtensions
     }
     public static void CustomDeath(this ExPlayerControl player, CustomDeathType deathType, ExPlayerControl source = null)
     {
+        Logger.Info($"CustomDeath: {deathType}, Source: {source?.Player.Data.PlayerName ?? "NoPlayer"}, Target: {player.Player.Data.PlayerName}");
         switch (deathType)
         {
             case CustomDeathType.Exile:
@@ -47,14 +48,14 @@ public static class CustomDeathExtensions
             case CustomDeathType.KilLWithoutDeadbodyAndTeleport:
                 if (source == null)
                     throw new Exception("Source is null");
-                Vector2 pos = player.Player.GetTruePosition();
-                source.Player.MurderPlayer(player.Player, MurderResultFlags.Succeeded);
-                FinalStatusManager.SetFinalStatus(player, FinalStatus.Kill);
-                DeadBody deadBody = GameObject.FindObjectsOfType<DeadBody>().FirstOrDefault(x => x.ParentId == player.PlayerId);
+                Vector2 pos = source.Player.GetTruePosition();
+                source.Player.MurderPlayer(source.Player, MurderResultFlags.Succeeded);
+                FinalStatusManager.SetFinalStatus(source, FinalStatus.Kill);
+                DeadBody deadBody = GameObject.FindObjectsOfType<DeadBody>().FirstOrDefault(x => x.ParentId == source.PlayerId);
                 if (deadBody != null)
                     GameObject.Destroy(deadBody.gameObject);
-                player.Player.NetTransform.SnapTo(pos);
-                player.Player.MyPhysics.body.velocity = Vector2.zero;
+                source.Player.NetTransform.SnapTo(pos);
+                source.Player.MyPhysics.body.velocity = Vector2.zero;
                 break;
             case CustomDeathType.Suicide:
                 player.Player.MurderPlayer(player.Player, MurderResultFlags.Succeeded);

@@ -923,9 +923,11 @@ VentTrapperStunTime,トラップ効果時間,Trap Effect Time,陷阱效果时间
 # Rocket Options
 RocketGrabCooldown,「掴む」のクールタイム,Grab Cooldown,「掴む」のクールタイム,「掴む」のクールタイム
 RocketSubsequentGrabCooldown,二人目を掴めるようになるまでの時間,Subsequent Grab Cooldown,二人目を掴めるようになるまでの時間,二人目を掴めるようになるまでの時間
+RocketLaunchAfterMeeting,会議中に掴んでいる場合、会議後にエフェクトと音を出して打ち上げる,If it's being held during the meeting，launch it with effects and sound after the meeting.
 RocketLaunchChargeTime,チャージタイム,Launch Charge Time,チャージタイム,チャージタイム
 RocketGrabButtonText,掴む,Grab,掴む,掴む
 RocketLaunchButtonText,ドッカーン!,Launch!
+
 
 # Vampire
 VampireAbsorptionCooldown,吸血クールダウン,Absorption Cooldown,吸血冷却时间,吸血冷卻時間

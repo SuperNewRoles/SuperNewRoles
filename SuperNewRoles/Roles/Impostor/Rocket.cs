@@ -20,7 +20,7 @@ class Rocket : RoleBase<Rocket>
     public override RoleId Role { get; } = RoleId.Rocket;
     public override Color32 RoleColor { get; } = Palette.ImpostorRed;
     public override List<Func<AbilityBase>> Abilities { get; } = [
-        () => new RocketAbility(RocketInitialGrabCooldown, RocketSubsequentGrabCooldown)
+        () => new RocketAbility(RocketInitialGrabCooldown, RocketSubsequentGrabCooldown, RocketLaunchAfterMeeting)
     ];
 
     public override QuoteMod QuoteMod { get; } = QuoteMod.SuperNewRoles;
@@ -34,11 +34,13 @@ class Rocket : RoleBase<Rocket>
     public override RoleOptionMenuType OptionTeam { get; } = RoleOptionMenuType.Impostor;
 
     // Custom Options
-    [CustomOptionFloat("RocketInitialGrabCooldown", 2.5f, 60f, 2.5f, 15f, translationName: "RocketGrabAbility/InitialCooldown")]
+    [CustomOptionFloat("RocketInitialGrabCooldown", 2.5f, 60f, 2.5f, 15f)]
     public static float RocketInitialGrabCooldown;
 
-    [CustomOptionFloat("RocketSubsequentGrabCooldown", 0f, 60f, 2.5f, 5f, translationName: "RocketGrabAbility/SubsequentCooldown")]
+    [CustomOptionFloat("RocketSubsequentGrabCooldown", 0f, 60f, 2.5f, 5f)]
     public static float RocketSubsequentGrabCooldown;
+    [CustomOptionBool("RocketLaunchAfterMeeting", false)]
+    public static bool RocketLaunchAfterMeeting;
 }
 
 // --- Main Ability Class (Container) ---
@@ -46,20 +48,21 @@ public class RocketAbility : AbilityBase
 {
     private readonly float _initialCooldown;
     private readonly float _subsequentCooldown;
-
+    private readonly bool _launchAfterMeeting;
     public RocketGrabAbility GrabAbility { get; private set; }
     public RocketLaunchAbility LaunchAbility { get; private set; }
 
-    public RocketAbility(float initialCooldown, float subsequentCooldown)
+    public RocketAbility(float initialCooldown, float subsequentCooldown, bool launchAfterMeeting)
     {
         _initialCooldown = initialCooldown;
         _subsequentCooldown = subsequentCooldown;
+        _launchAfterMeeting = launchAfterMeeting;
     }
 
     public override void AttachToAlls()
     {
         base.AttachToAlls();
-        GrabAbility = new RocketGrabAbility(_initialCooldown, _subsequentCooldown);
+        GrabAbility = new RocketGrabAbility(_initialCooldown, _subsequentCooldown, _launchAfterMeeting);
         LaunchAbility = new RocketLaunchAbility();
         GrabAbility.SetLaunchAbility(LaunchAbility);
         LaunchAbility.SetGrabAbility(GrabAbility);
@@ -78,6 +81,7 @@ public class RocketGrabAbility : TargetCustomButtonBase
 
     public List<ExPlayerControl> GrabbedPlayers { get; } = new();
     private bool launchAfterMeeting = false;
+    private bool launchAfterMeetingOption = false;
 
     private EventListener<MeetingStartEventData> _onMeetingStartEvent;
     private EventListener<WrapUpEventData> _onWrapUpEvent;
@@ -90,13 +94,15 @@ public class RocketGrabAbility : TargetCustomButtonBase
     public override Color32 OutlineColor => Rocket.Instance.RoleColor;
     // Implement required abstract member
     public override bool OnlyCrewmates => true; // Can grab Crewmates/Neutrals, adjust if Impostors should be grabbable
+    public override Func<ExPlayerControl, bool> IsTargetable => (player) => GrabbedPlayers.Contains(player);
 
     public override float DefaultTimer => GrabbedPlayers.Count == 0 ? initialCooldown : subsequentCooldown;
 
-    public RocketGrabAbility(float initialCooldown, float subsequentCooldown)
+    public RocketGrabAbility(float initialCooldown, float subsequentCooldown, bool launchAfterMeeting)
     {
         this.initialCooldown = initialCooldown;
         this.subsequentCooldown = subsequentCooldown;
+        this.launchAfterMeetingOption = launchAfterMeeting;
     }
 
     // Method called by RocketAbility during Attach
@@ -180,9 +186,15 @@ public class RocketGrabAbility : TargetCustomButtonBase
         {
             if (launchAbility != null)
             {
-                // Convert using .PlayerControl
                 List<ExPlayerControl> playersToLaunch = GrabbedPlayers;
-                launchAbility.ForceLaunch(playersToLaunch);
+                if (launchAfterMeetingOption)
+                {
+                    launchAbility.RpcLaunchPlayers(playersToLaunch);
+                }
+                else
+                {
+                    launchAbility.RpcAllExile(playersToLaunch);
+                }
             }
         }
         launchAfterMeeting = false;
@@ -279,20 +291,29 @@ public class RocketLaunchAbility : CustomButtonBase
         }
     }
 
-    public void ForceLaunch(List<ExPlayerControl> playersToLaunch)
+
+    [CustomRPC]
+    public void RpcAllExile(List<ExPlayerControl> playersToLaunch)
     {
-        if (Player != null && Player.AmOwner && playersToLaunch != null && playersToLaunch.Count > 0)
+        if (grabAbility == null || Player == null) return;
+        foreach (var targetControl in playersToLaunch)
         {
-            RpcLaunchPlayers(playersToLaunch);
+            if (targetControl == null || targetControl.IsDead()) continue;
+            if (grabAbility.GrabbedPlayers.Contains(targetControl))
+            {
+                targetControl.CustomDeath(CustomDeathType.LaunchByRocket, source: Player);
+            }
         }
+        grabAbility.ClearGrabbedPlayersLocally();
     }
 
     [CustomRPC]
-    private void RpcLaunchPlayers(List<ExPlayerControl> targets)
+    public void RpcLaunchPlayers(List<ExPlayerControl> targets)
     {
         if (grabAbility == null || Player == null) return;
         Vector3 launchPosition = Player.transform.position;
         int count = 0;
+
         foreach (var targetControl in targets)
         {
             // Get ExPlayerControl using GameData
@@ -307,10 +328,6 @@ public class RocketLaunchAbility : CustomButtonBase
             new GameObject("RocketDeadbody").AddComponent<RocketDeadbody>().Init(targetEx, count, targets.Count);
             count++;
         }
-        grabAbility.RpcClearGrabbedPlayers();
-        if (Player.AmOwner)
-        {
-            grabAbility.ClearGrabbedPlayersLocally();
-        }
+        grabAbility.ClearGrabbedPlayersLocally();
     }
 }
