@@ -53,7 +53,7 @@ public partial class SuperNewRolesPlugin : BasePlugin
     private readonly List<Action> _mainThreadActions = new();
     private readonly object _mainThreadActionsLock = new();
 
-    public static Assembly Assembly { get; private set; }
+    public static Assembly Assembly { get; private set; } = Assembly.GetExecutingAssembly();
 
     private static string _currentSceneName;
 
@@ -139,7 +139,7 @@ public partial class SuperNewRolesPlugin : BasePlugin
     }
     public void PatchAll(Harmony harmony)
     {
-        var assembly = Assembly.GetExecutingAssembly();
+        var assembly = Assembly;
         if (Constants.GetPlatformType() == Platforms.Android)
         {
             harmony.PatchAll(assembly);

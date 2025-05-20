@@ -18,7 +18,7 @@ public static class PluginConfig
 public static class VersionInfo
 {
     private static Version _version;
-    public static Version Current => _version ??= Assembly.GetExecutingAssembly().GetName().Version;
+    public static Version Current => _version ??= SuperNewRolesPlugin.Assembly.GetName().Version;
     public static readonly string VersionString = Current.ToString();
     public static string NewVersion = "";
     public static bool IsUpdate = false;
@@ -78,7 +78,7 @@ public static class Statics
 
     // アセンブリ
     private static Assembly _assembly = null;
-    public static Assembly Assembly => _assembly ??= Assembly.GetExecutingAssembly();
+    public static Assembly Assembly => _assembly ??= SuperNewRolesPlugin.Assembly;
 
 
     // プラットフォーム設定
