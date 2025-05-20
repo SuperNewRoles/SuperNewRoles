@@ -52,6 +52,8 @@ public class CupidAbility : AbilityBase
     public byte Lovers1 { get; private set; }
     public byte Lovers2 { get; private set; }
 
+    private CreateLoversAbility createLoversAbility;
+
     public bool EnabledTimeLimit { get; }
     public float TimeLimit { get; }
     public bool CanSeeCreatedLoversRole { get; }
@@ -67,7 +69,7 @@ public class CupidAbility : AbilityBase
     {
         base.AttachToAlls();
 
-        var createLoversAbility = new CreateLoversAbility(
+        createLoversAbility = new CreateLoversAbility(
             CoolTime,
             ModTranslation.GetString("CupidLoveArrow"),
             AssetManager.GetAsset<Sprite>("CupidButton.png"),
@@ -99,10 +101,20 @@ public class CupidAbility : AbilityBase
     {
         if (!Player.AmOwner) return;
         if (Player.IsDead()) return;
-        if (Lovers1 != data.Player.PlayerId && Lovers2 != data.Player.PlayerId) return;
-        if (!data.Player.IsLovers()) return;
-        if (data.Player.cosmetics.nameText.text.Contains("♥")) return;
-        data.Player.cosmetics.nameText.text += ModHelpers.Cs(Lovers.Instance.RoleColor, "♥");
+        if (createLoversAbility.CreatedCouple != null)
+        {
+            if (Lovers1 != data.Player.PlayerId && Lovers2 != data.Player.PlayerId) return;
+            if (!data.Player.IsLovers()) return;
+            if (data.Player.cosmetics.nameText.text.Contains("♥")) return;
+            data.Player.cosmetics.nameText.text += ModHelpers.Cs(Lovers.Instance.RoleColor, "♥");
+        }
+        // まだ作ってないけど1人に刺してたら中抜きハートを付ける
+        else if (createLoversAbility.CurrentTarget != null)
+        {
+            if (createLoversAbility.CurrentTarget.PlayerId != data.Player.PlayerId) return;
+            if (data.Player.cosmetics.nameText.text.Contains("♡")) return;
+            data.Player.cosmetics.nameText.text += ModHelpers.Cs(Lovers.Instance.RoleColor, "♡");
+        }
     }
 
     private void OnNameTextUpdateVisiable(NameTextUpdateVisiableEventData data)

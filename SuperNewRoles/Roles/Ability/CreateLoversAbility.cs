@@ -24,7 +24,7 @@ public class CreateLoversAbility : TargetCustomButtonBase
 
     protected override KeyType keytype => KeyType.Ability1;
 
-    private ExPlayerControl CurrentTarget { get; set; }
+    public ExPlayerControl CurrentTarget { get; private set; }
 
     public override Color32 OutlineColor => Lovers.Instance.RoleColor;
 
@@ -97,7 +97,10 @@ public class CreateLoversAbility : TargetCustomButtonBase
     public override void OnClick()
     {
         if (CurrentTarget == null || CurrentTarget.IsDead() || CurrentTarget.IsLovers())
+        {
             CurrentTarget = Target;
+            NameText.UpdateNameInfo(CurrentTarget);
+        }
         else
         {
             RpcCustomCreateLovers(CurrentTarget, Target);
