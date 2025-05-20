@@ -1,5 +1,6 @@
 using System;
 using SuperNewRoles.Events;
+using SuperNewRoles.Events.PCEvents;
 using SuperNewRoles.Modules.Events.Bases;
 using UnityEngine;
 
@@ -10,8 +11,9 @@ public class CanUseReportButtonAbility : AbilityBase
     private Func<bool> _canUseReportButton;
     private EventListener _fixedUpdateListener;
     private EventListener _hudUpdateListener;
+    private EventListener<DieEventData> _dieListener;
     private bool _lastCanUseReportButton;
-    public CanUseReportButtonAbility(Func<bool> canUseReportButton)
+    public CanUseReportButtonAbility(Func<bool> canUseReportButton,)
     {
         _canUseReportButton = canUseReportButton;
     }
@@ -21,6 +23,7 @@ public class CanUseReportButtonAbility : AbilityBase
         base.AttachToLocalPlayer();
         _fixedUpdateListener = FixedUpdateEvent.Instance.AddListener(OnUpdate);
         _hudUpdateListener = HudUpdateEvent.Instance.AddListener(OnUpdate);
+        _dieListener = DieEvent.Instance.AddListener(OnDie);
     }
 
     public override void DetachToLocalPlayer()
@@ -28,6 +31,7 @@ public class CanUseReportButtonAbility : AbilityBase
         base.DetachToLocalPlayer();
         _fixedUpdateListener?.RemoveListener();
         _hudUpdateListener?.RemoveListener();
+        _dieListener?.RemoveListener();
     }
 
     private void OnUpdate()
@@ -44,6 +48,15 @@ public class CanUseReportButtonAbility : AbilityBase
         {
             HudManager.Instance.ReportButton.gameObject.SetActive(canUseReportButton);
             _lastCanUseReportButton = canUseReportButton;
+        }
+    }
+
+    private void OnDie(DieEventData data)
+    {
+        if (_canUseReportButton()) return;
+        foreach (DeadBody deadBody in GameObject.FindObjectsOfType<DeadBody>())
+        {
+            deadBody.Reported = true;
         }
     }
 }
