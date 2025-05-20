@@ -382,6 +382,10 @@ public static class AssignRoles
     [CustomRPC]
     public static void RpcCustomSetLovers(ExPlayerControl playerA, ExPlayerControl playerB, byte loversIndex, bool setNameText)
     {
+        CustomSetLovers(playerA, playerB, loversIndex, setNameText);
+    }
+    public static LoversCouple CustomSetLovers(ExPlayerControl playerA, ExPlayerControl playerB, byte loversIndex, bool setNameText)
+    {
         playerA.SetModifierRole(ModifierRoleId.Lovers);
         playerB.SetModifierRole(ModifierRoleId.Lovers);
         LoversAbility loversAbilityA = playerA.GetAbility<LoversAbility>();
@@ -394,7 +398,8 @@ public static class AssignRoles
             NameText.UpdateNameInfo(playerA);
             NameText.UpdateNameInfo(playerB);
         }
-        LoversIndex++;
+        LoversIndex = (byte)(loversIndex + 1);
+        return loversCouple;
     }
 
     private static void AssignModifier(PlayerControl player, ModifierRoleId modifierRoleId)

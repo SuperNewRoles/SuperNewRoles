@@ -16,7 +16,12 @@ class Cupid : RoleBase<Cupid>
     public override RoleId Role { get; } = RoleId.Cupid; // RoleId.Cupid が enum に存在すると仮定
     public override Color32 RoleColor { get; } = Lovers.Instance.RoleColor;
     public override List<Func<AbilityBase>> Abilities { get; } = [
-        () => new CupidAbility(CupidCoolTime, CupidEnabledTimeLimit, CupidTimeLimit)
+        () => new CupidAbility(
+            CupidCoolTime,
+            CupidEnabledTimeLimit,
+            CupidTimeLimit,
+            CupidCanSeeCreatedLoversRole
+        )
     ];
 
     public override QuoteMod QuoteMod { get; } = QuoteMod.SuperNewRoles;
@@ -35,23 +40,28 @@ class Cupid : RoleBase<Cupid>
     public static bool CupidEnabledTimeLimit;
     [CustomOptionFloat("CupidTimeLimit", 30f, 600f, 15f, 120f, parentFieldName: nameof(CupidEnabledTimeLimit))]
     public static float CupidTimeLimit;
+    [CustomOptionBool("CupidCanSeeCreatedLoversRole", false)]
+    public static bool CupidCanSeeCreatedLoversRole;
 }
 
 public class CupidAbility : AbilityBase
 {
     public float CoolTime { get; }
     private EventListener<NameTextUpdateEventData> _nameTextUpdateEvent;
-    private byte lovers1;
-    private byte lovers2;
+    private EventListener<NameTextUpdateVisiableEventData> _nameTextUpdateVisiableEvent;
+    public byte Lovers1 { get; private set; }
+    public byte Lovers2 { get; private set; }
 
     public bool EnabledTimeLimit { get; }
     public float TimeLimit { get; }
+    public bool CanSeeCreatedLoversRole { get; }
 
-    public CupidAbility(float coolTime, bool enabledTimeLimit, float timeLimit)
+    public CupidAbility(float coolTime, bool enabledTimeLimit, float timeLimit, bool canSeeCreatedLoversRole)
     {
         CoolTime = coolTime;
         EnabledTimeLimit = enabledTimeLimit;
         TimeLimit = timeLimit;
+        CanSeeCreatedLoversRole = canSeeCreatedLoversRole;
     }
     public override void AttachToAlls()
     {
@@ -64,29 +74,41 @@ public class CupidAbility : AbilityBase
             false,
             (players) =>
             {
-                lovers1 = players[0].PlayerId;
-                lovers2 = players[1].PlayerId;
+                Lovers1 = players[0].PlayerId;
+                Lovers2 = players[1].PlayerId;
             },
             EnabledTimeLimit,
             TimeLimit
         );
         Player.AttachAbility(createLoversAbility, new AbilityParentAbility(this));
-
-        _nameTextUpdateEvent = NameTextUpdateEvent.Instance.AddListener(OnNameTextUpdate);
     }
-    public override void DetachToAlls()
+    public override void AttachToLocalPlayer()
     {
-        base.DetachToAlls();
+        base.AttachToLocalPlayer();
+        _nameTextUpdateEvent = NameTextUpdateEvent.Instance.AddListener(OnNameTextUpdate);
+        _nameTextUpdateVisiableEvent = NameTextUpdateVisiableEvent.Instance.AddListener(OnNameTextUpdateVisiable);
+    }
+    public override void DetachToLocalPlayer()
+    {
+        base.DetachToLocalPlayer();
         _nameTextUpdateEvent?.RemoveListener();
+        _nameTextUpdateVisiableEvent?.RemoveListener();
     }
 
     private void OnNameTextUpdate(NameTextUpdateEventData data)
     {
         if (!Player.AmOwner) return;
         if (Player.IsDead()) return;
-        if (lovers1 != data.Player.PlayerId && lovers2 != data.Player.PlayerId) return;
+        if (Lovers1 != data.Player.PlayerId && Lovers2 != data.Player.PlayerId) return;
         if (!data.Player.IsLovers()) return;
         if (data.Player.cosmetics.nameText.text.Contains("♥")) return;
         data.Player.cosmetics.nameText.text += ModHelpers.Cs(Lovers.Instance.RoleColor, "♥");
+    }
+
+    private void OnNameTextUpdateVisiable(NameTextUpdateVisiableEventData data)
+    {
+        if (!CanSeeCreatedLoversRole) return;
+        if (data.Player.PlayerId != Lovers1 && data.Player.PlayerId != Lovers2) return;
+        NameText.UpdateVisiable(data.Player, true);
     }
 }

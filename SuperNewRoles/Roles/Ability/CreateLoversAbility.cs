@@ -38,6 +38,9 @@ public class CreateLoversAbility : TargetCustomButtonBase
     public override Func<ExPlayerControl, bool> IsTargetable => (player) => !player.IsLovers() && CurrentTarget != player;
     public override ShowTextType showTextType => _enabledTimeLimit ? ShowTextType.Show : ShowTextType.Hidden;
     public override string showText => _enabledTimeLimit ? ModTranslation.GetString("DurationTimerText", (int)(_timeLimit - _currentTimer) + 1) : string.Empty;
+
+    public LoversCouple CreatedCouple { get; private set; }
+
     public CreateLoversAbility(float coolTime, string buttonText, Sprite sprite, bool IsLoversMe, Action<List<ExPlayerControl>> callback = null, bool enabledTimeLimit = false, float timeLimit = 0f)
     {
         CoolTime = coolTime;
@@ -56,7 +59,7 @@ public class CreateLoversAbility : TargetCustomButtonBase
 
     public override bool CheckHasButton()
     {
-        return base.CheckHasButton() && !Player.IsLovers();
+        return base.CheckHasButton() && !_created;
     }
 
     public override void AttachToAlls()
@@ -97,9 +100,14 @@ public class CreateLoversAbility : TargetCustomButtonBase
             CurrentTarget = Target;
         else
         {
-            AssignRoles.RpcCustomSetLovers(CurrentTarget, Target, AssignRoles.LoversIndex, true);
+            RpcCustomCreateLovers(CurrentTarget, Target);
             _callback?.Invoke([CurrentTarget, Target]);
-            _created = true;
         }
+    }
+    [CustomRPC]
+    public void RpcCustomCreateLovers(ExPlayerControl playerA, ExPlayerControl playerB)
+    {
+        CreatedCouple = AssignRoles.CustomSetLovers(playerA, playerB, AssignRoles.LoversIndex, true);
+        _created = true;
     }
 }

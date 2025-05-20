@@ -6,6 +6,7 @@ using SuperNewRoles.Roles.Modifiers;
 using SuperNewRoles.Roles.Neutral;
 using UnityEngine;
 using SuperNewRoles.CustomOptions.Categories;
+using SuperNewRoles.Roles.Ability;
 
 namespace SuperNewRoles.Modules;
 
@@ -64,7 +65,7 @@ public static class EndGamer
             if (winType != WinType.SingleNeutral)
                 UpdateHijackers(ref reason, ref winners, ref color, ref upperText, ref winText, ref winType);
             // 独自単独勝利とは同時勝利できない
-            UpdateAdditionalWinners(out additionalWinners, winType == WinType.SingleNeutral);
+            UpdateAdditionalWinners(reason, out additionalWinners, winType == WinType.SingleNeutral);
             winners.UnionWith(additionalWinners);
         }
         Logger.Info("----------- Finished EndGame Start -----------");
@@ -131,7 +132,7 @@ public static class EndGamer
             }
         }
     }
-    private static void UpdateAdditionalWinners(out HashSet<ExPlayerControl> winners, bool cantWinSixAdditionalWinners)
+    private static void UpdateAdditionalWinners(GameOverReason reason, out HashSet<ExPlayerControl> winners, bool cantWinSixAdditionalWinners)
     {
         winners = new();
         // ラバーズじゃない人がいる場合
@@ -170,7 +171,29 @@ public static class EndGamer
                     if (lovers.Player.IsDead()) continue;
                     winners.Add(lovers.Player);
                 }
+                List<ExPlayerControl> creatorCupid = getCreatorCupid(winner);
+                foreach (ExPlayerControl cupid in creatorCupid)
+                {
+                    winners.Add(cupid);
+                }
             }
         }
+        if (reason == (GameOverReason)CustomGameOverReason.LoversWin)
+        {
+            List<ExPlayerControl> creatorCupid = getCreatorCupid(winners.First());
+            foreach (ExPlayerControl cupid in creatorCupid)
+            {
+                winners.Add(cupid);
+            }
+        }
+    }
+
+    // Helper
+    private static List<ExPlayerControl> getCreatorCupid(ExPlayerControl winner)
+    {
+        return ExPlayerControl.ExPlayerControls.Where(x =>
+                x.Role == RoleId.Cupid &&
+                x.TryGetAbility<CupidAbility>(out var cupidAbility) &&
+                (cupidAbility.Lovers1 == winner.PlayerId || cupidAbility.Lovers2 == winner.PlayerId)).ToList();
     }
 }

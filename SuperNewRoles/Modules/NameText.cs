@@ -170,7 +170,7 @@ public static class NameText
             return;
         bool visiable = player.Player.Visible &&
                         (ExPlayerControl.LocalPlayer.PlayerId == player.PlayerId ||
-                         (ExPlayerControl.LocalPlayer.IsDead() &&
+                        (ExPlayerControl.LocalPlayer.IsDead() &&
                             (!GameSettingOptions.HideGhostRoles || (ExPlayerControl.LocalPlayer.IsImpostor() && GameSettingOptions.ShowGhostRolesToImpostor)))
                         );
         UpdateVisiable(player, visiable);
