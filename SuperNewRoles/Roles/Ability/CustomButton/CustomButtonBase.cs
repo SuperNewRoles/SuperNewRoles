@@ -115,7 +115,8 @@ public abstract class CustomButtonBase : AbilityBase
     private ActionButton _template;
     private ActionButton _getTemplate()
     {
-        _template = HudManager.Instance.KillButton;
+        //_template = HudManager.Instance.KillButton;
+        _template = HudManager.Instance.AbilityButton;
         return _template;
     }
 
