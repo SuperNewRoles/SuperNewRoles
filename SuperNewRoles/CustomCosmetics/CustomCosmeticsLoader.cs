@@ -886,9 +886,7 @@ public class CustomCosmeticsLoader
                     File.WriteAllBytes(targetPath, assetBundleData);
                     Logger.Info($"アセットバンドルをダウンロード/検証し保存しました: {assetBundleUrl} -> {targetPath}");
                     if (!notLoadedAssetBundles.Contains(targetPath))
-                    {
                         notLoadedAssetBundles.Add(targetPath);
-                    }
                     successThisAttempt = true;
                 }
                 catch (Exception e)

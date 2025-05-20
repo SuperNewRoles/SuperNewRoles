@@ -43,6 +43,24 @@ public static class CoStartGamePatch
     }
 }
 
+[HarmonyPatch(typeof(LogicGameFlowHnS), nameof(LogicGameFlowHnS.CheckEndCriteria))]
+public static class CheckGameEndPatchHnS
+{
+    public static bool Prefix()
+    {
+        if (!CheckGameEndPatch.CouldCheckEndGame) return false;
+        try
+        {
+            Logger.Info("HnSゲーム終了チェック");
+            return CheckGameEndPatch.HandleGameEndCheck(true);
+        }
+        catch (Exception ex)
+        {
+            Logger.Error($"ゲーム終了チェック中にエラーが発生: {ex}");
+            return true; // エラー時はバニラの処理に任せる
+        }
+    }
+}
 [HarmonyPatch(typeof(LogicGameFlowNormal), nameof(LogicGameFlowNormal.CheckEndCriteria))]
 public static class CheckGameEndPatch
 {
@@ -55,7 +73,7 @@ public static class CheckGameEndPatch
         if (!CouldCheckEndGame) return false;
         try
         {
-            return HandleGameEndCheck();
+            return HandleGameEndCheck(false);
         }
         catch (Exception ex)
         {
@@ -64,14 +82,14 @@ public static class CheckGameEndPatch
         }
     }
 
-    private static bool HandleGameEndCheck()
+    public static bool HandleGameEndCheck(bool isHnS)
     {
         if (!ShouldCheckEndGame()) return false;
 
         using var gameState = new GameState();
         if (!gameState.IsValid) return false;
 
-        var victoryType = DetermineVictoryType(gameState);
+        var victoryType = DetermineVictoryType(gameState, isHnS);
         if (victoryType != VictoryType.None)
         {
             EndGame(victoryType);
@@ -92,12 +110,12 @@ public static class CheckGameEndPatch
                !DestroyableSingleton<TutorialManager>.InstanceExists;
     }
 
-    private static VictoryType DetermineVictoryType(GameState state)
+    private static VictoryType DetermineVictoryType(GameState state, bool isHnS)
     {
         if (!state.IsValid) return VictoryType.None;
 
-        var victory = DeterminePriorityVictory(state) ??
-                     DeterminePlayerBasedVictory(state) ??
+        var victory = (isHnS ? null : DeterminePriorityVictory(state)) ??
+                     DeterminePlayerBasedVictory(state, isHnS) ??
                      VictoryType.None;
         return victory;
     }
@@ -115,9 +133,9 @@ public static class CheckGameEndPatch
 
         return null;
     }
-    private static VictoryType? DeterminePlayerBasedVictory(GameState state)
+    private static VictoryType? DeterminePlayerBasedVictory(GameState state, bool isHnS)
     {
-        var stats = new PlayerStatistics();
+        var stats = new PlayerStatistics(isHnS);
 
         // インポスター勝利
         if (stats.IsImpostorDominating)
@@ -278,9 +296,11 @@ public class PlayerStatistics
     public bool IsHitmanDominating { get; }
     public bool IsCrewmateVictory => !IsKillerExist;
     public bool IsOwlWin => IsKillerWin(OwlAlive) && OwlAlive == 1;
+    private bool isHnS;
 
-    public PlayerStatistics()
+    public PlayerStatistics(bool isHnS)
     {
+        this.isHnS = isHnS;
         int teamImpostorsAlive = 0, crewAlive = 0, totalAlive = 0;
         int teamJackalAlive = 0, jackalRoleAlive = 0;
         int pavlovsDogAlive = 0, pavlovsOwnerAlive = 0, pavlovsOwnerRemaining = 0;
@@ -333,7 +353,7 @@ public class PlayerStatistics
         TotalKiller = totalKiller;
 
         bool impostorWin = IsKillerWin(teamImpostorsAlive);
-        bool jackalWin = IsKillerWin(jackalRoleAlive);
+        bool jackalWin = IsKillerWin(teamJackalAlive);
         bool pavlovWin = IsKillerWin(TeamPavlovsAlive);
         bool hitmanWin = IsKillerWin(hitmanAlive);
 
@@ -366,7 +386,7 @@ public class PlayerStatistics
 
     private bool IsKillerWin(int teamAlive)
     {
-        return teamAlive >= TotalAlive - teamAlive
+        return isHnS ? teamAlive >= TotalAlive : (teamAlive >= TotalAlive - teamAlive)
             && TotalKiller <= teamAlive
             && teamAlive != 0
             && !(PavlovsDogAlive <= 0 && TeamPavlovsAlive > 0);
