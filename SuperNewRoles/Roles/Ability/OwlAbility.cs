@@ -24,6 +24,7 @@ public class OwlAbility : AbilityBase
 {
     private readonly OwlData _data;
     private Vent _nestVent;
+    private bool _hasNestVent;
     private int _deadBodyCount;
 
     private CustomKillButtonAbility _customKillButtonAbility;
@@ -36,15 +37,17 @@ public class OwlAbility : AbilityBase
     public OwlAbility(OwlData data)
     {
         _data = data;
+        _hasNestVent = false;
         _deadBodyCount = 0;
     }
 
     public override void AttachToAlls()
     {
         _customKillButtonAbility = new(
-            () => _data.CanKillOutsideOfBlackout || ModHelpers.IsElectrical(),
+            () => _hasNestVent,
             () => _data.KillCooldown,
-            () => false
+            () => false,
+            isTargetable: target => _data.CanKillOutsideOfBlackout || ModHelpers.IsElectrical()
         );
         _customVentAbility = new(
             () => _data.CanUseVent
@@ -53,7 +56,7 @@ public class OwlAbility : AbilityBase
             ModHelpers.IsElectrical
         );
         _nestAbility = new(
-            vent => { if (_nestVent == null) RpcSetNestVent(this, vent.Id); }
+            vent => { if (!_hasNestVent) RpcSetNestVent(this, vent.Id); }
         );
         _deadBodyTransportAbility = new(
             () => _nestVent,
@@ -63,7 +66,7 @@ public class OwlAbility : AbilityBase
         _specialBlackoutAbility = new(
             _data.SpecialBlackoutCool,
             _data.SpecialBlackoutTime,
-            () => _deadBodyCount >= _data.CanSpecialBlackoutDeadBodyCount
+            () => _hasNestVent && _deadBodyCount >= _data.CanSpecialBlackoutDeadBodyCount
         );
 
         Player.AddAbility(_customKillButtonAbility, new AbilityParentAbility(this));
@@ -75,7 +78,11 @@ public class OwlAbility : AbilityBase
     }
 
     [CustomRPC]
-    public static void RpcSetNestVent(OwlAbility ability, int value) => ability._nestVent = Array.Find<Vent>(ShipStatus.Instance.AllVents, x => x.Id == value);
+    public static void RpcSetNestVent(OwlAbility ability, int value)
+    {
+        ability._nestVent = Array.Find<Vent>(ShipStatus.Instance.AllVents, x => x.Id == value);
+        ability._hasNestVent = true;
+    }
 
     [CustomRPC]
     public static void RpcSetDeadBodyCount(OwlAbility ability, int value) => ability._deadBodyCount = value;
@@ -186,6 +193,8 @@ public class OwlDeadBodyTransportAbility : CustomButtonBase, IButtonEffect
     }
 
     public override void OnMeetingEnds() => RpcDeadBodyInTransport(this);
+
+    void IButtonEffect.DoEffect(ActionButton actionButton, float effectStartTime) { }
 
     private void OnEffectEnds()
     {
