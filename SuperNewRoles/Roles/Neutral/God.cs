@@ -17,7 +17,7 @@ class God : RoleBase<God>
         () => new KnowOtherAbility(x => MeetingHud.Instance != null ? true : x.IsAlive(), () => true),
         () => new KnowVoteAbility(() => !GodSeeVote),
         () => new CustomTaskAbility(() => (GodNeededTask, false, GodTaskOption.Total), GodNeededTask ? GodTaskOption : null),
-        () => new SabotageCanUseAbility(() => sabotageCanUse()),
+        () => new SabotageCanUseAbility(() => sabotageCantUse()),
         () => new CanUseReportButtonAbility(() => !GodCannotUseReportButton)
     ];
 
