@@ -157,7 +157,8 @@ public static class EndGamer
                             winners.Add(player);
                         break;
                     case RoleId.Tuna when !Tuna.EnableTunaSoloWin:
-                        winners.Add(player);
+                        if (player.IsAlive())
+                            winners.Add(player);
                         break;
                 }
             }
