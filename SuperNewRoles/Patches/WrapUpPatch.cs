@@ -58,24 +58,28 @@ class WrapUpPatch
             WrapUpPatch.Postfix(__instance, __instance.initData?.networkedPlayer);
         }
     }
-    [HarmonyPatch(typeof(AirshipExileController), nameof(AirshipExileController.WrapUpAndSpawn))]
+    [HarmonyPatch(typeof(AirshipExileController._WrapUpAndSpawn_d__11), nameof(AirshipExileController._WrapUpAndSpawn_d__11.MoveNext))]
     public class AirshipExileControllerWrapUpPatch
     {
-        public static bool Prefix(AirshipExileController __instance)
+        private static int last;
+        public static bool Prefix(AirshipExileController._WrapUpAndSpawn_d__11 __instance)
         {
-            WrapUpPatch.Prefix(__instance.initData?.networkedPlayer);
-            if (Balancer.currentAbilityUser != null && Balancer.IsDoubleExile && __instance != ExileController.Instance)
+            if (last == __instance.__4__this.GetInstanceID())
+                return true;
+            last = __instance.__4__this.GetInstanceID();
+            WrapUpPatch.Prefix(__instance.__4__this.initData?.networkedPlayer);
+            if (Balancer.currentAbilityUser != null && Balancer.IsDoubleExile && __instance.__4__this != ExileController.Instance)
             {
-                if (__instance.initData?.networkedPlayer != null)
+                if (__instance.__4__this.initData?.networkedPlayer != null)
                 {
-                    PlayerControl @object = __instance.initData?.networkedPlayer?.Object;
+                    PlayerControl @object = __instance.__4__this.initData?.networkedPlayer?.Object;
                     if (@object)
                     {
                         @object.Exiled();
                     }
-                    __instance.initData.networkedPlayer.IsDead = true;
+                    __instance.__4__this.initData.networkedPlayer.IsDead = true;
                 }
-                GameObject.Destroy(__instance.gameObject);
+                GameObject.Destroy(__instance.__4__this.gameObject);
 
                 // 暗転をごり押しで解決
                 if (MapCustomHandler.IsMapCustom(MapCustomHandler.MapCustomId.Airship, false) && MapCustom.AirshipRandomSpawn.GetBool())
