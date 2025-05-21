@@ -548,7 +548,7 @@ public class IntroPatch
         }
     }
 
-    [HarmonyPatch(typeof(IntroCutscene), nameof(IntroCutscene.ShowRole))]
+    [HarmonyPatch(typeof(IntroCutscene._ShowRole_d__41), nameof(IntroCutscene._ShowRole_d__41.MoveNext))]
     class SetUpRoleTextPatch
     {
         private static byte ToByteIntro(float f)
@@ -566,80 +566,66 @@ public class IntroPatch
                 yield return null;
             }
         }
-        static bool Prefix(IntroCutscene __instance, ref Il2CppSystem.Collections.IEnumerator __result)
+        private static int last;
+        public static void Postfix(IntroCutscene._ShowRole_d__41 __instance)
         {
-            __result = SetupRole(__instance).WrapToIl2Cpp();
-            return false;
-        }
-
-        private static IEnumerator SetupRole(IntroCutscene __instance)
-        {
+            if (__instance.__4__this.GetInstanceID() == last)
+                return;
             CustomButton.MeetingEndedUpdate();
-            if (OldModeButtons.IsOldMode) yield break;
-            new LateTask(() =>
+            last = __instance.__4__this.GetInstanceID();
+
+            var player = PlayerControl.LocalPlayer;
+            var myrole = PlayerControl.LocalPlayer.GetRole();
+
+            if (myrole is RoleId.Bestfalsecharge)
+                myrole = RoleId.DefaultRole;
+
+            Color roleColor = CustomRoles.GetRoleColor(myrole);
+            __instance.__4__this.YouAreText.color = roleColor;           //あなたのロールは...を役職の色に変更
+            __instance.__4__this.RoleText.color = roleColor;             //役職名の色を変更
+            __instance.__4__this.RoleBlurbText.color = roleColor;        //イントロの簡易説明の色を変更
+
+            __instance.__4__this.RoleText.text = CustomRoles.GetRoleName(myrole);               //役職名を変更
+            if (PlayerControl.LocalPlayer.GetRoleBase() is IGroupIntro GroupIntro &&
+            GroupIntro.IsGroupIntro(out string IntroText))
             {
-                var player = PlayerControl.LocalPlayer;
-                var myrole = PlayerControl.LocalPlayer.GetRole();
+                __instance.__4__this.RoleBlurbText.text = IntroText;       //イントロのグループ説明を変更
+            }
+            else
+            {
+                __instance.__4__this.RoleBlurbText.text = CustomRoles.GetRoleIntro(myrole);     //イントロの簡易説明を変更
+            }
 
-                if (myrole is RoleId.Bestfalsecharge)
-                    myrole = RoleId.DefaultRole;
+            if (myrole is RoleId.DefaultRole)
+            {
+                __instance.__4__this.RoleText.text = player.Data.Role.NiceName;
+                __instance.__4__this.RoleBlurbText.text = player.Data.Role.Blurb;
+                __instance.__4__this.YouAreText.color = player.Data.Role.TeamColor;   //あなたのロールは...を役職の色に変更
+                __instance.__4__this.RoleText.color = player.Data.Role.TeamColor;     //役職名の色を変更
+                __instance.__4__this.RoleBlurbText.color = player.Data.Role.TeamColor;//イントロの簡易説明の色を変更
+            }
 
-                Color roleColor = CustomRoles.GetRoleColor(myrole);
-                __instance.YouAreText.color = roleColor;           //あなたのロールは...を役職の色に変更
-                __instance.RoleText.color = roleColor;             //役職名の色を変更
-                __instance.RoleBlurbText.color = roleColor;        //イントロの簡易説明の色を変更
+            //重複を持っていたらメッセージ追記
+            if (PlayerControl.LocalPlayer.IsLovers()) __instance.__4__this.RoleBlurbText.text += "\n" + ModHelpers.Cs(RoleClass.Lovers.color, string.Format(ModTranslation.GetString("LoversIntro"), PlayerControl.LocalPlayer.GetOneSideLovers()?.Data?.PlayerName ?? ""));
+            if (PlayerControl.LocalPlayer.IsQuarreled()) __instance.__4__this.RoleBlurbText.text += "\n" + ModHelpers.Cs(RoleClass.Quarreled.color, string.Format(ModTranslation.GetString("QuarreledIntro"), PlayerControl.LocalPlayer.GetOneSideQuarreled()?.Data?.PlayerName ?? ""));
+            if (PlayerControl.LocalPlayer.IsAttributeGuesser()) __instance.__4__this.RoleBlurbText.text += $"\n{ModHelpers.Cs(NiceGuesser.Roleinfo.RoleColor, ModTranslation.GetString("AttributeGuesserIntro"))}";
 
-                __instance.RoleText.text = CustomRoles.GetRoleName(myrole);               //役職名を変更
-                if (PlayerControl.LocalPlayer.GetRoleBase() is IGroupIntro GroupIntro &&
-                GroupIntro.IsGroupIntro(out string IntroText))
-                {
-                    __instance.RoleBlurbText.text = IntroText;       //イントロのグループ説明を変更
-                }
-                else
-                {
-                    __instance.RoleBlurbText.text = CustomRoles.GetRoleIntro(myrole);     //イントロの簡易説明を変更
-                }
+            ModeHandler.YouAreIntroHandler(__instance.__4__this);
 
-                if (myrole is RoleId.DefaultRole)
-                {
-                    __instance.RoleText.text = player.Data.Role.NiceName;
-                    __instance.RoleBlurbText.text = player.Data.Role.Blurb;
-                    __instance.YouAreText.color = player.Data.Role.TeamColor;   //あなたのロールは...を役職の色に変更
-                    __instance.RoleText.color = player.Data.Role.TeamColor;     //役職名の色を変更
-                    __instance.RoleBlurbText.color = player.Data.Role.TeamColor;//イントロの簡易説明の色を変更
-                }
+            //プレイヤーを作成&位置変更
+            __instance.__4__this.ourCrewmate = __instance.__4__this.CreatePlayer(0, 1, PlayerControl.LocalPlayer.Data, false);
+            __instance.__4__this.ourCrewmate.gameObject.SetActive(false);
+            __instance.__4__this.ourCrewmate.transform.localPosition = new Vector3(0f, -1.05f, -18f);
+            __instance.__4__this.ourCrewmate.transform.localScale = new Vector3(1f, 1f, 1f);
 
-                //重複を持っていたらメッセージ追記
-                if (PlayerControl.LocalPlayer.IsLovers()) __instance.RoleBlurbText.text += "\n" + ModHelpers.Cs(RoleClass.Lovers.color, string.Format(ModTranslation.GetString("LoversIntro"), PlayerControl.LocalPlayer.GetOneSideLovers()?.Data?.PlayerName ?? ""));
-                if (PlayerControl.LocalPlayer.IsQuarreled()) __instance.RoleBlurbText.text += "\n" + ModHelpers.Cs(RoleClass.Quarreled.color, string.Format(ModTranslation.GetString("QuarreledIntro"), PlayerControl.LocalPlayer.GetOneSideQuarreled()?.Data?.PlayerName ?? ""));
-                if (PlayerControl.LocalPlayer.IsAttributeGuesser()) __instance.RoleBlurbText.text += $"\n{ModHelpers.Cs(NiceGuesser.Roleinfo.RoleColor, ModTranslation.GetString("AttributeGuesserIntro"))}";
+            //サウンド再生
+            IntroData.PlayIntroSound(myrole);
 
-                ModeHandler.YouAreIntroHandler(__instance);
-
-                //プレイヤーを作成&位置変更
-                __instance.ourCrewmate = __instance.CreatePlayer(0, 1, PlayerControl.LocalPlayer.Data, false);
-                __instance.ourCrewmate.gameObject.SetActive(false);
-                __instance.ourCrewmate.transform.localPosition = new Vector3(0f, -1.05f, -18f);
-                __instance.ourCrewmate.transform.localScale = new Vector3(1f, 1f, 1f);
-
-                //サウンド再生
-                IntroData.PlayIntroSound(myrole);
-
-                //字幕やプレイヤーを再表示する(Prefixで消している)
-                __instance.ourCrewmate.gameObject.SetActive(true);
-                __instance.YouAreText.gameObject.SetActive(true);
-                __instance.RoleText.gameObject.SetActive(true);
-                __instance.RoleBlurbText.gameObject.SetActive(true);
-            }, 0f, "Override Role Text");
-
-            //メッセージ表示2.5秒後にすべて非表示にする
-            yield return new WaitForSeconds(2.5f);
-            __instance.ourCrewmate.gameObject.SetActive(false);     //プレイヤーを消す
-            __instance.YouAreText.gameObject.SetActive(false);      //あなたのロールは...を消す
-            __instance.RoleText.gameObject.SetActive(false);        //役職名を消す
-            __instance.RoleBlurbText.gameObject.SetActive(false);   //役職のイントロ説明文を消す
-
-            yield break;
+            //字幕やプレイヤーを再表示する(Prefixで消している)
+            __instance.__4__this.ourCrewmate.gameObject.SetActive(true);
+            __instance.__4__this.YouAreText.gameObject.SetActive(true);
+            __instance.__4__this.RoleText.gameObject.SetActive(true);
+            __instance.__4__this.RoleBlurbText.gameObject.SetActive(true);
         }
     }
     [HarmonyPatch(typeof(IntroCutscene), nameof(IntroCutscene.BeginCrewmate))]

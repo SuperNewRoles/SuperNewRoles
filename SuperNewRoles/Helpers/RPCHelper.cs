@@ -674,7 +674,7 @@ public static class RPCHelper
             ((MonoBehaviour)player).StopAllCoroutines();
             ((MonoBehaviour)player).StartCoroutine(player.CoExitVent(id));
         }
-        MessageWriter messageWriter = AmongUsClient.Instance.StartRpc(player.NetId, 20, SendOption.None);
+        MessageWriter messageWriter = AmongUsClient.Instance.StartRpcImmediately(player.NetId, 20, SendOption.None);
         messageWriter.WritePacked(id);
         messageWriter.EndMessage();
     }
