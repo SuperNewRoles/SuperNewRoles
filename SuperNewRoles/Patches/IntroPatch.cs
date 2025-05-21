@@ -548,7 +548,7 @@ public class IntroPatch
         }
     }
 
-    [HarmonyPatch(typeof(IntroCutscene), nameof(IntroCutscene.ShowRole))]
+    [HarmonyPatch(typeof(IntroCutscene._ShowRole_d__41), nameof(IntroCutscene._ShowRole_d__41.MoveNext))]
     class SetUpRoleTextPatch
     {
         private static byte ToByteIntro(float f)
