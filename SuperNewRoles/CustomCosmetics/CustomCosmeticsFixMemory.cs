@@ -7,6 +7,7 @@ public static class CustomCosmeticsFixMemory
 {
     public static void UnloadAllAssets()
     {
+        return;
         Logger.Info("[CustomCosmeticsFixMemory] Starting to unload all cosmetics assets...");
         int hatCount = 0;
         foreach (var hat in CustomCosmeticsLoader.moddedHats.Values)

@@ -44,6 +44,7 @@ public static class AirshipWrapUpPatch
 {
     public static void Postfix(AirshipExileController __instance)
     {
+        Logger.Info("AirshipWrapUpPatch 開始");
         WrapUpEvent.Invoke(__instance.initData.networkedPlayer);
         CheckGameEndPatch.CouldCheckEndGame = false;
         new LateTask(() =>

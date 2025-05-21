@@ -43,6 +43,7 @@ public static class AssignRoles
 
     public static void AssignCustomRoles()
     {
+        Logger.Info("AssignCustomRoles() 開始: カスタム役職のアサイン処理を開始します。");
         CreateTickets();
         AssignedRoleIds.Clear(); // 役職アサイン前にクリア
 
