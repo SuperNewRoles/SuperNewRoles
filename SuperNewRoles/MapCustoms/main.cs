@@ -147,11 +147,16 @@ public static class Extensions
         return self.Count > 0 ? self[UnityEngine.Random.Range(0, self.Count)] : default;
     }
 }
-[HarmonyPatch(typeof(AirshipExileController), nameof(AirshipExileController.WrapUpAndSpawn))]
+[HarmonyPatch(typeof(AirshipExileController._WrapUpAndSpawn_d__11), nameof(AirshipExileController._WrapUpAndSpawn_d__11.MoveNext))]
 class AirshipExileControllerWrapUpAndSpawnPatch
 {
-    static void Prefix()
-    { // エアーシップ電気室のドアをシャッフルする
+    private static int last;
+    static void Prefix(AirshipExileController._WrapUpAndSpawn_d__11 __instance)
+    {
+        if (last == __instance.__4__this.GetInstanceID())
+            return;
+        last = __instance.__4__this.GetInstanceID();
+        // エアーシップ電気室のドアをシャッフルする
         if (MapCustoms.MapCustomHandler.IsMapCustom(MapCustomHandler.MapCustomId.Airship)
             && MapCustom.ShuffleElectricalDoors.GetBool()
             && AmongUsClient.Instance.AmHost)
