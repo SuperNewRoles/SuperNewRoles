@@ -559,14 +559,18 @@ public class WaveCannonObject : CustomAnimation
                 CannotMurderPlayers.Add(player.PlayerId);
                 return true;
             }
+            Vector3 pos = player.transform.position;
+            Vector2 pos2 = player.GetTruePosition();
             MessageWriter writer = RPCHelper.StartRPC(CustomRPC.RPCMurderPlayer);
-            writer.Write(CachedPlayer.LocalPlayer.PlayerId);
+            writer.Write(player.PlayerId);
             writer.Write(player.PlayerId);
             writer.Write((byte)0);
             AmongUsClient.Instance.FinishRpcImmediately(writer);
             float Timer = PlayerControl.LocalPlayer.killTimer;
-            RPCProcedure.RPCMurderPlayer(CachedPlayer.LocalPlayer.PlayerId, player.PlayerId, 0);
+            RPCProcedure.RPCMurderPlayer(player.PlayerId, player.PlayerId, 0);
             player.RpcSetFinalStatus(FinalStatus.Evaporation);
+            player.transform.position = pos;
+            player.NetTransform.RpcSnapTo(pos2);
             if (PlayerControl.LocalPlayer.IsImpostor())
             {
                 PlayerControl.LocalPlayer.killTimer = Timer;
