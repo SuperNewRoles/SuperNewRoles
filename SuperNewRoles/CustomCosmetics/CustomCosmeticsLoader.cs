@@ -391,6 +391,9 @@ public class CustomCosmeticsLoader
         }
         LoadedPackages.Sort((a, b) => a.name.CompareTo(b.name));
 
+        willLoad = () => { };
+        CustomLoadingScreen.PleaseDoWillLoad = true;
+
         runned = true;
         Logger.Info("CustomCosmeticsLoader willLoad done");
     }

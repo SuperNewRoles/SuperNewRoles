@@ -6,6 +6,7 @@
         <Authors>ykundesu</Authors>
         <langVersion>preview</langVersion>
         <IncludeSourceRevisionInInformationalVersion>false</IncludeSourceRevisionInInformationalVersion>
+        <DebugType>portable</DebugType>
     </PropertyGroup>
 
     <PropertyGroup>

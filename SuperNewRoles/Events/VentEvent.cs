@@ -36,9 +36,9 @@ public class PlayerPhysicsRpcEnterVentPrefixEvent : EventTargetBase<PlayerPhysic
 [HarmonyPatch(typeof(PlayerPhysics), nameof(PlayerPhysics.RpcEnterVent))]
 public static class VentUsePatch
 {
-    public static bool Prefix(int id)
+    public static bool Prefix(int ventId)
     {
-        PlayerPhysicsRpcEnterVentPrefixEvent.Invoke(id, out bool result);
+        PlayerPhysicsRpcEnterVentPrefixEvent.Invoke(ventId, out bool result);
         return result;
     }
 }

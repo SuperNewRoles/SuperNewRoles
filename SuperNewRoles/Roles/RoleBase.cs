@@ -5,7 +5,6 @@ using System.Text;
 using System.Threading.Tasks;
 using AmongUs.GameOptions;
 using SuperNewRoles.Modules;
-using UnityEngine.Networking.Types;
 using UnityEngine;
 using SuperNewRoles.Roles.Ability;
 using SuperNewRoles.CustomOptions;
