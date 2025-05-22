@@ -496,4 +496,9 @@ public static class ModHelpers
     {
         return GameOptionsManager.Instance.CurrentGameOptions.GameMode is AmongUs.GameOptions.GameModes.HideNSeek or AmongUs.GameOptions.GameModes.SeekFools;
     }
+    public static bool TryCastOut<T>(this Il2CppInterop.Runtime.InteropTypes.Il2CppObjectBase obj, out T result) where T : Il2CppInterop.Runtime.InteropTypes.Il2CppObjectBase
+    {
+        result = obj.TryCast<T>();
+        return result != null;
+    }
 }

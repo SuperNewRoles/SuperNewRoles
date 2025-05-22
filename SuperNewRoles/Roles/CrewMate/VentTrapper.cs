@@ -9,6 +9,7 @@ using SuperNewRoles.Roles.Ability.CustomButton;
 using SuperNewRoles.Modules.Events.Bases;
 using System.Linq;
 using SuperNewRoles.Events;
+using SuperNewRoles.Modules.Events;
 
 namespace SuperNewRoles.Roles.CrewMate;
 
@@ -82,6 +83,8 @@ public class VentTrapperAbility : CustomButtonBase, IButtonEffect, IAbilityCount
     public override float DefaultTimer => _data.coolTime;
     public override ShowTextType showTextType => ShowTextType.ShowWithCount;
     public override bool CheckHasButton() => base.CheckHasButton() && Count > 0;
+    private EventListener<PlayerPhysicsFixedUpdateEventData> _fixedUpdateEvent;
+    private Vector3 _lastPosition;
     public override bool CheckIsAvailable()
     {
         if (isEffectActive) return false;
@@ -98,6 +101,28 @@ public class VentTrapperAbility : CustomButtonBase, IButtonEffect, IAbilityCount
     public override void DetachToAlls()
     {
         _ventUsePrefixEvent?.RemoveListener();
+    }
+
+    public override void AttachToLocalPlayer()
+    {
+        base.AttachToLocalPlayer();
+        _fixedUpdateEvent = PlayerPhysicsFixedUpdateEvent.Instance.AddListener(OnFixedUpdate);
+    }
+
+    public override void DetachToLocalPlayer()
+    {
+        base.DetachToLocalPlayer();
+        _fixedUpdateEvent?.RemoveListener();
+    }
+
+    private void OnFixedUpdate(PlayerPhysicsFixedUpdateEventData data)
+    {
+        if (!Player.AmOwner && !data.Instance.AmOwner) return;
+        if (isEffectActive)
+        {
+            Player.Player.transform.position = _lastPosition;
+            data.Instance.body.velocity = Vector2.zero;
+        }
     }
 
     private void OnVentUsePrefix(PlayerPhysicsRpcEnterVentPrefixEventData data)
@@ -126,8 +151,9 @@ public class VentTrapperAbility : CustomButtonBase, IButtonEffect, IAbilityCount
             return;
         }
         if (!TryGetNearbyVent(ShipStatus.Instance.AllVents.Where(x => !_trappedVents.Contains(x)), out _targetVent)) return;
-        Player.Player.moveable = false;
+        // Player.Player.moveable = false;
         Player.MyPhysics.body.velocity = Vector2.zero;
+        _lastPosition = Player.Player.transform.position;
     }
 
     private void FinishPlanting()

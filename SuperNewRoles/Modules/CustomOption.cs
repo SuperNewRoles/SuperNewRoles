@@ -62,21 +62,41 @@ public static class CustomOptionManager
             RoleOptionManager.RpcSyncRoleOptionsAll();
         }
     }
-    [HarmonyPatch(typeof(AmongUsClient), nameof(AmongUsClient.Awake))]
+    [HarmonyPatch(typeof(RoleManager), nameof(RoleManager.SelectRoles))]
     public static class FixMaxImpostorsPatch
     {
-        public static void Postfix()
+        public static void Prefix(RoleManager __instance)
         {
             // 0を150個
             int[] MaxImpostors = new int[150];
+            int impostor = GameOptionsManager.Instance.CurrentGameOptions.GetInt(Int32OptionNames.NumImpostors);
             for (int i = 0; i < 150; i++)
-                MaxImpostors[i] = byte.MaxValue;
+                MaxImpostors[i] = impostor;
             NormalGameOptionsV07.MaxImpostors = MaxImpostors;
             NormalGameOptionsV08.MaxImpostors = MaxImpostors;
             NormalGameOptionsV09.MaxImpostors = MaxImpostors;
             HideNSeekGameOptionsV07.MaxImpostors = MaxImpostors;
             HideNSeekGameOptionsV08.MaxImpostors = MaxImpostors;
             HideNSeekGameOptionsV09.MaxImpostors = MaxImpostors;
+            SetImpostors(impostor);
+        }
+        private static void SetImpostors(int impostor)
+        {
+            var current = GameOptionsManager.Instance.CurrentGameOptions;
+            if (current.TryCastOut(out NormalGameOptionsV07 normalGameOptionsV07))
+                normalGameOptionsV07.NumImpostors = impostor;
+            else if (current.TryCastOut(out NormalGameOptionsV08 normalGameOptionsV08))
+                normalGameOptionsV08.NumImpostors = impostor;
+            else if (current.TryCastOut(out NormalGameOptionsV09 normalGameOptionsV09))
+                normalGameOptionsV09.NumImpostors = impostor;
+            else if (current.TryCastOut(out HideNSeekGameOptionsV07 hideNSeekGameOptionsV07))
+                hideNSeekGameOptionsV07.NumImpostors = impostor;
+            else if (current.TryCastOut(out HideNSeekGameOptionsV08 hideNSeekGameOptionsV08))
+                hideNSeekGameOptionsV08.NumImpostors = impostor;
+            else if (current.TryCastOut(out HideNSeekGameOptionsV09 hideNSeekGameOptionsV09))
+                hideNSeekGameOptionsV09.NumImpostors = impostor;
+            else
+                Logger.Error("GameOptionsManager.Instance.CurrentGameOptions is not supported");
         }
     }
     [CustomRPC]
