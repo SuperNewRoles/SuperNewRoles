@@ -95,11 +95,13 @@ public class VentTrapperAbility : CustomButtonBase, IButtonEffect, IAbilityCount
 
     public override void AttachToAlls()
     {
+        base.AttachToAlls();
         _ventUsePrefixEvent = PlayerPhysicsRpcEnterVentPrefixEvent.Instance.AddListener(OnVentUsePrefix);
     }
 
     public override void DetachToAlls()
     {
+        base.DetachToAlls();
         _ventUsePrefixEvent?.RemoveListener();
     }
 
@@ -150,7 +152,9 @@ public class VentTrapperAbility : CustomButtonBase, IButtonEffect, IAbilityCount
             Player.Player.MyPhysics?.RpcExitVent(Vent.currentVent.Id);
             return;
         }
+        Logger.Info("TryGetNearbyVent");
         if (!TryGetNearbyVent(ShipStatus.Instance.AllVents.Where(x => !_trappedVents.Contains(x)), out _targetVent)) return;
+        Logger.Info("Got");
         // Player.Player.moveable = false;
         Player.MyPhysics.body.velocity = Vector2.zero;
         _lastPosition = Player.Player.transform.position;

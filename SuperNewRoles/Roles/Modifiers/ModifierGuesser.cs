@@ -12,7 +12,15 @@ class ModifierGuesser : ModifierBase<ModifierGuesser>
 
     public override Color32 RoleColor => Crewmate.NiceGuesser.Instance.RoleColor;
 
-    public override List<Func<AbilityBase>> Abilities => [() => new GuesserAbility(2, 2, true, true)];
+    public override List<Func<AbilityBase>> Abilities => [
+        () => new GuesserAbility(
+            maxShots: ModifierGuesserMaxShots,
+            shotsPerMeeting: ModifierGuesserShotsPerMeeting,
+            cannotShootCrewmate: ModifierGuesserCannotShootCrewmate,
+            cannotShootCelebrity: ModifierGuesserCannotShootStar,
+            celebrityLimitedTurns: ModifierGuesserLimitedTurns,
+            celebrityLimitedTurnsCount: ModifierGuesserLimitedTurnsCount
+        )];
 
     public override QuoteMod QuoteMod => QuoteMod.SuperNewRoles;
 
