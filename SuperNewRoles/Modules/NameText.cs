@@ -125,7 +125,7 @@ public static class NameText
     {
         player.Player.cosmetics.nameText.text += text;
         if (player.VoteArea != null && player.VoteArea.PlayerIcon?.cosmetics?.nameText != null)
-            player.VoteArea.PlayerIcon.cosmetics.nameText.text += text;
+            player.VoteArea.NameText.text += text;
     }
     public static void RegisterNameTextUpdateEvent()
     {

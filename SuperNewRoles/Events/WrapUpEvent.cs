@@ -39,13 +39,17 @@ public static class WrapUpPatch
     }
 }
 
-[HarmonyPatch(typeof(AirshipExileController), nameof(AirshipExileController.WrapUpAndSpawn))]
+[HarmonyPatch(typeof(AirshipExileController._WrapUpAndSpawn_d__11), nameof(AirshipExileController._WrapUpAndSpawn_d__11.MoveNext))]
 public static class AirshipWrapUpPatch
 {
-    public static void Postfix(AirshipExileController __instance)
+    private static int _last;
+    public static void Postfix(AirshipExileController._WrapUpAndSpawn_d__11 __instance)
     {
+        if (_last == __instance.__4__this.GetInstanceID())
+            return;
+        _last = __instance.__4__this.GetInstanceID();
         Logger.Info("AirshipWrapUpPatch 開始");
-        WrapUpEvent.Invoke(__instance.initData.networkedPlayer);
+        WrapUpEvent.Invoke(__instance.__4__this.initData.networkedPlayer);
         CheckGameEndPatch.CouldCheckEndGame = false;
         new LateTask(() =>
         {

@@ -13,10 +13,10 @@ class JumboModifier : ModifierBase<JumboModifier>
 {
     public override ModifierRoleId ModifierRole => ModifierRoleId.JumboModifier;
 
-    public override Color32 RoleColor => Palette.ImpostorRed;
+    public override Color32 RoleColor => Color.white;
 
     public override List<Func<AbilityBase>> Abilities => [() =>
-        new JumboAbility(new(JumboMaxSize / 10, JumboSizeUpSpeed / 10, JumboWalkSoundSize))
+        new JumboAbility(new(JumboMaxSize / 10, JumboSizeUpSpeed, JumboWalkSoundSize, JumboSizeUpOnMeeting))
     ];
 
     public override QuoteMod QuoteMod => QuoteMod.SuperNewRoles;
@@ -39,10 +39,12 @@ class JumboModifier : ModifierBase<JumboModifier>
     public static bool JumboAssignToNeutral;
     [CustomOptionFloat("JumboMaxSize", 1f, 72f, 1f, 24f)]
     public static float JumboMaxSize;
-    [CustomOptionFloat("JumboSizeUpSpeed", 10f, 600f, 10f, 300f)]
+    [CustomOptionFloat("JumboSizeUpSpeed", 0f, 360f, 2.5f, 60f)]
     public static float JumboSizeUpSpeed;
     [CustomOptionFloat("JumboWalkSoundSize", 1f, 100f, 1f, 10f)]
     public static float JumboWalkSoundSize;
+    [CustomOptionBool("JumboSizeUpOnMeeting", true)]
+    public static bool JumboSizeUpOnMeeting;
 
     private List<AssignedTeamType> GetAssignedTeams()
     {
@@ -59,7 +61,7 @@ class JumboModifier : ModifierBase<JumboModifier>
     }
 }
 
-public record JumboData(float MaxSize, float SizeUpSpeed, float WalkSoundSize);
+public record JumboData(float MaxSize, float SizeUpSpeed, float WalkSoundSize, bool SizeUpOnMeeting);
 public class JumboAbility : AbilityBase
 {
     private JumboData Data { get; }
@@ -67,6 +69,8 @@ public class JumboAbility : AbilityBase
     private EventListener<NameTextUpdateEventData> _nameTextUpdateListener;
     private EventListener<WrapUpEventData> _wrapUpListener;
     private EventListener<MurderEventData> _murderListener;
+    private EventListener<ExileControllerEventData> _exileControllerListener;
+    private EventListener<MeetingCalledAnimationInitializeEventData> _meetingCalledAnimationInitializeListener;
     private float _currentSize = 0f;
     private Vector2 _oldPosition;
     private bool _hasOldPosition = false;
@@ -84,6 +88,8 @@ public class JumboAbility : AbilityBase
         _nameTextUpdateListener = NameTextUpdateEvent.Instance.AddListener(OnNameTextUpdate);
         _wrapUpListener = WrapUpEvent.Instance.AddListener(OnWrapUp);
         _murderListener = MurderEvent.Instance.AddListener(OnMurder);
+        _exileControllerListener = ExileControllerEvent.Instance.AddListener(OnExileController);
+        _meetingCalledAnimationInitializeListener = MeetingCalledAnimationInitializeEvent.Instance.AddListener(OnMeetingCalledAnimationInitialize);
     }
     public override void DetachToAlls()
     {
@@ -92,6 +98,8 @@ public class JumboAbility : AbilityBase
         _nameTextUpdateListener?.RemoveListener();
         _wrapUpListener?.RemoveListener();
         _murderListener?.RemoveListener();
+        _exileControllerListener?.RemoveListener();
+        _meetingCalledAnimationInitializeListener?.RemoveListener();
     }
     private void OnWrapUp(WrapUpEventData data)
     {
@@ -111,6 +119,17 @@ public class JumboAbility : AbilityBase
                 array[i].transform.localScale = Vector3.one * (_currentSize + 1f);
         }
     }
+    private void OnExileController(ExileControllerEventData data)
+    {
+        if (data.instance.initData.networkedPlayer == null || data.instance.initData.networkedPlayer.PlayerId != Player.PlayerId)
+            return;
+        data.instance.Player.transform.localScale = Vector3.one * (_currentSize + 1f);
+    }
+    private void OnMeetingCalledAnimationInitialize(MeetingCalledAnimationInitializeEventData data)
+    {
+        if (data.outfit.PlayerName != Player.Data.DefaultOutfit.PlayerName) return;
+        data.animation.playerParts.transform.localScale = Vector3.one * (_currentSize + 1f);
+    }
     private void OnNameTextUpdate(NameTextUpdateEventData data)
     {
         if (data.Player != Player) return;
@@ -125,7 +144,7 @@ public class JumboAbility : AbilityBase
     }
     private void OnFixedUpdate()
     {
-        if (MeetingHud.Instance != null || ExileController.Instance != null || FastDestroyableSingleton<HudManager>.Instance.IsIntroDisplayed) return;
+        if ((!Data.SizeUpOnMeeting && (MeetingHud.Instance != null || ExileController.Instance != null)) || FastDestroyableSingleton<HudManager>.Instance.IsIntroDisplayed) return;
         var p = Player.Player;
         if (p == null) return;
         // 初期位置の設定

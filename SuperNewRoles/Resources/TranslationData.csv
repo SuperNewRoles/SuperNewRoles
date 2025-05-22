@@ -911,9 +911,10 @@ ToiletFan.ButtonTitle,トイレ!,Toilet!
 # JumboModifier
 JumboAssignToImpostor,インポスターにも割り当てる,Assign to Impostor,分配给内鬼,分配給內鬼
 JumboAssignToNeutral,第三陣営にも割り当てる,Assign to Neutral,分配给第三方阵营,分配給第三方陣營
-JumboSizeUpSpeed,成長スピード,Growth Speed,成長速度,成長速度
+JumboSizeUpSpeed,成長しきるまでの時間(秒),Time to grow(seconds)
 JumboMaxSize,最大サイズ,Max Size,最大大小,最大大小
 JumboWalkSoundSize,歩行音量,Walk Sound Size,步行音量,步行音量
+JumboSizeUpOnMeeting,会議中にも成長する,Grow on Meeting,会议中成长,會議中成長
 
 # VentTrapper
 VentTrapperButtonText,トラップ!,Trap!

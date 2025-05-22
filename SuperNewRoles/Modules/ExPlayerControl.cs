@@ -188,7 +188,7 @@ public class ExPlayerControl
             roleBase = role;
             foreach (var modifier in ModifierRoleBases)
             {
-                if (!modifier.AssignedTeams.Contains(roleBase.AssignedTeam))
+                if (modifier.AssignedTeams.Count != 0 && !modifier.AssignedTeams.Contains(roleBase.AssignedTeam))
                     DetachOldModifierRole(modifier.ModifierRole);
             }
         }
@@ -466,7 +466,7 @@ public class ExPlayerControl
     public bool CanSabotage()
         => _customSaboAbility != null ? _customSaboAbility.CheckCanSabotage() : (IsImpostor() && !ModHelpers.IsHnS());
     public bool ShowVanillaSabotageButton()
-        => (IsImpostor() && !ModHelpers.IsHnS()) && IsAlive() && _customSaboAbility == null;
+        => (IsImpostor() && !ModHelpers.IsHnS()) && _customSaboAbility == null;
     public AbilityBase GetAbility(ulong abilityId)
     {
         return PlayerAbilitiesDictionary.TryGetValue(abilityId, out var ability) ? ability : null;
