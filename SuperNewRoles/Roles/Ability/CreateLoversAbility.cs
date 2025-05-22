@@ -112,5 +112,7 @@ public class CreateLoversAbility : TargetCustomButtonBase
     {
         CreatedCouple = AssignRoles.CustomSetLovers(playerA, playerB, AssignRoles.LoversIndex, true);
         _created = true;
+        NameText.UpdateNameInfo(playerA);
+        NameText.UpdateNameInfo(playerB);
     }
 }

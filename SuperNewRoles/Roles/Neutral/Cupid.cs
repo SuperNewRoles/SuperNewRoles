@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using AmongUs.GameOptions;
 using SuperNewRoles.CustomOptions;
 using SuperNewRoles.Events;
@@ -20,7 +21,8 @@ class Cupid : RoleBase<Cupid>
             CupidCoolTime,
             CupidEnabledTimeLimit,
             CupidTimeLimit,
-            CupidCanSeeCreatedLoversRole
+            CupidCanSeeCreatedLoversRole,
+            CupidLoversCanSeeCupidRole
         )
     ];
 
@@ -42,6 +44,8 @@ class Cupid : RoleBase<Cupid>
     public static float CupidTimeLimit;
     [CustomOptionBool("CupidCanSeeCreatedLoversRole", false)]
     public static bool CupidCanSeeCreatedLoversRole;
+    [CustomOptionBool("CupidLoversCanSeeCupidRole", false)]
+    public static bool CupidLoversCanSeeCupidRole;
 }
 
 public class CupidAbility : AbilityBase
@@ -57,13 +61,15 @@ public class CupidAbility : AbilityBase
     public bool EnabledTimeLimit { get; }
     public float TimeLimit { get; }
     public bool CanSeeCreatedLoversRole { get; }
+    public bool LoversCanSeeCupidRole { get; }
 
-    public CupidAbility(float coolTime, bool enabledTimeLimit, float timeLimit, bool canSeeCreatedLoversRole)
+    public CupidAbility(float coolTime, bool enabledTimeLimit, float timeLimit, bool canSeeCreatedLoversRole, bool loversCanSeeCupidRole)
     {
         CoolTime = coolTime;
         EnabledTimeLimit = enabledTimeLimit;
         TimeLimit = timeLimit;
         CanSeeCreatedLoversRole = canSeeCreatedLoversRole;
+        LoversCanSeeCupidRole = loversCanSeeCupidRole;
     }
     public override void AttachToAlls()
     {
@@ -83,18 +89,22 @@ public class CupidAbility : AbilityBase
             TimeLimit
         );
         Player.AttachAbility(createLoversAbility, new AbilityParentAbility(this));
+        _nameTextUpdateVisiableEvent = NameTextUpdateVisiableEvent.Instance.AddListener(OnNameTextUpdateVisiable);
+    }
+    public override void DetachToAlls()
+    {
+        base.DetachToAlls();
+        _nameTextUpdateVisiableEvent?.RemoveListener();
     }
     public override void AttachToLocalPlayer()
     {
         base.AttachToLocalPlayer();
         _nameTextUpdateEvent = NameTextUpdateEvent.Instance.AddListener(OnNameTextUpdate);
-        _nameTextUpdateVisiableEvent = NameTextUpdateVisiableEvent.Instance.AddListener(OnNameTextUpdateVisiable);
     }
     public override void DetachToLocalPlayer()
     {
         base.DetachToLocalPlayer();
         _nameTextUpdateEvent?.RemoveListener();
-        _nameTextUpdateVisiableEvent?.RemoveListener();
     }
 
     private void OnNameTextUpdate(NameTextUpdateEventData data)
@@ -119,8 +129,28 @@ public class CupidAbility : AbilityBase
 
     private void OnNameTextUpdateVisiable(NameTextUpdateVisiableEventData data)
     {
-        if (!CanSeeCreatedLoversRole) return;
-        if (data.Player.PlayerId != Lovers1 && data.Player.PlayerId != Lovers2) return;
-        NameText.UpdateVisiable(data.Player, true);
+        if (!CanSeeCreatedLoversRole && !LoversCanSeeCupidRole) return;
+
+        bool shouldBeVisible = false;
+        // キューピッドが作ったラバーズの役職を見れる
+        if (CanSeeCreatedLoversRole &&
+            Player.AmOwner &&
+            createLoversAbility?.CreatedCouple?.lovers != null &&
+            createLoversAbility.CreatedCouple.lovers.Any(x => x.Player.PlayerId == data.Player.PlayerId))
+        {
+            shouldBeVisible = true;
+        }
+
+        if (LoversCanSeeCupidRole &&
+            data.Player.PlayerId == Player.PlayerId &&
+            createLoversAbility?.CreatedCouple?.lovers != null &&
+            createLoversAbility.CreatedCouple.lovers.Any(x => x.Player.AmOwner))
+        {
+            shouldBeVisible = true;
+        }
+        if (shouldBeVisible)
+        {
+            NameText.UpdateVisiable(data.Player, true);
+        }
     }
 }
