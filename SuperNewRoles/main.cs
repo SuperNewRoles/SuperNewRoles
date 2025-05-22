@@ -91,7 +91,6 @@ public partial class SuperNewRolesPlugin : BasePlugin
         Instance = this;
 
         RegisterCustomObjects();
-        Harmony.DEBUG = true;
         CustomLoadingScreen.Patch(Harmony);
         HarmonyPatchAllTask = TaskRunIfWindows(() => PatchAll(Harmony));
 
@@ -152,7 +151,6 @@ public partial class SuperNewRolesPlugin : BasePlugin
             {
                 //tasks.Add(Task.Run(() => ));
                 harmony.CreateClassProcessor(type).Patch();
-                Logger.LogInfo($"Patching {type.Name}");
             });
             Task.WhenAll(tasks.ToArray()).Wait();
         }

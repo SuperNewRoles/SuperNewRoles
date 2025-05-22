@@ -12,7 +12,7 @@ class RulerModifier : ModifierBase<RulerModifier>
 {
     public override ModifierRoleId ModifierRole => ModifierRoleId.RulerModifier;
 
-    public override Color32 RoleColor => Palette.ImpostorRed;
+    public override Color32 RoleColor => new(255, 202, 0, 255);
 
     public override List<Func<AbilityBase>> Abilities => [() => new CustomSidekickButtonAbility(
             canCreateSidekick: (created) => !created,
@@ -34,7 +34,7 @@ class RulerModifier : ModifierBase<RulerModifier>
     public override RoleTag[] RoleTags => [];
 
     public override short IntroNum => 1;
-    public override Func<ExPlayerControl, string> ModifierMark => (player) => ModHelpers.Cs(RoleColor, "狂わせる{0}");
+    public override Func<ExPlayerControl, string> ModifierMark => (player) => ModHelpers.Cs(RoleColor, "{0}✞");
 
     public override bool AssignFilter => true;
 
