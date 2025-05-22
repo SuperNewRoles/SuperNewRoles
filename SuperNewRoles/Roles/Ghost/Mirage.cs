@@ -15,7 +15,10 @@ class Mirage : GhostRoleBase<Mirage>
     public override GhostRoleId Role { get; } = GhostRoleId.Mirage;
     public override Color32 RoleColor { get; } = Palette.ImpostorRed;
 
-    public override List<Func<AbilityBase>> Abilities => [() => new MirageAbility(MirageLimitUse, MirageLimitCount)];
+    public override List<Func<AbilityBase>> Abilities => [
+        () => new MirageAbility(MirageLimitUse, MirageLimitCount),
+        () => new DisibleHauntAbility(() => true),
+    ];
 
     public override QuoteMod QuoteMod => QuoteMod.SuperNewRoles;
 

@@ -301,6 +301,7 @@ public class ExPlayerControl
         }
         if (AmOwner)
             SuperTrophyManager.DetachTrophy(abilitiesToDetach);
+        ModifierRole &= ~modifierRoleId;
     }
     public void ReverseRole(ExPlayerControl target)
     {
