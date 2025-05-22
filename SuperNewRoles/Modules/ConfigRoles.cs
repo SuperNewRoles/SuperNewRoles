@@ -14,7 +14,7 @@ public static class ConfigRoles
     {
         CanUseDataConnection = SuperNewRolesPlugin.Instance.Config.Bind("Default", "CanUseDataConnection", false, "サイズが大きいファイルをデータ通信でダウンロードするかどうか(Download large files over mobile data?)");
 
-        _isCPUProcessorAffinity = SuperNewRolesPlugin.Instance.Config.Bind("Default", "CPUProcessorAffinity", true, "CPUの割当を変更するかどうか(Change CPU affinity?)");
+        _isCPUProcessorAffinity = SuperNewRolesPlugin.Instance.Config.Bind("Default", "CPUProcessorAffinity", false, "CPUの割当を変更するかどうか(Change CPU affinity?)");
         _ProcessorAffinityMask = SuperNewRolesPlugin.Instance.Config.Bind("Default", "ProcessorAffinityMask", (ulong)3, "CPUの割当を変更するためのマスク(Mask for changing CPU affinity)");
     }
 }
