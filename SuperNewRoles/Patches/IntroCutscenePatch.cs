@@ -9,6 +9,7 @@ using SuperNewRoles.MapCustoms;
 using SuperNewRoles.Modules;
 using SuperNewRoles.Modules.Events.Bases;
 using SuperNewRoles.Roles;
+using SuperNewRoles.Roles.Ability;
 using SuperNewRoles.Roles.Ability.CustomButton;
 using UnityEngine;
 
@@ -256,10 +257,13 @@ public static class IntroCutscenePatch
     private static void ReAssignTasks()
     {
         // ローカルプレイヤーのみがタスクを再割り当てする
-        var localPlayer = ExPlayerControl.LocalPlayer;
-        if (localPlayer != null && localPlayer.CustomTaskAbility != null && localPlayer.CustomTaskAbility.assignTaskData != null)
+        foreach (var taskAbility in ExPlayerControl.LocalPlayer.GetAbilities<CustomTaskAbility>())
         {
-            localPlayer.CustomTaskAbility.AssignTasks();
+            if (taskAbility.assignTaskData != null)
+            {
+                taskAbility.AssignTasks();
+                break;
+            }
         }
     }
 }
