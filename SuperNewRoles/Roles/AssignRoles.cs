@@ -323,7 +323,7 @@ public static class AssignRoles
                 .Where(p => !ModifierGuesser.ModifierGuesserCategory.ModifierDoNotAssignRoles.Contains(p.Role));
         }
 
-        candidates = candidates.Where(p => p.Role != RoleId.Truelover && p.Role != RoleId.Cupid);
+        candidates = candidates.Where(p => p.Role is not RoleId.Truelover and not RoleId.Cupid and not RoleId.LoversBreaker);
 
         var candidatesList = candidates.ToList();
 

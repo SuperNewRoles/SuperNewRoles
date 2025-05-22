@@ -281,6 +281,7 @@ Madmate,マッドメイト,Madmate,疯友,瘋友
 BlackCat,黒猫,Black Cat,黑猫,黑貓
 Jackal,ジャッカル,Jackal,杰克,傑克
 Sidekick,サイドキック,Sidekick,側翼,側翼
+SidekickWaveCannon,波動砲サイドキック,Sidekick Wave Cannon,側翼波動砲,側翼波動砲
 SelfBomber,自爆魔,Self Bomber,自爆者,自爆者
 Samurai,侍,Samurai,侍,侍
 WaveCannon,波動砲,Wave Cannon,波动炮,波動砲
@@ -431,6 +432,7 @@ JackalSidekickCooldown,サイドキック 作成クールダウン,Sidekick Cool
 JackalSidekickType,サイドキックタイプ,Sidekick Type,边缘队员类型,邊緣隊員類型
 JackalSidekickType.Sidekick,サイドキック,Sidekick,边缘队员,邊緣隊員
 JackalSidekickType.Friends,ジャッカルフレンズ,Jackal Friends,杰克朋友,傑克朋友
+JackalSidekickType.SidekickWaveCannon,波動砲サイドキック,Sidekick Wave Cannon
 SidekickButtonText,サイドキック,Sidekick,边缘队员,邊緣隊員
 
 # Bait Options

@@ -84,6 +84,7 @@ public enum RoleId : short
     Rocket,
     Vampire,
     VampireDependent,
+    SidekickWaveCannon,
 }
 
 public enum GhostRoleId : short
