@@ -271,7 +271,7 @@ RestrictVital,Restrict Vital,バイタルの時間制限,生命监测装置使�
 RestrictCamera,Restrict Camera,カメラの時間制限,监控使用时间限制,監視器時間限制
 CanNotGhostSeeRole,When a player dies，the role of other players is not displayed.,死亡時に他プレイヤーの役職を表示しない,死亡玩家不能确认其他玩家的职业,死亡時不顯示其他玩家的職業
 OnlyImpostorGhostSeeRole,Impostors display the roles of other players.,インポスターは死亡時に他プレイヤーの役職を表示する,只有死亡的内鬼玩家可以确认其他玩家的职业,只有內鬼死亡時才顯示其他玩家的職業
-CanGhostSeeVote,After death，everyone's voting address can be confirmed.,死亡者が全員の投票先を確認できる,死亡玩家能确认所有玩家的职业,死亡玩家能確認所有玩家的投票
+CanGhostSeeVote,After death，everyone's voting address can be confirmed.,死亡者が全員の投票先を確認できる,死亡玩家能确认所有玩家的投票,死亡玩家能確認所有玩家的投票
 CanSeeImpostorRole,Imposters can check each other's rolls.,インポスターが互いに役職を確認できる,内鬼阵营玩家互相确认职业,內鬼可以查看其他內鬼的職業
 CanSeeImpostorRoleTurn,Number of turns to confirm,わかるようになる会議数,确认彼此职业所需回合数,查看所需回合數
 CanNotGhostHaveHaunt,After death，can not have Hount ability.,死亡者が憑依能力を持たない,玩家死亡后不再受到灵咒影响,死者不具有憑依能力
@@ -1954,7 +1954,7 @@ UbiquitousFlyingSpeedOption,Flying speed,飛行速度,无人机飞行速度,飛�
 UbiquitousDoorHackCoolTimeOption,Door Hack Cool Time,「ドアハック」のクールタイム,无人机黑入舱门冷却时间,「駭入門」冷卻時間
 UbiquitousDoorHackScopeOption,Scope of "Door Hack",「ドアハック」の範囲,无人机黑入舱门范围,「駭入門」範圍
 UbiquitousDroneVisibilityRangeOption,Drone visibility range,ドローンに映る範囲,无人机视野,無人機可視範圍
-UbiquitousMapShowPlayerColor,Display on map in player colours,プレイヤーカラーでマップに表示する,,在地圖上顯示玩家顏色
+UbiquitousMapShowPlayerColor,Display on map in player colours,プレイヤーカラーでマップに表示する,在地图上显示玩家颜色,在地圖上顯示玩家顏色
 UbiquitousOperationButton,Operation,操作,操纵,操作
 UbiquitousCallButton,Call,呼び出す,呼叫,召喚
 UbiquitousCallHomeButton,Call Home,呼び戻す,唤回,喚回
@@ -1969,16 +1969,16 @@ RemoteControllerOperationButtonName,Operation!,操作!,操纵！,控制！
 RemoteControllerTarget,Objects of Interference,干渉対象,操纵对象：,控制對象：
 Permanence,Permanence,永続,持续,持續
 
-AttributeGuesserOption,Attribute Guesser,モディファイアゲッサー,,賭怪屬性
-AttributeGuesserMaximumAllocationImpostor,Maximum allocations (Imposter),最大割当数(インポスター),,屬性賦予最大數量(內鬼)
-AttributeGuesserEmissionProbabilityImpostor,Emission probability (Imposter),排出確率(インポスター),,賦予機率(內鬼)
-AttributeGuesserMaximumAllocationNeutral,Maximum allocations (Neutral),最大割当数(第三陣営),,屬性賦予最大數量(中立)
-AttributeGuesserEmissionProbabilityNeutral,Emission probability (Neutral),排出確率(第三陣営),,賦予機率(中立)
-AttributeGuesserMaximumAllocationCrew,Maximum allocations (Crewmate),最大割当数(クルー),,屬性賦予最大數量(船員)
-AttributeGuesserEmissionProbabilityCrew,Emission probability (Crewmate),排出確率(クルー),,賦予機率(船員)
-MadmateCannotAttributeGuesser,Exclude Madmate-type positions from distribution,配布先からマッドメイト系役職を除外する,,排除叛徒系職業
-MadmateSelfDestructive,Madmate-type role always self-destruct.,マッドメイト系役職は必ず自爆する,,叛徒系職業必定自爆
-AttributeGuesserIntro,And guess what.,そして、推察せよ。,,這次，你也帶上了狙擊槍。
+AttributeGuesserOption,Attribute Guesser,モディファイアゲッサー,赌怪,賭怪屬性
+AttributeGuesserMaximumAllocationImpostor,Maximum allocations (Imposter),最大割当数(インポスター),内鬼阵营最大赌怪数量,屬性賦予最大數量(內鬼)
+AttributeGuesserEmissionProbabilityImpostor,Emission probability (Imposter),排出確率(インポスター),附加几率(內鬼),賦予機率(內鬼)
+AttributeGuesserMaximumAllocationNeutral,Maximum allocations (Neutral),最大割当数(第三陣営),独立阵营最大赌怪数量,屬性賦予最大數量(中立)
+AttributeGuesserEmissionProbabilityNeutral,Emission probability (Neutral),排出確率(第三陣営),附加几率(中立),賦予機率(中立)
+AttributeGuesserMaximumAllocationCrew,Maximum allocations (Crewmate),最大割当数(クルー),船员阵营最大赌怪数量,屬性賦予最大數量(船員)
+AttributeGuesserEmissionProbabilityCrew,Emission probability (Crewmate),排出確率(クルー),附加几率(船员),賦予機率(船員)
+MadmateCannotAttributeGuesser,Exclude Madmate-type positions from distribution,配布先からマッドメイト系役職を除外する,排除叛徒系职业,排除叛徒系職業
+MadmateSelfDestructive,Madmate-type role always self-destruct.,マッドメイト系役職は必ず自爆する,叛徒系职业必定自爆,叛徒系職業必定自爆
+AttributeGuesserIntro,And guess what.,そして、推察せよ。,艺术就是刺杀!,這次，你也帶上了狙擊槍。
 
 #NewRoleTranslation
 
