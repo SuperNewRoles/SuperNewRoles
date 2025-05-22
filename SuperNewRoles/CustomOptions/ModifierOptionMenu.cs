@@ -876,7 +876,7 @@ public static class ModifierOptionMenu
     private static GameObject GenerateAssignFilterEditButton(ModifierOptionMenuObjectData.ModifierCategoryDataBase modifierOption, Transform parent)
     {
         // BulkRoleSettings.InitializeBulkRoleButton を参考にボタンを作成
-        var button = GameObject.Instantiate(AssetManager.GetAsset<GameObject>("BulkRoleButton")); // BulkRoleButtonアセットを使用
+        var button = GameObject.Instantiate(AssetManager.GetAsset<GameObject>("RoleDetailButton")); // BulkRoleButtonアセットを使用
         button.name = "AssignFilterEditButton";
         button.transform.SetParent(parent); // 親を適切に設定
 

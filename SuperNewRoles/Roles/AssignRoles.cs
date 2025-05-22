@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using AmongUs.GameOptions;
 using HarmonyLib;
 using SuperNewRoles.CustomOptions.Categories;
 using SuperNewRoles.Modules;
@@ -18,8 +19,33 @@ class GameStartManagerStartPatch
     }
 }
 [HarmonyPatch(typeof(RoleManager), nameof(RoleManager.SelectRoles))]
-class RoleManagerSelectRolesPatch
+public static class RoleManagerSelectRolesPatch
 {
+    public static bool Prefix(RoleManager __instance)
+    {
+        var list = AmongUsClient.Instance.allClients.ToArray();
+        var list2 = (from c in list
+                     where c.Character != null
+                     where c.Character.Data != null
+                     where !c.Character.Data.Disconnected && !c.Character.Data.IsDead
+                     orderby c.Id
+                     select c.Character.Data).ToList();
+        foreach (NetworkedPlayerInfo allPlayer in GameData.Instance.AllPlayers)
+        {
+            if (allPlayer.Object != null && allPlayer.Object.isDummy)
+            {
+                list2.Add(allPlayer);
+            }
+        }
+        IGameOptions currentGameOptions = GameOptionsManager.Instance.CurrentGameOptions;
+        // バニラとの変更点ここ
+        // インポスターの数をそのまま使ってバリデーションを防いでる
+        int numImpostors = GameOptionsManager.Instance.CurrentGameOptions.NumImpostors;
+        __instance.DebugRoleAssignments(list2.ToIl2CppList(), ref numImpostors);
+        GameManager.Instance.LogicRoleSelection.AssignRolesForTeam(list2.ToIl2CppList(), currentGameOptions, RoleTeamTypes.Impostor, numImpostors, new Il2CppSystem.Nullable<RoleTypes>(RoleTypes.Impostor));
+        GameManager.Instance.LogicRoleSelection.AssignRolesForTeam(list2.ToIl2CppList(), currentGameOptions, RoleTeamTypes.Crewmate, int.MaxValue, new Il2CppSystem.Nullable<RoleTypes>(RoleTypes.Crewmate));
+        return false;
+    }
     public static void Postfix(RoleManager __instance)
     {
         AssignRoles.AssignCustomRoles();

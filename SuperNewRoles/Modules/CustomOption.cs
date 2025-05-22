@@ -7,6 +7,7 @@ using System.Reflection;
 using System.Security.Cryptography;
 using AmongUs.GameOptions;
 using HarmonyLib;
+using InnerNet;
 using SuperNewRoles.CustomOptions;
 using SuperNewRoles.CustomOptions.Categories;
 using SuperNewRoles.Roles;
@@ -62,42 +63,28 @@ public static class CustomOptionManager
             RoleOptionManager.RpcSyncRoleOptionsAll();
         }
     }
-    [HarmonyPatch(typeof(RoleManager), nameof(RoleManager.SelectRoles))]
-    public static class FixMaxImpostorsPatch
+    [HarmonyPatch(typeof(IGameOptionsExtensions), nameof(IGameOptionsExtensions.GetAdjustedNumImpostors))]
+    public static class FixAdjustedNumImpostors
     {
-        public static void Prefix(RoleManager __instance)
+        public static bool Prefix(ref int __result)
         {
-            // 0を150個
-            int[] MaxImpostors = new int[150];
-            int impostor = GameOptionsManager.Instance.CurrentGameOptions.GetInt(Int32OptionNames.NumImpostors);
-            for (int i = 0; i < 150; i++)
-                MaxImpostors[i] = impostor;
-            NormalGameOptionsV07.MaxImpostors = MaxImpostors;
-            NormalGameOptionsV08.MaxImpostors = MaxImpostors;
-            NormalGameOptionsV09.MaxImpostors = MaxImpostors;
-            HideNSeekGameOptionsV07.MaxImpostors = MaxImpostors;
-            HideNSeekGameOptionsV08.MaxImpostors = MaxImpostors;
-            HideNSeekGameOptionsV09.MaxImpostors = MaxImpostors;
-            SetImpostors(impostor);
+            __result = GameOptionsManager.Instance.CurrentGameOptions.NumImpostors;
+            Logger.Info($"GetAdjustedNumImpostors: {__result}");
+            Logger.Info("AAAAAAAAAAAA");
+            Logger.Info("AAAAAAAAAAAA");
+            Logger.Info("AAAAAAAAAAAA");
+            Logger.Info("AAAAAAAAAAAA");
+            Logger.Info("AAAAAAAAAAAA");
+            Logger.Info("AAAAAAAAAAAA");
+            Logger.Info("AAAAAAAAAAAA");
+            Logger.Info("AAAAAAAAAAAA");
+            Logger.Info("AAAAAAAAAAAA");
+            Logger.Info("AAAAAAAAAAAA");
+            Logger.Info("AAAAAAAAAAAA");
+            Logger.Info("AAAAAAAAAAAA");
+            return false;
         }
-        private static void SetImpostors(int impostor)
-        {
-            var current = GameOptionsManager.Instance.CurrentGameOptions;
-            if (current.TryCastOut(out NormalGameOptionsV07 normalGameOptionsV07))
-                normalGameOptionsV07.NumImpostors = impostor;
-            else if (current.TryCastOut(out NormalGameOptionsV08 normalGameOptionsV08))
-                normalGameOptionsV08.NumImpostors = impostor;
-            else if (current.TryCastOut(out NormalGameOptionsV09 normalGameOptionsV09))
-                normalGameOptionsV09.NumImpostors = impostor;
-            else if (current.TryCastOut(out HideNSeekGameOptionsV07 hideNSeekGameOptionsV07))
-                hideNSeekGameOptionsV07.NumImpostors = impostor;
-            else if (current.TryCastOut(out HideNSeekGameOptionsV08 hideNSeekGameOptionsV08))
-                hideNSeekGameOptionsV08.NumImpostors = impostor;
-            else if (current.TryCastOut(out HideNSeekGameOptionsV09 hideNSeekGameOptionsV09))
-                hideNSeekGameOptionsV09.NumImpostors = impostor;
-            else
-                Logger.Error("GameOptionsManager.Instance.CurrentGameOptions is not supported");
-        }
+
     }
     [CustomRPC]
     public static void RpcSyncOption(string optionId, byte selection)
