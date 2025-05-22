@@ -114,6 +114,7 @@ static class AdditionalTempData
         public int TasksTotal { get; set; }
         public int PlayerId { get; set; }
         public int ColorId { get; set; }
+        public float additionalSize { get; set; }
         public FinalStatus Status { get; internal set; }
         public RoleId RoleId { get; set; }
         public GhostRoleId GhostRoleId { get; set; }
@@ -423,6 +424,14 @@ public class EndGameManagerSetUpPatch
                 playerObj.cosmetics.nameText.text = $"{roleInfo.PlayerName}{roleInfo.NameSuffix}\n{string.Join("\n", roleText)}";
                 customCosmeticsLayer.hat2?.SetHat(roleInfo.Hat2Id, roleInfo.ColorId);
                 customCosmeticsLayer.visor2?.SetVisor(roleInfo.Visor2Id, roleInfo.ColorId);
+                playerObj.transform.localScale *= roleInfo.additionalSize;
+                playerObj.cosmetics.nameTextContainer.transform.localScale /= roleInfo.additionalSize;
+
+                if (roleInfo.ModifierRoleId.HasFlag(ModifierRoleId.JumboModifier))
+                {
+                    playerObj.transform.localPosition += new Vector3(0, 0.7f, 0f);
+                    playerObj.cosmetics.nameTextContainer.transform.localPosition = new(0.2f, -0.2f, 0f);
+                }
             }
         }
     }
@@ -525,6 +534,7 @@ public static class OnGameEndPatch
         FinalStatus status = FinalStatus.Alive;
         string hat2Id = "";
         string visor2Id = "";
+        float additionalSize = 1f;
 
         if (player.Disconnected)
         {
@@ -552,6 +562,7 @@ public static class OnGameEndPatch
             hat2Id = customCosmeticsLayer?.hat2?.Hat?.ProdId ?? "";
             visor2Id = customCosmeticsLayer?.visor2?.Visor?.ProdId ?? "";
         }
+        additionalSize *= modifierRoleId.HasFlag(ModifierRoleId.JumboModifier) ? 2f : 1f;
 
         return new AdditionalTempData.PlayerRoleInfo()
         {
@@ -572,6 +583,7 @@ public static class OnGameEndPatch
             modifierMarks = player.Object == null ? [] : modifierRoleId != ModifierRoleId.None ? CustomRoleManager.TryGetModifierById(modifierRoleId, out var modifierRole2) ? new List<string> { modifierRole2.ModifierMark(player) } : new List<string>() : new List<string>(),
             Hat2Id = hat2Id,
             Visor2Id = visor2Id,
+            additionalSize = additionalSize,
         };
     }
 

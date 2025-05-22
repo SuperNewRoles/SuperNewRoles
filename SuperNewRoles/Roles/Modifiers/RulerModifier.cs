@@ -34,7 +34,7 @@ class RulerModifier : ModifierBase<RulerModifier>
     public override RoleTag[] RoleTags => [];
 
     public override short IntroNum => 1;
-    public override Func<ExPlayerControl, string> ModifierMark => (player) => ModHelpers.Cs(RoleColor, "{0}✞");
+    public override Func<ExPlayerControl, string> ModifierMark => (player) => "{0} " + ModHelpers.Cs(RoleColor, "†");
 
     public override bool AssignFilter => true;
 

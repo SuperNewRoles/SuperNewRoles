@@ -29,7 +29,7 @@ class JumboModifier : ModifierBase<JumboModifier>
 
     public override short IntroNum => 1;
 
-    public override Func<ExPlayerControl, string> ModifierMark => _ => "{0} Ⓙ";
+    public override Func<ExPlayerControl, string> ModifierMark => _ => "{0} " + ModHelpers.Cs(RoleColor, "Ⓙ");
 
     public override bool AssignFilter => true;
 
@@ -71,7 +71,7 @@ public class JumboAbility : AbilityBase
     private EventListener<MurderEventData> _murderListener;
     private EventListener<ExileControllerEventData> _exileControllerListener;
     private EventListener<MeetingCalledAnimationInitializeEventData> _meetingCalledAnimationInitializeListener;
-    private float _currentSize = 0f;
+    public float _currentSize { get; private set; } = 0f;
     private Vector2 _oldPosition;
     private bool _hasOldPosition = false;
     private float _playSoundTimer = 0f;
