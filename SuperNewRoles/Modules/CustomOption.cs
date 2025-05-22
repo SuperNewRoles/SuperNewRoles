@@ -70,7 +70,7 @@ public static class CustomOptionManager
             // 0を150個
             int[] MaxImpostors = new int[150];
             for (int i = 0; i < 150; i++)
-                MaxImpostors[i] = 0;
+                MaxImpostors[i] = byte.MaxValue;
             NormalGameOptionsV07.MaxImpostors = MaxImpostors;
             NormalGameOptionsV08.MaxImpostors = MaxImpostors;
             NormalGameOptionsV09.MaxImpostors = MaxImpostors;
