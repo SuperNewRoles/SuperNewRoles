@@ -354,6 +354,9 @@ VentTrapper,ベントトラッパー,Vent Trapper
 Rocket,ロケット,Rocket
 Vampire,ヴァンパイア,Vampire,吸血鬼,吸血鬼
 VampireDependent,眷属,Dependent,眷属,眷屬
+Spelunker,スペランカー,Spelunker,倒霉蛋,倒霉鬼
+ModifierSpelunker,モディファイアスペランカー,Modifier Spelunker
+PartTimer,フリーター,Part Timer
 
 # Descriptions
 BestFalseCharge.Description,特に能力を有さないクルーメイトです。\n死亡するまでこの役職だと自覚出来ません。\n最初の会議が終了すると、そのまま死亡します。,The ultimate red herring! A Crewmate with no abilities who lives in blissful ignorance.\nThey won't realize they have this role until they're dead—talk about a rude awakening!\nAfter the first meeting ends, they die faster than someone saying "I saw Blue vent!",这是一个没有特殊能力的船员。\n在死亡之前他们不会意识到自己拥有这个角色。\n第一场会议结束后，他们会直接死亡。,這是一個沒有特殊能力的船員。\n在死亡之前他們不會察覺自己擁有這個角色。\n第一場會議結束後，他們會直接死亡。
@@ -992,3 +995,49 @@ MatryoshkaButtonText,死体を着る/脱ぐ,Wear/Remove Body,穿戴/脱下尸体
 
 # 忘却者関連
 Amnesiac.RoleChangeNotification,あなたは次の役職になりました: ,You have become the following role: ,你现在的职业变为: ,你現在的職業變為: 
+
+# Spelunker関連
+SpelunkerVentDeathChance,ベント死の確率,Probability of vent death,倒霉蛋在管道口跌倒而死的概率,倒霉鬼在管道口跌倒而死的機率
+LadderDeadChance,転落死する確率,Ladder Death Chance,摔死的概率,摔死的機率
+SpelunkerIsDeathCommsOrPowerdown,コミュ・停電で死ぬ,Death from Communications/Power Down,通信或断电时死亡,通信或斷電時死亡
+SpelunkerDeathCommsOrPowerdownTime,コミュ・停電死の時間,Time to death from Communications/Power Down,通信或断电死亡时间,通信或斷電死亡時間
+SpelunkerLiftDeathChance,昇降機死の確率,Elevator Death Chance,电梯死亡概率,電梯死亡機率
+SpelunkerDoorOpenChance,ドア開放死の確率,Door Opening Death Chance,开门死亡概率,開門死亡機率
+
+# BlackHatHacker
+BlackHatHacker,ブラックハットハッカー,Black Hat Hacker,黑帽客,黑帽駭客
+BlackHatHackerDescription,ウイルスを使って全員を感染させろ！,Use viruses to infect everyone!,使用病毒感染所有人,使用病毒感染所有人
+BlackHatHackerHackCoolTime,ハックのクールタイム,Hack Cool Time,植入病毒冷却,駭入的冷卻時間
+BlackHatHackerHackCountable,ハック可能回数,Number of hacks possible,最大植入病毒次数,駭入的使用次數
+BlackHatHackerIsNotInfectionIncrease,感染者が居なくなったらハック回数を増やす,Increase the number of hacks once the infected are gone,不存在感染者时增加一次感染次数,當感染者消失後，增加駭入的使用次數
+BlackHatHackerHackInfectiousTime,感染時間,Infectious time,感染所需时间,感染所需時間
+BlackHatHackerNotInfectiousTime,会議後感染が進まない時間,Post-meeting time when infection does not progress,会议阶段结束后感染停止持续时间,會議結束感染停止的持續時間
+BlackHatHackerStartSelfPropagationType.Never,なし,Never,无,無
+BlackHatHackerStartSelfPropagationType.Percent25,25%,25%,25%,25%
+BlackHatHackerStartSelfPropagationType.Percent50,50%,50%,50%,50%
+BlackHatHackerStartSelfPropagationType.Percent75,75%,75%,75%,75%
+BlackHatHackerStartSelfPropagationType.Percent90,90%,90%,90%,90%
+BlackHatHackerInfectionScopeType.Short,近距離,Short,短距离,短距離
+BlackHatHackerInfectionScopeType.Medium,中距離,Medium,中距离,中距離
+BlackHatHackerInfectionScopeType.Long,遠距離,Long,长距离,長距離
+BlackHatHackerCanInfectedAdmin,感染者アドミンを使える,Can use infected admins,黑帽客可以观看仅标记被感染玩家的管理地图,黑帽駭客可以使用管理員地圖查看被感染者
+BlackHatHackerCanMoveWhenUsesAdmin,アドミン使用中に移動できる,Can move when using admin,使用管理地图时可以移动,使用管理地圖時可以移動
+BlackHatHackerIsAdminColor,感染者アドミンで色が分かる,Infected admins can tell the color,黑帽客可以确认被感染玩家在管理地图上的颜色,可以在管理員地圖中分辨感染者的顏色
+BlackHatHackerCanInfectedVitals,感染者バイタルを使える,Can use infected person vitals,黑帽客可以观看仅记录被感染玩家的生命监测装置,黑帽駭客可以使用生命探測器查看被感染者
+BlackHatHackerCanDeadWin,死亡していても勝利出来る,You can win even if you are dead,黑帽客死亡后仍可获胜,黑帽駭客死亡後仍可獲勝
+BlackHatHackerHackButtonName,ハック,Hack,植入病毒,駭入
+BlackHatHackerHackNumText,残り{0}回,{0} remaining,剩余{0}次,剩餘{0}次
+BlackHatHackerStatusOfInfection,感染状況,Status of infection,感染情况,感染狀況
+BlackHatHackerInfected,感染済み,Infected,已感染,已感染
+BlackHatHackerPageChange,ページ変更,Page Change,翻页,翻頁
+BlackHatHackerWin,ブラックハットハッカーの勝利,Black Hat Hacker Win,黑帽駭客获胜,黑帽駭客獲勝
+
+
+# PartTimerPartTimer,フリーター,PartTimer,打工仔,打工仔
+PartTimerDescription,バイトするなら…！,If you want a part-time job...!,打工的话...!,打工的話...!
+PartTimerDeathTurn,無職で死亡までのターン数,Turns until death when unemployed,无工作时死亡倒计时回合,無工作時死亡倒計時回合
+PartTimerInitialCooldown,初期クールタイム,Initial Cooldown,初期冷却时间,初期冷卻時間
+artTimerFinalCooldown,最終クールタイム,Final Cooldown,最终冷却时间,最終冷卻時間
+PartTimerCanSeeTargetRole,雇用主の役職を見る,See employer's role,查看雇主角色,查看雇主角色
+PartTimerNeedAliveToWin,勝利に生存が必要,Need alive to win,胜利需要存活,勝利需要存活
+PartTimerButtonName,バイト,PartTime,打工,打工

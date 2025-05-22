@@ -83,7 +83,11 @@ public enum RoleId : short
     ToiletFan,
     Rocket,
     Vampire,
-    VampireDependent, SidekickWaveCannon, Spelunker,
+    VampireDependent,
+    SidekickWaveCannon,
+    Spelunker,
+    BlackHatHacker,
+    PartTimer,
 }
 
 public enum GhostRoleId : short
@@ -103,6 +107,7 @@ public enum ModifierRoleId : short
     RulerModifier = 1 << 2,
     Lovers = 1 << 3,
     JumboModifier = 1 << 4,
+    ModifierSpelunker = 1 << 5,
 }
 
 public enum QuoteMod : byte

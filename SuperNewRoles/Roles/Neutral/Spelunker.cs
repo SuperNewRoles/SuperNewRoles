@@ -17,12 +17,16 @@ class Spelunker : RoleBase<Spelunker>
 {
     public override RoleId Role { get; } = RoleId.Spelunker;
     public override Color32 RoleColor { get; } = new(255, 255, 0, byte.MaxValue); // 黄色
-    public override List<Func<AbilityBase>> Abilities { get; } = [() => new SpelunkerAbility(new SpelunkerData(
-        VentDeathChance: SpelunkerVentDeathChance,
-        CommsOrLightdownDeathTime: SpelunkerIsDeathCommsOrPowerdown ? SpelunkerDeathCommsOrPowerdownTime : -1f,
-        LiftDeathChance: SpelunkerLiftDeathChance,
-        DoorOpenChance: SpelunkerDoorOpenChance
-    ))];
+    public override List<Func<AbilityBase>> Abilities { get; } = [
+        () => new SpelunkerAbility(new SpelunkerData(
+            VentDeathChance: SpelunkerVentDeathChance,
+            CommsOrLightdownDeathTime: SpelunkerIsDeathCommsOrPowerdown ? SpelunkerDeathCommsOrPowerdownTime : -1f,
+            LiftDeathChance: SpelunkerLiftDeathChance,
+            DoorOpenChance: SpelunkerDoorOpenChance,
+            LadderDeathChance: SpelunkerLadderDeathChance
+        )),
+        () => new LadderDeathAbility(SpelunkerLadderDeathChance)
+    ];
 
     public override QuoteMod QuoteMod { get; } = QuoteMod.SuperNewRoles;
     public override RoleTypes IntroSoundType { get; } = RoleTypes.Shapeshifter;
@@ -48,13 +52,17 @@ class Spelunker : RoleBase<Spelunker>
 
     [CustomOptionInt("SpelunkerDoorOpenChance", 0, 100, 5, 20, translationName: "SpelunkerDoorOpenChance")]
     public static int SpelunkerDoorOpenChance;
+
+    [CustomOptionInt("SpelunkerLadderDeathChance", 0, 100, 5, 20, translationName: "LadderDeadChance")]
+    public static int SpelunkerLadderDeathChance;
 }
 
 public record SpelunkerData(
     int VentDeathChance,
     float CommsOrLightdownDeathTime,
     int LiftDeathChance,
-    int DoorOpenChance
+    int DoorOpenChance,
+    int LadderDeathChance
 );
 
 public class SpelunkerAbility : AbilityBase
@@ -64,6 +72,8 @@ public class SpelunkerAbility : AbilityBase
     private EventListener _fixedUpdateListener;
     private EventListener<MurderEventData> _murderListener;
     private EventListener<ExileEventData> _exileListener;
+    private EventListener<UsePlatformEventData> _usePlatformListener;
+    private EventListener<DoorConsoleUseEventData> _doorConsoleUseListener;
 
     // Spelunker specific variables
     private bool _isVentChecked;
@@ -84,6 +94,8 @@ public class SpelunkerAbility : AbilityBase
         _fixedUpdateListener = FixedUpdateEvent.Instance.AddListener(OnFixedUpdate);
         _murderListener = MurderEvent.Instance.AddListener(OnMurder);
         _exileListener = ExileEvent.Instance.AddListener(OnExile);
+        _usePlatformListener = UsePlatformEvent.Instance.AddListener(OnUsePlatform);
+        _doorConsoleUseListener = DoorConsoleUseEvent.Instance.AddListener(OnDoorConsoleUse);
     }
 
     public override void DetachToLocalPlayer()
@@ -91,6 +103,8 @@ public class SpelunkerAbility : AbilityBase
         _fixedUpdateListener?.RemoveListener();
         _murderListener?.RemoveListener();
         _exileListener?.RemoveListener();
+        _usePlatformListener?.RemoveListener();
+        _doorConsoleUseListener?.RemoveListener();
     }
 
     private void OnFixedUpdate()
@@ -184,6 +198,22 @@ public class SpelunkerAbility : AbilityBase
         _deathPosition = null;
     }
 
+    private void OnUsePlatform(UsePlatformEventData data)
+    {
+        if (data.player == ExPlayerControl.LocalPlayer)
+        {
+            OnMovingPlatformUsed(data.platform);
+        }
+    }
+
+    private void OnDoorConsoleUse(DoorConsoleUseEventData data)
+    {
+        if (data.player == ExPlayerControl.LocalPlayer)
+        {
+            OnDoorOpen();
+        }
+    }
+
     // MovingPlatformの使用時の転落死判定
     public void OnMovingPlatformUsed(MovingPlatformBehaviour platform)
     {
@@ -201,35 +231,6 @@ public class SpelunkerAbility : AbilityBase
         {
             ExPlayerControl.LocalPlayer.RpcCustomDeath(CustomDeathType.Suicide);
             FinalStatusManager.RpcSetFinalStatus(ExPlayerControl.LocalPlayer, FinalStatus.SpelunkerOpenDoor);
-        }
-    }
-}
-
-// Harmonyパッチをここに追加
-[HarmonyPatch(typeof(MovingPlatformBehaviour), nameof(MovingPlatformBehaviour.UsePlatform))]
-public static class MovingPlatformUsePlatformPatch
-{
-    public static void Postfix(MovingPlatformBehaviour __instance, PlayerControl target)
-    {
-        if (target.PlayerId == ExPlayerControl.LocalPlayer.PlayerId &&
-            ExPlayerControl.LocalPlayer.Role == RoleId.Spelunker)
-        {
-            var spelunkerAbility = ExPlayerControl.LocalPlayer.GetAbility<SpelunkerAbility>();
-            spelunkerAbility?.OnMovingPlatformUsed(__instance);
-        }
-    }
-}
-
-[HarmonyPatch(typeof(DoorConsole), nameof(DoorConsole.Use))]
-public static class DoorConsoleOpenPatch
-{
-    public static void Postfix(DoorConsole __instance)
-    {
-        __instance.CanUse(ExPlayerControl.LocalPlayer.Data, out var canUse, out var _);
-        if (canUse && ExPlayerControl.LocalPlayer.Role == RoleId.Spelunker)
-        {
-            var spelunkerAbility = ExPlayerControl.LocalPlayer.GetAbility<SpelunkerAbility>();
-            spelunkerAbility?.OnDoorOpen();
         }
     }
 }

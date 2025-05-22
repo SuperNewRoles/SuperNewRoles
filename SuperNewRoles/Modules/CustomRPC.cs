@@ -437,6 +437,36 @@ public static class CustomRPCManager
                         }
                     }
                 }
+                else if (type == typeof(Dictionary<byte, byte>))
+                {
+                    if (obj == null)
+                        writer.Write(0);
+                    else
+                    {
+                        var dict = obj as Dictionary<byte, byte>;
+                        writer.Write(dict.Count);
+                        foreach (var kvp in dict)
+                        {
+                            writer.Write(kvp.Key);
+                            writer.Write(kvp.Value);
+                        }
+                    }
+                }
+                else if (type == typeof(Dictionary<byte, float>))
+                {
+                    if (obj == null)
+                        writer.Write(0);
+                    else
+                    {
+                        var dict = obj as Dictionary<byte, float>;
+                        writer.Write(dict.Count);
+                        foreach (var kvp in dict)
+                        {
+                            writer.Write(kvp.Key);
+                            writer.Write(kvp.Value);
+                        }
+                    }
+                }
                 else if (type == typeof(PlayerControl))
                 {
                     if (obj == null)
@@ -666,6 +696,8 @@ public static class CustomRPCManager
             Type t when t == typeof(Dictionary<byte, byte>) => ReadDictionary<byte, byte>(reader, r => r.ReadByte(), r => r.ReadByte()),
             Type t when t == typeof(Dictionary<string, byte>) => ReadDictionary<string, byte>(reader, r => r.ReadString(), r => r.ReadByte()),
             Type t when t == typeof(Dictionary<ushort, byte>) => ReadDictionary<ushort, byte>(reader, r => r.ReadUInt16(), r => r.ReadByte()),
+            Type t when t == typeof(Dictionary<byte, float>) => ReadDictionary<byte, float>(reader, r => r.ReadByte(), r => r.ReadSingle()),
+            Type t when t == typeof(Dictionary<byte, bool>) => ReadDictionary<byte, byte>(reader, r => r.ReadByte(), r => r.ReadByte()),
             Type t when t == typeof(Dictionary<byte, (byte, int)>) => ReadDictionaryWithTuple(reader),
             Type t when t == typeof(Dictionary<byte, bool>) => ReadDictionary<byte, bool>(reader, r => r.ReadByte(), r => r.ReadBoolean()),
             Type t when t == typeof(Color) => new Color(reader.ReadSingle(), reader.ReadSingle(), reader.ReadSingle(), reader.ReadSingle()),

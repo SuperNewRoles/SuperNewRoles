@@ -187,6 +187,19 @@ public static class EndGamer
                 winners.Add(cupid);
             }
         }
+        foreach (ExPlayerControl player in ExPlayerControl.ExPlayerControls)
+        {
+            if (player.Role == RoleId.PartTimer)
+            {
+                PartTimerAbility partTimerAbility = player.GetAbility<PartTimerAbility>();
+                if (partTimerAbility != null && partTimerAbility._employer != null && (nowWinners.Contains(partTimerAbility._employer) || winners.Contains(partTimerAbility._employer)))
+                {
+                    // 生存勝利設定がONで死んでいる場合は勝利しない
+                    if (partTimerAbility._data.needAliveToWin && player.IsDead()) continue;
+                    winners.Add(player);
+                }
+            }
+        }
     }
 
     // Helper

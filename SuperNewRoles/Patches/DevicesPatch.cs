@@ -247,6 +247,11 @@ public static class DevicesPatch
                                 if (!hashSet.Add(component.PlayerId)) continue;
 
                                 if (((ExPlayerControl)component).GetAbility<HideInAdminAbility>()?.IsHideInAdmin ?? false) continue;
+
+                                // BlackHatHackerのフィルター
+                                var blackHatHacker = SuperNewRoles.Roles.Ability.BlackHatHackerAbility.LocalInstance;
+                                if (blackHatHacker != null && blackHatHacker.Data.CanInfectedAdmin &&
+                                    !blackHatHacker.InfectedPlayerId.Contains(component.PlayerId) && !component.AmOwner) continue;
                                 count++;
                                 colors.Add(component.Player.CurrentOutfit.ColorId);
                                 if (canSeeImpostorIcon && component.IsImpostor())
@@ -359,6 +364,12 @@ public static class DevicesPatch
     {
         static void Postfix(Minigame __instance)
         {
+            if (__instance is VitalsMinigame)
+            {
+                // BlackHatHackerのバイタル状態をリセット
+                SuperNewRoles.Roles.Ability.BlackHatHackerVitalsState.IsUsingVitals = false;
+            }
+
             if (__instance is not VitalsMinigame || !(MapSettingOptions.DeviceOptions && MapSettingOptions.RestrictionMode == DeviceRestrictionModeType.TimeLimit && IsVitalRestrict))
                 return;
             RpcSetDeviceUseStatus(DeviceType.Vital, PlayerControl.LocalPlayer.PlayerId, false);
@@ -381,6 +392,20 @@ public static class DevicesPatch
                 {
                     __instance.Close();
                     return;
+                }
+            }
+
+            // BlackHatHackerのバイタルフィルター
+            var blackHatHacker = SuperNewRoles.Roles.Ability.BlackHatHackerAbility.LocalInstance;
+            if (blackHatHacker != null && blackHatHacker.Data.CanInfectedVitals &&
+                SuperNewRoles.Roles.Ability.BlackHatHackerVitalsState.IsUsingVitals)
+            {
+                foreach (VitalsPanel vital in __instance.vitals)
+                {
+                    if (vital.PlayerInfo == null) continue;
+                    bool isInfected = blackHatHacker.InfectedPlayerId.Contains(vital.PlayerInfo.PlayerId) ||
+                                     vital.PlayerInfo.Object.AmOwner;
+                    vital.gameObject.SetActive(isInfected);
                 }
             }
 

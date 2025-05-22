@@ -35,6 +35,7 @@ public enum FinalStatus
     SpelunkerCommsElecDeath,
     SpelunkerOpenDoor,
     NunDeath,
+    LadderDeath,
 }
 
 public static class FinalStatusListener
