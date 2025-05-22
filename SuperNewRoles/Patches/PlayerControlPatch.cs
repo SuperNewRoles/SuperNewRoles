@@ -31,24 +31,6 @@ using static SuperNewRoles.ModHelpers;
 
 namespace SuperNewRoles.Patches;
 
-[HarmonyPatch(typeof(PlayerControl), nameof(PlayerControl.RpcUsePlatform))]
-public class UsePlatformPlayerControlPatch
-{
-    public static bool Prefix(PlayerControl __instance)
-    {
-        if (!AmongUsClient.Instance.AmHost)
-        {
-            AmongUsClient.Instance.StartRpcImmediately(__instance.NetId, 32, SendOption.Reliable)
-                .EndMessage();
-            return false;
-        }
-        AirshipStatus airshipStatus = GameObject.FindObjectOfType<AirshipStatus>();
-        if (airshipStatus)
-            airshipStatus.GapPlatform.Use(__instance);
-        return false;
-    }
-}
-
 [HarmonyPatch(typeof(PlayerPhysics), nameof(PlayerPhysics.FixedUpdate))]
 public static class PlayerPhysicsFixedUpdatePatch
 {
