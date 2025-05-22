@@ -83,8 +83,7 @@ public enum RoleId : short
     ToiletFan,
     Rocket,
     Vampire,
-    VampireDependent,
-    SidekickWaveCannon,
+    VampireDependent, SidekickWaveCannon, Spelunker,
 }
 
 public enum GhostRoleId : short

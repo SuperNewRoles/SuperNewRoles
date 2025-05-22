@@ -47,6 +47,18 @@ public static class ModHelpers
         // RandomNumberGenerator.GetInt32は `toExclusive` なので max + 1 する
         return RandomNumberGenerator.GetInt32(min, max + 1);
     }
+
+    /// <summary>
+    /// 指定された確率（パーセンテージ）で成功を判定する
+    /// </summary>
+    /// <param name="percentage">成功確率（0-100）</param>
+    /// <returns>成功した場合true</returns>
+    public static bool IsSuccessChance(int percentage)
+    {
+        if (percentage <= 0) return false;
+        if (percentage >= 100) return true;
+        return GetRandomInt(100) < percentage;
+    }
     private static MD5 md5 = MD5.Create();
     private static SHA256 sha256 = SHA256.Create();
     public static string HashMD5(string str)
