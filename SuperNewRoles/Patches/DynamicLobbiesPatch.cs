@@ -94,7 +94,7 @@ public static class DynamicLobbies
                 return $"プレイヤー最小人数は {LobbyLimit}です。";
             }
         }
-    }
+    }/*
     [HarmonyPatch(typeof(InnerNetClient), nameof(InnerNetClient.SendAllStreamedObjects))]
     public static class InnerNetClientSendAllStreamedObjectsPatch
     {
@@ -221,5 +221,5 @@ public static class DynamicLobbies
             messageWriter.Recycle();
             Logger.Info("Send all data message", "SendInitialData");
         }
-    }
+    }*/
 }

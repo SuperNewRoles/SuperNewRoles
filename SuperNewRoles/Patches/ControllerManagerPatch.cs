@@ -30,7 +30,7 @@ class GameManagerSerializeFix
             {
                 flag = true;
                 writer.StartMessage((byte)index);
-                var hasBody = logicComponent.Serialize(writer, initialState);
+                var hasBody = logicComponent.Serialize(writer);
                 if (hasBody) writer.EndMessage();
                 else writer.CancelMessage();
                 logicComponent.ClearDirtyFlag();
@@ -128,7 +128,7 @@ class ControllerManagerUpdatePatch
             {
                 Vector2 center = ShipStatus.Instance.MapPrefab.HerePoint.transform.parent.localPosition * -1f * ShipStatus.Instance.MapScale;
                 File.WriteAllBytes("SpawnableMap.png", MapDatabase.MapDatabase.GetCurrentMapData().OutputMap(center, new Vector2(10f, 7f) * ShipStatus.Instance.MapScale, 40f).EncodeToPNG());
-               return;
+                return;
             }
             if (Input.GetKeyDown(KeyCode.P))
             {

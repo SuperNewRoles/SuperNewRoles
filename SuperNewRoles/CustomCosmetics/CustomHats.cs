@@ -591,10 +591,10 @@ public class CustomHatLoader
         if (running)
             return;
         running = true;
-        hatFetchTask = LaunchHatFetcherAsync();
+        hatFetchTask = Task.Run(LaunchHatFetcherAsync);
     }
 
-    private static async Task LaunchHatFetcherAsync()
+    private static void LaunchHatFetcherAsync()
     {
         if (!DownLoadCustomCosmetics.IsLoad) return;
 
@@ -689,7 +689,7 @@ public class CustomHatLoader
             {
                 try
                 {
-                    HttpStatusCode status = await FetchHats(repo.Key);
+                    HttpStatusCode status = Task.Run(() => FetchHats(repo.Key)).Result;
                     if (status != HttpStatusCode.OK)
                         System.Console.WriteLine($"Custom hats could not be loaded from repo: {repo.Key}\n");
                     else
