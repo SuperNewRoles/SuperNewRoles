@@ -1055,3 +1055,12 @@ EvilMechanic,イビルメカニック,Evil Mechanic,邪恶机械师,邪惡機械
 EvilMechanic.Description,ベントを自分の位置に移動させることができるインポスターです。\n能力使用中は透明になり、キルやサボタージュに有利になります。\n一定時間後、ベントは元の位置に戻ります。,An Impostor who can move vents to their position.\nWhile using the ability, they become transparent, gaining advantages for kills and sabotage.\nAfter a certain time, the vent returns to its original position.,这是一个可以将通风口移动到自己位置的内鬼。\n使用能力时会变透明，有利于击杀和破坏。\n一定时间后，通风口会回到原位。,這是一個可以將通風口移動到自己位置的內鬼。\n使用能力時會變透明，有利於擊殺和破壞。\n一定時間後，通風口會回到原位。
 EvilMechanicCoolTime,イビルメカニック クールタイム,Evil Mechanic Cool Time,邪恶机械师冷却时间,邪惡機械師冷卻時間
 EvilMechanicDurationTime,効果持続時間,Effect Duration,效果持续时间,效果持續時間
+
+# BodyBuilder
+BodyBuilderName,ボディービルダー,BodyBuilder,健身者,健美運動員
+BodyBuilderDescription,<color=#d68f5e>ボディービルダー</color>は全てのタスクを完了した後、\nポージングを行うことができるクルーメイトです。\nポージング中は透明になりますが、移動するとポージングが解除されます。,<color=#d68f5e>BodyBuilder</color> is a crewmate who can pose after completing all tasks.\nWhile posing they become transparent, but moving cancels the pose.,<color=#d68f5e>健身者</color>是一个在完成所有任务后可以摆姿势的船员。\n摆姿势时会变透明，但移动会取消姿势。,<color=#d68f5e>健美運動員</color>是一個在完成所有任務後可以擺姿勢的船員。\n擺姿勢時會變透明，但移動會取消姿勢。
+BodyBuilderChangeAllTaskLiftWeights,全タスクをウェイトリフティングに変更,Change All Tasks to Lift Weights,将所有任务改为举重,將所有任務改為舉重
+BodyBuilderTaskOptionAvailable,タスク数を設定,Set Task Numbers,设置任务数量,設置任務數量
+BodyBuilderTaskOption,タスク設定,Task Settings,任务设置,任務設置
+BodyBuilderButtonText,ポーズ,Pose,摆姿势,擺姿勢
+BodyBuilderButtonName,ポーズボタン,Pose Button,摆姿势按钮,擺姿勢按鈕

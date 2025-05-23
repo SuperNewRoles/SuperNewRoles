@@ -428,6 +428,36 @@ public class EndGameManagerSetUpPatch
                 playerObj.transform.localScale *= roleInfo.additionalSize;
                 playerObj.cosmetics.nameTextContainer.transform.localScale /= roleInfo.additionalSize;
 
+                // BodyBuilderのポージング表示
+                if (roleInfo.RoleId == RoleId.BodyBuilder && roleInfo.TasksCompleted == roleInfo.TasksTotal)
+                {
+                    var posingId = (byte)UnityEngine.Random.Range(1, 6); // ランダムなポーズ
+                    var prefab = AssetManager.GetAsset<GameObject>($"BodyBuilderAnim0{posingId}.prefab");
+                    if (prefab != null)
+                    {
+                        var pose = UnityEngine.Object.Instantiate(prefab, playerObj.transform);
+                        pose.gameObject.transform.position = playerObj.transform.position;
+                        pose.transform.localPosition = new Vector3(0f, 1f, 0f);
+                        pose.transform.localScale *= 1.5f;
+
+                        // プレイヤーを非表示にする
+                        playerObj.cosmetics.gameObject.SetActive(false);
+                        if (playerObj.cosmetics.currentBodySprite?.BodySprite != null)
+                            playerObj.cosmetics.currentBodySprite.BodySprite.gameObject.SetActive(false);
+
+                        // ポーズのスプライトレンダラーを設定
+                        var spriteRenderer = pose.GetComponent<SpriteRenderer>();
+                        if (spriteRenderer != null)
+                        {
+                            spriteRenderer.sharedMaterial = FastDestroyableSingleton<HatManager>.Instance.PlayerMaterial;
+                            spriteRenderer.maskInteraction = SpriteMaskInteraction.None;
+                            PlayerMaterial.SetMaskLayerBasedOnLocalPlayer(spriteRenderer, false);
+                            PlayerMaterial.SetColors(roleInfo.ColorId, spriteRenderer);
+                            spriteRenderer.color = new Color(1f, 1f, 1f, roleInfo.Status != FinalStatus.Alive ? 0.5f : 1f);
+                        }
+                    }
+                }
+
                 if (roleInfo.ModifierRoleId.HasFlag(ModifierRoleId.JumboModifier))
                 {
                     playerObj.transform.localPosition += new Vector3(0, 0.7f, 0f);

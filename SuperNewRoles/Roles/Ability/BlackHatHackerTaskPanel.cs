@@ -107,7 +107,6 @@ public static class BlackHatHackerHudManagerPatch
     [HarmonyPatch(nameof(HudManager.Update)), HarmonyPostfix]
     public static void UpdatePostfix(HudManager __instance)
     {
-        Logger.Info("HudUpdate");
         if (ChangeTab == null) return;
 
         // ゲーム開始前や特定の状況での安全チェック
@@ -145,20 +144,12 @@ public static class BlackHatHackerHudManagerPatch
 
     private static void UpdateInfectionStatus(HudManager __instance)
     {
-        Logger.Info("UpdateInfectionStatus");
         // 安全チェック
         if (PlayerControl.LocalPlayer == null || ExPlayerControl.LocalPlayer == null) return;
         if (BlackHatHacker.Instance?.Role == null) return;
         if (PlayerControl.LocalPlayer.Data == null) return;
 
-        var roleTask = PlayerControl.LocalPlayer.transform?.Find("RoleTask")?.GetComponent<ImportantTextTask>();
-        Logger.Info("UpdateInfectionStatus2");
-        if (roleTask == null) return;
-        Logger.Info("UpdateInfectionStatus3");
-
-        StringBuilder text = new(roleTask.Text);
-        text.AppendLine();
-
+        StringBuilder text = new();
         if (!PlayerControl.LocalPlayer.Data.IsDead)
         {
             var ability = BlackHatHackerAbility.LocalInstance;

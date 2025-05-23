@@ -90,6 +90,7 @@ public enum RoleId : short
     PartTimer,
     NiceMechanic,
     EvilMechanic,
+    BodyBuilder,
 }
 
 public enum GhostRoleId : short

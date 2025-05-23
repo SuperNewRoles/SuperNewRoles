@@ -14,6 +14,7 @@ using SuperNewRoles.Modules;
 using SuperNewRoles.Roles.Ability;
 using TMPro;
 using UnityEngine;
+using UnityEngine.Audio;
 using UnityEngine.Networking;
 
 namespace SuperNewRoles;
@@ -546,5 +547,20 @@ public static class ModHelpers
                 player.cosmetics.nameText.enabled = true; // 少しでも姿を見られるなら, プレイヤー名を表示する。
         }
         catch { }
+    }
+    public static AudioSource PlaySound(Transform parent, AudioClip clip, bool loop, float volume = 1f, AudioMixerGroup audioMixer = null)
+    {
+        if (audioMixer == null)
+        {
+            audioMixer = (loop ? SoundManager.Instance.MusicChannel : SoundManager.Instance.SfxChannel);
+        }
+        AudioSource value = parent.GetComponent<AudioSource>() ?? parent.gameObject.AddComponent<AudioSource>();
+        value.outputAudioMixerGroup = audioMixer;
+        value.playOnAwake = false;
+        value.volume = volume;
+        value.loop = loop;
+        value.clip = clip;
+        value.Play();
+        return value;
     }
 }
