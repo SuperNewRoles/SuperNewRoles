@@ -20,6 +20,10 @@ Key,English,Japanese,SChinese,TChinese
 # 半形逗號「,」不得使用，只能用作分隔符號。
 # 作為代替請使用全形逗號「，」。
 
+# Popup
+SNR2PopupTitle,New SuperNewRoles is here!,新しいSuperNewRolesはすぐそこに,全新的SuperNewRoles近在咫尺,全新的SuperNewRoles近在咫尺
+SNR2PopupText,More user-friendly UI，high performance，custom cosmetics，and more.\nUpdate now to experience SuperNewRoles2.\nFor more details，see the <link=https://supernewroles.com/v3.0.0.0>Release Notes</link>.,より使いやすいUI、高いパフォーマンス、カスタムコスメティックスなど。\n今すぐアップデートしてSuperNewRoles2を体験しよう。\n詳細は<link=https://supernewroles.com/v3.0.0.0>リリースノート</link>をご覧ください。,更易用的 UI、更高的性能、定制化妆品等。\n立即更新，体验 SuperNewRoles2。\n欲了解详情，请查看 <link=https://supernewroles.com/v3.0.0.0>发行说明</link>。,更易用的 UI、更高的效能、自訂化妝品等。\n立即更新，體驗 SuperNewRoles2。\n詳細資訊請參閱 <link=https://supernewroles.com/v3.0.0.0>發行說明</link>。
+
 # Main
 rolemodname,SuperNewRoles,SuperNewRoles,SuperNewRoles,SuperNewRoles
 StartLogText,Create By ykundesu\nThank You Play SuperNewRoles,作成:ykundesu\nSuperNewRolesをプレイしてくれてありがとうございます!!!!,模组作者：ykundesu\n感谢游玩本模组！,模組作者：ykundesu\n感謝您遊玩本模組！
@@ -2206,3 +2210,8 @@ QuoteModTheOtherRoles,<color=#ff351f>The Other Roles</color>,<color=#ff351f>The 
 QuoteModTheOtherRolesGM,<color=#ff351f>The Other Roles GM</color>,<color=#ff351f>The Other Roles GM</color>,<color=#ff351f>超多职业GM版</color>,<color=#ff351f>The Other Roles GM</color>
 QuoteModTheOtherRolesGMH,<color=#ff351f>The Other Roles GM H</color>,<color=#ff351f>The Other Roles GM H</color>,<color=#ff351f>超多职业GMH版</color>,<color=#ff351f>The Other Roles GM H</color>
 QuoteModTownOfUsR,<color=#00ff00>Town Of UsR</color>,<color=#00ff00>Town Of UsR</color>,<color=#00ff00>职业小镇重制版</color>,<color=#00ff00>Town Of UsR</color>
+# Update Progress
+UpdateProgressTitle,Update Progress,アップデート進行状況,更新进度,更新進度
+UpdatingInProgress,Updating...\nPlease wait,アップデート中です...\nお待ちください,更新中... 请稍候,更新中... 請稍候
+UpdateCompleteRestartRequired,Update complete!\nPlease restart the game.,アップデート完了！\nゲームを再起動してください。,更新完成！请重启游戏。,更新完成！請重新啟動遊戲。
+UpdateFailed,Update failed!\nPlease try again.,アップデートに失敗しました。\n再度お試しください。,更新失败！请重试。,更新失敗！請重試。
