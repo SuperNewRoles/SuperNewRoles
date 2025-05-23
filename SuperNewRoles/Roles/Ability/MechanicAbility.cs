@@ -35,6 +35,7 @@ public class MechanicAbility : VentTargetCustomButtonBase, IAbilityCount, IButto
     };
 
     public float EffectDuration => durationTime;
+    public bool effectCancellable => true;
 
     public float EffectTimer { get; set; }
     private Vector3 moveableVentPosition;
@@ -83,6 +84,9 @@ public class MechanicAbility : VentTargetCustomButtonBase, IAbilityCount, IButto
     {
         base.DetachToAlls();
         _onPlayerPhysicsFixedUpdateEvent?.RemoveListener();
+        if (currentVent != null)
+            SetVentStatus(Player, currentVent, false, moveableVentPosition);
+        ModHelpers.SetOpacity(Player, 1f, false);
     }
 
     private void OnMeetingStart(MeetingStartEventData data)
@@ -97,6 +101,7 @@ public class MechanicAbility : VentTargetCustomButtonBase, IAbilityCount, IButto
     private void OnPlayerPhysicsFixedUpdate(PlayerPhysicsFixedUpdateEventData data)
     {
         if (data.Instance.myPlayer != Player) return;
+        if (data.Instance.myPlayer.Data.IsDead) return;
         if (currentVent != null)
         {
             // プレイヤーの位置にベントを移動

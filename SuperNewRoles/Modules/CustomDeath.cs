@@ -124,6 +124,11 @@ public static class CustomDeathExtensions
                 player.Player.MurderPlayer(player.Player, MurderResultFlags.Succeeded);
                 FinalStatusManager.SetFinalStatus(player, FinalStatus.VampireWithDead);
                 break;
+            case CustomDeathType.PenguinAfterMeeting:
+                player.Player.Exiled();
+                MurderEvent.Invoke(source, player, MurderResultFlags.Succeeded);
+                FinalStatusManager.SetFinalStatus(player, FinalStatus.Kill);
+                break;
             default:
                 throw new Exception($"Invalid death type: {deathType}");
         }
@@ -160,4 +165,5 @@ public enum CustomDeathType
     VampireKill,
     VampireWithDead,
     KilLWithoutDeadbodyAndTeleport,
+    PenguinAfterMeeting,
 }

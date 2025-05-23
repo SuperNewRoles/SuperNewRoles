@@ -42,7 +42,8 @@ class SelfBomber : RoleBase<SelfBomber>
         var obj = GameObject.Instantiate(AssetManager.GetAsset<GameObject>("SelfBomberEffect"), player.transform);
         obj.AddComponent<DestroyOnAnimationEndObject>();
         obj.transform.localPosition = new(0, 0, -0.5f);
-        obj.transform.localScale = Vector3.oneVector * 0.8f;
+        float size = 1.4f;
+        obj.transform.localScale = player.MyPhysics.FlipX ? new Vector3(-size, size, size) : Vector3.one * size;
         player.CustomDeath(CustomDeathType.SelfBomb, source: player);
     }
 

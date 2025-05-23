@@ -10,6 +10,7 @@ using System.Text;
 using System.Threading.Tasks;
 using BepInEx.Unity.IL2CPP.Utils.Collections;
 using Hazel;
+using SuperNewRoles.CustomCosmetics.CosmeticsPlayer;
 using SuperNewRoles.Modules;
 using SuperNewRoles.Roles.Ability;
 using TMPro;
@@ -536,6 +537,14 @@ public static class ModHelpers
             if (player.cosmetics.visor != null)
                 player.cosmetics.visor.Image.color = color;
 
+            CustomCosmeticsLayer layer = CustomCosmeticsLayers.ExistsOrInitialize(player.cosmetics);
+            if (layer != null)
+            {
+                layer.hat1.SpriteColor = color;
+                layer.hat2.SpriteColor = color;
+                layer.visor1.Image.color = color;
+                layer.visor2.Image.color = color;
+            }
             if (player.cosmetics.colorBlindText != null && opacity < 0.1f) // 完全に透明化している場合のみ, 色覚補助テキストを非表示にする。
                 player.cosmetics.colorBlindText.color = Palette.ClearWhite;
             else if (player.cosmetics.colorBlindText != null)

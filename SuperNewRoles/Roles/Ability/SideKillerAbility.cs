@@ -31,9 +31,9 @@ public class SideKillerAbility : AbilityBase
         _data = data;
     }
 
-    public override void Attach(PlayerControl player, ulong abilityId, AbilityParentBase parent)
+    public override void AttachToAlls()
     {
-        base.Attach(player, abilityId, parent);
+        base.AttachToAlls();
 
         _killAbility = new CustomKillButtonAbility(
             () => true,
@@ -67,11 +67,9 @@ public class SideKillerAbility : AbilityBase
             () => true
         );
 
-        ExPlayerControl exPlayer = (ExPlayerControl)player;
-        AbilityParentAbility parentAbility = new(this);
-        exPlayer.AttachAbility(_killAbility, parentAbility);
-        exPlayer.AttachAbility(_sidekickAbility, parentAbility);
-        exPlayer.AttachAbility(_knowOtherAbility, parentAbility);
+        Player.AttachAbility(_killAbility, new AbilityParentAbility(this));
+        Player.AttachAbility(_sidekickAbility, new AbilityParentAbility(this));
+        Player.AttachAbility(_knowOtherAbility, new AbilityParentAbility(this));
 
         if (Player.AmOwner)
         {
