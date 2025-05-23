@@ -845,6 +845,9 @@ GodCannotFixReactor,リアクターとO2を直せない,Cannot fix reactor,无�
 GodCannotFixComms,コミュサボを直せない,Cannot fix comms,无法修复通讯,無法修復通訊
 GodCannotFixLights,停電を直せない,Cannot fix lights,无法修复停电,無法修復停電
 GodCannotUseReportButton,死体を通報できない,Cannot report dead bodies,无法通報死體,無法通報死體
+GodCannotUseEmergencyButton,緊急ボタンを押せない,Cannot use emergency button,无法使用紧急按钮,無法使用緊急按鈕
+GodCannotUseEmergencyButtonText,神は緊急ボタンを押せません,God cannot use emergency button,神无法使用紧急按钮,神無法使用緊急按鈕
+
 # ModifierGuesser
 ModifierGuesserCategory,ゲッサー,Guesser
 ModifierGuesserMaxImpostors,最大インポスター数,Max Impostors
@@ -1042,6 +1045,7 @@ BlackHatHackerWin,ブラックハットハッカーの勝利,Black Hat Hacker Wi
 PartTimerDescription,バイトするなら…！,If you want a part-time job...!,打工的话...!,打工的話...!
 PartTimerDeathTurn,無職で死亡までのターン数,Turns until death when unemployed,无工作时死亡倒计时回合,無工作時死亡倒計時回合
 PartTimerInitialCooldown,初期クールタイム,Initial Cooldown,初期冷却时间,初期冷卻時間
+PartTimerFinalCooldown,最終クールタイム,Final Cooldown,最终冷却时间,最終冷卻時間
 artTimerFinalCooldown,最終クールタイム,Final Cooldown,最终冷却时间,最終冷卻時間
 PartTimerCanSeeTargetRole,雇用主の役職を見る,See employer's role,查看雇主角色,查看雇主角色
 PartTimerNeedAliveToWin,勝利に生存が必要,Need alive to win,胜利需要存活,勝利需要存活

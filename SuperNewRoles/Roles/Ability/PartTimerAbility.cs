@@ -16,7 +16,7 @@ public class PartTimerAbility : TargetCustomButtonBase
     public PartTimerData _data { get; private set; }
     private int _deathTurn;
     public ExPlayerControl _employer { get; private set; }
-    private bool _isEmployed => _employer != null && _employer.IsAlive();
+    private bool _isEmployed => _employer != null;
 
     private EventListener<WrapUpEventData> _wrapUpListener;
     private EventListener<NameTextUpdateEventData> _nameTextUpdateListener;
@@ -64,6 +64,7 @@ public class PartTimerAbility : TargetCustomButtonBase
     private void OnNameTextUpdateVisiable(NameTextUpdateVisiableEventData data)
     {
         if (!_isEmployed) return;
+        if (!_data.canSeeTargetRole) return;
         if (data.Player == _employer)
             NameText.UpdateVisiable(data.Player, true);
     }
@@ -124,7 +125,7 @@ public class PartTimerAbility : TargetCustomButtonBase
             if (_deathTurn <= 0)
             {
                 // 自殺する
-                ExPlayerControl.LocalPlayer.RpcCustomDeath(CustomDeathType.Suicide);
+                ExPlayerControl.LocalPlayer.RpcCustomDeath(CustomDeathType.SuicideSecrets);
                 return;
             }
         }
@@ -151,9 +152,7 @@ public class PartTimerAbility : TargetCustomButtonBase
             {
                 NameText.SetNameTextColor(data.Player, Color.green);
                 var partTimerSymbol = ModHelpers.Cs(new Color(0, 1, 0, 1), "■");
-                data.Player.PlayerInfoText.text += partTimerSymbol;
-                if (data.Player.MeetingInfoText != null)
-                    data.Player.MeetingInfoText.text += partTimerSymbol;
+                NameText.AddNameText(data.Player, partTimerSymbol);
             }
         }
     }

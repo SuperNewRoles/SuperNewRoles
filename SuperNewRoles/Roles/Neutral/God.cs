@@ -18,7 +18,8 @@ class God : RoleBase<God>
         () => new KnowVoteAbility(() => !GodSeeVote),
         () => new CustomTaskAbility(() => (GodNeededTask, false, GodTaskOption.Total), GodNeededTask ? GodTaskOption : null),
         () => new SabotageCanUseAbility(() => sabotageCantUse()),
-        () => new CanUseReportButtonAbility(() => !GodCannotUseReportButton)
+        () => new CanUseReportButtonAbility(() => !GodCannotUseReportButton),
+        () => new CanUseEmergencyButtonAbility(() => !GodCannotUseEmergencyButton, () => ModTranslation.GetString("GodCannotUseEmergencyButtonText"))
     ];
 
     public override QuoteMod QuoteMod { get; } = QuoteMod.SuperNewRoles;
@@ -46,7 +47,8 @@ class God : RoleBase<God>
     public static bool GodCannotFixLights;
     [CustomOptionBool("GodCannotUseReportButton", true)]
     public static bool GodCannotUseReportButton;
-
+    [CustomOptionBool("GodCannotUseEmergencyButton", true)]
+    public static bool GodCannotUseEmergencyButton;
 
     private static SabotageType sabotageCantUse()
     {

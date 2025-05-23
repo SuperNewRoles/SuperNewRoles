@@ -11,6 +11,7 @@ using SuperNewRoles.Modules.Events.Bases;
 using SuperNewRoles.Roles;
 using SuperNewRoles.Roles.Ability;
 using SuperNewRoles.Roles.Ability.CustomButton;
+using SuperNewRoles.Roles.Neutral;
 using UnityEngine;
 
 namespace SuperNewRoles.Patches;
@@ -190,7 +191,7 @@ public static class IntroCutscenePatch
         }
         else if (ExPlayerControl.LocalPlayer.IsFriendRoles())
         {
-            color = Palette.CrewmateBlue;
+            color = Jackal.Instance.RoleColor;
             TeamTitle = ModTranslation.GetString("JackalFriends");
             ImpostorText = ModTranslation.GetString("FriendSubIntro");
         }

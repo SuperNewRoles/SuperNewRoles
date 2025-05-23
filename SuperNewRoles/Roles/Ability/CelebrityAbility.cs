@@ -115,7 +115,6 @@ public class AlwaysCelebrityAbility : AbilityBase
     }
     private void OnNameTextUpdate(NameTextUpdateEventData data)
     {
-        if (data.Player.Role == RoleId.Celebrity)
-            NameText.SetNameTextColor(data.Player, Celebrity.Instance.RoleColor);
+        NameText.SetNameTextColor(data.Player, Celebrity.Instance.RoleColor);
     }
 }

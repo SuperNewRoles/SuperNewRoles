@@ -129,6 +129,10 @@ public static class CustomDeathExtensions
                 MurderEvent.Invoke(source, player, MurderResultFlags.Succeeded);
                 FinalStatusManager.SetFinalStatus(player, FinalStatus.Kill);
                 break;
+            case CustomDeathType.SuicideSecrets:
+                player.Player.Exiled();
+                FinalStatusManager.SetFinalStatus(player, FinalStatus.Suicide);
+                break;
             default:
                 throw new Exception($"Invalid death type: {deathType}");
         }
@@ -166,4 +170,5 @@ public enum CustomDeathType
     VampireWithDead,
     KilLWithoutDeadbodyAndTeleport,
     PenguinAfterMeeting,
+    SuicideSecrets,
 }
