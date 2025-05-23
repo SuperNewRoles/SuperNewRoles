@@ -78,8 +78,13 @@ public class BodyBuilderAbility : CustomButtonBase
 
     public override bool CheckIsAvailable()
     {
+        return true;
+    }
+
+    public override bool CheckHasButton()
+    {
         // 全タスク完了時のみ使用可能
-        return Player.Player.AllTasksCompleted();
+        return Player == ExPlayerControl.LocalPlayer && Player.Player.AllTasksCompleted();
     }
 
     private void UpdatePhysics(PlayerPhysicsFixedUpdateEventData data)
@@ -114,7 +119,7 @@ public class BodyBuilderAbility : CustomButtonBase
         Logger.Info("BodyBuilder ポージング開始3");
 
         // 音を再生
-        var distance = Vector2.Distance(PlayerControl.LocalPlayer.transform.position, Player.NetTransform.transform.position);
+        var distance = Vector2.Distance(PlayerControl.LocalPlayer.transform.position, Player.transform.position);
         var volume = 1 / distance <= 0.25f ? 0f : 1 / distance;
         ShipStatus ship = MapLoader.Fungle;
         var liftWeightsTask = ship.ShortTasks.FirstOrDefault(x => x.TaskType == TaskTypes.LiftWeights);
@@ -139,7 +144,9 @@ public class BodyBuilderAbility : CustomButtonBase
 
         var pos = pose.gameObject.transform.position;
         pos.z -= 0.5f;
+        pos.y += 0.6f;
         pose.gameObject.transform.position = pos;
+        pose.gameObject.transform.localScale = Player.cosmetics.currentBodySprite.BodySprite.transform.localScale;
 
         var spriteRenderer = pose.GetComponent<SpriteRenderer>();
         spriteRenderer.sharedMaterial = FastDestroyableSingleton<HatManager>.Instance.PlayerMaterial;
