@@ -31,6 +31,9 @@ public class BodyBuilderAbility : CustomButtonBase
     private GameObject posingObject;
     private Vector3 lastPosition = Vector3.zero;
 
+    // 初期が0なので
+    public override bool IsFirstCooldownTenSeconds => false;
+
     // ポーズID範囲
     private static readonly IntRange PosingIdRange = new(1, 5);
 
@@ -144,9 +147,9 @@ public class BodyBuilderAbility : CustomButtonBase
 
         var pos = pose.gameObject.transform.position;
         pos.z -= 0.5f;
-        pos.y += 0.6f;
+        pos.y += Player.cosmetics.currentBodySprite.BodySprite.transform.parent.localScale.x == 1 ? 0f : 0.8f;
         pose.gameObject.transform.position = pos;
-        pose.gameObject.transform.localScale = Player.cosmetics.currentBodySprite.BodySprite.transform.localScale;
+        pose.gameObject.transform.localScale = Player.cosmetics.currentBodySprite.BodySprite.transform.parent.localScale;
 
         var spriteRenderer = pose.GetComponent<SpriteRenderer>();
         spriteRenderer.sharedMaterial = FastDestroyableSingleton<HatManager>.Instance.PlayerMaterial;
