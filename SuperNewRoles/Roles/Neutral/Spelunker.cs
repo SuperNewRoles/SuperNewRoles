@@ -55,6 +55,9 @@ class Spelunker : RoleBase<Spelunker>
 
     [CustomOptionInt("SpelunkerLadderDeathChance", 0, 100, 5, 20, translationName: "LadderDeadChance")]
     public static int SpelunkerLadderDeathChance;
+
+    [CustomOptionBool("SpelunkerIsAdditionalWin", false, translationName: "AdditionalWin")]
+    public static bool SpelunkerIsAdditionalWin;
 }
 
 public record SpelunkerData(
@@ -70,7 +73,6 @@ public class SpelunkerAbility : AbilityBase
     public SpelunkerData Data { get; set; }
 
     private EventListener _fixedUpdateListener;
-    private EventListener<MurderEventData> _murderListener;
     private EventListener<ExileEventData> _exileListener;
     private EventListener<UsePlatformEventData> _usePlatformListener;
     private EventListener<DoorConsoleUseEventData> _doorConsoleUseListener;
@@ -92,7 +94,6 @@ public class SpelunkerAbility : AbilityBase
     {
         base.AttachToLocalPlayer();
         _fixedUpdateListener = FixedUpdateEvent.Instance.AddListener(OnFixedUpdate);
-        _murderListener = MurderEvent.Instance.AddListener(OnMurder);
         _exileListener = ExileEvent.Instance.AddListener(OnExile);
         _usePlatformListener = UsePlatformEvent.Instance.AddListener(OnUsePlatform);
         _doorConsoleUseListener = DoorConsoleUseEvent.Instance.AddListener(OnDoorConsoleUse);
@@ -101,7 +102,6 @@ public class SpelunkerAbility : AbilityBase
     public override void DetachToLocalPlayer()
     {
         _fixedUpdateListener?.RemoveListener();
-        _murderListener?.RemoveListener();
         _exileListener?.RemoveListener();
         _usePlatformListener?.RemoveListener();
         _doorConsoleUseListener?.RemoveListener();
@@ -184,12 +184,6 @@ public class SpelunkerAbility : AbilityBase
         {
             _commsOrLightdownTime = Data.CommsOrLightdownDeathTime;
         }
-    }
-
-    private void OnMurder(MurderEventData data)
-    {
-        // 他のロールに変更されると死ぬ (CheckSetRole equivalent)
-        // このロジックは別途 RoleChangeEvent で実装する必要がある
     }
 
     private void OnExile(ExileEventData data)

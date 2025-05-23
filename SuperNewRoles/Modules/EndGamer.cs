@@ -135,6 +135,20 @@ public static class EndGamer
                 }
             }
         }
+        if (!Spelunker.SpelunkerIsAdditionalWin)
+        {
+            foreach (ExPlayerControl player in ExPlayerControl.ExPlayerControls)
+            {
+                if (player.Role == RoleId.Spelunker && player.IsAlive())
+                {
+                    reason = (GameOverReason)CustomGameOverReason.SpelunkerWin;
+                    winners = [player];
+                    color = Spelunker.Instance.RoleColor;
+                    upperText = "Spelunker";
+                    winType = WinType.Hijackers;
+                }
+            }
+        }
     }
     private static void UpdateAdditionalWinners(GameOverReason reason, HashSet<ExPlayerControl> nowWinners, out HashSet<ExPlayerControl> winners, bool cantWinSixAdditionalWinners)
     {
@@ -161,6 +175,10 @@ public static class EndGamer
                             winners.Add(player);
                         break;
                     case RoleId.Tuna when !Tuna.EnableTunaSoloWin:
+                        if (player.IsAlive())
+                            winners.Add(player);
+                        break;
+                    case RoleId.Spelunker when Spelunker.SpelunkerIsAdditionalWin:
                         if (player.IsAlive())
                             winners.Add(player);
                         break;

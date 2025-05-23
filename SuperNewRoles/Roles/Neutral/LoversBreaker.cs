@@ -88,7 +88,7 @@ public class LoversBreakerAbility : TargetCustomButtonBase
 
     public override bool CheckIsAvailable()
     {
-        return TargetIsExist && PlayerControl.LocalPlayer.CanMove && ExPlayerControl.LocalPlayer.IsDead();
+        return TargetIsExist && PlayerControl.LocalPlayer.CanMove && ExPlayerControl.LocalPlayer.IsAlive();
     }
 
     private int checkCounter = 0;

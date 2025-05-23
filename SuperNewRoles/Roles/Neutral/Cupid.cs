@@ -113,10 +113,10 @@ public class CupidAbility : AbilityBase
         if (Player.IsDead()) return;
         if (createLoversAbility.CreatedCouple != null)
         {
-            if (Lovers1 != data.Player.PlayerId && Lovers2 != data.Player.PlayerId) return;
+            if (!createLoversAbility.CreatedCouple.lovers.Any(x => x.Player.PlayerId == data.Player.PlayerId)) return;
             if (!data.Player.IsLovers()) return;
             if (data.Player.cosmetics.nameText.text.Contains("♥")) return;
-            data.Player.cosmetics.nameText.text += ModHelpers.Cs(Lovers.Instance.RoleColor, "♥");
+            NameText.AddNameText(data.Player, ModHelpers.Cs(Lovers.Instance.RoleColor, "♥"));
         }
         // まだ作ってないけど1人に刺してたら中抜きハートを付ける
         else if (createLoversAbility.CurrentTarget != null)

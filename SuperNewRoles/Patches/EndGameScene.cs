@@ -58,6 +58,7 @@ public enum CustomGameOverReason
     LoversBreakerWin,
     OwlWin,
     BlackHatHackerWin,
+    SpelunkerWin,
 }
 
 static class AdditionalTempData
