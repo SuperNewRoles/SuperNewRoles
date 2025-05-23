@@ -16,7 +16,8 @@ class ModifierSpelunker : ModifierBase<ModifierSpelunker>
     public override List<Func<AbilityBase>> Abilities => [
         () => new SpelunkerAbility(new SpelunkerData(
             VentDeathChance: ModifierSpelunkerVentDeathChance,
-            CommsOrLightdownDeathTime: ModifierSpelunkerIsDeathCommsOrPowerdown ? ModifierSpelunkerDeathCommsOrPowerdownTime : -1f,
+            CommsDeathTime: ModifierSpelunkerIsDeathCommsOrPowerdown ? ModifierSpelunkerDeathCommsTime : -1f,
+            PowerdownDeathTime: ModifierSpelunkerIsDeathCommsOrPowerdown ? ModifierSpelunkerDeathPowerdownTime : -1f,
             LiftDeathChance: ModifierSpelunkerLiftDeathChance,
             DoorOpenChance: ModifierSpelunkerDoorOpenChance,
             LadderDeathChance: ModifierSpelunkerLadderDeathChance
@@ -59,14 +60,17 @@ class ModifierSpelunker : ModifierBase<ModifierSpelunker>
     [CustomOptionInt("ModifierSpelunkerCrewmateChance", 5, 100, 5, 100, translationName: "ModifierSpelunkerCrewmateChance", parentFieldName: nameof(ModifierSpelunkerCategory))]
     public static int ModifierSpelunkerCrewmateChance = 100;
 */
-    [CustomOptionInt("ModifierSpelunkerVentDeathChance", 0, 100, 5, 20, translationName: "SpelunkerVentDeathChance")]
-    public static int ModifierSpelunkerVentDeathChance = 20;
 
     [CustomOptionBool("ModifierSpelunkerIsDeathCommsOrPowerdown", true, translationName: "SpelunkerIsDeathCommsOrPowerdown")]
     public static bool ModifierSpelunkerIsDeathCommsOrPowerdown = true;
 
-    [CustomOptionFloat("ModifierSpelunkerDeathCommsOrPowerdownTime", 5f, 120f, 2.5f, 20f, translationName: "SpelunkerDeathCommsOrPowerdownTime", parentFieldName: nameof(ModifierSpelunkerIsDeathCommsOrPowerdown))]
-    public static float ModifierSpelunkerDeathCommsOrPowerdownTime = 20f;
+    [CustomOptionFloat("ModifierSpelunkerDeathCommsTime", 5f, 120f, 2.5f, 20f, translationName: "SpelunkerDeathCommsTime", parentFieldName: nameof(ModifierSpelunkerIsDeathCommsOrPowerdown))]
+    public static float ModifierSpelunkerDeathCommsTime = 20f;
+
+    [CustomOptionFloat("ModifierSpelunkerDeathPowerdownTime", 5f, 120f, 2.5f, 20f, translationName: "SpelunkerDeathPowerdownTime", parentFieldName: nameof(ModifierSpelunkerIsDeathCommsOrPowerdown))]
+    public static float ModifierSpelunkerDeathPowerdownTime = 20f;
+    [CustomOptionInt("ModifierSpelunkerVentDeathChance", 0, 100, 5, 20, translationName: "SpelunkerVentDeathChance")]
+    public static int ModifierSpelunkerVentDeathChance = 20;
 
     [CustomOptionInt("ModifierSpelunkerLiftDeathChance", 0, 100, 5, 20, translationName: "SpelunkerLiftDeathChance")]
     public static int ModifierSpelunkerLiftDeathChance = 20;

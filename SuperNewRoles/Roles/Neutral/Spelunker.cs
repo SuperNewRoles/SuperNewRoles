@@ -20,7 +20,8 @@ class Spelunker : RoleBase<Spelunker>
     public override List<Func<AbilityBase>> Abilities { get; } = [
         () => new SpelunkerAbility(new SpelunkerData(
             VentDeathChance: SpelunkerVentDeathChance,
-            CommsOrLightdownDeathTime: SpelunkerIsDeathCommsOrPowerdown ? SpelunkerDeathCommsOrPowerdownTime : -1f,
+            CommsDeathTime: SpelunkerIsDeathCommsOrPowerdown ? SpelunkerDeathCommsTime : -1f,
+            PowerdownDeathTime: SpelunkerIsDeathCommsOrPowerdown ? SpelunkerDeathPowerdownTime : -1f,
             LiftDeathChance: SpelunkerLiftDeathChance,
             DoorOpenChance: SpelunkerDoorOpenChance,
             LadderDeathChance: SpelunkerLadderDeathChance
@@ -38,14 +39,17 @@ class Spelunker : RoleBase<Spelunker>
     public override RoleTag[] RoleTags { get; } = [];
     public override RoleOptionMenuType OptionTeam { get; } = RoleOptionMenuType.Neutral;
 
-    [CustomOptionInt("SpelunkerVentDeathChance", 0, 100, 5, 20, translationName: "SpelunkerVentDeathChance")]
-    public static int SpelunkerVentDeathChance;
-
     [CustomOptionBool("SpelunkerIsDeathCommsOrPowerdown", true, translationName: "SpelunkerIsDeathCommsOrPowerdown")]
     public static bool SpelunkerIsDeathCommsOrPowerdown;
 
-    [CustomOptionFloat("SpelunkerDeathCommsOrPowerdownTime", 5f, 120f, 2.5f, 20f, translationName: "SpelunkerDeathCommsOrPowerdownTime", parentFieldName: nameof(SpelunkerIsDeathCommsOrPowerdown))]
-    public static float SpelunkerDeathCommsOrPowerdownTime;
+    [CustomOptionFloat("SpelunkerDeathCommsTime", 5f, 120f, 2.5f, 20f, parentFieldName: nameof(SpelunkerIsDeathCommsOrPowerdown))]
+    public static float SpelunkerDeathCommsTime;
+
+    [CustomOptionFloat("SpelunkerDeathPowerdownTime", 5f, 120f, 2.5f, 20f, parentFieldName: nameof(SpelunkerIsDeathCommsOrPowerdown))]
+    public static float SpelunkerDeathPowerdownTime;
+
+    [CustomOptionInt("SpelunkerVentDeathChance", 0, 100, 5, 20, translationName: "SpelunkerVentDeathChance")]
+    public static int SpelunkerVentDeathChance;
 
     [CustomOptionInt("SpelunkerLiftDeathChance", 0, 100, 5, 20, translationName: "SpelunkerLiftDeathChance")]
     public static int SpelunkerLiftDeathChance;
@@ -62,7 +66,8 @@ class Spelunker : RoleBase<Spelunker>
 
 public record SpelunkerData(
     int VentDeathChance,
-    float CommsOrLightdownDeathTime,
+    float CommsDeathTime,
+    float PowerdownDeathTime,
     int LiftDeathChance,
     int DoorOpenChance,
     int LadderDeathChance
@@ -79,15 +84,15 @@ public class SpelunkerAbility : AbilityBase
 
     // Spelunker specific variables
     private bool _isVentChecked;
-    private float _commsOrLightdownTime;
+    private float _commsDeathTimer;
+    private float _powerdownDeathTimer;
     private Vector2? _deathPosition;
-
-    private const float VentDistance = 0.35f;
 
     public SpelunkerAbility(SpelunkerData data)
     {
         Data = data;
-        _commsOrLightdownTime = data.CommsOrLightdownDeathTime;
+        _commsDeathTimer = data.CommsDeathTime;
+        _powerdownDeathTimer = data.PowerdownDeathTime;
     }
 
     public override void AttachToLocalPlayer()
@@ -119,9 +124,13 @@ public class SpelunkerAbility : AbilityBase
         }
 
         // コミュと停電の不安死
-        if (Data.CommsOrLightdownDeathTime != -1)
+        if (Data.CommsDeathTime != -1)
         {
-            CheckCommsOrLightdownDeath();
+            CheckCommsDeath();
+        }
+        if (Data.PowerdownDeathTime != -1)
+        {
+            CheckPowerdownDeath();
         }
 
         // 転落死判定
@@ -142,7 +151,7 @@ public class SpelunkerAbility : AbilityBase
         {
             foreach (var vent in ShipStatus.Instance.AllVents)
             {
-                if (Vector2.Distance(vent.transform.position + new Vector3(0, 0.15f, 0), ExPlayerControl.LocalPlayer.transform.position) < VentDistance)
+                if (Vector2.Distance(vent.transform.position, ExPlayerControl.LocalPlayer.transform.position) < vent.UsableDistance)
                 {
                     currentVent = vent;
                     nearVent = true;
@@ -169,12 +178,12 @@ public class SpelunkerAbility : AbilityBase
         }
     }
 
-    private void CheckCommsOrLightdownDeath()
+    private void CheckCommsDeath()
     {
-        if (ModHelpers.IsComms() || ModHelpers.IsElectrical())
+        if (ModHelpers.IsComms())
         {
-            _commsOrLightdownTime -= Time.fixedDeltaTime;
-            if (_commsOrLightdownTime <= 0)
+            _commsDeathTimer -= Time.fixedDeltaTime;
+            if (_commsDeathTimer <= 0)
             {
                 ExPlayerControl.LocalPlayer.RpcCustomDeath(CustomDeathType.Suicide);
                 FinalStatusManager.RpcSetFinalStatus(ExPlayerControl.LocalPlayer, FinalStatus.SpelunkerCommsElecDeath);
@@ -182,10 +191,26 @@ public class SpelunkerAbility : AbilityBase
         }
         else
         {
-            _commsOrLightdownTime = Data.CommsOrLightdownDeathTime;
+            _commsDeathTimer = Data.CommsDeathTime;
         }
     }
 
+    private void CheckPowerdownDeath()
+    {
+        if (ModHelpers.IsElectrical())
+        {
+            _powerdownDeathTimer -= Time.fixedDeltaTime;
+            if (_powerdownDeathTimer <= 0)
+            {
+                ExPlayerControl.LocalPlayer.RpcCustomDeath(CustomDeathType.Suicide);
+                FinalStatusManager.RpcSetFinalStatus(ExPlayerControl.LocalPlayer, FinalStatus.SpelunkerCommsElecDeath);
+            }
+        }
+        else
+        {
+            _powerdownDeathTimer = Data.PowerdownDeathTime;
+        }
+    }
     private void OnExile(ExileEventData data)
     {
         // 会議終了時のリセット

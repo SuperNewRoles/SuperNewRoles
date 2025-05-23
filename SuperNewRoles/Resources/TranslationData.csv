@@ -1000,12 +1000,13 @@ MatryoshkaButtonText,死体を着る/脱ぐ,Wear/Remove Body,穿戴/脱下尸体
 Amnesiac.RoleChangeNotification,あなたは次の役職になりました: ,You have become the following role: ,你现在的职业变为: ,你現在的職業變為: 
 
 # Spelunker関連
-SpelunkerVentDeathChance,ベント死の確率,Probability of vent death,倒霉蛋在管道口跌倒而死的概率,倒霉鬼在管道口跌倒而死的機率
-LadderDeadChance,転落死する確率,Ladder Death Chance,摔死的概率,摔死的機率
+SpelunkerVentDeathChance,ベント死の確率(%),Probability of vent death,倒霉蛋在管道口跌倒而死的概率,倒霉鬼在管道口跌倒而死的機率
+LadderDeadChance,転落死する確率(%),Ladder Death Chance,摔死的概率,摔死的機率
 SpelunkerIsDeathCommsOrPowerdown,コミュ・停電で死ぬ,Death from Communications/Power Down,通信或断电时死亡,通信或斷電時死亡
-SpelunkerDeathCommsOrPowerdownTime,コミュ・停電死の時間,Time to death from Communications/Power Down,通信或断电死亡时间,通信或斷電死亡時間
-SpelunkerLiftDeathChance,昇降機死の確率,Elevator Death Chance,电梯死亡概率,電梯死亡機率
-SpelunkerDoorOpenChance,ドア開放死の確率,Door Opening Death Chance,开门死亡概率,開門死亡機率
+SpelunkerDeathCommsTime,コミュの時間(秒),Time to death from Communications (seconds),通信死亡时间(秒),通信死亡時間(秒)
+SpelunkerDeathPowerdownTime,停電の時間(秒),Time to death from Power Down (seconds),断电死亡时间(秒),斷電死亡時間(秒)
+SpelunkerLiftDeathChance,昇降機死の確率(%),Elevator Death Chance,电梯死亡概率,電梯死亡機率
+SpelunkerDoorOpenChance,ドア開放死の確率(%),Door Opening Death Chance,开门死亡概率,開門死亡機率
 
 # BlackHatHacker
 BlackHatHacker,ブラックハットハッカー,Black Hat Hacker,黑帽客,黑帽駭客
