@@ -75,8 +75,8 @@ public class BlackHatHackerVitalsButton : CustomButtonBase
 {
     private BlackHatHackerAbility _ability;
 
-    public override Sprite Sprite => FastDestroyableSingleton<TranslationController>.Instance.GetImage(ImageNames.VitalsButton);
-    public override string buttonText => ModTranslation.GetString("DoctorVitalName");
+    public override Sprite Sprite => FastDestroyableSingleton<HudManager>.Instance.UseButton.fastUseSettings[ImageNames.VitalsButton].Image;
+    public override string buttonText => ModTranslation.GetString("BlackHatHackerVitalsButtonName");
     protected override KeyType keytype => KeyType.Vent;
     public override float DefaultTimer => 0f;
 

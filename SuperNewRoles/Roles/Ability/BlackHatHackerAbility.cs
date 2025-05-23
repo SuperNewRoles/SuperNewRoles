@@ -19,7 +19,7 @@ public class BlackHatHackerAbility : AbilityBase
     // DevicesPatchからアクセスするための静的プロパティ
     public static BlackHatHackerAbility LocalInstance { get; private set; }
     public BlackHatHackerHackButton HackButton { get; private set; }
-    private PortableAdminAbility AdminAbility { get; set; }
+    public PortableAdminAbility AdminAbility { get; set; }
     private BlackHatHackerVitalsButton VitalsAbility { get; set; }
 
     public BlackHatHackerTaskPanel TaskPanel { get; private set; }
@@ -34,6 +34,7 @@ public class BlackHatHackerAbility : AbilityBase
 
     private EventListener _fixedUpdateEvent;
     private EventListener<WrapUpEventData> _wrapUpEvent;
+    private EventListener<MeetingCloseEventData> _meetingCloseEvent;
 
     public List<byte> SelfPropagationPlayerId
     {
@@ -94,6 +95,7 @@ public class BlackHatHackerAbility : AbilityBase
         // イベントリスナーの登録
         _fixedUpdateEvent = FixedUpdateEvent.Instance.AddListener(OnFixedUpdate);
         _wrapUpEvent = WrapUpEvent.Instance.AddListener(OnWrapUp);
+        _meetingCloseEvent = MeetingCloseEvent.Instance.AddListener(OnMeetingClose);
 
         // ローカルプレイヤーの場合、静的参照を設定
         if (Player.AmOwner)
@@ -115,6 +117,8 @@ public class BlackHatHackerAbility : AbilityBase
             FixedUpdateEvent.Instance.RemoveListener(_fixedUpdateEvent);
         if (_wrapUpEvent != null)
             WrapUpEvent.Instance.RemoveListener(_wrapUpEvent);
+        if (_meetingCloseEvent != null)
+            MeetingCloseEvent.Instance.RemoveListener(_meetingCloseEvent);
 
         // 静的参照をクリア
         if (LocalInstance == this)
@@ -188,18 +192,29 @@ public class BlackHatHackerAbility : AbilityBase
         DeadPlayers = PlayerControl.AllPlayerControls.ToArray()
             .Where(x => x.Data.IsDead)
             .Select(x => x.PlayerId).ToList();
+    }
 
-        if (HackButton.Count <= 0 &&
-            InfectionTimer.All(x => x.Value <= 0 || GameData.Instance.GetPlayerById(x.Key)?.IsDead == true) &&
-            Data.IsNotInfectionIncrease)
+    private void OnMeetingClose(MeetingCloseEventData data)
+    {
+        // 会議終了時に死亡者リストを更新
+        DeadPlayers = PlayerControl.AllPlayerControls.ToArray()
+            .Where(p => p.Data.IsDead)
+            .Select(p => p.PlayerId)
+            .ToList();
+
+        // 感染者がいない場合、かつ設定が有効な場合にハック回数を補充
+        if (Data.IsNotInfectionIncrease &&
+            !InfectionTimer.Any(kvp => kvp.Value >= Data.HackInfectiousTime && !DeadPlayers.Contains(kvp.Key)))
         {
-            HackButton.Count = 1;
+            if (HackButton != null) // HackButtonがnullでないことを確認
+            {
+                HackButton.Count += 1; // 設定されている最大回数に戻す（または1回増やすなど、仕様に応じて変更）
+            }
         }
     }
 
     public bool IsSelfPropagation(float timer)
     {
-        if (Data.StartSelfPropagation == BlackHatHackerSelfPropagationType.Never) return false;
         return timer >= Data.HackInfectiousTime * ((int)Data.StartSelfPropagation / 100f);
     }
 
@@ -207,10 +222,9 @@ public class BlackHatHackerAbility : AbilityBase
     {
         return InfectionTimer.All(x =>
         {
-            var playerInfo = GameData.Instance.GetPlayerById(x.Key);
-            return playerInfo?.IsDead == true ||
-                   playerInfo?.Object?.AmOwner == true ||
-                   x.Value >= Data.HackInfectiousTime;
+            // DeadPlayersリストを使用して生死を判定
+            ExPlayerControl player = ExPlayerControl.ById(x.Key);
+            return player == null || player.AmOwner || player.IsDead() || x.Value >= Data.HackInfectiousTime;
         });
     }
 

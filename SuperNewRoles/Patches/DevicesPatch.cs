@@ -9,6 +9,7 @@ using UnityEngine;
 using Il2CppInterop.Runtime.InteropTypes.Arrays;
 using SuperNewRoles.Roles.Ability;
 using static SuperNewRoles.CustomOptions.Categories.MapSettingOptions;
+using System.Linq;
 
 namespace SuperNewRoles.Patches;
 
@@ -250,7 +251,7 @@ public static class DevicesPatch
 
                                 // BlackHatHackerのフィルター
                                 var blackHatHacker = SuperNewRoles.Roles.Ability.BlackHatHackerAbility.LocalInstance;
-                                if (blackHatHacker != null && blackHatHacker.Data.CanInfectedAdmin &&
+                                if (blackHatHacker != null && blackHatHacker.AdminAbility != null &&
                                     !blackHatHacker.InfectedPlayerId.Contains(component.PlayerId) && !component.AmOwner) continue;
                                 count++;
                                 colors.Add(component.Player.CurrentOutfit.ColorId);
@@ -268,6 +269,18 @@ public static class DevicesPatch
                             Color iconColor = numImpostorIcons-- > 0 ? Palette.ImpostorRed : numDeadIcons-- > 0 ? Color.gray : Color.yellow;
                             material.SetColor(PlayerMaterial.BackColor, iconColor);
                             material.SetColor(PlayerMaterial.BodyColor, iconColor);
+                        }
+                        if (BlackHatHackerAbility.LocalInstance?.AdminAbility != null && DontCountBecausePortableAdmin)
+                        {
+                            foreach (PoolableBehavior icon in counterArea.myIcons)
+                            {
+                                if (colors.Count <= 0) continue;
+                                Material material = icon.GetComponent<SpriteRenderer>().material;
+                                Color iconColor = Palette.PlayerColors[colors.FirstOrDefault()];
+                                material.SetColor(PlayerMaterial.BackColor, iconColor);
+                                material.SetColor(PlayerMaterial.BodyColor, iconColor);
+                                colors.RemoveAt(0);
+                            }
                         }
                     }
                     else Debug.LogWarning($"Couldn't find counter for:{counterArea.RoomType}");

@@ -78,7 +78,6 @@ class BlackHatHacker : RoleBase<BlackHatHacker>
 
 public enum BlackHatHackerSelfPropagationType
 {
-    Never = 0,
     Percent25 = 25,
     Percent50 = 50,
     Percent75 = 75,
