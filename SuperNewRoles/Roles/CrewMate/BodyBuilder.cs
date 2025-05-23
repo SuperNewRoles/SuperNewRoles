@@ -13,7 +13,9 @@ class BodyBuilder : RoleBase<BodyBuilder>
     public override RoleId Role { get; } = RoleId.BodyBuilder;
     public override Color32 RoleColor { get; } = new(214, 143, 94, byte.MaxValue);
     public override List<Func<AbilityBase>> Abilities { get; } = [
-        () => new BodyBuilderAbility(ChangeAllTaskLiftWeights, TaskOptionAvailable ? TaskOption : null),
+        () => new BodyBuilderAbility(),
+        () => new LiftWeightsMinigameAbility(),
+        () => new CustomTaskTypeAbility(TaskTypes.LiftWeights, ChangeAllTaskLiftWeights, MapNames.Airship),
         () => new CustomTaskAbility(
             () => (true, TaskOptionAvailable, TaskOptionAvailable ? TaskOption.Total : null),
             TaskOptionAvailable ? TaskOption : null

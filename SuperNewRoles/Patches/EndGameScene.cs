@@ -429,7 +429,7 @@ public class EndGameManagerSetUpPatch
                 playerObj.cosmetics.nameTextContainer.transform.localScale /= roleInfo.additionalSize;
 
                 // BodyBuilderのポージング表示
-                if (roleInfo.RoleId == RoleId.BodyBuilder && roleInfo.TasksCompleted == roleInfo.TasksTotal)
+                if (roleInfo.RoleId == RoleId.BodyBuilder && roleInfo.TasksCompleted >= roleInfo.TasksTotal)
                 {
                     var posingId = (byte)UnityEngine.Random.Range(1, 6); // ランダムなポーズ
                     var prefab = AssetManager.GetAsset<GameObject>($"BodyBuilderAnim0{posingId}.prefab");

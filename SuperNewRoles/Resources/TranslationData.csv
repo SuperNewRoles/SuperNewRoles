@@ -1064,3 +1064,10 @@ BodyBuilderTaskOptionAvailable,タスク数を設定,Set Task Numbers,设置任�
 BodyBuilderTaskOption,タスク設定,Task Settings,任务设置,任務設置
 BodyBuilderButtonText,ポーズ,Pose,摆姿势,擺姿勢
 BodyBuilderButtonName,ポーズボタン,Pose Button,摆姿势按钮,擺姿勢按鈕
+
+# HamburgerShop
+HamburgerShopName,ハンバーガー屋,Hamburger Shop,汉堡店,漢堡店
+HamburgerShopDescription,<color=#ffa500>ハンバーガー屋</color>は全てのタスクをハンバーガー作りに変更できるクルーメイトです。\nエアシップのハンバーガー作りタスクが全マップで利用可能になります。,<color=#ffa500>Hamburger Shop</color> is a crewmate who can change all tasks to hamburger making.\nThe Airship's hamburger making task becomes available on all maps.,<color=#ffa500>汉堡店</color>是一个可以将所有任务改为制作汉堡的船员。\n飞艇的制作汉堡任务在所有地图上都可用。,<color=#ffa500>漢堡店</color>是一個可以將所有任務改為製作漢堡的船員。\n飛艇的製作漢堡任務在所有地圖上都可用。
+HamburgerShopChangeAllTasksToBurger,全タスクをハンバーガー作りに変更,Change All Tasks to Hamburger Making,将所有任务改为制作汉堡,將所有任務改為製作漢堡
+HamburgerShopTaskOptionAvailable,タスク数を設定,Set Task Numbers,设置任务数量,設置任務數量
+HamburgerShopTaskOption,タスク設定,Task Settings,任务设置,任務設置

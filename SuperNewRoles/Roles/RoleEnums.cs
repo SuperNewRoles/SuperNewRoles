@@ -91,6 +91,7 @@ public enum RoleId : short
     NiceMechanic,
     EvilMechanic,
     BodyBuilder,
+    HamburgerShop,
 }
 
 public enum GhostRoleId : short
