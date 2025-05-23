@@ -123,7 +123,7 @@ public class EvilHackerAbility : AbilityBase
             ShowDoorClosedMarks: () => Data.showDoorInfoOnMap
         ));
 
-        _sidekickButtonAbility = new CustomSidekickButtonAbility(
+        _sidekickButtonAbility = new CustomSidekickButtonAbility(new(
             canCreateSidekick: (created) => Data.canCreateMadmate && !created,
             sidekickCooldown: () => Data.madmateCooldown,
             sidekickRole: () => RoleId.Madmate,
@@ -132,7 +132,7 @@ public class EvilHackerAbility : AbilityBase
             sidekickText: ModTranslation.GetString("CreateMadmateButtonText"),
             sidekickCount: () => 1,
             isTargetable: (player) => !player.IsImpostor()
-        );
+        ));
 
         ((ExPlayerControl)player).AttachAbility(_portableAdminAbility, new AbilityParentAbility(this));
         ((ExPlayerControl)player).AttachAbility(_advancedAdminAbility, new AbilityParentAbility(this));

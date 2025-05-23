@@ -108,7 +108,7 @@ public class VampireAbility : AbilityBase
     public override void AttachToAlls()
     {
         base.AttachToAlls();
-        sidekickButtonAbility = new CustomSidekickButtonAbility(
+        sidekickButtonAbility = new CustomSidekickButtonAbility(new(
             canCreateSidekick: (_) => nightFall.canCreate && !created,
             sidekickCooldown: () => nightFall.cooldown,
             sidekickRole: () => RoleId.VampireDependent,
@@ -121,7 +121,7 @@ public class VampireAbility : AbilityBase
             {
                 new LateTask(() => RpcSetDependent(player), 0.1f, "VampireSetDependent");
             }
-        );
+        ));
         killButtonAbility = new CustomKillButtonAbility(
             canKill: () => true,
             killCooldown: () => kill.killCooldown,

@@ -10,15 +10,15 @@ namespace SuperNewRoles.Roles.Ability;
 
 public class PromoteOnParentDeathAbility : AbilityBase
 {
-    public AbilityParentRole Owner { get; }
+    public AbilityParentAbility Owner { get; }
     public RoleId PromoteRole { get; }
     public RoleTypes PromoteRoleVanilla { get; }
-    public Action OnPromoted { get; set; }
+    public Action<ExPlayerControl> OnPromoted { get; set; } = (player) => { };
 
     private EventListener _fixedUpdateEventListener;
     private bool _hasPromoted = false;
 
-    public PromoteOnParentDeathAbility(AbilityParentRole owner, RoleId promoteRole, RoleTypes promoteRoleVanilla)
+    public PromoteOnParentDeathAbility(AbilityParentAbility owner, RoleId promoteRole, RoleTypes promoteRoleVanilla)
     {
         Owner = owner;
         PromoteRole = promoteRole;
@@ -38,7 +38,7 @@ public class PromoteOnParentDeathAbility : AbilityBase
     private void OnFixedUpdate()
     {
         if (_hasPromoted) return;
-        if (Owner != null && Owner.Player != null && Owner.Player.Role == Owner?.ParentRole?.Role && Owner.Player.IsAlive()) return;
+        if (Owner != null && Owner.Player != null && Owner.Player.IsAlive()) return;
         Promote();
         _hasPromoted = true;
     }
@@ -49,7 +49,8 @@ public class PromoteOnParentDeathAbility : AbilityBase
         if (exPlayer.IsDead()) return;
 
         RpcPromote(exPlayer, PromoteRole, PromoteRoleVanilla);
-        OnPromoted?.Invoke();
+        // Playerはこの時点でnullになってるのでexPlayerを渡す
+        OnPromoted?.Invoke(exPlayer);
     }
     [CustomRPC]
     public static void RpcPromote(ExPlayerControl player, RoleId roleId, RoleTypes roleType)

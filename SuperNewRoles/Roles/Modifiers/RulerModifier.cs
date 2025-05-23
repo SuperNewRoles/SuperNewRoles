@@ -14,7 +14,7 @@ class RulerModifier : ModifierBase<RulerModifier>
 
     public override Color32 RoleColor => new(255, 202, 0, 255);
 
-    public override List<Func<AbilityBase>> Abilities => [() => new CustomSidekickButtonAbility(
+    public override List<Func<AbilityBase>> Abilities => [() => new CustomSidekickButtonAbility(new(
             canCreateSidekick: (created) => !created,
             sidekickCooldown: () => Cooldown,
             sidekickRole: () => RoleId.Madmate,
@@ -23,7 +23,7 @@ class RulerModifier : ModifierBase<RulerModifier>
             sidekickText: ModTranslation.GetString("CreateMadmateButtonText"),
             sidekickCount: () => 1,
             isTargetable: (player) => !player.IsImpostor()
-        )];
+        ))];
 
     public override QuoteMod QuoteMod => QuoteMod.SuperNewRoles;
 

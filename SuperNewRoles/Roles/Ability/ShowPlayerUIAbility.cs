@@ -74,6 +74,7 @@ public class ShowPlayerUIAbility : AbilityBase
             if (playerUIObject.cosmetics.colorBlindText != null)
                 playerUIObject.cosmetics.colorBlindText.text = "";
             playerUIObject.transform.localPosition = new(index * 1.5f, 0f, -0.3f);
+            playerUIObject.cosmetics.showColorBlindText = false;
             index++;
         }
 

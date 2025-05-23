@@ -35,7 +35,7 @@ public class JackalAbility : AbilityBase
             () => JackData.CanUseVent
         );
 
-        SidekickAbility = new CustomSidekickButtonAbility(
+        SidekickAbility = new CustomSidekickButtonAbility(new(
             (bool sidekickCreated) => JackData.CanCreateSidekick && !sidekickCreated,
             () => JackData.SidekickCooldown,
             () => getSidekickType(JackData.SidekickType),
@@ -47,22 +47,23 @@ public class JackalAbility : AbilityBase
             sidekickedPromoteData: getPromoteData(JackData.SidekickType),
             onSidekickCreated: (player) =>
             {
+                Logger.Info($"OnSidekickCreated: {player.PlayerId}");
                 new LateTask(() =>
                 {
+                    Logger.Info($"OnSidekickCreated2: {player.PlayerId}");
                     if (JackData.SidekickType is JackalSidekickType.Sidekick or JackalSidekickType.SidekickWaveCannon)
                     {
-                        Logger.Info("Sidekick created: " + player.Data.PlayerName);
-                        var jsidekick = player.PlayerAbilities.FirstOrDefault(x => x is JSidekickAbility);
-                        Logger.Info("jsidekick: " + jsidekick);
-                        if (jsidekick is JSidekickAbility jsidekickAbility)
+                        Logger.Info($"OnSidekickCreated3: {player.PlayerId}");
+                        var jsidekick = player.GetAbility<JSidekickAbility>();
+                        if (jsidekick != null)
                         {
-                            Logger.Info("jsidekickAbility: " + jsidekickAbility);
-                            JSidekickAbility.RpcSetCanInfinite(JackData.IsInfiniteJackal, jsidekickAbility);
+                            Logger.Info($"OnSidekickCreated4: {player.PlayerId}");
+                            jsidekick.RpcSetCanInfinite(JackData.IsInfiniteJackal);
                         }
                     }
-                }, 0.5f);
+                }, 0.5f, "JackalAbility.OnSidekickCreated");
             }
-        );
+        ));
 
         KnowJackalAbility = new KnowOtherAbility(
             (player) => player.IsJackalTeam(),
@@ -86,7 +87,7 @@ public class JackalAbility : AbilityBase
         switch (sidekickType)
         {
             case JackalSidekickType.Sidekick:
-                return RoleId.Jackal;
+                return RoleId.Sidekick;
             case JackalSidekickType.Friends:
                 return RoleId.JackalFriends;
             case JackalSidekickType.SidekickWaveCannon:

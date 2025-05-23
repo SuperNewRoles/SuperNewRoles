@@ -49,7 +49,7 @@ public class PavlovsOwnerAbility : AbilityBase
 
     private CustomSidekickButtonAbility CreateSidekickAbility(PlayerControl player)
     {
-        return new CustomSidekickButtonAbility(
+        return new CustomSidekickButtonAbility(new(
             _ => CanCreateSidekick(player),
             () => _data.sidekickCooldown,
             () => RoleId.PavlovsDog,
@@ -61,7 +61,7 @@ public class PavlovsOwnerAbility : AbilityBase
             sidekickSuccess: (player) => !_data.suicideOnImpostorSidekick || !player.IsImpostor(),
             onSidekickCreated: (p) => OnSidekickCreated(player, p),
             showSidekickLimitText: () => _data.maxSidekickCount > 0
-        );
+        ));
     }
 
     private bool CanCreateSidekick(ExPlayerControl player)

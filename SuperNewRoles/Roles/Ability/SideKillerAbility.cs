@@ -42,7 +42,7 @@ public class SideKillerAbility : AbilityBase
             isTargetable: (player) => SetTargetPatch.ValidMadkiller(player)
         );
 
-        _sidekickAbility = new CustomSidekickButtonAbility(
+        _sidekickAbility = new CustomSidekickButtonAbility(new(
             (bool sidekickCreated) => !sidekickCreated,
             () => _data.killCooldown,
             () => RoleId.MadKiller,
@@ -60,6 +60,7 @@ public class SideKillerAbility : AbilityBase
                     RpcSetMadKillerAbility(this, madKillerAbility);
                 }
             }
+        )
         );
 
         _knowOtherAbility = new KnowOtherAbility(
