@@ -13,9 +13,9 @@ namespace SuperNewRoles.Roles.Ability;
 public class ShapeshiftButtonAbility : CustomButtonBase, IButtonEffect
 {
     public float DurationTime;
-    public float CoolTime; // Separate cooldown for the shapeshift ability itself
+    public float CoolTime;
 
-    public override Sprite Sprite => FastDestroyableSingleton<RoleManager>.Instance.GetRole(RoleTypes.Shapeshifter).Ability.Image;
+    public override Sprite Sprite => SpriteName != null ? AssetManager.GetAsset<Sprite>(SpriteName) : FastDestroyableSingleton<RoleManager>.Instance.GetRole(RoleTypes.Shapeshifter).Ability.Image;
     public override string buttonText => FastDestroyableSingleton<TranslationController>.Instance.GetString(StringNames.ShapeshiftAbility);
     protected override KeyType keytype => KeyType.Ability1;
     public override float DefaultTimer => CoolTime;
@@ -35,11 +35,13 @@ public class ShapeshiftButtonAbility : CustomButtonBase, IButtonEffect
 
     private PlayerControl _shapeTarget;
     public PlayerControl ShapeTarget => _shapeTarget;
+    public string SpriteName { get; }
 
-    public ShapeshiftButtonAbility(float durationTime, float coolTime)
+    public ShapeshiftButtonAbility(float coolTime, float durationTime, string spriteName = null)
     {
         DurationTime = durationTime;
         CoolTime = coolTime;
+        SpriteName = spriteName;
     }
 
     public override void OnClick()

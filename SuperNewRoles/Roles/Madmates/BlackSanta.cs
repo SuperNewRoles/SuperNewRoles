@@ -44,16 +44,6 @@ class BlackSanta : RoleBase<BlackSanta>
     public override RoleTypes IntroSoundType => RoleTypes.Shapeshifter;
     public override RoleOptionMenuType OptionTeam => RoleOptionMenuType.Crewmate;
 
-    // マッドメイト機能
-    [CustomOptionBool("BlackSantaCouldUseVent", true, translationName: "CanUseVent")]
-    public static bool BlackSantaCouldUseVent;
-
-    [CustomOptionBool("BlackSantaHasImpostorVision", true, translationName: "HasImpostorVision")]
-    public static bool BlackSantaHasImpostorVision;
-
-    [CustomOptionBool("BlackSantaCanKnowImpostors", true, translationName: "MadmateCanKnowImpostors")]
-    public static bool BlackSantaCanKnowImpostors;
-
     // サンタ機能
     [CustomOptionFloat("BlackSantaAbilityCooldown", 0f, 180f, 2.5f, 25f, translationName: "SantaAbilityCooldown")]
     public static float BlackSantaAbilityCooldown;
@@ -75,6 +65,16 @@ class BlackSanta : RoleBase<BlackSanta>
     public static int BlackSantaPenguinPercentage;
     [CustomOptionInt("BlackSantaWaveCannonPercentage", 0, 100, 5, 0)]
     public static int BlackSantaWaveCannonPercentage;
+
+    // マッドメイト機能
+    [CustomOptionBool("BlackSantaCouldUseVent", true, translationName: "CanUseVent")]
+    public static bool BlackSantaCouldUseVent;
+
+    [CustomOptionBool("BlackSantaHasImpostorVision", true, translationName: "HasImpostorVision")]
+    public static bool BlackSantaHasImpostorVision;
+
+    [CustomOptionBool("BlackSantaCanKnowImpostors", true, translationName: "MadmateCanKnowImpostors")]
+    public static bool BlackSantaCanKnowImpostors;
 
     // 狂信
     [CustomOptionInt("BlackSantaNeededTaskCount", 0, 10, 1, 1, translationName: "MadmateNeededTaskCount", parentFieldName: nameof(BlackSantaCanKnowImpostors))]

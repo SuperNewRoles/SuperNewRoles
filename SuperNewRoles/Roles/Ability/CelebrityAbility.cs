@@ -38,9 +38,7 @@ public class CelebrityAbility : AbilityBase
         _meetingStartEvent = MeetingStartEvent.Instance.AddListener(OnMeetingStart);
         _isAlive = ExPlayerControl.LocalPlayer.IsAlive();
         if (Data.YellowChangedRole)
-        {
             Player.AttachAbility(new AlwaysCelebrityAbility(), new AbilityParentPlayer(Player));
-        }
     }
     private void OnMeetingStart(MeetingStartEventData data)
     {
@@ -105,10 +103,15 @@ public class CelebrityAbility : AbilityBase
 public class AlwaysCelebrityAbility : AbilityBase
 {
     private EventListener<NameTextUpdateEventData> _nameTextUpdateEvent;
-    public override void AttachToLocalPlayer()
+    public override void AttachToAlls()
     {
-        base.AttachToLocalPlayer();
+        base.AttachToAlls();
         _nameTextUpdateEvent = NameTextUpdateEvent.Instance.AddListener(OnNameTextUpdate);
+    }
+    public override void DetachToAlls()
+    {
+        base.DetachToAlls();
+        _nameTextUpdateEvent?.RemoveListener();
     }
     private void OnNameTextUpdate(NameTextUpdateEventData data)
     {
