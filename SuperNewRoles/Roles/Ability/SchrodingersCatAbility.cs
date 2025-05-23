@@ -49,7 +49,7 @@ public class SchrodingersCatAbility : AbilityBase
     public override void AttachToAlls()
     {
         _customKillButtonAbility = new CustomKillButtonAbility(
-            () => Data.HasKillAbility && CurrentTeam != SchrodingersCatTeam.SchrodingersCat,
+            () => Data.HasKillAbility && CurrentTeam is not SchrodingersCatTeam.SchrodingersCat and not SchrodingersCatTeam.Crewmate,
             () => Data.KillCooldown,
             () => false,
             isTargetable: (player) => player.IsAlive() && CheckTargetable(player)
@@ -80,6 +80,7 @@ public class SchrodingersCatAbility : AbilityBase
     {
         if (Player.IsLovers()) return;
         if (data.target != Player) return;
+        if (data.killer == Player) return;
         if (CurrentTeam != SchrodingersCatTeam.SchrodingersCat) return;
         if (data.killer.IsImpostor())
             CurrentTeam = Data.HasKillAbility ? SchrodingersCatTeam.Impostor : SchrodingersCatTeam.Madmate;
@@ -173,13 +174,14 @@ public class SchrodingersCatAbility : AbilityBase
     {
         foreach (var deadBody in GameObject.FindObjectsOfType<DeadBody>())
         {
-            deadBody.transform.localPosition = new(999, 999);
+            if (deadBody.ParentId == Player.PlayerId)
+                deadBody.transform.localPosition = new(999, 999);
         }
         new LateTask(() =>
         {
             Player.Player.Revive();
             RoleManager.Instance.SetRole(Player, RoleTypes.Crewmate);
-        }, 0f);
+        }, 0.017f);
         new LateTask(() =>
         {
             foreach (var deadBody in GameObject.FindObjectsOfType<DeadBody>())
@@ -206,6 +208,7 @@ public class SchrodingersCatAbility : AbilityBase
                 ));
                 if (Player.AmOwner)
                     madmateAbility.CustomTaskAbility.AssignTasks();
+                Player.AttachAbility(madmateAbility, new AbilityParentAbility(this));
                 break;
             case SchrodingersCatTeam.Friends:
                 Player.DetachAbility(_knowOtherAbility.AbilityId);
@@ -221,6 +224,7 @@ public class SchrodingersCatAbility : AbilityBase
                 ));
                 if (Player.AmOwner)
                     jackalFriendsAbility.CustomTaskAbility.AssignTasks();
+                Player.AttachAbility(jackalFriendsAbility, new AbilityParentAbility(this));
                 break;
         }
     }
