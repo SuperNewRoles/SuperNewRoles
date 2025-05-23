@@ -36,6 +36,7 @@ public interface ICosmeticData
     string GetItemName();
     string Author { get; }
     void LoadAsync(Action onSuccess);
+    void SetDoUnload();
 }
 public interface ICustomCosmeticHat
 {
@@ -94,6 +95,7 @@ public abstract class CosmeticDataWrapper : ICosmeticData
         return _data;
     }
     public abstract void LoadAsync(Action onSuccess);
+    public abstract void SetDoUnload();
 }
 public class CosmeticDataWrapperHat : CosmeticDataWrapper, ICustomCosmeticHat
 {
@@ -110,7 +112,7 @@ public class CosmeticDataWrapperHat : CosmeticDataWrapper, ICustomCosmeticHat
     {
         // なんもなくていいとおもう
     }
-    public void SetDoUnload()
+    public override void SetDoUnload()
     {
         if (hatViewData == null) return;
         hatViewData.Unload();
@@ -168,7 +170,7 @@ public class CosmeticDataWrapperVisor : CosmeticDataWrapper, ICustomCosmeticViso
     {
         // なんもなくていいとおもう
     }
-    public void SetDoUnload()
+    public override void SetDoUnload()
     {
         if (visorViewData == null) return;
         visorViewData.Unload();
@@ -206,6 +208,11 @@ public class CosmeticDataWrapperSkin : CosmeticDataWrapper
                 skinViewData.LoadAsync((Il2CppSystem.Action)onSuccess);
         }
     }
+    public override void SetDoUnload()
+    {
+        if (skinViewData == null) return;
+        skinViewData.Unload();
+    }
 }
 public class CosmeticDataWrapperNamePlate : CosmeticDataWrapper
 {
@@ -229,6 +236,11 @@ public class CosmeticDataWrapperNamePlate : CosmeticDataWrapper
                 namePlateViewData.LoadAsync((Il2CppSystem.Action)onSuccess);
         }
     }
+    public override void SetDoUnload()
+    {
+        if (namePlateViewData == null) return;
+        namePlateViewData.Unload();
+    }
 }
 
 // ModdedHatDataをラップするクラス
@@ -249,17 +261,11 @@ public class ModdedHatDataWrapper : ICosmeticData, ICustomCosmeticHat
     }
     public void SetDontUnload()
     {
+        // なんもなくていいとおもう
     }
     public void SetDoUnload()
-    {/*
-        _data.LoadFrontSprite()?.Unload();
-        _data.LoadFrontLeftSprite()?.Unload();
-        _data.LoadBackSprite()?.Unload();
-        _data.LoadBackLeftSprite()?.Unload();
-        _data.LoadClimbSprite()?.Unload();
-        _data.LoadClimbLeftSprite()?.Unload();
-        _data.LoadFlipSprite()?.Unload();
-        _data.LoadFlipBackSprite()?.Unload();*/
+    {
+        _data.UnloadSprites();
     }
     public bool BlocksVisors => Options.blockVisors;
     public Sprite Climb => _data.LoadClimbSprite();
@@ -278,7 +284,22 @@ public class ModdedHatDataWrapper : ICosmeticData, ICustomCosmeticHat
     public void SetPreview(SpriteRenderer renderer, int colorId)
     {
         // ModdedHatDataのプレビュー設定ロジック
-        renderer.sprite = _data.LoadFrontSprite();
+        Sprite frontSprite = Asset;
+        renderer.sprite = frontSprite;
+        if (frontSprite != null && PreviewCrewmateColor)
+        {
+            renderer.material = FastDestroyableSingleton<HatManager>.Instance.PlayerMaterial;
+            PlayerMaterial.SetMaskLayerBasedOnLocalPlayer(renderer, false);
+            PlayerMaterial.SetColors(colorId, renderer);
+        }
+        else if (frontSprite != null)
+        {
+            renderer.material = FastDestroyableSingleton<HatManager>.Instance.DefaultShader;
+        }
+        else
+        {
+            renderer.material = FastDestroyableSingleton<HatManager>.Instance.DefaultShader;
+        }
     }
 
     public string GetItemName()
@@ -316,10 +337,8 @@ public class ModdedVisorDataWrapper : ICosmeticData, ICustomCosmeticVisor
         _data.LoadClimbSprite()?.DontUnload();
     }
     public void SetDoUnload()
-    {/*
-        _data.LoadIdleSprite()?.Unload();
-        _data.LoadLeftIdleSprite()?.Unload();
-        _data.LoadClimbSprite()?.Unload();*/
+    {
+        _data.UnloadSprites();
     }
     public bool BlocksVisors => false;
     public Sprite Climb => _data.LoadClimbSprite()?.DontUnload();
@@ -336,7 +355,23 @@ public class ModdedVisorDataWrapper : ICosmeticData, ICustomCosmeticVisor
     public void SetPreview(SpriteRenderer renderer, int colorId)
     {
         // ModdedVisorDataのプレビュー設定ロジック
-        renderer.sprite = _data.LoadIdleSprite();
+        Sprite idleSprite = _data.LoadIdleSprite();
+        renderer.sprite = idleSprite;
+
+        if (idleSprite != null && PreviewCrewmateColor)
+        {
+            renderer.material = FastDestroyableSingleton<HatManager>.Instance.PlayerMaterial;
+            PlayerMaterial.SetMaskLayerBasedOnLocalPlayer(renderer, false);
+            PlayerMaterial.SetColors(colorId, renderer);
+        }
+        else if (idleSprite != null)
+        {
+            renderer.material = FastDestroyableSingleton<HatManager>.Instance.DefaultShader;
+        }
+        else
+        {
+            renderer.material = FastDestroyableSingleton<HatManager>.Instance.DefaultShader;
+        }
     }
 
     public string GetItemName()
@@ -386,6 +421,11 @@ public class ModdedNamePlateDataWrapper : ICosmeticData
     {
         onSuccess?.Invoke();
     }
+
+    public void SetDoUnload()
+    {
+        _data.UnloadSprites();
+    }
 }
 
 public class CustomCosmeticsCostumeMenu : CustomCosmeticsMenuBase<CustomCosmeticsCostumeMenu>
@@ -407,6 +447,11 @@ public class CustomCosmeticsCostumeMenu : CustomCosmeticsMenuBase<CustomCosmetic
     {
         // CosmeticMenuKisekae
         var obj = PlayerCustomizationMenu.Instance;
+        if (obj == null)
+        {
+            Logger.Error("PlayerCustomizationMenu.Instance is null in Initialize.");
+            return;
+        }
         kisekae = GameObject.Instantiate(AssetManager.GetAsset<GameObject>("CosmeticMenuKisekae"), obj.transform);
         kisekae.transform.localPosition = new(0.31f, -0.085f, -15f);
         kisekae.transform.localScale = Vector3.one * 0.28f;
@@ -416,7 +461,6 @@ public class CustomCosmeticsCostumeMenu : CustomCosmeticsMenuBase<CustomCosmetic
 
         slots = new();
         activeSlots = new();
-        slotToGroupMap = new();
     }
 
     private void SetupButtons(PlayerCustomizationMenu obj)
@@ -700,11 +744,23 @@ public class CustomCosmeticsCostumeMenu : CustomCosmeticsMenuBase<CustomCosmetic
         string currentCosmeticId = currentCosmeticFunc()?.ProdId ?? "";
         slots = [];
         activeSlots = [];
-        slotToGroupMap = null;
         kisekae.SetActive(false);
         if (CurrentCostumeTab != null)
         {
+            // Unload cosmetics from the previous tab's packagedCosmetics
+            if (this.packagedCosmetics != null)
+            {
+                foreach (var cosmeticList in this.packagedCosmetics.Values)
+                {
+                    foreach (var cosmetic in cosmeticList)
+                    {
+                        cosmetic.SetDoUnload();
+                    }
+                }
+                this.packagedCosmetics.Clear();
+            }
             GameObject.Destroy(CurrentCostumeTab);
+            CurrentCostumeTab = null;
         }
         CurrentCostumeTabType = tabType;
         CurrentCostumeTab = GameObject.Instantiate(AssetManager.GetAsset<GameObject>("CosmeticMenuList"), kisekae.transform.parent);
@@ -887,7 +943,7 @@ public class CustomCosmeticsCostumeMenu : CustomCosmeticsMenuBase<CustomCosmetic
             emptySlot.button.OnMouseOut.AddListener((UnityAction)(() =>
             {
                 if (selectedButton != emptySlot.button)
-                    emptySlot.transform.Find("Selected").gameObject.SetActive(false); // Empty slot preview is always empty
+                    emptySlot.transform.Find("Selected").gameObject.SetActive(false);
                 PreviewCosmetic(currentCosmeticFunc(), PlayerCustomizationMenu.Instance, onPreview);
             }));
             emptySlot.gameObject.SetActive(true);
@@ -924,12 +980,14 @@ public class CustomCosmeticsCostumeMenu : CustomCosmeticsMenuBase<CustomCosmetic
 
             var cosmeticData = cosmetics[i];
 
+            /* このブロックはSetPreviewに処理を移譲するためコメントアウトまたは削除
             if (cosmeticData.PreviewCrewmateColor)
             {
                 slot.spriteRenderer.material = FastDestroyableSingleton<HatManager>.Instance.PlayerMaterial;
                 PlayerMaterial.SetMaskLayerBasedOnLocalPlayer(slot.spriteRenderer, false);
                 PlayerMaterial.SetColors(PlayerControl.LocalPlayer != null ? PlayerControl.LocalPlayer.Data.DefaultOutfit.ColorId : DataManager.Player.Customization.Color, slot.spriteRenderer);
             }
+            */
 
             slot.transform.localPosition = tabType != CostumeTabType.Skin ? new(-15.69f + col * 2.77f, 2.63f - itemRow * 2.68f + offSetY, -10) : new(-15.78f + col * 2.63f, 2.63f - itemRow * 2.6f + offSetY, -10);
             slot.transform.localScale = Vector3.one * (tabType != CostumeTabType.Skin ? 0.85f : 0.8f);
@@ -1023,7 +1081,6 @@ public class CustomCosmeticsCostumeMenu : CustomCosmeticsMenuBase<CustomCosmetic
                 throw new Exception($"Invalid costume tab type: {tabType}");
         }
     }
-    private Dictionary<Transform, int> slotToGroupMap;
 
     public override void Update()
     {
@@ -1125,8 +1182,38 @@ public class CustomCosmeticsCostumeMenu : CustomCosmeticsMenuBase<CustomCosmetic
     {
         yield return null;
 
-        List<ICosmeticData> cosmeticsInPackage = packagedCosmetics[categoryKey];
+        if (scroller == null || scroller.Inner == null || costumeSlot == null || currentCosmeticFunc_cached == null || emptyCosmeticFunc == null || PlayerCustomizationMenu.Instance == null)
+        {
+            Logger.Error("GenerateCategorySlotsCoroutine: Critical reference is null, aborting for category " + categoryKey);
+            generatingCategories.Remove(categoryKey);
+            didNotCreateCategory.Remove(categoryKey);
+            yield break;
+        }
+        if (CurrentCostumeTab == null || !CurrentCostumeTab.activeInHierarchy)
+        {
+            Logger.Info("GenerateCategorySlotsCoroutine: CurrentCostumeTab is no longer active, aborting for category " + categoryKey);
+            generatingCategories.Remove(categoryKey);
+            didNotCreateCategory.Remove(categoryKey);
+            yield break;
+        }
+
+        List<ICosmeticData> cosmeticsInPackage;
+        if (packagedCosmetics == null || !packagedCosmetics.TryGetValue(categoryKey, out cosmeticsInPackage))
+        {
+            Logger.Error($"GenerateCategorySlotsCoroutine: Category key {categoryKey} not found in packagedCosmetics or packagedCosmetics is null.");
+            generatingCategories.Remove(categoryKey);
+            didNotCreateCategory.Remove(categoryKey);
+            yield break;
+        }
+
         var slotAsset = costumeSlot();
+        if (slotAsset == null)
+        {
+            Logger.Error("GenerateCategorySlotsCoroutine: slotAsset is null, aborting for category " + categoryKey);
+            generatingCategories.Remove(categoryKey);
+            didNotCreateCategory.Remove(categoryKey);
+            yield break;
+        }
         Transform innerTransform = scroller.Inner;
         string currentCosmeticId = currentCosmeticFunc_cached?.Invoke()?.ProdId ?? "NONE";
         var localEmptyCosmetic = emptyCosmeticFunc();
@@ -1201,6 +1288,14 @@ public class CustomCosmeticsCostumeMenu : CustomCosmeticsMenuBase<CustomCosmetic
             CustomCosmeticsCostumeSlot slotToSetup = generatedSlots[i];
             ICosmeticData cosmeticDataForSlot = slotDataMapping[i];
 
+            if (CurrentCostumeTab == null || !CurrentCostumeTab.activeInHierarchy || PlayerCustomizationMenu.Instance == null)
+            {
+                Logger.Info("GenerateCategorySlotsCoroutine: Tab or PlayerCustomizationMenu became invalid during slot setup for category " + categoryKey);
+                generatingCategories.Remove(categoryKey);
+                didNotCreateCategory.Remove(categoryKey);
+                yield break;
+            }
+
             slotToSetup.button.OnClick = new();
             slotToSetup.button.OnClick.AddListener((UnityAction)(() =>
             {
@@ -1234,11 +1329,8 @@ public class CustomCosmeticsCostumeMenu : CustomCosmeticsMenuBase<CustomCosmetic
             {
                 if (slotToSetup != null && slotToSetup.spriteRenderer != null)
                 {
+                    if (PlayerCustomizationMenu.Instance == null) return; // Guard against PlayerCustomizationMenu being destroyed
                     cosmeticDataForSlot.SetPreview(slotToSetup.spriteRenderer, PlayerControl.LocalPlayer != null ? PlayerControl.LocalPlayer.Data.DefaultOutfit.ColorId : DataManager.Player.Customization.Color);
-                    if (cosmeticDataForSlot.PreviewCrewmateColor)
-                    {
-                        PlayerMaterial.SetColors(PlayerControl.LocalPlayer != null ? PlayerControl.LocalPlayer.Data.DefaultOutfit.ColorId : DataManager.Player.Customization.Color, slotToSetup.spriteRenderer);
-                    }
                     if (cosmeticDataForSlot.ProdId == localEmptyCosmetic.ProdId)
                     {
                         slotToSetup.spriteRenderer.sprite = null;
@@ -1275,8 +1367,29 @@ public class CustomCosmeticsCostumeMenu : CustomCosmeticsMenuBase<CustomCosmetic
     public override void Hide()
     {
         GameObject.Destroy(kisekae);
+        kisekae = null;
         if (CurrentCostumeTab != null)
+        {
             GameObject.Destroy(CurrentCostumeTab);
+            CurrentCostumeTab = null;
+        }
+
+        if (this.packagedCosmetics != null)
+        {
+            foreach (var cosmeticList in this.packagedCosmetics.Values)
+            {
+                foreach (var cosmetic in cosmeticList)
+                {
+                    cosmetic.SetDoUnload();
+                }
+            }
+            this.packagedCosmetics.Clear();
+            this.packagedCosmetics = null;
+        }
+        slots = null;
+        didNotCreateCategory.Clear();
+        generatingCategories.Clear();
+        activeSlots = null;
         PlayerCustomizationMenu.Instance.PreviewArea.transform.localPosition = new(0f, -0.25f, -3f);
         PlayerCustomizationMenu.Instance.itemName.transform.localPosition = new(0f, -1.74f, -5f);
     }

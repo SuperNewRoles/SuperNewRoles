@@ -252,8 +252,11 @@ namespace SuperNewRoles.Modules
                                     int colonIndex = headerLine.IndexOf(':');
                                     if (colonIndex > 0)
                                     {
-                                        string name = headerLine.Substring(0, colonIndex).Trim();
-                                        string value = headerLine.Substring(colonIndex + 1).Trim();
+                                        ReadOnlySpan<char> headerSpan = headerLine.AsSpan();
+                                        ReadOnlySpan<char> nameSpan = headerSpan.Slice(0, colonIndex).Trim();
+                                        ReadOnlySpan<char> valueSpan = headerSpan.Slice(colonIndex + 1).Trim();
+                                        string name = nameSpan.ToString();
+                                        string value = valueSpan.ToString();
                                         try
                                         {
                                             currentResponse.Headers.Add(name, value);

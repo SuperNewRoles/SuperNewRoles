@@ -693,7 +693,8 @@ public class CustomCosmeticsLoader
                         continue;
                     }
 
-                    string packageName = packagePathInTypeFolder.Substring(0, endOfPackageNameIndex);
+                    ReadOnlySpan<char> packageNameSpan = packagePathInTypeFolder.AsSpan(0, endOfPackageNameIndex);
+                    string packageName = packageNameSpan.ToString();
 
                     if (!string.IsNullOrEmpty(packageName))
                     {
@@ -1126,6 +1127,23 @@ public class CustomCosmeticsLoader
         var il2cppArray = (Il2CppStructArray<byte>)data;
         return ImageConversion.LoadImage(tex, il2cppArray, markNonReadable);
         // return iCall_LoadImage.Invoke(tex.Pointer, il2cppArray.Pointer, markNonReadable);
+    }
+
+    public static void ClearDownloadedSpriteCache()
+    {
+        // Only clear if the cache is actually in use (not on Android where it's null by default)
+        if (downloadedSprites != null)
+        {
+            Logger.Info($"Clearing downloadedSprites cache. Count before: {downloadedSprites.Count}");
+            downloadedSprites.Clear();
+            // Forcing GC might be an option for aggressive testing, but generally not recommended for production.
+            // System.GC.Collect();
+            Logger.Info("downloadedSprites cache cleared.");
+        }
+        else
+        {
+            Logger.Info("downloadedSprites cache is not in use (likely Android platform). No action taken.");
+        }
     }
 
     /// <summary>

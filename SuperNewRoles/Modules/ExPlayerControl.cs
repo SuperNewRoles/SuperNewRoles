@@ -17,7 +17,7 @@ public class ExPlayerControl
     public static ExPlayerControl LocalPlayer => _localPlayer;
     private static ExPlayerControl _localPlayer;
     private static List<ExPlayerControl> _exPlayerControls { get; } = new();
-    public static IReadOnlyList<ExPlayerControl> ExPlayerControls => _exPlayerControls.AsReadOnly();
+    public static List<ExPlayerControl> ExPlayerControls => _exPlayerControls;
     private static ExPlayerControl[] _exPlayerControlsArray;
     public PlayerControl Player { get; }
     public NetworkedPlayerInfo Data { get; }
@@ -54,6 +54,17 @@ public class ExPlayerControl
     public CustomTaskAbility CustomTaskAbility => _customTaskAbility;
     private List<ImpostorVisionAbility> _impostorVisionAbilities = new();
     private Dictionary<string, bool> _hasAbilityCache = new();
+
+    public override int GetHashCode()
+    {
+        return PlayerId;
+    }
+    public override bool Equals(object obj)
+    {
+        if (obj is ExPlayerControl other)
+            return PlayerId == other.PlayerId;
+        return false;
+    }
 
     public ExPlayerControl(PlayerControl player)
     {

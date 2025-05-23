@@ -96,7 +96,33 @@ public static class ModHelpers
         }
     }
     public static ReadOnlySpan<T> AsSpan<T>(this List<T> list) => CollectionsMarshal.AsSpan(list);
-
+    public static ReadOnlySpan<T> AsSpan<T>(this T[] array) => array;
+    /*public static bool Any<T>(this ReadOnlySpan<T> span, Func<T, bool> predicate)
+    {
+        foreach (var item in span)
+        {
+            if (predicate(item)) return true;
+        }
+        return false;
+    }
+    public static ReadOnlySpan<T> Where<T>(this ReadOnlySpan<T> span, Func<T, bool> predicate)
+    {
+        var list = new List<T>();
+        foreach (var item in span)
+        {
+            if (predicate(item)) list.Add(item);
+        }
+        return list.AsSpan();
+    }
+    public static HashSet<T> ToHashSet<T>(this ReadOnlySpan<T> span)
+    {
+        var hashSet = new HashSet<T>();
+        foreach (var item in span)
+        {
+            hashSet.Add(item);
+        }
+        return hashSet;
+    }*/
     public static bool IsComms()
     {
         try

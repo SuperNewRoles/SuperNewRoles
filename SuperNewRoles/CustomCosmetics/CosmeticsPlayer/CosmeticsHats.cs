@@ -123,7 +123,7 @@ public class CustomHatLayer : MonoBehaviour
             CosmeticLayer.currentBodySprite.BodySprite.enabled = !(clayer.HideBody.hat1 || clayer.HideBody.hat2) && CosmeticLayer.Visible;
 
         SetMaterialColor(color);
-        UnloadAsset();
+        // UnloadAsset();
         Hat.LoadAsync(() => PopulateFromViewData());
     }
 
