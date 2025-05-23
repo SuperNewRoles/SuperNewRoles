@@ -88,6 +88,8 @@ public enum RoleId : short
     Spelunker,
     BlackHatHacker,
     PartTimer,
+    NiceMechanic,
+    EvilMechanic,
 }
 
 public enum GhostRoleId : short

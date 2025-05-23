@@ -129,7 +129,7 @@ public class BlackHatHackerAbility : AbilityBase
         SharedTimer -= Time.fixedDeltaTime;
         if (SharedTimer <= 0)
         {
-            RpcSetInfectionTimer(PlayerControl.LocalPlayer.PlayerId, InfectionTimer);
+            RpcSetInfectionTimer(InfectionTimer);
             SharedTimer = 1;
         }
 
@@ -215,10 +215,9 @@ public class BlackHatHackerAbility : AbilityBase
     }
 
     [CustomRPC]
-    public static void RpcSetInfectionTimer(byte playerId, Dictionary<byte, float> infectionData)
+    public void RpcSetInfectionTimer(Dictionary<byte, float> infectionData)
     {
-        // TODO: 感染タイマーの同期処理実装
-        Logger.Info($"Infection timer sync for player {playerId}");
+        this.InfectionTimer = infectionData;
     }
 }
 

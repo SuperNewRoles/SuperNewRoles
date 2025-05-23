@@ -12,6 +12,7 @@ using BepInEx.Unity.IL2CPP.Utils.Collections;
 using Hazel;
 using SuperNewRoles.Modules;
 using SuperNewRoles.Roles.Ability;
+using TMPro;
 using UnityEngine;
 using UnityEngine.Networking;
 
@@ -512,5 +513,38 @@ public static class ModHelpers
     {
         result = obj.TryCast<T>();
         return result != null;
+    }
+    public static void SetOpacity(PlayerControl player, float opacity, bool cansee)
+    {
+        // Sometimes it just doesn't work?
+        var color = Color.Lerp(Palette.ClearWhite, Palette.White, opacity);
+        try
+        {
+            if (player.cosmetics.currentBodySprite.BodySprite != null)
+                player.cosmetics.currentBodySprite.BodySprite.color = color;
+
+            if (player.cosmetics.skin.layer != null)
+                player.cosmetics.skin.layer.color = color;
+
+            if (player.cosmetics.hat != null)
+                player.cosmetics.hat.SpriteColor = color;
+
+            if (player.cosmetics.GetPet() != null)
+                player.cosmetics.GetPet().ForEachRenderer(true, (Il2CppSystem.Action<SpriteRenderer>)((render) => render.color = color));
+
+            if (player.cosmetics.visor != null)
+                player.cosmetics.visor.Image.color = color;
+
+            if (player.cosmetics.colorBlindText != null && opacity < 0.1f) // 完全に透明化している場合のみ, 色覚補助テキストを非表示にする。
+                player.cosmetics.colorBlindText.color = Palette.ClearWhite;
+            else if (player.cosmetics.colorBlindText != null)
+                player.cosmetics.colorBlindText.color = Palette.White;
+
+            if (player.cosmetics.nameText != null && opacity < 0.1f)
+                player.cosmetics.nameText.enabled = false; // 完全に透明化している場合は, プレイヤー名を非表示にする。
+            else
+                player.cosmetics.nameText.enabled = true; // 少しでも姿を見られるなら, プレイヤー名を表示する。
+        }
+        catch { }
     }
 }

@@ -48,6 +48,8 @@ public static class EndGamer
     }*/
     public static void EndGame(GameOverReason reason, WinType winType, HashSet<ExPlayerControl> winners, Color32 color, string upperText, string winText = null)
     {
+        if (CustomOptionManager.DebugMode && CustomOptionManager.DebugModeNoGameEnd && reason != (GameOverReason)CustomGameOverReason.Haison)
+            return;
         HashSet<ExPlayerControl> additionalWinners = new();
 
         // サボタージュ勝ちの時はインポスター以外死んだ判定で判定していく
@@ -90,6 +92,8 @@ public static class EndGamer
     [CustomRPC]
     public static void RpcEndGameWithWinner(CustomGameOverReason reason, WinType winType, ExPlayerControl[] winners, Color32 color, string upperText, string winText = "")
     {
+        if (CustomOptionManager.DebugMode && CustomOptionManager.DebugModeNoGameEnd)
+            return;
         ShipStatus.Instance.enabled = false;
         if (!AmongUsClient.Instance.AmHost) return;
         EndGame((GameOverReason)reason, winType, winners.ToHashSet(), color, upperText, string.IsNullOrEmpty(winText) || winText == "" ? null : winText);

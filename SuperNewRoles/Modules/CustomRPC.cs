@@ -345,6 +345,9 @@ public static class CustomRPCManager
                 writer.Write(color32.b);
                 writer.Write(color32.a);
                 break;
+            case Vent vent:
+                writer.Write((byte)vent.Id);
+                break;
             default:
                 if (type == typeof(Dictionary<byte, byte>))
                 {
@@ -684,6 +687,7 @@ public static class CustomRPCManager
             Type t when t == typeof(float) => reader.ReadSingle(),
             Type t when t == typeof(bool) => reader.ReadBoolean(),
             Type t when t == typeof(string) => reader.ReadString(),
+            Type t when t == typeof(Vent) => VentCache.VentById(reader.ReadByte()),
             Type t when t == typeof(List<string>) => ReadStringList(reader),
             Type t when t == typeof(PlayerControl) => (PlayerControl)ExPlayerControl.ById(reader.ReadByte()),
             Type t when t == typeof(PlayerControl[]) => ReadPlayerControlArray(reader),

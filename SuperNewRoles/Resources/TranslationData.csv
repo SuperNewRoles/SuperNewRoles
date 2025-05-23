@@ -1041,3 +1041,17 @@ artTimerFinalCooldown,最終クールタイム,Final Cooldown,最终冷却时间
 PartTimerCanSeeTargetRole,雇用主の役職を見る,See employer's role,查看雇主角色,查看雇主角色
 PartTimerNeedAliveToWin,勝利に生存が必要,Need alive to win,胜利需要存活,勝利需要存活
 PartTimerButtonName,バイト,PartTime,打工,打工
+
+# NiceMechanic
+NiceMechanic,ナイスメカニック,Nice Mechanic,好人机械师,好人機械師
+NiceMechanic.Description,ベントを自分の位置に移動させることができるクルーメイトです。\n能力使用中は透明になり、敵から発見されにくくなります。\n一定時間後、ベントは元の位置に戻ります。,A Crewmate who can move vents to their position.\nWhile using the ability, they become transparent and harder to detect.\nAfter a certain time, the vent returns to its original position.,这是一个可以将通风口移动到自己位置的船员。\n使用能力时会变透明，不易被敌人发现。\n一定时间后，通风口会回到原位。,這是一個可以將通風口移動到自己位置的船員。\n使用能力時會變透明，不易被敵人發現。\n一定時間後，通風口會回到原位。
+NiceMechanicCoolTime,メカニック クールタイム,Mechanic Cool Time,机械师冷却时间,機械師冷卻時間
+NiceMechanicDurationTime,効果持続時間,Effect Duration,效果持续时间,效果持續時間
+NiceMechanicUseVent,ベントを使用できる,Can Use Vent,可以使用通风口,可以使用通風口
+MechanicButtonText,メカニック,Mechanic,机械师,機械師
+
+# EvilMechanic
+EvilMechanic,イビルメカニック,Evil Mechanic,邪恶机械师,邪惡機械師
+EvilMechanic.Description,ベントを自分の位置に移動させることができるインポスターです。\n能力使用中は透明になり、キルやサボタージュに有利になります。\n一定時間後、ベントは元の位置に戻ります。,An Impostor who can move vents to their position.\nWhile using the ability, they become transparent, gaining advantages for kills and sabotage.\nAfter a certain time, the vent returns to its original position.,这是一个可以将通风口移动到自己位置的内鬼。\n使用能力时会变透明，有利于击杀和破坏。\n一定时间后，通风口会回到原位。,這是一個可以將通風口移動到自己位置的內鬼。\n使用能力時會變透明，有利於擊殺和破壞。\n一定時間後，通風口會回到原位。
+EvilMechanicCoolTime,イビルメカニック クールタイム,Evil Mechanic Cool Time,邪恶机械师冷却时间,邪惡機械師冷卻時間
+EvilMechanicDurationTime,効果持続時間,Effect Duration,效果持续时间,效果持續時間
