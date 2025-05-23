@@ -119,6 +119,8 @@ public static class BlackHatHackerHudManagerPatch
 
         // タブの表示制御
         ChangeTab.SetActive(isBlackHatHacker || isDead);
+        if (ModHelpers.Not(isBlackHatHacker || isDead))
+            return;
         Vector3 pos = ChangeTab.transform.localPosition;
         pos.x = __instance.TaskPanel.tab.transform.localPosition.x;
         ChangeTab.transform.localPosition = pos;
