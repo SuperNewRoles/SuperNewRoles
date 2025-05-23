@@ -357,6 +357,8 @@ VampireDependent,眷属,Dependent,眷属,眷屬
 Spelunker,スペランカー,Spelunker,倒霉蛋,倒霉鬼
 ModifierSpelunker,モディファイアスペランカー,Modifier Spelunker
 PartTimer,フリーター,Part Timer
+HamburgerShop,ハンバーガー屋,Hamburger Shop
+BodyBuilder,ボディービルダー,Body Builder
 
 # Descriptions
 BestFalseCharge.Description,特に能力を有さないクルーメイトです。\n死亡するまでこの役職だと自覚出来ません。\n最初の会議が終了すると、そのまま死亡します。,The ultimate red herring! A Crewmate with no abilities who lives in blissful ignorance.\nThey won't realize they have this role until they're dead—talk about a rude awakening!\nAfter the first meeting ends, they die faster than someone saying "I saw Blue vent!",这是一个没有特殊能力的船员。\n在死亡之前他们不会意识到自己拥有这个角色。\n第一场会议结束后，他们会直接死亡。,這是一個沒有特殊能力的船員。\n在死亡之前他們不會察覺自己擁有這個角色。\n第一場會議結束後，他們會直接死亡。
@@ -1057,16 +1059,14 @@ EvilMechanicCoolTime,イビルメカニック クールタイム,Evil Mechanic C
 EvilMechanicDurationTime,効果持続時間,Effect Duration,效果持续时间,效果持續時間
 
 # BodyBuilder
-BodyBuilderName,ボディービルダー,BodyBuilder,健身者,健美運動員
 BodyBuilderDescription,<color=#d68f5e>ボディービルダー</color>は全てのタスクを完了した後、\nポージングを行うことができるクルーメイトです。\nポージング中は透明になりますが、移動するとポージングが解除されます。,<color=#d68f5e>BodyBuilder</color> is a crewmate who can pose after completing all tasks.\nWhile posing they become transparent, but moving cancels the pose.,<color=#d68f5e>健身者</color>是一个在完成所有任务后可以摆姿势的船员。\n摆姿势时会变透明，但移动会取消姿势。,<color=#d68f5e>健美運動員</color>是一個在完成所有任務後可以擺姿勢的船員。\n擺姿勢時會變透明，但移動會取消姿勢。
-BodyBuilderChangeAllTaskLiftWeights,全タスクをウェイトリフティングに変更,Change All Tasks to Lift Weights,将所有任务改为举重,將所有任務改為舉重
+BodyBuilderChangeAllTaskLiftWeights,全タスクを筋肉に変更,Change All Tasks to Lift Weights,将所有任务改为举重,將所有任務改為舉重
 BodyBuilderTaskOptionAvailable,タスク数を設定,Set Task Numbers,设置任务数量,設置任務數量
 BodyBuilderTaskOption,タスク設定,Task Settings,任务设置,任務設置
 BodyBuilderButtonText,ポーズ,Pose,摆姿势,擺姿勢
 BodyBuilderButtonName,ポーズボタン,Pose Button,摆姿势按钮,擺姿勢按鈕
 
 # HamburgerShop
-HamburgerShopName,ハンバーガー屋,Hamburger Shop,汉堡店,漢堡店
 HamburgerShopDescription,<color=#ffa500>ハンバーガー屋</color>は全てのタスクをハンバーガー作りに変更できるクルーメイトです。\nエアシップのハンバーガー作りタスクが全マップで利用可能になります。,<color=#ffa500>Hamburger Shop</color> is a crewmate who can change all tasks to hamburger making.\nThe Airship's hamburger making task becomes available on all maps.,<color=#ffa500>汉堡店</color>是一个可以将所有任务改为制作汉堡的船员。\n飞艇的制作汉堡任务在所有地图上都可用。,<color=#ffa500>漢堡店</color>是一個可以將所有任務改為製作漢堡的船員。\n飛艇的製作漢堡任務在所有地圖上都可用。
 HamburgerShopChangeAllTasksToBurger,全タスクをハンバーガー作りに変更,Change All Tasks to Hamburger Making,将所有任务改为制作汉堡,將所有任務改為製作漢堡
 HamburgerShopTaskOptionAvailable,タスク数を設定,Set Task Numbers,设置任务数量,設置任務數量

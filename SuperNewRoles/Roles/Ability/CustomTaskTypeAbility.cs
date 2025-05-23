@@ -26,7 +26,34 @@ public class CustomTaskTypeAbility : AbilityBase
 
     public bool ShouldChangeTask()
     {
-        return true;
+        return ChangeAllTasks || (byte)TargetMap != GameOptionsManager.Instance.CurrentGameOptions.MapId;
+    }
+
+    public NormalPlayerTask GetTargetTask()
+    {
+        var task = ShipStatus.Instance.ShortTasks.FirstOrDefault(x => x.TaskType == TargetTaskType);
+        if (task == null)
+            task = ShipStatus.Instance.CommonTasks.FirstOrDefault(x => x.TaskType == TargetTaskType);
+        if (task == null)
+            task = ShipStatus.Instance.LongTasks.FirstOrDefault(x => x.TaskType == TargetTaskType);
+        if (task == null)
+            return null;
+        return task;
+    }
+
+    public void AssignTasks(int count)
+    {
+        var taskList = new List<byte>();
+        var task = GetTargetTask();
+        for (int i = 0; i < count; i++)
+        {
+            taskList.Add((byte)task.Index);
+        }
+        // タスクをプレイヤーに割り当てる
+        if (taskList.Count > 0)
+        {
+            CustomTaskAbility.RpcUncheckedSetTasks(Player, taskList);
+        }
     }
 }
 
