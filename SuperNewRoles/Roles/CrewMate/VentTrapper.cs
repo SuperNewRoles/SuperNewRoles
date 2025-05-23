@@ -152,9 +152,7 @@ public class VentTrapperAbility : CustomButtonBase, IButtonEffect, IAbilityCount
             Player.Player.MyPhysics?.RpcExitVent(Vent.currentVent.Id);
             return;
         }
-        Logger.Info("TryGetNearbyVent");
         if (!TryGetNearbyVent(ShipStatus.Instance.AllVents.Where(x => !_trappedVents.Contains(x)), out _targetVent)) return;
-        Logger.Info("Got");
         // Player.Player.moveable = false;
         Player.MyPhysics.body.velocity = Vector2.zero;
         _lastPosition = Player.Player.transform.position;
@@ -165,9 +163,9 @@ public class VentTrapperAbility : CustomButtonBase, IButtonEffect, IAbilityCount
         Player.Player.moveable = true;
         this.UseAbilityCount();
         GameObject batu = new("Batu");
-        batu.transform.parent = _targetVent.transform;
-        batu.transform.position = _targetVent.transform.position - new Vector3(0, 0.05f, 0.1f);
-        batu.AddComponent<SpriteRenderer>().sprite = AssetManager.GetAsset<Sprite>("DoorClosed.png");
+        batu.transform.position = _targetVent.transform.position - new Vector3(0, 0.05f, 0.01f);
+        batu.transform.localScale = Vector3.one * 0.3f;
+        batu.AddComponent<SpriteRenderer>().sprite = AssetManager.GetAsset<Sprite>("VentTrapped.png");
         SetTrapRPC(_targetVent.Id);
         ResetTimer();
     }
