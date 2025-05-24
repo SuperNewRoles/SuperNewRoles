@@ -190,33 +190,67 @@ public static class ModHelpers
         f = Mathf.Clamp01(f);
         return (byte)(f * 255);
     }
-    public static string WrapText(string text, int width)
+    public static string WrapText(string text, int width, bool halfIshalf = true)
     {
-        // 改行を CRLF/LF/R すべてで分割
-        var lines = text.Split(new[] { "\r\n", "\r", "\n" }, StringSplitOptions.None);
-        var sb = new StringBuilder();
-
-        foreach (var line in lines)
+        if (string.IsNullOrEmpty(text) || width <= 0)
         {
-            if (line.Length == 0)
+            return text;
+        }
+
+        StringBuilder overallResult = new StringBuilder();
+        // 改行を CRLF/LF/R すべてで分割
+        string[] lines = text.Split(new[] { "\r\n", "\r", "\n" }, StringSplitOptions.None);
+
+        foreach (string singleInputLine in lines)
+        {
+            if (singleInputLine.Length == 0)
             {
-                // 空行はそのまま
-                sb.AppendLine();
+                // 空行はそのまま（実際にはAppendLineが改行を追加する）
+                overallResult.AppendLine();
                 continue;
             }
 
-            // .NET の Regex はデフォルトで「.」が改行を含まないので、
-            // ここでは行単位で正しくマッチする
-            string wrapped = Regex.Replace(
-                line,
-                $".{{{width}}}",
-                "$0\n"
-            );
-            sb.Append(wrapped).AppendLine();
+            StringBuilder wrappedLineBuilder = new StringBuilder(); // 現在の入力行をラップした結果を保持
+            StringBuilder currentSegmentForWrapping = new StringBuilder(); // ラップ処理中の一部分
+            float currentVisualWidth = 0f;
+
+            foreach (char c in singleInputLine)
+            {
+                float charEffectiveWidth;
+                if (halfIshalf)
+                {
+                    // 半角文字の判定：ASCII印字可能文字 (U+0020～U+007E) または半角カタカナ (U+FF61～U+FF9F)
+                    bool isHankaku = (c >= '\u0020' && c <= '\u007E') || (c >= '\uFF61' && c <= '\uFF9F');
+                    charEffectiveWidth = isHankaku ? 0.5f : 1.0f;
+                }
+                else
+                {
+                    charEffectiveWidth = 1.0f;
+                }
+
+                // 現在のセグメントに文字を追加すると幅を超える場合、改行を挿入
+                if (currentVisualWidth + charEffectiveWidth > width && currentSegmentForWrapping.Length > 0)
+                {
+                    wrappedLineBuilder.Append(currentSegmentForWrapping.ToString());
+                    wrappedLineBuilder.Append('\n'); // 折り返しによる内部的な改行
+                    currentSegmentForWrapping.Clear();
+                    currentVisualWidth = 0f;
+                }
+                currentSegmentForWrapping.Append(c);
+                currentVisualWidth += charEffectiveWidth;
+            }
+
+            // 行の最後のセグメントを追加
+            wrappedLineBuilder.Append(currentSegmentForWrapping.ToString());
+
+            // 元のRegex.Replace(line, $".{{{width}}}", "$0\n").AppendLine(); の動作を模倣:
+            // ラップされた行（内部改行を含む可能性あり）を全体の結果に追加し、その後にも改行を追加。
+            overallResult.Append(wrappedLineBuilder.ToString());
+            overallResult.AppendLine();
         }
 
-        // 最後の余分な改行を削る
-        return sb.ToString().TrimEnd('\r', '\n');
+        // 最後に、全体の末尾の余分な改行を削除
+        return overallResult.ToString().TrimEnd('\r', '\n');
     }
     public static (int completed, int total) TaskCompletedData(NetworkedPlayerInfo playerInfo)
     {
