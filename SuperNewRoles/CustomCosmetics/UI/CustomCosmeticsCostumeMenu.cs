@@ -144,7 +144,11 @@ public class CosmeticDataWrapperHat : CosmeticDataWrapper, ICustomCosmeticHat
             if (hatViewData == null)
                 hatViewData = hat.CreateAddressableAsset();
             if (hatViewData != null)
-                hatViewData.LoadAsync((Il2CppSystem.Action)(() => { onSuccess(); _options.climb = hatViewData?.GetAsset()?.ClimbImage != null ? HatOptionType.None : hat.PreviewCrewmateColor ? HatOptionType.Adaptive : HatOptionType.NoAdaptive; }));
+                hatViewData.LoadAsync((Il2CppSystem.Action)(() =>
+                {
+                    onSuccess();
+                    _options.climb = hatViewData?.GetAsset()?.ClimbImage != null ? hat.PreviewCrewmateColor ? HatOptionType.Adaptive : HatOptionType.NoAdaptive : HatOptionType.None;
+                }));
         }
     }
 }
@@ -182,7 +186,11 @@ public class CosmeticDataWrapperVisor : CosmeticDataWrapper, ICustomCosmeticViso
             if (visorViewData == null)
                 visorViewData = visor.CreateAddressableAsset();
             if (visorViewData != null)
-                visorViewData.LoadAsync((Il2CppSystem.Action)onSuccess);
+                visorViewData.LoadAsync((Il2CppSystem.Action)(() =>
+                {
+                    onSuccess();
+                    _options.climb = visorViewData?.GetAsset()?.ClimbFrame != null;
+                }));
         }
     }
 }

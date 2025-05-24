@@ -413,7 +413,7 @@ public class CustomCosmeticsVisorOptions
 {
     public bool adaptive { get; }
     public bool flip { get; }
-    public bool climb { get; }
+    public bool climb { get; set; }
     public bool isSNR { get; }
     public CustomCosmeticsVisorOptions(JToken optionsJson)
     {
