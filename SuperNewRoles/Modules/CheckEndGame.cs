@@ -46,12 +46,16 @@ public static class CoStartGamePatch
 [HarmonyPatch(typeof(LogicGameFlowHnS), nameof(LogicGameFlowHnS.CheckEndCriteria))]
 public static class CheckGameEndPatchHnS
 {
-    public static bool Prefix()
+    public static bool Prefix(LogicGameFlowHnS __instance)
     {
         if (!CheckGameEndPatch.CouldCheckEndGame) return false;
         try
         {
-            Logger.Info("HnSゲーム終了チェック");
+            if (!DestroyableSingleton<TutorialManager>.InstanceExists && __instance.AllTimersExpired())
+            {
+                CheckGameEndPatch.EndGame(VictoryType.CrewmateVote);
+                return false;
+            }
             return CheckGameEndPatch.HandleGameEndCheck(true);
         }
         catch (Exception ex)
@@ -166,7 +170,7 @@ public static class CheckGameEndPatch
         return null;
     }
 
-    private static void EndGame(VictoryType victoryType)
+    public static void EndGame(VictoryType victoryType)
     {
         if (ShipStatus.Instance != null)
             ShipStatus.Instance.enabled = false;
