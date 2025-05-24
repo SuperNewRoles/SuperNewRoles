@@ -119,7 +119,6 @@ public static class CustomTaskTypePatches
 
         public static void GetTargetShip(TaskTypes targetTaskType, MapNames? targetMap, Action<ShipStatus> onLoaded)
         {
-            Logger.Info($"GetTargetShip: {targetTaskType}, {targetMap}");
             // 特定のマップが指定されている場合はそのマップから取得
             if (targetMap.HasValue)
             {

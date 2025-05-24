@@ -11,6 +11,7 @@ using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using BepInEx.Unity.IL2CPP.Utils.Collections;
 using Hazel;
+using Il2CppInterop.Runtime.InteropTypes;
 using SuperNewRoles.CustomCosmetics.CosmeticsPlayer;
 using SuperNewRoles.Modules;
 using SuperNewRoles.Roles.Ability;
@@ -251,6 +252,11 @@ public static class ModHelpers
 
         // 最後に、全体の末尾の余分な改行を削除
         return overallResult.ToString().TrimEnd('\r', '\n');
+    }
+    public static bool Il2CppIs<T1, T2>(this T1 before, out T2 after) where T1 : Il2CppObjectBase where T2 : Il2CppObjectBase
+    {
+        after = before?.TryCast<T2>();
+        return after != null;
     }
     public static (int completed, int total) TaskCompletedData(NetworkedPlayerInfo playerInfo)
     {

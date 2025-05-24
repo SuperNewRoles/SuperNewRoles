@@ -33,7 +33,7 @@ public static class LiftWeightsMinigamePatches
         [HarmonyPatch(nameof(LiftWeightsMinigame.Begin)), HarmonyPrefix]
         public static void BeginPrefix(PlayerTask task, ref int __state)
         {
-            if (task is NormalPlayerTask normal) __state = normal.MaxStep;
+            if (task.Il2CppIs(out NormalPlayerTask normal)) __state = normal.MaxStep;
             else __state = 1;
         }
 

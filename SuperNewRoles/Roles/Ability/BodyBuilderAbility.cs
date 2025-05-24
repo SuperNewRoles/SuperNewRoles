@@ -40,11 +40,6 @@ public class BodyBuilderAbility : CustomButtonBase
     private EventListener<MeetingStartEventData> _meetingStartEvent;
     private EventListener<ExileEventData> _exileEvent;
     private EventListener<PlayerPhysicsFixedUpdateEventData> _onPlayerPhysicsFixedUpdateEvent;
-
-    public BodyBuilderAbility()
-    {
-    }
-
     public override void AttachToLocalPlayer()
     {
         base.AttachToLocalPlayer();
@@ -65,6 +60,15 @@ public class BodyBuilderAbility : CustomButtonBase
         _meetingStartEvent?.RemoveListener();
         _exileEvent?.RemoveListener();
         _onPlayerPhysicsFixedUpdateEvent?.RemoveListener();
+    }
+
+    public override void DetachToAlls()
+    {
+        base.DetachToAlls();
+        if (posingObject != null)
+        {
+            CancelPosing();
+        }
     }
 
     public override void OnClick()
@@ -107,15 +111,12 @@ public class BodyBuilderAbility : CustomButtonBase
 
     private void StartPosing(byte posingId)
     {
-        Logger.Info("BodyBuilder ポージング開始");
         // 使用者が霊界かつ自身が霊界でないならreturn
         if (Player.IsDead() && ExPlayerControl.LocalPlayer.IsAlive())
             return;
-        Logger.Info("BodyBuilder ポージング開始2");
 
         CancelPosing();
         Player.NetTransform.Halt();
-        Logger.Info("BodyBuilder ポージング開始3");
 
         // 音を再生
         var distance = Vector2.Distance(PlayerControl.LocalPlayer.transform.position, Player.transform.position);
@@ -133,7 +134,6 @@ public class BodyBuilderAbility : CustomButtonBase
                 }
             }
         });
-        Logger.Info("BodyBuilder ポージング開始4");
 
         // ポーズプレハブを生成
         var prefab = GetPrefab(posingId);
@@ -142,7 +142,6 @@ public class BodyBuilderAbility : CustomButtonBase
         {
             renderer.color = new(1f, 1f, 1f, 0f);
         }
-        Logger.Info("BodyBuilder ポージング開始5");
 
         var pos = pose.gameObject.transform.position;
         pos.z -= 0.5f;
@@ -158,12 +157,10 @@ public class BodyBuilderAbility : CustomButtonBase
         spriteRenderer.color = new(1f, 1f, 1f, Player.IsDead() ? 0.5f : 1f);
 
         posingObject = pose;
-        Logger.Info("BodyBuilder ポージング開始6");
     }
 
     private void CancelPosing()
     {
-        Logger.Info("BodyBuilder Remove");
         if (Player != null)
         {
             foreach (SpriteRenderer renderer in Player.Player.gameObject.GetComponentsInChildren<SpriteRenderer>())
