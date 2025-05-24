@@ -6,6 +6,8 @@ Close,閉じる,Close,关闭,關閉
 Impostor,インポスター,Impostor,内鬼,內鬼
 Crewmate,クルーメイト,Crewmate,船员,船員
 Neutral,第三陣営,Neutral,第三阵营,第三陣營
+GhostRoles,幽霊役職,Ghost Roles,幽灵角色,幽靈角色
+Modifier,モディファイア,Modifier,修饰符,修飾符
 People,{0}人,{0} people,{0}人,{0}人
 
 # 共通設定テキスト
@@ -176,6 +178,7 @@ RoleOptionMenuType.Impostor,インポスター,Impostor,内鬼,內鬼
 RoleOptionMenuType.Crewmate,クルーメイト,Crewmate,船员,船員
 RoleOptionMenuType.Neutral,第三陣営,Neutral,第三阵营,第三陣營
 RoleOptionMenuType.Ghost,幽霊役職,Ghost Role,幽灵角色,幽靈角色
+RoleOptionMenuType.Modifier,モディファイア,Modifier,修饰符,修飾符
 
 # ModifierOptionMenu
 EditAssignFilterButtonText,アサインフィルターを編集,Edit Assign Filter,编辑分配过滤器,編輯分配過濾器
@@ -260,10 +263,12 @@ HelpMenu.MyRoleInformation,自分の役職,My Role Information,我的角色信�
 HelpMenu.MyRoleInformation.InLobbyText,ゲーム中に自分の役職が表示されます。,Your role will be displayed during the game.,游戏过程中会显示你的角色。,遊戲過程中會顯示你的角色。
 HelpMenu.MyRoleInformation.RoleSettingsTitle,役職設定,Role Settings,角色设置,角色設定
 HelpMenu.AssignmentsSettingInfomation,配役情報,Assignments Information,配役信息,配役資訊
+HelpMenu.AssignmentsSettingInfomation2,配役情報2,Assignments Information 2,配役信息2,配役資訊2
 HelpMenu.ModSettingsInformation,MOD設定情報,MOD Settings Information,MOD设置信息,MOD設定資訊
 HelpMenu.RoleDictionary,役職辞典,Role Dictionary,角色辞典,角色辭典
 HelpMenu.NoneOptions1,204: Not content: この役職に設定がありませんでした。,204: Not content: This role has no settings.,204: Not content: 此角色没有设置。,204: Not content: 此角色沒有設定。
 HelpMenu.NoneOptions2,役職の設定が見つかりませんでした。おにぎりでも食べて落ち着きましょう。,We couldn't find the role setting. Take a break and have a rice ball.,我们找不到角色设置。吃个饭冷静一下吧。,我們找不到角色設定。吃個飯冷靜一下吧。
+HelpMenu.AllTeams,全陣営,All Teams,所有阵营,所有陣營
 
 # MadFriendsIntro
 MadRolesSubIntro,この命は我が主たるインポスターのために,This life is for my mastert，the Impostor.,为内鬼献出生命,背叛船員，為吾主內鬼而戰。
@@ -530,6 +535,9 @@ RoleDictionary,役職辞典,Role Dictionary,角色词典,角色詞典
 ImpostorButton,インポスター,Impostor,内鬼,內鬼
 NeutralButton,第三陣営,Neutral,第三阵营,第三陣營
 CrewmateButton,クルーメイト,Crewmate,船员,船員
+GhostButton,幽霊役職,Ghost Roles,幽灵角色,幽靈角色
+ModifierButton,モディファイア,Modifier,修饰符,修飾符
+
 
 # Chief
 ChiefAppoint,任命,Appoint,任命,任命

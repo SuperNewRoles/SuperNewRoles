@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using System.Linq;
 using SuperNewRoles.Modules;
 using SuperNewRoles.Roles;
@@ -70,8 +71,13 @@ public class MyRoleInfomationMenu : HelpMenuCategoryBase
                     GameObject.Destroy(child);
             }
 
-            // サンプルボタンの代わりに実際の役職ボタンを生成
-            IRoleBase[] roles = [ExPlayerControl.LocalPlayer.roleBase]; // 役職IDのリストを取得（実装に応じて要調整）
+            // 役職IDのリストを取得
+            List<IRoleInformation> roles = [ExPlayerControl.LocalPlayer.roleBase];
+            foreach (var modifier in ExPlayerControl.LocalPlayer.ModifierRoleBases)
+                roles.Add(modifier);
+            if (ExPlayerControl.LocalPlayer.GhostRoleBase != null)
+                roles.Add(ExPlayerControl.LocalPlayer.GhostRoleBase);
+
             var bulkRoleButtonAsset = AssetManager.GetAsset<GameObject>("BulkRoleButton");
 
             // ボタン生成位置の基準値
@@ -79,10 +85,10 @@ public class MyRoleInfomationMenu : HelpMenuCategoryBase
             float yInterval = 0.8f; // ボタン間の垂直間隔
 
             GameObject firstButton = null;
-            for (int i = 0; i < roles.Length; i++)
+            for (int i = 0; i < roles.Count; i++)
             {
                 var role = roles[i];
-                int totalRoles = roles.Length;
+                int totalRoles = roles.Count;
                 float posX;
                 if (totalRoles == 1)
                 {
@@ -120,11 +126,11 @@ public class MyRoleInfomationMenu : HelpMenuCategoryBase
     }
 
     // 役職ボタン生成用のヘルパー関数
-    private GameObject CreateRoleButton(IRoleBase role, Transform parent, Vector3 position)
+    private GameObject CreateRoleButton(IRoleInformation role, Transform parent, Vector3 position)
     {
         var bulkRoleButtonAsset = AssetManager.GetAsset<GameObject>("BulkRoleButton");
         var bulkRoleButton = GameObject.Instantiate(bulkRoleButtonAsset, parent);
-        bulkRoleButton.name = $"RoleButton_{role.Role}";
+        bulkRoleButton.name = $"RoleButton_{role.RoleName}";
         bulkRoleButton.transform.localPosition = position;
         bulkRoleButton.transform.localScale = Vector3.one * 0.36f;
 
@@ -132,7 +138,7 @@ public class MyRoleInfomationMenu : HelpMenuCategoryBase
         var textComponent = bulkRoleButton.transform.Find("Text")?.GetComponent<TextMeshPro>();
         if (textComponent != null)
         {
-            textComponent.text = ModHelpers.CsWithTranslation(role.RoleColor, role.Role.ToString()); // 翻訳キーは役職ID+"Name"
+            textComponent.text = ModHelpers.CsWithTranslation(role.RoleColor, role.RoleName); // 翻訳キーは役職ID+"Name"
         }
 
         // ボタンイベント設定

@@ -16,6 +16,10 @@ internal abstract class ModifierBase<T> : BaseSingleton<T>, IModifierBase where 
     protected int _optionidbase = -1;
 
     public abstract ModifierRoleId ModifierRole { get; }
+    public string RoleName => ModifierRole.ToString();
+    public virtual CustomOption[] Options => RoleOptionManager.TryGetModifierRoleOption(ModifierRole, out var role) ? role.Options : [];
+    public virtual int? PercentageOption => RoleOptionManager.TryGetModifierRoleOption(ModifierRole, out var role) ? role.Percentage : null;
+    public virtual int? NumberOfCrews => RoleOptionManager.TryGetModifierRoleOption(ModifierRole, out var role) ? role.NumberOfCrews : null;
     public abstract Color32 RoleColor { get; }
     public abstract List<Func<AbilityBase>> Abilities { get; }
     public abstract QuoteMod QuoteMod { get; }
@@ -38,10 +42,9 @@ internal abstract class ModifierBase<T> : BaseSingleton<T>, IModifierBase where 
     }
 }
 
-public interface IModifierBase
+public interface IModifierBase : IRoleInformation
 {
     public ModifierRoleId ModifierRole { get; }
-    public Color32 RoleColor { get; }
     /// <summary>
     /// 追加したいAbilityを[ typeof(HogeAbility), typeof(FugaAbility) ]の形でListとして用意する
     /// 役職選出時(OnSetRole)に自動でnewされます

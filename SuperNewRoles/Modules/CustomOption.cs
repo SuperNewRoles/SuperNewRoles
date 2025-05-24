@@ -138,9 +138,11 @@ public static class CustomOptionManager
                     if (!fieldNames.Add(field.Name))
                         throw new InvalidOperationException($"Category field name is duplicated: {field.Name}");
                     var assignFilter = field.GetCustomAttribute<AssignFilterAttribute>();
+                    var modifierAttribute = field.GetCustomAttribute<ModifierAttribute>();
                     var category = new CustomOptionCategory(
                         field.Name,
-                        isModifier: field.GetCustomAttribute<ModifierAttribute>() != null,
+                        isModifier: modifierAttribute != null,
+                        modifierRoleId: modifierAttribute?.ModifierRoleId ?? ModifierRoleId.None,
                         hasModifierAssignFilter: assignFilter != null,
                         modifierAssignFilterTeam: assignFilter?.AssignedTeamTypes,
                         modifierDoNotAssignRoles: assignFilter?.HiddenRoleIds);
@@ -671,6 +673,92 @@ public static class RoleOptionManager
     public static GhostRoleOption[] GhostRoleOptions { get; private set; } // GhostRole用
     public static List<ExclusivityData> ExclusivitySettings { get; private set; } = new();
 
+    // キャッシュ用のディクショナリ
+    private static Dictionary<ushort, RoleOption> _roleOptionsByByte = new();
+    private static Dictionary<ushort, ModifierRoleOption> _modifierRoleOptionsByByte = new();
+    private static Dictionary<ushort, GhostRoleOption> _ghostRoleOptionsByByte = new();
+
+    /// <summary>
+    /// RoleIdをbyteにキャストしたものからRoleOptionを取得します
+    /// </summary>
+    /// <param name="roleIdByte">RoleIdをbyteにキャストした値</param>
+    /// <returns>対応するRoleOption、見つからない場合はnull</returns>
+    public static RoleOption? GetRoleOption(RoleId role)
+    {
+        return _roleOptionsByByte.TryGetValue((ushort)role, out var roleOption) ? roleOption : null;
+    }
+
+    /// <summary>
+    /// ModifierRoleIdをbyteにキャストしたものからModifierRoleOptionを取得します
+    /// </summary>
+    /// <param name="modifierRoleIdByte">ModifierRoleIdをbyteにキャストした値</param>
+    /// <returns>対応するModifierRoleOption、見つからない場合はnull</returns>
+    public static ModifierRoleOption? GetModifierRoleOption(ModifierRoleId modifierRoleId)
+    {
+        return _modifierRoleOptionsByByte.TryGetValue((ushort)modifierRoleId, out var modifierRoleOption) ? modifierRoleOption : null;
+    }
+
+    /// <summary>
+    /// GhostRoleIdをbyteにキャストしたものからGhostRoleOptionを取得します
+    /// </summary>
+    /// <param name="ghostRoleIdByte">GhostRoleIdをbyteにキャストした値</param>
+    /// <returns>対応するGhostRoleOption、見つからない場合はnull</returns>
+    public static GhostRoleOption? GetGhostRoleOption(GhostRoleId ghostRoleId)
+    {
+        return _ghostRoleOptionsByByte.TryGetValue((ushort)ghostRoleId, out var ghostRoleOption) ? ghostRoleOption : null;
+    }
+
+    public static bool TryGetRoleOption(RoleId roleId, out RoleOption roleOption)
+    {
+        return _roleOptionsByByte.TryGetValue((ushort)roleId, out roleOption);
+    }
+
+    public static bool TryGetModifierRoleOption(ModifierRoleId modifierRoleId, out ModifierRoleOption modifierRoleOption)
+    {
+        return _modifierRoleOptionsByByte.TryGetValue((ushort)modifierRoleId, out modifierRoleOption);
+    }
+
+    public static bool TryGetGhostRoleOption(GhostRoleId ghostRoleId, out GhostRoleOption ghostRoleOption)
+    {
+        return _ghostRoleOptionsByByte.TryGetValue((ushort)ghostRoleId, out ghostRoleOption);
+    }
+
+    /// <summary>
+    /// キャッシュを更新します。RoleOptionLoadの後に呼び出される必要があります。
+    /// </summary>
+    private static void UpdateCaches()
+    {
+        // RoleOptionsのキャッシュを更新
+        _roleOptionsByByte.Clear();
+        if (RoleOptions != null)
+        {
+            foreach (var roleOption in RoleOptions)
+            {
+                _roleOptionsByByte[(byte)roleOption.RoleId] = roleOption;
+            }
+        }
+
+        // ModifierRoleOptionsのキャッシュを更新
+        _modifierRoleOptionsByByte.Clear();
+        if (ModifierRoleOptions != null)
+        {
+            foreach (var modifierRoleOption in ModifierRoleOptions)
+            {
+                _modifierRoleOptionsByByte[(byte)modifierRoleOption.ModifierRoleId] = modifierRoleOption;
+            }
+        }
+
+        // GhostRoleOptionsのキャッシュを更新
+        _ghostRoleOptionsByByte.Clear();
+        if (GhostRoleOptions != null)
+        {
+            foreach (var ghostRoleOption in GhostRoleOptions)
+            {
+                _ghostRoleOptionsByByte[(byte)ghostRoleOption.RoleId] = ghostRoleOption;
+            }
+        }
+    }
+
     [CustomRPC]
     public static void RpcSyncRoleOption(RoleId roleId, byte numberOfCrews, int percentage)
     {
@@ -902,6 +990,8 @@ public static class RoleOptionManager
                 return new GhostRoleOption(role.Role, 0, 0, optionsForRole);
             })
             .ToArray();
+
+        UpdateCaches();
     }
 
     public static void AddExclusivitySetting(int maxAssign, string[] roles)
@@ -1750,7 +1840,11 @@ public class CustomOptionBoolAttribute : CustomOptionBaseAttribute
 [AttributeUsage(AttributeTargets.Field)]
 public class ModifierAttribute : Attribute
 {
-    public ModifierAttribute() { }
+    public ModifierRoleId ModifierRoleId { get; }
+    public ModifierAttribute(ModifierRoleId modifierRoleId = ModifierRoleId.None)
+    {
+        ModifierRoleId = modifierRoleId;
+    }
 }
 [AttributeUsage(AttributeTargets.Field)]
 public class AssignFilterAttribute : Attribute
@@ -1767,20 +1861,23 @@ public class CustomOptionCategory
 {
     public string Id { get; }
     public string Name { get; }
-    public List<CustomOption> Options { get; } = new();
+    public CustomOption[] Options { get; private set; } = Array.Empty<CustomOption>();
+    private List<CustomOption> _options = new();
     public bool IsModifier { get; }
     public bool HasModifierAssignFilter { get; }
     public List<RoleId> ModifierAssignFilter { get; set; } = new();
+    public ModifierRoleId ModifierRoleId { get; }
     public AssignedTeamType[] ModifierAssignFilterTeam { get; set; } = Array.Empty<AssignedTeamType>();
     public RoleId[] ModifierDoNotAssignRoles { get; set; } = Array.Empty<RoleId>();
 
-    public CustomOptionCategory(string name, bool isModifier = false, bool hasModifierAssignFilter = false, List<RoleId> modifierAssignFilter = null, AssignedTeamType[] modifierAssignFilterTeam = null, RoleId[] modifierDoNotAssignRoles = null)
+    public CustomOptionCategory(string name, bool isModifier = false, ModifierRoleId modifierRoleId = ModifierRoleId.None, bool hasModifierAssignFilter = false, List<RoleId> modifierAssignFilter = null, AssignedTeamType[] modifierAssignFilterTeam = null, RoleId[] modifierDoNotAssignRoles = null)
     {
         Id = ComputeMD5Hash.Compute(name);
         Name = name; // 後でTranslationを使用して翻訳する
         RegisterCategory(this);
         IsModifier = isModifier;
         HasModifierAssignFilter = hasModifierAssignFilter;
+        ModifierRoleId = modifierRoleId;
         ModifierAssignFilter = modifierAssignFilter ?? new();
         ModifierAssignFilterTeam = modifierAssignFilterTeam ?? Array.Empty<AssignedTeamType>();
         ModifierDoNotAssignRoles = modifierDoNotAssignRoles ?? Array.Empty<RoleId>();
@@ -1793,9 +1890,10 @@ public class CustomOptionCategory
 
     public void AddOption(CustomOption option)
     {
-        if (!Options.Contains(option))
+        if (!_options.Contains(option))
         {
-            Options.Add(option);
+            _options.Add(option);
+            Options = _options.ToArray();
         }
     }
 }

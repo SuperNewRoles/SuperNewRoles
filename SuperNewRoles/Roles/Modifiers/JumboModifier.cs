@@ -57,6 +57,9 @@ class JumboModifier : ModifierBase<JumboModifier>
             teams.Add(AssignedTeamType.Impostor);
         if (JumboAssignToNeutral)
             teams.Add(AssignedTeamType.Neutral);
+        // 全て
+        if (teams.Count == 0 || teams.Count >= 3)
+            return [];
         return teams;
     }
 }

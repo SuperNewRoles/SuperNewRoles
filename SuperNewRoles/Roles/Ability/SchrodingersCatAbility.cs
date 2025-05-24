@@ -121,10 +121,7 @@ public class SchrodingersCatAbility : AbilityBase
                 case SchrodingersCatTeam.Friends:
                     color = Jackal.Instance.RoleColor;
                     break;
-                case SchrodingersCatTeam.Pavlovs:
-                case SchrodingersCatTeam.PavlovFriends:
-                    color = PavlovsOwner.Instance.RoleColor;
-                    break;
+
                 default:
                     return;
             }

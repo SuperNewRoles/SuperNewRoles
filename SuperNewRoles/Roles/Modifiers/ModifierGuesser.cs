@@ -23,6 +23,12 @@ class ModifierGuesser : ModifierBase<ModifierGuesser>
             madmateSuicide: ModifierGuesserMadmateSuicide
         )];
 
+    public override int? PercentageOption => 100;
+
+    public override int? NumberOfCrews => 1;
+
+    public override CustomOption[] Options => ModifierGuesserCategory.Options;
+
     public override QuoteMod QuoteMod => QuoteMod.SuperNewRoles;
 
     public override List<AssignedTeamType> AssignedTeams => [];
@@ -38,7 +44,7 @@ class ModifierGuesser : ModifierBase<ModifierGuesser>
 
     public override RoleId[] DoNotAssignRoles => [RoleId.God, RoleId.NiceGuesser, RoleId.EvilGuesser, RoleId.Balancer];
 
-    [Modifier]
+    [Modifier(ModifierRoleId.ModifierGuesser)]
     [AssignFilter([], [RoleId.God, RoleId.NiceGuesser, RoleId.EvilGuesser, RoleId.Balancer])]
     public static CustomOptionCategory ModifierGuesserCategory;
 
