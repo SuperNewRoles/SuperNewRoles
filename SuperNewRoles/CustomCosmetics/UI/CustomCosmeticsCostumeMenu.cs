@@ -137,10 +137,9 @@ public class CosmeticDataWrapperHat : CosmeticDataWrapper, ICustomCosmeticHat
     public override Sprite Asset_Back => hatViewData?.GetAsset()?.BackImage;
     public override void LoadAsync(Action onSuccess)
     {
-        // Logger.Info("Wrrapperrrr!!!!!!!!!!!!!!!!!!");
+
         if (_data is HatData hat)
         {
-            // Logger.Info("Wrrapperrr222222222222r!!!!!!!!!!!!!!!!!!");
             if (hatViewData == null)
                 hatViewData = hat.CreateAddressableAsset();
             if (hatViewData != null)
