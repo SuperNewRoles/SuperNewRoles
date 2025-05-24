@@ -31,8 +31,7 @@ public static class CustomCosmeticsAssetBundleExtensions
 {
     public static Sprite LoadCosmeticsAsset(this AssetBundle assetBundle, string path)
     {
-        Sprite sprite = assetBundle.LoadAsset<Sprite>(path);
-        return sprite;
+        return assetBundle.LoadAsset<Sprite>(path);
     }
 }
 
@@ -390,7 +389,7 @@ public class CustomCosmeticsNamePlate
             if (assetBundle == null)
                 _loadSprite = CustomCosmeticsLoader.LoadSpriteFromPath(path_base + "plate.png");
             else
-                _loadSprite = AssetManager.GetAsset<Sprite>(path_base + "plate.png");
+                _loadSprite = assetBundle.LoadCosmeticsAsset(path_base + "plate.png");
         }
         return _loadSprite;
     }
