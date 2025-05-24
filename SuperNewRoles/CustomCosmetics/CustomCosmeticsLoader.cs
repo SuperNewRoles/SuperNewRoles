@@ -283,11 +283,11 @@ public class CustomCosmeticsLoader
                         string packagenamed = currentPackage.name;
                         if (!willDownloads.ContainsKey(packagenamed))
                             willDownloads.Add(packagenamed, []);
-                        willDownloads[packagenamed].Add((visor["name"].ToString() + "_idle", getpath(url, json["visors"] != null ? "visors/" : "Visors/" + visor["resource"]?.ToString())));
+                        willDownloads[packagenamed].Add((visor["name"].ToString() + "_idle", getpath(url, (json["visors"] != null ? "visors/" : "Visors/") + visor["resource"]?.ToString())));
                         if (visor["resourceleft"] != null)
-                            willDownloads[packagenamed].Add((visor["name"].ToString() + "_idle_left", getpath(url, json["visors"] != null ? "visors/" : "Visors/" + visor["resourceleft"]?.ToString())));
+                            willDownloads[packagenamed].Add((visor["name"].ToString() + "_idle_left", getpath(url, (json["visors"] != null ? "visors/" : "Visors/") + visor["resourceleft"]?.ToString())));
                         if (visor["flipresource"] != null)
-                            willDownloads[packagenamed].Add((visor["name"].ToString() + "_flip", getpath(url, json["visors"] != null ? "visors/" : "Visors/" + visor["flipresource"]?.ToString())));
+                            willDownloads[packagenamed].Add((visor["name"].ToString() + "_flip", getpath(url, (json["visors"] != null ? "visors/" : "Visors/") + visor["flipresource"]?.ToString())));
                     }
                 }
                 else
@@ -983,8 +983,6 @@ public class CustomCosmeticsLoader
                 Logger.Info("Downloading sprite: " + downloadQueue.Count);
                 var item = downloadQueue.Dequeue();
                 activeDownloads++;
-                // SuperNewRolesPlugin.Instance が MonoBehaviour を継承していると仮定
-                // そうでない場合は、適切なコルーチン開始方法に置き換える必要があります。
                 string filePath = Path.Combine(item.packagePath, $"{item.spriteName}.png").Replace("\\", "/");
                 if (File.Exists(filePath))
                 {
@@ -1097,7 +1095,7 @@ public class CustomCosmeticsLoader
 
     private static Sprite CreateSpriteFromPath(string path)
     {
-        Texture2D texture = new(2, 2, TextureFormat.ARGB32, true);
+        Texture2D texture = new(2, 2, TextureFormat.ARGB32, false);
         byte[] byteTexture;
         if (downloadedSprites == null || !downloadedSprites.TryGetValue(path, out byteTexture))
             byteTexture = File.ReadAllBytes(path);
@@ -1164,7 +1162,7 @@ public class CustomCosmeticsLoader
             Logger.Error($"ファイルが存在しません: {path}");
             return null;
         }
-        Texture2D texture = new(2, 2, TextureFormat.ARGB32, true);
+        Texture2D texture = new(2, 2, TextureFormat.ARGB32, false);
         byte[] byteTexture = File.ReadAllBytes(path);
         LoadImage(texture, byteTexture, true);
         if (texture == null)
