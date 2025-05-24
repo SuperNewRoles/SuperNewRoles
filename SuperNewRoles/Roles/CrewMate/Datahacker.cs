@@ -131,7 +131,7 @@ public class DatahackerAbility : AbilityBase
 
     public override void AttachToLocalPlayer()
     {
-        nameTextUpdateVisiableListener = NameTextUpdateVisiableEvent.Instance.AddListener((data) => UpdateNameText(data));
+        nameTextUpdateVisiableListener = NameTextUpdateVisiableEvent.Instance.AddListener((data) => UpdateNameVisible(data));
     }
 
     public override void DetachToLocalPlayer()
@@ -175,10 +175,13 @@ public class DatahackerAbility : AbilityBase
         }
     }
 
-    private void UpdateNameText(NameTextUpdateVisiableEventData data)
+    private void UpdateNameVisible(NameTextUpdateVisiableEventData data)
     {
         if (Player.AmOwner && hackingCompleted && hackingData.CanSeeRoleNames)
-            NameText.UpdateVisiable(data.Player, data.Player.IsAlive());
+        {
+            if (CanSeeRole(data.Player, out _))
+                NameText.UpdateVisiable(data.Player, data.Player.IsAlive());
+        }
     }
 
     /// <summary>
@@ -239,33 +242,41 @@ public class DatahackerAbility : AbilityBase
     }
     private bool CanSeeRole(ExPlayerControl target, out Color32 color)
     {
+        color = Color.white;
         Logger.Info($"CanSeeRole: {target.Data.PlayerName}");
-        if (target.IsNeutral() && hackingData.CanSeeNeutral)
+        if (target.IsNeutral())
         {
+            if (hackingData.CanSeeNeutral)
+                return false;
             Logger.Info("Neutral");
             color = new(127, 127, 127, byte.MaxValue);
             return hackingData.CanSeeKillingNeutral ? target.IsKiller() : true;
         }
-        if (target.IsImpostor() && hackingData.CanSeeImpostor)
+        if (target.IsImpostor())
         {
+            if (hackingData.CanSeeImpostor)
+                return false;
             Logger.Info("Impostor");
             color = Palette.ImpostorRed;
             return true;
         }
-        if (target.IsCrewmate() && hackingData.CanSeeCrew)
+        else
         {
-            if (target.IsMadRoles() && hackingData.CanSeeMadmates)
+            if (hackingData.CanSeeCrew)
+                return false;
+            Logger.Info("Crewmate");
+            if ((target.IsMadRoles() || target.IsFriendRoles()) && hackingData.CanSeeMadmates)
             {
                 Logger.Info("Madmates");
                 color = Palette.ImpostorRed;
                 return true;
             }
-            Logger.Info("Crewmate");
-            color = target.Data.Role.TeamColor;
-            return true;
+            else
+            {
+                Logger.Info("Crewmate (Mad as Crew)");
+                color = target.Data.Role.TeamColor;
+                return true;
+            }
         }
-        Logger.Info("Clear");
-        color = Color.clear;
-        return false;
     }
 }

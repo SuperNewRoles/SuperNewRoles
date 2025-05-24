@@ -409,8 +409,12 @@ CrewmateWin,クルーメイト,Crewmates
 
 # Sheriff Options
 SheriffKillCooldown,キルクールタイム,Kill Cooldown,杀人冷却时间,殺人冷卻時間
+SheriffMaxKillCount,キル可能回数,Killable count
+SheriffCanKillMadRoles,マッドをキルできる,Can Kill MadRoles
 SheriffCanKillNeutral,第三陣営をキルできる,Can Kill Neutral,可以杀第三阵营,可以殺第三陣營
 SheriffCanKillImpostor,インポスターをキルできる,Can Kill Impostor,可以杀内鬼,可以殺內鬼
+SheriffCanKillFriendRoles,フレンズをキルできる,Can Kill FriendRoles
+SheriffCanKillLovers,ラバーズをキルできる,Can Kill Lovers
 
 # Guesser Options
 NiceGuesserMaxShots,打てる最大数,Maximum Number of Shots,最大射击次数,最大射擊次數
