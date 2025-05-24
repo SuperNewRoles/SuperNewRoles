@@ -59,7 +59,7 @@ public class CustomHatLayer : MonoBehaviour
 
     public void OnDestroy()
     {
-        UnloadAsset();
+        // UnloadAsset();
     }
 
     public bool HasHat()

@@ -83,7 +83,7 @@ public class BodyBuilderAbility : CustomButtonBase
     public override bool CheckHasButton()
     {
         // 全タスク完了時のみ使用可能
-        return Player == ExPlayerControl.LocalPlayer && Player.Player.AllTasksCompleted();
+        return Player == ExPlayerControl.LocalPlayer && Player.IsTaskComplete();
     }
 
     private void UpdatePhysics(PlayerPhysicsFixedUpdateEventData data)
@@ -109,7 +109,7 @@ public class BodyBuilderAbility : CustomButtonBase
     {
         Logger.Info("BodyBuilder ポージング開始");
         // 使用者が霊界かつ自身が霊界でないならreturn
-        if (Player.IsDead() && !PlayerControl.LocalPlayer.Data.IsDead)
+        if (Player.IsDead() && ExPlayerControl.LocalPlayer.IsAlive())
             return;
         Logger.Info("BodyBuilder ポージング開始2");
 
@@ -120,16 +120,19 @@ public class BodyBuilderAbility : CustomButtonBase
         // 音を再生
         var distance = Vector2.Distance(PlayerControl.LocalPlayer.transform.position, Player.transform.position);
         var volume = 1 / distance <= 0.25f ? 0f : 1 / distance;
-        ShipStatus ship = MapLoader.Fungle;
-        var liftWeightsTask = ship.ShortTasks.FirstOrDefault(x => x.TaskType == TaskTypes.LiftWeights);
-        if (liftWeightsTask != null)
+        // 最悪音ならなくてもいいので遅延
+        MapLoader.LoadMap(MapNames.Fungle, (ship) =>
         {
-            var liftWeightsMinigame = liftWeightsTask.MinigamePrefab.TryCast<LiftWeightsMinigame>();
-            if (liftWeightsMinigame != null)
+            var liftWeightsTask = ship.ShortTasks.FirstOrDefault(x => x.TaskType == TaskTypes.LiftWeights);
+            if (liftWeightsTask != null)
             {
-                ModHelpers.PlaySound(Player.transform, liftWeightsMinigame.completeAllRepsSound, false, volume, null);
+                var liftWeightsMinigame = liftWeightsTask.MinigamePrefab.TryCast<LiftWeightsMinigame>();
+                if (liftWeightsMinigame != null)
+                {
+                    ModHelpers.PlaySound(Player.transform, liftWeightsMinigame.completeAllRepsSound, false, volume, null);
+                }
             }
-        }
+        });
         Logger.Info("BodyBuilder ポージング開始4");
 
         // ポーズプレハブを生成

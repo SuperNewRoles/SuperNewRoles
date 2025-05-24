@@ -15,7 +15,7 @@ class BodyBuilder : RoleBase<BodyBuilder>
     public override List<Func<AbilityBase>> Abilities { get; } = [
         () => new BodyBuilderAbility(),
         () => new LiftWeightsMinigameAbility(),
-        () => new CustomTaskTypeAbility(TaskTypes.LiftWeights, ChangeAllTaskLiftWeights, MapNames.Airship),
+        () => new CustomTaskTypeAbility(TaskTypes.LiftWeights, ChangeAllTaskLiftWeights, MapNames.Fungle),
         () => new CustomTaskAbility(
             () => (true, TaskOptionAvailable, TaskOptionAvailable ? TaskOption.Total : null),
             TaskOptionAvailable ? TaskOption : null

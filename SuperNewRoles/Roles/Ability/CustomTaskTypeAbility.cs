@@ -41,6 +41,13 @@ public class CustomTaskTypeAbility : AbilityBase
         return task;
     }
 
+    public override void AttachToLocalPlayer()
+    {
+        base.AttachToLocalPlayer();
+        // 先に読み込んでおく
+        CustomTaskTypePatches.ConsolePatch.GetTargetShip(TargetTaskType, TargetMap, (_) => { });
+    }
+
     public void AssignTasks(int count)
     {
         var taskList = new List<byte>();
@@ -82,12 +89,14 @@ public static class CustomTaskTypePatches
                 return;
 
             preMinigame = task.MinigamePrefab;
-            ShipStatus ship = GetTargetShip(customTaskTypeAbility.TargetTaskType, customTaskTypeAbility.TargetMap);
-            var targetTask = GetTargetTaskFromShip(ship, customTaskTypeAbility.TargetTaskType);
-            if (targetTask != null)
+            GetTargetShip(customTaskTypeAbility.TargetTaskType, customTaskTypeAbility.TargetMap, (ship) =>
             {
-                task.MinigamePrefab = targetTask.MinigamePrefab;
-            }
+                var targetTask = GetTargetTaskFromShip(ship, customTaskTypeAbility.TargetTaskType);
+                if (targetTask != null)
+                {
+                    task.MinigamePrefab = targetTask.MinigamePrefab;
+                }
+            });
         }
 
         static void Postfix(Console __instance)
@@ -108,20 +117,29 @@ public static class CustomTaskTypePatches
             }
         }
 
-        private static ShipStatus GetTargetShip(TaskTypes targetTaskType, MapNames? targetMap)
+        public static void GetTargetShip(TaskTypes targetTaskType, MapNames? targetMap, Action<ShipStatus> onLoaded)
         {
+            Logger.Info($"GetTargetShip: {targetTaskType}, {targetMap}");
             // 特定のマップが指定されている場合はそのマップから取得
             if (targetMap.HasValue)
             {
-                return targetMap.Value switch
+                switch (targetMap.Value)
                 {
-                    MapNames.Fungle => MapLoader.Fungle,
-                    _ => ShipStatus.Instance
-                };
+                    case MapNames.Fungle:
+                        Logger.Info("LoadMap: Fungle");
+                        MapLoader.LoadMap(MapNames.Fungle, (ship) =>
+                        {
+                            onLoaded(ship);
+                        });
+                        break;
+                    default:
+                        onLoaded(ShipStatus.Instance);
+                        break;
+                }
             }
 
             // 現在のマップから取得
-            return ShipStatus.Instance;
+            onLoaded(ShipStatus.Instance);
         }
 
         private static NormalPlayerTask GetTargetTaskFromShip(ShipStatus ship, TaskTypes targetTaskType)

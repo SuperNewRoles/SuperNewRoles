@@ -101,12 +101,15 @@ public static class SelectSpawn
         };
     }
 
-    public static IEnumerator SelectSpawnCoroutine(ShipStatus currentShip, MapSpawnData mapData)
+    public static IEnumerator SelectSpawnCoroutine(MapSpawnData mapData)
     {
-        SpawnInMinigame spawnInMinigame = GameObject.Instantiate<SpawnInMinigame>(MapLoader.Airship.TryCast<AirshipStatus>().SpawnInGame);
-        spawnInMinigame.transform.SetParent(Camera.main.transform, false);
-        spawnInMinigame.transform.localPosition = new Vector3(0f, 0f, -600f);
-
+        SpawnInMinigame spawnInMinigame = null;
+        yield return MapLoader.LoadMapAsync(MapNames.Airship, (ship) =>
+        {
+            spawnInMinigame = GameObject.Instantiate<SpawnInMinigame>(ship.TryCast<AirshipStatus>().SpawnInGame);
+            spawnInMinigame.transform.SetParent(Camera.main.transform, false);
+            spawnInMinigame.transform.localPosition = new Vector3(0f, 0f, -600f);
+        });
         List<SpawnInMinigame.SpawnLocation> locations = new(mapData.Locations.Length);
         foreach (var loc in mapData.Locations)
         {
@@ -129,23 +132,40 @@ public static class SelectSpawn
     [HarmonyPatch(typeof(ShipStatus), nameof(ShipStatus.PrespawnStep))]
     public static class ShipStatus_PrespawnStep_Patch
     {
-        public static bool Prefix(ShipStatus __instance, ref Il2CppSystem.Collections.IEnumerator __result)
+        public static bool Prefix(ref Il2CppSystem.Collections.IEnumerator __result)
         {
-            MapSpawnData currentMapData = null;
-
-            if (PolusHandler.IsPolusSpawnType(SpawnTypeOptions.Select))
-                currentMapData = PolusMapData;
-
-            else if (FungleHandler.IsFungleSpawnType(SpawnTypeOptions.Select))
-                currentMapData = FungleMapData;
+            MapSpawnData currentMapData = GetMapData();
 
             if (currentMapData != null && currentMapData.IsSpawnTypeSelect(SpawnTypeOptions.Select)) // Double check IsSpawnTypeSelect for safety
             {
-                __result = SelectSpawnCoroutine(__instance, currentMapData).WrapToIl2Cpp();
+                __result = SelectSpawnCoroutine(currentMapData).WrapToIl2Cpp();
                 return false; // Skip original method
             }
 
             return true; // Proceed with original method if not Polus or Fungle with select spawn
         }
+    }
+    [HarmonyPatch(typeof(AmongUsClient), nameof(AmongUsClient.CoStartGame))]
+    public static class AmongUsClient_CoStartGame_Patch
+    {
+        public static void Postfix(AmongUsClient __instance)
+        {
+            Logger.Info("AmongUsClient_CoStartGame_Patch");
+            MapSpawnData currentMapData = GetMapData();
+            if (currentMapData != null && currentMapData.IsSpawnTypeSelect(SpawnTypeOptions.Select))
+            {
+                // 先に読み込んでおく
+                MapLoader.LoadMap(MapNames.Airship, (ship) => { });
+            }
+        }
+    }
+
+    private static MapSpawnData GetMapData()
+    {
+        if (PolusHandler.IsPolusSpawnType(SpawnTypeOptions.Select))
+            return PolusMapData;
+        else if (FungleHandler.IsFungleSpawnType(SpawnTypeOptions.Select))
+            return FungleMapData;
+        return null;
     }
 }

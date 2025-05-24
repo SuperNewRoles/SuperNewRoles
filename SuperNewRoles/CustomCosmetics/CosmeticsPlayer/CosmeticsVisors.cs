@@ -89,7 +89,7 @@ public class CustomVisorLayer : MonoBehaviour
         }
         CustomCosmeticVisor = data as ICustomCosmeticVisor;
         SetMaterialColor(color);
-        UnloadAsset();
+        // UnloadAsset();
         Visor.LoadAsync(() =>
         {
             PopulateFromViewData();

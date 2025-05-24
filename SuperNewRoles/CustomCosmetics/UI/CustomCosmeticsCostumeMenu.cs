@@ -747,18 +747,6 @@ public class CustomCosmeticsCostumeMenu : CustomCosmeticsMenuBase<CustomCosmetic
         kisekae.SetActive(false);
         if (CurrentCostumeTab != null)
         {
-            // Unload cosmetics from the previous tab's packagedCosmetics
-            if (this.packagedCosmetics != null)
-            {
-                foreach (var cosmeticList in this.packagedCosmetics.Values)
-                {
-                    foreach (var cosmetic in cosmeticList)
-                    {
-                        cosmetic.SetDoUnload();
-                    }
-                }
-                this.packagedCosmetics.Clear();
-            }
             GameObject.Destroy(CurrentCostumeTab);
             CurrentCostumeTab = null;
         }
@@ -1392,6 +1380,7 @@ public class CustomCosmeticsCostumeMenu : CustomCosmeticsMenuBase<CustomCosmetic
         activeSlots = null;
         PlayerCustomizationMenu.Instance.PreviewArea.transform.localPosition = new(0f, -0.25f, -3f);
         PlayerCustomizationMenu.Instance.itemName.transform.localPosition = new(0f, -1.74f, -5f);
+        Resources.UnloadUnusedAssets();
     }
 
     // ボタンのプレビュー画像を更新するメソッド
