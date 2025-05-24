@@ -141,23 +141,103 @@ public static class AssetManager
     {
         var typeKey = TypeToByte[assetBundleType];
         if (!_cachedAssets.TryGetValue(typeKey, out var typeCache))
+        {
+            Logger.Error($"Cache for AssetBundleType {assetBundleType} not found. Bundle may not have been loaded.", "AssetManager.GetAsset");
             return null;
+        }
 
         var cacheKey = new AssetCacheKey(path, Il2CppType.Of<T>());
-        if (typeCache.TryGetValue(cacheKey, out var cached) && cached != null)
-            return cached?.TryCast<T>();
-
-        var bundle = Bundles[typeKey];
-        var loadedAsset = bundle.LoadAsset<T>(path);
-        if (loadedAsset == null)
+        if (typeCache.TryGetValue(cacheKey, out var cachedUnityObject) && cachedUnityObject != null)
         {
-            Logger.Error($"Failed to load Asset: {path}", "GetAsset");
+            return cachedUnityObject.TryCast<T>();
+        }
+
+        if (!Bundles.TryGetValue(typeKey, out var bundle) || bundle == null)
+        {
+            Logger.Error($"AssetBundle for type {assetBundleType} not loaded or is null. Cannot load asset: {path}", "AssetManager.GetAsset");
             typeCache[cacheKey] = null;
             return null;
         }
-        var asset = loadedAsset;
-        typeCache[cacheKey] = asset;
-        return asset;
+
+        var loadedUnityObject = bundle.LoadAsset(path, Il2CppType.Of<T>());
+
+        if (loadedUnityObject == null)
+        {
+            Logger.Error($"Failed to load asset: {path} of type {Il2CppType.Of<T>().Name} from bundle {assetBundleType}.", "AssetManager.GetAsset");
+            typeCache[cacheKey] = null;
+            return null;
+        }
+
+        if (ConfigRoles.IsCompressCosmetics)
+        {
+            // Attempt runtime compression for Texture2D and Sprites
+            if (loadedUnityObject is Texture2D texture)
+            {
+                if (!texture.isReadable)
+                {
+                    Logger.Info($"Texture2D '{path}' is not readable. Skipping compression.", "AssetManager.GetAsset");
+                }
+                else if (IsUncompressedTextureFormat(texture.format))
+                {
+                    try
+                    {
+                        Logger.Info($"Compressing Texture2D: {path} (Original Format: {texture.format})", "AssetManager.GetAsset");
+                        texture.Compress(true); // false for lower quality, faster compression
+                        Logger.Info($"Compressed Texture2D: {path} (New Format: {texture.format})", "AssetManager.GetAsset");
+                    }
+                    catch (Exception e)
+                    {
+                        Logger.Error($"Failed to compress Texture2D '{path}'. Error: {e.Message}", "AssetManager.GetAsset");
+                    }
+                }
+            }
+            else if (loadedUnityObject is Sprite sprite)
+            {
+                Texture2D spriteTexture = sprite.texture;
+                if (spriteTexture != null)
+                {
+                    if (!spriteTexture.isReadable)
+                    {
+                        Logger.Info($"Sprite's texture '{path}' is not readable. Skipping compression.", "AssetManager.GetAsset");
+                    }
+                    else if (IsUncompressedTextureFormat(spriteTexture.format))
+                    {
+                        try
+                        {
+                            Logger.Info($"Compressing Sprite's Texture: {path} (Original Format: {spriteTexture.format})", "AssetManager.GetAsset");
+                            spriteTexture.Compress(true);
+                            Logger.Info($"Compressed Sprite's Texture: {path} (New Format: {spriteTexture.format})", "AssetManager.GetAsset");
+                        }
+                        catch (Exception e)
+                        {
+                            Logger.Error($"Failed to compress Sprite's texture '{path}'. Error: {e.Message}", "AssetManager.GetAsset");
+                        }
+                    }
+                }
+            }
+        }
+
+        typeCache[cacheKey] = loadedUnityObject; // Cache the potentially modified Unity Object
+        return loadedUnityObject.TryCast<T>();
+    }
+
+    private static bool IsUncompressedTextureFormat(TextureFormat format)
+    {
+        switch (format)
+        {
+            // Common uncompressed formats that Texture2D.Compress() typically targets
+            case TextureFormat.Alpha8:
+            case TextureFormat.ARGB4444:
+            case TextureFormat.RGB24:
+            case TextureFormat.RGBA32:
+            case TextureFormat.ARGB32:
+            case TextureFormat.BGRA32: // Often used on some platforms
+                return true;
+            default:
+                // If it's already a known compressed format (DXT, ETC, ASTC, PVRTC, etc.)
+                // or a format that Compress() doesn't handle well or isn't intended for, return false.
+                return false;
+        }
     }
 
     public static GameObject Instantiate(string path, Transform parent, AssetBundleType assetBundleType = AssetBundleType.Sprite)

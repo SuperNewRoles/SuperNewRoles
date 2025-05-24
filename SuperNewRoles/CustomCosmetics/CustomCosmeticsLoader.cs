@@ -1066,7 +1066,6 @@ public class CustomCosmeticsLoader
 
     public static Sprite LoadSpriteFromPath(string path)
     {
-        Logger.Info($"LoadSpriteFromPath: {path}");
         try
         {
             if (File.Exists(path))
@@ -1107,7 +1106,7 @@ public class CustomCosmeticsLoader
             Logger.Warning("Used Sprites");
             downloadedSprites.Remove(path);
         }
-        LoadImage(texture, byteTexture, false);
+        LoadImage(texture, byteTexture, true);
         if (texture == null)
             return null;
         Sprite sprite = Sprite.Create(texture, new Rect(0, 0, texture.width, texture.height), new Vector2(0.53f, 0.575f), texture.width * 0.375f);
@@ -1121,11 +1120,10 @@ public class CustomCosmeticsLoader
     internal static d_LoadImage iCall_LoadImage;
     private static bool LoadImage(Texture2D tex, byte[] data, bool markNonReadable)
     {
-        Logger.Info($"Current Thread: {Thread.CurrentThread.ManagedThreadId}");
         if (iCall_LoadImage == null)
             iCall_LoadImage = IL2CPP.ResolveICall<d_LoadImage>("UnityEngine.ImageConversion::LoadImage");
         var il2cppArray = (Il2CppStructArray<byte>)data;
-        return ImageConversion.LoadImage(tex, il2cppArray, markNonReadable);
+        return iCall_LoadImage.Invoke(tex.Pointer, il2cppArray.Pointer, markNonReadable);
         // return iCall_LoadImage.Invoke(tex.Pointer, il2cppArray.Pointer, markNonReadable);
     }
 
@@ -1168,7 +1166,7 @@ public class CustomCosmeticsLoader
         }
         Texture2D texture = new(2, 2, TextureFormat.ARGB32, true);
         byte[] byteTexture = File.ReadAllBytes(path);
-        LoadImage(texture, byteTexture, false);
+        LoadImage(texture, byteTexture, true);
         if (texture == null)
             return null;
         Sprite sprite = Sprite.Create(texture, new Rect(0, 0, texture.width, texture.height), new Vector2(0.53f, 0.575f), texture.width * 0.375f);
@@ -1191,7 +1189,7 @@ public class CustomCosmeticsLoader
             byte[] bytes = File.ReadAllBytes(path);
             Texture2D texture = new(2, 2);
 
-            LoadImage(texture, bytes, false);
+            LoadImage(texture, bytes, true);
 
             Rect rect = new(0f, 0f, texture.width, texture.height);
             Sprite sprite = Sprite.Create(texture, rect, new Vector2(0.5f, 0.5f), 115f);

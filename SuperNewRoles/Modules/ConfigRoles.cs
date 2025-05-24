@@ -9,6 +9,15 @@ public static class ConfigRoles
     public static ConfigEntry<bool> _isCPUProcessorAffinity;
     public static ConfigEntry<ulong> _ProcessorAffinityMask;
 
+    private static ConfigEntry<bool> _isCompressCosmetics;
+
+    public static bool IsCompressCosmetics { get; private set; }
+
+    public static void SetIsCompressCosmetics(bool value)
+    {
+        IsCompressCosmetics = value;
+        _isCompressCosmetics.Value = value;
+    }
 
     public static void Init()
     {
@@ -16,6 +25,9 @@ public static class ConfigRoles
 
         _isCPUProcessorAffinity = SuperNewRolesPlugin.Instance.Config.Bind("Default", "CPUProcessorAffinity", false, "CPUの割当を変更するかどうか(Change CPU affinity?)");
         _ProcessorAffinityMask = SuperNewRolesPlugin.Instance.Config.Bind("Default", "ProcessorAffinityMask", (ulong)3, "CPUの割当を変更するためのマスク(Mask for changing CPU affinity)");
+
+        _isCompressCosmetics = SuperNewRolesPlugin.Instance.Config.Bind("Default", "CompressCosmetics", true, "コスメティックを圧縮するかどうか(Compress cosmetics?)");
+        IsCompressCosmetics = _isCompressCosmetics.Value;
     }
 }
 

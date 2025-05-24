@@ -27,6 +27,15 @@ public class CustomCosmeticsPackage
     }
 }
 
+public static class CustomCosmeticsAssetBundleExtensions
+{
+    public static Sprite LoadCosmeticsAsset(this AssetBundle assetBundle, string path)
+    {
+        Sprite sprite = assetBundle.LoadAsset<Sprite>(path);
+        return sprite;
+    }
+}
+
 public class CustomCosmeticsHat
 {
     public string name { get; }
@@ -73,7 +82,7 @@ public class CustomCosmeticsHat
             if (assetBundle == null)
                 _loadFrontSprite = CustomCosmeticsLoader.LoadSpriteFromPath(path_base + "front.png");
             else
-                _loadFrontSprite = assetBundle.LoadAsset<Sprite>(path_base + "front.png");
+                _loadFrontSprite = assetBundle.LoadCosmeticsAsset(path_base + "front.png");
         }
         return _loadFrontSprite;
     }
@@ -86,7 +95,7 @@ public class CustomCosmeticsHat
             if (assetBundle == null)
                 _loadClimbSprite = CustomCosmeticsLoader.LoadSpriteFromPath(path_base + "climb.png");
             else
-                _loadClimbSprite = assetBundle.LoadAsset<Sprite>(path_base + "climb.png");
+                _loadClimbSprite = assetBundle.LoadCosmeticsAsset(path_base + "climb.png");
         }
         return _loadClimbSprite;
     }
@@ -99,7 +108,7 @@ public class CustomCosmeticsHat
             if (assetBundle == null)
                 _loadBackSprite = CustomCosmeticsLoader.LoadSpriteFromPath(path_base + "back.png");
             else
-                _loadBackSprite = assetBundle.LoadAsset<Sprite>(path_base + "back.png");
+                _loadBackSprite = assetBundle.LoadCosmeticsAsset(path_base + "back.png");
         }
         return _loadBackSprite;
     }
@@ -112,7 +121,7 @@ public class CustomCosmeticsHat
             if (assetBundle == null)
                 _loadFlipSprite = CustomCosmeticsLoader.LoadSpriteFromPath(path_base + "flip.png");
             else
-                _loadFlipSprite = assetBundle.LoadAsset<Sprite>(path_base + "flip.png");
+                _loadFlipSprite = assetBundle.LoadCosmeticsAsset(path_base + "flip.png");
         }
         return _loadFlipSprite;
     }
@@ -125,7 +134,7 @@ public class CustomCosmeticsHat
             if (assetBundle == null)
                 _loadFlipBackSprite = CustomCosmeticsLoader.LoadSpriteFromPath(path_base + "flip_back.png");
             else
-                _loadFlipBackSprite = assetBundle.LoadAsset<Sprite>(path_base + "flip_back.png");
+                _loadFlipBackSprite = assetBundle.LoadCosmeticsAsset(path_base + "flip_back.png");
         }
         return _loadFlipBackSprite;
     }
@@ -138,7 +147,7 @@ public class CustomCosmeticsHat
             if (assetBundle == null)
                 _loadClimbLeftSprite = CustomCosmeticsLoader.LoadSpriteFromPath(path_base + "climb_left.png");
             else
-                _loadClimbLeftSprite = assetBundle.LoadAsset<Sprite>(path_base + "climb_left.png");
+                _loadClimbLeftSprite = assetBundle.LoadCosmeticsAsset(path_base + "climb_left.png");
         }
         return _loadClimbLeftSprite;
     }
@@ -276,7 +285,7 @@ public class CustomCosmeticsVisor
             if (assetBundle == null)
                 _loadIdleSprite = CustomCosmeticsLoader.CreateVisorSprite(path_base + "idle.png", options.isSNR);
             else
-                _loadIdleSprite = assetBundle.LoadAsset<Sprite>(path_base + "idle.png");
+                _loadIdleSprite = assetBundle.LoadCosmeticsAsset(path_base + "idle.png");
         }
         return _loadIdleSprite;
     }
@@ -289,7 +298,7 @@ public class CustomCosmeticsVisor
             if (assetBundle == null)
                 _loadLeftIdleSprite = CustomCosmeticsLoader.CreateVisorSprite(path_base + "flip.png", options.isSNR);
             else
-                _loadLeftIdleSprite = assetBundle.LoadAsset<Sprite>(path_base + "flip.png");
+                _loadLeftIdleSprite = assetBundle.LoadCosmeticsAsset(path_base + "flip.png");
         }
         return _loadLeftIdleSprite;
     }
@@ -302,7 +311,7 @@ public class CustomCosmeticsVisor
             if (assetBundle == null)
                 _loadClimbSprite = CustomCosmeticsLoader.CreateVisorSprite(path_base + "climb.png", options.isSNR);
             else
-                _loadClimbSprite = assetBundle.LoadAsset<Sprite>(path_base + "climb.png");
+                _loadClimbSprite = assetBundle.LoadCosmeticsAsset(path_base + "climb.png");
         }
         return _loadClimbSprite;
     }
@@ -381,7 +390,7 @@ public class CustomCosmeticsNamePlate
             if (assetBundle == null)
                 _loadSprite = CustomCosmeticsLoader.LoadSpriteFromPath(path_base + "plate.png");
             else
-                _loadSprite = assetBundle.LoadAsset<Sprite>(path_base + "plate.png");
+                _loadSprite = AssetManager.GetAsset<Sprite>(path_base + "plate.png");
         }
         return _loadSprite;
     }
