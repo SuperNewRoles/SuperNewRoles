@@ -212,7 +212,7 @@ public class RequestInGameManager
         request.Dispose();
         callback(success);
     }
-    public static IEnumerator SendReport(string description, string title, string type, Dictionary<string, string> additionalInfo, Action<bool> callback)
+    public static IEnumerator SendReport(string description, string title, string type, Dictionary<string, string> additionalInfo, Action<bool> callback, Action<float> progressCallback = null)
     {
         additionalInfo["message"] = description;
         additionalInfo["title"] = title;
@@ -223,11 +223,22 @@ public class RequestInGameManager
             uploadHandler = new UploadHandlerRaw(Encoding.UTF8.GetBytes(data)),
             downloadHandler = new DownloadHandlerBuffer()
         };
+        request.chunkedTransfer = true;
         string token = string.Empty;
         yield return GetOrCreateToken(t => token = t);
         request.SetRequestHeader("Content-Type", "application/json");
         request.SetRequestHeader("Authorization", $"Bearer {token}");
-        yield return request.SendWebRequest();
+
+        var operation = request.SendWebRequest();
+
+        while (!operation.isDone)
+        {
+            Logger.Info($"Sending report progress: {request.uploadProgress * 100f:F1}%");
+            progressCallback?.Invoke(request.uploadProgress * 100);
+            yield return null;
+        }
+        progressCallback?.Invoke(request.uploadProgress * 100); // Ensure final progress is reported
+
         bool success = false;
         if (request.result == UnityWebRequest.Result.Success && request.responseCode >= 200 && request.responseCode < 300)
         {

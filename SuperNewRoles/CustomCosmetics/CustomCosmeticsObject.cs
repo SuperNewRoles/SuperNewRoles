@@ -427,7 +427,7 @@ public class CustomCosmeticsHatOptions
     public HatOptionType back { get; }
     public HatOptionType flip { get; }
     public HatOptionType flip_back { get; }
-    public HatOptionType climb { get; }
+    public HatOptionType climb { get; set; }
     public bool blockVisors { get; }
     public bool HideBody { get; }
     /*

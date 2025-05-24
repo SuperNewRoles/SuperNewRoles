@@ -7,6 +7,7 @@ using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
 using System.Security.Cryptography;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using BepInEx.Unity.IL2CPP.Utils.Collections;
 using Hazel;
@@ -188,6 +189,34 @@ public static class ModHelpers
     {
         f = Mathf.Clamp01(f);
         return (byte)(f * 255);
+    }
+    public static string WrapText(string text, int width)
+    {
+        // 改行を CRLF/LF/R すべてで分割
+        var lines = text.Split(new[] { "\r\n", "\r", "\n" }, StringSplitOptions.None);
+        var sb = new StringBuilder();
+
+        foreach (var line in lines)
+        {
+            if (line.Length == 0)
+            {
+                // 空行はそのまま
+                sb.AppendLine();
+                continue;
+            }
+
+            // .NET の Regex はデフォルトで「.」が改行を含まないので、
+            // ここでは行単位で正しくマッチする
+            string wrapped = Regex.Replace(
+                line,
+                $".{{{width}}}",
+                "$0\n"
+            );
+            sb.Append(wrapped).AppendLine();
+        }
+
+        // 最後の余分な改行を削る
+        return sb.ToString().TrimEnd('\r', '\n');
     }
     public static (int completed, int total) TaskCompletedData(NetworkedPlayerInfo playerInfo)
     {

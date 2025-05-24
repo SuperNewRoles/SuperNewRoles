@@ -144,7 +144,7 @@ public class CosmeticDataWrapperHat : CosmeticDataWrapper, ICustomCosmeticHat
             if (hatViewData == null)
                 hatViewData = hat.CreateAddressableAsset();
             if (hatViewData != null)
-                hatViewData.LoadAsync((Il2CppSystem.Action)onSuccess);
+                hatViewData.LoadAsync((Il2CppSystem.Action)(() => { onSuccess(); _options.climb = hatViewData?.GetAsset()?.ClimbImage != null ? HatOptionType.None : hat.PreviewCrewmateColor ? HatOptionType.Adaptive : HatOptionType.NoAdaptive; }));
         }
     }
 }

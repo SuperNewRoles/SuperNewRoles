@@ -13,7 +13,7 @@ public class MessageListUI
         GameObject messageListUI = GameObject.Instantiate(AssetManager.GetAsset<GameObject>("Scroller"), parent);
         messageListUI.transform.localPosition = new(0f, 0f, -10f);
         bool active = true;
-        LoadingUI.ShowLoadingUI(parent, () => "Loading...", () => active);
+        LoadingUI.ShowLoadingUI(parent, () => ModTranslation.GetString("RequestInGameLoading"), () => active);
         AmongUsClient.Instance.StartCoroutine(RequestInGameManager.GetThreads(threads =>
         {
             if (threads == null)

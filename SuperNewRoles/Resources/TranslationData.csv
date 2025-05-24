@@ -161,6 +161,15 @@ RequestInGameType.Question,質問,Question,質問,質問
 RequestInGameType.Request,要望,Request,要望,要望
 RequestInGameType.Thanks,感謝,Thanks,感謝,感謝
 RequestInGameType.Other,その他,Other,其他,其他
+RequestInGameSendTitleGray,タイトル,Title,标题,標題
+RequestInGameSendTitleBack,タイトルを入力してください(3文字以上),Please enter a title (at least 3 characters),请输入标题（至少3个字符）,請輸入標題（至少3個字元）
+RequestInGameSendDescriptionGray,メッセージ,Message,消息,訊息
+RequestInGameSendDescriptionBack,メッセージを入力してください(10文字以上),Please enter a message (at least 10 characters),请输入消息（至少10个字符）,請輸入訊息（至少10個字元）
+RequestInGameSendButton,送信,Send,发送,發送
+RequestInGameLoadingData,データを取得中,Loading data
+RequestInGameSendingReport,レポートを送信中,Sending report
+RequestInGameSendingReportProgress,レポートを送信中... ({0}%),Sending report... {0}%,发送报告中...{0}%,發送報告中...{0}%
+RequestInGameLoading,読み込み中...,Loading...
 
 # RoleOptionMenu
 RoleOptionMenuType.Impostor,インポスター,Impostor,内鬼,內鬼

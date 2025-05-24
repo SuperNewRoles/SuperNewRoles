@@ -69,19 +69,6 @@ public static class CustomOptionManager
         public static bool Prefix(ref int __result)
         {
             __result = GameOptionsManager.Instance.CurrentGameOptions.NumImpostors;
-            Logger.Info($"GetAdjustedNumImpostors: {__result}");
-            Logger.Info("AAAAAAAAAAAA");
-            Logger.Info("AAAAAAAAAAAA");
-            Logger.Info("AAAAAAAAAAAA");
-            Logger.Info("AAAAAAAAAAAA");
-            Logger.Info("AAAAAAAAAAAA");
-            Logger.Info("AAAAAAAAAAAA");
-            Logger.Info("AAAAAAAAAAAA");
-            Logger.Info("AAAAAAAAAAAA");
-            Logger.Info("AAAAAAAAAAAA");
-            Logger.Info("AAAAAAAAAAAA");
-            Logger.Info("AAAAAAAAAAAA");
-            Logger.Info("AAAAAAAAAAAA");
             return false;
         }
 
@@ -100,6 +87,7 @@ public static class CustomOptionManager
     [CustomRPC]
     public static void _RpcSyncOptionsAll(Dictionary<ushort, byte> options, bool resetToDefault)
     {
+        Logger.Info("RpcSyncOptionsAll");
         if (resetToDefault)
         {
             foreach (var option in CustomOptions)
