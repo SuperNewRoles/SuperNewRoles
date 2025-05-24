@@ -313,7 +313,7 @@ public class PlayerStatistics
             if (player == null || player.IsDead()) continue;
             totalAlive++;
 
-            if (player.IsImpostor()) teamImpostorsAlive++;
+            if (player.IsImpostor() || (isHnS && player.IsMadRoles())) teamImpostorsAlive++;
             if (player.IsCrewmate()) crewAlive++;
             if (player.IsJackalTeam()) teamJackalAlive++;
             if (player.IsJackal()) jackalRoleAlive++;
@@ -331,7 +331,7 @@ public class PlayerStatistics
 
             if (Lovers.LoversAdditionalWinCondition && player.IsLovers())
             {
-                if (player.IsImpostorWinTeam()) hasLoversImpostorTeam = true;
+                if (player.IsImpostorWinTeam() || (isHnS && player.IsMadRoles())) hasLoversImpostorTeam = true;
                 if (player.IsJackalTeam()) hasLoversJackalTeam = true;
                 if (player.IsPavlovsTeam()) hasLoversPavlovsTeam = true;
                 if (player.Role == RoleId.Hitman) hasLoversHitmanTeam = true;

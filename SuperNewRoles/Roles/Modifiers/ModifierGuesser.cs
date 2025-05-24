@@ -19,7 +19,8 @@ class ModifierGuesser : ModifierBase<ModifierGuesser>
             cannotShootCrewmate: ModifierGuesserCannotShootCrewmate,
             cannotShootCelebrity: ModifierGuesserCannotShootStar,
             celebrityLimitedTurns: ModifierGuesserLimitedTurns,
-            celebrityLimitedTurnsCount: ModifierGuesserLimitedTurnsCount
+            celebrityLimitedTurnsCount: ModifierGuesserLimitedTurnsCount,
+            madmateSuicide: ModifierGuesserMadmateSuicide
         )];
 
     public override QuoteMod QuoteMod => QuoteMod.SuperNewRoles;
@@ -76,4 +77,7 @@ class ModifierGuesser : ModifierBase<ModifierGuesser>
 
     [CustomOptionBool("ModifierGuesserCannotShootCrewmate", true, translationName: "EvilGuesserCannotShootCrewmate", parentFieldName: nameof(ModifierGuesserCategory))]
     public static bool ModifierGuesserCannotShootCrewmate = true;
+
+    [CustomOptionBool("ModifierGuesserMadmateSuicide", true, translationName: "ModifierGuesserMadmateSuicide", parentFieldName: nameof(ModifierGuesserCategory))]
+    public static bool ModifierGuesserMadmateSuicide = true;
 }

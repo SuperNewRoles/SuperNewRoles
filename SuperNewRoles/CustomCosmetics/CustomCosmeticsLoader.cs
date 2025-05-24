@@ -59,7 +59,7 @@ public class CustomCosmeticsLoader
     private static Dictionary<string, List<(string, string)>> willDownloads = new();
 
     // Android版はメモリ節約のため、ダウンロードしたバイト列を保持しない
-    private static readonly Dictionary<string, byte[]> downloadedSprites = Constants.GetPlatformType() == Platforms.Android ? null : new();
+    private static readonly Dictionary<string, byte[]> downloadedSprites = null; //Constants.GetPlatformType() == Platforms.Android ? null : new();
 
     public static int AssetBundlesDownloadedCount;
     public static int AssetBundlesAllCount;
@@ -124,6 +124,8 @@ public class CustomCosmeticsLoader
             try
             {
                 string jsonContent = ft.content;
+                Logger.Info("JSON!!!");
+                Logger.Info(jsonContent);
 
                 // JSONをパース
                 JObject json = JObject.Parse(jsonContent);

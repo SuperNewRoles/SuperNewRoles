@@ -197,8 +197,9 @@ public class ExPlayerControl
             if (AmOwner)
                 SuperTrophyManager.RegisterTrophy(Role);
             roleBase = role;
-            foreach (var modifier in ModifierRoleBases)
+            foreach (var modifier in ModifierRoleBases.ToArray())
             {
+                Logger.Info($"ModifierRole: {modifier.ModifierRole} AssignedTeams: {string.Join(",", modifier.AssignedTeams)} RoleBaseAssignedTeam: {roleBase.AssignedTeam}", "ExPlayerControl");
                 if (modifier.AssignedTeams.Count != 0 && !modifier.AssignedTeams.Contains(roleBase.AssignedTeam))
                     DetachOldModifierRole(modifier.ModifierRole);
             }
@@ -313,6 +314,7 @@ public class ExPlayerControl
         if (AmOwner)
             SuperTrophyManager.DetachTrophy(abilitiesToDetach);
         ModifierRole &= ~modifierRoleId;
+        ModifierRoleBases.RemoveAll(x => modifierRoleId.HasFlag(x.ModifierRole));
     }
     public void ReverseRole(ExPlayerControl target)
     {

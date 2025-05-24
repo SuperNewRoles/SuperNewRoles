@@ -865,7 +865,7 @@ ModifierGuesserMaxNeutrals,最大第三陣営数,Max Neutrals
 ModifierGuesserNeutralChance,第三陣営排出確率,Neutral Spawn Chance
 ModifierGuesserMaxCrewmates,最大クルーメイト数,Max Crewmates
 ModifierGuesserCrewmateChance,クルーメイト排出確率,Crewmate Spawn Chance
-
+ModifierGuesserMadmateSuicide,マッド・フレンズは自爆する,Mad Role suddenly dies
 
 # Lovers
 LoversCategory,<color=#FF69B4>ラバーズ</color>,<color=#FF69B4>Lovers</color>,<color=#FF69B4>恋爱</color>,<color=#FF69B4>戀愛</color>
