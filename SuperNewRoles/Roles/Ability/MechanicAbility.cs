@@ -5,6 +5,7 @@ using SuperNewRoles.Roles.Ability.CustomButton;
 using SuperNewRoles.Events;
 using SuperNewRoles.Modules.Events.Bases;
 using SuperNewRoles.Modules.Events;
+using SuperNewRoles.Events.PCEvents;
 
 namespace SuperNewRoles.Roles.Ability;
 
@@ -21,6 +22,7 @@ public class MechanicAbility : VentTargetCustomButtonBase, IAbilityCount, IButto
     private Vent currentVent;
     private EventListener<MeetingStartEventData> _onMeetingStartEvent;
     private EventListener<PlayerPhysicsFixedUpdateEventData> _onPlayerPhysicsFixedUpdateEvent;
+    private EventListener<DieEventData> _onDie;
 
     public string SpriteName { get; }
     public bool isEffectActive { get; set; }
@@ -66,12 +68,14 @@ public class MechanicAbility : VentTargetCustomButtonBase, IAbilityCount, IButto
     {
         base.AttachToLocalPlayer();
         _onMeetingStartEvent = MeetingStartEvent.Instance.AddListener(OnMeetingStart);
+        _onDie = DieEvent.Instance.AddListener(OnDie);
     }
 
     public override void DetachToLocalPlayer()
     {
         base.DetachToLocalPlayer();
         _onMeetingStartEvent?.RemoveListener();
+        _onDie?.RemoveListener();
     }
 
     public override void AttachToAlls()
@@ -112,6 +116,12 @@ public class MechanicAbility : VentTargetCustomButtonBase, IAbilityCount, IButto
             if (data.Instance.myPlayer.moveable)
                 moveableVentPosition = currentVent.transform.position;
         }
+    }
+
+    private void OnDie(DieEventData data)
+    {
+        if (data.player == Player && currentVent != null)
+            RpcSetVentStatus(ExPlayerControl.LocalPlayer, currentVent, false, moveableVentPosition);
     }
 
     [CustomRPC]

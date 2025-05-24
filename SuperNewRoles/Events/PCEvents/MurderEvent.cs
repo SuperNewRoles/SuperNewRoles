@@ -20,6 +20,21 @@ public class MurderEventData : IEventData
         this.resultFlags = resultFlags;
     }
 }
+public class MurderPrefixEventData : IEventData
+{
+    public ExPlayerControl Killer { get; }
+    public ExPlayerControl RefTarget { get; set; }
+    public MurderResultFlags RefResultFlags { get; set; }
+    public bool RefSuccess { get; set; }
+
+    public MurderPrefixEventData(ExPlayerControl killer, ExPlayerControl target, MurderResultFlags resultFlags, bool success)
+    {
+        this.Killer = killer;
+        this.RefTarget = target;
+        this.RefResultFlags = resultFlags;
+        this.RefSuccess = success;
+    }
+}
 
 public class MurderEvent : EventTargetBase<MurderEvent, MurderEventData>
 {
@@ -29,9 +44,26 @@ public class MurderEvent : EventTargetBase<MurderEvent, MurderEventData>
         Instance.Awake(data);
     }
 }
+
+public class MurderPrefixEvent : EventTargetBase<MurderPrefixEvent, MurderPrefixEventData>
+{
+    public static MurderPrefixEventData Invoke(ExPlayerControl killer, ExPlayerControl target, MurderResultFlags resultFlags)
+    {
+        var data = new MurderPrefixEventData(killer, target, resultFlags, true);
+        Instance.Awake(data);
+        return data;
+    }
+}
 [HarmonyPatch(typeof(PlayerControl), nameof(PlayerControl.MurderPlayer))]
 public static class MurderPatch
 {
+    public static bool Prefix(PlayerControl __instance, ref PlayerControl target, ref MurderResultFlags resultFlags)
+    {
+        var data = MurderPrefixEvent.Invoke(__instance, target, resultFlags);
+        target = data.RefTarget;
+        resultFlags = data.RefResultFlags;
+        return data.RefSuccess;
+    }
     public static void Postfix(PlayerControl __instance, PlayerControl target, MurderResultFlags resultFlags)
     {
         MurderEvent.Invoke(__instance, target, resultFlags);
