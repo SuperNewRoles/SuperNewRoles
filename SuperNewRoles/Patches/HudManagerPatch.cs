@@ -1,6 +1,7 @@
 using HarmonyLib;
 using UnityEngine;
 using InnerNet;
+using SuperNewRoles.Modules;
 
 namespace SuperNewRoles.Patches;
 
@@ -31,6 +32,18 @@ public static class HudManagerPatch
             {
                 PlayerControl.LocalPlayer.Collider.offset = new Vector2(0f, -0.3636f);
             }
+        }
+    }
+}
+[HarmonyPatch(typeof(HudManager._CoShowIntro_d__88), nameof(HudManager._CoShowIntro_d__88.MoveNext))]
+public static class HudManagerShowIntroPatch
+{
+    public static void Postfix(bool __result)
+    {
+        if (!__result && ModHelpers.IsHnS())
+        {
+            Logger.Info("HudManagerShowIntroPatch");
+            ExPlayerControl.LocalPlayer.SetKillTimerUnchecked(1f, 1f);
         }
     }
 }
