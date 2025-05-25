@@ -16,7 +16,7 @@ public static class HawkZoom
     private static float mouseScrollDeltaSensitivity = 0.5f; // マウスホイールの感度調整用
     private const float smoothTime = 0.1f; // SmoothDampのスムーズ時間（値を小さくするとシャープに、大きくするとより滑らかに）
 
-    private static float manualTargetSize = 3f; // 手動ズームの目標サイズ
+    public static float manualTargetSize = 3f; // 手動ズームの目標サイズ
     private static bool manualTargetInitialized = false;
 
     public static void Postfix()
@@ -131,5 +131,14 @@ public static class AspectPositionAdjustPositionPatch
             return false;
         }
         return true;
+    }
+}
+
+[HarmonyPatch(typeof(HudManager), nameof(HudManager.Awake))]
+public static class HudManagerAwakePatch
+{
+    public static void Postfix(HudManager __instance)
+    {
+        HawkZoom.size = HawkZoom.manualTargetSize = 3f;
     }
 }
