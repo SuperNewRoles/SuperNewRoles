@@ -246,7 +246,7 @@ public class DatahackerAbility : AbilityBase
         Logger.Info($"CanSeeRole: {target.Data.PlayerName}");
         if (target.IsNeutral())
         {
-            if (hackingData.CanSeeNeutral)
+            if (!hackingData.CanSeeNeutral)
                 return false;
             Logger.Info("Neutral");
             color = new(127, 127, 127, byte.MaxValue);
@@ -254,7 +254,7 @@ public class DatahackerAbility : AbilityBase
         }
         if (target.IsImpostor())
         {
-            if (hackingData.CanSeeImpostor)
+            if (!hackingData.CanSeeImpostor)
                 return false;
             Logger.Info("Impostor");
             color = Palette.ImpostorRed;
@@ -262,7 +262,7 @@ public class DatahackerAbility : AbilityBase
         }
         else
         {
-            if (hackingData.CanSeeCrew)
+            if (!hackingData.CanSeeCrew)
                 return false;
             Logger.Info("Crewmate");
             if ((target.IsMadRoles() || target.IsFriendRoles()) && hackingData.CanSeeMadmates)
