@@ -37,7 +37,7 @@ public class SchrodingersCatAbility : AbilityBase
     private CustomVentAbility _customVentAbility;
     private CustomSaboAbility _customSaboAbility;
     private ImpostorVisionAbility _impostorVisionAbility;
-    private EventListener<MurderPrefixEventData> _murderListener;
+    private EventListener<TryKillEventData> _murderListener;
     private EventListener<NameTextUpdateEventData> _nameTextUpdateListener;
     public SchrodingersCatTeam CurrentTeam { get; private set; } = SchrodingersCatTeam.SchrodingersCat;
     public SchrodingersCatAbility(SchrodingersCatData data)
@@ -73,7 +73,7 @@ public class SchrodingersCatAbility : AbilityBase
         Player.AttachAbility(_customSaboAbility, new AbilityParentAbility(this));
         Player.AttachAbility(_impostorVisionAbility, new AbilityParentAbility(this));
 
-        _murderListener = MurderPrefixEvent.Instance.AddListener(OnMurder);
+        _murderListener = TryKillEvent.Instance.AddListener(TryMurder);
         _nameTextUpdateListener = NameTextUpdateEvent.Instance.AddListener(OnNameTextUpdate);
     }
     public override void DetachToAlls()
@@ -81,7 +81,7 @@ public class SchrodingersCatAbility : AbilityBase
         _murderListener?.RemoveListener();
         _nameTextUpdateListener?.RemoveListener();
     }
-    private void OnMurder(MurderPrefixEventData data)
+    private void TryMurder(TryKillEventData data)
     {
         if (Player.IsLovers()) return;
         if (data.RefTarget != Player) return;

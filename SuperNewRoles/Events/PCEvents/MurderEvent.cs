@@ -20,18 +20,16 @@ public class MurderEventData : IEventData
         this.resultFlags = resultFlags;
     }
 }
-public class MurderPrefixEventData : IEventData
+public class TryKillEventData : IEventData
 {
     public ExPlayerControl Killer { get; }
     public ExPlayerControl RefTarget { get; set; }
-    public MurderResultFlags RefResultFlags { get; set; }
     public bool RefSuccess { get; set; }
 
-    public MurderPrefixEventData(ExPlayerControl killer, ExPlayerControl target, MurderResultFlags resultFlags, bool success)
+    public TryKillEventData(ExPlayerControl killer, ExPlayerControl target, bool success)
     {
         this.Killer = killer;
         this.RefTarget = target;
-        this.RefResultFlags = resultFlags;
         this.RefSuccess = success;
     }
 }
@@ -45,25 +43,30 @@ public class MurderEvent : EventTargetBase<MurderEvent, MurderEventData>
     }
 }
 
-public class MurderPrefixEvent : EventTargetBase<MurderPrefixEvent, MurderPrefixEventData>
+public class TryKillEvent : EventTargetBase<TryKillEvent, TryKillEventData>
 {
-    public static MurderPrefixEventData Invoke(ExPlayerControl killer, ExPlayerControl target, MurderResultFlags resultFlags)
+    public static TryKillEventData Invoke(ExPlayerControl killer, ref ExPlayerControl target)
     {
-        var data = new MurderPrefixEventData(killer, target, resultFlags, true);
+        var data = new TryKillEventData(killer, target, true);
         Instance.Awake(data);
+        target = data.RefTarget;
         return data;
+    }
+}
+[HarmonyPatch(typeof(PlayerControl), nameof(PlayerControl.RpcMurderPlayer))]
+public static class TryKillPatch
+{
+    public static bool Prefix(PlayerControl __instance, PlayerControl target, bool didSucceed)
+    {
+        if (!didSucceed)
+            return true;
+        CustomDeathExtensions.RpcCustomDeath(source: __instance, target: target, deathType: CustomDeathType.Kill);
+        return false;
     }
 }
 [HarmonyPatch(typeof(PlayerControl), nameof(PlayerControl.MurderPlayer))]
 public static class MurderPatch
 {
-    public static bool Prefix(PlayerControl __instance, ref PlayerControl target, ref MurderResultFlags resultFlags)
-    {
-        var data = MurderPrefixEvent.Invoke(__instance, target, resultFlags);
-        target = data.RefTarget;
-        resultFlags = data.RefResultFlags;
-        return data.RefSuccess;
-    }
     public static void Postfix(PlayerControl __instance, PlayerControl target, MurderResultFlags resultFlags)
     {
         MurderEvent.Invoke(__instance, target, resultFlags);

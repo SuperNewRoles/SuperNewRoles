@@ -95,6 +95,7 @@ public enum RoleId : short
     NiceHawk,
     EvilHawk,
     MadHawk,
+    WiseMan,
 }
 
 public enum GhostRoleId : short
