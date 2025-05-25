@@ -564,6 +564,114 @@ public static class RoleOptionManager
         public CustomOption[] Options { get; }
         public Color32 RoleColor { get; }
         public List<RoleId> AssignFilterList { get; set; } = new();
+        private int _maxImpostors_My;
+        private int _maxImpostors_Host;
+        public int MaxImpostors
+        {
+            get => (AmongUsClient.Instance != null && AmongUsClient.Instance.AmConnected && !AmongUsClient.Instance.AmHost) ? _maxImpostors_Host : _maxImpostors_My;
+            set
+            {
+                bool isHost = AmongUsClient.Instance != null && AmongUsClient.Instance.AmConnected && !AmongUsClient.Instance.AmHost;
+                if (isHost)
+                {
+                    _maxImpostors_Host = value;
+                }
+                else
+                {
+                    _maxImpostors_My = value;
+                }
+            }
+        }
+        private int _impostorChance_My;
+        private int _impostorChance_Host;
+        public int ImpostorChance
+        {
+            get => (AmongUsClient.Instance != null && AmongUsClient.Instance.AmConnected && !AmongUsClient.Instance.AmHost) ? _impostorChance_Host : _impostorChance_My;
+            set
+            {
+                bool isHost = AmongUsClient.Instance != null && AmongUsClient.Instance.AmConnected && !AmongUsClient.Instance.AmHost;
+                if (isHost)
+                {
+                    _impostorChance_Host = value;
+                }
+                else
+                {
+                    _impostorChance_My = value;
+                }
+            }
+        }
+        private int _maxNeutrals_My;
+        private int _maxNeutrals_Host;
+        public int MaxNeutrals
+        {
+            get => (AmongUsClient.Instance != null && AmongUsClient.Instance.AmConnected && !AmongUsClient.Instance.AmHost) ? _maxNeutrals_Host : _maxNeutrals_My;
+            set
+            {
+                bool isHost = AmongUsClient.Instance != null && AmongUsClient.Instance.AmConnected && !AmongUsClient.Instance.AmHost;
+                if (isHost)
+                {
+                    _maxNeutrals_Host = value;
+                }
+                else
+                {
+                    _maxNeutrals_My = value;
+                }
+            }
+        }
+        private int _neutralChance_My;
+        private int _neutralChance_Host;
+        public int NeutralChance
+        {
+            get => (AmongUsClient.Instance != null && AmongUsClient.Instance.AmConnected && !AmongUsClient.Instance.AmHost) ? _neutralChance_Host : _neutralChance_My;
+            set
+            {
+                bool isHost = AmongUsClient.Instance != null && AmongUsClient.Instance.AmConnected && !AmongUsClient.Instance.AmHost;
+                if (isHost)
+                {
+                    _neutralChance_Host = value;
+                }
+                else
+                {
+                    _neutralChance_My = value;
+                }
+            }
+        }
+        private int _maxCrewmates_My;
+        private int _maxCrewmates_Host;
+        public int MaxCrewmates
+        {
+            get => (AmongUsClient.Instance != null && AmongUsClient.Instance.AmConnected && !AmongUsClient.Instance.AmHost) ? _maxCrewmates_Host : _maxCrewmates_My;
+            set
+            {
+                bool isHost = AmongUsClient.Instance != null && AmongUsClient.Instance.AmConnected && !AmongUsClient.Instance.AmHost;
+                if (isHost)
+                {
+                    _maxCrewmates_Host = value;
+                }
+                else
+                {
+                    _maxCrewmates_My = value;
+                }
+            }
+        }
+        private int _crewmateChance_My;
+        private int _crewmateChance_Host;
+        public int CrewmateChance
+        {
+            get => (AmongUsClient.Instance != null && AmongUsClient.Instance.AmConnected && !AmongUsClient.Instance.AmHost) ? _crewmateChance_Host : _crewmateChance_My;
+            set
+            {
+                bool isHost = AmongUsClient.Instance != null && AmongUsClient.Instance.AmConnected && !AmongUsClient.Instance.AmHost;
+                if (isHost)
+                {
+                    _crewmateChance_Host = value;
+                }
+                else
+                {
+                    _crewmateChance_My = value;
+                }
+            }
+        }
         public ModifierRoleOption(ModifierRoleId modifierRoleId, byte numberOfCrews, int percentage, CustomOption[] options)
         {
             ModifierRoleId = modifierRoleId;
@@ -582,18 +690,30 @@ public static class RoleOptionManager
             }
         }
 
-        public void UpdateValues(byte numberOfCrews, int percentage)
+        public void UpdateValues(byte numberOfCrews, int percentage, int maxImpostors, int impostorChance, int maxNeutrals, int neutralChance, int maxCrewmates, int crewmateChance)
         {
             bool isHost = AmongUsClient.Instance != null && AmongUsClient.Instance.AmConnected && !AmongUsClient.Instance.AmHost;
             if (isHost)
             {
                 _numberOfCrews_Host = numberOfCrews;
                 _percentage_Host = percentage;
+                _maxImpostors_Host = maxImpostors;
+                _impostorChance_Host = impostorChance;
+                _maxNeutrals_Host = maxNeutrals;
+                _neutralChance_Host = neutralChance;
+                _maxCrewmates_Host = maxCrewmates;
+                _crewmateChance_Host = crewmateChance;
             }
             else
             {
                 _numberOfCrews_My = numberOfCrews;
                 _percentage_My = percentage;
+                _maxImpostors_My = maxImpostors;
+                _impostorChance_My = impostorChance;
+                _maxNeutrals_My = maxNeutrals;
+                _neutralChance_My = neutralChance;
+                _maxCrewmates_My = maxCrewmates;
+                _crewmateChance_My = crewmateChance;
             }
         }
     }
@@ -772,7 +892,7 @@ public static class RoleOptionManager
     }
 
     [CustomRPC]
-    public static void RpcSyncModifierRoleOption(ModifierRoleId modifierRoleId, byte numberOfCrews, int percentage)
+    public static void RpcSyncModifierRoleOption(ModifierRoleId modifierRoleId, byte numberOfCrews, int percentage, int maxImpostors, int impostorChance, int maxNeutrals, int neutralChance, int maxCrewmates, int crewmateChance)
     {
         var roleOption = ModifierRoleOptions.FirstOrDefault(o => o.ModifierRoleId == modifierRoleId);
         if (roleOption == null)
@@ -780,7 +900,7 @@ public static class RoleOptionManager
             Logger.Warning($"モディファイアロールオプションが見つかりません: {modifierRoleId}");
             return;
         }
-        roleOption.UpdateValues(numberOfCrews, percentage);
+        roleOption.UpdateValues(numberOfCrews, percentage, maxImpostors, impostorChance, maxNeutrals, neutralChance, maxCrewmates, crewmateChance);
     }
 
     /// <summary>
@@ -836,7 +956,7 @@ public static class RoleOptionManager
                 var opt = ModifierRoleOptions.FirstOrDefault(o => o.ModifierRoleId == modifierRoleId);
                 if (opt == null) return;
                 // 実際の同期を実行
-                RpcSyncModifierRoleOption(modifierRoleId, opt.NumberOfCrews, opt.Percentage);
+                RpcSyncModifierRoleOption(modifierRoleId, opt.NumberOfCrews, opt.Percentage, opt.MaxImpostors, opt.ImpostorChance, opt.MaxNeutrals, opt.NeutralChance, opt.MaxCrewmates, opt.CrewmateChance);
                 // タスクとペンディング変更を削除
                 DelayedSyncTasksModifier.Remove(modifierRoleId);
             }, SyncDelay, $"SyncModifierRoleOption_{modifierRoleId}");
@@ -898,13 +1018,13 @@ public static class RoleOptionManager
         }
     }
     [CustomRPC]
-    public static void _RpcSyncModifierRoleOptionsAll(Dictionary<byte, (byte, int)> options)
+    public static void _RpcSyncModifierRoleOptionsAll(Dictionary<byte, (byte, int, int, int, int, int, int, int)> options)
     {
         foreach (var modifierRoleOption in ModifierRoleOptions)
         {
             if (options.TryGetValue((byte)modifierRoleOption.ModifierRoleId, out var values))
             {
-                modifierRoleOption.UpdateValues(values.Item1, values.Item2);
+                modifierRoleOption.UpdateValues(values.Item1, values.Item2, values.Item3, values.Item4, values.Item5, values.Item6, values.Item7, values.Item8);
             }
         }
     }
@@ -929,7 +1049,7 @@ public static class RoleOptionManager
         _RpcSyncRoleOptionsAll(roleOptions);
         var modifierRoleOptions = ModifierRoleOptions.ToDictionary(
             o => (byte)o.ModifierRoleId,
-            o => (o.NumberOfCrews, o.Percentage));
+            o => (o.NumberOfCrews, o.Percentage, o.MaxImpostors, o.ImpostorChance, o.MaxNeutrals, o.NeutralChance, o.MaxCrewmates, o.CrewmateChance));
         _RpcSyncModifierRoleOptionsAll(modifierRoleOptions);
         var ghostRoleOptions = GhostRoleOptions.ToDictionary( // GhostRole用
             o => (byte)o.RoleId,
@@ -1404,6 +1524,15 @@ public class FileOptionStorage : IOptionStorage
             string modifierRoleIdStr = reader.ReadString();
             byte numberOfCrews = reader.ReadByte();
             int percentage = reader.ReadInt32();
+
+            // 陣営別設定を読み込み
+            int maxImpostors = reader.ReadInt32();
+            int impostorChance = reader.ReadInt32();
+            int maxNeutrals = reader.ReadInt32();
+            int neutralChance = reader.ReadInt32();
+            int maxCrewmates = reader.ReadInt32();
+            int crewmateChance = reader.ReadInt32();
+
             if (Enum.TryParse(typeof(ModifierRoleId), modifierRoleIdStr, out var modifierRoleIdObj) && modifierRoleIdObj is ModifierRoleId modifierRoleId)
             {
                 var modifierRoleOption = RoleOptionManager.ModifierRoleOptions.FirstOrDefault(x => x.ModifierRoleId == modifierRoleId);
@@ -1411,6 +1540,13 @@ public class FileOptionStorage : IOptionStorage
                 {
                     modifierRoleOption.NumberOfCrews = numberOfCrews;
                     modifierRoleOption.Percentage = percentage;
+                    modifierRoleOption.MaxImpostors = maxImpostors;
+                    modifierRoleOption.ImpostorChance = impostorChance;
+                    modifierRoleOption.MaxNeutrals = maxNeutrals;
+                    modifierRoleOption.NeutralChance = neutralChance;
+                    modifierRoleOption.MaxCrewmates = maxCrewmates;
+                    modifierRoleOption.CrewmateChance = crewmateChance;
+
                     // AssignFilterListの復元
                     var roleBase = CustomRoleManager.AllModifiers.FirstOrDefault(r => r.ModifierRole == modifierRoleId);
                     if (roleBase != null && roleBase.AssignFilter)
@@ -1568,6 +1704,15 @@ public class FileOptionStorage : IOptionStorage
             writer.Write(roleOption.ModifierRoleId.ToString());
             writer.Write(roleOption.NumberOfCrews);
             writer.Write(roleOption.Percentage);
+
+            // 陣営別設定を保存
+            writer.Write(roleOption.MaxImpostors);
+            writer.Write(roleOption.ImpostorChance);
+            writer.Write(roleOption.MaxNeutrals);
+            writer.Write(roleOption.NeutralChance);
+            writer.Write(roleOption.MaxCrewmates);
+            writer.Write(roleOption.CrewmateChance);
+
             // AssignFilterListの保存
             var roleBase = CustomRoleManager.AllModifiers.FirstOrDefault(r => r.ModifierRole == roleOption.ModifierRoleId);
             if (roleBase != null && roleBase.AssignFilter)

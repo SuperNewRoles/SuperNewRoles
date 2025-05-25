@@ -527,27 +527,116 @@ public static class ModifierOptionMenu
 
         if (category is ModifierOptionMenuObjectData.ModifierCategoryDataModifier modifierCategoryData)
         {
-            // Generate UI for NumOfCrews
-            var numCrewsObj = GenerateModifierNumberOptionSelect(
-                modifierCategoryData.ModifierOption,
-                menuTransform,
-                "NumberOfCrews",
-                () => modifierCategoryData.ModifierOption.NumberOfCrews,
-                (val) => modifierCategoryData.ModifierOption.NumberOfCrews = (byte)val,
-                0, 15, 1, ModTranslation.GetString("NumberOfCrewsPostfix"), false // isChild = false for top-level modifier options
-            );
-            modifierGameObjects.Add(numCrewsObj);
+            var modifierBase = CustomRoleManager.AllModifiers.FirstOrDefault(m => m.ModifierRole == modifierCategoryData.ModifierOption.ModifierRoleId);
+            if (modifierBase != null && modifierBase.UseTeamSpecificAssignment)
+            {
+                // Generate UI for Team Specific Assignment (like ModifierGuesser)
+                // Impostor
+                var maxImpostorsObj = GenerateModifierNumberOptionSelect(
+                    modifierCategoryData.ModifierOption,
+                    menuTransform,
+                    "ModifierMaxImpostors",
+                    () => modifierBase.MaxImpostors,
+                    (val) =>
+                    {
+                        var option = RoleOptionManager.ModifierRoleOptions.FirstOrDefault(x => x.ModifierRoleId == modifierCategoryData.ModifierOption.ModifierRoleId);
+                        if (option != null) option.MaxImpostors = (int)val;
+                    },
+                    0, 15, 1, "", false
+                );
+                modifierGameObjects.Add(maxImpostorsObj);
+                var impostorChanceObj = GenerateModifierNumberOptionSelect(
+                    modifierCategoryData.ModifierOption,
+                    menuTransform,
+                    "ModifierImpostorChance",
+                    () => modifierBase.ImpostorChance,
+                    (val) =>
+                    {
+                        var option = RoleOptionManager.ModifierRoleOptions.FirstOrDefault(x => x.ModifierRoleId == modifierCategoryData.ModifierOption.ModifierRoleId);
+                        if (option != null) option.ImpostorChance = (int)val;
+                    },
+                    0, 100, 5, "%", false
+                );
+                modifierGameObjects.Add(impostorChanceObj);
+                // Neutral
+                var maxNeutralsObj = GenerateModifierNumberOptionSelect(
+                    modifierCategoryData.ModifierOption,
+                    menuTransform,
+                    "ModifierMaxNeutrals",
+                    () => modifierBase.MaxNeutrals,
+                    (val) =>
+                    {
+                        var option = RoleOptionManager.ModifierRoleOptions.FirstOrDefault(x => x.ModifierRoleId == modifierCategoryData.ModifierOption.ModifierRoleId);
+                        if (option != null) option.MaxNeutrals = (int)val;
+                    },
+                    0, 15, 1, "", false
+                );
+                modifierGameObjects.Add(maxNeutralsObj);
+                var neutralChanceObj = GenerateModifierNumberOptionSelect(
+                    modifierCategoryData.ModifierOption,
+                    menuTransform,
+                    "ModifierNeutralChance",
+                    () => modifierBase.NeutralChance,
+                    (val) =>
+                    {
+                        var option = RoleOptionManager.ModifierRoleOptions.FirstOrDefault(x => x.ModifierRoleId == modifierCategoryData.ModifierOption.ModifierRoleId);
+                        if (option != null) option.NeutralChance = (int)val;
+                    },
+                    0, 100, 5, "%", false
+                );
+                modifierGameObjects.Add(neutralChanceObj);
+                // Crewmate
+                var maxCrewmatesObj = GenerateModifierNumberOptionSelect(
+                    modifierCategoryData.ModifierOption,
+                    menuTransform,
+                    "ModifierMaxCrewmates",
+                    () => modifierBase.MaxCrewmates,
+                    (val) =>
+                    {
+                        var option = RoleOptionManager.ModifierRoleOptions.FirstOrDefault(x => x.ModifierRoleId == modifierCategoryData.ModifierOption.ModifierRoleId);
+                        if (option != null) option.MaxCrewmates = (int)val;
+                    },
+                    0, 15, 1, "", false
+                );
+                modifierGameObjects.Add(maxCrewmatesObj);
+                var crewmateChanceObj = GenerateModifierNumberOptionSelect(
+                    modifierCategoryData.ModifierOption,
+                    menuTransform,
+                    "ModifierCrewmateChance",
+                    () => modifierBase.CrewmateChance,
+                    (val) =>
+                    {
+                        var option = RoleOptionManager.ModifierRoleOptions.FirstOrDefault(x => x.ModifierRoleId == modifierCategoryData.ModifierOption.ModifierRoleId);
+                        if (option != null) option.CrewmateChance = (int)val;
+                    },
+                    0, 100, 5, "%", false
+                );
+                modifierGameObjects.Add(crewmateChanceObj);
+            }
+            else
+            {
+                // Generate UI for NumOfCrews
+                var numCrewsObj = GenerateModifierNumberOptionSelect(
+                    modifierCategoryData.ModifierOption,
+                    menuTransform,
+                    "NumberOfCrews",
+                    () => modifierCategoryData.ModifierOption.NumberOfCrews,
+                    (val) => modifierCategoryData.ModifierOption.NumberOfCrews = (byte)val,
+                    0, 15, 1, ModTranslation.GetString("NumberOfCrewsPostfix"), false // isChild = false for top-level modifier options
+                );
+                modifierGameObjects.Add(numCrewsObj);
 
-            // Generate UI for Percentage
-            var percentageObj = GenerateModifierNumberOptionSelect(
-                modifierCategoryData.ModifierOption,
-                menuTransform,
-                "AssignPer",
-                () => modifierCategoryData.ModifierOption.Percentage,
-                (val) => modifierCategoryData.ModifierOption.Percentage = (int)val,
-                0, 100, 5, "%", false // isChild = false
-            );
-            modifierGameObjects.Add(percentageObj);
+                // Generate UI for Percentage
+                var percentageObj = GenerateModifierNumberOptionSelect(
+                    modifierCategoryData.ModifierOption,
+                    menuTransform,
+                    "AssignPer",
+                    () => modifierCategoryData.ModifierOption.Percentage,
+                    (val) => modifierCategoryData.ModifierOption.Percentage = (int)val,
+                    0, 100, 5, "%", false // isChild = false
+                );
+                modifierGameObjects.Add(percentageObj);
+            }
         }
         menuData.CategoryModifierOptionGameObjects[category.Name] = modifierGameObjects; // Store modifier GameObjects
 
@@ -869,7 +958,7 @@ public static class ModifierOptionMenu
         // ホストの場合、他のプレイヤーに同期
         if (AmongUsClient.Instance.AmHost)
         {
-            RoleOptionManager.RpcSyncModifierRoleOption(modifierOption.ModifierRoleId, modifierOption.NumberOfCrews, modifierOption.Percentage);
+            RoleOptionManager.RpcSyncModifierRoleOption(modifierOption.ModifierRoleId, modifierOption.NumberOfCrews, modifierOption.Percentage, modifierOption.MaxImpostors, modifierOption.ImpostorChance, modifierOption.MaxNeutrals, modifierOption.NeutralChance, modifierOption.MaxCrewmates, modifierOption.CrewmateChance);
         }
     }
 

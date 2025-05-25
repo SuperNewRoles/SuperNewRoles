@@ -28,6 +28,9 @@ class ModifierHawk : ModifierBase<ModifierHawk>
     public override RoleTag[] RoleTags { get; } = [];
     public override RoleId[] DoNotAssignRoles => [RoleId.NiceHawk, RoleId.MadHawk, RoleId.EvilHawk];
 
+    public override bool AssignFilter => true;
+    public override bool UseTeamSpecificAssignment => true;
+
     public override Func<ExPlayerControl, string> ModifierMark => (player) => "{0}";
 
     [CustomOptionFloat("ModifierHawkCoolTime", 0f, 120f, 2.5f, 30f, translationName: "CoolTime")]

@@ -626,6 +626,28 @@ public static class CustomRPCManager
                 }
             }
         };
+        WriteActions[typeof(Dictionary<byte, (byte, int, int, int, int, int, int, int)>)] = (writer, val) =>
+        {
+            if (val == null)
+                writer.Write(0);
+            else
+            {
+                var dict = val as Dictionary<byte, (byte, int, int, int, int, int, int, int)>;
+                writer.Write(dict.Count);
+                foreach (var kvp in dict)
+                {
+                    writer.Write(kvp.Key);
+                    writer.Write(kvp.Value.Item1);
+                    writer.Write(kvp.Value.Item2);
+                    writer.Write(kvp.Value.Item3);
+                    writer.Write(kvp.Value.Item4);
+                    writer.Write(kvp.Value.Item5);
+                    writer.Write(kvp.Value.Item6);
+                    writer.Write(kvp.Value.Item7);
+                    writer.Write(kvp.Value.Item8);
+                }
+            }
+        };
         WriteActions[typeof(Dictionary<byte, float>)] = (writer, val) =>
         {
             if (val == null)
@@ -682,6 +704,7 @@ public static class CustomRPCManager
         ReadActions[typeof(Dictionary<ushort, byte>)] = reader => ReadDictionary<ushort, byte>(reader, r => r.ReadUInt16(), r => r.ReadByte());
         ReadActions[typeof(Dictionary<byte, float>)] = reader => ReadDictionary<byte, float>(reader, r => r.ReadByte(), r => r.ReadSingle());
         ReadActions[typeof(Dictionary<byte, (byte, int)>)] = reader => ReadDictionaryWithTuple(reader);
+        ReadActions[typeof(Dictionary<byte, (byte, int, int, int, int, int, int, int)>)] = reader => ReadDictionary<byte, (byte, int, int, int, int, int, int, int)>(reader, r => r.ReadByte(), r => (r.ReadByte(), r.ReadInt32(), r.ReadInt32(), r.ReadInt32(), r.ReadInt32(), r.ReadInt32(), r.ReadInt32(), r.ReadInt32()));
         ReadActions[typeof(Dictionary<byte, bool>)] = reader => ReadDictionary<byte, bool>(reader, r => r.ReadByte(), r => r.ReadBoolean());
         ReadActions[typeof(Color)] = reader => new Color(reader.ReadSingle(), reader.ReadSingle(), reader.ReadSingle(), reader.ReadSingle());
         ReadActions[typeof(Color32)] = reader => new Color32(reader.ReadByte(), reader.ReadByte(), reader.ReadByte(), reader.ReadByte());
