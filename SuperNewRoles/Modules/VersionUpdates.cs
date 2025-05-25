@@ -185,7 +185,7 @@ public static class VersionUpdatesUI
             }
         }
         int index = 0;
-        string dllPath = Assembly.GetExecutingAssembly().Location;
+        string dllPath = SuperNewRolesPlugin.Assembly.Location;
         byte[] bytes = File.ReadAllBytes(dllPath);
         string currentHash = ModHelpers.HashSHA256(bytes);
         string currentVersion = VersionConfigManager.GetVersion();

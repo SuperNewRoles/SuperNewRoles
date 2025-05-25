@@ -12,7 +12,22 @@ class ModifierGuesser : ModifierBase<ModifierGuesser>
 
     public override Color32 RoleColor => Crewmate.NiceGuesser.Instance.RoleColor;
 
-    public override List<Func<AbilityBase>> Abilities => [() => new GuesserAbility(2, 2, true, true)];
+    public override List<Func<AbilityBase>> Abilities => [
+        () => new GuesserAbility(
+            maxShots: ModifierGuesserMaxShots,
+            shotsPerMeeting: ModifierGuesserShotsPerMeeting,
+            cannotShootCrewmate: ModifierGuesserCannotShootCrewmate,
+            cannotShootCelebrity: ModifierGuesserCannotShootStar,
+            celebrityLimitedTurns: ModifierGuesserLimitedTurns,
+            celebrityLimitedTurnsCount: ModifierGuesserLimitedTurnsCount,
+            madmateSuicide: ModifierGuesserMadmateSuicide
+        )];
+
+    public override int? PercentageOption => 100;
+
+    public override int? NumberOfCrews => 1;
+
+    public override CustomOption[] Options => ModifierGuesserCategory.Options;
 
     public override QuoteMod QuoteMod => QuoteMod.SuperNewRoles;
 
@@ -27,8 +42,10 @@ class ModifierGuesser : ModifierBase<ModifierGuesser>
     public override short IntroNum => 1;
     public override Func<ExPlayerControl, string> ModifierMark => (player) => "{0}" + ModHelpers.Cs(RoleColor, "⊕");
 
-    [Modifier]
-    [AssignFilter]
+    public override RoleId[] DoNotAssignRoles => [RoleId.God, RoleId.NiceGuesser, RoleId.EvilGuesser, RoleId.Balancer];
+
+    [Modifier(ModifierRoleId.ModifierGuesser)]
+    [AssignFilter([], [RoleId.God, RoleId.NiceGuesser, RoleId.EvilGuesser, RoleId.Balancer])]
     public static CustomOptionCategory ModifierGuesserCategory;
 
     [CustomOptionInt("ModifierGuesserMaxImpostors", 0, 15, 1, 0, translationName: "ModifierGuesserMaxImpostors", parentFieldName: nameof(ModifierGuesserCategory))]
@@ -66,4 +83,7 @@ class ModifierGuesser : ModifierBase<ModifierGuesser>
 
     [CustomOptionBool("ModifierGuesserCannotShootCrewmate", true, translationName: "EvilGuesserCannotShootCrewmate", parentFieldName: nameof(ModifierGuesserCategory))]
     public static bool ModifierGuesserCannotShootCrewmate = true;
+
+    [CustomOptionBool("ModifierGuesserMadmateSuicide", true, translationName: "ModifierGuesserMadmateSuicide", parentFieldName: nameof(ModifierGuesserCategory))]
+    public static bool ModifierGuesserMadmateSuicide = true;
 }

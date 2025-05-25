@@ -3,11 +3,19 @@ using SuperNewRoles.Modules.Events.Bases;
 
 namespace SuperNewRoles.Events;
 
-public class ExileControllerEvent : EventTargetBase<ExileControllerEvent>
+public class ExileControllerEventData : IEventData
 {
-    public static void Invoke()
+    public ExileController instance { get; }
+    public ExileControllerEventData(ExileController instance)
     {
-        Instance.Awake();
+        this.instance = instance;
+    }
+}
+public class ExileControllerEvent : EventTargetBase<ExileControllerEvent, ExileControllerEventData>
+{
+    public static void Invoke(ExileController instance)
+    {
+        Instance.Awake(new ExileControllerEventData(instance));
     }
 }
 
@@ -16,6 +24,6 @@ public static class ExileControllerBeginPatch
 {
     public static void Postfix(ExileController __instance)
     {
-        ExileControllerEvent.Invoke();
+        ExileControllerEvent.Invoke(__instance);
     }
 }

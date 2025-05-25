@@ -26,22 +26,30 @@ class SelfBomber : RoleBase<SelfBomber>
             targetPlayersInVents: () => true,
             isTargetable: null,
             killedCallback: (killedPlayers) => {
-                // 自分自身も爆発に巻き込まれて死亡
-                var localPlayer = ExPlayerControl.LocalPlayer;
-                localPlayer.CustomDeath(CustomDeathType.SelfBomb, source: localPlayer);
             },
             customSprite: AssetManager.GetAsset<Sprite>("SelfBomberBomButton.png"),
             customButtonText: ModTranslation.GetString("SelfBomberKillButtonText"),
             customDeathType: CustomDeathType.BombBySelfBomb,
             callback: () =>
             {
-                var obj = GameObject.Instantiate(AssetManager.GetAsset<GameObject>("SelfBomberEffect"), PlayerControl.LocalPlayer.transform);
-                obj.AddComponent<DestroyOnAnimationEndObject>();
-                obj.transform.localPosition = new(0,0,-0.5f);
-                obj.transform.localScale = Vector3.oneVector * 0.8f;
+                RpcSelfBomberCallback(ExPlayerControl.LocalPlayer);
             }
         )
     ];
+    [CustomRPC]
+    public static void RpcSelfBomberCallback(ExPlayerControl player)
+    {
+        var obj = GameObject.Instantiate(AssetManager.GetAsset<GameObject>("SelfBomberEffect"), player.transform);
+        obj.AddComponent<DestroyOnAnimationEndObject>();
+        obj.transform.localPosition = new(0, 0, -0.5f);
+        float size = 1.68f;
+        obj.transform.localScale = player.MyPhysics.FlipX ? new Vector3(-size, size, size) : Vector3.one * size;
+        player.CustomDeath(CustomDeathType.SelfBomb, source: player);
+        if (player.AmOwner && Minigame.Instance != null)
+        {
+            new LateTask(() => Minigame.Instance.Close(), 0.1f);
+        }
+    }
 
     public override QuoteMod QuoteMod { get; } = QuoteMod.SuperNewRoles;
     public override RoleTypes IntroSoundType { get; } = RoleTypes.Engineer;

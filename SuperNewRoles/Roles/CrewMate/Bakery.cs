@@ -33,7 +33,7 @@ class Bakery : RoleBase<Bakery>
 public class BakeryAbility : AbilityBase
 {
     private static TextMeshPro confirmImpostorSecondText;
-    private EventListener _exileControllerEventListener;
+    private EventListener<ExileControllerEventData> _exileControllerEventListener;
     private string ExileText
     {
         get
@@ -53,11 +53,11 @@ public class BakeryAbility : AbilityBase
         base.DetachToAlls();
     }
 
-    private void OnExileControllerEvent()
+    private void OnExileControllerEvent(ExileControllerEventData data)
     {
         if (confirmImpostorSecondText != null)
             return;
-        confirmImpostorSecondText = GameObject.Instantiate(ExileController.Instance.ImpostorText, ExileController.Instance.Text.transform);
+        confirmImpostorSecondText = GameObject.Instantiate(data.instance.ImpostorText, data.instance.Text.transform);
         StringBuilder changeStringBuilder = new();
         bool isUseConfirmImpostorSecondText = false;
 

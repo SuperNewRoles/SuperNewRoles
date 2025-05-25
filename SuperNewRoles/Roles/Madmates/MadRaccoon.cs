@@ -20,7 +20,7 @@ class MadRaccoon : RoleBase<MadRaccoon>
             MadRaccoonCanKnowImpostors,
             MadRaccoonNeededTaskCount,
             MadRaccoonIsSpecialTasks ? MadRaccoonSpecialTasks : null)),
-        () => new ShapeshiftButtonAbility(MadRaccoonShapeshiftCooldown, MadRaccoonShapeshiftDuration)
+        () => new ShapeshiftButtonAbility(MadRaccoonShapeshiftCooldown, MadRaccoonShapeshiftDuration, "MadRacoonButton.png")
     ];
 
     public override QuoteMod QuoteMod { get; } = QuoteMod.TheOtherRoles;
@@ -33,7 +33,14 @@ class MadRaccoon : RoleBase<MadRaccoon>
     public override RoleTag[] RoleTags { get; } = [];
     public override RoleOptionMenuType OptionTeam { get; } = RoleOptionMenuType.Crewmate;
 
-    // --- Custom Options ---
+    // --- Shapeshift ---
+    [CustomOptionFloat("MadRaccoonShapeshiftCooldown", 2.5f, 60f, 2.5f, 30f)]
+    public static float MadRaccoonShapeshiftCooldown;
+
+    [CustomOptionFloat("MadRaccoonShapeshiftDuration", 2.5f, 60f, 2.5f, 15f)]
+    public static float MadRaccoonShapeshiftDuration;
+
+    // --- Madmate Custom Options ---
     [CustomOptionBool("MadRaccoonCouldUseVent", false, translationName: "CanUseVent")]
     public static bool MadRaccoonCouldUseVent;
 
@@ -50,10 +57,4 @@ class MadRaccoon : RoleBase<MadRaccoon>
     public static bool MadRaccoonIsSpecialTasks;
     [CustomOptionTask("MadRaccoonSpecialTasks", 1, 1, 1, translationName: "MadmateSpecialTasks", parentFieldName: nameof(MadRaccoonIsSpecialTasks))]
     public static TaskOptionData MadRaccoonSpecialTasks;
-
-    [CustomOptionFloat("MadRaccoonShapeshiftCooldown", 2.5f, 60f, 2.5f, 30f)]
-    public static float MadRaccoonShapeshiftCooldown;
-
-    [CustomOptionFloat("MadRaccoonShapeshiftDuration", 2.5f, 60f, 2.5f, 15f)]
-    public static float MadRaccoonShapeshiftDuration;
 }

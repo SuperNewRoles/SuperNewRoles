@@ -14,7 +14,6 @@ using SuperNewRoles.Patches;
 using SuperNewRoles.Roles.Ability;
 using SuperNewRoles.SuperTrophies;
 using UnityEngine;
-using UnityEngine.Networking.Types;
 
 namespace SuperNewRoles.Roles.CrewMate;
 

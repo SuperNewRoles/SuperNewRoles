@@ -37,7 +37,7 @@ public class SchrodingersCatAbility : AbilityBase
     private CustomVentAbility _customVentAbility;
     private CustomSaboAbility _customSaboAbility;
     private ImpostorVisionAbility _impostorVisionAbility;
-    private EventListener<MurderEventData> _murderListener;
+    private EventListener<TryKillEventData> _murderListener;
     private EventListener<NameTextUpdateEventData> _nameTextUpdateListener;
     public SchrodingersCatTeam CurrentTeam { get; private set; } = SchrodingersCatTeam.SchrodingersCat;
     public SchrodingersCatAbility(SchrodingersCatData data)
@@ -49,7 +49,7 @@ public class SchrodingersCatAbility : AbilityBase
     public override void AttachToAlls()
     {
         _customKillButtonAbility = new CustomKillButtonAbility(
-            () => Data.HasKillAbility && CurrentTeam != SchrodingersCatTeam.SchrodingersCat,
+            () => Data.HasKillAbility && CurrentTeam is not SchrodingersCatTeam.SchrodingersCat and not SchrodingersCatTeam.Crewmate,
             () => Data.KillCooldown,
             () => false,
             isTargetable: (player) => player.IsAlive() && CheckTargetable(player)
@@ -73,28 +73,37 @@ public class SchrodingersCatAbility : AbilityBase
         Player.AttachAbility(_customSaboAbility, new AbilityParentAbility(this));
         Player.AttachAbility(_impostorVisionAbility, new AbilityParentAbility(this));
 
-        _murderListener = MurderEvent.Instance.AddListener(OnMurder);
+        _murderListener = TryKillEvent.Instance.AddListener(TryMurder);
         _nameTextUpdateListener = NameTextUpdateEvent.Instance.AddListener(OnNameTextUpdate);
     }
-    private void OnMurder(MurderEventData data)
+    public override void DetachToAlls()
+    {
+        _murderListener?.RemoveListener();
+        _nameTextUpdateListener?.RemoveListener();
+    }
+    private void TryMurder(TryKillEventData data)
     {
         if (Player.IsLovers()) return;
-        if (data.target != Player) return;
+        if (data.RefTarget != Player) return;
+        if (data.Killer == Player) return;
         if (CurrentTeam != SchrodingersCatTeam.SchrodingersCat) return;
-        if (data.killer.IsImpostor())
+        if (data.Killer.IsImpostor())
             CurrentTeam = Data.HasKillAbility ? SchrodingersCatTeam.Impostor : SchrodingersCatTeam.Madmate;
-        else if (data.killer.IsJackal())
+        else if (data.Killer.IsJackal())
             CurrentTeam = Data.HasKillAbility ? SchrodingersCatTeam.Jackal : SchrodingersCatTeam.Friends;
-        else if (data.killer.IsPavlovsTeam())
+        else if (data.Killer.IsPavlovsTeam())
             CurrentTeam = Data.HasKillAbility ? SchrodingersCatTeam.Pavlovs : SchrodingersCatTeam.PavlovFriends;
-        else if (data.killer.IsCrewmate())
+        else if (data.Killer.IsCrewmate())
             CurrentTeam = SchrodingersCatTeam.Crewmate;
         else if (Data.CrewOnKillByNonSpecific)
             CurrentTeam = SchrodingersCatTeam.Crewmate;
-        else
-            Player.CustomDeath(CustomDeathType.Suicide);
         if (CurrentTeam != SchrodingersCatTeam.SchrodingersCat)
+        {
             Dominate(CurrentTeam);
+            data.RefSuccess = false;
+            if (data.RefTarget.AmOwner)
+                DestroyableSingleton<HudManager>.Instance.KillOverlay.ShowKillAnimation(data.Killer.Data, data.RefTarget.Data);
+        }
     }
     private void OnNameTextUpdate(NameTextUpdateEventData data)
     {
@@ -112,10 +121,7 @@ public class SchrodingersCatAbility : AbilityBase
                 case SchrodingersCatTeam.Friends:
                     color = Jackal.Instance.RoleColor;
                     break;
-                case SchrodingersCatTeam.Pavlovs:
-                case SchrodingersCatTeam.PavlovFriends:
-                    color = PavlovsOwner.Instance.RoleColor;
-                    break;
+
                 default:
                     return;
             }
@@ -124,7 +130,7 @@ public class SchrodingersCatAbility : AbilityBase
                 data.Player.MeetingInfoText.text = ModHelpers.Cs(color, data.Player.MeetingInfoText.text);
             data.Player.cosmetics.nameText.text = ModHelpers.Cs(color, data.Player.cosmetics.nameText.text);
             if (data.Player.VoteArea != null)
-                data.Player.VoteArea.PlayerIcon.cosmetics.nameText.text = ModHelpers.Cs(color, data.Player.VoteArea.PlayerIcon.cosmetics.nameText.text);
+                data.Player.VoteArea.NameText.text = ModHelpers.Cs(color, data.Player.VoteArea.NameText.text);
         }
     }
     private bool CheckTargetable(ExPlayerControl player)
@@ -173,13 +179,14 @@ public class SchrodingersCatAbility : AbilityBase
     {
         foreach (var deadBody in GameObject.FindObjectsOfType<DeadBody>())
         {
-            deadBody.transform.localPosition = new(999, 999);
+            if (deadBody.ParentId == Player.PlayerId)
+                deadBody.transform.localPosition = new(999, 999);
         }
         new LateTask(() =>
         {
             Player.Player.Revive();
             RoleManager.Instance.SetRole(Player, RoleTypes.Crewmate);
-        }, 0f);
+        }, 0.017f);
         new LateTask(() =>
         {
             foreach (var deadBody in GameObject.FindObjectsOfType<DeadBody>())
@@ -206,6 +213,7 @@ public class SchrodingersCatAbility : AbilityBase
                 ));
                 if (Player.AmOwner)
                     madmateAbility.CustomTaskAbility.AssignTasks();
+                Player.AttachAbility(madmateAbility, new AbilityParentAbility(this));
                 break;
             case SchrodingersCatTeam.Friends:
                 Player.DetachAbility(_knowOtherAbility.AbilityId);
@@ -221,6 +229,7 @@ public class SchrodingersCatAbility : AbilityBase
                 ));
                 if (Player.AmOwner)
                     jackalFriendsAbility.CustomTaskAbility.AssignTasks();
+                Player.AttachAbility(jackalFriendsAbility, new AbilityParentAbility(this));
                 break;
         }
     }
@@ -289,10 +298,5 @@ public class SchrodingersCatAbility : AbilityBase
             default:
                 return false;
         }
-    }
-
-    public override void DetachToAlls()
-    {
-        _murderListener?.RemoveListener();
     }
 }

@@ -5,7 +5,6 @@ using System.Text;
 using System.Threading.Tasks;
 using AmongUs.GameOptions;
 using SuperNewRoles.Modules;
-using UnityEngine.Networking.Types;
 using UnityEngine;
 using SuperNewRoles.Roles.Ability;
 using SuperNewRoles.CustomOptions;
@@ -17,6 +16,10 @@ internal abstract class GhostRoleBase<T> : BaseSingleton<T>, IGhostRoleBase wher
     protected int _optionidbase = -1;
 
     public abstract GhostRoleId Role { get; }
+    public string RoleName => Role.ToString();
+    public CustomOption[] Options => RoleOptionManager.TryGetGhostRoleOption(Role, out var role) ? role.Options : [];
+    public int? PercentageOption => RoleOptionManager.TryGetGhostRoleOption(Role, out var role) ? role.Percentage : null;
+    public int? NumberOfCrews => RoleOptionManager.TryGetGhostRoleOption(Role, out var role) ? role.NumberOfCrews : null;
     public abstract Color32 RoleColor { get; }
     public abstract List<Func<AbilityBase>> Abilities { get; }
     public abstract QuoteMod QuoteMod { get; }
@@ -28,13 +31,14 @@ internal abstract class GhostRoleBase<T> : BaseSingleton<T>, IGhostRoleBase wher
     public virtual RoleId[] RelatedRoleIds { get; } = [];
     public virtual bool HiddenOption => false;
 
+    public List<AssignedTeamType> AssignedTeams => [AssignedTeam];
+
     // public abstract void CreateCustomOption();
 }
 
-public interface IGhostRoleBase
+public interface IGhostRoleBase : IRoleInformation
 {
     public GhostRoleId Role { get; }
-    public Color32 RoleColor { get; }
     /// <summary>
     /// 追加したいAbilityを[ typeof(HogeAbility), typeof(FugaAbility) ]の形でListとして用意する
     /// 役職選出時(OnSetRole)に自動でnewされます
@@ -48,7 +52,6 @@ public interface IGhostRoleBase
     public short IntroNum { get; }
     public bool IsVanillaRole => QuoteMod == QuoteMod.Vanilla;
     public RoleId[] RelatedRoleIds { get; }
-    public bool HiddenOption { get; }
 
     /// <summary>
     /// AbilityはAbilitiesから自動でセットされるが、追加で他の処理を行いたい場合はOverrideすること

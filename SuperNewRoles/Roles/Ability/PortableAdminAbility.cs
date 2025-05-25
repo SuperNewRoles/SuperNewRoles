@@ -14,7 +14,7 @@ public record PortableAdminData(Func<bool> CanUseAdmin, Func<bool> canUseAdminDu
     public bool CanMoveWhileUsingAdmin => canMoveWhileUsingAdmin?.Invoke() ?? true;
     public bool CountRemainingTime => coundRemainingTime?.Invoke() ?? false;
 }
-class PortableAdminAbility : CustomButtonBase
+public class PortableAdminAbility : CustomButtonBase
 {
     private readonly PortableAdminData Data;
     public PortableAdminAbility(PortableAdminData data)
@@ -55,10 +55,6 @@ class PortableAdminAbility : CustomButtonBase
             Mode = MapOptions.Modes.CountOverlay,
             AllowMovementWhileMapOpen = Data.CanMoveWhileUsingAdmin
         });
-    }
-    public override void Attach(PlayerControl player, ulong abilityId, AbilityParentBase parent)
-    {
-        base.Attach(player, abilityId, parent);
     }
 
     private Sprite GetAdminButtonSprite()

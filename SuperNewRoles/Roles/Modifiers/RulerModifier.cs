@@ -12,9 +12,9 @@ class RulerModifier : ModifierBase<RulerModifier>
 {
     public override ModifierRoleId ModifierRole => ModifierRoleId.RulerModifier;
 
-    public override Color32 RoleColor => Palette.ImpostorRed;
+    public override Color32 RoleColor => new(255, 202, 0, 255);
 
-    public override List<Func<AbilityBase>> Abilities => [() => new CustomSidekickButtonAbility(
+    public override List<Func<AbilityBase>> Abilities => [() => new CustomSidekickButtonAbility(new(
             canCreateSidekick: (created) => !created,
             sidekickCooldown: () => Cooldown,
             sidekickRole: () => RoleId.Madmate,
@@ -23,7 +23,7 @@ class RulerModifier : ModifierBase<RulerModifier>
             sidekickText: ModTranslation.GetString("CreateMadmateButtonText"),
             sidekickCount: () => 1,
             isTargetable: (player) => !player.IsImpostor()
-        )];
+        ))];
 
     public override QuoteMod QuoteMod => QuoteMod.SuperNewRoles;
 
@@ -34,9 +34,11 @@ class RulerModifier : ModifierBase<RulerModifier>
     public override RoleTag[] RoleTags => [];
 
     public override short IntroNum => 1;
-    public override Func<ExPlayerControl, string> ModifierMark => (player) => ModHelpers.Cs(RoleColor, "狂わせる{0}");
+    public override Func<ExPlayerControl, string> ModifierMark => (player) => "{0} " + ModHelpers.Cs(RoleColor, "†");
 
     public override bool AssignFilter => true;
+
+    public override RoleId[] DoNotAssignRoles => [];
 
     [CustomOptionFloat("RulerModifierCooldown", 0f, 180f, 2.5f, 30f, translationName: "CoolTime")]
     public static float Cooldown;

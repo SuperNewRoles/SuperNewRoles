@@ -77,7 +77,7 @@ public class ChiefAbility : AbilityBase
     public override void AttachToAlls()
     {
         // 任命ボタンの作成
-        _sidekickButton = new CustomSidekickButtonAbility(
+        _sidekickButton = new CustomSidekickButtonAbility(new(
             canCreateSidekick: created => _canAppointSheriff && !created,
             sidekickCooldown: () => Chief.ChiefAppointCooldown, // クールダウンを設定値に変更
             sidekickRole: () => RoleId.Sheriff,
@@ -92,7 +92,7 @@ public class ChiefAbility : AbilityBase
                 return !target.IsImpostor();
             },
             onSidekickCreated: OnSheriffAppointed
-        );
+        ));
 
         ExPlayerControl exPlayer = Player;
         AbilityParentAbility abilityParentAbility = new(this);

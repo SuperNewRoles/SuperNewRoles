@@ -64,7 +64,6 @@ public static class CustomLoadingScreen
         text.localScale = Vector3.one * 0.15f;
         LoadingText = text.GetComponent<TextMeshPro>();
         Inited = true;
-        // if (Constants.GetPlatformType() != Platforms.Android)
         __instance.StartCoroutine(CustomCosmeticsLoader.LoadCosmeticsTaskAsync((c) => __instance.StartCoroutine(c.WrapToIl2Cpp())).WrapToIl2Cpp());
         PatcherUpdater.Initialize();
         CustomCosmeticsLoader.runned = false;

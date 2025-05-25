@@ -15,7 +15,10 @@ class Mirage : GhostRoleBase<Mirage>
     public override GhostRoleId Role { get; } = GhostRoleId.Mirage;
     public override Color32 RoleColor { get; } = Palette.ImpostorRed;
 
-    public override List<Func<AbilityBase>> Abilities => [() => new MirageAbility(MirageLimitUse, MirageLimitCount)];
+    public override List<Func<AbilityBase>> Abilities => [
+        () => new MirageAbility(MirageLimitUse, MirageLimitCount),
+        () => new DisibleHauntAbility(() => true),
+    ];
 
     public override QuoteMod QuoteMod => QuoteMod.SuperNewRoles;
 
@@ -48,7 +51,7 @@ public class MirageAbility : CustomButtonBase, IAbilityCount
     public override float DefaultTimer => 0f;
     public override string buttonText => ModTranslation.GetString("MirageButtonText");
     public override Sprite Sprite => AssetManager.GetAsset<Sprite>("MirageButton.png");
-    protected override KeyType keytype => KeyType.Ability2;
+    protected override KeyType keytype => KeyType.Ability1;
     private EventListener<DieEventData> dieEventListener;
 
     public override ShowTextType showTextType => LimitUse && HasCount ? ShowTextType.ShowWithCount : ShowTextType.Hidden;
@@ -104,7 +107,6 @@ public class MirageAbility : CustomButtonBase, IAbilityCount
     public static void RpcSpawnDeadbody(PlayerControl player, Vector3 position)
     {
         DeadBody deadBody = GameObject.Instantiate<DeadBody>(GameManager.Instance.DeadBodyPrefab);
-        deadBody.enabled = false;
         deadBody.ParentId = player.PlayerId;
         foreach (var bodyRenderer in deadBody.bodyRenderers)
         {
@@ -114,5 +116,6 @@ public class MirageAbility : CustomButtonBase, IAbilityCount
         Vector3 val = position + (PlayerControl.LocalPlayer.KillAnimations.FirstOrDefault()?.BodyOffset ?? Vector3.zero);
         val.z = val.y / 1000f;
         deadBody.transform.position = val;
+        deadBody.enabled = true;
     }
 }

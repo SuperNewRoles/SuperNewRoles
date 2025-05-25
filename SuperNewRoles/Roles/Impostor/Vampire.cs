@@ -108,7 +108,7 @@ public class VampireAbility : AbilityBase
     public override void AttachToAlls()
     {
         base.AttachToAlls();
-        sidekickButtonAbility = new CustomSidekickButtonAbility(
+        sidekickButtonAbility = new CustomSidekickButtonAbility(new(
             canCreateSidekick: (_) => nightFall.canCreate && !created,
             sidekickCooldown: () => nightFall.cooldown,
             sidekickRole: () => RoleId.VampireDependent,
@@ -121,7 +121,7 @@ public class VampireAbility : AbilityBase
             {
                 new LateTask(() => RpcSetDependent(player), 0.1f, "VampireSetDependent");
             }
-        );
+        ));
         killButtonAbility = new CustomKillButtonAbility(
             canKill: () => true,
             killCooldown: () => kill.killCooldown,
@@ -203,9 +203,10 @@ public class VampireAbility : AbilityBase
         if (delayTimer <= 0)
         {
             delayTimer = 0;
+            new BloodStain(TargetingPlayer, isBlack: kill.blackBloodstains, parent: bloodStainsParentTargeting).BloodStainObject.transform.localScale *= 3f;
             TargetingPlayer.CustomDeath(CustomDeathType.VampireKill, source: Player);
-            new BloodStain(TargetingPlayer, isBlack: kill.blackBloodstains, parent: bloodStainsParentTargeting);
             TargetingPlayer = null;
+            return;
         }
         bloodStainTimer -= Time.fixedDeltaTime;
         if (bloodStainTimer <= 0)

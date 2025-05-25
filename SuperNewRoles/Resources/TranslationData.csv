@@ -6,18 +6,21 @@ Close,閉じる,Close,关闭,關閉
 Impostor,インポスター,Impostor,内鬼,內鬼
 Crewmate,クルーメイト,Crewmate,船员,船員
 Neutral,第三陣営,Neutral,第三阵营,第三陣營
+GhostRoles,幽霊役職,Ghost Roles,幽灵角色,幽靈角色
+Modifier,モディファイア,Modifier,修饰符,修飾符
 People,{0}人,{0} people,{0}人,{0}人
 
 # 共通設定テキスト
 CoolTime,クールタイム,Cool Time,冷却时间,冷卻時間
 KillCoolTime,キルクールタイム,Kill Cool Time,击杀冷却时间,擊殺冷卻時間
-DurationTime,継続時間,Duration Time,持续时间,持續時間
+DurationTime,効果時間,Duration Time,持续时间,持續時間
 CanUseVent,ベントを使用できる,Can Use Vent,可以使用通风口,可以使用通風口
 HasImpostorVision,インポスターの視界を持つ,Has Impostor Vision,拥有内鬼视野,擁有內鬼視野
 TaskOption,タスクを個別で設定するか,Set tasks individually,独立设置任务,獨立設置任務
 UseLimit,使用可能回数,Usage Limit,可使用次数,可使用次數
 RemainingText,残り{0}回,Remaining {0} times,剩余 {0} 次,剩餘 {0} 次
-ShapeshiftDurationTimerText,残り {0} 秒,Remaining {0} seconds,剩余 {0} 秒,剩餘 {0} 秒
+DurationTimerText,残り{0}秒,Remaining {0} seconds,剩余 {0} 秒,剩餘 {0} 秒
+AdditionalWin,追加勝利,Additional Win,额外胜利,額外勝利
 
 # CustomColors
 colorSalmon,サーモン,Salmon,鲑鱼红,鮭魚紅
@@ -160,12 +163,22 @@ RequestInGameType.Question,質問,Question,質問,質問
 RequestInGameType.Request,要望,Request,要望,要望
 RequestInGameType.Thanks,感謝,Thanks,感謝,感謝
 RequestInGameType.Other,その他,Other,其他,其他
+RequestInGameSendTitleGray,タイトル,Title,标题,標題
+RequestInGameSendTitleBack,タイトルを入力してください(3文字以上),Please enter a title (at least 3 characters),请输入标题（至少3个字符）,請輸入標題（至少3個字元）
+RequestInGameSendDescriptionGray,メッセージ,Message,消息,訊息
+RequestInGameSendDescriptionBack,メッセージを入力してください(10文字以上),Please enter a message (at least 10 characters),请输入消息（至少10个字符）,請輸入訊息（至少10個字元）
+RequestInGameSendButton,送信,Send,发送,發送
+RequestInGameLoadingData,データを取得中,Loading data
+RequestInGameSendingReport,レポートを送信中,Sending report
+RequestInGameSendingReportProgress,レポートを送信中... ({0}%),Sending report... {0}%,发送报告中...{0}%,發送報告中...{0}%
+RequestInGameLoading,読み込み中...,Loading...
 
 # RoleOptionMenu
 RoleOptionMenuType.Impostor,インポスター,Impostor,内鬼,內鬼
 RoleOptionMenuType.Crewmate,クルーメイト,Crewmate,船员,船員
 RoleOptionMenuType.Neutral,第三陣営,Neutral,第三阵营,第三陣營
 RoleOptionMenuType.Ghost,幽霊役職,Ghost Role,幽灵角色,幽靈角色
+RoleOptionMenuType.Modifier,モディファイア,Modifier,修饰符,修飾符
 
 # ModifierOptionMenu
 EditAssignFilterButtonText,アサインフィルターを編集,Edit Assign Filter,编辑分配过滤器,編輯分配過濾器
@@ -196,8 +209,8 @@ AirshipRandomSpawn,ランダムスポーン,Random Spawn,随机出生点,隨機�
 RecordsAdminDestroy,アーカイブアドミン封印,Seal Records Admin,封印档案室管理地图,封印檔案室管理地圖
 AntiTaskOverWall,壁越しタスク禁止,Disable Tasks Through Walls,禁止隔墙任务,禁止隔牆任務
 ModifyGapRoomOneWayShadow,昇降機の影変更,Modify Gap Room Shadow,修改升降机阴影,修改升降機陰影
-GapRoomShadowIgnoresImpostors,インポスターは下から上を見れる,Impostors Can See Up From Below,内鬼可以从下方看到上方,內鬼可以從下方看到上方
-DisableGapRoomShadowForNonImpostor,インポスターは上から下を見れる,Impostors Can See Down From Above,内鬼可以从上方看到下方,內鬼可以從上方看到下方
+GapRoomShadowIgnoresImpostors,インポスター視界のプレイヤーは下から上を見れる,Impostors Can See Up From Below,内鬼可以看见下方玩家,內鬼可以看見下方玩家
+DisableGapRoomShadowForNonImpostor,インポスター視界のプレイヤー以外が上から下を見られなくする,Disable Gap Room Shadow For Non Impostor,禁止非内鬼从上方看到下方,禁止非內鬼從上方看到下方
 PresetDefault,プリセット {0},Preset {0},预设 {0},預設 {0}
 PresetSelected,プリセット {0},Preset {0},预设 {0},預設 {0}
 AddPreset,プリセットを追加,Add Preset,新增预设,新增預設
@@ -250,10 +263,12 @@ HelpMenu.MyRoleInformation,自分の役職,My Role Information,我的角色信�
 HelpMenu.MyRoleInformation.InLobbyText,ゲーム中に自分の役職が表示されます。,Your role will be displayed during the game.,游戏过程中会显示你的角色。,遊戲過程中會顯示你的角色。
 HelpMenu.MyRoleInformation.RoleSettingsTitle,役職設定,Role Settings,角色设置,角色設定
 HelpMenu.AssignmentsSettingInfomation,配役情報,Assignments Information,配役信息,配役資訊
+HelpMenu.AssignmentsSettingInfomation2,配役情報2,Assignments Information 2,配役信息2,配役資訊2
 HelpMenu.ModSettingsInformation,MOD設定情報,MOD Settings Information,MOD设置信息,MOD設定資訊
 HelpMenu.RoleDictionary,役職辞典,Role Dictionary,角色辞典,角色辭典
 HelpMenu.NoneOptions1,204: Not content: この役職に設定がありませんでした。,204: Not content: This role has no settings.,204: Not content: 此角色没有设置。,204: Not content: 此角色沒有設定。
 HelpMenu.NoneOptions2,役職の設定が見つかりませんでした。おにぎりでも食べて落ち着きましょう。,We couldn't find the role setting. Take a break and have a rice ball.,我们找不到角色设置。吃个饭冷静一下吧。,我們找不到角色設定。吃個飯冷靜一下吧。
+HelpMenu.AllTeams,全陣営,All Teams,所有阵营,所有陣營
 
 # MadFriendsIntro
 MadRolesSubIntro,この命は我が主たるインポスターのために,This life is for my mastert，the Impostor.,为内鬼献出生命,背叛船員，為吾主內鬼而戰。
@@ -281,6 +296,7 @@ Madmate,マッドメイト,Madmate,疯友,瘋友
 BlackCat,黒猫,Black Cat,黑猫,黑貓
 Jackal,ジャッカル,Jackal,杰克,傑克
 Sidekick,サイドキック,Sidekick,側翼,側翼
+SidekickWaveCannon,波動砲サイドキック,Sidekick Wave Cannon,側翼波動砲,側翼波動砲
 SelfBomber,自爆魔,Self Bomber,自爆者,自爆者
 Samurai,侍,Samurai,侍,侍
 WaveCannon,波動砲,Wave Cannon,波动炮,波動砲
@@ -353,6 +369,15 @@ VentTrapper,ベントトラッパー,Vent Trapper
 Rocket,ロケット,Rocket
 Vampire,ヴァンパイア,Vampire,吸血鬼,吸血鬼
 VampireDependent,眷属,Dependent,眷属,眷屬
+Spelunker,スペランカー,Spelunker,倒霉蛋,倒霉鬼
+ModifierSpelunker,モディファイアスペランカー,Modifier Spelunker
+PartTimer,フリーター,Part Timer
+HamburgerShop,ハンバーガー屋,Hamburger Shop
+BodyBuilder,ボディービルダー,Body Builder
+NiceHawk,ナイスホーク,Nice Hawk
+MadHawk,マッドホーク,Mad Hawk
+EvilHawk,イビルホーク,Evil Hawk
+ModifierHawk,モディファイアホーク,Modifier Hawk
 
 # Descriptions_Impostor
 EvilGuesser.Description,会議に関する能力を有するインポスターです。\n会議中に出現するボタンを押し、対象のプレイヤーの役職が何か当てると、そのプレイヤーをキルすることが出来ます。\nただし、外すと自身が死亡してしまいます。,An Impostor with a meeting‐based ability.\nDuring meetings, by pressing the appearing button and correctly guessing a target player's role, they can kill that player.\nHowever, an incorrect guess results in their own death.,这是一个拥有会议相关能力的内鬼。\n在会议中，点击出现的按钮后，如果猜中目标玩家的角色，就可以将其击杀。\n但如果猜错，自己会死亡。,這是一個具備會議相關能力的內鬼。\n在會議中，按下出現的按鈕後，若能正確猜出目標玩家的角色，便可將其擊殺。\n不過，若猜錯，則自己將會死亡。
@@ -458,8 +483,12 @@ CrewmateWin,クルーメイト,Crewmates
 
 # Sheriff Options
 SheriffKillCooldown,キルクールタイム,Kill Cooldown,杀人冷却时间,殺人冷卻時間
+SheriffMaxKillCount,キル可能回数,Killable count
+SheriffCanKillMadRoles,マッドをキルできる,Can Kill MadRoles
 SheriffCanKillNeutral,第三陣営をキルできる,Can Kill Neutral,可以杀第三阵营,可以殺第三陣營
 SheriffCanKillImpostor,インポスターをキルできる,Can Kill Impostor,可以杀内鬼,可以殺內鬼
+SheriffCanKillFriendRoles,フレンズをキルできる,Can Kill FriendRoles
+SheriffCanKillLovers,ラバーズをキルできる,Can Kill Lovers
 
 # Guesser Options
 NiceGuesserMaxShots,打てる最大数,Maximum Number of Shots,最大射击次数,最大射擊次數
@@ -496,6 +525,7 @@ JackalSidekickCooldown,サイドキック 作成クールダウン,Sidekick Cool
 JackalSidekickType,サイドキックタイプ,Sidekick Type,边缘队员类型,邊緣隊員類型
 JackalSidekickType.Sidekick,サイドキック,Sidekick,边缘队员,邊緣隊員
 JackalSidekickType.Friends,ジャッカルフレンズ,Jackal Friends,杰克朋友,傑克朋友
+JackalSidekickType.SidekickWaveCannon,波動砲サイドキック,Sidekick Wave Cannon
 SidekickButtonText,サイドキック,Sidekick,边缘队员,邊緣隊員
 
 # Bait Options
@@ -562,6 +592,7 @@ WaveCannonJackalWaveCannonType,波動砲タイプ,Wave Cannon Type,波动炮类�
 
 # Tuna
 TunaStopTimeLimit,停止可能時間,Tuna Stop Time Limit,金枪鱼停止时间,金槍魚停止時間
+EnableTunaSoloWin,マグロの単独勝利,Enable Tuna Solo Win,启用金枪鱼单人胜利,啟用金槍魚單人勝利
 
 # Teruteru
 TeruteruRequireTaskCompletion,タスク完了が必要,Require Task Completion,需要完成任务,需要完成任務
@@ -573,6 +604,9 @@ RoleDictionary,役職辞典,Role Dictionary,角色词典,角色詞典
 ImpostorButton,インポスター,Impostor,内鬼,內鬼
 NeutralButton,第三陣営,Neutral,第三阵营,第三陣營
 CrewmateButton,クルーメイト,Crewmate,船员,船員
+GhostButton,幽霊役職,Ghost Roles,幽灵角色,幽靈角色
+ModifierButton,モディファイア,Modifier,修饰符,修飾符
+
 
 # Chief
 ChiefAppoint,任命,Appoint,任命,任命
@@ -641,6 +675,7 @@ CelebrityIntro,みんなのスター！！,The Celebrity!!,大家的明星！！
 CelebrityKeepNameColorAfterRoleChange,役職が変わっても名前の色がスターのままになる,Keep name color as Celebrity even if role changes,即使角色改变也保持明星姓名颜色,即使角色改變也保持明星姓名顏色
 CelebrityEnableGlowEffect,タスクフェイズ中、設定したキルクール秒数毎に画面を光らせるか,Enable screen glow effect every kill cooldown during task phase,是否在任务阶段每次击杀冷却结束时闪亮屏幕,是否在任務階段每次擊殺冷卻結束時閃亮屏幕
 CelebrityGlowOnlyWhileAlive,画面が光るのは生きている間のみか(会議更新),Screen glows only while alive (updates on meeting),屏幕仅在活着时闪烁（会议更新）,螢幕僅在活著時閃爍（會議更新）
+CelebrityYellowChangedRole,役職が変わっても名前の色がスターのままになる,Even if the role changes，the name color remains as a star.
 
 # Vulture
 VultureCooldown,ヴァルチャークールダウン,Vulture Cooldown,秃鹫冷却时间,禿鷲冷卻時間
@@ -673,8 +708,8 @@ TheFungleSetting,The Fungle設定,The Fungle Settings,The Fungle设置,The Fungl
 TheFungleSpawnType,スポーンタイプ,Spawn Type,出生点类型,出生點類型
 TheFungleAdditionalAdmin,追加アドミン,Additional Admin,额外管理地图,額外管理地圖
 TheFunglePowerOutageSabotage,停電サボタージュ,Power Outage Sabotage,停电破坏,停電破壞
-TheFungleHideSporeMask,胞子マスク非表示,Hide Spore Mask,隐藏孢子面具,隱藏孢子面具
-TheFungleHideSporeMaskOnlyImpostor,インポスターのみ非表示,Hide Only for Impostor,僅对内鬼隐藏,僅對內鬼隱藏
+TheFungleHideSporeMask,キノコの胞子効果無効,Disable Mushroom Spore Effect,禁用蘑菇孢子效果,禁用蘑菇孢子效果
+TheFungleHideSporeMaskOnlyImpostor,インポスターのみ無効,Hide Only for Impostor,僅对内鬼隐藏,僅對內鬼隱藏
 PolusSetting,Polus設定,Polus Settings,Polus设置,Polus設置
 
 # RoomName
@@ -896,10 +931,13 @@ WorshiperAbilitySuicideCoolTime,自殺クールタイム,Suicide Cooldown,自殺
 GodNeededTask,勝利にタスクが必要,Required Tasks for Victory,胜利需要任务,勝利需要任務
 GodSeeVote,投票結果を見れる,See Vote Results,可以看投票结果,可以看投票結果
 GodDescends,降臨,Descends,降臨,降臨
-GodCannotFixReactor,リアクターを直せない,Cannot fix reactor,无法修复反应堆,無法修復反應堆
+GodCannotFixReactor,リアクターとO2を直せない,Cannot fix reactor,无法修复反应堆,無法修復反應堆
 GodCannotFixComms,コミュサボを直せない,Cannot fix comms,无法修复通讯,無法修復通訊
 GodCannotFixLights,停電を直せない,Cannot fix lights,无法修复停电,無法修復停電
 GodCannotUseReportButton,死体を通報できない,Cannot report dead bodies,无法通報死體,無法通報死體
+GodCannotUseEmergencyButton,緊急ボタンを押せない,Cannot use emergency button,无法使用紧急按钮,無法使用緊急按鈕
+GodCannotUseEmergencyButtonText,神は緊急ボタンを押せません,God cannot use emergency button,神无法使用紧急按钮,神無法使用緊急按鈕
+
 # ModifierGuesser
 ModifierGuesserCategory,ゲッサー,Guesser
 ModifierGuesserMaxImpostors,最大インポスター数,Max Impostors
@@ -908,7 +946,7 @@ ModifierGuesserMaxNeutrals,最大第三陣営数,Max Neutrals
 ModifierGuesserNeutralChance,第三陣営排出確率,Neutral Spawn Chance
 ModifierGuesserMaxCrewmates,最大クルーメイト数,Max Crewmates
 ModifierGuesserCrewmateChance,クルーメイト排出確率,Crewmate Spawn Chance
-
+ModifierGuesserMadmateSuicide,マッド・フレンズは自爆する,Mad Role suddenly dies
 
 # Lovers
 LoversCategory,<color=#FF69B4>ラバーズ</color>,<color=#FF69B4>Lovers</color>,<color=#FF69B4>恋爱</color>,<color=#FF69B4>戀愛</color>
@@ -919,6 +957,7 @@ LoversAvoidQuarreled,クラードと重複しない,Avoid Quarreled
 LoversAdditionalWinCondition,追加勝利,Additional Win Condition
 LoversIncludeImpostorsInSelection,抽選にインポスターを含む,Include Impostors in Selection
 LoversIncludeThirdTeamInSelection,抽選に第三陣営を含む,Include Third Team in Selection
+CupidLoversCanSeeCupidRole,ラバーズがキューピッドを知れる,Lovers Can See Cupid
 
 # Owl
 OwlIntro1,暗闇に羽ばたきし者,The one who flapped his wings in the dark,黑暗中鼓动羽翼之人,在黑暗中鼓動翅膀的人
@@ -944,9 +983,14 @@ SchrodingersCatCrewOnKillByNonSpecific,特定の役職以外からキルされ�
 
 # Truelover
 TrueLoverCreateLovers,一目惚れ,One-sided Love,一見傾心,一見傾心
+TrueloverEnabledTimeLimit,一目惚れの時間制限を有効にする,Enable Love Time Limit,啟用時間限制,啟用時間限制
+TrueloverTimeLimit,一目惚れの時間制限,Love Time Limit,時間限制,時間限制
 
-#Cupid
+# Cupid
 CupidLoveArrow,恋の矢,Love Arrow
+CupidEnabledTimeLimit,ラバーズ作成の時間制限を有効にする,Enable Love Arrow Time Limit,啟用時間限制,啟用時間限制
+CupidTimeLimit,ラバーズ作成の時間制限,Love Arrow Time Limit,時間限制,時間限制
+CupidCanSeeCreatedLoversRole,キューピットがラバーズの役職が見える,Cupid can see the roles of the Lovers
 
 # Crab
 CrabButton,カニ!,Crab!,螃蟹!,螃蟹!
@@ -970,9 +1014,10 @@ ToiletFan.ButtonTitle,トイレ!,Toilet!
 # JumboModifier
 JumboAssignToImpostor,インポスターにも割り当てる,Assign to Impostor,分配给内鬼,分配給內鬼
 JumboAssignToNeutral,第三陣営にも割り当てる,Assign to Neutral,分配给第三方阵营,分配給第三方陣營
-JumboSizeUpSpeed,成長スピード,Growth Speed,成長速度,成長速度
+JumboSizeUpSpeed,成長しきるまでの時間(秒),Time to grow(seconds)
 JumboMaxSize,最大サイズ,Max Size,最大大小,最大大小
 JumboWalkSoundSize,歩行音量,Walk Sound Size,步行音量,步行音量
+JumboSizeUpOnMeeting,会議中にも成長する,Grow on Meeting,会议中成长,會議中成長
 
 # VentTrapper
 VentTrapperButtonText,トラップ!,Trap!
@@ -980,11 +1025,14 @@ VentTrapperSetupTime,トラップ設置時間,Setup Time,陷阱设置时间,陷�
 VentTrapperStunTime,トラップ効果時間,Trap Effect Time,陷阱效果时间,陷阱效果時間
 
 # Rocket Options
+RocketInitialGrabCooldown,初回「掴む」のクールタイム,Initial Grab Cooldown,初回掴むのクールタイム,初回掴む的冷卻時間
 RocketGrabCooldown,「掴む」のクールタイム,Grab Cooldown,「掴む」のクールタイム,「掴む」のクールタイム
 RocketSubsequentGrabCooldown,二人目を掴めるようになるまでの時間,Subsequent Grab Cooldown,二人目を掴めるようになるまでの時間,二人目を掴めるようになるまでの時間
+RocketLaunchAfterMeeting,会議中に掴んでいる場合、会議後にエフェクトと音を出して打ち上げる,If it's being held during the meeting，launch it with effects and sound after the meeting.
 RocketLaunchChargeTime,チャージタイム,Launch Charge Time,チャージタイム,チャージタイム
 RocketGrabButtonText,掴む,Grab,掴む,掴む
 RocketLaunchButtonText,ドッカーン!,Launch!
+
 
 # Vampire
 VampireAbsorptionCooldown,吸血クールダウン,Absorption Cooldown,吸血冷却时间,吸血冷卻時間
@@ -1021,9 +1069,9 @@ TheFungleZiplineUpOrDown,ジップライン昇降方向,Zipline Direction,滑索
 TheFungleCameraOption,カメラ設定,Camera Settings,摄像头设置,攝像頭設置
 TheFungleCameraChangeRange,カメラ範囲変更,Camera Range Change,摄像头范围改变,攝像頭範圍改變
 TheFungleCameraSpeed,カメラスピード,Camera Speed,摄像头速度,攝像頭速度
-TheFungleMushroomMixupOption,マッシュルームミックスアップ,Mushroom Mixup,蘑菇混合,蘑菇混合
-TheFungleMushroomMixupCantOpenMeeting,ミックスアップ中会議不可,Cannot Open Meeting During Mixup,混合时不能开会,混合時不能開會
-TheFungleMushroomMixupTime,ミックスアップ継続時間,Mushroom Mixup Duration,蘑菇混合持续时间,蘑菇混合持續時間
+TheFungleMushroomMixupOption,キノコカオスの設定,Mushroom Mixup,蘑菇混合,蘑菇混合
+TheFungleMushroomMixupCantOpenMeeting,キノコカオス中は会議できない,Cannot Open Meeting During Mixup,混合时不能开会,混合時不能開會
+TheFungleMushroomMixupTime,キノコカオス継続時間,Mushroom Mixup Duration,蘑菇混合持续时间,蘑菇混合持續時間
 
 FungleSpawnTypeOptions.TheFungleSpawnTypeNormal,通常,Normal,通常,通常
 FungleSpawnTypeOptions.RandomSpawnOption,ランダムスポーン,Random Spawn,随机出生点,隨機出生點
@@ -1043,3 +1091,95 @@ MatryoshkaButtonText,死体を着る/脱ぐ,Wear/Remove Body,穿戴/脱下尸体
 
 # 忘却者関連
 Amnesiac.RoleChangeNotification,あなたは次の役職になりました: ,You have become the following role: ,你现在的职业变为: ,你現在的職業變為: 
+
+# Spelunker関連
+SpelunkerVentDeathChance,ベント死の確率(%),Probability of vent death,倒霉蛋在管道口跌倒而死的概率,倒霉鬼在管道口跌倒而死的機率
+LadderDeadChance,転落死する確率(%),Ladder Death Chance,摔死的概率,摔死的機率
+SpelunkerIsDeathCommsOrPowerdown,コミュ・停電で死ぬ,Death from Communications/Power Down,通信或断电时死亡,通信或斷電時死亡
+SpelunkerDeathCommsTime,コミュの時間(秒),Time to death from Communications (seconds),通信死亡时间(秒),通信死亡時間(秒)
+SpelunkerDeathPowerdownTime,停電の時間(秒),Time to death from Power Down (seconds),断电死亡时间(秒),斷電死亡時間(秒)
+SpelunkerLiftDeathChance,昇降機死の確率(%),Elevator Death Chance,电梯死亡概率,電梯死亡機率
+SpelunkerDoorOpenChance,ドア開放死の確率(%),Door Opening Death Chance,开门死亡概率,開門死亡機率
+
+# BlackHatHacker
+BlackHatHacker,ブラックハットハッカー,Black Hat Hacker,黑帽客,黑帽駭客
+BlackHatHackerDescription,ウイルスを使って全員を感染させろ！,Use viruses to infect everyone!,使用病毒感染所有人,使用病毒感染所有人
+BlackHatHackerHackCoolTime,ハックのクールタイム,Hack Cool Time,植入病毒冷却,駭入的冷卻時間
+BlackHatHackerHackCountable,ハック可能回数,Number of hacks possible,最大植入病毒次数,駭入的使用次數
+BlackHatHackerIsNotInfectionIncrease,感染者が居なくなったらハック回数を増やす,Increase the number of hacks once the infected are gone,不存在感染者时增加一次感染次数,當感染者消失後，增加駭入的使用次數
+BlackHatHackerHackInfectiousTime,感染時間,Infectious time,感染所需时间,感染所需時間
+BlackHatHackerNotInfectiousTime,会議後感染が進まない時間,Post-meeting time when infection does not progress,会议阶段结束后感染停止持续时间,會議結束感染停止的持續時間
+BlackHatHackerStartSelfPropagation,自己増殖が開始される感染度,Infection level at which self-propagation starts,感染度达到开始自增殖,感染度達到開始自增殖
+BlackHatHackerStartSelfPropagationType.Percent25,25%,25%
+BlackHatHackerStartSelfPropagationType.Percent50,50%,50%
+BlackHatHackerStartSelfPropagationType.Percent75,75%,75%
+BlackHatHackerStartSelfPropagationType.Percent90,90%,90%
+BlackHatHackerInfectionScope,感染範囲,Infection scope,感染范围,感染範圍
+BlackHatHackerInfectionScopeType.Short,近距離,Short,短距离,短距離
+BlackHatHackerInfectionScopeType.Medium,中距離,Medium,中距离,中距離
+BlackHatHackerInfectionScopeType.Long,遠距離,Long,长距离,長距離
+BlackHatHackerCanInfectedAdmin,感染者アドミンを使える,Can use infected admins,黑帽客可以观看仅标记被感染玩家的管理地图,黑帽駭客可以使用管理員地圖查看被感染者
+BlackHatHackerCanMoveWhenUsesAdmin,アドミン使用中に移動できる,Can move when using admin,使用管理地图时可以移动,使用管理地圖時可以移動
+BlackHatHackerIsAdminColor,感染者アドミンで色が分かる,Infected admins can tell the color,黑帽客可以确认被感染玩家在管理地图上的颜色,可以在管理員地圖中分辨感染者的顏色
+BlackHatHackerCanInfectedVitals,感染者バイタルを使える,Can use infected person vitals,黑帽客可以观看仅记录被感染玩家的生命监测装置,黑帽駭客可以使用生命探測器查看被感染者
+BlackHatHackerCanDeadWin,死亡していても勝利出来る,You can win even if you are dead,黑帽客死亡后仍可获胜,黑帽駭客死亡後仍可獲勝
+BlackHatHackerHackButtonName,ハック,Hack,植入病毒,駭入
+BlackHatHackerHackNumText,残り{0}回,{0} remaining,剩余{0}次,剩餘{0}次
+BlackHatHackerStatusOfInfection,感染状況,Status of infection,感染情况,感染狀況
+BlackHatHackerInfected,感染済み,Infected,已感染,已感染
+BlackHatHackerPageChange,ページ変更,Page Change,翻页,翻頁
+BlackHatHackerWin,ブラックハットハッカーの勝利,Black Hat Hacker Win,黑帽駭客获胜,黑帽駭客獲勝
+
+
+# PartTimerPartTimer,フリーター,PartTimer,打工仔,打工仔
+PartTimerDescription,バイトするなら…！,If you want a part-time job...!,打工的话...!,打工的話...!
+PartTimerDeathTurn,無職で死亡までのターン数,Turns until death when unemployed,无工作时死亡倒计时回合,無工作時死亡倒計時回合
+PartTimerInitialCooldown,初期クールタイム,Initial Cooldown,初期冷却时间,初期冷卻時間
+PartTimerFinalCooldown,最終クールタイム,Final Cooldown,最终冷却时间,最終冷卻時間
+artTimerFinalCooldown,最終クールタイム,Final Cooldown,最终冷却时间,最終冷卻時間
+PartTimerCanSeeTargetRole,雇用主の役職を見る,See employer's role,查看雇主角色,查看雇主角色
+PartTimerNeedAliveToWin,勝利に生存が必要,Need alive to win,胜利需要存活,勝利需要存活
+PartTimerButtonName,バイト,PartTime,打工,打工
+
+# NiceMechanic
+NiceMechanic,ナイスメカニック,Nice Mechanic,好人机械师,好人機械師
+NiceMechanic.Description,ベントを自分の位置に移動させることができるクルーメイトです。\n能力使用中は透明になり、敵から発見されにくくなります。\n一定時間後、ベントは元の位置に戻ります。,A Crewmate who can move vents to their position.\nWhile using the ability, they become transparent and harder to detect.\nAfter a certain time, the vent returns to its original position.,这是一个可以将通风口移动到自己位置的船员。\n使用能力时会变透明，不易被敌人发现。\n一定时间后，通风口会回到原位。,這是一個可以將通風口移動到自己位置的船員。\n使用能力時會變透明，不易被敵人發現。\n一定時間後，通風口會回到原位。
+NiceMechanicCoolTime,メカニック クールタイム,Mechanic Cool Time,机械师冷却时间,機械師冷卻時間
+NiceMechanicDurationTime,効果持続時間,Effect Duration,效果持续时间,效果持續時間
+NiceMechanicUseVent,ベントを使用できる,Can Use Vent,可以使用通风口,可以使用通風口
+MechanicButtonText,メカニック,Mechanic,机械师,機械師
+
+# EvilMechanic
+EvilMechanic,イビルメカニック,Evil Mechanic,邪恶机械师,邪惡機械師
+EvilMechanic.Description,ベントを自分の位置に移動させることができるインポスターです。\n能力使用中は透明になり、キルやサボタージュに有利になります。\n一定時間後、ベントは元の位置に戻ります。,An Impostor who can move vents to their position.\nWhile using the ability, they become transparent, gaining advantages for kills and sabotage.\nAfter a certain time, the vent returns to its original position.,这是一个可以将通风口移动到自己位置的内鬼。\n使用能力时会变透明，有利于击杀和破坏。\n一定时间后，通风口会回到原位。,這是一個可以將通風口移動到自己位置的內鬼。\n使用能力時會變透明，有利於擊殺和破壞。\n一定時間後，通風口會回到原位。
+EvilMechanicCoolTime,イビルメカニック クールタイム,Evil Mechanic Cool Time,邪恶机械师冷却时间,邪惡機械師冷卻時間
+EvilMechanicDurationTime,効果持続時間,Effect Duration,效果持续时间,效果持續時間
+
+# BodyBuilder
+BodyBuilderDescription,<color=#d68f5e>ボディービルダー</color>は全てのタスクを完了した後、\nポージングを行うことができるクルーメイトです。\nポージング中は透明になりますが、移動するとポージングが解除されます。,<color=#d68f5e>BodyBuilder</color> is a crewmate who can pose after completing all tasks.\nWhile posing they become transparent, but moving cancels the pose.,<color=#d68f5e>健身者</color>是一个在完成所有任务后可以摆姿势的船员。\n摆姿势时会变透明，但移动会取消姿势。,<color=#d68f5e>健美運動員</color>是一個在完成所有任務後可以擺姿勢的船員。\n擺姿勢時會變透明，但移動會取消姿勢。
+BodyBuilderChangeAllTaskLiftWeights,全タスクを筋肉に変更,Change All Tasks to Lift Weights,将所有任务改为举重,將所有任務改為舉重
+BodyBuilderTaskOptionAvailable,タスク数を設定,Set Task Numbers,设置任务数量,設置任務數量
+BodyBuilderTaskOption,タスク設定,Task Settings,任务设置,任務設置
+BodyBuilderButtonText,ポーズ,Pose,摆姿势,擺姿勢
+BodyBuilderButtonName,ポーズボタン,Pose Button,摆姿势按钮,擺姿勢按鈕
+
+# HamburgerShop
+HamburgerShopDescription,<color=#ffa500>ハンバーガー屋</color>は全てのタスクをハンバーガー作りに変更できるクルーメイトです。\nエアシップのハンバーガー作りタスクが全マップで利用可能になります。,<color=#ffa500>Hamburger Shop</color> is a crewmate who can change all tasks to hamburger making.\nThe Airship's hamburger making task becomes available on all maps.,<color=#ffa500>汉堡店</color>是一个可以将所有任务改为制作汉堡的船员。\n飞艇的制作汉堡任务在所有地图上都可用。,<color=#ffa500>漢堡店</color>是一個可以將所有任務改為製作漢堡的船員。\n飛艇的製作漢堡任務在所有地圖上都可用。
+HamburgerShopChangeAllTasksToBurger,全タスクをハンバーガー作りに変更,Change All Tasks to Hamburger Making,将所有任务改为制作汉堡,將所有任務改為製作漢堡
+HamburgerShopTaskOptionAvailable,タスク数を設定,Set Task Numbers,设置任务数量,設置任務數量
+HamburgerShopTaskOption,タスク設定,Task Settings,任务设置,任務設置
+
+# LoversBreaker
+LoversBreakerWinKillCount,勝利に必要な爆破数,Number of kills needed to win,胜利所需爆破次数,勝利所需爆破次數
+LoversBreakerIsDeathWin,死亡していても勝利出来る,You can win even if you are dead,死亡后仍可获胜,死亡後仍可獲勝
+
+# NiceHawk
+HawkButtonText,ホークアイ,Hawk Eye,鹰眼,鷹眼
+HawkZoomMagnification,ホークアイのズーム倍率,Hawk Eye Zoom Magnification,鹰眼放大倍率,鷹眼放大倍率
+HawkCannotWalkInEffect,ホークアイの効果中は移動できない,Cannot move while Hawk Eye is active,鹰眼效果中无法移动,鷹眼效果中無法移動
+
+# WiseMan
+WiseMan,賢者,Wise Man,贤者,賢者
+WiseManDescription,<color=#55b4ec>賢者</color>は透視能力で壁の向こうを見ることができるクルーメイトです。\n能力使用中はカメラがロックされ、特定の角度で壁を透視できます。\n移動制限を有効にすることで、より集中した観察が可能になります。,<color=#55b4ec>Wise Man</color> is a crewmate who can see through walls with clairvoyance.\nWhile using the ability, the camera is locked and can see through walls at specific angles.\nEnabling movement restrictions allows for more focused observation.,<color=#55b4ec>贤者</color>是一个可以透视墙壁的船员。\n使用能力时摄像头被锁定，可以从特定角度透视墙壁。\n启用移动限制可以进行更专注的观察。,<color=#55b4ec>賢者</color>是一個可以透視牆壁的船員。\n使用能力時攝影機被鎖定，可以從特定角度透視牆壁。\n啟用移動限制可以進行更專注的觀察。
+WiseManButtonText,透視,Clairvoyance,透视,透視
+WiseManEnableWalk,透視中に歩行を許可,Allow walking during clairvoyance,透视中允许行走,透視中允許行走

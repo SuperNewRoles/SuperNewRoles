@@ -83,25 +83,25 @@ public class TeruteruAbility : AbilityBase
         if (!AmongUsClient.Instance.AmHost)
             return;
         // プレイヤーが追放された時の処理
-        if (data.exiled == Player)
+        if (data.exiled == null || data.exiled.PlayerId != Player.PlayerId)
+            return;
+        // タスク完了が必要な設定がオンの場合
+        if (_data.RequireTaskCompletion)
         {
-            // タスク完了が必要な設定がオンの場合
-            if (_data.RequireTaskCompletion)
+            // タスク数をチェック
+            var (tasksCompleted, tasksTotal) = ModHelpers.TaskCompletedData(Player.Data);
+
+            // 設定された必要タスク数を使用
+            if (tasksCompleted < _data.RequiredTaskCount)
             {
-                // タスク数をチェック
-                var (tasksCompleted, tasksTotal) = ModHelpers.TaskCompletedData(Player.Data);
-
-                // 設定された必要タスク数を使用
-                if (tasksCompleted < _data.RequiredTaskCount)
-                {
-                    // タスク不足で勝利条件を満たさない
-                    return;
-                }
+                // タスク不足で勝利条件を満たさない
+                return;
             }
-
-            // 勝利条件を満たした場合、ゲーム終了
-            EndGamer.RpcEndGameWithWinner(CustomGameOverReason.TeruteruWin, WinType.SingleNeutral, [Player], Palette.CrewmateBlue, "Teruteru");
         }
+
+        // 勝利条件を満たした場合、ゲーム終了
+        EndGamer.RpcEndGameWithWinner(CustomGameOverReason.TeruteruWin, WinType.SingleNeutral, [Player], Teruteru.Instance.RoleColor, "Teruteru");
+
     }
 
     public override void DetachToAlls()

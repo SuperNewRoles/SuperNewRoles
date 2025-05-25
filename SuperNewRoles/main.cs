@@ -32,6 +32,7 @@ using SuperNewRoles.API;
 using AmongUs.Data.Player;
 using SuperNewRoles.RequestInGame;
 using System.Diagnostics;
+using UnityEngine.SceneManagement;
 
 namespace SuperNewRoles;
 
@@ -52,6 +53,10 @@ public partial class SuperNewRolesPlugin : BasePlugin
     private readonly List<Action> _mainThreadActions = new();
     private readonly object _mainThreadActionsLock = new();
 
+    public static Assembly Assembly { get; private set; } = Assembly.GetExecutingAssembly();
+
+    private static string _currentSceneName;
+
     public static bool IsEpic => Constants.GetPurchasingPlatformType() == PlatformConfig.EpicGamesStoreName;
     public static string BaseDirectory => Path.GetFullPath(Path.Combine(BepInEx.Paths.BepInExRootPath, "../SuperNewRolesNext"));
     public static string SecretDirectory => Path.GetFullPath(Path.Combine(UnityEngine.Application.persistentDataPath, "SuperNewRolesNextSecrets"));
@@ -59,7 +64,7 @@ public partial class SuperNewRolesPlugin : BasePlugin
     {
         // AndroidでTask.Runを使わないか
         bool needed = false;
-        if (needed && Constants.GetPlatformType() == Platforms.Android)
+        if (needed && ModHelpers.IsAndroid())
             action();
         else
             return Task.Run(action);
@@ -74,6 +79,7 @@ public partial class SuperNewRolesPlugin : BasePlugin
 
     public override void Load()
     {
+        Assembly = Assembly.GetExecutingAssembly();
         BepInEx.Logging.Logger.Listeners.Add(new SNRLogListener());
 
         MainThreadId = Thread.CurrentThread.ManagedThreadId;
@@ -83,6 +89,7 @@ public partial class SuperNewRolesPlugin : BasePlugin
         SuperNewRolesPlugin.Logger.LogInfo($"SecretDirectory: {SecretDirectory}");
 
         Instance = this;
+
         RegisterCustomObjects();
         CustomLoadingScreen.Patch(Harmony);
         HarmonyPatchAllTask = TaskRunIfWindows(() => PatchAll(Harmony));
@@ -92,6 +99,8 @@ public partial class SuperNewRolesPlugin : BasePlugin
         if (!Directory.Exists(SecretDirectory))
             Directory.CreateDirectory(SecretDirectory);
 
+        ConfigRoles.Init();
+        UpdateCPUProcessorAffinity();
         CustomRoleManager.Load();
         AssetManager.Load();
         ModTranslation.Load();
@@ -118,7 +127,7 @@ public partial class SuperNewRolesPlugin : BasePlugin
         });
 
         Logger.LogInfo("Waiting for Harmony patch");
-        if (Constants.GetPlatformType() == Platforms.Android)
+        if (ModHelpers.IsAndroid())
         {
             HarmonyPatchAllTask?.Wait();
             CustomRPCManagerLoadTask?.Wait();
@@ -127,25 +136,61 @@ public partial class SuperNewRolesPlugin : BasePlugin
         Logger.LogInfo("--------------------------------");
         Logger.LogInfo(ModTranslation.GetString("WelcomeNextSuperNewRoles"));
         Logger.LogInfo("--------------------------------");
-
-        // メモリ使用量削減のため、未使用のアセットをアンロード
-        GC.Collect();
     }
     public void PatchAll(Harmony harmony)
     {
-        if (Constants.GetPlatformType() == Platforms.Android)
+        var assembly = Assembly;
+        if (ModHelpers.IsAndroid())
         {
-            harmony.PatchAll(Assembly.GetExecutingAssembly());
+            harmony.PatchAll(assembly);
+            // コルーチンパッチを処理
+            HarmonyCoroutinePatchProcessor.ProcessCoroutinePatches(harmony, assembly);
         }
         else
         {
             List<Task> tasks = new();
-            AccessTools.GetTypesFromAssembly(Assembly.GetExecutingAssembly()).Do(delegate (Type type)
+            AccessTools.GetTypesFromAssembly(assembly).Do(delegate (Type type)
             {
-                tasks.Add(Task.Run(() => harmony.CreateClassProcessor(type).Patch()));
+                //tasks.Add(Task.Run(() => ));
+                harmony.CreateClassProcessor(type).Patch();
             });
-            Task.WaitAll(tasks.ToArray());
+            Task.WhenAll(tasks.ToArray()).Wait();
+
+            // コルーチンパッチを処理
+            HarmonyCoroutinePatchProcessor.ProcessCoroutinePatches(harmony, assembly);
         }
+    }
+
+    // CPUのコア割当を変更してパフォーマンスを改善する
+    public static void UpdateCPUProcessorAffinity()
+    {
+        if (!OperatingSystem.IsWindows() && !OperatingSystem.IsLinux()) return;
+
+        ulong affinity = ConfigRoles._ProcessorAffinityMask.Value;
+        if (!ConfigRoles._isCPUProcessorAffinity.Value || affinity == 0)
+        {
+            Logger.LogWarning("UpdateCPUProcessorAffinity: IsCPUProcessorAffinity is false");
+            return;
+        }
+
+        Logger.LogInfo("Start UpdateCPUProcessorAffinity");
+        if (Environment.ProcessorCount > 1)
+        {
+            Logger.LogInfo($"Environment.ProcessorCount: {Environment.ProcessorCount}");
+            Process currentProcess = Process.GetCurrentProcess();
+            Logger.LogInfo($"Current ProcessorAffinity: {currentProcess.ProcessorAffinity}");
+            // コア数上限突破の場合は全てのコアを使う
+            if (Environment.ProcessorCount < System.Numerics.BitOperations.Log2(affinity))
+            {
+                affinity = 1;
+                for (int i = 1; i < Environment.ProcessorCount; i++)
+                {
+                    affinity |= (ulong)1 << i;
+                }
+            }
+            currentProcess.ProcessorAffinity = (IntPtr)affinity;
+        }
+        Logger.LogInfo($"UpdatedCPUProcessorAffinity To: {affinity}");
     }
 
     // 起動中に他クライアントに上書きされないようにDisposeせずに持っておく
@@ -153,6 +198,12 @@ public partial class SuperNewRolesPlugin : BasePlugin
 
     private static void CheckStarts()
     {
+        // Androidはよっぽどのことがない限り1起動で済むので
+        if (ModHelpers.IsAndroid())
+        {
+            ProcessNumber = 0;
+            return;
+        }
         // SuperNewRolesNext/Startsディレクトリのパスを取得
         string startsDir = BaseDirectory + "/Starts";
         // ディレクトリが存在しなければ作成
@@ -207,6 +258,7 @@ public partial class SuperNewRolesPlugin : BasePlugin
         ClassInjector.RegisterTypeInIl2Cpp<VersionUpdatesComponent>();
         ClassInjector.RegisterTypeInIl2Cpp<ReleaseNoteComponent>();
         ClassInjector.RegisterTypeInIl2Cpp<PatcherUpdaterComponent>();
+        // lassInjector.RegisterTypeInIl2Cpp<AddressableReleaseOnDestroy>();
     }
 
     public void ExecuteInMainThread(Action action)

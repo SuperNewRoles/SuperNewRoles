@@ -10,15 +10,15 @@ namespace SuperNewRoles.Roles.Ability;
 
 public class PromoteOnParentDeathAbility : AbilityBase
 {
-    public AbilityParentBase Owner { get; }
+    public AbilityParentAbility Owner { get; }
     public RoleId PromoteRole { get; }
     public RoleTypes PromoteRoleVanilla { get; }
-    public Action OnPromoted { get; set; }
+    public Action<ExPlayerControl> OnPromoted { get; set; } = (player) => { };
 
     private EventListener _fixedUpdateEventListener;
     private bool _hasPromoted = false;
 
-    public PromoteOnParentDeathAbility(AbilityParentBase owner, RoleId promoteRole, RoleTypes promoteRoleVanilla)
+    public PromoteOnParentDeathAbility(AbilityParentAbility owner, RoleId promoteRole, RoleTypes promoteRoleVanilla)
     {
         Owner = owner;
         PromoteRole = promoteRole;
@@ -33,12 +33,12 @@ public class PromoteOnParentDeathAbility : AbilityBase
     public override void DetachToLocalPlayer()
     {
         base.DetachToLocalPlayer();
-        FixedUpdateEvent.Instance.RemoveListener(_fixedUpdateEventListener);
+        _fixedUpdateEventListener?.RemoveListener();
     }
     private void OnFixedUpdate()
     {
         if (_hasPromoted) return;
-        if (Owner.Player != null && Owner.Player.IsAlive()) return;
+        if (Owner != null && Owner.Player != null && Owner.Player.IsAlive()) return;
         Promote();
         _hasPromoted = true;
     }
@@ -47,10 +47,10 @@ public class PromoteOnParentDeathAbility : AbilityBase
         ExPlayerControl exPlayer = Player;
         if (exPlayer.Role == PromoteRole) return;
         if (exPlayer.IsDead()) return;
-        if (Owner.Player != null && Owner.Player.IsAlive()) return;
 
         RpcPromote(exPlayer, PromoteRole, PromoteRoleVanilla);
-        OnPromoted?.Invoke();
+        // Playerはこの時点でnullになってるのでexPlayerを渡す
+        OnPromoted?.Invoke(exPlayer);
     }
     [CustomRPC]
     public static void RpcPromote(ExPlayerControl player, RoleId roleId, RoleTypes roleType)

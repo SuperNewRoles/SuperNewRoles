@@ -122,9 +122,9 @@ public class PenguinAbility : TargetCustomButtonBase, IButtonEffect
         if (target != null && target.IsAlive())
         {
             if (afterMeeting)
-                target.CustomDeath(CustomDeathType.Kill, source: source);
+                target.CustomDeath(CustomDeathType.PenguinAfterMeeting, source: source);
             else
-                target.CustomDeath(CustomDeathType.KilLWithoutDeadbodyAndTeleport, source: source);
+                target.CustomDeath(CustomDeathType.Kill, source: source);
         }
         ability.targetPlayer = null;
     }

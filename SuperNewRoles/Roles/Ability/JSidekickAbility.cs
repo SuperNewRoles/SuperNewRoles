@@ -40,29 +40,19 @@ public class JSidekickAbility : AbilityBase
     }
 
     [CustomRPC]
-    public static void RpcSetCanInfinite(bool canInfinite, JSidekickAbility jsidekick)
+    public void RpcSetCanInfinite(bool canInfinite)
     {
-        if (jsidekick != null)
+        this.canInfinite = canInfinite;
+        var pOnParentDeathAbility = Player.GetAbility<PromoteOnParentDeathAbility>();
+        if (pOnParentDeathAbility is not PromoteOnParentDeathAbility promoteOnParentDeathAbility)
+            return;
+        if (canInfinite)
+            return;
+        promoteOnParentDeathAbility.OnPromoted += (player) =>
         {
-            jsidekick.canInfinite = canInfinite;
-            var pOnParentDeathAbility = jsidekick.Player.PlayerAbilities.FirstOrDefault(x => x is PromoteOnParentDeathAbility);
-            if (pOnParentDeathAbility is PromoteOnParentDeathAbility promoteOnParentDeathAbility)
-            {
-                promoteOnParentDeathAbility.OnPromoted += () =>
-                {
-                    if (!canInfinite)
-                    {
-                        var jackal = jsidekick.Player.PlayerAbilities.FirstOrDefault(x => x is JackalAbility);
-                        if (jackal is JackalAbility jackalAbility)
-                        {
-                            jackalAbility.JackData.CanCreateSidekick = false;
-                        }
-                    }
-                };
-            }
-        }
-    }
-    public override void AttachToLocalPlayer()
-    {
+            var jackal = player.GetAbility<JackalAbility>();
+            if (jackal != null)
+                jackal.JackData.CanCreateSidekick = false;
+        };
     }
 }

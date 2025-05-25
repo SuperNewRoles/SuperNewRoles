@@ -9,6 +9,7 @@ using UnityEngine;
 using Il2CppInterop.Runtime.InteropTypes.Arrays;
 using SuperNewRoles.Roles.Ability;
 using static SuperNewRoles.CustomOptions.Categories.MapSettingOptions;
+using System.Linq;
 
 namespace SuperNewRoles.Patches;
 
@@ -247,6 +248,11 @@ public static class DevicesPatch
                                 if (!hashSet.Add(component.PlayerId)) continue;
 
                                 if (((ExPlayerControl)component).GetAbility<HideInAdminAbility>()?.IsHideInAdmin ?? false) continue;
+
+                                // BlackHatHackerのフィルター
+                                var blackHatHacker = SuperNewRoles.Roles.Ability.BlackHatHackerAbility.LocalInstance;
+                                if (blackHatHacker != null && blackHatHacker.AdminAbility != null &&
+                                    !blackHatHacker.InfectedPlayerId.Contains(component.PlayerId) && !component.AmOwner) continue;
                                 count++;
                                 colors.Add(component.Player.CurrentOutfit.ColorId);
                                 if (canSeeImpostorIcon && component.IsImpostor())
@@ -263,6 +269,18 @@ public static class DevicesPatch
                             Color iconColor = numImpostorIcons-- > 0 ? Palette.ImpostorRed : numDeadIcons-- > 0 ? Color.gray : Color.yellow;
                             material.SetColor(PlayerMaterial.BackColor, iconColor);
                             material.SetColor(PlayerMaterial.BodyColor, iconColor);
+                        }
+                        if (BlackHatHackerAbility.LocalInstance?.AdminAbility != null && DontCountBecausePortableAdmin)
+                        {
+                            foreach (PoolableBehavior icon in counterArea.myIcons)
+                            {
+                                if (colors.Count <= 0) continue;
+                                Material material = icon.GetComponent<SpriteRenderer>().material;
+                                Color iconColor = Palette.PlayerColors[colors.FirstOrDefault()];
+                                material.SetColor(PlayerMaterial.BackColor, iconColor);
+                                material.SetColor(PlayerMaterial.BodyColor, iconColor);
+                                colors.RemoveAt(0);
+                            }
                         }
                     }
                     else Debug.LogWarning($"Couldn't find counter for:{counterArea.RoomType}");
@@ -359,6 +377,12 @@ public static class DevicesPatch
     {
         static void Postfix(Minigame __instance)
         {
+            if (__instance is VitalsMinigame)
+            {
+                // BlackHatHackerのバイタル状態をリセット
+                SuperNewRoles.Roles.Ability.BlackHatHackerVitalsState.IsUsingVitals = false;
+            }
+
             if (__instance is not VitalsMinigame || !(MapSettingOptions.DeviceOptions && MapSettingOptions.RestrictionMode == DeviceRestrictionModeType.TimeLimit && IsVitalRestrict))
                 return;
             RpcSetDeviceUseStatus(DeviceType.Vital, PlayerControl.LocalPlayer.PlayerId, false);
@@ -381,6 +405,20 @@ public static class DevicesPatch
                 {
                     __instance.Close();
                     return;
+                }
+            }
+
+            // BlackHatHackerのバイタルフィルター
+            var blackHatHacker = SuperNewRoles.Roles.Ability.BlackHatHackerAbility.LocalInstance;
+            if (blackHatHacker != null && blackHatHacker.Data.CanInfectedVitals &&
+                SuperNewRoles.Roles.Ability.BlackHatHackerVitalsState.IsUsingVitals)
+            {
+                foreach (VitalsPanel vital in __instance.vitals)
+                {
+                    if (vital.PlayerInfo == null) continue;
+                    bool isInfected = blackHatHacker.InfectedPlayerId.Contains(vital.PlayerInfo.PlayerId) ||
+                                     vital.PlayerInfo.Object.AmOwner;
+                    vital.gameObject.SetActive(isInfected);
                 }
             }
 

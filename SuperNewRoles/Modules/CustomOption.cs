@@ -7,6 +7,7 @@ using System.Reflection;
 using System.Security.Cryptography;
 using AmongUs.GameOptions;
 using HarmonyLib;
+using InnerNet;
 using SuperNewRoles.CustomOptions;
 using SuperNewRoles.CustomOptions.Categories;
 using SuperNewRoles.Roles;
@@ -62,22 +63,15 @@ public static class CustomOptionManager
             RoleOptionManager.RpcSyncRoleOptionsAll();
         }
     }
-    [HarmonyPatch(typeof(AmongUsClient), nameof(AmongUsClient.Awake))]
-    public static class FixMaxImpostorsPatch
+    [HarmonyPatch(typeof(IGameOptionsExtensions), nameof(IGameOptionsExtensions.GetAdjustedNumImpostors))]
+    public static class FixAdjustedNumImpostors
     {
-        public static void Postfix()
+        public static bool Prefix(ref int __result)
         {
-            // 0を150個
-            int[] MaxImpostors = new int[150];
-            for (int i = 0; i < 150; i++)
-                MaxImpostors[i] = 0;
-            NormalGameOptionsV07.MaxImpostors = MaxImpostors;
-            NormalGameOptionsV08.MaxImpostors = MaxImpostors;
-            NormalGameOptionsV09.MaxImpostors = MaxImpostors;
-            HideNSeekGameOptionsV07.MaxImpostors = MaxImpostors;
-            HideNSeekGameOptionsV08.MaxImpostors = MaxImpostors;
-            HideNSeekGameOptionsV09.MaxImpostors = MaxImpostors;
+            __result = GameOptionsManager.Instance.CurrentGameOptions.NumImpostors;
+            return false;
         }
+
     }
     [CustomRPC]
     public static void RpcSyncOption(string optionId, byte selection)
@@ -93,6 +87,7 @@ public static class CustomOptionManager
     [CustomRPC]
     public static void _RpcSyncOptionsAll(Dictionary<ushort, byte> options, bool resetToDefault)
     {
+        Logger.Info("RpcSyncOptionsAll");
         if (resetToDefault)
         {
             foreach (var option in CustomOptions)
@@ -133,7 +128,7 @@ public static class CustomOptionManager
     {
         var fieldNames = new HashSet<string>();
         SuperNewRolesPlugin.Logger.LogInfo("[Splash] Loading CustomOptions...");
-        foreach (var type in Assembly.GetExecutingAssembly().GetTypes())
+        foreach (var type in SuperNewRolesPlugin.Assembly.GetTypes())
         {
             foreach (var field in type.GetFields(BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Static))
             {
@@ -142,7 +137,15 @@ public static class CustomOptionManager
                 {
                     if (!fieldNames.Add(field.Name))
                         throw new InvalidOperationException($"Category field name is duplicated: {field.Name}");
-                    var category = new CustomOptionCategory(field.Name, isModifier: field.GetCustomAttribute<ModifierAttribute>() != null, hasModifierAssignFilter: field.GetCustomAttribute<AssignFilterAttribute>() != null);
+                    var assignFilter = field.GetCustomAttribute<AssignFilterAttribute>();
+                    var modifierAttribute = field.GetCustomAttribute<ModifierAttribute>();
+                    var category = new CustomOptionCategory(
+                        field.Name,
+                        isModifier: modifierAttribute != null,
+                        modifierRoleId: modifierAttribute?.ModifierRoleId ?? ModifierRoleId.None,
+                        hasModifierAssignFilter: assignFilter != null,
+                        modifierAssignFilterTeam: assignFilter?.AssignedTeamTypes,
+                        modifierDoNotAssignRoles: assignFilter?.HiddenRoleIds);
                     field.SetValue(null, category);
                     CategoryByFieldName[field.Name] = category;
                     continue;
@@ -670,6 +673,92 @@ public static class RoleOptionManager
     public static GhostRoleOption[] GhostRoleOptions { get; private set; } // GhostRole用
     public static List<ExclusivityData> ExclusivitySettings { get; private set; } = new();
 
+    // キャッシュ用のディクショナリ
+    private static Dictionary<ushort, RoleOption> _roleOptionsByByte = new();
+    private static Dictionary<ushort, ModifierRoleOption> _modifierRoleOptionsByByte = new();
+    private static Dictionary<ushort, GhostRoleOption> _ghostRoleOptionsByByte = new();
+
+    /// <summary>
+    /// RoleIdをbyteにキャストしたものからRoleOptionを取得します
+    /// </summary>
+    /// <param name="roleIdByte">RoleIdをbyteにキャストした値</param>
+    /// <returns>対応するRoleOption、見つからない場合はnull</returns>
+    public static RoleOption? GetRoleOption(RoleId role)
+    {
+        return _roleOptionsByByte.TryGetValue((ushort)role, out var roleOption) ? roleOption : null;
+    }
+
+    /// <summary>
+    /// ModifierRoleIdをbyteにキャストしたものからModifierRoleOptionを取得します
+    /// </summary>
+    /// <param name="modifierRoleIdByte">ModifierRoleIdをbyteにキャストした値</param>
+    /// <returns>対応するModifierRoleOption、見つからない場合はnull</returns>
+    public static ModifierRoleOption? GetModifierRoleOption(ModifierRoleId modifierRoleId)
+    {
+        return _modifierRoleOptionsByByte.TryGetValue((ushort)modifierRoleId, out var modifierRoleOption) ? modifierRoleOption : null;
+    }
+
+    /// <summary>
+    /// GhostRoleIdをbyteにキャストしたものからGhostRoleOptionを取得します
+    /// </summary>
+    /// <param name="ghostRoleIdByte">GhostRoleIdをbyteにキャストした値</param>
+    /// <returns>対応するGhostRoleOption、見つからない場合はnull</returns>
+    public static GhostRoleOption? GetGhostRoleOption(GhostRoleId ghostRoleId)
+    {
+        return _ghostRoleOptionsByByte.TryGetValue((ushort)ghostRoleId, out var ghostRoleOption) ? ghostRoleOption : null;
+    }
+
+    public static bool TryGetRoleOption(RoleId roleId, out RoleOption roleOption)
+    {
+        return _roleOptionsByByte.TryGetValue((ushort)roleId, out roleOption);
+    }
+
+    public static bool TryGetModifierRoleOption(ModifierRoleId modifierRoleId, out ModifierRoleOption modifierRoleOption)
+    {
+        return _modifierRoleOptionsByByte.TryGetValue((ushort)modifierRoleId, out modifierRoleOption);
+    }
+
+    public static bool TryGetGhostRoleOption(GhostRoleId ghostRoleId, out GhostRoleOption ghostRoleOption)
+    {
+        return _ghostRoleOptionsByByte.TryGetValue((ushort)ghostRoleId, out ghostRoleOption);
+    }
+
+    /// <summary>
+    /// キャッシュを更新します。RoleOptionLoadの後に呼び出される必要があります。
+    /// </summary>
+    private static void UpdateCaches()
+    {
+        // RoleOptionsのキャッシュを更新
+        _roleOptionsByByte.Clear();
+        if (RoleOptions != null)
+        {
+            foreach (var roleOption in RoleOptions)
+            {
+                _roleOptionsByByte[(byte)roleOption.RoleId] = roleOption;
+            }
+        }
+
+        // ModifierRoleOptionsのキャッシュを更新
+        _modifierRoleOptionsByByte.Clear();
+        if (ModifierRoleOptions != null)
+        {
+            foreach (var modifierRoleOption in ModifierRoleOptions)
+            {
+                _modifierRoleOptionsByByte[(byte)modifierRoleOption.ModifierRoleId] = modifierRoleOption;
+            }
+        }
+
+        // GhostRoleOptionsのキャッシュを更新
+        _ghostRoleOptionsByByte.Clear();
+        if (GhostRoleOptions != null)
+        {
+            foreach (var ghostRoleOption in GhostRoleOptions)
+            {
+                _ghostRoleOptionsByByte[(byte)ghostRoleOption.RoleId] = ghostRoleOption;
+            }
+        }
+    }
+
     [CustomRPC]
     public static void RpcSyncRoleOption(RoleId roleId, byte numberOfCrews, int percentage)
     {
@@ -901,6 +990,8 @@ public static class RoleOptionManager
                 return new GhostRoleOption(role.Role, 0, 0, optionsForRole);
             })
             .ToArray();
+
+        UpdateCaches();
     }
 
     public static void AddExclusivitySetting(int maxAssign, string[] roles)
@@ -1749,30 +1840,47 @@ public class CustomOptionBoolAttribute : CustomOptionBaseAttribute
 [AttributeUsage(AttributeTargets.Field)]
 public class ModifierAttribute : Attribute
 {
-    public ModifierAttribute() { }
+    public ModifierRoleId ModifierRoleId { get; }
+    public ModifierAttribute(ModifierRoleId modifierRoleId = ModifierRoleId.None)
+    {
+        ModifierRoleId = modifierRoleId;
+    }
 }
 [AttributeUsage(AttributeTargets.Field)]
 public class AssignFilterAttribute : Attribute
 {
-    public AssignFilterAttribute() { }
+    public AssignedTeamType[] AssignedTeamTypes { get; }
+    public RoleId[] HiddenRoleIds { get; }
+    public AssignFilterAttribute(AssignedTeamType[] assignedTeamTypes, RoleId[] hiddenRoleIds)
+    {
+        AssignedTeamTypes = assignedTeamTypes;
+        HiddenRoleIds = hiddenRoleIds;
+    }
 }
 public class CustomOptionCategory
 {
     public string Id { get; }
     public string Name { get; }
-    public List<CustomOption> Options { get; } = new();
+    public CustomOption[] Options { get; private set; } = Array.Empty<CustomOption>();
+    private List<CustomOption> _options = new();
     public bool IsModifier { get; }
     public bool HasModifierAssignFilter { get; }
     public List<RoleId> ModifierAssignFilter { get; set; } = new();
+    public ModifierRoleId ModifierRoleId { get; }
+    public AssignedTeamType[] ModifierAssignFilterTeam { get; set; } = Array.Empty<AssignedTeamType>();
+    public RoleId[] ModifierDoNotAssignRoles { get; set; } = Array.Empty<RoleId>();
 
-    public CustomOptionCategory(string name, bool isModifier = false, bool hasModifierAssignFilter = false, List<RoleId> modifierAssignFilter = null)
+    public CustomOptionCategory(string name, bool isModifier = false, ModifierRoleId modifierRoleId = ModifierRoleId.None, bool hasModifierAssignFilter = false, List<RoleId> modifierAssignFilter = null, AssignedTeamType[] modifierAssignFilterTeam = null, RoleId[] modifierDoNotAssignRoles = null)
     {
         Id = ComputeMD5Hash.Compute(name);
         Name = name; // 後でTranslationを使用して翻訳する
         RegisterCategory(this);
         IsModifier = isModifier;
         HasModifierAssignFilter = hasModifierAssignFilter;
+        ModifierRoleId = modifierRoleId;
         ModifierAssignFilter = modifierAssignFilter ?? new();
+        ModifierAssignFilterTeam = modifierAssignFilterTeam ?? Array.Empty<AssignedTeamType>();
+        ModifierDoNotAssignRoles = modifierDoNotAssignRoles ?? Array.Empty<RoleId>();
     }
 
     private static void RegisterCategory(CustomOptionCategory category)
@@ -1782,9 +1890,10 @@ public class CustomOptionCategory
 
     public void AddOption(CustomOption option)
     {
-        if (!Options.Contains(option))
+        if (!_options.Contains(option))
         {
-            Options.Add(option);
+            _options.Add(option);
+            Options = _options.ToArray();
         }
     }
 }

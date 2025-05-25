@@ -59,7 +59,7 @@ public class CustomCosmeticsLoader
     private static Dictionary<string, List<(string, string)>> willDownloads = new();
 
     // Android版はメモリ節約のため、ダウンロードしたバイト列を保持しない
-    private static readonly Dictionary<string, byte[]> downloadedSprites = Constants.GetPlatformType() == Platforms.Android ? null : new();
+    private static readonly Dictionary<string, byte[]> downloadedSprites = null; //ModHelpers.IsAndroid() ? null : new();
 
     public static int AssetBundlesDownloadedCount;
     public static int AssetBundlesAllCount;
@@ -69,9 +69,20 @@ public class CustomCosmeticsLoader
     public static int SpritesAllCount;
     public static bool SpritesDownloading = false;
 
-    public static readonly int MAX_CONCURRENT_DOWNLOADS = Constants.GetPlatformType() == Platforms.Android ? 10 : 30;
+    public static readonly int MAX_CONCURRENT_DOWNLOADS = ModHelpers.IsAndroid() ? 10 : 30;
     public static IEnumerator LoadAsync(Func<IEnumerator, Coroutine> startCoroutine)
     {
+        switch (Application.internetReachability)
+        {
+            case NetworkReachability.NotReachable:
+                Logger.Error("インターネットに接続されていません");
+                yield break;
+            case NetworkReachability.ReachableViaCarrierDataNetwork when !ConfigRoles.CanUseDataConnection.Value:
+                Logger.Error("データ通信ではダウンロードしない設定です。");
+                yield break;
+            default:
+                break;
+        }
         runned = false;
         AssetBundlesDownloading = true;
         client.Timeout = TimeSpan.FromSeconds(5);
@@ -113,7 +124,6 @@ public class CustomCosmeticsLoader
             try
             {
                 string jsonContent = ft.content;
-
                 // JSONをパース
                 JObject json = JObject.Parse(jsonContent);
                 JToken assetBundlesToken = json["assetbundles"];
@@ -128,7 +138,7 @@ public class CustomCosmeticsLoader
                         string expectedHash = assetBundle["hash"]?.ToString() ?? "";
                         string expectedHashAndroid = assetBundle["hash_android"]?.ToString() ?? "";
 
-                        bool isAndroid = Constants.GetPlatformType() == Platforms.Android;
+                        bool isAndroid = ModHelpers.IsAndroid();
 
                         string currentUrl = isAndroid ? assetBundleAndroidUrl : assetBundleUrl;
                         string currentExpectedHash = isAndroid ? expectedHashAndroid : expectedHash;
@@ -272,11 +282,11 @@ public class CustomCosmeticsLoader
                         string packagenamed = currentPackage.name;
                         if (!willDownloads.ContainsKey(packagenamed))
                             willDownloads.Add(packagenamed, []);
-                        willDownloads[packagenamed].Add((visor["name"].ToString() + "_idle", getpath(url, json["visors"] != null ? "visors/" : "Visors/" + visor["resource"]?.ToString())));
+                        willDownloads[packagenamed].Add((visor["name"].ToString() + "_idle", getpath(url, (json["visors"] != null ? "visors/" : "Visors/") + visor["resource"]?.ToString())));
                         if (visor["resourceleft"] != null)
-                            willDownloads[packagenamed].Add((visor["name"].ToString() + "_idle_left", getpath(url, json["visors"] != null ? "visors/" : "Visors/" + visor["resourceleft"]?.ToString())));
+                            willDownloads[packagenamed].Add((visor["name"].ToString() + "_idle_left", getpath(url, (json["visors"] != null ? "visors/" : "Visors/") + visor["resourceleft"]?.ToString())));
                         if (visor["flipresource"] != null)
-                            willDownloads[packagenamed].Add((visor["name"].ToString() + "_flip", getpath(url, json["visors"] != null ? "visors/" : "Visors/" + visor["flipresource"]?.ToString())));
+                            willDownloads[packagenamed].Add((visor["name"].ToString() + "_flip", getpath(url, (json["visors"] != null ? "visors/" : "Visors/") + visor["flipresource"]?.ToString())));
                     }
                 }
                 else
@@ -329,45 +339,60 @@ public class CustomCosmeticsLoader
             }
         }
 
-        // Start sprite downloads
-        Coroutine spriteDownloadCoroutine = startCoroutine(DownloadSpritesAsync(startCoroutine));
         Logger.Info("DownloadSpritesAsync done");
         // Wait for asset bundles to finish loading
+        yield return DownloadSpritesAsync(startCoroutine);
         yield return new WaitUntil((Il2CppSystem.Func<bool>)(() => assetBundleLoadingCount <= 0));
         AssetBundlesDownloading = false;
         Logger.Info("assetBundleLoadingCount done");
         // After asset bundles are done, wait for sprite downloads to complete
-        if (spriteDownloadCoroutine != null)
-        {
-            yield return spriteDownloadCoroutine;
-        }
         SpritesDownloading = false;
         Logger.Info("spriteDownloadCoroutine done");
-        willLoad = () =>
+
+        while (notLoadedAssetBundles.Count > 0)
         {
-            // ダウンロードされたアセットバンドルを順次読み込みパッケージを取り出す
-            try
+            string bundlePath = notLoadedAssetBundles[0];
+            AssetBundle loadedBundleInstance = null;
+            bool loadBundleFinished = false;
+            Logger.Info("Loading asset bundle: " + bundlePath);
+
+            // LoadAssetBundleコルーチンをstartCoroutineで実行し、完了を待機
+            startCoroutine(LoadAssetBundle(bundlePath, (assetBundle) =>
             {
-                while (notLoadedAssetBundles.Count > 0)
-                {
-                    string bundlePath = notLoadedAssetBundles[0];
-                    AssetBundle assetBundle = LoadAssetBundle(bundlePath);
-                    string[] packagesHats = GetPackages(assetBundle, "Hats");
-                    string[] packagesVisors = GetPackages(assetBundle, "Visors");
-                    string[] packagesNamePlates = GetPackages(assetBundle, "NamePlates");
-                    foreach (string package in packagesHats)
-                    {
-                        Logger.Info($"パッケージ: {package}");
-                    }
-                    LoadPackages(assetBundle, packagesHats, packagesVisors, packagesNamePlates);
-                    notLoadedAssetBundles.RemoveAt(0);
-                }
-            }
-            catch (Exception e)
+                loadedBundleInstance = assetBundle;
+                loadBundleFinished = true;
+            }));
+
+            // 完了通知フラグが立つまで待機
+            yield return new WaitUntil((Il2CppSystem.Func<bool>)(() => loadBundleFinished));
+            Logger.Info("Loaded AssetBundle");
+
+            if (loadedBundleInstance != null)
             {
-                Logger.Error($"カスタムコスメティックの読み込みに失敗しました: {e}");
+                Logger.Info("Loading Packages");
+                var allPackages = GetAllPackagesByType(loadedBundleInstance);
+                string[] packagesHats = allPackages["Hats"];
+                string[] packagesVisors = allPackages["Visors"];
+                string[] packagesNamePlates = allPackages["NamePlates"];
+
+                // LoadPackages は IEnumerator を返すように変更される
+                // startCoroutine を使って実行し、完了を待つ
+                Logger.Info("Loading Packages");
+                yield return LoadPackages(loadedBundleInstance, packagesHats, packagesVisors, packagesNamePlates, startCoroutine);
+                Logger.Info("Loaded Packages");
+                notLoadedAssetBundles.RemoveAt(0);
             }
-        };
+            else
+            {
+                Logger.Error($"アセットバンドルのロードに失敗しました: {bundlePath}。キューから削除します。");
+                notLoadedAssetBundles.RemoveAt(0); // エラー時もキューから削除して無限ループを防ぐ
+            }
+        }
+        LoadedPackages.Sort((a, b) => a.name.CompareTo(b.name));
+
+        willLoad = () => { };
+        CustomLoadingScreen.PleaseDoWillLoad = true;
+
         runned = true;
         Logger.Info("CustomCosmeticsLoader willLoad done");
     }
@@ -429,13 +454,15 @@ public class CustomCosmeticsLoader
         }
     }
 
-    private static void LoadPackages(AssetBundle assetBundle, string[] packagesHats, string[] packagesVisors, string[] packagesNamePlates)
+    private static IEnumerator LoadPackages(AssetBundle assetBundle, string[] packagesHats, string[] packagesVisors, string[] packagesNamePlates, Func<IEnumerator, Coroutine> startCoroutine)
     {
         foreach (string package in packagesHats)
         {
+            Logger.Info("Loading PackagesLoadAssetASync");
             // package.jsonをロードするパスを組み立て、読み込み
             string packageJsonPath = $"assets/hats/{package}/package.json";
-            TextAsset packageTextAsset = assetBundle.LoadAsset<TextAsset>(packageJsonPath);
+            var packageTextAsset = assetBundle.LoadAsset<TextAsset>(packageJsonPath);
+
             if (packageTextAsset == null)
             {
                 Logger.Error($"パッケージ: {package} の package.json が読み込めません(Hats)");
@@ -477,11 +504,13 @@ public class CustomCosmeticsLoader
             }
             else
                 Logger.Error($"パッケージ: {package} に hats が見つかりません");
+            GameObject.Destroy(packageTextAsset);
         }
         foreach (string package in packagesVisors)
         {
             string visorsPath = $"assets/visors/{package}/package.json";
-            TextAsset visorsTextAsset = assetBundle.LoadAsset<TextAsset>(visorsPath);
+            var visorsTextAsset = assetBundle.LoadAsset<TextAsset>(visorsPath);
+
             if (visorsTextAsset == null)
             {
                 Logger.Error($"パッケージ: {package} の package.json が読み込めません(Visors)");
@@ -530,11 +559,13 @@ public class CustomCosmeticsLoader
             {
                 cosmeticsPackage.visors = [];
             }
+            GameObject.Destroy(visorsTextAsset);
         }
         foreach (string package in packagesNamePlates)
         {
             string namePlatesPath = $"assets/nameplates/{package}/package.json";
-            TextAsset namePlatesTextAsset = assetBundle.LoadAsset<TextAsset>(namePlatesPath);
+            var namePlatesTextAsset = assetBundle.LoadAsset<TextAsset>(namePlatesPath);
+
             if (namePlatesTextAsset == null)
             {
                 Logger.Error($"パッケージ: {package} の package.json が読み込めません(NamePlates)");
@@ -581,7 +612,9 @@ public class CustomCosmeticsLoader
             {
                 cosmeticsPackage.namePlates = [];
             }
+            GameObject.Destroy(namePlatesTextAsset);
         }
+        yield break;
     }
     public static CustomCosmeticsHat? GetModdedHat(string hatId)
     {
@@ -611,29 +644,108 @@ public class CustomCosmeticsLoader
         return moddedNamePlates.TryGetValue(namePlateId, out var namePlate) ? new ModdedNamePlateDataWrapper(namePlate) : null;
     }
 
-    private static string[] GetPackages(AssetBundle assetBundle, string type)
+    private static Dictionary<string, string[]> GetAllPackagesByType(AssetBundle assetBundle)
     {
-        return assetBundle.GetAllAssetNames()
-            .Select(path => path.Split('/'))
-            .Where(segments => segments.Length >= 4 &&
-                               string.Equals(segments[0], "Assets", StringComparison.OrdinalIgnoreCase) &&
-                               string.Equals(segments[1], type, StringComparison.OrdinalIgnoreCase) &&
-                               !string.IsNullOrEmpty(segments[2]))
-            .Select(segments => segments[2])
-            .Distinct()
-            .ToArray();
+        var categorizedPackagesSet = new Dictionary<string, HashSet<string>>(StringComparer.OrdinalIgnoreCase)
+        {
+            { "Hats", new HashSet<string>(StringComparer.OrdinalIgnoreCase) },
+            { "Visors", new HashSet<string>(StringComparer.OrdinalIgnoreCase) },
+            { "NamePlates", new HashSet<string>(StringComparer.OrdinalIgnoreCase) }
+        };
+
+        string assetsPrefix = "assets/";
+        // Dictionary keys are "Hats", "Visors", "NamePlates". Subdirectory names are lowercase.
+        string[] typeSubdirectories = new string[] { "hats", "visors", "nameplates" };
+        string[] typeKeys = new string[] { "Hats", "Visors", "NamePlates" };
+
+        foreach (string assetPath in assetBundle.GetAllAssetNames())
+        {
+            if (!assetPath.StartsWith(assetsPrefix, StringComparison.OrdinalIgnoreCase))
+            {
+                continue;
+            }
+
+            // e.g., assetPath = "assets/hats/packagename/resource.png"
+            // pathAfterAssets = "hats/packagename/resource.png"
+            string pathAfterAssets = assetPath.Substring(assetsPrefix.Length);
+
+            for (int i = 0; i < typeSubdirectories.Length; i++)
+            {
+                string currentTypeSubdirectory = typeSubdirectories[i] + "/"; // e.g., "hats/"
+                if (pathAfterAssets.StartsWith(currentTypeSubdirectory, StringComparison.OrdinalIgnoreCase))
+                {
+                    string determinedTypeKey = typeKeys[i]; // e.g., "Hats"
+
+                    // packagePathInTypeFolder = "packagename/resource.png"
+                    string packagePathInTypeFolder = pathAfterAssets.Substring(currentTypeSubdirectory.Length);
+
+                    if (string.IsNullOrEmpty(packagePathInTypeFolder))
+                    {
+                        continue;
+                    }
+
+                    int endOfPackageNameIndex = packagePathInTypeFolder.IndexOf('/');
+                    // If no further '/', it means path is like "assets/type/packagename"
+                    // Original GetPackages logic (segments.Length >= 4) would skip this.
+                    if (endOfPackageNameIndex == -1)
+                    {
+                        continue;
+                    }
+
+                    ReadOnlySpan<char> packageNameSpan = packagePathInTypeFolder.AsSpan(0, endOfPackageNameIndex);
+                    string packageName = packageNameSpan.ToString();
+
+                    if (!string.IsNullOrEmpty(packageName))
+                    {
+                        categorizedPackagesSet[determinedTypeKey].Add(packageName);
+                    }
+                    // Found type for this assetPath, move to next assetPath
+                    break;
+                }
+            }
+        }
+
+        var result = new Dictionary<string, string[]>(StringComparer.OrdinalIgnoreCase);
+        foreach (var kvp in categorizedPackagesSet)
+        {
+            result[kvp.Key] = kvp.Value.ToArray();
+        }
+        return result;
     }
 
-    private static AssetBundle LoadAssetBundle(string assetBundlePath)
+    private static IEnumerator LoadAssetBundle(string assetBundlePath, Action<AssetBundle> onFinish)
     {
-        AssetBundle assetBundle = AssetBundle.LoadFromFile(assetBundlePath);
+        Logger.Info("Loading!!! AssetBundle");
+        // var assetBundleRequest = AssetBundle.LoadFromFileAsync(assetBundlePath);
+        var assetBundle = AssetBundle.LoadFromFile(assetBundlePath);
         assetBundle.DontUnload();
+        onFinish(assetBundle);
+        yield break;
+        /*
+        yield return assetBundle;
+        Logger.Info("Loaded!!! AssetBunde");
+        assetBundle.assetBundle.DontUnload();
         Logger.Info($"アセットバンドルをロードしました: {assetBundlePath} {assetBundle != null}");
-        return assetBundle;
+        onFinish(assetBundle.assetBundle);*/
     }
 
     private static IEnumerator DownloadAssetBundleWithRetryAsync(string assetBundleUrl, string expectedHash, Action onFinish)
     {
+        switch (Application.internetReachability)
+        {
+            case NetworkReachability.NotReachable:
+                yield return null;
+                Logger.Error("インターネットに接続されていません");
+                onFinish();
+                yield break;
+            case NetworkReachability.ReachableViaCarrierDataNetwork when !ConfigRoles.CanUseDataConnection.Value:
+                yield return null;
+                Logger.Error("データ通信ではダウンロードしない設定です。");
+                onFinish();
+                yield break;
+            default:
+                break;
+        }
         string fileNameFromUrl = Path.GetFileName(assetBundleUrl);
         string bundleStorageDir = Path.Combine(SuperNewRolesPlugin.BaseDirectory, "CustomCosmetics", fileNameFromUrl);
         string targetPath = Path.Combine(bundleStorageDir, $"{expectedHash}.bundle");
@@ -685,6 +797,7 @@ public class CustomCosmeticsLoader
                 request = SNRHttpClient.Get(assetBundleUrl);
                 // ユーザーが設定したタイムアウト値を使用
                 request.timeout = 60;
+                request.ignoreSslErrors = true;
 
                 IEnumerator webRequestEnumerator = SendSNRHttpClientHelper(request);
                 bool moveNextSuccess = true;
@@ -776,9 +889,7 @@ public class CustomCosmeticsLoader
                     File.WriteAllBytes(targetPath, assetBundleData);
                     Logger.Info($"アセットバンドルをダウンロード/検証し保存しました: {assetBundleUrl} -> {targetPath}");
                     if (!notLoadedAssetBundles.Contains(targetPath))
-                    {
                         notLoadedAssetBundles.Add(targetPath);
-                    }
                     successThisAttempt = true;
                 }
                 catch (Exception e)
@@ -812,6 +923,19 @@ public class CustomCosmeticsLoader
 
     public static IEnumerator DownloadSpritesAsync(Func<IEnumerator, Coroutine> startCoroutine)
     {
+        switch (Application.internetReachability)
+        {
+            case NetworkReachability.NotReachable:
+                yield return null;
+                Logger.Error("インターネットに接続されていません");
+                yield break;
+            case NetworkReachability.ReachableViaCarrierDataNetwork when !ConfigRoles.CanUseDataConnection.Value:
+                yield return null;
+                Logger.Error("データ通信ではダウンロードしない設定です。");
+                yield break;
+            default:
+                break;
+        }
         string basePath = $"{SuperNewRolesPlugin.BaseDirectory}/CustomCosmetics/";
         int activeDownloads = 0;
         Queue<(string spriteName, string spritePath, string packageKey, string packagePath)> downloadQueue = new();
@@ -855,10 +979,9 @@ public class CustomCosmeticsLoader
         {
             while (downloadQueue.Count > 0 && activeDownloads < MAX_CONCURRENT_DOWNLOADS)
             {
+                Logger.Info("Downloading sprite: " + downloadQueue.Count);
                 var item = downloadQueue.Dequeue();
                 activeDownloads++;
-                // SuperNewRolesPlugin.Instance が MonoBehaviour を継承していると仮定
-                // そうでない場合は、適切なコルーチン開始方法に置き換える必要があります。
                 string filePath = Path.Combine(item.packagePath, $"{item.spriteName}.png").Replace("\\", "/");
                 if (File.Exists(filePath))
                 {
@@ -940,7 +1063,6 @@ public class CustomCosmeticsLoader
 
     public static Sprite LoadSpriteFromPath(string path)
     {
-        Logger.Info($"LoadSpriteFromPath: {path}");
         try
         {
             if (File.Exists(path))
@@ -972,7 +1094,7 @@ public class CustomCosmeticsLoader
 
     private static Sprite CreateSpriteFromPath(string path)
     {
-        Texture2D texture = new(2, 2, TextureFormat.ARGB32, true);
+        Texture2D texture = new(2, 2, TextureFormat.ARGB32, false);
         byte[] byteTexture;
         if (downloadedSprites == null || !downloadedSprites.TryGetValue(path, out byteTexture))
             byteTexture = File.ReadAllBytes(path);
@@ -981,7 +1103,7 @@ public class CustomCosmeticsLoader
             Logger.Warning("Used Sprites");
             downloadedSprites.Remove(path);
         }
-        LoadImage(texture, byteTexture, false);
+        LoadImage(texture, byteTexture, true);
         if (texture == null)
             return null;
         Sprite sprite = Sprite.Create(texture, new Rect(0, 0, texture.width, texture.height), new Vector2(0.53f, 0.575f), texture.width * 0.375f);
@@ -995,12 +1117,28 @@ public class CustomCosmeticsLoader
     internal static d_LoadImage iCall_LoadImage;
     private static bool LoadImage(Texture2D tex, byte[] data, bool markNonReadable)
     {
-        Logger.Info($"Current Thread: {Thread.CurrentThread.ManagedThreadId}");
         if (iCall_LoadImage == null)
             iCall_LoadImage = IL2CPP.ResolveICall<d_LoadImage>("UnityEngine.ImageConversion::LoadImage");
         var il2cppArray = (Il2CppStructArray<byte>)data;
-        return ImageConversion.LoadImage(tex, il2cppArray, markNonReadable);
+        return iCall_LoadImage.Invoke(tex.Pointer, il2cppArray.Pointer, markNonReadable);
         // return iCall_LoadImage.Invoke(tex.Pointer, il2cppArray.Pointer, markNonReadable);
+    }
+
+    public static void ClearDownloadedSpriteCache()
+    {
+        // Only clear if the cache is actually in use (not on Android where it's null by default)
+        if (downloadedSprites != null)
+        {
+            Logger.Info($"Clearing downloadedSprites cache. Count before: {downloadedSprites.Count}");
+            downloadedSprites.Clear();
+            // Forcing GC might be an option for aggressive testing, but generally not recommended for production.
+            // System.GC.Collect();
+            Logger.Info("downloadedSprites cache cleared.");
+        }
+        else
+        {
+            Logger.Info("downloadedSprites cache is not in use (likely Android platform). No action taken.");
+        }
     }
 
     /// <summary>
@@ -1023,9 +1161,9 @@ public class CustomCosmeticsLoader
             Logger.Error($"ファイルが存在しません: {path}");
             return null;
         }
-        Texture2D texture = new(2, 2, TextureFormat.ARGB32, true);
+        Texture2D texture = new(2, 2, TextureFormat.ARGB32, false);
         byte[] byteTexture = File.ReadAllBytes(path);
-        LoadImage(texture, byteTexture, false);
+        LoadImage(texture, byteTexture, true);
         if (texture == null)
             return null;
         Sprite sprite = Sprite.Create(texture, new Rect(0, 0, texture.width, texture.height), new Vector2(0.53f, 0.575f), texture.width * 0.375f);
@@ -1048,7 +1186,7 @@ public class CustomCosmeticsLoader
             byte[] bytes = File.ReadAllBytes(path);
             Texture2D texture = new(2, 2);
 
-            LoadImage(texture, bytes, false);
+            LoadImage(texture, bytes, true);
 
             Rect rect = new(0f, 0f, texture.width, texture.height);
             Sprite sprite = Sprite.Create(texture, rect, new Vector2(0.5f, 0.5f), 115f);

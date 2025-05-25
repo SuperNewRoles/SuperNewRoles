@@ -17,7 +17,7 @@ public class ExPlayerControl
     public static ExPlayerControl LocalPlayer => _localPlayer;
     private static ExPlayerControl _localPlayer;
     private static List<ExPlayerControl> _exPlayerControls { get; } = new();
-    public static IReadOnlyList<ExPlayerControl> ExPlayerControls => _exPlayerControls.AsReadOnly();
+    public static List<ExPlayerControl> ExPlayerControls => _exPlayerControls;
     private static ExPlayerControl[] _exPlayerControlsArray;
     public PlayerControl Player { get; }
     public NetworkedPlayerInfo Data { get; }
@@ -54,6 +54,17 @@ public class ExPlayerControl
     public CustomTaskAbility CustomTaskAbility => _customTaskAbility;
     private List<ImpostorVisionAbility> _impostorVisionAbilities = new();
     private Dictionary<string, bool> _hasAbilityCache = new();
+
+    public override int GetHashCode()
+    {
+        return PlayerId;
+    }
+    public override bool Equals(object obj)
+    {
+        if (obj is ExPlayerControl other)
+            return PlayerId == other.PlayerId;
+        return false;
+    }
 
     public ExPlayerControl(PlayerControl player)
     {
@@ -175,6 +186,7 @@ public class ExPlayerControl
     public void SetRole(RoleId roleId)
     {
         if (Role == roleId) return;
+        RoleId oldRole = Role;
         DetachOldRole(Role);
         if (AmOwner)
             SuperTrophyManager.DetachTrophy(Role);
@@ -185,9 +197,10 @@ public class ExPlayerControl
             if (AmOwner)
                 SuperTrophyManager.RegisterTrophy(Role);
             roleBase = role;
-            foreach (var modifier in ModifierRoleBases)
+            foreach (var modifier in ModifierRoleBases.ToArray())
             {
-                if (!modifier.AssignedTeams.Contains(roleBase.AssignedTeam))
+                Logger.Info($"ModifierRole: {modifier.ModifierRole} AssignedTeams: {string.Join(",", modifier.AssignedTeams)} RoleBaseAssignedTeam: {roleBase.AssignedTeam}", "ExPlayerControl");
+                if (modifier.AssignedTeams.Count != 0 && !modifier.AssignedTeams.Contains(roleBase.AssignedTeam))
                     DetachOldModifierRole(modifier.ModifierRole);
             }
         }
@@ -195,6 +208,7 @@ public class ExPlayerControl
         {
             Logger.Error($"Role {roleId} not found");
         }
+        SetRoleEvent.Invoke(this, oldRole, roleId);
     }
 
     public bool HasCustomKillButton()
@@ -299,6 +313,8 @@ public class ExPlayerControl
         }
         if (AmOwner)
             SuperTrophyManager.DetachTrophy(abilitiesToDetach);
+        ModifierRole &= ~modifierRoleId;
+        ModifierRoleBases.RemoveAll(x => modifierRoleId.HasFlag(x.ModifierRole));
     }
     public void ReverseRole(ExPlayerControl target)
     {
@@ -353,15 +369,17 @@ public class ExPlayerControl
         foreach (var ability in myAbilities)
         {
             var currentParent = ability.ability.Parent;
-            if (currentParent is AbilityParentAbility)
+            if (currentParent is not AbilityParentRole)
                 continue;
+            currentParent.Player = Player;
             target.AttachAbility(ability.ability, currentParent);
         }
         foreach (var ability in targetAbilities)
         {
             var currentParent = ability.ability.Parent;
-            if (currentParent is AbilityParentAbility)
+            if (currentParent is not AbilityParentRole)
                 continue;
+            currentParent.Player = Player;
             AttachAbility(ability.ability, currentParent);
         }
         // 名前情報を更新
@@ -408,7 +426,7 @@ public class ExPlayerControl
         => IsKiller() && !IsCrewmate();
 
     public bool IsCrewmate()
-        => roleBase != null ? roleBase.AssignedTeam == AssignedTeamType.Crewmate && !IsMadRoles() : !Data.Role.IsImpostor;
+        => roleBase != null ? (Role == RoleId.SchrodingersCat && GetAbility<SchrodingersCatAbility>()?.CurrentTeam == SchrodingersCatTeam.Crewmate) || (roleBase.AssignedTeam == AssignedTeamType.Crewmate && !IsMadRoles()) : !Data.Role.IsImpostor;
     public bool IsCrewmateOrMadRoles()
         => IsCrewmate() || IsMadRoles();
     public bool IsImpostor()
@@ -456,13 +474,13 @@ public class ExPlayerControl
         return (result.complete, all ?? result.all);
     }
     public bool CanUseVent()
-        => _customVentAbility != null ? _customVentAbility.CheckCanUseVent() : IsImpostor();
+        => _customVentAbility != null ? _customVentAbility.CheckCanUseVent() : (IsImpostor() && !ModHelpers.IsHnS()) || Data.Role.Role == RoleTypes.Engineer;
     public bool ShowVanillaVentButton()
-        => IsImpostor() && IsAlive() && _customVentAbility == null;
+        => (IsImpostor() && !ModHelpers.IsHnS()) && IsAlive() && _customVentAbility == null;
     public bool CanSabotage()
-        => _customSaboAbility != null ? _customSaboAbility.CheckCanSabotage() : IsImpostor();
+        => _customSaboAbility != null ? _customSaboAbility.CheckCanSabotage() : (IsImpostor() && !ModHelpers.IsHnS());
     public bool ShowVanillaSabotageButton()
-        => IsImpostor() && IsAlive() && _customSaboAbility == null;
+        => (IsImpostor() && !ModHelpers.IsHnS()) && _customSaboAbility == null;
     public AbilityBase GetAbility(ulong abilityId)
     {
         return PlayerAbilitiesDictionary.TryGetValue(abilityId, out var ability) ? ability : null;

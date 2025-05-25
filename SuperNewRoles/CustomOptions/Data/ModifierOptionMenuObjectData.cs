@@ -187,12 +187,16 @@ public class ModifierOptionMenuObjectData : OptionMenuBase
         public bool HiddenOption { get; set; } = false;
         public bool AssignFilter { get; set; } = false;
         public virtual Func<List<RoleId>> AssignFilterList { get; } = () => [];
+        public virtual AssignedTeamType[] ModifierAssignFilterTeam { get; } = [];
+        public virtual RoleId[] ModifierDoNotAssignRoles { get; } = [];
         public virtual Action<List<RoleId>> OnUpdateAssignFilter { get; } = (_) => { };
     }
     public class ModifierCategoryDataCategory : ModifierCategoryDataBase
     {
         private List<RoleId> _assignFilterList;
         public override Func<List<RoleId>> AssignFilterList { get; }
+        public override AssignedTeamType[] ModifierAssignFilterTeam { get; } = [];
+        public override RoleId[] ModifierDoNotAssignRoles { get; } = [];
         public override Action<List<RoleId>> OnUpdateAssignFilter { get; }
         public ModifierCategoryDataCategory(CustomOptionCategory category)
         {
@@ -202,6 +206,8 @@ public class ModifierOptionMenuObjectData : OptionMenuBase
             AssignFilter = category.HasModifierAssignFilter;
             _assignFilterList = category.ModifierAssignFilter;
             AssignFilterList = () => _assignFilterList;
+            ModifierAssignFilterTeam = category.ModifierAssignFilterTeam;
+            ModifierDoNotAssignRoles = category.ModifierDoNotAssignRoles;
             OnUpdateAssignFilter = (list) =>
             {
                 _assignFilterList = list;
@@ -215,6 +221,8 @@ public class ModifierOptionMenuObjectData : OptionMenuBase
         private List<RoleId> _assignFilterList;
         public override Func<List<RoleId>> AssignFilterList { get; }
         public override Action<List<RoleId>> OnUpdateAssignFilter { get; }
+        public override AssignedTeamType[] ModifierAssignFilterTeam { get; } = [];
+        public override RoleId[] ModifierDoNotAssignRoles { get; } = [];
 
         public ModifierCategoryDataModifier(RoleOptionManager.ModifierRoleOption modifier)
         {
@@ -224,7 +232,10 @@ public class ModifierOptionMenuObjectData : OptionMenuBase
             if (CustomRoleManager.TryGetModifierById(modifier.ModifierRoleId, out var modifierData))
             {
                 AssignFilter = modifierData.AssignFilter;
-                _assignFilterList = RoleOptionManager.ModifierRoleOptions.FirstOrDefault(x => x.ModifierRoleId == modifier.ModifierRoleId)?.AssignFilterList ?? new List<RoleId>();
+                var option = RoleOptionManager.ModifierRoleOptions.FirstOrDefault(x => x.ModifierRoleId == modifier.ModifierRoleId);
+                _assignFilterList = option?.AssignFilterList ?? new List<RoleId>();
+                ModifierAssignFilterTeam = modifierData.AssignedTeams.ToArray();
+                ModifierDoNotAssignRoles = modifierData.DoNotAssignRoles;
             }
             else
             {

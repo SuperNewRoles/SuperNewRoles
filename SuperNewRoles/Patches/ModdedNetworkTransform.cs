@@ -114,7 +114,7 @@ public static class ModdedNetworkTransform
     }
     public static void FixedUpdate(PlayerControl player)
     {
-        if (player.NetTransform.isPaused || player.onLadder || (ShipStatus.Instance.Type == ShipStatus.MapType.Fungle && ShipStatus.Instance is FungleShipStatus fungleShipStatus && fungleShipStatus.Zipline.playerIdHands.ContainsKey(player.PlayerId)))
+        if (player.NetTransform.isPaused || player.onLadder || (ShipStatus.Instance != null && ShipStatus.Instance.Type == ShipStatus.MapType.Fungle && ShipStatus.Instance is FungleShipStatus fungleShipStatus && fungleShipStatus.Zipline.playerIdHands.ContainsKey(player.PlayerId)))
         {
             // Clear state for paused players
             return;

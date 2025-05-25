@@ -24,6 +24,12 @@ public class CustomRPCAttribute : Attribute
     }
 }
 
+public interface ICustomRpcObject
+{
+    void Serialize(MessageWriter writer);
+    void Deserialize(MessageReader reader);
+}
+
 public static class CustomRpcExts
 {
     /*[CustomRPC(onlyOtherPlayer: true)]
@@ -89,6 +95,15 @@ public static class CustomRPCManager
     private static bool IsRpcReceived = false;
 
     /// <summary>
+    /// Writeメソッドの型ごとの処理をキャッシュする辞書
+    /// </summary>
+    private static readonly Dictionary<Type, Action<MessageWriter, object>> WriteActions = new();
+    /// <summary>
+    /// ReadFromTypeメソッドの型ごとの処理をキャッシュする辞書
+    /// </summary>
+    private static readonly Dictionary<Type, Func<MessageReader, object>> ReadActions = new();
+
+    /// <summary>
     /// メソッドのハッシュ値を生成
     /// </summary>
     /// <param name="method">ハッシュ値を生成するメソッド</param>
@@ -111,7 +126,7 @@ public static class CustomRPCManager
     public static List<Action> Load()
     {
         // すべてのRPCメソッドのハッシュ値を収集
-        var methodsWithDetails = Assembly.GetExecutingAssembly()
+        var methodsWithDetails = SuperNewRolesPlugin.Assembly
             .GetTypes()
             .SelectMany(t => t.GetMethods(BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance | BindingFlags.Static))
             .Select(m => new
@@ -277,352 +292,407 @@ public static class CustomRPCManager
         {
             var underlyingType = Enum.GetUnderlyingType(type);
             if (underlyingType == typeof(byte))
-                writer.Write((byte)(object)obj);
+                writer.Write((byte)obj);
             else if (underlyingType == typeof(short))
-                ModHelpers.Write(writer, (short)(object)obj);
+                ModHelpers.Write(writer, (short)obj);
             else if (underlyingType == typeof(ushort))
-                writer.Write((ushort)(object)obj);
+                writer.Write((ushort)obj);
             else if (underlyingType == typeof(int))
-                writer.Write((int)(object)obj);
+                writer.Write((int)obj);
             else if (underlyingType == typeof(uint))
-                writer.Write((uint)(object)obj);
+                writer.Write((uint)obj);
             else if (underlyingType == typeof(ulong))
-                writer.Write((ulong)(object)obj);
+                writer.Write((ulong)obj);
             else if (underlyingType == typeof(long))
                 ModHelpers.Write(writer, (long)obj);
             else
                 throw new Exception($"Unsupported enum underlying type: {underlyingType}");
             return;
         }
-        switch (obj)
+
+        if (WriteActions.TryGetValue(type, out var writeAction))
         {
-            case byte b:
-                writer.Write(b);
-                break;
-            case int i:
-                writer.Write(i);
-                break;
-            case short s:
-                ModHelpers.Write(writer, s);
-                break;
-            case ushort us:
-                writer.Write(us);
-                break;
-            case uint ui:
-                writer.Write(ui);
-                break;
-            case ulong ul:
-                writer.Write(ul);
-                break;
-            case long l:
-                ModHelpers.Write(writer, l);
-                break;
-            case float f:
-                writer.Write(f);
-                break;
-            case bool bl:
-                writer.Write(bl);
-                break;
-            case string s:
-                writer.Write(s);
-                break;
-            case List<string> list:
-                writer.Write(list.Count);
-                foreach (var s in list)
-                {
-                    writer.Write(s);
-                }
-                break;
-            case Color color:
-                writer.Write(color.r);
-                writer.Write(color.g);
-                writer.Write(color.b);
-                writer.Write(color.a);
-                break;
-            case Color32 color32:
-                writer.Write(color32.r);
-                writer.Write(color32.g);
-                writer.Write(color32.b);
-                writer.Write(color32.a);
-                break;
-            default:
-                if (type == typeof(Dictionary<byte, byte>))
-                {
-                    if (obj == null)
-                        writer.Write(0);
-                    else
-                    {
-                        var dict = obj as Dictionary<byte, byte>;
-                        writer.Write(dict.Count);
-                        foreach (var kvp in dict)
-                        {
-                            writer.Write(kvp.Key);
-                            writer.Write(kvp.Value);
-                        }
-                    }
-                }
-                else if (type == typeof(Dictionary<string, int>))
-                {
-                    if (obj == null)
-                        writer.Write(0);
-                    else
-                    {
-                        var dict = obj as Dictionary<string, int>;
-                        writer.Write(dict.Count);
-                        foreach (var kvp in dict)
-                        {
-                            writer.Write(kvp.Key);
-                            writer.Write(kvp.Value);
-                        }
-                    }
-                }
-                else if (type == typeof(Dictionary<byte, byte>))
-                {
-                    if (obj == null)
-                        writer.Write(0);
-                    else
-                    {
-                        var dict = obj as Dictionary<byte, byte>;
-                        writer.Write(dict.Count);
-                        foreach (var kvp in dict)
-                        {
-                            writer.Write(kvp.Key);
-                            writer.Write(kvp.Value);
-                        }
-                    }
-                }
-                else if (type == typeof(Dictionary<string, byte>))
-                {
-                    if (obj == null)
-                        writer.Write(0);
-                    else
-                    {
-                        var dict = obj as Dictionary<string, byte>;
-                        writer.Write(dict.Count);
-                        foreach (var kvp in dict)
-                        {
-                            writer.Write(kvp.Key);
-                            writer.Write(kvp.Value);
-                        }
-                    }
-                }
-                else if (type == typeof(Dictionary<ushort, byte>))
-                {
-                    if (obj == null)
-                        writer.Write(0);
-                    else
-                    {
-                        var dict = obj as Dictionary<ushort, byte>;
-                        writer.Write(dict.Count);
-                        foreach (var kvp in dict)
-                        {
-                            writer.Write(kvp.Key);
-                            writer.Write(kvp.Value);
-                        }
-                    }
-                }
-                else if (type == typeof(Dictionary<byte, (byte, int)>))
-                {
-                    if (obj == null)
-                        writer.Write(0);
-                    else
-                    {
-                        var dict = obj as Dictionary<byte, (byte, int)>;
-                        writer.Write(dict.Count);
-                        foreach (var kvp in dict)
-                        {
-                            writer.Write(kvp.Key);
-                            writer.Write(kvp.Value.Item1);
-                            writer.Write(kvp.Value.Item2);
-                        }
-                    }
-                }
-                else if (type == typeof(PlayerControl))
-                {
-                    if (obj == null)
-                        writer.Write(byte.MaxValue);
-                    else
-                        writer.Write((obj as PlayerControl)?.PlayerId ?? byte.MaxValue);
-                }
-                else if (type == typeof(PlayerControl[]))
-                {
-                    if (obj == null)
-                        writer.Write(0);
-                    else
-                    {
-                        var pcArray = obj as PlayerControl[];
-                        writer.Write(pcArray.Length);
-                        foreach (var playerControl in pcArray)
-                        {
-                            if (playerControl == null)
-                                writer.Write(byte.MaxValue);
-                            else
-                                writer.Write(playerControl.PlayerId);
-                        }
-                    }
-                }
-                else if (type == typeof(ExPlayerControl))
-                {
-                    if (obj == null)
-                        writer.Write(byte.MaxValue);
-                    else
-                        writer.Write((obj as ExPlayerControl)?.PlayerId ?? byte.MaxValue);
-                }
-                else if (type == typeof(ExPlayerControl[]))
-                {
-                    if (obj == null)
-                        writer.Write(0);
-                    else
-                    {
-                        var exPcArray = obj as ExPlayerControl[];
-                        writer.Write(exPcArray.Length);
-                        foreach (var exPlayerControl in exPcArray)
-                        {
-                            if (exPlayerControl == null)
-                                writer.Write(byte.MaxValue);
-                            else
-                                writer.Write(exPlayerControl.PlayerId);
-                        }
-                    }
-                }
-                else if (type == typeof(NetworkedPlayerInfo))
-                {
-                    if (obj == null)
-                        writer.Write(byte.MaxValue);
-                    else
-                        writer.Write((obj as NetworkedPlayerInfo)?.PlayerId ?? byte.MaxValue);
-                }
-                else if (type.IsSubclassOf(typeof(InnerNetObject)))
-                {
-                    if (obj == null)
-                        writer.Write(uint.MaxValue);
-                    else
-                        writer.Write((obj as InnerNetObject)?.NetId ?? uint.MaxValue);
-                }
-                else if (type == typeof(List<byte>))
-                {
-                    if (obj == null)
-                        writer.Write(0);
-                    else
-                    {
-                        var byteList = obj as List<byte>;
-                        writer.Write(byteList.Count);
-                        foreach (var b in byteList)
-                        {
-                            writer.Write(b);
-                        }
-                    }
-                }
-                else if (type.IsSubclassOf(typeof(AbilityBase)))
-                {
-                    var abilityBase = obj as AbilityBase;
-                    if (obj == null || abilityBase?.Player == null)
-                        writer.Write(byte.MaxValue);
-                    else
-                    {
-                        writer.Write(abilityBase.Player.PlayerId);
-                        writer.Write(abilityBase.AbilityId);
-                    }
-                }
-                else if (type == typeof(Vector2))
-                {
-                    if (obj == null)
-                    {
-                        writer.Write(0f);
-                        writer.Write(0f);
-                    }
-                    else
-                    {
-                        Vector2 v2 = (Vector2)obj;
-                        writer.Write(v2.x);
-                        writer.Write(v2.y);
-                    }
-                }
-                else if (type == typeof(Vector3))
-                {
-                    if (obj == null)
-                    {
-                        writer.Write(0f);
-                        writer.Write(0f);
-                        writer.Write(0f);
-                    }
-                    else
-                    {
-                        Vector3 v3 = (Vector3)obj;
-                        writer.Write(v3.x);
-                        writer.Write(v3.y);
-                        writer.Write(v3.z);
-                    }
-                }
-                else if (type == typeof(Vector2[]))
-                {
-                    if (obj == null)
-                        writer.Write(0);
-                    else
-                    {
-                        var v2Array = obj as Vector2[];
-                        writer.Write(v2Array.Length);
-                        foreach (var v in v2Array)
-                        {
-                            writer.Write(v.x);
-                            writer.Write(v.y);
-                        }
-                    }
-                }
-                else if (type == typeof(Vector3[]))
-                {
-                    if (obj == null)
-                        writer.Write(0);
-                    else
-                    {
-                        var v3Array = obj as Vector3[];
-                        writer.Write(v3Array.Length);
-                        foreach (var v in v3Array)
-                        {
-                            writer.Write(v.x);
-                            writer.Write(v.y);
-                            writer.Write(v.z);
-                        }
-                    }
-                }
-                else if (type == typeof(Dictionary<byte, bool>))
-                {
-                    if (obj == null)
-                        writer.Write(0);
-                    else
-                    {
-                        var dict = obj as Dictionary<byte, bool>;
-                        writer.Write(dict.Count);
-                        foreach (var kvp in dict)
-                        {
-                            writer.Write(kvp.Key);
-                            writer.Write(kvp.Value);
-                        }
-                    }
-                }
-                else if (type == typeof(List<ExPlayerControl>))
-                {
-                    if (obj == null)
-                        writer.Write(0);
-                    else
-                    {
-                        var exPcList = obj as List<ExPlayerControl>;
-                        writer.Write(exPcList.Count);
-                        foreach (var exPlayerControl in exPcList)
-                        {
-                            if (exPlayerControl == null)
-                                writer.Write(byte.MaxValue);
-                            else
-                                writer.Write(exPlayerControl.PlayerId);
-                        }
-                    }
-                }
-                else
-                {
-                    throw new Exception($"Invalid type: {obj.GetType()}");
-                }
-                break;
+            writeAction(writer, obj);
         }
+        // AbilityBaseのインスタンスメソッドの場合
+        else if (obj is AbilityBase abilityBase)
+        {
+            writer.Write(abilityBase.Player.PlayerId);
+            writer.Write(abilityBase.AbilityId);
+        }
+        else if (obj is ICustomRpcObject customRpcObject) // ICustomRpcObject は WriteActions に登録しにくいので個別対応
+        {
+            customRpcObject.Serialize(writer);
+        }
+        else
+        {
+            // WriteActions にない型の場合は、従来の switch で処理（または例外）
+            // ここでは例外を投げるか、フォールバックのロジックを実装するか選択
+            // 今回は、事前に対応型を登録しておく方針なので、基本的にはここに来ない想定
+            throw new Exception($"Unsupported type for Write: {type}");
+        }
+    }
+
+    static CustomRPCManager() // 静的コンストラクタでWriteActionsとReadActionsを初期化
+    {
+        // WriteActionsの初期化 (既存のコード)
+        // 基本型
+        WriteActions[typeof(byte)] = (writer, val) => writer.Write((byte)val);
+        WriteActions[typeof(int)] = (writer, val) => writer.Write((int)val);
+        WriteActions[typeof(short)] = (writer, val) => ModHelpers.Write(writer, (short)val);
+        WriteActions[typeof(ushort)] = (writer, val) => writer.Write((ushort)val);
+        WriteActions[typeof(uint)] = (writer, val) => writer.Write((uint)val);
+        WriteActions[typeof(ulong)] = (writer, val) => writer.Write((ulong)val);
+        WriteActions[typeof(long)] = (writer, val) => ModHelpers.Write(writer, (long)val);
+        WriteActions[typeof(float)] = (writer, val) => writer.Write((float)val);
+        WriteActions[typeof(bool)] = (writer, val) => writer.Write((bool)val);
+        WriteActions[typeof(string)] = (writer, val) => writer.Write((string)val);
+
+        // リスト型
+        WriteActions[typeof(List<string>)] = (writer, val) =>
+        {
+            var list = val as List<string>;
+            writer.Write(list.Count);
+            foreach (var s in list)
+            {
+                writer.Write(s);
+            }
+        };
+        WriteActions[typeof(List<byte>)] = (writer, val) =>
+        {
+            if (val == null)
+                writer.Write(0);
+            else
+            {
+                var byteList = val as List<byte>;
+                writer.Write(byteList.Count);
+                foreach (var b in byteList)
+                {
+                    writer.Write(b);
+                }
+            }
+        };
+        WriteActions[typeof(List<ExPlayerControl>)] = (writer, val) =>
+        {
+            if (val == null)
+                writer.Write(0);
+            else
+            {
+                var exPcList = val as List<ExPlayerControl>;
+                writer.Write(exPcList.Count);
+                foreach (var exPlayerControl in exPcList)
+                {
+                    if (exPlayerControl == null)
+                        writer.Write(byte.MaxValue);
+                    else
+                        writer.Write(exPlayerControl.PlayerId);
+                }
+            }
+        };
+
+
+        // 色
+        WriteActions[typeof(Color)] = (writer, val) =>
+        {
+            var color = (Color)val;
+            writer.Write(color.r);
+            writer.Write(color.g);
+            writer.Write(color.b);
+            writer.Write(color.a);
+        };
+        WriteActions[typeof(Color32)] = (writer, val) =>
+        {
+            var color32 = (Color32)val;
+            writer.Write(color32.r);
+            writer.Write(color32.g);
+            writer.Write(color32.b);
+            writer.Write(color32.a);
+        };
+
+        // ゲームオブジェクト関連
+        WriteActions[typeof(Vent)] = (writer, val) => writer.Write((byte)((Vent)val).Id);
+        WriteActions[typeof(PlayerControl)] = (writer, val) =>
+        {
+            if (val == null)
+                writer.Write(byte.MaxValue);
+            else
+                writer.Write((val as PlayerControl)?.PlayerId ?? byte.MaxValue);
+        };
+        WriteActions[typeof(PlayerControl[])] = (writer, val) =>
+        {
+            if (val == null)
+                writer.Write(0);
+            else
+            {
+                var pcArray = val as PlayerControl[];
+                writer.Write(pcArray.Length);
+                foreach (var playerControl in pcArray)
+                {
+                    if (playerControl == null)
+                        writer.Write(byte.MaxValue);
+                    else
+                        writer.Write(playerControl.PlayerId);
+                }
+            }
+        };
+        WriteActions[typeof(ExPlayerControl)] = (writer, val) =>
+        {
+            if (val == null)
+                writer.Write(byte.MaxValue);
+            else
+                writer.Write((val as ExPlayerControl)?.PlayerId ?? byte.MaxValue);
+        };
+        WriteActions[typeof(ExPlayerControl[])] = (writer, val) =>
+        {
+            if (val == null)
+                writer.Write(0);
+            else
+            {
+                var exPcArray = val as ExPlayerControl[];
+                writer.Write(exPcArray.Length);
+                foreach (var exPlayerControl in exPcArray)
+                {
+                    if (exPlayerControl == null)
+                        writer.Write(byte.MaxValue);
+                    else
+                        writer.Write(exPlayerControl.PlayerId);
+                }
+            }
+        };
+        WriteActions[typeof(NetworkedPlayerInfo)] = (writer, val) =>
+        {
+            if (val == null)
+                writer.Write(byte.MaxValue);
+            else
+                writer.Write((val as NetworkedPlayerInfo)?.PlayerId ?? byte.MaxValue);
+        };
+        WriteActions[typeof(InnerNetObject)] = (writer, val) => // これは厳密にはサブクラスを捉えられない
+        {
+            if (val == null)
+                writer.Write(uint.MaxValue);
+            else
+                writer.Write((val as InnerNetObject)?.NetId ?? uint.MaxValue);
+        };
+
+        WriteActions[typeof(AbilityBase)] = (writer, val) => // サブクラスはこれでは対応できない
+        {
+            var abilityBase = val as AbilityBase;
+            if (val == null || abilityBase?.Player == null)
+                writer.Write(byte.MaxValue);
+            else
+            {
+                writer.Write(abilityBase.Player.PlayerId);
+                writer.Write(abilityBase.AbilityId);
+            }
+        };
+
+        // Vector
+        WriteActions[typeof(Vector2)] = (writer, val) =>
+        {
+            if (val == null)
+            {
+                writer.Write(0f);
+                writer.Write(0f);
+            }
+            else
+            {
+                Vector2 v2 = (Vector2)val;
+                writer.Write(v2.x);
+                writer.Write(v2.y);
+            }
+        };
+        WriteActions[typeof(Vector3)] = (writer, val) =>
+        {
+            if (val == null)
+            {
+                writer.Write(0f);
+                writer.Write(0f);
+                writer.Write(0f);
+            }
+            else
+            {
+                Vector3 v3 = (Vector3)val;
+                writer.Write(v3.x);
+                writer.Write(v3.y);
+                writer.Write(v3.z);
+            }
+        };
+        WriteActions[typeof(Vector2[])] = (writer, val) =>
+        {
+            if (val == null)
+                writer.Write(0);
+            else
+            {
+                var v2Array = val as Vector2[];
+                writer.Write(v2Array.Length);
+                foreach (var v in v2Array)
+                {
+                    writer.Write(v.x);
+                    writer.Write(v.y);
+                }
+            }
+        };
+        WriteActions[typeof(Vector3[])] = (writer, val) =>
+        {
+            if (val == null)
+                writer.Write(0);
+            else
+            {
+                var v3Array = val as Vector3[];
+                writer.Write(v3Array.Length);
+                foreach (var v in v3Array)
+                {
+                    writer.Write(v.x);
+                    writer.Write(v.y);
+                    writer.Write(v.z);
+                }
+            }
+        };
+
+        // Dictionary
+        WriteActions[typeof(Dictionary<byte, byte>)] = (writer, val) =>
+        {
+            if (val == null)
+                writer.Write(0);
+            else
+            {
+                var dict = val as Dictionary<byte, byte>;
+                writer.Write(dict.Count);
+                foreach (var kvp in dict)
+                {
+                    writer.Write(kvp.Key);
+                    writer.Write(kvp.Value);
+                }
+            }
+        };
+        WriteActions[typeof(Dictionary<string, int>)] = (writer, val) =>
+        {
+            if (val == null)
+                writer.Write(0);
+            else
+            {
+                var dict = val as Dictionary<string, int>;
+                writer.Write(dict.Count);
+                foreach (var kvp in dict)
+                {
+                    writer.Write(kvp.Key);
+                    writer.Write(kvp.Value);
+                }
+            }
+        };
+        WriteActions[typeof(Dictionary<string, byte>)] = (writer, val) =>
+        {
+            if (val == null)
+                writer.Write(0);
+            else
+            {
+                var dict = val as Dictionary<string, byte>;
+                writer.Write(dict.Count);
+                foreach (var kvp in dict)
+                {
+                    writer.Write(kvp.Key);
+                    writer.Write(kvp.Value);
+                }
+            }
+        };
+        WriteActions[typeof(Dictionary<ushort, byte>)] = (writer, val) =>
+        {
+            if (val == null)
+                writer.Write(0);
+            else
+            {
+                var dict = val as Dictionary<ushort, byte>;
+                writer.Write(dict.Count);
+                foreach (var kvp in dict)
+                {
+                    writer.Write(kvp.Key);
+                    writer.Write(kvp.Value);
+                }
+            }
+        };
+        WriteActions[typeof(Dictionary<byte, (byte, int)>)] = (writer, val) =>
+        {
+            if (val == null)
+                writer.Write(0);
+            else
+            {
+                var dict = val as Dictionary<byte, (byte, int)>;
+                writer.Write(dict.Count);
+                foreach (var kvp in dict)
+                {
+                    writer.Write(kvp.Key);
+                    writer.Write(kvp.Value.Item1);
+                    writer.Write(kvp.Value.Item2);
+                }
+            }
+        };
+        WriteActions[typeof(Dictionary<byte, float>)] = (writer, val) =>
+        {
+            if (val == null)
+                writer.Write(0);
+            else
+            {
+                var dict = val as Dictionary<byte, float>;
+                writer.Write(dict.Count);
+                foreach (var kvp in dict)
+                {
+                    writer.Write(kvp.Key);
+                    writer.Write(kvp.Value);
+                }
+            }
+        };
+        WriteActions[typeof(Dictionary<byte, bool>)] = (writer, val) =>
+        {
+            if (val == null)
+                writer.Write(0);
+            else
+            {
+                var dict = val as Dictionary<byte, bool>;
+                writer.Write(dict.Count);
+                foreach (var kvp in dict)
+                {
+                    writer.Write(kvp.Key);
+                    writer.Write(kvp.Value);
+                }
+            }
+        };
+
+        // ReadActionsの初期化
+        ReadActions[typeof(byte)] = reader => reader.ReadByte();
+        ReadActions[typeof(int)] = reader => reader.ReadInt32();
+        ReadActions[typeof(short)] = reader => reader.ReadInt16();
+        ReadActions[typeof(ushort)] = reader => reader.ReadUInt16();
+        ReadActions[typeof(uint)] = reader => reader.ReadUInt32();
+        ReadActions[typeof(ulong)] = reader => reader.ReadUInt64();
+        ReadActions[typeof(float)] = reader => reader.ReadSingle();
+        ReadActions[typeof(bool)] = reader => reader.ReadBoolean();
+        ReadActions[typeof(string)] = reader => reader.ReadString();
+        ReadActions[typeof(Vent)] = reader => VentCache.VentById(reader.ReadByte());
+        ReadActions[typeof(List<string>)] = reader => ReadStringList(reader);
+        ReadActions[typeof(PlayerControl)] = reader => (PlayerControl)ExPlayerControl.ById(reader.ReadByte());
+        ReadActions[typeof(PlayerControl[])] = reader => ReadPlayerControlArray(reader);
+        ReadActions[typeof(ExPlayerControl)] = reader => ExPlayerControl.ById(reader.ReadByte());
+        ReadActions[typeof(ExPlayerControl[])] = reader => ReadExPlayerControlArray(reader);
+        ReadActions[typeof(NetworkedPlayerInfo)] = reader => GameData.Instance.GetPlayerById(reader.ReadByte());
+        ReadActions[typeof(RoleId)] = reader => (RoleId)reader.ReadInt32();
+        ReadActions[typeof(Dictionary<string, string>)] = reader => ReadDictionary<string, string>(reader, r => r.ReadString(), r => r.ReadString());
+        ReadActions[typeof(Dictionary<string, int>)] = reader => ReadDictionary<string, int>(reader, r => r.ReadString(), r => r.ReadInt32());
+        ReadActions[typeof(Dictionary<byte, byte>)] = reader => ReadDictionary<byte, byte>(reader, r => r.ReadByte(), r => r.ReadByte());
+        ReadActions[typeof(Dictionary<string, byte>)] = reader => ReadDictionary<string, byte>(reader, r => r.ReadString(), r => r.ReadByte());
+        ReadActions[typeof(Dictionary<ushort, byte>)] = reader => ReadDictionary<ushort, byte>(reader, r => r.ReadUInt16(), r => r.ReadByte());
+        ReadActions[typeof(Dictionary<byte, float>)] = reader => ReadDictionary<byte, float>(reader, r => r.ReadByte(), r => r.ReadSingle());
+        ReadActions[typeof(Dictionary<byte, (byte, int)>)] = reader => ReadDictionaryWithTuple(reader);
+        ReadActions[typeof(Dictionary<byte, bool>)] = reader => ReadDictionary<byte, bool>(reader, r => r.ReadByte(), r => r.ReadBoolean());
+        ReadActions[typeof(Color)] = reader => new Color(reader.ReadSingle(), reader.ReadSingle(), reader.ReadSingle(), reader.ReadSingle());
+        ReadActions[typeof(Color32)] = reader => new Color32(reader.ReadByte(), reader.ReadByte(), reader.ReadByte(), reader.ReadByte());
+        ReadActions[typeof(List<byte>)] = reader => ReadByteList(reader);
+        ReadActions[typeof(List<ExPlayerControl>)] = reader => ReadExPlayerControlList(reader);
+        ReadActions[typeof(Vector2)] = reader => new Vector2(reader.ReadSingle(), reader.ReadSingle());
+        ReadActions[typeof(Vector3)] = reader => new Vector3(reader.ReadSingle(), reader.ReadSingle(), reader.ReadSingle());
+        ReadActions[typeof(Vector2[])] = reader => ReadVector2Array(reader);
+        ReadActions[typeof(Vector3[])] = reader => ReadVector3Array(reader);
+        // IsSubclassOf(typeof(AbilityBase)) や typeof(ICustomRpcObject).IsAssignableFrom(t) は
+        // ReadFromType メソッド内で個別処理
     }
 
     /// <summary>
@@ -643,42 +713,24 @@ public static class CustomRPCManager
                          : throw new Exception($"Unsupported enum underlying type: {underlyingType}");
             return Enum.ToObject(type, value);
         }
-        return type switch
+
+        if (ReadActions.TryGetValue(type, out var readAction))
         {
-            Type t when t == typeof(byte) => reader.ReadByte(),
-            Type t when t == typeof(int) => reader.ReadInt32(),
-            Type t when t == typeof(short) => reader.ReadInt16(),
-            Type t when t == typeof(ushort) => reader.ReadUInt16(),
-            Type t when t == typeof(uint) => reader.ReadUInt32(),
-            Type t when t == typeof(ulong) => reader.ReadUInt64(),
-            Type t when t == typeof(float) => reader.ReadSingle(),
-            Type t when t == typeof(bool) => reader.ReadBoolean(),
-            Type t when t == typeof(string) => reader.ReadString(),
-            Type t when t == typeof(List<string>) => ReadStringList(reader),
-            Type t when t == typeof(PlayerControl) => (PlayerControl)ExPlayerControl.ById(reader.ReadByte()),
-            Type t when t == typeof(PlayerControl[]) => ReadPlayerControlArray(reader),
-            Type t when t == typeof(ExPlayerControl) => ExPlayerControl.ById(reader.ReadByte()),
-            Type t when t == typeof(ExPlayerControl[]) => ReadExPlayerControlArray(reader),
-            Type t when t == typeof(NetworkedPlayerInfo) => GameData.Instance.GetPlayerById(reader.ReadByte()),
-            Type t when t == typeof(RoleId) => (RoleId)reader.ReadInt32(),
-            Type t when t == typeof(Dictionary<string, string>) => ReadDictionary<string, string>(reader, r => r.ReadString(), r => r.ReadString()),
-            Type t when t == typeof(Dictionary<string, int>) => ReadDictionary<string, int>(reader, r => r.ReadString(), r => r.ReadInt32()),
-            Type t when t == typeof(Dictionary<byte, byte>) => ReadDictionary<byte, byte>(reader, r => r.ReadByte(), r => r.ReadByte()),
-            Type t when t == typeof(Dictionary<string, byte>) => ReadDictionary<string, byte>(reader, r => r.ReadString(), r => r.ReadByte()),
-            Type t when t == typeof(Dictionary<ushort, byte>) => ReadDictionary<ushort, byte>(reader, r => r.ReadUInt16(), r => r.ReadByte()),
-            Type t when t == typeof(Dictionary<byte, (byte, int)>) => ReadDictionaryWithTuple(reader),
-            Type t when t == typeof(Dictionary<byte, bool>) => ReadDictionary<byte, bool>(reader, r => r.ReadByte(), r => r.ReadBoolean()),
-            Type t when t == typeof(Color) => new Color(reader.ReadSingle(), reader.ReadSingle(), reader.ReadSingle(), reader.ReadSingle()),
-            Type t when t == typeof(Color32) => new Color32(reader.ReadByte(), reader.ReadByte(), reader.ReadByte(), reader.ReadByte()),
-            Type t when t == typeof(List<byte>) => ReadByteList(reader),
-            Type t when t == typeof(List<ExPlayerControl>) => ReadExPlayerControlList(reader),
-            Type t when t == typeof(Vector2) => new Vector2(reader.ReadSingle(), reader.ReadSingle()),
-            Type t when t == typeof(Vector3) => new Vector3(reader.ReadSingle(), reader.ReadSingle(), reader.ReadSingle()),
-            Type t when t == typeof(Vector2[]) => ReadVector2Array(reader),
-            Type t when t == typeof(Vector3[]) => ReadVector3Array(reader),
-            Type t when t.IsSubclassOf(typeof(AbilityBase)) => ReadAbilityBase(reader),
-            _ => throw new Exception($"Invalid type: {type}")
-        };
+            return readAction(reader);
+        }
+        // ReadActions にない型や特殊な処理が必要な型 (サブクラス、インターフェース)
+        else if (type.IsSubclassOf(typeof(AbilityBase)))
+        {
+            return ReadAbilityBase(reader);
+        }
+        else if (typeof(ICustomRpcObject).IsAssignableFrom(type))
+        {
+            return ReadCustomRpcObject(reader, type);
+        }
+        else
+        {
+            throw new Exception($"Invalid type for ReadFromType: {type}");
+        }
     }
     /// <summary>
     /// AbilityBaseを読み取るヘルパーメソッド
@@ -816,5 +868,12 @@ public static class CustomRPCManager
             array[i] = new Vector3(reader.ReadSingle(), reader.ReadSingle(), reader.ReadSingle());
         }
         return array;
+    }
+
+    private static object ReadCustomRpcObject(MessageReader reader, Type type)
+    {
+        var obj = Activator.CreateInstance(type) as ICustomRpcObject;
+        obj?.Deserialize(reader);
+        return obj;
     }
 }

@@ -4,6 +4,7 @@ using BepInEx.Unity.IL2CPP.Utils.Collections;
 using SuperNewRoles.CustomOptions;
 using SuperNewRoles.CustomOptions.Categories;
 using SuperNewRoles.Modules;
+using TMPro;
 using UnityEngine;
 using UnityEngine.Events;
 
@@ -15,11 +16,20 @@ public class ReportUIMenu
     {
         GameObject reportUIMenu = GameObject.Instantiate(AssetManager.GetAsset<GameObject>("ReportUI"), parent.transform.parent);
         reportUIMenu.transform.localPosition = new(0f, 0f, -10f);
-        TextBoxTMP descriptionTextBox = reportUIMenu.transform.Find("Inner/InputBoxDescription").GetComponent<TextBoxTMP>();
-        TextBoxTMP titleTextBox = reportUIMenu.transform.Find("Inner/InputBoxTitle").GetComponent<TextBoxTMP>();
+        GameObject Inner = reportUIMenu.transform.Find("Inner").gameObject;
+        TextBoxTMP descriptionTextBox = Inner.transform.Find("InputBoxDescription").GetComponent<TextBoxTMP>();
+        TextBoxTMP titleTextBox = Inner.transform.Find("InputBoxTitle").GetComponent<TextBoxTMP>();
+        // Translation
+        Inner.transform.Find("InputBoxDescription/Text").GetComponent<TextMeshPro>().text = ModTranslation.GetString("RequestInGameSendDescriptionBack");
+        Inner.transform.Find("InputBoxTitle/Text").GetComponent<TextMeshPro>().text = ModTranslation.GetString("RequestInGameSendTitleBack");
+        Inner.transform.Find("TextGrayTitle/Text").GetComponent<TextMeshPro>().text = ModTranslation.GetString("RequestInGameSendTitleGray");
+        Inner.transform.Find("TextGrayDescription/Text").GetComponent<TextMeshPro>().text = ModTranslation.GetString("RequestInGameSendDescriptionGray");
+        Inner.transform.Find("Button_Send/Text").GetComponent<TextMeshPro>().text = ModTranslation.GetString("RequestInGameSendButton");
+
         ConfigureTextBox(descriptionTextBox);
         ConfigureTextBox(titleTextBox);
-        GameObject Button_Send = reportUIMenu.transform.Find("Inner/Button_Send").gameObject;
+
+        GameObject Button_Send = Inner.transform.Find("Button_Send").gameObject;
         PassiveButton passiveButton = Button_Send.AddComponent<PassiveButton>();
         passiveButton.Colliders = new Collider2D[] { passiveButton.GetComponent<Collider2D>() };
         passiveButton.OnClick = new();
@@ -74,7 +84,7 @@ public class ReportUIMenu
     private static void SendReport(Transform parent, RequestInGameType requestInGameType, string description, string title)
     {
         bool isActive = true;
-        string text = "データを取得中";
+        string text = ModTranslation.GetString("RequestInGameLoadingData");
         LoadingUI.ShowLoadingUI(parent, () => text, () => isActive);
         switch (requestInGameType)
         {
@@ -88,7 +98,7 @@ public class ReportUIMenu
                     }
                     else
                     {
-                        text = "レポートを送信中";
+                        text = ModTranslation.GetString("RequestInGameSendingReportProgress", 0);
                         Dictionary<string, string> additionalInfo = new();
                         additionalInfo["version"] = Application.version;
                         additionalInfo["mode"] = Categories.ModeOption.ToString();
@@ -109,6 +119,9 @@ public class ReportUIMenu
                                     GameObject.Destroy(parent.gameObject);
                                 }, 0f);
                             }
+                        }, progress =>
+                        {
+                            text = ModTranslation.GetString("RequestInGameSendingReportProgress", progress);
                         }).WrapToIl2Cpp());
                     }
                 }).WrapToIl2Cpp());
@@ -123,7 +136,7 @@ public class ReportUIMenu
                     }
                     else
                     {
-                        text = "レポートを送信中";
+                        text = ModTranslation.GetString("RequestInGameSendingReportProgress", 0);
                         Dictionary<string, string> additionalInfo = new();
                         AmongUsClient.Instance.StartCoroutine(RequestInGameManager.SendReport(description, title, requestInGameType.ToString(), additionalInfo, success =>
                         {
@@ -141,6 +154,9 @@ public class ReportUIMenu
                                     GameObject.Destroy(parent.gameObject);
                                 }, 0f);
                             }
+                        }, progress =>
+                        {
+                            text = ModTranslation.GetString("RequestInGameSendingReportProgress", progress);
                         }).WrapToIl2Cpp());
                     }
                 }).WrapToIl2Cpp());

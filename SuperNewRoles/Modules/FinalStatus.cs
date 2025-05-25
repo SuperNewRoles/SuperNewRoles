@@ -30,6 +30,12 @@ public enum FinalStatus
     LaunchByRocket,
     VampireKill,
     VampireWithDead,
+    SpelunkerSetRoleDeath,
+    SpelunkerVentDeath,
+    SpelunkerCommsElecDeath,
+    SpelunkerOpenDoor,
+    NunDeath,
+    LadderDeath,
 }
 
 public static class FinalStatusListener

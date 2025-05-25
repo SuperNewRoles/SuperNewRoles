@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using AmongUs.GameOptions;
 using HarmonyLib;
 using SuperNewRoles.CustomOptions.Categories;
 using SuperNewRoles.Modules;
@@ -18,8 +19,33 @@ class GameStartManagerStartPatch
     }
 }
 [HarmonyPatch(typeof(RoleManager), nameof(RoleManager.SelectRoles))]
-class RoleManagerSelectRolesPatch
+public static class RoleManagerSelectRolesPatch
 {
+    public static bool Prefix(RoleManager __instance)
+    {
+        var list = AmongUsClient.Instance.allClients.ToArray();
+        var list2 = (from c in list
+                     where c.Character != null
+                     where c.Character.Data != null
+                     where !c.Character.Data.Disconnected && !c.Character.Data.IsDead
+                     orderby c.Id
+                     select c.Character.Data).ToList();
+        foreach (NetworkedPlayerInfo allPlayer in GameData.Instance.AllPlayers)
+        {
+            if (allPlayer.Object != null && allPlayer.Object.isDummy)
+            {
+                list2.Add(allPlayer);
+            }
+        }
+        IGameOptions currentGameOptions = GameOptionsManager.Instance.CurrentGameOptions;
+        // バニラとの変更点ここ
+        // インポスターの数をそのまま使ってバリデーションを防いでる
+        int numImpostors = GameOptionsManager.Instance.CurrentGameOptions.NumImpostors;
+        __instance.DebugRoleAssignments(list2.ToIl2CppList(), ref numImpostors);
+        GameManager.Instance.LogicRoleSelection.AssignRolesForTeam(list2.ToIl2CppList(), currentGameOptions, RoleTeamTypes.Impostor, numImpostors, new Il2CppSystem.Nullable<RoleTypes>(RoleTypes.Impostor));
+        GameManager.Instance.LogicRoleSelection.AssignRolesForTeam(list2.ToIl2CppList(), currentGameOptions, RoleTeamTypes.Crewmate, int.MaxValue, new Il2CppSystem.Nullable<RoleTypes>(RoleTypes.Crewmate));
+        return false;
+    }
     public static void Postfix(RoleManager __instance)
     {
         AssignRoles.AssignCustomRoles();
@@ -43,6 +69,7 @@ public static class AssignRoles
 
     public static void AssignCustomRoles()
     {
+        Logger.Info("AssignCustomRoles() 開始: カスタム役職のアサイン処理を開始します。");
         CreateTickets();
         AssignedRoleIds.Clear(); // 役職アサイン前にクリア
 
@@ -205,7 +232,9 @@ public static class AssignRoles
 
             List<ExPlayerControl> targetPlayers = ExPlayerControl.ExPlayerControls
                 .Where(x => modifierBase.AssignedTeams.Count <= 0 || modifierBase.AssignedTeams.Contains(x.roleBase.AssignedTeam))
-                .Where(x => ModifierGuesser.ModifierGuesserCategory.ModifierAssignFilter.Count == 0 || ModifierGuesser.ModifierGuesserCategory.ModifierAssignFilter.Contains(x.Role))
+                .Where(x => ModifierGuesser.ModifierGuesserCategory.ModifierAssignFilter.Count == 0 || !ModifierGuesser.ModifierGuesserCategory.ModifierAssignFilter.Contains(x.Role))
+                .Where(x => ModifierGuesser.ModifierGuesserCategory.ModifierDoNotAssignRoles.Length == 0 || !ModifierGuesser.ModifierGuesserCategory.ModifierDoNotAssignRoles.Contains(x.Role))
+                .Where(x => ModifierGuesser.ModifierGuesserCategory.ModifierAssignFilterTeam.Length == 0 || ModifierGuesser.ModifierGuesserCategory.ModifierAssignFilterTeam.Contains(x.roleBase.AssignedTeam))
                 .ToList();
             Logger.Info($"AssignModifiers: ModifierRole {modifierRoleId} に適用可能なプレイヤー数 = {targetPlayers.Count}");
 
@@ -245,7 +274,7 @@ public static class AssignRoles
         var modifierRoleId = ModifierRoleId.ModifierGuesser;
 
         // インポスターへの割当
-        var impostors = allPlayers.Where(x => x.IsImpostor() && !x.ModifierRole.HasFlag(modifierRoleId) && (ModifierGuesser.ModifierGuesserCategory.ModifierAssignFilter.Count == 0 || ModifierGuesser.ModifierGuesserCategory.ModifierAssignFilter.Contains(x.Role))).ToList();
+        var impostors = allPlayers.Where(x => x.IsImpostor() && !x.ModifierRole.HasFlag(modifierRoleId) && !ModifierGuesser.ModifierGuesserCategory.ModifierAssignFilter.Contains(x.Role) && !ModifierGuesser.ModifierGuesserCategory.ModifierDoNotAssignRoles.Contains(x.Role)).ToList();
         for (int i = 0; i < ModifierGuesser.ModifierGuesserMaxImpostors; i++)
         {
             int roll = ModHelpers.GetRandomInt(0, 100);
@@ -257,7 +286,7 @@ public static class AssignRoles
             }
         }
         // 第三陣営への割当
-        var neutrals = allPlayers.Where(x => x.IsNeutral() && !x.ModifierRole.HasFlag(modifierRoleId) && (ModifierGuesser.ModifierGuesserCategory.ModifierAssignFilter.Count == 0 || ModifierGuesser.ModifierGuesserCategory.ModifierAssignFilter.Contains(x.Role))).ToList();
+        var neutrals = allPlayers.Where(x => x.IsNeutral() && !x.ModifierRole.HasFlag(modifierRoleId) && !ModifierGuesser.ModifierGuesserCategory.ModifierAssignFilter.Contains(x.Role) && !ModifierGuesser.ModifierGuesserCategory.ModifierDoNotAssignRoles.Contains(x.Role)).ToList();
         for (int i = 0; i < ModifierGuesser.ModifierGuesserMaxNeutrals; i++)
         {
             int roll = ModHelpers.GetRandomInt(0, 100);
@@ -269,7 +298,7 @@ public static class AssignRoles
             }
         }
         // クルーメイトへの割当
-        var crewmates = allPlayers.Where(x => x.IsCrewmate() && !x.ModifierRole.HasFlag(modifierRoleId) && (ModifierGuesser.ModifierGuesserCategory.ModifierAssignFilter.Count == 0 || ModifierGuesser.ModifierGuesserCategory.ModifierAssignFilter.Contains(x.Role))).ToList();
+        var crewmates = allPlayers.Where(x => x.IsCrewmate() && !x.ModifierRole.HasFlag(modifierRoleId) && !ModifierGuesser.ModifierGuesserCategory.ModifierAssignFilter.Contains(x.Role) && !ModifierGuesser.ModifierGuesserCategory.ModifierDoNotAssignRoles.Contains(x.Role)).ToList();
         for (int i = 0; i < ModifierGuesser.ModifierGuesserMaxCrewmates; i++)
         {
             int roll = ModHelpers.GetRandomInt(0, 100);
@@ -312,10 +341,15 @@ public static class AssignRoles
         if (ModifierGuesser.ModifierGuesserCategory.ModifierAssignFilter.Count > 0)
         {
             candidates = candidates
-                .Where(p => ModifierGuesser.ModifierGuesserCategory.ModifierAssignFilter.Contains(p.Role));
+                .Where(p => !ModifierGuesser.ModifierGuesserCategory.ModifierAssignFilter.Contains(p.Role));
+        }
+        if (ModifierGuesser.ModifierGuesserCategory.ModifierDoNotAssignRoles.Length > 0)
+        {
+            candidates = candidates
+                .Where(p => !ModifierGuesser.ModifierGuesserCategory.ModifierDoNotAssignRoles.Contains(p.Role));
         }
 
-        candidates = candidates.Where(p => p.Role != RoleId.Truelover);
+        candidates = candidates.Where(p => p.Role is not RoleId.Truelover and not RoleId.Cupid and not RoleId.LoversBreaker);
 
         var candidatesList = candidates.ToList();
 
@@ -375,6 +409,10 @@ public static class AssignRoles
     [CustomRPC]
     public static void RpcCustomSetLovers(ExPlayerControl playerA, ExPlayerControl playerB, byte loversIndex, bool setNameText)
     {
+        CustomSetLovers(playerA, playerB, loversIndex, setNameText);
+    }
+    public static LoversCouple CustomSetLovers(ExPlayerControl playerA, ExPlayerControl playerB, byte loversIndex, bool setNameText)
+    {
         playerA.SetModifierRole(ModifierRoleId.Lovers);
         playerB.SetModifierRole(ModifierRoleId.Lovers);
         LoversAbility loversAbilityA = playerA.GetAbility<LoversAbility>();
@@ -387,7 +425,8 @@ public static class AssignRoles
             NameText.UpdateNameInfo(playerA);
             NameText.UpdateNameInfo(playerB);
         }
-        LoversIndex++;
+        LoversIndex = (byte)(loversIndex + 1);
+        return loversCouple;
     }
 
     private static void AssignModifier(PlayerControl player, ModifierRoleId modifierRoleId)

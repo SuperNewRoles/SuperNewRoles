@@ -4,6 +4,7 @@ using HarmonyLib;
 using UnityEngine;
 using SuperNewRoles.CustomOptions.Categories;
 using SuperNewRoles.Modules;
+using SuperNewRoles.Events;
 
 namespace SuperNewRoles.MapCustoms;
 
@@ -48,8 +49,12 @@ public static class AirshipCustom
                     if (c.name == "DivertRecieve" && (c.Room == SystemTypes.Armory || c.Room == SystemTypes.MainHall)) c.checkWalls = true;
                 }
             }
-
-            if (MapCustomHandler.IsMapCustom(MapCustomHandler.MapCustomId.Airship) && MapEditSettingsOptions.ModifyGapRoomOneWayShadow && ShipStatus.Instance.FastRooms.TryGetValue(SystemTypes.GapRoom, out var gapRoom))
+            SetRoleEvent.Instance.AddListener((data) => OnSetRole(data));
+        }
+        private static void OnSetRole(SetRoleEventData data)
+        {
+            if (!data.player.AmOwner) return;
+            if (MapEditSettingsOptions.ModifyGapRoomOneWayShadow && ShipStatus.Instance.FastRooms.TryGetValue(SystemTypes.GapRoom, out var gapRoom))
             {
                 var gapRoomShadow = gapRoom.GetComponentInChildren<OneWayShadows>();
                 var amImpostorLight = ExPlayerControl.LocalPlayer.IsImpostor() || ExPlayerControl.LocalPlayer.HasImpostorVision();

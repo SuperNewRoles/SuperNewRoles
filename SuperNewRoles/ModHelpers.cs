@@ -7,12 +7,17 @@ using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
 using System.Security.Cryptography;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using BepInEx.Unity.IL2CPP.Utils.Collections;
 using Hazel;
+using Il2CppInterop.Runtime.InteropTypes;
+using SuperNewRoles.CustomCosmetics.CosmeticsPlayer;
 using SuperNewRoles.Modules;
 using SuperNewRoles.Roles.Ability;
+using TMPro;
 using UnityEngine;
+using UnityEngine.Audio;
 using UnityEngine.Networking;
 
 namespace SuperNewRoles;
@@ -46,6 +51,18 @@ public static class ModHelpers
         }
         // RandomNumberGenerator.GetInt32は `toExclusive` なので max + 1 する
         return RandomNumberGenerator.GetInt32(min, max + 1);
+    }
+
+    /// <summary>
+    /// 指定された確率（パーセンテージ）で成功を判定する
+    /// </summary>
+    /// <param name="percentage">成功確率（0-100）</param>
+    /// <returns>成功した場合true</returns>
+    public static bool IsSuccessChance(int percentage)
+    {
+        if (percentage <= 0) return false;
+        if (percentage >= 100) return true;
+        return GetRandomInt(100) < percentage;
     }
     private static MD5 md5 = MD5.Create();
     private static SHA256 sha256 = SHA256.Create();
@@ -81,7 +98,33 @@ public static class ModHelpers
         }
     }
     public static ReadOnlySpan<T> AsSpan<T>(this List<T> list) => CollectionsMarshal.AsSpan(list);
-
+    public static ReadOnlySpan<T> AsSpan<T>(this T[] array) => array;
+    /*public static bool Any<T>(this ReadOnlySpan<T> span, Func<T, bool> predicate)
+    {
+        foreach (var item in span)
+        {
+            if (predicate(item)) return true;
+        }
+        return false;
+    }
+    public static ReadOnlySpan<T> Where<T>(this ReadOnlySpan<T> span, Func<T, bool> predicate)
+    {
+        var list = new List<T>();
+        foreach (var item in span)
+        {
+            if (predicate(item)) list.Add(item);
+        }
+        return list.AsSpan();
+    }
+    public static HashSet<T> ToHashSet<T>(this ReadOnlySpan<T> span)
+    {
+        var hashSet = new HashSet<T>();
+        foreach (var item in span)
+        {
+            hashSet.Add(item);
+        }
+        return hashSet;
+    }*/
     public static bool IsComms()
     {
         try
@@ -147,6 +190,73 @@ public static class ModHelpers
     {
         f = Mathf.Clamp01(f);
         return (byte)(f * 255);
+    }
+    public static string WrapText(string text, int width, bool halfIshalf = true)
+    {
+        if (string.IsNullOrEmpty(text) || width <= 0)
+        {
+            return text;
+        }
+
+        StringBuilder overallResult = new StringBuilder();
+        // 改行を CRLF/LF/R すべてで分割
+        string[] lines = text.Split(new[] { "\r\n", "\r", "\n" }, StringSplitOptions.None);
+
+        foreach (string singleInputLine in lines)
+        {
+            if (singleInputLine.Length == 0)
+            {
+                // 空行はそのまま（実際にはAppendLineが改行を追加する）
+                overallResult.AppendLine();
+                continue;
+            }
+
+            StringBuilder wrappedLineBuilder = new StringBuilder(); // 現在の入力行をラップした結果を保持
+            StringBuilder currentSegmentForWrapping = new StringBuilder(); // ラップ処理中の一部分
+            float currentVisualWidth = 0f;
+
+            foreach (char c in singleInputLine)
+            {
+                float charEffectiveWidth;
+                if (halfIshalf)
+                {
+                    // 半角文字の判定：ASCII印字可能文字 (U+0020～U+007E) または半角カタカナ (U+FF61～U+FF9F)
+                    bool isHankaku = (c >= '\u0020' && c <= '\u007E') || (c >= '\uFF61' && c <= '\uFF9F');
+                    charEffectiveWidth = isHankaku ? 0.5f : 1.0f;
+                }
+                else
+                {
+                    charEffectiveWidth = 1.0f;
+                }
+
+                // 現在のセグメントに文字を追加すると幅を超える場合、改行を挿入
+                if (currentVisualWidth + charEffectiveWidth > width && currentSegmentForWrapping.Length > 0)
+                {
+                    wrappedLineBuilder.Append(currentSegmentForWrapping.ToString());
+                    wrappedLineBuilder.Append('\n'); // 折り返しによる内部的な改行
+                    currentSegmentForWrapping.Clear();
+                    currentVisualWidth = 0f;
+                }
+                currentSegmentForWrapping.Append(c);
+                currentVisualWidth += charEffectiveWidth;
+            }
+
+            // 行の最後のセグメントを追加
+            wrappedLineBuilder.Append(currentSegmentForWrapping.ToString());
+
+            // 元のRegex.Replace(line, $".{{{width}}}", "$0\n").AppendLine(); の動作を模倣:
+            // ラップされた行（内部改行を含む可能性あり）を全体の結果に追加し、その後にも改行を追加。
+            overallResult.Append(wrappedLineBuilder.ToString());
+            overallResult.AppendLine();
+        }
+
+        // 最後に、全体の末尾の余分な改行を削除
+        return overallResult.ToString().TrimEnd('\r', '\n');
+    }
+    public static bool Il2CppIs<T1, T2>(this T1 before, out T2 after) where T1 : Il2CppObjectBase where T2 : Il2CppObjectBase
+    {
+        after = before?.TryCast<T2>();
+        return after != null;
     }
     public static (int completed, int total) TaskCompletedData(NetworkedPlayerInfo playerInfo)
     {
@@ -491,4 +601,75 @@ public static class ModHelpers
         => player.Player.IsWaitingSpawn();
 
     public static bool Not(bool b) => !b;
+
+    public static bool IsHnS()
+    {
+        return GameOptionsManager.Instance.CurrentGameOptions.GameMode is AmongUs.GameOptions.GameModes.HideNSeek or AmongUs.GameOptions.GameModes.SeekFools;
+    }
+    public static bool TryCastOut<T>(this Il2CppInterop.Runtime.InteropTypes.Il2CppObjectBase obj, out T result) where T : Il2CppInterop.Runtime.InteropTypes.Il2CppObjectBase
+    {
+        result = obj.TryCast<T>();
+        return result != null;
+    }
+    public static void SetOpacity(PlayerControl player, float opacity, bool cansee)
+    {
+        // Sometimes it just doesn't work?
+        var color = Color.Lerp(Palette.ClearWhite, Palette.White, opacity);
+        try
+        {
+            if (player.cosmetics.currentBodySprite.BodySprite != null)
+                player.cosmetics.currentBodySprite.BodySprite.color = color;
+
+            if (player.cosmetics.skin.layer != null)
+                player.cosmetics.skin.layer.color = color;
+
+            if (player.cosmetics.hat != null)
+                player.cosmetics.hat.SpriteColor = color;
+
+            if (player.cosmetics.GetPet() != null)
+                player.cosmetics.GetPet().ForEachRenderer(true, (Il2CppSystem.Action<SpriteRenderer>)((render) => render.color = color));
+
+            if (player.cosmetics.visor != null)
+                player.cosmetics.visor.Image.color = color;
+
+            CustomCosmeticsLayer layer = CustomCosmeticsLayers.ExistsOrInitialize(player.cosmetics);
+            if (layer != null)
+            {
+                layer.hat1.SpriteColor = color;
+                layer.hat2.SpriteColor = color;
+                layer.visor1.Image.color = color;
+                layer.visor2.Image.color = color;
+            }
+            if (player.cosmetics.colorBlindText != null && opacity < 0.1f) // 完全に透明化している場合のみ, 色覚補助テキストを非表示にする。
+                player.cosmetics.colorBlindText.color = Palette.ClearWhite;
+            else if (player.cosmetics.colorBlindText != null)
+                player.cosmetics.colorBlindText.color = Palette.White;
+
+            if (player.cosmetics.nameText != null && opacity < 0.1f)
+                player.cosmetics.nameText.enabled = false; // 完全に透明化している場合は, プレイヤー名を非表示にする。
+            else
+                player.cosmetics.nameText.enabled = true; // 少しでも姿を見られるなら, プレイヤー名を表示する。
+        }
+        catch { }
+    }
+    public static AudioSource PlaySound(Transform parent, AudioClip clip, bool loop, float volume = 1f, AudioMixerGroup audioMixer = null)
+    {
+        if (audioMixer == null)
+        {
+            audioMixer = (loop ? SoundManager.Instance.MusicChannel : SoundManager.Instance.SfxChannel);
+        }
+        AudioSource value = parent.GetComponent<AudioSource>() ?? parent.gameObject.AddComponent<AudioSource>();
+        value.outputAudioMixerGroup = audioMixer;
+        value.playOnAwake = false;
+        value.volume = volume;
+        value.loop = loop;
+        value.clip = clip;
+        value.Play();
+        return value;
+    }
+
+    public static bool IsAndroid()
+    {
+        return Constants.GetPlatformType() == Platforms.Android;
+    }
 }

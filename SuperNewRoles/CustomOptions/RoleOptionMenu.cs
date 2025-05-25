@@ -20,6 +20,8 @@ public enum RoleOptionMenuType
     Impostor,
     Neutral,
     Hidden,
+    Ghost,
+    Modifier,
 }
 
 /// <summary>

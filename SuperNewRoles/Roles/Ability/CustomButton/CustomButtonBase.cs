@@ -80,6 +80,10 @@ public abstract class CustomButtonBase : AbilityBase
     /// <returns>trueならカウントが進む</returns>
     public virtual bool CheckDecreaseCoolCount()
     {
+        // イントロ中はカウントしない
+        if (DestroyableSingleton<HudManager>.Instance.IsIntroDisplayed)
+            return false;
+
         var localPlayer = PlayerControl.LocalPlayer;
         var moveable = !PlayerControl.LocalPlayer.inVent && PlayerControl.LocalPlayer.moveable;
 
@@ -107,7 +111,14 @@ public abstract class CustomButtonBase : AbilityBase
         Timer -= Time.deltaTime;
     }
 
-    public virtual ActionButton textTemplate => HudManager.Instance.AbilityButton;
+    public virtual ActionButton textTemplate { get { return _template ?? _getTemplate(); } }
+    private ActionButton _template;
+    private ActionButton _getTemplate()
+    {
+        //_template = HudManager.Instance.KillButton;
+        _template = HudManager.Instance.AbilityButton;
+        return _template;
+    }
 
     public CustomButtonBase() { }
 
@@ -146,9 +157,9 @@ public abstract class CustomButtonBase : AbilityBase
         _text.text = "";
     }
 
-    public override void Attach(PlayerControl player, ulong abilityId, AbilityParentBase parent)
+    public override void AttachToAlls()
     {
-        base.Attach(player, abilityId, parent);
+        base.AttachToAlls();
         buttonEffect = this as IButtonEffect;
     }
 

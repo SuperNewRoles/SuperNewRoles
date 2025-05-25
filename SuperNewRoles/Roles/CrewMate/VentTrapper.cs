@@ -9,6 +9,7 @@ using SuperNewRoles.Roles.Ability.CustomButton;
 using SuperNewRoles.Modules.Events.Bases;
 using System.Linq;
 using SuperNewRoles.Events;
+using SuperNewRoles.Modules.Events;
 
 namespace SuperNewRoles.Roles.CrewMate;
 
@@ -82,22 +83,48 @@ public class VentTrapperAbility : CustomButtonBase, IButtonEffect, IAbilityCount
     public override float DefaultTimer => _data.coolTime;
     public override ShowTextType showTextType => ShowTextType.ShowWithCount;
     public override bool CheckHasButton() => base.CheckHasButton() && Count > 0;
+    private EventListener<PlayerPhysicsFixedUpdateEventData> _fixedUpdateEvent;
+    private Vector3 _lastPosition;
     public override bool CheckIsAvailable()
     {
         if (isEffectActive) return false;
         if (!Player.Player.CanMove) return false;
         // Ventの近傍でのみ設置
-        return TryGetNearbyVent(ShipStatus.Instance.AllVents.Where(x => !_trappedVents.Contains(x)), out _targetVent);
+        return TryGetNearbyVent(ShipStatus.Instance.AllVents.Where(x => !_trappedVents.Any(y => y.Id == x.Id)), out _targetVent);
     }
 
     public override void AttachToAlls()
     {
+        base.AttachToAlls();
         _ventUsePrefixEvent = PlayerPhysicsRpcEnterVentPrefixEvent.Instance.AddListener(OnVentUsePrefix);
     }
 
     public override void DetachToAlls()
     {
+        base.DetachToAlls();
         _ventUsePrefixEvent?.RemoveListener();
+    }
+
+    public override void AttachToLocalPlayer()
+    {
+        base.AttachToLocalPlayer();
+        _fixedUpdateEvent = PlayerPhysicsFixedUpdateEvent.Instance.AddListener(OnFixedUpdate);
+    }
+
+    public override void DetachToLocalPlayer()
+    {
+        base.DetachToLocalPlayer();
+        _fixedUpdateEvent?.RemoveListener();
+    }
+
+    private void OnFixedUpdate(PlayerPhysicsFixedUpdateEventData data)
+    {
+        if (!Player.AmOwner && !data.Instance.AmOwner) return;
+        if (isEffectActive)
+        {
+            Player.Player.transform.position = _lastPosition;
+            data.Instance.body.velocity = Vector2.zero;
+        }
     }
 
     private void OnVentUsePrefix(PlayerPhysicsRpcEnterVentPrefixEventData data)
@@ -125,9 +152,10 @@ public class VentTrapperAbility : CustomButtonBase, IButtonEffect, IAbilityCount
             Player.Player.MyPhysics?.RpcExitVent(Vent.currentVent.Id);
             return;
         }
-        if (!TryGetNearbyVent(ShipStatus.Instance.AllVents.Where(x => !_trappedVents.Contains(x)), out _targetVent)) return;
-        Player.Player.moveable = false;
+        if (!TryGetNearbyVent(ShipStatus.Instance.AllVents.Where(x => !_trappedVents.Any(y => y.Id == x.Id)), out _targetVent)) return;
+        // Player.Player.moveable = false;
         Player.MyPhysics.body.velocity = Vector2.zero;
+        _lastPosition = Player.Player.transform.position;
     }
 
     private void FinishPlanting()
@@ -135,9 +163,9 @@ public class VentTrapperAbility : CustomButtonBase, IButtonEffect, IAbilityCount
         Player.Player.moveable = true;
         this.UseAbilityCount();
         GameObject batu = new("Batu");
-        batu.transform.parent = _targetVent.transform;
-        batu.transform.position = _targetVent.transform.position - new Vector3(0, 0.05f, 0.1f);
-        batu.AddComponent<SpriteRenderer>().sprite = AssetManager.GetAsset<Sprite>("DoorClosed.png");
+        batu.transform.position = _targetVent.transform.position - new Vector3(0, 0.05f, 0.01f);
+        batu.transform.localScale = Vector3.one * 0.3f;
+        batu.AddComponent<SpriteRenderer>().sprite = AssetManager.GetAsset<Sprite>("VentTrapped.png");
         SetTrapRPC(_targetVent.Id);
         ResetTimer();
     }

@@ -85,6 +85,8 @@ public static class NameText
         if (player.MeetingInfoText != null)
             player.MeetingInfoText.text = meetingInfoText;
         player.cosmetics.nameText.text = player.Player.CurrentOutfit.PlayerName;
+        if (player.VoteArea != null)
+            player.VoteArea.NameText.text = player.Player.CurrentOutfit.PlayerName;
         bool visiable = ExPlayerControl.LocalPlayer.PlayerId == player.PlayerId ||
                         (ExPlayerControl.LocalPlayer.IsDead() && !GameSettingOptions.HideGhostRoles);
         if (visiable)
@@ -125,7 +127,7 @@ public static class NameText
     {
         player.Player.cosmetics.nameText.text += text;
         if (player.VoteArea != null && player.VoteArea.PlayerIcon?.cosmetics?.nameText != null)
-            player.VoteArea.PlayerIcon.cosmetics.nameText.text += text;
+            player.VoteArea.NameText.text += text;
     }
     public static void RegisterNameTextUpdateEvent()
     {
@@ -170,7 +172,7 @@ public static class NameText
             return;
         bool visiable = player.Player.Visible &&
                         (ExPlayerControl.LocalPlayer.PlayerId == player.PlayerId ||
-                         (ExPlayerControl.LocalPlayer.IsDead() &&
+                        (ExPlayerControl.LocalPlayer.IsDead() &&
                             (!GameSettingOptions.HideGhostRoles || (ExPlayerControl.LocalPlayer.IsImpostor() && GameSettingOptions.ShowGhostRolesToImpostor)))
                         );
         UpdateVisiable(player, visiable);

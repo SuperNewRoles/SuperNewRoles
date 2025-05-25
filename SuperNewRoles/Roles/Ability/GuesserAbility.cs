@@ -16,6 +16,7 @@ public class GuesserAbility : CustomMeetingButtonBase, IAbilityCount
     private readonly bool CelebrityLimitedTurns;
     private readonly int CelebrityLimitedTurnsCount;
     private readonly int maxShots;
+    private readonly bool madmateSuicide;
     // ※ 画面上に既にUIが存在しているか確認するためのフィールド
     private GameObject guesserUI;
     private bool HideButtons = false;
@@ -25,7 +26,7 @@ public class GuesserAbility : CustomMeetingButtonBase, IAbilityCount
     private TMPro.TextMeshPro limitText;
     public override Sprite Sprite => AssetManager.GetAsset<Sprite>("TargetIcon.png");
 
-    public GuesserAbility(int maxShots, int shotsPerMeeting, bool cannotShootCrewmate, bool cannotShootCelebrity, bool celebrityLimitedTurns = false, int celebrityLimitedTurnsCount = 3)
+    public GuesserAbility(int maxShots, int shotsPerMeeting, bool cannotShootCrewmate, bool cannotShootCelebrity, bool celebrityLimitedTurns = false, int celebrityLimitedTurnsCount = 3, bool madmateSuicide = false)
     {
         this.maxShots = maxShots;
         this.shotsPerMeeting = shotsPerMeeting;
@@ -33,6 +34,7 @@ public class GuesserAbility : CustomMeetingButtonBase, IAbilityCount
         this.cannotShootCelebrity = cannotShootCelebrity;
         this.CelebrityLimitedTurns = celebrityLimitedTurns;
         this.CelebrityLimitedTurnsCount = celebrityLimitedTurnsCount;
+        this.madmateSuicide = madmateSuicide;
         Count = maxShots;
     }
 
@@ -368,7 +370,7 @@ public class GuesserAbility : CustomMeetingButtonBase, IAbilityCount
                         var targetRole = exPlayer.Role;
                         ExPlayerControl dyingTarget = (targetRole == rolebase.Role) ? exPlayer : PlayerControl.LocalPlayer;
 
-                        RpcShotGuesser(PlayerControl.LocalPlayer, dyingTarget, PlayerControl.LocalPlayer == exPlayer);
+                        RpcShotGuesser(PlayerControl.LocalPlayer, dyingTarget, madmateSuicide && (dyingTarget.IsMadRoles() || dyingTarget.IsFriendRoles()), PlayerControl.LocalPlayer == exPlayer);
                         HideButtons = false;
                         SetActiveAllPlayerVoteArea(true);
                         UnityEngine.Object.Destroy(container.gameObject);
@@ -440,19 +442,19 @@ public class GuesserAbility : CustomMeetingButtonBase, IAbilityCount
         ReloadPage();
     }
     [CustomRPC]
-    public static void RpcShotGuesser(PlayerControl killer, ExPlayerControl dyingTarget, bool isMisFire)
+    public static void RpcShotGuesser(PlayerControl killer, ExPlayerControl dyingTarget, bool isSuicide, bool isMisFire)
     {
         if (killer == null || dyingTarget == null)
             return;
         if (dyingTarget == null) return;
         dyingTarget.Player.Exiled();
 
-        if (isMisFire) dyingTarget.FinalStatus = FinalStatus.GuesserMisFire;
+        if (isMisFire || isSuicide) dyingTarget.FinalStatus = FinalStatus.GuesserMisFire;
         else dyingTarget.FinalStatus = FinalStatus.GuesserKill;
         if (Constants.ShouldPlaySfx()) SoundManager.Instance.PlaySound(dyingTarget.Player.KillSfx, false, 0.8f);
 
         // GuesserShotEventを発行
-        Events.GuesserShotEvent.Invoke(killer, dyingTarget.Player, isMisFire);
+        Events.GuesserShotEvent.Invoke(killer, dyingTarget.Player, isMisFire || isSuicide);
 
         if (MeetingHud.Instance)
         {

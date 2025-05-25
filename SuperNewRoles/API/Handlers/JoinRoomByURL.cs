@@ -364,7 +364,7 @@ public class JoinRoomURLGenerator // または既存のクラスに追加
             var selected = new GameObject("Selected");
             selected.transform.SetParent(obj.transform);
             selected.transform.localPosition = Vector3.zero;
-            selected.transform.localScale = Vector3.one * 0.93f;
+            selected.transform.localScale = Vector3.one * 4.65f;
             SpriteRenderer selectedRenderer = selected.AddComponent<SpriteRenderer>();
             selectedRenderer.sprite = AssetManager.GetAsset<Sprite>("processed_white2.png");
             selectedRenderer.color = new Color(1, 1, 1, 0.6f);
@@ -405,50 +405,3 @@ public class JoinRoomURLGenerator // または既存のクラスに追加
         }
     }
 }
-
-// --- 使用例 ---
-// public static void Main(string[] args) // または適切なテストメソッド内
-// {
-//     try
-//     {
-//         // 通常モードのURL生成
-//         string normalUrl = JoinRoomURLGenerator.GenerateJoinRoomURL(
-//             host: "localhost",
-//             port: 8080, // APIサーバーがリッスンしているポート
-//             serverIP: "192.168.1.100",
-//             serverPort: "22023",
-//             serverType: JoinRoomURLGenerator.ServerType.Asia,
-//             gameID: 123456
-//         );
-//         Console.WriteLine($"Normal URL: {normalUrl}");
-
-//         // カスタムサーバータイプのURL生成
-//         string customUrl = JoinRoomURLGenerator.GenerateJoinRoomURL(
-//             host: "localhost",
-//             port: 8080,
-//             serverIP: "custom.server.com",
-//             serverPort: "22024",
-//             serverType: JoinRoomURLGenerator.ServerType.Custom,
-//             gameID: 789012,
-//             matchmakerIP: "matchmaker.custom.com",
-//             matchmakerPort: "80"
-//         );
-//         Console.WriteLine($"Custom URL: {customUrl}");
-
-//         // デバッグモードのURL生成 (暗号化なし)
-//         string debugUrl = JoinRoomURLGenerator.GenerateJoinRoomURL(
-//             host: "localhost",
-//             port: 8080,
-//             serverIP: "127.0.0.1",
-//             serverPort: "22023",
-//             serverType: JoinRoomURLGenerator.ServerType.SNRTokyo,
-//             gameID: 987654,
-//             debugMode: true
-//         );
-//         Console.WriteLine($"Debug URL: {debugUrl}");
-//     }
-//     catch (Exception ex)
-//     {
-//         Console.WriteLine($"Error generating URL: {ex.Message}");
-//     }
-// }

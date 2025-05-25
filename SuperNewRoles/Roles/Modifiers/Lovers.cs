@@ -17,9 +17,13 @@ class Lovers : ModifierBase<Lovers>
 
     public override Color32 RoleColor => new(255, 105, 180, byte.MaxValue);
 
-    public override List<Func<AbilityBase>> Abilities => [() => new LoversAbility(LoversKnowPartnerRole, LoversKnowPartnerPosition), () => new CustomTaskAbility(() => (false, false, 0), null)];
+    public override List<Func<AbilityBase>> Abilities => [() => new LoversAbility(LoversKnowPartnerRole, LoversKnowPartnerPosition), () => new CustomTaskAbility(() => (false, false, null), null)];
 
     public override QuoteMod QuoteMod => QuoteMod.SuperNewRoles;
+
+    public override int? PercentageOption => (int)LoversSpawnChance;
+    public override int? NumberOfCrews => (int)LoversMaxCoupleCount;
+    public override CustomOption[] Options => LoversCategory.Options;
 
     public override List<AssignedTeamType> AssignedTeams => [];
 
@@ -31,15 +35,15 @@ class Lovers : ModifierBase<Lovers>
     public override Func<ExPlayerControl, string> ModifierMark => (player) => "{0}"; // + ModHelpers.Cs(player.AmOwner && player.IsAlive() && player.Role != RoleId.God ? RoleColor : player.GetAbility<LoversAbility>().HeartColor, "♥");
     public override bool HiddenOption => true;
 
-    [Modifier]
-    [AssignFilter]
+    [Modifier(ModifierRoleId.Lovers)]
+    [AssignFilter([], [])]
     public static CustomOptionCategory LoversCategory;
 
-    [CustomOptionFloat("LoversMaxCoupleCount", 0f, 15f, 1f, 0f, parentFieldName: nameof(LoversCategory))]
-    public static float LoversMaxCoupleCount;
+    [CustomOptionInt("LoversMaxCoupleCount", 0, 15, 1, 0, parentFieldName: nameof(LoversCategory))]
+    public static int LoversMaxCoupleCount;
 
-    [CustomOptionFloat("LoversSpawnChance", 0f, 100f, 5f, 100f, parentFieldName: nameof(LoversCategory))]
-    public static float LoversSpawnChance;
+    [CustomOptionInt("LoversSpawnChance", 0, 100, 5, 100, parentFieldName: nameof(LoversCategory))]
+    public static int LoversSpawnChance;
 
     //クラードと重複しない
     [CustomOptionBool("LoversAvoidQuarreled", true, parentFieldName: nameof(LoversCategory))]

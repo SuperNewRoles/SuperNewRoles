@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using Il2CppInterop.Runtime;
 using PowerTools;
 using SuperNewRoles.Modules;
@@ -99,9 +100,8 @@ public class CustomCosmeticsLayer
         // 明示的にワールド座標をリセット
         visorLayer.transform.position = cosmeticsLayer.transform.position;
         // その後、ローカル座標を設定
-        visorLayer.transform.localPosition = new Vector3(-0.04f, 0.575f, z);
+        visorLayer.transform.localPosition = new Vector3(cosmeticsLayer.visor.transform.localPosition.x, cosmeticsLayer.visor.transform.localPosition.y, z);
 
-        Logger.Info("visorLayer.transform.localPosition: " + visorLayer.transform.localPosition);
         visorLayer.SetLocalZ(z);
 
         var nodes = cosmeticsLayer.currentBodySprite.BodySprite.GetComponent<SpriteAnimNodes>();
@@ -114,8 +114,9 @@ public class CustomCosmeticsLayer
             nodeSync.Renderer = cosmeticsLayer.currentBodySprite.BodySprite;
             nodeSync.NodeId = 1;
             anims.group.NodeSyncs.Add(nodeSync);
+            visorLayer.nodeSync = nodeSync;
         }
-
+        visorLayer.vanillaNodeSyncs = cosmeticsLayer.visor.GetComponents<SpriteAnimNodeSync>().ToList();
         // if (cosmeticsLayer.visor)
         return visorLayer;
     }
@@ -124,7 +125,7 @@ public class CustomCosmeticsLayer
         // 新しいCustomHatLayerの生成と共通設定の適用
         CustomHatLayer hatLayer = new GameObject(hatName).AddComponent<CustomHatLayer>();
         hatLayer.transform.parent = ModdedCosmetics.transform;
-        hatLayer.transform.localPosition = new Vector3(-0.04f, 0.575f, -0.5999f);
+        hatLayer.transform.localPosition = new Vector3(hatParent.transform.localPosition.x, hatParent.transform.localPosition.y, -0.5999f);
         hatLayer.transform.localScale = Vector3.one;
         hatLayer.Parent = hatParent.Parent;
         hatLayer.gameObject.layer = baseLayer.gameObject.layer;
@@ -145,6 +146,7 @@ public class CustomCosmeticsLayer
         }
         else
             Logger.Info("NULLLLLLLLLLLLLLLLLLLLLL");
+        hatLayer.vanillaNodeSyncs = cosmeticsLayer.hat.GetComponents<SpriteAnimNodeSync>().ToList();
 
         // バックレイヤーの作成と設定
         hatLayer.BackLayer = new GameObject("back").AddComponent<SpriteRenderer>();

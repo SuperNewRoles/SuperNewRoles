@@ -112,7 +112,7 @@ public class ModSettingsInformationHelpMenu : HelpMenuCategoryBase
         foreach (var category in categories)
         {
             // カテゴリ内にオプションが存在しなければスキップ
-            if (category.Options.Count == 0) continue;
+            if (category.Options.Length == 0) continue;
             if (category.IsModifier) continue;
 
             // ヘッダー用のOptionBaseを複製して配置

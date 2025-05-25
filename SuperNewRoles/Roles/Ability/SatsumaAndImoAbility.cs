@@ -28,10 +28,13 @@ public class SatsumaAndImoAbility : AbilityBase
 
     private void OnWrapUp(WrapUpEventData data)
     {
-        // WrapUp ごとにチームを切り替え
-        _teamState = _teamState == SatsumaTeam.Crewmate ? SatsumaTeam.Madmate : SatsumaTeam.Crewmate;
-        // 名前更新
-        NameText.UpdateAllNameInfo();
+        new LateTask(() =>
+        {
+            // WrapUp ごとにチームを切り替え
+            _teamState = _teamState == SatsumaTeam.Crewmate ? SatsumaTeam.Madmate : SatsumaTeam.Crewmate;
+            // 名前更新
+            NameText.UpdateAllNameInfo();
+        }, 0.6f, "SatsumaAndImoAbility");
     }
 
     private void OnNameTextUpdate(NameTextUpdateEventData data)

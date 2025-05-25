@@ -42,15 +42,18 @@ public class PushedPlayerDeadbody : MonoBehaviour
         if (DeadBody != null)
             Speed = 1.5f;
         transform.position = Player.transform.position;
-        currentPoolableBehaviour = Instantiate(MapLoader.Airship.ExileCutscenePrefab.Player);
-        currentPoolableBehaviour.gameObject.layer = 8;
-        currentPoolableBehaviour.transform.SetParent(transform);
-        currentPoolableBehaviour.SetBodyColor(player.CurrentOutfit.ColorId);
-        currentPoolableBehaviour.transform.localPosition = Vector3.zero;
-        currentPoolableBehaviour.transform.localScale = Vector3.one * 0.4f;
-        currentPoolableBehaviour.gameObject.SetActive(true);
-        HandSlot = currentPoolableBehaviour.transform.FindChild("HandSlot").GetComponent<SpriteRenderer>();
-        PlayerMaterial.SetColors(player.CurrentOutfit.ColorId, HandSlot);
+        MapLoader.LoadMap(MapNames.Airship, (ship) =>
+        {
+            currentPoolableBehaviour = Instantiate(ship.ExileCutscenePrefab.Player);
+            currentPoolableBehaviour.gameObject.layer = 8;
+            currentPoolableBehaviour.transform.SetParent(transform);
+            currentPoolableBehaviour.SetBodyColor(player.CurrentOutfit.ColorId);
+            currentPoolableBehaviour.transform.localPosition = Vector3.zero;
+            currentPoolableBehaviour.transform.localScale = Vector3.one * 0.4f;
+            currentPoolableBehaviour.gameObject.SetActive(true);
+            HandSlot = currentPoolableBehaviour.transform.FindChild("HandSlot").GetComponent<SpriteRenderer>();
+            PlayerMaterial.SetColors(player.CurrentOutfit.ColorId, HandSlot);
+        });
         //currentPoolableBehaviour.cosmetics.currentBodySprite.BodySprite.sprite = MapLoader.Airship.ExileCutscenePrefab.Player.transform.FindChild("BodyForms/Normal").GetComponent<SpriteRenderer>().sprite;
         AnimationTimer = 0f;
         pushAnimation = PushAnimation.Push;

@@ -37,7 +37,7 @@ public class SantaAbility : AbilityBase
 
     public override void AttachToAlls()
     {
-        ButtonAbility = new(
+        ButtonAbility = new(new(
             canCreateSidekick: (_) => ButtonAbility.HasCount,
             sidekickCooldown: () => _data.Cooldown,
             sidekickRole: () => _selectedRole,
@@ -72,7 +72,7 @@ public class SantaAbility : AbilityBase
                 RpcSantaAssigndRole(Player, player, successed);
             },
             showSidekickLimitText: () => true
-            );
+        ));
 
         Player.AttachAbility(ButtonAbility, new AbilityParentAbility(this));
     }

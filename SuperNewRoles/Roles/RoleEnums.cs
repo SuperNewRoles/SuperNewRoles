@@ -84,6 +84,18 @@ public enum RoleId : short
     Rocket,
     Vampire,
     VampireDependent,
+    SidekickWaveCannon,
+    Spelunker,
+    BlackHatHacker,
+    PartTimer,
+    NiceMechanic,
+    EvilMechanic,
+    BodyBuilder,
+    HamburgerShop,
+    NiceHawk,
+    EvilHawk,
+    MadHawk,
+    WiseMan,
 }
 
 public enum GhostRoleId : short
@@ -103,6 +115,8 @@ public enum ModifierRoleId : short
     RulerModifier = 1 << 2,
     Lovers = 1 << 3,
     JumboModifier = 1 << 4,
+    ModifierSpelunker = 1 << 5,
+    ModifierHawk = 1 << 6,
 }
 
 public enum QuoteMod : byte

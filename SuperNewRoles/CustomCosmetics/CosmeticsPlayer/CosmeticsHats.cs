@@ -1,4 +1,6 @@
 using System;
+using System.Collections.Generic;
+using System.Linq;
 using AmongUs.Data;
 using HarmonyLib;
 using PowerTools;
@@ -57,7 +59,7 @@ public class CustomHatLayer : MonoBehaviour
 
     public void OnDestroy()
     {
-        UnloadAsset();
+        // UnloadAsset();
     }
 
     public bool HasHat()
@@ -121,7 +123,7 @@ public class CustomHatLayer : MonoBehaviour
             CosmeticLayer.currentBodySprite.BodySprite.enabled = !(clayer.HideBody.hat1 || clayer.HideBody.hat2) && CosmeticLayer.Visible;
 
         SetMaterialColor(color);
-        UnloadAsset();
+        // UnloadAsset();
         Hat.LoadAsync(() => PopulateFromViewData());
     }
 
@@ -282,10 +284,14 @@ public class CustomHatLayer : MonoBehaviour
         }
     }
 
+    public List<SpriteAnimNodeSync> vanillaNodeSyncs = new();
+
     public bool HideHat()
     {
         return false;
     }
+
+    private int count = 0;
 
     public void LateUpdate()
     {
@@ -293,6 +299,27 @@ public class CustomHatLayer : MonoBehaviour
         {
             return;
         }
+
+        count--;
+        if (count <= 0 && spriteSyncNode != null)
+        {
+            count = 30;
+            var parentsync = vanillaNodeSyncs.FirstOrDefault(x => x.enabled);
+            if (parentsync != null)
+            {
+                spriteSyncNode.Parent = parentsync.Parent;
+                spriteSyncNode.ParentRenderer = parentsync.ParentRenderer;
+                spriteSyncNode.Renderer = parentsync.Renderer;
+                spriteSyncNode.enabled = true;
+            }
+            else
+            {
+                Logger.Error("parentsync is null");
+                spriteSyncNode.enabled = false;
+            }
+        }
+
+        Parent = CosmeticLayer.hat.Parent;
 
         var clayer = CustomCosmeticsLayers.ExistsOrInitialize(CosmeticLayer);
         if (clayer == null)

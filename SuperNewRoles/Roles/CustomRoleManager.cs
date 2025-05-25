@@ -20,7 +20,7 @@ public static class CustomRoleManager
         int loadedRoles = 0;
         int loadedModifiers = 0;
         int loadedGhostRoles = 0;
-        AllRoles = Assembly.GetExecutingAssembly().GetTypes()
+        AllRoles = SuperNewRolesPlugin.Assembly.GetTypes()
             // まずIRoleBaseインターフェースを実装している型を取得
             .Where(type => typeof(IRoleBase).IsAssignableFrom(type))
             // 次にRoleBase<T>を継承している型に絞る（直接の継承をチェック）
@@ -41,7 +41,7 @@ public static class CustomRoleManager
                 return (IRoleBase)instanceProperty.GetValue(null);
             })
             .ToArray();
-        AllModifiers = Assembly.GetExecutingAssembly().GetTypes()
+        AllModifiers = SuperNewRolesPlugin.Assembly.GetTypes()
             .Where(type => typeof(IModifierBase).IsAssignableFrom(type))
             .Where(type => type.BaseType != null &&
                            type.BaseType.IsGenericType &&
@@ -59,7 +59,7 @@ public static class CustomRoleManager
                 return (IModifierBase)instanceProperty.GetValue(null);
             })
             .ToArray();
-        AllGhostRoles = Assembly.GetExecutingAssembly().GetTypes()
+        AllGhostRoles = SuperNewRolesPlugin.Assembly.GetTypes()
             .Where(type => typeof(IGhostRoleBase).IsAssignableFrom(type))
             .Where(type => type.BaseType != null &&
                            type.BaseType.IsGenericType &&

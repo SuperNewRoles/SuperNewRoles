@@ -311,9 +311,9 @@ public class JsonParser
                     case 'u': // Unicode escape \uXXXX
                         if (_pos + 4 > _json.Length)
                             throw new JsonParseException("Invalid Unicode escape sequence: not enough characters", _pos - 1);
-                        string hex = _json.Substring(_pos, 4);
-                        if (!int.TryParse(hex, NumberStyles.HexNumber, CultureInfo.InvariantCulture, out int unicodeChar))
-                            throw new JsonParseException($"Invalid Unicode escape sequence '\\u{hex}'", _pos - 1);
+                        ReadOnlySpan<char> hexSpan = _json.AsSpan(_pos, 4);
+                        if (!int.TryParse(hexSpan, NumberStyles.HexNumber, CultureInfo.InvariantCulture, out int unicodeChar))
+                            throw new JsonParseException($"Invalid Unicode escape sequence '\\u{hexSpan.ToString()}'", _pos - 1);
                         sb.Append((char)unicodeChar);
                         _pos += 4;
                         break;
