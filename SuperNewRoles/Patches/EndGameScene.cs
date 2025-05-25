@@ -125,6 +125,7 @@ static class AdditionalTempData
         public bool isImpostor { get; set; }
         public string Hat2Id { get; set; }
         public string Visor2Id { get; set; }
+        public Color? LoversHeartColor { get; set; }
         public PlayerRoleInfo Clone()
         {
             return (PlayerRoleInfo)MemberwiseClone();
@@ -423,7 +424,10 @@ public class EndGameManagerSetUpPatch
                 {
                     roleText = modifier.Replace("{0}", roleText);
                 }
-                playerObj.cosmetics.nameText.text = $"{roleInfo.PlayerName}{roleInfo.NameSuffix}\n{string.Join("\n", roleText)}";
+                string playerName = ModHelpers.Cs(Palette.PlayerColors[roleInfo.ColorId], roleInfo.PlayerName);
+                if (roleInfo.LoversHeartColor != null)
+                    playerName += ModHelpers.Cs(roleInfo.LoversHeartColor.Value, " ♥");
+                playerObj.cosmetics.nameText.text = $"{playerName}{roleInfo.NameSuffix}\n{string.Join("\n", roleText)}";
                 customCosmeticsLayer.hat2?.SetHat(roleInfo.Hat2Id, roleInfo.ColorId);
                 customCosmeticsLayer.visor2?.SetVisor(roleInfo.Visor2Id, roleInfo.ColorId);
                 playerObj.transform.localScale *= roleInfo.additionalSize;
@@ -484,7 +488,12 @@ public class EndGameManagerSetUpPatch
             {
                 var taskInfo = roleInfo.TasksTotal > 0 ? $"<color=#FAD934FF>({roleInfo.TasksCompleted}/{roleInfo.TasksTotal})</color>" : "";
                 string roleText = ModHelpers.CsWithTranslation(roleInfo.roleBase.RoleColor, roleInfo.roleBase.Role.ToString());
-                string result = $"{ModHelpers.Cs(Palette.PlayerColors[roleInfo.ColorId], roleInfo.PlayerName)}{roleInfo.NameSuffix}<pos=17%>{taskInfo} - <pos=27%>{ModTranslation.GetString("FinalStatus." + roleInfo.Status)} - {roleText}";
+                foreach (var modifier in roleInfo.modifierMarks)
+                    roleText = modifier.Replace("{0}", roleText);
+                string playerName = ModHelpers.Cs(Palette.PlayerColors[roleInfo.ColorId], roleInfo.PlayerName);
+                if (roleInfo.LoversHeartColor != null)
+                    playerName += ModHelpers.Cs(roleInfo.LoversHeartColor.Value, " ♥");
+                string result = $"{playerName}{roleInfo.NameSuffix}<pos=17%>{taskInfo} - <pos=27%>{ModTranslation.GetString("FinalStatus." + roleInfo.Status)} - {roleText}";
                 summaryBuilder.AppendLine(result);
             }
 
@@ -567,6 +576,7 @@ public static class OnGameEndPatch
         string hat2Id = "";
         string visor2Id = "";
         float additionalSize = 1f;
+        Color? loversHeartColor = null;
 
         if (player.Disconnected)
         {
@@ -593,6 +603,7 @@ public static class OnGameEndPatch
             CustomCosmeticsLayer customCosmeticsLayer = CustomCosmeticsLayers.ExistsOrInitialize(player.Object.cosmetics);
             hat2Id = customCosmeticsLayer?.hat2?.Hat?.ProdId ?? "";
             visor2Id = customCosmeticsLayer?.visor2?.Visor?.ProdId ?? "";
+            loversHeartColor = exPlayer.TryGetAbility<LoversAbility>(out var loversAbility) ? loversAbility.HeartColor : null;
         }
         additionalSize *= modifierRoleId.HasFlag(ModifierRoleId.JumboModifier) ? 2f : 1f;
 
@@ -616,6 +627,7 @@ public static class OnGameEndPatch
             Hat2Id = hat2Id,
             Visor2Id = visor2Id,
             additionalSize = additionalSize,
+            LoversHeartColor = loversHeartColor,
         };
     }
 
