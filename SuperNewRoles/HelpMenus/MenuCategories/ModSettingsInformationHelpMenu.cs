@@ -180,7 +180,7 @@ public class ModSettingsInformationHelpMenu : HelpMenuCategoryBase
             optionsTemplate.SetActive(false);
         }
 
-        scroller.ContentYBounds.max = contentYBoundsMax / 0.75f;  // スクロール領域の調整値
+        scroller.ContentYBounds.max = contentYBoundsMax / 0.9f + 0.2f;  // スクロール領域の調整値
     }
 
     public override void Hide(GameObject Container)
