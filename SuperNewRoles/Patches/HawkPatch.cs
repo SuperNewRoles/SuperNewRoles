@@ -134,8 +134,8 @@ public static class AspectPositionAdjustPositionPatch
     }
 }
 
-[HarmonyPatch(typeof(HudManager), nameof(HudManager.Awake))]
-public static class HudManagerAwakePatch
+[HarmonyPatch(typeof(HudManager), nameof(HudManager.Start))]
+public static class HudManagerStartPatch
 {
     public static void Postfix(HudManager __instance)
     {
