@@ -91,10 +91,10 @@ public class ModSettingsInformationHelpMenu : HelpMenuCategoryBase
         float contentYBoundsMax = 0f;
 
         // 定数定義：ヘッダー高さ、オプション間のオフセット、初期オプション表示位置
-        const float headerHeight = 0.6f; //元値0.6f
-        const float optionYOffset = 0.25f; //元値0.34375f
-        const float textYOffset = optionYOffset * 0.8f; //元値0.8f
-        const float headerOptionStartY = 1.75f; //元値1.75f
+        const float headerHeight = 0.6f;
+        const float optionYOffset = 0.25f;
+        const float textYOffset = optionYOffset * 0.8f;
+        const float headerOptionStartY = 1.75f;
 
         // ローカル関数：オプションUIを生成して位置調整を行う
         GameObject InstantiateOptionItem(GameObject template, Transform container, string optionName, float x, ref float optionYPos, ref float lastYRef, ref float bounds)
@@ -180,7 +180,7 @@ public class ModSettingsInformationHelpMenu : HelpMenuCategoryBase
             optionsTemplate.SetActive(false);
         }
 
-        scroller.ContentYBounds.max = contentYBoundsMax / 0.75f;  // スクロール領域の調整値 //元値0.9f + 0.2f
+        scroller.ContentYBounds.max = contentYBoundsMax / 0.75f;  // スクロール領域の調整値
     }
 
     public override void Hide(GameObject Container)
