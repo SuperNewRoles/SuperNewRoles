@@ -54,6 +54,9 @@ namespace SuperNewRoles.CustomOptions
 
         public static string FormatOptionValue(object value, CustomOption option)
         {
+            string formattedValue = "";
+            string suffix = "";
+
             if (value is float floatValue)
             {
                 var floatAttribute = option.Attribute as CustomOptionFloatAttribute;
@@ -62,14 +65,41 @@ namespace SuperNewRoles.CustomOptions
                     float step = floatAttribute.Step;
                     // 数値がほぼ整数であれば、小数点を表示せずにフォーマットする
                     if (Mathf.Approximately(floatValue, Mathf.Round(floatValue)))
-                        return string.Format("{0:F0}", floatValue);
-
+                        formattedValue = string.Format("{0:F0}", floatValue);
                     // stepが0.1以上の場合、ほぼ1桁の精度なら小数点1桁でフォーマットする
-                    if (step >= 0.1f && Mathf.Approximately(floatValue * 10f, Mathf.Round(floatValue * 10f)))
-                        return string.Format("{0:F1}", floatValue);
+                    else if (step >= 0.1f && Mathf.Approximately(floatValue * 10f, Mathf.Round(floatValue * 10f)))
+                        formattedValue = string.Format("{0:F1}", floatValue);
+                    else
+                        formattedValue = floatValue.ToString();
+
+                    // Suffixが設定されている場合は翻訳して追加
+                    if (!string.IsNullOrEmpty(floatAttribute.Suffix))
+                    {
+                        suffix = ModTranslation.GetString(floatAttribute.Suffix);
+                    }
                 }
-                // 上記条件に合致しない場合は、そのままの文字列として返す
-                return floatValue.ToString();
+                else
+                {
+                    formattedValue = floatValue.ToString();
+                }
+            }
+            else if (value is int intValue)
+            {
+                var intAttribute = option.Attribute as CustomOptionIntAttribute;
+                formattedValue = intValue.ToString();
+                if (intAttribute != null && !string.IsNullOrEmpty(intAttribute.Suffix))
+                {
+                    suffix = ModTranslation.GetString(intAttribute.Suffix);
+                }
+            }
+            else if (value is byte byteValue)
+            {
+                var byteAttribute = option.Attribute as CustomOptionByteAttribute;
+                formattedValue = byteValue.ToString();
+                if (byteAttribute != null && !string.IsNullOrEmpty(byteAttribute.Suffix))
+                {
+                    suffix = ModTranslation.GetString(byteAttribute.Suffix);
+                }
             }
             else if (value is Enum enumValue)
             {
@@ -80,7 +110,12 @@ namespace SuperNewRoles.CustomOptions
                 }
                 return enumValue.ToString();
             }
-            return value.ToString();
+            else
+            {
+                formattedValue = value.ToString();
+            }
+
+            return formattedValue + suffix;
         }
     }
 }

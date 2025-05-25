@@ -305,7 +305,7 @@ public class CustomOption
 
     public string GetCurrentSelectionString()
     {
-        if (Attribute is CustomOptionFloatAttribute or CustomOptionSelectAttribute)
+        if (Attribute is CustomOptionFloatAttribute or CustomOptionIntAttribute or CustomOptionByteAttribute or CustomOptionSelectAttribute)
         {
             return UIHelper.FormatOptionValue(Value, this);
         }
@@ -1904,15 +1904,17 @@ public abstract class CustomOptionNumericAttribute<T> : CustomOptionBaseAttribut
     public T Max { get; }
     public T Step { get; }
     public T DefaultValue { get; }
+    public string? Suffix { get; }
     public event Action<T> ValueChanged;
 
-    protected CustomOptionNumericAttribute(string id, T min, T max, T step, T defaultValue, string? translationName = null, string? parentFieldName = null, DisplayModeId displayMode = DisplayModeId.All, object? parentActiveValue = null)
+    protected CustomOptionNumericAttribute(string id, T min, T max, T step, T defaultValue, string? translationName = null, string? parentFieldName = null, DisplayModeId displayMode = DisplayModeId.All, object? parentActiveValue = null, string? suffix = null)
         : base(id, translationName, parentFieldName, displayMode, parentActiveValue)
     {
         Min = min;
         Max = max;
         Step = step;
         DefaultValue = defaultValue;
+        Suffix = suffix;
     }
 
     public override object[] GenerateSelections()
@@ -1938,8 +1940,8 @@ public abstract class CustomOptionNumericAttribute<T> : CustomOptionBaseAttribut
 [AttributeUsage(AttributeTargets.Field)]
 public class CustomOptionFloatAttribute : CustomOptionNumericAttribute<float>
 {
-    public CustomOptionFloatAttribute(string id, float min, float max, float step, float defaultValue, string? translationName = null, string? parentFieldName = null, DisplayModeId displayMode = DisplayModeId.All, object? parentActiveValue = null)
-        : base(id, min, max, step, defaultValue, translationName, parentFieldName, displayMode, parentActiveValue) { }
+    public CustomOptionFloatAttribute(string id, float min, float max, float step, float defaultValue, string? translationName = null, string? parentFieldName = null, DisplayModeId displayMode = DisplayModeId.All, object? parentActiveValue = null, string? suffix = null)
+        : base(id, min, max, step, defaultValue, translationName, parentFieldName, displayMode, parentActiveValue, suffix) { }
 
     protected override float Add(float a, float b) => a + b;
     public override byte GenerateDefaultSelection() => (byte)((DefaultValue - Min) / Step);
@@ -1948,8 +1950,8 @@ public class CustomOptionFloatAttribute : CustomOptionNumericAttribute<float>
 [AttributeUsage(AttributeTargets.Field)]
 public class CustomOptionIntAttribute : CustomOptionNumericAttribute<int>
 {
-    public CustomOptionIntAttribute(string id, int min, int max, int step, int defaultValue, string? translationName = null, string? parentFieldName = null, DisplayModeId displayMode = DisplayModeId.All, object? parentActiveValue = null)
-        : base(id, min, max, step, defaultValue, translationName, parentFieldName, displayMode, parentActiveValue) { }
+    public CustomOptionIntAttribute(string id, int min, int max, int step, int defaultValue, string? translationName = null, string? parentFieldName = null, DisplayModeId displayMode = DisplayModeId.All, object? parentActiveValue = null, string? suffix = null)
+        : base(id, min, max, step, defaultValue, translationName, parentFieldName, displayMode, parentActiveValue, suffix) { }
 
     protected override int Add(int a, int b) => a + b;
     public override byte GenerateDefaultSelection() => (byte)((DefaultValue - Min) / Step);
@@ -1958,8 +1960,8 @@ public class CustomOptionIntAttribute : CustomOptionNumericAttribute<int>
 [AttributeUsage(AttributeTargets.Field)]
 public class CustomOptionByteAttribute : CustomOptionNumericAttribute<byte>
 {
-    public CustomOptionByteAttribute(string id, byte min, byte max, byte step, byte defaultValue, string? translationName = null, string? parentFieldName = null, DisplayModeId displayMode = DisplayModeId.All, object? parentActiveValue = null)
-        : base(id, min, max, step, defaultValue, translationName, parentFieldName, displayMode, parentActiveValue) { }
+    public CustomOptionByteAttribute(string id, byte min, byte max, byte step, byte defaultValue, string? translationName = null, string? parentFieldName = null, DisplayModeId displayMode = DisplayModeId.All, object? parentActiveValue = null, string? suffix = null)
+        : base(id, min, max, step, defaultValue, translationName, parentFieldName, displayMode, parentActiveValue, suffix) { }
 
     protected override byte Add(byte a, byte b) => (byte)(a + b);
     public override byte GenerateDefaultSelection() => (byte)((DefaultValue - Min) / Step);
