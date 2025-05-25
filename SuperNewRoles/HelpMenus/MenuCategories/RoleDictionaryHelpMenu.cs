@@ -74,7 +74,7 @@ public class RoleDictionaryHelpMenu : HelpMenuCategoryBase
         if (textComponent != null)
         {
             // 翻訳キーを適切に設定
-            textComponent.text = ModHelpers.CsWithTranslation(RoleDetailMenu.GetTeamColor(teamType), buttonName);
+            textComponent.text = "<b>" + ModHelpers.CsWithTranslation(RoleDetailMenu.GetTeamColor(teamType), buttonName) + "</b>";
         }
 
         // デフォルトのチームのボタンを選択状態にする
@@ -135,6 +135,9 @@ public class RoleDictionaryHelpMenu : HelpMenuCategoryBase
 
         // チーム別の役職を表示
         GenerateRoleButtons(CurrentTeamContainer.transform, teamType);
+
+        // Scrollerの境界を設定
+        SetScrollerBounds(teamType);
     }
 
     private void GenerateRoleButtons(Transform container, RoleOptionMenuType teamType)
@@ -491,6 +494,67 @@ public class RoleDictionaryHelpMenu : HelpMenuCategoryBase
             {
                 CloseRoleDetail();
             }
+        }
+    }
+
+    // ScrollerのContentYBounds.maxを計算するメソッド
+    private float CalculateContentYBoundsMax(int roleCount)
+    {
+        const int maxColumns = 4; // 1行に4役職
+        const float baseHeight = 1.2f; // 基本の高さ
+        const float rowHeight = 0.35f; // 1行の高さ
+        const int baseRoleCount = 36; // 基準となる役職数
+        const float additionalHeightPerRow = 1f; // 1行ごとに追加する高さ
+
+        // 役職数が36以下の場合は基本の高さを返す
+        if (roleCount <= baseRoleCount)
+        {
+            return 0f; // スクロール不要
+        }
+
+        // 36を超えた分の役職数を計算
+        int excessRoles = roleCount - baseRoleCount;
+
+        // 追加で必要な行数を計算（4役職で1行）
+        int additionalRows = (int)Mathf.Ceil((float)excessRoles / maxColumns);
+
+        // 追加の高さを計算
+        float additionalHeight = additionalRows * additionalHeightPerRow;
+
+        return additionalHeight;
+    }
+
+    // Scrollerの境界を設定するメソッド
+    private void SetScrollerBounds(RoleOptionMenuType teamType)
+    {
+        var scroller = MenuObject.transform.Find("Scroller")?.GetComponent<Scroller>();
+        if (scroller == null) return;
+
+        int roleCount = GetRoleCountForTeam(teamType);
+        float maxYBounds = CalculateContentYBoundsMax(roleCount);
+
+        scroller.ContentYBounds.max = maxYBounds;
+    }
+
+    // 陣営ごとの役職数を取得するメソッド
+    private int GetRoleCountForTeam(RoleOptionMenuType teamType)
+    {
+        switch (teamType)
+        {
+            case RoleOptionMenuType.Ghost:
+                return CustomRoleManager.AllGhostRoles
+                    .Where(r => r.QuoteMod != QuoteMod.Vanilla && !r.HiddenOption)
+                    .Count();
+
+            case RoleOptionMenuType.Modifier:
+                return CustomRoleManager.AllModifiers
+                    .Where(r => r.QuoteMod != QuoteMod.Vanilla)
+                    .Count();
+
+            default:
+                return CustomRoleManager.AllRoles
+                    .Where(r => r.QuoteMod != QuoteMod.Vanilla && (r.OptionTeam == teamType || (r.OptionTeam == RoleOptionMenuType.Hidden && r.AssignedTeam == (AssignedTeamType)teamType)))
+                    .Count();
         }
     }
 }

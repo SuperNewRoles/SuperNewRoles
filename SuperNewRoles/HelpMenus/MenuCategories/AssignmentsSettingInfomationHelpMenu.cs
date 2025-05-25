@@ -130,7 +130,7 @@ public class AssignmentsSettingInfomationHelpMenu : HelpMenuCategoryBase
 
         // ロールの基本テキストを生成するローカル関数
         string GetRoleText(RoleOptionManager.RoleOption role, Color? color = null) =>
-            $"{ModHelpers.CsWithTranslation(color ?? role.RoleColor, role.RoleId.ToString())} x{role.NumberOfCrews} ({role.Percentage}%)\n";
+            $"<b>{ModHelpers.CsWithTranslation(color ?? role.RoleColor, role.RoleId.ToString())}</b> x{role.NumberOfCrews} ({role.Percentage}%)\n";
 
         int index = 0;
         // 各ロールについて処理
