@@ -50,11 +50,8 @@ class Lovers : ModifierBase<Lovers>
     public static bool LoversAvoidQuarreled;
 
     // 追加勝利
-    [CustomOptionBool("LoversAdditionalWinCondition", true, parentFieldName: nameof(LoversCategory))]
-    public static bool LoversAdditionalWinCondition;
-    // 元の陣営で勝利出来ない
-    [CustomOptionBool("LoversOriginalTeamCannotWin", true, parentFieldName: nameof(LoversCategory))]
-    public static bool LoversOriginalTeamCannotWin;
+    [CustomOptionSelect("LoversWinType", typeof(LoversWinType), "LoversWinType.", parentFieldName: nameof(LoversCategory))]
+    public static LoversWinType LoversWinType;
     // 相方の役職がわかる
     [CustomOptionBool("LoversKnowPartnerRole", true, parentFieldName: nameof(LoversCategory))]
     public static bool LoversKnowPartnerRole;
@@ -71,6 +68,13 @@ class Lovers : ModifierBase<Lovers>
     public static bool LoversIncludeThirdTeamInSelection;
 }
 
+public enum LoversWinType
+{
+    Normal,
+    Shared,
+    Single,
+}
+
 public class LoversAbility : AbilityBase
 {
     public Color32 HeartColor => couple.HeartColor;
@@ -81,11 +85,11 @@ public class LoversAbility : AbilityBase
     private PlayerArrowsAbility _playerArrowsAbility;
     private KnowOtherAbility _knowOtherAbility;
     private bool knowPartnerRole;
-    private bool knowPartnerPosition;
+    private bool knowPartnerRole;
     public LoversAbility(bool knowPartnerRole, bool knowPartnerPosition)
     {
         this.knowPartnerRole = knowPartnerRole;
-        this.knowPartnerPosition = knowPartnerPosition;
+        this.knowPartnerRole = knowPartnerPosition;
     }
     public void SetCouple(LoversCouple couple)
     {
@@ -96,7 +100,7 @@ public class LoversAbility : AbilityBase
         _dieListener = DieEvent.Instance.AddListener(OnDie);
         _nameTextUpdateListener = NameTextUpdateEvent.Instance.AddListener(OnNameTextUpdate);
         _playerArrowsAbility = new PlayerArrowsAbility(
-            () => !knowPartnerPosition ? Array.Empty<ExPlayerControl>() : couple.lovers.Where(ability => !ability.Player.AmOwner && (ExPlayerControl.LocalPlayer.IsDead() || ability.Player.IsAlive())).Select(ability => ability.Player),
+            () => !knowPartnerRole ? Array.Empty<ExPlayerControl>() : couple.lovers.Where(ability => !ability.Player.AmOwner && (ExPlayerControl.LocalPlayer.IsDead() || ability.Player.IsAlive())).Select(ability => ability.Player),
             (player) => Lovers.Instance.RoleColor
         );
         _knowOtherAbility = new KnowOtherAbility(

@@ -1175,7 +1175,7 @@ public static class CustomOptionSaver
     private const byte CurrentVersion = 1;
     private static int currentPreset = 0;
     public static bool IsLoaded { get; private set; } = false;
-    private static Dictionary<int, string> presetNames = new();
+    public static Dictionary<int, string> presetNames = new();
     public static IReadOnlyDictionary<int, string> PresetNames => presetNames;
 
     public static int CurrentPreset
@@ -1379,7 +1379,6 @@ public class FileOptionStorage : IOptionStorage
     private readonly string _optionFileName;
     private readonly string _presetFileNameBase;
     private static readonly object FileLocker = new();
-    private readonly Dictionary<int, string> presetNames = new();
 
     public FileOptionStorage(DirectoryInfo directory, string optionFileName, string presetFileNameBase)
     {
@@ -1403,7 +1402,7 @@ public class FileOptionStorage : IOptionStorage
         {
             if (!File.Exists(_optionFileName))
             {
-                this.presetNames.Clear(); // ファイルがない場合は内部のpresetNamesもクリア
+                CustomOptionSaver.presetNames.Clear(); // ファイルがない場合は内部のpresetNamesもクリア
                 return (false, 0, 0);
             }
 
@@ -1413,20 +1412,20 @@ public class FileOptionStorage : IOptionStorage
             byte version = reader.ReadByte();
             if (!ValidateChecksum(reader))
             {
-                this.presetNames.Clear(); // チェックサム不正でも内部のpresetNamesをクリア
+                CustomOptionSaver.presetNames.Clear(); // チェックサム不正でも内部のpresetNamesをクリア
                 return (false, version, 0);
             }
 
             int preset = reader.ReadInt32();
 
             // プリセット名を読み込む (this.presetNames を更新)
-            this.presetNames.Clear();
+            CustomOptionSaver.presetNames.Clear();
             int nameCount = reader.ReadInt32();
             for (int i = 0; i < nameCount; i++)
             {
                 int presetId = reader.ReadInt32();
                 string name = reader.ReadString();
-                this.presetNames[presetId] = name;
+                CustomOptionSaver.presetNames[presetId] = name;
             }
 
             return (true, version, preset);
@@ -1623,7 +1622,7 @@ public class FileOptionStorage : IOptionStorage
         // LoadOptionData() によって更新された可能性のある内部の presetNames フィールドのコピーを返す
         lock (FileLocker) // presetNamesへのアクセスを保護
         {
-            return (true, new Dictionary<int, string>(this.presetNames));
+            return (true, new Dictionary<int, string>(CustomOptionSaver.presetNames));
         }
     }
 
@@ -1639,8 +1638,8 @@ public class FileOptionStorage : IOptionStorage
             writer.Write(preset);
 
             // プリセット名を保存
-            writer.Write(presetNames.Count);
-            foreach (KeyValuePair<int, string> pair in presetNames)
+            writer.Write(CustomOptionSaver.presetNames.Count);
+            foreach (KeyValuePair<int, string> pair in CustomOptionSaver.presetNames)
             {
                 writer.Write(pair.Key);
                 writer.Write(pair.Value);

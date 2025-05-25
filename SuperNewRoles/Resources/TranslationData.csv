@@ -889,10 +889,15 @@ LoversMaxCoupleCount,最大カップル数,Max Couple Count
 LoversSpawnChance,排出確率,Spawn Chance
 LoversDieWithPartner,2人同時に死ぬ,Die with Partner
 LoversAvoidQuarreled,クラードと重複しない,Avoid Quarreled
-LoversAdditionalWinCondition,追加勝利,Additional Win Condition
+LoversWinType,勝利条件,Win Type
+LoversWinType.Normal,通常,Normal
+LoversWinType.Shared,共勝利,Shared
+LoversWinType.Single,完全単独,Single
 LoversIncludeImpostorsInSelection,抽選にインポスターを含む,Include Impostors in Selection
 LoversIncludeThirdTeamInSelection,抽選に第三陣営を含む,Include Third Team in Selection
 CupidLoversCanSeeCupidRole,ラバーズがキューピッドを知れる,Lovers Can See Cupid
+LoversKnowPartnerRole,相方の役職がわかる,Know Partner Role
+LoversKnowPartnerPosition,相方の位置がわかる,Know Partner Position
 
 # Owl
 OwlIntro1,暗闇に羽ばたきし者,The one who flapped his wings in the dark,黑暗中鼓动羽翼之人,在黑暗中鼓動翅膀的人

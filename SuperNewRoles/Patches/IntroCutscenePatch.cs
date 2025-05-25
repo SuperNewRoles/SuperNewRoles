@@ -23,7 +23,7 @@ public static class IntroCutscenePatch
     {
         public static void Postfix(IntroCutscene __instance)
         {
-            Logger.Info("A");
+            Logger.Info("AASAAAAAAAAAAAAAAAAAAAAjhygtrfegtyjut5refrgdbAaaa");
             // なんかバグるからとりあえず
             if (ModHelpers.IsHnS())
             {

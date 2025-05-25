@@ -154,7 +154,7 @@ public static class EndGamer
     {
         winners = new();
         // ラバーズじゃない人がいる場合
-        if (Lovers.LoversOriginalTeamCannotWin && winners.Any(x => !x.IsLovers()))
+        if (Lovers.LoversWinType == LoversWinType.Single && winners.Any(x => !x.IsLovers()))
         {
             foreach (ExPlayerControl winner in winners)
             {
@@ -187,7 +187,7 @@ public static class EndGamer
         }
         foreach (ExPlayerControl winner in winners)
         {
-            if (Lovers.LoversAdditionalWinCondition && winner.IsLovers())
+            if (Lovers.LoversWinType == LoversWinType.Shared && winner.IsLovers())
             {
                 foreach (LoversAbility lovers in winner.GetAbility<LoversAbility>()?.couple?.lovers)
                 {

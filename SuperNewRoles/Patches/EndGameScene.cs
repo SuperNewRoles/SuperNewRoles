@@ -432,7 +432,7 @@ public class EndGameManagerSetUpPatch
                 // BodyBuilderのポージング表示
                 if (roleInfo.RoleId == RoleId.BodyBuilder && roleInfo.TasksCompleted >= roleInfo.TasksTotal)
                 {
-                    var posingId = (byte)UnityEngine.Random.Range(1, 6); // ランダムなポーズ
+                    var posingId = (byte)UnityEngine.Random.Range(1, 5); // ランダムなポーズ
                     var prefab = AssetManager.GetAsset<GameObject>($"BodyBuilderAnim0{posingId}.prefab");
                     if (prefab != null)
                     {
