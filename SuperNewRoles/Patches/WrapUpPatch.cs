@@ -97,7 +97,7 @@ class WrapUpPatch
         public static void Postfix(AirshipExileController._WrapUpAndSpawn_d__11 __instance)
         {
             if (lastpost == __instance.__4__this.GetInstanceID())
-                return true;
+                return;
             lastpost = __instance.__4__this.GetInstanceID();
             WrapUpPatch.Postfix(__instance.__4__this, __instance.__4__this.initData?.networkedPlayer);
         }
