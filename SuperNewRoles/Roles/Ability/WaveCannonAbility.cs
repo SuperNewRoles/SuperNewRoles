@@ -60,7 +60,6 @@ public class WaveCannonAbility : CustomButtonBase, IButtonEffect
 
     public override bool CheckIsAvailable()
     {
-        //TODO:発射可能条件
         return PlayerControl.LocalPlayer.CanMove;
     }
     public override void Detach()

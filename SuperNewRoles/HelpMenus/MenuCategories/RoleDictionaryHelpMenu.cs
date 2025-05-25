@@ -215,7 +215,7 @@ public class RoleDictionaryHelpMenu : HelpMenuCategoryBase
     {
         // モディファイア役職一覧を取得
         var modifierRoles = CustomRoleManager.AllModifiers
-            .Where(r => r.QuoteMod != QuoteMod.Vanilla && !r.HiddenOption)
+            .Where(r => r.QuoteMod != QuoteMod.Vanilla)
             .OrderBy(r => r.ModifierRole.ToString())
             .ToList();
 
