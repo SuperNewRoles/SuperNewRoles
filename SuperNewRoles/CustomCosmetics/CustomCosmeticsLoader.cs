@@ -124,9 +124,6 @@ public class CustomCosmeticsLoader
             try
             {
                 string jsonContent = ft.content;
-                Logger.Info("JSON!!!");
-                Logger.Info(jsonContent);
-
                 // JSONをパース
                 JObject json = JObject.Parse(jsonContent);
                 JToken assetBundlesToken = json["assetbundles"];

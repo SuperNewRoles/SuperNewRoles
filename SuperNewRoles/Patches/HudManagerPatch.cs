@@ -35,10 +35,10 @@ public static class HudManagerPatch
         }
     }
 }
-[HarmonyPatch(typeof(HudManager._CoShowIntro_d__88), nameof(HudManager._CoShowIntro_d__88.MoveNext))]
+[HarmonyCoroutinePatch(typeof(HudManager), nameof(HudManager.CoShowIntro))]
 public static class HudManagerShowIntroPatch
 {
-    public static void Postfix(bool __result)
+    public static void Postfix(ref bool __result)
     {
         if (!__result && ModHelpers.IsHnS())
         {

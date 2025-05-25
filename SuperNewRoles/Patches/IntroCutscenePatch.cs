@@ -39,7 +39,7 @@ public static class IntroCutscenePatch
             }, 5f, "Initialize");
         }
     }
-    [HarmonyPatch(typeof(IntroCutscene._ShowRole_d__41), nameof(IntroCutscene._ShowRole_d__41.MoveNext))]
+    [HarmonyCoroutinePatch(typeof(IntroCutscene), nameof(IntroCutscene.ShowRole))]
     public static class SetUpRoleTextPatch
     {
         private static int last;
@@ -48,11 +48,14 @@ public static class IntroCutscenePatch
             f = Mathf.Clamp01(f);
             return (byte)(f * 255);
         }
-        public static void Postfix(IntroCutscene._ShowRole_d__41 __instance)
+        public static void Postfix(object __instance) // IEnumerator<object>などの具体的な型ではなくobject型で受け取る
         {
-            if (__instance.__4__this.GetInstanceID() == last)
+            IntroCutscene introCutscene = HarmonyCoroutinePatchProcessor.GetParentFromCoroutine<IntroCutscene>(__instance);
+            if (introCutscene == null) return;
+
+            if (introCutscene.GetInstanceID() == last)
                 return;
-            last = __instance.__4__this.GetInstanceID();
+            last = introCutscene.GetInstanceID();
             ExPlayerControl player = PlayerControl.LocalPlayer;
             RoleId myrole = player.Role;
 
@@ -62,36 +65,36 @@ public static class IntroCutscenePatch
             if (rolebase != null)
             {
                 Color roleColor = rolebase.RoleColor;
-                __instance.__4__this.YouAreText.color = roleColor;           //あなたのロールは...を役職の色に変更
-                __instance.__4__this.RoleText.color = roleColor;             //役職名の色を変更
-                __instance.__4__this.RoleBlurbText.color = roleColor;        //イントロの簡易説明の色を変更
+                introCutscene.YouAreText.color = roleColor;           //あなたのロールは...を役職の色に変更
+                introCutscene.RoleText.color = roleColor;             //役職名の色を変更
+                introCutscene.RoleBlurbText.color = roleColor;        //イントロの簡易説明の色を変更
 
-                __instance.__4__this.RoleText.text = ModTranslation.GetString(rolebase.Role.ToString());               //役職名を変更
+                introCutscene.RoleText.text = ModTranslation.GetString(rolebase.Role.ToString());               //役職名を変更
 
                 var randomIntroNum = Random.Range(1, rolebase.IntroNum + 1); // 1からrolebase.IntroNumまでのランダムな数を取得
-                __instance.__4__this.RoleBlurbText.text = ModTranslation.GetString($"{rolebase.Role}Intro{randomIntroNum}");     //イントロの簡易説明をランダムに変更
+                introCutscene.RoleBlurbText.text = ModTranslation.GetString($"{rolebase.Role}Intro{randomIntroNum}");     //イントロの簡易説明をランダムに変更
             }
 
             if (myrole is RoleId.Crewmate or RoleId.Impostor)
             {
-                __instance.__4__this.RoleText.text = player.Data.Role.NiceName;
-                __instance.__4__this.RoleBlurbText.text = player.Data.Role.Blurb;
-                __instance.__4__this.YouAreText.color = player.Data.Role.TeamColor;   //あなたのロールは...を役職の色に変更
-                __instance.__4__this.RoleText.color = player.Data.Role.TeamColor;     //役職名の色を変更
-                __instance.__4__this.RoleBlurbText.color = player.Data.Role.TeamColor;//イントロの簡易説明の色を変更
+                introCutscene.RoleText.text = player.Data.Role.NiceName;
+                introCutscene.RoleBlurbText.text = player.Data.Role.Blurb;
+                introCutscene.YouAreText.color = player.Data.Role.TeamColor;   //あなたのロールは...を役職の色に変更
+                introCutscene.RoleText.color = player.Data.Role.TeamColor;     //役職名の色を変更
+                introCutscene.RoleBlurbText.color = player.Data.Role.TeamColor;//イントロの簡易説明の色を変更
             }
 
             foreach (var modifier in player.ModifierRoleBases)
             {
                 var randomIntroNum = Random.Range(1, modifier.IntroNum + 1);
-                __instance.__4__this.RoleBlurbText.text += "\n" + ModHelpers.CsWithTranslation(modifier.RoleColor, $"{modifier.ModifierRole}Intro{randomIntroNum}");
+                introCutscene.RoleBlurbText.text += "\n" + ModHelpers.CsWithTranslation(modifier.RoleColor, $"{modifier.ModifierRole}Intro{randomIntroNum}");
             }
 
             //プレイヤーを作成&位置変更
-            __instance.__4__this.ourCrewmate = __instance.__4__this.CreatePlayer(0, 1, PlayerControl.LocalPlayer.Data, false);
-            __instance.__4__this.ourCrewmate.gameObject.SetActive(false);
-            __instance.__4__this.ourCrewmate.transform.localPosition = new Vector3(0f, -1.05f, -18f);
-            __instance.__4__this.ourCrewmate.transform.localScale = new Vector3(1f, 1f, 1f);
+            introCutscene.ourCrewmate = introCutscene.CreatePlayer(0, 1, PlayerControl.LocalPlayer.Data, false);
+            introCutscene.ourCrewmate.gameObject.SetActive(false);
+            introCutscene.ourCrewmate.transform.localPosition = new Vector3(0f, -1.05f, -18f);
+            introCutscene.ourCrewmate.transform.localScale = new Vector3(1f, 1f, 1f);
 
             //サウンド再生
             var sound = PlayerControl.LocalPlayer.Data.Role.IntroSound;
@@ -100,10 +103,10 @@ public static class IntroCutscenePatch
             SoundManager.Instance.PlaySound(sound, false, 1);
 
             //字幕やプレイヤーを再表示する(Prefixで消している)
-            __instance.__4__this.ourCrewmate.gameObject.SetActive(true);
-            __instance.__4__this.YouAreText.gameObject.SetActive(true);
-            __instance.__4__this.RoleText.gameObject.SetActive(true);
-            __instance.__4__this.RoleBlurbText.gameObject.SetActive(true);
+            introCutscene.ourCrewmate.gameObject.SetActive(true);
+            introCutscene.YouAreText.gameObject.SetActive(true);
+            introCutscene.RoleText.gameObject.SetActive(true);
+            introCutscene.RoleBlurbText.gameObject.SetActive(true);
         }
     }
 

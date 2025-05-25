@@ -143,6 +143,8 @@ public partial class SuperNewRolesPlugin : BasePlugin
         if (Constants.GetPlatformType() == Platforms.Android)
         {
             harmony.PatchAll(assembly);
+            // コルーチンパッチを処理
+            HarmonyCoroutinePatchProcessor.ProcessCoroutinePatches(harmony, assembly);
         }
         else
         {
@@ -153,6 +155,9 @@ public partial class SuperNewRolesPlugin : BasePlugin
                 harmony.CreateClassProcessor(type).Patch();
             });
             Task.WhenAll(tasks.ToArray()).Wait();
+
+            // コルーチンパッチを処理
+            HarmonyCoroutinePatchProcessor.ProcessCoroutinePatches(harmony, assembly);
         }
     }
 
