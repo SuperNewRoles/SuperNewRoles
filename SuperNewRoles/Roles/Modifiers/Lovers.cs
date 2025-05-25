@@ -32,7 +32,7 @@ class Lovers : ModifierBase<Lovers>
     public override RoleTag[] RoleTags => [];
 
     public override short IntroNum => 1;
-    public override Func<ExPlayerControl, string> ModifierMark => (player) => "{0}"; // + ModHelpers.Cs(player.AmOwner && player.IsAlive() && player.Role != RoleId.God ? RoleColor : player.GetAbility<LoversAbility>().HeartColor, "♥");
+    public override Func<ExPlayerControl, string> ModifierMark => (player) => "{0}" + ModHelpers.Cs(player.AmOwner && player.IsAlive() && player.Role != RoleId.God ? RoleColor : player.GetAbility<LoversAbility>().HeartColor, "♥");
     public override bool HiddenOption => true;
 
     [Modifier(ModifierRoleId.Lovers)]
