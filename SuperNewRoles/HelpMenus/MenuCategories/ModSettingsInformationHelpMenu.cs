@@ -5,6 +5,7 @@ using SuperNewRoles.CustomOptions;
 using TMPro;
 using UnityEngine;
 using UnityEngine.Events;
+using Unity.Services.Core.Internal;
 
 namespace SuperNewRoles.HelpMenus.MenuCategories;
 
@@ -91,7 +92,7 @@ public class ModSettingsInformationHelpMenu : HelpMenuCategoryBase
 
         // 定数定義：ヘッダー高さ、オプション間のオフセット、初期オプション表示位置
         const float headerHeight = 0.6f;
-        const float optionYOffset = 0.34375f;
+        const float optionYOffset = 0.25f;
         const float textYOffset = optionYOffset * 0.8f;
         const float headerOptionStartY = 1.75f;
 
