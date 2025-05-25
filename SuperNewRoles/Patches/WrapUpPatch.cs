@@ -93,9 +93,13 @@ class WrapUpPatch
             }
             return true;
         }
-        public static void Postfix(AirshipExileController __instance)
+        private static int lastpost;
+        public static void Postfix(AirshipExileController._WrapUpAndSpawn_d__11 __instance)
         {
-            WrapUpPatch.Postfix(__instance, __instance.initData?.networkedPlayer);
+            if (lastpost == __instance.__4__this.GetInstanceID())
+                return;
+            lastpost = __instance.__4__this.GetInstanceID();
+            WrapUpPatch.Postfix(__instance.__4__this, __instance.__4__this.initData?.networkedPlayer);
         }
     }
     public static void Prefix(NetworkedPlayerInfo exiled)
