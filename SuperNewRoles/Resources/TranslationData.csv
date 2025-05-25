@@ -231,8 +231,8 @@ CustomOptionTask_Short,ショートタスク,Short Tasks,短任務,短任務
 CustomOptionTask_Long,ロングタスク,Long Tasks,长任務,長任務
 CustomOptionTask_Common,通常タスク,Common Tasks,共同任務,共同任務
 SkipStartGameCountdown,ゲーム開始カウントダウンをスキップ,Skip Game Start Countdown,跳过游戏开始倒计时,跳過遊戲開始倒計時
-CustomOptionTrue,有効,Enabled,启用,啟用
-CustomOptionFalse,無効,Disabled,无效,无效
+CustomOptionTrue,オン,Enabled,启用,啟用
+CustomOptionFalse,オフ,Disabled,无效,无效
 
 # Win
 WinName,勝利,Win,勝利,勝利

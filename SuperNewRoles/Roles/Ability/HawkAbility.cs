@@ -4,6 +4,7 @@ using SuperNewRoles.Roles.Ability.CustomButton;
 using SuperNewRoles.Events;
 using System;
 using SuperNewRoles.Modules.Events.Bases;
+using SuperNewRoles.Events.PCEvents;
 
 namespace SuperNewRoles.Roles.Ability;
 
@@ -33,6 +34,8 @@ public class HawkAbility : CustomButtonBase, IButtonEffect
     private readonly bool _cannotWalkInEffect;
 
     private EventListener<HawkEventData> hawkEventListener;
+    private EventListener<MeetingStartEventData> meetingStartEventListener;
+    private EventListener<DieEventData> dieEventListener;
 
     public HawkAbility(float coolDown, float duration, float zoomMagnification, bool cannotWalkInEffect)
     {
@@ -47,12 +50,15 @@ public class HawkAbility : CustomButtonBase, IButtonEffect
         base.AttachToLocalPlayer();
         hawkEventListener = HawkEvent.Instance.AddListener((data) =>
         {
-            if (isEffectActive)
-            {
-                data.RefCancelZoom = true;
-                data.RefZoomSize = (int)(DEFAULT_ZOOM_SIZE * _zoomMagnification);
-                data.RefAcceleration = true;
-            }
+            OnHawk(data);
+        });
+        meetingStartEventListener = MeetingStartEvent.Instance.AddListener((data) =>
+        {
+            OnStartMeeting();
+        });
+        dieEventListener = DieEvent.Instance.AddListener((data) =>
+        {
+            OnDie();
         });
     }
 
@@ -60,6 +66,8 @@ public class HawkAbility : CustomButtonBase, IButtonEffect
     {
         base.DetachToLocalPlayer();
         hawkEventListener?.RemoveListener();
+        meetingStartEventListener?.RemoveListener();
+        dieEventListener?.RemoveListener();
     }
 
     public override void OnClick()
@@ -70,6 +78,28 @@ public class HawkAbility : CustomButtonBase, IButtonEffect
             PlayerControl.LocalPlayer.moveable = false;
             PlayerControl.LocalPlayer.MyPhysics.body.velocity = Vector2.zero;
         }
+    }
+
+    private void OnHawk(HawkEventData data)
+    {
+        if (ExPlayerControl.LocalPlayer.IsDead()) return;
+        if (MeetingHud.Instance != null) return;
+        if (!isEffectActive) return;
+        data.RefCancelZoom = true;
+        data.RefZoomSize = (int)(DEFAULT_ZOOM_SIZE * _zoomMagnification);
+        data.RefAcceleration = true;
+    }
+
+    private void OnStartMeeting()
+    {
+        isEffectActive = false;
+        ResetTimer();
+    }
+
+    private void OnDie()
+    {
+        isEffectActive = false;
+        ResetTimer();
     }
 
     public override bool CheckIsAvailable()

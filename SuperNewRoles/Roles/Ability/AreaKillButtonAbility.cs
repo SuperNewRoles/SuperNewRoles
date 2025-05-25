@@ -136,6 +136,6 @@ public class AreaKillButtonAbility : CustomButtonBase
 
     public override bool CheckHasButton()
     {
-        return CanKill() && !IsUsed;
+        return ExPlayerControl.LocalPlayer.IsAlive() && CanKill() && !IsUsed;
     }
 }
