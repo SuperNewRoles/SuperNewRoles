@@ -14,7 +14,7 @@ public static partial class ModTranslation
     private static Dictionary<SupportedLangs, Dictionary<string, string>> AllTranslations = new();
     public static void Load()
     {
-        if (Constants.GetPlatformType() != Platforms.Android)
+        if (!ModHelpers.IsAndroid())
             AllTranslations = LoadTranslation();
         UpdateCurrentTranslations();
     }
@@ -73,7 +73,7 @@ public static partial class ModTranslation
             return;
         CurrentLang = GetCurrentSupportedLang();
         // Androidはメモリ節約のため現在の翻訳しか保持しない
-        if (Constants.GetPlatformType() == Platforms.Android)
+        if (ModHelpers.IsAndroid())
             AllTranslations = LoadTranslation();
         switch (CurrentLang)
         {
@@ -92,7 +92,7 @@ public static partial class ModTranslation
             default:
                 throw new Exception($"Invalid language: {CurrentLang}");
         }
-        if (Constants.GetPlatformType() == Platforms.Android)
+        if (ModHelpers.IsAndroid())
             AllTranslations = null;
     }
     public static string GetString(string key)

@@ -59,7 +59,7 @@ public class CustomCosmeticsLoader
     private static Dictionary<string, List<(string, string)>> willDownloads = new();
 
     // Android版はメモリ節約のため、ダウンロードしたバイト列を保持しない
-    private static readonly Dictionary<string, byte[]> downloadedSprites = null; //Constants.GetPlatformType() == Platforms.Android ? null : new();
+    private static readonly Dictionary<string, byte[]> downloadedSprites = null; //ModHelpers.IsAndroid() ? null : new();
 
     public static int AssetBundlesDownloadedCount;
     public static int AssetBundlesAllCount;
@@ -69,7 +69,7 @@ public class CustomCosmeticsLoader
     public static int SpritesAllCount;
     public static bool SpritesDownloading = false;
 
-    public static readonly int MAX_CONCURRENT_DOWNLOADS = Constants.GetPlatformType() == Platforms.Android ? 10 : 30;
+    public static readonly int MAX_CONCURRENT_DOWNLOADS = ModHelpers.IsAndroid() ? 10 : 30;
     public static IEnumerator LoadAsync(Func<IEnumerator, Coroutine> startCoroutine)
     {
         switch (Application.internetReachability)
@@ -138,7 +138,7 @@ public class CustomCosmeticsLoader
                         string expectedHash = assetBundle["hash"]?.ToString() ?? "";
                         string expectedHashAndroid = assetBundle["hash_android"]?.ToString() ?? "";
 
-                        bool isAndroid = Constants.GetPlatformType() == Platforms.Android;
+                        bool isAndroid = ModHelpers.IsAndroid();
 
                         string currentUrl = isAndroid ? assetBundleAndroidUrl : assetBundleUrl;
                         string currentExpectedHash = isAndroid ? expectedHashAndroid : expectedHash;

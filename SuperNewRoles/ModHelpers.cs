@@ -667,4 +667,9 @@ public static class ModHelpers
         value.Play();
         return value;
     }
+
+    public static bool IsAndroid()
+    {
+        return Constants.GetPlatformType() == Platforms.Android;
+    }
 }

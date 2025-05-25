@@ -69,13 +69,13 @@ public static class AssetManager
         foreach (var data in AssetPathes)
         {
             SuperNewRolesPlugin.Logger.LogInfo($"[Splash] Loading AssetBundle: {data.Type}");
-            string platform = Constants.GetPlatformType() == Platforms.Android ? "_android" : "";
+            string platform = ModHelpers.IsAndroid() ? "_android" : "";
             AssetBundle assetBundle = null;
             try
             {
                 // AssemblyからAssetBundleファイルを読み込む
                 string resourceName = $"SuperNewRoles.Resources.{data.Path}{platform}.bundle";
-                if (Constants.GetPlatformType() == Platforms.Android)
+                if (ModHelpers.IsAndroid())
                 {
                     // メモリ量削減の為Androidはファイルから読み込む
                     using (var bundleStream = ExcAssembly.GetManifestResourceStream(resourceName))
@@ -296,7 +296,7 @@ public static class AssetManager
         }
         // Optionally, if you also want to clear the Bundles dictionary (though this might not be what you want if bundles are meant to persist across scenes)
         // Bundles.Clear();
-        if (Constants.GetPlatformType() != Platforms.Android)
+        if (!ModHelpers.IsAndroid())
             Resources.UnloadUnusedAssets();
         SuperNewRolesPlugin.Logger.LogInfo("[AssetManager] All cached assets unloaded.");
     }

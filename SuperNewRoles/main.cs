@@ -64,7 +64,7 @@ public partial class SuperNewRolesPlugin : BasePlugin
     {
         // AndroidでTask.Runを使わないか
         bool needed = false;
-        if (needed && Constants.GetPlatformType() == Platforms.Android)
+        if (needed && ModHelpers.IsAndroid())
             action();
         else
             return Task.Run(action);
@@ -127,7 +127,7 @@ public partial class SuperNewRolesPlugin : BasePlugin
         });
 
         Logger.LogInfo("Waiting for Harmony patch");
-        if (Constants.GetPlatformType() == Platforms.Android)
+        if (ModHelpers.IsAndroid())
         {
             HarmonyPatchAllTask?.Wait();
             CustomRPCManagerLoadTask?.Wait();
@@ -140,7 +140,7 @@ public partial class SuperNewRolesPlugin : BasePlugin
     public void PatchAll(Harmony harmony)
     {
         var assembly = Assembly;
-        if (Constants.GetPlatformType() == Platforms.Android)
+        if (ModHelpers.IsAndroid())
         {
             harmony.PatchAll(assembly);
             // コルーチンパッチを処理
@@ -199,7 +199,7 @@ public partial class SuperNewRolesPlugin : BasePlugin
     private static void CheckStarts()
     {
         // Androidはよっぽどのことがない限り1起動で済むので
-        if (Constants.GetPlatformType() == Platforms.Android)
+        if (ModHelpers.IsAndroid())
         {
             ProcessNumber = 0;
             return;

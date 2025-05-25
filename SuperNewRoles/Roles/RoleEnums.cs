@@ -92,6 +92,9 @@ public enum RoleId : short
     EvilMechanic,
     BodyBuilder,
     HamburgerShop,
+    NiceHawk,
+    EvilHawk,
+    MadHawk,
 }
 
 public enum GhostRoleId : short
@@ -112,6 +115,7 @@ public enum ModifierRoleId : short
     Lovers = 1 << 3,
     JumboModifier = 1 << 4,
     ModifierSpelunker = 1 << 5,
+    ModifierHawk = 1 << 6,
 }
 
 public enum QuoteMod : byte
