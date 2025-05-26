@@ -189,7 +189,7 @@ public class AssignmentsSettingInfomation2HelpMenu : HelpMenuCategoryBase
         var teamNameTMP = info.Find("TeamName").GetComponent<TextMeshPro>();
         if (teamNameTMP != null)
         {
-            teamNameTMP.text = ModHelpers.CsWithTranslation(Color.magenta, "Modifier");
+            teamNameTMP.text = ModHelpers.CsWithTranslation(new Color32(255, 112, 183, 255), "Modifier");
         }
         else
         {

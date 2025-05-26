@@ -305,7 +305,7 @@ public static class RoleOptionMenu
     /// </summary>
     private static void UpdateMenuTitle(RoleOptionMenuType type)
     {
-        RoleOptionMenuObjectData.TitleText.text = $"<b>{ModTranslation.GetString($"RoleOptionMenuType.{type}")}</b>";
+        RoleOptionMenuObjectData.TitleText.text = $"{ModTranslation.GetString($"RoleOptionMenuType.{type}")}";
     }
 
     /// <summary>

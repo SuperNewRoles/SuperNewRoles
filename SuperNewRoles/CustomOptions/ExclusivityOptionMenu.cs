@@ -32,7 +32,7 @@ public static class ExclusivityOptionMenu
             RoleOptionMenu.GetGameSettingMenu().transform,
             new(0, 0, -2f),
             Vector3.one * 0.2f);
-        menu.transform.Find("TitleText").GetComponent<TextMeshPro>().text = $"<b>{ModTranslation.GetString("ExclusivityOptionMenuTitle")}</b>";
+        menu.transform.Find("TitleText").GetComponent<TextMeshPro>().text = $"{ModTranslation.GetString("ExclusivityOptionMenuTitle")}";
 
         var header = menu.transform.Find("Header");
         header.Find("MaxText").GetComponent<TextMeshPro>().text = ModTranslation.GetString("ExclusivityOptionMenuMaxText");
@@ -47,7 +47,7 @@ public static class ExclusivityOptionMenu
             parent,
             new(-17.255f, 4.2f - (index * 1.8f), -2f),
             Vector3.one);
-        button.transform.Find("GroupText").GetComponent<TextMeshPro>().text = $"<b>{ModTranslation.GetString("ExclusivityOptionMenuGroupText", index + 1)}</b>";
+        button.transform.Find("GroupText").GetComponent<TextMeshPro>().text = $"{ModTranslation.GetString("ExclusivityOptionMenuGroupText", index + 1)}";
 
         var exclusivitySetting = index < RoleOptionManager.ExclusivitySettings.Count
             ? RoleOptionManager.ExclusivitySettings[index].Roles
@@ -316,7 +316,7 @@ public static class ExclusivityOptionMenu
             ? RoleOptionManager.ExclusivitySettings[index].Roles
             : new();
         instance.ExclusivityEditMenu.transform.Find("TitleText").GetComponent<TextMeshPro>().text =
-            $"<b>{ModTranslation.GetString("ExclusivityEditMenuGroupTitle", index + 1)}</b>";
+            $"{ModTranslation.GetString("ExclusivityEditMenuGroupTitle", index + 1)}";
     }
 
     private static void ReGenerateMenu()

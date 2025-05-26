@@ -313,7 +313,7 @@ public static class BulkRoleSettings
     public static void SetupBulkHeaderBar(string side, GameObject obj)
     {
         var headerBar = obj.transform.Find($"HeaderBar_{side}");
-        headerBar.Find("MaxPeople_Text").GetComponent<TextMeshPro>().text = $"<b>{ModTranslation.GetString("MaxPeople")}</b>";
-        headerBar.Find("AssignPer_Text").GetComponent<TextMeshPro>().text = $"<b>{ModTranslation.GetString("AssignPer")}</b>";
+        headerBar.Find("MaxPeople_Text").GetComponent<TextMeshPro>().text = $"{ModTranslation.GetString("MaxPeople")}";
+        headerBar.Find("AssignPer_Text").GetComponent<TextMeshPro>().text = $"{ModTranslation.GetString("AssignPer")}";
     }
 }
