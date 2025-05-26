@@ -92,7 +92,7 @@ public static class HelpMenuObjectManager
 
             // テキストを設定
             bulkRoleButton.transform.Find("Text").GetComponent<TextMeshPro>().text =
-                $"<b>{ModTranslation.GetString($"HelpMenu.{categories[i].Name}")}</b>";
+            $"{ModTranslation.GetString($"HelpMenu.{categories[i].Name}")}";
 
             // Selectedオブジェクトを取得
             GameObject selectedObject = bulkRoleButton.transform.Find("Selected").gameObject;

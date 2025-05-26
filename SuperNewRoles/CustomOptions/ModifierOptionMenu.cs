@@ -1064,7 +1064,7 @@ public static class ModifierOptionMenu
         if (titleText != null)
         {
             // Modifier名をタイトルに入れるなど
-            titleText.text = $"<b>{ModTranslation.GetString("AssignFilterEditMenuTitle")}</b>"; // 新しい翻訳キー
+            titleText.text = $"{ModTranslation.GetString("AssignFilterEditMenuTitle")}"; // 新しい翻訳キー
         }
 
         // デフォルトで表示するロールタイプ（例：Impostor）
