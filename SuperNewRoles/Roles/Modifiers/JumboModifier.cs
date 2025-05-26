@@ -29,7 +29,7 @@ class JumboModifier : ModifierBase<JumboModifier>
 
     public override short IntroNum => 1;
 
-    public override Func<ExPlayerControl, string> ModifierMark => _ => "{0} " + ModHelpers.Cs(RoleColor, "Ⓙ");
+    public override Func<ExPlayerControl, string> ModifierMark => _ => "{0}" + ModHelpers.Cs(RoleColor, "Ⓙ");
 
     public override bool AssignFilter => true;
 

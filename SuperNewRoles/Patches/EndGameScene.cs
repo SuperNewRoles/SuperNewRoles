@@ -420,6 +420,8 @@ public class EndGameManagerSetUpPatch
                 string roleText = ModHelpers.CsWithTranslation(roleInfo.roleBase.RoleColor, roleInfo.roleBase.Role.ToString());
                 if (roleInfo.GhostRoleId != GhostRoleId.None)
                     roleText = $"{ModHelpers.CsWithTranslation(roleInfo.ghostRoleBase.RoleColor, roleInfo.GhostRoleId.ToString())} ({roleText}) ";
+                if (roleInfo.modifierMarks.Count > 0)
+                    roleText += " ";
                 foreach (var modifier in roleInfo.modifierMarks)
                 {
                     roleText = modifier.Replace("{0}", roleText);
@@ -488,6 +490,8 @@ public class EndGameManagerSetUpPatch
             {
                 var taskInfo = roleInfo.TasksTotal > 0 ? $"<color=#FAD934FF>({roleInfo.TasksCompleted}/{roleInfo.TasksTotal})</color>" : "";
                 string roleText = ModHelpers.CsWithTranslation(roleInfo.roleBase.RoleColor, roleInfo.roleBase.Role.ToString());
+                if (roleInfo.modifierMarks.Count > 0)
+                    roleText += " ";
                 foreach (var modifier in roleInfo.modifierMarks)
                     roleText = modifier.Replace("{0}", roleText);
                 string playerName = ModHelpers.Cs(Palette.PlayerColors[roleInfo.ColorId], roleInfo.PlayerName);
@@ -577,6 +581,7 @@ public static class OnGameEndPatch
         string visor2Id = "";
         float additionalSize = 1f;
         Color? loversHeartColor = null;
+        List<string> modifierMarks = [];
 
         if (player.Disconnected)
         {
@@ -604,6 +609,10 @@ public static class OnGameEndPatch
             hat2Id = customCosmeticsLayer?.hat2?.Hat?.ProdId ?? "";
             visor2Id = customCosmeticsLayer?.visor2?.Visor?.ProdId ?? "";
             loversHeartColor = exPlayer.TryGetAbility<LoversAbility>(out var loversAbility) ? loversAbility.HeartColor : null;
+            foreach (var modifier in exPlayer.ModifierRoleBases)
+            {
+                modifierMarks.Add(modifier.ModifierMark(exPlayer));
+            }
         }
         additionalSize *= modifierRoleId.HasFlag(ModifierRoleId.JumboModifier) ? 2f : 1f;
 
@@ -623,7 +632,7 @@ public static class OnGameEndPatch
             roleBase = CustomRoleManager.TryGetRoleById(roleId, out var role) ? role : null,
             ghostRoleBase = CustomRoleManager.TryGetGhostRoleById(ghostRoleId, out var ghostRole) ? ghostRole : null,
             modifierRoleBases = modifierRoleId != ModifierRoleId.None ? CustomRoleManager.TryGetModifierById(modifierRoleId, out var modifierRole) ? new List<IModifierBase> { modifierRole } : new List<IModifierBase>() : new List<IModifierBase>(),
-            modifierMarks = player.Object == null ? [] : modifierRoleId != ModifierRoleId.None ? CustomRoleManager.TryGetModifierById(modifierRoleId, out var modifierRole2) ? new List<string> { modifierRole2.ModifierMark(player) } : new List<string>() : new List<string>(),
+            modifierMarks = modifierMarks,
             Hat2Id = hat2Id,
             Visor2Id = visor2Id,
             additionalSize = additionalSize,
