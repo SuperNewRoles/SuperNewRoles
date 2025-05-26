@@ -426,9 +426,9 @@ public class ExPlayerControl
         => IsKiller() && !IsCrewmate();
 
     public bool IsCrewmate()
-        => roleBase != null ? (Role == RoleId.SchrodingersCat && GetAbility<SchrodingersCatAbility>()?.CurrentTeam == SchrodingersCatTeam.Crewmate) || (roleBase.AssignedTeam == AssignedTeamType.Crewmate && !IsMadRoles()) : !Data.Role.IsImpostor;
+        => roleBase != null ? (Role == RoleId.SchrodingersCat && GetAbility<SchrodingersCatAbility>()?.CurrentTeam == SchrodingersCatTeam.Crewmate) || (roleBase.AssignedTeam == AssignedTeamType.Crewmate && !IsMadRoles() && !IsFriendRoles()) : !Data.Role.IsImpostor;
     public bool IsCrewmateOrMadRoles()
-        => IsCrewmate() || IsMadRoles();
+        => IsCrewmate() || IsMadRoles() || IsFriendRoles();
     public bool IsImpostor()
         => Data.Role.IsImpostor || GetAbility<SchrodingersCatAbility>()?.CurrentTeam == SchrodingersCatTeam.Impostor;
     public bool IsNeutral()

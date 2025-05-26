@@ -311,7 +311,7 @@ public static class AssignRoles
             }
         }
         // クルーメイトへの割当
-        var crewmates = allPlayers.Where(x => x.IsCrewmate() &&
+        var crewmates = allPlayers.Where(x => x.IsCrewmateOrMadRoles() &&
                                         !x.ModifierRole.HasFlag(modifierRoleId) &&
                                         (modifierRoleOption.AssignFilterList.Count == 0 || !modifierRoleOption.AssignFilterList.Contains(x.Role)) &&
                                         (modifierBase.DoNotAssignRoles.Length == 0 || !modifierBase.DoNotAssignRoles.Contains(x.Role)))

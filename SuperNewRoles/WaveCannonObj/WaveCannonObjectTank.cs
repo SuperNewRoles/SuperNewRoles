@@ -64,7 +64,7 @@ public class WaveCannonObjectTank : WaveCannonObjectBase
     private GameObject _gameObject;
     private GameObject _tankObj;
     public override GameObject WaveCannonObject => _gameObject;
-    public override bool HidePlayer => false;
+    public override bool HidePlayer => true;
     public override Vector3 startPositionOffset => new(0, 0f, 0);
 
     public override SpriteRenderer ShootRenderer => _shootRenderer;
