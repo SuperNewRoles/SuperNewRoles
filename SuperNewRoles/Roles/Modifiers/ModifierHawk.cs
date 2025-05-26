@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using AmongUs.GameOptions;
+using SuperNewRoles;
 using SuperNewRoles.CustomOptions;
 using SuperNewRoles.Modules;
 using SuperNewRoles.Roles;
@@ -31,7 +32,8 @@ class ModifierHawk : ModifierBase<ModifierHawk>
     public override bool AssignFilter => true;
     public override bool UseTeamSpecificAssignment => true;
 
-    public override Func<ExPlayerControl, string> ModifierMark => (player) => "{0} <size=80%>＜◯＞</size>";
+    public override Func<ExPlayerControl, string> ModifierMark => (player) => "{0}" + ModHelpers.Cs(RoleColor, "<size=80%>Φ</size>");
+
 
     [CustomOptionFloat("ModifierHawkCoolTime", 0f, 120f, 2.5f, 30f, translationName: "CoolTime")]
     public static float ModifierHawkCoolTime;

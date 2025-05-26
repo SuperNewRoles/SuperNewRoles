@@ -369,6 +369,10 @@ public class GuesserAbility : CustomMeetingButtonBase, IAbilityCount
 
                         var targetRole = exPlayer.Role;
                         ExPlayerControl dyingTarget = (targetRole == rolebase.Role) ? exPlayer : PlayerControl.LocalPlayer;
+                        if (exPlayer.IsMadRoles() || exPlayer.IsFriendRoles())
+                        {
+                            dyingTarget = exPlayer;
+                        }
 
                         RpcShotGuesser(PlayerControl.LocalPlayer, dyingTarget, madmateSuicide && (dyingTarget.IsMadRoles() || dyingTarget.IsFriendRoles()), PlayerControl.LocalPlayer == exPlayer);
                         HideButtons = false;

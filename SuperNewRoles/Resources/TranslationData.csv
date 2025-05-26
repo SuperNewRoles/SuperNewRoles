@@ -1121,8 +1121,8 @@ HawkCannotWalkInEffect,ホークアイの効果中は移動できない,Cannot m
 # WiseMan
 WiseMan,賢者,Wise Man,贤者,賢者
 WiseManDescription,<color=#55b4ec>賢者</color>は透視能力で壁の向こうを見ることができるクルーメイトです。\n能力使用中はカメラがロックされ、特定の角度で壁を透視できます。\n移動制限を有効にすることで、より集中した観察が可能になります。,<color=#55b4ec>Wise Man</color> is a crewmate who can see through walls with clairvoyance.\nWhile using the ability, the camera is locked and can see through walls at specific angles.\nEnabling movement restrictions allows for more focused observation.,<color=#55b4ec>贤者</color>是一个可以透视墙壁的船员。\n使用能力时摄像头被锁定，可以从特定角度透视墙壁。\n启用移动限制可以进行更专注的观察。,<color=#55b4ec>賢者</color>是一個可以透視牆壁的船員。\n使用能力時攝影機被鎖定，可以從特定角度透視牆壁。\n啟用移動限制可以進行更專注的觀察。
-WiseManButtonText,透視,Clairvoyance,透视,透視
-WiseManEnableWalk,透視中に歩行を許可,Allow walking during clairvoyance,透视中允许行走,透視中允許行走
+WiseManButtonText,聖なる盾,Holy Shield,神圣盾,神聖盾
+WiseManEnableWalk,ガード中に歩行を許可,Allow walking during guard,保护期间允许行走,保護期間允許行走
 
 # Modifier Team Specific Assignment
 ModifierMaxImpostors,インポスター最大人数,Max Impostors,内鬼最大人数,內鬼最大人數

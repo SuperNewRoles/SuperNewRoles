@@ -39,6 +39,7 @@ public class WiseManAbility : CustomButtonBase, IButtonEffect
     private EventListener<DieEventData> _dieEventListener;
     public bool Active { get; private set; }
     private Vector3 position;
+    private bool Guarded;
 
     public WiseManAbility(float coolDown, float duration, bool enableWalk)
     {
@@ -98,6 +99,7 @@ public class WiseManAbility : CustomButtonBase, IButtonEffect
 
     private void OnTryKill(TryKillEventData data)
     {
+        if (Guarded) return;
         if (data.RefTarget != Player) return;
         if (data.Killer == data.RefTarget) return;
         data.RefSuccess = false;
@@ -114,6 +116,7 @@ public class WiseManAbility : CustomButtonBase, IButtonEffect
     {
         Active = isActive;
         this.position = position;
+        Guarded = false;
     }
 
     private void PhysicsUpdate(PlayerPhysicsFixedUpdateEventData data)
