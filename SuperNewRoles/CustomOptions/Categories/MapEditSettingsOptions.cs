@@ -94,9 +94,8 @@ public static class MapEditSettingsOptions
     [CustomOptionBool("TheFungleMushroomMixupOption", false, parentFieldName: nameof(TheFungleSetting))]
     public static bool TheFungleMushroomMixupOption;
 
-    /* TODO
-        [CustomOptionBool("TheFungleMushroomMixupCantOpenMeeting", false, parentFieldName: nameof(TheFungleMushroomMixupOption))]
-        public static bool TheFungleMushroomMixupCantOpenMeeting;*/
+    [CustomOptionBool("TheFungleMushroomMixupCantOpenMeeting", false, parentFieldName: nameof(TheFungleMushroomMixupOption))]
+    public static bool TheFungleMushroomMixupCantOpenMeeting;
 
     [CustomOptionFloat("TheFungleMushroomMixupTime", 1f, 30f, 0.5f, 10f, parentFieldName: nameof(TheFungleMushroomMixupOption))]
     public static float TheFungleMushroomMixupTime;

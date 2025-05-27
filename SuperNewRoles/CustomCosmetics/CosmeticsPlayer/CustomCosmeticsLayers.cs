@@ -4,6 +4,7 @@ using System.Linq;
 using Il2CppInterop.Runtime;
 using PowerTools;
 using SuperNewRoles.Modules;
+using TMPro;
 using UnityEngine;
 using UnityEngine.Rendering;
 
@@ -65,6 +66,14 @@ public class CustomCosmeticsLayer
         {
             bodySprite.BodySprite.sortingOrder = 6;
         }
+        foreach (var spriteRenderer in cosmeticsLayer.skin.GetComponentsInChildren<SpriteRenderer>())
+        {
+            spriteRenderer.sortingOrder = 7;
+        }
+        foreach (var textMeshPro in cosmeticsLayer.nameTextContainer.GetComponentsInChildren<TextMeshPro>())
+        {
+            textMeshPro.sortingOrder = 500;
+        }
 
         ModdedCosmetics = new GameObject("ModdedCosmetics");
         ModdedCosmetics.transform.parent = cosmeticsLayer.transform;
@@ -74,9 +83,6 @@ public class CustomCosmeticsLayer
         ModdedCosmetics.layer = cosmeticsLayer.gameObject.layer;
 
         cosmeticsLayer.transform.localPosition = new(0, 0, -0.0001f);
-
-        var skin = cosmeticsLayer.skin.GetComponent<SpriteRenderer>();
-        skin.sortingOrder = 0;
 
         var hat = cosmeticsLayer.hat;
         visor1 = CreateVisorLayer(cosmeticsLayer, "visor1", -0.8f, 40);

@@ -27,6 +27,18 @@ public static class GameSettingOptions
     public static bool ChangeReportDistance;
     [CustomOptionFloat("ReportDistanceOption", 0.4f, 10f, 0.2f, 5f, parentFieldName: nameof(ChangeReportDistance))]
     public static float ReportDistanceOption;
+
+    [CustomOptionBool("CustomAprilFools", false, parentFieldName: nameof(Categories.GameSettings))]
+    public static bool CustomAprilFools;
+    [CustomOptionSelect("AprilFoolsOutfitType", typeof(AprilFoolsOutfitType), "AprilFoolsOutfitType.", parentFieldName: nameof(CustomAprilFools))]
+    public static AprilFoolsOutfitType AprilFoolsOutfitType;
+    [CustomOptionBool("AprilFoolsEnableDleks", false, parentFieldName: nameof(CustomAprilFools))]
+    public static bool AprilFoolsEnableDleks;
+}
+public enum AprilFoolsOutfitType
+{
+    None,
+
 }
 
 public enum GhostVoteDisplayType

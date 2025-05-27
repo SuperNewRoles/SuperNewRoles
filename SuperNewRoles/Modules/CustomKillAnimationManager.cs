@@ -71,6 +71,7 @@ public static class OverlayKillAnimationCoShowPatch
         {
             yield return null;
         }
+        CustomKillAnimationManager.ClearCurrentCustomKillAnimation();
         __instance.gameObject.SetActive(false);
         yield return new WaitForLerp(1f / 6f, (Action<float>)((float t) =>
         {

@@ -138,6 +138,12 @@ GhostVoteDisplayType.Show,表示,Show
 GhostVoteDisplayType.Hide,非表示,Hide
 ChangeReportDistance,レポート距離を変更する,Change report distance
 ReportDistanceOption,レポート距離,Report distance
+CustomAprilFools,エイプリルフールを有効にする,Enabled aprilfools
+AprilFoolsOutfitType,姿,Outfit type
+AprilFoolsOutfitType.None,なし,None
+AprilFoolsOutfitType.Horse,ウマングアス,Horse
+AprilFoolsOutfitType.AlongUs,ロングモード,aLONG us
+AprilFoolsEnableDleks,ドルクス,Dleks ehT
 
 # VersionUpdates
 VersionUpdateType.stability,安定版,Stability,稳定版,穩定版
@@ -1020,6 +1026,7 @@ TheFungleCameraSpeed,カメラスピード,Camera Speed,摄像头速度,攝像�
 TheFungleMushroomMixupOption,キノコカオスの設定,Mushroom Mixup,蘑菇混合,蘑菇混合
 TheFungleMushroomMixupCantOpenMeeting,キノコカオス中は会議できない,Cannot Open Meeting During Mixup,混合时不能开会,混合時不能開會
 TheFungleMushroomMixupTime,キノコカオス継続時間,Mushroom Mixup Duration,蘑菇混合持续时间,蘑菇混合持續時間
+MushroomMixupCantOpenMeeting,混乱して会議を開けない!,I'm too confused to start the meeting!
 
 FungleSpawnTypeOptions.TheFungleSpawnTypeNormal,通常,Normal,通常,通常
 FungleSpawnTypeOptions.RandomSpawnOption,ランダムスポーン,Random Spawn,随机出生点,隨機出生點

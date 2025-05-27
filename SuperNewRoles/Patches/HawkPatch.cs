@@ -1,5 +1,6 @@
 using System;
 using HarmonyLib;
+using SuperNewRoles.CustomOptions.Categories;
 using SuperNewRoles.Events;
 using SuperNewRoles.Modules;
 using UnityEngine;
@@ -51,7 +52,7 @@ public static class HawkZoom
             zoomSpeed = 0f;
         }
         // ユーザーが編集した手動ズーム条件
-        else if (!data.RefCancelZoom && ExPlayerControl.LocalPlayer != null && ExPlayerControl.LocalPlayer.IsDead() && MeetingHud.Instance == null)
+        else if (GeneralSettingOptions.EnabledZoomOnDead && !data.RefCancelZoom && ExPlayerControl.LocalPlayer != null && ExPlayerControl.LocalPlayer.IsDead() && MeetingHud.Instance == null)
         {
             if (!PlayerControl.LocalPlayer.CanMove)
             {
