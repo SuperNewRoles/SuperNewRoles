@@ -50,6 +50,7 @@ public static class CustomOptionManager
                 _lateTask = new LateTask(() =>
                 {
                     RpcSyncOptionsAll();
+                    RoleOptionManager.RpcSyncRoleOptionsAll();
                     _lateTask = null;
                 }, 2f, "CustomOptionManager.RpcSyncOptionsAll");
         }
@@ -61,7 +62,10 @@ public static class CustomOptionManager
         {
             // ゲーム開始時に一度だけ同期する(AmongUsClient.StartGameが呼ばれるのはホストのみ)
             if (AmongUsClient.Instance.AmHost)
+            {
                 RpcSyncOptionsAll();
+                RoleOptionManager.RpcSyncRoleOptionsAll();
+            }
         }
     }
     [CustomRPC]
@@ -125,9 +129,7 @@ public static class CustomOptionManager
                 if (field.IsStatic && field.FieldType == typeof(CustomOptionCategory))
                 {
                     if (!fieldNames.Add(field.Name))
-                    {
-                        throw new InvalidOperationException($"フィールド名が重複しています: {field.Name}");
-                    }
+                        throw new InvalidOperationException($"Category field name is duplicated: {field.Name}");
                     var category = new CustomOptionCategory(field.Name);
                     field.SetValue(null, category);
                     CategoryByFieldName[field.Name] = category;
@@ -146,7 +148,7 @@ public static class CustomOptionManager
                 }
                 if (!fieldNames.Add(field.Name))
                 {
-                    throw new InvalidOperationException($"フィールド名が重複しています: {field.Name}");
+                    throw new InvalidOperationException($"Field name is duplicated: {field.Name}");
                 }
 
                 // カスタムオプション属性を辞書に追加
@@ -177,7 +179,17 @@ public static class CustomOptionManager
     private static void LinkParentOptions()
     {
         // 各カスタムオプションをフィールド名をキーとするディクショナリに変換してキャッシュ
-        var optionsByFieldName = CustomOptions.ToDictionary(o => o.FieldInfo.Name);
+        var taskOptionNames = new[]
+        {
+            nameof(CustomOptionTaskAttribute.CommonValue),
+            nameof(CustomOptionTaskAttribute.LongValue),
+            nameof(CustomOptionTaskAttribute.ShortValue)
+        };
+
+        var optionsByFieldName = CustomOptions
+            .Where(o => !taskOptionNames.Contains(o.FieldInfo.Name))
+            .ToDictionary(o => o.FieldInfo.Name);
+
         foreach (var option in CustomOptions)
         {
             if (!string.IsNullOrEmpty(option.Attribute.ParentFieldName))
@@ -361,19 +373,58 @@ public class CustomOption
 
 public static class RoleOptionManager
 {
+    // 遅延同期用のディクショナリとLateTaskを追加
+    public static readonly Dictionary<RoleId, LateTask> DelayedSyncTasks = new();
+    private static readonly float SyncDelay = 0.5f; // 0.5秒の遅延
+
     public class RoleOption
     {
         public RoleId RoleId { get; }
         public AssignedTeamType AssignTeam { get; }
-        public byte NumberOfCrews { get; set; }
-        public int Percentage { get; set; }
+        private byte _numberOfCrews_My;
+        private byte _numberOfCrews_Host;
+        private int _percentage_My;
+        private int _percentage_Host;
+        public byte NumberOfCrews
+        {
+            get => (AmongUsClient.Instance != null && AmongUsClient.Instance.AmConnected && !AmongUsClient.Instance.AmHost) ? _numberOfCrews_Host : _numberOfCrews_My;
+            set
+            {
+                bool isHost = AmongUsClient.Instance != null && AmongUsClient.Instance.AmConnected && !AmongUsClient.Instance.AmHost;
+                if (isHost)
+                {
+                    _numberOfCrews_Host = value;
+                }
+                else
+                {
+                    _numberOfCrews_My = value;
+                }
+            }
+        }
+        public int Percentage
+        {
+            get => (AmongUsClient.Instance != null && AmongUsClient.Instance.AmConnected && !AmongUsClient.Instance.AmHost) ? _percentage_Host : _percentage_My;
+            set
+            {
+                bool isHost = AmongUsClient.Instance != null && AmongUsClient.Instance.AmConnected && !AmongUsClient.Instance.AmHost;
+                if (isHost)
+                {
+                    _percentage_Host = value;
+                }
+                else
+                {
+                    _percentage_My = value;
+                    // ホストの場合は、変更を他のプレイヤーに同期
+                }
+            }
+        }
         public CustomOption[] Options { get; }
         public Color32 RoleColor { get; }
         public RoleOption(RoleId roleId, byte numberOfCrews, int percentage, CustomOption[] options)
         {
             RoleId = roleId;
-            NumberOfCrews = numberOfCrews;
-            Percentage = percentage;
+            _numberOfCrews_My = numberOfCrews;
+            _percentage_My = percentage;
             Options = options;
             // ロールの色情報を取得
             var roleBase = CustomRoleManager.AllRoles.FirstOrDefault(r => r.Role == roleId);
@@ -382,9 +433,92 @@ public static class RoleOptionManager
             RoleColor = roleBase?.RoleColor ?? new Color32(255, 255, 255, 255);
             AssignTeam = roleBase?.AssignedTeam ?? AssignedTeamType.Crewmate;
         }
+
+        public void UpdateValues(byte numberOfCrews, int percentage)
+        {
+            bool isHost = AmongUsClient.Instance != null && AmongUsClient.Instance.AmConnected && !AmongUsClient.Instance.AmHost;
+            if (isHost)
+            {
+                _numberOfCrews_Host = numberOfCrews;
+                _percentage_Host = percentage;
+            }
+            else
+            {
+                _numberOfCrews_My = numberOfCrews;
+                _percentage_My = percentage;
+            }
+        }
     }
     public static RoleOption[] RoleOptions { get; private set; }
     public static List<ExclusivityData> ExclusivitySettings { get; private set; } = new();
+
+    [CustomRPC]
+    public static void RpcSyncRoleOption(RoleId roleId, byte numberOfCrews, int percentage)
+    {
+        var roleOption = RoleOptions.FirstOrDefault(o => o.RoleId == roleId);
+        if (roleOption == null)
+        {
+            Logger.Warning($"ロールオプションが見つかりません: {roleId}");
+            return;
+        }
+        roleOption.UpdateValues(numberOfCrews, percentage);
+    }
+
+    /// <summary>
+    /// 遅延付きでロールオプションを同期します。
+    /// 同じロールに対する複数の変更は、最後の変更のみが送信されます。
+    /// </summary>
+    /// <param name="roleId">ロールID</param>
+    /// <param name="numberOfCrews">クルー数</param>
+    /// <param name="percentage">確率</param>
+    public static void RpcSyncRoleOptionDelay(RoleId roleId, byte numberOfCrews, int percentage)
+    {
+        // ホストでない場合は何もしない
+        if (!AmongUsClient.Instance.AmHost) return;
+
+        // 既存のタスクがあれば遅延をリセット
+        if (DelayedSyncTasks.TryGetValue(roleId, out var existingTask))
+        {
+            existingTask.UpdateDelay(SyncDelay);
+        }
+        else
+        {
+            // 新しいタスクを作成
+            var task = new LateTask(() =>
+            {
+                var opt = RoleOptions.FirstOrDefault(o => o.RoleId == roleId);
+                if (opt == null) return;
+                // 実際の同期を実行
+                RpcSyncRoleOption(roleId, opt.NumberOfCrews, opt.Percentage);
+                // タスクとペンディング変更を削除
+                DelayedSyncTasks.Remove(roleId);
+            }, SyncDelay, $"SyncRoleOption_{roleId}");
+
+            // タスクを保存
+            DelayedSyncTasks[roleId] = task;
+        }
+    }
+
+    [CustomRPC]
+    public static void _RpcSyncRoleOptionsAll(Dictionary<byte, (byte, int)> options)
+    {
+        foreach (var roleOption in RoleOptions)
+        {
+            if (options.TryGetValue((byte)roleOption.RoleId, out var values))
+            {
+                roleOption.UpdateValues(values.Item1, values.Item2);
+            }
+        }
+    }
+
+    public static void RpcSyncRoleOptionsAll()
+    {
+        // 変更されたロールオプションだけを送信
+        var roleOptions = RoleOptions.ToDictionary(
+            o => (byte)o.RoleId,
+            o => (o.NumberOfCrews, o.Percentage));
+        _RpcSyncRoleOptionsAll(roleOptions);
+    }
 
     public static void RoleOptionLoad()
     {

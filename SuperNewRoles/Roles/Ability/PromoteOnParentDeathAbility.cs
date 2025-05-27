@@ -1,3 +1,4 @@
+using System;
 using AmongUs.GameOptions;
 using SuperNewRoles.Events;
 using SuperNewRoles.Events.PCEvents;
@@ -11,6 +12,7 @@ public class PromoteOnParentDeathAbility : AbilityBase
     public AbilityParentBase Owner { get; }
     public RoleId PromoteRole { get; }
     public RoleTypes PromoteRoleVanilla { get; }
+    public Action OnPromoted { get; set; }
 
     private EventListener<DieEventData> DieEventListener;
     private EventListener<DisconnectEventData> DisconnectEventListener;
@@ -57,6 +59,7 @@ public class PromoteOnParentDeathAbility : AbilityBase
         ExPlayerControl exPlayer = Player;
         if (exPlayer.Role == PromoteRole) return;
         RpcPromote(exPlayer, PromoteRole, PromoteRoleVanilla);
+        OnPromoted?.Invoke();
     }
     [CustomRPC]
     public static void RpcPromote(ExPlayerControl player, RoleId roleId, RoleTypes roleType)

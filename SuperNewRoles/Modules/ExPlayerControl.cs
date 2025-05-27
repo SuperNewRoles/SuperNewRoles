@@ -1,10 +1,12 @@
 using System.Collections.Generic;
 using System.Linq;
+using AmongUs.GameOptions;
 using SuperNewRoles.Events;
 using SuperNewRoles.Roles;
 using SuperNewRoles.Roles.Ability;
 using SuperNewRoles.Roles.Neutral;
 using TMPro;
+using UnityEngine;
 
 namespace SuperNewRoles.Modules;
 
@@ -32,6 +34,9 @@ public class ExPlayerControl
     public FinalStatus FinalStatus { get { return _finalStatus ?? FinalStatus.Alive; } set { _finalStatus = value; } }
 
     private CustomVentAbility _customVentAbility;
+    private CustomSaboAbility _customSaboAbility;
+    private CustomTaskAbility _customTaskAbility;
+    public CustomTaskAbility CustomTaskAbility => _customTaskAbility;
     private List<ImpostorVisionAbility> _impostorVisionAbilities = new();
     private Dictionary<string, bool> _hasAbilityCache = new();
 
@@ -73,6 +78,27 @@ public class ExPlayerControl
         hasAbility = PlayerAbilities.Any(x => x.GetType().Name == abilityName);
         _hasAbilityCache[abilityName] = hasAbility;
         return hasAbility;
+    }
+    public void ResetKillCooldown()
+    {
+        if (!AmOwner) return;
+        if (FastDestroyableSingleton<HudManager>.Instance.KillButton.isActiveAndEnabled)
+        {
+            float coolTime = GameOptionsManager.Instance.CurrentGameOptions.GetFloat(FloatOptionNames.KillCooldown);
+            SetKillTimerUnchecked(coolTime, coolTime);
+        }
+        PlayerAbilities.ForEach(x =>
+        {
+            if (x is CustomKillButtonAbility customKillButtonAbility)
+            {
+                customKillButtonAbility.ResetTimer();
+            }
+        });
+    }
+    public void SetKillTimerUnchecked(float time, float maxTime)
+    {
+        Player.killTimer = Mathf.Clamp(time, 0f, maxTime);
+        FastDestroyableSingleton<HudManager>.Instance.KillButton.SetCoolDown(Player.killTimer, maxTime);
     }
     public void SetRole(RoleId roleId)
     {
@@ -162,32 +188,45 @@ public class ExPlayerControl
         => roleBase != null ? roleBase.AssignedTeam == AssignedTeamType.Neutral : false;
     public bool IsImpostorWinTeam()
         => IsImpostor() || IsMadRoles();
-    // TODO: 後でMADロールを追加したらここに追加する
     public bool IsMadRoles()
         => HasAbility(nameof(MadmateAbility));
     public bool IsFriendRoles()
-        => false;
+        => roleBase?.Role == RoleId.JackalFriends;
     public bool IsJackal()
         => HasAbility(nameof(JackalAbility));
     public bool IsSidekick()
         => HasAbility(nameof(JSidekickAbility));
     public bool IsJackalTeam()
-        => IsJackal() || IsSidekick();
-    // TODO: 後で追加する
+        => IsJackal() || IsSidekick() || IsFriendRoles();
     public bool IsLovers()
         => false;
     public bool IsDead()
         => Data == null || Data.Disconnected || Data.IsDead;
     public bool IsAlive()
         => !IsDead();
-    // TODO: 後で書く
     public bool IsTaskTriggerRole()
-        => roleBase != null ? IsCrewmate() : IsCrewmate();
+        => _customTaskAbility != null ? _customTaskAbility.CheckIsTaskTrigger()?.isTaskTrigger ?? IsCrewmate() : IsCrewmate();
+    public (int complete, int all) GetAllTaskForShowProgress()
+    {
+        (int complete, int all) result = ModHelpers.TaskCompletedData(Data);
+        if (_customTaskAbility == null)
+        {
+            return result;
+        }
+        var (isTaskTrigger, all) = _customTaskAbility.CheckIsTaskTrigger() ?? (false, result.all);
+        return (result.complete, all);
+    }
     public bool CanUseVent()
         => _customVentAbility != null ? _customVentAbility.CheckCanUseVent() : IsImpostor();
+    public bool CanSabotage()
+        => _customSaboAbility != null ? _customSaboAbility.CheckCanSabotage() : IsImpostor();
     public AbilityBase GetAbility(ulong abilityId)
     {
         return PlayerAbilitiesDictionary.TryGetValue(abilityId, out var ability) ? ability : null;
+    }
+    public T GetAbility<T>(ulong abilityId) where T : AbilityBase
+    {
+        return GetAbility(abilityId) as T;
     }
     private void AttachAbility(AbilityBase ability, ulong abilityId, AbilityParentBase parent)
     {
@@ -200,6 +239,14 @@ public class ExPlayerControl
         else if (ability is ImpostorVisionAbility impostorVisionAbility)
         {
             _impostorVisionAbilities.Add(impostorVisionAbility);
+        }
+        else if (ability is CustomSaboAbility customSaboAbility)
+        {
+            _customSaboAbility = customSaboAbility;
+        }
+        else if (ability is CustomTaskAbility customTaskAbility)
+        {
+            _customTaskAbility = customTaskAbility;
         }
         ability.Attach(Player, abilityId, parent);
         _hasAbilityCache.Clear();
@@ -226,6 +273,14 @@ public class ExPlayerControl
         else if (ability is ImpostorVisionAbility impostorVisionAbility)
         {
             _impostorVisionAbilities.Remove(impostorVisionAbility);
+        }
+        else if (ability is CustomSaboAbility customSaboAbility)
+        {
+            _customSaboAbility = null;
+        }
+        else if (ability is CustomTaskAbility customTaskAbility)
+        {
+            _customTaskAbility = null;
         }
         PlayerAbilities.Remove(ability);
         PlayerAbilitiesDictionary.Remove(abilityId);

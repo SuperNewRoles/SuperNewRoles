@@ -15,8 +15,11 @@ namespace SuperNewRoles.Modules;
 [AttributeUsage(AttributeTargets.Method)]
 public class CustomRPCAttribute : Attribute
 {
-
-    public CustomRPCAttribute() { }
+    public bool OnlyOtherPlayer { get; }
+    public CustomRPCAttribute(bool onlyOtherPlayer = false)
+    {
+        OnlyOtherPlayer = onlyOtherPlayer;
+    }
 }
 
 /// <summary>
@@ -124,8 +127,9 @@ public static class CustomRPCManager
 
             // RPC送信
             AmongUsClient.Instance.FinishRpcImmediately(writer);
-            Logger.Info($"Sent RPC: {__originalMethod.Name}");
-            return true;
+            var attr = __originalMethod.GetCustomAttribute<CustomRPCAttribute>();
+            Logger.Info($"Sent RPC: {__originalMethod.Name} {attr?.OnlyOtherPlayer}");
+            return !attr?.OnlyOtherPlayer ?? true;
         }
         Logger.Info($"Registering RPC: {method.Name} {id}");
         var newMethod = NewMethod;
@@ -192,7 +196,7 @@ public static class CustomRPCManager
             if (underlyingType == typeof(byte))
                 writer.Write((byte)(object)obj);
             else if (underlyingType == typeof(short))
-                writer.Write((short)(object)obj);
+                ModHelpers.Write(writer, (short)(object)obj);
             else if (underlyingType == typeof(ushort))
                 writer.Write((ushort)(object)obj);
             else if (underlyingType == typeof(int))
@@ -202,7 +206,7 @@ public static class CustomRPCManager
             else if (underlyingType == typeof(ulong))
                 writer.Write((ulong)(object)obj);
             else if (underlyingType == typeof(long))
-                writer.Write((long)(object)obj);
+                ModHelpers.Write(writer, (long)obj);
             else
                 throw new Exception($"Unsupported enum underlying type: {underlyingType}");
             return;
@@ -216,7 +220,7 @@ public static class CustomRPCManager
                 writer.Write(i);
                 break;
             case short s:
-                writer.Write(s);
+                ModHelpers.Write(writer, s);
                 break;
             case ushort us:
                 writer.Write(us);
@@ -226,6 +230,9 @@ public static class CustomRPCManager
                 break;
             case ulong ul:
                 writer.Write(ul);
+                break;
+            case long l:
+                ModHelpers.Write(writer, l);
                 break;
             case float f:
                 writer.Write(f);
@@ -288,6 +295,15 @@ public static class CustomRPCManager
                     writer.Write(kvp.Value);
                 }
                 break;
+            case Dictionary<byte, (byte, int)> dictByteWithTuple:
+                writer.Write(dictByteWithTuple.Count);
+                foreach (var kvp in dictByteWithTuple)
+                {
+                    writer.Write(kvp.Key);
+                    writer.Write(kvp.Value.Item1);
+                    writer.Write(kvp.Value.Item2);
+                }
+                break;
             case PlayerControl pc:
                 writer.Write(pc.PlayerId);
                 break;
@@ -313,6 +329,22 @@ public static class CustomRPCManager
                 break;
             case InnerNetObject innerNetObject:
                 writer.Write(innerNetObject.NetId);
+                break;
+            case List<byte> byteList:
+                writer.Write(byteList.Count);
+                foreach (var b in byteList)
+                {
+                    writer.Write(b);
+                }
+                break;
+            case Vector2 v2:
+                writer.Write(v2.x);
+                writer.Write(v2.y);
+                break;
+            case Vector3 v3:
+                writer.Write(v3.x);
+                writer.Write(v3.y);
+                writer.Write(v3.z);
                 break;
             default:
                 throw new Exception($"Invalid type: {obj.GetType()}");
@@ -359,8 +391,12 @@ public static class CustomRPCManager
             Type t when t == typeof(Dictionary<byte, byte>) => ReadDictionary<byte, byte>(reader, r => r.ReadByte(), r => r.ReadByte()),
             Type t when t == typeof(Dictionary<string, byte>) => ReadDictionary<string, byte>(reader, r => r.ReadString(), r => r.ReadByte()),
             Type t when t == typeof(Dictionary<ushort, byte>) => ReadDictionary<ushort, byte>(reader, r => r.ReadUInt16(), r => r.ReadByte()),
+            Type t when t == typeof(Dictionary<byte, (byte, int)>) => ReadDictionaryWithTuple(reader),
             Type t when t == typeof(Color) => new Color(reader.ReadSingle(), reader.ReadSingle(), reader.ReadSingle(), reader.ReadSingle()),
             Type t when t == typeof(Color32) => new Color32(reader.ReadByte(), reader.ReadByte(), reader.ReadByte(), reader.ReadByte()),
+            Type t when t == typeof(List<byte>) => ReadByteList(reader),
+            Type t when t == typeof(Vector2) => new Vector2(reader.ReadSingle(), reader.ReadSingle()),
+            Type t when t == typeof(Vector3) => new Vector3(reader.ReadSingle(), reader.ReadSingle(), reader.ReadSingle()),
             _ => throw new Exception($"Invalid type: {type}")
         };
     }
@@ -380,6 +416,23 @@ public static class CustomRPCManager
             var key = keyReader(reader);
             var value = valueReader(reader);
             dict[key] = value;
+        }
+        return dict;
+    }
+
+    /// <summary>
+    /// タプルを含むDictionaryを読み取るヘルパーメソッド
+    /// </summary>
+    private static Dictionary<byte, (byte, int)> ReadDictionaryWithTuple(MessageReader reader)
+    {
+        int count = reader.ReadInt32();
+        var dict = new Dictionary<byte, (byte, int)>();
+        for (int i = 0; i < count; i++)
+        {
+            byte key = reader.ReadByte();
+            byte tupleItem1 = reader.ReadByte();
+            int tupleItem2 = reader.ReadInt32();
+            dict[key] = (tupleItem1, tupleItem2);
         }
         return dict;
     }
@@ -410,5 +463,19 @@ public static class CustomRPCManager
             array[i] = ExPlayerControl.ById(reader.ReadByte());
         }
         return array;
+    }
+
+    /// <summary>
+    /// List<byte>を読み取る
+    /// </summary>
+    private static List<byte> ReadByteList(MessageReader reader)
+    {
+        int count = reader.ReadInt32();
+        List<byte> list = new List<byte>(count);
+        for (int i = 0; i < count; i++)
+        {
+            list.Add(reader.ReadByte());
+        }
+        return list;
     }
 }

@@ -58,10 +58,17 @@ FinalResults,最終結果,Final Results,最终结果,最終結果
 
 # FinalStatus
 FinalStatus.Alive,生存,Alive,生存,生存
-FinalStatus.Dead,死亡,Dead,死亡,死亡
+FinalStatus.Kill,キル,Kill,击杀,擊殺
 FinalStatus.Sabotage,サボタージュ,Sabotage,破坏,破壞
 FinalStatus.Disonnected,切断,Disonnected,切断,切斷
 FinalStatus.Exile,追放,Exile,追放,追放
+FinalStatus.WaveCannon,蒸発,Vaporize,蒸发,蒸發
+FinalStatus.FalseCharge,冤罪,False Charge,冤罪,冤罪
+FinalStatus.Revange,道連れ,Revange,道連れ,道連れ
+FinalStatus.Suicide,自殺,Suicide,自殺,自殺
+FinalStatus.Samurai,サムライ,Samurai,侍,侍
+FinalStatus.BombBySelfBomb,爆破,Bomb by Self Bomber,自爆被卷入,自爆被卷入
+FinalStatus.SelfBomb,自爆,Self Bomb,自爆,自爆
 
 # AssignRoles
 AssignRoles_MaxImpostors,最大 インポスター 選出数,Max Impostors,最大内鬼数,最大內鬼數
@@ -85,7 +92,11 @@ EvilGuesser,イビルゲッサー,Evil Guesser,内鬼猜疑者,內鬼猜疑者
 Madmate,マッドメイト,Madmate,瘋狂者,瘋狂者
 BlackCat,黒猫,Black Cat,黑猫,黑貓
 Jackal,ジャッカル,Jackal,杰克,傑克
-Sidekick,サイドキック,Sidekick,侧翼,側翼
+Sidekick,サイドキック,Sidekick,側翼,側翼
+SelfBomber,自爆魔,Self Bomber,自爆者,自爆者
+Samurai,侍,Samurai,侍,侍
+WaveCannon,波動砲,Wave Cannon,波动炮,波動砲
+WaveCannonJackal,波動砲ジャッカル,Wave Cannon Jackal,波动炮杰克,波動砲傑克
 
 # Sheriff Options
 SheriffKillCooldown,キルクールタイム,Kill Cooldown,杀人冷却时间,殺人冷卻時間
@@ -113,12 +124,19 @@ MadmateNeededTaskCount,必要タスク数,Required Task Count,需要完成任务
 MadmateCouldUseVent,ベントを使用できる,Can Use Vents,可以使用通风口,可以使用通風口
 MadmateHasImpostorVision,インポスターの視界,Has Impostor Vision,拥有内鬼视野,擁有內鬼視野
 BlackCatRevengeNotImpostorExile,インポスターを道連れしない,Do Not Exile Impostor,不带内鬼出局,不帶內鬼出局
+MadmateIsSpecialTasks,タスク数を変更する,Change Task Count,改变任务数,改變任務數
+MadmateSpecialTasks,タスク数,Task Count,任务数,任務數
 
 # Jackal Options
 JackalKillCooldown,キルクールダウン,Kill Cooldown,杰克击杀冷却时间,傑克殺人冷卻時間
 JackalCanUseVent,ベントを使用できる,Can Use Vents,可以使用通风口,可以使用通風口
+JackalImpostorVision,インポスターの視界,Has Impostor Vision,拥有内鬼视野,擁有內鬼視野
+JackalInfiniteJackal,無限ジャッカル,Infinite Jackal,无限杰克,無限傑克
 JackalCanCreateSidekick,サイドキックを作成できる,Can Create Sidekick,杰克可以创建边缘队员,傑克可以創建邊緣隊員
 JackalSidekickCooldown,サイドキック 作成クールダウン,Sidekick Cooldown,杰克边缘队员冷却时间,傑克邊緣隊員冷卻時間
+JackalSidekickType,サイドキックタイプ,Sidekick Type,边缘队员类型,邊緣隊員類型
+JackalSidekickType.Sidekick,サイドキック,Sidekick,边缘队员,邊緣隊員
+JackalSidekickType.Friends,ジャッカルフレンズ,Jackal Friends,杰克朋友,傑克朋友
 
 # Bait Options
 BaitReportTime,通報の遅延,Report Delay,通報延遲,通報延遲
@@ -138,6 +156,47 @@ BalancerTitleTextEitherExile,追放者の運命が決まる...,The fate of the e
 BalancerTitleTextWhoIsImpostor,どっちがインポスター？,Which one is the Impostor?,哪一个是内鬼？,哪一個是內鬼？
 BalancerTitleTextPleaseVote,どちらかに入れろ,Put it one way or the other.,到底要选哪个呢,誰的罪孽更深呢
 BalancerTitleTextGetBalance,バランスを求めよ。,Seek balance.,寻求平衡,尋求平衡
-BalancerAbilityUseText,能力発動,Ability activated,能力發動,能力發動
+BalancerAbilityUseText,能力發動,Ability activated,能力發動,能力發動
 BalancerVoteText,どちらかに投票せよ！,Vote for one or the other!,请选择一名玩家投票！,將票投給其中一邊！
 BalancerDoubleExileText,どちらも追放された...,Both were exiled...,两名玩家都被驱逐了...,兩名玩家都被驅逐了...
+BalancerOnePlayerDeadText,こうなる運命だったのだ...,It was destined to be this way...,这就是命运...,這就是命運...
+BalancerRandomVoteWhenNoVote,未投票時ランダムに投票する,Random Vote When No Vote,未投票时随机投票,未投票時隨機投票
+
+# SelfBomber
+SelfBomberKillButtonText,爆発,Explosion,爆炸,爆炸
+SelfBomberCooldown,爆発クールダウン,Explosion Cooldown,爆炸冷却时间,爆炸冷卻時間
+SelfBomberExplosionRadius,爆発範囲,Explosion Radius,爆炸范围,爆炸範圍
+SelfBomberOnlyKillCrewmates,クルーメイトのみを爆発する,Only Kill Crewmates,只能杀船员,只能殺船員
+SelfBomberIgnoreWalls,壁を無視する,Ignore Walls,忽略墙壁,忽略牆壁
+
+# Samurai
+SamuraiKillButtonText,必殺技,Slash,斬擊,斬擊
+SamuraiKillCooldown,必殺技クールダウン,Slash Cooldown,斬擊冷卻時間,斬擊冷卻時間
+SamuraiKillRadius,必殺技の範囲,Slash Radius,斬擊範圍,斬擊範圍
+SamuraiOnlyKillCrewmates,クルーメイトのみを必殺技する,Only Kill Crewmates,只能杀船员,只能殺船員
+SamuraiIgnoreWalls,壁を無視する,Ignore Walls,忽略墙壁,忽略牆壁
+SamuraiCanUseVent,ベントを使用できる,Can Use Vents,可以使用通风口,可以使用通風口
+SamuraiCanSabotage,サボタージュを使用できる,Can Sabotage,可以使用破坏,可以使用破壞
+
+# WaveCannon
+WaveCannonButtonText,波動砲,Wave Cannon,波动炮,波動砲
+WaveCannonCooldown,波動砲クールダウン,Wave Cannon Cooldown,波动炮冷却时间,波動砲冷卻時間
+WaveCannonDuration,波動砲の充填時間,Wave Cannon Fill Time,波动炮充填时间,波動砲充填時間
+WaveCannonSyncKillCoolTime,波動砲とキルボタンのクールタイムを同期する,Sync the Wave Cannon and Kill Button Cooldowns,同步波动炮和击杀按钮冷却时间,同步波動砲和殺人按鈕冷卻時間
+WaveCannonAnimationType,アニメーションタイプ,Animation Type,动画类型,動畫類型
+WaveCannonAnimationType.Tank,戦車,Tank,战车,戰車
+WaveCannonAnimationType.Cannon,大砲,Cannon,大炮,大砲
+WaveCannonAnimationType.Santa,サンタ,Santa,圣诞老人,聖誕老人
+WaveCannonAnimationType.Bullet,弾丸,Bullet,子弹,子彈
+
+# WaveCannonJackal
+WaveCannonJackalKillCooldown,キルクールダウン,Kill Cooldown,杰克击杀冷却时间,傑克殺人冷卻時間
+WaveCannonJackalCanUseVent,ベントを使用できる,Can Use Vents,可以使用通风口,可以使用通風口
+WaveCannonJackalCanCreateSidekick,サイドキックを作成できる,Can Create Sidekick,杰克可以创建边缘队员,傑克可以創建邊緣隊員
+WaveCannonJackalSidekickCooldown,サイドキック 作成クールダウン,Sidekick Cooldown,杰克边缘队员冷却时间,傑克邊緣隊員冷卻時間
+WaveCannonJackalImpostorVision,インポスターの視界,Has Impostor Vision,拥有内鬼视野,擁有內鬼視野
+WaveCannonJackalInfiniteJackal,無限ジャッカル,Infinite Jackal,无限杰克,無限傑克
+WaveCannonJackalSidekickType,サイドキックタイプ,Sidekick Type,边缘队员类型,邊緣隊員類型
+WaveCannonJackalWaveCannonCooldown,波動砲クールダウン,Wave Cannon Cooldown,波动炮冷却时间,波動砲冷卻時間
+WaveCannonJackalWaveCannonEffectDuration,波動砲の充填時間,Wave Cannon Fill Time,波动炮充填时间,波動砲充填時間
+WaveCannonJackalWaveCannonType,波動砲タイプ,Wave Cannon Type,波动炮类型,波動砲類型

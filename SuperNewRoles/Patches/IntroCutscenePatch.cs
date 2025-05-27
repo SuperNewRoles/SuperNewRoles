@@ -185,6 +185,24 @@ public static class IntroCutscenePatch
                 NameText.UpdateNameInfo(player);
             }
             NameText.RegisterNameTextUpdateEvent();
+            SaboAndVent.RegisterListener();
+            FinalStatusListener.LoadListener();
+            CustomDeathExtensions.Register();
+            PoolablePrefabManager.OnIntroCutsceneDestroy(__instance);
+
+            ReAssignTasks();
+
+            NameText.UpdateAllNameInfo();
+        }
+        private static void ReAssignTasks()
+        {
+            foreach (var player in ExPlayerControl.ExPlayerControls)
+            {
+                if (player.IsTaskTriggerRole())
+                {
+                    player.CustomTaskAbility.AssignTasks();
+                }
+            }
         }
     }
 }

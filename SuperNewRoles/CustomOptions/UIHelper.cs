@@ -60,12 +60,15 @@ namespace SuperNewRoles.CustomOptions
                 if (floatAttribute != null)
                 {
                     float step = floatAttribute.Step;
-                    if (Mathf.Abs(floatValue - Mathf.Round(floatValue)) < 0.00001f)
+                    // 数値がほぼ整数であれば、小数点を表示せずにフォーマットする
+                    if (Mathf.Approximately(floatValue, Mathf.Round(floatValue)))
                         return string.Format("{0:F0}", floatValue);
 
-                    if (step >= 0.1f && Mathf.Abs((floatValue * 10) - Mathf.Round(floatValue * 10)) < 0.00001f)
+                    // stepが0.1以上の場合、ほぼ1桁の精度なら小数点1桁でフォーマットする
+                    if (step >= 0.1f && Mathf.Approximately(floatValue * 10f, Mathf.Round(floatValue * 10f)))
                         return string.Format("{0:F1}", floatValue);
                 }
+                // 上記条件に合致しない場合は、そのままの文字列として返す
                 return floatValue.ToString();
             }
             else if (value is Enum enumValue)

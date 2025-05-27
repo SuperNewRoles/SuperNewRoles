@@ -15,18 +15,14 @@ public class CustomKillButtonAbility : TargetCustomButtonBase
     public Action<ExPlayerControl> KilledCallback { get; }
 
     public override Color32 OutlineColor => ExPlayerControl.LocalPlayer.roleBase.RoleColor;
-    public override Vector3 LocalScale => Vector3.one;
     public override Sprite Sprite => HudManager.Instance?.KillButton?.graphic?.sprite;
     public override string buttonText => FastDestroyableSingleton<TranslationController>.Instance.GetString(StringNames.KillLabel);
-    public override Vector3 PositionOffset => new Vector3(0, 1f, 0);
     protected override KeyCode? hotkey => KeyCode.Q;
-    protected override int joystickkey => 0;
     public override float DefaultTimer => KillCooldown?.Invoke() ?? 0;
     public override bool OnlyCrewmates => OnlyCrewmatesValue?.Invoke() ?? false;
     public override bool TargetPlayersInVents => TargetPlayersInVentsValue?.Invoke() ?? false;
-    public override Color? color => Palette.ImpostorRed;
     public override Func<ExPlayerControl, bool>? IsTargetable => IsTargetableValue;
-    public CustomKillButtonAbility(Func<bool> canKill, Func<float?> killCooldown = null, Func<bool> onlyCrewmates = null, Func<bool> targetPlayersInVents = null, Func<ExPlayerControl, bool> isTargetable = null, Action<ExPlayerControl> killedCallback = null)
+    public CustomKillButtonAbility(Func<bool> canKill, Func<float?> killCooldown, Func<bool> onlyCrewmates, Func<bool> targetPlayersInVents = null, Func<ExPlayerControl, bool> isTargetable = null, Action<ExPlayerControl> killedCallback = null)
     {
         CanKill = canKill;
         KillCooldown = killCooldown;

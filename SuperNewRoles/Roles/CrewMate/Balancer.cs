@@ -22,7 +22,7 @@ class Balancer : RoleBase<Balancer>
 {
     public override RoleId Role { get; } = RoleId.Balancer;
     public override Color32 RoleColor { get; } = new(255, 128, 0, byte.MaxValue);
-    public override List<Func<AbilityBase>> Abilities { get; } = [() => new BalancerAbility()];
+    public override List<Func<AbilityBase>> Abilities { get; } = [() => new BalancerAbility(BalancerUseCount)];
 
     public override QuoteMod QuoteMod { get; } = QuoteMod.TheOtherRoles;
     public override RoleTypes IntroSoundType { get; } = RoleTypes.Crewmate;
@@ -41,6 +41,10 @@ class Balancer : RoleBase<Balancer>
     [CustomOptionInt("BalancerUseCount", 1, 10, 1, 1)]
     public static int BalancerUseCount;
 
+    // 未投票時ランダムに投票する
+    [CustomOptionBool("BalancerRandomVoteWhenNoVote", true)]
+    public static bool BalancerRandomVoteWhenNoVote;
+
     public override RoleOptionMenuType OptionTeam { get; } = RoleOptionMenuType.Crewmate;
 }
 
@@ -57,6 +61,7 @@ class BalancerAbility : AbilityBase, IAbilityCount
     private PlayerControl targetPlayerLeft;
     private PlayerControl targetPlayerRight;
     private bool isDoubleExile = false;
+    public bool isOnePlayerDead = false; // 片方のプレイヤーが死亡したかどうかのフラグ
     public static BalancerAbility BalancingAbility { get; private set; }
 
     // 天秤ボタン
@@ -99,7 +104,10 @@ class BalancerAbility : AbilityBase, IAbilityCount
         WaitVote
     }
     public BalancerState CurrentState { get; private set; } = BalancerState.NotBalance;
-
+    public BalancerAbility(int useCount)
+    {
+        Count = useCount; // 設定された回数だけ使用可能
+    }
     // 天秤の状態をリセットするメソッド
     private void ClearAndReload()
     {
@@ -110,26 +118,31 @@ class BalancerAbility : AbilityBase, IAbilityCount
         targetPlayerRight = null;
         isAbilityUsed = false;
         BalancingAbility = null;
+
+        // 天秤ボタンの状態もリセット
+        if (balancerButton != null)
+        {
+            balancerButton.firstSelectedTarget = null;
+        }
     }
 
     public override void AttachToLocalPlayer()
     {
-        Count = Balancer.BalancerUseCount; // 設定された回数だけ使用可能
         updateEventListener = FixedUpdateEvent.Instance.AddListener(Update);
     }
     public override void Attach(PlayerControl player, ulong abilityId, AbilityParentBase parent)
     {
         base.Attach(player, abilityId, parent);
-        // 天秤ボタンを初期化
-        balancerButton = new BalancerMeetingButton(this);
-        ExPlayerControl exPlayer = (ExPlayerControl)player;
-        exPlayer.AddAbility(balancerButton, new AbilityParentAbility(this));
         meetingStartEventListener = MeetingStartEvent.Instance.AddListener(OnMeetingStart);
         meetingCloseEventListener = MeetingCloseEvent.Instance.AddListener(OnMeetingClose);
         // FixedUpdateイベントにアニメーション更新処理を登録
         fixedUpdateEventListener = FixedUpdateEvent.Instance.AddListener(FixedUpdateAnimation);
         votingCompleteEventListener = VotingCompleteEvent.Instance.AddListener(OnVotingComplete);
         wrapUpEventListener = WrapUpEvent.Instance.AddListener(OnWrapUp);
+        // 天秤ボタンを初期化
+        balancerButton = new BalancerMeetingButton(this);
+        ExPlayerControl exPlayer = (ExPlayerControl)player;
+        exPlayer.AddAbility(balancerButton, new AbilityParentAbility(this));
     }
     private void Update()
     {
@@ -194,13 +207,26 @@ class BalancerAbility : AbilityBase, IAbilityCount
         {
             if (MeetingHud.Instance.playerStates.All((PlayerVoteArea ps) => ps.AmDead || ps.DidVote))
             {
-                foreach (PlayerVoteArea area in MeetingHud.Instance.playerStates)
+                // 未投票時ランダムに投票する設定がONの場合のみ、投票先を変更する
+                if (Balancer.BalancerRandomVoteWhenNoVote)
                 {
-                    List<byte> targetIds = new() { targetPlayerLeft.PlayerId, targetPlayerRight.PlayerId };
-                    if (!targetIds.Contains(area.VotedFor))
+                    foreach (PlayerVoteArea area in MeetingHud.Instance.playerStates)
                     {
-                        area.VotedFor = targetIds[UnityEngine.Random.Range(0, targetIds.Count)];
+                        List<byte> targetIds = new() { targetPlayerLeft.PlayerId, targetPlayerRight.PlayerId };
+                        if (!targetIds.Contains(area.VotedFor))
+                        {
+                            area.VotedFor = targetIds[UnityEngine.Random.Range(0, targetIds.Count)];
+                        }
                     }
+                }
+                else
+                {
+                    foreach (PlayerVoteArea area in MeetingHud.Instance.playerStates)
+                    {
+                        if (area.VotedFor < 250)
+                            area.VotedFor = 255;
+                    }
+
                 }
                 bool tie;
                 var max = MeetingHud.Instance.CalculateVotes().MaxPair(out tie);
@@ -261,6 +287,8 @@ class BalancerAbility : AbilityBase, IAbilityCount
         MeetingHud.Instance.SkipVoteButton.gameObject.SetActive(false);
         // 能力使用回数を減らす
         isAbilityUsed = true;
+        // 注：UseAbilityCountメソッドは既にOnClickで呼び出されているため、
+        // ここでは単にフラグを設定するだけ
 
         // 会議時間を変更
         MeetingHud.Instance.discussionTimer = GameOptionsManager.Instance.CurrentGameOptions.GetInt(Int32OptionNames.VotingTime) - Balancer.BalancerVoteTime - 6.5f;
@@ -451,6 +479,9 @@ class BalancerAbility : AbilityBase, IAbilityCount
             {
                 target = targetPlayerRight;
             }
+
+            // 片方のプレイヤーが死亡したフラグを設定
+            isOnePlayerDead = true;
 
             // 会議を終了する処理（ホストのみ実行）
             if (AmongUsClient.Instance.AmHost && target != null)
@@ -807,8 +838,18 @@ class BalancerAbility : AbilityBase, IAbilityCount
         }
         public static void Postfix(ExileController __instance, ExileController.InitProperties init)
         {
-            if (BalancingAbility.isDoubleExile)
-                __instance.completeString = ModTranslation.GetString("BalancerDoubleExileText");
+            if (BalancingAbility != null)
+            {
+                if (BalancingAbility.isDoubleExile)
+                {
+                    __instance.completeString = ModTranslation.GetString("BalancerDoubleExileText");
+                }
+                else if (BalancingAbility.isOnePlayerDead)
+                {
+                    // 片方のプレイヤーが死亡した場合のテキスト
+                    __instance.completeString = ModTranslation.GetString("BalancerOnePlayerDeadText");
+                }
+            }
         }
     }
 }
@@ -818,7 +859,7 @@ class BalancerMeetingButton : CustomMeetingButtonBase
 {
     private BalancerAbility parentAbility;
     private Sprite _sprite;
-    private PlayerControl firstSelectedTarget;
+    public PlayerControl firstSelectedTarget;
 
     public BalancerMeetingButton(BalancerAbility parent)
     {
@@ -844,7 +885,7 @@ class BalancerMeetingButton : CustomMeetingButtonBase
         }
     }
 
-    public override bool HasButtonLocalPlayer => false;
+    public override bool HasButtonLocalPlayer => true;
 
     // ボタンがクリック可能かどうか
     public override bool CheckIsAvailable(ExPlayerControl player)
@@ -866,9 +907,12 @@ class BalancerMeetingButton : CustomMeetingButtonBase
         if (player.PlayerId == PlayerControl.LocalPlayer.PlayerId) return false;
         if (player.IsDead()) return false;
         if (firstSelectedTarget != null && firstSelectedTarget.PlayerId == player.PlayerId) return false;
+        // 現在の会議で既に能力を使用している場合はボタンを表示しない
         if (parentAbility.isAbilityUsed) return false;
+        // 既に天秤会議が進行中の場合はボタンを表示しない
         if (BalancerAbility.BalancingAbility != null) return false;
-        return true;
+        // 能力使用回数が残っているかどうかをチェック
+        return parentAbility.HasCount;
     }
 
     // ボタンがクリックされた時の処理

@@ -10,11 +10,12 @@ namespace SuperNewRoles.Roles.Ability.CustomButton;
 internal interface IButtonEffect
 {
     public bool isEffectActive { get; set; }
-    protected Action OnEffectEnds { get; }
-    public bool effectCancellable { get; }
-    public float EffectDuration { get; }
-    public bool IsEffectDurationInfinity { get; }
-    public float FillUpTime { get; }
+    public abstract Action OnEffectEnds { get; }
+    public abstract float EffectDuration { get; }
+    public virtual bool effectCancellable => false;
+    public virtual bool IsEffectDurationInfinity => false;
+    public virtual float FillUpTime => 0f;
+
     private static readonly Color color = new(0F, 0.8F, 0F);
     float EffectTimer { get; set; }
 
@@ -29,6 +30,14 @@ internal interface IButtonEffect
             this.EffectTimer = IsEffectDurationInfinity ? 0f : EffectDuration;
             actionButton.cooldownTimerText.color = color;
             this.isEffectActive = true;
+        }
+    }
+    public virtual void OnCancel(ActionButton actionButton)
+    {
+        if (isEffectActive)
+        {
+            isEffectActive = false;
+            OnEffectEnds();
         }
     }
 
@@ -55,7 +64,7 @@ internal interface IButtonEffect
     public virtual void DoEffect(ActionButton actionButton, float effectStartTime = 3f)
     {
         //以下はFillup。もし別のeffectにしたくなったらoverrideして自分でなんとかする。
-        if (actionButton.isCoolingDown && EffectTimer < effectStartTime)
+        if (isEffectActive && actionButton.isCoolingDown && EffectTimer < effectStartTime)
         {
             actionButton.graphic.transform.localPosition = actionButton.position + (Vector3)UnityEngine.Random.insideUnitCircle * 0.05f;
         }

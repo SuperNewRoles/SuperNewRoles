@@ -159,4 +159,38 @@ public static class ModHelpers
         }
         return list;
     }
+    public static void Shuffle<T>(this List<T> list)
+    {
+        // Fisher–Yatesアルゴリズムを使ってリストをシャッフル
+        for (int i = list.Count - 1; i > 0; i--)
+        {
+            int j = UnityEngine.Random.Range(0, i + 1);
+            T temp = list[i];
+            list[i] = list[j];
+            list[j] = temp;
+        }
+    }
+    public static List<T> Shuffled<T>(this List<T> list)
+    {
+        list.Shuffle();
+        return list;
+    }
+    public static void Write(this MessageWriter writer, short value)
+    {
+        writer.Buffer[writer.Position++] = (byte)value;
+        writer.Buffer[writer.Position++] = (byte)(value >> 8);
+        if (writer.Position > writer.Length) writer.Length = writer.Position;
+    }
+    public static void Write(this MessageWriter writer, long value)
+    {
+        writer.Buffer[writer.Position++] = (byte)value;
+        writer.Buffer[writer.Position++] = (byte)(value >> 8);
+        writer.Buffer[writer.Position++] = (byte)(value >> 16);
+        writer.Buffer[writer.Position++] = (byte)(value >> 24);
+        writer.Buffer[writer.Position++] = (byte)(value >> 32);
+        writer.Buffer[writer.Position++] = (byte)(value >> 40);
+        writer.Buffer[writer.Position++] = (byte)(value >> 48);
+        writer.Buffer[writer.Position++] = (byte)(value >> 56);
+        if (writer.Position > writer.Length) writer.Length = writer.Position;
+    }
 }

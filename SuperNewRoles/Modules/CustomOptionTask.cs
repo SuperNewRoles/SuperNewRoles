@@ -102,6 +102,7 @@ namespace SuperNewRoles.Modules
             }
             // カスタムオプションを作成し、リストに追加
             CustomOption option = new(attribute, field, role, isTaskOption: true);
+            meField.SetValue(null, TaskData);
             return option;
         }
 

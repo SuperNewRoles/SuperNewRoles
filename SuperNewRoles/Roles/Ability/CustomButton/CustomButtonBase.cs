@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Configuration;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -28,20 +29,17 @@ public abstract class CustomButtonBase : AbilityBase
     private EventListener<WrapUpEventData> wrapUpEvent;
     private ActionButton actionButton;
     private IButtonEffect buttonEffect;
-    public abstract Vector3 PositionOffset { get; }
-    public abstract Vector3 LocalScale { get; }
     public virtual float Timer { get; set; }
     public abstract float DefaultTimer { get; }
     public abstract string buttonText { get; }
 
     public abstract Sprite Sprite { get; }
-    public abstract Color? color { get; }
     private static readonly Color GrayOut = new(1f, 1f, 1f, 0.3f);
 
     //TODO:未実装
     //Updateで感知するよりも、button押したのをトリガーにするべきな気がするけどそれは可能か？
     protected abstract KeyCode? hotkey { get; }
-    protected abstract int joystickkey { get; }
+    // protected abstract int joystickkey { get; }
 
     public abstract bool CheckIsAvailable();
     public virtual bool CheckHasButton() => !PlayerControl.LocalPlayer.Data.IsDead;
@@ -92,8 +90,12 @@ public abstract class CustomButtonBase : AbilityBase
         SetActive(false);
         hudUpdateEvent = HudUpdateEvent.Instance.AddListener(OnUpdate);
         wrapUpEvent = WrapUpEvent.Instance.AddListener(x => OnMeetingEnds());
-        buttonEffect = this as IButtonEffect;
         ResetTimer();
+    }
+    public override void Attach(PlayerControl player, ulong abilityId, AbilityParentBase parent)
+    {
+        base.Attach(player, abilityId, parent);
+        buttonEffect = this as IButtonEffect;
     }
 
     public virtual void OnUpdate()
@@ -109,13 +111,23 @@ public abstract class CustomButtonBase : AbilityBase
         //エフェクト中は直後のbuttonEffect.Updateで表記が上書きされる……はず
         actionButton.SetCoolDown(Timer, float.MaxValue);
         actionButton.OverrideText(buttonText);
-        if (CheckIsAvailable())
+        if (CheckIsAvailable() && (buttonEffect == null || !buttonEffect.isEffectActive))
         {
             actionButton.graphic.color = actionButton.buttonLabelText.color = Palette.EnabledColor;
             actionButton.graphic.material.SetFloat("_Desat", 0f);
             if (Input.GetKeyDown(hotkey ?? KeyCode.None))
             {
                 OnClickEvent();
+            }
+        }
+        else if (buttonEffect != null && buttonEffect.isEffectActive && buttonEffect.effectCancellable)
+        {
+            actionButton.graphic.color = actionButton.buttonLabelText.color = Palette.EnabledColor;
+            actionButton.graphic.material.SetFloat("_Desat", 0f);
+            if (Input.GetKeyDown(hotkey ?? KeyCode.None))
+            {
+                buttonEffect.OnCancel(actionButton);
+                ResetTimer();
             }
         }
         else
@@ -129,13 +141,18 @@ public abstract class CustomButtonBase : AbilityBase
 
     public void OnClickEvent()
     {
-        if (this.Timer <= 0f && CheckIsAvailable())
+        if (this.Timer <= 0f && CheckIsAvailable() && (buttonEffect == null || !buttonEffect.isEffectActive))
         {
             actionButton.graphic.color = GrayOut;
             this.OnClick();
             ResetTimer();
-            IButtonEffect buttonEffect = this as IButtonEffect;
             if (buttonEffect != null) buttonEffect.OnClick(actionButton);
+        }
+        else if (buttonEffect != null && buttonEffect.isEffectActive && buttonEffect.effectCancellable)
+        {
+            actionButton.graphic.color = Palette.EnabledColor;
+            buttonEffect.OnCancel(actionButton);
+            ResetTimer();
         }
     }
     public void SetActive(bool isActive)

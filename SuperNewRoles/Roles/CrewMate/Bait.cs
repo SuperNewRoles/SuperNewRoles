@@ -42,7 +42,6 @@ class Bait : RoleBase<Bait>
     // 通報を遅延させる
     [CustomOptionFloat("BaitReportTime", 0.5f, 10f, 0.1f, 0.5f)]
     public static float BaitReportTime;
-
     // キラーに警告する
     [CustomOptionBool("BaitWarnKiller", true, parentFieldName: nameof(BaitReportTime))]
     public static bool BaitWarnKiller;

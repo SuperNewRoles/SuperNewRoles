@@ -15,13 +15,9 @@ public class CustomVentAbility : CustomButtonBase
     public Func<float?> VentCooldown { get; }
     public Func<float?> VentDuration { get; }
 
-    public override Color? color => Color.white;
-    public override Vector3 LocalScale => Vector3.one;
     public override Sprite Sprite => HudManager.Instance?.ImpostorVentButton?.graphic?.sprite; // TODO: 適切なスプライトを設定する必要があります
     public override string buttonText => FastDestroyableSingleton<TranslationController>.Instance.GetString(StringNames.VentLabel);
-    public override Vector3 PositionOffset => new Vector3(0, 2f, 0);
     protected override KeyCode? hotkey => KeyCode.V;
-    protected override int joystickkey => 0;
     public override float DefaultTimer => VentCooldown?.Invoke() ?? 0;
 
     public CustomVentAbility(Func<bool> canUseVent, Func<float?> ventCooldown = null, Func<float?> ventDuration = null)

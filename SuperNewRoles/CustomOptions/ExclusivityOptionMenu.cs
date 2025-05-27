@@ -98,11 +98,11 @@ public static class ExclusivityOptionMenu
 
         if (isIncrement)
         {
-            newValue = currentValue < 15 ? currentValue + 1 : 1;
+            newValue = currentValue < 15 ? currentValue + 1 : 0;
         }
         else
         {
-            newValue = currentValue > 1 ? currentValue - 1 : 15;
+            newValue = currentValue > 0 ? currentValue - 1 : 15;
         }
 
         selectedText.text = newValue.ToString();

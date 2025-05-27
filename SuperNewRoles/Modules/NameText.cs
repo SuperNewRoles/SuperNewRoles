@@ -1,6 +1,8 @@
 using System.Linq;
 using SuperNewRoles.Events;
 using SuperNewRoles.Events.PCEvents;
+using SuperNewRoles.Roles;
+using SuperNewRoles.Roles.CrewMate;
 using UnityEngine;
 
 namespace SuperNewRoles.Modules;
@@ -57,14 +59,20 @@ public static class NameText
         {
             if (player.IsTaskTriggerRole())
             {
-                var (complete, all) = ModHelpers.TaskCompletedData(player.Data);
+                var (complete, all) = player.GetAllTaskForShowProgress();
                 TaskText += ModHelpers.Cs(Color.yellow, "(" + (ModHelpers.IsComms() ? "?" : complete.ToString()) + "/" + all.ToString() + ")");
             }
         }
         catch { }
         string playerInfoText = "";
         string meetingInfoText = "";
-        playerInfoText = $"{ModHelpers.Cs(player.roleBase.RoleColor, ModTranslation.GetString(player.Role.ToString()))}";
+        string roleName = player.roleBase.Role.ToString();
+        // ベスト冤罪ヤーは生きてる時は自覚できない
+        if (player.roleBase.Role == RoleId.BestFalseCharge && player.AmOwner && player.IsDead())
+        {
+            roleName = Crewmate.Instance.Role.ToString();
+        }
+        playerInfoText = $"{ModHelpers.Cs(player.roleBase.RoleColor, ModTranslation.GetString(roleName))}";
         playerInfoText += TaskText;
         meetingInfoText = playerInfoText.Trim();
         player.PlayerInfoText.text = playerInfoText;
@@ -96,6 +104,7 @@ public static class NameText
             UpdateNameInfo(x.killer);
             UpdateNameInfo(x.target);
         }));
+        DieEvent.Instance.AddListener(x => UpdateAllNameInfo());
         WrapUpEvent.Instance.AddListener(x => UpdateAllNameInfo());
         MeetingStartEvent.Instance.AddListener(UpdateAllNameInfo);
         FixedUpdateEvent.Instance.AddListener(UpdateAllVisiable);

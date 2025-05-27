@@ -11,6 +11,7 @@ public class MadmateAbility : AbilityBase
     public CustomVentAbility VentAbility { get; private set; }
     public KnowImpostorAbility KnowImpostorAbility { get; private set; }
     public ImpostorVisionAbility ImpostorVisionAbility { get; private set; }
+    public CustomTaskAbility CustomTaskAbility { get; private set; }
     public MadmateAbility(MadmateData madData)
     {
         MadData = madData;
@@ -21,12 +22,14 @@ public class MadmateAbility : AbilityBase
         VentAbility = new CustomVentAbility(() => MadData.CouldUseVent);
         KnowImpostorAbility = new KnowImpostorAbility(MadData.CouldKnowImpostors);
         ImpostorVisionAbility = new ImpostorVisionAbility(() => MadData.HasImpostorVision);
+        CustomTaskAbility = new CustomTaskAbility(() => (true, MadData.TaskNeeded), MadData.SpecialTasks);
         ExPlayerControl exPlayer = (ExPlayerControl)player;
 
         AbilityParentAbility parentAbility = new(this);
         exPlayer.AttachAbility(VentAbility, parentAbility);
         exPlayer.AttachAbility(KnowImpostorAbility, parentAbility);
         exPlayer.AttachAbility(ImpostorVisionAbility, parentAbility);
+        exPlayer.AttachAbility(CustomTaskAbility, parentAbility);
 
         base.Attach(player, abilityId, parent);
     }
@@ -39,8 +42,10 @@ public class MadmateData
 {
     public bool HasImpostorVision { get; }
     public bool CouldUseVent { get; }
+    public TaskOptionData SpecialTasks { get; }
+    public int TaskNeeded { get; }
+
     private bool _couldKnowImpostors;
-    private int _taskNeeded;
     private bool _lastTaskChecked;
     public bool CouldKnowImpostors()
     {
@@ -48,13 +53,14 @@ public class MadmateData
         if (_lastTaskChecked) return true;
         var (complete, all) = ModHelpers.TaskCompletedData(ExPlayerControl.LocalPlayer.Data);
         if (complete == -1 || all == -1) return false;
-        return _lastTaskChecked = complete >= _taskNeeded;
+        return _lastTaskChecked = complete >= TaskNeeded;
     }
-    public MadmateData(bool hasImpostorVision, bool couldUseVent, bool couldKnowImpostors, int taskNeeded)
+    public MadmateData(bool hasImpostorVision, bool couldUseVent, bool couldKnowImpostors, int taskNeeded, TaskOptionData specialTasks)
     {
         HasImpostorVision = hasImpostorVision;
         CouldUseVent = couldUseVent;
         _couldKnowImpostors = couldKnowImpostors;
-        _taskNeeded = taskNeeded;
+        TaskNeeded = taskNeeded;
+        SpecialTasks = specialTasks;
     }
 }
