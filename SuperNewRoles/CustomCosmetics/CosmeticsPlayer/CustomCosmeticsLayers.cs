@@ -58,7 +58,13 @@ public class CustomCosmeticsLayer
 
     public CustomCosmeticsLayer(CosmeticsLayer cosmeticsLayer)
     {
+        cosmeticsLayer.transform.parent.gameObject.AddComponent<SortingGroup>();
         this.cosmeticsLayer = cosmeticsLayer;
+
+        foreach (var bodySprite in cosmeticsLayer.bodySprites)
+        {
+            bodySprite.BodySprite.sortingOrder = 6;
+        }
 
         ModdedCosmetics = new GameObject("ModdedCosmetics");
         ModdedCosmetics.transform.parent = cosmeticsLayer.transform;
@@ -67,18 +73,17 @@ public class CustomCosmeticsLayer
         ModdedCosmetics.transform.localRotation = Quaternion.identity;
         ModdedCosmetics.layer = cosmeticsLayer.gameObject.layer;
 
-        cosmeticsLayer.gameObject.AddComponent<SortingGroup>();
         cosmeticsLayer.transform.localPosition = new(0, 0, -0.0001f);
 
         var skin = cosmeticsLayer.skin.GetComponent<SpriteRenderer>();
         skin.sortingOrder = 0;
 
         var hat = cosmeticsLayer.hat;
-        visor1 = CreateVisorLayer(cosmeticsLayer, "visor1", -0.8f, 20);
-        hat1 = CreateHatLayer(cosmeticsLayer, hat, "hat1", new Vector3(0f, 0f, 0), new Vector3(0f, 0f, 0.7f), 30);
+        visor1 = CreateVisorLayer(cosmeticsLayer, "visor1", -0.8f, 40);
+        hat1 = CreateHatLayer(cosmeticsLayer, hat, "hat1", new Vector3(0f, 0f, 0), new Vector3(0f, 0f, 0.7f), 30, 5);
         hat1.LayerNumber = 1;
-        visor2 = CreateVisorLayer(cosmeticsLayer, "visor2", -0.51f, 1);
-        hat2 = CreateHatLayer(cosmeticsLayer, hat, "hat2", new Vector3(0f, 0f, 0), new Vector3(0f, 0f, 0.6f), 10);
+        visor2 = CreateVisorLayer(cosmeticsLayer, "visor2", -0.51f, 20);
+        hat2 = CreateHatLayer(cosmeticsLayer, hat, "hat2", new Vector3(0f, 0f, 0), new Vector3(0f, 0f, 0.6f), 10, 4);
         hat2.LayerNumber = 2;
 
         CustomCosmeticsLayers.visorLayer1s[cosmeticsLayer.visor.GetInstanceID()] = visor1;
@@ -120,7 +125,7 @@ public class CustomCosmeticsLayer
         // if (cosmeticsLayer.visor)
         return visorLayer;
     }
-    private CustomHatLayer CreateHatLayer(CosmeticsLayer baseLayer, HatParent hatParent, string hatName, Vector3 frontOffset, Vector3 backOffset, int sortingOrder)
+    private CustomHatLayer CreateHatLayer(CosmeticsLayer baseLayer, HatParent hatParent, string hatName, Vector3 frontOffset, Vector3 backOffset, int sortingOrder, int sortingOrderBack)
     {
         // 新しいCustomHatLayerの生成と共通設定の適用
         CustomHatLayer hatLayer = new GameObject(hatName).AddComponent<CustomHatLayer>();
@@ -155,7 +160,7 @@ public class CustomCosmeticsLayer
         hatLayer.BackLayer.transform.localScale = Vector3.one;
         hatLayer.BackLayer.gameObject.layer = baseLayer.gameObject.layer;
         hatLayer.BackLayer.material = hatParent.BackLayer.material;
-        hatLayer.BackLayer.sortingOrder = sortingOrder;
+        hatLayer.BackLayer.sortingOrder = sortingOrderBack;
         // フロントレイヤーの作成と設定
         hatLayer.FrontLayer = new GameObject("front").AddComponent<SpriteRenderer>();
         hatLayer.FrontLayer.transform.parent = hatLayer.transform;
