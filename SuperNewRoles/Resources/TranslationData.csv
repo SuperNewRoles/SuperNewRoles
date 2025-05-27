@@ -9,6 +9,7 @@ Neutral,第三陣営,Neutral,第三阵营,第三陣營
 GhostRoles,幽霊役職,Ghost Roles,幽灵角色,幽靈角色
 Modifier,モディファイア,Modifier,修饰符,修飾符
 People,{0}人,{0} people,{0}人,{0}人
+Role.Slugger,スラッガー,Slugger,冲锋者,衝鋒者
 
 # 共通設定テキスト
 CoolTime,クールタイム,Cool Time,冷却时间,冷卻時間
@@ -1139,3 +1140,9 @@ ModifierMaxNeutrals,第三陣営最大人数,Max Neutrals,第三阵营最大人�
 ModifierNeutralChance,第三陣営確率,Neutral Chance,第三阵营概率,第三陣營機率
 ModifierMaxCrewmates,クルーメイト最大人数,Max Crewmates,船员最大人数,船員最大人數
 ModifierCrewmateChance,クルーメイト確率,Crewmate Chance,船员概率,船員機率
+
+# Slugger Options
+SluggerChargeTime,チャージ時間,Charge Time,蓄力时间,蓄力時間
+SluggerIsMultiKill,複数キルを許可,Allow Multi-Kill,允许多重击杀,允许多重擊殺
+SluggerIsSyncKillCoolTime,キルクールタイム同期,Sync Kill Cooldown,同步击杀冷却,同步擊殺冷卻
+SluggerButtonName,スラッガー！,Slugger!,击杀,擊杀
