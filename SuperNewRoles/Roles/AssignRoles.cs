@@ -115,6 +115,11 @@ public static class AssignRoles
                 role.AvailableMaps.Length != 0 &&
                 !role.AvailableMaps.Any(map => (byte)map == GameOptionsManager.Instance.CurrentGameOptions.MapId))
                 continue;
+
+            // LoversBreaker役職の特別な選出条件をチェック
+            if (roleOption.RoleId == RoleId.LoversBreaker && ShouldSkipLoversBreakerAssignment())
+                continue;
+
             if (roleOption.Percentage >= 100)
             {
                 AssignTickets_HundredPercent[roleOption.AssignTeam].Add(new AssignTickets(roleOption));
@@ -128,6 +133,53 @@ public static class AssignRoles
                 }
             }
         }
+    }
+
+    /// <summary>
+    /// LoversBreaker役職の選出をスキップするかどうかを判定します。
+    /// Lovers、Truelover、Cupidの全ての確率または選出数が0の場合にtrueを返します。
+    /// </summary>
+    private static bool ShouldSkipLoversBreakerAssignment()
+    {
+        // Lovers（Modifier）の確率と選出数をチェック
+        bool loversDisabled = true;
+        if (RoleOptionManager.TryGetModifierRoleOption(ModifierRoleId.Lovers, out var loversOption))
+        {
+            if (loversOption.Percentage > 0 && loversOption.NumberOfCrews > 0)
+            {
+                loversDisabled = false;
+            }
+        }
+
+        // Truelover役職の確率と選出数をチェック
+        bool trueloverDisabled = true;
+        if (RoleOptionManager.TryGetRoleOption(RoleId.Truelover, out var trueloverOption))
+        {
+            if (trueloverOption.Percentage > 0 && trueloverOption.NumberOfCrews > 0)
+            {
+                trueloverDisabled = false;
+            }
+        }
+
+        // Cupid役職の確率と選出数をチェック
+        bool cupidDisabled = true;
+        if (RoleOptionManager.TryGetRoleOption(RoleId.Cupid, out var cupidOption))
+        {
+            if (cupidOption.Percentage > 0 && cupidOption.NumberOfCrews > 0)
+            {
+                cupidDisabled = false;
+            }
+        }
+
+        // 全ての役職が無効化されている場合はLoversBreaker役職をスキップ
+        bool shouldSkip = loversDisabled && trueloverDisabled && cupidDisabled;
+
+        if (shouldSkip)
+        {
+            Logger.Info("LoversBreaker役職をスキップします: Lovers、Truelover、Cupidの全ての確率または選出数が0です。");
+        }
+
+        return shouldSkip;
     }
     private static void AssignTickets(List<AssignTickets> tickets_hundred, List<AssignTickets> tickets_not_hundred, bool isImpostor, int maxBeans)
     {
@@ -357,19 +409,18 @@ public static class AssignRoles
         }
 
         // ModifierGuesserのAssignFilterを取得
-        var modifierGuesserOption = RoleOptionManager.ModifierRoleOptions.FirstOrDefault(x => x.ModifierRoleId == ModifierRoleId.Lovers);
-        if (modifierGuesserOption?.AssignFilterList.Count > 0)
+        if (RoleOptionManager.TryGetModifierRoleOption(ModifierRoleId.Lovers, out var modifierLovers))
         {
-            candidates = candidates
-                .Where(p => !modifierGuesserOption.AssignFilterList.Contains(p.Role));
-        }
-
-        // ModifierGuesserのDoNotAssignRolesをチェック
-        var modifierGuesser = CustomRoleManager.AllModifiers.FirstOrDefault(m => m.ModifierRole == ModifierRoleId.Lovers);
-        if (modifierGuesser?.DoNotAssignRoles.Length > 0)
-        {
-            candidates = candidates
-                .Where(p => !modifierGuesser.DoNotAssignRoles.Contains(p.Role));
+            if (modifierLovers.AssignFilterList.Count > 0)
+            {
+                candidates = candidates
+                    .Where(p => !modifierLovers.AssignFilterList.Contains(p.Role));
+            }
+            if (Lovers.Instance.DoNotAssignRoles.Length > 0)
+            {
+                candidates = candidates
+                    .Where(p => !Lovers.Instance.DoNotAssignRoles.Contains(p.Role));
+            }
         }
 
         candidates = candidates.Where(p => p.Role is not RoleId.Truelover and not RoleId.Cupid and not RoleId.LoversBreaker);

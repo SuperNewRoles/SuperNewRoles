@@ -378,6 +378,7 @@ NiceHawk,ナイスホーク,Nice Hawk
 MadHawk,マッドホーク,Mad Hawk
 EvilHawk,イビルホーク,Evil Hawk
 ModifierHawk,モディファイアホーク,Modifier Hawk
+Bullet,弾,Bullet
 
 # Descriptions
 BestFalseCharge.Description,特に能力を有さないクルーメイトです。\n死亡するまでこの役職だと自覚出来ません。\n最初の会議が終了すると、そのまま死亡します。,The ultimate red herring! A Crewmate with no abilities who lives in blissful ignorance.\nThey won't realize they have this role until they're dead—talk about a rude awakening!\nAfter the first meeting ends, they die faster than someone saying "I saw Blue vent!",这是一个没有特殊能力的船员。\n在死亡之前他们不会意识到自己拥有这个角色。\n第一场会议结束后，他们会直接死亡。,這是一個沒有特殊能力的船員。\n在死亡之前他們不會察覺自己擁有這個角色。\n第一場會議結束後，他們會直接死亡。
@@ -461,6 +462,7 @@ JackalSidekickType,サイドキックタイプ,Sidekick Type,边缘队员类型,
 JackalSidekickType.Sidekick,サイドキック,Sidekick,边缘队员,邊緣隊員
 JackalSidekickType.Friends,ジャッカルフレンズ,Jackal Friends,杰克朋友,傑克朋友
 JackalSidekickType.SidekickWaveCannon,波動砲サイドキック,Sidekick Wave Cannon
+JackalSidekickType.Bullet,弾,Bullet,子弹,子彈
 SidekickButtonText,サイドキック,Sidekick,边缘队员,邊緣隊員
 
 # Bait Options
@@ -524,6 +526,10 @@ WaveCannonJackalSidekickType,サイドキックタイプ,Sidekick Type,边缘队
 WaveCannonJackalWaveCannonCooldown,波動砲クールダウン,Wave Cannon Cooldown,波动炮冷却时间,波動砲冷卻時間
 WaveCannonJackalWaveCannonEffectDuration,波動砲の充填時間,Wave Cannon Fill Time,波动炮充填时间,波動砲充填時間
 WaveCannonJackalWaveCannonType,波動砲タイプ,Wave Cannon Type,波动炮类型,波動砲類型
+WaveCannonJackalBulletLoadBulletCooltime,弾のチャージクールタイム,Bullet Charge Cooltime,子弹充能冷却时间,子彈充能冷卻時間
+WaveCannonJackalBulletLoadedChargeTime,弾波動砲のチャージ時間,Bullet Loaded Charge Time,子弹充能时间,子彈充能時間
+WaveCannonJackalCreateBulletToJackal,弾がジャッカルに昇格する,Bullet becomes Jackal,子弹成为杰克,子彈成為傑克
+WaveCannonJackalNewJackalHaveWaveCannon,弾が昇格した際波動砲を持つ,Bullet becomes Jackal and has Wave Cannon,子弹成为杰克并拥有波动炮,子彈成為傑克並擁有波動砲
 
 # Tuna
 TunaStopTimeLimit,停止可能時間,Tuna Stop Time Limit,金枪鱼停止时间,金槍魚停止時間
@@ -920,6 +926,7 @@ SchrodingersCatKillVictimSuicide,キル者が自殺する,Killer suicides,擊殺
 SchrodingersCatSuicideTime,自殺までの時間,Time until suicide,自殺剩餘時間,自殺剩餘時間
 SchrodingersCatBeCrewOnExile,追放でクルー陣営になる,Become crew on exile,被逐出時變為船員陣營,被逐出時變為船員陣營
 SchrodingersCatCrewOnKillByNonSpecific,特定の役職以外からキルされたときクルー陣営になる,Become crew when killed by non specific role,被非特定角色擊殺時變為船員陣營,被非特定角色擊殺時變為船員陣營
+SchrodingersCatSuicideText,猫をキルした... ,Killed the cat...,殺了貓...,殺了貓...
 
 # Truelover
 TrueLoverCreateLovers,一目惚れ,One-sided Love,一見傾心,一見傾心
@@ -1037,7 +1044,7 @@ SpelunkerVentDeathChance,ベント死の確率,Probability of vent death,倒霉�
 LadderDeadChance,転落死する確率,Ladder Death Chance,摔死的概率,摔死的機率
 SpelunkerIsDeathCommsOrPowerdown,コミュ・停電で死ぬ,Death from Communications/Power Down,通信或断电时死亡,通信或斷電時死亡
 SpelunkerDeathCommsTime,コミュの時間,Time to death from Communications (seconds),通信死亡时间(秒),通信死亡時間(秒)
-SpelunkerDeathPowerdownTime,停電の時,Time to death from Power Down (seconds),断电死亡时间(秒),斷電死亡時間(秒)
+SpelunkerDeathPowerdownTime,停電の時間,Time to death from Power Down (seconds),断电死亡时间(秒),斷電死亡時間(秒)
 SpelunkerLiftDeathChance,昇降機死の確率,Elevator Death Chance,电梯死亡概率,電梯死亡機率
 SpelunkerDoorOpenChance,ドア開放死の確率,Door Opening Death Chance,开门死亡概率,開門死亡機率
 
@@ -1112,6 +1119,7 @@ HamburgerShopTaskOption,タスク設定,Task Settings,任务设置,任務設置
 # LoversBreaker
 LoversBreakerWinKillCount,勝利に必要な爆破数,Number of kills needed to win,胜利所需爆破次数,勝利所需爆破次數
 LoversBreakerIsDeathWin,死亡していても勝利出来る,You can win even if you are dead,死亡后仍可获胜,死亡後仍可獲勝
+LoversBreakerBreak,爆破,Break!
 
 # NiceHawk
 HawkButtonText,ホークアイ,Hawk Eye,鹰眼,鷹眼

@@ -6,7 +6,7 @@ namespace SuperNewRoles.WaveCannonObj;
 
 public class WaveCannonObjectTank : WaveCannonObjectBase
 {
-    public WaveCannonObjectTank(WaveCannonAbility ability, bool isFlipX, Vector3 startPosition, bool isResetKillCooldown) : base(ability, isFlipX, startPosition, isResetKillCooldown)
+    public WaveCannonObjectTank(WaveCannonAbility ability, bool isFlipX, Vector3 startPosition, bool isResetKillCooldown, string tankObjectName = "WaveCannonTank") : base(ability, isFlipX, startPosition, isResetKillCooldown)
     {
         // 砲台のコンテナオブジェクトを生成
         _gameObject = new GameObject("WaveCannonObjectTank");
@@ -37,7 +37,7 @@ public class WaveCannonObjectTank : WaveCannonObjectBase
         _player.cosmetics.nameText.gameObject.SetActive(false);
         SoundManager.Instance.PlaySound(AssetManager.GetAsset<AudioClip>("WaveCannon.Charge.mp3"), false);
 
-        var tankObj = AssetManager.GetAsset<GameObject>("WaveCannonTank");
+        var tankObj = AssetManager.GetAsset<GameObject>(tankObjectName);
         _tankObj = GameObject.Instantiate(tankObj, _gameObject.transform);
         _tankObj.transform.localScale = Vector3.one;
         _tankObj.transform.localPosition = new(0.75f, 0, 1);

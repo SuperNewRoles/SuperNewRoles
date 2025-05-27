@@ -104,6 +104,7 @@ public class WiseManAbility : CustomButtonBase, IButtonEffect
         if (data.Killer == data.RefTarget) return;
         data.RefSuccess = false;
         data.Killer.CustomDeath(CustomDeathType.Suicide);
+        Guarded = true;
     }
 
     public override bool CheckIsAvailable()

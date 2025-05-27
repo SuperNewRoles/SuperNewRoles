@@ -97,7 +97,6 @@ public abstract class WaveCannonObjectBase
 
             if (!ability.Player.AmOwner) return;
             List<ExPlayerControl> targetPlayersSorted = ExPlayerControl.ExPlayerControls.Where(x => x.IsAlive() && x.PlayerId != ability.Player.PlayerId).OrderBy(x => Mathf.Abs(ability.Player.transform.position.x - x.transform.position.x)).ToList();
-            Logger.Info($"---- targetPlayersSorted: {targetPlayersSorted.Count} ----");
             foreach (var collider in HitColliders)
             {
                 foreach (ExPlayerControl player in targetPlayersSorted)
@@ -185,7 +184,6 @@ public abstract class WaveCannonObjectBase
     {
         if (ability?.Player?.AmOwner == true)
             RpcDetach(ability.Player, ability.AbilityId);
-        Logger.Info("Detached");
         new LateTask(() => FixedUpdateEvent.Instance.RemoveListener(fixedUpdateEvent), 0f);
         detached = true;
         if (WaveCannonObject != null)
@@ -214,6 +212,8 @@ public abstract class WaveCannonObjectBase
         {
             case WaveCannonType.Tank:
                 return new WaveCannonObjectTank(ability, isFlipX, startPosition, isResetKillCooldown);
+            case WaveCannonType.Bullet:
+                return new WaveCannonObjectBullet(ability, isFlipX, startPosition, isResetKillCooldown);
             default:
                 throw new Exception($"Invalid wave cannon type: {type}");
         }

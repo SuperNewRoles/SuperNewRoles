@@ -10,7 +10,7 @@ namespace SuperNewRoles.Roles.Ability;
 
 public class PromoteOnParentDeathAbility : AbilityBase
 {
-    public AbilityParentAbility Owner { get; }
+    public AbilityParentRole Owner { get; }
     public RoleId PromoteRole { get; }
     public RoleTypes PromoteRoleVanilla { get; }
     public Action<ExPlayerControl> OnPromoted { get; set; } = (player) => { };
@@ -18,7 +18,7 @@ public class PromoteOnParentDeathAbility : AbilityBase
     private EventListener _fixedUpdateEventListener;
     private bool _hasPromoted = false;
 
-    public PromoteOnParentDeathAbility(AbilityParentAbility owner, RoleId promoteRole, RoleTypes promoteRoleVanilla)
+    public PromoteOnParentDeathAbility(AbilityParentRole owner, RoleId promoteRole, RoleTypes promoteRoleVanilla)
     {
         Owner = owner;
         PromoteRole = promoteRole;

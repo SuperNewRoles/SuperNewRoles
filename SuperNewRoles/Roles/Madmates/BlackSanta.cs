@@ -43,7 +43,7 @@ class BlackSanta : RoleBase<BlackSanta>
     public override short IntroNum => 1;
     public override RoleTypes IntroSoundType => RoleTypes.Shapeshifter;
     public override RoleOptionMenuType OptionTeam => RoleOptionMenuType.Crewmate;
-
+    public override RoleId[] RelatedRoleIds => [RoleId.EvilGuesser, RoleId.SelfBomber, RoleId.Penguin, RoleId.WaveCannon];
     // サンタ機能
     [CustomOptionFloat("BlackSantaAbilityCooldown", 0f, 180f, 2.5f, 25f, translationName: "SantaAbilityCooldown")]
     public static float BlackSantaAbilityCooldown;

@@ -121,20 +121,22 @@ public class CustomSidekickButtonAbility : TargetCustomButtonBase
     public void RpcSidekicked(ExPlayerControl player, SidekickData data)
     {
         Logger.Info($"RpcSidekicked: {player.PlayerId}, {data.RoleId}, {data.IsVanilla}, {data.IsPromote}, {data.PromoteToRole}, {data.PromoteToRoleVanilla}");
-        player.SetRole(data.RoleId);
-        if (data.IsVanilla)
-            RoleManager.Instance.SetRole(player, data.RoleType);
-        NameText.UpdateAllNameInfo();
 
+        player.SetRole(data.RoleId);
         if (data.IsPromote)
         {
+            Logger.Info("SidekickData IsPromote");
             PromoteOnParentDeathAbility promoteAbility = new(
-                new AbilityParentAbility(this),
+                new AbilityParentRole(Player, Player.roleBase),
                 data.PromoteToRole,
                 data.PromoteToRoleVanilla
             );
+            Logger.Info("SidekickData AttachAbility to player: " + player.PlayerId);
             player.AttachAbility(promoteAbility, new AbilityParentRole(player, player.roleBase));
         }
+        if (data.IsVanilla)
+            RoleManager.Instance.SetRole(player, data.RoleType);
+        NameText.UpdateAllNameInfo();
     }
 }
 

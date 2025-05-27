@@ -499,6 +499,7 @@ public class ExPlayerControl
     }
     private void AttachAbility(AbilityBase ability, ulong abilityId, AbilityParentBase parent)
     {
+        Logger.Info("AttachAbility: " + ability.GetType().Name + " to player: " + PlayerId);
         PlayerAbilities.Add(ability);
         PlayerAbilitiesDictionary.Add(abilityId, ability);
         _abilityCache[ability.GetType().Name] = ability;

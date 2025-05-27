@@ -6,6 +6,7 @@ using SuperNewRoles.Modules;
 using SuperNewRoles.Modules.Events.Bases;
 using SuperNewRoles.Roles.CrewMate;
 using SuperNewRoles.Roles.Neutral;
+using TMPro;
 using UnityEngine;
 
 namespace SuperNewRoles.Roles.Ability;
@@ -39,6 +40,13 @@ public class SchrodingersCatAbility : AbilityBase
     private ImpostorVisionAbility _impostorVisionAbility;
     private EventListener<TryKillEventData> _murderListener;
     private EventListener<NameTextUpdateEventData> _nameTextUpdateListener;
+    private EventListener<WrapUpEventData> _wrapUpListener;
+    private EventListener _fixedUpdateListener;
+
+    private float suicideTimer;
+    private ExPlayerControl _suicideTarget;
+    private TextMeshPro _suicideText;
+
     public SchrodingersCatTeam CurrentTeam { get; private set; } = SchrodingersCatTeam.SchrodingersCat;
     public SchrodingersCatAbility(SchrodingersCatData data)
     {
@@ -48,12 +56,6 @@ public class SchrodingersCatAbility : AbilityBase
 
     public override void AttachToAlls()
     {
-        _customKillButtonAbility = new CustomKillButtonAbility(
-            () => Data.HasKillAbility && CurrentTeam is not SchrodingersCatTeam.SchrodingersCat and not SchrodingersCatTeam.Crewmate,
-            () => Data.KillCooldown,
-            () => false,
-            isTargetable: (player) => player.IsAlive() && CheckTargetable(player)
-        );
         _knowOtherAbility = new KnowOtherAbility(
             (player) => CurrentTeam != SchrodingersCatTeam.SchrodingersCat && CanKnow(player),
             () => false
@@ -67,7 +69,6 @@ public class SchrodingersCatAbility : AbilityBase
         _impostorVisionAbility = new ImpostorVisionAbility(
             () => CurrentTeam != SchrodingersCatTeam.SchrodingersCat && IsImpostorVision()
         );
-        Player.AttachAbility(_customKillButtonAbility, new AbilityParentAbility(this));
         Player.AttachAbility(_knowOtherAbility, new AbilityParentAbility(this));
         Player.AttachAbility(_customVentAbility, new AbilityParentAbility(this));
         Player.AttachAbility(_customSaboAbility, new AbilityParentAbility(this));
@@ -75,11 +76,40 @@ public class SchrodingersCatAbility : AbilityBase
 
         _murderListener = TryKillEvent.Instance.AddListener(TryMurder);
         _nameTextUpdateListener = NameTextUpdateEvent.Instance.AddListener(OnNameTextUpdate);
+        _wrapUpListener = WrapUpEvent.Instance.AddListener(OnWrapUp);
+        _fixedUpdateListener = FixedUpdateEvent.Instance.AddListener(OnFixedUpdate);
     }
     public override void DetachToAlls()
     {
         _murderListener?.RemoveListener();
         _nameTextUpdateListener?.RemoveListener();
+        _wrapUpListener?.RemoveListener();
+        _fixedUpdateListener?.RemoveListener();
+    }
+    private void OnFixedUpdate()
+    {
+        if (suicideTimer > 0 && _suicideTarget != null)
+        {
+            suicideTimer -= Time.fixedDeltaTime;
+            if (suicideTimer <= 0 || MeetingHud.Instance != null)
+            {
+                _suicideTarget.CustomDeath(CustomDeathType.Suicide);
+                if (_suicideText != null)
+                {
+                    _suicideText.text = "";
+                    GameObject.Destroy(_suicideText.gameObject);
+                    _suicideText = null;
+                }
+                _suicideTarget = null;
+            }
+        }
+    }
+    private void OnWrapUp(WrapUpEventData data)
+    {
+        if (ModHelpers.Not(data.exiled?.PlayerId == Player.PlayerId && Data.BeCrewOnExile && CurrentTeam == SchrodingersCatTeam.SchrodingersCat))
+            return;
+        CurrentTeam = SchrodingersCatTeam.Crewmate;
+        Dominate(CurrentTeam);
     }
     private void TryMurder(TryKillEventData data)
     {
@@ -96,41 +126,122 @@ public class SchrodingersCatAbility : AbilityBase
         else if (data.Killer.IsCrewmate())
             CurrentTeam = SchrodingersCatTeam.Crewmate;
         else if (Data.CrewOnKillByNonSpecific)
+        {
             CurrentTeam = SchrodingersCatTeam.Crewmate;
+            Player.CustomDeath(CustomDeathType.Suicide);
+        }
         if (CurrentTeam != SchrodingersCatTeam.SchrodingersCat)
         {
             Dominate(CurrentTeam);
+            if (Data.KillVictimSuicide)
+            {
+                suicideTimer = Data.SuicideTime;
+                _suicideTarget = data.RefTarget;
+                if (_suicideTarget.AmOwner)
+                {
+                    _suicideText = GameObject.Instantiate(data.Killer.cosmetics.nameText, null);
+                    _suicideText.transform.localPosition = new(0, 0, 0);
+                    _suicideText.alignment = TextAlignmentOptions.Center;
+                    _suicideText.text = ModTranslation.GetString("SchrodingersCatSuicideText");
+                }
+            }
+            if (data.RefTarget.AmOwner)
+                NameText.UpdateAllNameInfo();
+            else
+                NameText.UpdateNameInfo(data.RefTarget);
             data.RefSuccess = false;
             if (data.RefTarget.AmOwner)
                 DestroyableSingleton<HudManager>.Instance.KillOverlay.ShowKillAnimation(data.Killer.Data, data.RefTarget.Data);
         }
     }
+    /// <summary>
+    /// playerが現在のチームに所属しているかどうかを返す
+    /// </summary>
+    /// <param name="player"></param>
+    /// <returns></returns>
+    private bool CheckTeam(ExPlayerControl player)
+    {
+        switch (CurrentTeam)
+        {
+            case SchrodingersCatTeam.SchrodingersCat:
+                return false;
+            case SchrodingersCatTeam.Crewmate:
+                return player.IsCrewmate();
+            case SchrodingersCatTeam.Impostor:
+            case SchrodingersCatTeam.Madmate:
+                return player.IsImpostor();
+            case SchrodingersCatTeam.Jackal:
+            case SchrodingersCatTeam.Friends:
+                return player.IsJackal();
+            case SchrodingersCatTeam.Pavlovs:
+            case SchrodingersCatTeam.PavlovFriends:
+                return player.IsPavlovsTeam();
+            default:
+                return false;
+        }
+    }
     private void OnNameTextUpdate(NameTextUpdateEventData data)
     {
         if (CurrentTeam == SchrodingersCatTeam.SchrodingersCat) return;
-        if (data.Visible)
+        if (data.Player != Player)
         {
-            Color32 color = Color.white;
-            switch (CurrentTeam)
-            {
-                case SchrodingersCatTeam.Impostor:
-                case SchrodingersCatTeam.Madmate:
-                    color = Palette.ImpostorRed; ;
-                    break;
-                case SchrodingersCatTeam.Jackal:
-                case SchrodingersCatTeam.Friends:
-                    color = Jackal.Instance.RoleColor;
-                    break;
+            if (Player.AmOwner)
+                NameUpdateOwner(data);
+            return;
+        }
+        if (CurrentTeam == SchrodingersCatTeam.Crewmate)
+        {
+            if (!data.Visible)
+                return;
+        }
+        else if (ModHelpers.Not(data.Visible || Player.AmOwner || CheckTeam(Player))) return;
 
-                default:
-                    return;
-            }
-            data.Player.PlayerInfoText.text = ModHelpers.Cs(color, data.Player.PlayerInfoText.text);
-            if (data.Player.MeetingInfoText)
-                data.Player.MeetingInfoText.text = ModHelpers.Cs(color, data.Player.MeetingInfoText.text);
-            data.Player.cosmetics.nameText.text = ModHelpers.Cs(color, data.Player.cosmetics.nameText.text);
-            if (data.Player.VoteArea != null)
-                data.Player.VoteArea.NameText.text = ModHelpers.Cs(color, data.Player.VoteArea.NameText.text);
+        Color32 color = Color.white;
+        switch (CurrentTeam)
+        {
+            case SchrodingersCatTeam.Impostor:
+            case SchrodingersCatTeam.Madmate:
+                color = Palette.ImpostorRed;
+                break;
+            case SchrodingersCatTeam.Jackal:
+            case SchrodingersCatTeam.Friends:
+                color = Jackal.Instance.RoleColor;
+                break;
+            case SchrodingersCatTeam.Crewmate:
+                color = Palette.CrewmateBlue;
+                break;
+            case SchrodingersCatTeam.Pavlovs:
+            case SchrodingersCatTeam.PavlovFriends:
+                color = PavlovsDog.Instance.RoleColor;
+                break;
+            default:
+                return;
+        }
+        data.Player.PlayerInfoText.text = ModHelpers.Cs(color, data.Player.PlayerInfoText.text);
+        if (data.Player.MeetingInfoText)
+            data.Player.MeetingInfoText.text = ModHelpers.Cs(color, data.Player.MeetingInfoText.text);
+        data.Player.cosmetics.nameText.text = ModHelpers.Cs(color, data.Player.cosmetics.nameText.text);
+        if (data.Player.VoteArea != null)
+            data.Player.VoteArea.NameText.text = ModHelpers.Cs(color, data.Player.VoteArea.NameText.text);
+    }
+    private void NameUpdateOwner(NameTextUpdateEventData data)
+    {
+        switch (CurrentTeam)
+        {
+            case SchrodingersCatTeam.Crewmate:
+                break;
+            case SchrodingersCatTeam.Impostor:
+                if (data.Player.IsImpostor())
+                    data.Player.PlayerInfoText.text = ModHelpers.Cs(Palette.ImpostorRed, data.Player.PlayerInfoText.text);
+                break;
+            case SchrodingersCatTeam.Jackal:
+                if (data.Player.IsJackal())
+                    data.Player.PlayerInfoText.text = ModHelpers.Cs(Jackal.Instance.RoleColor, data.Player.PlayerInfoText.text);
+                break;
+            case SchrodingersCatTeam.Pavlovs:
+                if (data.Player.IsPavlovsTeam())
+                    data.Player.PlayerInfoText.text = ModHelpers.Cs(PavlovsOwner.Instance.RoleColor, data.Player.PlayerInfoText.text);
+                break;
         }
     }
     private bool CheckTargetable(ExPlayerControl player)
@@ -177,26 +288,16 @@ public class SchrodingersCatAbility : AbilityBase
     }
     public void Dominate(SchrodingersCatTeam team)
     {
-        foreach (var deadBody in GameObject.FindObjectsOfType<DeadBody>())
+        if (Data.HasKillAbility && CurrentTeam != SchrodingersCatTeam.SchrodingersCat && CurrentTeam != SchrodingersCatTeam.Crewmate)
         {
-            if (deadBody.ParentId == Player.PlayerId)
-                deadBody.transform.localPosition = new(999, 999);
+            _customKillButtonAbility = new CustomKillButtonAbility(
+                () => Data.HasKillAbility && CurrentTeam is not SchrodingersCatTeam.SchrodingersCat and not SchrodingersCatTeam.Crewmate,
+                () => Data.KillCooldown,
+                () => false,
+                isTargetable: (player) => player.IsAlive() && CheckTargetable(player)
+            );
+            Player.AttachAbility(_customKillButtonAbility, new AbilityParentAbility(this));
         }
-        new LateTask(() =>
-        {
-            Player.Player.Revive();
-            RoleManager.Instance.SetRole(Player, RoleTypes.Crewmate);
-        }, 0.017f);
-        new LateTask(() =>
-        {
-            foreach (var deadBody in GameObject.FindObjectsOfType<DeadBody>())
-            {
-                if (deadBody.ParentId == Player.PlayerId)
-                {
-                    GameObject.Destroy(deadBody.gameObject);
-                }
-            }
-        }, 0.5f);
         switch (team)
         {
             case SchrodingersCatTeam.Madmate:
