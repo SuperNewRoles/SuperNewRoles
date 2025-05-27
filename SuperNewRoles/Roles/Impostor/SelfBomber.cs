@@ -86,7 +86,11 @@ public class SelfBomberKillAnimation : ICustomKillAnimation
     public void Initialize(OverlayKillAnimation __instance, KillOverlayInitData initData)
     {
         _selfBomberEffect = GameObject.Instantiate(AssetManager.GetAsset<GameObject>("SelfBomberEffect"), __instance.transform).GetComponent<Animator>();
-        _selfBomberEffect.transform.localPosition = new(-1.5f, 0.3f, -0.5f);
+        AspectPosition aspectPosition = _selfBomberEffect.gameObject.AddComponent<AspectPosition>();
+        aspectPosition.Alignment = AspectPosition.EdgeAlignments.Center;
+        aspectPosition.DistanceFromEdge = Vector3.zero;
+        aspectPosition.OnEnable();
+        // _selfBomberEffect.transform.localPosition = new(-1.5f, 0.3f, -0.5f);
         _selfBomberEffect.gameObject.layer = 5;
         _selfBomberEffect.transform.localScale = Vector3.one * 1.7f;
     }
@@ -100,6 +104,7 @@ public class SelfBomberKillAnimation : ICustomKillAnimation
             {
                 _animatorFinished = true;
                 _timer = 0f; // タイマー開始
+                GameObject.Destroy(_selfBomberEffect.gameObject);
             }
             else
             {
