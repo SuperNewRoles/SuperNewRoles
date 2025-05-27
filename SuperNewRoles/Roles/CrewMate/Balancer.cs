@@ -24,7 +24,7 @@ class Balancer : RoleBase<Balancer>
     public override Color32 RoleColor { get; } = new(255, 128, 0, byte.MaxValue);
     public override List<Func<AbilityBase>> Abilities { get; } = [() => new BalancerAbility(BalancerUseCount)];
 
-    public override QuoteMod QuoteMod { get; } = QuoteMod.TheOtherRoles;
+    public override QuoteMod QuoteMod { get; } = QuoteMod.SuperNewRoles;
     public override RoleTypes IntroSoundType { get; } = RoleTypes.Crewmate;
     public override short IntroNum { get; } = 1;
 
@@ -264,6 +264,7 @@ class BalancerAbility : AbilityBase, IAbilityCount
             VotingCompleteEvent.Instance.RemoveListener(votingCompleteEventListener);
             votingCompleteEventListener = null;
         }
+        wrapUpEventListener?.RemoveListener();
 
         if (BalancingAbility == this && AmongUsClient.Instance.AmHost)
         {

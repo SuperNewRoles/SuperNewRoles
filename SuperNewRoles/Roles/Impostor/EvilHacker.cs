@@ -25,7 +25,7 @@ class EvilHacker : RoleBase<EvilHacker>
         madmateCooldown: EvilHackerCreateMadmateCooldown
     ))];
 
-    public override QuoteMod QuoteMod { get; } = QuoteMod.SuperNewRoles;
+    public override QuoteMod QuoteMod { get; } = QuoteMod.TheOtherRolesGMH;
     public override RoleTypes IntroSoundType { get; } = RoleTypes.Impostor;
     public override short IntroNum { get; } = 1;
 

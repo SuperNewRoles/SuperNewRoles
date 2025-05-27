@@ -19,7 +19,7 @@ class Lovers : ModifierBase<Lovers>
 
     public override List<Func<AbilityBase>> Abilities => [() => new LoversAbility(LoversKnowPartnerRole, LoversKnowPartnerPosition), () => new CustomTaskAbility(() => (false, false, null), null)];
 
-    public override QuoteMod QuoteMod => QuoteMod.SuperNewRoles;
+    public override QuoteMod QuoteMod => QuoteMod.TheOtherRoles;
 
     public override int? PercentageOption => (int)LoversSpawnChance;
     public override int? NumberOfCrews => (int)LoversMaxCoupleCount;

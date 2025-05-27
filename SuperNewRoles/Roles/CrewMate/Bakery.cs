@@ -20,7 +20,7 @@ class Bakery : RoleBase<Bakery>
     public override RoleId Role { get; } = RoleId.Bakery;
     public override Color32 RoleColor { get; } = new(0, 255, 0, byte.MaxValue);
     public override List<Func<AbilityBase>> Abilities { get; } = [() => new BakeryAbility()];
-    public override QuoteMod QuoteMod { get; } = QuoteMod.SuperNewRoles;
+    public override QuoteMod QuoteMod { get; } = QuoteMod.ExtremeRoles;
     public override RoleTypes IntroSoundType { get; } = RoleTypes.Crewmate;
     public override short IntroNum { get; } = 1;
     public override AssignedTeamType AssignedTeam { get; } = AssignedTeamType.Crewmate;

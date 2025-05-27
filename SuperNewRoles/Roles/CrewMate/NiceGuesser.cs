@@ -14,7 +14,7 @@ class NiceGuesser : RoleBase<NiceGuesser>
     public override Color32 RoleColor { get; } = Color.yellow;
     public override List<Func<AbilityBase>> Abilities { get; } = [() => new GuesserAbility(NiceGuesserMaxShots, NiceGuesserShotsPerMeeting, NiceGuesserCannotShootCrewmate, NiceGuesserCannotShootStar, NiceGuesserLimitedTurns, NiceGuesserLimitedTurnsCount)];
 
-    public override QuoteMod QuoteMod { get; } = QuoteMod.SuperNewRoles;
+    public override QuoteMod QuoteMod { get; } = QuoteMod.TheOtherRoles;
     public override RoleTypes IntroSoundType { get; } = RoleTypes.Crewmate;
     public override short IntroNum { get; } = 1;
 

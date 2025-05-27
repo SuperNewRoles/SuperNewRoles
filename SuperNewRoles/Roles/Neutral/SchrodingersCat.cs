@@ -24,7 +24,7 @@ class SchrodingersCat : RoleBase<SchrodingersCat>
         )), () => new CustomTaskAbility(() => (false, false, 0))
     };
 
-    public override QuoteMod QuoteMod { get; } = QuoteMod.SuperNewRoles;
+    public override QuoteMod QuoteMod { get; } = QuoteMod.TheOtherRolesGMH;
     public override RoleTypes IntroSoundType { get; } = RoleTypes.Crewmate;
     public override short IntroNum { get; } = 1;
 

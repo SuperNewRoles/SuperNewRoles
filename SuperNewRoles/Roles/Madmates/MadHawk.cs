@@ -27,7 +27,7 @@ class MadHawk : RoleBase<MadHawk>
             MadHawkCannotWalkInEffect)
     ];
 
-    public override QuoteMod QuoteMod { get; } = QuoteMod.TheOtherRoles;
+    public override QuoteMod QuoteMod { get; } = QuoteMod.SuperNewRoles;
     public override RoleTypes IntroSoundType { get; } = RoleTypes.Shapeshifter;
     public override short IntroNum { get; } = 1;
 

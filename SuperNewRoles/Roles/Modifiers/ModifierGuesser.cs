@@ -23,7 +23,7 @@ class ModifierGuesser : ModifierBase<ModifierGuesser>
             madmateSuicide: ModifierGuesserMadmateSuicide
         )];
 
-    public override QuoteMod QuoteMod => QuoteMod.SuperNewRoles;
+    public override QuoteMod QuoteMod => QuoteMod.NebulaOnTheShip;
 
     public override List<AssignedTeamType> AssignedTeams => [];
 

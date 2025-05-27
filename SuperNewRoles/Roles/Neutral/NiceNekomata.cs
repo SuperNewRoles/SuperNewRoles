@@ -22,7 +22,7 @@ class NiceNekomata : RoleBase<NiceNekomata>
         () => new RevengeExileAbility(false)
     };
 
-    public override QuoteMod QuoteMod { get; } = QuoteMod.SuperNewRoles;
+    public override QuoteMod QuoteMod { get; } = QuoteMod.AuLibHalt;
     public override RoleTypes IntroSoundType { get; } = RoleTypes.Crewmate;
     public override short IntroNum { get; } = 1;
 
