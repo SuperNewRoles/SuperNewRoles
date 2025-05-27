@@ -369,7 +369,7 @@ public class GuesserAbility : CustomMeetingButtonBase, IAbilityCount
 
                         var targetRole = exPlayer.Role;
                         ExPlayerControl dyingTarget = (targetRole == rolebase.Role) ? exPlayer : PlayerControl.LocalPlayer;
-                        if (exPlayer.IsMadRoles() || exPlayer.IsFriendRoles())
+                        if (madmateSuicide && (ExPlayerControl.LocalPlayer.IsMadRoles() || ExPlayerControl.LocalPlayer.IsFriendRoles()))
                         {
                             dyingTarget = exPlayer;
                         }
