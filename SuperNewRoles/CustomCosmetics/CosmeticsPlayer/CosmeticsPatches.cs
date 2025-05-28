@@ -311,3 +311,14 @@ public static class MeetingHud_Update
         }
     }
 }
+[HarmonyPatch(typeof(MeetingIntroAnimation), nameof(MeetingIntroAnimation.Init))]
+public static class MeetingIntroAnimation_Init
+{
+    public static void Postfix(MeetingIntroAnimation __instance)
+    {
+        PlayerVoteArea area = __instance.GetComponentInChildren<PlayerVoteArea>();
+        CustomCosmeticsLayer customCosmeticsLayer = CustomCosmeticsLayers.ExistsOrInitialize(area.PlayerIcon.cosmetics);
+        customCosmeticsLayer.visor1.Image.maskInteraction = SpriteMaskInteraction.VisibleInsideMask;
+        customCosmeticsLayer.visor2.Image.maskInteraction = SpriteMaskInteraction.VisibleInsideMask;
+    }
+}
