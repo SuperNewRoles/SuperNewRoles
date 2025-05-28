@@ -86,10 +86,10 @@ public class CustomCosmeticsLayer
 
         var hat = cosmeticsLayer.hat;
         visor1 = CreateVisorLayer(cosmeticsLayer, "visor1", -0.8f, 40);
-        hat1 = CreateHatLayer(cosmeticsLayer, hat, "hat1", new Vector3(0f, 0f, 0), new Vector3(0f, 0f, 0.7f), 30, 5);
+        hat1 = CreateHatLayer(cosmeticsLayer, hat, "hat1", new Vector3(0f, 0f, 0), new Vector3(0f, 0f, 0.7f), 30, 4);
         hat1.LayerNumber = 1;
         visor2 = CreateVisorLayer(cosmeticsLayer, "visor2", -0.51f, 20);
-        hat2 = CreateHatLayer(cosmeticsLayer, hat, "hat2", new Vector3(0f, 0f, 0), new Vector3(0f, 0f, 0.6f), 10, 4);
+        hat2 = CreateHatLayer(cosmeticsLayer, hat, "hat2", new Vector3(0f, 0f, 0), new Vector3(0f, 0f, 0.6f), 10, 5);
         hat2.LayerNumber = 2;
 
         CustomCosmeticsLayers.visorLayer1s[cosmeticsLayer.visor.GetInstanceID()] = visor1;
