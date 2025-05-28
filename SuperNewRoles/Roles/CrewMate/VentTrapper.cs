@@ -140,6 +140,7 @@ public class VentTrapperAbility : CustomButtonBase, IButtonEffect, IAbilityCount
                 PlayerControl.LocalPlayer.moveable = true;
             }, _data.stunTime, "VentTrapperAbility");
             TrappedVentRPC(data.ventId);
+            new CustomMessage(ModTranslation.GetString("VentTrapperStunMessage"), _data.stunTime);
             ShipStatus.Instance.AllVents.FirstOrDefault(x => x.Id == data.ventId)?.SetButtons(false);
         }
     }
@@ -189,7 +190,6 @@ public class VentTrapperAbility : CustomButtonBase, IButtonEffect, IAbilityCount
     [CustomRPC]
     public void SetTrapRPC(int ventId)
     {
-        // TODO: トラップ登録と拘束処理を実装
         Vent vent = ShipStatus.Instance.AllVents.First(x => x.Id == ventId);
         if (vent == null)
         {
@@ -204,5 +204,4 @@ public class VentTrapperAbility : CustomButtonBase, IButtonEffect, IAbilityCount
     {
         _trappingVents.Remove(ventId);
     }
-
 }

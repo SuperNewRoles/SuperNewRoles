@@ -981,6 +981,7 @@ JumboSizeUpOnMeeting,会議中にも成長する,Grow on Meeting,会议中成长
 VentTrapperButtonText,トラップ!,Trap!
 VentTrapperSetupTime,トラップ設置時間,Setup Time,陷阱设置时间,陷阱設置時間
 VentTrapperStunTime,トラップ効果時間,Trap Effect Time,陷阱效果时间,陷阱效果時間
+VentTrapperStunMessage,罠に引っかかった！,I'm trapped!,我被陷阱困住了!,我被陷阱困住了!
 
 # Rocket Options
 RocketInitialGrabCooldown,初回「掴む」のクールタイム,Initial Grab Cooldown,初回掴むのクールタイム,初回掴む的冷卻時間

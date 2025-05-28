@@ -30,10 +30,7 @@ class Samurai : RoleBase<Samurai>
             customDeathType: CustomDeathType.Samurai,
             callback: () =>
             {
-                var obj = GameObject.Instantiate(AssetManager.GetAsset<GameObject>("SamuraiEffect"), PlayerControl.LocalPlayer.transform);
-                obj.AddComponent<DestroyOnAnimationEndObject>();
-                obj.transform.localPosition = new(0,0,-0.5f);
-                obj.transform.localScale = Vector3.oneVector * 0.8f;
+                RpcSamuraiAnimation(ExPlayerControl.LocalPlayer);
             }
         ),
         () => new CustomSaboAbility(
@@ -43,6 +40,14 @@ class Samurai : RoleBase<Samurai>
             canUseVent: () => SamuraiCanUseVent
         )
     ];
+    [CustomRPC]
+    public static void RpcSamuraiAnimation(ExPlayerControl player)
+    {
+        var obj = GameObject.Instantiate(AssetManager.GetAsset<GameObject>("SamuraiEffect"), player.transform);
+        obj.AddComponent<DestroyOnAnimationEndObject>();
+        obj.transform.localPosition = new(0, 0, -0.5f);
+        obj.transform.localScale = Vector3.oneVector * 1f;
+    }
 
     public override QuoteMod QuoteMod { get; } = QuoteMod.SuperNewRoles;
     public override RoleTypes IntroSoundType { get; } = RoleTypes.Shapeshifter;
