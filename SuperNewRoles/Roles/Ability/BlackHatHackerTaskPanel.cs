@@ -50,8 +50,6 @@ public static class BlackHatHackerHudManagerPatch
     [HarmonyPatch(nameof(HudManager.Start)), HarmonyPostfix]
     public static void StartPostfix(HudManager __instance)
     {
-        TaskText = "Tasks";
-
         // 感染状況切り替えタブ
         ChangeTab = UnityEngine.Object.Instantiate(__instance.TaskPanel.tab.gameObject, __instance.TaskPanel.transform);
         ChangeTab.name = "ChangeTab";
@@ -100,7 +98,6 @@ public static class BlackHatHackerHudManagerPatch
             if (!__instance.TaskPanel.open) __instance.TaskPanel.open = true;
         }));
 
-        __instance.TaskPanel.tab.transform.Find("TabText_TMP").GetComponent<TextMeshPro>().text = TaskText;
         TabTextTMP = __instance.TaskPanel.tab.transform.Find("TabText_TMP").GetComponent<TextMeshPro>();
     }
 
@@ -113,6 +110,7 @@ public static class BlackHatHackerHudManagerPatch
         if (PlayerControl.LocalPlayer == null || ExPlayerControl.LocalPlayer == null) return;
         if (BlackHatHacker.Instance?.Role == null) return;
         if (PlayerControl.LocalPlayer.Data == null) return;
+        if (!RoleOptionManager.TryGetRoleOption(BlackHatHacker.Instance.Role, out var option) || option.Percentage == 0 || option.NumberOfCrews == 0) return;
 
         bool isBlackHatHacker = ExPlayerControl.LocalPlayer.Role == BlackHatHacker.Instance.Role;
         bool isDead = PlayerControl.LocalPlayer.Data.IsDead;

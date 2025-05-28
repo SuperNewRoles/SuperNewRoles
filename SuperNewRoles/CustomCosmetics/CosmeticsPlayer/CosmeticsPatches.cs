@@ -322,3 +322,14 @@ public static class MeetingIntroAnimation_Init
         customCosmeticsLayer.visor2.Image.maskInteraction = SpriteMaskInteraction.VisibleInsideMask;
     }
 }
+[HarmonyPatch(typeof(MushroomMixupPlayerAnimation), nameof(MushroomMixupPlayerAnimation.StartAnimation))]
+public static class MushroomMixupPlayerAnimation_StartAnimation
+{
+    public static void Postfix(MushroomMixupPlayerAnimation __instance)
+    {
+        foreach (SpriteRenderer spriteRenderer in __instance.GetComponentsInChildren<SpriteRenderer>())
+        {
+            spriteRenderer.sortingOrder = 1000;
+        }
+    }
+}
