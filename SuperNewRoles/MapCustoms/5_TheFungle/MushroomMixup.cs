@@ -16,7 +16,7 @@ public static class MushroomMixup
         fungleShipStatus.specialSabotage.secondsForAutoHeal = MapEditSettingsOptions.TheFungleMushroomMixupTime;
         EmergencyCheckEvent.Instance.AddListener(x =>
         {
-            if (fungleShipStatus.specialSabotage.IsActive)
+            if (MapEditSettingsOptions.TheFungleMushroomMixupCantOpenMeeting && fungleShipStatus.specialSabotage.IsActive)
             {
                 x.RefEnabledEmergency = false;
                 x.RefEmergencyTexts.Add(ModTranslation.GetString("MushroomMixupCantOpenMeeting"));
