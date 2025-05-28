@@ -143,13 +143,8 @@ public static class AssignRoles
     {
         // Lovers（Modifier）の確率と選出数をチェック
         bool loversDisabled = true;
-        if (RoleOptionManager.TryGetModifierRoleOption(ModifierRoleId.Lovers, out var loversOption))
-        {
-            if (loversOption.Percentage > 0 && loversOption.NumberOfCrews > 0)
-            {
-                loversDisabled = false;
-            }
-        }
+        if (Lovers.LoversSpawnChance > 0 && Lovers.LoversMaxCoupleCount > 0)
+            loversDisabled = false;
 
         // Truelover役職の確率と選出数をチェック
         bool trueloverDisabled = true;

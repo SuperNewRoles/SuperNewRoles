@@ -82,7 +82,7 @@ public class LoversBreakerAbility : TargetCustomButtonBase
     public override Color32 OutlineColor => LoversBreaker.Instance.RoleColor;
     protected override KeyType keytype => KeyType.Kill;
     public override float DefaultTimer => Data.KillCooldown;
-    public override string buttonText => FastDestroyableSingleton<TranslationController>.Instance.GetString(StringNames.KillLabel);
+    public override string buttonText => ModTranslation.GetString("LoversBreakerBreak");
     public override Sprite Sprite => AssetManager.GetAsset<Sprite>("LoversBreakerButton.png");
     public override bool OnlyCrewmates => false;
     public override bool TargetPlayersInVents => false;

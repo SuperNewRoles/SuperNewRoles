@@ -106,7 +106,7 @@ public abstract class WaveCannonObjectBase
                     if (player.PlayerId == ability.Player.PlayerId) continue;
                     if (!collider.IsTouching(player.Player.Collider)) continue;
                     if (player == _touchedWiseman) continue;
-                    if (EnabledWiseMan && !checkedWiseman && _touchedWiseman == null && player.TryGetAbility<WiseManAbility>(out var wiseManAbility) && wiseManAbility.Active)
+                    if (EnabledWiseMan && !checkedWiseman && _touchedWiseman == null && player.TryGetAbility<WiseManAbility>(out var wiseManAbility) && wiseManAbility.Active && !wiseManAbility.Guarded)
                     {
                         _touchedWiseman = player;
                         RpcWaveCannonWiseMan(ability, player, GetRandomAngle());
@@ -169,6 +169,10 @@ public abstract class WaveCannonObjectBase
         roleEffectAnimation.Play(wiseMan, null, wiseMan.cosmetics.FlipX, RoleEffectAnimation.SoundType.Global);
         if (ability.Player.AmOwner || wiseMan.AmOwner)
             obj.OnAnimationShoot();
+        if (wiseMan.TryGetAbility<WiseManAbility>(out var wiseManAbility))
+        {
+            wiseManAbility.Guarded = true;
+        }
     }
     [CustomRPC]
     public static void RpcWaveCannonNoWiseMan(WaveCannonAbility ability)

@@ -38,7 +38,7 @@ class Vampire : RoleBase<Vampire>
     public override WinnerTeamType WinnerTeam => WinnerTeamType.Impostor;
     public override TeamTag TeamTag => TeamTag.Impostor;
     public override RoleTag[] RoleTags => new RoleTag[] { RoleTag.SpecialKiller };
-    public override RoleOptionMenuType OptionTeam => RoleOptionMenuType.Impostor;
+    public override RoleOptionMenuType OptionTeam => RoleOptionMenuType.Hidden;
 
     [CustomOptionFloat("VampireAbsorptionCooldown", 2.5f, 60f, 2.5f, 30f)]
     public static float VampireAbsorptionCooldown;

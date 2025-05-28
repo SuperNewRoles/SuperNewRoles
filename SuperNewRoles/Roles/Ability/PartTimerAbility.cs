@@ -89,7 +89,7 @@ public class PartTimerAbility : TargetCustomButtonBase
         if (Target == null) return;
         if (_isEmployed) return;
 
-        RpcEmploy(Player, Target);
+        RpcEmploy(Target);
         ResetTimer();
     }
 
@@ -150,7 +150,7 @@ public class PartTimerAbility : TargetCustomButtonBase
             }
             else if (_employer.AmOwner)
             {
-                setMarkTo(data.Player);
+                setMarkTo(Player);
             }
         }
         else if (Player.AmOwner && _employer == data.Player)
@@ -160,17 +160,15 @@ public class PartTimerAbility : TargetCustomButtonBase
     }
     private void setMarkTo(ExPlayerControl player)
     {
-        NameText.SetNameTextColor(player, Color.green);
-        var partTimerSymbol = ModHelpers.Cs(new Color(0, 1, 0, 1), "■");
+        var partTimerSymbol = ModHelpers.Cs(new Color(0, 1, 0, 1), " ■");
         NameText.AddNameText(player, partTimerSymbol);
     }
-    public static void RpcEmploy(ExPlayerControl partTimer, ExPlayerControl employer)
+    [CustomRPC]
+    public void RpcEmploy(ExPlayerControl employer)
     {
-        if (partTimer.TryGetAbility<PartTimerAbility>(out var ability))
-        {
-            ability._employer = employer;
-            NameText.UpdateNameInfo(partTimer);
-        }
+        _employer = employer;
+        NameText.UpdateNameInfo(Player);
+        NameText.UpdateNameInfo(employer);
     }
 
     public override Func<ExPlayerControl, bool> IsTargetable => (target) =>

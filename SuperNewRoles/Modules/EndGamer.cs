@@ -154,13 +154,13 @@ public static class EndGamer
     {
         winners = new();
         // ラバーズじゃない人がいる場合
-        if (Lovers.LoversWinType == LoversWinType.Single && winners.Any(x => !x.IsLovers()))
+        if (Lovers.LoversWinType == LoversWinType.Single && nowWinners.Any(x => !x.IsLovers()))
         {
             foreach (ExPlayerControl winner in winners)
             {
                 if (winner.IsLovers())
                 {
-                    winners.Remove(winner);
+                    nowWinners.Remove(winner);
                 }
             }
         }
@@ -185,7 +185,7 @@ public static class EndGamer
                 }
             }
         }
-        foreach (ExPlayerControl winner in winners)
+        foreach (ExPlayerControl winner in nowWinners)
         {
             if (Lovers.LoversWinType == LoversWinType.Shared && winner.IsLovers())
             {

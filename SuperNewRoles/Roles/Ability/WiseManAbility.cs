@@ -39,7 +39,7 @@ public class WiseManAbility : CustomButtonBase, IButtonEffect
     private EventListener<DieEventData> _dieEventListener;
     public bool Active { get; private set; }
     private Vector3 position;
-    private bool Guarded;
+    public bool Guarded { get; set; }
 
     public WiseManAbility(float coolDown, float duration, bool enableWalk)
     {

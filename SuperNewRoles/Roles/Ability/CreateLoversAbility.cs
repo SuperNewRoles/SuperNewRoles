@@ -5,6 +5,7 @@ using SuperNewRoles.Modules;
 using SuperNewRoles.Modules.Events.Bases;
 using SuperNewRoles.Roles.Ability.CustomButton;
 using SuperNewRoles.Roles.Modifiers;
+using SuperNewRoles.Roles.Neutral;
 using UnityEngine;
 
 namespace SuperNewRoles.Roles.Ability;
@@ -96,6 +97,8 @@ public class CreateLoversAbility : TargetCustomButtonBase
 
     public override void OnClick()
     {
+        if (Target.HasAbility<LoversBreakerAbility>())
+            return;
         if (CurrentTarget == null || CurrentTarget.IsDead() || CurrentTarget.IsLovers())
         {
             CurrentTarget = Target;

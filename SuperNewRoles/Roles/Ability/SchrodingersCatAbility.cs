@@ -312,9 +312,9 @@ public class SchrodingersCatAbility : AbilityBase
                     taskNeeded: Madmate.MadmateNeededTaskCount,
                     specialTasks: Madmate.MadmateSpecialTasks
                 ));
+                Player.AttachAbility(madmateAbility, new AbilityParentAbility(this));
                 if (Player.AmOwner)
                     madmateAbility.CustomTaskAbility.AssignTasks();
-                Player.AttachAbility(madmateAbility, new AbilityParentAbility(this));
                 break;
             case SchrodingersCatTeam.Friends:
                 Player.DetachAbility(_knowOtherAbility.AbilityId);
