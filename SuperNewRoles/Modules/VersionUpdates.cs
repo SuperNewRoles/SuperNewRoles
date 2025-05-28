@@ -19,7 +19,7 @@ namespace SuperNewRoles.Modules;
 
 public static class VersionUpdatesUI
 {
-    public const string ApiUrl = "https://supernewrolesupdater-20250518-github.pages.dev/";
+    public const string ApiUrl = "https://update.supernewroles.com/";
     public const string VersionListUrl = ApiUrl + "versions20";
     // FilePath is now managed by VersionConfigManager
     // private static string FilePath = Path.Combine(BepInEx.Paths.PatcherPluginPath, "snrupdate.json");
