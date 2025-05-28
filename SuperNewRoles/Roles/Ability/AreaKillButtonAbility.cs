@@ -124,11 +124,11 @@ public class AreaKillButtonAbility : CustomButtonBase
         {
             player.CustomDeath(customDeathType, source: localPlayer);
         }
-        if (AmongUsClient.Instance.AmHost && ExPlayerControl.ExPlayerControls.Count(x => x.IsAlive()) == 0)
-            EndGamer.RpcEndGameImpostorWin();
         KilledCallback?.Invoke(killedPlayers);
         if (killedPlayers.Count > 0)
             AreaKillEvent.Invoke(localPlayer, killedPlayers, CustomDeathType);
+        if (ExPlayerControl.ExPlayerControls.Count(x => x.IsAlive()) == 0)
+            EndGamer.RpcEndGameImpostorWin();
     }
 
     public override bool CheckIsAvailable()
