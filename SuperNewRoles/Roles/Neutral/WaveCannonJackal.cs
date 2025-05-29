@@ -22,7 +22,7 @@ class WaveCannonJackal : RoleBase<WaveCannonJackal>
             sidekickCooldown: WaveCannonJackalSidekickCooldown,
             isImpostorVision: WaveCannonJackalImpostorVision,
             isInfiniteJackal: WaveCannonJackalInfiniteJackal,
-            sidekickType: WaveCannonJackalSidekickType
+            sidekickType: (RoleId)WaveCannonJackalSidekickType
         )),
         () => new WaveCannonAbility(
             coolDown: WaveCannonJackalCooldown,
@@ -41,7 +41,7 @@ class WaveCannonJackal : RoleBase<WaveCannonJackal>
     public override TeamTag TeamTag { get; } = TeamTag.Jackal;
     public override RoleTag[] RoleTags { get; } = [RoleTag.SpecialKiller];
     public override RoleOptionMenuType OptionTeam { get; } = RoleOptionMenuType.Neutral;
-    public override RoleId[] RelatedRoleIds { get; } = [RoleId.Sidekick, RoleId.JackalFriends];
+    public override RoleId[] RelatedRoleIds { get; } = [RoleId.Sidekick, RoleId.JackalFriends, RoleId.SidekickWaveCannon];
 
     [CustomOptionFloat("WaveCannonJackalKillCooldown", 2.5f, 60f, 2.5f, 30f)]
     public static float WaveCannonJackalKillCooldown;
@@ -61,8 +61,18 @@ class WaveCannonJackal : RoleBase<WaveCannonJackal>
     [CustomOptionBool("WaveCannonJackalInfiniteJackal", true)]
     public static bool WaveCannonJackalInfiniteJackal;
 
-    [CustomOptionSelect("WaveCannonJackalSidekickType", typeof(JackalSidekickType), "JackalSidekickType.", parentFieldName: nameof(WaveCannonJackalCanCreateSidekick))]
-    public static JackalSidekickType WaveCannonJackalSidekickType;
+    [CustomOptionSelect("WaveCannonJackalSidekickType", typeof(WaveCannonJackalSidekickType), "JackalSidekickType.", parentFieldName: nameof(WaveCannonJackalCanCreateSidekick))]
+    public static WaveCannonJackalSidekickType WaveCannonJackalSidekickType;
+
+    [CustomOptionBool("WaveCannonJackalCreateBulletToJackal", true, parentFieldName: nameof(WaveCannonJackalSidekickType), parentActiveValue: WaveCannonJackalSidekickType.Bullet)]
+    public static bool WaveCannonJackalCreateBulletToJackal;
+    [CustomOptionBool("WaveCannonJackalNewJackalHaveWaveCannon", true, parentFieldName: nameof(WaveCannonJackalCreateBulletToJackal))]
+    public static bool WaveCannonJackalNewJackalHaveWaveCannon;
+
+    [CustomOptionFloat("WaveCannonJackalBulletLoadBulletCooltime", 0f, 180f, 2.5f, 20f, parentFieldName: nameof(WaveCannonJackalSidekickType), parentActiveValue: WaveCannonJackalSidekickType.Bullet)]
+    public static float WaveCannonJackalBulletLoadBulletCooltime;
+    [CustomOptionFloat("WaveCannonJackalBulletLoadedChargeTime", 0f, 15f, 0.5f, 5f, parentFieldName: nameof(WaveCannonJackalSidekickType), parentActiveValue: WaveCannonJackalSidekickType.Bullet)]
+    public static float WaveCannonJackalBulletLoadedChargeTime;
 
     [CustomOptionFloat("WaveCannonJackalWaveCannonCooldown", 2.5f, 60f, 2.5f, 30f)]
     public static float WaveCannonJackalCooldown;
@@ -75,4 +85,11 @@ class WaveCannonJackal : RoleBase<WaveCannonJackal>
 
     [CustomOptionSelect("WaveCannonJackalWaveCannonType", typeof(WaveCannonTypeForOption), "WaveCannonAnimationType.")]
     public static WaveCannonType WaveCannonJackalType = WaveCannonType.Tank;
+}
+public enum WaveCannonJackalSidekickType
+{
+    Sidekick = RoleId.Sidekick,
+    Friends = RoleId.JackalFriends,
+    SidekickWaveCannon = RoleId.SidekickWaveCannon,
+    Bullet = RoleId.Bullet,
 }

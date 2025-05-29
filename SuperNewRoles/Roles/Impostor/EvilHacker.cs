@@ -25,7 +25,7 @@ class EvilHacker : RoleBase<EvilHacker>
         madmateCooldown: EvilHackerCreateMadmateCooldown
     ))];
 
-    public override QuoteMod QuoteMod { get; } = QuoteMod.SuperNewRoles;
+    public override QuoteMod QuoteMod { get; } = QuoteMod.TheOtherRolesGMH;
     public override RoleTypes IntroSoundType { get; } = RoleTypes.Impostor;
     public override short IntroNum { get; } = 1;
 
@@ -34,6 +34,7 @@ class EvilHacker : RoleBase<EvilHacker>
     public override TeamTag TeamTag { get; } = TeamTag.Impostor;
     public override RoleTag[] RoleTags { get; } = [RoleTag.Information];
     public override RoleOptionMenuType OptionTeam { get; } = RoleOptionMenuType.Impostor;
+    public override RoleId[] RelatedRoleIds { get; } = [RoleId.Madmate];
     // アドミン使用中に移動出来るか
     [CustomOptionBool("EvilHackerCanMoveWhileUsingAdmin", false)]
     public static bool EvilHackerCanMoveWhileUsingAdmin;

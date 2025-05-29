@@ -5,6 +5,7 @@ using SuperNewRoles.CustomOptions;
 using TMPro;
 using UnityEngine;
 using UnityEngine.Events;
+using Unity.Services.Core.Internal;
 
 namespace SuperNewRoles.HelpMenus.MenuCategories;
 
@@ -89,11 +90,12 @@ public class ModSettingsInformationHelpMenu : HelpMenuCategoryBase
         float lastY = 0f;
         float contentYBoundsMax = 0f;
 
-        // 定数定義：ヘッダー高さ、オプション間のオフセット、初期オプション表示位置
+        // 定数定義：ヘッダー高さ、オプション間のオフセット、初期オプション表示位置、子オプションのインデント幅
         const float headerHeight = 0.6f;
-        const float optionYOffset = 0.34375f;
+        const float optionYOffset = 0.25f;
         const float textYOffset = optionYOffset * 0.8f;
         const float headerOptionStartY = 1.75f;
+        const float indentWidth = 0.4f;
 
         // ローカル関数：オプションUIを生成して位置調整を行う
         GameObject InstantiateOptionItem(GameObject template, Transform container, string optionName, float x, ref float optionYPos, ref float lastYRef, ref float bounds)
@@ -147,32 +149,7 @@ public class ModSettingsInformationHelpMenu : HelpMenuCategoryBase
             // カテゴリ内の各オプションを表示
             foreach (var option in category.Options)
             {
-                // 親オプションUIを複製して配置（x座標：2.1f）
-                var optionItem = InstantiateOptionItem(optionsTemplate, optionsContainer.transform, option.Name, 2.1f, ref optionYPos, ref lastY, ref contentYBoundsMax);
-                var optionText = optionItem.GetComponent<TextMeshPro>();
-                if (optionText != null)
-                {
-                    string optionValue = option.GetCurrentSelectionString();
-                    optionText.text = $"{ModTranslation.GetString(option.Name)}: {optionValue}";
-                }
-
-                // 子オプションがあれば、表示条件を確認して再帰的に生成
-                if (option.ChildrenOption.Count > 0)
-                {
-                    foreach (var childOption in option.ChildrenOption)
-                    {
-                        if (!childOption.ShouldDisplay()) continue;
-
-                        // 子オプションUIを複製して配置（インデント付き：x座標：2.5f）
-                        var childItem = InstantiateOptionItem(optionsTemplate, optionsContainer.transform, childOption.Name, 2.5f, ref optionYPos, ref lastY, ref contentYBoundsMax);
-                        var childText = childItem.GetComponent<TextMeshPro>();
-                        if (childText != null)
-                        {
-                            string childValue = childOption.GetCurrentSelectionString();
-                            childText.text = $"{ModTranslation.GetString(childOption.Name)}: {childValue}";
-                        }
-                    }
-                }
+                CreateOptionUI(optionsTemplate, optionsContainer.transform, option, 2.1f, ref optionYPos, ref lastY, ref contentYBoundsMax, indentWidth);
             }
 
             // Optionsテンプレートは元々のテンプレートなので非表示
@@ -180,6 +157,36 @@ public class ModSettingsInformationHelpMenu : HelpMenuCategoryBase
         }
 
         scroller.ContentYBounds.max = contentYBoundsMax / 0.9f + 0.2f;  // スクロール領域の調整値
+    }
+
+    private void CreateOptionUI(GameObject template, Transform container, CustomOption option, float currentX, ref float optionYPos, ref float lastYRef, ref float bounds, float indentWidth)
+    {
+        // オプションUIを複製して配置
+        var item = GameObject.Instantiate(template, container);
+        item.name = $"Options(Clone)_{option.Name}";
+        item.transform.localPosition = new Vector3(currentX, optionYPos, 0);
+        item.SetActive(true);
+        var optionText = item.GetComponent<TextMeshPro>();
+        if (optionText != null)
+        {
+            string optionValue = option.GetCurrentSelectionString();
+            optionText.text = $"{ModTranslation.GetString(option.Name)}: {optionValue}";
+        }
+
+        optionYPos -= 0.25f; // optionYOffset
+        lastYRef -= 0.25f * 0.8f; // textYOffset
+        bounds += (0.25f * 0.8f) * 0.45f; // textYOffset * 0.45f
+
+        // 子オプションがあれば、表示条件を確認して再帰的に生成
+        if (option.ChildrenOption.Count > 0)
+        {
+            foreach (var childOption in option.ChildrenOption)
+            {
+                if (!childOption.ShouldDisplay()) continue;
+                // 子オプションUIを再帰的に作成（インデント付き）
+                CreateOptionUI(template, container, childOption, currentX + indentWidth, ref optionYPos, ref lastYRef, ref bounds, indentWidth);
+            }
+        }
     }
 
     public override void Hide(GameObject Container)

@@ -89,7 +89,7 @@ public class PartTimerAbility : TargetCustomButtonBase
         if (Target == null) return;
         if (_isEmployed) return;
 
-        RpcEmploy(Player, Target);
+        RpcEmploy(Target);
         ResetTimer();
     }
 
@@ -115,7 +115,7 @@ public class PartTimerAbility : TargetCustomButtonBase
         if (_employer != null && _employer.IsDead())
         {
             _employer = null;
-            _deathTurn = _data.deathTurn; // DeathTurnをリセット
+            _deathTurn = _data.deathTurn + 1; // DeathTurnをリセット
         }
 
         // 無職状態の場合、DeathTurnを減らす
@@ -150,21 +150,25 @@ public class PartTimerAbility : TargetCustomButtonBase
             }
             else if (_employer.AmOwner)
             {
-                NameText.SetNameTextColor(data.Player, Color.green);
-                var partTimerSymbol = ModHelpers.Cs(new Color(0, 1, 0, 1), "■");
-                NameText.AddNameText(data.Player, partTimerSymbol);
+                setMarkTo(Player);
             }
         }
-    }
-
-    [CustomRPC]
-    public static void RpcEmploy(ExPlayerControl partTimer, ExPlayerControl employer)
-    {
-        if (partTimer.TryGetAbility<PartTimerAbility>(out var ability))
+        else if (Player.AmOwner && _employer == data.Player)
         {
-            ability._employer = employer;
-            NameText.UpdateNameInfo(partTimer);
+            setMarkTo(data.Player);
         }
+    }
+    private void setMarkTo(ExPlayerControl player)
+    {
+        var partTimerSymbol = ModHelpers.Cs(new Color(0, 1, 0, 1), " ■");
+        NameText.AddNameText(player, partTimerSymbol);
+    }
+    [CustomRPC]
+    public void RpcEmploy(ExPlayerControl employer)
+    {
+        _employer = employer;
+        NameText.UpdateNameInfo(Player);
+        NameText.UpdateNameInfo(employer);
     }
 
     public override Func<ExPlayerControl, bool> IsTargetable => (target) =>

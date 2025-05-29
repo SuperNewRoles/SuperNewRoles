@@ -22,7 +22,7 @@ class BlackCat : RoleBase<BlackCat>
         () => new RevengeExileAbility(BlackCatRevengeNotImpostorExile)
     ];
 
-    public override QuoteMod QuoteMod { get; } = QuoteMod.TheOtherRoles;
+    public override QuoteMod QuoteMod { get; } = QuoteMod.TheOtherRolesGMH;
     public override RoleTypes IntroSoundType { get; } = RoleTypes.Phantom;
     public override short IntroNum { get; } = 1;
 

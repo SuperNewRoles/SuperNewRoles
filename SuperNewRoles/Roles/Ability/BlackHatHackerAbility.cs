@@ -34,7 +34,6 @@ public class BlackHatHackerAbility : AbilityBase
 
     private EventListener _fixedUpdateEvent;
     private EventListener<WrapUpEventData> _wrapUpEvent;
-    private EventListener<MeetingCloseEventData> _meetingCloseEvent;
 
     public List<byte> SelfPropagationPlayerId
     {
@@ -95,7 +94,6 @@ public class BlackHatHackerAbility : AbilityBase
         // イベントリスナーの登録
         _fixedUpdateEvent = FixedUpdateEvent.Instance.AddListener(OnFixedUpdate);
         _wrapUpEvent = WrapUpEvent.Instance.AddListener(OnWrapUp);
-        _meetingCloseEvent = MeetingCloseEvent.Instance.AddListener(OnMeetingClose);
 
         // ローカルプレイヤーの場合、静的参照を設定
         if (Player.AmOwner)
@@ -113,12 +111,8 @@ public class BlackHatHackerAbility : AbilityBase
     public override void DetachToLocalPlayer()
     {
         base.DetachToLocalPlayer();
-        if (_fixedUpdateEvent != null)
-            FixedUpdateEvent.Instance.RemoveListener(_fixedUpdateEvent);
-        if (_wrapUpEvent != null)
-            WrapUpEvent.Instance.RemoveListener(_wrapUpEvent);
-        if (_meetingCloseEvent != null)
-            MeetingCloseEvent.Instance.RemoveListener(_meetingCloseEvent);
+        _fixedUpdateEvent?.RemoveListener();
+        _wrapUpEvent?.RemoveListener();
 
         // 静的参照をクリア
         if (LocalInstance == this)
@@ -189,18 +183,9 @@ public class BlackHatHackerAbility : AbilityBase
     private void OnWrapUp(WrapUpEventData data)
     {
         NotInfectiousTimer = this.Data.NotInfectiousTime;
-        DeadPlayers = PlayerControl.AllPlayerControls.ToArray()
-            .Where(x => x.Data.IsDead)
+        DeadPlayers = ExPlayerControl.ExPlayerControls
+            .Where(x => x.IsDead() || data?.exiled?.PlayerId == x.PlayerId)
             .Select(x => x.PlayerId).ToList();
-    }
-
-    private void OnMeetingClose(MeetingCloseEventData data)
-    {
-        // 会議終了時に死亡者リストを更新
-        DeadPlayers = PlayerControl.AllPlayerControls.ToArray()
-            .Where(p => p.Data.IsDead)
-            .Select(p => p.PlayerId)
-            .ToList();
 
         // 感染者がいない場合、かつ設定が有効な場合にハック回数を補充
         if (Data.IsNotInfectionIncrease &&

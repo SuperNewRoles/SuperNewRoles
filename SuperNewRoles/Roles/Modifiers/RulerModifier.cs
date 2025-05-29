@@ -34,11 +34,12 @@ class RulerModifier : ModifierBase<RulerModifier>
     public override RoleTag[] RoleTags => [];
 
     public override short IntroNum => 1;
-    public override Func<ExPlayerControl, string> ModifierMark => (player) => "{0} " + ModHelpers.Cs(RoleColor, "†");
+    public override Func<ExPlayerControl, string> ModifierMark => (player) => "{0}" + ModHelpers.Cs(RoleColor, "†");
 
     public override bool AssignFilter => true;
 
     public override RoleId[] DoNotAssignRoles => [];
+    public override RoleId[] RelatedRoleIds => [RoleId.Madmate];
 
     [CustomOptionFloat("RulerModifierCooldown", 0f, 180f, 2.5f, 30f, translationName: "CoolTime")]
     public static float Cooldown;

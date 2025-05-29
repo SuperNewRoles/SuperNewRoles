@@ -291,7 +291,49 @@ public static class MeetingHud_PopulateButtons
                 Logger.Info($"{player.Data.PlayerId} : {pcLayer.hat2.Hat?.ProdId} {pcLayer.visor2.Visor?.ProdId}");
                 customCosmeticsLayer?.hat2?.SetHat(pcLayer.hat2.Hat?.ProdId ?? "", player.Data.DefaultOutfit.ColorId);
                 customCosmeticsLayer?.visor2?.SetVisor(pcLayer.visor2.Visor?.ProdId ?? "", player.Data.DefaultOutfit.ColorId);
+                // fix mask
+                customCosmeticsLayer.visor1.Image.maskInteraction = SpriteMaskInteraction.VisibleInsideMask;
+                customCosmeticsLayer.visor2.Image.maskInteraction = SpriteMaskInteraction.VisibleInsideMask;
             }
         }, 3f, "MeetingHud_PopulateButtons");
+    }
+}
+[HarmonyPatch(typeof(MeetingHud), nameof(MeetingHud.Update))]
+public static class MeetingHud_Update
+{
+    public static void Postfix(MeetingHud __instance)
+    {
+        foreach (var playerState in __instance.playerStates)
+        {
+            CustomCosmeticsLayer customCosmeticsLayer = CustomCosmeticsLayers.ExistsOrInitialize(playerState.PlayerIcon.cosmetics);
+            customCosmeticsLayer.visor1.Image.maskInteraction = SpriteMaskInteraction.VisibleInsideMask;
+            customCosmeticsLayer.visor2.Image.maskInteraction = SpriteMaskInteraction.VisibleInsideMask;
+        }
+    }
+}
+[HarmonyPatch(typeof(MeetingIntroAnimation), nameof(MeetingIntroAnimation.Init))]
+public static class MeetingIntroAnimation_Init
+{
+    public static void Postfix(MeetingIntroAnimation __instance)
+    {
+        PlayerVoteArea area = __instance.GetComponentInChildren<PlayerVoteArea>();
+        CustomCosmeticsLayer customCosmeticsLayer = CustomCosmeticsLayers.ExistsOrInitialize(area.PlayerIcon.cosmetics);
+        customCosmeticsLayer.visor1.Image.maskInteraction = SpriteMaskInteraction.VisibleInsideMask;
+        customCosmeticsLayer.visor2.Image.maskInteraction = SpriteMaskInteraction.VisibleInsideMask;
+        customCosmeticsLayer.hat1.FrontLayer.maskInteraction = SpriteMaskInteraction.VisibleInsideMask;
+        customCosmeticsLayer.hat1.BackLayer.maskInteraction = SpriteMaskInteraction.VisibleInsideMask;
+        customCosmeticsLayer.hat2.FrontLayer.maskInteraction = SpriteMaskInteraction.VisibleInsideMask;
+        customCosmeticsLayer.hat2.BackLayer.maskInteraction = SpriteMaskInteraction.VisibleInsideMask;
+    }
+}
+[HarmonyPatch(typeof(MushroomMixupPlayerAnimation), nameof(MushroomMixupPlayerAnimation.StartAnimation))]
+public static class MushroomMixupPlayerAnimation_StartAnimation
+{
+    public static void Postfix(MushroomMixupPlayerAnimation __instance)
+    {
+        foreach (SpriteRenderer spriteRenderer in __instance.GetComponentsInChildren<SpriteRenderer>())
+        {
+            spriteRenderer.sortingOrder = 1000;
+        }
     }
 }

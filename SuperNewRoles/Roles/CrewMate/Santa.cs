@@ -42,6 +42,7 @@ internal class Santa : RoleBase<Santa>
     public override short IntroNum => 1;
     public override RoleTypes IntroSoundType => RoleTypes.Crewmate;
     public override RoleOptionMenuType OptionTeam => RoleOptionMenuType.Crewmate;
+    public override RoleId[] RelatedRoleIds => [RoleId.NiceGuesser, RoleId.Sheriff, RoleId.Balancer, RoleId.Celebrity, RoleId.HomeSecurityGuard];
 
     [CustomOptionFloat("SantaAbilityCooldown", 0f, 180f, 2.5f, 25f)]
     public static float SantaAbilityCooldown;

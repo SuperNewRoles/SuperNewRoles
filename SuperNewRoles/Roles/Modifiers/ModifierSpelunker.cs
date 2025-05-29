@@ -34,32 +34,13 @@ class ModifierSpelunker : ModifierBase<ModifierSpelunker>
     public override RoleTag[] RoleTags => [];
 
     public override short IntroNum => 1;
+
+    public override bool AssignFilter => true;
+    public override bool UseTeamSpecificAssignment => true;
+
     public override Func<ExPlayerControl, string> ModifierMark => (player) => "{0}" + ModHelpers.Cs(RoleColor, "⚠");
 
     public override RoleId[] DoNotAssignRoles => [RoleId.Spelunker];
-
-    /*[Modifier]
-    [AssignFilter([], [RoleId.Spelunker])]
-    public static CustomOptionCategory ModifierSpelunkerCategory;
-
-    [CustomOptionInt("ModifierSpelunkerMaxImpostors", 0, 15, 1, 0, translationName: "ModifierSpelunkerMaxImpostors", parentFieldName: nameof(ModifierSpelunkerCategory))]
-    public static int ModifierSpelunkerMaxImpostors = 0;
-
-    [CustomOptionInt("ModifierSpelunkerImpostorChance", 5, 100, 5, 100, translationName: "ModifierSpelunkerImpostorChance", parentFieldName: nameof(ModifierSpelunkerCategory))]
-    public static int ModifierSpelunkerImpostorChance = 100;
-
-    [CustomOptionInt("ModifierSpelunkerMaxNeutrals", 0, 15, 1, 0, translationName: "ModifierSpelunkerMaxNeutrals", parentFieldName: nameof(ModifierSpelunkerCategory))]
-    public static int ModifierSpelunkerMaxNeutrals = 0;
-
-    [CustomOptionInt("ModifierSpelunkerNeutralChance", 5, 100, 5, 100, translationName: "ModifierSpelunkerNeutralChance", parentFieldName: nameof(ModifierSpelunkerCategory))]
-    public static int ModifierSpelunkerNeutralChance = 100;
-
-    [CustomOptionInt("ModifierSpelunkerMaxCrewmates", 0, 15, 1, 1, translationName: "ModifierSpelunkerMaxCrewmates", parentFieldName: nameof(ModifierSpelunkerCategory))]
-    public static int ModifierSpelunkerMaxCrewmates = 1;
-
-    [CustomOptionInt("ModifierSpelunkerCrewmateChance", 5, 100, 5, 100, translationName: "ModifierSpelunkerCrewmateChance", parentFieldName: nameof(ModifierSpelunkerCategory))]
-    public static int ModifierSpelunkerCrewmateChance = 100;
-*/
 
     [CustomOptionBool("ModifierSpelunkerIsDeathCommsOrPowerdown", true, translationName: "SpelunkerIsDeathCommsOrPowerdown")]
     public static bool ModifierSpelunkerIsDeathCommsOrPowerdown = true;

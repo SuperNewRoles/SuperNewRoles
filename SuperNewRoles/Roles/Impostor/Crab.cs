@@ -29,7 +29,7 @@ internal class Crab : RoleBase<Crab>
 
     [CustomOptionFloat("CrabCoolTime", 2.5f, 180f, 2.5f, 20f, translationName: "CoolTime")]
     public static float CrabCoolTime;
-    [CustomOptionFloat("CrabEffectDuration", 0f, 30f, 0.5f, 5f, translationName: "EffectDuration")]
+    [CustomOptionFloat("CrabEffectDuration", 0f, 30f, 0.5f, 5f, translationName: "DurationTime")]
     public static float CrabEffectDuration;
 }
 
@@ -82,7 +82,7 @@ public class CrabAbility : CustomButtonBase, IButtonEffect
     private void OnPhysicsFixedUpdate(PlayerPhysicsFixedUpdateEventData data)
     {
         if (!data.Instance.AmOwner) return;
-        if (((ExPlayerControl)data.Instance.myPlayer).IsDead()) return;
+        if (Player.IsDead()) return;
 
         if (MeetingHud.Instance != null)
         {

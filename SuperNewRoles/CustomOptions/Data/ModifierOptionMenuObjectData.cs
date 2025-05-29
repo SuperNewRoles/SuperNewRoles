@@ -66,6 +66,12 @@ public class ModifierOptionMenuObjectData : OptionMenuBase
 
     public Dictionary<string, List<(CustomOption Option, GameObject GameObject)>> CategoryOptionObjects;
     public Dictionary<string, List<GameObject>> CategoryModifierOptionGameObjects { get; private set; }
+
+    /// <summary>
+    /// Modifier固有オプションのGameObjectと対応する値の種類を管理する辞書
+    /// </summary>
+    public Dictionary<string, Dictionary<GameObject, string>> CategoryModifierOptionTypes { get; private set; }
+
     public GameObject ModeMenu { get; set; }
 
     // AssignFilter Edit Menu related properties
@@ -86,6 +92,7 @@ public class ModifierOptionMenuObjectData : OptionMenuBase
         RightAreaInner = RightAreaScroller.transform.Find("Inner").gameObject;
         CategoryOptionObjects = new Dictionary<string, List<(CustomOption, GameObject)>>();
         CategoryModifierOptionGameObjects = new Dictionary<string, List<GameObject>>();
+        CategoryModifierOptionTypes = new Dictionary<string, Dictionary<GameObject, string>>();
     }
 
     public void AddOptionUIData(string categoryName, CustomOption option, GameObject uiObject, bool isBooleanOption)
@@ -113,6 +120,18 @@ public class ModifierOptionMenuObjectData : OptionMenuBase
                 SelectedText = uiObject.transform.Find("SelectedText").GetComponent<TMPro.TextMeshPro>()
             });
         }
+    }
+
+    /// <summary>
+    /// Modifier固有オプションのGameObjectと対応する値の種類を登録
+    /// </summary>
+    public void AddModifierOptionType(string categoryName, GameObject gameObject, string optionType)
+    {
+        if (!CategoryModifierOptionTypes.ContainsKey(categoryName))
+        {
+            CategoryModifierOptionTypes[categoryName] = new Dictionary<GameObject, string>();
+        }
+        CategoryModifierOptionTypes[categoryName][gameObject] = optionType;
     }
 
     public override void Hide()
@@ -145,22 +164,62 @@ public class ModifierOptionMenuObjectData : OptionMenuBase
         }
 
         // Modifier固有オプションの表示を更新
-        if (CurrentCategory is ModifierCategoryDataModifier modCategory && CategoryModifierOptionGameObjects.TryGetValue(CurrentCategory.Name, out var modifierGameObjects))
+        if (CurrentCategory is ModifierCategoryDataModifier modCategory &&
+            CategoryModifierOptionGameObjects.TryGetValue(CurrentCategory.Name, out var modifierGameObjects) &&
+            CategoryModifierOptionTypes.TryGetValue(CurrentCategory.Name, out var modifierOptionTypes))
         {
-            // ここで NumOfCrews と Percentage の GameObject を見つけてテキストを更新
-            // 例えば、GameObject の名前に基づいて探すか、あるいは GameObject と対応する値の種類（NumOfCrews/Percentage）をペアで保存しておく必要がある
-            // 今回は簡略化のため、リストの順序（0番目がNumOfCrews, 1番目がPercentage）に依存すると仮定する
-            if (modifierGameObjects.Count >= 2)
+            var modifierBase = CustomRoleManager.TryGetModifierById(modCategory.ModifierOption.ModifierRoleId, out var modifier) ? modifier : null;
+
+            foreach (var gameObject in modifierGameObjects)
             {
-                // NumOfCrews の更新
-                var numCrewsText = modifierGameObjects[0]?.transform.Find("SelectedText")?.GetComponent<TextMeshPro>();
-                if (numCrewsText != null) numCrewsText.text = modCategory.ModifierOption.NumberOfCrews.ToString();
+                if (gameObject == null) continue;
 
-                // Percentage の更新
-                var percentageText = modifierGameObjects[1]?.transform.Find("SelectedText")?.GetComponent<TextMeshPro>();
-                if (percentageText != null) percentageText.text = $"{modCategory.ModifierOption.Percentage}%";
+                var selectedText = gameObject.transform.Find("SelectedText")?.GetComponent<TextMeshPro>();
+                if (selectedText == null) continue;
+
+                // GameObjectの種類に基づいて適切な値を設定
+                if (modifierOptionTypes.TryGetValue(gameObject, out var optionType))
+                {
+                    if (modifierBase != null && modifierBase.UseTeamSpecificAssignment)
+                    {
+                        // Team Specific Assignment の場合
+                        switch (optionType)
+                        {
+                            case "ModifierMaxImpostors":
+                                selectedText.text = modifierBase.MaxImpostors.ToString();
+                                break;
+                            case "ModifierImpostorChance":
+                                selectedText.text = modifierBase.ImpostorChance.ToString() + "%";
+                                break;
+                            case "ModifierMaxNeutrals":
+                                selectedText.text = modifierBase.MaxNeutrals.ToString();
+                                break;
+                            case "ModifierNeutralChance":
+                                selectedText.text = modifierBase.NeutralChance.ToString() + "%";
+                                break;
+                            case "ModifierMaxCrewmates":
+                                selectedText.text = modifierBase.MaxCrewmates.ToString();
+                                break;
+                            case "ModifierCrewmateChance":
+                                selectedText.text = modifierBase.CrewmateChance.ToString() + "%";
+                                break;
+                        }
+                    }
+                    else
+                    {
+                        // 通常のModifierの場合
+                        switch (optionType)
+                        {
+                            case "NumberOfCrews":
+                                selectedText.text = modCategory.ModifierOption.NumberOfCrews.ToString() + ModTranslation.GetString("NumberOfCrewsPostfix");
+                                break;
+                            case "AssignPer":
+                                selectedText.text = modCategory.ModifierOption.Percentage.ToString() + "%";
+                                break;
+                        }
+                    }
+                }
             }
-
         }
     }
 

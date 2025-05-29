@@ -141,7 +141,7 @@ public class AssignmentsSettingInfomation2HelpMenu : HelpMenuCategoryBase
             newRole.gameObject.SetActive(true);
             newRole.transform.localPosition = new Vector3(0, yPos, 0);
 
-            string baseRoleText = $"{ModHelpers.CsWithTranslation(ghostRole.RoleColor, ghostRole.RoleId.ToString())} x{ghostRole.NumberOfCrews} ({ghostRole.Percentage}%)\n";
+            string baseRoleText = $"<b>{ModHelpers.CsWithTranslation(ghostRole.RoleColor, ghostRole.RoleId.ToString())}</b> x{ghostRole.NumberOfCrews} ({ghostRole.Percentage}%)\n";
             newRole.text = baseRoleText;
 
             // PassiveButtonの設定
@@ -159,7 +159,7 @@ public class AssignmentsSettingInfomation2HelpMenu : HelpMenuCategoryBase
             passiveButton.OnMouseOver = new();
             passiveButton.OnMouseOver.AddListener((UnityAction)(() =>
             {
-                newRole.text = ModHelpers.Cs(Color.green, $"{ModHelpers.CsWithTranslation(Color.green, ghostRole.RoleId.ToString())} x{ghostRole.NumberOfCrews} ({ghostRole.Percentage}%)\n");
+                newRole.text = ModHelpers.Cs(Color.green, $"<b>{ModHelpers.CsWithTranslation(Color.green, ghostRole.RoleId.ToString())}</b> x{ghostRole.NumberOfCrews} ({ghostRole.Percentage}%)\n");
             }));
 
             passiveButton.OnMouseOut = new();
@@ -189,7 +189,7 @@ public class AssignmentsSettingInfomation2HelpMenu : HelpMenuCategoryBase
         var teamNameTMP = info.Find("TeamName").GetComponent<TextMeshPro>();
         if (teamNameTMP != null)
         {
-            teamNameTMP.text = ModHelpers.CsWithTranslation(Color.magenta, "Modifier");
+            teamNameTMP.text = ModHelpers.CsWithTranslation(new Color32(255, 112, 183, 255), "Modifier");
         }
         else
         {
@@ -230,7 +230,7 @@ public class AssignmentsSettingInfomation2HelpMenu : HelpMenuCategoryBase
             newRole.gameObject.SetActive(true);
             newRole.transform.localPosition = new Vector3(0, yPos, 0);
 
-            string baseRoleText = $"{ModHelpers.CsWithTranslation(modifierRole.RoleColor, modifierRole.ModifierRole.ToString())} x{modifierRole.NumberOfCrews} ({modifierRole.PercentageOption}%)\n";
+            string baseRoleText = $"<b>{ModHelpers.CsWithTranslation(modifierRole.RoleColor, modifierRole.ModifierRole.ToString())}</b> x{modifierRole.NumberOfCrews} ({modifierRole.PercentageOption}%)\n";
             newRole.text = baseRoleText;
 
             // PassiveButtonの設定
@@ -248,7 +248,7 @@ public class AssignmentsSettingInfomation2HelpMenu : HelpMenuCategoryBase
             passiveButton.OnMouseOver = new();
             passiveButton.OnMouseOver.AddListener((UnityAction)(() =>
             {
-                newRole.text = ModHelpers.Cs(Color.green, $"{ModHelpers.CsWithTranslation(Color.green, modifierRole.ModifierRole.ToString())} x{modifierRole.NumberOfCrews} ({modifierRole.PercentageOption}%)\n");
+                newRole.text = ModHelpers.Cs(Color.green, $"<b>{ModHelpers.CsWithTranslation(Color.green, modifierRole.ModifierRole.ToString())}</b> x{modifierRole.NumberOfCrews} ({modifierRole.PercentageOption}%)\n");
             }));
 
             passiveButton.OnMouseOut = new();

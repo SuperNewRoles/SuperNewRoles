@@ -672,4 +672,21 @@ public static class ModHelpers
     {
         return Constants.GetPlatformType() == Platforms.Android;
     }
+
+    public static KeyValuePair<byte, int> MaxPair(this Dictionary<byte, int> self, out bool tie)
+    {
+        KeyValuePair<byte, int> max = new(byte.MaxValue, int.MinValue);
+        tie = false;
+        foreach (var pair in self)
+        {
+            if (pair.Value > max.Value)
+            {
+                max = pair;
+                tie = false;
+            }
+            else if (pair.Value == max.Value)
+                tie = true;
+        }
+        return max;
+    }
 }

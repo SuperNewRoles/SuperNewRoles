@@ -136,7 +136,7 @@ public static class StandardOptionMenu
         else
             StandardOptionMenuObjectData.Instance.ModeMenu.SetActive(true);
         var modeOptionText = StandardOptionMenuObjectData.Instance.ModeMenu.transform.Find("ModeOption/Text").GetComponent<TextMeshPro>();
-        modeOptionText.text = $"<b>{ModTranslation.GetString("ModeOption")}</b>";
+        modeOptionText.text = $"{ModTranslation.GetString("ModeOption")}";
         ConfigureModeOption(StandardOptionMenuObjectData.Instance.ModeMenu);
         ShowDefaultOptionMenu(Categories.Categories.ModeSettings, StandardOptionMenuObjectData.Instance.RightAreaInner.transform);
     }

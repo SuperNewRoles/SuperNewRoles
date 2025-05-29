@@ -811,7 +811,7 @@ public class CustomCosmeticsCostumeMenu : CustomCosmeticsMenuBase<CustomCosmetic
             textMesh.alignment = TextAlignmentOptions.TopLeft;
             textMesh.text = FastDestroyableSingleton<TranslationController>.Instance.currentLanguage.languageID == SupportedLangs.Japanese ? package.Key : package.Value.First().Package_EN;
             textMesh.color = Color.white;
-            textMesh.fontStyle = FontStyles.Bold;
+            //textMesh.fontStyle = FontStyles.Bold;
             textMesh.enableWordWrapping = false;
             textMesh.rectTransform.sizeDelta = new Vector2(35f, 2f);
 

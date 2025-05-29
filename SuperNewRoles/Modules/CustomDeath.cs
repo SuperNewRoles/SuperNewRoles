@@ -80,8 +80,6 @@ public static class CustomDeathExtensions
                 FinalStatusManager.SetFinalStatus(player, FinalStatus.LoversSuicide);
                 break;
             case CustomDeathType.WaveCannon:
-                if (!TryKillEvent.Invoke(source, ref player).RefSuccess)
-                    break;
                 source.Player.MurderPlayer(player.Player, MurderResultFlags.Succeeded);
                 FinalStatusManager.SetFinalStatus(player, FinalStatus.WaveCannon);
                 break;

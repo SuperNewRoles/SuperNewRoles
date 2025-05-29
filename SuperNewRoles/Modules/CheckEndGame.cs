@@ -310,6 +310,7 @@ public class PlayerStatistics
         int pavlovsDogAlive = 0, pavlovsOwnerAlive = 0, pavlovsOwnerRemaining = 0;
         int arsonistAlive = 0, owlAlive = 0, hitmanAlive = 0, totalKiller = 0;
         bool hasLoversImpostorTeam = false, hasLoversJackalTeam = false, hasLoversPavlovsTeam = false, hasLoversHitmanTeam = false;
+        bool isLoversBlock = Lovers.LoversWinType is LoversWinType.Normal or LoversWinType.Single;
 
         var players = ExPlayerControl.ExPlayerControls;
         foreach (var player in players)
@@ -333,7 +334,7 @@ public class PlayerStatistics
             if (player.Role == RoleId.Hitman) hitmanAlive++;
             if (player.IsNonCrewKiller() || player.IsJackalTeam()) totalKiller++;
 
-            if (Lovers.LoversAdditionalWinCondition && player.IsLovers())
+            if (isLoversBlock && player.IsLovers())
             {
                 if (player.IsImpostorWinTeam() || (isHnS && player.IsMadRoles())) hasLoversImpostorTeam = true;
                 if (player.IsJackalTeam()) hasLoversJackalTeam = true;
@@ -361,22 +362,22 @@ public class PlayerStatistics
         bool pavlovWin = IsKillerWin(TeamPavlovsAlive);
         bool hitmanWin = IsKillerWin(hitmanAlive);
 
-        if (Lovers.LoversAdditionalWinCondition && impostorWin && teamImpostorsAlive > 1 && hasLoversImpostorTeam)
+        if (isLoversBlock && impostorWin && teamImpostorsAlive > 1 && hasLoversImpostorTeam)
         {
             Logger.Info("Lovers追加勝利判定（Impostor）: ラバーズを含むため勝利取消");
             impostorWin = false;
         }
-        if (Lovers.LoversAdditionalWinCondition && jackalWin && teamJackalAlive > 1 && hasLoversJackalTeam)
+        if (isLoversBlock && jackalWin && teamJackalAlive > 1 && hasLoversJackalTeam)
         {
             Logger.Info("Lovers追加勝利判定（Jackal）: ラバーズを含むため勝利取消");
             jackalWin = false;
         }
-        if (Lovers.LoversAdditionalWinCondition && pavlovWin && TeamPavlovsAlive > 1 && hasLoversPavlovsTeam)
+        if (isLoversBlock && pavlovWin && TeamPavlovsAlive > 1 && hasLoversPavlovsTeam)
         {
             Logger.Info("Lovers追加勝利判定（Pavlovs）: ラバーズを含むため勝利取消");
             pavlovWin = false;
         }
-        if (Lovers.LoversAdditionalWinCondition && hitmanWin && hitmanAlive > 1 && hasLoversHitmanTeam)
+        if (isLoversBlock && hitmanWin && hitmanAlive > 1 && hasLoversHitmanTeam)
         {
             Logger.Info("Lovers追加勝利判定（Hitman）: ラバーズを含むため勝利取消");
             hitmanWin = false;

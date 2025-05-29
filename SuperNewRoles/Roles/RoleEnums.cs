@@ -96,6 +96,7 @@ public enum RoleId : short
     EvilHawk,
     MadHawk,
     WiseMan,
+    Bullet,
 }
 
 public enum GhostRoleId : short
@@ -126,7 +127,11 @@ public enum QuoteMod : byte
     NebulaOnTheShip,
     TownOfHost,
     TheOtherRoles,
-    TheOtherRolesGM
+    TheOtherRolesGM,
+    TheOtherRolesGMH,
+    AuLibHalt,
+    ExtremeRoles,
+    exr
 }
 
 public enum TeamTag : byte

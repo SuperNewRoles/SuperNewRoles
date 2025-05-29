@@ -21,11 +21,11 @@ class Jackal : RoleBase<Jackal>
             sidekickCooldown: JackalSidekickCooldown,
             isImpostorVision: JackalImpostorVision,
             isInfiniteJackal: JackalInfiniteJackal,
-            sidekickType: JackalSidekickType
+            sidekickType: (RoleId)JackalSidekickType
         ))
     ];
 
-    public override QuoteMod QuoteMod { get; } = QuoteMod.SuperNewRoles;
+    public override QuoteMod QuoteMod { get; } = QuoteMod.TheOtherRoles;
     public override RoleTypes IntroSoundType { get; } = RoleTypes.Shapeshifter;
     public override short IntroNum { get; } = 1;
 
@@ -34,7 +34,7 @@ class Jackal : RoleBase<Jackal>
     public override TeamTag TeamTag { get; } = TeamTag.Jackal;
     public override RoleTag[] RoleTags { get; } = [RoleTag.SpecialKiller];
     public override RoleOptionMenuType OptionTeam { get; } = RoleOptionMenuType.Neutral;
-    public override RoleId[] RelatedRoleIds { get; } = [RoleId.Sidekick, RoleId.JackalFriends];
+    public override RoleId[] RelatedRoleIds { get; } = [RoleId.Sidekick, RoleId.JackalFriends, RoleId.SidekickWaveCannon];
 
     [CustomOptionFloat("JackalKillCooldown", 2.5f, 60f, 2.5f, 30f)]
     public static float JackalKillCooldown;

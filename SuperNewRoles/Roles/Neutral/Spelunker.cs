@@ -42,22 +42,22 @@ class Spelunker : RoleBase<Spelunker>
     [CustomOptionBool("SpelunkerIsDeathCommsOrPowerdown", true, translationName: "SpelunkerIsDeathCommsOrPowerdown")]
     public static bool SpelunkerIsDeathCommsOrPowerdown;
 
-    [CustomOptionFloat("SpelunkerDeathCommsTime", 5f, 120f, 2.5f, 20f, parentFieldName: nameof(SpelunkerIsDeathCommsOrPowerdown))]
+    [CustomOptionFloat("SpelunkerDeathCommsTime", 5f, 120f, 2.5f, 20f, parentFieldName: nameof(SpelunkerIsDeathCommsOrPowerdown), suffix: "s")]
     public static float SpelunkerDeathCommsTime;
 
-    [CustomOptionFloat("SpelunkerDeathPowerdownTime", 5f, 120f, 2.5f, 20f, parentFieldName: nameof(SpelunkerIsDeathCommsOrPowerdown))]
+    [CustomOptionFloat("SpelunkerDeathPowerdownTime", 5f, 120f, 2.5f, 20f, parentFieldName: nameof(SpelunkerIsDeathCommsOrPowerdown), suffix: "s")]
     public static float SpelunkerDeathPowerdownTime;
 
-    [CustomOptionInt("SpelunkerVentDeathChance", 0, 100, 5, 20, translationName: "SpelunkerVentDeathChance")]
+    [CustomOptionInt("SpelunkerVentDeathChance", 0, 100, 5, 20, translationName: "SpelunkerVentDeathChance", suffix: "%")]
     public static int SpelunkerVentDeathChance;
 
-    [CustomOptionInt("SpelunkerLiftDeathChance", 0, 100, 5, 20, translationName: "SpelunkerLiftDeathChance")]
+    [CustomOptionInt("SpelunkerLiftDeathChance", 0, 100, 5, 20, translationName: "SpelunkerLiftDeathChance", suffix: "%")]
     public static int SpelunkerLiftDeathChance;
 
-    [CustomOptionInt("SpelunkerDoorOpenChance", 0, 100, 5, 20, translationName: "SpelunkerDoorOpenChance")]
+    [CustomOptionInt("SpelunkerDoorOpenChance", 0, 100, 5, 20, translationName: "SpelunkerDoorOpenChance", suffix: "%")]
     public static int SpelunkerDoorOpenChance;
 
-    [CustomOptionInt("SpelunkerLadderDeathChance", 0, 100, 5, 20, translationName: "LadderDeadChance")]
+    [CustomOptionInt("SpelunkerLadderDeathChance", 0, 100, 5, 20, translationName: "LadderDeadChance", suffix: "%")]
     public static int SpelunkerLadderDeathChance;
 
     [CustomOptionBool("SpelunkerIsAdditionalWin", false, translationName: "AdditionalWin")]

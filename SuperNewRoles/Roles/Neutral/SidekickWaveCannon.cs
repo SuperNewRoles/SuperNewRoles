@@ -27,4 +27,5 @@ class SidekickWaveCannon : RoleBase<SidekickWaveCannon>
     public override TeamTag TeamTag { get; } = TeamTag.Neutral;
     public override RoleTag[] RoleTags { get; } = [];
     public override RoleOptionMenuType OptionTeam { get; } = RoleOptionMenuType.Hidden;
+    public override RoleId[] RelatedRoleIds { get; } = [RoleId.Jackal, RoleId.WaveCannonJackal];
 }

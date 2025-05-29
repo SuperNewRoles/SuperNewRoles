@@ -9,6 +9,7 @@ Neutral,第三陣営,Neutral,第三阵营,第三陣營
 GhostRoles,幽霊役職,Ghost Roles,幽灵角色,幽靈角色
 Modifier,モディファイア,Modifier,修饰符,修飾符
 People,{0}人,{0} people,{0}人,{0}人
+Role.Slugger,スラッガー,Slugger,冲锋者,衝鋒者
 
 # 共通設定テキスト
 CoolTime,クールタイム,Cool Time,冷却时间,冷卻時間
@@ -137,6 +138,16 @@ GhostVoteDisplayType.Show,表示,Show
 GhostVoteDisplayType.Hide,非表示,Hide
 ChangeReportDistance,レポート距離を変更する,Change report distance
 ReportDistanceOption,レポート距離,Report distance
+CustomAprilFools,エイプリルフールを有効にする,Enabled aprilfools
+AprilFoolsOutfitType,姿,Outfit type
+AprilFoolsOutfitType.None,なし,None
+AprilFoolsOutfitType.Horse,ウマングアス,Horse
+AprilFoolsOutfitType.AlongUs,ロングモード,aLONG us
+AprilFoolsEnableDleks,ドルクス,Dleks ehT
+
+# ClientOptions
+ClientOptionsVanilla,バニラ設定,Vanilla Settings,原版设置,原版設置
+ClientOptionsMod,Mod設定,Mod Settings,模组设置,模組設置
 
 # VersionUpdates
 VersionUpdateType.stability,安定版,Stability,稳定版,穩定版
@@ -231,8 +242,8 @@ CustomOptionTask_Short,ショートタスク,Short Tasks,短任務,短任務
 CustomOptionTask_Long,ロングタスク,Long Tasks,长任務,長任務
 CustomOptionTask_Common,通常タスク,Common Tasks,共同任務,共同任務
 SkipStartGameCountdown,ゲーム開始カウントダウンをスキップ,Skip Game Start Countdown,跳过游戏开始倒计时,跳過遊戲開始倒計時
-CustomOptionTrue,有効,Enabled,启用,啟用
-CustomOptionFalse,無効,Disabled,无效,无效
+CustomOptionTrue,オン,Enabled,启用,啟用
+CustomOptionFalse,オフ,Disabled,无效,无效
 
 # Win
 WinName,勝利,Win,勝利,勝利
@@ -378,6 +389,7 @@ NiceHawk,ナイスホーク,Nice Hawk
 MadHawk,マッドホーク,Mad Hawk
 EvilHawk,イビルホーク,Evil Hawk
 ModifierHawk,モディファイアホーク,Modifier Hawk
+Bullet,弾,Bullet
 
 # Descriptions_Impostor
 EvilGuesser.Description,会議に関する能力を有するインポスターです。\n会議中に出現するボタンを押し、対象のプレイヤーの役職が何か当てると、そのプレイヤーをキルすることが出来ます。\nただし、外すと自身が死亡してしまいます。,An Impostor with a meeting‐based ability.\nDuring meetings, by pressing the appearing button and correctly guessing a target player's role, they can kill that player.\nHowever, an incorrect guess results in their own death.,这是一个拥有会议相关能力的内鬼。\n在会议中，点击出现的按钮后，如果猜中目标玩家的角色，就可以将其击杀。\n但如果猜错，自己会死亡。,這是一個具備會議相關能力的內鬼。\n在會議中，按下出現的按鈕後，若能正確猜出目標玩家的角色，便可將其擊殺。\n不過，若猜錯，則自己將會死亡。
@@ -526,6 +538,7 @@ JackalSidekickType,サイドキックタイプ,Sidekick Type,边缘队员类型,
 JackalSidekickType.Sidekick,サイドキック,Sidekick,边缘队员,邊緣隊員
 JackalSidekickType.Friends,ジャッカルフレンズ,Jackal Friends,杰克朋友,傑克朋友
 JackalSidekickType.SidekickWaveCannon,波動砲サイドキック,Sidekick Wave Cannon
+JackalSidekickType.Bullet,弾,Bullet,子弹,子彈
 SidekickButtonText,サイドキック,Sidekick,边缘队员,邊緣隊員
 
 # Bait Options
@@ -589,6 +602,10 @@ WaveCannonJackalSidekickType,サイドキックタイプ,Sidekick Type,边缘队
 WaveCannonJackalWaveCannonCooldown,波動砲クールダウン,Wave Cannon Cooldown,波动炮冷却时间,波動砲冷卻時間
 WaveCannonJackalWaveCannonEffectDuration,波動砲の充填時間,Wave Cannon Fill Time,波动炮充填时间,波動砲充填時間
 WaveCannonJackalWaveCannonType,波動砲タイプ,Wave Cannon Type,波动炮类型,波動砲類型
+WaveCannonJackalBulletLoadBulletCooltime,弾のチャージクールタイム,Bullet Charge Cooltime,子弹充能冷却时间,子彈充能冷卻時間
+WaveCannonJackalBulletLoadedChargeTime,弾波動砲のチャージ時間,Bullet Loaded Charge Time,子弹充能时间,子彈充能時間
+WaveCannonJackalCreateBulletToJackal,弾がジャッカルに昇格する,Bullet becomes Jackal,子弹成为杰克,子彈成為傑克
+WaveCannonJackalNewJackalHaveWaveCannon,弾が昇格した際波動砲を持つ,Bullet becomes Jackal and has Wave Cannon,子弹成为杰克并拥有波动炮,子彈成為傑克並擁有波動砲
 
 # Tuna
 TunaStopTimeLimit,停止可能時間,Tuna Stop Time Limit,金枪鱼停止时间,金槍魚停止時間
@@ -954,10 +971,15 @@ LoversMaxCoupleCount,最大カップル数,Max Couple Count
 LoversSpawnChance,排出確率,Spawn Chance
 LoversDieWithPartner,2人同時に死ぬ,Die with Partner
 LoversAvoidQuarreled,クラードと重複しない,Avoid Quarreled
-LoversAdditionalWinCondition,追加勝利,Additional Win Condition
+LoversWinType,勝利条件,Win Type
+LoversWinType.Normal,通常,Normal
+LoversWinType.Shared,共勝利,Shared
+LoversWinType.Single,完全単独,Single
 LoversIncludeImpostorsInSelection,抽選にインポスターを含む,Include Impostors in Selection
 LoversIncludeThirdTeamInSelection,抽選に第三陣営を含む,Include Third Team in Selection
 CupidLoversCanSeeCupidRole,ラバーズがキューピッドを知れる,Lovers Can See Cupid
+LoversKnowPartnerRole,相方の役職がわかる,Know Partner Role
+LoversKnowPartnerPosition,相方の位置がわかる,Know Partner Position
 
 # Owl
 OwlIntro1,暗闇に羽ばたきし者,The one who flapped his wings in the dark,黑暗中鼓动羽翼之人,在黑暗中鼓動翅膀的人
@@ -980,6 +1002,7 @@ SchrodingersCatKillVictimSuicide,キル者が自殺する,Killer suicides,擊殺
 SchrodingersCatSuicideTime,自殺までの時間,Time until suicide,自殺剩餘時間,自殺剩餘時間
 SchrodingersCatBeCrewOnExile,追放でクルー陣営になる,Become crew on exile,被逐出時變為船員陣營,被逐出時變為船員陣營
 SchrodingersCatCrewOnKillByNonSpecific,特定の役職以外からキルされたときクルー陣営になる,Become crew when killed by non specific role,被非特定角色擊殺時變為船員陣營,被非特定角色擊殺時變為船員陣營
+SchrodingersCatSuicideText,猫をキルした... ,Killed the cat...,殺了貓...,殺了貓...
 
 # Truelover
 TrueLoverCreateLovers,一目惚れ,One-sided Love,一見傾心,一見傾心
@@ -1023,6 +1046,7 @@ JumboSizeUpOnMeeting,会議中にも成長する,Grow on Meeting,会议中成长
 VentTrapperButtonText,トラップ!,Trap!
 VentTrapperSetupTime,トラップ設置時間,Setup Time,陷阱设置时间,陷阱設置時間
 VentTrapperStunTime,トラップ効果時間,Trap Effect Time,陷阱效果时间,陷阱效果時間
+VentTrapperStunMessage,罠に引っかかった！,I'm trapped!,我被陷阱困住了!,我被陷阱困住了!
 
 # Rocket Options
 RocketInitialGrabCooldown,初回「掴む」のクールタイム,Initial Grab Cooldown,初回掴むのクールタイム,初回掴む的冷卻時間
@@ -1072,6 +1096,7 @@ TheFungleCameraSpeed,カメラスピード,Camera Speed,摄像头速度,攝像�
 TheFungleMushroomMixupOption,キノコカオスの設定,Mushroom Mixup,蘑菇混合,蘑菇混合
 TheFungleMushroomMixupCantOpenMeeting,キノコカオス中は会議できない,Cannot Open Meeting During Mixup,混合时不能开会,混合時不能開會
 TheFungleMushroomMixupTime,キノコカオス継続時間,Mushroom Mixup Duration,蘑菇混合持续时间,蘑菇混合持續時間
+MushroomMixupCantOpenMeeting,混乱して会議を開けない!,I'm too confused to start the meeting!
 
 FungleSpawnTypeOptions.TheFungleSpawnTypeNormal,通常,Normal,通常,通常
 FungleSpawnTypeOptions.RandomSpawnOption,ランダムスポーン,Random Spawn,随机出生点,隨機出生點
@@ -1093,13 +1118,13 @@ MatryoshkaButtonText,死体を着る/脱ぐ,Wear/Remove Body,穿戴/脱下尸体
 Amnesiac.RoleChangeNotification,あなたは次の役職になりました: ,You have become the following role: ,你现在的职业变为: ,你現在的職業變為: 
 
 # Spelunker関連
-SpelunkerVentDeathChance,ベント死の確率(%),Probability of vent death,倒霉蛋在管道口跌倒而死的概率,倒霉鬼在管道口跌倒而死的機率
-LadderDeadChance,転落死する確率(%),Ladder Death Chance,摔死的概率,摔死的機率
+SpelunkerVentDeathChance,ベント死の確率,Probability of vent death,倒霉蛋在管道口跌倒而死的概率,倒霉鬼在管道口跌倒而死的機率
+LadderDeadChance,転落死する確率,Ladder Death Chance,摔死的概率,摔死的機率
 SpelunkerIsDeathCommsOrPowerdown,コミュ・停電で死ぬ,Death from Communications/Power Down,通信或断电时死亡,通信或斷電時死亡
-SpelunkerDeathCommsTime,コミュの時間(秒),Time to death from Communications (seconds),通信死亡时间(秒),通信死亡時間(秒)
-SpelunkerDeathPowerdownTime,停電の時間(秒),Time to death from Power Down (seconds),断电死亡时间(秒),斷電死亡時間(秒)
-SpelunkerLiftDeathChance,昇降機死の確率(%),Elevator Death Chance,电梯死亡概率,電梯死亡機率
-SpelunkerDoorOpenChance,ドア開放死の確率(%),Door Opening Death Chance,开门死亡概率,開門死亡機率
+SpelunkerDeathCommsTime,コミュの時間,Time to death from Communications (seconds),通信死亡时间(秒),通信死亡時間(秒)
+SpelunkerDeathPowerdownTime,停電の時間,Time to death from Power Down (seconds),断电死亡时间(秒),斷電死亡時間(秒)
+SpelunkerLiftDeathChance,昇降機死の確率,Elevator Death Chance,电梯死亡概率,電梯死亡機率
+SpelunkerDoorOpenChance,ドア開放死の確率,Door Opening Death Chance,开门死亡概率,開門死亡機率
 
 # BlackHatHacker
 BlackHatHacker,ブラックハットハッカー,Black Hat Hacker,黑帽客,黑帽駭客
@@ -1172,6 +1197,7 @@ HamburgerShopTaskOption,タスク設定,Task Settings,任务设置,任務設置
 # LoversBreaker
 LoversBreakerWinKillCount,勝利に必要な爆破数,Number of kills needed to win,胜利所需爆破次数,勝利所需爆破次數
 LoversBreakerIsDeathWin,死亡していても勝利出来る,You can win even if you are dead,死亡后仍可获胜,死亡後仍可獲勝
+LoversBreakerBreak,爆破,Break!
 
 # NiceHawk
 HawkButtonText,ホークアイ,Hawk Eye,鹰眼,鷹眼
@@ -1181,5 +1207,19 @@ HawkCannotWalkInEffect,ホークアイの効果中は移動できない,Cannot m
 # WiseMan
 WiseMan,賢者,Wise Man,贤者,賢者
 WiseManDescription,<color=#55b4ec>賢者</color>は透視能力で壁の向こうを見ることができるクルーメイトです。\n能力使用中はカメラがロックされ、特定の角度で壁を透視できます。\n移動制限を有効にすることで、より集中した観察が可能になります。,<color=#55b4ec>Wise Man</color> is a crewmate who can see through walls with clairvoyance.\nWhile using the ability, the camera is locked and can see through walls at specific angles.\nEnabling movement restrictions allows for more focused observation.,<color=#55b4ec>贤者</color>是一个可以透视墙壁的船员。\n使用能力时摄像头被锁定，可以从特定角度透视墙壁。\n启用移动限制可以进行更专注的观察。,<color=#55b4ec>賢者</color>是一個可以透視牆壁的船員。\n使用能力時攝影機被鎖定，可以從特定角度透視牆壁。\n啟用移動限制可以進行更專注的觀察。
-WiseManButtonText,透視,Clairvoyance,透视,透視
-WiseManEnableWalk,透視中に歩行を許可,Allow walking during clairvoyance,透视中允许行走,透視中允許行走
+WiseManButtonText,聖なる盾,Holy Shield,神圣盾,神聖盾
+WiseManEnableWiseManWalk,賢者ステップを有効にする,Enable Wise Man Step,启用贤者步,啟用賢者步
+
+# Modifier Team Specific Assignment
+ModifierMaxImpostors,インポスター最大人数,Max Impostors,内鬼最大人数,內鬼最大人數
+ModifierImpostorChance,インポスター確率,Impostor Chance,内鬼概率,內鬼機率
+ModifierMaxNeutrals,第三陣営最大人数,Max Neutrals,第三阵营最大人数,第三陣營最大人數
+ModifierNeutralChance,第三陣営確率,Neutral Chance,第三阵营概率,第三陣營機率
+ModifierMaxCrewmates,クルーメイト最大人数,Max Crewmates,船员最大人数,船員最大人數
+ModifierCrewmateChance,クルーメイト確率,Crewmate Chance,船员概率,船員機率
+
+# Slugger Options
+SluggerChargeTime,チャージ時間,Charge Time,蓄力时间,蓄力時間
+SluggerIsMultiKill,複数キルを許可,Allow Multi-Kill,允许多重击杀,允许多重擊殺
+SluggerIsSyncKillCoolTime,キルクールタイム同期,Sync Kill Cooldown,同步击杀冷却,同步擊殺冷卻
+SluggerButtonName,スラッガー！,Slugger!,击杀,擊杀

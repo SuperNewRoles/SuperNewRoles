@@ -96,7 +96,6 @@ public static class AssignRoles
 
         // Assign Modifiers
         AssignModifiers();
-        AssignGuesser();
 
         // Assign Lovers
         AssignLovers();
@@ -116,6 +115,11 @@ public static class AssignRoles
                 role.AvailableMaps.Length != 0 &&
                 !role.AvailableMaps.Any(map => (byte)map == GameOptionsManager.Instance.CurrentGameOptions.MapId))
                 continue;
+
+            // LoversBreaker役職の特別な選出条件をチェック
+            if (roleOption.RoleId == RoleId.LoversBreaker && ShouldSkipLoversBreakerAssignment())
+                continue;
+
             if (roleOption.Percentage >= 100)
             {
                 AssignTickets_HundredPercent[roleOption.AssignTeam].Add(new AssignTickets(roleOption));
@@ -129,6 +133,48 @@ public static class AssignRoles
                 }
             }
         }
+    }
+
+    /// <summary>
+    /// LoversBreaker役職の選出をスキップするかどうかを判定します。
+    /// Lovers、Truelover、Cupidの全ての確率または選出数が0の場合にtrueを返します。
+    /// </summary>
+    private static bool ShouldSkipLoversBreakerAssignment()
+    {
+        // Lovers（Modifier）の確率と選出数をチェック
+        bool loversDisabled = true;
+        if (Lovers.LoversSpawnChance > 0 && Lovers.LoversMaxCoupleCount > 0)
+            loversDisabled = false;
+
+        // Truelover役職の確率と選出数をチェック
+        bool trueloverDisabled = true;
+        if (RoleOptionManager.TryGetRoleOption(RoleId.Truelover, out var trueloverOption))
+        {
+            if (trueloverOption.Percentage > 0 && trueloverOption.NumberOfCrews > 0)
+            {
+                trueloverDisabled = false;
+            }
+        }
+
+        // Cupid役職の確率と選出数をチェック
+        bool cupidDisabled = true;
+        if (RoleOptionManager.TryGetRoleOption(RoleId.Cupid, out var cupidOption))
+        {
+            if (cupidOption.Percentage > 0 && cupidOption.NumberOfCrews > 0)
+            {
+                cupidDisabled = false;
+            }
+        }
+
+        // 全ての役職が無効化されている場合はLoversBreaker役職をスキップ
+        bool shouldSkip = loversDisabled && trueloverDisabled && cupidDisabled;
+
+        if (shouldSkip)
+        {
+            Logger.Info("LoversBreaker役職をスキップします: Lovers、Truelover、Cupidの全ての確率または選出数が0です。");
+        }
+
+        return shouldSkip;
     }
     private static void AssignTickets(List<AssignTickets> tickets_hundred, List<AssignTickets> tickets_not_hundred, bool isImpostor, int maxBeans)
     {
@@ -212,16 +258,10 @@ public static class AssignRoles
             var modifierRoleId = modifierBase.ModifierRole;
             Logger.Info($"AssignModifiers: Modifier処理開始 - ModifierRole = {modifierRoleId}");
 
-            // モディファイアのオプションから確率を取得
             var modifierRoleOption = RoleOptionManager.ModifierRoleOptions.FirstOrDefault(x => x.ModifierRoleId == modifierRoleId);
             if (modifierRoleOption == null)
             {
                 Logger.Info($"AssignModifiers: ModifierRoleOptionが見つからないため、ModifierRole {modifierRoleId} をスキップします。");
-                continue;
-            }
-            if (modifierRoleOption.Percentage <= 0)
-            {
-                Logger.Info($"AssignModifiers: ModifierRoleOptionのパーセンテージが0以下のため、ModifierRole {modifierRoleId} をスキップします。");
                 continue;
             }
             if (modifierBase.HiddenOption)
@@ -230,55 +270,71 @@ public static class AssignRoles
                 continue;
             }
 
-            List<ExPlayerControl> targetPlayers = ExPlayerControl.ExPlayerControls
-                .Where(x => modifierBase.AssignedTeams.Count <= 0 || modifierBase.AssignedTeams.Contains(x.roleBase.AssignedTeam))
-                .Where(x => ModifierGuesser.ModifierGuesserCategory.ModifierAssignFilter.Count == 0 || !ModifierGuesser.ModifierGuesserCategory.ModifierAssignFilter.Contains(x.Role))
-                .Where(x => ModifierGuesser.ModifierGuesserCategory.ModifierDoNotAssignRoles.Length == 0 || !ModifierGuesser.ModifierGuesserCategory.ModifierDoNotAssignRoles.Contains(x.Role))
-                .Where(x => ModifierGuesser.ModifierGuesserCategory.ModifierAssignFilterTeam.Length == 0 || ModifierGuesser.ModifierGuesserCategory.ModifierAssignFilterTeam.Contains(x.roleBase.AssignedTeam))
-                .ToList();
-            Logger.Info($"AssignModifiers: ModifierRole {modifierRoleId} に適用可能なプレイヤー数 = {targetPlayers.Count}");
-
-            for (int i = 0; i < modifierRoleOption.NumberOfCrews; i++)
+            if (modifierBase.UseTeamSpecificAssignment)
             {
-                Logger.Info($"AssignModifiers: ModifierRole {modifierRoleId} - ループ {i + 1}/{modifierRoleOption.NumberOfCrews} 開始");
-                int randomRoll = ModHelpers.GetRandomInt(0, 100);
-                Logger.Info($"AssignModifiers: ModifierRole {modifierRoleId} - ループ {i + 1} のランダム値 = {randomRoll} (閾値: {modifierRoleOption.Percentage})");
-                if (randomRoll > modifierRoleOption.Percentage)
+                AssignTeamSpecificModifier(modifierBase, modifierRoleOption);
+            }
+            else
+            {
+                if (modifierRoleOption.Percentage <= 0)
                 {
-                    Logger.Info($"AssignModifiers: ModifierRole {modifierRoleId} - ループ {i + 1} はランダム判定により割り当てをスキップします。");
+                    Logger.Info($"AssignModifiers: ModifierRoleOptionのパーセンテージが0以下のため、ModifierRole {modifierRoleId} をスキップします。");
                     continue;
                 }
-                if (targetPlayers.Count == 0)
+                List<ExPlayerControl> targetPlayers = ExPlayerControl.ExPlayerControls
+                    .Where(x => modifierBase.AssignedTeams.Count <= 0 || modifierBase.AssignedTeams.Contains(x.roleBase.AssignedTeam))
+                    .Where(x => modifierRoleOption.AssignFilterList.Count == 0 || !modifierRoleOption.AssignFilterList.Contains(x.Role))
+                    .Where(x => modifierBase.DoNotAssignRoles.Length == 0 || !modifierBase.DoNotAssignRoles.Contains(x.Role))
+                    // .Where(x => modifierBase.ModifierAssignFilterTeam.Length == 0 || modifierBase.ModifierAssignFilterTeam.Contains(x.roleBase.AssignedTeam))
+                    .ToList();
+                Logger.Info($"AssignModifiers: ModifierRole {modifierRoleId} に適用可能なプレイヤー数 = {targetPlayers.Count}");
+
+                for (int i = 0; i < modifierRoleOption.NumberOfCrews; i++)
                 {
-                    Logger.Info($"AssignModifiers: ModifierRole {modifierRoleId} - ループ {i + 1} で対象プレイヤーが存在しないため、ループを終了します。");
-                    break;
+                    Logger.Info($"AssignModifiers: ModifierRole {modifierRoleId} - ループ {i + 1}/{modifierRoleOption.NumberOfCrews} 開始");
+                    int randomRoll = ModHelpers.GetRandomInt(0, 100);
+                    Logger.Info($"AssignModifiers: ModifierRole {modifierRoleId} - ループ {i + 1} のランダム値 = {randomRoll} (閾値: {modifierRoleOption.Percentage})");
+                    if (randomRoll > modifierRoleOption.Percentage)
+                    {
+                        Logger.Info($"AssignModifiers: ModifierRole {modifierRoleId} - ループ {i + 1} はランダム判定により割り当てをスキップします。");
+                        continue;
+                    }
+                    if (targetPlayers.Count == 0)
+                    {
+                        Logger.Info($"AssignModifiers: ModifierRole {modifierRoleId} - ループ {i + 1} で対象プレイヤーが存在しないため、ループを終了します。");
+                        break;
+                    }
+                    int playerIndex = targetPlayers.GetRandomIndex();
+                    Logger.Info($"AssignModifiers: ModifierRole {modifierRoleId} - 選択されたプレイヤーインデックス = {playerIndex}");
+                    PlayerControl targetPlayer = targetPlayers[playerIndex];
+                    Logger.Info($"AssignModifiers: ModifierRole {modifierRoleId} - 選択されたプレイヤーID = {targetPlayer.PlayerId}");
+                    targetPlayers.RemoveAt(playerIndex);
+                    Logger.Info($"AssignModifiers: ModifierRole {modifierRoleId} - プレイヤー {targetPlayer.PlayerId} を対象リストから削除しました。");
+                    Logger.Info($"AssignModifiers: ModifierRole {modifierRoleId} - プレイヤー {targetPlayer.PlayerId} に対してModifierの割り当てを試みます。");
+                    AssignModifier(targetPlayer, modifierRoleId);
                 }
-                int playerIndex = targetPlayers.GetRandomIndex();
-                Logger.Info($"AssignModifiers: ModifierRole {modifierRoleId} - 選択されたプレイヤーインデックス = {playerIndex}");
-                PlayerControl targetPlayer = targetPlayers[playerIndex];
-                Logger.Info($"AssignModifiers: ModifierRole {modifierRoleId} - 選択されたプレイヤーID = {targetPlayer.PlayerId}");
-                targetPlayers.RemoveAt(playerIndex);
-                Logger.Info($"AssignModifiers: ModifierRole {modifierRoleId} - プレイヤー {targetPlayer.PlayerId} を対象リストから削除しました。");
-                Logger.Info($"AssignModifiers: ModifierRole {modifierRoleId} - プレイヤー {targetPlayer.PlayerId} に対してModifierの割り当てを試みます。");
-                AssignModifier(targetPlayer, modifierRoleId);
             }
             Logger.Info($"AssignModifiers: ModifierRole {modifierRoleId} の処理が完了しました。");
         }
         Logger.Info("AssignModifiers() 終了: 全てのModifier処理が完了しました。");
     }
 
-    private static void AssignGuesser()
+    private static void AssignTeamSpecificModifier(IModifierBase modifierBase, RoleOptionManager.ModifierRoleOption modifierRoleOption)
     {
-        Logger.Info("AssignGuesser() 開始: GuesserModifierのアサイン処理を開始します。");
+        Logger.Info($"AssignTeamSpecificModifier() 開始: ModifierRole {modifierBase.ModifierRole} の陣営別アサイン処理を開始します。");
         var allPlayers = ExPlayerControl.ExPlayerControls;
-        var modifierRoleId = ModifierRoleId.ModifierGuesser;
+        var modifierRoleId = modifierBase.ModifierRole;
 
         // インポスターへの割当
-        var impostors = allPlayers.Where(x => x.IsImpostor() && !x.ModifierRole.HasFlag(modifierRoleId) && !ModifierGuesser.ModifierGuesserCategory.ModifierAssignFilter.Contains(x.Role) && !ModifierGuesser.ModifierGuesserCategory.ModifierDoNotAssignRoles.Contains(x.Role)).ToList();
-        for (int i = 0; i < ModifierGuesser.ModifierGuesserMaxImpostors; i++)
+        var impostors = allPlayers.Where(x => x.IsImpostor() &&
+                                        !x.ModifierRole.HasFlag(modifierRoleId) &&
+                                        (modifierRoleOption.AssignFilterList.Count == 0 || !modifierRoleOption.AssignFilterList.Contains(x.Role)) &&
+                                        (modifierBase.DoNotAssignRoles.Length == 0 || !modifierBase.DoNotAssignRoles.Contains(x.Role)))
+                                .ToList();
+        for (int i = 0; i < modifierRoleOption.MaxImpostors; i++)
         {
             int roll = ModHelpers.GetRandomInt(0, 100);
-            if (roll <= ModifierGuesser.ModifierGuesserImpostorChance && impostors.Count > 0)
+            if (roll <= modifierRoleOption.ImpostorChance && impostors.Count > 0)
             {
                 var exPlayer = impostors[impostors.GetRandomIndex()];
                 impostors.Remove(exPlayer);
@@ -286,11 +342,15 @@ public static class AssignRoles
             }
         }
         // 第三陣営への割当
-        var neutrals = allPlayers.Where(x => x.IsNeutral() && !x.ModifierRole.HasFlag(modifierRoleId) && !ModifierGuesser.ModifierGuesserCategory.ModifierAssignFilter.Contains(x.Role) && !ModifierGuesser.ModifierGuesserCategory.ModifierDoNotAssignRoles.Contains(x.Role)).ToList();
-        for (int i = 0; i < ModifierGuesser.ModifierGuesserMaxNeutrals; i++)
+        var neutrals = allPlayers.Where(x => x.IsNeutral() &&
+                                       !x.ModifierRole.HasFlag(modifierRoleId) &&
+                                       (modifierRoleOption.AssignFilterList.Count == 0 || !modifierRoleOption.AssignFilterList.Contains(x.Role)) &&
+                                       (modifierBase.DoNotAssignRoles.Length == 0 || !modifierBase.DoNotAssignRoles.Contains(x.Role)))
+                               .ToList();
+        for (int i = 0; i < modifierRoleOption.MaxNeutrals; i++)
         {
             int roll = ModHelpers.GetRandomInt(0, 100);
-            if (roll <= ModifierGuesser.ModifierGuesserNeutralChance && neutrals.Count > 0)
+            if (roll <= modifierRoleOption.NeutralChance && neutrals.Count > 0)
             {
                 var exPlayer = neutrals[neutrals.GetRandomIndex()];
                 neutrals.Remove(exPlayer);
@@ -298,18 +358,22 @@ public static class AssignRoles
             }
         }
         // クルーメイトへの割当
-        var crewmates = allPlayers.Where(x => x.IsCrewmate() && !x.ModifierRole.HasFlag(modifierRoleId) && !ModifierGuesser.ModifierGuesserCategory.ModifierAssignFilter.Contains(x.Role) && !ModifierGuesser.ModifierGuesserCategory.ModifierDoNotAssignRoles.Contains(x.Role)).ToList();
-        for (int i = 0; i < ModifierGuesser.ModifierGuesserMaxCrewmates; i++)
+        var crewmates = allPlayers.Where(x => x.IsCrewmateOrMadRoles() &&
+                                        !x.ModifierRole.HasFlag(modifierRoleId) &&
+                                        (modifierRoleOption.AssignFilterList.Count == 0 || !modifierRoleOption.AssignFilterList.Contains(x.Role)) &&
+                                        (modifierBase.DoNotAssignRoles.Length == 0 || !modifierBase.DoNotAssignRoles.Contains(x.Role)))
+                                .ToList();
+        for (int i = 0; i < modifierRoleOption.MaxCrewmates; i++)
         {
             int roll = ModHelpers.GetRandomInt(0, 100);
-            if (roll <= ModifierGuesser.ModifierGuesserCrewmateChance && crewmates.Count > 0)
+            if (roll <= modifierRoleOption.CrewmateChance && crewmates.Count > 0)
             {
                 var exPlayer = crewmates[crewmates.GetRandomIndex()];
                 crewmates.Remove(exPlayer);
                 AssignModifier(exPlayer.Player, modifierRoleId);
             }
         }
-        Logger.Info("AssignGuesser() 終了: GuesserModifierのアサイン処理が完了しました。");
+        Logger.Info($"AssignTeamSpecificModifier() 終了: ModifierRole {modifierBase.ModifierRole} の陣営別アサイン処理が完了しました。");
     }
 
     private static void AssignLovers()
@@ -338,15 +402,20 @@ public static class AssignRoles
             candidates = candidates
                 .Where(p => !p.IsNeutral());
         }
-        if (ModifierGuesser.ModifierGuesserCategory.ModifierAssignFilter.Count > 0)
+
+        // ModifierGuesserのAssignFilterを取得
+        if (RoleOptionManager.TryGetModifierRoleOption(ModifierRoleId.Lovers, out var modifierLovers))
         {
-            candidates = candidates
-                .Where(p => !ModifierGuesser.ModifierGuesserCategory.ModifierAssignFilter.Contains(p.Role));
-        }
-        if (ModifierGuesser.ModifierGuesserCategory.ModifierDoNotAssignRoles.Length > 0)
-        {
-            candidates = candidates
-                .Where(p => !ModifierGuesser.ModifierGuesserCategory.ModifierDoNotAssignRoles.Contains(p.Role));
+            if (modifierLovers.AssignFilterList.Count > 0)
+            {
+                candidates = candidates
+                    .Where(p => !modifierLovers.AssignFilterList.Contains(p.Role));
+            }
+            if (Lovers.Instance.DoNotAssignRoles.Length > 0)
+            {
+                candidates = candidates
+                    .Where(p => !Lovers.Instance.DoNotAssignRoles.Contains(p.Role));
+            }
         }
 
         candidates = candidates.Where(p => p.Role is not RoleId.Truelover and not RoleId.Cupid and not RoleId.LoversBreaker);

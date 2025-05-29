@@ -34,7 +34,7 @@ class SerialKiller : RoleBase<SerialKiller>
         )
     ];
 
-    public override QuoteMod QuoteMod { get; } = QuoteMod.TheOtherRoles;
+    public override QuoteMod QuoteMod { get; } = QuoteMod.TheOtherRolesGM;
     public override RoleTypes IntroSoundType { get; } = RoleTypes.Impostor;
     public override short IntroNum { get; } = 1;
 

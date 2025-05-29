@@ -125,6 +125,7 @@ static class AdditionalTempData
         public bool isImpostor { get; set; }
         public string Hat2Id { get; set; }
         public string Visor2Id { get; set; }
+        public Color? LoversHeartColor { get; set; }
         public PlayerRoleInfo Clone()
         {
             return (PlayerRoleInfo)MemberwiseClone();
@@ -408,7 +409,7 @@ public class EndGameManagerSetUpPatch
             playerObj.UpdateFromPlayerOutfit(data.Outfit, PlayerMaterial.MaskType.None, data.IsDead, true);
             playerObj.cosmetics.nameText.color = Color.white;
             playerObj.cosmetics.nameText.transform.localScale = new Vector3(1f / scaleVector.x, 1f / scaleVector.y, 1f / scaleVector.z);
-            playerObj.cosmetics.nameText.transform.localPosition = new Vector3(playerObj.cosmetics.nameText.transform.localPosition.x, playerObj.cosmetics.nameText.transform.localPosition.y - 0.8f, -15f);
+            playerObj.cosmetics.nameText.transform.localPosition = new Vector3(playerObj.cosmetics.nameText.transform.localPosition.x, playerObj.cosmetics.nameText.transform.localPosition.y - 0.8f, -150f);
             playerObj.cosmetics.nameText.text = data.PlayerName;
 
             CustomCosmeticsLayer customCosmeticsLayer = CustomCosmeticsLayers.ExistsOrInitialize(playerObj.cosmetics);
@@ -419,11 +420,16 @@ public class EndGameManagerSetUpPatch
                 string roleText = ModHelpers.CsWithTranslation(roleInfo.roleBase.RoleColor, roleInfo.roleBase.Role.ToString());
                 if (roleInfo.GhostRoleId != GhostRoleId.None)
                     roleText = $"{ModHelpers.CsWithTranslation(roleInfo.ghostRoleBase.RoleColor, roleInfo.GhostRoleId.ToString())} ({roleText}) ";
+                if (roleInfo.modifierMarks.Count > 0)
+                    roleText += " ";
                 foreach (var modifier in roleInfo.modifierMarks)
                 {
                     roleText = modifier.Replace("{0}", roleText);
                 }
-                playerObj.cosmetics.nameText.text = $"{roleInfo.PlayerName}{roleInfo.NameSuffix}\n{string.Join("\n", roleText)}";
+                string playerName = ModHelpers.Cs(Palette.PlayerColors[roleInfo.ColorId], roleInfo.PlayerName);
+                if (roleInfo.LoversHeartColor != null)
+                    playerName += ModHelpers.Cs(roleInfo.LoversHeartColor.Value, " ♥");
+                playerObj.cosmetics.nameText.text = $"{playerName}{roleInfo.NameSuffix}\n{string.Join("\n", roleText)}";
                 customCosmeticsLayer.hat2?.SetHat(roleInfo.Hat2Id, roleInfo.ColorId);
                 customCosmeticsLayer.visor2?.SetVisor(roleInfo.Visor2Id, roleInfo.ColorId);
                 playerObj.transform.localScale *= roleInfo.additionalSize;
@@ -432,7 +438,7 @@ public class EndGameManagerSetUpPatch
                 // BodyBuilderのポージング表示
                 if (roleInfo.RoleId == RoleId.BodyBuilder && roleInfo.TasksCompleted >= roleInfo.TasksTotal)
                 {
-                    var posingId = (byte)UnityEngine.Random.Range(1, 6); // ランダムなポーズ
+                    var posingId = (byte)UnityEngine.Random.Range(1, 5); // ランダムなポーズ
                     var prefab = AssetManager.GetAsset<GameObject>($"BodyBuilderAnim0{posingId}.prefab");
                     if (prefab != null)
                     {
@@ -484,7 +490,14 @@ public class EndGameManagerSetUpPatch
             {
                 var taskInfo = roleInfo.TasksTotal > 0 ? $"<color=#FAD934FF>({roleInfo.TasksCompleted}/{roleInfo.TasksTotal})</color>" : "";
                 string roleText = ModHelpers.CsWithTranslation(roleInfo.roleBase.RoleColor, roleInfo.roleBase.Role.ToString());
-                string result = $"{ModHelpers.Cs(Palette.PlayerColors[roleInfo.ColorId], roleInfo.PlayerName)}{roleInfo.NameSuffix}<pos=17%>{taskInfo} - <pos=27%>{ModTranslation.GetString("FinalStatus." + roleInfo.Status)} - {roleText}";
+                if (roleInfo.modifierMarks.Count > 0)
+                    roleText += " ";
+                foreach (var modifier in roleInfo.modifierMarks)
+                    roleText = modifier.Replace("{0}", roleText);
+                string playerName = ModHelpers.Cs(Palette.PlayerColors[roleInfo.ColorId], roleInfo.PlayerName);
+                if (roleInfo.LoversHeartColor != null)
+                    playerName += ModHelpers.Cs(roleInfo.LoversHeartColor.Value, " ♥");
+                string result = $"{playerName}{roleInfo.NameSuffix}<pos=17%>{taskInfo} - <pos=27%>{ModTranslation.GetString("FinalStatus." + roleInfo.Status)} - {roleText}";
                 summaryBuilder.AppendLine(result);
             }
 
@@ -567,6 +580,8 @@ public static class OnGameEndPatch
         string hat2Id = "";
         string visor2Id = "";
         float additionalSize = 1f;
+        Color? loversHeartColor = null;
+        List<string> modifierMarks = [];
 
         if (player.Disconnected)
         {
@@ -593,6 +608,11 @@ public static class OnGameEndPatch
             CustomCosmeticsLayer customCosmeticsLayer = CustomCosmeticsLayers.ExistsOrInitialize(player.Object.cosmetics);
             hat2Id = customCosmeticsLayer?.hat2?.Hat?.ProdId ?? "";
             visor2Id = customCosmeticsLayer?.visor2?.Visor?.ProdId ?? "";
+            loversHeartColor = exPlayer.TryGetAbility<LoversAbility>(out var loversAbility) ? loversAbility.HeartColor : null;
+            foreach (var modifier in exPlayer.ModifierRoleBases)
+            {
+                modifierMarks.Add(modifier.ModifierMark(exPlayer));
+            }
         }
         additionalSize *= modifierRoleId.HasFlag(ModifierRoleId.JumboModifier) ? 2f : 1f;
 
@@ -612,10 +632,11 @@ public static class OnGameEndPatch
             roleBase = CustomRoleManager.TryGetRoleById(roleId, out var role) ? role : null,
             ghostRoleBase = CustomRoleManager.TryGetGhostRoleById(ghostRoleId, out var ghostRole) ? ghostRole : null,
             modifierRoleBases = modifierRoleId != ModifierRoleId.None ? CustomRoleManager.TryGetModifierById(modifierRoleId, out var modifierRole) ? new List<IModifierBase> { modifierRole } : new List<IModifierBase>() : new List<IModifierBase>(),
-            modifierMarks = player.Object == null ? [] : modifierRoleId != ModifierRoleId.None ? CustomRoleManager.TryGetModifierById(modifierRoleId, out var modifierRole2) ? new List<string> { modifierRole2.ModifierMark(player) } : new List<string>() : new List<string>(),
+            modifierMarks = modifierMarks,
             Hat2Id = hat2Id,
             Visor2Id = visor2Id,
             additionalSize = additionalSize,
+            LoversHeartColor = loversHeartColor,
         };
     }
 

@@ -31,6 +31,7 @@ class Chief : RoleBase<Chief>
     public override TeamTag TeamTag { get; } = TeamTag.Crewmate;
     public override RoleTag[] RoleTags { get; } = [];
     public override RoleOptionMenuType OptionTeam { get; } = RoleOptionMenuType.Crewmate;
+    public override RoleId[] RelatedRoleIds { get; } = [RoleId.Sheriff];
 
     [CustomOptionFloat("ChiefAppointCooldown", 0f, 60f, 2.5f, 30f)]
     public static float ChiefAppointCooldown;

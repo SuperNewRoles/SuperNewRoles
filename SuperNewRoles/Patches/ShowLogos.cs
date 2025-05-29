@@ -130,7 +130,7 @@ public static class VersionTextHandler
             GameObject.Destroy(versionText.GetComponent<RoomTracker>());
             versionText.transform.SetParent(_logoObject.transform);
             versionText.transform.localScale = Vector3.one * 2.55f;
-            versionText.transform.localPosition = new(-3f, -0.74f, 0f);
+            versionText.transform.localPosition = new(-3.45f, -0.88f, 0f);
             versionText.SetText($"<color=#ffa500>v{VersionInfo.VersionString}</color>");
             _aspectPosition = _logoObject.AddComponent<AspectPosition>();
             _aspectPosition.Alignment = AspectPosition.EdgeAlignments.LeftTop;

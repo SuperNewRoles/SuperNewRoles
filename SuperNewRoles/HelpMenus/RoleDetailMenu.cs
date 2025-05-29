@@ -161,7 +161,7 @@ public static class RoleDetailMenu
             RoleOptionMenuType.Crewmate => Color.white,
             RoleOptionMenuType.Neutral => Color.gray,
             RoleOptionMenuType.Ghost => Color.cyan,
-            RoleOptionMenuType.Modifier => Color.yellow,
+            RoleOptionMenuType.Modifier => new Color32(255, 112, 183, 255),
             _ => Palette.ImpostorRed
         };
     }

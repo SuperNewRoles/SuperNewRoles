@@ -19,6 +19,7 @@ public class AreaKillButtonAbility : CustomButtonBase
     public Func<ExPlayerControl, bool> IsTargetableValue { get; }
     public Func<bool> IgnoreWallsValue { get; }
     public Action<List<ExPlayerControl>> KilledCallback { get; }
+    public Action<List<ExPlayerControl>> BeforeKillCallback { get; }
     public Sprite CustomSprite { get; }
     public string CustomButtonText { get; }
     public Color? CustomColor { get; }
@@ -43,6 +44,7 @@ public class AreaKillButtonAbility : CustomButtonBase
         string customButtonText = null,
         Color? customColor = null,
         CustomDeathType customDeathType = CustomDeathType.Kill,
+        Action<List<ExPlayerControl>> beforeKillCallback = null,
         Action callback = null
     )
     {
@@ -60,6 +62,7 @@ public class AreaKillButtonAbility : CustomButtonBase
         CustomColor = customColor;
         CustomDeathType = customDeathType;
         IsUsed = false;
+        BeforeKillCallback = beforeKillCallback;
         Callback = callback;
     }
 
@@ -116,15 +119,16 @@ public class AreaKillButtonAbility : CustomButtonBase
     {
         if (killedPlayers.Count == 0) return;
         var localPlayer = ExPlayerControl.LocalPlayer;
+        BeforeKillCallback?.Invoke(killedPlayers);
         foreach (var player in killedPlayers)
         {
             player.CustomDeath(customDeathType, source: localPlayer);
         }
-        if (AmongUsClient.Instance.AmHost && ExPlayerControl.ExPlayerControls.Count(x => x.IsAlive()) == 0)
-            EndGamer.RpcEndGameImpostorWin();
         KilledCallback?.Invoke(killedPlayers);
         if (killedPlayers.Count > 0)
             AreaKillEvent.Invoke(localPlayer, killedPlayers, CustomDeathType);
+        if (ExPlayerControl.ExPlayerControls.Count(x => x.IsAlive()) == 0)
+            EndGamer.RpcEndGameImpostorWin();
     }
 
     public override bool CheckIsAvailable()
@@ -136,6 +140,6 @@ public class AreaKillButtonAbility : CustomButtonBase
 
     public override bool CheckHasButton()
     {
-        return CanKill() && !IsUsed;
+        return ExPlayerControl.LocalPlayer.IsAlive() && CanKill() && !IsUsed;
     }
 }

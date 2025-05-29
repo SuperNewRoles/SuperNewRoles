@@ -23,7 +23,7 @@ class NekoKabocha : RoleBase<NekoKabocha>
             NekoKabochaCanRevengeExiled))
         ];
 
-    public override QuoteMod QuoteMod { get; } = QuoteMod.SuperNewRoles;
+    public override QuoteMod QuoteMod { get; } = QuoteMod.TheOtherRolesGM;
     public override RoleTypes IntroSoundType { get; } = RoleTypes.Impostor;
     public override short IntroNum { get; } = 1;
 

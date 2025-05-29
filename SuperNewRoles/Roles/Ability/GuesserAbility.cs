@@ -369,6 +369,10 @@ public class GuesserAbility : CustomMeetingButtonBase, IAbilityCount
 
                         var targetRole = exPlayer.Role;
                         ExPlayerControl dyingTarget = (targetRole == rolebase.Role) ? exPlayer : PlayerControl.LocalPlayer;
+                        if (madmateSuicide && (ExPlayerControl.LocalPlayer.IsMadRoles() || ExPlayerControl.LocalPlayer.IsFriendRoles()))
+                        {
+                            dyingTarget = ExPlayerControl.LocalPlayer;
+                        }
 
                         RpcShotGuesser(PlayerControl.LocalPlayer, dyingTarget, madmateSuicide && (dyingTarget.IsMadRoles() || dyingTarget.IsFriendRoles()), PlayerControl.LocalPlayer == exPlayer);
                         HideButtons = false;
@@ -388,11 +392,27 @@ public class GuesserAbility : CustomMeetingButtonBase, IAbilityCount
         {
             if (!IsValidRole(roleBase)) continue;
 
-            CreateRoleAndRelated(roleBase, GeneratedButtons);
+            CreateRoleAndRelated(roleBase, ref GeneratedButtons);
         }
 
-        void CreateRoleAndRelated(IRoleBase role, List<RoleId> generated)
+        foreach (IGhostRoleBase roleBase in CustomRoleManager.AllGhostRoles)
         {
+            if (!IsValidGhostRole(roleBase)) continue;
+
+            RelatedGhostRole(roleBase, ref GeneratedButtons);
+        }
+
+        foreach (IModifierBase roleBase in CustomRoleManager.AllModifiers)
+        {
+            if (!IsValidModifierRole(roleBase)) continue;
+
+            RelatedModifierRole(roleBase, ref GeneratedButtons);
+        }
+
+        void CreateRoleAndRelated(IRoleBase role, ref List<RoleId> generated)
+        {
+            if (generated.Contains(role.Role)) return;
+
             CreateRole(role);
             generated.Add(role.Role);
 
@@ -405,8 +425,59 @@ public class GuesserAbility : CustomMeetingButtonBase, IAbilityCount
                 var relatedRole = CustomRoleManager.GetRoleById(relatedId);
                 if (relatedRole == null) continue;
 
-                CreateRoleAndRelated(relatedRole, generated);
+                CreateRoleAndRelated(relatedRole, ref generated);
             }
+        }
+
+        void RelatedGhostRole(IGhostRoleBase role, ref List<RoleId> generated)
+        {
+            if (role.RelatedRoleIds == null) return;
+
+            foreach (var relatedId in role.RelatedRoleIds)
+            {
+                if (generated.Contains(relatedId)) continue;
+
+                var relatedRole = CustomRoleManager.GetRoleById(relatedId);
+                if (relatedRole == null) continue;
+
+                CreateRoleAndRelated(relatedRole, ref generated);
+            }
+        }
+
+        void RelatedModifierRole(IModifierBase role, ref List<RoleId> generated)
+        {
+            if (role.RelatedRoleIds == null) return;
+
+            foreach (var relatedId in role.RelatedRoleIds)
+            {
+                if (generated.Contains(relatedId)) continue;
+
+                var relatedRole = CustomRoleManager.GetRoleById(relatedId);
+                if (relatedRole == null) continue;
+
+                CreateRoleAndRelated(relatedRole, ref generated);
+            }
+        }
+
+        bool IsValidGhostRole(IGhostRoleBase role)
+        {
+            if (role == null) return false;
+            if (RoleOptionManager.TryGetGhostRoleOption(role.Role, out var option)) return false;
+            if (option.NumberOfCrews == 0 || option.Percentage == 0) return false;
+            return true;
+        }
+
+        bool IsValidModifierRole(IModifierBase role)
+        {
+            if (role == null) return false;
+            if (!RoleOptionManager.TryGetModifierRoleOption(role.ModifierRole, out var option)) return false;
+            if (!role.UseTeamSpecificAssignment && (option.NumberOfCrews == 0 || option.Percentage == 0)) return false;
+            if (role.UseTeamSpecificAssignment && (
+                (role.CrewmateChance == 0 || option.NumberOfCrews == 0) &&
+                (role.ImpostorChance == 0 || option.MaxImpostors == 0) &&
+                (role.NeutralChance == 0 || option.MaxNeutrals == 0))
+                ) return false;
+            return true;
         }
 
         bool IsValidRole(IRoleBase role)
@@ -428,8 +499,7 @@ public class GuesserAbility : CustomMeetingButtonBase, IAbilityCount
                     return false;
             }
 
-            var option = RoleOptionManager.RoleOptions.FirstOrDefault(x => x.RoleId == role.Role);
-            if (option == null || option.NumberOfCrews == 0 || option.Percentage == 0)
+            if (!RoleOptionManager.TryGetRoleOption(role.Role, out var option) || option.NumberOfCrews == 0 || option.Percentage == 0)
             {
                 Logger.Info("continueになりました:" + role.Role, "Guesser");
                 return false;

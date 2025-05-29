@@ -19,7 +19,7 @@ class Lovers : ModifierBase<Lovers>
 
     public override List<Func<AbilityBase>> Abilities => [() => new LoversAbility(LoversKnowPartnerRole, LoversKnowPartnerPosition), () => new CustomTaskAbility(() => (false, false, null), null)];
 
-    public override QuoteMod QuoteMod => QuoteMod.SuperNewRoles;
+    public override QuoteMod QuoteMod => QuoteMod.TheOtherRoles;
 
     public override int? PercentageOption => (int)LoversSpawnChance;
     public override int? NumberOfCrews => (int)LoversMaxCoupleCount;
@@ -32,11 +32,11 @@ class Lovers : ModifierBase<Lovers>
     public override RoleTag[] RoleTags => [];
 
     public override short IntroNum => 1;
-    public override Func<ExPlayerControl, string> ModifierMark => (player) => "{0}"; // + ModHelpers.Cs(player.AmOwner && player.IsAlive() && player.Role != RoleId.God ? RoleColor : player.GetAbility<LoversAbility>().HeartColor, "♥");
+    public override Func<ExPlayerControl, string> ModifierMark => (_) => "{0}";// (player) => "{0}" + ModHelpers.Cs(player.AmOwner && player.IsAlive() && player.Role != RoleId.God ? RoleColor : player.GetAbility<LoversAbility>().HeartColor, "♥");
     public override bool HiddenOption => true;
 
     [Modifier(ModifierRoleId.Lovers)]
-    [AssignFilter([], [])]
+    [AssignFilter([], [RoleId.Truelover, RoleId.Cupid, RoleId.LoversBreaker])]
     public static CustomOptionCategory LoversCategory;
 
     [CustomOptionInt("LoversMaxCoupleCount", 0, 15, 1, 0, parentFieldName: nameof(LoversCategory))]
@@ -50,11 +50,8 @@ class Lovers : ModifierBase<Lovers>
     public static bool LoversAvoidQuarreled;
 
     // 追加勝利
-    [CustomOptionBool("LoversAdditionalWinCondition", true, parentFieldName: nameof(LoversCategory))]
-    public static bool LoversAdditionalWinCondition;
-    // 元の陣営で勝利出来ない
-    [CustomOptionBool("LoversOriginalTeamCannotWin", true, parentFieldName: nameof(LoversCategory))]
-    public static bool LoversOriginalTeamCannotWin;
+    [CustomOptionSelect("LoversWinType", typeof(LoversWinType), "LoversWinType.", parentFieldName: nameof(LoversCategory))]
+    public static LoversWinType LoversWinType;
     // 相方の役職がわかる
     [CustomOptionBool("LoversKnowPartnerRole", true, parentFieldName: nameof(LoversCategory))]
     public static bool LoversKnowPartnerRole;
@@ -69,6 +66,13 @@ class Lovers : ModifierBase<Lovers>
 
     [CustomOptionBool("LoversIncludeThirdTeamInSelection", false, parentFieldName: nameof(LoversCategory))]
     public static bool LoversIncludeThirdTeamInSelection;
+}
+
+public enum LoversWinType
+{
+    Normal,
+    Shared,
+    Single,
 }
 
 public class LoversAbility : AbilityBase

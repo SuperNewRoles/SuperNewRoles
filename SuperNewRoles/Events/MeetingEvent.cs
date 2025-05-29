@@ -212,15 +212,15 @@ public static class MeetingHudCheckForEndVotingPatch
     {
         if (__instance.playerStates.All((PlayerVoteArea ps) => ps.AmDead || ps.DidVote))
         {
-            (Il2CppSystem.Collections.Generic.Dictionary<byte, int> self, Dictionary<byte, int> additionalOnly) = CalculateVotesCustom(__instance);
+            (Dictionary<byte, int> self, Dictionary<byte, int> additionalOnly) = CalculateVotesCustom(__instance);
             bool tie;
-            Il2CppSystem.Collections.Generic.KeyValuePair<byte, int> max = self.MaxPair(out tie);
+            KeyValuePair<byte, int> max = self.MaxPair(out tie);
             NetworkedPlayerInfo exiled = GameData.Instance.AllPlayers.ToSystemList().FirstOrDefault((NetworkedPlayerInfo v) => !tie && v.PlayerId == max.Key);
             List<MeetingHud.VoterState> array = new();
             for (int i = 0; i < __instance.playerStates.Length; i++)
             {
                 PlayerVoteArea playerVoteArea = __instance.playerStates[i];
-                MeetingHud.VoterState voterState = default(MeetingHud.VoterState);
+                MeetingHud.VoterState voterState = default;
                 voterState.VoterId = playerVoteArea.TargetPlayerId;
                 voterState.VotedForId = playerVoteArea.VotedFor;
                 array.Add(voterState);
@@ -234,7 +234,7 @@ public static class MeetingHudCheckForEndVotingPatch
                     // もう既に上で追加されてるから追加分だけ
                     while (count > 1)
                     {
-                        MeetingHud.VoterState voterState = default(MeetingHud.VoterState);
+                        MeetingHud.VoterState voterState = default;
                         voterState.VoterId = addOnly.Key;
                         voterState.VotedForId = __instance.playerStates[addOnly.Key].VotedFor;
                         array.Add(voterState);
@@ -246,9 +246,9 @@ public static class MeetingHudCheckForEndVotingPatch
         }
         return false;
     }
-    public static (Il2CppSystem.Collections.Generic.Dictionary<byte, int> self, Dictionary<byte, int> additionalOnly) CalculateVotesCustom(MeetingHud __instance)
+    public static (Dictionary<byte, int> self, Dictionary<byte, int> additionalOnly) CalculateVotesCustom(MeetingHud __instance)
     {
-        Il2CppSystem.Collections.Generic.Dictionary<byte, int> dictionary = new();
+        Dictionary<byte, int> dictionary = new();
         Dictionary<byte, int> additionalOnly = new();
         for (int i = 0; i < __instance.playerStates.Length; i++)
         {

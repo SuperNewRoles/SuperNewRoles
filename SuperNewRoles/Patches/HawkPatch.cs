@@ -1,5 +1,6 @@
 using System;
 using HarmonyLib;
+using SuperNewRoles.CustomOptions.Categories;
 using SuperNewRoles.Events;
 using SuperNewRoles.Modules;
 using UnityEngine;
@@ -16,7 +17,7 @@ public static class HawkZoom
     private static float mouseScrollDeltaSensitivity = 0.5f; // マウスホイールの感度調整用
     private const float smoothTime = 0.1f; // SmoothDampのスムーズ時間（値を小さくするとシャープに、大きくするとより滑らかに）
 
-    private static float manualTargetSize = 3f; // 手動ズームの目標サイズ
+    public static float manualTargetSize = 3f; // 手動ズームの目標サイズ
     private static bool manualTargetInitialized = false;
 
     public static void Postfix()
@@ -38,11 +39,6 @@ public static class HawkZoom
             manualTargetInitialized = false;
         }
 
-
-        // イベントを発行してアビリティ側のズーム情報を取得
-        // HawkEventData の第2引数は、アビリティが参照する「現在のズームサイズ」であり、
-        // アビリティが固定ズーム値を返さない場合の基準値となる。
-        // ここでは manualTargetSize を渡すことで、手動操作の目標値をアビリティが考慮できるようにする。
         HawkEventData data = HawkEvent.Invoke(false, (int)manualTargetSize, false);
 
         if (data.RefAcceleration) // アビリティがSmoothDampを要求する場合
@@ -56,12 +52,12 @@ public static class HawkZoom
             zoomSpeed = 0f;
         }
         // ユーザーが編集した手動ズーム条件
-        else if (!data.RefCancelZoom && ExPlayerControl.LocalPlayer != null && ExPlayerControl.LocalPlayer.IsDead() && MeetingHud.Instance == null)
+        else if (GeneralSettingOptions.EnabledZoomOnDead && !data.RefCancelZoom && ExPlayerControl.LocalPlayer != null && ExPlayerControl.LocalPlayer.IsDead() && MeetingHud.Instance == null)
         {
             if (!PlayerControl.LocalPlayer.CanMove)
             {
                 // CanMoveでない場合は手動ズームターゲットを現在のサイズに維持（動かさない）
-                manualTargetSize = size;
+                manualTargetSize = 3f;
             }
             else if (ModHelpers.IsAndroid())
             {
@@ -104,11 +100,8 @@ public static class HawkZoom
         }
         else // その他の場合（生存プレイヤーでアビリティ干渉なし、など）はデフォルトの挙動
         {
-            // アビリティの干渉がなく、上記の手動ズーム条件にも合致しない場合
-            // (例: 生存していて、IsDead()の条件に引っかからない場合など)
-            // ここでも手動ズームを許可するなら、上記のPC/Android処理と同様のロジックをここに展開
-            // もし何もしなければ、アビリティOFF時は manualTargetSize が変わらず、size がそれに追従する
-            // ここでは一旦、何もしなければ現在のmanualTargetSizeに追従し続ける
+            if (MeetingHud.Instance != null)
+                manualTargetSize = 3f;
             size = Mathf.SmoothDamp(size, manualTargetSize, ref zoomSpeed, smoothTime);
         }
 
@@ -139,5 +132,14 @@ public static class AspectPositionAdjustPositionPatch
             return false;
         }
         return true;
+    }
+}
+
+[HarmonyPatch(typeof(HudManager), nameof(HudManager.Start))]
+public static class HudManagerStartPatch
+{
+    public static void Postfix(HudManager __instance)
+    {
+        HawkZoom.size = HawkZoom.manualTargetSize = 3f;
     }
 }

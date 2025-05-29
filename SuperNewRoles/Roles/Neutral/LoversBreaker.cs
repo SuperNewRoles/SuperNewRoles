@@ -36,10 +36,10 @@ class LoversBreaker : RoleBase<LoversBreaker>
     public override RoleTag[] RoleTags { get; } = [RoleTag.SpecialKiller];
     public override RoleOptionMenuType OptionTeam { get; } = RoleOptionMenuType.Neutral;
 
-    [CustomOptionFloat("LoversBreakerKillCooldown", 2.5f, 60f, 2.5f, 10f, translationName: "CoolTime")]
+    [CustomOptionFloat("LoversBreakerKillCooldown", 2.5f, 60f, 2.5f, 30f, translationName: "CoolTime")]
     public static float LoversBreakerKillCooldown;
 
-    [CustomOptionInt("LoversBreakerWinKillCount", 1, 10, 1, 3)]
+    [CustomOptionInt("LoversBreakerWinKillCount", 1, 10, 1, 1)]
     public static int LoversBreakerWinKillCount;
 
     [CustomOptionBool("LoversBreakerIsDeathWin", false)]
@@ -54,6 +54,7 @@ public class LoversBreakerAbility : TargetCustomButtonBase
 
     private EventListener<NameTextUpdateEventData> _nameTextUpdateListener;
     private EventListener _fixedUpdateListener;
+    private EventListener<DieEventData> _dieListener;
 
     private int _successCount;
 
@@ -67,6 +68,7 @@ public class LoversBreakerAbility : TargetCustomButtonBase
         base.AttachToAlls();
         _nameTextUpdateListener = NameTextUpdateEvent.Instance.AddListener(OnNameTextUpdate);
         _fixedUpdateListener = FixedUpdateEvent.Instance.AddListener(OnFixedUpdate);
+        _dieListener = DieEvent.Instance.AddListener(OnDie);
     }
 
     public override void DetachToAlls()
@@ -74,12 +76,13 @@ public class LoversBreakerAbility : TargetCustomButtonBase
         base.DetachToAlls();
         _nameTextUpdateListener?.RemoveListener();
         _fixedUpdateListener?.RemoveListener();
+        _dieListener?.RemoveListener();
     }
 
     public override Color32 OutlineColor => LoversBreaker.Instance.RoleColor;
     protected override KeyType keytype => KeyType.Kill;
     public override float DefaultTimer => Data.KillCooldown;
-    public override string buttonText => FastDestroyableSingleton<TranslationController>.Instance.GetString(StringNames.KillLabel);
+    public override string buttonText => ModTranslation.GetString("LoversBreakerBreak");
     public override Sprite Sprite => AssetManager.GetAsset<Sprite>("LoversBreakerButton.png");
     public override bool OnlyCrewmates => false;
     public override bool TargetPlayersInVents => false;
@@ -99,11 +102,21 @@ public class LoversBreakerAbility : TargetCustomButtonBase
         checkCounter++;
         if (checkCounter % 10 != 0) return;
         checkCounter = 0;
+        CheckWin();
+    }
+    private void CheckWin()
+    {
         if (!Data.IsDeathWin && Player.IsDead()) return;
         if (_successCount >= Data.WinKillCount && !ExPlayerControl.ExPlayerControls.Any(p => p.IsLovers() && p.IsAlive()))
         {
             EndGamer.RpcEndGameWithWinner(CustomGameOverReason.LoversBreakerWin, WinType.SingleNeutral, [ExPlayerControl.LocalPlayer], LoversBreaker.Instance.RoleColor, "LoversBreaker", string.Empty);
         }
+    }
+
+    private void OnDie(DieEventData data)
+    {
+        if (data.player != Player) return;
+        CheckWin();
     }
 
     public override void OnClick()
@@ -113,13 +126,13 @@ public class LoversBreakerAbility : TargetCustomButtonBase
         {
             ExPlayerControl.LocalPlayer.RpcCustomDeath(Target, CustomDeathType.Kill);
             _successCount++;
-            RpcSyncCount();
+            CheckWin();
+            RpcSyncCount(_successCount);
         }
         else
         {
             ExPlayerControl.LocalPlayer.RpcCustomDeath(CustomDeathType.Suicide);
         }
-        ResetTimer();
     }
 
     private void OnNameTextUpdate(NameTextUpdateEventData data)
@@ -132,18 +145,10 @@ public class LoversBreakerAbility : TargetCustomButtonBase
             Player.MeetingInfoText.text += text;
     }
 
-    private void RpcSyncCount()
-    {
-        RpcSyncCount(this, _successCount);
-    }
-
     [CustomRPC]
-    public static void RpcSyncCount(LoversBreakerAbility ability, int successCount)
+    public void RpcSyncCount(int successCount)
     {
-        if (ability != null)
-            ability.SetCount(successCount);
-        else
-            Logger.Error("LoversBreakerAbility is null");
+        SetCount(successCount);
     }
 
     private void SetCount(int successCount)

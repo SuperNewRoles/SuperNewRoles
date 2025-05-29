@@ -14,6 +14,7 @@ public static class SuperTrophyManager
     {
         Logger.Info("SuperTrophyManager: Load");
         trophies = new();
+        return;
         var allTypes = SuperNewRolesPlugin.Assembly.GetTypes().Where(x => IsSuperTrophyType(x)).ToList();
         SuperNewRolesPlugin.Logger.LogInfo($"[Splash] Found {allTypes.Count} super trophy types");
         int index = 0;

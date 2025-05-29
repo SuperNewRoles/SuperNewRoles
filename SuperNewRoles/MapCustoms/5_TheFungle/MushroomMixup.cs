@@ -1,4 +1,5 @@
 using SuperNewRoles.CustomOptions.Categories;
+using SuperNewRoles.Events;
 
 namespace SuperNewRoles.MapCustoms;
 public static class MushroomMixup
@@ -13,5 +14,14 @@ public static class MushroomMixup
         if (fungleShipStatus == null)
             return;
         fungleShipStatus.specialSabotage.secondsForAutoHeal = MapEditSettingsOptions.TheFungleMushroomMixupTime;
+        EmergencyCheckEvent.Instance.AddListener(x =>
+        {
+            if (MapEditSettingsOptions.TheFungleMushroomMixupCantOpenMeeting && fungleShipStatus.specialSabotage.IsActive)
+            {
+                x.RefEnabledEmergency = false;
+                x.RefEmergencyTexts.Add(ModTranslation.GetString("MushroomMixupCantOpenMeeting"));
+
+            }
+        });
     }
 }

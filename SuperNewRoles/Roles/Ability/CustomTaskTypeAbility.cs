@@ -45,7 +45,7 @@ public class CustomTaskTypeAbility : AbilityBase
     {
         base.AttachToLocalPlayer();
         // 先に読み込んでおく
-        CustomTaskTypePatches.ConsolePatch.GetTargetShip(TargetTaskType, TargetMap, (_) => { });
+        CustomTaskTypePatches.ConsolePatch.GetTargetShip(TargetMap, (_) => { });
     }
 
     public void AssignTasks(int count)
@@ -89,7 +89,7 @@ public static class CustomTaskTypePatches
                 return;
 
             preMinigame = task.MinigamePrefab;
-            GetTargetShip(customTaskTypeAbility.TargetTaskType, customTaskTypeAbility.TargetMap, (ship) =>
+            GetTargetShip(customTaskTypeAbility.TargetMap, (ship) =>
             {
                 var targetTask = GetTargetTaskFromShip(ship, customTaskTypeAbility.TargetTaskType);
                 if (targetTask != null)
@@ -117,7 +117,7 @@ public static class CustomTaskTypePatches
             }
         }
 
-        public static void GetTargetShip(TaskTypes targetTaskType, MapNames? targetMap, Action<ShipStatus> onLoaded)
+        public static void GetTargetShip(MapNames? targetMap, Action<ShipStatus> onLoaded)
         {
             // 特定のマップが指定されている場合はそのマップから取得
             if (targetMap.HasValue)
@@ -125,8 +125,25 @@ public static class CustomTaskTypePatches
                 switch (targetMap.Value)
                 {
                     case MapNames.Fungle:
+                        if (GameOptionsManager.Instance.CurrentGameOptions.MapId == (int)MapNames.Fungle)
+                        {
+                            onLoaded(ShipStatus.Instance);
+                            return;
+                        }
                         Logger.Info("LoadMap: Fungle");
                         MapLoader.LoadMap(MapNames.Fungle, (ship) =>
+                        {
+                            onLoaded(ship);
+                        });
+                        break;
+                    case MapNames.Airship:
+                        if (GameOptionsManager.Instance.CurrentGameOptions.MapId == (int)MapNames.Airship)
+                        {
+                            onLoaded(ShipStatus.Instance);
+                            return;
+                        }
+                        Logger.Info("LoadMap: Airship");
+                        MapLoader.LoadMap(MapNames.Airship, (ship) =>
                         {
                             onLoaded(ship);
                         });

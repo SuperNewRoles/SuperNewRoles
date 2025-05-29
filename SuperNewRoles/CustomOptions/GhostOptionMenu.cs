@@ -87,7 +87,7 @@ public static class GhostOptionMenu
     {
         var data = GhostOptionMenuObjectData.Instance;
         if (data?.TitleText != null)
-            data.TitleText.text = $"<b>{ModTranslation.GetString($"RoleOptionMenuType.Ghost")}</b>";
+            data.TitleText.text = $"{ModTranslation.GetString($"RoleOptionMenuType.Ghost")}";
     }
 
     private static void UpdateGhostRoleButtons()

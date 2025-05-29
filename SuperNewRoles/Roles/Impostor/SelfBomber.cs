@@ -33,12 +33,19 @@ class SelfBomber : RoleBase<SelfBomber>
             callback: () =>
             {
                 RpcSelfBomberCallback(ExPlayerControl.LocalPlayer);
+            },
+            beforeKillCallback: (killedPlayers) =>
+            {
+                if (killedPlayers.Contains(ExPlayerControl.LocalPlayer))
+                    CustomKillAnimationManager.SetCurrentCustomKillAnimation(new SelfBomberKillAnimation());
             }
         )
     ];
     [CustomRPC]
     public static void RpcSelfBomberCallback(ExPlayerControl player)
     {
+        if (player.AmOwner)
+            CustomKillAnimationManager.SetCurrentCustomKillAnimation(new SelfBomberKillAnimation());
         var obj = GameObject.Instantiate(AssetManager.GetAsset<GameObject>("SelfBomberEffect"), player.transform);
         obj.AddComponent<DestroyOnAnimationEndObject>();
         obj.transform.localPosition = new(0, 0, -0.5f);
@@ -69,6 +76,49 @@ class SelfBomber : RoleBase<SelfBomber>
 
     [CustomOptionBool("SelfBomberOnlyKillCrewmates", false)]
     public static bool SelfBomberOnlyKillCrewmates;
+}
+
+public class SelfBomberKillAnimation : ICustomKillAnimation
+{
+    private Animator _selfBomberEffect;
+    private bool _animatorFinished = false;
+    private float _timer = 0f;
+    public void Initialize(OverlayKillAnimation __instance, KillOverlayInitData initData)
+    {
+        _selfBomberEffect = GameObject.Instantiate(AssetManager.GetAsset<GameObject>("SelfBomberEffect"), __instance.transform).GetComponent<Animator>();
+        AspectPosition aspectPosition = _selfBomberEffect.gameObject.AddComponent<AspectPosition>();
+        aspectPosition.Alignment = AspectPosition.EdgeAlignments.Center;
+        aspectPosition.DistanceFromEdge = Vector3.zero;
+        aspectPosition.OnEnable();
+        // _selfBomberEffect.transform.localPosition = new(-1.5f, 0.3f, -0.5f);
+        _selfBomberEffect.gameObject.layer = 5;
+        _selfBomberEffect.transform.localScale = Vector3.one * 1.7f;
+    }
+
+    public bool FixedUpdate()
+    {
+        if (!_animatorFinished)
+        {
+            // アニメーターが終了したかチェック
+            if (_selfBomberEffect != null && _selfBomberEffect.GetCurrentAnimatorStateInfo(0).normalizedTime >= 1)
+            {
+                _animatorFinished = true;
+                _timer = 0f; // タイマー開始
+                GameObject.Destroy(_selfBomberEffect.gameObject);
+            }
+            else
+            {
+                // アニメーター再生中
+                return true;
+            }
+        }
+
+        // アニメーター終了後、1秒の遅延タイマーを進める
+        _timer += Time.fixedDeltaTime;
+
+        // 1秒経過するまでtrueを返す
+        return _timer < 1f;
+    }
 }
 
 // --- Trophies ---

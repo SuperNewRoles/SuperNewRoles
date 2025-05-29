@@ -74,6 +74,8 @@ public static class NameText
         }
         if (player.GhostRole != GhostRoleId.None && player.GhostRoleBase != null)
             roleName = $"{ModHelpers.CsWithTranslation(player.GhostRoleBase.RoleColor, player.GhostRole.ToString())} ({roleName}) ";
+        if (player.ModifierRoleBases.Count > 0)
+            roleName += " ";
         foreach (var modifier in player.ModifierRoleBases)
         {
             roleName = modifier.ModifierMark(player).Replace("{0}", roleName);

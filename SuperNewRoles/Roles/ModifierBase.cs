@@ -32,14 +32,13 @@ internal abstract class ModifierBase<T> : BaseSingleton<T>, IModifierBase where 
     public virtual bool HiddenOption { get; } = false;
     public virtual bool AssignFilter { get; } = false;
     public virtual RoleId[] DoNotAssignRoles { get; } = [];
-    public int OptionIdBase
-    {
-        get
-        {
-            if (_optionidbase < 0) _optionidbase = (int)(AssignedTeams.FirstOrDefault() + 1) * 100000 + (int)ModifierRole * 100 + 5000000;
-            return _optionidbase;
-        }
-    }
+    public virtual bool UseTeamSpecificAssignment { get; } = false;
+    public virtual int MaxImpostors => RoleOptionManager.TryGetModifierRoleOption(ModifierRole, out var role) ? role.MaxImpostors : 0;
+    public virtual int ImpostorChance => RoleOptionManager.TryGetModifierRoleOption(ModifierRole, out var role) ? role.ImpostorChance : 100;
+    public virtual int MaxNeutrals => RoleOptionManager.TryGetModifierRoleOption(ModifierRole, out var role) ? role.MaxNeutrals : 0;
+    public virtual int NeutralChance => RoleOptionManager.TryGetModifierRoleOption(ModifierRole, out var role) ? role.NeutralChance : 100;
+    public virtual int MaxCrewmates => RoleOptionManager.TryGetModifierRoleOption(ModifierRole, out var role) ? role.MaxCrewmates : 0;
+    public virtual int CrewmateChance => RoleOptionManager.TryGetModifierRoleOption(ModifierRole, out var role) ? role.CrewmateChance : 100;
 }
 
 public interface IModifierBase : IRoleInformation
@@ -61,6 +60,13 @@ public interface IModifierBase : IRoleInformation
     public bool AssignFilter { get; }
     public RoleId[] DoNotAssignRoles { get; }
     public RoleId[] RelatedRoleIds { get; }
+    public bool UseTeamSpecificAssignment { get; }
+    public int MaxImpostors { get; }
+    public int ImpostorChance { get; }
+    public int MaxNeutrals { get; }
+    public int NeutralChance { get; }
+    public int MaxCrewmates { get; }
+    public int CrewmateChance { get; }
 
     /// <summary>
     /// AbilityはAbilitiesから自動でセットされるが、追加で他の処理を行いたい場合はOverrideすること

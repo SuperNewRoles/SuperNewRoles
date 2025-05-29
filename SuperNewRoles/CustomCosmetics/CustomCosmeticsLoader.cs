@@ -76,9 +76,15 @@ public class CustomCosmeticsLoader
         {
             case NetworkReachability.NotReachable:
                 Logger.Error("インターネットに接続されていません");
+                willLoad = () => { };
+                CustomLoadingScreen.PleaseDoWillLoad = true;
+                runned = true;
                 yield break;
             case NetworkReachability.ReachableViaCarrierDataNetwork when !ConfigRoles.CanUseDataConnection.Value:
                 Logger.Error("データ通信ではダウンロードしない設定です。");
+                willLoad = () => { };
+                CustomLoadingScreen.PleaseDoWillLoad = true;
+                runned = true;
                 yield break;
             default:
                 break;
