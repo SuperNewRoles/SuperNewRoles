@@ -429,7 +429,7 @@ Jackal.Description,キル能力を有する第三陣営です。\n自陣営以�
 Sidekick.Description,ジャッカル陣営に属する第三陣営です。\n自陣営以外のキルが出来る陣営が全滅した上で、自陣営とクルーが同数以下になれば勝利します。\n自身をサイドキックに変化させたジャッカルが死亡すると、自身がジャッカルへと昇格し、キル能力を有するようになります。,A third‐faction role belonging to the Jackal faction.\nIt wins when all factions capable of killing outside its own are eliminated and its faction and the Crewmates are equal in number or fewer.\nIf the Jackal who transformed you into a Sidekick dies, you are promoted to Jackal and gain a kill ability.,这是属于杰克阵营的第三阵营角色。\n当所有能够进行击杀的其他阵营被消灭，并且其阵营与船员人数相等或较少时，即可获胜。\n如果使你变为边缘队员的杰克死亡，你将晋升为杰克，并获得击杀能力。,這是一個隸屬於傑克陣營的第三陣營角色。\n當其他能進行擊殺的陣營全部被消滅，且其陣營與船員數量相等或更少時，即獲勝。\n若使你轉為邊翼的傑克死亡，你將晉升為杰克，並獲得擊殺能力。
 WaveCannonJackal.Description,キル能力を有する第三陣営です。\n自陣営以外のキルが出来る陣営が全滅した上で、自陣営とクルーが同数以下になれば勝利します。\n「波動砲」ボタンを押すことで、その時点で向いている方向に向かって、障害物を無視して一直線に飛んでいくビームを撃つことが出来ます。\nビームにあたったプレイヤーは陣営関係なく死亡します。\n\n設定によって様々なタイプのサイドキックを作成することが出来ます。,A third‐faction role with a kill ability.\nIt wins if all factions capable of killing outside its own are eliminated and its faction and the Crewmates are equal in number or fewer.\nBy pressing the "Wave Cannon" button, it fires a beam in the direction it is facing that ignores obstacles and travels straight, killing any player it hits regardless of faction.\n\nAdditionally, various types of Sidekicks can be created based on the settings.,这是一个拥有击杀能力的第三阵营角色。\n当所有能进行击杀的其他阵营被消灭，并且其阵营与船员人数相等或更少时，即可获胜。\n按下"波动炮"按钮后，会向当前面向的方向发射一束无视障碍的直线光束，击中的玩家无论阵营都会死亡。\n此外，根据设定，还可以创建多种类型的边缘队员。,這是一個具備擊殺能力的第三陣營角色。\n當其他能進行擊殺的陣營全部被消滅，且其陣營與船員數量相等或更少時，即獲勝。\n按下「波動砲」按鈕後，會向當前所面向的方向發射無視障礙的直線光束，被擊中的玩家不論陣營皆會死亡。\n此外，依據設定，還可創建各種類型的邊翼。
 SidekickWaveCannon.Description,ジャッカル陣営に属する第三陣営です。\n自陣営以外のキルが出来る陣営が全滅した上で、自陣営とクルーが同数以下になれば勝利します。\n自身をサイドキックに変化させた波動砲ジャッカルが死亡すると、自身が波動砲ジャッカルへと昇格し、キル能力を有するようになります。,A third‐faction role belonging to the Jackal faction.\nIt wins when all factions capable of killing outside its own are eliminated and its faction and the Crewmates are equal in number or fewer.\nIf the Wave Cannon Jackal who transformed you into a Sidekick dies, you are promoted to Wave Cannon Jackal, gaining a kill ability.,这是属于杰克阵营的第三阵营角色。\n当所有能够进行击杀的其他阵营被消灭，并且其阵营与船员人数相等或较少时，即可获胜。\n如果将你变为边缘队员的波动炮杰克死亡，你将晋升为波动炮杰克，并获得击杀能力。,這是一個隸屬於傑克陣營的第三陣營角色。\n當其他能進行擊殺的陣營全部被消滅，且其陣營與船員數量相等或更少時，即獲勝。\n若令你變為邊翼的波動砲傑克死亡，你將晉升為波動砲傑克，並獲得擊殺能力。
-Bullet.Description,,
+Bullet.Description,ジャッカル陣営に属する第三陣営です。\n自陣営以外のキルが出来る陣営が全滅した上で、自陣営とクルーが同数以下になれば勝利します。\n自身を弾に変化させた波動砲ジャッカルに向かって「装填」ボタンを押すと、波動砲ジャッカルにくっつき、弾自身の意思では動けなくなります。\nその状態で波動砲ジャッカルが波動砲を撃つと、超波動砲になり、元の波動砲よりもかなり太いサイズのビームを放つことが出来ます。\nその際、弾は死亡してしまいます。\n自身を弾に変化させた波動砲ジャッカルが死亡した際に役職がどうなるかは設定によって異なります。,
 Tuna.Description,キル能力を有さない第三陣営です。\n一定秒数立ち止まるとその場で死亡してしまいます。\nゲーム終了まで生存していると、一部役職の特殊勝利を除き、勝利することが出来ます。,A third‐faction role without a kill ability.\nIf they remain stationary for a set number of seconds, they die instantly.\nIf they survive until the end of the game, they win—except for roles with special win conditions.,这是一个没有击杀能力的第三阵营角色。\n如果原地不动达到一定秒数，将会立即死亡。\n只要存活到游戏结束（除了一些具有特殊胜利条件的角色），便可获胜。,這是一個沒有擊殺能力的第三陣營角色。\n若持續原地不動達到一定秒數，將會立即死亡。\n只要存活到遊戲結束，除去部分特殊勝利條件的角色，即可獲勝。
 Teruteru.Description,キル能力を有さない独自の勝利条件を持つ第三陣営です。\n会議にて追放されると、その時点で単独勝利します。,A third‐faction role without a kill ability that has its own win condition.\nIf ejected during a meeting, it wins immediately on its own.,这是一个没有击杀能力、拥有独特胜利条件的第三阵营角色。\n在会议中被逐出时，即可立即单独获胜。,這是一個沒有擊殺能力且具備獨特勝利條件的第三陣營角色。\n在會議中被逐出時，即可立即單獨獲勝。
 Opportunist.Description,キル能力を有さない第三陣営です。\nゲーム終了まで生存していると、一部役職の特殊勝利を除き、共に勝利することが出来ます。,A third‐faction role without a kill ability.\nIf they survive until the end of the game, they win alongside others—except for certain roles with special win conditions.,这是一个没有击杀能力的第三阵营角色。\n只要存活到游戏结束（除了一些具特殊胜利条件的角色），他们就能与其他人一起获胜。,這是一個沒有擊殺能力的第三陣營角色。\n只要存活到遊戲結束，除去部分特殊勝利條件的角色，即可與他人一同獲勝。
@@ -437,7 +437,7 @@ Workperson.Description,キル能力を有さない独自の勝利条件を持つ
 PavlovsOwner.Description,キル能力を有さない第三陣営です。\n犬が生存した状態かつ、自陣営以外のキルが出来る陣営が全滅した上で、自陣営とクルーが同数以下になれば勝利します。\n「刷り込み」ボタンを押すと、対象のプレイヤーの役職をパブロフの犬に変更します。\n設定次第では、インポスターを犬にしようとすると自殺してしまいます。\n複数回使用出来る設定もありますが、犬は場に最大1人までしか存在出来ません。\n犬が死亡すると新しい犬を作成出来るようになります。\n常に犬の居場所が矢印で表示されます。\n\n生存した状態かつ、「刷り込み」の使用回数が残っている場合、キル陣営が全滅したり、この役職と他キル陣営が同数になってもゲームが継続します。,A third‐faction role without a kill ability.\nIt wins if a dog is alive and all factions capable of killing outside its own are eliminated, with its faction and the Crewmates in equal or fewer numbers.\nBy pressing the "Imprinting" button, it changes a target player's role to Pavlov's Dog.\nDepending on settings, attempting to turn an Impostor into a dog results in suicide.\nAlthough the ability can be used multiple times, only one dog may exist at a time.\nWhen the dog dies, a new one can be created.\nIts location is always indicated by an arrow.\n\nFurthermore, as long as the dog is alive and there are remaining uses of "Imprinting", the game continues even if the kill faction is eliminated or this role and other kill‐capable factions are equal in number.,这是一个没有击杀能力的第三阵营角色。\n获胜条件是：狗存活且所有能够击杀的其他阵营被消灭，同时其阵营与船员人数相等或更少。\n按下"刷印"按钮后，会将目标玩家的角色改为帕夫洛夫之犬。\n根据设定，如果试图将内鬼变成狗，则会自杀。\n此能力可多次使用，但场上最多只能存在一只狗。\n当狗死亡后，可以生成新的狗，并且狗的位置始终以箭头标示。\n此外，只要狗存活且"刷印"次数尚余，即使击杀阵营全部被消灭或本角色与其他具击杀能力的陣営人数相等，游戏亦会继续。,這是一個沒有擊殺能力的第三陣營角色。\n勝利條件為：狗存活且所有能夠擊殺的其他陣營被消滅，同時其陣營與船員數量相等或更少。\n按下「刷印」按鈕後，會將目標玩家的角色變更為帕夫洛夫之犬。\n根據設定，若嘗試將內鬼變成狗，則會自動自殺。\n此能力可多次使用，但場上最多僅能存在一隻狗。\n當狗死亡後，即可生成新的狗，且狗的位置將始終以箭頭標示。\n此外，只要狗存活且「刷印」的使用次數仍有餘，即使擊殺陣營全部被消滅或本角色與其他具擊殺能力的陣營數量相等，遊戲仍將繼續。
 PavlovsDog.Description,パブロフの犬陣営に属するキル能力を有する第三陣営です。\n自陣営以外のキルが出来る陣営が全滅した上で、自陣営とクルーが同数以下になれば勝利します。\nオーナーが死亡すると、キルクールタイムが短くなる代わりに、キルをしないと自殺してしまいます。,A third‐faction role belonging to the Pavlov's Dog faction with a kill ability.\nIt wins if all factions capable of killing outside its own are eliminated and its faction and the Crewmates are equal in number or fewer.\nWhen the Owner dies, its kill cooldown shortens, but if it fails to kill, it will commit suicide.,这是一个隶属于帕夫洛夫之犬阵营、具有击杀能力的第三阵营角色。\n当所有能够执行击杀的其他阵营被消灭，并且其阵营与船员人数相等或更少时，即可获胜。\n当犬主死亡时，击杀冷却时间会缩短，但如果未能击杀，则会自杀。,這是一個隸屬於帕夫洛夫之犬陣營、具備擊殺能力的第三陣營角色。\n當其他能夠擊殺的陣營全部被消滅，且其陣營與船員數量相等或更少時，即獲勝。\n當犬主死亡時，擊殺冷卻時間會縮短，但若未擊殺，則會自動自殺。
 Vulture.Description,キル能力を有さない独自の勝利条件を持つ第三陣営です。\n死体の近くで「喰らう」ボタンを押すと、その死体を食べることが出来ます。\n死体を設定個数食べると、その時点で単独勝利します。,A third‐faction role without a kill ability that has its own win condition.\nBy pressing the "Devour" button near a corpse, it can consume the body.\nOnce it consumes a set number of corpses, it wins the game immediately on its own.,这是一个没有击杀能力、拥有独特胜利条件的第三阵营角色。\n在尸体附近按下"吞噬"按钮即可吞食该尸体。\n当吞食达到设定数量后，即可立即单独获胜。,這是一個沒有擊殺能力且具備獨特勝利條件的第三陣營角色。\n在屍體附近按下「吞噬」按鈕，即可吞食該屍體。\n一旦吞噬達到設定數量，即可立即單獨獲勝。
-Arsonist.Description,\nキル能力を有さない独自の勝利条件を持つ第三陣営です。\n他プレイヤーの近くで「塗る」ボタンを押し、その後一定秒数近くにいると対象にオイルを塗ることが出来ます。\n生存者全員にオイルを塗った状態で、「燃やす」ボタンを押すと、その時点で単独勝利します。,This is a third-party role with a unique win condition and no killing ability．\nBy pressing the "Oil" button near another player and staying close for a certain amount of time afterward，you can cover them in oil．\nIf you successfully oil all surviving players and then press the "Ignite" button，you will instantly achieve a solo victory．,这是一个拥有独特胜利条件、但没有击杀能力的第三方阵营角色。\n靠近其他玩家并按下“涂抹”按钮，随后在一定时间内保持接近，即可将目标玩家涂上油。\n当所有生存者都被涂上油后，按下“燃烧”按钮即可立即获得单独胜利。,這是一個擁有獨特勝利條件、但沒有擊殺能力的第三方陣營角色。\n靠近其他玩家並按下「塗抹」按鈕，之後在一定時間內保持靠近，即可將對方塗上油。\n當所有生還者都被塗上油後，按下「燃燒」按鈕，即可立即獲得單獨勝利。
+Arsonist.Description,キル能力を有さない独自の勝利条件を持つ第三陣営です。\n他プレイヤーの近くで「塗る」ボタンを押し、その後一定秒数近くにいると対象にオイルを塗ることが出来ます。\n生存者全員にオイルを塗った状態で、「燃やす」ボタンを押すと、その時点で単独勝利します。,This is a third-party role with a unique win condition and no killing ability．\nBy pressing the "Oil" button near another player and staying close for a certain amount of time afterward，you can cover them in oil．\nIf you successfully oil all surviving players and then press the "Ignite" button，you will instantly achieve a solo victory．,这是一个拥有独特胜利条件、但没有击杀能力的第三方阵营角色。\n靠近其他玩家并按下“涂抹”按钮，随后在一定时间内保持接近，即可将目标玩家涂上油。\n当所有生存者都被涂上油后，按下“燃烧”按钮即可立即获得单独胜利。,這是一個擁有獨特勝利條件、但沒有擊殺能力的第三方陣營角色。\n靠近其他玩家並按下「塗抹」按鈕，之後在一定時間內保持靠近，即可將對方塗上油。\n當所有生還者都被塗上油後，按下「燃燒」按鈕，即可立即獲得單獨勝利。
 Amnesiac.Description,キル能力を有さない第三陣営です。\nこの役職は勝利条件を持ちません。\n死体を通報すると、その死体のプレイヤーの役職を引き継ぎます。\n勝利条件は引き継いだ役職のものに変化します。,This is a third-party role with no killing ability．\nThis role does not have its own win condition．\nWhen you report a dead body，you inherit the role of the deceased player．\nYour win condition will change to match the role you inherited．,这是一个没有击杀能力的第三方阵营角色。\n该角色本身没有胜利条件。\n当你通报尸体时，会继承该尸体玩家的角色。\n你的胜利条件将变为继承角色的胜利条件。,這是一個沒有擊殺能力的第三方陣營角色。\n此角色本身沒有勝利條件。\n當你通報屍體時，會繼承該屍體玩家的角色。\n你的勝利條件將變為所繼承角色的勝利條件。
 FalseCharges.Description,キル能力を有さない独自の勝利条件を持つ第三陣営です。\n他プレイヤーに冤罪をかけることが出来、冤罪をかけた相手が一定ターン以内に追放されると単独勝利します。\nなお、冤罪をかけた際、自身は死亡してしまうため、能力は一度しか使うことが出来ません。,This is a third-party role with no killing ability and a unique win condition．\nYou can falsely accuse another player，and if that player is ejected within a certain number of turns，you will achieve a solo victory．\nHowever，you will die immediately after making the accusation，so you can only use this ability once．,这是一个没有击杀能力、拥有独特胜利条件的第三方阵营角色。\n你可以对其他玩家进行冤罪指控，如果该玩家在一定回合内被投票逐出，你将获得单独胜利。\n不过，在你发动冤罪时自己会死亡，因此该能力只能使用一次。,這是一個沒有擊殺能力、擁有獨特勝利條件的第三方陣營角色。\n你可以對其他玩家發動冤罪指控，若該玩家在一定回合內被投票逐出，你將獲得單獨勝利。\n不過，在你發動冤罪時自己會死亡，因此此能力僅能使用一次。
 Hitman.Description,キル能力を有する第三陣営です。\n指定数のターゲットをキルするとその時点で単独勝利します。\nターゲットは画面の左下に表示され、その居場所に向かって赤色の矢印も表示されます。\n設定によっては一定数失敗してしまうとその時点で死亡してしまいます。,This is a third-party role with killing ability．\nIf you successfully kill a set number of targets，you will achieve a solo victory at that moment．\nYour targets are displayed in the bottom-left corner of the screen，and a red arrow will point you toward their location．\nDepending on the settings，if you fail a certain number of times，you will die immediately．,这是一个拥有击杀能力的第三方阵营角色。\n当你成功击杀指定数量的目标后，将立即获得单独胜利。\n目标会显示在屏幕左下角，并有红色箭头指引其位置。\n根据设定，如果失败次数达到一定数量，你将立即死亡。,這是一個擁有擊殺能力的第三方陣營角色。\n當你成功擊殺指定數量的目標後，將立即獲得單獨勝利。\n目標會顯示在畫面左下角，並會有紅色箭頭指引其位置。\n根據設定，若失敗達到一定次數，你將立即死亡。
@@ -448,7 +448,7 @@ SchrodingersCat.Description,キル能力を有さない第三陣営です。\n�
 Truelover.Description,,
 Cupid.Description,,
 Spelunker.Description,,
-BlackHatHacker.Description,,
+BlackHatHacker.Description,キル能力を有さない独自の勝利条件を持つ第三陣営です。\n「感染」ボタンを押すと、任意のプレイヤーに感染させることが出来ます。\nそのプレイヤーが他プレイヤーに接近すると、感染率が上昇していき、100%になると新たな感染源となります。\n生存者全員が感染源になると、その時点で単独勝利します。,
 PartTimer.Description,,
 
 
@@ -474,10 +474,10 @@ Pteranodon.Description,タスクターンに使用出来る能力を有するク
 NiceButtoner.Description,タスクターンに使用出来る能力を有するクルーメイトです。\n「緊急会議！」ボタンを押すと、いつでも会議を招集することが出来ます。,
 Mayor.Description,会議に関する能力を有するクルーメイトです。\nこの役職は、他の役職よりも多くの票を投票することが出来ます。,
 Bakery.Description,会議に関する能力を有するクルーメイトです。\nこの役職が生存していると、会議終了時にパンを焼いたことが通知されます。,
-VentTrapper.Description,,
+VentTrapper.Description,タスクターンに使用出来る能力を有するクルーメイトです。,
 SpeedBooster.Description,,
 NiceTeleporter.Description,,
-Taskmaster.Description,,
+Taskmaster.Description,タスクターンに発動する能力を有するクルーメイトです。\nタスクを触るだけで完了することが出来ます。\nまた、設定次第で、サボタージュも触るだけで修理することが出来ます。,
 ToiletFan.Description,,
 NiceMechanic.Description,,
 BodyBuilder.Description,タスクターンに使用出来る能力を有するクルーメイトです。\nこの役職の持つタスクは全てファングルの重量上げタスクに置き換わります。\nタスクを全て完了すると、マッスルポーズを取ることが出来るようになります。\nマッスルポーズは他者視点でも視認出来ます。,
@@ -501,15 +501,19 @@ MadHawk.Description,,
 JackalFriends.Description,ジャッカルの味方のクルーメイトです。\nいわゆる狂人と呼ばれる役職のジャッカル版です。\n勝利条件はクルーメイトの勝利ではなく、ジャッカルの勝利です。\nその勝利に自身の生死は問われないので、あの手この手でジャッカルを勝利に導きましょう。,
 
 # Descriptions_GhostRoles
-Cantera.Description,,
-Mirage.Description,,
+Cantera.Description,タスクターンに使用出来る能力を有するクルーメイトです。\n「灯火」ボタンを押すと、対象のプレイヤーに取り憑き、一定時間視界を明るくします。\nこの役職は死亡したプレイヤーに割り当てられます。,
+Mirage.Description,タスクターンに発動する能力と、使用出来る能力を有するインポスターです。\n誰かが死亡すると画面が青く発光します。\n死体が発生すると能力を使用出来るようになります。\n「複製」ボタンを押すと、そのターンに発生した死体をその場に複製して設置します。\n生成された死体はリポートすることが出来ます。\nまた、複製した数だけ同じ死体が発見されます。\nこの役職は死亡したプレイヤーに割り当てられます。,
 
 
 
 # Descriptions_Modifier
-ModifierGuesser.Description,,
-Lovers.Description,,
-
+ModifierGuesser.Description,会議に関する能力を有する追加役職です。\n元の役職の能力に加えてこの能力を有します。\n会議中に出現するボタンを押し、対象のプレイヤーの役職が何か当てると、そのプレイヤーをキルすることが出来ます。\nただし、外すと自身が死亡してしまいます。\n\nホストモードでは、以下のコマンドを使用して推測します。\n/bt 色の名前 役職名,
+ModifierMadmate.Description,,
+RulerModifier.Description,タスクターンに使用出来る能力を有するインポスター専用モディファイアです。\n「狂わせる」ボタンを押すことで、対象のプレイヤーの役職をマッドメイトに変更することが出来ます。,
+Lovers.Description,独自の勝利条件を持つモディファイアです。\nこのモディファイアは必ずペアで配役されます。\n一部役職によって後から付与されることもあります。\nペアの片方が死亡すると、もう片方もその後を追って共に死亡します。\nこのモディファイアを持つ二人のプレイヤーは、元の役職の勝利条件に加えて独自の勝利条件を持ちます。\n生存者数がラバーズを含む3名以下になると、ラバーズ単独勝利となります。\nただし、完全単独の場合、ラバーズとしてしか勝利できません。\nまた、ラバーズにキル能力を有する人外が含まれる場合、キル能力を有する人外とキル能力を有しないクルーが同数以下になっても、ラバーズが死亡するか、ラバーズが単独勝利するまでゲームが継続します(勝利モードが共勝利の場合を除く)。\n共勝利モードのときは、どちらも生存した状態かつ、ペアのどちらかが元陣営で勝利した際、もう片方のプレイヤーも共に勝利します。,
+JumboModifier.Description,見た目に変化のあるモディファイアです。\n時間経過でどんどん大きくなっていきます。\nクルーメイトのジャンボが成長しきる前に追放されると、全員敗北になります。\nインポスターのジャンボは最大まで成長すると、一度だけ使えるサブキルボタンを獲得します。,
+ModifierSpelunker.Description,,
+ModifierHawk.Description,,
 
 
 # wins
