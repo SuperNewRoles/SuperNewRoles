@@ -392,8 +392,8 @@ ModifierHawk,モディファイアホーク,Modifier Hawk
 Bullet,弾,Bullet
 
 # Descriptions_VanillaRoles
-Crewmate.Description,,
-Impostor.Description,,
+Crewmate.Description,特に何も能力を持たない基本的なクルーメイト役職です。\n人狼ゲームにおける村人の役割を持ちます。\nキル能力を持つ人外を全て追放するか、タスクを全て完了すると勝利します。,
+Impostor.Description,基本的なインポスター役職です。\n人狼ゲームにおける人狼の役割を持ちます。\nキル能力を有しており、インポスター以外のプレイヤーをキルすることが出来ます。\nサボタージュでクルーメイトを妨害したり、ベントを使って長距離を一瞬で移動出来ます。\nインポスターとクルーメイトが同数以下になるか、致命的なサボタージュの時間切れで勝利します。,
 
 # Descriptions_Impostor
 EvilGuesser.Description,会議に関する能力を有するインポスターです。\n会議中に出現するボタンを押し、対象のプレイヤーの役職が何か当てると、そのプレイヤーをキルすることが出来ます。\nただし、外すと自身が死亡してしまいます。,An Impostor with a meeting‐based ability.\nDuring meetings，by pressing the appearing button and correctly guessing a target player's role，they can kill that player.\nHowever，an incorrect guess results in their own death.,这是一个拥有会议相关能力的内鬼。\n在会议中，点击出现的按钮后，如果猜中目标玩家的角色，就可以将其击杀。\n但如果猜错，自己会死亡。,這是一個具備會議相關能力的內鬼。\n在會議中，按下出現的按鈕後，若能正確猜出目標玩家的角色，便可將其擊殺。\n不過，若猜錯，則自己將會死亡。
