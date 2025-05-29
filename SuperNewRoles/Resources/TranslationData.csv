@@ -400,15 +400,15 @@ SerialKiller.Description,キルに関係する能力を有するインポスタ�
 SideKiller.Description,自陣営を増やす能力を有するインポスターです。\n「侵食する」ボタンを押すと、対象のプレイヤーの役職をマッドキラーに変更します。,An Impostor with the ability to expand its faction.\nBy pressing the "Infiltrate" button, it changes a target player's role to Mad Killer.,这是一个具有增加自身阵营人数能力的内鬼。\n按下"侵蚀"按钮后，会将目标玩家的角色更改为疯狂杀手。,這是一個具備擴充自身陣營能力的內鬼。\n按下「侵蝕」按鈕後，將會把目標玩家的角色變更為瘋狂殺手。
 MadKiller.Description,インポスター陣営に属する役職です。\n自身をマッドキラーに変化させたサイドキラーが死亡すると、インポスターへ昇格し、キル能力を有するようになります。\n昇格前はマッドメイト同様クルーメイト判定です。,A role within the Impostor faction.\nWhen the Sidekiller who transformed you into a Mad Killer dies, you are promoted to an Impostor and gain a kill ability.\nPrior to promotion, you are considered a Crewmate, similar to a Madmate.,这是一个隶属于内鬼阵营的角色。\n当将你变为疯狂杀手的边缘杀手死亡时，你将晋升为内鬼，并获得击杀能力。\n晋升前，你和疯友一样被视为船员。,這是一個隸屬於內鬼陣營的角色。\n當使你變成瘋狂殺手的邊緣殺手死亡時，你將晉升為內鬼，並獲得擊殺能力。\n晉升前，你將與瘋友同視為船員。
 EvilGambler.Description,キルに関係する能力を有するインポスターです。\nキルをした際、次のキルクールが確率で変動します。\nターンの最初のキルクールは、ゲーム全体のインポスターのキルクールタイムに準じます。,An Impostor with kill‐related abilities.\nAfter making a kill, the cooldown for the next kill changes probabilistically.\nThe initial kill cooldown of a turn follows the overall Impostor kill cooldown time in the game.,这是一个拥有与击杀相关能力的内鬼。\n在击杀后，下一次击杀的冷却时间会根据概率变化。\n一回合开始时的击杀冷却时间遵循整个游戏中内鬼的击杀冷却设置。,這是一個具備擊殺相關能力的內鬼。\n成功擊殺後，其下一次擊殺的冷卻時間會依機率變動。\n回合初的擊殺冷卻時間則依照整體遊戲中內鬼的設定。
-Penguin.Description,,
-Pusher.Description,,
-EvilHacker.Description,,
-SuicideWisher.Description,,
-NekoKabocha.Description,,
+Penguin.Description,特殊なキル能力を有するインポスターです。\n「拉致」ボタンを押すと、対象のプレイヤーを掴んで運べるようになります。\nキルボタンを押すか、設定秒数経過で対象をキルします。,
+Pusher.Description,特殊なキル能力を有するインポスターです。\n「突き落とす」ボタンを押すと、マップ内の特定の場所でのみ、対象のプレイヤーを突き落としてキルが出来ます。\nはしごで突き落とした場合は、はしごの下に死体が発生します。\nそれ以外で突き落とした場合は、死体は発生しません。,
+EvilHacker.Description,タスクターンに使用出来る能力を有するインポスターです。\n「アドミン」ボタンを押すことで、いつでもどこでもアドミンを見ることが出来ます。\nこの役職のアドミンは、情報機器を制限する設定の影響を受けません。\nまた、設定次第では「狂わせる」ボタンを押すことで、対象のプレイヤーの役職をマッドメイトに変更することが出来ます。,
+SuicideWisher.Description,タスクターンに使用出来る能力を有するインポスターです。\n「自殺」ボタンを押すと、自殺することが出来ます。,
+NekoKabocha.Description,キル及び会議に関係する能力を有するインポスターです。\nキルされると、キルをしてきたプレイヤーを巻き添えにします。\nまた、追放されると、生存者のうち誰か一人を道連れにします。\nこのとき、インポスターを道連れすることがあります。,
 EvilNekomata.Description,,
-Matryoshka.Description,,
-Conjurer.Description,,
-Doppelganger.Description,,
+Matryoshka.Description,タスクターンに使用出来る能力を有するインポスターです。\n「着る」ボタンを押すと、対象の死体を着てそのプレイヤーの姿に変わります。\n一定時間が経過するか、「脱ぐ」ボタンを押すと、着ていた死体をその場に脱ぎ捨てます。,
+Conjurer.Description,特殊なキル能力を有するインポスターです。\nマーカーを三箇所に設置した状態で「圧縮」ボタンを押すと、マーカーを結んで出来る三角形の範囲内にいるプレイヤーを全てキルします。\nこの役職は通常キルは出来ません。,
+Doppelganger.Description,キルに関係する能力を有するインポスターです。\n他プレイヤーの姿に変身することが出来ます。\n変身元のプレイヤーをキルすると、キルクールが短くなります。\n変身せずにキルをしたり、変身元以外のプレイヤーをキルするとキルクールが長くなります。,
 EvilButtoner.Description,,
 Necromancer.Description,自陣営を増やす能力を有するインポスターです。幽霊を見ることが出来、幽霊に「呪縛」ボタンを押すと、対象のプレイヤーの役職をレヴェナントに変更します。,An impostor who has the ability to increase their own camp. They can see ghosts\, and pressing the "Curse" button on a ghost changes the target player's role to Revenant.,,
 Revenant.Description,インポスター陣営に属する幽霊役職です。タスクターンに使用出来る能力を有します。「呪う」ボタンを押すと対象に取り憑き、視界を奪います。,A ghost role belonging to the Impostor team. Has an ability that can be used during the task turn. Pressing the "Haunt" button possesses the target and steals their vision.,,
@@ -416,10 +416,10 @@ Teleporter.Description,,
 Pursuer.Description,,
 Crab.Description,,
 EvilSpeedBooster.Description,,
-Rocket.Description,,
-Vampire.Description,,
-VampireDependent.Description,,
-EvilMechanic.Description,ベントを自分の位置に移動させることができるインポスターです。\n能力使用中は透明になり、キルやサボタージュに有利になります。\n一定時間後、ベントは元の位置に戻ります。,An Impostor who can move vents to their position.\nWhile using the ability, they become transparent, gaining advantages for kills and sabotage.\nAfter a certain time, the vent returns to its original position.,这是一个可以将通风口移动到自己位置的内鬼。\n使用能力时会变透明，有利于击杀和破坏。\n一定时间后，通风口会回到原位。,這是一個可以將通風口移動到自己位置的內鬼。\n使用能力時會變透明，有利於擊殺和破壞。\n一定時間後，通風口會回到原位。
+Rocket.Description,特殊なキル能力を有するインポスターです。\n「掴む」ボタンを押すと、対象のプレイヤーを掴んで運べるようになります。\n「打ち上げる」ボタンを押すと、掴んでいたプレイヤーを空に打ち上げて花火にします。\n死体は残りません。\n「打ち上げる」ボタンを押すまで何人でも掴むことが出来ますが、その状態で会議が召集され、その会議で追放されるとキルに失敗してしまいます。\n追放されなければ掴んでいたプレイヤーを打ち上げて次のタスクターンへ移行します。,
+Vampire.Description,特殊なキル能力を有するインポスターです。\nキルボタンを押すと、設定秒数経過後に対象のプレイヤーが死亡します。\n次のターン、キルボタンを押した場所から、対象のプレイヤーが死亡した場所まで血痕が残ります。\nこの役職は、アドミンに映らず、死亡してもバイタル上では死亡表記になりません。\nまた、停電を直す気がありません。\n設定次第では「夜に堕とす」ボタンを押すことで、対象のプレイヤーの役職を眷属に変更することが出来ます。,
+VampireDependent.Description,インポスター陣営に属する役職です。\nキル能力を有します。\n通常時は視野が狭く、停電時は視野が広くなります。\nこの役職は、アドミンに映らず、死亡してもバイタル上では死亡表記になりません。\nまた、停電を直す気がありません。\nマッドメイト同様クルーメイト判定の役職です。\n自身を眷属に変化させたヴァンパイアが死亡すると、共に死亡します。,
+EvilMechanic.Description,,
 EvilHawk.Description,,
 
 
