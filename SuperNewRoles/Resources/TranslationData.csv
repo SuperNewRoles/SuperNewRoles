@@ -520,6 +520,118 @@ ModifierSpelunker.Description,プレイヤーを虚弱にするモディファ�
 ModifierHawk.Description,タスクターンに使用出来る能力を追加するモディファイアです。\n「ホークアイ」ボタンを押すと自分の視野が広がり、周囲の様子を見ることが出来ます。,
 
 
+# Intros_Impostor
+EvilGuesserIntro1,,
+SamuraiIntro1,侍マック,
+SelfBomberIntro1,,
+WaveCannonIntro1,,
+SerialKillerIntro1,,
+SideKillerIntro1,,
+MadKillerIntro1,,
+EvilGamblerIntro1,,
+PenguinIntro1,,
+PusherIntro1,,
+EvilHackerIntro1,,
+SuicideWisherIntro1,,
+NekoKabochaIntro1,,
+EvilNekomataIntro1,,
+MatryoshkaIntro1,,
+ConjurerIntro1,,
+DoppelgangerIntro1,,
+EvilButtonerIntro1,,
+NecromancerIntro1,死すれば我が力となりて,If you die\，you become my power,,
+RevenantIntro1,永遠たる呪縛,Eternal Curse,,
+TeleporterIntro1,,
+PursuerIntro1,,
+CrabIntro1,,
+EvilSpeedBoosterIntro1,,
+RocketIntro1,,
+VampireIntro1,,
+VampireDependentIntro1,,
+EvilMechanicIntro1,,
+EvilHawkIntro1,,
+
+# Intros_Neutral
+JackalIntro1,,
+SidekickIntro1,,
+WaveCannonJackalIntro1,,
+SidekickWaveCannonIntro1,,
+BulletIntro1,,
+TunaIntro1,,
+TeruteruIntro1,,
+OpportunistIntro1,,
+WorkpersonIntro1,,
+PavlovsOwnerIntro1,,
+PavlovsDogIntro1,,
+VultureIntro1,,
+ArsonistIntro1,,
+AmnesiacIntro1,,
+FalseChargesIntro1,,
+HitmanIntro1,,
+LoversBreakerIntro1,,
+GodIntro1,,
+OwlIntro1,暗闇に羽ばたきし者,The one who flapped his wings in the dark,黑暗中鼓动羽翼之人,在黑暗中鼓動翅膀的人
+SchrodingersCatIntro1,,
+TrueloverIntro1,,
+CupidIntro1,,
+SpelunkerIntro1,,
+BlackHatHackerIntro1,,
+PartTimerIntro1,,
+
+# Intros_Crewmate
+BaitIntro1,,
+BestFalseChargeIntro1,,
+SheriffIntro1,,
+NiceGuesserIntro1,,
+BalancerIntro1,,
+ChiefIntro1,,
+HomeSecurityGuardIntro1,,
+SeerIntro1,,
+CelebrityIntro1,,
+DatahackerIntro1,,
+SantaIntro1,,
+JumpDancerIntro1,,
+WellBehaverIntro1,,
+NiceNekomataIntro1,,
+PteranodonIntro1,,
+NiceButtonerIntro1,,
+MayorIntro1,,
+BakeryIntro1,,
+VentTrapperIntro1,,
+SpeedBoosterIntro1,,
+NiceTeleporterIntro1,,
+TaskmasterIntro1,,
+ToiletFanIntro1,,
+NiceMechanicIntro1,,
+BodyBuilderIntro1,,
+HamburgerShopIntro1,,
+NiceHawkIntro1,,
+WiseManIntro1,,
+
+# Intros_MadRoles
+MadmateIntro1,,
+BlackCatIntro1,,
+MadRaccoonIntro1,,
+BlackSantaIntro1,,
+WorshiperIntro1,,
+SatsumaAndImoIntro1,,
+MadHawkIntro1,,
+
+JackalFriendsIntro1,,
+
+# Intros_GhostRoles
+CanteraIntro1,,
+MirageIntro1,,
+
+# Intros_Modifier
+ModifierGuesserIntro1,,
+ModifierMadmateIntro1,,
+RulerModifierIntro1,,
+LoversIntro1,,
+JumboModifierIntro1,,
+ModifierSpelunkerIntro1,,
+ModifierHawkIntro1,,
+
 # wins
 WinText,勝利,Win
 ImpostorWin,インポスター,Impostors
@@ -929,13 +1041,11 @@ MayorVoteAdditionalVote,追加投票数,Additional Vote
 SuicideButtonText,自滅,Suicide,自杀,自殺
 
 # Necromancer
-NecromancerIntro1,死すれば我が力となりて,If you die\，you become my power,,
 NecromancerCurseCooldown,「呪縛」クールタイム,Curse Cooldown,,
 NecromancerMaxRevenants,レヴェナント作成可能数,Max Revenants,,
 NecromancerCurseButtonText,呪縛,Curse,詛咒,詛咒
 
 # Revenant
-RevenantIntro1,永遠たる呪縛,Eternal Curse,,
 RevenantRequiredTasks,能力に必要なタスク個数,Required Tasks for Ability,,
 RevenantHauntDuration,視界を奪う時間,Haunt Duration,,
 RevenantHauntVision,効果中の視界,Vision During Haunt,,
@@ -1012,7 +1122,6 @@ LoversKnowPartnerRole,相方の役職がわかる,Know Partner Role
 LoversKnowPartnerPosition,相方の位置がわかる,Know Partner Position
 
 # Owl
-OwlIntro1,暗闇に羽ばたきし者,The one who flapped his wings in the dark,黑暗中鼓动羽翼之人,在黑暗中鼓動翅膀的人
 OwlCanSpecialBlackoutDeadBodyCount,特殊停電を使えるようになる死体数,Number of bodies that will be able to use special blackout,获得紧急停电所需藏匿的尸体数,啟用黑幕降臨所需的屍體數
 OwlSpecialBlackoutCool,特殊停電のクールタイム,Cool time for special power outages,紧急停电冷却时间,黑幕降臨的冷卻時間
 OwlSpecialBlackoutTime,特殊停電の効果時間,Effect duration of special power outages,紧急停电持续时间,黑幕降臨的持續時間
