@@ -20,6 +20,7 @@ public enum FinalStatus
     Samurai,
     BombBySelfBomb,
     SelfBomb,
+    Tuna,
 }
 
 public static class FinalStatusListener

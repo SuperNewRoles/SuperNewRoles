@@ -257,7 +257,7 @@ internal static class SyncVersionErrorHandler
 
     private static bool ShouldDisplayErrors(HudManager hudManager)
     {
-        if (!GameStartManager.InstanceExists)
+        if (AmongUsClient.Instance.GameState != InnerNet.InnerNetClient.GameStates.Joined)
         {
             if (ErrorText != null) ErrorText.gameObject.SetActive(false);
             return false;

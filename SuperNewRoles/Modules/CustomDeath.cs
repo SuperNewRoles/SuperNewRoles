@@ -65,6 +65,10 @@ public static class CustomDeathExtensions
                 player.Player.MurderPlayer(player.Player, MurderResultFlags.Succeeded);
                 FinalStatusManager.SetFinalStatus(player, FinalStatus.SelfBomb);
                 break;
+            case CustomDeathType.Tuna:
+                player.Player.MurderPlayer(player.Player, MurderResultFlags.Succeeded);
+                FinalStatusManager.SetFinalStatus(player, FinalStatus.Tuna);
+                break;
             default:
                 throw new Exception($"Invalid death type: {deathType}");
         }
@@ -91,4 +95,5 @@ public enum CustomDeathType
     Samurai,
     BombBySelfBomb,
     SelfBomb,
+    Tuna
 }

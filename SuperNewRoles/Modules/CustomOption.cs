@@ -286,6 +286,10 @@ public class CustomOption
         {
             return ModTranslation.GetString($"{selectAttr.TranslationPrefix}{Selections[Selection]}");
         }
+        else if (Attribute is CustomOptionBoolAttribute boolAttr)
+        {
+            return ModTranslation.GetString(Selection == 0 ? "CustomOptionFalse" : "CustomOptionTrue");
+        }
         return Selections[Selection].ToString();
     }
 

@@ -22,6 +22,15 @@ public class CustomRPCAttribute : Attribute
     }
 }
 
+public static class CustomRpcExts
+{
+    [CustomRPC]
+    public static void RpcEndGameForHost(GameOverReason reason)
+    {
+        if (!AmongUsClient.Instance.AmHost) return;
+        GameManager.Instance.RpcEndGame(reason, false);
+    }
+}
 /// <summary>
 /// カスタムRPCを管理するクラス
 /// </summary>

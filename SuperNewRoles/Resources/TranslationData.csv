@@ -6,6 +6,7 @@ Close,閉じる,Close,关闭,關閉
 Impostor,インポスター,Impostor,内鬼,內鬼
 Crewmate,クルーメイト,Crewmate,船员,船員
 Neutral,第三陣営,Neutral,第三阵营,第三陣營
+People,{0}人,{0} people,{0}人,{0}人
 
 NeutralSubIntro,自分の事だけ考えろ。他人の事は利用せよ。,Think only about yourself. Use others.,只考虑自己。利用他人。,只考慮自己。利用他人。
 
@@ -16,8 +17,6 @@ RoleOptionMenuType.Crewmate,クルーメイト,Crewmate,船员,船員
 RoleOptionMenuType.Neutral,第三陣営,Neutral,第三阵营,第三陣營
 
 # CustomOption
-CustomOptionFalse,無効,Disabled,无效,无效
-CustomOptionTrue,有効,Enabled,启用,啟用
 BulkRoleButton,役職数一括設定,Bulk Role Setting,批量设置角色,批量設定角色
 NumberOfCrews,人数,Number of Crewmates,船员人数,船員人數
 NumberOfCrewsSelected,{0}人,{0} people,{0}人,{0}人
@@ -49,6 +48,8 @@ CustomOptionTask_Short,短いタスク,Short Tasks,短任務,短任務
 CustomOptionTask_Long,長いタスク,Long Tasks,长任務,長任務
 CustomOptionTask_Common,共通タスク,Common Tasks,共同任務,共同任務
 SkipStartGameCountdown,ゲーム開始カウントダウンをスキップ,Skip Game Start Countdown,跳过游戏开始倒计时,跳過遊戲開始倒計時
+CustomOptionTrue,有効,Enabled,启用,啟用
+CustomOptionFalse,無効,Disabled,无效,无效
 
 # Win
 WinName,勝利,Win,勝利,勝利
@@ -59,9 +60,9 @@ FinalResults,最終結果,Final Results,最终结果,最終結果
 # FinalStatus
 FinalStatus.Alive,生存,Alive,生存,生存
 FinalStatus.Kill,キル,Kill,击杀,擊殺
+FinalStatus.Exiled,追放,Exiled,追放,追放
 FinalStatus.Sabotage,サボタージュ,Sabotage,破坏,破壞
 FinalStatus.Disonnected,切断,Disonnected,切断,切斷
-FinalStatus.Exile,追放,Exile,追放,追放
 FinalStatus.WaveCannon,蒸発,Vaporize,蒸发,蒸發
 FinalStatus.FalseCharge,冤罪,False Charge,冤罪,冤罪
 FinalStatus.Revange,道連れ,Revange,道連れ,道連れ
@@ -69,6 +70,15 @@ FinalStatus.Suicide,自殺,Suicide,自殺,自殺
 FinalStatus.Samurai,サムライ,Samurai,侍,侍
 FinalStatus.BombBySelfBomb,爆破,Bomb by Self Bomber,自爆被卷入,自爆被卷入
 FinalStatus.SelfBomb,自爆,Self Bomb,自爆,自爆
+FinalStatus.Tuna,水揚げ,Tuna,水揚げ,水揚げ
+
+# HelpMenu
+HelpMenu.MyRoleInformation,自分の役職,My Role Information,我的角色信息,我的角色資訊
+HelpMenu.MyRoleInformation.InLobbyText,ゲーム中に自分の役職が表示されます。,Your role will be displayed during the game.,游戏过程中会显示你的角色。,遊戲過程中會顯示你的角色。
+HelpMenu.MyRoleInformation.RoleSettingsTitle,役職設定,Role Settings,角色设置,角色設定
+HelpMenu.AssignmentsSettingInfomation,配役情報,Assignments Information,配役信息,配役資訊
+HelpMenu.ModSettingsInformation,MOD設定情報,MOD Settings Information,MOD设置信息,MOD設定資訊
+HelpMenu.RoleDictionary,役職辞典,Role Dictionary,角色辞典,角色辭典
 
 # AssignRoles
 AssignRoles_MaxImpostors,最大 インポスター 選出数,Max Impostors,最大内鬼数,最大內鬼數
@@ -97,6 +107,9 @@ SelfBomber,自爆魔,Self Bomber,自爆者,自爆者
 Samurai,侍,Samurai,侍,侍
 WaveCannon,波動砲,Wave Cannon,波动炮,波動砲
 WaveCannonJackal,波動砲ジャッカル,Wave Cannon Jackal,波动炮杰克,波動砲傑克
+Tuna,マグロ,Tuna,金枪鱼,金槍魚
+Teruteru,てるてる,Teruteru,特鲁特鲁,特魯特魯
+Opportunist,オポチュニスト,Opportunist,机会主义者,機會主義者
 
 # Sheriff Options
 SheriffKillCooldown,キルクールタイム,Kill Cooldown,杀人冷却时间,殺人冷卻時間
@@ -200,3 +213,19 @@ WaveCannonJackalSidekickType,サイドキックタイプ,Sidekick Type,边缘队
 WaveCannonJackalWaveCannonCooldown,波動砲クールダウン,Wave Cannon Cooldown,波动炮冷却时间,波動砲冷卻時間
 WaveCannonJackalWaveCannonEffectDuration,波動砲の充填時間,Wave Cannon Fill Time,波动炮充填时间,波動砲充填時間
 WaveCannonJackalWaveCannonType,波動砲タイプ,Wave Cannon Type,波动炮类型,波動砲類型
+
+# Tuna
+Tuna.Description,止まるな、動き続けろ！一瞬の油断が命取りだ...\n俊敏に泳ぎ続ける。マグロだから！,Don't stop, keep moving... A moment's lapse could be fatal! Keep swimming swiftly... like a tuna!,不要停，持续游动…片刻松懈将致命！如金枪鱼般敏捷游动…,不要停，持續游動…片刻鬆懈將致命！如鮪魚般敏捷游動…
+TunaStopTimeLimit,停止可能時間,Tuna Stop Time Limit,金枪鱼停止时间,金槍魚停止時間
+
+# Teruteru
+TeruteruCanUseVent,ベントを使用できる,Can Use Vents,可以使用通风口,可以使用通風口
+TeruteruRequireTaskCompletion,タスク完了が必要,Require Task Completion,需要完成任务,需要完成任務
+TeruteruRequiredTaskCount,必要タスク数,Required Task Count,需要完成的任务数,需要完成的任務數
+TeruteruCustomTaskCount,タスク数を変更する,Change Task Count,更改任务数,更改任務數
+
+# RoleDictionary
+RoleDictionary,役職辞典,Role Dictionary,角色词典,角色詞典
+ImpostorButton,インポスター,Impostor,内鬼,內鬼
+NeutralButton,第三陣営,Neutral,第三阵营,第三陣營
+CrewmateButton,クルーメイト,Crewmate,船员,船員

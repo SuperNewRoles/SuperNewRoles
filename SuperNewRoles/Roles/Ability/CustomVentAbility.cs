@@ -144,7 +144,7 @@ public class CustomVentAbility : CustomButtonBase
     }
     public override bool CheckHasButton()
     {
-        return CheckCanUseVent();
+        return CheckCanUseVent() && !ExPlayerControl.LocalPlayer.IsImpostor();
     }
 
     public override void AttachToLocalPlayer()

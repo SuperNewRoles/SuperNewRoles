@@ -51,7 +51,7 @@ class Samurai : RoleBase<Samurai>
     [CustomOptionBool("SamuraiOnlyKillCrewmates", false)]
     public static bool SamuraiOnlyKillCrewmates;
 
-    [CustomOptionBool("SamuraiIgnoreWalls", false)]
+    [CustomOptionBool("SamuraiIgnoreWalls", true)]
     public static bool SamuraiIgnoreWalls;
 
     [CustomOptionBool("SamuraiCanUseVent", true)]

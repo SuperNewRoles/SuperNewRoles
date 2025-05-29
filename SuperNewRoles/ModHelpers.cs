@@ -152,8 +152,9 @@ public static class ModHelpers
     public static IEnumerable<GameObject> GetChildren(this GameObject gameObject)
     {
         List<GameObject> list = new();
-        foreach (Transform child in gameObject.transform)
+        for (int i = 0; i < gameObject.transform.childCount; i++)
         {
+            var child = gameObject.transform.GetChild(i);
             if (child.gameObject == null) continue;
             list.Add(child.gameObject);
         }

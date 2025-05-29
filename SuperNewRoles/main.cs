@@ -18,11 +18,18 @@ using SuperNewRoles.Roles;
 using SuperNewRoles.CustomOptions;
 using UnityEngine.EventSystems;
 using SuperNewRoles.Modules.Events.Bases;
+using SuperNewRoles.HelpMenus;
 
 namespace SuperNewRoles;
 
 [BepInAutoPlugin(PluginConfig.Id, PluginConfig.Name)]
 [BepInProcess(PluginConfig.ProcessName)]
+[BepInIncompatibility("com.emptybottle.townofhost")]
+[BepInIncompatibility("me.eisbison.theotherroles")]
+[BepInIncompatibility("me.yukieiji.extremeroles")]
+[BepInIncompatibility("com.tugaru.TownOfPlus")]
+[BepInIncompatibility("com.emptybottle.townofhost")]
+[BepInIncompatibility("jp.ykundesu.agartha")]
 public partial class SuperNewRolesPlugin : BasePlugin
 {
     public Harmony Harmony { get; } = new Harmony(PluginConfig.Id);
@@ -56,8 +63,9 @@ public partial class SuperNewRolesPlugin : BasePlugin
     }
     private static void RegisterCustomObjects()
     {
-        var rightClickDetectorOptions = new RegisterTypeOptions { Interfaces = new[] { typeof(IPointerClickHandler) } };
         ClassInjector.RegisterTypeInIl2Cpp<RightClickDetector>();
+        ClassInjector.RegisterTypeInIl2Cpp<FadeCoroutine>();
+        ClassInjector.RegisterTypeInIl2Cpp<HelpMenuObjectComponent>();
     }
 
 

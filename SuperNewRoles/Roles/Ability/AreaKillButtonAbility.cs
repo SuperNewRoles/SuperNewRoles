@@ -104,6 +104,8 @@ public class AreaKillButtonAbility : CustomButtonBase
         }
         IsUsed = true;
         KilledCallback?.Invoke(killedPlayers);
+        if (ExPlayerControl.ExPlayerControls.Count(x => x.IsAlive()) == 0)
+            CustomRpcExts.RpcEndGameForHost(GameOverReason.ImpostorByKill);
         ResetTimer();
     }
 
