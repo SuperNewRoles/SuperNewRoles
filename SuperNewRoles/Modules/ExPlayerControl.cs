@@ -444,11 +444,11 @@ public class ExPlayerControl
            || GhostRole == GhostRoleId.Revenant
            || (Role == RoleId.SatsumaAndImo && GetAbility<SatsumaAndImoAbility>()?.IsMadTeam == true);
     public bool IsFriendRoles()
-        => HasAbility(nameof(JFriendAbility));
+        => HasAbility(nameof(JFriendAbility)) || (Role == RoleId.Bullet && !WaveCannonJackal.WaveCannonJackalCreateBulletToJackal);
     public bool IsJackal()
         => HasAbility(nameof(JackalAbility)) || GetAbility<SchrodingersCatAbility>()?.CurrentTeam == SchrodingersCatTeam.Jackal;
     public bool IsSidekick()
-        => HasAbility(nameof(JSidekickAbility));
+        => HasAbility(nameof(JSidekickAbility)) || (Role == RoleId.Bullet && WaveCannonJackal.WaveCannonJackalCreateBulletToJackal);
     public bool IsJackalTeam()
         => IsJackal() || IsSidekick();
     public bool IsJackalTeamWins()

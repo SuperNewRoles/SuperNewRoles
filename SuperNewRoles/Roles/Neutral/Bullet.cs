@@ -7,6 +7,7 @@ using SuperNewRoles.Modules.Events;
 using SuperNewRoles.Modules.Events.Bases;
 using SuperNewRoles.Roles.Ability;
 using SuperNewRoles.Roles.Ability.CustomButton;
+using SuperNewRoles.WaveCannonObj;
 using UnityEngine;
 
 namespace SuperNewRoles.Roles.Neutral;
@@ -14,7 +15,7 @@ namespace SuperNewRoles.Roles.Neutral;
 class Bullet : RoleBase<Bullet>
 {
     public override RoleId Role { get; } = RoleId.Bullet;
-    public override Color32 RoleColor { get; } = Palette.ImpostorRed;
+    public override Color32 RoleColor { get; } = Jackal.Instance.RoleColor;
     public override List<Func<AbilityBase>> Abilities { get; } = [
         () => new JSidekickAbility(canUseVent: WaveCannonJackal.WaveCannonJackalCanUseVent),
         () => new BulletAbility(WaveCannonJackal.WaveCannonJackalBulletLoadBulletCooltime, WaveCannonJackal.WaveCannonJackalBulletLoadedChargeTime)
@@ -57,6 +58,11 @@ public class BulletAbility : TargetCustomButtonBase
 
     private AbilityParentRole _parent;
     private WaveCannonAbility _waveCannonAbility;
+
+    private EventListener<NameTextUpdateEventData> _nameTextUpdateEvent;
+    private EventListener<MeetingStartEventData> _meetingStartEvent;
+    private EventListener<EmergencyCheckEventData> _emergencyCheckEvent;
+
     public BulletAbility(float coolDown, float effectDuration)
     {
         CoolDown = coolDown;
@@ -72,11 +78,42 @@ public class BulletAbility : TargetCustomButtonBase
             _waveCannonAbility = _parent.Player.GetAbility<WaveCannonAbility>();
         }, 0f);
         _playerPhysicsFixedUpdateEvent = PlayerPhysicsFixedUpdateEvent.Instance.AddListener(OnPlayerPhysicsFixedUpdate);
+        _nameTextUpdateEvent = NameTextUpdateEvent.Instance.AddListener(OnNameTextUpdate);
+        _meetingStartEvent = MeetingStartEvent.Instance.AddListener(OnMeetingStart);
+        _emergencyCheckEvent = EmergencyCheckEvent.Instance.AddListener(OnEmergencyCheck);
     }
     public override void DetachToAlls()
     {
         base.DetachToAlls();
         _playerPhysicsFixedUpdateEvent?.RemoveListener();
+        _nameTextUpdateEvent?.RemoveListener();
+        _meetingStartEvent?.RemoveListener();
+        _emergencyCheckEvent?.RemoveListener();
+        if (_waveCannonAbility != null)
+            _waveCannonAbility.bullet = null;
+    }
+    private void OnNameTextUpdate(NameTextUpdateEventData data)
+    {
+        if (data.Player == Player || data.Player == _parent?.Player)
+        {
+            if (Player.AmOwner || _parent.Player.AmOwner)
+            {
+                NameText.AddNameText(data.Player, ModHelpers.Cs(Bullet.Instance.RoleColor, "☆"), true);
+            }
+        }
+    }
+    private void OnMeetingStart(MeetingStartEventData data)
+    {
+        if (_waveCannonAbility?.bullet == Player)
+            _waveCannonAbility.bullet = null;
+    }
+    private void OnEmergencyCheck(EmergencyCheckEventData data)
+    {
+        if (_waveCannonAbility?.WaveCannonObject != null && _waveCannonAbility.WaveCannonObject is WaveCannonObjectBullet bulletObject)
+        {
+            data.RefEmergencyTexts.Add(ModTranslation.GetString("BulletEmergencyText"));
+            data.RefEnabledEmergency = false;
+        }
     }
     private void OnPlayerPhysicsFixedUpdate(PlayerPhysicsFixedUpdateEventData data)
     {
