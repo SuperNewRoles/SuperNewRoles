@@ -396,7 +396,6 @@ EvilGuesser.Description,会議に関する能力を有するインポスター�
 SelfBomber.Description,特殊なキル能力を有するインポスターです。\n「自爆」ボタンを押すと、自身が死亡する代わりに、近くにいるクルーメイトを全てキルすることが出来ます。,An Impostor with a unique kill ability.\nBy pressing the "Self‐Destruct" button, they sacrifice themselves to kill all nearby Crewmates.,这是一个拥有特殊击杀能力的内鬼。\n按下"自爆"按钮后，会以牺牲自身为代价，击杀所有附近的船员。,這是一個具備特殊擊殺能力的內鬼。\n按下「自爆」按鈕後，自己將犧牲，卻可擊殺所有附近的船員。
 Samurai.Description,特殊なキル能力を有するインポスターです。\n1ゲームに一度だけ使用出来る「必殺技」ボタンを押すと、近くにいるクルーメイトを全てキルすることが出来ます。,An Impostor with a unique kill ability.\nThey can use the "Finishing Move" button once per game to kill all nearby Crewmates.,这是一个拥有特殊击杀能力的内鬼。\n每局游戏只能使用一次"必杀技"按钮，能够击杀所有附近的船员。,這是一個具備特殊擊殺能力的內鬼。\n每局遊戲僅能使用一次「必殺技」按鈕，可擊殺所有附近的船員。
 WaveCannon.Description,特殊なキル能力を有するインポスターです。\n「波動砲」ボタンを押すことで、その時点で向いている方向に向かって、障害物を無視して一直線に飛んでいくビームを撃つことが出来ます。\nビームにあたったプレイヤーは陣営関係なく死亡します。,An Impostor with a special kill ability.\nBy pressing the "Wave Cannon" button, they fire a beam in the direction they are facing that ignores obstacles and travels straight.\nAny player hit by the beam dies regardless of faction.,这是一个拥有特殊击杀能力的内鬼。\n按下"波动炮"按钮后，会向其面向的方向发射一束直线光束，能够无视障碍物。\n被光束击中的玩家，无论所属阵营，都会死亡。,這是一個具有特殊擊殺能力的內鬼。\n按下「波動砲」按鈕後，會向當前所面向的方向發射無視障礙的直線光束。\n任何被光束擊中的玩家，無論所屬陣營，皆會死亡。
-Chief.Description,タスクターンに使用出来る能力を有するクルーメイトです。\n「任命」ボタンを押すと、対象のプレイヤーの役職をシェリフに変更します。\nただし、対象のプレイヤーがインポスターだった場合、自殺してしまいます。,A Crewmate with an ability that can be used during task turns.\nBy pressing the "Appoint" button, they change a target player's role to Sheriff.\nHowever, if the target player is an Impostor, they commit suicide.,这是一个在任务回合中能使用能力的船员。\n按下"任命"按钮后，会将目标玩家的角色更改为警长。\n但如果目标玩家是内鬼，则会自杀。,這是一個在任務回合中能夠使用能力的船員。\n按下「任命」按鈕後，會將目標玩家的角色變更為警長。\n不過，若目標玩家為內鬼，則會自動自殺。
 SerialKiller.Description,キルに関係する能力を有するインポスターです。\nキルクールが短い代わりに、一定時間キルをしないと自殺してしまいます。,An Impostor with kill‐related abilities.\nWhile their kill cooldown is short, if they don't kill within a certain time, they will commit suicide.,这是一个拥有击杀相关能力的内鬼。\n虽然击杀冷却时间很短，但如果在一定时间内没有击杀，将会自杀。,這是一個具備擊殺相關能力的內鬼。\n雖然其擊殺冷卻時間短，但若在一定時間內未能擊殺，則會自動自殺。
 SideKiller.Description,自陣営を増やす能力を有するインポスターです。\n「侵食する」ボタンを押すと、対象のプレイヤーの役職をマッドキラーに変更します。,An Impostor with the ability to expand its faction.\nBy pressing the "Infiltrate" button, it changes a target player's role to Mad Killer.,这是一个具有增加自身阵营人数能力的内鬼。\n按下"侵蚀"按钮后，会将目标玩家的角色更改为疯狂杀手。,這是一個具備擴充自身陣營能力的內鬼。\n按下「侵蝕」按鈕後，將會把目標玩家的角色變更為瘋狂殺手。
 MadKiller.Description,インポスター陣営に属する役職です。\n自身をマッドキラーに変化させたサイドキラーが死亡すると、インポスターへ昇格し、キル能力を有するようになります。\n昇格前はマッドメイト同様クルーメイト判定です。,A role within the Impostor faction.\nWhen the Sidekiller who transformed you into a Mad Killer dies, you are promoted to an Impostor and gain a kill ability.\nPrior to promotion, you are considered a Crewmate, similar to a Madmate.,这是一个隶属于内鬼阵营的角色。\n当将你变为疯狂杀手的边缘杀手死亡时，你将晋升为内鬼，并获得击杀能力。\n晋升前，你和疯友一样被视为船员。,這是一個隸屬於內鬼陣營的角色。\n當使你變成瘋狂殺手的邊緣殺手死亡時，你將晉升為內鬼，並獲得擊殺能力。\n晉升前，你將與瘋友同視為船員。
@@ -445,32 +444,45 @@ Owl,フクロウ,Owl
 
 
 # Descriptions_Crewmate
+Bait.Description,,
 BestFalseCharge.Description,特に能力を有さないクルーメイトです。\n死亡するまでこの役職だと自覚出来ません。\n最初の会議が終了すると、そのまま死亡します。,The ultimate red herring! A Crewmate with no abilities who lives in blissful ignorance.\nThey won't realize they have this role until they're dead—talk about a rude awakening!\nAfter the first meeting ends, they die faster than someone saying "I saw Blue vent!",这是一个没有特殊能力的船员。\n在死亡之前他们不会意识到自己拥有这个角色。\n第一场会议结束后，他们会直接死亡。,這是一個沒有特殊能力的船員。\n在死亡之前他們不會察覺自己擁有這個角色。\n第一場會議結束後，他們會直接死亡。
 Sheriff.Description,キル能力を有するクルーメイトです。\n「執行」ボタンを押すと、対象のプレイヤーに対してキル能力を行使します。\nその際、対象のプレイヤーがキル可能な陣営でなかった場合、自身が死亡してしまいます。\n基本的には、ライン精査等、白黒つけたいときに能力を使用すると良いでしょう。,A Crewmate with the ability to kill.\nBy pressing the "Execute" button, they can use their kill ability on a target player.\nHowever, if the target is not in a killable faction, they die.\nGenerally, this ability is best used when a clear decision is needed.,这是一个拥有击杀能力的船员。\n按下"执行"按钮后，可以对目标玩家施展击杀能力。\n但如果目标玩家不属于可被击杀的阵营，则自己会死亡。\n基本上，此能力适用于需要明确判定时使用，例如在排查时.,這是一個具備擊殺能力的船員。\n按下「執行」按鈕後，可以對目標玩家施展擊殺能力。\n若目標玩家不屬於可被擊殺的陣營，則使用者將會死亡。\n基本上，此能力適用於需要做出明確判斷時，例如進行排查時使用。
-Guesser.Description,会議に関する能力を有するクルーメイトです。\n会議中に出現するボタンを押し、対象のプレイヤーの役職が何か当てると、そのプレイヤーをキルすることが出来ます。\nただし、外すと自身が死亡してしまいます。,A Crewmate with a meeting‐based ability.\nDuring meetings, they can press a button to guess a target player's role; if correct, that player is killed.\nHowever, an incorrect guess results in their own death.,这是一个拥有会议相关能力的船员。\n在会议中，通过点击出现的按钮，若猜中目标玩家的角色，则能够将其击杀。\n但如果猜错，则自己会死亡。,這是一個具備會議相關能力的船員。\n在會議中，按下出現的按鈕後，若能猜中目標玩家的角色，便能將其擊殺。\n然而，若猜錯，則自己將會死亡。
+NiceGuesser.Description,会議に関する能力を有するクルーメイトです。\n会議中に出現するボタンを押し、対象のプレイヤーの役職が何か当てると、そのプレイヤーをキルすることが出来ます。\nただし、外すと自身が死亡してしまいます。,A Crewmate with a meeting‐based ability.\nDuring meetings, they can press a button to guess a target player's role; if correct, that player is killed.\nHowever, an incorrect guess results in their own death.,这是一个拥有会议相关能力的船员。\n在会议中，通过点击出现的按钮，若猜中目标玩家的角色，则能够将其击杀。\n但如果猜错，则自己会死亡。,這是一個具備會議相關能力的船員。\n在會議中，按下出現的按鈕後，若能猜中目標玩家的角色，便能將其擊殺。\n然而，若猜錯，則自己將會死亡。
+Balancer.Description,会議に関する能力を有するクルーメイトです。\n会議中に出現するボタン2つを押すと、対象のプレイヤー二人のどちらか片方は最低でも追放される特殊な会議を開くことが出来ます。\n投票が同数だった場合、二人同時に追放されます。,A Crewmate with a meeting‐focused ability.\nBy pressing the two buttons that appear during a meeting, a special meeting is initiated in which at least one of the two targeted players will be ejected.\nIn the event of a tie vote, both players are ejected simultaneously.,这是一个拥有会议相关能力的船员。\n在会议中按下出现的两个按钮后，便会发起一场特殊会议，确保目标的两名玩家中至少有一人被放逐。\n若投票数相同，则两人同时被放逐。,這是一個具備會議相關能力的船員。\n在會議中按下出現的兩個按鈕後，會啟動一個特殊會議，使目標的兩名玩家中至少有一人被逐出。\n若投票數相同，則兩人將同時被逐出。
+Chief.Description,タスクターンに使用出来る能力を有するクルーメイトです。\n「任命」ボタンを押すと、対象のプレイヤーの役職をシェリフに変更します。\nただし、対象のプレイヤーがインポスターだった場合、自殺してしまいます。,A Crewmate with an ability that can be used during task turns.\nBy pressing the "Appoint" button, they change a target player's role to Sheriff.\nHowever, if the target player is an Impostor, they commit suicide.,这是一个在任务回合中能使用能力的船员。\n按下"任命"按钮后，会将目标玩家的角色更改为警长。\n但如果目标玩家是内鬼，则会自杀。,這是一個在任務回合中能夠使用能力的船員。\n按下「任命」按鈕後，會將目標玩家的角色變更為警長。\n不過，若目標玩家為內鬼，則會自動自殺。
 HomeSecurityGuard.Description,特に能力を有さないクルーメイトです。\nタスクもありません。,A Crewmate with no special abilities.\nThey also have no tasks.,这是一个没有特殊能力的船员，也没有任务。,這是一個沒有特殊能力的船員，且沒有任務。
 Seer.Description,タスクターンに発動する能力を有するクルーメイトです。\n誰かが死亡すると画面が青く発光します。\nまた、誰かが死亡した箇所に霊魂を確認することが出来ます。\nこれらの能力は設定によって、いずれかまたはどちらも保有します。,A Crewmate with an ability that activates during task turns.\nWhen someone dies, the screen emits a blue glow.\nThey can also detect a spirit at the location of the death.\nDepending on settings, they may have one or both of these abilities.,这是一个在任务回合中能发动能力的船员。\n当有人死亡时，屏幕会发出蓝光，并且可以在死亡地点检测到灵魂。\n这些能力依据设定可能单独或同时存在。,這是一個在任務回合中可發動能力的船員。\n當有人死亡時，螢幕會發出藍光，同時能在死亡地點察覺靈魂。\n這些能力可依據設定單獨或全部具備。
-Balancer.Description,会議に関する能力を有するクルーメイトです。\n会議中に出現するボタン2つを押すと、対象のプレイヤー二人のどちらか片方は最低でも追放される特殊な会議を開くことが出来ます。\n投票が同数だった場合、二人同時に追放されます。,A Crewmate with a meeting‐focused ability.\nBy pressing the two buttons that appear during a meeting, a special meeting is initiated in which at least one of the two targeted players will be ejected.\nIn the event of a tie vote, both players are ejected simultaneously.,这是一个拥有会议相关能力的船员。\n在会议中按下出现的两个按钮后，便会发起一场特殊会议，确保目标的两名玩家中至少有一人被放逐。\n若投票数相同，则两人同时被放逐。,這是一個具備會議相關能力的船員。\n在會議中按下出現的兩個按鈕後，會啟動一個特殊會議，使目標的兩名玩家中至少有一人被逐出。\n若投票數相同，則兩人將同時被逐出。
 Celebrity.Description,特に能力を有さないクルーメイトです。\n全員視点で名前が役職色に変わっており、全員からスターだということがわかります。,A Crewmate with no special abilities.\nTheir name is displayed in the color of their role for everyone, making it clear to all that they are the Star.,这是一个没有特殊能力的船员。\n他们的名字以角色颜色显示在所有人的视角中，让大家都看出他们是明星。,這是一個沒有特殊能力的船員。\n他們的名字以角色顏色呈現在所有人眼中，讓大家都能看出他們是明星。
 Datahacker.Description,タスクターンに発動する能力を有するクルーメイトです。\nタスクを一定数こなすと、敵対する陣営のプレイヤーが誰かわかります。\nただし、それより少し前に敵対する陣営のプレイヤーから自身がデータハッカーとバレてしまいます。,A Crewmate with an ability that activates during task turns.\nAfter completing a certain number of tasks, they can identify the players from opposing factions.\nHowever, shortly before that, opposing faction players will realize that they are the Datahacker.,
 Santa.Description,タスクターンに使用出来る能力を有するクルーメイトです。\n「プレゼント」ボタンを押すと、対象のプレイヤーをランダムな役職に変更します。\nただし、対象のプレイヤーがクルーメイト以外だった場合、自殺してしまいます。,I am a Crewmate with the ability to use task turns.\nWhen I press the "Present" button， the target player is changed to a random role.\nHowever， if the target player is not a Crewmate， I will commit suicide.,我是一个可以使用任务轮次的船员。\n当我按下“礼物”按钮时，目标玩家将被随机更换为一个角色。\n但是，如果目标玩家不是船员，我就会自杀。,我是一名可以使用任務回合的船員。\n當我按下「禮物」按鈕時，目標玩家會被隨機更換為一個職業。\n但如果目標玩家不是船員，我就會自殺。
-JumpDancer,ジャンプダンサー,Jump Dancer,舞跳者,跳躍舞者
-Celebrity,スター,Celebrity,明星,明星
-WellBehaver,品行方正,WellBehaver
-NiceButtoner,ナイスボタナー,Nice Buttoner
-Mayor,メイヤー,Mayor
-Bakery,パン屋,Bakery
-Balancer,天秤,Balancer
-
+JumpDancer.Description,,
+WellBehaver.Description,,
+NiceNekomata.Description,,
+Pteranodon.Description,,
+NiceButtoner.Description,,
+Mayor.Description,,
+Bakery.Description,,
+VentTrapper.Description,,
+SpeedBooster.Description,,
+NiceTeleporter.Description,,
+Taskmaster.Description,,
+ToiletFan.Description,,
+NiceMechanic.Description,,
+BodyBuilder.Description,,
+HamburgerShop.Description,,
+NiceHawk.Description,,
+WiseMan.Description,,
 
 
 
 # Descriptions_MadRoles
 Madmate.Description,インポスターの味方のクルーメイトです。\nいわゆる狂人と呼ばれる役職です。\n勝利条件はクルーメイトの勝利ではなく、インポスターの勝利です。\nその勝利に自身の生死は問われないので、あの手この手でインポスターを勝利に導きましょう。,A Crewmate allied with the Impostors.\nOften known as the Madmate.\nTheir win condition is not for the Crewmates to win, but for the Impostors to win.\nTheir own survival is irrelevant, so use any means necessary to secure an Impostor victory.,这是一个支持内鬼的船员，也称为疯友角色。\n他们的胜利条件不是船员获胜，而是内鬼获胜，并且他们的生死并不影响胜利。\n所以，尽可能地采用各种手段促成内鬼获胜。,這是一個支持內鬼的船員，俗稱瘋友角色。\n其勝利條件並非船員勝利，而是內鬼勝利，且自身生死不影響結果。\n因此，請用一切手段助內鬼取勝。
 BlackCat.Description,インポスターの味方のクルーメイトです。\nいわゆる狂人と呼ばれる役職です。\n勝利条件はクルーメイトの勝利ではなく、インポスターの勝利です。\nその勝利に自身の生死は問われないので、あの手この手でインポスターを勝利に導きましょう。\nこの役職は、自身が追放された際、誰か一人を道連れにする能力を有します。,A Crewmate allied with the Impostors.\nKnown as the Black Cat—a type of madmate.\nTheir win condition is not a Crewmate victory but an Impostor victory.\nTheir own survival is irrelevant, so use any means necessary to ensure an Impostor win.\nAdditionally, when this role is ejected, it has the ability to take one other player with it.,这是一个支持内鬼的船员，也就是所谓的黑猫角色，一种狂人角色。\n他们的胜利条件不是船员获胜，而是内鬼获胜，而且他们的生死无关紧要。\n请用各种方法促使内鬼获胜。\n该角色在被逐出时，有能力带走一名玩家。,這是一個支持內鬼的船員，亦稱黑貓，屬於瘋友角色之一。\n其勝利條件並非船員勝利，而是內鬼勝利，且自身生死無關緊要。\n請採用各種手段助內鬼取勝。\n此角色在被逐出時，具備帶走一名玩家的能力。
+MadRaccoon.Description,,
 BlackSanta.Description,インポスターの味方のクルーメイトです。\nいわゆる狂人と呼ばれる役職です。\n勝利条件はクルーメイトの勝利ではなく、インポスターの勝利です。\nその勝利に自身の生死は問われないので、あの手この手でインポスターを勝利に導きましょう。\nこの役職は、「プレゼント」ボタンを押すと、対象のプレイヤーをランダムな役職に変更します。\nただし、対象のプレイヤーがインポスター以外だった場合、自殺してしまいます。,I am a Crewmate allied with the Impostors．\nThis role is commonly referred to as the “Madmate”．\nMy win condition is not the Crewmates’ victory，but the Impostors’ victory．\nWhether I live or die does not matter for that outcome，so use every trick in the book to help the Impostors win．\nThis role can press the "Present" button to change the target player into a random role．\nHowever，if the target player is not an Impostor，I will commit suicide．,我是一个站在内鬼一方的船员。\n这个角色也被称为“狂人”。\n我的胜利条件不是船员胜利，而是内鬼胜利。\n无论我生还是死，只要内鬼获胜我就算胜利，所以请想尽办法帮助内鬼取得胜利。\n这个角色按下“礼物”按钮后，会将目标玩家随机更换为一个角色。\n但如果目标玩家不是内鬼，我就会自杀。,我是一名站在內鬼一方的船員。\n這個角色也被稱為「狂人」。\n我的勝利條件不是船員的勝利，而是內鬼的勝利。\n不論我生或死，只要內鬼贏了，我就算獲勝，所以請千方百計協助內鬼取勝。\n這個角色按下「禮物」按鈕後，會將目標玩家隨機更換為一個職業。\n但如果目標玩家不是內鬼，我就會自殺。
-Worshiper,崇拝者,Worshiper,崇拜者,崇拜者
-MadRaccoon,化け狸,MadRaccoon
+Worshiper.Description,,
+SatsumaAndImo.Description,,
+MadHawk.Description,,
 
 
 
@@ -1168,7 +1180,6 @@ PartTimerButtonName,バイト,PartTime,打工,打工
 
 # NiceMechanic
 NiceMechanic,ナイスメカニック,Nice Mechanic,好人机械师,好人機械師
-NiceMechanic.Description,ベントを自分の位置に移動させることができるクルーメイトです。\n能力使用中は透明になり、敵から発見されにくくなります。\n一定時間後、ベントは元の位置に戻ります。,A Crewmate who can move vents to their position.\nWhile using the ability, they become transparent and harder to detect.\nAfter a certain time, the vent returns to its original position.,这是一个可以将通风口移动到自己位置的船员。\n使用能力时会变透明，不易被敌人发现。\n一定时间后，通风口会回到原位。,這是一個可以將通風口移動到自己位置的船員。\n使用能力時會變透明，不易被敵人發現。\n一定時間後，通風口會回到原位。
 NiceMechanicCoolTime,メカニック クールタイム,Mechanic Cool Time,机械师冷却时间,機械師冷卻時間
 NiceMechanicDurationTime,効果持続時間,Effect Duration,效果持续时间,效果持續時間
 NiceMechanicUseVent,ベントを使用できる,Can Use Vent,可以使用通风口,可以使用通風口
@@ -1181,7 +1192,6 @@ EvilMechanicCoolTime,イビルメカニック クールタイム,Evil Mechanic C
 EvilMechanicDurationTime,効果持続時間,Effect Duration,效果持续时间,效果持續時間
 
 # BodyBuilder
-BodyBuilderDescription,<color=#d68f5e>ボディービルダー</color>は全てのタスクを完了した後、\nポージングを行うことができるクルーメイトです。\nポージング中は透明になりますが、移動するとポージングが解除されます。,<color=#d68f5e>BodyBuilder</color> is a crewmate who can pose after completing all tasks.\nWhile posing they become transparent, but moving cancels the pose.,<color=#d68f5e>健身者</color>是一个在完成所有任务后可以摆姿势的船员。\n摆姿势时会变透明，但移动会取消姿势。,<color=#d68f5e>健美運動員</color>是一個在完成所有任務後可以擺姿勢的船員。\n擺姿勢時會變透明，但移動會取消姿勢。
 BodyBuilderChangeAllTaskLiftWeights,全タスクを筋肉に変更,Change All Tasks to Lift Weights,将所有任务改为举重,將所有任務改為舉重
 BodyBuilderTaskOptionAvailable,タスク数を設定,Set Task Numbers,设置任务数量,設置任務數量
 BodyBuilderTaskOption,タスク設定,Task Settings,任务设置,任務設置
@@ -1189,7 +1199,6 @@ BodyBuilderButtonText,ポーズ,Pose,摆姿势,擺姿勢
 BodyBuilderButtonName,ポーズボタン,Pose Button,摆姿势按钮,擺姿勢按鈕
 
 # HamburgerShop
-HamburgerShopDescription,<color=#ffa500>ハンバーガー屋</color>は全てのタスクをハンバーガー作りに変更できるクルーメイトです。\nエアシップのハンバーガー作りタスクが全マップで利用可能になります。,<color=#ffa500>Hamburger Shop</color> is a crewmate who can change all tasks to hamburger making.\nThe Airship's hamburger making task becomes available on all maps.,<color=#ffa500>汉堡店</color>是一个可以将所有任务改为制作汉堡的船员。\n飞艇的制作汉堡任务在所有地图上都可用。,<color=#ffa500>漢堡店</color>是一個可以將所有任務改為製作漢堡的船員。\n飛艇的製作漢堡任務在所有地圖上都可用。
 HamburgerShopChangeAllTasksToBurger,全タスクをハンバーガー作りに変更,Change All Tasks to Hamburger Making,将所有任务改为制作汉堡,將所有任務改為製作漢堡
 HamburgerShopTaskOptionAvailable,タスク数を設定,Set Task Numbers,设置任务数量,設置任務數量
 HamburgerShopTaskOption,タスク設定,Task Settings,任务设置,任務設置
