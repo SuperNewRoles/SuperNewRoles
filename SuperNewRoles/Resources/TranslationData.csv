@@ -8,8 +8,95 @@ Crewmate,クルーメイト,Crewmate,船员,船員
 Neutral,第三陣営,Neutral,第三阵营,第三陣營
 People,{0}人,{0} people,{0}人,{0}人
 
+SidekickRemainingText,残り{0}回,Remaining {0} times,剩余 {0} 次,剩餘 {0} 次
+
+# Colors
+# CustomColors
+colorSalmon,サーモン,Salmon,鲑鱼红,鮭魚紅
+colorBordeaux,ボルドー,Bordeaux,枣红,波爾多紅
+colorOlive,オリーブ,Olive,橄榄绿,橄欖綠
+colorTurqoise,ターコイズ,Turqoise,绿松石,綠松石藍
+colorMint,ミント,Mint,薄荷绿,薄荷綠
+colorLavender,ラベンダー,Lavender,薰衣紫,薰衣紫
+colorNougat,ヌガー,Nougat,棕褐,棕褐
+colorPeach,ピーチ,Peach,桃红,桃紅
+colorWasabi,ワサビ,Wasabi,芥末绿,芥末綠
+colorHotPink,ホットピンク,Hot Pink,热粉,艷粉
+colorPetrol,ペトロールブルー,Petrol Blue,油画蓝,油藍
+colorLemon,レモン,Lemon,柠檬黄,檸檬黃
+colorSignalOrange,シグナルオレンジ,Signal Orange,信号橙,信號橙
+colorTeal,ティール,Teal,蓝绿,青綠
+colorBlurple,ブラープル,Blurple,蓝紫,藍紫
+colorSunrise,サンライズ,Sunrise,日出红,日出紅
+colorIce,アイス,Ice,冰蓝,冰藍
+colorPitchBlack,真っ黒,Pitch Black,纯黑,極黑
+colorDarkmagenta,ダークマゼンタ,Dark Magenta,深品红,深洋紅
+colorMintcream,ミントクリーム,Mint Cream,奶油白,薄荷乳白
+colorLeaf,葉,Leaf,叶绿,葉綠
+colorEmerald,エメラルド,Emerald,翡翠,翡翠
+colorBrightyellow,嫩黄,Bright yellow,嫩黄,濃黃
+colorDarkaqua,濃い水色,Dark aqua,湖绿,湖水綠
+colorMatcha,抹茶,Matcha,抹茶,抹茶
+colorPitchwhite,真っ白,Pitch white,纯白,極白
+colorDarksky,雨空,Dark sky,乌云,雨天
+colorIntenseblue,墨蓝,Intense blue,淡藍
+colorBlueclosertoblack,若黑藍,Blue closer to black,黑蓝,若黑藍
+colorSunkengreenishblue,沈んだ緑みの青,Sunken greenish blue,绿蓝,墮綠藍
+colorAzi,アジ,Azi,竹荚鱼,竹莢魚
+colorPitchred,真っ赤,Pitch red,纯红,極紅
+colorPitchblue,真っ青,Pitch blue,纯蓝,極藍
+colorPitchgreen,真っ緑,Pitch green,纯绿,極綠
+colorPitchyellow,真っ黄色,Pitch yellow,纯黄,極黃
+colorBackblue,影青,Back blue,影青,影青
+colorMildpurple,穏やかな紫,Mild purple,淡紫,溫紫
+colorAshishreddishpurplecolor,灰みの赤紫系の色,Ashish reddish purple color,灰红,灰紅紫
+colorMelon,メロン,Melon,瓜绿,瓜綠
+colorCrasyublue,クラッシュブルー,Crasyu Blue,深海蓝,碧海
+colorLightgreen,ライトグリーン,Light Green,浅绿,亮綠
+colorAzuki,小豆,Azuki,小豆,紅豆
+colorSnow,雪,Snow,雪,雪白
+colorLightMagenta,ライトマゼンタ,LightMagenta,浅品红,淺洋紅
+colorPeachFlower,桃花,PeachFlower,桃花,桃紅
+colorPlum,梅,Plum,梅,梅紅
+colorSkyBlue,青空,SkyBlue,天蓝,天藍
+colorLightCyan,ライトシアン,LightCyan,浅青,淡青
+colorLightOrange,ライトオレンジ,LightOrange,浅橙,亮橘
+colorSprout,新芽,Sprout,新芽,新芽綠
+colorNega,ネガ,Nega,负片滤镜,負片
+colorGold,金色,Gold,金色,金色
+colorWineRed,ワインレッド,WineRed,酒红,酒紅
+colorCrazyRed,クレイジーレッド,CrazyRed,大红,瘋狂紅
+colorTokiwaGreen,常磐緑,TokiwaGreen,常青绿,常磐綠
+colorPosi,ポジ,Posi,正片滤镜,正片
+colorXmasRed,クリスマスレッド,XmasRed,圣诞红,聖誕紅
+colorXmasGreen,クリスマスグリーン,XmasGreen,圣诞绿,聖誕綠
+colorCyberRed,サイバーレッド,CyberRed,赛博红,電馭紅
+colorCyberYellow,サイバーイエロー,CyberYellow,赛博黄,電馭黃
+colorCyberGreen,サイバーグリーン,CyberGreen,赛博绿,電馭綠
+colorCyberBlue,サイバーブルー,CyberBlue,赛博蓝,電馭藍
+colorCyberPurple,サイバーパープル,CyberPurple,赛博紫,電馭紫
+colorHalloweenOrange,ハロウィンオレンジ,HalloweenOrange,万圣橙,萬聖橘
+
+# 情報機器制限
+DeviceOptions,情報機器制限,Device Options,设备限制,設備限制
+DeviceAdminOption,アドミン設定,Admin Settings,管理地图设置,管理地圖設置
+DeviceVitalOrDoorLogOption,バイタル・ドアログ設定,Vital/Doorlog Settings,生命体征/门禁记录设置,生命體徵/門禁記錄設置
+DeviceCameraOption,カメラ設定,Camera Settings,摄像头设置,攝像頭設置
+DeviceOptionType.None,使用可能,Disabled,禁用,禁用
+DeviceOptionType.CantUse,使用不可,Enabled,启用,啟用
+DeviceOptionType.Restrict,時間制限,Time Limit,时间限制,時間限制
+DeviceTimeSettingAdmin,アドミンの制限時間,Admin Limit Time,管理地图限制时间,管理地圖限制時間
+DeviceTimeSettingVitalOrDoorLog,バイタル・ドアログの制限時間,Vital/Doorlog Limit Time,生命体征/门禁记录限制时间,生命體徵/門禁記錄限制時間
+DeviceTimeSettingCamera,カメラの制限時間,Camera Limit Time,摄像头限制时间,攝像頭限制時間
+
 NeutralSubIntro,自分の事だけ考えろ。他人の事は利用せよ。,Think only about yourself. Use others.,只考虑自己。利用他人。,只考慮自己。利用他人。
 
+# GeneralSettings
+KickNonPCPlayers,PC以外をキックする,Kick Non-PC Players,踢出非PC玩家,踢出非PC玩家
+BanNoFriendCodePlayers,フレンドコードを持っていない人をBANする,Ban Players Without Friend Code,封禁没有好友代码的玩家,封禁沒有好友代碼的玩家
+
+# GameSettings
+CannotTaskTrigger,タスクに関係ない役職の場合、タスクをできなくする,If the role is not related to the task, the task cannot be done,如果角色与任务无关，则无法完成任务,如果角色與任務無關，則無法完成任務
 
 # RoleOptionMenu
 RoleOptionMenuType.Impostor,インポスター,Impostor,内鬼,內鬼
@@ -28,6 +115,16 @@ ModeSettings,モード設定,Mode Settings,模式设置,模式設定
 GameSettings,ゲーム設定,Game Settings,游戏设置,遊戲設定
 MapSettings,マップ設定,Map Settings,地图设置,地圖設定
 MapEditSettings,マップ改造,Map Edit Settings,地图改造,地圖改造
+WireTaskIsRandom,配線タスクランダム,Random Wire Task,随机接线任务,隨機接線任務
+WireTaskNum,配線タスク数,Number of Wire Tasks,接线任务数量,接線任務數量
+DisableModColor,MODカラー禁止,Disable MOD Colors,禁用MOD颜色,禁用MOD顏色
+AirshipSetting,Airship 設定,Airship Settings,飞艇设置,飛艇設置
+AirshipRandomSpawn,ランダムスポーン,Random Spawn,随机出生点,隨機出生點
+RecordsAdminDestroy,アーカイブアドミン封印,Seal Records Admin,封印档案室管理地图,封印檔案室管理地圖
+AntiTaskOverWall,壁越しタスク禁止,Disable Tasks Through Walls,禁止隔墙任务,禁止隔牆任務
+ModifyGapRoomOneWayShadow,昇降機の影変更,Modify Gap Room Shadow,修改升降机阴影,修改升降機陰影
+GapRoomShadowIgnoresImpostors,インポスターは下から上を見れる,Impostors Can See Up From Below,内鬼可以从下方看到上方,內鬼可以從下方看到上方
+DisableGapRoomShadowForNonImpostor,インポスターは上から下を見れる,Impostors Can See Down From Above,内鬼可以从上方看到下方,內鬼可以從上方看到下方
 PresetDefault,プリセット {0},Preset {0},预设 {0},預設 {0}
 PresetSelected,プリセット {0},Preset {0},预设 {0},預設 {0}
 AddPreset,プリセットを追加,Add Preset,新增预设,新增預設
@@ -44,9 +141,9 @@ ExclusivityOptionMenuGroupText,グループ {0},Group {0},群組 {0},群組 {0}
 ExclusivityEditMenuTitle,排他設定の編集,Edit Exclusivity Settings,编辑排他设置,編輯排他設置
 ExclusivityEditMenuGroupTitle,グループ {0}の設定,Group {0} Settings,组 {0} 设置,組 {0} 設置
 DebugMode,デバッグモード,Debug Mode,偵錯模式,偵錯模式
-CustomOptionTask_Short,短いタスク,Short Tasks,短任務,短任務
-CustomOptionTask_Long,長いタスク,Long Tasks,长任務,長任務
-CustomOptionTask_Common,共通タスク,Common Tasks,共同任務,共同任務
+CustomOptionTask_Short,ショートタスク,Short Tasks,短任務,短任務
+CustomOptionTask_Long,ロングタスク,Long Tasks,长任務,長任務
+CustomOptionTask_Common,通常タスク,Common Tasks,共同任務,共同任務
 SkipStartGameCountdown,ゲーム開始カウントダウンをスキップ,Skip Game Start Countdown,跳过游戏开始倒计时,跳過遊戲開始倒計時
 CustomOptionTrue,有効,Enabled,启用,啟用
 CustomOptionFalse,無効,Disabled,无效,无效
@@ -110,6 +207,17 @@ WaveCannonJackal,波動砲ジャッカル,Wave Cannon Jackal,波动炮杰克,波
 Tuna,マグロ,Tuna,金枪鱼,金槍魚
 Teruteru,てるてる,Teruteru,特鲁特鲁,特魯特魯
 Opportunist,オポチュニスト,Opportunist,机会主义者,機會主義者
+Chief,村長,Chief,村长,村長
+Workperson,仕事人,Workperson,工作人员,工作人員
+SerialKiller,シリアルキラー,Serial Killer,连环杀手,連環殺手
+PavlovsOwner,パブロフのオーナー,Pavlov's Owner,帕夫洛夫的主人,帕夫洛夫的主人
+PavlovsDog,パブロフの犬,Pavlov's Dog,帕夫洛夫的狗,帕夫洛夫的狗
+SideKiller,サイドキラー,SideKiller,边缘杀手,邊緣殺手
+MadKiller,マッドキラー,MadKiller,疯狂杀手,瘋狂殺手
+EvilGambler,イビルギャンブラー,Evil Gambler,,
+HomeSecurityGuard,自宅警備員,Home Security Guard,家庭安保员,家庭安保員
+Seer,シーア,Seer,预言家,預言家
+Vulture,ヴァルチャー,Vulture,秃鹫,禿鷲
 
 # Sheriff Options
 SheriffKillCooldown,キルクールタイム,Kill Cooldown,杀人冷却时间,殺人冷卻時間
@@ -121,11 +229,16 @@ NiceGuesserMaxShots,打てる最大数,Maximum Number of Shots,最大射击次�
 NiceGuesserShotsPerMeeting,1会議に打てる回数,Shots Per Meeting,每次会议射击次数,每次會議射擊次數
 NiceGuesserCannotShootCrewmate,クルーメイトを打てない,Cannot Shoot Crewmate,不能射击船员,不能射擊船員
 NiceGuesserCannotShootStar,スターを打てない,Cannot Shoot Star,不能射击星星,不能射擊星星
+NiceGuesserLimitedTurns,撃てないターンを制限する,Limit Turns Cannot Shoot,限制不能射击的回合,限制不能射擊的回合
+NiceGuesserLimitedTurnsCount,ターン数,Number of Turns,回合数,回合數
 EvilGuesserMaxShots,打てる最大数,Maximum Number of Shots,最大射击次数,最大射擊次數
 EvilGuesserShotsPerMeeting,1会議に打てる回数,Shots Per Meeting,每次会议射击次数,每次會議射擊次數
 EvilGuesserCannotShootImpostor,インポスターを打てない,Cannot Shoot Impostor,不能射击内鬼,不能射擊內鬼
 EvilGuesserCannotShootStar,スターを打てない,Cannot Shoot Star,不能射击星星,不能射擊星星
 EvilGuesserCannotShootCrewmate,クルーメイトを打てない,Cannot Shoot Crewmate,不能射击船员,不能射擊船員
+EvilGuesserLimitedTurns,撃てないターンを制限する,Limit Turns Cannot Shoot,限制不能射击的回合,限制不能射擊的回合
+EvilGuesserLimitedTurnsCount,ターン数,Number of Turns,回合数,回合數
+GuesserLimitText,残り発数：{0}回({1}回),Guesser Limit: {0} shots ({1} this meeting),猜疑者总剩余：{0}次(本次会议：{1}次),猜疑者總剩餘：{0}次(本次會議：{1}次)
 
 # Guesser UI
 NextPage,次へ,Next,下一页,下一頁
@@ -150,6 +263,7 @@ JackalSidekickCooldown,サイドキック 作成クールダウン,Sidekick Cool
 JackalSidekickType,サイドキックタイプ,Sidekick Type,边缘队员类型,邊緣隊員類型
 JackalSidekickType.Sidekick,サイドキック,Sidekick,边缘队员,邊緣隊員
 JackalSidekickType.Friends,ジャッカルフレンズ,Jackal Friends,杰克朋友,傑克朋友
+SidekickButtonText,サイドキック,Sidekick,边缘队员,邊緣隊員
 
 # Bait Options
 BaitReportTime,通報の遅延,Report Delay,通報延遲,通報延遲
@@ -173,26 +287,26 @@ BalancerAbilityUseText,能力發動,Ability activated,能力發動,能力發動
 BalancerVoteText,どちらかに投票せよ！,Vote for one or the other!,请选择一名玩家投票！,將票投給其中一邊！
 BalancerDoubleExileText,どちらも追放された...,Both were exiled...,两名玩家都被驱逐了...,兩名玩家都被驅逐了...
 BalancerOnePlayerDeadText,こうなる運命だったのだ...,It was destined to be this way...,这就是命运...,這就是命運...
-BalancerRandomVoteWhenNoVote,未投票時ランダムに投票する,Random Vote When No Vote,未投票时随机投票,未投票時隨機投票
+BalancerRandomVoteWhenNoVote,未投票時ランダムに投票する,Random Vote When No Vote,未投票時随机投票,未投票時隨機投票
+BalancerLimitText,天秤残り{0}回,Balancer Limit {0} times,天秤剩余{0}次,天秤剩餘{0}次
 
 # SelfBomber
 SelfBomberKillButtonText,爆発,Explosion,爆炸,爆炸
 SelfBomberCooldown,爆発クールダウン,Explosion Cooldown,爆炸冷却时间,爆炸冷卻時間
 SelfBomberExplosionRadius,爆発範囲,Explosion Radius,爆炸范围,爆炸範圍
-SelfBomberOnlyKillCrewmates,クルーメイトのみを爆発する,Only Kill Crewmates,只能杀船员,只能殺船員
+SelfBomberOnlyKillCrewmates,インポスターはキルしない,Only Kill Crewmates,只能杀船员,只能殺船員
 SelfBomberIgnoreWalls,壁を無視する,Ignore Walls,忽略墙壁,忽略牆壁
 
 # Samurai
 SamuraiKillButtonText,必殺技,Slash,斬擊,斬擊
 SamuraiKillCooldown,必殺技クールダウン,Slash Cooldown,斬擊冷卻時間,斬擊冷卻時間
 SamuraiKillRadius,必殺技の範囲,Slash Radius,斬擊範圍,斬擊範圍
-SamuraiOnlyKillCrewmates,クルーメイトのみを必殺技する,Only Kill Crewmates,只能杀船员,只能殺船員
+SamuraiOnlyKillCrewmates,インポスターはキルしない,Only Kill Crewmates,只能杀船员,只能殺船員
 SamuraiIgnoreWalls,壁を無視する,Ignore Walls,忽略墙壁,忽略牆壁
 SamuraiCanUseVent,ベントを使用できる,Can Use Vents,可以使用通风口,可以使用通風口
 SamuraiCanSabotage,サボタージュを使用できる,Can Sabotage,可以使用破坏,可以使用破壞
 
 # WaveCannon
-WaveCannonButtonText,波動砲,Wave Cannon,波动炮,波動砲
 WaveCannonCooldown,波動砲クールダウン,Wave Cannon Cooldown,波动炮冷却时间,波動砲冷卻時間
 WaveCannonDuration,波動砲の充填時間,Wave Cannon Fill Time,波动炮充填时间,波動砲充填時間
 WaveCannonSyncKillCoolTime,波動砲とキルボタンのクールタイムを同期する,Sync the Wave Cannon and Kill Button Cooldowns,同步波动炮和击杀按钮冷却时间,同步波動砲和殺人按鈕冷卻時間
@@ -201,6 +315,7 @@ WaveCannonAnimationType.Tank,戦車,Tank,战车,戰車
 WaveCannonAnimationType.Cannon,大砲,Cannon,大炮,大砲
 WaveCannonAnimationType.Santa,サンタ,Santa,圣诞老人,聖誕老人
 WaveCannonAnimationType.Bullet,弾丸,Bullet,子弹,子彈
+WaveCannonButtonText,波動砲,Wave Cannon,波动炮,波動砲
 
 # WaveCannonJackal
 WaveCannonJackalKillCooldown,キルクールダウン,Kill Cooldown,杰克击杀冷却时间,傑克殺人冷卻時間
@@ -229,3 +344,122 @@ RoleDictionary,役職辞典,Role Dictionary,角色词典,角色詞典
 ImpostorButton,インポスター,Impostor,内鬼,內鬼
 NeutralButton,第三陣営,Neutral,第三阵营,第三陣營
 CrewmateButton,クルーメイト,Crewmate,船员,船員
+
+# Chief
+ChiefDescription,任命：1試合に一度だけ対象をシェリフに任命することが出来ます。インポスターを任命した場合は自身が死亡します。,Appointment: Once per game, you can appoint a target as Sheriff. If you appoint an Impostor, you will die.,任命：每局游戏仅能任命一名玩家为警长。若任命内鬼，你将死亡。,任命：每局遊戲僅能任命一名玩家為警長。若任命內鬼，你將死亡。
+ChiefAppoint,任命,Appoint,任命,任命
+ChiefSheriffKillCooldown,任命されたシェリフのキルクールタイム,Appointed Sheriff Kill Cooldown,任命警长的击杀冷却时间,任命警長的擊殺冷卻時間
+ChiefSheriffMaxKillCount,任命されたシェリフの最大キル数,Appointed Sheriff Max Kill Count,任命警长的最大击杀次数,任命警長的最大擊殺次數
+ChiefSheriffCanKillImpostor,インポスターをキル出来る,Can Kill Impostor,能击杀内鬼,能擊殺內鬼
+ChiefSheriffCanKillMadRoles,マッドロールをキル出来る,Can Kill Mad Roles,能击杀背叛者,能擊殺背叛者
+ChiefSheriffCanKillNeutral,第三陣営をキル出来る,Can Kill Neutral,能击杀第三阵营,能擊殺第三陣營
+ChiefSheriffCanKillFriendRoles,フレンド系の役職をキル出来る,Can Kill Friend Roles,能击杀友方角色,能擊殺友方角色
+ChiefSheriffCanKillLovers,ラバーズをキル出来る,Can Kill Lovers,能击杀恋人,能擊殺戀人
+ChiefAppointCooldown,任命のクールタイム,Appointment Cooldown,任命冷却时间,任命冷卻時間
+ChiefCanSeeCreatedSheriff,作成したシェリフがわかる,Can See Created Sheriff,能看到已任命的警长,能看到已任命的警長
+
+# Workperson
+WorkpersonNeedAliveToWin,生存していないと勝利出来ない,Need Alive To Win,需要存活才能获胜,需要存活才能獲勝
+WorkpersonUseCustomTaskSetting,タスク数を固有で設定するか,Use Custom Task Setting,是否使用自定义任务设置,是否使用自定義任務設置
+WorkpersonDesc,タスクを全て完了すると単独勝利します。,Win alone by completing all tasks.,完成所有任务后单独获胜。,完成所有任務後單獨獲勝。
+WorkpersonCanUseVent,ベントに入れる,Can Use Vent,可以使用通风口,可以使用通風口
+
+# SerialKiller
+SerialKillerResetOnMeeting,会議に入るとリセットされる,Reset on Meeting,会议时重置,會議時重置
+SerialKillerKillCooldown,キルクールタイム,Kill Cooldown,杀人冷却时间,殺人冷卻時間
+SerialKillerSuicideTime,自殺までの時間,Time Until Suicide,自杀前的时间,自殺前的時間
+SerialKillerCanUseVent,ベントを使用できる,Can Use Vents,可以使用通风口,可以使用通風口
+SerialKillerCanSabotage,サボタージュを使用できる,Can Sabotage,可以使用破坏,可以使用破壞
+SerialKillerSuicideText,自殺まで{0}秒,Suicide in {0} seconds,自杀前{0}秒,自殺前{0}秒
+
+# Pavlovs
+PavlovsOwnerCanUseVent,オーナーがベントを使用できる,Owner can use vents,主人可以使用通风口,主人可以使用通風口
+PavlovsOwnerSidekickCooldown,指名のクールタイム,Appointment Cooldown,指定冷却时间,指定冷卻時間
+PavlovsOwnerMaxSidekickCount,1試合内に指名できる回数,Maximum Appointments per Game,每局游戏最大指定次数,每局遊戲最大指定次數
+PavlovsOwnerSuicideOnImpostorSidekick,インポスターを指名すると自爆する,Suicide when Appointing Impostor,指定内鬼时自杀,指定內鬼時自殺
+PavlovsOwnerIsImpostorVision,オーナーがインポスターの視界,Owner has Impostor Vision,主人拥有内鬼视野,主人擁有內鬼視野
+PavlovsDogButtonText,刷り込み,Conditioning,条件反射,條件反射
+PavlovsDogCanUseVent,犬がベントを使用できる,Dog can use vents,狗可以使用通风口,狗可以使用通風口
+PavlovsDogIsImpostorVision,犬がインポスターの視界,Dog has Impostor Vision,狗拥有内鬼视野,狗擁有內鬼視野
+PavlovsDogKillCooldown,犬のキルクールタイム,Dog's Kill Cooldown,狗的击杀冷却时间,狗的擊殺冷卻時間
+PavlovsDogRampageKillCooldown,暴走時のキルクールタイム,Rampage Kill Cooldown,暴走时的击杀冷却时间,暴走時的擊殺冷卻時間
+PavlovsDogRampageSuicideTime,暴走時の自爆タイム,Rampage Suicide Time,暴走时的自杀时间,暴走時的自殺時間
+PavlovsDogResetSuicideTimeOnMeeting,会議で自爆タイムをリセットする,Reset Suicide Timer on Meeting,会议时重置自杀计时器,會議時重置自殺計時器
+
+# SideKiller
+SideKillerSidekickButtonName,浸食する,Infect,感染,感染
+SideKillerKillCooldown,サイドキラーのクールタイム,SideKiller Cooldown,边缘杀手冷却时间,邊緣殺手冷卻時間
+MadKillerKillCooldown,マッドキラーのクールタイム,MadKiller Cooldown,疯狂杀手冷却时间,瘋狂殺手冷卻時間
+MadKillerCanUseVent,マッドキラーがベントを使用出来る,MadKiller Can Use Vent,疯狂杀手可以使用通风口,瘋狂殺手可以使用通風口
+MadKillerHasImpostorVision,マッドキラーが人外視野,MadKiller Has Impostor Vision,疯狂杀手拥有内鬼视野,瘋狂殺手擁有內鬼視野
+CannotSeeMadKillerBeforePromotion,昇格前のマッドキラーを視認できない,Cannot See MadKiller Before Promotion,无法在晋升前看到疯狂杀手,無法在晉升前看到瘋狂殺手
+
+# EvilGambler
+EvilGamblerSuccessKillCooldown,成功時のキルクールタイム,Success Kill Cooldown,成功时的击杀冷却时间,成功時的擊殺冷卻時間
+EvilGamblerFailureKillCooldown,失敗時のキルクールタイム,Failure Kill Cooldown,失败时的击杀冷却时间,失敗時的擊殺冷卻時間
+EvilGamblerSuccessChance,成功確率,Success Chance,成功概率,成功機率
+
+# Seer
+Seer.Mode,モード,Mode,模式,模式
+Seer.Mode.Both,両方,Both,两者,兩者
+Seer.Mode.FlashOnly,死の点滅のみ,Flash Only,仅死亡闪光,僅死亡閃光
+Seer.Mode.SoulOnly,霊魂のみ,Soul Only,仅灵魂,僅靈魂
+Seer.LimitSoulDuration,霊魂の表示時間を制限する,Limit Soul Duration,限制灵魂显示时间,限制靈魂顯示時間
+Seer.SoulDuration,霊魂の表示時間,Soul Duration,灵魂显示时间,靈魂顯示時間
+
+# Role Names
+Celebrity,スター,Celebrity,明星,明星
+CelebrityIntro,みんなのスター！！,The Celebrity!!,大家的明星！！,大家的明星！！
+CelebrityDescription,みんなから自分がスターと分かります\n周囲は縋るその希望に\n信じた結果齎す事など考えもせず,Everyone knows you're a Celebrity\nOthers cling to that hope\nWithout considering what trusting would bring,每个人都知道你是明星\n周围人都依靠着那份希望\n却从未想过相信的后果,每個人都知道你是明星\n周圍人都依靠著那份希望\n卻從未想過相信的後果
+
+# Celebrity Role Settings
+CelebrityKeepNameColorAfterRoleChange,役職が変わっても名前の色がスターのままになる,Keep name color as Celebrity even if role changes,即使角色改变也保持明星姓名颜色,即使角色改變也保持明星姓名顏色
+CelebrityEnableGlowEffect,タスクフェイズ中、設定したキルクール秒数毎に画面を光らせるか,Enable screen glow effect every kill cooldown during task phase,是否在任务阶段每次击杀冷却结束时闪亮屏幕,是否在任務階段每次擊殺冷卻結束時閃亮屏幕
+CelebrityGlowOnlyWhileAlive,画面が光るのは生きている間のみか(会議更新),Screen glows only while alive (updates on meeting),屏幕仅在活着时闪烁（会议更新）,螢幕僅在活著時閃爍（會議更新）
+
+# Vulture
+VultureCooldown,ヴァルチャークールダウン,Vulture Cooldown,秃鹫冷却时间,禿鷲冷卻時間
+VultureRequiredBodies,勝利死体数,Required Bodies for Win,胜利所需尸体数,勝利所需屍體數
+VultureCanUseVent,ベントに入れる,Can Use Vent,可以使用通风口,可以使用通風口
+VultureShowArrows,死体を指す矢印を表示する,Show Arrows to Dead Bodies,显示指向尸体的箭头,顯示指向屍體的箭頭
+VultureEatButton,食らう,Eat,吞食,吞食
+
+# マップ設定関連
+VentAnimationPlaySetting,ベントアニメーションを有効にする,Enable Vent Animation,启用通风口动画,啟用通風口動畫
+ReactorDurationSetting,緊急タスク継続時間の設定,Reactor Duration Settings,紧急任务持续时间设置,緊急任務持續時間設置
+SkeldReactorTime,The Skeld リアクター継続時間,The Skeld Reactor Duration,The Skeld 反应堆持续时间,The Skeld 反應堆持續時間
+SkeldLifeSuppTime,The Skeld 酸素継続時間,The Skeld Oxygen Duration,The Skeld 氧气持续时间,The Skeld 氧氣持續時間
+MiraReactorTime,MIRA HQ リアクター継続時間,MIRA HQ Reactor Duration,MIRA HQ 反应堆持续时间,MIRA HQ 反應堆持續時間
+MiraLifeSuppTime,MIRA HQ 酸素継続時間,MIRA HQ Oxygen Duration,MIRA HQ 氧气持续时间,MIRA HQ 氧氣持續時間
+PolusReactorTime,Polus リアクター継続時間,Polus Reactor Duration,Polus 反应堆持续时间,Polus 反應堆持續時間
+AirshipReactorTime,Airship リアクター継続時間,Airship Reactor Duration,Airship 反应堆持续时间,Airship 反應堆持續時間
+FungleReactorTime,The Fungle リアクター継続時間,The Fungle Reactor Duration,The Fungle 反应堆持续时间,The Fungle 反應堆持續時間
+LadderCoolChangeSetting,梯子クールダウンの設定,Ladder Cooldown Settings,梯子冷却时间设置,梯子冷卻時間設置
+LadderCoolTimeSetting,梯子クールダウン時間,Ladder Cooldown Time,梯子冷却时间,梯子冷卻時間
+LadderImpostorCoolChangeSetting,インポスター用梯子クールダウンの設定,Impostor Ladder Cooldown Settings,内鬼梯子冷却时间设置,內鬼梯子冷卻時間設置
+LadderImpostorCoolTimeSetting,インポスター用梯子クールダウン時間,Impostor Ladder Cooldown Time,内鬼梯子冷却时间,內鬼梯子冷卻時間
+ZiplineCoolChangeSetting,ジップラインクールダウンの設定,Zipline Cooldown Settings,滑索冷却时间设置,滑索冷卻時間設置
+ZiplineCoolTimeSetting,ジップラインクールダウン時間,Zipline Cooldown Time,滑索冷却时间,滑索冷卻時間
+ZiplineImpostorCoolChangeSetting,インポスター用ジップラインクールダウンの設定,Impostor Zipline Cooldown Settings,内鬼滑索冷却时间设置,內鬼滑索冷卻時間設置
+ZiplineImpostorCoolTimeSetting,インポスター用ジップラインクールダウン時間,Impostor Zipline Cooldown Time,内鬼滑索冷却时间,內鬼滑索冷卻時間
+FungleHandler.FungleSpawnType.Default,通常,Default,默认,預設
+FungleHandler.FungleSpawnType.Random,ランダム,Random,随机,隨機
+FungleHandler.FungleSpawnType.Select,選択,Select,选择,選擇
+TheFungleSetting,The Fungle設定,The Fungle Settings,The Fungle设置,The Fungle設置
+TheFungleSpawnType,スポーンタイプ,Spawn Type,出生点类型,出生點類型
+TheFungleAdditionalAdmin,追加アドミン,Additional Admin,额外管理地图,額外管理地圖
+TheFunglePowerOutageSabotage,停電サボタージュ,Power Outage Sabotage,停电破坏,停電破壞
+TheFungleHideSporeMask,胞子マスク非表示,Hide Spore Mask,隐藏孢子面具,隱藏孢子面具
+TheFungleHideSporeMaskOnlyImpostor,インポスターのみ非表示,Hide Only for Impostor,僅对内鬼隐藏,僅對內鬼隱藏
+
+# ゲッサートロフィー
+GuesserPerfectShot,完璧なショット,Perfect Shot,完美射击,完美射擊
+GuesserPerfectShotDescription,1回のミーティングで外さずに撃つ,Shoot without missing in a meeting,在一次会议中不失手射击,在一次會議中不失手射擊
+GuesserTripleKill,トリプルキル,Triple Kill,三连杀,三連殺
+GuesserTripleKillDescription,1回のミーティングで3人以上正確に撃つ,Accurately shoot at least 3 people in a meeting,在一次会议中精确射击至少3人,在一次會議中精確射擊至少3人
+GuesserImpostorHunter,インポスターハンター,Impostor Hunter,内鬼猎人,內鬼獵人
+GuesserImpostorHunterDescription,インポスターを3人以上正確に撃つ,Accurately shoot at least 3 impostors,精确射击至少3个内鬼,精確射擊至少3個內鬼
+GuesserFirstMeetingKill,初戦の勝利,First Meeting Victory,首次会议胜利,首次會議勝利
+GuesserFirstMeetingKillDescription,最初の会議で誰かを正確に撃つ,Accurately shoot someone in the first meeting,在第一次会议中精确射击某人,在第一次會議中精確射擊某人
+GuesserSharpshooter,鋭い射手,Sharpshooter,神射手,神射手
+GuesserSharpshooterDescription,連続で5回成功させる,Successfully shoot 5 times in a row,连续成功射击5次,連續成功射擊5次

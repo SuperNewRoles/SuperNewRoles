@@ -4,6 +4,9 @@ using System.Linq;
 using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
+using System.Collections;
+using System.Collections.Generic;
+using System.Threading;
 using AmongUs.Data;
 using BepInEx;
 using BepInEx.Unity.IL2CPP;
@@ -19,6 +22,11 @@ using SuperNewRoles.CustomOptions;
 using UnityEngine.EventSystems;
 using SuperNewRoles.Modules.Events.Bases;
 using SuperNewRoles.HelpMenus;
+using SuperNewRoles.MapCustoms;
+using SuperNewRoles.SuperTrophies;
+using SuperNewRoles.CustomCosmetics.UI;
+using SuperNewRoles.CustomCosmetics;
+using SuperNewRoles.CustomCosmetics.CosmeticsPlayer;
 
 namespace SuperNewRoles;
 
@@ -29,25 +37,32 @@ namespace SuperNewRoles;
 [BepInIncompatibility("me.yukieiji.extremeroles")]
 [BepInIncompatibility("com.tugaru.TownOfPlus")]
 [BepInIncompatibility("com.emptybottle.townofhost")]
-[BepInIncompatibility("jp.ykundesu.agartha")]
+// [BepInIncompatibility("jp.ykundesu.agartha")]
 public partial class SuperNewRolesPlugin : BasePlugin
 {
     public Harmony Harmony { get; } = new Harmony(PluginConfig.Id);
     public static SuperNewRolesPlugin Instance;
     public static ManualLogSource Logger { get; private set; }
 
+    public static int MainThreadId { get; private set; }
+    private readonly List<Action> _mainThreadActions = new();
+    private readonly object _mainThreadActionsLock = new();
+
     public static bool IsEpic => Constants.GetPurchasingPlatformType() == PlatformConfig.EpicGamesStoreName;
 
     public override void Load()
     {
+        MainThreadId = Thread.CurrentThread.ManagedThreadId;
         Logger = Log;
         Instance = this;
         RegisterCustomObjects();
         Task task = Task.Run(() => Harmony.PatchAll());
+
         if (!Directory.Exists("./SuperNewRolesNext"))
         {
             Directory.CreateDirectory("./SuperNewRolesNext");
         }
+
         CustomRoleManager.Load();
         AssetManager.Load();
         ModTranslation.Load();
@@ -55,6 +70,11 @@ public partial class SuperNewRolesPlugin : BasePlugin
         CustomOptionManager.Load();
         SyncVersion.Load();
         EventListenerManager.Load();
+        SuperTrophyManager.Load();
+        CustomCosmeticsSaver.Load();
+        CustomColors.Load();
+
+        Logger.LogInfo("Waiting for Harmony patch");
         task.Wait();
         Logger.LogInfo("SuperNewRoles loaded");
         Logger.LogInfo("--------------------------------");
@@ -66,8 +86,51 @@ public partial class SuperNewRolesPlugin : BasePlugin
         ClassInjector.RegisterTypeInIl2Cpp<RightClickDetector>();
         ClassInjector.RegisterTypeInIl2Cpp<FadeCoroutine>();
         ClassInjector.RegisterTypeInIl2Cpp<HelpMenuObjectComponent>();
+        ClassInjector.RegisterTypeInIl2Cpp<GotTrophyUI.SlideAnimator>();
+        ClassInjector.RegisterTypeInIl2Cpp<CustomCosmeticsCostumeSlot>();
+        ClassInjector.RegisterTypeInIl2Cpp<CustomHatLayer>();
+        ClassInjector.RegisterTypeInIl2Cpp<CustomVisorLayer>();
     }
 
+    public void ExecuteInMainThread(Action action)
+    {
+        if (Thread.CurrentThread.ManagedThreadId == MainThreadId)
+        {
+            action();
+        }
+        else
+        {
+            lock (_mainThreadActionsLock)
+            {
+                _mainThreadActions.Add(action);
+            }
+        }
+    }
+
+    public void Update()
+    {
+        if (_mainThreadActions.Count > 0)
+        {
+            List<Action> actionsToExecute;
+            lock (_mainThreadActionsLock)
+            {
+                actionsToExecute = new List<Action>(_mainThreadActions);
+                _mainThreadActions.Clear();
+            }
+
+            foreach (var action in actionsToExecute)
+            {
+                try
+                {
+                    action();
+                }
+                catch (Exception e)
+                {
+                    Logger.LogError($"Error executing action on main thread: {e}");
+                }
+            }
+        }
+    }
 
     // https://github.com/yukieiji/ExtremeRoles/blob/master/ExtremeRoles/Patches/Manager/AuthManagerPatch.cs
     [HarmonyPatch(typeof(AuthManager), nameof(AuthManager.CoConnect))]

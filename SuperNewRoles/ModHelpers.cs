@@ -4,6 +4,7 @@ using System.Linq;
 using System.Runtime.InteropServices;
 using System.Security.Cryptography;
 using System.Text;
+using BepInEx.Unity.IL2CPP.Utils.Collections;
 using Hazel;
 using SuperNewRoles.Modules;
 using UnityEngine;
@@ -193,5 +194,71 @@ public static class ModHelpers
         writer.Buffer[writer.Position++] = (byte)(value >> 48);
         writer.Buffer[writer.Position++] = (byte)(value >> 56);
         if (writer.Position > writer.Length) writer.Length = writer.Position;
+    }
+    public static int GetRandomIndex<T>(List<T> list)
+    {
+        return UnityEngine.Random.Range(0, list.Count);
+    }
+    /// <summary>
+    /// 2つの位置が指定された距離以内かどうかを確認します
+    /// </summary>
+    /// <param name="pos">位置1</param>
+    /// <param name="pos2">位置2</param>
+    /// <param name="distance">最大距離</param>
+    /// <returns>距離以内の場合はtrue</returns>
+    public static bool IsPositionDistance(Vector2 pos, Vector2 pos2, float distance)
+    {
+        float dis = Vector2.Distance(pos, pos2);
+        return dis <= distance;
+    }
+
+    /// <summary>
+    /// リストからランダムな要素を取得します
+    /// </summary>
+    /// <typeparam name="T">リストの型</typeparam>
+    /// <param name="list">リスト</param>
+    /// <returns>ランダムな要素</returns>
+    public static T GetRandom<T>(this List<T> list)
+    {
+        if (list == null || list.Count == 0) return default;
+        return list[UnityEngine.Random.Range(0, list.Count)];
+    }
+
+    /// <summary>
+    /// リストからランダムなインデックスを取得します
+    /// </summary>
+    /// <typeparam name="T">リストの型</typeparam>
+    /// <param name="list">リスト</param>
+    /// <returns>ランダムなインデックス</returns>
+    public static int GetRandomIndex<T>(this IEnumerable<T> list)
+    {
+        var array = list as T[] ?? list.ToArray();
+        return UnityEngine.Random.Range(0, array.Length);
+    }
+    public static IEnumerable<T> GetSystemEnumerable<T>(this Il2CppSystem.Collections.IEnumerable list)
+    {
+        var castedList = list.WrapToManaged().OfType<T>();
+        foreach (var item in castedList)
+        {
+            yield return item;
+        }
+    }
+    public static IEnumerable<T> GetSystemEnumerable<T>(this Il2CppSystem.Collections.Generic.IEnumerable<T> list)
+    {
+        return GetSystemEnumerable<T>(list.TryCast<Il2CppSystem.Collections.IEnumerable>());
+    }
+    public static T TryGetIndex<T>(this List<T> list, int index)
+    {
+        if (index < 0 || index >= list.Count) return default;
+        return list[index];
+    }
+    public static T TryGetIndex<T>(this T[] array, int index)
+    {
+        if (index < 0 || index >= array.Length) return default;
+        return array[index];
+    }
+    public static byte ParseToByte(this string str)
+    {
+        return byte.Parse(str);
     }
 }

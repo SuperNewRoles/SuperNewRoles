@@ -12,6 +12,8 @@ public static class CustomRoleManager
     public static Dictionary<int, IRoleBase> AllRolesByRoleId { get; private set; }
     public static void Load()
     {
+        SuperNewRolesPlugin.Logger.LogInfo("[Splash] Loading Roles...");
+        int loadedRoles = 0;
         AllRoles = Assembly.GetExecutingAssembly().GetTypes()
             // まずIRoleBaseインターフェースを実装している型を取得
             .Where(type => typeof(IRoleBase).IsAssignableFrom(type))
@@ -22,7 +24,8 @@ public static class CustomRoleManager
             // さらにBaseSingletonがついている型なので、BaseSingleton<T>のInstanceプロパティを取得する
             .Select(type =>
             {
-                Logger.Info($"Loading role: {type.FullName}");
+                loadedRoles++;
+                SuperNewRolesPlugin.Logger.LogInfo($"[Splash] Loading role {loadedRoles}: {type.Name}");
                 var baseSingletonType = typeof(BaseSingleton<>).MakeGenericType(type);
                 var instanceProperty = baseSingletonType.GetProperty("Instance", System.Reflection.BindingFlags.Public | System.Reflection.BindingFlags.Static);
                 if (instanceProperty == null)
@@ -33,6 +36,7 @@ public static class CustomRoleManager
             })
             .ToArray();
         AllRolesByRoleId = AllRoles.ToDictionary(role => (int)role.Role);
+        SuperNewRolesPlugin.Logger.LogInfo($"[Splash] Role loading complete ({loadedRoles} roles)");
     }
     public static IRoleBase GetRoleById(RoleId roleId)
     {

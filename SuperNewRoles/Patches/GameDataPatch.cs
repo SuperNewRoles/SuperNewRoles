@@ -15,9 +15,9 @@ public static class GameDataRecomputeTaskCountsPatch
         foreach (var player in ExPlayerControl.ExPlayerControls)
         {
             NetworkedPlayerInfo playerInfo = player.Data;
-            if (player.roleBase?.WinnerTeam == WinnerTeamType.Crewmate)
+            if (player.roleBase?.WinnerTeam == WinnerTeamType.Crewmate && player.IsTaskTriggerRole())
             {
-                var (playerCompleted, playerTotal) = ModHelpers.TaskCompletedData(playerInfo);
+                var (playerCompleted, playerTotal) = player.GetAllTaskForShowProgress();
                 __instance.TotalTasks += playerTotal;
                 __instance.CompletedTasks += playerCompleted;
             }

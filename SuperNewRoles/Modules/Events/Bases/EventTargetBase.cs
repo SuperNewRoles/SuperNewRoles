@@ -13,9 +13,28 @@ namespace SuperNewRoles.Modules.Events.Bases;
 /// </summary>
 public abstract class EventTargetBase<T, U> : InternalEventTargetBase<T, EventListener<U>> where T : InternalEventTargetBase<T, EventListener<U>>, new() where U : IEventData
 {
+    private List<EventListener<U>> _pendingRemoval = new();
+    private bool _isAwaking = false;
+
     public void Awake(U obj)
     {
-        foreach (EventListener<U> listener in listeners) listener.Do(obj);
+        _isAwaking = true;
+        foreach (EventListener<U> listener in listeners)
+        {
+            if (!_pendingRemoval.Contains(listener))
+                listener.Do(obj);
+        }
+        _isAwaking = false;
+
+        // Awake完了後に保留中の削除を処理
+        if (_pendingRemoval.Count > 0)
+        {
+            foreach (var listener in _pendingRemoval)
+            {
+                listeners.Remove(listener);
+            }
+            _pendingRemoval.Clear();
+        }
     }
 
     public EventListener<U> AddListener(Action<U> action)
@@ -24,16 +43,48 @@ public abstract class EventTargetBase<T, U> : InternalEventTargetBase<T, EventLi
         listeners.Add(listener);
         return listener;
     }
-    public void RemoveListener(EventListener<U> listener) => listeners.Remove(listener);
+
+    public void RemoveListener(EventListener<U> listener)
+    {
+        if (_isAwaking)
+        {
+            // Awake中は削除をキューに入れる
+            if (!_pendingRemoval.Contains(listener))
+                _pendingRemoval.Add(listener);
+        }
+        else
+        {
+            listeners.Remove(listener);
+        }
+    }
 }
 /// <summary>
 /// <para><typeparamref name="T" />: Singletonとする自分自身を指定</para>
 /// </summary>
 public abstract class EventTargetBase<T> : InternalEventTargetBase<T, EventListener> where T : InternalEventTargetBase<T, EventListener>, new()
 {
+    private List<EventListener> _pendingRemoval = new();
+    private bool _isAwaking = false;
+
     public void Awake()
     {
-        foreach (EventListener listener in listeners) listener.Do();
+        _isAwaking = true;
+        foreach (EventListener listener in listeners)
+        {
+            if (!_pendingRemoval.Contains(listener))
+                listener.Do();
+        }
+        _isAwaking = false;
+
+        // Awake完了後に保留中の削除を処理
+        if (_pendingRemoval.Count > 0)
+        {
+            foreach (var listener in _pendingRemoval)
+            {
+                listeners.Remove(listener);
+            }
+            _pendingRemoval.Clear();
+        }
     }
 
     public EventListener AddListener(Action action)
@@ -42,7 +93,20 @@ public abstract class EventTargetBase<T> : InternalEventTargetBase<T, EventListe
         listeners.Add(listener);
         return listener;
     }
-    public void RemoveListener(EventListener listener) => listeners.Remove(listener);
+
+    public void RemoveListener(EventListener listener)
+    {
+        if (_isAwaking)
+        {
+            // Awake中は削除をキューに入れる
+            if (!_pendingRemoval.Contains(listener))
+                _pendingRemoval.Add(listener);
+        }
+        else
+        {
+            listeners.Remove(listener);
+        }
+    }
 }
 
 /// <summary>

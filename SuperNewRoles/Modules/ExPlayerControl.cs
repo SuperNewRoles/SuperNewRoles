@@ -5,6 +5,7 @@ using SuperNewRoles.Events;
 using SuperNewRoles.Roles;
 using SuperNewRoles.Roles.Ability;
 using SuperNewRoles.Roles.Neutral;
+using SuperNewRoles.SuperTrophies;
 using TMPro;
 using UnityEngine;
 
@@ -20,6 +21,13 @@ public class ExPlayerControl
     public static IReadOnlyCollection<ExPlayerControl> ExPlayerControlsArray => _exPlayerControlsArray;
     public PlayerControl Player { get; }
     public NetworkedPlayerInfo Data { get; }
+    public PlayerPhysics MyPhysics => Player?.MyPhysics;
+    public CustomNetworkTransform NetTransform => Player?.NetTransform;
+    public CosmeticsLayer cosmetics => Player?.cosmetics;
+    public bool moveable => Player?.moveable ?? false;
+    public Vector2 GetTruePosition() => Player?.GetTruePosition() ?? Vector2.zero;
+    public float MaxReportDistance => Player?.MaxReportDistance ?? 1f;
+    public Transform transform => Player?.transform;
     public byte PlayerId { get; }
     public bool AmOwner { get; private set; }
     public RoleId Role { get; private set; }
@@ -29,6 +37,7 @@ public class ExPlayerControl
     public ExPlayerControl Parent { get; set; }
     public TextMeshPro PlayerInfoText { get; set; }
     public TextMeshPro MeetingInfoText { get; set; }
+    public PlayerVoteArea VoteArea { get; set; }
     public int lastAbilityId { get; set; }
     private FinalStatus? _finalStatus;
     public FinalStatus FinalStatus { get { return _finalStatus ?? FinalStatus.Alive; } set { _finalStatus = value; } }
@@ -36,6 +45,7 @@ public class ExPlayerControl
     private CustomVentAbility _customVentAbility;
     private CustomSaboAbility _customSaboAbility;
     private CustomTaskAbility _customTaskAbility;
+    private CustomKillButtonAbility _customKillButtonAbility;
     public CustomTaskAbility CustomTaskAbility => _customTaskAbility;
     private List<ImpostorVisionAbility> _impostorVisionAbilities = new();
     private Dictionary<string, bool> _hasAbilityCache = new();
@@ -79,6 +89,13 @@ public class ExPlayerControl
         _hasAbilityCache[abilityName] = hasAbility;
         return hasAbility;
     }
+    public bool IsTaskComplete()
+    {
+        (int completed, int total) = ModHelpers.TaskCompletedData(Data);
+        if (_customTaskAbility == null) return completed >= total;
+        var (isTaskTrigger, all) = _customTaskAbility.CheckIsTaskTrigger() ?? (false, total);
+        return isTaskTrigger && completed >= all;
+    }
     public void ResetKillCooldown()
     {
         if (!AmOwner) return;
@@ -104,16 +121,28 @@ public class ExPlayerControl
     {
         if (Role == roleId) return;
         DetachOldRole(Role);
+        if (AmOwner)
+            SuperTrophyManager.DetachTrophy(Role);
         Role = roleId;
         if (CustomRoleManager.TryGetRoleById(roleId, out var role))
         {
             role.OnSetRole(Player);
+            if (AmOwner)
+                SuperTrophyManager.RegisterTrophy(Role);
             roleBase = role;
         }
         else
         {
             Logger.Error($"Role {roleId} not found");
         }
+    }
+    public bool HasCustomKillButton()
+    {
+        return _customKillButtonAbility != null;
+    }
+    public bool CanKill()
+    {
+        return _customKillButtonAbility != null && _customKillButtonAbility.CanKill();
     }
     private void DetachOldRole(RoleId roleId)
     {
@@ -141,11 +170,10 @@ public class ExPlayerControl
         }
         foreach (var ability in abilitiesToDetach)
         {
-            ability.Detach();
-            PlayerAbilities.Remove(ability);
-            PlayerAbilitiesDictionary.Remove(ability.AbilityId);
-            _hasAbilityCache.Remove(ability.GetType().Name);
+            DetachAbility(ability.AbilityId);
         }
+        if (AmOwner)
+            SuperTrophyManager.DetachTrophy(abilitiesToDetach);
     }
     public void Disconnected()
     {
@@ -183,11 +211,13 @@ public class ExPlayerControl
     public bool IsCrewmate()
         => roleBase != null ? roleBase.AssignedTeam == AssignedTeamType.Crewmate && !IsMadRoles() : !Data.Role.IsImpostor;
     public bool IsImpostor()
-        => roleBase != null ? roleBase.AssignedTeam == AssignedTeamType.Impostor : Data.Role.IsImpostor;
+        => Data.Role.IsImpostor;
     public bool IsNeutral()
         => roleBase != null ? roleBase.AssignedTeam == AssignedTeamType.Neutral : false;
     public bool IsImpostorWinTeam()
-        => IsImpostor() || IsMadRoles();
+        => IsImpostor() || IsMadRoles() || Role == RoleId.MadKiller;
+    public bool IsPavlovsTeam()
+        => Role is RoleId.PavlovsDog or RoleId.PavlovsOwner;
     public bool IsMadRoles()
         => HasAbility(nameof(MadmateAbility));
     public bool IsFriendRoles()
@@ -197,6 +227,8 @@ public class ExPlayerControl
     public bool IsSidekick()
         => HasAbility(nameof(JSidekickAbility));
     public bool IsJackalTeam()
+        => IsJackal() || IsSidekick();
+    public bool IsJackalTeamWins()
         => IsJackal() || IsSidekick() || IsFriendRoles();
     public bool IsLovers()
         => false;
@@ -232,21 +264,24 @@ public class ExPlayerControl
     {
         PlayerAbilities.Add(ability);
         PlayerAbilitiesDictionary.Add(abilityId, ability);
-        if (ability is CustomVentAbility customVentAbility)
+        SuperTrophyManager.RegisterTrophy(ability);
+        switch (ability)
         {
-            _customVentAbility = customVentAbility;
-        }
-        else if (ability is ImpostorVisionAbility impostorVisionAbility)
-        {
-            _impostorVisionAbilities.Add(impostorVisionAbility);
-        }
-        else if (ability is CustomSaboAbility customSaboAbility)
-        {
-            _customSaboAbility = customSaboAbility;
-        }
-        else if (ability is CustomTaskAbility customTaskAbility)
-        {
-            _customTaskAbility = customTaskAbility;
+            case CustomVentAbility customVentAbility:
+                _customVentAbility = customVentAbility;
+                break;
+            case ImpostorVisionAbility impostorVisionAbility:
+                _impostorVisionAbilities.Add(impostorVisionAbility);
+                break;
+            case CustomSaboAbility customSaboAbility:
+                _customSaboAbility = customSaboAbility;
+                break;
+            case CustomTaskAbility customTaskAbility:
+                _customTaskAbility = customTaskAbility;
+                break;
+            case CustomKillButtonAbility customKillButtonAbility:
+                _customKillButtonAbility = customKillButtonAbility;
+                break;
         }
         ability.Attach(Player, abilityId, parent);
         _hasAbilityCache.Clear();
@@ -266,21 +301,24 @@ public class ExPlayerControl
         {
             ability.Detach();
         }
-        if (ability is CustomVentAbility customVentAbility)
+        SuperTrophyManager.DetachTrophy(ability);
+        switch (ability)
         {
-            _customVentAbility = null;
-        }
-        else if (ability is ImpostorVisionAbility impostorVisionAbility)
-        {
-            _impostorVisionAbilities.Remove(impostorVisionAbility);
-        }
-        else if (ability is CustomSaboAbility customSaboAbility)
-        {
-            _customSaboAbility = null;
-        }
-        else if (ability is CustomTaskAbility customTaskAbility)
-        {
-            _customTaskAbility = null;
+            case CustomVentAbility customVentAbility:
+                _customVentAbility = null;
+                break;
+            case ImpostorVisionAbility impostorVisionAbility:
+                _impostorVisionAbilities.Remove(impostorVisionAbility);
+                break;
+            case CustomSaboAbility customSaboAbility:
+                _customSaboAbility = null;
+                break;
+            case CustomTaskAbility customTaskAbility:
+                _customTaskAbility = null;
+                break;
+            case CustomKillButtonAbility customKillButtonAbility:
+                _customKillButtonAbility = null;
+                break;
         }
         PlayerAbilities.Remove(ability);
         PlayerAbilitiesDictionary.Remove(abilityId);

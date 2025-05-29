@@ -53,21 +53,17 @@ public abstract class WaveCannonObjectBase
         {
             ability.Player.transform.position = startPosition;
             ability.Player.MyPhysics.body.velocity = Vector2.zero;
-            ability.Player.moveable = false;
+            ability.Player.Player.moveable = false;
         }
         ability.Player.transform.position = startPosition;
         if (isShooting)
         {
             OnAnimationUpdateShooting();
             if (!ability.Player.AmOwner) return;
-            Logger.Info("Shooting");
             foreach (var collider in HitColliders)
             {
-                Logger.Info("Collider");
-
                 foreach (ExPlayerControl player in ExPlayerControl.ExPlayerControls)
                 {
-                    Logger.Info("Player:" + player.PlayerId);
                     if (player.IsDead()) continue;
                     if (player.PlayerId == ability.Player.PlayerId) continue;
                     if (!collider.IsTouching(player.Player.Collider)) continue;
@@ -113,7 +109,7 @@ public abstract class WaveCannonObjectBase
             ability.Player.cosmetics.currentBodySprite.BodySprite.gameObject.SetActive(true);
             ability.Player.cosmetics.gameObject.SetActive(true);
         }
-        ability.Player.moveable = true;
+        ability.Player.Player.moveable = true;
         ability.Player.MyPhysics.Animations.PlayIdleAnimation();
         if (ability.Player.AmOwner && isResetKillCooldown)
             ExPlayerControl.LocalPlayer.ResetKillCooldown();

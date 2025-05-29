@@ -43,14 +43,14 @@ namespace SuperNewRoles.Modules
 
         public event Action<int> ValueChanged;
 
-        public CustomOptionTaskAttribute(string id, int shortDefault, int longDefault, int commonDefault, string? translationName = null, string? parentFieldName = null, DisplayModeId displayMode = DisplayModeId.Default)
-            : base(id, translationName, parentFieldName, displayMode)
+        public CustomOptionTaskAttribute(string id, int shortDefault, int longDefault, int commonDefault, string? translationName = null, string? parentFieldName = null, DisplayModeId displayMode = DisplayModeId.Default, object? parentActiveValue = null)
+            : base(id, translationName, parentFieldName, displayMode, parentActiveValue)
         {
             // TaskDataのみを初期化して、個別オプションは後付（AttachOptionsメソッド経由）とします
             TaskData = new TaskOptionData(shortDefault, longDefault, commonDefault);
-            ShortOption = new CustomOptionIntAttribute(id + "_Short", 0, 20, 1, shortDefault, "CustomOptionTask_Short", parentFieldName, displayMode);
-            LongOption = new CustomOptionIntAttribute(id + "_Long", 0, 20, 1, longDefault, "CustomOptionTask_Long", parentFieldName, displayMode);
-            CommonOption = new CustomOptionIntAttribute(id + "_Common", 0, 20, 1, commonDefault, "CustomOptionTask_Common", parentFieldName, displayMode);
+            ShortOption = new CustomOptionIntAttribute(id + "_Short", 0, 20, 1, shortDefault, "CustomOptionTask_Short", parentFieldName, displayMode, parentActiveValue);
+            LongOption = new CustomOptionIntAttribute(id + "_Long", 0, 20, 1, longDefault, "CustomOptionTask_Long", parentFieldName, displayMode, parentActiveValue);
+            CommonOption = new CustomOptionIntAttribute(id + "_Common", 0, 20, 1, commonDefault, "CustomOptionTask_Common", parentFieldName, displayMode, parentActiveValue);
         }
         public void SetupAttributes(FieldInfo meField, ref HashSet<string> fieldNames, List<CustomOption> customOptions, Dictionary<string, CustomOptionBaseAttribute> customOptionAttributes)
         {
@@ -84,13 +84,14 @@ namespace SuperNewRoles.Modules
             var longOption = SetupAttribute(LongOption, longField, meField);
             var commonOption = SetupAttribute(CommonOption, commonField, meField);
 
-            customOptions.Add(shortOption);
-            customOptions.Add(longOption);
+            // 通常、ロング、ショートの順にタスクオプションを追加
             customOptions.Add(commonOption);
+            customOptions.Add(longOption);
+            customOptions.Add(shortOption);
+            Logger.Info($"TaskOptionData初期値: Common={TaskData.Common}, Long={TaskData.Long}, Short={TaskData.Short}");
         }
         private CustomOption SetupAttribute(CustomOptionIntAttribute attribute, FieldInfo field, FieldInfo meField)
         {
-            Logger.Info($"field.DeclaringType: {meField.DeclaringType.Name}");
             attribute.SetFieldInfo(field);
             RoleId? role = null;
             if (meField.DeclaringType.GetInterfaces().Contains(typeof(IRoleBase)))
@@ -103,36 +104,41 @@ namespace SuperNewRoles.Modules
             // カスタムオプションを作成し、リストに追加
             CustomOption option = new(attribute, field, role, isTaskOption: true);
             meField.SetValue(null, TaskData);
+
+            // ValueChangedイベントハンドラーを設定
+            if (attribute == ShortOption)
+            {
+                attribute.ValueChanged += OnShortOptionValueChanged;
+            }
+            else if (attribute == LongOption)
+            {
+                attribute.ValueChanged += OnLongOptionValueChanged;
+            }
+            else if (attribute == CommonOption)
+            {
+                attribute.ValueChanged += OnCommonOptionValueChanged;
+            }
+
             return option;
-        }
-
-        // このメソッドを利用して、各CustomOptionIntAttributeを後付で設定できます。
-        public void AttachOptions(CustomOptionIntAttribute shortOption, CustomOptionIntAttribute longOption, CustomOptionIntAttribute commonOption)
-        {
-            ShortOption = shortOption;
-            LongOption = longOption;
-            CommonOption = commonOption;
-
-            // 値変更時のハンドラを設定
-            ShortOption.ValueChanged += OnShortOptionValueChanged;
-            LongOption.ValueChanged += OnLongOptionValueChanged;
-            CommonOption.ValueChanged += OnCommonOptionValueChanged;
         }
 
         private void OnShortOptionValueChanged(int val)
         {
+            Logger.Info($"ShortOption値が変更されました: {val}");
             TaskData.Short = val;
             ValueChanged?.Invoke(val);
         }
 
         private void OnLongOptionValueChanged(int val)
         {
+            Logger.Info($"LongOption値が変更されました: {val}");
             TaskData.Long = val;
             ValueChanged?.Invoke(val);
         }
 
         private void OnCommonOptionValueChanged(int val)
         {
+            Logger.Info($"CommonOption値が変更されました: {val}");
             TaskData.Common = val;
             ValueChanged?.Invoke(val);
         }

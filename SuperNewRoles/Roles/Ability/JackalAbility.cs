@@ -36,13 +36,14 @@ public class JackalAbility : AbilityBase
         );
 
         SidekickAbility = new CustomSidekickButtonAbility(
-            () => JackData.CanCreateSidekick,
+            (bool sidekickCreated) => JackData.CanCreateSidekick && !sidekickCreated,
             () => JackData.SidekickCooldown,
             () => JackData.SidekickType == JackalSidekickType.Friends ? RoleId.JackalFriends : RoleId.Sidekick,
             () => RoleTypes.Crewmate,
             AssetManager.GetAsset<Sprite>("JackalSidekickButton.png"),
             ModTranslation.GetString("SidekickButtonText"),
-            (player) => !player.IsJackalTeam(),
+            sidekickCount: () => 1,
+            isTargetable: (player) => !player.IsJackalTeam(),
             sidekickedPromoteData: JackData.SidekickType == JackalSidekickType.Sidekick ? new(RoleId.Jackal, RoleTypes.Crewmate) : null,
             onSidekickCreated: (player) =>
             {

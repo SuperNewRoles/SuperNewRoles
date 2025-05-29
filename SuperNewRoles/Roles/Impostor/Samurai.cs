@@ -42,7 +42,7 @@ class Samurai : RoleBase<Samurai>
     public override RoleTag[] RoleTags { get; } = [RoleTag.SpecialKiller];
     public override RoleOptionMenuType OptionTeam { get; } = RoleOptionMenuType.Impostor;
 
-    [CustomOptionFloat("SamuraiKillCooldown", 10f, 60f, 2.5f, 30f)]
+    [CustomOptionFloat("SamuraiKillCooldown", 2.5f, 60f, 2.5f, 30f)]
     public static float SamuraiKillCooldown;
 
     [CustomOptionFloat("SamuraiKillRadius", 1f, 5f, 0.5f, 2f)]

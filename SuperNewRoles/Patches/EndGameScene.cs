@@ -3,9 +3,11 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using HarmonyLib;
+using SuperNewRoles.CustomCosmetics.CosmeticsPlayer;
 using SuperNewRoles.Modules;
 using SuperNewRoles.Roles;
 using SuperNewRoles.Roles.Neutral;
+using SuperNewRoles.SuperTrophies;
 using UnityEngine;
 
 namespace SuperNewRoles.Patches;
@@ -22,6 +24,9 @@ public enum WinCondition
     TunaWin,
     TeruteruWin,
     OpportunistWin,
+    WorkpersonWin,
+    VultureWin,
+    PavlovsWin,
 }
 public enum CustomGameOverReason
 {
@@ -31,6 +36,9 @@ public enum CustomGameOverReason
     JackalWin = 33,
     TunaWin = 34,
     TeruteruWin = 35,
+    WorkpersonWin = 36,
+    VultureWin = 37,
+    PavlovsWin,
 }
 
 static class AdditionalTempData
@@ -90,6 +98,7 @@ static class AdditionalTempData
         public RoleId GhostRoleId { get; set; }
         public string AttributeRoleName { get; set; }
         public bool isImpostor { get; set; }
+        public string Hat2Id { get; set; }
 
         public PlayerRoleInfo Clone()
         {
@@ -163,6 +172,18 @@ public class EndGameManagerSetUpPatch
                 baseText = "Opportunist";
                 roleColor = Opportunist.Instance.RoleColor;
                 break;
+            case WinCondition.WorkpersonWin:
+                baseText = "Workperson";
+                roleColor = Workperson.Instance.RoleColor;
+                break;
+            case WinCondition.VultureWin:
+                baseText = "Vulture";
+                roleColor = Vulture.Instance.RoleColor;
+                break;
+            case WinCondition.PavlovsWin:
+                baseText = "PavlovsDog";
+                roleColor = PavlovsDog.Instance.RoleColor;
+                break;
             default:
                 baseText = "Unknown";
                 roleColor = Color.white;
@@ -227,6 +248,9 @@ public class EndGameManagerSetUpPatch
 
         AdditionalTempData.Clear();
         OnGameEndPatch.WinText = ModHelpers.Cs(roleColor, winText);
+
+        // トロフィー処理を実行
+        SuperTrophyManager.OnEndGame();
     }
 
     private static void CreatePlayerObjects(EndGameManager instance)
@@ -272,10 +296,13 @@ public class EndGameManagerSetUpPatch
             playerObj.cosmetics.nameText.transform.localPosition = new Vector3(playerObj.cosmetics.nameText.transform.localPosition.x, playerObj.cosmetics.nameText.transform.localPosition.y - 0.8f, -15f);
             playerObj.cosmetics.nameText.text = data.PlayerName;
 
+            CustomCosmeticsLayer customCosmeticsLayer = CustomCosmeticsLayers.ExistsOrInitialize(playerObj.cosmetics);
+
             foreach (var roleInfo in AdditionalTempData.playerRoles)
             {
                 if (roleInfo.PlayerName != data.PlayerName) continue;
                 playerObj.cosmetics.nameText.text = $"{roleInfo.PlayerName}{roleInfo.NameSuffix}\n{string.Join("\n", ModHelpers.CsWithTranslation(roleInfo.roleBase.RoleColor, roleInfo.roleBase.Role.ToString()))}";
+                customCosmeticsLayer.hat2?.SetHat(roleInfo.Hat2Id, roleInfo.ColorId);
             }
         }
     }
@@ -403,7 +430,7 @@ public static class OnGameEndPatch
             case CustomGameOverReason.Haison:
                 return GetHaisonWinInfo(emptyReviveList);
             case CustomGameOverReason.JackalWin:
-                return (ExPlayerControl.ExPlayerControls.Where(p => p.IsJackal()),
+                return (ExPlayerControl.ExPlayerControls.Where(p => p.IsJackalTeamWins()),
                         WinCondition.JackalWin,
                         emptyReviveList);
             case CustomGameOverReason.TunaWin:
@@ -413,6 +440,18 @@ public static class OnGameEndPatch
             case CustomGameOverReason.TeruteruWin:
                 return (ExPlayerControl.ExPlayerControls.Where(p => p != null && p.Role == RoleId.Teruteru),
                         WinCondition.TeruteruWin,
+                        emptyReviveList);
+            case CustomGameOverReason.WorkpersonWin:
+                return (ExPlayerControl.ExPlayerControls.Where(p => p != null && p.Role == RoleId.Workperson && p.IsTaskComplete()),
+                        WinCondition.WorkpersonWin,
+                        emptyReviveList);
+            case CustomGameOverReason.VultureWin:
+                return (ExPlayerControl.ExPlayerControls.Where(p => p != null && p.Role == RoleId.Vulture && p.PlayerAbilities.FirstOrDefault(x => x is EatDeadBodyAbility eatDeadBodyAbility && eatDeadBodyAbility.canWin) != null),
+                        WinCondition.VultureWin,
+                        emptyReviveList);
+            case CustomGameOverReason.PavlovsWin:
+                return (ExPlayerControl.ExPlayerControls.Where(p => p != null && p.IsPavlovsTeam()),
+                        WinCondition.PavlovsWin,
                         emptyReviveList);
             default:
                 Logger.Error("不明なゲームオーバー理由:" + reason);
@@ -484,6 +523,8 @@ public static class OnGameEndPatch
         var (tasksCompleted, tasksTotal) = GetPlayerTaskInfo(exPlayer);
         UpdatePlayerStatusForSabotage(player, exPlayer, gameOverReason);
 
+        CustomCosmeticsLayer customCosmeticsLayer = CustomCosmeticsLayers.ExistsOrInitialize(player.Object.cosmetics);
+        string hat2Id = customCosmeticsLayer?.hat2?.Hat?.ProdId ?? "";
         return new AdditionalTempData.PlayerRoleInfo()
         {
             PlayerName = player.DefaultOutfit.PlayerName,
@@ -495,7 +536,8 @@ public static class OnGameEndPatch
             RoleId = exPlayer.Role,
             isImpostor = exPlayer.IsImpostor(),
             Status = exPlayer.FinalStatus,
-            roleBase = exPlayer.roleBase
+            roleBase = exPlayer.roleBase,
+            Hat2Id = hat2Id,
         };
     }
 

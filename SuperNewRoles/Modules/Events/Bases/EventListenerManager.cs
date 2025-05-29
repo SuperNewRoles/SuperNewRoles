@@ -27,10 +27,13 @@ public static class EventListenerManager
         var eventTargetTypes = types.Where(t =>
             !t.IsInterface &&
             !t.IsAbstract &&
-            typeof(IEventTargetBase).IsAssignableFrom(t));
+            typeof(IEventTargetBase).IsAssignableFrom(t)).ToList();
 
+        SuperNewRolesPlugin.Logger.LogInfo($"[Splash] Found {eventTargetTypes.Count} event target types");
+        int index = 0;
         foreach (var type in eventTargetTypes)
         {
+            index++;
             // BaseSingletonを継承しているか確認
             if (type.IsSubclassOf(typeof(BaseSingleton<>).MakeGenericType(type)))
             {
@@ -55,11 +58,7 @@ public static class EventListenerManager
                     listeners.Add(instance);
                 }
             }
-        }
-        Logger.Info($"Loaded {listeners.Count} listeners");
-        foreach (var listener in listeners)
-        {
-            Logger.Info($"Loaded {listener.GetType().Name}");
+            SuperNewRolesPlugin.Logger.LogInfo($"[Splash] Loaded listeners ({index}/{eventTargetTypes.Count}): {type.Name}");
         }
     }
     [HarmonyPatch(typeof(GameStartManager), nameof(GameStartManager.Start))]

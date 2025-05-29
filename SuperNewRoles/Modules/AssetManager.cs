@@ -43,11 +43,12 @@ public static class AssetManager
     private static Dictionary<byte, AssetBundle> Bundles { get; } = new(3);
     public static void Load()
     {
+        SuperNewRolesPlugin.Logger.LogInfo("[Splash] Loading AssetBundles...");
         Logger.Info("-------Start AssetBundle-------");
         var ExcAssembly = Assembly.GetExecutingAssembly();
         foreach (var data in AssetPathes)
         {
-            Logger.Info($"Loading AssetBundle: {data.Type}");
+            SuperNewRolesPlugin.Logger.LogInfo($"[Splash] Loading AssetBundle: {data.Type}");
             try
             {
                 //AssemblyからAssetBundleファイルを読み込む
@@ -55,8 +56,25 @@ public static class AssetManager
                     GetManifestResourceStream(
                     $"SuperNewRoles.Resources.{data.Path}.bundle"
                     );
-                //AssetBundleを読み込む
-                var assetBundle = AssetBundle.LoadFromMemory(BundleStream.ReadFully());
+                // SuperNewRolesNext/snrsprites.bundleに保存する
+                AssetBundle assetBundle = null;
+                /*try
+                {
+                    File.WriteAllBytes(
+                        $"./SuperNewRolesNext/{data.Path}.bundle",
+                        BundleStream.ReadFully()
+                    );
+                    //AssetBundleを読み込む
+                    assetBundle = AssetBundle.LoadFromFile(
+                        $"./SuperNewRolesNext/{data.Path}.bundle"
+                    );
+                }
+                catch (Exception e)
+                {
+                    assetBundle = AssetBundle.LoadFromMemory(BundleStream.ReadFully());
+                    Logger.Error(e.ToString(), "LoadAssetBundle");
+                }*/
+                assetBundle = AssetBundle.LoadFromMemory(BundleStream.ReadFully());
                 //読み込んだAssetBundleを保存
                 Bundles[TypeToByte[data.Type]] = assetBundle;
                 //キャッシュ用のDictionaryを作成
@@ -73,6 +91,7 @@ public static class AssetManager
                 Logger.Error(e.ToString(), "LoadAssetBundle");
             }
         }
+        SuperNewRolesPlugin.Logger.LogInfo("[Splash] AssetBundles loaded");
         Logger.Info("-------End LoadAssetBundle-------");
     }
     /// <summary>
@@ -122,5 +141,9 @@ public static class AssetManager
         obj.hideFlags |= HideFlags.DontUnloadUnusedAsset;
 
         return obj;
+    }
+    public static void Unload(this UnityEngine.Object obj)
+    {
+        obj.hideFlags &= ~HideFlags.DontUnloadUnusedAsset;
     }
 }

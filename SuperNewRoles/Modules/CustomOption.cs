@@ -6,27 +6,21 @@ using System.Linq;
 using System.Reflection;
 using System.Security.Cryptography;
 using HarmonyLib;
+using SuperNewRoles.CustomOptions;
+using SuperNewRoles.CustomOptions.Categories;
 using SuperNewRoles.Roles;
 using UnityEngine;
 namespace SuperNewRoles.Modules;
 
 public static class CustomOptionManager
 {
-    public static CustomOptionCategory PresetSettings;
-    public static CustomOptionCategory GeneralSettings;
-    public static CustomOptionCategory ModeSettings;
-    public static CustomOptionCategory GameSettings;
-    public static CustomOptionCategory MapSettings;
-    public static CustomOptionCategory MapEditSettings;
 
-    [CustomOptionSelect("ModeOption", typeof(ModeId), "ModeId.", parentFieldName: nameof(ModeSettings))]
-    public static ModeId ModeOption;
 
-    [CustomOptionBool("DebugMode", false, parentFieldName: nameof(GeneralSettings))]
+    [CustomOptionBool("DebugMode", false, parentFieldName: nameof(Categories.GeneralSettings))]
     public static bool DebugMode;
     [CustomOptionBool("DebugModeNoGameEnd", false, parentFieldName: nameof(DebugMode))]
     public static bool DebugModeNoGameEnd;
-    [CustomOptionBool("SkipStartGameCountdown", false, parentFieldName: nameof(GeneralSettings))]
+    [CustomOptionBool("SkipStartGameCountdown", false, parentFieldName: nameof(Categories.GeneralSettings))]
     public static bool SkipStartGameCountdown;
 
     private static Dictionary<string, CustomOptionBaseAttribute> CustomOptionAttributes { get; } = new();
@@ -42,6 +36,7 @@ public static class CustomOptionManager
         private static LateTask _lateTask;
         public static void Postfix()
         {
+            if (!AmongUsClient.Instance.AmHost) return;
             // ゲーム終了後の復帰からの同期で大量に通信を送るのを防ぐために
             // 2秒内に来たプレイヤーは同時に同期する
             if (_lateTask != null)
@@ -61,11 +56,9 @@ public static class CustomOptionManager
         public static void Postfix()
         {
             // ゲーム開始時に一度だけ同期する(AmongUsClient.StartGameが呼ばれるのはホストのみ)
-            if (AmongUsClient.Instance.AmHost)
-            {
-                RpcSyncOptionsAll();
-                RoleOptionManager.RpcSyncRoleOptionsAll();
-            }
+            if (!AmongUsClient.Instance.AmHost) return;
+            RpcSyncOptionsAll();
+            RoleOptionManager.RpcSyncRoleOptionsAll();
         }
     }
     [CustomRPC]
@@ -121,6 +114,7 @@ public static class CustomOptionManager
     private static void LoadCustomOptions()
     {
         var fieldNames = new HashSet<string>();
+        SuperNewRolesPlugin.Logger.LogInfo("[Splash] Loading CustomOptions...");
         foreach (var type in Assembly.GetExecutingAssembly().GetTypes())
         {
             foreach (var field in type.GetFields())
@@ -168,16 +162,13 @@ public static class CustomOptionManager
                 CustomOptions.Add(option);
             }
         }
-        Logger.Info("CustomOptions");
-        foreach (var option in CustomOptions)
-        {
-            Logger.Info($"option: {option.Name}");
-        }
+        SuperNewRolesPlugin.Logger.LogInfo($"[Splash] {CustomOptions.Count} CustomOptions loaded");
     }
 
     // 属性で指定された親フィールド名があるオプションについて、親オプションと紐付ける処理
     private static void LinkParentOptions()
     {
+        SuperNewRolesPlugin.Logger.LogInfo("[Splash] Linking parent options...");
         // 各カスタムオプションをフィールド名をキーとするディクショナリに変換してキャッシュ
         var taskOptionNames = new[]
         {
@@ -210,6 +201,7 @@ public static class CustomOptionManager
                 }
             }
         }
+        SuperNewRolesPlugin.Logger.LogInfo("[Splash] Parent options linked");
     }
 
     internal static void RegisterOptionCategory(CustomOptionCategory category)
@@ -275,16 +267,9 @@ public class CustomOption
 
     public string GetCurrentSelectionString()
     {
-        if (Attribute is CustomOptionFloatAttribute floatAttribute)
+        if (Attribute is CustomOptionFloatAttribute or CustomOptionSelectAttribute)
         {
-            float step = floatAttribute.Step;
-            if (step >= 1f) return string.Format("{0:F0}", Value);
-            else if (step >= 0.1f) return string.Format("{0:F1}", Value);
-            else return string.Format("{0:F2}", Value);
-        }
-        else if (Attribute is CustomOptionSelectAttribute selectAttr)
-        {
-            return ModTranslation.GetString($"{selectAttr.TranslationPrefix}{Selections[Selection]}");
+            return UIHelper.FormatOptionValue(Value, this);
         }
         else if (Attribute is CustomOptionBoolAttribute boolAttr)
         {
@@ -295,19 +280,27 @@ public class CustomOption
 
     public CustomOption(CustomOptionBaseAttribute attribute, FieldInfo fieldInfo, RoleId? parentRole = null, bool isTaskOption = false)
     {
-        Attribute = attribute ?? throw new ArgumentNullException(nameof(attribute));
-        FieldInfo = fieldInfo ?? throw new ArgumentNullException(nameof(fieldInfo));
+        try
+        {
+            Attribute = attribute ?? throw new ArgumentNullException(nameof(attribute));
+            FieldInfo = fieldInfo ?? throw new ArgumentNullException(nameof(fieldInfo));
 
-        Selections = attribute.GenerateSelections();
-        var defaultSelection = attribute.GenerateDefaultSelection();
-        Name = attribute.TranslationName;
-        ParentRole = parentRole;
-        IsBooleanOption = attribute is CustomOptionBoolAttribute;
-        DisplayMode = attribute.DisplayMode;
-        _defaultValue = Selections[defaultSelection];
-        _defaultSelection = defaultSelection;
-        IsTaskOption = isTaskOption;
-        UpdateSelection(defaultSelection);
+            Selections = attribute.GenerateSelections();
+            var defaultSelection = attribute.GenerateDefaultSelection();
+            Name = attribute.TranslationName;
+            ParentRole = parentRole;
+            IsBooleanOption = attribute is CustomOptionBoolAttribute;
+            DisplayMode = attribute.DisplayMode;
+            _defaultValue = Selections[defaultSelection];
+            _defaultSelection = defaultSelection;
+            IsTaskOption = isTaskOption;
+            UpdateSelection(defaultSelection);
+        }
+        catch (Exception ex)
+        {
+            Logger.Error($"Failed to create CustomOption: {attribute.TranslationName}");
+            throw;
+        }
     }
 
     public virtual void UpdateSelection(byte value)
@@ -364,6 +357,34 @@ public class CustomOption
 
     public bool ShouldDisplay()
     {
+        // 親オプションがある場合、親オプションの値をチェック
+        if (ParentOption != null)
+        {
+            // ParentActiveValueが設定されている場合、親の値がそれと一致するかチェック
+            if (Attribute.ParentActiveValue != null)
+            {
+                // 親の値が指定された値と一致しない場合は表示しない
+                if (!ParentOption.Value.Equals(Attribute.ParentActiveValue))
+                {
+                    return false;
+                }
+            }
+            else if (ParentOption.Selection == 0)
+            {
+                return false;
+            }
+
+            // 親オプションをチェック
+            var parent = ParentOption;
+            while (parent != null)
+            {
+                // 親オプションが無効（Selectionが0）ならfalse
+                if (!parent.ShouldDisplay())
+                    return false;
+                parent = parent.ParentOption;
+            }
+        }
+
         return Modules.DisplayMode.HasMode(
             Modules.DisplayMode.GetCurrentMode(),
             this.DisplayMode);
@@ -997,13 +1018,15 @@ public abstract class CustomOptionBaseAttribute : Attribute
     public CustomOptionType OptionType { get; private set; } = CustomOptionType.None;
     public string? ParentFieldName { get; }
     public DisplayModeId DisplayMode { get; }
+    public object? ParentActiveValue { get; }
 
-    protected CustomOptionBaseAttribute(string id, string? translationName = null, string? parentFieldName = null, DisplayModeId displayMode = DisplayModeId.All)
+    protected CustomOptionBaseAttribute(string id, string? translationName = null, string? parentFieldName = null, DisplayModeId displayMode = DisplayModeId.All, object? parentActiveValue = null)
     {
         Id = ComputeMD5Hash.Compute(id);
         TranslationName = translationName ?? id;
         ParentFieldName = parentFieldName;
         DisplayMode = displayMode;
+        ParentActiveValue = parentActiveValue;
     }
 
     public void SetFieldInfo(FieldInfo fieldInfo)
@@ -1036,8 +1059,8 @@ public class CustomOptionSelectAttribute : CustomOptionBaseAttribute
     private readonly Type _enumType;
     public string TranslationPrefix { get; }
 
-    public CustomOptionSelectAttribute(string id, Type enumType, string translationPrefix, string? translationName = null, string? parentFieldName = null, DisplayModeId displayMode = DisplayModeId.All)
-        : base(id, translationName, parentFieldName, displayMode)
+    public CustomOptionSelectAttribute(string id, Type enumType, string translationPrefix, string? translationName = null, string? parentFieldName = null, DisplayModeId displayMode = DisplayModeId.All, object? parentActiveValue = null)
+        : base(id, translationName, parentFieldName, displayMode, parentActiveValue)
     {
         if (!enumType.IsEnum) throw new ArgumentException("Type must be an enum", nameof(enumType));
         _enumType = enumType;
@@ -1061,8 +1084,8 @@ public abstract class CustomOptionNumericAttribute<T> : CustomOptionBaseAttribut
     public T DefaultValue { get; }
     public event Action<T> ValueChanged;
 
-    protected CustomOptionNumericAttribute(string id, T min, T max, T step, T defaultValue, string? translationName = null, string? parentFieldName = null, DisplayModeId displayMode = DisplayModeId.All)
-        : base(id, translationName, parentFieldName, displayMode)
+    protected CustomOptionNumericAttribute(string id, T min, T max, T step, T defaultValue, string? translationName = null, string? parentFieldName = null, DisplayModeId displayMode = DisplayModeId.All, object? parentActiveValue = null)
+        : base(id, translationName, parentFieldName, displayMode, parentActiveValue)
     {
         Min = min;
         Max = max;
@@ -1093,8 +1116,8 @@ public abstract class CustomOptionNumericAttribute<T> : CustomOptionBaseAttribut
 [AttributeUsage(AttributeTargets.Field)]
 public class CustomOptionFloatAttribute : CustomOptionNumericAttribute<float>
 {
-    public CustomOptionFloatAttribute(string id, float min, float max, float step, float defaultValue, string? translationName = null, string? parentFieldName = null, DisplayModeId displayMode = DisplayModeId.All)
-        : base(id, min, max, step, defaultValue, translationName, parentFieldName, displayMode) { }
+    public CustomOptionFloatAttribute(string id, float min, float max, float step, float defaultValue, string? translationName = null, string? parentFieldName = null, DisplayModeId displayMode = DisplayModeId.All, object? parentActiveValue = null)
+        : base(id, min, max, step, defaultValue, translationName, parentFieldName, displayMode, parentActiveValue) { }
 
     protected override float Add(float a, float b) => a + b;
     public override byte GenerateDefaultSelection() => (byte)((DefaultValue - Min) / Step);
@@ -1103,8 +1126,8 @@ public class CustomOptionFloatAttribute : CustomOptionNumericAttribute<float>
 [AttributeUsage(AttributeTargets.Field)]
 public class CustomOptionIntAttribute : CustomOptionNumericAttribute<int>
 {
-    public CustomOptionIntAttribute(string id, int min, int max, int step, int defaultValue, string? translationName = null, string? parentFieldName = null, DisplayModeId displayMode = DisplayModeId.All)
-        : base(id, min, max, step, defaultValue, translationName, parentFieldName, displayMode) { }
+    public CustomOptionIntAttribute(string id, int min, int max, int step, int defaultValue, string? translationName = null, string? parentFieldName = null, DisplayModeId displayMode = DisplayModeId.All, object? parentActiveValue = null)
+        : base(id, min, max, step, defaultValue, translationName, parentFieldName, displayMode, parentActiveValue) { }
 
     protected override int Add(int a, int b) => a + b;
     public override byte GenerateDefaultSelection() => (byte)((DefaultValue - Min) / Step);
@@ -1113,8 +1136,8 @@ public class CustomOptionIntAttribute : CustomOptionNumericAttribute<int>
 [AttributeUsage(AttributeTargets.Field)]
 public class CustomOptionByteAttribute : CustomOptionNumericAttribute<byte>
 {
-    public CustomOptionByteAttribute(string id, byte min, byte max, byte step, byte defaultValue, string? translationName = null, string? parentFieldName = null, DisplayModeId displayMode = DisplayModeId.All)
-        : base(id, min, max, step, defaultValue, translationName, parentFieldName, displayMode) { }
+    public CustomOptionByteAttribute(string id, byte min, byte max, byte step, byte defaultValue, string? translationName = null, string? parentFieldName = null, DisplayModeId displayMode = DisplayModeId.All, object? parentActiveValue = null)
+        : base(id, min, max, step, defaultValue, translationName, parentFieldName, displayMode, parentActiveValue) { }
 
     protected override byte Add(byte a, byte b) => (byte)(a + b);
     public override byte GenerateDefaultSelection() => (byte)((DefaultValue - Min) / Step);
@@ -1125,8 +1148,8 @@ public class CustomOptionBoolAttribute : CustomOptionBaseAttribute
 {
     public bool DefaultValue { get; }
 
-    public CustomOptionBoolAttribute(string id, bool defaultValue, string? translationName = null, string? parentFieldName = null, DisplayModeId displayMode = DisplayModeId.All)
-        : base(id, translationName, parentFieldName, displayMode)
+    public CustomOptionBoolAttribute(string id, bool defaultValue, string? translationName = null, string? parentFieldName = null, DisplayModeId displayMode = DisplayModeId.All, object? parentActiveValue = null)
+        : base(id, translationName, parentFieldName, displayMode, parentActiveValue)
     {
         DefaultValue = defaultValue;
     }

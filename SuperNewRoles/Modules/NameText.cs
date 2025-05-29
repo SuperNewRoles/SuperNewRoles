@@ -26,25 +26,22 @@ public static class NameText
             player.PlayerInfoText = playerInfoText;
         }
 
-        // Set the position every time bc it sometimes ends up in the wrong place due to camoflauge
         playerInfoText.transform.localPosition = player.Player.cosmetics.nameText.transform.localPosition + Vector3.up * 0.2f;
 
         var meetingInfo = player.MeetingInfoText;
-        if (MeetingHud.Instance != null)
+        if (MeetingHud.Instance != null && player.VoteArea != null)
         {
-            var playerVoteArea = MeetingHud.Instance.playerStates.FirstOrDefault(x => x.TargetPlayerId == player.PlayerId);
-            if (meetingInfo == null && playerVoteArea != null)
+            if (meetingInfo == null)
             {
-                meetingInfo = UnityEngine.Object.Instantiate(playerVoteArea.NameText, playerVoteArea.NameText.transform.parent);
+                meetingInfo = Object.Instantiate(player.VoteArea.NameText, player.VoteArea.NameText.transform.parent);
                 meetingInfo.transform.localPosition += Vector3.down * 0.1f;
                 meetingInfo.fontSize = 1.5f;
                 meetingInfo.gameObject.name = "Info";
                 player.MeetingInfoText = meetingInfo;
             }
-            // Set player name higher to align in middle
-            if (meetingInfo != null && playerVoteArea != null)
+            if (meetingInfo != null)
             {
-                var playerName = playerVoteArea.NameText;
+                var playerName = player.VoteArea.NameText;
                 playerName.transform.localPosition = new Vector3(0.3384f, 0.0311f + 0.0683f, -0.1f);
             }
         }
@@ -68,7 +65,7 @@ public static class NameText
         string meetingInfoText = "";
         string roleName = player.roleBase.Role.ToString();
         // ベスト冤罪ヤーは生きてる時は自覚できない
-        if (player.roleBase.Role == RoleId.BestFalseCharge && player.AmOwner && player.IsDead())
+        if (player.Role == RoleId.BestFalseCharge && player.AmOwner && player.IsAlive())
         {
             roleName = Crewmate.Instance.Role.ToString();
         }
@@ -82,31 +79,38 @@ public static class NameText
         if (visiable)
         {
             player.Data.Role.NameColor = player.roleBase.RoleColor;
-            player.Player.cosmetics.nameText.color = player.roleBase.RoleColor;
+            SetNameTextColor(player, player.roleBase.RoleColor);
+        }
+        else if (ExPlayerControl.LocalPlayer.IsImpostor() && player.IsImpostor())
+        {
+            player.Data.Role.NameColor = Palette.ImpostorRed;
+            SetNameTextColor(player, Palette.ImpostorRed);
         }
         else
         {
             player.Data.Role.NameColor = Color.white;
-            player.Player.cosmetics.nameText.color = Color.white;
+            SetNameTextColor(player, Color.white);
         }
         UpdateVisiable(player);
         NameTextUpdateEvent.Invoke(player);
+    }
+    public static void SetNameTextColor(ExPlayerControl player, Color color)
+    {
+        player.Player.cosmetics.nameText.color = color;
+        if (player.VoteArea != null)
+            player.VoteArea.NameText.color = color;
     }
     public static void RegisterNameTextUpdateEvent()
     {
         TaskCompleteEvent.Instance.AddListener(new(x => UpdateNameInfo(x.player)));
         MurderEvent.Instance.AddListener(new(x =>
         {
-            if (x.target?.PlayerId == ExPlayerControl.LocalPlayer?.PlayerId)
-            {
-                UpdateAllNameInfo();
-            }
             UpdateNameInfo(x.killer);
             UpdateNameInfo(x.target);
         }));
-        DieEvent.Instance.AddListener(x => UpdateAllNameInfo());
+        DieEvent.Instance.AddListener(x => { if (x.player?.PlayerId == ExPlayerControl.LocalPlayer?.PlayerId) new LateTask(() => UpdateAllNameInfo(), 0.5f); });
         WrapUpEvent.Instance.AddListener(x => UpdateAllNameInfo());
-        MeetingStartEvent.Instance.AddListener(UpdateAllNameInfo);
+        MeetingStartEvent.Instance.AddListener(x => UpdateAllNameInfo());
         FixedUpdateEvent.Instance.AddListener(UpdateAllVisiable);
     }
     private static void UpdateAllVisiable()

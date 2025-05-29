@@ -50,8 +50,8 @@ class Balancer : RoleBase<Balancer>
 
 class BalancerAbility : AbilityBase, IAbilityCount
 {
-    private EventListener meetingStartEventListener;
-    private EventListener meetingCloseEventListener;
+    private EventListener<MeetingStartEventData> meetingStartEventListener;
+    private EventListener<MeetingCloseEventData> meetingCloseEventListener;
     private EventListener fixedUpdateEventListener;
     private EventListener updateEventListener;
     private EventListener<VotingCompleteEventData> votingCompleteEventListener;
@@ -63,6 +63,7 @@ class BalancerAbility : AbilityBase, IAbilityCount
     private bool isDoubleExile = false;
     public bool isOnePlayerDead = false; // 片方のプレイヤーが死亡したかどうかのフラグ
     public static BalancerAbility BalancingAbility { get; private set; }
+    public static MeetingHud currentMeetingHud;
 
     // 天秤ボタン
     private BalancerMeetingButton balancerButton;
@@ -104,6 +105,7 @@ class BalancerAbility : AbilityBase, IAbilityCount
         WaitVote
     }
     public BalancerState CurrentState { get; private set; } = BalancerState.NotBalance;
+    private TextMeshPro limitText;
     public BalancerAbility(int useCount)
     {
         Count = useCount; // 設定された回数だけ使用可能
@@ -118,7 +120,7 @@ class BalancerAbility : AbilityBase, IAbilityCount
         targetPlayerRight = null;
         isAbilityUsed = false;
         BalancingAbility = null;
-
+        currentMeetingHud = null;
         // 天秤ボタンの状態もリセット
         if (balancerButton != null)
         {
@@ -133,8 +135,8 @@ class BalancerAbility : AbilityBase, IAbilityCount
     public override void Attach(PlayerControl player, ulong abilityId, AbilityParentBase parent)
     {
         base.Attach(player, abilityId, parent);
-        meetingStartEventListener = MeetingStartEvent.Instance.AddListener(OnMeetingStart);
-        meetingCloseEventListener = MeetingCloseEvent.Instance.AddListener(OnMeetingClose);
+        meetingStartEventListener = MeetingStartEvent.Instance.AddListener(x => OnMeetingStart());
+        meetingCloseEventListener = MeetingCloseEvent.Instance.AddListener(x => OnMeetingClosed());
         // FixedUpdateイベントにアニメーション更新処理を登録
         fixedUpdateEventListener = FixedUpdateEvent.Instance.AddListener(FixedUpdateAnimation);
         votingCompleteEventListener = VotingCompleteEvent.Instance.AddListener(OnVotingComplete);
@@ -146,7 +148,16 @@ class BalancerAbility : AbilityBase, IAbilityCount
     }
     private void Update()
     {
-
+        if (limitText == null) return;
+        if (Player.IsDead())
+        {
+            GameObject.Destroy(limitText.gameObject);
+            limitText = null;
+        }
+        else
+        {
+            limitText.text = ModTranslation.GetString("BalancerLimitText", Count);
+        }
     }
     public void OnWrapUp(WrapUpEventData data)
     {
@@ -203,50 +214,45 @@ class BalancerAbility : AbilityBase, IAbilityCount
     }
     public void EndBalancing()
     {
-        if (BalancingAbility != null && BalancingAbility == this)
+        if (BalancingAbility != this) return;
+        if (!MeetingHud.Instance.playerStates.All((PlayerVoteArea ps) => ps.AmDead || ps.DidVote)) return;
+        // 未投票時ランダムに投票する設定がONの場合のみ、投票先を変更する
+        if (Balancer.BalancerRandomVoteWhenNoVote)
         {
-            if (MeetingHud.Instance.playerStates.All((PlayerVoteArea ps) => ps.AmDead || ps.DidVote))
+            List<byte> targetIds = [targetPlayerLeft.PlayerId, targetPlayerRight.PlayerId];
+            foreach (PlayerVoteArea area in MeetingHud.Instance.playerStates)
             {
-                // 未投票時ランダムに投票する設定がONの場合のみ、投票先を変更する
-                if (Balancer.BalancerRandomVoteWhenNoVote)
+                if (!area.AmDead && !targetIds.Contains(area.VotedFor))
                 {
-                    foreach (PlayerVoteArea area in MeetingHud.Instance.playerStates)
-                    {
-                        List<byte> targetIds = new() { targetPlayerLeft.PlayerId, targetPlayerRight.PlayerId };
-                        if (!targetIds.Contains(area.VotedFor))
-                        {
-                            area.VotedFor = targetIds[UnityEngine.Random.Range(0, targetIds.Count)];
-                        }
-                    }
+                    area.VotedFor = targetIds[UnityEngine.Random.Range(0, targetIds.Count)];
                 }
-                else
-                {
-                    foreach (PlayerVoteArea area in MeetingHud.Instance.playerStates)
-                    {
-                        if (area.VotedFor < 250)
-                            area.VotedFor = 255;
-                    }
-
-                }
-                bool tie;
-                var max = MeetingHud.Instance.CalculateVotes().MaxPair(out tie);
-                PlayerControl exiled = null;
-                if (!tie)
-                {
-                    exiled = PlayerControl.AllPlayerControls.ToArray().FirstOrDefault(x => x.PlayerId == max.Key);
-                }
-                MeetingHud.VoterState[] array = new MeetingHud.VoterState[MeetingHud.Instance.playerStates.Length];
-                for (int i = 0; i < MeetingHud.Instance.playerStates.Length; i++)
-                {
-                    PlayerVoteArea playerVoteArea = MeetingHud.Instance.playerStates[i];
-                    MeetingHud.VoterState voterState = default;
-                    voterState.VoterId = playerVoteArea.TargetPlayerId;
-                    voterState.VotedForId = playerVoteArea.VotedFor;
-                    array[i] = voterState;
-                }
-                MeetingHud.Instance.RpcVotingComplete(array, exiled?.Data, tie);
             }
         }
+        else
+        {
+            foreach (PlayerVoteArea area in MeetingHud.Instance.playerStates)
+            {
+                if (!area.AmDead && area.VotedFor < 250)
+                    area.VotedFor = 255;
+            }
+        }
+        bool tie;
+        var max = MeetingHud.Instance.CalculateVotes().MaxPair(out tie);
+        PlayerControl exiled = null;
+        if (!tie)
+        {
+            exiled = PlayerControl.AllPlayerControls.ToArray().FirstOrDefault(x => x.PlayerId == max.Key);
+        }
+        MeetingHud.VoterState[] array = new MeetingHud.VoterState[MeetingHud.Instance.playerStates.Length];
+        for (int i = 0; i < MeetingHud.Instance.playerStates.Length; i++)
+        {
+            PlayerVoteArea playerVoteArea = MeetingHud.Instance.playerStates[i];
+            MeetingHud.VoterState voterState = default;
+            voterState.VoterId = playerVoteArea.TargetPlayerId;
+            voterState.VotedForId = playerVoteArea.VotedFor;
+            array[i] = voterState;
+        }
+        MeetingHud.Instance.RpcVotingComplete(array, exiled?.Data, tie);
     }
     public void OnVotingComplete(VotingCompleteEventData data)
     {
@@ -258,11 +264,20 @@ class BalancerAbility : AbilityBase, IAbilityCount
     public void OnMeetingStart()
     {
         ClearAndReload();
+        if (!Player.AmOwner) return;
+        limitText = GameObject.Instantiate(FastDestroyableSingleton<HudManager>.Instance.KillButton.cooldownTimerText, MeetingHud.Instance.transform);
+        limitText.text = ModTranslation.GetString("BalancerLimitText", Count);
+        limitText.enableWordWrapping = false;
+        limitText.transform.localScale = Vector3.one * 0.5f;
+        limitText.transform.localPosition = new Vector3(-3.15f, 2.27f, -10);
     }
 
-    public void OnMeetingClose()
+    public void OnMeetingClosed()
     {
         // 会議終了時の処理
+        if (limitText != null)
+            GameObject.Destroy(limitText.gameObject);
+        limitText = null;
     }
     [CustomRPC]
     public static void RpcStartAbility(ExPlayerControl source, PlayerControl player1, PlayerControl player2, ulong abilityId)
@@ -282,6 +297,7 @@ class BalancerAbility : AbilityBase, IAbilityCount
         targetPlayerLeft = player1;
         targetPlayerRight = player2;
         BalancingAbility = this;
+        currentMeetingHud = MeetingHud.Instance;
 
         PleaseVoteAnimIndex = 0;
         MeetingHud.Instance.SkipVoteButton.gameObject.SetActive(false);
@@ -764,8 +780,13 @@ class BalancerAbility : AbilityBase, IAbilityCount
                 break;
 
             case BalancerState.WaitVote:
-                // 投票フェーズ中の処理
-                // 目の回転処理を継続
+                foreach (var area in MeetingHud.Instance.playerStates)
+                {
+                    if (area.TargetPlayerId != targetPlayerLeft.PlayerId && area.TargetPlayerId != targetPlayerRight.PlayerId)
+                        area.gameObject.SetActive(false);
+                }
+                leftPlayerArea.transform.localPosition = new(-2.9f, 0, -0.9f);
+                rightPlayerArea.transform.localPosition = new(2.3f, 0, -0.9f);
                 if (eyeBackRender != null)
                 {
                     rotate -= Time.fixedDeltaTime * 25f;
@@ -904,7 +925,6 @@ class BalancerMeetingButton : CustomMeetingButtonBase
     {
         // 自分自身にはボタンを表示しない
         if (ExPlayerControl.LocalPlayer.IsDead()) return false;
-        if (player.PlayerId == PlayerControl.LocalPlayer.PlayerId) return false;
         if (player.IsDead()) return false;
         if (firstSelectedTarget != null && firstSelectedTarget.PlayerId == player.PlayerId) return false;
         // 現在の会議で既に能力を使用している場合はボタンを表示しない
@@ -924,8 +944,6 @@ class BalancerMeetingButton : CustomMeetingButtonBase
         {
             // 1人目のターゲットを選択
             firstSelectedTarget = clickedPlayer;
-            // 通知（任意）
-            // TODO: 必要に応じて通知を実装
         }
         else
         {

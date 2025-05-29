@@ -25,6 +25,18 @@ public enum RoleId : short
     Tuna,
     Teruteru,
     Opportunist,
+    Chief,
+    Workperson,
+    SerialKiller,
+    PavlovsOwner,
+    PavlovsDog,
+    SideKiller,
+    MadKiller,
+    EvilGambler,
+    HomeSecurityGuard,
+    Seer,
+    Celebrity,
+    Vulture,
 }
 
 public enum QuoteMod : byte
@@ -67,4 +79,5 @@ public enum RoleTag : byte
 {
     SpecialKiller,
     PowerPlayResistance,
+    Information,
 }

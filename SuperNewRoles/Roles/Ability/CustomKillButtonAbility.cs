@@ -13,6 +13,7 @@ public class CustomKillButtonAbility : TargetCustomButtonBase
     public Func<bool> TargetPlayersInVentsValue { get; }
     public Func<ExPlayerControl, bool> IsTargetableValue { get; }
     public Action<ExPlayerControl> KilledCallback { get; }
+    public Action<float> OnCooldownStarted;
 
     public override Color32 OutlineColor => ExPlayerControl.LocalPlayer.roleBase.RoleColor;
     public override Sprite Sprite => HudManager.Instance?.KillButton?.graphic?.sprite;
@@ -22,7 +23,11 @@ public class CustomKillButtonAbility : TargetCustomButtonBase
     public override bool OnlyCrewmates => OnlyCrewmatesValue?.Invoke() ?? false;
     public override bool TargetPlayersInVents => TargetPlayersInVentsValue?.Invoke() ?? false;
     public override Func<ExPlayerControl, bool>? IsTargetable => IsTargetableValue;
-    public CustomKillButtonAbility(Func<bool> canKill, Func<float?> killCooldown, Func<bool> onlyCrewmates, Func<bool> targetPlayersInVents = null, Func<ExPlayerControl, bool> isTargetable = null, Action<ExPlayerControl> killedCallback = null)
+    public override ShowTextType showTextType => _showTextType?.Invoke() ?? ShowTextType.Hidden;
+    public override string showText => _showText?.Invoke() ?? "";
+    private Func<ShowTextType> _showTextType { get; } = () => ShowTextType.Hidden;
+    private Func<string> _showText { get; } = () => "";
+    public CustomKillButtonAbility(Func<bool> canKill, Func<float?> killCooldown, Func<bool> onlyCrewmates, Func<bool> targetPlayersInVents = null, Func<ExPlayerControl, bool> isTargetable = null, Action<ExPlayerControl> killedCallback = null, Func<ShowTextType> showTextType = null, Func<string> showText = null)
     {
         CanKill = canKill;
         KillCooldown = killCooldown;
@@ -30,6 +35,8 @@ public class CustomKillButtonAbility : TargetCustomButtonBase
         TargetPlayersInVentsValue = targetPlayersInVents;
         IsTargetableValue = isTargetable;
         KilledCallback = killedCallback;
+        _showTextType = showTextType;
+        _showText = showText;
     }
 
     public override void OnClick()
@@ -39,6 +46,7 @@ public class CustomKillButtonAbility : TargetCustomButtonBase
 
         ExPlayerControl.LocalPlayer.RpcCustomDeath(Target, CustomDeathType.Kill);
         ResetTimer();
+        OnCooldownStarted?.Invoke(DefaultTimer);
     }
 
     public override bool CheckIsAvailable()
@@ -51,7 +59,7 @@ public class CustomKillButtonAbility : TargetCustomButtonBase
 
     public override bool CheckHasButton()
     {
-        return CanKill();
+        return ExPlayerControl.LocalPlayer.IsAlive() && CanKill();
     }
 
     [CustomRPC]

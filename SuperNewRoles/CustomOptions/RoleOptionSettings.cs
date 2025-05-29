@@ -76,22 +76,7 @@ namespace SuperNewRoles.CustomOptions
         /// </summary>
         /// <param name="option">チェック対象のオプション</param>
         /// <returns>表示すべき場合はtrue、非表示にすべき場合はfalse</returns>
-        private static bool ShouldOptionBeActive(CustomOption option)
-        {
-            if (!option.ShouldDisplay())
-                return false;
-
-            // 親オプションをチェック
-            var parent = option.ParentOption;
-            while (parent != null)
-            {
-                // 親オプションが無効（Selectionが0）ならfalse
-                if (parent.Selection == 0)
-                    return false;
-                parent = parent.ParentOption;
-            }
-            return true;
-        }
+        private static bool ShouldOptionBeActive(CustomOption option) => option.ShouldDisplay();
 
         /// <summary>
         /// すべてのオプションの表示状態を更新します

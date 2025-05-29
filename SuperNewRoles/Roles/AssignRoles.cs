@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using HarmonyLib;
+using SuperNewRoles.CustomOptions.Categories;
 using SuperNewRoles.Modules;
 
 namespace SuperNewRoles.Roles;
@@ -17,11 +18,11 @@ class RoleManagerSelectRolesPatch
 
 public static class AssignRoles
 {
-    [CustomOptionInt("AssignRoles_MaxImpostors", 1, 5, 1, 2, parentFieldName: nameof(CustomOptionManager.GeneralSettings))]
+    [CustomOptionInt("AssignRoles_MaxImpostors", 1, 15, 1, 2, parentFieldName: nameof(Categories.GeneralSettings))]
     public static int MaxImpostors;
-    [CustomOptionInt("AssignRoles_MaxCrews", 1, 5, 1, 2, parentFieldName: nameof(CustomOptionManager.GeneralSettings))]
+    [CustomOptionInt("AssignRoles_MaxCrews", 1, 15, 1, 2, parentFieldName: nameof(Categories.GeneralSettings))]
     public static int MaxCrews;
-    [CustomOptionInt("AssignRoles_MaxNeutrals", 1, 5, 1, 2, parentFieldName: nameof(CustomOptionManager.GeneralSettings))]
+    [CustomOptionInt("AssignRoles_MaxNeutrals", 1, 15, 1, 2, parentFieldName: nameof(Categories.GeneralSettings))]
     public static int MaxNeutrals;
 
     private static Dictionary<AssignedTeamType, List<AssignTickets>> AssignTickets_HundredPercent = new();

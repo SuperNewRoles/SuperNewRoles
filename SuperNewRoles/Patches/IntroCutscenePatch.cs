@@ -2,7 +2,11 @@ using System.Collections;
 using System.Linq;
 using BepInEx.Unity.IL2CPP.Utils.Collections;
 using HarmonyLib;
+using SuperNewRoles.CustomOptions.Categories;
+using SuperNewRoles.Events;
+using SuperNewRoles.MapCustoms;
 using SuperNewRoles.Modules;
+using SuperNewRoles.Modules.Events.Bases;
 using SuperNewRoles.Roles;
 using UnityEngine;
 
@@ -120,7 +124,7 @@ public static class IntroCutscenePatch
     /// <param name="yourTeam">チームを表示するプレイヤーのリスト</param>
     public static void SetupIntroTeamIcons(IntroCutscene __instance, ref Il2CppSystem.Collections.Generic.List<PlayerControl> yourTeam)
     {
-        if (CustomOptionManager.ModeOption == ModeId.Default)
+        if (Categories.ModeOption == ModeId.Default)
         {
             if (ExPlayerControl.LocalPlayer.IsCrewmate())
             {
@@ -189,19 +193,28 @@ public static class IntroCutscenePatch
             FinalStatusListener.LoadListener();
             CustomDeathExtensions.Register();
             PoolablePrefabManager.OnIntroCutsceneDestroy(__instance);
+            SetTargetPatch.Register();
+
+            FungleAdditionalAdmin.AddAdmin();
+            FungleAdditionalElectrical.CreateElectrical();
 
             ReAssignTasks();
 
             NameText.UpdateAllNameInfo();
+
+            // 情報機器制限の設定を初期化
+            if (MapSettingOptions.DeviceOptions)
+            {
+                DevicesPatch.ClearAndReload();
+            }
         }
         private static void ReAssignTasks()
         {
-            foreach (var player in ExPlayerControl.ExPlayerControls)
+            // ローカルプレイヤーのみがタスクを再割り当てする
+            var localPlayer = ExPlayerControl.LocalPlayer;
+            if (localPlayer != null && localPlayer.CustomTaskAbility != null && localPlayer.CustomTaskAbility.assignTaskData != null)
             {
-                if (player.IsTaskTriggerRole())
-                {
-                    player.CustomTaskAbility.AssignTasks();
-                }
+                localPlayer.CustomTaskAbility.AssignTasks();
             }
         }
     }
