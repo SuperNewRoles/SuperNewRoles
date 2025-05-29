@@ -522,7 +522,7 @@ ModifierHawk.Description,タスクターンに使用出来る能力を追加す�
 
 # Intros_Impostor
 EvilGuesserIntro1,,
-SamuraiIntro1,侍マック,
+SamuraiIntro1,,
 SelfBomberIntro1,,
 WaveCannonIntro1,,
 SerialKillerIntro1,,
