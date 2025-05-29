@@ -391,6 +391,10 @@ EvilHawk,イビルホーク,Evil Hawk
 ModifierHawk,モディファイアホーク,Modifier Hawk
 Bullet,弾,Bullet
 
+# Descriptions_VanillaRoles
+Crewmate.Description,,
+Impostor.Description,,
+
 # Descriptions_Impostor
 EvilGuesser.Description,会議に関する能力を有するインポスターです。\n会議中に出現するボタンを押し、対象のプレイヤーの役職が何か当てると、そのプレイヤーをキルすることが出来ます。\nただし、外すと自身が死亡してしまいます。,An Impostor with a meeting‐based ability.\nDuring meetings，by pressing the appearing button and correctly guessing a target player's role，they can kill that player.\nHowever，an incorrect guess results in their own death.,这是一个拥有会议相关能力的内鬼。\n在会议中，点击出现的按钮后，如果猜中目标玩家的角色，就可以将其击杀。\n但如果猜错，自己会死亡。,這是一個具備會議相關能力的內鬼。\n在會議中，按下出現的按鈕後，若能正確猜出目標玩家的角色，便可將其擊殺。\n不過，若猜錯，則自己將會死亡。
 Samurai.Description,特殊なキル能力を有するインポスターです。\n1ゲームに一度だけ使用出来る「必殺技」ボタンを押すと、近くにいるクルーメイトを全てキルすることが出来ます。,An Impostor with a unique kill ability.\nThey can use the "Finishing Move" button once per game to kill all nearby Crewmates.,这是一个拥有特殊击杀能力的内鬼。\n每局游戏只能使用一次"必杀技"按钮，能够击杀所有附近的船员。,這是一個具備特殊擊殺能力的內鬼。\n每局遊戲僅能使用一次「必殺技」按鈕，可擊殺所有附近的船員。
