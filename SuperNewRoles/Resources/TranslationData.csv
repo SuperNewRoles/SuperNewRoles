@@ -455,38 +455,38 @@ Seer.Description,タスクターンに発動する能力を有するクルーメ
 Celebrity.Description,特に能力を有さないクルーメイトです。\n全員視点で名前が役職色に変わっており、全員からスターだということがわかります。,A Crewmate with no special abilities.\nTheir name is displayed in the color of their role for everyone, making it clear to all that they are the Star.,这是一个没有特殊能力的船员。\n他们的名字以角色颜色显示在所有人的视角中，让大家都看出他们是明星。,這是一個沒有特殊能力的船員。\n他們的名字以角色顏色呈現在所有人眼中，讓大家都能看出他們是明星。
 Datahacker.Description,タスクターンに発動する能力を有するクルーメイトです。\nタスクを一定数こなすと、敵対する陣営のプレイヤーが誰かわかります。\nただし、それより少し前に敵対する陣営のプレイヤーから自身がデータハッカーとバレてしまいます。,A Crewmate with an ability that activates during task turns.\nAfter completing a certain number of tasks, they can identify the players from opposing factions.\nHowever, shortly before that, opposing faction players will realize that they are the Datahacker.,
 Santa.Description,タスクターンに使用出来る能力を有するクルーメイトです。\n「プレゼント」ボタンを押すと、対象のプレイヤーをランダムな役職に変更します。\nただし、対象のプレイヤーがクルーメイト以外だった場合、自殺してしまいます。,I am a Crewmate with the ability to use task turns.\nWhen I press the "Present" button， the target player is changed to a random role.\nHowever， if the target player is not a Crewmate， I will commit suicide.,我是一个可以使用任务轮次的船员。\n当我按下“礼物”按钮时，目标玩家将被随机更换为一个角色。\n但是，如果目标玩家不是船员，我就会自杀。,我是一名可以使用任務回合的船員。\n當我按下「禮物」按鈕時，目標玩家會被隨機更換為一個職業。\n但如果目標玩家不是船員，我就會自殺。
-JumpDancer.Description,,
-WellBehaver.Description,,
+JumpDancer.Description,タスクターンに使用出来る能力を有するクルーメイトです。\n「ジャンプ！」ボタンを押すと、周囲にいるプレイヤーと自身をジャンプさせます。,
+WellBehaver.Description,タスクを有さないクルーメイトです。\nその代わり、自身以外の誰かがマップ上に落としたゴミを拾わなくてはいけません。\nマップ上に一定数以上のゴミが溜まると死亡してしまいます。,
 NiceNekomata.Description,,
-Pteranodon.Description,,
-NiceButtoner.Description,,
-Mayor.Description,,
-Bakery.Description,,
+Pteranodon.Description,タスクターンに使用出来る能力を有するクルーメイトです。\nこの役職はエアシップのみ配役されます。\n本来であれば昇降機を使用しなければ渡れない箇所を、「ジャーンプ！」ボタンを押すことで飛び越えることが出来ます。,
+NiceButtoner.Description,タスクターンに使用出来る能力を有するクルーメイトです。「緊急会議！」ボタンを押すと、いつでも会議を招集することが出来ます。,
+Mayor.Description,会議に関する能力を有するクルーメイトです。\nこの役職は、他の役職よりも多くの票を投票することが出来ます。,
+Bakery.Description,会議に関する能力を有するクルーメイトです。この役職が生存していると、会議終了時にパンを焼いたことが通知されます。,
 VentTrapper.Description,,
 SpeedBooster.Description,,
 NiceTeleporter.Description,,
 Taskmaster.Description,,
 ToiletFan.Description,,
 NiceMechanic.Description,,
-BodyBuilder.Description,,
-HamburgerShop.Description,,
+BodyBuilder.Description,タスクターンに使用出来る能力を有するクルーメイトです。\nこの役職の持つタスクは全てファングルの重量上げタスクに置き換わります。\nタスクを全て完了すると、マッスルポーズを取ることが出来るようになります。\nマッスルポーズは他者視点でも視認出来ます。,
+HamburgerShop.Description,特に能力を有さないクルーメイトです。\nこの役職の持つタスクは全てエアシップのハンバーガータスクに置き換わります。,
 NiceHawk.Description,,
-WiseMan.Description,,
+WiseMan.Description,タスクターンに使用出来る能力を有するクルーメイトです。\n「聖なるバリア」ボタンを押すと、一定時間動けなくなる代わりに、キルを跳ね返すバリアを貼ります。\n通常キルをされた場合、キルをしてきたプレイヤーが死亡します。\n波動砲が当たった場合、波動砲は真上、真下、斜め上、斜め下の4つのいずれかの角度に向かって跳ね返ります。,
 
 
 
 # Descriptions_MadRoles
 Madmate.Description,インポスターの味方のクルーメイトです。\nいわゆる狂人と呼ばれる役職です。\n勝利条件はクルーメイトの勝利ではなく、インポスターの勝利です。\nその勝利に自身の生死は問われないので、あの手この手でインポスターを勝利に導きましょう。,A Crewmate allied with the Impostors.\nOften known as the Madmate.\nTheir win condition is not for the Crewmates to win, but for the Impostors to win.\nTheir own survival is irrelevant, so use any means necessary to secure an Impostor victory.,这是一个支持内鬼的船员，也称为疯友角色。\n他们的胜利条件不是船员获胜，而是内鬼获胜，并且他们的生死并不影响胜利。\n所以，尽可能地采用各种手段促成内鬼获胜。,這是一個支持內鬼的船員，俗稱瘋友角色。\n其勝利條件並非船員勝利，而是內鬼勝利，且自身生死不影響結果。\n因此，請用一切手段助內鬼取勝。
 BlackCat.Description,インポスターの味方のクルーメイトです。\nいわゆる狂人と呼ばれる役職です。\n勝利条件はクルーメイトの勝利ではなく、インポスターの勝利です。\nその勝利に自身の生死は問われないので、あの手この手でインポスターを勝利に導きましょう。\nこの役職は、自身が追放された際、誰か一人を道連れにする能力を有します。,A Crewmate allied with the Impostors.\nKnown as the Black Cat—a type of madmate.\nTheir win condition is not a Crewmate victory but an Impostor victory.\nTheir own survival is irrelevant, so use any means necessary to ensure an Impostor win.\nAdditionally, when this role is ejected, it has the ability to take one other player with it.,这是一个支持内鬼的船员，也就是所谓的黑猫角色，一种狂人角色。\n他们的胜利条件不是船员获胜，而是内鬼获胜，而且他们的生死无关紧要。\n请用各种方法促使内鬼获胜。\n该角色在被逐出时，有能力带走一名玩家。,這是一個支持內鬼的船員，亦稱黑貓，屬於瘋友角色之一。\n其勝利條件並非船員勝利，而是內鬼勝利，且自身生死無關緊要。\n請採用各種手段助內鬼取勝。\n此角色在被逐出時，具備帶走一名玩家的能力。
-MadRaccoon.Description,,
+MadRaccoon.Description,インポスターの味方のクルーメイトです。\nいわゆる狂人と呼ばれる役職です。\n勝利条件はクルーメイトの勝利ではなく、インポスターの勝利です。\nその勝利に自身の生死は問われないので、あの手この手でインポスターを勝利に導きましょう。\nこの役職は、他プレイヤーの姿に変身することが出来ます。,
 BlackSanta.Description,インポスターの味方のクルーメイトです。\nいわゆる狂人と呼ばれる役職です。\n勝利条件はクルーメイトの勝利ではなく、インポスターの勝利です。\nその勝利に自身の生死は問われないので、あの手この手でインポスターを勝利に導きましょう。\nこの役職は、「プレゼント」ボタンを押すと、対象のプレイヤーをランダムな役職に変更します。\nただし、対象のプレイヤーがインポスター以外だった場合、自殺してしまいます。,I am a Crewmate allied with the Impostors．\nThis role is commonly referred to as the “Madmate”．\nMy win condition is not the Crewmates’ victory，but the Impostors’ victory．\nWhether I live or die does not matter for that outcome，so use every trick in the book to help the Impostors win．\nThis role can press the "Present" button to change the target player into a random role．\nHowever，if the target player is not an Impostor，I will commit suicide．,我是一个站在内鬼一方的船员。\n这个角色也被称为“狂人”。\n我的胜利条件不是船员胜利，而是内鬼胜利。\n无论我生还是死，只要内鬼获胜我就算胜利，所以请想尽办法帮助内鬼取得胜利。\n这个角色按下“礼物”按钮后，会将目标玩家随机更换为一个角色。\n但如果目标玩家不是内鬼，我就会自杀。,我是一名站在內鬼一方的船員。\n這個角色也被稱為「狂人」。\n我的勝利條件不是船員的勝利，而是內鬼的勝利。\n不論我生或死，只要內鬼贏了，我就算獲勝，所以請千方百計協助內鬼取勝。\n這個角色按下「禮物」按鈕後，會將目標玩家隨機更換為一個職業。\n但如果目標玩家不是內鬼，我就會自殺。
-Worshiper.Description,,
+Worshiper.Description,インポスターの味方のクルーメイトです。\nいわゆる狂人と呼ばれる役職です。\n勝利条件はクルーメイトの勝利ではなく、インポスターの勝利です。\nその勝利に自身の生死は問われないので、あの手この手でインポスターを勝利に導きましょう。\nこの役職は、任意のタイミングで自殺をすることが出来ます。,
 SatsumaAndImo.Description,,
 MadHawk.Description,,
 
 
 
-JackalFriends,ジャッカルフレンズ,Jackal Friends
+JackalFriends.Description,ジャッカルの味方のクルーメイトです。\nいわゆる狂人と呼ばれる役職のジャッカル版です。\n勝利条件はクルーメイトの勝利ではなく、ジャッカルの勝利です。\nその勝利に自身の生死は問われないので、あの手この手でジャッカルを勝利に導きましょう。,
 
 # Descriptions_GhostRoles
 Cantera,カンテラ,Cantera
