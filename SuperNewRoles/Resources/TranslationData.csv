@@ -428,7 +428,8 @@ EvilHawk.Description,,
 Jackal.Description,キル能力を有する第三陣営です。\n自陣営以外のキルが出来る陣営が全滅した上で、自陣営とクルーが同数以下になれば勝利します。\n設定次第で他のプレイヤーの役職を、自身の後継となるサイドキックや、手助けをしてくれるジャッカルフレンズに変更する能力を有することも出来ます。,A third‐faction role with a kill ability.\nIt wins if all factions capable of killing outside its own are eliminated and its faction and the Crewmates are equal in number or fewer.\nDepending on the settings, it can change other players' roles into a Sidekick (its successor) or Jackal Friends who assist it.,这是一个拥有击杀能力的第三阵营角色。\n当所有能够进行击杀的其他阵营被消灭，并且其阵营与船员人数相等或更少时，即可获胜。\n根据设定，它还可以将其他玩家的角色变更为边缘队员（其继任者）或协助的杰克朋友。,這是一個具備擊殺能力的第三陣營角色。\n當其他能進行擊殺的陣營全部被消滅，且其陣營與船員數量相等或更少時，即獲勝。\n根據設定，還可將其他玩家的角色變更為接班的邊翼或提供協助的傑克朋友。
 Sidekick.Description,ジャッカル陣営に属する第三陣営です。\n自陣営以外のキルが出来る陣営が全滅した上で、自陣営とクルーが同数以下になれば勝利します。\n自身をサイドキックに変化させたジャッカルが死亡すると、自身がジャッカルへと昇格し、キル能力を有するようになります。,A third‐faction role belonging to the Jackal faction.\nIt wins when all factions capable of killing outside its own are eliminated and its faction and the Crewmates are equal in number or fewer.\nIf the Jackal who transformed you into a Sidekick dies, you are promoted to Jackal and gain a kill ability.,这是属于杰克阵营的第三阵营角色。\n当所有能够进行击杀的其他阵营被消灭，并且其阵营与船员人数相等或较少时，即可获胜。\n如果使你变为边缘队员的杰克死亡，你将晋升为杰克，并获得击杀能力。,這是一個隸屬於傑克陣營的第三陣營角色。\n當其他能進行擊殺的陣營全部被消滅，且其陣營與船員數量相等或更少時，即獲勝。\n若使你轉為邊翼的傑克死亡，你將晉升為杰克，並獲得擊殺能力。
 WaveCannonJackal.Description,キル能力を有する第三陣営です。\n自陣営以外のキルが出来る陣営が全滅した上で、自陣営とクルーが同数以下になれば勝利します。\n「波動砲」ボタンを押すことで、その時点で向いている方向に向かって、障害物を無視して一直線に飛んでいくビームを撃つことが出来ます。\nビームにあたったプレイヤーは陣営関係なく死亡します。\n\n設定によって様々なタイプのサイドキックを作成することが出来ます。,A third‐faction role with a kill ability.\nIt wins if all factions capable of killing outside its own are eliminated and its faction and the Crewmates are equal in number or fewer.\nBy pressing the "Wave Cannon" button, it fires a beam in the direction it is facing that ignores obstacles and travels straight, killing any player it hits regardless of faction.\n\nAdditionally, various types of Sidekicks can be created based on the settings.,这是一个拥有击杀能力的第三阵营角色。\n当所有能进行击杀的其他阵营被消灭，并且其阵营与船员人数相等或更少时，即可获胜。\n按下"波动炮"按钮后，会向当前面向的方向发射一束无视障碍的直线光束，击中的玩家无论阵营都会死亡。\n此外，根据设定，还可以创建多种类型的边缘队员。,這是一個具備擊殺能力的第三陣營角色。\n當其他能進行擊殺的陣營全部被消滅，且其陣營與船員數量相等或更少時，即獲勝。\n按下「波動砲」按鈕後，會向當前所面向的方向發射無視障礙的直線光束，被擊中的玩家不論陣營皆會死亡。\n此外，依據設定，還可創建各種類型的邊翼。
-WaveCannonSidekick.Description,ジャッカル陣営に属する第三陣営です。\n自陣営以外のキルが出来る陣営が全滅した上で、自陣営とクルーが同数以下になれば勝利します。\n自身をサイドキックに変化させた波動砲ジャッカルが死亡すると、自身が波動砲ジャッカルへと昇格し、キル能力を有するようになります。,A third‐faction role belonging to the Jackal faction.\nIt wins when all factions capable of killing outside its own are eliminated and its faction and the Crewmates are equal in number or fewer.\nIf the Wave Cannon Jackal who transformed you into a Sidekick dies, you are promoted to Wave Cannon Jackal, gaining a kill ability.,这是属于杰克阵营的第三阵营角色。\n当所有能够进行击杀的其他阵营被消灭，并且其阵营与船员人数相等或较少时，即可获胜。\n如果将你变为边缘队员的波动炮杰克死亡，你将晋升为波动炮杰克，并获得击杀能力。,這是一個隸屬於傑克陣營的第三陣營角色。\n當其他能進行擊殺的陣營全部被消滅，且其陣營與船員數量相等或更少時，即獲勝。\n若令你變為邊翼的波動砲傑克死亡，你將晉升為波動砲傑克，並獲得擊殺能力。
+SidekickWaveCannon.Description,ジャッカル陣営に属する第三陣営です。\n自陣営以外のキルが出来る陣営が全滅した上で、自陣営とクルーが同数以下になれば勝利します。\n自身をサイドキックに変化させた波動砲ジャッカルが死亡すると、自身が波動砲ジャッカルへと昇格し、キル能力を有するようになります。,A third‐faction role belonging to the Jackal faction.\nIt wins when all factions capable of killing outside its own are eliminated and its faction and the Crewmates are equal in number or fewer.\nIf the Wave Cannon Jackal who transformed you into a Sidekick dies, you are promoted to Wave Cannon Jackal, gaining a kill ability.,这是属于杰克阵营的第三阵营角色。\n当所有能够进行击杀的其他阵营被消灭，并且其阵营与船员人数相等或较少时，即可获胜。\n如果将你变为边缘队员的波动炮杰克死亡，你将晋升为波动炮杰克，并获得击杀能力。,這是一個隸屬於傑克陣營的第三陣營角色。\n當其他能進行擊殺的陣營全部被消滅，且其陣營與船員數量相等或更少時，即獲勝。\n若令你變為邊翼的波動砲傑克死亡，你將晉升為波動砲傑克，並獲得擊殺能力。
+Bullet.Description,,
 Tuna.Description,キル能力を有さない第三陣営です。\n一定秒数立ち止まるとその場で死亡してしまいます。\nゲーム終了まで生存していると、一部役職の特殊勝利を除き、勝利することが出来ます。,A third‐faction role without a kill ability.\nIf they remain stationary for a set number of seconds, they die instantly.\nIf they survive until the end of the game, they win—except for roles with special win conditions.,这是一个没有击杀能力的第三阵营角色。\n如果原地不动达到一定秒数，将会立即死亡。\n只要存活到游戏结束（除了一些具有特殊胜利条件的角色），便可获胜。,這是一個沒有擊殺能力的第三陣營角色。\n若持續原地不動達到一定秒數，將會立即死亡。\n只要存活到遊戲結束，除去部分特殊勝利條件的角色，即可獲勝。
 Teruteru.Description,キル能力を有さない独自の勝利条件を持つ第三陣営です。\n会議にて追放されると、その時点で単独勝利します。,A third‐faction role without a kill ability that has its own win condition.\nIf ejected during a meeting, it wins immediately on its own.,这是一个没有击杀能力、拥有独特胜利条件的第三阵营角色。\n在会议中被逐出时，即可立即单独获胜。,這是一個沒有擊殺能力且具備獨特勝利條件的第三陣營角色。\n在會議中被逐出時，即可立即單獨獲勝。
 Opportunist.Description,キル能力を有さない第三陣営です。\nゲーム終了まで生存していると、一部役職の特殊勝利を除き、共に勝利することが出来ます。,A third‐faction role without a kill ability.\nIf they survive until the end of the game, they win alongside others—except for certain roles with special win conditions.,这是一个没有击杀能力的第三阵营角色。\n只要存活到游戏结束（除了一些具特殊胜利条件的角色），他们就能与其他人一起获胜。,這是一個沒有擊殺能力的第三陣營角色。\n只要存活到遊戲結束，除去部分特殊勝利條件的角色，即可與他人一同獲勝。
@@ -440,13 +441,16 @@ Arsonist.Description,\nキル能力を有さない独自の勝利条件を持つ
 Amnesiac.Description,キル能力を有さない第三陣営です。\nこの役職は勝利条件を持ちません。\n死体を通報すると、その死体のプレイヤーの役職を引き継ぎます。\n勝利条件は引き継いだ役職のものに変化します。,This is a third-party role with no killing ability．\nThis role does not have its own win condition．\nWhen you report a dead body，you inherit the role of the deceased player．\nYour win condition will change to match the role you inherited．,这是一个没有击杀能力的第三方阵营角色。\n该角色本身没有胜利条件。\n当你通报尸体时，会继承该尸体玩家的角色。\n你的胜利条件将变为继承角色的胜利条件。,這是一個沒有擊殺能力的第三方陣營角色。\n此角色本身沒有勝利條件。\n當你通報屍體時，會繼承該屍體玩家的角色。\n你的勝利條件將變為所繼承角色的勝利條件。
 FalseCharges.Description,キル能力を有さない独自の勝利条件を持つ第三陣営です。\n他プレイヤーに冤罪をかけることが出来、冤罪をかけた相手が一定ターン以内に追放されると単独勝利します。\nなお、冤罪をかけた際、自身は死亡してしまうため、能力は一度しか使うことが出来ません。,This is a third-party role with no killing ability and a unique win condition．\nYou can falsely accuse another player，and if that player is ejected within a certain number of turns，you will achieve a solo victory．\nHowever，you will die immediately after making the accusation，so you can only use this ability once．,这是一个没有击杀能力、拥有独特胜利条件的第三方阵营角色。\n你可以对其他玩家进行冤罪指控，如果该玩家在一定回合内被投票逐出，你将获得单独胜利。\n不过，在你发动冤罪时自己会死亡，因此该能力只能使用一次。,這是一個沒有擊殺能力、擁有獨特勝利條件的第三方陣營角色。\n你可以對其他玩家發動冤罪指控，若該玩家在一定回合內被投票逐出，你將獲得單獨勝利。\n不過，在你發動冤罪時自己會死亡，因此此能力僅能使用一次。
 Hitman.Description,キル能力を有する第三陣営です。\n指定数のターゲットをキルするとその時点で単独勝利します。\nターゲットは画面の左下に表示され、その居場所に向かって赤色の矢印も表示されます。\n設定によっては一定数失敗してしまうとその時点で死亡してしまいます。,This is a third-party role with killing ability．\nIf you successfully kill a set number of targets，you will achieve a solo victory at that moment．\nYour targets are displayed in the bottom-left corner of the screen，and a red arrow will point you toward their location．\nDepending on the settings，if you fail a certain number of times，you will die immediately．,这是一个拥有击杀能力的第三方阵营角色。\n当你成功击杀指定数量的目标后，将立即获得单独胜利。\n目标会显示在屏幕左下角，并有红色箭头指引其位置。\n根据设定，如果失败次数达到一定数量，你将立即死亡。,這是一個擁有擊殺能力的第三方陣營角色。\n當你成功擊殺指定數量的目標後，將立即獲得單獨勝利。\n目標會顯示在畫面左下角，並會有紅色箭頭指引其位置。\n根據設定，若失敗達到一定次數，你將立即死亡。
+LoversBreaker.Description,,
 God.Description,キル能力を有さない独自の勝利条件を持つ第三陣営です。\n全てのプレイヤーの役職が何かを見ることが出来ます。\nゲーム終了まで生存していると、一部役職の特殊勝利を除き、その勝利を横取りして勝利することが出来ます。,This is a third-party role with no killing ability and a unique win condition．\nYou can see the roles of all players．\nIf you survive until the end of the game，you will steal the victory from the actual winners and claim it as your own，except in cases where special roles have unique win conditions．,这是一个没有击杀能力、拥有独特胜利条件的第三方阵营角色。\n你可以查看所有玩家的角色。\n如果你能存活到游戏结束，除部分具有特殊胜利条件的角色外，你将窃取原本的胜利并获得胜利。,這是一個沒有擊殺能力、擁有獨特勝利條件的第三方陣營角色。\n你可以查看所有玩家的角色。\n如果你能存活到遊戲結束，除了部分具有特殊勝利條件的角色之外，你將竊取原本的勝利並獲得勝利。
+Owl.Description,,
+SchrodingersCat.Description,キル能力を有さない第三陣営です。\nこの役職は勝利条件を持ちません。\n特定の陣営の役職にキルされると、その場で生き返ってそのキラーの陣営の仲間になり、勝利条件を獲得します。\n特定の陣営：インポスター、ジャッカル、パブロフの犬、クルーメイト,
+Truelover.Description,,
+Cupid.Description,,
+Spelunker.Description,,
+BlackHatHacker.Description,,
+PartTimer.Description,,
 
-
-
-
-
-Owl,フクロウ,Owl
 
 
 
@@ -497,14 +501,14 @@ MadHawk.Description,,
 JackalFriends.Description,ジャッカルの味方のクルーメイトです。\nいわゆる狂人と呼ばれる役職のジャッカル版です。\n勝利条件はクルーメイトの勝利ではなく、ジャッカルの勝利です。\nその勝利に自身の生死は問われないので、あの手この手でジャッカルを勝利に導きましょう。,
 
 # Descriptions_GhostRoles
-Cantera,カンテラ,Cantera
-Mirage,ミラージュ,Mirage
+Cantera.Description,,
+Mirage.Description,,
 
 
 
 # Descriptions_Modifier
-ModifierGuesser,モディファイアゲッサー,Modifier Guesser
-Lovers,ラバーズ,Lovers,恋爱,戀愛
+ModifierGuesser.Description,,
+Lovers.Description,,
 
 
 
@@ -1013,7 +1017,6 @@ OwlSpecialBlackoutButton,特殊停電,Special Blackout,紧急停电,黑幕降臨
 
 # SchrodingersCat Role and Options
 SchrodingersCat,シュレディンガーの猫,Schrödinger's Cat,薛定谔的猫,薛丁格的貓
-SchrodingersCat.Description,観測されるまで事象は確定しないんだ,Events remain undetermined until observed.,在被觀測前事象不確定。,在被觀測前事象不確定。
 SchrodingersCatHasKillAbility,キル能力を有する,Has kill ability,具有擊殺能力,具有擊殺能力
 SchrodingersCatKillCooldown,キルクールタイム,Kill Cool Time,擊殺冷卻時間,擊殺冷卻時間
 SchrodingersCatKillVictimSuicide,キル者が自殺する,Killer suicides,擊殺者自殺,擊殺者自殺
