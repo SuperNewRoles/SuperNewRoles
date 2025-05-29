@@ -393,26 +393,34 @@ Bullet,弾,Bullet
 
 # Descriptions_Impostor
 EvilGuesser.Description,会議に関する能力を有するインポスターです。\n会議中に出現するボタンを押し、対象のプレイヤーの役職が何か当てると、そのプレイヤーをキルすることが出来ます。\nただし、外すと自身が死亡してしまいます。,An Impostor with a meeting‐based ability.\nDuring meetings, by pressing the appearing button and correctly guessing a target player's role, they can kill that player.\nHowever, an incorrect guess results in their own death.,这是一个拥有会议相关能力的内鬼。\n在会议中，点击出现的按钮后，如果猜中目标玩家的角色，就可以将其击杀。\n但如果猜错，自己会死亡。,這是一個具備會議相關能力的內鬼。\n在會議中，按下出現的按鈕後，若能正確猜出目標玩家的角色，便可將其擊殺。\n不過，若猜錯，則自己將會死亡。
-SelfBomber.Description,特殊なキル能力を有するインポスターです。\n「自爆」ボタンを押すと、自身が死亡する代わりに、近くにいるクルーメイトを全てキルすることが出来ます。,An Impostor with a unique kill ability.\nBy pressing the "Self‐Destruct" button, they sacrifice themselves to kill all nearby Crewmates.,这是一个拥有特殊击杀能力的内鬼。\n按下"自爆"按钮后，会以牺牲自身为代价，击杀所有附近的船员。,這是一個具備特殊擊殺能力的內鬼。\n按下「自爆」按鈕後，自己將犧牲，卻可擊殺所有附近的船員。
 Samurai.Description,特殊なキル能力を有するインポスターです。\n1ゲームに一度だけ使用出来る「必殺技」ボタンを押すと、近くにいるクルーメイトを全てキルすることが出来ます。,An Impostor with a unique kill ability.\nThey can use the "Finishing Move" button once per game to kill all nearby Crewmates.,这是一个拥有特殊击杀能力的内鬼。\n每局游戏只能使用一次"必杀技"按钮，能够击杀所有附近的船员。,這是一個具備特殊擊殺能力的內鬼。\n每局遊戲僅能使用一次「必殺技」按鈕，可擊殺所有附近的船員。
+SelfBomber.Description,特殊なキル能力を有するインポスターです。\n「自爆」ボタンを押すと、自身が死亡する代わりに、近くにいるクルーメイトを全てキルすることが出来ます。,An Impostor with a unique kill ability.\nBy pressing the "Self‐Destruct" button, they sacrifice themselves to kill all nearby Crewmates.,这是一个拥有特殊击杀能力的内鬼。\n按下"自爆"按钮后，会以牺牲自身为代价，击杀所有附近的船员。,這是一個具備特殊擊殺能力的內鬼。\n按下「自爆」按鈕後，自己將犧牲，卻可擊殺所有附近的船員。
 WaveCannon.Description,特殊なキル能力を有するインポスターです。\n「波動砲」ボタンを押すことで、その時点で向いている方向に向かって、障害物を無視して一直線に飛んでいくビームを撃つことが出来ます。\nビームにあたったプレイヤーは陣営関係なく死亡します。,An Impostor with a special kill ability.\nBy pressing the "Wave Cannon" button, they fire a beam in the direction they are facing that ignores obstacles and travels straight.\nAny player hit by the beam dies regardless of faction.,这是一个拥有特殊击杀能力的内鬼。\n按下"波动炮"按钮后，会向其面向的方向发射一束直线光束，能够无视障碍物。\n被光束击中的玩家，无论所属阵营，都会死亡。,這是一個具有特殊擊殺能力的內鬼。\n按下「波動砲」按鈕後，會向當前所面向的方向發射無視障礙的直線光束。\n任何被光束擊中的玩家，無論所屬陣營，皆會死亡。
 SerialKiller.Description,キルに関係する能力を有するインポスターです。\nキルクールが短い代わりに、一定時間キルをしないと自殺してしまいます。,An Impostor with kill‐related abilities.\nWhile their kill cooldown is short, if they don't kill within a certain time, they will commit suicide.,这是一个拥有击杀相关能力的内鬼。\n虽然击杀冷却时间很短，但如果在一定时间内没有击杀，将会自杀。,這是一個具備擊殺相關能力的內鬼。\n雖然其擊殺冷卻時間短，但若在一定時間內未能擊殺，則會自動自殺。
 SideKiller.Description,自陣営を増やす能力を有するインポスターです。\n「侵食する」ボタンを押すと、対象のプレイヤーの役職をマッドキラーに変更します。,An Impostor with the ability to expand its faction.\nBy pressing the "Infiltrate" button, it changes a target player's role to Mad Killer.,这是一个具有增加自身阵营人数能力的内鬼。\n按下"侵蚀"按钮后，会将目标玩家的角色更改为疯狂杀手。,這是一個具備擴充自身陣營能力的內鬼。\n按下「侵蝕」按鈕後，將會把目標玩家的角色變更為瘋狂殺手。
 MadKiller.Description,インポスター陣営に属する役職です。\n自身をマッドキラーに変化させたサイドキラーが死亡すると、インポスターへ昇格し、キル能力を有するようになります。\n昇格前はマッドメイト同様クルーメイト判定です。,A role within the Impostor faction.\nWhen the Sidekiller who transformed you into a Mad Killer dies, you are promoted to an Impostor and gain a kill ability.\nPrior to promotion, you are considered a Crewmate, similar to a Madmate.,这是一个隶属于内鬼阵营的角色。\n当将你变为疯狂杀手的边缘杀手死亡时，你将晋升为内鬼，并获得击杀能力。\n晋升前，你和疯友一样被视为船员。,這是一個隸屬於內鬼陣營的角色。\n當使你變成瘋狂殺手的邊緣殺手死亡時，你將晉升為內鬼，並獲得擊殺能力。\n晉升前，你將與瘋友同視為船員。
 EvilGambler.Description,キルに関係する能力を有するインポスターです。\nキルをした際、次のキルクールが確率で変動します。\nターンの最初のキルクールは、ゲーム全体のインポスターのキルクールタイムに準じます。,An Impostor with kill‐related abilities.\nAfter making a kill, the cooldown for the next kill changes probabilistically.\nThe initial kill cooldown of a turn follows the overall Impostor kill cooldown time in the game.,这是一个拥有与击杀相关能力的内鬼。\n在击杀后，下一次击杀的冷却时间会根据概率变化。\n一回合开始时的击杀冷却时间遵循整个游戏中内鬼的击杀冷却设置。,這是一個具備擊殺相關能力的內鬼。\n成功擊殺後，其下一次擊殺的冷卻時間會依機率變動。\n回合初的擊殺冷卻時間則依照整體遊戲中內鬼的設定。
-Penguin,ペンギン,Penguin,企鹅,企鵝
-Pusher,突き落と師,Pusher,推落者,推落者
-EvilHacker,イビルハッカー,Evil Hacker,邪恶黑客,邪惡黑客
-SuicideWisher,スーサイドウィッシャー,Suicide Wisher,自杀愿望者,自殺願望者
-NekoKabocha,ネコカボチャ,NekoKabocha,猫南瓜,貓南瓜
-Matryoshka,マトリョーシカ,Matryoshka
-Conjurer,魔術師,Conjurer,魔术师,魔術師
-Doppelganger,ドッペルゲンガー,Doppelganger
-EvilButtoner,イビルボタナー,Evil Buttoner
-Necromancer,ネクロマンサー,Necromancer
-Revenant,レヴェナント,Revenant
-Teleporter,テレポーター,Teleporter
-Pursuer,追跡者,Pursuer,追踪者,追蹤者
+Penguin.Description,,
+Pusher.Description,,
+EvilHacker.Description,,
+SuicideWisher.Description,,
+NekoKabocha.Description,,
+EvilNekomata.Description,,
+Matryoshka.Description,,
+Conjurer.Description,,
+Doppelganger.Description,,
+EvilButtoner.Description,,
+Necromancer.Description,自陣営を増やす能力を有するインポスターです。幽霊を見ることが出来、幽霊に「呪縛」ボタンを押すと、対象のプレイヤーの役職をレヴェナントに変更します。,An impostor who has the ability to increase their own camp. They can see ghosts\, and pressing the "Curse" button on a ghost changes the target player's role to Revenant.,,
+Revenant.Description,インポスター陣営に属する幽霊役職です。タスクターンに使用出来る能力を有します。「呪う」ボタンを押すと対象に取り憑き、視界を奪います。,A ghost role belonging to the Impostor team. Has an ability that can be used during the task turn. Pressing the "Haunt" button possesses the target and steals their vision.,,
+Teleporter.Description,,
+Pursuer.Description,,
+Crab.Description,,
+EvilSpeedBooster.Description,,
+Rocket.Description,,
+Vampire.Description,,
+VampireDependent.Description,,
+EvilMechanic.Description,ベントを自分の位置に移動させることができるインポスターです。\n能力使用中は透明になり、キルやサボタージュに有利になります。\n一定時間後、ベントは元の位置に戻ります。,An Impostor who can move vents to their position.\nWhile using the ability, they become transparent, gaining advantages for kills and sabotage.\nAfter a certain time, the vent returns to its original position.,这是一个可以将通风口移动到自己位置的内鬼。\n使用能力时会变透明，有利于击杀和破坏。\n一定时间后，通风口会回到原位。,這是一個可以將通風口移動到自己位置的內鬼。\n使用能力時會變透明，有利於擊殺和破壞。\n一定時間後，通風口會回到原位。
+EvilHawk.Description,,
 
 
 
@@ -910,14 +918,12 @@ SuicideButtonText,自滅,Suicide,自杀,自殺
 
 # Necromancer
 NecromancerIntro1,死すれば我が力となりて,If you die\, you become my power,,
-Necromancer.Description,自陣営を増やす能力を有するインポスターです。幽霊を見ることが出来、幽霊に「呪縛」ボタンを押すと、対象のプレイヤーの役職をレヴェナントに変更します。,An impostor who has the ability to increase their own camp. They can see ghosts\, and pressing the "Curse" button on a ghost changes the target player's role to Revenant.,,
 NecromancerCurseCooldown,「呪縛」クールタイム,Curse Cooldown,,
 NecromancerMaxRevenants,レヴェナント作成可能数,Max Revenants,,
 NecromancerCurseButtonText,呪縛,Curse,詛咒,詛咒
 
 # Revenant
 RevenantIntro1,永遠たる呪縛,Eternal Curse,,
-Revenant.Description,インポスター陣営に属する幽霊役職です。タスクターンに使用出来る能力を有します。「呪う」ボタンを押すと対象に取り憑き、視界を奪います。,A ghost role belonging to the Impostor team. Has an ability that can be used during the task turn. Pressing the "Haunt" button possesses the target and steals their vision.,,
 RevenantRequiredTasks,能力に必要なタスク個数,Required Tasks for Ability,,
 RevenantHauntDuration,視界を奪う時間,Haunt Duration,,
 RevenantHauntVision,効果中の視界,Vision During Haunt,,
@@ -1187,7 +1193,6 @@ MechanicButtonText,メカニック,Mechanic,机械师,機械師
 
 # EvilMechanic
 EvilMechanic,イビルメカニック,Evil Mechanic,邪恶机械师,邪惡機械師
-EvilMechanic.Description,ベントを自分の位置に移動させることができるインポスターです。\n能力使用中は透明になり、キルやサボタージュに有利になります。\n一定時間後、ベントは元の位置に戻ります。,An Impostor who can move vents to their position.\nWhile using the ability, they become transparent, gaining advantages for kills and sabotage.\nAfter a certain time, the vent returns to its original position.,这是一个可以将通风口移动到自己位置的内鬼。\n使用能力时会变透明，有利于击杀和破坏。\n一定时间后，通风口会回到原位。,這是一個可以將通風口移動到自己位置的內鬼。\n使用能力時會變透明，有利於擊殺和破壞。\n一定時間後，通風口會回到原位。
 EvilMechanicCoolTime,イビルメカニック クールタイム,Evil Mechanic Cool Time,邪恶机械师冷却时间,邪惡機械師冷卻時間
 EvilMechanicDurationTime,効果持続時間,Effect Duration,效果持续时间,效果持續時間
 
