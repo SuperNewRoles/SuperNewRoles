@@ -22,7 +22,7 @@ class EvilButtoner : RoleBase<EvilButtoner>
     public override WinnerTeamType WinnerTeam => WinnerTeamType.Impostor;
     public override TeamTag TeamTag => TeamTag.Impostor;
     public override RoleTag[] RoleTags => [];
-    public override short IntroNum => 1; // 適切な値に変更してください
+    public override short IntroNum => 1;
     public override RoleOptionMenuType OptionTeam => RoleOptionMenuType.Impostor;
 
     [CustomOptionInt("EvilButtonerUseLimit", 1, 10, 1, 1, translationName: "UseLimit")]

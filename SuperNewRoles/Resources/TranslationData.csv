@@ -298,7 +298,7 @@ SyncError_HashMismatch,{player}の実行ファイルが一致しません。, {p
 SyncError_NotInstalled,{player}にSuperNewRolesが導入されていません。, {player} does not have SuperNewRoles installed.,{player}没有安装SuperNewRoles.,{player}沒有安裝SuperNewRoles.
 
 # Role
-Bait,ベイト,Bait,餌,餤
+Bait,ベイト,Bait,餌,餌
 BestFalseCharge,ベスト冤罪ヤー,Best False Charge,最佳冤罪者,最佳冤罪者
 Sheriff,シェリフ,Sheriff,警长,警長
 NiceGuesser,ナイスゲッサー,Nice Guesser,好人猜疑者,好人猜疑者
@@ -995,6 +995,7 @@ RocketLaunchButtonText,ドッカーン!,Launch!
 
 
 # Vampire
+VampireDependentsButtonText,夜に堕とす,make Dependents,眷属,夜墮
 VampireAbsorptionCooldown,吸血クールダウン,Absorption Cooldown,吸血冷却时间,吸血冷卻時間
 VampireKillDelay,キル遅延,Kill Delay,杀人延迟,殺人延遲
 VampireBloodstainDuration,血痕持続ターン数,Bloodstain Duration (Turns),血迹持续回合数,血跡持續回合數
