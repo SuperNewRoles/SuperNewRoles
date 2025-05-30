@@ -21,8 +21,8 @@ internal class Teleporter : RoleBase<Teleporter>
     ];
 
     public override QuoteMod QuoteMod { get; } = QuoteMod.SuperNewRoles;
-    public override RoleTypes IntroSoundType { get; } = RoleTypes.Impostor; // 仮でインポスターと同じ音
-    public override short IntroNum { get; } = 0; // 仮
+    public override RoleTypes IntroSoundType { get; } = RoleTypes.Impostor;
+    public override short IntroNum { get; } = 1;
 
     public override AssignedTeamType AssignedTeam { get; } = AssignedTeamType.Impostor;
     public override WinnerTeamType WinnerTeam { get; } = WinnerTeamType.Impostor;
