@@ -14,7 +14,7 @@ namespace SuperNewRoles.Roles.Neutral;
 
 class Cupid : RoleBase<Cupid>
 {
-    public override RoleId Role { get; } = RoleId.Cupid; // RoleId.Cupid が enum に存在すると仮定
+    public override RoleId Role { get; } = RoleId.Cupid;
     public override Color32 RoleColor { get; } = Lovers.Instance.RoleColor;
     public override List<Func<AbilityBase>> Abilities { get; } = [
         () => new CupidAbility(
