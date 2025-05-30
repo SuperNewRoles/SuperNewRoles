@@ -125,8 +125,13 @@ public static class NameText
         if (player.VoteArea != null)
             player.VoteArea.NameText.color = color;
     }
-    public static void AddNameText(ExPlayerControl player, string text)
+    public static void AddNameText(ExPlayerControl player, string text, bool checkContains = false)
     {
+        if (checkContains)
+        {
+            if (player.Player.cosmetics.nameText.text.Contains(text))
+                return;
+        }
         player.Player.cosmetics.nameText.text += text;
         if (player.VoteArea != null && player.VoteArea.PlayerIcon?.cosmetics?.nameText != null)
             player.VoteArea.NameText.text += text;

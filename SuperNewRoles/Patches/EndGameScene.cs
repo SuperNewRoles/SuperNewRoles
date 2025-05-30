@@ -14,6 +14,7 @@ using SuperNewRoles.HelpMenus;
 using UnityEngine.UI;
 using BepInEx.Unity.IL2CPP.Utils.Collections;
 using SuperNewRoles.Roles.Modifiers;
+using TMPro;
 
 namespace SuperNewRoles.Patches;
 
@@ -407,10 +408,13 @@ public class EndGameManagerSetUpPatch
             }
 
             playerObj.UpdateFromPlayerOutfit(data.Outfit, PlayerMaterial.MaskType.None, data.IsDead, true);
-            playerObj.cosmetics.nameText.color = Color.white;
             playerObj.cosmetics.nameText.transform.localScale = new Vector3(1f / scaleVector.x, 1f / scaleVector.y, 1f / scaleVector.z);
             playerObj.cosmetics.nameText.transform.localPosition = new Vector3(playerObj.cosmetics.nameText.transform.localPosition.x, playerObj.cosmetics.nameText.transform.localPosition.y - 0.8f, -150f);
-            playerObj.cosmetics.nameText.text = data.PlayerName;
+            TextMeshPro nameText = GameObject.Instantiate(playerObj.cosmetics.nameText, null);
+            nameText.color = Color.white;
+            nameText.text = data.PlayerName;
+            nameText.transform.position = playerObj.cosmetics.nameText.transform.position;
+            playerObj.cosmetics.nameText.gameObject.SetActive(false);
 
             CustomCosmeticsLayer customCosmeticsLayer = CustomCosmeticsLayers.ExistsOrInitialize(playerObj.cosmetics);
 
@@ -429,7 +433,7 @@ public class EndGameManagerSetUpPatch
                 string playerName = ModHelpers.Cs(Palette.PlayerColors[roleInfo.ColorId], roleInfo.PlayerName);
                 if (roleInfo.LoversHeartColor != null)
                     playerName += ModHelpers.Cs(roleInfo.LoversHeartColor.Value, " ♥");
-                playerObj.cosmetics.nameText.text = $"{playerName}{roleInfo.NameSuffix}\n{string.Join("\n", roleText)}";
+                nameText.text = $"{playerName}{roleInfo.NameSuffix}\n{string.Join("\n", roleText)}";
                 customCosmeticsLayer.hat2?.SetHat(roleInfo.Hat2Id, roleInfo.ColorId);
                 customCosmeticsLayer.visor2?.SetVisor(roleInfo.Visor2Id, roleInfo.ColorId);
                 playerObj.transform.localScale *= roleInfo.additionalSize;

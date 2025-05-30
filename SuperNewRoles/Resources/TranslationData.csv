@@ -746,10 +746,11 @@ WaveCannonJackalSidekickType,サイドキックタイプ,Sidekick Type,边缘队
 WaveCannonJackalWaveCannonCooldown,波動砲クールダウン,Wave Cannon Cooldown,波动炮冷却时间,波動砲冷卻時間
 WaveCannonJackalWaveCannonEffectDuration,波動砲の充填時間,Wave Cannon Fill Time,波动炮充填时间,波動砲充填時間
 WaveCannonJackalWaveCannonType,波動砲タイプ,Wave Cannon Type,波动炮类型,波動砲類型
-WaveCannonJackalBulletLoadBulletCooltime,弾のチャージクールタイム,Bullet Charge Cooltime,子弹充能冷却时间,子彈充能冷卻時間
-WaveCannonJackalBulletLoadedChargeTime,弾波動砲のチャージ時間,Bullet Loaded Charge Time,子弹充能时间,子彈充能時間
+WaveCannonJackalBulletLoadBulletCooltime,装填クールタイム,Bullet Charge Cooltime,子弹充能冷却时间,子彈充能冷卻時間
+WaveCannonJackalBulletLoadedChargeTime,超波動砲のチャージ時間,Bullet Loaded Charge Time,子弹充能时间,子彈充能時間
 WaveCannonJackalCreateBulletToJackal,弾がジャッカルに昇格する,Bullet becomes Jackal,子弹成为杰克,子彈成為傑克
 WaveCannonJackalNewJackalHaveWaveCannon,弾が昇格した際波動砲を持つ,Bullet becomes Jackal and has Wave Cannon,子弹成为杰克并拥有波动炮,子彈成為傑克並擁有波動砲
+BulletEmergencyText,なんだか怖くて会議を開けない...,Something is scary and I can't open the meeting...,什么东西很可怕，我开不了会...,什麼東西很可怕，我開不了會...
 
 # Tuna
 TunaStopTimeLimit,停止可能時間,Tuna Stop Time Limit,金枪鱼停止时间,金槍魚停止時間

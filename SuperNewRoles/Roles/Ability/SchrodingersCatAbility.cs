@@ -133,10 +133,10 @@ public class SchrodingersCatAbility : AbilityBase
         if (CurrentTeam != SchrodingersCatTeam.SchrodingersCat)
         {
             Dominate(CurrentTeam);
-            if (Data.KillVictimSuicide)
+            if (Data.KillVictimSuicide && Data.HasKillAbility)
             {
                 suicideTimer = Data.SuicideTime;
-                _suicideTarget = data.RefTarget;
+                _suicideTarget = data.Killer;
                 if (_suicideTarget.AmOwner)
                 {
                     _suicideText = GameObject.Instantiate(data.Killer.cosmetics.nameText, null);
@@ -194,7 +194,7 @@ public class SchrodingersCatAbility : AbilityBase
             if (!data.Visible)
                 return;
         }
-        else if (ModHelpers.Not(data.Visible || Player.AmOwner || CheckTeam(Player))) return;
+        else if (ModHelpers.Not(data.Visible || Player.AmOwner || CheckTeam(ExPlayerControl.LocalPlayer))) return;
 
         Color32 color = Color.white;
         switch (CurrentTeam)
@@ -218,8 +218,12 @@ public class SchrodingersCatAbility : AbilityBase
                 return;
         }
         data.Player.PlayerInfoText.text = ModHelpers.Cs(color, data.Player.PlayerInfoText.text);
+        data.Player.PlayerInfoText.color = color;
         if (data.Player.MeetingInfoText)
+        {
             data.Player.MeetingInfoText.text = ModHelpers.Cs(color, data.Player.MeetingInfoText.text);
+            data.Player.MeetingInfoText.color = color;
+        }
         data.Player.cosmetics.nameText.text = ModHelpers.Cs(color, data.Player.cosmetics.nameText.text);
         if (data.Player.VoteArea != null)
             data.Player.VoteArea.NameText.text = ModHelpers.Cs(color, data.Player.VoteArea.NameText.text);

@@ -68,6 +68,7 @@ public abstract class WaveCannonObjectBase
             ability.Player.Player.moveable = false;
         }
         ability.Player.transform.position = startPosition;
+        ability.Player.NetTransform.SnapTo(startPosition);
         if (isShooting)
         {
             // 賢者のRpcを待機する(ちらつきを防ぐため)

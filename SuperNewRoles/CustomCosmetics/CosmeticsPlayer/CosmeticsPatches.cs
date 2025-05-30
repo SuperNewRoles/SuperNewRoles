@@ -326,14 +326,44 @@ public static class MeetingIntroAnimation_Init
         customCosmeticsLayer.hat2.BackLayer.maskInteraction = SpriteMaskInteraction.VisibleInsideMask;
     }
 }
-[HarmonyPatch(typeof(MushroomMixupPlayerAnimation), nameof(MushroomMixupPlayerAnimation.StartAnimation))]
-public static class MushroomMixupPlayerAnimation_StartAnimation
+[HarmonyPatch(typeof(MushroomMixupPlayerAnimation), nameof(MushroomMixupPlayerAnimation.SetPlayer))]
+public static class MushroomMixupPlayerAnimation_SetPlayer
 {
     public static void Postfix(MushroomMixupPlayerAnimation __instance)
     {
-        foreach (SpriteRenderer spriteRenderer in __instance.GetComponentsInChildren<SpriteRenderer>())
+        foreach (SpriteRenderer spriteRenderer in __instance.GetComponentsInChildren<SpriteRenderer>(true))
         {
             spriteRenderer.sortingOrder = 1000;
+        }
+    }
+}
+[HarmonyPatch(typeof(MushroomMixupSabotageSystem), nameof(MushroomMixupSabotageSystem.MushroomMixUp))]
+public static class MushroomMixupSabotageSystem_MushroomMixUp
+{
+    public static void Postfix(MushroomMixupSabotageSystem __instance)
+    {
+        foreach (ExPlayerControl player in ExPlayerControl.ExPlayerControls)
+        {
+            CustomCosmeticsLayer customCosmeticsLayer = CustomCosmeticsLayers.ExistsOrInitialize(player.cosmetics);
+            customCosmeticsLayer.hat2.gameObject.SetActive(false);
+            customCosmeticsLayer.visor2.gameObject.SetActive(false);
+        }
+    }
+}
+[HarmonyPatch(typeof(MushroomMixupSabotageSystem), nameof(MushroomMixupSabotageSystem.Deteriorate))]
+public static class MushroomMixupSabotageSystem_Deteriorate
+{
+    public static void Prefix(MushroomMixupSabotageSystem __instance)
+    {
+        if (!(__instance.currentSecondsUntilHeal <= 0f))
+        {
+            return;
+        }
+        foreach (ExPlayerControl player in ExPlayerControl.ExPlayerControls)
+        {
+            CustomCosmeticsLayer customCosmeticsLayer = CustomCosmeticsLayers.ExistsOrInitialize(player.cosmetics);
+            customCosmeticsLayer.hat2.gameObject.SetActive(true);
+            customCosmeticsLayer.visor2.gameObject.SetActive(true);
         }
     }
 }

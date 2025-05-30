@@ -76,7 +76,7 @@ public class BlackHatHackerVitalsButton : CustomButtonBase
     private BlackHatHackerAbility _ability;
 
     public override Sprite Sprite => FastDestroyableSingleton<HudManager>.Instance.UseButton.fastUseSettings[ImageNames.VitalsButton].Image;
-    public override string buttonText => ModTranslation.GetString("BlackHatHackerVitalsButtonName");
+    public override string buttonText => FastDestroyableSingleton<TranslationController>.Instance.GetString(StringNames.VitalsLabel);
     protected override KeyType keytype => KeyType.Vent;
     public override float DefaultTimer => 0f;
 
@@ -96,6 +96,7 @@ public class BlackHatHackerVitalsButton : CustomButtonBase
     {
         // バイタル表示状態を設定
         BlackHatHackerVitalsState.IsUsingVitals = true;
+        DevicesPatch.DontCountBecausePortableVitals = true;
 
         var originalRole = PlayerControl.LocalPlayer.Data.Role.Role;
         FastDestroyableSingleton<RoleManager>.Instance.SetRole(PlayerControl.LocalPlayer, AmongUs.GameOptions.RoleTypes.Scientist);
@@ -107,6 +108,7 @@ public class BlackHatHackerVitalsButton : CustomButtonBase
     {
         base.OnMeetingEnds();
         BlackHatHackerVitalsState.IsUsingVitals = false;
+        DevicesPatch.DontCountBecausePortableVitals = false;
     }
 }
 

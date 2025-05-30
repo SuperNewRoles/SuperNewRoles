@@ -19,6 +19,7 @@ namespace SuperNewRoles.Patches;
 public static class DevicesPatch
 {
     public static bool DontCountBecausePortableAdmin;
+    public static bool DontCountBecausePortableVitals;
     private static bool isAdminRestrictOption;
     private static bool isAdminDisabledOption;
     public static bool IsAdminRestrict => DontCountBecausePortableAdmin ? false : isAdminRestrictOption;
@@ -251,10 +252,11 @@ public static class DevicesPatch
 
                                 // BlackHatHackerのフィルター
                                 var blackHatHacker = SuperNewRoles.Roles.Ability.BlackHatHackerAbility.LocalInstance;
-                                if (blackHatHacker != null && blackHatHacker.AdminAbility != null &&
+                                if (DevicesPatch.DontCountBecausePortableAdmin && blackHatHacker != null && blackHatHacker.AdminAbility != null &&
                                     !blackHatHacker.InfectedPlayerId.Contains(component.PlayerId) && !component.AmOwner) continue;
+                                if (DevicesPatch.DontCountBecausePortableAdmin && blackHatHacker != null && blackHatHacker.AdminAbility != null)
+                                    colors.Add(component.Player.CurrentOutfit.ColorId);
                                 count++;
-                                colors.Add(component.Player.CurrentOutfit.ColorId);
                                 if (canSeeImpostorIcon && component.IsImpostor())
                                 {
                                     numImpostorIcons++;
@@ -333,7 +335,7 @@ public static class DevicesPatch
     {
         static bool Prefix(VitalsMinigame __instance)
         {
-            if (MapSettingOptions.DeviceOptions)
+            if (MapSettingOptions.DeviceOptions && !DontCountBecausePortableVitals)
             {
                 if (MapSettingOptions.RestrictionMode == DeviceRestrictionModeType.OnOff && IsVitalDisabled)
                 {
@@ -381,6 +383,11 @@ public static class DevicesPatch
             {
                 // BlackHatHackerのバイタル状態をリセット
                 SuperNewRoles.Roles.Ability.BlackHatHackerVitalsState.IsUsingVitals = false;
+                if (DevicesPatch.DontCountBecausePortableVitals)
+                {
+                    DevicesPatch.DontCountBecausePortableVitals = false;
+                    return;
+                }
             }
 
             if (__instance is not VitalsMinigame || !(MapSettingOptions.DeviceOptions && MapSettingOptions.RestrictionMode == DeviceRestrictionModeType.TimeLimit && IsVitalRestrict))
@@ -394,7 +401,7 @@ public static class DevicesPatch
     {
         static void Postfix(VitalsMinigame __instance)
         {
-            if (MapSettingOptions.DeviceOptions)
+            if (MapSettingOptions.DeviceOptions && !DontCountBecausePortableVitals)
             {
                 if (MapSettingOptions.RestrictionMode == DeviceRestrictionModeType.OnOff && IsVitalDisabled)
                 {
