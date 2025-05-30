@@ -1198,6 +1198,7 @@ RocketLaunchButtonText,ドッカーン!,Launch!
 
 
 # Vampire
+VampireDependentsButtonText,夜に堕とす,make Dependents,眷属,夜墮
 VampireAbsorptionCooldown,吸血クールダウン,Absorption Cooldown,吸血冷却时间,吸血冷卻時間
 VampireKillDelay,キル遅延,Kill Delay,杀人延迟,殺人延遲
 VampireBloodstainDuration,血痕持続ターン数,Bloodstain Duration (Turns),血迹持续回合数,血跡持續回合數

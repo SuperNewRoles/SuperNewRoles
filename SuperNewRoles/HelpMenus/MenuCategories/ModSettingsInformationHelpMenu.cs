@@ -19,6 +19,14 @@ public class ModSettingsInformationHelpMenu : HelpMenuCategoryBase
     public string lastHash;
     private DelayTask _updateShowTask;
 
+
+    // 定数定義：ヘッダー高さ、オプション間のオフセット、初期オプション表示位置、子オプションのインデント幅
+    public const float headerHeight = 0.6f;
+    public const float optionYOffset = 0.25f;
+    public const float textYOffset = optionYOffset * 0.8f;
+    public const float headerOptionStartY = 1.75f;
+    public const float indentWidth = 0.4f;
+
     public override void Show(GameObject Container)
     {
         this.Container = Container;
@@ -90,26 +98,6 @@ public class ModSettingsInformationHelpMenu : HelpMenuCategoryBase
         float lastY = 0f;
         float contentYBoundsMax = 0f;
 
-        // 定数定義：ヘッダー高さ、オプション間のオフセット、初期オプション表示位置、子オプションのインデント幅
-        const float headerHeight = 0.6f;
-        const float optionYOffset = 0.25f;
-        const float textYOffset = optionYOffset * 0.8f;
-        const float headerOptionStartY = 1.75f;
-        const float indentWidth = 0.4f;
-
-        // ローカル関数：オプションUIを生成して位置調整を行う
-        GameObject InstantiateOptionItem(GameObject template, Transform container, string optionName, float x, ref float optionYPos, ref float lastYRef, ref float bounds)
-        {
-            var item = GameObject.Instantiate(template, container);
-            item.name = $"Options(Clone)_{optionName}";
-            item.transform.localPosition = new Vector3(x, optionYPos, 0);
-            item.SetActive(true);
-            optionYPos -= optionYOffset;
-            lastYRef -= textYOffset;
-            bounds += textYOffset * 0.45f;
-            return item;
-        }
-
         // 各カテゴリごとにOptionBase（ヘッダー）を作成
         foreach (var category in categories)
         {
@@ -173,9 +161,9 @@ public class ModSettingsInformationHelpMenu : HelpMenuCategoryBase
             optionText.text = $"{ModTranslation.GetString(option.Name)}: {optionValue}";
         }
 
-        optionYPos -= 0.25f; // optionYOffset
-        lastYRef -= 0.25f * 0.8f; // textYOffset
-        bounds += (0.25f * 0.8f) * 0.45f; // textYOffset * 0.45f
+        optionYPos -= optionYOffset;
+        lastYRef -= textYOffset;
+        bounds += textYOffset * 0.45f;
 
         // 子オプションがあれば、表示条件を確認して再帰的に生成
         if (option.ChildrenOption.Count > 0)

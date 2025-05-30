@@ -114,7 +114,7 @@ public class VampireAbility : AbilityBase
             sidekickRole: () => RoleId.VampireDependent,
             sidekickRoleVanilla: () => RoleTypes.Crewmate,
             sidekickSprite: AssetManager.GetAsset<Sprite>("VampireSidekickButton.png"),
-            sidekickText: ModTranslation.GetString("SidekickButtonText"),
+            sidekickText: ModTranslation.GetString("VampireDependentsButtonText"),
             sidekickCount: () => 1,
             isTargetable: (player) => !player.IsImpostor(),
             onSidekickCreated: (player) =>

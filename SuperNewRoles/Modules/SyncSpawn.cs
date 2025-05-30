@@ -25,6 +25,7 @@ public static class SyncSpawn
             __instance.gotButton = true;
             SpawnLocation = spawnPoint;
             RpcSpawnSelected(ExPlayerControl.LocalPlayer);
+            __instance.StopAllCoroutines();
             __instance.StartCoroutine(WaitForSpawn(__instance).WrapToIl2Cpp());
             return false;
         }
