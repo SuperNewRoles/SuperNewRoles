@@ -2,6 +2,7 @@ using AmongUs.Data;
 using HarmonyLib;
 using SuperNewRoles.CustomCosmetics.UI;
 using SuperNewRoles.Modules;
+using SuperNewRoles.Roles.Modifiers;
 using UnityEngine;
 using static CosmeticsLayer;
 
@@ -316,25 +317,29 @@ public static class MeetingIntroAnimation_Init
 {
     public static void Postfix(MeetingIntroAnimation __instance)
     {
-        PlayerVoteArea area = __instance.GetComponentInChildren<PlayerVoteArea>();
-        CustomCosmeticsLayer customCosmeticsLayer = CustomCosmeticsLayers.ExistsOrInitialize(area.PlayerIcon.cosmetics);
-        customCosmeticsLayer.visor1.Image.maskInteraction = SpriteMaskInteraction.VisibleInsideMask;
-        customCosmeticsLayer.visor2.Image.maskInteraction = SpriteMaskInteraction.VisibleInsideMask;
-        customCosmeticsLayer.hat1.FrontLayer.maskInteraction = SpriteMaskInteraction.VisibleInsideMask;
-        customCosmeticsLayer.hat1.BackLayer.maskInteraction = SpriteMaskInteraction.VisibleInsideMask;
-        customCosmeticsLayer.hat2.FrontLayer.maskInteraction = SpriteMaskInteraction.VisibleInsideMask;
-        customCosmeticsLayer.hat2.BackLayer.maskInteraction = SpriteMaskInteraction.VisibleInsideMask;
+        new LateTask(() =>
+        {
+            PlayerVoteArea area = __instance.GetComponentInChildren<PlayerVoteArea>();
+            CustomCosmeticsLayer customCosmeticsLayer = CustomCosmeticsLayers.ExistsOrInitialize(area.PlayerIcon.cosmetics);
+            customCosmeticsLayer.visor1.Image.maskInteraction = SpriteMaskInteraction.VisibleInsideMask;
+            customCosmeticsLayer.visor2.Image.maskInteraction = SpriteMaskInteraction.VisibleInsideMask;
+            customCosmeticsLayer.hat1.FrontLayer.maskInteraction = SpriteMaskInteraction.VisibleInsideMask;
+            customCosmeticsLayer.hat1.BackLayer.maskInteraction = SpriteMaskInteraction.VisibleInsideMask;
+            customCosmeticsLayer.hat2.FrontLayer.maskInteraction = SpriteMaskInteraction.VisibleInsideMask;
+            customCosmeticsLayer.hat2.BackLayer.maskInteraction = SpriteMaskInteraction.VisibleInsideMask;
+        }, 0.1f, "MeetingIntroAnimation_Init");
     }
 }
-[HarmonyPatch(typeof(MushroomMixupPlayerAnimation), nameof(MushroomMixupPlayerAnimation.SetPlayer))]
-public static class MushroomMixupPlayerAnimation_SetPlayer
+[HarmonyCoroutinePatch(typeof(MushroomMixupPlayerAnimation), nameof(MushroomMixupPlayerAnimation.CoPlay))]
+public static class MushroomMixupPlayerAnimation_CoPlay
 {
-    public static void Postfix(MushroomMixupPlayerAnimation __instance)
+    public static void Postfix(object __instance)
     {
-        foreach (SpriteRenderer spriteRenderer in __instance.GetComponentsInChildren<SpriteRenderer>(true))
-        {
-            spriteRenderer.sortingOrder = 1000;
-        }
+        MushroomMixupPlayerAnimation instance = HarmonyCoroutinePatchProcessor.GetParentFromCoroutine<MushroomMixupPlayerAnimation>(__instance);
+        if (instance == null) return;
+        instance.sprite.sortingOrder = 1000;
+        if (((ExPlayerControl)instance.player).TryGetAbility<JumboAbility>(out var jumboAbility))
+            instance.transform.localScale = Vector3.one * ((jumboAbility._currentSize + 1f) / 2.7f);
     }
 }
 [HarmonyPatch(typeof(MushroomMixupSabotageSystem), nameof(MushroomMixupSabotageSystem.MushroomMixUp))]

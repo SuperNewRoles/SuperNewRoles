@@ -33,6 +33,8 @@ class SelfBomber : RoleBase<SelfBomber>
             callback: () =>
             {
                 RpcSelfBomberCallback(ExPlayerControl.LocalPlayer);
+                if (ExPlayerControl.ExPlayerControls.Count(x => x.IsAlive()) == 0)
+                    EndGamer.RpcEndGameImpostorWin();
             },
             beforeKillCallback: (killedPlayers) =>
             {
