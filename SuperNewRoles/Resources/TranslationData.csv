@@ -609,28 +609,28 @@ NiceHawkIntro1,この目は悪事を見逃さない
 WiseManIntro1,聖なる守りを授かりし者
 
 # Intros_MadRoles
-MadmateIntro1,
-BlackCatIntro1,,
-MadRaccoonIntro1,,
-BlackSantaIntro1,,
-WorshiperIntro1,,
-SatsumaAndImoIntro1,,
-MadHawkIntro1,,
+MadmateIntro1,道を違えし者
+BlackCatIntro1,その尾は死を運ぶ
+MadRaccoonIntro1,偽姿の獣
+BlackSantaIntro1,悪い子には圧倒的力を
+WorshiperIntro1,この命を捧げても
+SatsumaAndImoIntro1,今宵はどちらに味方しようか
+MadHawkIntro1,この目は悪事に目を瞑る
 
-JackalFriendsIntro1,,
+JackalFriendsIntro1,暗躍者に心酔せし者
 
 # Intros_GhostRoles
-CanteraIntro1,,
-MirageIntro1,,
+CanteraIntro1,暗闇に灯る道標
+MirageIntro1,虚空を舞う幻影
 
 # Intros_Modifier
-ModifierGuesserIntro1,,
-ModifierMadmateIntro1,,
-RulerModifierIntro1,,
-LoversIntro1,,
-JumboModifierIntro1,,
-ModifierSpelunkerIntro1,,
-ModifierHawkIntro1,,
+ModifierGuesserIntro1,そして、推察せよ
+ModifierMadmateIntro1,そして、あなたは狂っている
+RulerModifierIntro1,そして、あなたは支配者だ
+LoversIntro1,そして、あなたは恋をしている
+JumboModifierIntro1,どんどん大きくなっちゃう
+ModifierSpelunkerIntro1,そして、あなたは貧弱だ
+ModifierHawkIntro1,そして、あなたは鋭い目を持つ
 
 # wins
 WinText,勝利,Win
