@@ -50,7 +50,7 @@ public static class EndGamer
     {
         if (CustomOptionManager.DebugMode && CustomOptionManager.DebugModeNoGameEnd && reason != (GameOverReason)CustomGameOverReason.Haison)
             return;
-        HashSet<ExPlayerControl> additionalWinners = new();
+        HashSet<string> addWinners = new();
 
         // サボタージュ勝ちの時はインポスター以外死んだ判定で判定していく
         if (reason == GameOverReason.ImpostorsBySabotage)
@@ -67,8 +67,7 @@ public static class EndGamer
             if (winType != WinType.SingleNeutral)
                 UpdateHijackers(ref reason, ref winners, ref color, ref upperText, ref winText, ref winType);
             // 独自単独勝利とは同時勝利できない
-            UpdateAdditionalWinners(reason, winners, out additionalWinners, winType == WinType.SingleNeutral);
-            winners.UnionWith(additionalWinners);
+            UpdateAdditionalWinners(reason, ref winners, out addWinners, winType == WinType.SingleNeutral);
         }
         Logger.Info("----------- Finished EndGame Start -----------");
         Logger.Info("reason: " + reason);
@@ -78,7 +77,7 @@ public static class EndGamer
         Logger.Info("winText: " + winText);
         Logger.Info("----------- Finished EndGame End -----------");
         RpcSyncAlive(ExPlayerControl.ExPlayerControls.ToDictionary(x => x.PlayerId, x => x.IsDead()));
-        EndGameManagerSetUpPatch.RpcEndGameWithCondition(reason, winners.Select(x => x.PlayerId).ToList(), upperText ?? reason.ToString(), additionalWinners.Select(x => x.Role.ToString()).ToHashSet().ToList(), color, false, winText ?? "WinText");
+        EndGameManagerSetUpPatch.RpcEndGameWithCondition(reason, winners.Select(x => x.PlayerId).ToList(), upperText ?? reason.ToString(), addWinners.Select(x => x.ToString()).ToHashSet().ToList(), color, false, winText ?? "WinText");
     }
     [CustomRPC]
     public static void RpcSyncAlive(Dictionary<byte, bool> dead)
@@ -150,17 +149,17 @@ public static class EndGamer
             }
         }
     }
-    private static void UpdateAdditionalWinners(GameOverReason reason, HashSet<ExPlayerControl> nowWinners, out HashSet<ExPlayerControl> winners, bool cantWinSixAdditionalWinners)
+    private static void UpdateAdditionalWinners(GameOverReason reason, ref HashSet<ExPlayerControl> winners, out HashSet<string> addWinners, bool cantWinSixAdditionalWinners)
     {
-        winners = new();
+        addWinners = new();
         // ラバーズじゃない人がいる場合
-        if (Lovers.LoversWinType == LoversWinType.Single && nowWinners.Any(x => !x.IsLovers()))
+        if (Lovers.LoversWinType == LoversWinType.Single && winners.Any(x => !x.IsLovers()))
         {
             foreach (ExPlayerControl winner in winners)
             {
                 if (winner.IsLovers())
                 {
-                    nowWinners.Remove(winner);
+                    winners.Remove(winner);
                 }
             }
         }
@@ -172,20 +171,29 @@ public static class EndGamer
                 {
                     case RoleId.Opportunist:
                         if (player.IsAlive())
+                        {
                             winners.Add(player);
+                            addWinners.Add(player.Role.ToString());
+                        }
                         break;
                     case RoleId.Tuna when !Tuna.EnableTunaSoloWin:
                         if (player.IsAlive())
+                        {
                             winners.Add(player);
+                            addWinners.Add(player.Role.ToString());
+                        }
                         break;
                     case RoleId.Spelunker when Spelunker.SpelunkerIsAdditionalWin:
                         if (player.IsAlive())
+                        {
                             winners.Add(player);
+                            addWinners.Add(player.Role.ToString());
+                        }
                         break;
                 }
             }
         }
-        foreach (ExPlayerControl winner in nowWinners)
+        foreach (ExPlayerControl winner in winners)
         {
             if (Lovers.LoversWinType == LoversWinType.Shared && winner.IsLovers())
             {
@@ -198,12 +206,13 @@ public static class EndGamer
                 foreach (ExPlayerControl cupid in creatorCupid)
                 {
                     winners.Add(cupid);
+                    addWinners.Add(cupid.Role.ToString());
                 }
             }
         }
         if (reason == (GameOverReason)CustomGameOverReason.LoversWin)
         {
-            List<ExPlayerControl> creatorCupid = getCreatorCupid(nowWinners.First());
+            List<ExPlayerControl> creatorCupid = getCreatorCupid(winners.First());
             foreach (ExPlayerControl cupid in creatorCupid)
             {
                 winners.Add(cupid);
@@ -214,11 +223,12 @@ public static class EndGamer
             if (player.Role == RoleId.PartTimer)
             {
                 PartTimerAbility partTimerAbility = player.GetAbility<PartTimerAbility>();
-                if (partTimerAbility != null && partTimerAbility._employer != null && (nowWinners.Contains(partTimerAbility._employer) || winners.Contains(partTimerAbility._employer)))
+                if (partTimerAbility != null && partTimerAbility._employer != null && (winners.Contains(partTimerAbility._employer) || winners.Contains(partTimerAbility._employer)))
                 {
                     // 生存勝利設定がONで死んでいる場合は勝利しない
                     if (partTimerAbility._data.needAliveToWin && player.IsDead()) continue;
                     winners.Add(player);
+                    addWinners.Add(player.Role.ToString());
                 }
             }
         }
