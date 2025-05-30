@@ -117,6 +117,7 @@ public class SchrodingersCatAbility : AbilityBase
         if (data.RefTarget != Player) return;
         if (data.Killer == Player) return;
         if (CurrentTeam != SchrodingersCatTeam.SchrodingersCat) return;
+        bool showKillAnimation = true;
         if (data.Killer.IsImpostor())
             CurrentTeam = Data.HasKillAbility ? SchrodingersCatTeam.Impostor : SchrodingersCatTeam.Madmate;
         else if (data.Killer.IsJackal())
@@ -129,7 +130,9 @@ public class SchrodingersCatAbility : AbilityBase
         {
             CurrentTeam = SchrodingersCatTeam.Crewmate;
             Player.CustomDeath(CustomDeathType.Suicide);
+            showKillAnimation = false;
         }
+
         if (CurrentTeam != SchrodingersCatTeam.SchrodingersCat)
         {
             Dominate(CurrentTeam);
@@ -150,7 +153,7 @@ public class SchrodingersCatAbility : AbilityBase
             else
                 NameText.UpdateNameInfo(data.RefTarget);
             data.RefSuccess = false;
-            if (data.RefTarget.AmOwner)
+            if (showKillAnimation && data.RefTarget.AmOwner)
                 DestroyableSingleton<HudManager>.Instance.KillOverlay.ShowKillAnimation(data.Killer.Data, data.RefTarget.Data);
         }
     }

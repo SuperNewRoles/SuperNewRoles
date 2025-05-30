@@ -221,7 +221,7 @@ public static class AssignRoles
             AssignTickets selectedTicket = tickets_not_hundred[ticketIndex];
             selectedTicket.IncrementRemainingAssignBeans();
             if (selectedTicket.RemainingAssignBeans <= 0)
-                tickets_not_hundred.RemoveAll(x => x.RoleOption == selectedTicket.RoleOption);
+                tickets_not_hundred.RemoveAll(x => x.RoleOption.RoleId == selectedTicket.RoleOption.RoleId);
 
             int playerIndex = targetPlayers.GetRandomIndex();
             PlayerControl targetPlayer = targetPlayers[playerIndex];
@@ -516,7 +516,7 @@ public static class AssignRoles
         Logger.Info($"AssignModifier: RPCを使用してプレイヤー {player.PlayerId} にModifierRole {modifierRoleId} を適用しました。");
     }
 }
-public struct AssignTickets
+public class AssignTickets
 {
     public RoleOptionManager.RoleOption RoleOption { get; }
     public int RemainingAssignBeans { get; private set; }
