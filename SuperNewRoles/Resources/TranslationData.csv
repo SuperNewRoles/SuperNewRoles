@@ -521,38 +521,38 @@ ModifierHawk.Description,タスクターンに使用出来る能力を追加す�
 
 
 # Intros_Impostor
-EvilGuesserIntro1,,
-SamuraiIntro1,,
-SelfBomberIntro1,,
-WaveCannonIntro1,,
-SerialKillerIntro1,,
-SideKillerIntro1,,
-MadKillerIntro1,,
-EvilGamblerIntro1,,
-PenguinIntro1,,
-PusherIntro1,,
-EvilHackerIntro1,,
-SuicideWisherIntro1,,
-NekoKabochaIntro1,,
-EvilNekomataIntro1,,
-MatryoshkaIntro1,,
-ConjurerIntro1,,
-DoppelgangerIntro1,,
-EvilButtonerIntro1,,
+EvilGuesserIntro1,名乗りはあの世への片道切符
+SamuraiIntro1,抜刀一閃
+SelfBomberIntro1,寄れば咲かせ、大輪の華
+WaveCannonIntro1,貫く電子の咆哮
+SerialKillerIntro1,血に飢えし獣
+SideKillerIntro1,悪意は侵食する
+MadKillerIntro1,染められし者
+EvilGamblerIntro1,その命を賭けて
+PenguinIntro1,ぺちぺち！
+PusherIntro1,ドンッと一発
+EvilHackerIntro1,船を包囲する情報の主
+SuicideWisherIntro1,この世と縁を断ち切って
+NekoKabochaIntro1,独りはお断り
+EvilNekomataIntro1,この尻尾は命を掴む
+MatryoshkaIntro1,その姿は真なりや？
+ConjurerIntro1,灯火吹き消す包囲陣
+DoppelgangerIntro1,瓜二つの殺し屋
+EvilButtonerIntro1,会議の主導権を握りし者
 NecromancerIntro1,死すれば我が力となりて,If you die\，you become my power,,
 RevenantIntro1,永遠たる呪縛,Eternal Curse,,
-TeleporterIntro1,,
-PursuerIntro1,,
-CrabIntro1,,
-EvilSpeedBoosterIntro1,,
-RocketIntro1,,
-VampireIntro1,,
-VampireDependentIntro1,,
-EvilMechanicIntro1,,
-EvilHawkIntro1,,
+TeleporterIntro1,混沌を集めし者
+PursuerIntro1,この刃から逃げられると思うなかれ
+CrabIntro1,カニッカニッカニッカニッ
+EvilSpeedBoosterIntro1,果まで追い詰める
+RocketIntro1,打ち上がれ！
+VampireIntro1,闇に舞うは夜の帝王
+VampireDependentIntro1,夜に魅入られし者
+EvilMechanicIntro1,独善的な改造
+EvilHawkIntro1,この目からは逃れられない
 
 # Intros_Neutral
-JackalIntro1,,
+JackalIntro1,
 SidekickIntro1,,
 WaveCannonJackalIntro1,,
 SidekickWaveCannonIntro1,,
@@ -570,7 +570,7 @@ FalseChargesIntro1,,
 HitmanIntro1,,
 LoversBreakerIntro1,,
 GodIntro1,,
-OwlIntro1,暗闇に羽ばたきし者,The one who flapped his wings in the dark,黑暗中鼓动羽翼之人,在黑暗中鼓動翅膀的人
+OwlIntro1,闇を駆る狩人
 SchrodingersCatIntro1,,
 TrueloverIntro1,,
 CupidIntro1,,
