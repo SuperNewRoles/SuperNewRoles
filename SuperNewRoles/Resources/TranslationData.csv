@@ -299,7 +299,6 @@ SyncError_NotInstalled,{player}にSuperNewRolesが導入されていません。
 
 # Role
 Bait,ベイト,Bait,餌,餌
-BaitReportTime,遅延時間,Delay Time,遲延時間,遲延時間
 BestFalseCharge,ベスト冤罪ヤー,Best False Charge,最佳冤罪者,最佳冤罪者
 Sheriff,シェリフ,Sheriff,警长,警長
 NiceGuesser,ナイスゲッサー,Nice Guesser,好人猜疑者,好人猜疑者
