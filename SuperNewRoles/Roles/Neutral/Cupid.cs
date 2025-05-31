@@ -1,183 +1,156 @@
+using System;
 using System.Collections.Generic;
-using System.Text;
+using System.Linq;
 using AmongUs.GameOptions;
-using Hazel;
-using SuperNewRoles.Mode.SuperHostRoles;
-using SuperNewRoles.Roles.Role;
-using SuperNewRoles.Roles.RoleBases;
-using SuperNewRoles.Roles.RoleBases.Interfaces;
+using SuperNewRoles.CustomOptions;
+using SuperNewRoles.Events;
+using SuperNewRoles.Modules;
+using SuperNewRoles.Modules.Events.Bases;
+using SuperNewRoles.Roles.Ability;
+using SuperNewRoles.Roles.Modifiers;
 using UnityEngine;
 
 namespace SuperNewRoles.Roles.Neutral;
 
-public class Cupid : RoleBase, INeutral, IFixedUpdaterAll, IFixedUpdaterMe, ISupportSHR, ICustomButton, IRpcHandler, INameHandler, ICheckMurderHandler
+class Cupid : RoleBase<Cupid>
 {
-    public static new RoleInfo Roleinfo = new(
-        typeof(Cupid),
-        (p) => new Cupid(p),
-        RoleId.Cupid,
-        "Cupid",
-        RoleClass.Lovers.color,
-        new(RoleId.Cupid, TeamTag.Neutral
-            ),
-        TeamRoleType.Neutral,
-        TeamType.Neutral
-        );
-    public static new OptionInfo Optioninfo =
-        new(RoleId.Cupid, 301100, true,
-            CoolTimeOption: (20f, 2.5f, 180f, 2.5f, true));
-    public static new IntroInfo Introinfo =
-        new(RoleId.Cupid, introSound: RoleTypes.Shapeshifter);
+    public override RoleId Role { get; } = RoleId.Cupid;
+    public override Color32 RoleColor { get; } = Lovers.Instance.RoleColor;
+    public override List<Func<AbilityBase>> Abilities { get; } = [
+        () => new CupidAbility(
+            CupidCoolTime,
+            CupidEnabledTimeLimit,
+            CupidTimeLimit,
+            CupidCanSeeCreatedLoversRole,
+            CupidLoversCanSeeCupidRole
+        )
+    ];
 
-    public bool Created { get; private set; }
+    public override QuoteMod QuoteMod { get; } = QuoteMod.SuperNewRoles;
+    public override RoleTypes IntroSoundType { get; } = RoleTypes.Crewmate;
+    public override short IntroNum { get; } = 1;
 
-    public RoleTypes RealRole => RoleTypes.Crewmate;
-    public RoleTypes DesyncRole => RoleTypes.Impostor;
+    public override AssignedTeamType AssignedTeam { get; } = AssignedTeamType.Neutral;
+    public override WinnerTeamType WinnerTeam { get; } = WinnerTeamType.Neutral;
+    public override TeamTag TeamTag { get; } = TeamTag.Neutral;
+    public override RoleTag[] RoleTags { get; } = [];
+    public override RoleOptionMenuType OptionTeam { get; } = RoleOptionMenuType.Neutral;
+    public override RoleId[] RelatedRoleIds { get; } = [];
+    [CustomOptionFloat("CupidCoolTime", 0f, 180f, 2.5f, 0f, translationName: "CoolTime")]
+    public static float CupidCoolTime;
+    [CustomOptionBool("CupidEnabledTimeLimit", true)]
+    public static bool CupidEnabledTimeLimit;
+    [CustomOptionFloat("CupidTimeLimit", 30f, 600f, 15f, 120f, parentFieldName: nameof(CupidEnabledTimeLimit))]
+    public static float CupidTimeLimit;
+    [CustomOptionBool("CupidCanSeeCreatedLoversRole", false)]
+    public static bool CupidCanSeeCreatedLoversRole;
+    [CustomOptionBool("CupidLoversCanSeeCupidRole", false)]
+    public static bool CupidLoversCanSeeCupidRole;
+}
 
-    public CustomButtonInfo[] CustomButtonInfos { get; }
-    private CustomButtonInfo CupidButtonInfo { get; }
+public class CupidAbility : AbilityBase
+{
+    public float CoolTime { get; }
+    private EventListener<NameTextUpdateEventData> _nameTextUpdateEvent;
+    private EventListener<NameTextUpdateVisiableEventData> _nameTextUpdateVisiableEvent;
+    public byte Lovers1 { get; private set; }
+    public byte Lovers2 { get; private set; }
 
-    private List<PlayerControl> _cachedUntargetPlayers;
-    //作ってる途中の片方
-    public PlayerControl currentPair { get; private set; }
+    private CreateLoversAbility createLoversAbility;
 
-    public void FixedUpdateAllSHR()
+    public bool EnabledTimeLimit { get; }
+    public float TimeLimit { get; }
+    public bool CanSeeCreatedLoversRole { get; }
+    public bool LoversCanSeeCupidRole { get; }
+
+    public CupidAbility(float coolTime, bool enabledTimeLimit, float timeLimit, bool canSeeCreatedLoversRole, bool loversCanSeeCupidRole)
     {
-        if (!Created)
-            return;
-        if (currentPair != null &&
-            currentPair.IsLovers())
-            return;
-        Created = false;
+        CoolTime = coolTime;
+        EnabledTimeLimit = enabledTimeLimit;
+        TimeLimit = timeLimit;
+        CanSeeCreatedLoversRole = canSeeCreatedLoversRole;
+        LoversCanSeeCupidRole = loversCanSeeCupidRole;
     }
-    public void FixedUpdateMeDefaultAlive()
+    public override void AttachToAlls()
     {
-        if (Created)
-        {
-            if (currentPair == null ||
-                !currentPair.IsLovers())
+        base.AttachToAlls();
+
+        createLoversAbility = new CreateLoversAbility(
+            CoolTime,
+            ModTranslation.GetString("CupidLoveArrow"),
+            AssetManager.GetAsset<Sprite>("CupidButton.png"),
+            false,
+            (players) =>
             {
-                Created = false;
-            }
-        }
-        else
-        {
-            if (CupidButtonInfo.CurrentTarget != null)
-                Patches.PlayerControlFixedUpdatePatch.SetPlayerOutline(CupidButtonInfo.CurrentTarget, Roleinfo.RoleColor);
-        }
+                Lovers1 = players[0].PlayerId;
+                Lovers2 = players[1].PlayerId;
+            },
+            EnabledTimeLimit,
+            TimeLimit
+        );
+        Player.AttachAbility(createLoversAbility, new AbilityParentAbility(this));
+        _nameTextUpdateVisiableEvent = NameTextUpdateVisiableEvent.Instance.AddListener(OnNameTextUpdateVisiable);
     }
-    public bool OnCheckMurderPlayerAmKiller(PlayerControl target)
+    public override void DetachToAlls()
     {
-        if (Created)
-            return false;
-        if (target.IsLovers() || target.IsRole(RoleId.LoversBreaker))
-            return false;
-        if (currentPair == target)
-            return false;
-        if (currentPair == null)
-        {
-            currentPair = target;
-        }
-        else
-        {
-            MessageWriter writer = RpcWriter;
-            writer.Write(CachedPlayer.LocalPlayer.PlayerId);
-            writer.Write(currentPair.PlayerId);
-            writer.Write(target.PlayerId);
-            SendRpc(writer);
-            Created = true;
-
-            ChangeName.UpdateRoleName(Player, ChangeNameType.SelfOnly);
-            ChangeName.UpdateRoleName(currentPair, ChangeNameType.SelfOnly);
-            ChangeName.UpdateRoleName(target, ChangeNameType.SelfOnly);
-        }
-
-        Player.ResetKillCool(Optioninfo.CoolTime);
-        return false;
+        base.DetachToAlls();
+        _nameTextUpdateVisiableEvent?.RemoveListener();
     }
-    public void BuildName(StringBuilder Suffix, StringBuilder RoleNameText, PlayerData<string> ChangePlayers)
+    public override void AttachToLocalPlayer()
     {
-        if (currentPair == null || !Created) return;
-
-        var suffix = ModHelpers.Cs(RoleClass.Lovers.color, " ♥");
-        PlayerControl Side = currentPair.GetOneSideLovers();
-        ChangePlayers[currentPair.PlayerId] = ChangeName.GetNowName(ChangePlayers, currentPair) + suffix;
-        ChangePlayers[Side.PlayerId] = ChangeName.GetNowName(ChangePlayers, Side) + suffix;
+        base.AttachToLocalPlayer();
+        _nameTextUpdateEvent = NameTextUpdateEvent.Instance.AddListener(OnNameTextUpdate);
     }
-    public void BuildSetting(IGameOptions gameOptions)
+    public override void DetachToLocalPlayer()
     {
-        gameOptions.SetFloat(FloatOptionNames.KillCooldown, Optioninfo.CoolTime);
-    }
-    private void ButtonOnClick()
-    {
-        PlayerControl target = CupidButtonInfo.CurrentTarget;
-        if (target.IsLovers() || target.IsRole(RoleId.LoversBreaker)) return;
-        if (currentPair == null)
-        {
-            currentPair = target;
-            CupidButtonInfo.ResetCoolTime();
-        }
-        else
-        {
-            MessageWriter writer = RpcWriter;
-            writer.Write(CachedPlayer.LocalPlayer.PlayerId);
-            writer.Write(currentPair.PlayerId);
-            writer.Write(target.PlayerId);
-            SendRpc(writer);
-            Created = true;
-        }
-        //アップデート
-        CupidButtonInfo.SetTarget();
-    }
-    private bool OnCouldUse()
-    {
-        if (!Created && currentPair != null && currentPair.IsDead())
-            currentPair = null;
-        return true;
-    }
-    public void OnHandleName()
-    {
-        if (Created && currentPair != null)
-        {
-            string suffix = ModHelpers.Cs(RoleClass.Lovers.color, " ♥");
-            PlayerControl side = currentPair.GetOneSideLovers();
-            SetNamesClass.SetPlayerNameText(currentPair, $"{currentPair.NameText().text}{suffix}");
-            if (!side.Data.Disconnected)
-                SetNamesClass.SetPlayerNameText(side, $"{side.NameText().text}{suffix}");
-        }
-    }
-    private List<PlayerControl> GetUntargetPlayers()
-    {
-        if (currentPair == null)
-            return null;
-        if (_cachedUntargetPlayers != null && _cachedUntargetPlayers.FirstOrDefault() != currentPair)
-            return _cachedUntargetPlayers;
-        return _cachedUntargetPlayers = new(1) { currentPair };
+        base.DetachToLocalPlayer();
+        _nameTextUpdateEvent?.RemoveListener();
     }
 
-    public void RpcReader(MessageReader reader)
+    private void OnNameTextUpdate(NameTextUpdateEventData data)
     {
-        (byte sourceid, byte player1, byte player2) = (reader.ReadByte(), reader.ReadByte(), reader.ReadByte());
-        currentPair = ModHelpers.PlayerById(player1);
-        RPCProcedure.SetLovers(player1, player2);
+        if (!Player.AmOwner) return;
+        if (Player.IsDead()) return;
+        if (createLoversAbility.CreatedCouple != null)
+        {
+            if (!createLoversAbility.CreatedCouple.lovers.Any(x => x.Player.PlayerId == data.Player.PlayerId)) return;
+            if (!data.Player.IsLovers()) return;
+            if (data.Player.cosmetics.nameText.text.Contains("♥")) return;
+            NameText.AddNameText(data.Player, ModHelpers.Cs(Lovers.Instance.RoleColor, "♥"));
+        }
+        // まだ作ってないけど1人に刺してたら中抜きハートを付ける
+        else if (createLoversAbility.CurrentTarget != null)
+        {
+            if (createLoversAbility.CurrentTarget.PlayerId != data.Player.PlayerId) return;
+            if (data.Player.cosmetics.nameText.text.Contains("♡")) return;
+            data.Player.cosmetics.nameText.text += ModHelpers.Cs(Lovers.Instance.RoleColor, "♡");
+        }
     }
 
-    public void FixedUpdateAllDefault()
+    private void OnNameTextUpdateVisiable(NameTextUpdateVisiableEventData data)
     {
-    }
+        if (!CanSeeCreatedLoversRole && !LoversCanSeeCupidRole) return;
 
-    public Cupid(PlayerControl p) : base(p, Roleinfo, Optioninfo, Introinfo)
-    {
-        Created = false;
-        CupidButtonInfo = new(null, this, () => ButtonOnClick(),
-            (isAlive) => isAlive && !Created,
-            CustomButtonCouldType.CanMove | CustomButtonCouldType.SetTarget,
-            null, ModHelpers.LoadSpriteFromResources("SuperNewRoles.Resources.cupidButton.png", 115f),
-            () => Optioninfo.CoolTime, new(-2f, 1, 0),
-            "CupidButtonName", KeyCode.F, 49, CouldUse: () => OnCouldUse(),
-            SetTargetUntargetPlayer: () => GetUntargetPlayers()
-            );
-        _cachedUntargetPlayers = null;
-        CustomButtonInfos = new CustomButtonInfo[1] { CupidButtonInfo };
+        bool shouldBeVisible = false;
+        // キューピッドが作ったラバーズの役職を見れる
+        if (CanSeeCreatedLoversRole &&
+            Player.AmOwner &&
+            createLoversAbility?.CreatedCouple?.lovers != null &&
+            createLoversAbility.CreatedCouple.lovers.Any(x => x.Player.PlayerId == data.Player.PlayerId))
+        {
+            shouldBeVisible = true;
+        }
+
+        if (LoversCanSeeCupidRole &&
+            data.Player.PlayerId == Player.PlayerId &&
+            createLoversAbility?.CreatedCouple?.lovers != null &&
+            createLoversAbility.CreatedCouple.lovers.Any(x => x.Player.AmOwner))
+        {
+            shouldBeVisible = true;
+        }
+        if (shouldBeVisible)
+        {
+            NameText.UpdateVisiable(data.Player, true);
+        }
     }
 }

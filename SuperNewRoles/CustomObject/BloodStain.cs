@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using UnityEngine;
+using SuperNewRoles.Modules;
 
 namespace SuperNewRoles.CustomObject;
 
@@ -21,44 +22,44 @@ public class BloodStain
     public static Sprite getBloodStainSprite()
     {
         if (sprite) return sprite;
-        sprite = ModHelpers.LoadSpriteFromResources("SuperNewRoles.Resources.BloodStain.png", 600f);
+        sprite = AssetManager.GetAsset<Sprite>("BloodStain.png");
         return sprite;
     }
-    public BloodStain(PlayerControl player, Vector3? pos = null)
+    public BloodStain(PlayerControl player, bool isBlack = false, Transform? parent = null, Vector3? pos = null)
     {
         this.owner = player;
         this.ownerId = player.PlayerId;
-        this.color = ConfigRoles.IsNotUsingBlood.Value ? new Color(0.2f, 0.2f, 0.2f) : new Color(179f / 255f, 0f, 0f); // 直接数値で血の色代入中 [? BloodBlack : BloodRed;]
+        this.color = isBlack ? new Color(0.2f, 0.2f, 0.2f) : new Color(179f / 255f, 0f, 0f); // 直接数値で血の色代入中 [? BloodBlack : BloodRed;]
 
-        Vector3 posdata = pos != null ? (Vector3)pos : player.transform.position;
+        Vector3 posdata = pos ?? player.transform.position;
         BloodStainObject = new("BloodStain");
         Vector3 position = new(posdata.x, posdata.y, posdata.z + 1f);
         BloodStainObject.transform.position = position;
         BloodStainObject.transform.localPosition = position;
         BloodStainObject.transform.localScale *= 1.5f;
         BloodStainObject.transform.Rotate(0f, 0f, UnityEngine.Random.Range(0f, 360f));
-        BloodStainObject.transform.SetParent(player.transform.parent);
+        BloodStainObject.transform.SetParent(parent ?? player.transform.parent);
 
         spriteRenderer = BloodStainObject.AddComponent<SpriteRenderer>();
         spriteRenderer.sprite = getBloodStainSprite();
         spriteRenderer.color = color;
 
-        BloodStainObject.SetActive(false);
+        BloodStainObject.SetActive(true);
 
         BloodStains.Add(this);
     }
-    public BloodStain(Vector3 pos)
+    public BloodStain(Vector3 pos, bool isBlack = false)
     {
         this.owner = null;
         this.ownerId = 255;
-        this.color = ConfigRoles.IsNotUsingBlood.Value ? new Color(0.2f, 0.2f, 0.2f) : new Color(179f / 255f, 0f, 0f);
+        this.color = isBlack ? new Color(0.2f, 0.2f, 0.2f) : new Color(179f / 255f, 0f, 0f);
 
         BloodStainObject = new("BloodStain");
         Vector3 position = new(pos.x, pos.y, pos.z + 1f);
         BloodStainObject.transform.position = position;
         BloodStainObject.transform.localPosition = position;
         BloodStainObject.transform.localScale *= 1.5f;
-        BloodStainObject.transform.Rotate(0f, 0f, UnityEngine.Random.Range(0f, 360f));
+        BloodStainObject.transform.Rotate(0f, 0f, Random.Range(0f, 360f));
         spriteRenderer = BloodStainObject.AddComponent<SpriteRenderer>();
         spriteRenderer.sprite = getBloodStainSprite();
         spriteRenderer.color = color;

@@ -4,81 +4,85 @@ using System.Linq;
 using System.Text;
 using BepInEx.Unity.IL2CPP.Utils.Collections;
 using HarmonyLib;
-using SuperNewRoles.Mode;
+using SuperNewRoles.CustomOptions.Categories;
+using SuperNewRoles.Roles;
 using TMPro;
 using UnityEngine;
+using UnityEngine.Events;
 using UnityEngine.Networking;
 
 namespace SuperNewRoles.Modules;
 public static class Analytics
 {
-    public const string AnalyticsUrl = "https://analytics.supernewroles.com/";
+    public const string AnalyticsUrl = SNRURLs.AnalyticsURL;
     public const string SendDataUrl = "SendData";
     public const string SendClientDataUrl = "SendClientData";
 
     [HarmonyPatch(typeof(MainMenuManager), nameof(MainMenuManager.LateUpdate))]
     public class MainMenuManagerLateUpdatePatch
     {
-        private static GenericPopup currentPopup;
+        private static GameObject currentPopup;
+        private static bool isAnalyticsPopupViewd = false;
         public static void Postfix(MainMenuManager __instance)
         {
             if (!FastDestroyableSingleton<EOSManager>.Instance.HasFinishedLoginFlow())
                 return;
             if (currentPopup == null)
                 currentPopup = null;
-            if (!ConfigRoles.IsSendAnalyticsPopupViewd)
+            if (!isAnalyticsPopupViewd && ConfigRoles.IsSendAnalyticsPopupViewd.Value)
+                isAnalyticsPopupViewd = true;
+            if (currentPopup == null && !isAnalyticsPopupViewd)
             {
-                ConfigRoles.IsSendAnalyticsPopupViewd = true;
-                GenericPopup Popup = GameObject.Instantiate(DiscordManager.Instance.discordPopup, Camera.main.transform);
+                GameObject Popup = AssetManager.Instantiate("AnalyticsBG", Camera.main.transform);
                 Popup.gameObject.SetActive(true);
-                Popup.transform.FindChild("Background").localScale = new(2, 2.8f, 1);
-                Popup.transform.FindChild("ExitGame").localPosition = new(0f, -2f, -0.5f);
-                Popup.transform.FindChild("ExitGame").GetComponentInChildren<TextMeshPro>().text = ModTranslation.GetString("AnalyticsOK");
-                TextMeshPro Title = GameObject.Instantiate(Popup.TextAreaTMP, Popup.transform);
-                Title.text = ModTranslation.GetString("Analytics");
-                Title.transform.localPosition = new(0.15f, 2, -0.5f);
-                Title.transform.localScale = Vector3.one * 4.5f;
-                Popup.TextAreaTMP.transform.localPosition = new(0, 0.8f, -0.5f);
-                Popup.TextAreaTMP.transform.localScale = Vector3.one * 1.4f;
-                Popup.TextAreaTMP.text = ModTranslation.GetString("AnalyticsText");
-                Popup.destroyOnClose = true;
+                Popup.transform.Find("Title").GetComponent<TextMeshPro>().text = ModTranslation.GetString("AnalyticsPopupTitle");
+                Popup.transform.Find("Text").GetComponent<TextMeshPro>().text = ModTranslation.GetString("AnalyticsPopupText");
+                Popup.transform.localScale = Vector3.one * 0.58f;
+                GameObject AnalyticsButton = Popup.transform.Find("AnalyticsButton").gameObject;
+                AnalyticsButton.transform.Find("Text").GetComponent<TextMeshPro>().text = ModTranslation.GetString("AnalyticsOK");
+                PassiveButton passiveButton = AnalyticsButton.AddComponent<PassiveButton>();
+                passiveButton.Colliders = new Collider2D[] { AnalyticsButton.GetComponent<Collider2D>() };
+                passiveButton.OnClick = new();
+                passiveButton.OnClick.AddListener((UnityAction)(() =>
+                {
+                    GameObject.Destroy(Popup);
+                    ConfigRoles.IsSendAnalyticsPopupViewd.Value = true;
+                    isAnalyticsPopupViewd = true;
+                    ConfigRoles.IsSendAnalytics.Value = true;
+                }));
+                passiveButton.OnMouseOver = new();
+                passiveButton.OnMouseOver.AddListener((UnityAction)(() =>
+                {
+                    AnalyticsButton.transform.Find("Selected").gameObject.SetActive(true);
+                }));
+                passiveButton.OnMouseOut = new();
+                passiveButton.OnMouseOut.AddListener((UnityAction)(() =>
+                {
+                    AnalyticsButton.transform.Find("Selected").gameObject.SetActive(false);
+                }));
                 currentPopup = Popup;
                 return;
             }
-            if (currentPopup == null &&!ConfigRoles.IsViewd20240618ServerInfo.Value)
-            {
-                ConfigRoles.IsViewd20240618ServerInfo.Value = true;
-                GenericPopup Popup = GameObject.Instantiate(DiscordManager.Instance.discordPopup, Camera.main.transform);
-                Popup.gameObject.SetActive(true);
-                Popup.transform.FindChild("Background").localScale = new(2, 2f, 1);
-                Popup.transform.FindChild("ExitGame").localPosition = new(0f, -1.5f, -0.5f);
-                GameObject.Destroy(Popup.transform.FindChild("ExitGame").GetComponentInChildren<TextTranslatorTMP>());
-                Popup.transform.FindChild("ExitGame").GetComponentInChildren<TextMeshPro>().text = ModTranslation.GetString("20240618_25SaverInfo_PopupOK");
-                Popup.transform.FindChild("ExitGame").GetComponentInChildren<TextMeshPro>().transform.localPosition = new(0.04f,0,0);
-                TextMeshPro Title = GameObject.Instantiate(Popup.TextAreaTMP, Popup.transform);
-                Title.text = ModTranslation.GetString("20240618_25SaverInfo_PopupTitle");
-                Title.transform.localPosition = new(0.07f, 1.285f, -0.5f);
-                Title.transform.localScale = Vector3.one * 2.8f;
-                Popup.TextAreaTMP.transform.localPosition = new(0.05f, -0.05f, -0.5f);
-                Popup.TextAreaTMP.transform.localScale = Vector3.one * 1.5f;
-                Popup.TextAreaTMP.text = ModTranslation.GetString("20240618_25SaverInfo_PopupText");
-                Popup.destroyOnClose = true;
-                currentPopup = Popup;
-                if (!AprilFoolsManager.isLastAprilFool)
-                {
-                    AprilFoolsManager._enums = null;
-                    AprilFoolsManager.SetRandomModMode();
-                }
-            }
+        }
+    }
+    [HarmonyPatch(typeof(AmongUsClient), nameof(AmongUsClient.CoEndGame))]
+    public class AmongUsClientCoEndGamePatch
+    {
+        public static void Postfix()
+        {
+            if (ConfigRoles.IsSendAnalytics.Value) return;
+            PostSendClientData();
+            if (AmongUsClient.Instance.AmHost)
+                PostSendData();
         }
     }
     public static void PostSendClientData()
     {
         Dictionary<string, string> data = new();
         data.Add("FriendCode", PlayerControl.LocalPlayer.Data.FriendCode);
-        data.Add("Mode", ModeHandler.GetMode().ToString());
+        data.Add("Mode", Categories.ModeSettings.ToString());
         data.Add("GameId", AmongUsClient.Instance.GameId.ToString());
-        data.Add("Version", SuperNewRolesPlugin.ThisVersion.ToString());
+        data.Add("Version", Statics.VersionString.ToString());
         NetworkedPlayerInfo Host = null;
         foreach (NetworkedPlayerInfo p in GameData.Instance.AllPlayers) if (p.PlayerId == 0) Host = p;
         data.Add("HostFriendCode", Host.FriendCode);
@@ -103,29 +107,24 @@ public static class Analytics
             PlayerDatas = PlayerDatas.Substring(0, PlayerDatas.Length - 1);
         }
 
-        foreach (CustomOption opt in CustomOption.options)
-        {
-            if (opt.GetSelection() == 0) continue;
-            Options += $"{opt.id}:{opt.GetSelection()},";
-        }
         if (Options.Length >= 1)
         {
             Options = Options.Substring(0, Options.Length - 1);
         }
 
-        foreach (CustomRoleOption opt in CustomRoleOption.RoleOptions.Values)
+        foreach (RoleOptionManager.RoleOption opt in RoleOptionManager.RoleOptions)
         {
-            if (opt.GetSelection() == 0) continue;
+            if (opt.NumberOfCrews == 0 || opt.Percentage == 0) continue;
             ActivateRole += $"{opt.RoleId},";
         }
         if (ActivateRole.Length >= 1)
         {
             ActivateRole = ActivateRole.Substring(0, ActivateRole.Length - 1);
         }
-        foreach (PlayerControl p in PlayerControl.AllPlayerControls)
+        foreach (ExPlayerControl p in ExPlayerControl.ExPlayerControls)
         {
-            if (RealActivateRoleList.Contains(p.GetRole())) continue;
-            RealActivateRoleList.Add(p.GetRole());
+            if (RealActivateRoleList.Contains(p.Role)) continue;
+            RealActivateRoleList.Add(p.Role);
         }
         foreach (RoleId role in RealActivateRoleList)
         {
@@ -138,9 +137,9 @@ public static class Analytics
 
         Dictionary<string, string> data = new();
         data.Add("FriendCode", PlayerControl.LocalPlayer.Data.FriendCode);
-        data.Add("Mode", ModeHandler.GetMode().ToString());
+        data.Add("Mode", Categories.ModeSettings.ToString());
         data.Add("GameId", AmongUsClient.Instance.GameId.ToString());
-        data.Add("Version", SuperNewRolesPlugin.ThisVersion.ToString());
+        data.Add("Version", Statics.VersionString.ToString());
         data.Add("PlayerDatas", PlayerDatas);
         data.Add("Options", Options);
         data.Add("ActivateRoles", ActivateRole);

@@ -1,180 +1,333 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
-using Hazel;
-using SuperNewRoles.Buttons;
-using SuperNewRoles.Helpers;
 using UnityEngine;
+using AmongUs.GameOptions;
+using SuperNewRoles.CustomOptions;
+using SuperNewRoles.Roles.Ability;
+using SuperNewRoles.Modules;
+using SuperNewRoles.Roles.Ability.CustomButton;
+using SuperNewRoles.Events;
+using SuperNewRoles.Events.PCEvents;
+using SuperNewRoles.Modules.Events.Bases;
+using SuperNewRoles.Ability;
+using SuperNewRoles.CustomObject;
 
 namespace SuperNewRoles.Roles.Impostor;
 
-public static class Rocket
+class Rocket : RoleBase<Rocket>
 {
-    public static class CustomOptionData
-    {
-        private static int optionId = 205600;
-        public static CustomRoleOption Option;
-        public static CustomOption PlayerCount;
-        public static CustomOption RocketButtonCooldown;
-        public static CustomOption RocketButtonAfterCooldown;
-        public static CustomOption RocketChargeTime;
+    public override RoleId Role { get; } = RoleId.Rocket;
+    public override Color32 RoleColor { get; } = Palette.ImpostorRed;
+    public override List<Func<AbilityBase>> Abilities { get; } = [
+        () => new RocketAbility(RocketInitialGrabCooldown, RocketSubsequentGrabCooldown, RocketLaunchAfterMeeting)
+    ];
 
-        public static void SetupCustomOptions()
+    public override QuoteMod QuoteMod { get; } = QuoteMod.SuperNewRoles;
+    public override RoleTypes IntroSoundType { get; } = RoleTypes.Shapeshifter; // Based on WaveCannon
+    public override short IntroNum { get; } = 1; // Based on WaveCannon
+
+    public override AssignedTeamType AssignedTeam { get; } = AssignedTeamType.Impostor;
+    public override WinnerTeamType WinnerTeam { get; } = WinnerTeamType.Impostor;
+    public override TeamTag TeamTag { get; } = TeamTag.Impostor;
+    public override RoleTag[] RoleTags { get; } = [RoleTag.SpecialKiller]; // Based on WaveCannon
+    public override RoleOptionMenuType OptionTeam { get; } = RoleOptionMenuType.Impostor;
+
+    // Custom Options
+    [CustomOptionFloat("RocketInitialGrabCooldown", 2.5f, 60f, 2.5f, 15f)]
+    public static float RocketInitialGrabCooldown;
+
+    [CustomOptionFloat("RocketSubsequentGrabCooldown", 0f, 60f, 2.5f, 5f)]
+    public static float RocketSubsequentGrabCooldown;
+    [CustomOptionBool("RocketLaunchAfterMeeting", false)]
+    public static bool RocketLaunchAfterMeeting;
+}
+
+// --- Main Ability Class (Container) ---
+public class RocketAbility : AbilityBase
+{
+    private readonly float _initialCooldown;
+    private readonly float _subsequentCooldown;
+    private readonly bool _launchAfterMeeting;
+    public RocketGrabAbility GrabAbility { get; private set; }
+    public RocketLaunchAbility LaunchAbility { get; private set; }
+
+    public RocketAbility(float initialCooldown, float subsequentCooldown, bool launchAfterMeeting)
+    {
+        _initialCooldown = initialCooldown;
+        _subsequentCooldown = subsequentCooldown;
+        _launchAfterMeeting = launchAfterMeeting;
+    }
+
+    public override void AttachToAlls()
+    {
+        base.AttachToAlls();
+        GrabAbility = new RocketGrabAbility(_initialCooldown, _subsequentCooldown, _launchAfterMeeting);
+        LaunchAbility = new RocketLaunchAbility();
+        GrabAbility.SetLaunchAbility(LaunchAbility);
+        LaunchAbility.SetGrabAbility(GrabAbility);
+        Player.AttachAbility(GrabAbility, new AbilityParentAbility(this));
+        Player.AttachAbility(LaunchAbility, new AbilityParentAbility(this));
+        Player.AttachAbility(new KillableAbility(() => false), new AbilityParentAbility(this));
+    }
+}
+
+public class RocketGrabAbility : TargetCustomButtonBase
+{
+    private float initialCooldown;
+    private float subsequentCooldown;
+    // Reference is set by the main RocketAbility
+    public RocketLaunchAbility launchAbility { get; private set; }
+
+    public List<ExPlayerControl> GrabbedPlayers { get; } = new();
+    private bool launchAfterMeeting = false;
+    private bool launchAfterMeetingOption = false;
+
+    private EventListener<MeetingStartEventData> _onMeetingStartEvent;
+    private EventListener<WrapUpEventData> _onWrapUpEvent;
+    private EventListener _fixedUpdateEvent;
+
+    // Use a placeholder sprite path for now
+    public override Sprite Sprite => AssetManager.GetAsset<Sprite>("RocketGrabButton.png");
+    public override string buttonText => ModTranslation.GetString("RocketGrabButtonText");
+    protected override KeyType keytype => KeyType.Ability1;
+    public override Color32 OutlineColor => Rocket.Instance.RoleColor;
+    // Implement required abstract member
+    public override bool OnlyCrewmates => true; // Can grab Crewmates/Neutrals, adjust if Impostors should be grabbable
+    public override Func<ExPlayerControl, bool> IsTargetable => (player) => !GrabbedPlayers.Contains(player);
+
+    public override float DefaultTimer => GrabbedPlayers.Count == 0 ? initialCooldown : subsequentCooldown;
+
+    public RocketGrabAbility(float initialCooldown, float subsequentCooldown, bool launchAfterMeeting)
+    {
+        this.initialCooldown = initialCooldown;
+        this.subsequentCooldown = subsequentCooldown;
+        this.launchAfterMeetingOption = launchAfterMeeting;
+    }
+
+    // Method called by RocketAbility during Attach
+    public void SetLaunchAbility(RocketLaunchAbility launchAbility)
+    {
+        this.launchAbility = launchAbility;
+    }
+
+    public override bool CheckIsAvailable()
+    {
+        // Try accessing PlayerControl via .PlayerControl property
+        bool standardConditions = Player != null && Player.IsAlive() && Player.Player.CanMove && MeetingHud.Instance == null;
+        bool targetValid = Target != null && Target.IsAlive() && !GrabbedPlayers.Contains(Target);
+        return standardConditions && targetValid;
+    }
+
+    public override void OnClick()
+    {
+        if (!CheckIsAvailable()) return;
+        // Pass PlayerControl via .PlayerControl property
+        RpcAddGrabbedPlayer(Target);
+        launchAbility.ResetTimer();
+    }
+
+    public override void AttachToAlls()
+    {
+        base.AttachToAlls();
+        _onMeetingStartEvent = MeetingStartEvent.Instance.AddListener(OnMeetingStart);
+        _onWrapUpEvent = WrapUpEvent.Instance.AddListener(OnWrapUp);
+        _fixedUpdateEvent = FixedUpdateEvent.Instance.AddListener(OnFixedUpdate);
+    }
+
+    public override void DetachToAlls()
+    {
+        base.DetachToAlls();
+        _onMeetingStartEvent?.RemoveListener();
+        _onWrapUpEvent?.RemoveListener();
+        _fixedUpdateEvent?.RemoveListener();
+        if (Player != null && Player.AmOwner && GrabbedPlayers.Count > 0)
         {
-            Option = CustomOption.SetupCustomRoleOption(optionId, false, RoleId.Rocket); optionId++;
-            PlayerCount = CustomOption.Create(optionId, false, CustomOptionType.Impostor, "SettingPlayerCountName", CustomOptionHolder.ImpostorPlayers[0], CustomOptionHolder.ImpostorPlayers[1], CustomOptionHolder.ImpostorPlayers[2], CustomOptionHolder.ImpostorPlayers[3], Option); optionId++;
-            RocketButtonCooldown = CustomOption.Create(optionId, false, CustomOptionType.Impostor, "RocketButtonCooldownSetting", 30f, 2.5f, 60f, 2.5f, Option); optionId++;
-            RocketButtonAfterCooldown = CustomOption.Create(optionId, false, CustomOptionType.Impostor, "RocketButtonAfterCooldown", 5f, 0f, 60f, 2.5f, Option); optionId++;
-            RocketChargeTime = CustomOption.Create(optionId, false, CustomOptionType.Impostor, "RocketChargeTimeSetting", 3, 0.5f, 10f, 0.5f, Option); optionId++;
+            RpcClearGrabbedPlayers();
         }
     }
-    public static void WrapUp(PlayerControl exiled)
+
+    private void OnFixedUpdate()
     {
-        //処理するデータがないならパス
-        if (RoleData.RocketData.Count <= 0)
-            return;
-        foreach (KeyValuePair<PlayerControl, List<PlayerControl>> data in (Dictionary<PlayerControl, List<PlayerControl>>)RoleData.RocketData)
+        if (Player == null || GrabbedPlayers.Count == 0) return;
+        foreach (var grabbedPlayer in GrabbedPlayers.ToList())
         {
-            //削除するか判定する
-            if (data.Key == null || data.Value == null || data.Value.Count <= 0 || data.Key.IsDead() || data.Value.IsAllDead() ||
-                !data.Key.IsRole(RoleId.Rocket) || (exiled != null && exiled.PlayerId == data.Key.PlayerId))
+            if (Player.AmOwner && (grabbedPlayer == null || grabbedPlayer.IsDead()))
             {
+                // Pass PlayerControl via .PlayerControl property
+                RpcRemoveGrabbedPlayer(grabbedPlayer.Player);
                 continue;
             }
-            foreach (PlayerControl player in data.Value)
+            if (MeetingHud.Instance == null)
             {
-                if (player == null || player.IsDead())
-                    continue;
-                player.Exiled();
+                grabbedPlayer.NetTransform.SnapTo(Player.transform.position);
+                grabbedPlayer.MyPhysics.body.velocity = Vector2.zero;
+                grabbedPlayer.transform.position = Player.transform.position;
             }
         }
-        RoleData.RocketData.Reset();
     }
-    public static void FixedUpdate()
+
+    private void OnMeetingStart(MeetingStartEventData data)
     {
-        //会議中なら処理しない
-        if (RoleClass.IsMeeting)
-            return;
-        //処理するデータがないならパス
-        if (RoleData.RocketData.Count <= 0)
-            return;
-        foreach (KeyValuePair<PlayerControl, List<PlayerControl>> data in (Dictionary<PlayerControl, List<PlayerControl>>)RoleData.RocketData)
+        if (Player != null && Player.AmOwner && GrabbedPlayers.Count > 0)
         {
-            //削除するか判定する
-            if (data.Key == null || data.Value == null || data.Value.Count <= 0 || data.Key.IsDead() || data.Value.IsAllDead() ||
-                !data.Key.IsRole(RoleId.Rocket))
+            launchAfterMeeting = true;
+        }
+        else
+        {
+            launchAfterMeeting = false;
+        }
+    }
+
+    private void OnWrapUp(WrapUpEventData data)
+    {
+        if (Player == null || !Player.AmOwner) return;
+        if (launchAfterMeeting && Player.IsAlive() && GrabbedPlayers.Count > 0)
+        {
+            if (launchAbility != null)
             {
-                RoleData.RocketData.Remove(data.Key);
-                return;
-            }
-            int index = -1;
-            foreach (PlayerControl player in data.Value)
-            {
-                index++;
-                if (player == null || player.IsDead())
+                List<ExPlayerControl> playersToLaunch = GrabbedPlayers;
+                if (launchAfterMeetingOption)
                 {
-                    //死亡している場合にさよなら
-                    data.Value.RemoveAt(index);
-                    continue;
+                    launchAbility.RpcLaunchPlayers(playersToLaunch);
                 }
-                player.transform.position = data.Key.transform.position;
+                else
+                {
+                    launchAbility.RpcAllExile(playersToLaunch);
+                }
+            }
+        }
+        launchAfterMeeting = false;
+        if (!Player.IsAlive() || (data.exiled != null && data.exiled.PlayerId == Player.PlayerId))
+        {
+            RpcClearGrabbedPlayers();
+        }
+    }
+
+    // --- RPCs ---
+    [CustomRPC]
+    public void RpcAddGrabbedPlayer(ExPlayerControl targetEx)
+    {
+        // Get ExPlayerControl using GameData
+        if (targetEx != null && !GrabbedPlayers.Contains(targetEx))
+        {
+            GrabbedPlayers.Add(targetEx);
+            if (Player != null && Player.AmOwner && launchAbility != null)
+            {
+                launchAbility.SetActive(launchAbility.CheckIsAvailable());
             }
         }
     }
 
-    internal static class RoleData
+    [CustomRPC]
+    public void RpcRemoveGrabbedPlayer(PlayerControl targetPlayerControl)
     {
-        public static List<PlayerControl> Player;
-        public static Color32 color = RoleClass.ImpostorRed;
-        public static float RocketButtonCooldown;
-        public static float RocketButtonAfterCooldown;
-        public static PlayerData<List<PlayerControl>> RocketData;
-        public static List<PlayerControl> LocalData => RocketData[PlayerControl.LocalPlayer];
+        var playerInfo = GameData.Instance.GetPlayerById(targetPlayerControl.PlayerId);
+        var targetEx = playerInfo != null ? (ExPlayerControl)playerInfo.Object : null;
 
-        public static void ClearAndReload()
+        if (targetEx != null && GrabbedPlayers.Remove(targetEx))
         {
-            Player = new();
-            RocketButtonCooldown = CustomOptionData.RocketButtonCooldown.GetFloat();
-            RocketButtonAfterCooldown = CustomOptionData.RocketButtonAfterCooldown.GetFloat();
-            RocketData = new(true, new());
+            if (Player != null && Player.AmOwner && launchAbility != null)
+            {
+                launchAbility.SetActive(launchAbility.CheckIsAvailable());
+            }
         }
     }
 
-    internal static class Button
+    [CustomRPC]
+    public void RpcClearGrabbedPlayers()
     {
-        private static CustomButton RocketSeizeButton;
-        private static CustomButton RocketRocketButton;
-        private static Sprite GetButtonSeizeSprite() => ModHelpers.LoadSpriteFromResources("SuperNewRoles.Resources.RocketSeizeButton.png", 115f);
-        private static Sprite GetButtonRocketSprite() => ModHelpers.LoadSpriteFromResources("SuperNewRoles.Resources.RocketRocketButton.png", 115f);
+        ClearGrabbedPlayersLocally();
+    }
 
-        internal static void SetupCustomButtons(HudManager hm)
+    // Called locally by LaunchAbility after successful launch
+    public void ClearGrabbedPlayersLocally()
+    {
+        GrabbedPlayers.Clear();
+        if (Player != null && Player.AmOwner && launchAbility != null)
         {
-            RocketSeizeButton = new(
-                () =>
-                {
-                    // ここに能力のコードを記載する
-                    PlayerControl target = HudManagerStartPatch.SetTarget(RoleData.LocalData, Crewmateonly: true);
-                    if (target == null)
-                        return;
-                    MessageWriter writer = RPCHelper.StartRPC(CustomRPC.RocketSeize);
-                    writer.Write(PlayerControl.LocalPlayer.PlayerId);
-                    writer.Write(target.PlayerId);
-                    writer.EndRPC();
-                    RPCProcedure.RocketSeize(PlayerControl.LocalPlayer.PlayerId, target.PlayerId);
-                    RocketSeizeButton.MaxTimer = RoleData.RocketButtonAfterCooldown;
-                    RocketSeizeButton.Timer = RoleData.RocketButtonAfterCooldown;
-                    RocketRocketButton.MaxTimer = CustomOptionData.RocketChargeTime.GetFloat();
-                    RocketRocketButton.Timer = RocketRocketButton.MaxTimer;
-                },
-                (bool isAlive, RoleId role) => { return isAlive && role == RoleId.Rocket; },
-                () => { return PlayerControl.LocalPlayer.CanMove && HudManagerStartPatch.SetTarget(RoleData.LocalData, Crewmateonly: true); },
-                () => { ResetRocketButtonCool(); },
-                GetButtonSeizeSprite(),
-                new Vector3(-2f, 1, 0),
-                hm,
-                hm.AbilityButton,
-                KeyCode.F,
-                49,
-                () => { return false; }
-            )
-            {
-                buttonText = ModTranslation.GetString("RocketSeizeButtonName"),
-                showButtonText = true
-            };
-
-            RocketRocketButton = new(
-                () =>
-                {
-                    MessageWriter writer = RPCHelper.StartRPC(CustomRPC.RocketLetsRocket);
-                    writer.Write(PlayerControl.LocalPlayer.PlayerId);
-                    writer.EndRPC();
-                    RPCProcedure.RocketLetsRocket(PlayerControl.LocalPlayer.PlayerId);
-                    ResetRocketButtonCool();
-                },
-                (bool isAlive, RoleId role) => { return isAlive && role == RoleId.Rocket && RoleData.LocalData.Count > 0; },
-                () => { return PlayerControl.LocalPlayer.CanMove; },
-                () => { ResetRocketButtonCool(); },
-                GetButtonRocketSprite(),
-                new Vector3(-2f, 1, 0),
-                hm,
-                hm.AbilityButton,
-                KeyCode.Q,
-                8,
-                () => { return false; }
-            )
-            {
-                buttonText = ModHelpers.IsSuccessChance(5) ? ModTranslation.GetString("RocketLetsButtonName") : ModTranslation.GetString("RocketLetsButtonName2"),
-                showButtonText = true
-            };
+            launchAbility.SetActive(launchAbility.CheckIsAvailable());
         }
+    }
+}
 
-        private static void ResetRocketButtonCool()
+public class RocketLaunchAbility : CustomButtonBase
+{
+    // Reference set by the main RocketAbility
+    public RocketGrabAbility grabAbility { get; private set; }
+
+    public override float DefaultTimer => 0.1f; // Minimal cooldown
+
+    // Use a placeholder sprite path for now
+    public override Sprite Sprite => AssetManager.GetAsset<Sprite>("RocketLaunchButton.png");
+    public override string buttonText => ModTranslation.GetString("RocketLaunchButtonText");
+    protected override KeyType keytype => KeyType.Ability2;
+
+    // Method called by RocketAbility during Attach
+    public void SetGrabAbility(RocketGrabAbility grabAbility)
+    {
+        this.grabAbility = grabAbility;
+    }
+
+    public override bool CheckIsAvailable()
+    {
+        // Use .PlayerControl
+        bool standardConditions = Player != null && Player.IsAlive() && Player.Player.CanMove && MeetingHud.Instance == null;
+        bool hasGrabbed = grabAbility != null && grabAbility.GrabbedPlayers.Count > 0;
+        return standardConditions && hasGrabbed;
+    }
+
+    public override bool CheckHasButton()
+        => base.CheckHasButton() && grabAbility != null && grabAbility.GrabbedPlayers.Count > 0;
+
+    public override void OnClick()
+    {
+        if (!CheckIsAvailable() || grabAbility == null) return;
+        // Convert using .PlayerControl
+        List<ExPlayerControl> playersToLaunch = grabAbility.GrabbedPlayers;
+        if (playersToLaunch.Count > 0)
         {
-            RocketSeizeButton.MaxTimer = RoleData.RocketButtonCooldown;
-            RocketSeizeButton.Timer = RoleData.RocketButtonCooldown;
-            RocketRocketButton.MaxTimer = CustomOptionData.RocketChargeTime.GetFloat();
-            RocketRocketButton.Timer = 0;
+            RpcLaunchPlayers(playersToLaunch);
         }
     }
 
-    // ここにコードを書きこんでください
+
+    [CustomRPC]
+    public void RpcAllExile(List<ExPlayerControl> playersToLaunch)
+    {
+        if (grabAbility == null || Player == null) return;
+        foreach (var targetControl in playersToLaunch)
+        {
+            if (targetControl == null || targetControl.IsDead()) continue;
+            if (grabAbility.GrabbedPlayers.Contains(targetControl))
+            {
+                targetControl.CustomDeath(CustomDeathType.LaunchByRocket, source: Player);
+            }
+        }
+        grabAbility.ClearGrabbedPlayersLocally();
+    }
+
+    [CustomRPC]
+    public void RpcLaunchPlayers(List<ExPlayerControl> targets)
+    {
+        if (grabAbility == null || Player == null) return;
+        Vector3 launchPosition = Player.transform.position;
+        int count = 0;
+
+        foreach (var targetControl in targets)
+        {
+            // Get ExPlayerControl using GameData
+            var playerInfo = GameData.Instance.GetPlayerById(targetControl.PlayerId);
+            var targetEx = playerInfo != null ? (ExPlayerControl)playerInfo.Object : null;
+
+            if (targetEx != null && targetEx.IsAlive() && grabAbility.GrabbedPlayers.Contains(targetEx))
+            {
+                targetEx.CustomDeath(CustomDeathType.LaunchByRocket, source: Player);
+                // SoundEffectManager.Instance?.PlaySound("RocketLaunch", false, 0.8f, launchPosition);
+            }
+            new GameObject("RocketDeadbody").AddComponent<RocketDeadbody>().Init(targetEx, count, targets.Count);
+            count++;
+        }
+        grabAbility.ClearGrabbedPlayersLocally();
+    }
 }
