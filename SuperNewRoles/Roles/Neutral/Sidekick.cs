@@ -1,70 +1,30 @@
-using System.Text;
+using System;
+using System.Collections.Generic;
 using AmongUs.GameOptions;
-using SuperNewRoles.Mode.SuperHostRoles;
-using SuperNewRoles.Roles.Role;
-using SuperNewRoles.Roles.RoleBases;
-using SuperNewRoles.Roles.RoleBases.Interfaces;
+using SuperNewRoles.CustomOptions;
+using SuperNewRoles.Modules;
+using SuperNewRoles.Roles.Ability;
+using UnityEngine;
 
 namespace SuperNewRoles.Roles.Neutral;
 
-public class Sidekick : RoleBase, ISidekick, INeutral, IImpostorVision, IVentAvailable, ISaboAvailable, ISupportSHR, ISHRAntiBlackout
+class Sidekick : RoleBase<Sidekick>
 {
-    public static new RoleInfo Roleinfo = new(
-        typeof(Sidekick),
-        (p) => new Sidekick(p),
-        RoleId.Sidekick,
-        "Sidekick",
-        RoleClass.JackalBlue,
-        new(RoleId.Sidekick, TeamTag.Sidekick),
-        TeamRoleType.Neutral,
-        TeamType.Neutral
-        );
+    public override RoleId Role { get; } = RoleId.Sidekick;
+    public override Color32 RoleColor { get; } = Jackal.Instance.RoleColor;
+    public override List<Func<AbilityBase>> Abilities { get; } = [
+        () => new JSidekickAbility(
+            canUseVent: Jackal.JackalCanUseVent
+        )
+    ];
 
-    public bool CanUseSabo => Jackal.Optioninfo.CanUseSabo;
-    public bool CanUseVent => Jackal.Optioninfo.CanUseVent;
-    public bool IsImpostorVision => Jackal.Optioninfo.IsImpostorVision;
-    public bool? IsImpostorLight => IsImpostorVision;
+    public override QuoteMod QuoteMod { get; } = QuoteMod.TheOtherRoles;
+    public override RoleTypes IntroSoundType { get; } = RoleTypes.Crewmate;
+    public override short IntroNum { get; } = 1;
 
-    public static new IntroInfo Introinfo =
-        new(RoleId.Sidekick, introSound: RoleTypes.Crewmate);
-    public Sidekick(PlayerControl p) : base(p, Roleinfo, null, Introinfo)
-    {
-    }
-
-    public RoleId TargetRole => RoleId.Jackal;
-
-    public RoleTypes RealRole => CanUseVent ? RoleTypes.Engineer : RoleTypes.Crewmate;
-
-    private Jackal CurrentParent;
-
-    public void SetParent(PlayerControl player)
-        => CurrentParent = player.GetRoleBase<Jackal>();
-
-    public void BuildSetting(IGameOptions gameOptions)
-    {
-        gameOptions.SetFloat(FloatOptionNames.EngineerCooldown, 0f);
-        gameOptions.SetFloat(FloatOptionNames.EngineerInVentMaxTime, 0f);
-    }
-
-    public void BuildName(StringBuilder Suffix, StringBuilder RoleNameText, PlayerData<string> ChangePlayers)
-    {
-        if (CurrentParent is null)
-            return;
-        if (CurrentParent.Player != null)
-            ChangePlayers[CurrentParent.Player] = ModHelpers.Cs(RoleClass.JackalBlue, ChangePlayers.GetNowName(CurrentParent.Player));
-        else if (Player.IsAlive())
-            ChangePlayers[CurrentParent.Player] = ModHelpers.Cs(RoleClass.CrewmateWhite, ChangePlayers.GetNowName(CurrentParent.Player));
-    }
-
-    public void StartAntiBlackout()
-    {
-        if (CurrentParent?.Player != null && !Player.IsMod())
-            CurrentParent.Player.RpcSetRoleDesync(CurrentParent.Player.IsDead() ? RoleTypes.CrewmateGhost : RoleTypes.Crewmate, Player);
-    }
-
-    public void EndAntiBlackout()
-    {
-        if (CurrentParent?.Player != null && !Player.IsMod() && CurrentParent.Player.IsAlive())
-            CurrentParent.Player.RpcSetRoleDesync(RoleTypes.Impostor, Player);
-    }
+    public override AssignedTeamType AssignedTeam { get; } = AssignedTeamType.Neutral;
+    public override WinnerTeamType WinnerTeam { get; } = WinnerTeamType.Neutral;
+    public override TeamTag TeamTag { get; } = TeamTag.Neutral;
+    public override RoleTag[] RoleTags { get; } = [];
+    public override RoleOptionMenuType OptionTeam { get; } = RoleOptionMenuType.Hidden;
 }

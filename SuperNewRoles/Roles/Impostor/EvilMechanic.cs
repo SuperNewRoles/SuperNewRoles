@@ -1,31 +1,35 @@
+using System;
 using System.Collections.Generic;
 using UnityEngine;
+using AmongUs.GameOptions;
+using SuperNewRoles.CustomOptions;
+using SuperNewRoles.Roles.Ability;
+using SuperNewRoles.Modules;
 
 namespace SuperNewRoles.Roles.Impostor;
 
-public static class EvilMechanic
+class EvilMechanic : RoleBase<EvilMechanic>
 {
-    private const int OptionId = 202200;
-    public static CustomRoleOption EvilMechanicOption;
-    public static CustomOption EvilMechanicPlayerCount;
-    public static CustomOption EvilMechanicCoolTime;
-    public static CustomOption EvilMechanicDurationTime;
-    public static void SetupCustomOptions()
-    {
-        EvilMechanicOption = CustomOption.SetupCustomRoleOption(OptionId, false, RoleId.EvilMechanic);
-        EvilMechanicPlayerCount = CustomOption.Create(OptionId + 1, false, CustomOptionType.Impostor, "SettingPlayerCountName", CustomOptionHolder.ImpostorPlayers[0], CustomOptionHolder.ImpostorPlayers[1], CustomOptionHolder.ImpostorPlayers[2], CustomOptionHolder.ImpostorPlayers[3], EvilMechanicOption);
-        EvilMechanicCoolTime = CustomOption.Create(OptionId + 2, false, CustomOptionType.Impostor, "NiceScientistCooldownSetting", 30f, 2.5f, 60f, 2.5f, EvilMechanicOption);
-        EvilMechanicDurationTime = CustomOption.Create(OptionId + 3, false, CustomOptionType.Impostor, "NiceScientistDurationSetting", 10f, 2.5f, 30f, 2.5f, EvilMechanicOption, format: "unitSeconds");
+    public override RoleId Role { get; } = RoleId.EvilMechanic;
+    public override Color32 RoleColor { get; } = Palette.ImpostorRed;
+    public override List<Func<AbilityBase>> Abilities { get; } = [() => new MechanicAbility(
+        coolTime: EvilMechanicCoolTime,
+        durationTime: EvilMechanicDurationTime,
+        sprite: "MechanicButton_Evil.png")]; // インポスターなので常にベントが使える
 
-    }
+    public override QuoteMod QuoteMod { get; } = QuoteMod.SuperNewRoles;
+    public override RoleTypes IntroSoundType { get; } = RoleTypes.Shapeshifter;
+    public override short IntroNum { get; } = 1;
 
-    public static List<PlayerControl> EvilMechanicPlayer;
-    public static Color32 color = RoleClass.ImpostorRed;
-    public static Sprite GetButtonSprite() => ModHelpers.LoadSpriteFromResources("SuperNewRoles.Resources.MechanicButton_Evil.png", 115f);
-    public static void ClearAndReload()
-    {
-        EvilMechanicPlayer = new();
-    }
+    public override AssignedTeamType AssignedTeam { get; } = AssignedTeamType.Impostor;
+    public override WinnerTeamType WinnerTeam { get; } = WinnerTeamType.Impostor;
+    public override TeamTag TeamTag { get; } = TeamTag.Impostor;
+    public override RoleTag[] RoleTags { get; } = [];
+    public override RoleOptionMenuType OptionTeam { get; } = RoleOptionMenuType.Impostor;
 
-    // ここにコードを書きこんでください
+    [CustomOptionFloat("EvilMechanicCoolTime", 2.5f, 60f, 2.5f, 30f)]
+    public static float EvilMechanicCoolTime;
+
+    [CustomOptionFloat("EvilMechanicDurationTime", 2.5f, 30f, 2.5f, 10f)]
+    public static float EvilMechanicDurationTime;
 }

@@ -1,70 +1,116 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using HarmonyLib;
-using SuperNewRoles.Roles.Neutral;
 using UnityEngine;
 
 namespace SuperNewRoles.Modules;
 
-//TownOfHostより！！
+/// <summary>遅延実行タスク管理クラス</summary>
 public class LateTask
 {
-    public string name;
-    public float timer;
-    public Action action;
-    public static List<LateTask> Tasks = new();
-    public static List<LateTask> AddTasks = new();
-    public bool Run(float deltaTime)
+    private static readonly object _lock = new();
+    private static readonly List<LateTask> Tasks = new();
+    private static readonly List<LateTask> AddTasks = new();
+    private static readonly List<LateTask> RemoveTasks = new();
+
+    public string Name { get; }
+    public float Timer { get; private set; }
+    public Action Action { get; }
+
+    /// <summary>遅延タスクコンストラクタ</summary>
+    /// <param name="action">実行アクション</param>
+    /// <param name="delayTime">遅延時間（秒）</param>
+    /// <param name="taskName">タスク名（デバッグ用）</param>
+    public LateTask(Action action, float delayTime, string taskName = "No Name Task")
     {
-        timer -= deltaTime;
-        if (timer <= 0)
+        Action = action ?? throw new ArgumentNullException(nameof(action));
+        Timer = delayTime >= 0 ? delayTime : 0;
+        Name = taskName;
+
+        lock (_lock)
         {
-            try {
-                action();
-            }
-            catch (Exception e) {
-                Logger.Error("Error in LateTask", "LateTask");
-                Logger.Error(e.ToString(), "LateTask");
-                Logger.Error(e.StackTrace, "LateTask");
-            }
+            AddTasks.Add(this);
+        }
+
+        Logger.Info($"New LateTask \"{Name}\" created (Delay: {delayTime}s)", "LateTask");
+    }
+    public void Cancel()
+    {
+        lock (_lock)
+        {
+            RemoveTasks.Add(this);
+        }
+    }
+    public void UpdateDelay(float delayTime)
+    {
+        lock (_lock)
+        {
+            Timer = delayTime;
+        }
+    }
+
+    private bool Execute()
+    {
+        try
+        {
+            Timer -= Time.deltaTime;
+            if (Timer > 0) return false;
+
+            Action.Invoke();
+            Logger.Info($"LateTask \"{Name}\" completed", "LateTask");
             return true;
         }
-        return false;
+        catch (Exception ex)
+        {
+            Logger.Error($"Error in LateTask \"{Name}\": {ex.Message}\n{ex.StackTrace}", "LateTask");
+            return true; // エラー発生時もタスクを削除
+        }
     }
-    public LateTask(Action action, float time, string name = "No Name Task")
-    {
-        this.action = action;
-        timer = time;
-        this.name = name;
-        AddTasks.Add(this);
-        Logger.Info("New LateTask \"" + name + "\" is created", "LateTask");
-    }
+
     public static void Update(float deltaTime)
     {
-        var TasksToRemove = new List<LateTask>();
-        Tasks.ForEach((task) =>
+        var completedTasks = new List<LateTask>(Tasks.Count);
+        foreach (var task in Tasks)
         {
-            //Logger.Info("LateTask \"" + task.name + "\" Start","LateTask");
-            if (task.Run(deltaTime))
-            {
-                Logger.Info("LateTask \"" + task.name + "\" is finished", "LateTask");
-                TasksToRemove.Add(task);
-            }
-        });
-        TasksToRemove.ForEach(task => Tasks.Remove(task));
-        foreach (LateTask task in AddTasks)
-        {
-            Tasks.Add(task);
+            if (task.Execute())
+                completedTasks.Add(task);
         }
-        AddTasks = new List<LateTask>();
+
+        if (completedTasks.Count > 0)
+        {
+            Tasks.RemoveAll(t => completedTasks.Contains(t));
+        }
+
+        lock (_lock)
+        {
+            if (AddTasks.Count > 0)
+            {
+                Tasks.AddRange(AddTasks);
+                AddTasks.Clear();
+            }
+            if (RemoveTasks.Count > 0)
+            {
+                Tasks.RemoveAll(t => RemoveTasks.Contains(t));
+                RemoveTasks.Clear();
+            }
+        }
     }
 }
+
 [HarmonyPatch(typeof(ModManager), nameof(ModManager.LateUpdate))]
-class LateUpdate
+internal class LateUpdatePatch
 {
+    [HarmonyPostfix]
     public static void Postfix()
     {
-        // LoversBreaker.LateUpdate();
-        LateTask.Update(Time.deltaTime);
+        try
+        {
+            LateTask.Update(Time.deltaTime);
+        }
+        catch (Exception ex)
+        {
+            Logger.Error($"LateTask Update Error: {ex.Message}", "LateUpdate");
+        }
     }
 }

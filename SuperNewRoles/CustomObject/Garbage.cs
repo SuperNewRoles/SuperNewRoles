@@ -2,7 +2,10 @@ using System;
 using System.Collections.Generic;
 using HarmonyLib;
 using Hazel;
-using SuperNewRoles.Helpers;
+using SuperNewRoles.Modules;
+using SuperNewRoles.Patches;
+using SuperNewRoles.Roles;
+using SuperNewRoles.Roles.CrewMate;
 using UnityEngine;
 using Object = UnityEngine.Object;
 
@@ -10,55 +13,64 @@ namespace SuperNewRoles.CustomObject;
 
 public class Garbage
 {
-    public static List<Garbage> AllGarbage;
+    public static List<Garbage> AllGarbage = new();
     public static GameObject AllGarbageObject;
     public static GameObject InstantiateGarbage;
     public static readonly float Distance = 0.75f;
-    public static int Count;
-    public static Sprite[] GarbageSprites = new Sprite[3]
+    public static Sprite[] GarbageSprites;
+    public ExPlayerControl MadeBy;
+
+    public static void LoadSprites()
     {
-        ModHelpers.LoadSpriteFromResources("SuperNewRoles.Resources.Garbage_1.png", 300f),
-        ModHelpers.LoadSpriteFromResources("SuperNewRoles.Resources.Garbage_2.png", 300f),
-        ModHelpers.LoadSpriteFromResources("SuperNewRoles.Resources.Garbage_3.png", 300f),
-    };
+        GarbageSprites = new Sprite[3]
+        {
+            AssetManager.GetAsset<Sprite>("Garbage_1.png"),
+            AssetManager.GetAsset<Sprite>("Garbage_2.png"),
+            AssetManager.GetAsset<Sprite>("Garbage_3.png"),
+        };
+    }
+
     public static void ClearAndReload()
     {
         AllGarbage = new();
-        Count = 0;
     }
 
     public GameObject GarbageObject;
     public SpriteRenderer GarbageRenderer;
     public CircleCollider2D CircleCollider;
     public ButtonBehavior Button;
-    public Garbage(Vector2 pos)
+    public int Index { get; }
+    public bool AllPlayerCanSeeGarbage { get; }
+    public Garbage(Vector2 pos, ExPlayerControl madeBy, int index, bool allPlayerCanSeeGarbage)
     {
+        AllPlayerCanSeeGarbage = allPlayerCanSeeGarbage;
         GarbageObject = Object.Instantiate(InstantiateGarbage, AllGarbageObject.transform);
         GarbageObject.transform.position = new(pos.x, pos.y, (pos.y / 1000f) + 0.0005f);
-        GarbageObject.name = $"Garbage {Count}";
-        GarbageObject.SetActive(true);
+        GarbageObject.transform.localScale *= 1.5f;
+        GarbageObject.name = $"Garbage {madeBy.PlayerId} {index}";
+        Index = index;
+        MadeBy = madeBy;
+        GarbageObject.SetActive(AllPlayerCanSeeGarbage || ExPlayerControl.LocalPlayer.Role == RoleId.WellBehaver);
 
         GarbageRenderer = GarbageObject.GetComponent<SpriteRenderer>();
-        GarbageRenderer.sprite = GarbageSprites.GetRandom();
+        GarbageRenderer.sprite = GarbageSprites[UnityEngine.Random.Range(0, GarbageSprites.Length)];
 
         CircleCollider = GarbageObject.GetComponent<CircleCollider2D>();
 
         Button = GarbageObject.GetComponent<ButtonBehavior>();
         Button.OnClick.AddListener((Action)(() =>
         {
-            if (!PlayerControl.LocalPlayer.IsRole(RoleId.WellBehaver) || PlayerControl.LocalPlayer.IsDead()) return;
-            if (Vector2.Distance(GarbageObject.transform.position, PlayerControl.LocalPlayer.GetTruePosition()) <= Distance)
+            ExPlayerControl player = PlayerControl.LocalPlayer;
+            if (player.Role != RoleId.WellBehaver || player.Data.IsDead) return;
+            if (Vector2.Distance(GarbageObject.transform.position, player.GetTruePosition()) <= Distance)
             {
                 Logger.Info($"{GarbageObject.name}を削除", "Garbage");
-                MessageWriter writer = RPCHelper.StartRPC(CustomRPC.DestroyGarbage);
-                writer.Write(GarbageObject.name);
-                writer.EndRPC();
+                WellBehaverAbility.RpcDestroyGarbage(ExPlayerControl.LocalPlayer, madeBy, index);
                 Clear();
             }
         }));
 
         AllGarbage.Add(this);
-        Count++;
     }
 
     public void Clear()
@@ -67,16 +79,17 @@ public class Garbage
         Object.Destroy(GarbageObject);
     }
 
-    [HarmonyPatch(typeof(ShipStatus))]
+    [HarmonyPatch(typeof(ShipStatus), nameof(ShipStatus.Start))]
     public static class ShipStatusPatch
     {
-        [HarmonyPatch(nameof(ShipStatus.Start)), HarmonyPostfix]
-        public static void StartPostfix()
+        public static void Postfix()
         {
-            AllGarbageObject = new("AllGarbageObject");
+            LoadSprites();
+
+            AllGarbageObject = new GameObject("AllGarbageObject");
             AllGarbageObject.transform.position = new(0f, 0f, 0f);
 
-            InstantiateGarbage = new("Instantiate Garbage") { layer = 11 };
+            InstantiateGarbage = new GameObject("Instantiate Garbage") { layer = 11 };
             InstantiateGarbage.transform.SetParent(AllGarbageObject.transform);
             InstantiateGarbage.SetActive(false);
 

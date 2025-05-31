@@ -3,8 +3,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using Agartha;
-using SuperNewRoles.Roles.Impostor.Pusher;
+using SuperNewRoles.Modules;
+using SuperNewRoles.Roles.Ability;
+using SuperNewRoles.Roles.Impostor;
 using UnityEngine;
 
 namespace SuperNewRoles.CustomObject;
@@ -21,9 +22,10 @@ public class PushedPlayerDeadbody : MonoBehaviour
     }
     public PoolablePlayer currentPoolableBehaviour { get; private set; }
     public PlayerControl Player { get; private set; }
+    public PlayerControl Source { get; private set; }
     private float AnimationTimer;
     private PushAnimation pushAnimation;
-    private Pusher.PushTarget pushTarget;
+    private PusherAbility.PushTarget pushTarget;
     private SpriteRenderer HandSlot;
     private DeadBody DeadBody;
     private Vector3 DeadBodyPosition;
@@ -31,25 +33,27 @@ public class PushedPlayerDeadbody : MonoBehaviour
     public void Awake()
     {
     }
-    public void Init(PlayerControl player, Pusher.PushTarget pushTarget, DeadBody deadBody, Vector3 deadbodyPosition)
+    public void Init(PlayerControl source, PlayerControl player, PusherAbility.PushTarget pushTarget, DeadBody deadBody, Vector3 deadbodyPosition)
     {
+        Source = source;
         Player = player;
         DeadBody = deadBody;
         DeadBodyPosition = deadbodyPosition;
         if (DeadBody != null)
             Speed = 1.5f;
         transform.position = Player.transform.position;
-        if (!MapOption.MapOption.playerIcons.TryGetValue(player.PlayerId, out PoolablePlayer poolableBehaviour))
-            throw new Exception("Failed to get poolableBehavior Icon");
-        currentPoolableBehaviour = Instantiate(MapLoader.Airship.ExileCutscenePrefab.Player);//poolableBehaviour);
-        currentPoolableBehaviour.gameObject.layer = 8;
-        currentPoolableBehaviour.transform.SetParent(transform);
-        currentPoolableBehaviour.SetBodyColor(player.CurrentOutfit.ColorId);
-        currentPoolableBehaviour.transform.localPosition = Vector3.zero;
-        currentPoolableBehaviour.transform.localScale = Vector3.one * 0.4f;
-        currentPoolableBehaviour.gameObject.SetActive(true);
-        HandSlot = currentPoolableBehaviour.transform.FindChild("HandSlot").GetComponent<SpriteRenderer>();
-        PlayerMaterial.SetColors(player.CurrentOutfit.ColorId, HandSlot);
+        MapLoader.LoadMap(MapNames.Airship, (ship) =>
+        {
+            currentPoolableBehaviour = Instantiate(ship.ExileCutscenePrefab.Player);
+            currentPoolableBehaviour.gameObject.layer = 8;
+            currentPoolableBehaviour.transform.SetParent(transform);
+            currentPoolableBehaviour.SetBodyColor(player.CurrentOutfit.ColorId);
+            currentPoolableBehaviour.transform.localPosition = Vector3.zero;
+            currentPoolableBehaviour.transform.localScale = Vector3.one * 0.4f;
+            currentPoolableBehaviour.gameObject.SetActive(true);
+            HandSlot = currentPoolableBehaviour.transform.FindChild("HandSlot").GetComponent<SpriteRenderer>();
+            PlayerMaterial.SetColors(player.CurrentOutfit.ColorId, HandSlot);
+        });
         //currentPoolableBehaviour.cosmetics.currentBodySprite.BodySprite.sprite = MapLoader.Airship.ExileCutscenePrefab.Player.transform.FindChild("BodyForms/Normal").GetComponent<SpriteRenderer>().sprite;
         AnimationTimer = 0f;
         pushAnimation = PushAnimation.Push;
@@ -92,6 +96,8 @@ public class PushedPlayerDeadbody : MonoBehaviour
                         rend.gameObject.SetActive(false);
                         rend.gameObject.SetActive(true);
                         DeadBody.transform.position = DeadBodyPosition;
+                        if (Source != null && Source.AmOwner && Constants.ShouldPlaySfx())
+                            SoundManager.Instance.PlaySound(Source.KillSfx, loop: false, 0.8f);
                     }
                     Destroy(gameObject);
                 }
@@ -105,9 +111,10 @@ public class PushedPlayerDeadbody : MonoBehaviour
     {
         Vector3 addposition = pushTarget switch
         {
-            Pusher.PushTarget.Right => new Vector3(16f, 0, 0),
-            Pusher.PushTarget.Left => new Vector3(-16f, 0, 0),
-            Pusher.PushTarget.Down => new Vector3(0, -9f, 0),
+            PusherAbility.PushTarget.Right => new Vector3(16f, 0, 0),
+            PusherAbility.PushTarget.Left => new Vector3(-16f, 0, 0),
+            PusherAbility.PushTarget.Down => new Vector3(0, -9f, 0),
+            PusherAbility.PushTarget.Up => new Vector3(0, 9f, 0),
             _ => throw new Exception("PushedPlayerDeadbody: Invalid PushTarget")
         } * Time.deltaTime;
         transform.position += addposition;
@@ -120,7 +127,7 @@ public class PushedPlayerDeadbody : MonoBehaviour
         if (rotate >= 360)
             rotate = 0;
         float rotated = 360 - rotate;
-        if (pushTarget == Pusher.PushTarget.Left)
+        if (pushTarget == PusherAbility.PushTarget.Left)
             rotated = rotate;
         transform.Rotate(new(0, 0, rotated));
     }
@@ -135,5 +142,20 @@ public class PushedPlayerDeadbody : MonoBehaviour
         // フェードアウト
         currentPoolableBehaviour.cosmetics.currentBodySprite.BodySprite.color = color;
         HandSlot.color = color;
+    }
+
+    private void OnDestroy()
+    {
+        // リソース解放
+        if (currentPoolableBehaviour != null)
+        {
+            GameObject.Destroy(currentPoolableBehaviour.gameObject);
+            currentPoolableBehaviour = null;
+        }
+
+        // 参照のクリア
+        Player = null;
+        DeadBody = null;
+        HandSlot = null;
     }
 }

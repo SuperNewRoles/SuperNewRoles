@@ -1,116 +1,108 @@
-using Hazel;
-using SuperNewRoles.Mode;
+using System;
+using System.Collections.Generic;
+using AmongUs.GameOptions;
+using SuperNewRoles.CustomOptions;
+using SuperNewRoles.Modules;
+using SuperNewRoles.Roles.Ability;
 using UnityEngine;
+using System.Linq;
+using SuperNewRoles.Events;
+using SuperNewRoles.Events.PCEvents;
+using SuperNewRoles.Modules.Events.Bases;
+using SuperNewRoles.SuperTrophies;
+using SuperNewRoles.Patches;
 
-namespace SuperNewRoles.Roles;
+namespace SuperNewRoles.Roles.Impostor;
 
-public static class SerialKiller
+class SerialKiller : RoleBase<SerialKiller>
 {
-    public static void SHRFixedUpdate(RoleId role)
+    public override RoleId Role { get; } = RoleId.SerialKiller;
+    public override Color32 RoleColor { get; } = Palette.ImpostorRed;
+    public override List<Func<AbilityBase>> Abilities { get; } = [
+        () => new ChangeKillTimerAbility(
+            killTimerGetter: () => SerialKillerKillCooldown
+        ),
+        () => new SuicideTimerAbility(
+            suicideTimeGetter: () => SerialKillerSuicideTime,
+            resetOnMeetingGetter: () => SerialKillerResetOnMeeting
+        ),
+        () => new CustomSaboAbility(
+            canSabotage: () => SerialKillerCanSabotage
+        ),
+        () => new CustomVentAbility(
+            canUseVent: () => SerialKillerCanUseVent
+        )
+    ];
+
+    public override QuoteMod QuoteMod { get; } = QuoteMod.TheOtherRolesGM;
+    public override RoleTypes IntroSoundType { get; } = RoleTypes.Impostor;
+    public override short IntroNum { get; } = 1;
+
+    public override AssignedTeamType AssignedTeam { get; } = AssignedTeamType.Impostor;
+    public override WinnerTeamType WinnerTeam { get; } = WinnerTeamType.Impostor;
+    public override TeamTag TeamTag { get; } = TeamTag.Impostor;
+    public override RoleTag[] RoleTags { get; } = [RoleTag.SpecialKiller];
+    public override RoleOptionMenuType OptionTeam { get; } = RoleOptionMenuType.Impostor;
+
+    [CustomOptionBool("SerialKillerResetOnMeeting", false)]
+    public static bool SerialKillerResetOnMeeting;
+
+    [CustomOptionFloat("SerialKillerKillCooldown", 2.5f, 120f, 2.5f, 20f)]
+    public static float SerialKillerKillCooldown;
+
+    [CustomOptionFloat("SerialKillerSuicideTime", 2.5f, 120f, 2.5f, 40f)]
+    public static float SerialKillerSuicideTime;
+
+    [CustomOptionBool("SerialKillerCanUseVent", true, translationName: "CanUseVent")]
+    public static bool SerialKillerCanUseVent;
+
+    [CustomOptionBool("SerialKillerCanSabotage", true)]
+    public static bool SerialKillerCanSabotage;
+}
+
+/// <summary>
+/// シリアルキラーが自殺タイマーが指定時間以下（例: 5秒以下）の状態で勝利するとトロフィーを獲得するクラス
+/// </summary>
+public class SerialKillerNearSuicideWinTrophy : SuperTrophyRole<SerialKillerNearSuicideWinTrophy>
+{
+    public override TrophiesEnum TrophyId => TrophiesEnum.SerialKillerNearSuicideWin;
+    public override TrophyRank TrophyRank => TrophyRank.Bronze;
+    public override RoleId[] TargetRoles => [RoleId.SerialKiller];
+
+    private EventListener<EndGameEventData> _onEndGameEvent;
+    private const float NearSuicideThreshold = 5.0f; // 5秒以下
+
+    public override void OnRegister()
     {
-        if (!RoleClass.IsMeeting)
+        _onEndGameEvent = EndGameEvent.Instance.AddListener(HandleEndGameEvent);
+    }
+
+    private void HandleEndGameEvent(EndGameEventData data)
+    {
+        var localPlayer = ExPlayerControl.LocalPlayer;
+
+        if (localPlayer.IsDead())
+            return;
+
+        bool isImpostorWin = data.winners.Any(w => w.PlayerId == localPlayer.PlayerId);
+
+        if (localPlayer?.roleBase?.Role == RoleId.SerialKiller && isImpostorWin && !localPlayer.IsDead())
         {
-            if (AmongUsClient.Instance.AmHost)
+            var suicideAbility = localPlayer.PlayerAbilities.FirstOrDefault(a => a is SuicideTimerAbility) as SuicideTimerAbility;
+
+            if (suicideAbility != null && suicideAbility.CurrentTimer > 0 && suicideAbility.CurrentTimer <= NearSuicideThreshold)
             {
-                foreach (PlayerControl p in RoleClass.SerialKiller.SerialKillerPlayer)
-                {
-                    if (p.IsAlive())
-                    {
-                        if (RoleClass.SerialKiller.IsSuicideViews.TryGetValue(p.PlayerId, out bool IsView) && IsView)
-                        {
-                            if (!RoleClass.SerialKiller.SuicideTimers.ContainsKey(p.PlayerId)) RoleClass.SerialKiller.SuicideTimers[p.PlayerId] = RoleClass.SerialKiller.SuicideDefaultTime;
-                            RoleClass.SerialKiller.SuicideTimers[p.PlayerId] -= Time.fixedDeltaTime;
-                            if (RoleClass.SerialKiller.SuicideTimers[p.PlayerId] <= 0)
-                            {
-                                p.RpcMurderPlayer(p, true);
-                                p.RpcSetFinalStatus(FinalStatus.SerialKillerSelfDeath);
-                            }
-                        }
-                    }
-                }
-            }
-        }
-        if (role == RoleId.SerialKiller)
-        {
-            if (!RoleClass.IsMeeting && RoleClass.SerialKiller.IsSuicideView)
-            {
-                RoleClass.SerialKiller.SuicideTime -= Time.fixedDeltaTime;
-                RoleClass.SerialKiller.SuicideKillText.text = string.Format(ModTranslation.GetString("SerialKillerSuicideText"), ((int)RoleClass.SerialKiller.SuicideTime) + 1);
-            }
-            else if (RoleClass.SerialKiller.SuicideKillText.text != "")
-            {
-                RoleClass.SerialKiller.SuicideKillText.text = "";
+                Complete();
             }
         }
     }
-    public static void FixedUpdate()
+
+    public override void OnDetached()
     {
-        if (!RoleClass.IsMeeting)
+        if (_onEndGameEvent != null)
         {
-            if (RoleClass.SerialKiller.IsSuicideView)
-            {
-                RoleClass.SerialKiller.SuicideTime -= Time.fixedDeltaTime;
-                if (RoleClass.SerialKiller.SuicideTime <= 0)
-                {
-                    MessageWriter writer = AmongUsClient.Instance.StartRpcImmediately(PlayerControl.LocalPlayer.NetId, (byte)CustomRPC.RPCMurderPlayer, SendOption.Reliable, -1);
-                    writer.Write(CachedPlayer.LocalPlayer.PlayerId);
-                    writer.Write(CachedPlayer.LocalPlayer.PlayerId);
-                    writer.Write(byte.MaxValue);
-                    AmongUsClient.Instance.FinishRpcImmediately(writer);
-                    RPCProcedure.RPCMurderPlayer(CachedPlayer.LocalPlayer.PlayerId, CachedPlayer.LocalPlayer.PlayerId, byte.MaxValue);
-                    PlayerControl.LocalPlayer.RpcSetFinalStatus(FinalStatus.SerialKillerSelfDeath);
-                }
-            }
-        }
-        if (!RoleClass.IsMeeting && RoleClass.SerialKiller.IsSuicideView)
-        {
-            RoleClass.SerialKiller.SuicideKillText.text = string.Format(ModTranslation.GetString("SerialKillerSuicideText"), ((int)RoleClass.SerialKiller.SuicideTime) + 1);
-        }
-        else
-        {
-            if (RoleClass.SerialKiller.SuicideKillText.text != "")
-            {
-                RoleClass.SerialKiller.SuicideKillText.text = "";
-            }
-        }
-    }
-    public static void MurderPlayer(PlayerControl __instance, PlayerControl target)
-    {
-        if (__instance.IsRole(RoleId.SerialKiller))
-        {
-            if (target.IsRole(RoleId.Fox) && RoleClass.Fox.Killer.Contains(__instance.PlayerId)) return;
-            if (__instance.PlayerId == CachedPlayer.LocalPlayer.PlayerId)
-            {
-                RoleClass.SerialKiller.SuicideTime = RoleClass.SerialKiller.SuicideDefaultTime;
-                RoleClass.SerialKiller.IsSuicideView = true;
-            }
-            RoleClass.SerialKiller.IsSuicideViews[__instance.PlayerId] = true;
-            if (ModeHandler.IsMode(ModeId.SuperHostRoles))
-            {
-                RoleClass.SerialKiller.SuicideTimers[__instance.PlayerId] = RoleClass.SerialKiller.SuicideDefaultTime;
-            }
-            else if (ModeHandler.IsMode(ModeId.Default))
-            {
-                if (__instance.PlayerId == CachedPlayer.LocalPlayer.PlayerId)
-                {
-                    __instance.SetKillTimerUnchecked(RoleClass.SerialKiller.KillTime);
-                    RoleClass.SerialKiller.SuicideTime = RoleClass.SerialKiller.SuicideDefaultTime;
-                }
-            }
-        }
-    }
-    public static void WrapUp()
-    {
-        if (RoleClass.SerialKiller.IsMeetingReset)
-        {
-            RoleClass.SerialKiller.SuicideTime = RoleClass.SerialKiller.SuicideDefaultTime;
-            foreach (PlayerControl p in RoleClass.SerialKiller.SerialKillerPlayer)
-            {
-                if (RoleClass.SerialKiller.SuicideTimers.ContainsKey(p.PlayerId))
-                {
-                    RoleClass.SerialKiller.SuicideTimers[p.PlayerId] = RoleClass.SerialKiller.SuicideDefaultTime;
-                }
-            }
+            EndGameEvent.Instance.RemoveListener(_onEndGameEvent);
+            _onEndGameEvent = null;
         }
     }
 }

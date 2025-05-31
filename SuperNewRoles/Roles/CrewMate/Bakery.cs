@@ -1,217 +1,84 @@
+using System;
+using System.Collections.Generic;
 using System.Text;
-using AmongUs.GameOptions;
 using HarmonyLib;
-using SuperNewRoles.Mode;
-using SuperNewRoles.Roles.Crewmate;
+using TMPro;
 using UnityEngine;
+using AmongUs.GameOptions;
+using SuperNewRoles.Modules;
+using SuperNewRoles.Roles.Ability;
+using SuperNewRoles.Roles.Crewmate;
+using SuperNewRoles.CustomOptions;
+using SuperNewRoles.Modules.Events.Bases;
+using SuperNewRoles.Events;
+using System.Linq;
 
-namespace SuperNewRoles.Roles;
+namespace SuperNewRoles.Roles.Crewmate;
 
-[HarmonyPatch(typeof(ExileController), nameof(ExileController.Begin))]
-public class Bakery
+class Bakery : RoleBase<Bakery>
 {
-    private static TMPro.TextMeshPro confirmImpostorSecondText;
-    public static bool Prefix(
-        ExileController __instance,
-        ref ExileController.InitProperties init)
+    public override RoleId Role { get; } = RoleId.Bakery;
+    public override Color32 RoleColor { get; } = new(0, 255, 0, byte.MaxValue);
+    public override List<Func<AbilityBase>> Abilities { get; } = [() => new BakeryAbility()];
+    public override QuoteMod QuoteMod { get; } = QuoteMod.ExtremeRoles;
+    public override RoleTypes IntroSoundType { get; } = RoleTypes.Crewmate;
+    public override short IntroNum { get; } = 1;
+    public override AssignedTeamType AssignedTeam { get; } = AssignedTeamType.Crewmate;
+    public override WinnerTeamType WinnerTeam { get; } = WinnerTeamType.Crewmate;
+    public override TeamTag TeamTag { get; } = TeamTag.Crewmate;
+    public override RoleTag[] RoleTags { get; } = [];
+    public override RoleOptionMenuType OptionTeam { get; } = RoleOptionMenuType.Crewmate;
+}
+
+public class BakeryAbility : AbilityBase
+{
+    private static TextMeshPro confirmImpostorSecondText;
+    private EventListener<ExileControllerEventData> _exileControllerEventListener;
+    private string ExileText
     {
-        if (RoleClass.Assassin.TriggerPlayer == null &&
-            RoleClass.Revolutionist.MeetingTrigger == null &&
-            (Balancer.currentAbilityUser == null || !Balancer.IsDoubleExile) &&
-            !Agartha.MapData.IsMap(Agartha.CustomMapNames.Agartha))
-            return true;
-
-        __instance.initData = init;
-
-        string printStr = "";
-
-        if (RoleClass.Assassin.TriggerPlayer != null)
+        get
         {
-            if (__instance.specialInputHandler != null) __instance.specialInputHandler.disableVirtualCursor = true;
-            ExileController.Instance = __instance;
-            ControllerManager.Instance.CloseAndResetAll();
-
-            __instance.Text.gameObject.SetActive(false);
-            __instance.Text.text = string.Empty;
-
-            PlayerControl player = RoleClass.Assassin.TriggerPlayer;
-
-            var exile = ModeHandler.IsMode(ModeId.SuperHostRoles) ? Mode.SuperHostRoles.Main.RealExiled : init?.networkedPlayer?.Object;
-            if (exile != null && exile.IsRole(RoleId.Marlin))
-            {
-                printStr = player.Data.PlayerName + ModTranslation.GetString("AssassinSuccess");
-                RoleClass.Assassin.IsImpostorWin = true;
-            }
-            else
-            {
-                printStr = player.Data.PlayerName + ModTranslation.GetString(
-                    "AssassinFail");
-                RoleClass.Assassin.DeadPlayer = RoleClass.Assassin.TriggerPlayer;
-            }
-            RoleClass.Assassin.TriggerPlayer = null;
-            __instance.initData = ModHelpers.GenerateExileInitProperties(null, false);
-            __instance.Player.gameObject.SetActive(false);
-            __instance.completeString = printStr;
-            __instance.ImpostorText.text = string.Empty;
-            if (!Agartha.MapData.IsMap(Agartha.CustomMapNames.Agartha))
-                __instance.StartCoroutine(__instance.Animate());
+            var rand = new System.Random();
+            return rand.Next(1, 10) == 1 ? ModTranslation.GetString("BakeryExileText2") : ModTranslation.GetString("BakeryExileText");
         }
-        else if (RoleClass.Revolutionist.MeetingTrigger != null)
-        {
-            if (__instance.specialInputHandler != null) __instance.specialInputHandler.disableVirtualCursor = true;
-            ExileController.Instance = __instance;
-            ControllerManager.Instance.CloseAndResetAll();
-
-            __instance.Text.gameObject.SetActive(false);
-            __instance.Text.text = string.Empty;
-
-
-            var exile = init?.networkedPlayer?.Object;
-            if (exile != null && exile.IsRole(RoleId.Dictator))
-            {
-                printStr = init?.networkedPlayer?.PlayerName + ModTranslation.GetString("RevolutionistSuccess");
-            }
-            else
-            {
-                printStr = init?.networkedPlayer?.PlayerName + ModTranslation.GetString(
-                    "RevolutionistFail");
-            }
-            init = ModHelpers.GenerateExileInitProperties(null, false);
-            __instance.Player.gameObject.SetActive(false);
-            __instance.completeString = printStr;
-            __instance.ImpostorText.text = string.Empty;
-            if (!Agartha.MapData.IsMap(Agartha.CustomMapNames.Agartha))
-                __instance.StartCoroutine(__instance.Animate());
-        }
-        else if (Balancer.currentAbilityUser != null && Balancer.IsDoubleExile)
-        {
-            if (!IsSec)
-            {
-                IsSec = true;
-                __instance.initData.networkedPlayer = null;
-                ExileController controller = GameObject.Instantiate(__instance, __instance.transform.parent);
-                controller.Begin(ModHelpers.GenerateExileInitProperties(Balancer.targetplayerright.Data, false));
-                IsSec = false;
-                controller.completeString = string.Empty;
-
-                controller.Text.gameObject.SetActive(false);
-                controller.Player.UpdateFromEitherPlayerDataOrCache(controller.initData.networkedPlayer, PlayerOutfitType.Default, PlayerMaterial.MaskType.Exile, includePet: false);
-                controller.Player.ToggleName(active: false);
-                SkinViewData skin = ShipStatus.Instance.CosmeticsCache.GetSkin(controller.initData.outfit.SkinId);
-                controller.Player.FixSkinSprite(skin.EjectFrame);
-                AudioClip sound = null;
-                if (controller.EjectSound != null)
-                {
-                    sound = new(controller.EjectSound.Pointer);
-                }
-                controller.EjectSound = null;
-                void createlate(int index)
-                {
-                    new LateTask(() => { controller.StopAllCoroutines(); controller.StartCoroutine(controller.Animate()); }, 0.025f + index * 0.025f);
-                }
-                new LateTask(() => controller.StartCoroutine(controller.Animate()), 0f);
-                for (int i = 0; i < 23; i++)
-                {
-                    createlate(i);
-                }
-                new LateTask(() => { controller.StopAllCoroutines(); controller.EjectSound = sound; controller.StartCoroutine(controller.Animate()); }, 0.6f);
-                ExileController.Instance = __instance;
-                init = ModHelpers.GenerateExileInitProperties(Balancer.targetplayerleft.Data, false);
-                if (ModHelpers.IsMap(MapNames.Fungle))
-                {
-                    ModHelpers.SetActiveAllObject(controller.gameObject.GetChildren(), "RaftAnimation", false);
-                    controller.transform.localPosition = new(-3.75f, -0.2f, -60f);
-                }
-                return true;
-            }
-        }
-        if (Agartha.MapData.IsMap(Agartha.CustomMapNames.Agartha))
-        {
-            return Agartha.ExileCutscenePatch.ExileControllerBeginePatch.Prefix(__instance, init);
-        }
-        return false;
     }
-    static bool IsSec;
-    // 生存判定
-    public static bool BakeryAlive()
+    public override void AttachToAlls()
     {
-        if (RoleClass.Bakery.BakeryPlayer.Count <= 0) return false;
-
-        foreach (PlayerControl p in RoleClass.Bakery.BakeryPlayer)
-        {
-            if (p.IsAlive())
-            {
-                Logger.Info("パン屋が生きていると判定されました");
-                return true;
-            }
-        }
-        Logger.Info("パン屋が生きていないと判定されました");
-        return false;
+        base.AttachToAlls();
+        _exileControllerEventListener = ExileControllerEvent.Instance.AddListener(OnExileControllerEvent);
     }
-    public static string GetExileText()
+    public override void DetachToAlls()
     {
-        // 翻訳
-        var rand = new System.Random();
-        return rand.Next(1, 10) == 1 ? ModTranslation.GetString("BakeryExileText2") : ModTranslation.GetString("BakeryExileText");
+        _exileControllerEventListener.RemoveListener();
+        base.DetachToAlls();
     }
 
-    static void Postfix(ExileController __instance)
+    private void OnExileControllerEvent(ExileControllerEventData data)
     {
-        // 文字定義
-        confirmImpostorSecondText = Object.Instantiate(
-                __instance.ImpostorText,
-                __instance.Text.transform);
+        if (confirmImpostorSecondText != null)
+            return;
+        confirmImpostorSecondText = GameObject.Instantiate(data.instance.ImpostorText, data.instance.Text.transform);
+        StringBuilder changeStringBuilder = new();
+        bool isUseConfirmImpostorSecondText = false;
 
-        StringBuilder changeStringBuilder = new(); // 変更する文字を, 一時的に保管する。
-        bool isUseConfirmImpostorSecondText = false; // 2つ目の追放テキストとして記載する内容はあるかを保存する
+        bool isBakeryAlive = ExPlayerControl.ExPlayerControls.Any(x => x.Role == RoleId.Bakery && x.IsAlive());
 
-        bool isBakeryAlive = BakeryAlive(); // パン屋 生存判定
-        (bool, string) isCrookGetInsure = Neutral.Crook.Ability.GetIsReceivedTheInsuranceAndAnnounce(); // 詐欺師 保険金受給判定
-
-        // |:========== 2段目の追放確認テキスト 取得 ==========:|
-
-        if (isBakeryAlive) // パン屋 生存していたら実行
+        if (isBakeryAlive)
         {
-            Logger.Info("パン屋がパンを焼きました", "ConfirmImpostorSecondText"); // ログ
+            Logger.Info("パン屋がパンを焼きました", "ConfirmImpostorSecondText");
             isUseConfirmImpostorSecondText = true;
-            changeStringBuilder.AppendLine(GetExileText());
+            changeStringBuilder.AppendLine(ExileText);
         }
-
-        if (isCrookGetInsure.Item1) // 詐欺師 保険金受給していたら実行
-        {
-            Logger.Info("詐欺師が保険金を受け取りました", "ConfirmImpostorSecondText"); // ログ
-            isUseConfirmImpostorSecondText = true;
-            changeStringBuilder.AppendLine(isCrookGetInsure.Item2);
-        }
-
-        // |:========== 2段目の追放確認テキスト 表示 ==========:|
 
         if (isUseConfirmImpostorSecondText)
         {
-            // 文字位置変更
             if (GameManager.Instance.LogicOptions.currentGameOptions.GetBool(BoolOptionNames.ConfirmImpostor))
                 confirmImpostorSecondText.transform.localPosition += new Vector3(0f, -0.4f, 0f);
-            else confirmImpostorSecondText.transform.localPosition += new Vector3(0f, -0.2f, 0f);
+            else
+                confirmImpostorSecondText.transform.localPosition += new Vector3(0f, -0.2f, 0f);
 
-            confirmImpostorSecondText.text = changeStringBuilder.ToString(); // 文字の内容を変える
-            confirmImpostorSecondText.gameObject.SetActive(true); // 文字の表示
-        }
-
-        // |:================================================:|
-
-        if (Balancer.currentAbilityUser != null && Balancer.IsDoubleExile && __instance.initData?.networkedPlayer?.PlayerId == Balancer.targetplayerleft.PlayerId)
-        {
-            __instance.completeString = ModTranslation.GetString("BalancerDoubleExileText");
-        }
-    }
-
-    //会議終了
-    [HarmonyPatch(typeof(ExileController), nameof(ExileController.ReEnableGameplay))]
-    public class BakeryChatDisable
-    {
-        static void Postfix()
-        {
-            confirmImpostorSecondText.gameObject.SetActive(false);
+            confirmImpostorSecondText.text = changeStringBuilder.ToString();
+            confirmImpostorSecondText.gameObject.SetActive(true);
         }
     }
 }

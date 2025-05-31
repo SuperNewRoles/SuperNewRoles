@@ -1,192 +1,145 @@
 using System;
-using AmongUs.GameOptions;
-using SuperNewRoles.Roles.Neutral;
-using SuperNewRoles.Roles.Role;
-using SuperNewRoles.Roles.RoleBases;
-using SuperNewRoles.Roles.RoleBases.Interfaces;
+using System.Collections.Generic;
 using UnityEngine;
-using Object = UnityEngine.Object;
+using AmongUs.GameOptions;
+using SuperNewRoles.CustomOptions;
+using SuperNewRoles.Roles.Ability;
+using SuperNewRoles.Modules;
 
 namespace SuperNewRoles.Roles.Impostor;
 
-public class EvilHacker : RoleBase, IImpostor, ICustomButton, IMapEvent
+class EvilHacker : RoleBase<EvilHacker>
 {
-    public static new RoleInfo Roleinfo = new(
-        typeof(EvilHacker),
-        (p) => new EvilHacker(p),
-        RoleId.EvilHacker,
-        "EvilHacker",
-        RoleClass.ImpostorRed,
-        new(RoleId.EvilHacker, TeamTag.Impostor,
-            RoleTag.Information, RoleTag.Killer),
-        TeamRoleType.Impostor,
-        TeamType.Impostor,
-        QuoteMod.TheOtherRolesGMH
-        );
-    public static new OptionInfo Optioninfo =
-        new(RoleId.EvilHacker, 200300, false,
-            optionCreator: CreateOption);
-    public static new IntroInfo Introinfo =
-        new(RoleId.EvilHacker, introNum: 2, introSound: RoleTypes.Impostor);
+    public override RoleId Role { get; } = RoleId.EvilHacker;
+    public override Color32 RoleColor { get; } = Palette.ImpostorRed;
+    public override List<Func<AbilityBase>> Abilities { get; } = [() => new EvilHackerAbility(new EvilHackerData(
+        canMoveWhileUsingAdmin: EvilHackerCanMoveWhileUsingAdmin,
+        canUseAdminDuringComms: EvilHackerCanUseAdminDuringComms,
+        hasEnhancedAdmin: EvilHackerHasEnhancedAdmin,
+        canUseAdminInMeeting: EvilHackerCanUseAdminInMeeting,
+        showAdminOnSabotageMap: EvilHackerShowAdminOnSabotageMap,
+        canSeeImpostorsOnAdmin: EvilHackerCanSeeImpostorsOnAdmin,
+        canSeeDeadBodiesOnAdmin: EvilHackerCanSeeDeadBodiesOnAdmin,
+        showDoorInfoOnMap: EvilHackerShowDoorInfoOnMap,
+        canCreateMadmate: EvilHackerCanCreateMadmate,
+        madmateCooldown: EvilHackerCreateMadmateCooldown
+    ))];
 
-    public static CustomOption CanMoveWhenUsesAdmin;
-    public static CustomOption MadmateSetting;
-    public static CustomOption ButtonCooldown;
-    public static CustomOption HasEnhancedAdmin;
-    public static CustomOption CanSeeImpostorPositions;
-    public static CustomOption CanSeeDeadBodyPositions;
-    public static CustomOption CanUseAdminDuringMeeting;
-    public static CustomOption SabotageMapShowsAdmin;
-    public static CustomOption MapShowsDoorState;
-    public static CustomOption CanUseAdminDuringCommsSabotaged;
+    public override QuoteMod QuoteMod { get; } = QuoteMod.TheOtherRolesGMH;
+    public override RoleTypes IntroSoundType { get; } = RoleTypes.Impostor;
+    public override short IntroNum { get; } = 1;
 
-    public CustomButtonInfo[] CustomButtonInfos { get; }
+    public override AssignedTeamType AssignedTeam { get; } = AssignedTeamType.Impostor;
+    public override WinnerTeamType WinnerTeam { get; } = WinnerTeamType.Impostor;
+    public override TeamTag TeamTag { get; } = TeamTag.Impostor;
+    public override RoleTag[] RoleTags { get; } = [RoleTag.Information];
+    public override RoleOptionMenuType OptionTeam { get; } = RoleOptionMenuType.Impostor;
+    public override RoleId[] RelatedRoleIds { get; } = [RoleId.Madmate];
+    // アドミン使用中に移動出来るか
+    [CustomOptionBool("EvilHackerCanMoveWhileUsingAdmin", false)]
+    public static bool EvilHackerCanMoveWhileUsingAdmin;
 
-    private static void CreateOption()
-    {
-        CanMoveWhenUsesAdmin = CustomOption.Create(Optioninfo.OptionId++, false, CustomOptionType.Impostor, "CanMoveWhenUsesAdmin", false, Optioninfo.RoleOption);
-        MadmateSetting = CustomOption.Create(Optioninfo.OptionId++, false, CustomOptionType.Impostor, "CreateMadmateSetting", false, Optioninfo.RoleOption);
-        ButtonCooldown = CustomOption.Create(Optioninfo.OptionId++, false, CustomOptionType.Impostor, "CreateMadmateButtonCooldownSetting", 30f, 0f, 60f, 2.5f, MadmateSetting);
-        HasEnhancedAdmin = CustomOption.Create(Optioninfo.OptionId++, false, CustomOptionType.Impostor, "EvilHackerHasEnhancedAdmin", true, Optioninfo.RoleOption);
-        CanSeeImpostorPositions = CustomOption.Create(Optioninfo.OptionId++, false, CustomOptionType.Impostor, "EvilHackerCanSeeImpostorPositions", true, HasEnhancedAdmin);
-        CanSeeDeadBodyPositions = CustomOption.Create(Optioninfo.OptionId++, false, CustomOptionType.Impostor, "EvilHackerCanSeeDeadBodyPositions", true, HasEnhancedAdmin);
-        CanUseAdminDuringMeeting = CustomOption.Create(Optioninfo.OptionId++, false, CustomOptionType.Impostor, "EvilHackerCanUseAdminDuringMeeting", true, Optioninfo.RoleOption);
-        SabotageMapShowsAdmin = CustomOption.Create(Optioninfo.OptionId++, false, CustomOptionType.Impostor, "EvilHackerSabotageMapShowsAdmin", true, Optioninfo.RoleOption);
-        MapShowsDoorState = CustomOption.Create(Optioninfo.OptionId++, false, CustomOptionType.Impostor, "EvilHackerMapShowsDoorState", true, Optioninfo.RoleOption);
-        CanUseAdminDuringCommsSabotaged = CustomOption.Create(Optioninfo.OptionId++, false, CustomOptionType.Impostor, "EvilHackerCanUseAdminDuringCommsSabotaged", true, Optioninfo.RoleOption);
-    }
-    public bool IsMyAdmin { get; set; }
-    public bool CanCreateMadmate { get; private set; }
-    public void EvilHackerAdminButtonOnClick()
-    {
-        IsMyAdmin = true;
-        FastDestroyableSingleton<HudManager>.Instance.ToggleMapVisible(new MapOptions()
-        {
-            Mode = MapOptions.Modes.CountOverlay,
-            AllowMovementWhileMapOpen = CanMoveWhenUsesAdmin.GetBool()
-        });
-    }
-    public void CreateMadmateButtonOnClick()
-    {
-        var target = EvilHackerMadmateButtonInfo.CurrentTarget;
-        if (target.IsImpostor())
-            return;
-        if (!CanCreateMadmate)
-            return;
-        Madmate.CreateMadmate(target);
-        CanCreateMadmate = false;
-    }
-    public static Sprite GetAdminButtonSprite()
-    {
-        MapNames mapId = (MapNames)GameOptionsManager.Instance.CurrentGameOptions.MapId;
-        UseButtonSettings button = FastDestroyableSingleton<HudManager>.Instance.UseButton.fastUseSettings[ImageNames.PolusAdminButton]; // Polus
-        if (mapId is MapNames.Skeld or MapNames.Dleks) button = FastDestroyableSingleton<HudManager>.Instance.UseButton.fastUseSettings[ImageNames.AdminMapButton]; // Skeld || Dleks
-        else if (mapId is MapNames.MiraHQ) button = FastDestroyableSingleton<HudManager>.Instance.UseButton.fastUseSettings[ImageNames.MIRAAdminButton]; // Mira HQ
-        else if (mapId == MapNames.Airship) button = FastDestroyableSingleton<HudManager>.Instance.UseButton.fastUseSettings[ImageNames.AirshipAdminButton]; // Airship
-        return button.Image;
-    }
-    public CustomButtonInfo EvilHackerButtonInfo { get; }
-    public CustomButtonInfo EvilHackerMadmateButtonInfo { get; }
-    public EvilHacker(PlayerControl p) : base(p, Roleinfo, Optioninfo, Introinfo)
-    {
-        EvilHackerButtonInfo = new(null, this, EvilHackerAdminButtonOnClick,
-            null, CustomButtonCouldType.CanMove, () => IsMyAdmin = false,
-            GetAdminButtonSprite(), null, new(-2f, 1, 0),
-            "ADMINButton", KeyCode.F, 49);
+    // コミュサボ中もアドミンを使用出来るか
+    [CustomOptionBool("EvilHackerCanUseAdminDuringComms", false)]
+    public static bool EvilHackerCanUseAdminDuringComms;
 
-        EvilHackerMadmateButtonInfo = new(null, this, CreateMadmateButtonOnClick,
-        (isAlive) => isAlive && CanCreateMadmate, CustomButtonCouldType.CanMove | CustomButtonCouldType.SetTarget, null,
-        ModHelpers.LoadSpriteFromResources("SuperNewRoles.Resources.CreateMadmateButton.png", 115f),
-        ButtonCooldown.GetFloat, new(-2.925f, -0.06f, 0), "CreateMadmateButton",
-        null, null, CouldUse: () => !Frankenstein.IsMonster(EvilHackerMadmateButtonInfo.CurrentTarget), SetTargetCrewmateOnly: () => true);
+    // 強化版アドミンを持つか
+    [CustomOptionBool("EvilHackerHasEnhancedAdmin", false)]
+    public static bool EvilHackerHasEnhancedAdmin;
 
-        CustomButtonInfos = new CustomButtonInfo[2]
-        {
-            EvilHackerButtonInfo,
-            EvilHackerMadmateButtonInfo,
-        };
-        CanCreateMadmate = MadmateSetting.GetBool();
+    // 会議中にアドミンを使用出来るか (強化版アドミンが必要)
+    [CustomOptionBool("EvilHackerCanUseAdminInMeeting", true, parentFieldName: nameof(EvilHackerHasEnhancedAdmin))]
+    public static bool EvilHackerCanUseAdminInMeeting;
+
+    // サボタージュマップにもアドミンを表示するか (強化版アドミンが必要)
+    [CustomOptionBool("EvilHackerShowAdminOnSabotageMap", true, parentFieldName: nameof(EvilHackerHasEnhancedAdmin))]
+    public static bool EvilHackerShowAdminOnSabotageMap;
+
+    // インポスターの位置がわかるか (強化版アドミンが必要)
+    [CustomOptionBool("EvilHackerCanSeeImpostorsOnAdmin", true, parentFieldName: nameof(EvilHackerHasEnhancedAdmin))]
+    public static bool EvilHackerCanSeeImpostorsOnAdmin;
+
+    // 死体の位置がわかるか (強化版アドミンが必要)
+    [CustomOptionBool("EvilHackerCanSeeDeadBodiesOnAdmin", true, parentFieldName: nameof(EvilHackerHasEnhancedAdmin))]
+    public static bool EvilHackerCanSeeDeadBodiesOnAdmin;
+
+    // マップにドアの開閉情報を表示するか (強化版アドミンが必要)
+    [CustomOptionBool("EvilHackerShowDoorInfoOnMap", true, parentFieldName: nameof(EvilHackerHasEnhancedAdmin))]
+    public static bool EvilHackerShowDoorInfoOnMap;
+
+    // マッドメイトを指名出来るか
+    [CustomOptionBool("EvilHackerCanCreateMadmate", false)]
+    public static bool EvilHackerCanCreateMadmate;
+
+    // 「狂わせる」クールタイム (マッドメイトを作成できる場合のみ)
+    [CustomOptionFloat("EvilHackerMadmateCooldown", 2.5f, 60f, 2.5f, 30f, parentFieldName: nameof(EvilHackerCanCreateMadmate))]
+    public static float EvilHackerCreateMadmateCooldown;
+}
+
+// イビルハッカーの設定データ
+public record EvilHackerData(
+    bool canMoveWhileUsingAdmin,
+    bool canUseAdminDuringComms,
+    bool hasEnhancedAdmin,
+    bool canUseAdminInMeeting,
+    bool showAdminOnSabotageMap,
+    bool canSeeImpostorsOnAdmin,
+    bool canSeeDeadBodiesOnAdmin,
+    bool showDoorInfoOnMap,
+    bool canCreateMadmate,
+    float madmateCooldown
+);
+
+/// <summary>
+/// イビルハッカーの能力クラス
+/// </summary>
+public class EvilHackerAbility : AbilityBase
+{
+    private readonly EvilHackerData Data;
+    private PortableAdminAbility _portableAdminAbility;
+    private AdvancedAdminAbility _advancedAdminAbility;
+    private CustomSidekickButtonAbility _sidekickButtonAbility;
+    public EvilHackerAbility(EvilHackerData hackerData) : base()
+    {
+        Data = hackerData;
     }
 
-    private static SpriteRenderer DoorClosedRendererPrefab;
-    /// <summary>マップ上のドア閉まってるよマークの配列<br/>インデックスで<see cref="ShipStatus.AllDoors"/>と対応する</summary>
-    public SpriteRenderer[] DoorClosedMarks;
-
-    private static SpriteRenderer CreatePrefab()
+    public override void Attach(PlayerControl player, ulong abilityId, AbilityParentBase parent)
     {
-        var prefabObject = new GameObject("SNR_DoorClosed");
-        var renderer = prefabObject.AddComponent<SpriteRenderer>();
-        renderer.sprite = ModHelpers.LoadSpriteFromResources("SuperNewRoles.Resources.DoorClosed.png", 115f);
-        // シーン切替時に破棄されないようにする これで1回生成すればずっと使える
-        Object.DontDestroyOnLoad(prefabObject);
-        prefabObject.SetActive(false);
-        prefabObject.layer = 5;  // UIレイヤ
-        return renderer;
+        base.Attach(player, abilityId, parent);
+
+        _portableAdminAbility = new PortableAdminAbility(new PortableAdminData(
+            CanUseAdmin: () => true,
+            canUseAdminDuringComms: () => Data.canUseAdminDuringComms,
+            canMoveWhileUsingAdmin: () => Data.canMoveWhileUsingAdmin
+        ));
+
+        _advancedAdminAbility = new AdvancedAdminAbility(new AdvancedAdminData(
+            AdvancedAdmin: () => Data.hasEnhancedAdmin,
+            CanUseAdminDuringComms: () => Data.canUseAdminDuringComms,
+            CanUseAdminDuringMeeting: () => Data.canUseAdminInMeeting,
+            SabotageMapShowsAdmin: () => Data.showAdminOnSabotageMap,
+            DistinctionImpostor: () => Data.canSeeImpostorsOnAdmin,
+            DistinctionDead: () => Data.canSeeDeadBodiesOnAdmin,
+            ShowDoorClosedMarks: () => Data.showDoorInfoOnMap
+        ));
+
+        _sidekickButtonAbility = new CustomSidekickButtonAbility(new(
+            canCreateSidekick: (created) => Data.canCreateMadmate && !created,
+            sidekickCooldown: () => Data.madmateCooldown,
+            sidekickRole: () => RoleId.Madmate,
+            sidekickRoleVanilla: () => RoleTypes.Crewmate,
+            sidekickSprite: AssetManager.GetAsset<Sprite>("CreateMadmateButton.png"),
+            sidekickText: ModTranslation.GetString("CreateMadmateButtonText"),
+            sidekickCount: () => 1,
+            isTargetable: (player) => !player.IsImpostor()
+        ));
+
+        ((ExPlayerControl)player).AttachAbility(_portableAdminAbility, new AbilityParentAbility(this));
+        ((ExPlayerControl)player).AttachAbility(_advancedAdminAbility, new AbilityParentAbility(this));
+        ((ExPlayerControl)player).AttachAbility(_sidekickButtonAbility, new AbilityParentAbility(this));
     }
-
-    public void MapAwakePostfix(MapBehaviour __instance)
+    public override void AttachToLocalPlayer()
     {
-        if (!MapShowsDoorState.GetBool()) return;
-        if (!DoorClosedRendererPrefab) DoorClosedRendererPrefab = CreatePrefab();
-        var allDoors = ShipStatus.Instance.AllDoors;
-        var mapScale = ShipStatus.Instance.MapScale;
-        DoorClosedMarks = new SpriteRenderer[allDoors.Length];
-        for (int i = 0; i < allDoors.Length; i++)
-        {
-            var door = allDoors[i];
-            var mark = DoorClosedMarks[i] = Object.Instantiate(DoorClosedRendererPrefab, __instance.taskOverlay.transform.parent);
-            var localPosition = door.transform.position / mapScale;
-            localPosition.z = -3f;
-            mark.transform.localPosition = localPosition;
-            mark.gameObject.SetActive(true);
-            mark.enabled = false;
-        }
-    }
-
-    public void MapShowPrefix(MapBehaviour __instance, MapOptions opts, ref bool __state)
-    {
-        if (!CanUseAdminDuringMeeting.GetBool() || !MeetingHud.Instance || opts.Mode != MapOptions.Modes.Normal) return;
-        IsMyAdmin = true;
-        opts.Mode = MapOptions.Modes.CountOverlay;
-        __state = true;
-    }
-
-    public void MapShowPostfix(MapBehaviour __instance, MapOptions opts)
-    {
-        if (!SabotageMapShowsAdmin.GetBool() || MeetingHud.Instance || opts.Mode != MapOptions.Modes.Sabotage) return;
-        IsMyAdmin = true;
-        __instance.countOverlay.gameObject.SetActive(true);
-        __instance.countOverlay.SetOptions(true, true);
-        __instance.countOverlayAllowsMovement = true;
-        __instance.taskOverlay.Hide();
-        __instance.HerePoint.enabled = true;
-        PlayerControl.LocalPlayer.SetPlayerMaterialColors(__instance.HerePoint);
-        __instance.ColorControl.SetColor(new(0f, 0.73f, 1f));
-        // アドミンがサボタージュとドア閉めのボタンに隠れないようにする
-        // ボタンより手前
-        __instance.countOverlay.transform.SetLocalZ(-3f);
-    }
-
-    public void MapFixedUpdatePostfix(MapBehaviour __instance)
-    {
-        if (!MapShowsDoorState.GetBool()) return;
-        var allDoors = ShipStatus.Instance.AllDoors;
-        for (int i = 0; i < allDoors.Length; i++)
-        {
-            var door = allDoors[i];
-            var mark = DoorClosedMarks[i];
-            if (door == null || mark == null)
-            {
-                continue;
-            }
-            mark.enabled = !door.IsOpen;
-        }
-    }
-
-    public void IsMapOpenStoppedPostfix(MapBehaviour __instance, ref bool __result)
-    {
-        // イビルハッカーがアドミン中も動けるように
-        if (__result && CanMoveWhenUsesAdmin.GetBool())
-            __result = false;
     }
 }

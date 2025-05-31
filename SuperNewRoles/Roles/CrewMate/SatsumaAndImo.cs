@@ -1,49 +1,32 @@
+using System;
+using System.Collections.Generic;
+using UnityEngine;
 using AmongUs.GameOptions;
-using SuperNewRoles.Roles.Role;
-using SuperNewRoles.Roles.RoleBases;
-using SuperNewRoles.Roles.RoleBases.Interfaces;
+using SuperNewRoles.CustomOptions;
+using SuperNewRoles.Modules;
+using SuperNewRoles.Roles.Ability;
 
-namespace SuperNewRoles.Roles.Crewmate;
+namespace SuperNewRoles.Roles.CrewMate;
 
-public class SatsumaAndImo : RoleBase, INeutral, IWrapUpHandler, ISupportSHR
+class SatsumaAndImo : RoleBase<SatsumaAndImo>
 {
-    public enum SatsumaTeam
-    {
-        Crewmate,
-        Madmate
-    }
-    public static new RoleInfo Roleinfo = new(
-        typeof(SatsumaAndImo),
-        (p) => new SatsumaAndImo(p),
-        RoleId.SatsumaAndImo,
-        "SatsumaAndImo",
-        new(153, 0, 68, byte.MaxValue),
-        new(RoleId.SatsumaAndImo, TeamTag.Crewmate),
-        TeamRoleType.Crewmate,
-        TeamType.Neutral
-        );
-    public RoleTypes RealRole => RoleTypes.Crewmate;
-    public static new OptionInfo Optioninfo =
-        new(RoleId.SatsumaAndImo, 401900, true);
-    public static new IntroInfo Introinfo =
-        new(RoleId.SatsumaAndImo, introSound: RoleTypes.Crewmate);
-    public SatsumaTeam TeamState;
-    public SatsumaAndImo(PlayerControl p) : base(p, Roleinfo, Optioninfo, Introinfo)
-    {
-        TeamState = SatsumaTeam.Crewmate;
-    }
-    public void OnWrapUp()
-    {
-        TeamState = TeamState == SatsumaTeam.Crewmate ? SatsumaTeam.Madmate : SatsumaTeam.Crewmate;
-    }
-    public string GetSuffixText()
-    {
-        return TeamState switch
-        {
-            _ => " (?)"
-        };
-    }
-    private static string TEAMNAME_Hatena = " (?)";
-    private static string TEAMNAME_Crewmate = " (C)";
-    private static string TEAMNAME_Madmate = " (M)";
+    private enum SatsumaTeam { Crewmate, Madmate }
+    private SatsumaTeam _teamState;
+
+    public override RoleId Role => RoleId.SatsumaAndImo;
+    public override Color32 RoleColor => new(153, 0, 68, byte.MaxValue);
+    public override List<Func<AbilityBase>> Abilities => new() {
+        () => new SatsumaAndImoAbility(),
+        () => new CustomTaskAbility(() => (false, null, 0))
+    };
+
+    public override QuoteMod QuoteMod => QuoteMod.SuperNewRoles;
+    public override RoleTypes IntroSoundType => RoleTypes.Crewmate;
+    public override short IntroNum => 1;
+
+    public override AssignedTeamType AssignedTeam => AssignedTeamType.Crewmate;
+    public override WinnerTeamType WinnerTeam => WinnerTeamType.Crewmate;
+    public override TeamTag TeamTag => TeamTag.Crewmate;
+    public override RoleTag[] RoleTags => Array.Empty<RoleTag>();
+    public override RoleOptionMenuType OptionTeam => RoleOptionMenuType.Crewmate;
 }

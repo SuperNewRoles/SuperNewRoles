@@ -1,69 +1,66 @@
-using Hazel;
+using SuperNewRoles.Events;
+using SuperNewRoles.Events.PCEvents;
 
 namespace SuperNewRoles.Modules;
 
-public static class FinalStatusClass
-{
-    public static void RpcSetFinalStatus(this PlayerControl player, FinalStatus status)
-    {
-        MessageWriter writer = Helpers.RPCHelper.StartRPC(CustomRPC.SetFinalStatus);
-        writer.Write(player.PlayerId);
-        writer.Write((byte)status);
-        Helpers.RPCHelper.EndRPC(writer);
-        RPCProcedure.SetFinalStatus(player.PlayerId, status);
-    }
-}
 public enum FinalStatus
 {
+    None,
     Alive,
     Kill,
+    Disconnect,
+    Revange,
     Exiled,
-    Disconnected,
-    Dead,
-    Sabotage,
-
-    SheriffKill,
-    SheriffMisFire,
-    HauntedSheriffKill,
-    HauntedSheriffMisFire,
-    SheriffHauntedWolfKill,
-    SheriffInvolvedOutburst,
-    SheriffSuicide,
-    HauntedSheriffSuicide,
-    NekomataExiled,
-    Ignite,
-    SluggerHarisen,
-    LoversBomb,
-    KunaiKill,
-    SamuraiKill,
-    ChiefMisSet,
-    FalseChargesFalseCharge,
-    SelfBomberBomb,
-    BySelfBomberBomb,
-    LadderDeath,
-    NunDeath,
-    SpelunkerCommsElecDeath,
-    SpelunkerSetRoleDeath,
-    SpelunkerVentDeath,
-    SpelunkerOpenDoor,
-    TunaSelfDeath,
-    BestFalseChargesFalseCharge,
-    SerialKillerSelfDeath,
-    VampireKill,
-    DependentsExiled,
-    OverKillerOverKill,
-    SuicideWisherSelfDeath,
-    MadmakerMisSet,
-    Revenge,//猫カボチャの道連れ
-    HitmanKill,
-    HitmanDead,
-    WorshiperSelfDeath,
-    TheThirdLittlePigCounterKill,
     GuesserKill,
     GuesserMisFire,
-    LoversBreakerKill,
-    MadJesterExiled,
-    SantaSelf,
-    Evaporation,
-    Sacrifice
+    Sabotage,
+    WaveCannon,
+    FalseCharge,
+    Suicide,
+    Samurai,
+    BombBySelfBomb,
+    SelfBomb,
+    Tuna,
+    Push,
+    Ignite,
+    FalseCharges,
+    SheriffSelfDeath,
+    SheriffKill,
+    LoversSuicide,
+    LaunchByRocket,
+    VampireKill,
+    VampireWithDead,
+    SpelunkerSetRoleDeath,
+    SpelunkerVentDeath,
+    SpelunkerCommsElecDeath,
+    SpelunkerOpenDoor,
+    NunDeath,
+    LadderDeath,
+}
+
+public static class FinalStatusListener
+{
+    public static void LoadListener()
+    {
+        WrapUpEvent.Instance.AddListener(x => SetFinalStatus(x.exiled, FinalStatus.Exiled));
+        MurderEvent.Instance.AddListener(x => SetFinalStatus(x.target, FinalStatus.Kill));
+        DisconnectEvent.Instance.AddListener(x => SetFinalStatus(x.disconnectedPlayer, FinalStatus.Disconnect));
+    }
+    private static void SetFinalStatus(ExPlayerControl exPlayer, FinalStatus finalStatus)
+    {
+        if (exPlayer == null) return;
+        exPlayer.FinalStatus = finalStatus;
+    }
+}
+public static class FinalStatusManager
+{
+    [CustomRPC]
+    public static void RpcSetFinalStatus(ExPlayerControl exPlayer, FinalStatus finalStatus)
+    {
+        SetFinalStatus(exPlayer, finalStatus);
+    }
+    public static void SetFinalStatus(ExPlayerControl exPlayer, FinalStatus finalStatus)
+    {
+        exPlayer.FinalStatus = finalStatus;
+    }
 }
