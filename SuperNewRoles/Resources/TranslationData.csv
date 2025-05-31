@@ -125,7 +125,7 @@ SumouMode,相撲モード(ベータ),Sumo Mode (Beta),相扑模式(测试版),�
 WaitingSpawnText,ロドー中... 残り:{0}/{1}クルー,Waiting... {0}/{1} Crewmates,等待中... {0}/{1} 船员,等待中... {0}/{1} 船員
 
 # GameSettings
-CannotTaskTrigger,タスクに関係ない役職の場合、タスクをできなくする,If the role is not related to the task, the task cannot be done,如果角色与任务无关，则无法完成任务,如果角色與任務無關，則無法完成任務
+CannotTaskTrigger,タスクに関係ない役職の場合、タスクをできなくする,If the role is not related to the task，the task cannot be done,如果角色与任务无关，则无法完成任务,如果角色與任務無關，則無法完成任務
 SyncSpawn,スポーンを同期する(選択スポーンのみ),Sync Spawn (Selected Spawn Only),同步出生点(仅选择出生点),同步出生點(僅選擇出生點)
 AdvancedRandom,よりランダムな乱数を使用する,Use a more random random number,使用更随机的随机数,使用更隨機的隨機數
 DisableTaskWin,タスク勝利を無効にする,Can't task win
@@ -169,7 +169,7 @@ VersionUpdateReleaseNoteLoadingError,リリースノートの読み込みに失�
 VersionUpdateReleaseNoteNotFound,リリースノートが見つかりませんでした。,Release note not found.
 
 # RequestInGame
-RequestInGameButtonText,バグ報告、要望、質問、感謝メールなどはこちらから,Bug reports, requests, questions, and thank you messages can be sent here
+RequestInGameButtonText,バグ報告、要望、質問、感謝メールなどはこちらから,Bug reports，requests，questions，and thank you messages can be sent here
 RequestInGameDiscordText,Discordはこちら,Discord is this,Discord 是這裡,Discord 是這裡
 RequestInGameMailBox,受信箱,Mailbox,收件箱,收件箱
 RequestInGameUpperText,お問い合わせフォーム,Contact Form,联系表单,聯絡表單
@@ -401,37 +401,246 @@ EvilHawk,イビルホーク,Evil Hawk
 ModifierHawk,モディファイアホーク,Modifier Hawk
 Bullet,弾,Bullet
 
-# Descriptions
-BestFalseCharge.Description,特に能力を有さないクルーメイトです。\n死亡するまでこの役職だと自覚出来ません。\n最初の会議が終了すると、そのまま死亡します。,The ultimate red herring! A Crewmate with no abilities who lives in blissful ignorance.\nThey won't realize they have this role until they're dead—talk about a rude awakening!\nAfter the first meeting ends, they die faster than someone saying "I saw Blue vent!",这是一个没有特殊能力的船员。\n在死亡之前他们不会意识到自己拥有这个角色。\n第一场会议结束后，他们会直接死亡。,這是一個沒有特殊能力的船員。\n在死亡之前他們不會察覺自己擁有這個角色。\n第一場會議結束後，他們會直接死亡。
-Sheriff.Description,キル能力を有するクルーメイトです。\n「執行」ボタンを押すと、対象のプレイヤーに対してキル能力を行使します。\nその際、対象のプレイヤーがキル可能な陣営でなかった場合、自身が死亡してしまいます。\n基本的には、ライン精査等、白黒つけたいときに能力を使用すると良いでしょう。,A Crewmate with the ability to kill.\nBy pressing the "Execute" button, they can use their kill ability on a target player.\nHowever, if the target is not in a killable faction, they die.\nGenerally, this ability is best used when a clear decision is needed.,这是一个拥有击杀能力的船员。\n按下"执行"按钮后，可以对目标玩家施展击杀能力。\n但如果目标玩家不属于可被击杀的阵营，则自己会死亡。\n基本上，此能力适用于需要明确判定时使用，例如在排查时.,這是一個具備擊殺能力的船員。\n按下「執行」按鈕後，可以對目標玩家施展擊殺能力。\n若目標玩家不屬於可被擊殺的陣營，則使用者將會死亡。\n基本上，此能力適用於需要做出明確判斷時，例如進行排查時使用。
-Guesser.Description,会議に関する能力を有するクルーメイトです。\n会議中に出現するボタンを押し、対象のプレイヤーの役職が何か当てると、そのプレイヤーをキルすることが出来ます。\nただし、外すと自身が死亡してしまいます。,A Crewmate with a meeting‐based ability.\nDuring meetings, they can press a button to guess a target player's role; if correct, that player is killed.\nHowever, an incorrect guess results in their own death.,这是一个拥有会议相关能力的船员。\n在会议中，通过点击出现的按钮，若猜中目标玩家的角色，则能够将其击杀。\n但如果猜错，则自己会死亡。,這是一個具備會議相關能力的船員。\n在會議中，按下出現的按鈕後，若能猜中目標玩家的角色，便能將其擊殺。\n然而，若猜錯，則自己將會死亡。
-EvilGuesser.Description,会議に関する能力を有するインポスターです。\n会議中に出現するボタンを押し、対象のプレイヤーの役職が何か当てると、そのプレイヤーをキルすることが出来ます。\nただし、外すと自身が死亡してしまいます。,An Impostor with a meeting‐based ability.\nDuring meetings, by pressing the appearing button and correctly guessing a target player's role, they can kill that player.\nHowever, an incorrect guess results in their own death.,这是一个拥有会议相关能力的内鬼。\n在会议中，点击出现的按钮后，如果猜中目标玩家的角色，就可以将其击杀。\n但如果猜错，自己会死亡。,這是一個具備會議相關能力的內鬼。\n在會議中，按下出現的按鈕後，若能正確猜出目標玩家的角色，便可將其擊殺。\n不過，若猜錯，則自己將會死亡。
-Madmate.Description,インポスターの味方のクルーメイトです。\nいわゆる狂人と呼ばれる役職です。\n勝利条件はクルーメイトの勝利ではなく、インポスターの勝利です。\nその勝利に自身の生死は問われないので、あの手この手でインポスターを勝利に導きましょう。,A Crewmate allied with the Impostors.\nOften known as the Madmate.\nTheir win condition is not for the Crewmates to win, but for the Impostors to win.\nTheir own survival is irrelevant, so use any means necessary to secure an Impostor victory.,这是一个支持内鬼的船员，也称为疯友角色。\n他们的胜利条件不是船员获胜，而是内鬼获胜，并且他们的生死并不影响胜利。\n所以，尽可能地采用各种手段促成内鬼获胜。,這是一個支持內鬼的船員，俗稱瘋友角色。\n其勝利條件並非船員勝利，而是內鬼勝利，且自身生死不影響結果。\n因此，請用一切手段助內鬼取勝。
-BlackCat.Description,インポスターの味方のクルーメイトです。\nいわゆる狂人と呼ばれる役職です。\n勝利条件はクルーメイトの勝利ではなく、インポスターの勝利です。\nその勝利に自身の生死は問われないので、あの手この手でインポスターを勝利に導きましょう。\nこの役職は、自身が追放された際、誰か一人を道連れにする能力を有します。,A Crewmate allied with the Impostors.\nKnown as the Black Cat—a type of madmate.\nTheir win condition is not a Crewmate victory but an Impostor victory.\nTheir own survival is irrelevant, so use any means necessary to ensure an Impostor win.\nAdditionally, when this role is ejected, it has the ability to take one other player with it.,这是一个支持内鬼的船员，也就是所谓的黑猫角色，一种狂人角色。\n他们的胜利条件不是船员获胜，而是内鬼获胜，而且他们的生死无关紧要。\n请用各种方法促使内鬼获胜。\n该角色在被逐出时，有能力带走一名玩家。,這是一個支持內鬼的船員，亦稱黑貓，屬於瘋友角色之一。\n其勝利條件並非船員勝利，而是內鬼勝利，且自身生死無關緊要。\n請採用各種手段助內鬼取勝。\n此角色在被逐出時，具備帶走一名玩家的能力。
-Jackal.Description,キル能力を有する第三陣営です。\n自陣営以外のキルが出来る陣営が全滅した上で、自陣営とクルーが同数以下になれば勝利します。\n設定次第で他のプレイヤーの役職を、自身の後継となるサイドキックや、手助けをしてくれるジャッカルフレンズに変更する能力を有することも出来ます。,A third‐faction role with a kill ability.\nIt wins if all factions capable of killing outside its own are eliminated and its faction and the Crewmates are equal in number or fewer.\nDepending on the settings, it can change other players' roles into a Sidekick (its successor) or Jackal Friends who assist it.,这是一个拥有击杀能力的第三阵营角色。\n当所有能够进行击杀的其他阵营被消灭，并且其阵营与船员人数相等或更少时，即可获胜。\n根据设定，它还可以将其他玩家的角色变更为边缘队员（其继任者）或协助的杰克朋友。,這是一個具備擊殺能力的第三陣營角色。\n當其他能進行擊殺的陣營全部被消滅，且其陣營與船員數量相等或更少時，即獲勝。\n根據設定，還可將其他玩家的角色變更為接班的邊翼或提供協助的傑克朋友。
-Sidekick.Description,ジャッカル陣営に属する第三陣営です。\n自陣営以外のキルが出来る陣営が全滅した上で、自陣営とクルーが同数以下になれば勝利します。\n自身をサイドキックに変化させたジャッカルが死亡すると、自身がジャッカルへと昇格し、キル能力を有するようになります。,A third‐faction role belonging to the Jackal faction.\nIt wins when all factions capable of killing outside its own are eliminated and its faction and the Crewmates are equal in number or fewer.\nIf the Jackal who transformed you into a Sidekick dies, you are promoted to Jackal and gain a kill ability.,这是属于杰克阵营的第三阵营角色。\n当所有能够进行击杀的其他阵营被消灭，并且其阵营与船员人数相等或较少时，即可获胜。\n如果使你变为边缘队员的杰克死亡，你将晋升为杰克，并获得击杀能力。,這是一個隸屬於傑克陣營的第三陣營角色。\n當其他能進行擊殺的陣營全部被消滅，且其陣營與船員數量相等或更少時，即獲勝。\n若使你轉為邊翼的傑克死亡，你將晉升為杰克，並獲得擊殺能力。
-SelfBomber.Description,特殊なキル能力を有するインポスターです。\n「自爆」ボタンを押すと、自身が死亡する代わりに、近くにいるクルーメイトを全てキルすることが出来ます。,An Impostor with a unique kill ability.\nBy pressing the "Self‐Destruct" button, they sacrifice themselves to kill all nearby Crewmates.,这是一个拥有特殊击杀能力的内鬼。\n按下"自爆"按钮后，会以牺牲自身为代价，击杀所有附近的船员。,這是一個具備特殊擊殺能力的內鬼。\n按下「自爆」按鈕後，自己將犧牲，卻可擊殺所有附近的船員。
+# Descriptions_VanillaRoles
+Crewmate.Description,特に何も能力を持たない基本的なクルーメイト役職です。\n人狼ゲームにおける村人の役割を持ちます。\nキル能力を持つ人外を全て追放するか、タスクを全て完了すると勝利します。,
+Impostor.Description,基本的なインポスター役職です。\n人狼ゲームにおける人狼の役割を持ちます。\nキル能力を有しており、インポスター以外のプレイヤーをキルすることが出来ます。\nサボタージュでクルーメイトを妨害したり、ベントを使って長距離を一瞬で移動出来ます。\nインポスターとクルーメイトが同数以下になるか、致命的なサボタージュの時間切れで勝利します。,
+
+# Descriptions_Impostor
+EvilGuesser.Description,会議に関する能力を有するインポスターです。\n会議中に出現するボタンを押し、対象のプレイヤーの役職が何か当てると、そのプレイヤーをキルすることが出来ます。\nただし、外すと自身が死亡してしまいます。,An Impostor with a meeting‐based ability.\nDuring meetings，by pressing the appearing button and correctly guessing a target player's role，they can kill that player.\nHowever，an incorrect guess results in their own death.,这是一个拥有会议相关能力的内鬼。\n在会议中，点击出现的按钮后，如果猜中目标玩家的角色，就可以将其击杀。\n但如果猜错，自己会死亡。,這是一個具備會議相關能力的內鬼。\n在會議中，按下出現的按鈕後，若能正確猜出目標玩家的角色，便可將其擊殺。\n不過，若猜錯，則自己將會死亡。
 Samurai.Description,特殊なキル能力を有するインポスターです。\n1ゲームに一度だけ使用出来る「必殺技」ボタンを押すと、近くにいるクルーメイトを全てキルすることが出来ます。,An Impostor with a unique kill ability.\nThey can use the "Finishing Move" button once per game to kill all nearby Crewmates.,这是一个拥有特殊击杀能力的内鬼。\n每局游戏只能使用一次"必杀技"按钮，能够击杀所有附近的船员。,這是一個具備特殊擊殺能力的內鬼。\n每局遊戲僅能使用一次「必殺技」按鈕，可擊殺所有附近的船員。
-WaveCannon.Description,特殊なキル能力を有するインポスターです。\n「波動砲」ボタンを押すことで、その時点で向いている方向に向かって、障害物を無視して一直線に飛んでいくビームを撃つことが出来ます。\nビームにあたったプレイヤーは陣営関係なく死亡します。,An Impostor with a special kill ability.\nBy pressing the "Wave Cannon" button, they fire a beam in the direction they are facing that ignores obstacles and travels straight.\nAny player hit by the beam dies regardless of faction.,这是一个拥有特殊击杀能力的内鬼。\n按下"波动炮"按钮后，会向其面向的方向发射一束直线光束，能够无视障碍物。\n被光束击中的玩家，无论所属阵营，都会死亡。,這是一個具有特殊擊殺能力的內鬼。\n按下「波動砲」按鈕後，會向當前所面向的方向發射無視障礙的直線光束。\n任何被光束擊中的玩家，無論所屬陣營，皆會死亡。
-WaveCannonJackal.Description,キル能力を有する第三陣営です。\n自陣営以外のキルが出来る陣営が全滅した上で、自陣営とクルーが同数以下になれば勝利します。\n「波動砲」ボタンを押すことで、その時点で向いている方向に向かって、障害物を無視して一直線に飛んでいくビームを撃つことが出来ます。\nビームにあたったプレイヤーは陣営関係なく死亡します。\n\n設定によって様々なタイプのサイドキックを作成することが出来ます。,A third‐faction role with a kill ability.\nIt wins if all factions capable of killing outside its own are eliminated and its faction and the Crewmates are equal in number or fewer.\nBy pressing the "Wave Cannon" button, it fires a beam in the direction it is facing that ignores obstacles and travels straight, killing any player it hits regardless of faction.\n\nAdditionally, various types of Sidekicks can be created based on the settings.,这是一个拥有击杀能力的第三阵营角色。\n当所有能进行击杀的其他阵营被消灭，并且其阵营与船员人数相等或更少时，即可获胜。\n按下"波动炮"按钮后，会向当前面向的方向发射一束无视障碍的直线光束，击中的玩家无论阵营都会死亡。\n此外，根据设定，还可以创建多种类型的边缘队员。,這是一個具備擊殺能力的第三陣營角色。\n當其他能進行擊殺的陣營全部被消滅，且其陣營與船員數量相等或更少時，即獲勝。\n按下「波動砲」按鈕後，會向當前所面向的方向發射無視障礙的直線光束，被擊中的玩家不論陣營皆會死亡。\n此外，依據設定，還可創建各種類型的邊翼。
-WaveCannonSidekick.Description,ジャッカル陣営に属する第三陣営です。\n自陣営以外のキルが出来る陣営が全滅した上で、自陣営とクルーが同数以下になれば勝利します。\n自身をサイドキックに変化させた波動砲ジャッカルが死亡すると、自身が波動砲ジャッカルへと昇格し、キル能力を有するようになります。,A third‐faction role belonging to the Jackal faction.\nIt wins when all factions capable of killing outside its own are eliminated and its faction and the Crewmates are equal in number or fewer.\nIf the Wave Cannon Jackal who transformed you into a Sidekick dies, you are promoted to Wave Cannon Jackal, gaining a kill ability.,这是属于杰克阵营的第三阵营角色。\n当所有能够进行击杀的其他阵营被消灭，并且其阵营与船员人数相等或较少时，即可获胜。\n如果将你变为边缘队员的波动炮杰克死亡，你将晋升为波动炮杰克，并获得击杀能力。,這是一個隸屬於傑克陣營的第三陣營角色。\n當其他能進行擊殺的陣營全部被消滅，且其陣營與船員數量相等或更少時，即獲勝。\n若令你變為邊翼的波動砲傑克死亡，你將晉升為波動砲傑克，並獲得擊殺能力。
-Tuna.Description,キル能力を有さない第三陣営です。\n一定秒数立ち止まるとその場で死亡してしまいます。\nゲーム終了まで生存していると、一部役職の特殊勝利を除き、勝利することが出来ます。,A third‐faction role without a kill ability.\nIf they remain stationary for a set number of seconds, they die instantly.\nIf they survive until the end of the game, they win—except for roles with special win conditions.,这是一个没有击杀能力的第三阵营角色。\n如果原地不动达到一定秒数，将会立即死亡。\n只要存活到游戏结束（除了一些具有特殊胜利条件的角色），便可获胜。,這是一個沒有擊殺能力的第三陣營角色。\n若持續原地不動達到一定秒數，將會立即死亡。\n只要存活到遊戲結束，除去部分特殊勝利條件的角色，即可獲勝。
-Teruteru.Description,キル能力を有さない独自の勝利条件を持つ第三陣営です。\n会議にて追放されると、その時点で単独勝利します。,A third‐faction role without a kill ability that has its own win condition.\nIf ejected during a meeting, it wins immediately on its own.,这是一个没有击杀能力、拥有独特胜利条件的第三阵营角色。\n在会议中被逐出时，即可立即单独获胜。,這是一個沒有擊殺能力且具備獨特勝利條件的第三陣營角色。\n在會議中被逐出時，即可立即單獨獲勝。
-Opportunist.Description,キル能力を有さない第三陣営です。\nゲーム終了まで生存していると、一部役職の特殊勝利を除き、共に勝利することが出来ます。,A third‐faction role without a kill ability.\nIf they survive until the end of the game, they win alongside others—except for certain roles with special win conditions.,这是一个没有击杀能力的第三阵营角色。\n只要存活到游戏结束（除了一些具特殊胜利条件的角色），他们就能与其他人一起获胜。,這是一個沒有擊殺能力的第三陣營角色。\n只要存活到遊戲結束，除去部分特殊勝利條件的角色，即可與他人一同獲勝。
-Chief.Description,タスクターンに使用出来る能力を有するクルーメイトです。\n「任命」ボタンを押すと、対象のプレイヤーの役職をシェリフに変更します。\nただし、対象のプレイヤーがインポスターだった場合、自殺してしまいます。,A Crewmate with an ability that can be used during task turns.\nBy pressing the "Appoint" button, they change a target player's role to Sheriff.\nHowever, if the target player is an Impostor, they commit suicide.,这是一个在任务回合中能使用能力的船员。\n按下"任命"按钮后，会将目标玩家的角色更改为警长。\n但如果目标玩家是内鬼，则会自杀。,這是一個在任務回合中能夠使用能力的船員。\n按下「任命」按鈕後，會將目標玩家的角色變更為警長。\n不過，若目標玩家為內鬼，則會自動自殺。
+SelfBomber.Description,特殊なキル能力を有するインポスターです。\n「自爆」ボタンを押すと、自身が死亡する代わりに、近くにいるクルーメイトを全てキルすることが出来ます。,An Impostor with a unique kill ability.\nBy pressing the "Self‐Destruct" button，they sacrifice themselves to kill all nearby Crewmates.,这是一个拥有特殊击杀能力的内鬼。\n按下"自爆"按钮后，会以牺牲自身为代价，击杀所有附近的船员。,這是一個具備特殊擊殺能力的內鬼。\n按下「自爆」按鈕後，自己將犧牲，卻可擊殺所有附近的船員。
+WaveCannon.Description,特殊なキル能力を有するインポスターです。\n「波動砲」ボタンを押すことで、その時点で向いている方向に向かって、障害物を無視して一直線に飛んでいくビームを撃つことが出来ます。\nビームにあたったプレイヤーは陣営関係なく死亡します。,An Impostor with a special kill ability.\nBy pressing the "Wave Cannon" button，they fire a beam in the direction they are facing that ignores obstacles and travels straight.\nAny player hit by the beam dies regardless of faction.,这是一个拥有特殊击杀能力的内鬼。\n按下"波动炮"按钮后，会向其面向的方向发射一束直线光束，能够无视障碍物。\n被光束击中的玩家，无论所属阵营，都会死亡。,這是一個具有特殊擊殺能力的內鬼。\n按下「波動砲」按鈕後，會向當前所面向的方向發射無視障礙的直線光束。\n任何被光束擊中的玩家，無論所屬陣營，皆會死亡。
+SerialKiller.Description,キルに関係する能力を有するインポスターです。\nキルクールが短い代わりに、一定時間キルをしないと自殺してしまいます。,An Impostor with kill‐related abilities.\nWhile their kill cooldown is short，if they don't kill within a certain time，they will commit suicide.,这是一个拥有击杀相关能力的内鬼。\n虽然击杀冷却时间很短，但如果在一定时间内没有击杀，将会自杀。,這是一個具備擊殺相關能力的內鬼。\n雖然其擊殺冷卻時間短，但若在一定時間內未能擊殺，則會自動自殺。
+SideKiller.Description,自陣営を増やす能力を有するインポスターです。\n「侵食する」ボタンを押すと、対象のプレイヤーの役職をマッドキラーに変更します。,An Impostor with the ability to expand its faction.\nBy pressing the "Infiltrate" button，it changes a target player's role to Mad Killer.,这是一个具有增加自身阵营人数能力的内鬼。\n按下"侵蚀"按钮后，会将目标玩家的角色更改为疯狂杀手。,這是一個具備擴充自身陣營能力的內鬼。\n按下「侵蝕」按鈕後，將會把目標玩家的角色變更為瘋狂殺手。
+MadKiller.Description,インポスター陣営に属する役職です。\n自身をマッドキラーに変化させたサイドキラーが死亡すると、インポスターへ昇格し、キル能力を有するようになります。\n昇格前はマッドメイト同様クルーメイト判定です。,A role within the Impostor faction.\nWhen the Sidekiller who transformed you into a Mad Killer dies，you are promoted to an Impostor and gain a kill ability.\nPrior to promotion，you are considered a Crewmate，similar to a Madmate.,这是一个隶属于内鬼阵营的角色。\n当将你变为疯狂杀手的边缘杀手死亡时，你将晋升为内鬼，并获得击杀能力。\n晋升前，你和疯友一样被视为船员。,這是一個隸屬於內鬼陣營的角色。\n當使你變成瘋狂殺手的邊緣殺手死亡時，你將晉升為內鬼，並獲得擊殺能力。\n晉升前，你將與瘋友同視為船員。
+EvilGambler.Description,キルに関係する能力を有するインポスターです。\nキルをした際、次のキルクールが確率で変動します。\nターンの最初のキルクールは、ゲーム全体のインポスターのキルクールタイムに準じます。,An Impostor with kill‐related abilities.\nAfter making a kill，the cooldown for the next kill changes probabilistically.\nThe initial kill cooldown of a turn follows the overall Impostor kill cooldown time in the game.,这是一个拥有与击杀相关能力的内鬼。\n在击杀后，下一次击杀的冷却时间会根据概率变化。\n一回合开始时的击杀冷却时间遵循整个游戏中内鬼的击杀冷却设置。,這是一個具備擊殺相關能力的內鬼。\n成功擊殺後，其下一次擊殺的冷卻時間會依機率變動。\n回合初的擊殺冷卻時間則依照整體遊戲中內鬼的設定。
+Penguin.Description,特殊なキル能力を有するインポスターです。\n「拉致」ボタンを押すと、対象のプレイヤーを掴んで運べるようになります。\nキルボタンを押すか、設定秒数経過で対象をキルします。,
+Pusher.Description,特殊なキル能力を有するインポスターです。\n「突き落とす」ボタンを押すと、マップ内の特定の場所でのみ、対象のプレイヤーを突き落としてキルが出来ます。\nはしごで突き落とした場合は、はしごの下に死体が発生します。\nそれ以外で突き落とした場合は、死体は発生しません。,
+EvilHacker.Description,タスクターンに使用出来る能力を有するインポスターです。\n「アドミン」ボタンを押すことで、いつでもどこでもアドミンを見ることが出来ます。\nこの役職のアドミンは、情報機器を制限する設定の影響を受けません。\nまた、設定次第では「狂わせる」ボタンを押すことで、対象のプレイヤーの役職をマッドメイトに変更することが出来ます。,
+SuicideWisher.Description,タスクターンに使用出来る能力を有するインポスターです。\n「自殺」ボタンを押すと、自殺することが出来ます。,
+NekoKabocha.Description,キル及び会議に関係する能力を有するインポスターです。\nキルされると、キルをしてきたプレイヤーを巻き添えにします。\nまた、追放されると、生存者のうち誰か一人を道連れにします。\nこのとき、インポスターを道連れすることがあります。,
+EvilNekomata.Description,会議に関する能力を有するインポスターです。\n追放されるとランダムで生存者を一人道連れにします。\nまた、道連れにしたプレイヤーが道連れ能力を所持している場合、道連れが連鎖します。,
+Matryoshka.Description,タスクターンに使用出来る能力を有するインポスターです。\n「着る」ボタンを押すと、対象の死体を着てそのプレイヤーの姿に変わります。\n一定時間が経過するか、「脱ぐ」ボタンを押すと、着ていた死体をその場に脱ぎ捨てます。,
+Conjurer.Description,特殊なキル能力を有するインポスターです。\nマーカーを三箇所に設置した状態で「圧縮」ボタンを押すと、マーカーを結んで出来る三角形の範囲内にいるプレイヤーを全てキルします。\nこの役職は通常キルは出来ません。,
+Doppelganger.Description,キルに関係する能力を有するインポスターです。\n他プレイヤーの姿に変身することが出来ます。\n変身元のプレイヤーをキルすると、キルクールが短くなります。\n変身せずにキルをしたり、変身元以外のプレイヤーをキルするとキルクールが長くなります。,
+EvilButtoner.Description,タスクターンに使用出来る能力を有するインポスターです。\n「ポチッ」ボタンを押すことでサボタージュ中以外ならいつでもどこでも緊急会議を開始出来ます。,
+Necromancer.Description,自陣営を増やす能力を有するインポスターです。幽霊を見ることが出来、幽霊に「呪縛」ボタンを押すと、対象のプレイヤーの役職をレヴェナントに変更します。,An impostor who has the ability to increase their own camp. They can see ghosts\，and pressing the "Curse" button on a ghost changes the target player's role to Revenant.,,
+Revenant.Description,インポスター陣営に属する幽霊役職です。タスクターンに使用出来る能力を有します。「呪う」ボタンを押すと対象に取り憑き、視界を奪います。,A ghost role belonging to the Impostor team. Has an ability that can be used during the task turn. Pressing the "Haunt" button possesses the target and steals their vision.,,
+Teleporter.Description,タスクターンに使用出来る能力を有するインポスターです。\n「テレポート！」ボタンを押すことで自分を含む生存者の誰かのところへ生存者全員をテレポートさせます。,
+Pursuer.Description,タスクターンに発動する能力を有するインポスターです。\nインポスター以外の自分から最も近い位置にいる生存者に向かって矢印が出ます。,
+Crab.Description,タスクターンに使用出来る能力を有するインポスターです。\n「カニ」ボタンを押すことで全てのプレイヤーを少しの間横方向にしか移動出来なくします。,
+EvilSpeedBooster.Description,タスクターンに使用出来る能力を有するインポスターです。\n「ブースト！」ボタンを押すことでしばらくの間素早く動けるようになります。,
+Rocket.Description,特殊なキル能力を有するインポスターです。\n「掴む」ボタンを押すと、対象のプレイヤーを掴んで運べるようになります。\n「打ち上げる」ボタンを押すと、掴んでいたプレイヤーを空に打ち上げて花火にします。\n死体は残りません。\n「打ち上げる」ボタンを押すまで何人でも掴むことが出来ますが、その状態で会議が召集され、その会議で追放されるとキルに失敗してしまいます。\n追放されなければ掴んでいたプレイヤーを打ち上げて次のタスクターンへ移行します。,
+Vampire.Description,特殊なキル能力を有するインポスターです。\nキルボタンを押すと、設定秒数経過後に対象のプレイヤーが死亡します。\n次のターン、キルボタンを押した場所から、対象のプレイヤーが死亡した場所まで血痕が残ります。\nこの役職は、アドミンに映らず、死亡してもバイタル上では死亡表記になりません。\nまた、停電を直す気がありません。\n設定次第では「夜に堕とす」ボタンを押すことで、対象のプレイヤーの役職を眷属に変更することが出来ます。,
+VampireDependent.Description,インポスター陣営に属する役職です。\nキル能力を有します。\n通常時は視野が狭く、停電時は視野が広くなります。\nこの役職は、アドミンに映らず、死亡してもバイタル上では死亡表記になりません。\nまた、停電を直す気がありません。\nマッドメイト同様クルーメイト判定の役職です。\n自身を眷属に変化させたヴァンパイアが死亡すると、共に死亡します。,
+EvilMechanic.Description,タスクターンに使用出来る能力を有するインポスターです。\nベントに向かって「移設」ボタンを押すとベントの姿になり、そのベントを移動することが出来ます。\nベントの接続先は変更されません。,
+EvilHawk.Description,タスクターンに使用出来る能力を有するインポスターです。\n「ホークアイ」ボタンを押すと自分の視野が広がり、周囲の様子を見ることが出来ます。,
+
+
+
+# Descriptions_Neutral
+Jackal.Description,キル能力を有する第三陣営です。\n自陣営以外のキルが出来る陣営が全滅した上で、自陣営とクルーが同数以下になれば勝利します。\n設定次第で他のプレイヤーの役職を、自身の後継となるサイドキックや、手助けをしてくれるジャッカルフレンズに変更する能力を有することも出来ます。,A third‐faction role with a kill ability.\nIt wins if all factions capable of killing outside its own are eliminated and its faction and the Crewmates are equal in number or fewer.\nDepending on the settings，it can change other players' roles into a Sidekick (its successor) or Jackal Friends who assist it.,这是一个拥有击杀能力的第三阵营角色。\n当所有能够进行击杀的其他阵营被消灭，并且其阵营与船员人数相等或更少时，即可获胜。\n根据设定，它还可以将其他玩家的角色变更为边缘队员（其继任者）或协助的杰克朋友。,這是一個具備擊殺能力的第三陣營角色。\n當其他能進行擊殺的陣營全部被消滅，且其陣營與船員數量相等或更少時，即獲勝。\n根據設定，還可將其他玩家的角色變更為接班的邊翼或提供協助的傑克朋友。
+Sidekick.Description,ジャッカル陣営に属する第三陣営です。\n自陣営以外のキルが出来る陣営が全滅した上で、自陣営とクルーが同数以下になれば勝利します。\n自身をサイドキックに変化させたジャッカルが死亡すると、自身がジャッカルへと昇格し、キル能力を有するようになります。,A third‐faction role belonging to the Jackal faction.\nIt wins when all factions capable of killing outside its own are eliminated and its faction and the Crewmates are equal in number or fewer.\nIf the Jackal who transformed you into a Sidekick dies，you are promoted to Jackal and gain a kill ability.,这是属于杰克阵营的第三阵营角色。\n当所有能够进行击杀的其他阵营被消灭，并且其阵营与船员人数相等或较少时，即可获胜。\n如果使你变为边缘队员的杰克死亡，你将晋升为杰克，并获得击杀能力。,這是一個隸屬於傑克陣營的第三陣營角色。\n當其他能進行擊殺的陣營全部被消滅，且其陣營與船員數量相等或更少時，即獲勝。\n若使你轉為邊翼的傑克死亡，你將晉升為杰克，並獲得擊殺能力。
+WaveCannonJackal.Description,キル能力を有する第三陣営です。\n自陣営以外のキルが出来る陣営が全滅した上で、自陣営とクルーが同数以下になれば勝利します。\n「波動砲」ボタンを押すことで、その時点で向いている方向に向かって、障害物を無視して一直線に飛んでいくビームを撃つことが出来ます。\nビームにあたったプレイヤーは陣営関係なく死亡します。\n\n設定によって様々なタイプのサイドキックを作成することが出来ます。,A third‐faction role with a kill ability.\nIt wins if all factions capable of killing outside its own are eliminated and its faction and the Crewmates are equal in number or fewer.\nBy pressing the "Wave Cannon" button，it fires a beam in the direction it is facing that ignores obstacles and travels straight，killing any player it hits regardless of faction.\n\nAdditionally，various types of Sidekicks can be created based on the settings.,这是一个拥有击杀能力的第三阵营角色。\n当所有能进行击杀的其他阵营被消灭，并且其阵营与船员人数相等或更少时，即可获胜。\n按下"波动炮"按钮后，会向当前面向的方向发射一束无视障碍的直线光束，击中的玩家无论阵营都会死亡。\n此外，根据设定，还可以创建多种类型的边缘队员。,這是一個具備擊殺能力的第三陣營角色。\n當其他能進行擊殺的陣營全部被消滅，且其陣營與船員數量相等或更少時，即獲勝。\n按下「波動砲」按鈕後，會向當前所面向的方向發射無視障礙的直線光束，被擊中的玩家不論陣營皆會死亡。\n此外，依據設定，還可創建各種類型的邊翼。
+SidekickWaveCannon.Description,ジャッカル陣営に属する第三陣営です。\n自陣営以外のキルが出来る陣営が全滅した上で、自陣営とクルーが同数以下になれば勝利します。\n自身をサイドキックに変化させた波動砲ジャッカルが死亡すると、自身が波動砲ジャッカルへと昇格し、キル能力を有するようになります。,A third‐faction role belonging to the Jackal faction.\nIt wins when all factions capable of killing outside its own are eliminated and its faction and the Crewmates are equal in number or fewer.\nIf the Wave Cannon Jackal who transformed you into a Sidekick dies，you are promoted to Wave Cannon Jackal，gaining a kill ability.,这是属于杰克阵营的第三阵营角色。\n当所有能够进行击杀的其他阵营被消灭，并且其阵营与船员人数相等或较少时，即可获胜。\n如果将你变为边缘队员的波动炮杰克死亡，你将晋升为波动炮杰克，并获得击杀能力。,這是一個隸屬於傑克陣營的第三陣營角色。\n當其他能進行擊殺的陣營全部被消滅，且其陣營與船員數量相等或更少時，即獲勝。\n若令你變為邊翼的波動砲傑克死亡，你將晉升為波動砲傑克，並獲得擊殺能力。
+Bullet.Description,ジャッカル陣営に属する第三陣営です。\n自陣営以外のキルが出来る陣営が全滅した上で、自陣営とクルーが同数以下になれば勝利します。\n自身を弾に変化させた波動砲ジャッカルに向かって「装填」ボタンを押すと、波動砲ジャッカルにくっつき、弾自身の意思では動けなくなります。\nその状態で波動砲ジャッカルが波動砲を撃つと、超波動砲になり、元の波動砲よりもかなり太いサイズのビームを放つことが出来ます。\nその際、弾は死亡してしまいます。\n自身を弾に変化させた波動砲ジャッカルが死亡した際に役職がどうなるかは設定によって異なります。,
+Tuna.Description,キル能力を有さない第三陣営です。\n一定秒数立ち止まるとその場で死亡してしまいます。\nゲーム終了まで生存していると、一部役職の特殊勝利を除き、勝利することが出来ます。,A third‐faction role without a kill ability.\nIf they remain stationary for a set number of seconds，they die instantly.\nIf they survive until the end of the game，they win—except for roles with special win conditions.,这是一个没有击杀能力的第三阵营角色。\n如果原地不动达到一定秒数，将会立即死亡。\n只要存活到游戏结束（除了一些具有特殊胜利条件的角色），便可获胜。,這是一個沒有擊殺能力的第三陣營角色。\n若持續原地不動達到一定秒數，將會立即死亡。\n只要存活到遊戲結束，除去部分特殊勝利條件的角色，即可獲勝。
+Teruteru.Description,キル能力を有さない独自の勝利条件を持つ第三陣営です。\n会議にて追放されると、その時点で単独勝利します。,A third‐faction role without a kill ability that has its own win condition.\nIf ejected during a meeting，it wins immediately on its own.,这是一个没有击杀能力、拥有独特胜利条件的第三阵营角色。\n在会议中被逐出时，即可立即单独获胜。,這是一個沒有擊殺能力且具備獨特勝利條件的第三陣營角色。\n在會議中被逐出時，即可立即單獨獲勝。
+Opportunist.Description,キル能力を有さない第三陣営です。\nゲーム終了まで生存していると、一部役職の特殊勝利を除き、共に勝利することが出来ます。,A third‐faction role without a kill ability.\nIf they survive until the end of the game，they win alongside others—except for certain roles with special win conditions.,这是一个没有击杀能力的第三阵营角色。\n只要存活到游戏结束（除了一些具特殊胜利条件的角色），他们就能与其他人一起获胜。,這是一個沒有擊殺能力的第三陣營角色。\n只要存活到遊戲結束，除去部分特殊勝利條件的角色，即可與他人一同獲勝。
 Workperson.Description,キル能力を有さない独自の勝利条件を持つ第三陣営です。\nタスクを全て完了すると、その時点で単独勝利します。,A third‐faction role without a kill ability that has its own win condition.\nCompleting all tasks results in an immediate solo win.,这是一个没有击杀能力、拥有独特胜利条件的第三阵营角色。\n一旦完成所有任务，就会立即单独获胜。,這是一個沒有擊殺能力且具備獨特勝利條件的第三陣營角色。\n完成所有任務後，即可立即獨自獲勝。
-SerialKiller.Description,キルに関係する能力を有するインポスターです。\nキルクールが短い代わりに、一定時間キルをしないと自殺してしまいます。,An Impostor with kill‐related abilities.\nWhile their kill cooldown is short, if they don't kill within a certain time, they will commit suicide.,这是一个拥有击杀相关能力的内鬼。\n虽然击杀冷却时间很短，但如果在一定时间内没有击杀，将会自杀。,這是一個具備擊殺相關能力的內鬼。\n雖然其擊殺冷卻時間短，但若在一定時間內未能擊殺，則會自動自殺。
-PavlovsOwner.Description,キル能力を有さない第三陣営です。\n犬が生存した状態かつ、自陣営以外のキルが出来る陣営が全滅した上で、自陣営とクルーが同数以下になれば勝利します。\n「刷り込み」ボタンを押すと、対象のプレイヤーの役職をパブロフの犬に変更します。\n設定次第では、インポスターを犬にしようとすると自殺してしまいます。\n複数回使用出来る設定もありますが、犬は場に最大1人までしか存在出来ません。\n犬が死亡すると新しい犬を作成出来るようになります。\n常に犬の居場所が矢印で表示されます。\n\n生存した状態かつ、「刷り込み」の使用回数が残っている場合、キル陣営が全滅したり、この役職と他キル陣営が同数になってもゲームが継続します。,A third‐faction role without a kill ability.\nIt wins if a dog is alive and all factions capable of killing outside its own are eliminated, with its faction and the Crewmates in equal or fewer numbers.\nBy pressing the "Imprinting" button, it changes a target player's role to Pavlov's Dog.\nDepending on settings, attempting to turn an Impostor into a dog results in suicide.\nAlthough the ability can be used multiple times, only one dog may exist at a time.\nWhen the dog dies, a new one can be created.\nIts location is always indicated by an arrow.\n\nFurthermore, as long as the dog is alive and there are remaining uses of "Imprinting", the game continues even if the kill faction is eliminated or this role and other kill‐capable factions are equal in number.,这是一个没有击杀能力的第三阵营角色。\n获胜条件是：狗存活且所有能够击杀的其他阵营被消灭，同时其阵营与船员人数相等或更少。\n按下"刷印"按钮后，会将目标玩家的角色改为帕夫洛夫之犬。\n根据设定，如果试图将内鬼变成狗，则会自杀。\n此能力可多次使用，但场上最多只能存在一只狗。\n当狗死亡后，可以生成新的狗，并且狗的位置始终以箭头标示。\n此外，只要狗存活且"刷印"次数尚余，即使击杀阵营全部被消灭或本角色与其他具击杀能力的陣営人数相等，游戏亦会继续。,這是一個沒有擊殺能力的第三陣營角色。\n勝利條件為：狗存活且所有能夠擊殺的其他陣營被消滅，同時其陣營與船員數量相等或更少。\n按下「刷印」按鈕後，會將目標玩家的角色變更為帕夫洛夫之犬。\n根據設定，若嘗試將內鬼變成狗，則會自動自殺。\n此能力可多次使用，但場上最多僅能存在一隻狗。\n當狗死亡後，即可生成新的狗，且狗的位置將始終以箭頭標示。\n此外，只要狗存活且「刷印」的使用次數仍有餘，即使擊殺陣營全部被消滅或本角色與其他具擊殺能力的陣營數量相等，遊戲仍將繼續。
-PavlovsDog.Description,パブロフの犬陣営に属するキル能力を有する第三陣営です。\n自陣営以外のキルが出来る陣営が全滅した上で、自陣営とクルーが同数以下になれば勝利します。\nオーナーが死亡すると、キルクールタイムが短くなる代わりに、キルをしないと自殺してしまいます。,A third‐faction role belonging to the Pavlov's Dog faction with a kill ability.\nIt wins if all factions capable of killing outside its own are eliminated and its faction and the Crewmates are equal in number or fewer.\nWhen the Owner dies, its kill cooldown shortens, but if it fails to kill, it will commit suicide.,这是一个隶属于帕夫洛夫之犬阵营、具有击杀能力的第三阵营角色。\n当所有能够执行击杀的其他阵营被消灭，并且其阵营与船员人数相等或更少时，即可获胜。\n当犬主死亡时，击杀冷却时间会缩短，但如果未能击杀，则会自杀。,這是一個隸屬於帕夫洛夫之犬陣營、具備擊殺能力的第三陣營角色。\n當其他能夠擊殺的陣營全部被消滅，且其陣營與船員數量相等或更少時，即獲勝。\n當犬主死亡時，擊殺冷卻時間會縮短，但若未擊殺，則會自動自殺。
-SideKiller.Description,自陣営を増やす能力を有するインポスターです。\n「侵食する」ボタンを押すと、対象のプレイヤーの役職をマッドキラーに変更します。,An Impostor with the ability to expand its faction.\nBy pressing the "Infiltrate" button, it changes a target player's role to Mad Killer.,这是一个具有增加自身阵营人数能力的内鬼。\n按下"侵蚀"按钮后，会将目标玩家的角色更改为疯狂杀手。,這是一個具備擴充自身陣營能力的內鬼。\n按下「侵蝕」按鈕後，將會把目標玩家的角色變更為瘋狂殺手。
-MadKiller.Description,インポスター陣営に属する役職です。\n自身をマッドキラーに変化させたサイドキラーが死亡すると、インポスターへ昇格し、キル能力を有するようになります。\n昇格前はマッドメイト同様クルーメイト判定です。,A role within the Impostor faction.\nWhen the Sidekiller who transformed you into a Mad Killer dies, you are promoted to an Impostor and gain a kill ability.\nPrior to promotion, you are considered a Crewmate, similar to a Madmate.,这是一个隶属于内鬼阵营的角色。\n当将你变为疯狂杀手的边缘杀手死亡时，你将晋升为内鬼，并获得击杀能力。\n晋升前，你和疯友一样被视为船员。,這是一個隸屬於內鬼陣營的角色。\n當使你變成瘋狂殺手的邊緣殺手死亡時，你將晉升為內鬼，並獲得擊殺能力。\n晉升前，你將與瘋友同視為船員。
-EvilGambler.Description,キルに関係する能力を有するインポスターです。\nキルをした際、次のキルクールが確率で変動します。\nターンの最初のキルクールは、ゲーム全体のインポスターのキルクールタイムに準じます。,An Impostor with kill‐related abilities.\nAfter making a kill, the cooldown for the next kill changes probabilistically.\nThe initial kill cooldown of a turn follows the overall Impostor kill cooldown time in the game.,这是一个拥有与击杀相关能力的内鬼。\n在击杀后，下一次击杀的冷却时间会根据概率变化。\n一回合开始时的击杀冷却时间遵循整个游戏中内鬼的击杀冷却设置。,這是一個具備擊殺相關能力的內鬼。\n成功擊殺後，其下一次擊殺的冷卻時間會依機率變動。\n回合初的擊殺冷卻時間則依照整體遊戲中內鬼的設定。
+PavlovsOwner.Description,キル能力を有さない第三陣営です。\n犬が生存した状態かつ、自陣営以外のキルが出来る陣営が全滅した上で、自陣営とクルーが同数以下になれば勝利します。\n「刷り込み」ボタンを押すと、対象のプレイヤーの役職をパブロフの犬に変更します。\n設定次第では、インポスターを犬にしようとすると自殺してしまいます。\n複数回使用出来る設定もありますが、犬は場に最大1人までしか存在出来ません。\n犬が死亡すると新しい犬を作成出来るようになります。\n常に犬の居場所が矢印で表示されます。\n\n生存した状態かつ、「刷り込み」の使用回数が残っている場合、キル陣営が全滅したり、この役職と他キル陣営が同数になってもゲームが継続します。,A third‐faction role without a kill ability.\nIt wins if a dog is alive and all factions capable of killing outside its own are eliminated，with its faction and the Crewmates in equal or fewer numbers.\nBy pressing the "Imprinting" button，it changes a target player's role to Pavlov's Dog.\nDepending on settings，attempting to turn an Impostor into a dog results in suicide.\nAlthough the ability can be used multiple times，only one dog may exist at a time.\nWhen the dog dies，a new one can be created.\nIts location is always indicated by an arrow.\n\nFurthermore，as long as the dog is alive and there are remaining uses of "Imprinting"，the game continues even if the kill faction is eliminated or this role and other kill‐capable factions are equal in number.,这是一个没有击杀能力的第三阵营角色。\n获胜条件是：狗存活且所有能够击杀的其他阵营被消灭，同时其阵营与船员人数相等或更少。\n按下"刷印"按钮后，会将目标玩家的角色改为帕夫洛夫之犬。\n根据设定，如果试图将内鬼变成狗，则会自杀。\n此能力可多次使用，但场上最多只能存在一只狗。\n当狗死亡后，可以生成新的狗，并且狗的位置始终以箭头标示。\n此外，只要狗存活且"刷印"次数尚余，即使击杀阵营全部被消灭或本角色与其他具击杀能力的陣営人数相等，游戏亦会继续。,這是一個沒有擊殺能力的第三陣營角色。\n勝利條件為：狗存活且所有能夠擊殺的其他陣營被消滅，同時其陣營與船員數量相等或更少。\n按下「刷印」按鈕後，會將目標玩家的角色變更為帕夫洛夫之犬。\n根據設定，若嘗試將內鬼變成狗，則會自動自殺。\n此能力可多次使用，但場上最多僅能存在一隻狗。\n當狗死亡後，即可生成新的狗，且狗的位置將始終以箭頭標示。\n此外，只要狗存活且「刷印」的使用次數仍有餘，即使擊殺陣營全部被消滅或本角色與其他具擊殺能力的陣營數量相等，遊戲仍將繼續。
+PavlovsDog.Description,パブロフの犬陣営に属するキル能力を有する第三陣営です。\n自陣営以外のキルが出来る陣営が全滅した上で、自陣営とクルーが同数以下になれば勝利します。\nオーナーが死亡すると、キルクールタイムが短くなる代わりに、キルをしないと自殺してしまいます。,A third‐faction role belonging to the Pavlov's Dog faction with a kill ability.\nIt wins if all factions capable of killing outside its own are eliminated and its faction and the Crewmates are equal in number or fewer.\nWhen the Owner dies，its kill cooldown shortens，but if it fails to kill，it will commit suicide.,这是一个隶属于帕夫洛夫之犬阵营、具有击杀能力的第三阵营角色。\n当所有能够执行击杀的其他阵营被消灭，并且其阵营与船员人数相等或更少时，即可获胜。\n当犬主死亡时，击杀冷却时间会缩短，但如果未能击杀，则会自杀。,這是一個隸屬於帕夫洛夫之犬陣營、具備擊殺能力的第三陣營角色。\n當其他能夠擊殺的陣營全部被消滅，且其陣營與船員數量相等或更少時，即獲勝。\n當犬主死亡時，擊殺冷卻時間會縮短，但若未擊殺，則會自動自殺。
+Vulture.Description,キル能力を有さない独自の勝利条件を持つ第三陣営です。\n死体の近くで「喰らう」ボタンを押すと、その死体を食べることが出来ます。\n死体を設定個数食べると、その時点で単独勝利します。,A third‐faction role without a kill ability that has its own win condition.\nBy pressing the "Devour" button near a corpse，it can consume the body.\nOnce it consumes a set number of corpses，it wins the game immediately on its own.,这是一个没有击杀能力、拥有独特胜利条件的第三阵营角色。\n在尸体附近按下"吞噬"按钮即可吞食该尸体。\n当吞食达到设定数量后，即可立即单独获胜。,這是一個沒有擊殺能力且具備獨特勝利條件的第三陣營角色。\n在屍體附近按下「吞噬」按鈕，即可吞食該屍體。\n一旦吞噬達到設定數量，即可立即單獨獲勝。
+Arsonist.Description,キル能力を有さない独自の勝利条件を持つ第三陣営です。\n他プレイヤーの近くで「塗る」ボタンを押し、その後一定秒数近くにいると対象にオイルを塗ることが出来ます。\n生存者全員にオイルを塗った状態で、「燃やす」ボタンを押すと、その時点で単独勝利します。,This is a third-party role with a unique win condition and no killing ability．\nBy pressing the "Oil" button near another player and staying close for a certain amount of time afterward，you can cover them in oil．\nIf you successfully oil all surviving players and then press the "Ignite" button，you will instantly achieve a solo victory．,这是一个拥有独特胜利条件、但没有击杀能力的第三方阵营角色。\n靠近其他玩家并按下“涂抹”按钮，随后在一定时间内保持接近，即可将目标玩家涂上油。\n当所有生存者都被涂上油后，按下“燃烧”按钮即可立即获得单独胜利。,這是一個擁有獨特勝利條件、但沒有擊殺能力的第三方陣營角色。\n靠近其他玩家並按下「塗抹」按鈕，之後在一定時間內保持靠近，即可將對方塗上油。\n當所有生還者都被塗上油後，按下「燃燒」按鈕，即可立即獲得單獨勝利。
+Amnesiac.Description,キル能力を有さない第三陣営です。\nこの役職は勝利条件を持ちません。\n死体を通報すると、その死体のプレイヤーの役職を引き継ぎます。\n勝利条件は引き継いだ役職のものに変化します。,This is a third-party role with no killing ability．\nThis role does not have its own win condition．\nWhen you report a dead body，you inherit the role of the deceased player．\nYour win condition will change to match the role you inherited．,这是一个没有击杀能力的第三方阵营角色。\n该角色本身没有胜利条件。\n当你通报尸体时，会继承该尸体玩家的角色。\n你的胜利条件将变为继承角色的胜利条件。,這是一個沒有擊殺能力的第三方陣營角色。\n此角色本身沒有勝利條件。\n當你通報屍體時，會繼承該屍體玩家的角色。\n你的勝利條件將變為所繼承角色的勝利條件。
+FalseCharges.Description,キル能力を有さない独自の勝利条件を持つ第三陣営です。\n他プレイヤーに冤罪をかけることが出来、冤罪をかけた相手が一定ターン以内に追放されると単独勝利します。\nなお、冤罪をかけた際、自身は死亡してしまうため、能力は一度しか使うことが出来ません。,This is a third-party role with no killing ability and a unique win condition．\nYou can falsely accuse another player，and if that player is ejected within a certain number of turns，you will achieve a solo victory．\nHowever，you will die immediately after making the accusation，so you can only use this ability once．,这是一个没有击杀能力、拥有独特胜利条件的第三方阵营角色。\n你可以对其他玩家进行冤罪指控，如果该玩家在一定回合内被投票逐出，你将获得单独胜利。\n不过，在你发动冤罪时自己会死亡，因此该能力只能使用一次。,這是一個沒有擊殺能力、擁有獨特勝利條件的第三方陣營角色。\n你可以對其他玩家發動冤罪指控，若該玩家在一定回合內被投票逐出，你將獲得單獨勝利。\n不過，在你發動冤罪時自己會死亡，因此此能力僅能使用一次。
+Hitman.Description,キル能力を有する第三陣営です。\n指定数のターゲットをキルするとその時点で単独勝利します。\nターゲットは画面の左下に表示され、その居場所に向かって赤色の矢印も表示されます。\n設定によっては一定数失敗してしまうとその時点で死亡してしまいます。,This is a third-party role with killing ability．\nIf you successfully kill a set number of targets，you will achieve a solo victory at that moment．\nYour targets are displayed in the bottom-left corner of the screen，and a red arrow will point you toward their location．\nDepending on the settings，if you fail a certain number of times，you will die immediately．,这是一个拥有击杀能力的第三方阵营角色。\n当你成功击杀指定数量的目标后，将立即获得单独胜利。\n目标会显示在屏幕左下角，并有红色箭头指引其位置。\n根据设定，如果失败次数达到一定数量，你将立即死亡。,這是一個擁有擊殺能力的第三方陣營角色。\n當你成功擊殺指定數量的目標後，將立即獲得單獨勝利。\n目標會顯示在畫面左下角，並會有紅色箭頭指引其位置。\n根據設定，若失敗達到一定次數，你將立即死亡。
+LoversBreaker.Description,特殊なキル能力を有する第三陣営です。/\nラバーズを設定数爆破した上でラバーズが全滅すると単独勝利します。\nただし、ラバーズ以外を爆破しようとすると自殺してしまいます。,
+God.Description,キル能力を有さない独自の勝利条件を持つ第三陣営です。\n全てのプレイヤーの役職が何かを見ることが出来ます。\nゲーム終了まで生存していると、一部役職の特殊勝利を除き、その勝利を横取りして勝利することが出来ます。,This is a third-party role with no killing ability and a unique win condition．\nYou can see the roles of all players．\nIf you survive until the end of the game，you will steal the victory from the actual winners and claim it as your own，except in cases where special roles have unique win conditions．,这是一个没有击杀能力、拥有独特胜利条件的第三方阵营角色。\n你可以查看所有玩家的角色。\n如果你能存活到游戏结束，除部分具有特殊胜利条件的角色外，你将窃取原本的胜利并获得胜利。,這是一個沒有擊殺能力、擁有獨特勝利條件的第三方陣營角色。\n你可以查看所有玩家的角色。\n如果你能存活到遊戲結束，除了部分具有特殊勝利條件的角色之外，你將竊取原本的勝利並獲得勝利。
+Owl.Description,キル能力を有する第三陣営です。\n自陣営以外のキルが出来る陣営が全滅した上で、自陣営とクルーが同数以下になれば勝利します。\nベントに「巣作り」をすることで各種能力を使用できるようになります。\n死体をひきずって運ぶことが出来、その死体を巣にしたベントに運べば隠すことが出来ます。\nまた、停電中に視界が広くなります。,
+SchrodingersCat.Description,キル能力を有さない第三陣営です。\nこの役職は勝利条件を持ちません。\n特定の陣営の役職にキルされると、その場で生き返ってそのキラーの陣営の仲間になり、勝利条件を獲得します。\n特定の陣営：インポスター、ジャッカル、パブロフの犬、クルーメイト,
+Truelover.Description,キル能力を有さない独自の勝利条件を持つ第三陣営です。\n「一目惚れ」ボタンを押すと、対象のプレイヤーとラバーズになります。\n勝利条件や能力はラバーズと同じになります。,
+Cupid.Description,キル能力を有さない独自の勝利条件を持つ第三陣営です。\n「恋の矢」ボタンを二人のプレイヤーに向かって押すと、その二人をラバーズにします。\n作成したラバーズが勝利すると共に勝利します。\nなお、勝利に自身の生存は必要ありません。,
+Spelunker.Description,キル能力を有さない独自の勝利条件を持つ第三陣営です。\nベントを踏んだり、ドアを開けたり、昇降機に乗ったり、はしごを降りたりすると一定確率で死亡してしまいます。\nまた、サボタージュが長引くと不安で死んでしまいます。\nゲーム終了まで生存していると、一部役職の勝利を除き、勝利を横取りして単独勝利します。,
+BlackHatHacker.Description,キル能力を有さない独自の勝利条件を持つ第三陣営です。\n「感染」ボタンを押すと、任意のプレイヤーに感染させることが出来ます。\nそのプレイヤーが他プレイヤーに接近すると、感染率が上昇していき、100%になると新たな感染源となります。\n生存者全員が感染源になると、その時点で単独勝利します。,
+PartTimer.Description,キル能力を有さない第三陣営です。\n「バイト」ボタンを押すと対象のプレイヤーに就職出来ます。\n就職先のプレイヤーが生存した状態で勝利条件を満たすと、共に勝利します。\nこの役職は、生存者が減れば減るほど、能力のクールタイムが延長されていきます。\nまた、就職先のプレイヤーが死亡すると勝利条件を失うため、再度就職する必要があります。\nなお、一定の期間無職でいると死亡してしまいます。,
+
+
+
+
+
+# Descriptions_Crewmate
+Bait.Description,タスクターンに発動する能力を有するクルーメイトです。\nキルされると、そのキル者に自身の死体を通報させます。,
+BestFalseCharge.Description,特に能力を有さないクルーメイトです。\n死亡するまでこの役職だと自覚出来ません。\n最初の会議が終了すると、そのまま死亡します。,The ultimate red herring! A Crewmate with no abilities who lives in blissful ignorance.\nThey won't realize they have this role until they're dead—talk about a rude awakening!\nAfter the first meeting ends，they die faster than someone saying "I saw Blue vent!",这是一个没有特殊能力的船员。\n在死亡之前他们不会意识到自己拥有这个角色。\n第一场会议结束后，他们会直接死亡。,這是一個沒有特殊能力的船員。\n在死亡之前他們不會察覺自己擁有這個角色。\n第一場會議結束後，他們會直接死亡。
+Sheriff.Description,キル能力を有するクルーメイトです。\n「執行」ボタンを押すと、対象のプレイヤーに対してキル能力を行使します。\nその際、対象のプレイヤーがキル可能な陣営でなかった場合、自身が死亡してしまいます。\n基本的には、ライン精査等、白黒つけたいときに能力を使用すると良いでしょう。,A Crewmate with the ability to kill.\nBy pressing the "Execute" button，they can use their kill ability on a target player.\nHowever，if the target is not in a killable faction，they die.\nGenerally，this ability is best used when a clear decision is needed.,这是一个拥有击杀能力的船员。\n按下"执行"按钮后，可以对目标玩家施展击杀能力。\n但如果目标玩家不属于可被击杀的阵营，则自己会死亡。\n基本上，此能力适用于需要明确判定时使用，例如在排查时.,這是一個具備擊殺能力的船員。\n按下「執行」按鈕後，可以對目標玩家施展擊殺能力。\n若目標玩家不屬於可被擊殺的陣營，則使用者將會死亡。\n基本上，此能力適用於需要做出明確判斷時，例如進行排查時使用。
+NiceGuesser.Description,会議に関する能力を有するクルーメイトです。\n会議中に出現するボタンを押し、対象のプレイヤーの役職が何か当てると、そのプレイヤーをキルすることが出来ます。\nただし、外すと自身が死亡してしまいます。,A Crewmate with a meeting‐based ability.\nDuring meetings，they can press a button to guess a target player's role; if correct，that player is killed.\nHowever，an incorrect guess results in their own death.,这是一个拥有会议相关能力的船员。\n在会议中，通过点击出现的按钮，若猜中目标玩家的角色，则能够将其击杀。\n但如果猜错，则自己会死亡。,這是一個具備會議相關能力的船員。\n在會議中，按下出現的按鈕後，若能猜中目標玩家的角色，便能將其擊殺。\n然而，若猜錯，則自己將會死亡。
+Balancer.Description,会議に関する能力を有するクルーメイトです。\n会議中に出現するボタン2つを押すと、対象のプレイヤー二人のどちらか片方は最低でも追放される特殊な会議を開くことが出来ます。\n投票が同数だった場合、二人同時に追放されます。,A Crewmate with a meeting‐focused ability.\nBy pressing the two buttons that appear during a meeting，a special meeting is initiated in which at least one of the two targeted players will be ejected.\nIn the event of a tie vote，both players are ejected simultaneously.,这是一个拥有会议相关能力的船员。\n在会议中按下出现的两个按钮后，便会发起一场特殊会议，确保目标的两名玩家中至少有一人被放逐。\n若投票数相同，则两人同时被放逐。,這是一個具備會議相關能力的船員。\n在會議中按下出現的兩個按鈕後，會啟動一個特殊會議，使目標的兩名玩家中至少有一人被逐出。\n若投票數相同，則兩人將同時被逐出。
+Chief.Description,タスクターンに使用出来る能力を有するクルーメイトです。\n「任命」ボタンを押すと、対象のプレイヤーの役職をシェリフに変更します。\nただし、対象のプレイヤーがインポスターだった場合、自殺してしまいます。,A Crewmate with an ability that can be used during task turns.\nBy pressing the "Appoint" button，they change a target player's role to Sheriff.\nHowever，if the target player is an Impostor，they commit suicide.,这是一个在任务回合中能使用能力的船员。\n按下"任命"按钮后，会将目标玩家的角色更改为警长。\n但如果目标玩家是内鬼，则会自杀。,這是一個在任務回合中能夠使用能力的船員。\n按下「任命」按鈕後，會將目標玩家的角色變更為警長。\n不過，若目標玩家為內鬼，則會自動自殺。
 HomeSecurityGuard.Description,特に能力を有さないクルーメイトです。\nタスクもありません。,A Crewmate with no special abilities.\nThey also have no tasks.,这是一个没有特殊能力的船员，也没有任务。,這是一個沒有特殊能力的船員，且沒有任務。
-Seer.Description,タスクターンに発動する能力を有するクルーメイトです。\n誰かが死亡すると画面が青く発光します。\nまた、誰かが死亡した箇所に霊魂を確認することが出来ます。\nこれらの能力は設定によって、いずれかまたはどちらも保有します。,A Crewmate with an ability that activates during task turns.\nWhen someone dies, the screen emits a blue glow.\nThey can also detect a spirit at the location of the death.\nDepending on settings, they may have one or both of these abilities.,这是一个在任务回合中能发动能力的船员。\n当有人死亡时，屏幕会发出蓝光，并且可以在死亡地点检测到灵魂。\n这些能力依据设定可能单独或同时存在。,這是一個在任務回合中可發動能力的船員。\n當有人死亡時，螢幕會發出藍光，同時能在死亡地點察覺靈魂。\n這些能力可依據設定單獨或全部具備。
-Vulture.Description,キル能力を有さない独自の勝利条件を持つ第三陣営です。\n死体の近くで「喰らう」ボタンを押すと、その死体を食べることが出来ます。\n死体を設定個数食べると、その時点で単独勝利します。,A third‐faction role without a kill ability that has its own win condition.\nBy pressing the "Devour" button near a corpse, it can consume the body.\nOnce it consumes a set number of corpses, it wins the game immediately on its own.,这是一个没有击杀能力、拥有独特胜利条件的第三阵营角色。\n在尸体附近按下"吞噬"按钮即可吞食该尸体。\n当吞食达到设定数量后，即可立即单独获胜。,這是一個沒有擊殺能力且具備獨特勝利條件的第三陣營角色。\n在屍體附近按下「吞噬」按鈕，即可吞食該屍體。\n一旦吞噬達到設定數量，即可立即單獨獲勝。
-Balancer.Description,会議に関する能力を有するクルーメイトです。\n会議中に出現するボタン2つを押すと、対象のプレイヤー二人のどちらか片方は最低でも追放される特殊な会議を開くことが出来ます。\n投票が同数だった場合、二人同時に追放されます。,A Crewmate with a meeting‐focused ability.\nBy pressing the two buttons that appear during a meeting, a special meeting is initiated in which at least one of the two targeted players will be ejected.\nIn the event of a tie vote, both players are ejected simultaneously.,这是一个拥有会议相关能力的船员。\n在会议中按下出现的两个按钮后，便会发起一场特殊会议，确保目标的两名玩家中至少有一人被放逐。\n若投票数相同，则两人同时被放逐。,這是一個具備會議相關能力的船員。\n在會議中按下出現的兩個按鈕後，會啟動一個特殊會議，使目標的兩名玩家中至少有一人被逐出。\n若投票數相同，則兩人將同時被逐出。
-Celebrity.Description,特に能力を有さないクルーメイトです。\n全員視点で名前が役職色に変わっており、全員からスターだということがわかります。,A Crewmate with no special abilities.\nTheir name is displayed in the color of their role for everyone, making it clear to all that they are the Star.,这是一个没有特殊能力的船员。\n他们的名字以角色颜色显示在所有人的视角中，让大家都看出他们是明星。,這是一個沒有特殊能力的船員。\n他們的名字以角色顏色呈現在所有人眼中，讓大家都能看出他們是明星。
-Datahacker.Description,タスクターンに発動する能力を有するクルーメイトです。\nタスクを一定数こなすと、敵対する陣営のプレイヤーが誰かわかります。\nただし、それより少し前に敵対する陣営のプレイヤーから自身がデータハッカーとバレてしまいます。,A Crewmate with an ability that activates during task turns.\nAfter completing a certain number of tasks, they can identify the players from opposing factions.\nHowever, shortly before that, opposing faction players will realize that they are the Datahacker.,
+Seer.Description,タスクターンに発動する能力を有するクルーメイトです。\n誰かが死亡すると画面が青く発光します。\nまた、誰かが死亡した箇所に霊魂を確認することが出来ます。\nこれらの能力は設定によって、いずれかまたはどちらも保有します。,A Crewmate with an ability that activates during task turns.\nWhen someone dies，the screen emits a blue glow.\nThey can also detect a spirit at the location of the death.\nDepending on settings，they may have one or both of these abilities.,这是一个在任务回合中能发动能力的船员。\n当有人死亡时，屏幕会发出蓝光，并且可以在死亡地点检测到灵魂。\n这些能力依据设定可能单独或同时存在。,這是一個在任務回合中可發動能力的船員。\n當有人死亡時，螢幕會發出藍光，同時能在死亡地點察覺靈魂。\n這些能力可依據設定單獨或全部具備。
+Celebrity.Description,特に能力を有さないクルーメイトです。\n全員視点で名前が役職色に変わっており、全員からスターだということがわかります。,A Crewmate with no special abilities.\nTheir name is displayed in the color of their role for everyone，making it clear to all that they are the Star.,这是一个没有特殊能力的船员。\n他们的名字以角色颜色显示在所有人的视角中，让大家都看出他们是明星。,這是一個沒有特殊能力的船員。\n他們的名字以角色顏色呈現在所有人眼中，讓大家都能看出他們是明星。
+Datahacker.Description,タスクターンに発動する能力を有するクルーメイトです。\nタスクを一定数こなすと、敵対する陣営のプレイヤーが誰かわかります。\nただし、それより少し前に敵対する陣営のプレイヤーから自身がデータハッカーとバレてしまいます。,A Crewmate with an ability that activates during task turns.\nAfter completing a certain number of tasks，they can identify the players from opposing factions.\nHowever，shortly before that，opposing faction players will realize that they are the Datahacker.,
+Santa.Description,タスクターンに使用出来る能力を有するクルーメイトです。\n「プレゼント」ボタンを押すと、対象のプレイヤーをランダムな役職に変更します。\nただし、対象のプレイヤーがクルーメイト以外だった場合、自殺してしまいます。,I am a Crewmate with the ability to use task turns.\nWhen I press the "Present" button， the target player is changed to a random role.\nHowever， if the target player is not a Crewmate， I will commit suicide.,我是一个可以使用任务轮次的船员。\n当我按下“礼物”按钮时，目标玩家将被随机更换为一个角色。\n但是，如果目标玩家不是船员，我就会自杀。,我是一名可以使用任務回合的船員。\n當我按下「禮物」按鈕時，目標玩家會被隨機更換為一個職業。\n但如果目標玩家不是船員，我就會自殺。
+JumpDancer.Description,タスクターンに使用出来る能力を有するクルーメイトです。\n「ジャンプ！」ボタンを押すと、周囲にいるプレイヤーと自身をジャンプさせます。,
+WellBehaver.Description,タスクを有さないクルーメイトです。\nその代わり、自身以外の誰かがマップ上に落としたゴミを拾わなくてはいけません。\nマップ上に一定数以上のゴミが溜まると死亡してしまいます。,
+NiceNekomata.Description,会議に関する能力を有するクルーメイトです。\n追放されるとランダムで生存者を一人道連れにします。\nまた、道連れにしたプレイヤーが道連れ能力を所持している場合、道連れが連鎖します。,
+Pteranodon.Description,タスクターンに使用出来る能力を有するクルーメイトです。\nこの役職はエアシップのみ配役されます。\n本来であれば昇降機を使用しなければ渡れない箇所を、「ジャーンプ！」ボタンを押すことで飛び越えることが出来ます。,
+NiceButtoner.Description,タスクターンに使用出来る能力を有するクルーメイトです。\n「ポチッ」ボタンを押すことでサボタージュ中以外ならいつでもどこでも緊急会議を開始出来ます
+Mayor.Description,会議に関する能力を有するクルーメイトです。\nこの役職は、他の役職よりも多くの票を投票することが出来ます。,
+Bakery.Description,会議に関する能力を有するクルーメイトです。\nこの役職が生存していると、会議終了時にパンを焼いたことが通知されます。,
+VentTrapper.Description,タスクターンに使用出来る能力を有するクルーメイトです。,
+SpeedBooster.Description,タスクターンに使用出来る能力を有するクルーメイトです。\n「ブースト！」ボタンを押すことでしばらくの間素早く動けるようになります。,
+NiceTeleporter.Description,タスクターンに使用出来る能力を有するクルーメイトです。\n「テレポート！」ボタンを押すことで自分を含む生存者の誰かのところへ生存者全員をテレポートさせます。,
+Taskmaster.Description,タスクターンに発動する能力を有するクルーメイトです。\nタスクを触るだけで完了することが出来ます。\nまた、設定次第で、サボタージュも触るだけで修理することが出来ます。,
+ToiletFan.Description,タスクターンに使用出来る能力を有するクルーメイトです。\n「トイレ！」ボタンを押すことでラウンジのトイレのドアを全開に出来ます。\nこの役職はエアシップでしか配役されません。,
+NiceMechanic.Description,タスクターンに使用出来る能力を有するクルーメイトです。\nベントに向かって「移設」ボタンを押すとベントの姿になり、そのベントを移動することが出来ます。\nベントの接続先は変更されません。,
+BodyBuilder.Description,タスクターンに使用出来る能力を有するクルーメイトです。\nこの役職の持つタスクは全てファングルの重量上げタスクに置き換わります。\nタスクを全て完了すると、マッスルポーズを取ることが出来るようになります。\nマッスルポーズは他者視点でも視認出来ます。,
+HamburgerShop.Description,特に能力を有さないクルーメイトです。\nこの役職の持つタスクは全てエアシップのハンバーガータスクに置き換わります。,
+NiceHawk.Description,タスクターンに使用出来る能力を有するクルーメイトです。\n「ホークアイ」ボタンを押すと自分の視野が広がり、周囲の様子を見ることが出来ます。,
+WiseMan.Description,タスクターンに使用出来る能力を有するクルーメイトです。\n「聖なるバリア」ボタンを押すと、一定時間動けなくなる代わりに、キルを跳ね返すバリアを貼ります。\n通常キルをされた場合、キルをしてきたプレイヤーが死亡します。\n波動砲が当たった場合、波動砲は真上、真下、斜め上、斜め下の4つのいずれかの角度に向かって跳ね返ります。,
+
+
+
+# Descriptions_MadRoles
+Madmate.Description,インポスターの味方のクルーメイトです。\nいわゆる狂人と呼ばれる役職です。\n勝利条件はクルーメイトの勝利ではなく、インポスターの勝利です。\nその勝利に自身の生死は問われないので、あの手この手でインポスターを勝利に導きましょう。,A Crewmate allied with the Impostors.\nOften known as the Madmate.\nTheir win condition is not for the Crewmates to win，but for the Impostors to win.\nTheir own survival is irrelevant，so use any means necessary to secure an Impostor victory.,这是一个支持内鬼的船员，也称为疯友角色。\n他们的胜利条件不是船员获胜，而是内鬼获胜，并且他们的生死并不影响胜利。\n所以，尽可能地采用各种手段促成内鬼获胜。,這是一個支持內鬼的船員，俗稱瘋友角色。\n其勝利條件並非船員勝利，而是內鬼勝利，且自身生死不影響結果。\n因此，請用一切手段助內鬼取勝。
+BlackCat.Description,インポスターの味方のクルーメイトです。\nいわゆる狂人と呼ばれる役職です。\n勝利条件はクルーメイトの勝利ではなく、インポスターの勝利です。\nその勝利に自身の生死は問われないので、あの手この手でインポスターを勝利に導きましょう。\nこの役職は、自身が追放された際、誰か一人を道連れにする能力を有します。,A Crewmate allied with the Impostors.\nKnown as the Black Cat—a type of madmate.\nTheir win condition is not a Crewmate victory but an Impostor victory.\nTheir own survival is irrelevant，so use any means necessary to ensure an Impostor win.\nAdditionally，when this role is ejected，it has the ability to take one other player with it.,这是一个支持内鬼的船员，也就是所谓的黑猫角色，一种狂人角色。\n他们的胜利条件不是船员获胜，而是内鬼获胜，而且他们的生死无关紧要。\n请用各种方法促使内鬼获胜。\n该角色在被逐出时，有能力带走一名玩家。,這是一個支持內鬼的船員，亦稱黑貓，屬於瘋友角色之一。\n其勝利條件並非船員勝利，而是內鬼勝利，且自身生死無關緊要。\n請採用各種手段助內鬼取勝。\n此角色在被逐出時，具備帶走一名玩家的能力。
+MadRaccoon.Description,インポスターの味方のクルーメイトです。\nいわゆる狂人と呼ばれる役職です。\n勝利条件はクルーメイトの勝利ではなく、インポスターの勝利です。\nその勝利に自身の生死は問われないので、あの手この手でインポスターを勝利に導きましょう。\nこの役職は、他プレイヤーの姿に変身することが出来ます。,
+BlackSanta.Description,インポスターの味方のクルーメイトです。\nいわゆる狂人と呼ばれる役職です。\n勝利条件はクルーメイトの勝利ではなく、インポスターの勝利です。\nその勝利に自身の生死は問われないので、あの手この手でインポスターを勝利に導きましょう。\nこの役職は、「プレゼント」ボタンを押すと、対象のプレイヤーをランダムな役職に変更します。\nただし、対象のプレイヤーがインポスター以外だった場合、自殺してしまいます。,I am a Crewmate allied with the Impostors．\nThis role is commonly referred to as the “Madmate”．\nMy win condition is not the Crewmates’ victory，but the Impostors’ victory．\nWhether I live or die does not matter for that outcome，so use every trick in the book to help the Impostors win．\nThis role can press the "Present" button to change the target player into a random role．\nHowever，if the target player is not an Impostor，I will commit suicide．,我是一个站在内鬼一方的船员。\n这个角色也被称为“狂人”。\n我的胜利条件不是船员胜利，而是内鬼胜利。\n无论我生还是死，只要内鬼获胜我就算胜利，所以请想尽办法帮助内鬼取得胜利。\n这个角色按下“礼物”按钮后，会将目标玩家随机更换为一个角色。\n但如果目标玩家不是内鬼，我就会自杀。,我是一名站在內鬼一方的船員。\n這個角色也被稱為「狂人」。\n我的勝利條件不是船員的勝利，而是內鬼的勝利。\n不論我生或死，只要內鬼贏了，我就算獲勝，所以請千方百計協助內鬼取勝。\n這個角色按下「禮物」按鈕後，會將目標玩家隨機更換為一個職業。\n但如果目標玩家不是內鬼，我就會自殺。
+Worshiper.Description,インポスターの味方のクルーメイトです。\nいわゆる狂人と呼ばれる役職です。\n勝利条件はクルーメイトの勝利ではなく、インポスターの勝利です。\nその勝利に自身の生死は問われないので、あの手この手でインポスターを勝利に導きましょう。\nこの役職は、任意のタイミングで自殺をすることが出来ます。,
+SatsumaAndImo.Description,特に能力を有さないクルーメイト兼マッドメイトです。\n会議を挟むごとにクルーメイトとマッドメイトに交互に変化します。\n勝利条件もターンごとに変化します。,
+MadHawk.Description,インポスターの味方のクルーメイトです。\nいわゆる狂人と呼ばれる役職です。\n勝利条件はクルーメイトの勝利ではなく、インポスターの勝利です。\nその勝利に自身の生死は問われないので、あの手この手でインポスターを勝利に導きましょう。この役職は、タスクターンに使用出来る能力を有します。\n「ホークアイ」ボタンを押すと自分の視野が広がり、周囲の様子を見ることが出来ます。,
+
+
+
+JackalFriends.Description,ジャッカルの味方のクルーメイトです。\nいわゆる狂人と呼ばれる役職のジャッカル版です。\n勝利条件はクルーメイトの勝利ではなく、ジャッカルの勝利です。\nその勝利に自身の生死は問われないので、あの手この手でジャッカルを勝利に導きましょう。,
+
+# Descriptions_GhostRoles
+Cantera.Description,タスクターンに使用出来る能力を有するクルーメイトです。\n「灯火」ボタンを押すと、対象のプレイヤーに取り憑き、一定時間視界を明るくします。\nこの役職は死亡したプレイヤーに割り当てられます。,
+Mirage.Description,タスクターンに発動する能力と、使用出来る能力を有するインポスターです。\n誰かが死亡すると画面が青く発光します。\n死体が発生すると能力を使用出来るようになります。\n「複製」ボタンを押すと、そのターンに発生した死体をその場に複製して設置します。\n生成された死体はリポートすることが出来ます。\nまた、複製した数だけ同じ死体が発見されます。\nこの役職は死亡したプレイヤーに割り当てられます。,
+
+
+
+# Descriptions_Modifier
+ModifierGuesser.Description,会議に関する能力を有する追加役職です。\n元の役職の能力に加えてこの能力を有します。\n会議中に出現するボタンを押し、対象のプレイヤーの役職が何か当てると、そのプレイヤーをキルすることが出来ます。\nただし、外すと自身が死亡してしまいます。\n\nホストモードでは、以下のコマンドを使用して推測します。\n/bt 色の名前 役職名,
+ModifierMadmate.Description,,
+RulerModifier.Description,タスクターンに使用出来る能力を有するインポスター専用モディファイアです。\n「狂わせる」ボタンを押すことで、対象のプレイヤーの役職をマッドメイトに変更することが出来ます。,
+Lovers.Description,独自の勝利条件を持つモディファイアです。\nこのモディファイアは必ずペアで配役されます。\n一部役職によって後から付与されることもあります。\nペアの片方が死亡すると、もう片方もその後を追って共に死亡します。\nこのモディファイアを持つ二人のプレイヤーは、元の役職の勝利条件に加えて独自の勝利条件を持ちます。\n生存者数がラバーズを含む3名以下になると、ラバーズ単独勝利となります。\nただし、完全単独の場合、ラバーズとしてしか勝利できません。\nまた、ラバーズにキル能力を有する人外が含まれる場合、キル能力を有する人外とキル能力を有しないクルーが同数以下になっても、ラバーズが死亡するか、ラバーズが単独勝利するまでゲームが継続します(勝利モードが共勝利の場合を除く)。\n共勝利モードのときは、どちらも生存した状態かつ、ペアのどちらかが元陣営で勝利した際、もう片方のプレイヤーも共に勝利します。,
+JumboModifier.Description,見た目に変化のあるモディファイアです。\n時間経過でどんどん大きくなっていきます。\nクルーメイトのジャンボが成長しきる前に追放されると、全員敗北になります。\nインポスターのジャンボは最大まで成長すると、一度だけ使えるサブキルボタンを獲得します。,
+ModifierSpelunker.Description,プレイヤーを虚弱にするモディファイアです。\nベントを踏んだり、ドアを開けたり、昇降機に乗ったり、はしごを降りたりすると一定確率で死亡してしまいます。\nまた、サボタージュが長引くと不安で死んでしまいます。,
+ModifierHawk.Description,タスクターンに使用出来る能力を追加するモディファイアです。\n「ホークアイ」ボタンを押すと自分の視野が広がり、周囲の様子を見ることが出来ます。,
+
+
+# Intros_Impostor
+EvilGuesserIntro1,名乗りはあの世への片道切符,
+SamuraiIntro1,抜刀一閃,
+SelfBomberIntro1,寄れば咲かせ、大輪の華,
+WaveCannonIntro1,貫く電子の咆哮,
+SerialKillerIntro1,血に飢えし獣,
+SideKillerIntro1,悪意は侵食する,
+MadKillerIntro1,染められし者,
+EvilGamblerIntro1,その命を賭けて,
+PenguinIntro1,ぺちぺち！,
+PusherIntro1,ドンッと一発,
+EvilHackerIntro1,船を包囲する情報の主,
+SuicideWisherIntro1,この世と縁を断ち切って,
+NekoKabochaIntro1,独りはお断り,
+EvilNekomataIntro1,この尻尾は命を掴む,
+MatryoshkaIntro1,その姿は真なりや？,
+ConjurerIntro1,灯火吹き消す包囲陣,
+DoppelgangerIntro1,瓜二つの殺し屋,
+EvilButtonerIntro1,会議の主導権を握りし者,
+NecromancerIntro1,死すれば我が力となりて,If you die\，you become my power,,
+RevenantIntro1,永遠たる呪縛,Eternal Curse,,
+TeleporterIntro1,混沌を集めし者,
+PursuerIntro1,この刃から逃げられると思うなかれ,
+CrabIntro1,カニッカニッカニッカニッ,
+EvilSpeedBoosterIntro1,果まで追い詰める,
+RocketIntro1,打ち上がれ！,
+VampireIntro1,闇に舞うは夜の帝王,
+VampireDependentIntro1,夜に魅入られし者,
+EvilMechanicIntro1,独善的な改造,
+EvilHawkIntro1,この目からは逃れられない,
+
+# Intros_Neutral
+JackalIntro1,暗躍するもう一人の殺人鬼,
+SidekickIntro1,暗躍せし者の右腕,
+WaveCannonJackalIntro1,青色の閃光,
+SidekickWaveCannonIntro1,見習い砲術師,
+BulletIntro1,この命を以て,
+TunaIntro1,止められない、止まらない,
+TeruteruIntro1,その処刑台へ夢を見る,
+OpportunistIntro1,そこに善悪は存在しない,
+WorkpersonIntro1,仕事を、仕事をしなきゃ……,
+PavlovsOwnerIntro1,躾けてあげましょう,
+PavlovsDogIntro1,わん！！！！！！,
+VultureIntro1,悪食の鷲,
+ArsonistIntro1,焔の芸術を魅せましょう,
+AmnesiacIntro1,私は……何者だ？,
+FalseChargesIntro1,この冤罪で全てを狂わせましょう,
+HitmanIntro1,凄腕ヒットマン,
+LoversBreakerIntro1,リア充は全て滅ぼす！！,
+GodIntro1,私は神だ,
+OwlIntro1,闇を駆る狩人,
+SchrodingersCatIntro1,箱の中の猫は一体何？,
+TrueloverIntro1,この純愛を捧げましょう,
+CupidIntro1,運命の糸を紡ぐ,
+SpelunkerIntro1,ひ、ひぃ！死んじゃうよ！,
+BlackHatHackerIntro1,拡散する侵略者,
+PartTimerIntro1,精一杯働きます！,
+
+# Intros_Crewmate
+BaitIntro1,この身を餌に真実を,
+BestFalseChargeIntro1,そ、そんな、冤罪です！,
+SheriffIntro1,この弾丸は真実を貫く,
+NiceGuesserIntro1,真実は会議室で明かせ,
+BalancerIntro1,どちらを選ぶもそれまた運命,
+ChiefIntro1,皆を導くのは私の役目,
+HomeSecurityGuardIntro1,家の警備は任せろ！,
+SeerIntro1,死の音を聞く,
+CelebrityIntro1,誰もが見惚れる輝き,
+DatahackerIntro1,この船に潜む悪意を解析せよ,
+SantaIntro1,良い子には栄光を授けよう,
+JumpDancerIntro1,ぴょんっと飛び出そう！,
+WellBehaverIntro1,礼儀正しく、まともな行いを,
+NiceNekomataIntro1,にゃんこガチャだにゃん！,
+PteranodonIntro1,その翼は谷を繋ぐ,
+NiceButtonerIntro1,お集まりくださ～い！,
+MayorIntro1,その権力は村を救うだろう,
+BakeryIntro1,美味しいパンが焼けました,
+VentTrapperIntro1,捕らえたぞ！,
+SpeedBoosterIntro1,このスピードについてこれるかな！？,
+NiceTeleporterIntro1,皆、しゅうごーう！,
+TaskmasterIntro1,こんな仕事、ちょちょいのちょいさ,
+ToiletFanIntro1,トイレ、全ッ開ッ！,
+NiceMechanicIntro1,この船の整備は私の仕事,
+BodyBuilderIntro1,ムキッ！,
+HamburgerShopIntro1,ハンバーガーはいかがですか？,
+NiceHawkIntro1,この目は悪事を見逃さない,
+WiseManIntro1,聖なる守りを授かりし者,
+
+# Intros_MadRoles
+MadmateIntro1,道を違えし者,
+BlackCatIntro1,その尾は死を運ぶ,
+MadRaccoonIntro1,偽姿の獣,
+BlackSantaIntro1,悪い子には圧倒的力を授けよう,
+WorshiperIntro1,この命を捧げても,
+SatsumaAndImoIntro1,今宵はどちらに味方しようか,
+MadHawkIntro1,この目は悪事に目を瞑る,
+
+JackalFriendsIntro1,暗躍者に心酔せし者,
+
+# Intros_GhostRoles
+CanteraIntro1,暗闇に灯る道標,
+MirageIntro1,虚空を舞う幻影,
+
+# Intros_Modifier
+ModifierGuesserIntro1,そして、推察せよ,
+ModifierMadmateIntro1,そして、あなたは狂っている,
+RulerModifierIntro1,そして、あなたは支配者だ,
+LoversIntro1,そして、あなたは恋をしている,
+JumboModifierIntro1,どんどん大きくなっちゃう,
+ModifierSpelunkerIntro1,そして、あなたは貧弱だ,
+ModifierHawkIntro1,そして、あなたは鋭い目を持つ,
 
 # wins
 WinText,勝利,Win
@@ -745,7 +954,7 @@ PenguinHundredKillDescription,ペンギンの能力で累計100人キルした,K
 
 # Pusher
 PusherButtonName,ドン！,Push!
-PusherRevengeRole,突き落とした相手が猫又系の役職だった場合、ランダムに道連れする,If the player you pushed is a nekomata role, randomly pull along,如果被推的玩家是疯友角色,随机道连,如果被推的玩家是瘋友角色,隨機道連
+PusherRevengeRole,突き落とした相手が猫又系の役職だった場合、ランダムに道連れする,If the player you pushed is a nekomata role，randomly pull along,如果被推的玩家是疯友角色,随机道连,如果被推的玩家是瘋友角色,隨機道連
 
 # EvilHacker Settings
 EvilHackerCanMoveWhileUsingAdmin,アドミン使用中に移動出来る,Can Move While Using Admin,使用管理地图时可以移动,使用管理地圖時可以移動
@@ -844,15 +1053,11 @@ MayorVoteAdditionalVote,追加投票数,Additional Vote
 SuicideButtonText,自滅,Suicide,自杀,自殺
 
 # Necromancer
-NecromancerIntro1,死すれば我が力となりて,If you die\, you become my power,,
-Necromancer.Description,自陣営を増やす能力を有するインポスターです。幽霊を見ることが出来、幽霊に「呪縛」ボタンを押すと、対象のプレイヤーの役職をレヴェナントに変更します。,An impostor who has the ability to increase their own camp. They can see ghosts\, and pressing the "Curse" button on a ghost changes the target player's role to Revenant.,,
 NecromancerCurseCooldown,「呪縛」クールタイム,Curse Cooldown,,
 NecromancerMaxRevenants,レヴェナント作成可能数,Max Revenants,,
 NecromancerCurseButtonText,呪縛,Curse,詛咒,詛咒
 
 # Revenant
-RevenantIntro1,永遠たる呪縛,Eternal Curse,,
-Revenant.Description,インポスター陣営に属する幽霊役職です。タスクターンに使用出来る能力を有します。「呪う」ボタンを押すと対象に取り憑き、視界を奪います。,A ghost role belonging to the Impostor team. Has an ability that can be used during the task turn. Pressing the "Haunt" button possesses the target and steals their vision.,,
 RevenantRequiredTasks,能力に必要なタスク個数,Required Tasks for Ability,,
 RevenantHauntDuration,視界を奪う時間,Haunt Duration,,
 RevenantHauntVision,効果中の視界,Vision During Haunt,,
@@ -929,7 +1134,6 @@ LoversKnowPartnerRole,相方の役職がわかる,Know Partner Role
 LoversKnowPartnerPosition,相方の位置がわかる,Know Partner Position
 
 # Owl
-OwlIntro1,暗闇に羽ばたきし者,The one who flapped his wings in the dark,黑暗中鼓动羽翼之人,在黑暗中鼓動翅膀的人
 OwlCanSpecialBlackoutDeadBodyCount,特殊停電を使えるようになる死体数,Number of bodies that will be able to use special blackout,获得紧急停电所需藏匿的尸体数,啟用黑幕降臨所需的屍體數
 OwlSpecialBlackoutCool,特殊停電のクールタイム,Cool time for special power outages,紧急停电冷却时间,黑幕降臨的冷卻時間
 OwlSpecialBlackoutTime,特殊停電の効果時間,Effect duration of special power outages,紧急停电持续时间,黑幕降臨的持續時間
@@ -942,7 +1146,6 @@ OwlSpecialBlackoutButton,特殊停電,Special Blackout,紧急停电,黑幕降臨
 
 # SchrodingersCat Role and Options
 SchrodingersCat,シュレディンガーの猫,Schrödinger's Cat,薛定谔的猫,薛丁格的貓
-SchrodingersCat.Description,観測されるまで事象は確定しないんだ,Events remain undetermined until observed.,在被觀測前事象不確定。,在被觀測前事象不確定。
 SchrodingersCatHasKillAbility,キル能力を有する,Has kill ability,具有擊殺能力,具有擊殺能力
 SchrodingersCatKillCooldown,キルクールタイム,Kill Cool Time,擊殺冷卻時間,擊殺冷卻時間
 SchrodingersCatKillVictimSuicide,キル者が自殺する,Killer suicides,擊殺者自殺,擊殺者自殺
@@ -1116,20 +1319,17 @@ PartTimerButtonName,バイト,PartTime,打工,打工
 
 # NiceMechanic
 NiceMechanic,ナイスメカニック,Nice Mechanic,好人机械师,好人機械師
-NiceMechanic.Description,ベントを自分の位置に移動させることができるクルーメイトです。\n能力使用中は透明になり、敵から発見されにくくなります。\n一定時間後、ベントは元の位置に戻ります。,A Crewmate who can move vents to their position.\nWhile using the ability, they become transparent and harder to detect.\nAfter a certain time, the vent returns to its original position.,这是一个可以将通风口移动到自己位置的船员。\n使用能力时会变透明，不易被敌人发现。\n一定时间后，通风口会回到原位。,這是一個可以將通風口移動到自己位置的船員。\n使用能力時會變透明，不易被敵人發現。\n一定時間後，通風口會回到原位。
-NiceMechanicCoolTime,メカニック クールタイム,Mechanic Cool Time,机械师冷却时间,機械師冷卻時間
+MechanicButtonText,移設,
+NiceMechanicCoolTime,移設クールタイム,
 NiceMechanicDurationTime,効果持続時間,Effect Duration,效果持续时间,效果持續時間
 NiceMechanicUseVent,ベントを使用できる,Can Use Vent,可以使用通风口,可以使用通風口
-MechanicButtonText,メカニック,Mechanic,机械师,機械師
 
 # EvilMechanic
 EvilMechanic,イビルメカニック,Evil Mechanic,邪恶机械师,邪惡機械師
-EvilMechanic.Description,ベントを自分の位置に移動させることができるインポスターです。\n能力使用中は透明になり、キルやサボタージュに有利になります。\n一定時間後、ベントは元の位置に戻ります。,An Impostor who can move vents to their position.\nWhile using the ability, they become transparent, gaining advantages for kills and sabotage.\nAfter a certain time, the vent returns to its original position.,这是一个可以将通风口移动到自己位置的内鬼。\n使用能力时会变透明，有利于击杀和破坏。\n一定时间后，通风口会回到原位。,這是一個可以將通風口移動到自己位置的內鬼。\n使用能力時會變透明，有利於擊殺和破壞。\n一定時間後，通風口會回到原位。
-EvilMechanicCoolTime,イビルメカニック クールタイム,Evil Mechanic Cool Time,邪恶机械师冷却时间,邪惡機械師冷卻時間
+EvilMechanicCoolTime,移設クールタイム,
 EvilMechanicDurationTime,効果持続時間,Effect Duration,效果持续时间,效果持續時間
 
 # BodyBuilder
-BodyBuilderDescription,<color=#d68f5e>ボディービルダー</color>は全てのタスクを完了した後、\nポージングを行うことができるクルーメイトです。\nポージング中は透明になりますが、移動するとポージングが解除されます。,<color=#d68f5e>BodyBuilder</color> is a crewmate who can pose after completing all tasks.\nWhile posing they become transparent, but moving cancels the pose.,<color=#d68f5e>健身者</color>是一个在完成所有任务后可以摆姿势的船员。\n摆姿势时会变透明，但移动会取消姿势。,<color=#d68f5e>健美運動員</color>是一個在完成所有任務後可以擺姿勢的船員。\n擺姿勢時會變透明，但移動會取消姿勢。
 BodyBuilderChangeAllTaskLiftWeights,全タスクを筋肉に変更,Change All Tasks to Lift Weights,将所有任务改为举重,將所有任務改為舉重
 BodyBuilderTaskOptionAvailable,タスク数を設定,Set Task Numbers,设置任务数量,設置任務數量
 BodyBuilderTaskOption,タスク設定,Task Settings,任务设置,任務設置
@@ -1137,7 +1337,6 @@ BodyBuilderButtonText,ポーズ,Pose,摆姿势,擺姿勢
 BodyBuilderButtonName,ポーズボタン,Pose Button,摆姿势按钮,擺姿勢按鈕
 
 # HamburgerShop
-HamburgerShopDescription,<color=#ffa500>ハンバーガー屋</color>は全てのタスクをハンバーガー作りに変更できるクルーメイトです。\nエアシップのハンバーガー作りタスクが全マップで利用可能になります。,<color=#ffa500>Hamburger Shop</color> is a crewmate who can change all tasks to hamburger making.\nThe Airship's hamburger making task becomes available on all maps.,<color=#ffa500>汉堡店</color>是一个可以将所有任务改为制作汉堡的船员。\n飞艇的制作汉堡任务在所有地图上都可用。,<color=#ffa500>漢堡店</color>是一個可以將所有任務改為製作漢堡的船員。\n飛艇的製作漢堡任務在所有地圖上都可用。
 HamburgerShopChangeAllTasksToBurger,全タスクをハンバーガー作りに変更,Change All Tasks to Hamburger Making,将所有任务改为制作汉堡,將所有任務改為製作漢堡
 HamburgerShopTaskOptionAvailable,タスク数を設定,Set Task Numbers,设置任务数量,設置任務數量
 HamburgerShopTaskOption,タスク設定,Task Settings,任务设置,任務設置
@@ -1154,7 +1353,7 @@ HawkCannotWalkInEffect,ホークアイの効果中は移動できない,Cannot m
 
 # WiseMan
 WiseMan,賢者,Wise Man,贤者,賢者
-WiseManDescription,<color=#55b4ec>賢者</color>は透視能力で壁の向こうを見ることができるクルーメイトです。\n能力使用中はカメラがロックされ、特定の角度で壁を透視できます。\n移動制限を有効にすることで、より集中した観察が可能になります。,<color=#55b4ec>Wise Man</color> is a crewmate who can see through walls with clairvoyance.\nWhile using the ability, the camera is locked and can see through walls at specific angles.\nEnabling movement restrictions allows for more focused observation.,<color=#55b4ec>贤者</color>是一个可以透视墙壁的船员。\n使用能力时摄像头被锁定，可以从特定角度透视墙壁。\n启用移动限制可以进行更专注的观察。,<color=#55b4ec>賢者</color>是一個可以透視牆壁的船員。\n使用能力時攝影機被鎖定，可以從特定角度透視牆壁。\n啟用移動限制可以進行更專注的觀察。
+WiseManDescription,<color=#55b4ec>賢者</color>は透視能力で壁の向こうを見ることができるクルーメイトです。\n能力使用中はカメラがロックされ、特定の角度で壁を透視できます。\n移動制限を有効にすることで、より集中した観察が可能になります。,<color=#55b4ec>Wise Man</color> is a crewmate who can see through walls with clairvoyance.\nWhile using the ability，the camera is locked and can see through walls at specific angles.\nEnabling movement restrictions allows for more focused observation.,<color=#55b4ec>贤者</color>是一个可以透视墙壁的船员。\n使用能力时摄像头被锁定，可以从特定角度透视墙壁。\n启用移动限制可以进行更专注的观察。,<color=#55b4ec>賢者</color>是一個可以透視牆壁的船員。\n使用能力時攝影機被鎖定，可以從特定角度透視牆壁。\n啟用移動限制可以進行更專注的觀察。
 WiseManButtonText,聖なる盾,Holy Shield,神圣盾,神聖盾
 WiseManEnableWiseManWalk,賢者ステップを有効にする,Enable Wise Man Step,启用贤者步,啟用賢者步
 
