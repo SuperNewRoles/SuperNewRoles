@@ -73,6 +73,12 @@ public static class AssignRoles
         CreateTickets();
         AssignedRoleIds.Clear(); // 役職アサイン前にクリア
 
+        foreach (PlayerControl player in PlayerControl.AllPlayerControls)
+        {
+            if (!player.Data.Role.IsSimpleRole)
+                AssignRole(player, player.Data.Role.IsImpostor ? RoleId.Impostor : RoleId.Crewmate);
+        }
+
         // Assign Impostors
         AssignTickets(AssignTickets_HundredPercent[AssignedTeamType.Impostor],
         AssignTickets_NotHundredPercent[AssignedTeamType.Impostor],
@@ -181,7 +187,7 @@ public static class AssignRoles
         List<PlayerControl> targetPlayers = new();
         foreach (PlayerControl player in PlayerControl.AllPlayerControls)
         {
-            if (player.Data.Role.IsImpostor == isImpostor && (isImpostor || ((ExPlayerControl)player).Role is RoleId.Crewmate or RoleId.None))
+            if (player.Data.Role.IsSimpleRole && player.Data.Role.IsImpostor == isImpostor && (isImpostor || ((ExPlayerControl)player).Role is RoleId.Crewmate or RoleId.None))
                 targetPlayers.Add(player);
         }
         if (targetPlayers.Count <= 0)
