@@ -22,19 +22,23 @@
         <EmbeddedResource Include="Resources\**" />
     </ItemGroup>
 
-    <ItemGroup>
+    <ItemGroup Condition="'$(Configuration)' == 'Debug'">
         <Reference Include="$(AmongUs)/BepInEx/core/*.dll" />
         <Reference Include="$(AmongUs)/BepInEx/interop/*.dll" />
     </ItemGroup>
+    <ItemGroup Condition="'$(Configuration)' == 'Release'">
+        <Reference Include="$(Build)/core/*.dll" />
+        <Reference Include="$(Build)/interop/*.dll" />
+    </ItemGroup>
 
-    <Target Name="CopyCustomContent" AfterTargets="AfterBuild">
+    <Target Name="CopyCustomContent" AfterTargets="AfterBuild" Condition="'$(Configuration)' == 'Debug'">
         <Message Text="Second occurrence" />
         <Copy SourceFiles="$(ProjectDir)bin\$(Configuration)\net6.0\SuperNewRoles.dll" DestinationFolder="$(AmongUs)/BepInEx/plugins/" />
         <Exec Command="start &quot;&quot; &quot;$(AmongUs)/Among Us.exe&quot;" />
     </Target>
 
     <ItemGroup>
-        <PackageReference Include="GitInfo" Version="2.0.20">
+    <PackageReference Include="GitInfo" Version="2.0.20">
             <PrivateAssets>all</PrivateAssets>
             <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
         </PackageReference>
