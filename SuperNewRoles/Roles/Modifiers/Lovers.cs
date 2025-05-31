@@ -36,7 +36,7 @@ class Lovers : ModifierBase<Lovers>
     public override bool HiddenOption => true;
 
     [Modifier(ModifierRoleId.Lovers)]
-    [AssignFilter([], [RoleId.Truelover, RoleId.Cupid, RoleId.LoversBreaker])]
+    [AssignFilter([], [RoleId.Truelover, RoleId.LoversBreaker])]
     public static CustomOptionCategory LoversCategory;
 
     [CustomOptionInt("LoversMaxCoupleCount", 0, 15, 1, 0, parentFieldName: nameof(LoversCategory))]
@@ -122,6 +122,7 @@ public class LoversAbility : AbilityBase
         if (Player.IsDead()) return;
         if (ShipStatus.Instance?.enabled != true) return;
         if (!couple.CheckWin(Player)) return;
+        if (couple.lovers.Any(x => x.Player == null || x.Player.IsDead())) return;
         if (ExPlayerControl.ExPlayerControls.Count(player => player.IsAlive()) == couple.lovers.Count + 1)
         {
             EndGamer.RpcEndGameWithWinner(Patches.CustomGameOverReason.LoversWin, WinType.SingleNeutral, couple.lovers.Select(ability => ability.Player).ToArray(), Lovers.Instance.RoleColor, "Lovers", "WinText");
@@ -134,7 +135,18 @@ public class LoversAbility : AbilityBase
         if (ExPlayerControl.LocalPlayer.IsAlive() && ExPlayerControl.LocalPlayer.Role != RoleId.God && !IsCoupleWith(ExPlayerControl.LocalPlayer)) return;
         if (data.Player.cosmetics.nameText.text.Contains("♥")) return;
         data.Player.cosmetics.nameText.text += ModHelpers.Cs(ExPlayerControl.LocalPlayer.IsDead() || ExPlayerControl.LocalPlayer.Role == RoleId.God ? HeartColor : Lovers.Instance.RoleColor, "♥");
-    }
+    }/*
+    private void OnWrapUp(WrapUpEventData data)
+    {
+        if (!Player.AmOwner) return;
+        if (ExPlayerControl.LocalPlayer.IsDead()) return;
+        if (data.exiled == null) return;
+        if (data.exiled.PlayerId == Player.PlayerId) return;
+        if (IsCoupleWith(data.exiled))
+        {
+            ExPlayerControl.LocalPlayer.RpcCustomDeath(CustomDeathType.LoversSuicideMurderWithoutDeadbody);
+        }
+    }*/
     private void OnDie(DieEventData data)
     {
         Logger.Info($"OnDie: {data.player.name}");

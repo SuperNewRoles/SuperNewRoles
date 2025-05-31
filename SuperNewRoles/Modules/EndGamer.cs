@@ -155,13 +155,7 @@ public static class EndGamer
         // ラバーズじゃない人がいる場合
         if (Lovers.LoversWinType == LoversWinType.Single && winners.Any(x => !x.IsLovers()))
         {
-            foreach (ExPlayerControl winner in winners)
-            {
-                if (winner.IsLovers())
-                {
-                    winners.Remove(winner);
-                }
-            }
+            winners.RemoveWhere(x => x.IsLovers());
         }
         if (!cantWinSixAdditionalWinners)
         {

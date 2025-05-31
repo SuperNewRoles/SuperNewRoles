@@ -73,10 +73,8 @@ public static class CustomDeathExtensions
                 FinalStatusManager.SetFinalStatus(player, FinalStatus.LoversSuicide);
                 break;
             case CustomDeathType.LoversSuicideMurderWithoutDeadbody:
-                player.Player.MurderPlayer(player.Player, MurderResultFlags.Succeeded);
-                DeadBody deadBody2 = GameObject.FindObjectsOfType<DeadBody>().FirstOrDefault(x => x.ParentId == player.PlayerId);
-                if (deadBody2 != null)
-                    GameObject.Destroy(deadBody2.gameObject);
+                player.Player.Exiled();
+                MurderEvent.Invoke(source, player, MurderResultFlags.Succeeded);
                 FinalStatusManager.SetFinalStatus(player, FinalStatus.LoversSuicide);
                 break;
             case CustomDeathType.WaveCannon:
