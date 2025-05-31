@@ -1,38 +1,31 @@
+using System;
+using System.Collections.Generic;
 using AmongUs.GameOptions;
-using SuperNewRoles.Roles.Role;
-using SuperNewRoles.Roles.RoleBases;
-using SuperNewRoles.Roles.RoleBases.Interfaces;
+using SuperNewRoles.CustomOptions;
+using SuperNewRoles.Modules;
+using SuperNewRoles.Roles.Ability;
+using UnityEngine;
 
 namespace SuperNewRoles.Roles.Neutral;
 
-public class SidekickWaveCannon : RoleBase, ISidekick, INeutral, IVentAvailable, ISaboAvailable, IImpostorVision
+class SidekickWaveCannon : RoleBase<SidekickWaveCannon>
 {
-    public static new RoleInfo Roleinfo = new(
-        typeof(SidekickWaveCannon),
-        (p) => new SidekickWaveCannon(p),
-        RoleId.SidekickWaveCannon,
-        "SidekickWaveCannon",
-        RoleClass.JackalBlue,
-        new(RoleId.SidekickWaveCannon, TeamTag.Jackal),
-        TeamRoleType.Neutral,
-        TeamType.Neutral
-        );
+    public override RoleId Role { get; } = RoleId.SidekickWaveCannon;
+    public override Color32 RoleColor { get; } = Jackal.Instance.RoleColor;
+    public override List<Func<AbilityBase>> Abilities { get; } = [
+        () => new JSidekickAbility(
+            canUseVent: Jackal.JackalCanUseVent
+        )
+    ];
 
-    public bool CanUseSabo => WaveCannonJackal.Optioninfo.CanUseSabo;
-    public bool CanUseVent => WaveCannonJackal.Optioninfo.CanUseVent;
-    public bool IsImpostorVision => WaveCannonJackal.Optioninfo.IsImpostorVision;
+    public override QuoteMod QuoteMod { get; } = QuoteMod.SuperNewRoles;
+    public override RoleTypes IntroSoundType { get; } = RoleTypes.Crewmate;
+    public override short IntroNum { get; } = 1;
 
-    public RoleId TargetRole => RoleId.WaveCannonJackal;
-    public WaveCannonJackal SidekickedParent;
-
-    public static new IntroInfo Introinfo =
-        new(RoleId.SidekickWaveCannon, introSound: RoleTypes.Shapeshifter);
-    public SidekickWaveCannon(PlayerControl p) : base(p, Roleinfo, null, Introinfo)
-    {
-    }
-
-    public void SetParent(PlayerControl player)
-    {
-        SidekickedParent = player?.GetRoleBase<WaveCannonJackal>();
-    }
+    public override AssignedTeamType AssignedTeam { get; } = AssignedTeamType.Neutral;
+    public override WinnerTeamType WinnerTeam { get; } = WinnerTeamType.Neutral;
+    public override TeamTag TeamTag { get; } = TeamTag.Neutral;
+    public override RoleTag[] RoleTags { get; } = [];
+    public override RoleOptionMenuType OptionTeam { get; } = RoleOptionMenuType.Hidden;
+    public override RoleId[] RelatedRoleIds { get; } = [RoleId.Jackal, RoleId.WaveCannonJackal];
 }

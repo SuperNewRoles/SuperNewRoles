@@ -5,13 +5,10 @@ using AmongUs.GameOptions;
 using HarmonyLib;
 using Hazel;
 using InnerNet;
-using SuperNewRoles.Helpers;
 using UnityEngine;
-using static System.Int32;
 
 namespace SuperNewRoles.Patches;
 
-[Harmony]
 public static class DynamicLobbies
 {
     static int LobbyLimit = 15;
@@ -22,7 +19,7 @@ public static class DynamicLobbies
         public static bool Prefix(AmongUsClient __instance, [HarmonyArgument(0)] ClientData client)
         {
             if (LobbyLimit < __instance.allClients.Count)
-            { // TODO: Fix this canceling start
+            {
                 DisconnectPlayer(__instance, client.Id);
                 return false;
             }
@@ -72,7 +69,7 @@ public static class DynamicLobbies
 
     public static string LobbyLimitChange(string command)
     {
-        if (!TryParse(command[4..], out LobbyLimit))
+        if (!int.TryParse(command[4..], out LobbyLimit))
         {
             return "使い方\n/mp {最大人数}";
         }
@@ -80,13 +77,13 @@ public static class DynamicLobbies
         {
             if (!ModHelpers.IsCustomServer())
             {
-                LobbyLimit = Math.Clamp(LobbyLimit, 4, 15);
+                LobbyLimit = Mathf.Clamp(LobbyLimit, 4, 15);
             }
             if (LobbyLimit != GameManager.Instance.LogicOptions.currentGameOptions.MaxPlayers)
             {
                 GameManager.Instance.LogicOptions.currentGameOptions.SetInt(Int32OptionNames.MaxPlayers, LobbyLimit);
                 FastDestroyableSingleton<GameStartManager>.Instance.LastPlayerCount = LobbyLimit;
-                RPCHelper.RpcSyncOption(GameManager.Instance.LogicOptions.currentGameOptions);
+                RpcSyncOption(GameManager.Instance.LogicOptions.currentGameOptions);
                 return $"ロビーの最大人数を{LobbyLimit}人に変更しました！";
             }
             else
@@ -94,6 +91,28 @@ public static class DynamicLobbies
                 return $"プレイヤー最小人数は {LobbyLimit}です。";
             }
         }
+    }
+
+    public static void RpcSyncOption(IGameOptions options)
+    {
+        GameManager gm = NormalGameManager.Instance;
+        MessageWriter writer = MessageWriter.Get(SendOption.Reliable);
+        writer.StartMessage(5);
+        writer.Write(AmongUsClient.Instance.GameId);
+        {
+            writer.StartMessage(1); //0x01 Data
+            {
+                writer.WritePacked(gm.NetId);
+                writer.StartMessage((byte)4);
+                writer.WriteBytesAndSize(gm.LogicOptions.gameOptionsFactory.ToBytes(options, AprilFoolsMode.IsAprilFoolsModeToggledOn));
+                writer.EndMessage();
+            }
+            writer.EndMessage();
+        }
+        writer.EndMessage();
+
+        AmongUsClient.Instance.SendOrDisconnect(writer);
+        writer.Recycle();
     }/*
     [HarmonyPatch(typeof(InnerNetClient), nameof(InnerNetClient.SendAllStreamedObjects))]
     public static class InnerNetClientSendAllStreamedObjectsPatch
