@@ -183,13 +183,16 @@ RequestInGameSendTitleGray,タイトル,Title,标题,標題
 RequestInGameSendTitleBack,タイトルを入力してください(3文字以上),Please enter a title (at least 3 characters),请输入标题（至少3个字符）,請輸入標題（至少3個字元）
 RequestInGameSendDescriptionGray,メッセージ,Message,消息,訊息
 RequestInGameSendDescriptionBack,メッセージを入力してください(10文字以上),Please enter a message (at least 10 characters),请输入消息（至少10个字符）,請輸入訊息（至少10個字元）
-RequestInGameAgreement,規約: ,Agreement: ,規約: ,規約: 
+RequestInGameAgreement,利用規約はこちら,Agreement is here,利用規約在這裡,利用規約在這裡
 RequestInGameSendButton,同意して送信,Send with agreement,同意后发送,同意後發送
 RequestInGameLoadingData,データを取得中,Loading data
 RequestInGameSendingReport,レポートを送信中,Sending report
 RequestInGameSendingReportProgress,レポートを送信中... ({0}%),Sending report... {0}%,发送报告中...{0}%,發送報告中...{0}%
 RequestInGameLoading,読み込み中...,Loading...
 RequestInGame_MessageTooShort,メッセージが短すぎます。,The message is too short.,消息太短了。,消息太短了。
+RequestInGame_SuccessReport,成功,Success,成功,成功
+RequestInGame_SuccessReportText,送信しました。返信には時間がかかりますのでご了承ください。\n質問の場合は自動で返信されますので、数分後にご確認ください。,Sent. Please note that it may take some time to respond.\nIf it is a question，it will be automatically replied to，so please check it after a few minutes.
+RequestInGame_SuccessReportReturnButton,戻る,Return,返回,返回
 
 # RoleOptionMenu
 RoleOptionMenuType.Impostor,インポスター,Impostor,内鬼,內鬼

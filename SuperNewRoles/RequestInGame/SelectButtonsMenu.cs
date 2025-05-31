@@ -112,7 +112,7 @@ public class SelectButtonsMenu
             GameObject button = buttons.transform.Find("Button_" + buttonName).gameObject;
             SetupButton(button, () => { ReportUIMenu.ShowReportUIMenu(top, (RequestInGameType)Enum.Parse(typeof(RequestInGameType), buttonName)); GameObject.Destroy(top); });
         }
-        SetupButton(buttons.transform.Find("Button_Discord").gameObject, () => { Application.OpenURL("https://supernewroles.com/discord"); });
+        SetupButton(buttons.transform.Find("Button_Discord").gameObject, () => { Application.OpenURL(SocialLinks.DiscordServer); });
         SetupButton(buttons.transform.Find("Button_MessageBox").gameObject, () => { MessageListUI.ShowMessageListUI(top.transform.parent); GameObject.Destroy(top); });
     }
     private static void SetupButton(GameObject button, Action onClick)

@@ -25,7 +25,27 @@ public class ReportUIMenu
         Inner.transform.Find("TextGrayTitle/Text").GetComponent<TextMeshPro>().text = ModTranslation.GetString("RequestInGameSendTitleGray");
         Inner.transform.Find("TextGrayDescription/Text").GetComponent<TextMeshPro>().text = ModTranslation.GetString("RequestInGameSendDescriptionGray");
         Inner.transform.Find("Button_Send/Text").GetComponent<TextMeshPro>().text = ModTranslation.GetString("RequestInGameSendButton");
-        Inner.transform.Find("AgreementText").GetComponent<TextMeshPro>().text = ModTranslation.GetString("RequestInGameSendAgreement");
+        GameObject agreement = Inner.transform.Find("AgreementText").gameObject;
+        TextMeshPro agreementTMP = agreement.GetComponent<TextMeshPro>();
+        agreementTMP.text = ModTranslation.GetString("RequestInGameAgreement");
+
+        PassiveButton agreementButton = agreement.AddComponent<PassiveButton>();
+        agreementButton.Colliders = new Collider2D[] { agreementButton.GetComponent<Collider2D>() };
+        agreementButton.OnClick = new();
+        agreementButton.OnClick.AddListener((UnityAction)(() =>
+        {
+            Application.OpenURL(SNRURLs.ReportInGameAgreement);
+        }));
+        agreementButton.OnMouseOver = new();
+        agreementButton.OnMouseOver.AddListener((UnityAction)(() =>
+        {
+            agreementTMP.color = Color.green;
+        }));
+        agreementButton.OnMouseOut = new();
+        agreementButton.OnMouseOut.AddListener((UnityAction)(() =>
+        {
+            agreementTMP.color = Color.white;
+        }));
 
         ConfigureTextBox(descriptionTextBox);
         ConfigureTextBox(titleTextBox);
@@ -168,7 +188,10 @@ public class ReportUIMenu
     {
         GameObject successUI = GameObject.Instantiate(AssetManager.GetAsset<GameObject>("SuccessReport"), parent);
         successUI.transform.localPosition = new(0f, 0f, -10f);
+        successUI.transform.Find("Title").GetComponent<TextMeshPro>().text = ModTranslation.GetString("RequestInGame_SuccessReport");
+        successUI.transform.Find("Description").GetComponent<TextMeshPro>().text = ModTranslation.GetString("RequestInGame_SuccessReportText");
         GameObject returnButton = successUI.transform.Find("ReturnButton").gameObject;
+        returnButton.transform.Find("Text").GetComponent<TextMeshPro>().text = ModTranslation.GetString("RequestInGame_SuccessReportReturnButton");
         PassiveButton passiveButton = returnButton.AddComponent<PassiveButton>();
         passiveButton.Colliders = new Collider2D[] { passiveButton.GetComponent<Collider2D>() };
         passiveButton.OnClick = new();

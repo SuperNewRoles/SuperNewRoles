@@ -14,7 +14,7 @@ using UnityEngine.Networking;
 namespace SuperNewRoles.Modules;
 public static class Analytics
 {
-    public const string AnalyticsUrl = "https://analytics.supernewroles.com/";
+    public const string AnalyticsUrl = SNRURLs.AnalyticsURL;
     public const string SendDataUrl = "SendData";
     public const string SendClientDataUrl = "SendClientData";
 

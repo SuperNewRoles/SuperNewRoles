@@ -14,7 +14,7 @@ public static class CustomServer
         ServerManager serverManager = FastDestroyableSingleton<ServerManager>.Instance;
         SNRRegion = new StaticHttpRegionInfo(SNRServerName, StringNames.NoTranslation,
                 "cs.supernewroles.com", new([
-                        new("http-1", "https://cs.supernewroles.com", 443, false)
+                        new("http-1", SNRURLs.SNRCS, 443, false)
                     ])).TryCast<IRegionInfo>();
         var regions = new IRegionInfo[2] {
                 SNRRegion,

@@ -19,7 +19,7 @@ namespace SuperNewRoles.Modules;
 
 public static class VersionUpdatesUI
 {
-    public const string ApiUrl = "https://update.supernewroles.com/";
+    public const string ApiUrl = SNRURLs.UpdateURL;
     public const string VersionListUrl = ApiUrl + "versions20";
     // FilePath is now managed by VersionConfigManager
     // private static string FilePath = Path.Combine(BepInEx.Paths.PatcherPluginPath, "snrupdate.json");
@@ -340,7 +340,7 @@ public static class VersionUpdatesUI
         bool active = true;
         scroller.Inner.transform.Find("ReleaseNoteText").GetComponent<TextMeshPro>().text = "";
         LoadingUI.ShowLoadingUI(scroller.Inner.transform, () => ModTranslation.GetString("VersionUpdateReleaseNoteLoading"), () => active);
-        UnityWebRequest request = UnityWebRequest.Get("https://api.github.com/repos/supernewroles/SuperNewRoles/releases/tags/" + version);
+        UnityWebRequest request = UnityWebRequest.Get(SNRURLs.GithubAPITags + "/" + version);
         yield return request.SendWebRequest();
         if (request.result != UnityWebRequest.Result.Success)
         {

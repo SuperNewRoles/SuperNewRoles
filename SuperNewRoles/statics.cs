@@ -29,6 +29,16 @@ public static class VersionInfo
     public static readonly string[] SupportedVanillaVersions = new[] { "2024.3.5" };
 }
 
+public static class SNRURLs
+{
+    public const string ReportInGameAgreement = "https://wiki.supernewroles.com/reporting-in-game-terms";
+    public const string AnalyticsURL = "https://analytics.supernewroles.com/";
+    public const string SNRCS = "https://cs.supernewroles.com";
+    public const string ReportInGameAPI = "https://reports-api.supernewroles.com";
+    public const string UpdateURL = "https://update.supernewroles.com/";
+    public const string GithubAPITags = "https://api.github.com/repos/supernewroles/SuperNewRoles/releases/tags";
+    public const string JoinRoomHost = "joinroom.supernewroles.com";
+}
 public static class BranchConfig
 {
     public const string MasterBranch = "master";
@@ -53,7 +63,7 @@ public static class UIConfig
 
 public static class SocialLinks
 {
-    public const string DiscordServer = "https://discord.gg/Cqfwx82ynN";
+    public const string DiscordServer = "https://supernewroles.com/discord";
     public const string TwitterSnrDevs = "https://twitter.com/SNRDevs";
     public const string TwitterSnrOfficials = "https://twitter.com/SNROfficials";
 }

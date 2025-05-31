@@ -320,7 +320,7 @@ public class JoinRoomURLGenerator // または既存のクラスに追加
         }
 
         // 完全なURLを構築
-        UriBuilder uriBuilder = new("https", "joinroom.supernewroles.com", 443, ApiPath)
+        UriBuilder uriBuilder = new("https", SNRURLs.JoinRoomHost, 443, ApiPath)
         {
             Query = queryStringBuilder.ToString()
         };

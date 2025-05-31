@@ -70,7 +70,7 @@ public class RequestInGameManager
         {
             if (!ValidatedToken)
             {
-                var validateUrl = "https://reports-api.supernewroles.com/validateToken/";
+                var validateUrl = $"{SNRURLs.ReportInGameAPI}/validateToken/";
                 var validateRequest = UnityWebRequest.Get(validateUrl);
                 validateRequest.SetRequestHeader("Authorization", $"Bearer {Token}");
                 yield return validateRequest.SendWebRequest();
@@ -87,7 +87,7 @@ public class RequestInGameManager
             }
         }
 
-        var createUrl = "https://reports-api.supernewroles.com/createAccount/";
+        var createUrl = $"{SNRURLs.ReportInGameAPI}/createAccount/";
         var createRequest = new UnityWebRequest(createUrl, "POST");
         createRequest.downloadHandler = new DownloadHandlerBuffer();
         yield return createRequest.SendWebRequest();
@@ -109,7 +109,7 @@ public class RequestInGameManager
     }
     public static IEnumerator GetThreads(Action<List<Thread>> callback, bool unreadOnly = false)
     {
-        string url = "https://reports-api.supernewroles.com/getThreads/";
+        string url = $"{SNRURLs.ReportInGameAPI}/getThreads/";
         var request = UnityWebRequest.Get(url);
         string token = string.Empty;
         yield return GetOrCreateToken(t => token = t);
@@ -145,7 +145,7 @@ public class RequestInGameManager
     }
     public static IEnumerator GetMessages(string thread_id, Action<List<Message>> callback)
     {
-        string url = $"https://reports-api.supernewroles.com/getMessages/{thread_id}";
+        string url = $"{SNRURLs.ReportInGameAPI}/getMessages/{thread_id}";
         var request = UnityWebRequest.Get(url);
         string token = string.Empty;
         yield return GetOrCreateToken(t => token = t);
@@ -187,7 +187,7 @@ public class RequestInGameManager
             { "content", text }
         };
         var bodyBytes = Encoding.UTF8.GetBytes(JsonConvert.SerializeObject(data.Wrap()));
-        string url = $"https://reports-api.supernewroles.com/sendMessage/{thread_id}";
+        string url = $"{SNRURLs.ReportInGameAPI}/sendMessage/{thread_id}";
         var request = new UnityWebRequest(url, "POST")
         {
             uploadHandler = new UploadHandlerRaw(bodyBytes),
@@ -217,7 +217,7 @@ public class RequestInGameManager
         additionalInfo["message"] = description;
         additionalInfo["title"] = title;
         string data = JsonConvert.SerializeObject(additionalInfo.Wrap());
-        string url = $"https://reports-api.supernewroles.com/sendRequest/{type}";
+        string url = $"{SNRURLs.ReportInGameAPI}/sendRequest/{type}";
         var request = new UnityWebRequest(url, "POST")
         {
             uploadHandler = new UploadHandlerRaw(Encoding.UTF8.GetBytes(data)),
