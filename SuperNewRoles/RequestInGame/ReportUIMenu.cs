@@ -25,6 +25,7 @@ public class ReportUIMenu
         Inner.transform.Find("TextGrayTitle/Text").GetComponent<TextMeshPro>().text = ModTranslation.GetString("RequestInGameSendTitleGray");
         Inner.transform.Find("TextGrayDescription/Text").GetComponent<TextMeshPro>().text = ModTranslation.GetString("RequestInGameSendDescriptionGray");
         Inner.transform.Find("Button_Send/Text").GetComponent<TextMeshPro>().text = ModTranslation.GetString("RequestInGameSendButton");
+        Inner.transform.Find("AgreementText").GetComponent<TextMeshPro>().text = ModTranslation.GetString("RequestInGameSendAgreement");
 
         ConfigureTextBox(descriptionTextBox);
         ConfigureTextBox(titleTextBox);
