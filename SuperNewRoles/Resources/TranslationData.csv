@@ -145,6 +145,11 @@ AprilFoolsOutfitType.Horse,ウマングアス,Horse
 AprilFoolsOutfitType.AlongUs,ロングモード,aLONG us
 AprilFoolsEnableDleks,ドルクス,Dleks ehT
 
+# Analytics
+AnalyticsPopupTitle,解析データの送信,Send analytics data,发送分析数据,發送分析數據
+AnalyticsPopupText,SuperNewRolesの開発の為に、解析データを送信します。\n送信されるデータは以下をご覧ください。\n特定の個人を特定できる情報は送信しません。\nhttps://wiki.supernewroles.com/analytics,For the development of SuperNewRoles,\nwe will send analysis data.\nPlease see below for the details of the data being sent.\nNo personally identifiable information will be transmitted.\nhttps://wiki.supernewroles.com/analytics
+AnalyticsOK,わかった,understand,我明白了,我明白了
+
 # ClientOptions
 ClientOptionsVanilla,バニラ設定,Vanilla Settings,原版设置,原版設置
 ClientOptionsMod,Mod設定,Mod Settings,模组设置,模組設置

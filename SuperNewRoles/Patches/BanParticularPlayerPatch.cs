@@ -10,6 +10,7 @@ public static class PlayerKickHelper
     public static bool KickPlayerIfNeeded(ClientData client, bool kickPC, bool kickAndroid, bool kickOther)
     {
         if (client == null || client.PlatformData == null) return false;
+        if (AmongUsClient.Instance.ClientId == client.Id) return false;
 
         var pf = client.PlatformData.Platform;
 

@@ -80,10 +80,9 @@ public static class MapEditSettingsOptions
     [CustomOptionSelect("TheFungleZiplineUpOrDown", typeof(FungleZiplineDirectionOptions), "FungleZiplineDirectionOptions.", parentFieldName: nameof(TheFungleCanUseZiplineOption))]
     public static FungleZiplineDirectionOptions TheFungleZiplineUpOrDown;
 
+    /* TODO
     [CustomOptionBool("TheFungleCameraOption", false, parentFieldName: nameof(TheFungleSetting))]
     public static bool TheFungleCameraOption;
-
-    /* TODO
 
     [CustomOptionFloat("TheFungleCameraChangeRange", 0.5f, 15f, 0.5f, 7.5f, parentFieldName: nameof(TheFungleCameraOption))]
     public static float TheFungleCameraChangeRange;

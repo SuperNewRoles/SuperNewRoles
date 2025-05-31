@@ -158,9 +158,7 @@ public class CustomCosmeticsLoader
                     }
                 }
                 else
-                {
                     Logger.Error($"assetbundlesが見つかりません: {url}");
-                }
 
                 JToken hatsToken = json["hats"];
                 if (hatsToken != null)
@@ -173,7 +171,8 @@ public class CustomCosmeticsLoader
                             currentPackage = new CustomCosmeticsPackage(
                                 packageName,
                                 packageName,
-                                0
+                                 0,
+                                1
                             );
                             packageMap[packageName] = currentPackage;
                             loadedPackages.Add(currentPackage);
@@ -259,7 +258,8 @@ public class CustomCosmeticsLoader
                             currentPackage = new CustomCosmeticsPackage(
                                 packageName,
                                 packageName,
-                                0
+                                 0,
+                                1
                             );
                             packageMap[packageName] = currentPackage;
                             loadedPackages.Add(currentPackage);
@@ -310,7 +310,8 @@ public class CustomCosmeticsLoader
                             currentPackage = new CustomCosmeticsPackage(
                                 packageName,
                                 packageName,
-                                0
+                                 0,
+                                1
                             );
                             packageMap[packageName] = currentPackage;
                             loadedPackages.Add(currentPackage);
@@ -394,7 +395,15 @@ public class CustomCosmeticsLoader
                 notLoadedAssetBundles.RemoveAt(0); // エラー時もキューから削除して無限ループを防ぐ
             }
         }
-        LoadedPackages.Sort((a, b) => a.name.CompareTo(b.name));
+        LoadedPackages.Sort((a, b) =>
+        {
+            // orderが高いほど先頭にするため、降順でソート
+            int orderComparison = b.order.CompareTo(a.order);
+            if (orderComparison != 0)
+                return orderComparison;
+            // orderが同じ場合は名前でソート
+            return a.name.CompareTo(b.name);
+        });
 
         willLoad = () => { };
         CustomLoadingScreen.PleaseDoWillLoad = true;
@@ -484,7 +493,8 @@ public class CustomCosmeticsLoader
             CustomCosmeticsPackage cosmeticsPackage = new(
                 packageInfo["name"].ToString(),
                 packageInfo["name_en"]?.ToString(),
-                (int)packageInfo["parseversion"]
+                (int)packageInfo["parseversion"],
+                packageInfo["order"] != null ? (int)packageInfo["order"] : 1
             );
             loadedPackages.Add(cosmeticsPackage);
             Logger.Info($"hats {cosmeticsPackage.name} {cosmeticsPackage.version}");
@@ -533,7 +543,8 @@ public class CustomCosmeticsLoader
             CustomCosmeticsPackage cosmeticsPackage = loadedPackages.FirstOrDefault(p => p.name == packageInfo["name"].ToString() && p.name_en == packageInfo["name_en"]?.ToString() && p.version == (int)packageInfo["parseversion"]) ?? new(
                 packageInfo["name"].ToString(),
                 packageInfo["name_en"]?.ToString(),
-                (int)packageInfo["parseversion"]
+                (int)packageInfo["parseversion"],
+                packageInfo["order"] != null ? (int)packageInfo["order"] : 1
             );
             // パッケージが見つからなかった場合のみ追加する
             if (!loadedPackages.Contains(cosmeticsPackage))
@@ -587,7 +598,8 @@ public class CustomCosmeticsLoader
             CustomCosmeticsPackage cosmeticsPackage = loadedPackages.FirstOrDefault(p => p.name == packageInfo["name"].ToString() && p.name_en == packageInfo["name_en"]?.ToString() && p.version == (int)packageInfo["parseversion"]) ?? new(
                 packageInfo["name"].ToString(),
                 packageInfo["name_en"]?.ToString(),
-                (int)packageInfo["parseversion"]
+                (int)packageInfo["parseversion"],
+                packageInfo["order"] != null ? (int)packageInfo["order"] : 1
             );
             // パッケージが見つからなかった場合のみ追加する
             if (!loadedPackages.Contains(cosmeticsPackage))

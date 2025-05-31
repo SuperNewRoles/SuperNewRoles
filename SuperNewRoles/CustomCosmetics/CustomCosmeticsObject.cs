@@ -12,14 +12,16 @@ public class CustomCosmeticsPackage
     public string name { get; }
     public string name_en { get; }
     public int version { get; }
+    public int order { get; }
     public List<CustomCosmeticsHat> hats { get; set; } = [];
     public List<CustomCosmeticsVisor> visors { get; set; } = [];
     public List<CustomCosmeticsNamePlate> namePlates { get; set; } = [];
-    public CustomCosmeticsPackage(string name, string name_en, int version)
+    public CustomCosmeticsPackage(string name, string name_en, int version, int order = 1)
     {
         this.name = name;
         this.name_en = name_en;
         this.version = version;
+        this.order = order;
     }
     public override string ToString()
     {

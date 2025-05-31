@@ -9,8 +9,12 @@ public static class GeneralSettingOptions
     public static bool KickPlatformPlayers;
     [CustomOptionBool("KickPCPlayers", false, parentFieldName: nameof(KickPlatformPlayers))]
     public static bool KickPCPlayers;
-    [CustomOptionBool("KickAndroidPlayers", false, parentFieldName: nameof(KickPlatformPlayers))]
+    /*[CustomOptionBool("KickAndroidPlayers", false, parentFieldName: nameof(KickPlatformPlayers))]
     public static bool KickAndroidPlayers;
+    */
+    // todo:リリース時
+    public static bool KickAndroidPlayers = true;
+
     [CustomOptionBool("KickOtherPlayers", false, parentFieldName: nameof(KickPlatformPlayers))]
     public static bool KickOtherPlayers;
 
