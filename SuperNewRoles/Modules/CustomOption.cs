@@ -18,9 +18,9 @@ public static class CustomOptionManager
 {
 
 
-    [CustomOptionBool("DebugMode", false, parentFieldName: nameof(Categories.GeneralSettings))]
-    public static bool DebugMode;
-    [CustomOptionBool("DebugModeNoGameEnd", false, parentFieldName: nameof(DebugMode))]
+    // [CustomOptionBool("DebugMode", false, parentFieldName: nameof(Categories.GeneralSettings))]
+    public static bool DebugMode = true;
+    [CustomOptionBool("DebugModeNoGameEnd", false)]
     public static bool DebugModeNoGameEnd;
     [CustomOptionBool("SkipStartGameCountdown", false, parentFieldName: nameof(Categories.GeneralSettings))]
     public static bool SkipStartGameCountdown;

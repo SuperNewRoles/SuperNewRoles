@@ -248,6 +248,7 @@ ExclusivityOptionMenuGroupText,グループ {0},Group {0},群組 {0},群組 {0}
 ExclusivityEditMenuTitle,排他設定の編集,Edit Exclusivity Settings,编辑排他设置,編輯排他設置
 ExclusivityEditMenuGroupTitle,グループ {0}の設定,Group {0} Settings,组 {0} 设置,組 {0} 設置
 DebugMode,デバッグモード,Debug Mode,偵錯模式,偵錯模式
+DebugModeNoGameEnd,ゲームを終了しない,No game end
 CustomOptionTask_Short,ショートタスク,Short Tasks,短任務,短任務
 CustomOptionTask_Long,ロングタスク,Long Tasks,长任務,長任務
 CustomOptionTask_Common,通常タスク,Common Tasks,共同任務,共同任務

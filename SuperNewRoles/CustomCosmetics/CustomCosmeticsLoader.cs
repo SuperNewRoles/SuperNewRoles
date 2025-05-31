@@ -34,7 +34,7 @@ public class CustomCosmeticsLoader
     public static string[] CustomCosmeticsURLs = new string[]
     {
             // "https://example.com/custom_cosmetics.json",
-            "https://raw.githubusercontent.com/ykundesu/SuperNewCosmetics/refs/heads/main/cosmetics_next.json",
+            "https://raw.githubusercontent.com/SuperNewRoles/SuperNewCosmetics/refs/heads/main/cosmetics_next.json",
             // $"{SuperNewRolesPlugin.BaseDirectory}/debug_assets.json",
             "https://raw.githubusercontent.com/hinakkyu/TheOtherHats/refs/heads/master/CustomHats.json",
             "https://raw.githubusercontent.com/catudon1276/CatudonCostume/refs/heads/main/CustomHats.json",
