@@ -67,6 +67,7 @@ class RevenantAbility : TargetCustomButtonBase
     private EventListener<TaskCompleteEventData> _taskCompleteListener;
     private EventListener<ShipStatusLightEventData> _shipStatusLightListener;
     private EventListener<EmergencyCheckEventData> _emergencyCheckListener;
+    private EventListener<WrapUpEventData> _wrapUpListener;
     private EventListener _hudManagerUpdateListener;
 
     public List<(float time, ExPlayerControl player)> HauntedPlayers { get; } = [];
@@ -105,6 +106,7 @@ class RevenantAbility : TargetCustomButtonBase
         _shipStatusLightListener = ShipStatusLightEvent.Instance.AddListener(OnShipStatusLight);
         _emergencyCheckListener = EmergencyCheckEvent.Instance.AddListener(OnEmergencyCheck);
         _hudManagerUpdateListener = HudUpdateEvent.Instance.AddListener(OnHudManagerUpdate);
+        _wrapUpListener = WrapUpEvent.Instance.AddListener(OnWrapUp);
         NecromancerHitodamas = new();
     }
     public override void DetachToAlls()
@@ -114,6 +116,7 @@ class RevenantAbility : TargetCustomButtonBase
         _emergencyCheckListener?.RemoveListener();
         _hudManagerUpdateListener?.RemoveListener();
         HauntedPlayers.Clear();
+        _wrapUpListener?.RemoveListener();
     }
     public override void AttachToLocalPlayer()
     {
@@ -138,6 +141,14 @@ class RevenantAbility : TargetCustomButtonBase
             }
         }
         Arrows.Clear();
+    }
+    private void OnWrapUp(WrapUpEventData data)
+    {
+        if (!Player.AmOwner) return;
+        foreach (var haunted in HauntedPlayers)
+        {
+            RpcSetRevenantStatus(this, haunted.player, false);
+        }
     }
     private void OnTaskComplete(TaskCompleteEventData data)
     {
