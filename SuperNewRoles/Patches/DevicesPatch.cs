@@ -7,6 +7,10 @@ using SuperNewRoles.Modules;
 using TMPro;
 using UnityEngine;
 using Il2CppInterop.Runtime.InteropTypes.Arrays;
+using SuperNewRoles.Roles.Ability;
+using static SuperNewRoles.CustomOptions.Categories.MapSettingOptions;
+using System.Linq;
+using SuperNewRoles.Roles.Neutral;
 
 namespace SuperNewRoles.Patches;
 
@@ -15,9 +19,16 @@ namespace SuperNewRoles.Patches;
 /// </summary>
 public static class DevicesPatch
 {
-    public static bool IsAdminRestrict;
+    public static bool DontCountBecausePortableAdmin;
+    public static bool DontCountBecausePortableVitals;
+    private static bool isAdminRestrictOption;
+    private static bool isAdminDisabledOption;
+    public static bool IsAdminRestrict => DontCountBecausePortableAdmin ? false : isAdminRestrictOption;
+    public static bool IsAdminDisabled => isAdminDisabledOption;
     public static bool IsVitalRestrict;
+    public static bool IsVitalDisabled;
     public static bool IsCameraRestrict;
+    public static bool IsCameraDisabled;
     public static TextMeshPro TimeRemaining;
     static HashSet<string> DeviceTypes = new();
     public static Dictionary<string, HashSet<byte>> UsePlayers = new();
@@ -37,26 +48,42 @@ public static class DevicesPatch
         DeviceTypes = new();
         DeviceTimers = new();
 
-        IsAdminRestrict = MapSettingOptions.DeviceAdminOption == DeviceOptionType.Restrict;
-        IsCameraRestrict = MapSettingOptions.DeviceCameraOption == DeviceOptionType.Restrict;
-        IsVitalRestrict = MapSettingOptions.DeviceVitalOrDoorLogOption == DeviceOptionType.Restrict;
+        isAdminRestrictOption = false;
+        isAdminDisabledOption = false;
+        IsCameraRestrict = false;
+        IsCameraDisabled = false;
+        IsVitalRestrict = false;
+        IsVitalDisabled = false;
 
         if (MapSettingOptions.DeviceOptions)
         {
-            if (IsAdminRestrict)
+            if (MapSettingOptions.RestrictionMode == DeviceRestrictionModeType.TimeLimit)
             {
-                DeviceTypes.Add(DeviceType.Admin.ToString());
-                DeviceTimers[DeviceType.Admin.ToString()] = MapSettingOptions.DeviceUseAdminTime;
+                isAdminRestrictOption = MapSettingOptions.DeviceAdminTimeLimit > 0;
+                IsCameraRestrict = MapSettingOptions.DeviceCameraTimeLimit > 0;
+                IsVitalRestrict = MapSettingOptions.DeviceVitalTimeLimit > 0;
+
+                if (isAdminRestrictOption)
+                {
+                    DeviceTypes.Add(DeviceType.Admin.ToString());
+                    DeviceTimers[DeviceType.Admin.ToString()] = MapSettingOptions.DeviceAdminTimeLimit;
+                }
+                if (IsCameraRestrict)
+                {
+                    DeviceTypes.Add(DeviceType.Camera.ToString());
+                    DeviceTimers[DeviceType.Camera.ToString()] = MapSettingOptions.DeviceCameraTimeLimit;
+                }
+                if (IsVitalRestrict)
+                {
+                    DeviceTypes.Add(DeviceType.Vital.ToString());
+                    DeviceTimers[DeviceType.Vital.ToString()] = MapSettingOptions.DeviceVitalTimeLimit;
+                }
             }
-            if (IsCameraRestrict)
+            else if (MapSettingOptions.RestrictionMode == DeviceRestrictionModeType.OnOff)
             {
-                DeviceTypes.Add(DeviceType.Camera.ToString());
-                DeviceTimers[DeviceType.Camera.ToString()] = MapSettingOptions.DeviceUseCameraTime;
-            }
-            if (IsVitalRestrict)
-            {
-                DeviceTypes.Add(DeviceType.Vital.ToString());
-                DeviceTimers[DeviceType.Vital.ToString()] = MapSettingOptions.DeviceUseVitalOrDoorLogTime;
+                isAdminDisabledOption = !MapSettingOptions.DeviceAdminEnabled;
+                IsCameraDisabled = !MapSettingOptions.DeviceCameraEnabled;
+                IsVitalDisabled = !MapSettingOptions.DeviceVitalEnabled;
             }
         }
         SyncTimer = 0f;
@@ -65,6 +92,17 @@ public static class DevicesPatch
     {
         ExPlayerControl player = ExPlayerControl.ById(playerId);
         return player != null && player.IsAlive();
+    }
+    private static void CreateRemainingTextIfNeeded(Transform Parent)
+    {
+        if (TimeRemaining != null) return;
+        TimeRemaining = UnityEngine.Object.Instantiate(FastDestroyableSingleton<HudManager>.Instance.TaskPanel.taskText, Parent);
+        TimeRemaining.alignment = TextAlignmentOptions.BottomRight;
+        TimeRemaining.transform.position = Vector3.zero;
+        TimeRemaining.transform.localPosition = new Vector3(2.75f, 4.65f);
+        TimeRemaining.transform.localScale *= 2f;
+        TimeRemaining.color = Palette.White;
+        TimeRemaining.text = "";
     }
     public static void FixedUpdate()
     {
@@ -77,14 +115,15 @@ public static class DevicesPatch
             if (timer <= 0)
                 continue;
             UsePlayers[deviceType].RemoveWhere(playerId => !ValidPlayer(playerId));
+
             if (UsePlayers[deviceType].Count <= 0)
                 continue;
+
             DeviceTimers[deviceType] -= Time.fixedDeltaTime;
+
             if (SyncTimer <= 0)
             {
-                // RPCを送信する
                 RpcSetDeviceTime(deviceType, DeviceTimers[deviceType]);
-                Logger.Info($"Sync {deviceType}:{DeviceTimers[deviceType]}");
             }
         }
         if (SyncTimer <= 0)
@@ -99,15 +138,17 @@ public static class DevicesPatch
     {
         public static bool Prefix(MapConsole __instance)
         {
-            bool IsUse = !MapSettingOptions.DeviceOptions || MapSettingOptions.DeviceAdminOption != DeviceOptionType.CantUse;
-            return IsUse;
+            DontCountBecausePortableAdmin = false;
+            bool canUse = !(MapSettingOptions.DeviceOptions &&
+                            ((MapSettingOptions.RestrictionMode == DeviceRestrictionModeType.OnOff && IsAdminDisabled) ||
+                             (MapSettingOptions.RestrictionMode == DeviceRestrictionModeType.TimeLimit && IsAdminRestrict && DeviceTimers[DeviceType.Admin.ToString()] <= 0)));
+            return canUse;
         }
     }
 
-    [HarmonyPatch(typeof(MapCountOverlay), nameof(MapCountOverlay.Awake))]
+    [HarmonyPatch(typeof(MapCountOverlay), nameof(MapCountOverlay.OnEnable))]
     class MapCountOverlayAwakePatch
     {
-        [HarmonyPostfix]
         public static void Postfix(MapCountOverlay __instance)
         {
             if (IsAdminRestrict)
@@ -117,23 +158,10 @@ public static class DevicesPatch
                     MapBehaviour.Instance.Close();
                     return;
                 }
-                if (TimeRemaining == null)
-                {
-                    TimeRemaining = UnityEngine.Object.Instantiate(FastDestroyableSingleton<HudManager>.Instance.TaskPanel.taskText, __instance.transform);
-                    TimeRemaining.alignment = TextAlignmentOptions.BottomRight;
-                    TimeRemaining.transform.position = Vector3.zero;
-                    TimeRemaining.transform.localPosition = new Vector3(2.75f, 4.65f);
-                    TimeRemaining.transform.localScale *= 2f;
-                    TimeRemaining.color = Palette.White;
-                    TimeRemaining.text = "";
-                }
+                CreateRemainingTextIfNeeded(__instance.transform);
 
-                // RPCを送信
+                Logger.Info($"[Admin Open] RpcSetDeviceUseStatus Called: Player={PlayerControl.LocalPlayer.PlayerId}, IsOpen=true");
                 RpcSetDeviceUseStatus(DeviceType.Admin, PlayerControl.LocalPlayer.PlayerId, true);
-            }
-            else if (MapSettingOptions.DeviceOptions && MapSettingOptions.DeviceAdminOption == DeviceOptionType.CantUse)
-            {
-                MapBehaviour.Instance.Close();
             }
         }
     }
@@ -143,17 +171,125 @@ public static class DevicesPatch
     {
         public static bool Prefix(MapCountOverlay __instance)
         {
-            if (IsAdminRestrict && DeviceTimers[DeviceType.Admin.ToString()] <= 0)
+            if (MapSettingOptions.DeviceOptions)
             {
-                MapBehaviour.Instance.Close();
-                return false;
+                if (MapSettingOptions.RestrictionMode == DeviceRestrictionModeType.OnOff && IsAdminDisabled)
+                {
+                    MapBehaviour.Instance.Close();
+                    return false;
+                }
+                if (MapSettingOptions.RestrictionMode == DeviceRestrictionModeType.TimeLimit && IsAdminRestrict && DeviceTimers[DeviceType.Admin.ToString()] <= 0)
+                {
+                    MapBehaviour.Instance.Close();
+                    return false;
+                }
             }
-            else if (MapSettingOptions.DeviceOptions && MapSettingOptions.DeviceCameraOption == DeviceOptionType.CantUse)
+            CreateAdmins(__instance);
+            return false;
+        }
+
+        private static void CreateAdmins(MapCountOverlay __instance)
+        {
+            AdvancedAdminAbility advancedAdminAbility = ExPlayerControl.LocalPlayer.GetAbility<AdvancedAdminAbility>();
+            bool commsActive = !(advancedAdminAbility?.Data.canUseAdminDuringComms ?? false) && ModHelpers.IsComms();
+
+            if (!__instance.isSab && commsActive)
             {
-                MapBehaviour.Instance.Close();
-                return false;
+                __instance.isSab = true;
+                __instance.BackgroundColor.SetColor(Palette.DisabledGrey);
+                __instance.SabotageText.gameObject.SetActive(true);
+                return;
             }
-            return true;
+
+            if (__instance.isSab && !commsActive)
+            {
+                __instance.isSab = false;
+                __instance.BackgroundColor.SetColor(Color.green);
+                __instance.SabotageText.gameObject.SetActive(false);
+            }
+
+            bool canSeeImpostorIcon = advancedAdminAbility?.Data.distinctionImpostor ?? false;
+            bool canSeeDeadIcon = advancedAdminAbility?.Data.distinctionDead ?? false;
+
+            for (int i = 0; i < __instance.CountAreas.Length; i++)
+            {
+                CounterArea counterArea = __instance.CountAreas[i];
+
+                if (!commsActive && counterArea.RoomType > SystemTypes.Hallway)
+                {
+                    PlainShipRoom plainShipRoom = ShipStatus.Instance.FastRooms.TryGetValue(counterArea.RoomType, out var room) ? room : null;
+
+                    if (plainShipRoom != null && plainShipRoom.roomArea)
+                    {
+                        HashSet<int> hashSet = new();
+                        int num = plainShipRoom.roomArea.OverlapCollider(__instance.filter, __instance.buffer);
+                        int count = 0;
+                        List<int> colors = new();
+                        int numDeadIcons = 0;
+                        int numImpostorIcons = 0;
+
+                        for (int j = 0; j < num; j++)
+                        {
+                            Collider2D collider2D = __instance.buffer[j];
+                            if (collider2D.CompareTag("DeadBody") && __instance.includeDeadBodies)
+                            {
+                                if (canSeeDeadIcon)
+                                {
+                                    numDeadIcons++;
+                                }
+
+                                count++;
+                                colors.Add(ExPlayerControl.ById(collider2D.GetComponent<DeadBody>().ParentId).Player.CurrentOutfit.ColorId);
+                            }
+                            else
+                            {
+                                ExPlayerControl component = collider2D.GetComponent<PlayerControl>();
+                                if (component?.Player == null) continue;
+                                if (component.Data == null || component.Data.Disconnected || component.Data.IsDead) continue;
+                                if (!__instance.showLivePlayerPosition && component.AmOwner) continue;
+                                if (!hashSet.Add(component.PlayerId)) continue;
+
+                                if (((ExPlayerControl)component).GetAbility<HideInAdminAbility>()?.IsHideInAdmin ?? false) continue;
+
+                                // BlackHatHackerのフィルター
+                                var blackHatHacker = ExPlayerControl.LocalPlayer.GetAbility<BlackHatHackerAbility>();
+                                if (DevicesPatch.DontCountBecausePortableAdmin && blackHatHacker != null && blackHatHacker.AdminAbility != null &&
+                                    !blackHatHacker.InfectedPlayerId.Contains(component.PlayerId) && !component.AmOwner) continue;
+                                if (DevicesPatch.DontCountBecausePortableAdmin && blackHatHacker != null && blackHatHacker.AdminAbility != null && BlackHatHacker.BlackHatHackerIsAdminColor)
+                                    colors.Add(component.Player.CurrentOutfit.ColorId);
+                                count++;
+                                if (canSeeImpostorIcon && component.IsImpostor())
+                                {
+                                    numImpostorIcons++;
+                                }
+                            }
+                        }
+                        counterArea.UpdateCount(count);
+
+                        foreach (PoolableBehavior icon in counterArea.myIcons)
+                        {
+                            Material material = icon.GetComponent<SpriteRenderer>().material;
+                            Color iconColor = numImpostorIcons-- > 0 ? Palette.ImpostorRed : numDeadIcons-- > 0 ? Color.gray : Color.yellow;
+                            material.SetColor(PlayerMaterial.BackColor, iconColor);
+                            material.SetColor(PlayerMaterial.BodyColor, iconColor);
+                        }
+                        if (BlackHatHackerAbility.LocalInstance?.AdminAbility != null && DontCountBecausePortableAdmin)
+                        {
+                            foreach (PoolableBehavior icon in counterArea.myIcons)
+                            {
+                                if (colors.Count <= 0) continue;
+                                Material material = icon.GetComponent<SpriteRenderer>().material;
+                                Color iconColor = Palette.PlayerColors[colors.FirstOrDefault()];
+                                material.SetColor(PlayerMaterial.BackColor, iconColor);
+                                material.SetColor(PlayerMaterial.BodyColor, iconColor);
+                                colors.RemoveAt(0);
+                            }
+                        }
+                    }
+                    else Debug.LogWarning($"Couldn't find counter for:{counterArea.RoomType}");
+                }
+                else counterArea.UpdateCount(0);
+            }
         }
 
         public static void Postfix(MapCountOverlay __instance)
@@ -188,6 +324,7 @@ public static class DevicesPatch
                 GameObject.Destroy(TimeRemaining.gameObject);
                 TimeRemaining = null;
             }
+            Logger.Info($"[Admin Close] RpcSetDeviceUseStatus Called: Player={PlayerControl.LocalPlayer.PlayerId}, IsOpen=false");
             RpcSetDeviceUseStatus(DeviceType.Admin, PlayerControl.LocalPlayer.PlayerId, false);
         }
     }
@@ -197,27 +334,44 @@ public static class DevicesPatch
     [HarmonyPatch(typeof(VitalsMinigame), nameof(VitalsMinigame.Begin))]
     class VitalsMinigameBeginPatch
     {
-        static void Postfix(VitalsMinigame __instance)
+        static bool Prefix(VitalsMinigame __instance)
         {
-            if (MapSettingOptions.DeviceOptions && MapSettingOptions.DeviceVitalOrDoorLogOption == DeviceOptionType.CantUse)
-                __instance.Close();
-            else if (IsVitalRestrict && DeviceTimers[DeviceType.Vital.ToString()] <= 0)
-                __instance.Close();
-            else if (IsVitalRestrict)
+            if (MapSettingOptions.DeviceOptions && !DontCountBecausePortableVitals)
             {
-                if (TimeRemaining == null)
+                if (MapSettingOptions.RestrictionMode == DeviceRestrictionModeType.OnOff && IsVitalDisabled)
                 {
-                    TimeRemaining = UnityEngine.Object.Instantiate(FastDestroyableSingleton<HudManager>.Instance.TaskPanel.taskText, __instance.transform);
-                    TimeRemaining.alignment = TextAlignmentOptions.BottomRight;
-                    TimeRemaining.transform.position = Vector3.zero;
-                    TimeRemaining.transform.localPosition = new Vector3(1.7f, 4.45f);
-                    TimeRemaining.transform.localScale *= 1.8f;
-                    TimeRemaining.color = Palette.White;
-                    TimeRemaining.text = "";
+                    foreach (var vital in __instance.vitals)
+                    {
+                        vital.gameObject.SetActive(false);
+                    }
+                    __instance.Close();
+                    return false;
                 }
-                // RPCを送信
-                RpcSetDeviceUseStatus(DeviceType.Vital, PlayerControl.LocalPlayer.PlayerId, true);
+                if (MapSettingOptions.RestrictionMode == DeviceRestrictionModeType.TimeLimit && IsVitalRestrict)
+                {
+                    if (DeviceTimers[DeviceType.Vital.ToString()] <= 0)
+                    {
+                        foreach (var vital in __instance.vitals)
+                        {
+                            vital.gameObject.SetActive(false);
+                        }
+                        __instance.Close();
+                        return false;
+                    }
+                    if (TimeRemaining == null)
+                    {
+                        TimeRemaining = UnityEngine.Object.Instantiate(FastDestroyableSingleton<HudManager>.Instance.TaskPanel.taskText, __instance.transform);
+                        TimeRemaining.alignment = TextAlignmentOptions.BottomRight;
+                        TimeRemaining.transform.position = Vector3.zero;
+                        TimeRemaining.transform.localPosition = new Vector3(1.7f, 4.45f);
+                        TimeRemaining.transform.localScale *= 1.8f;
+                        TimeRemaining.color = Palette.White;
+                        TimeRemaining.text = "";
+                    }
+                    RpcSetDeviceUseStatus(DeviceType.Vital, PlayerControl.LocalPlayer.PlayerId, true);
+                }
             }
+            return true;
         }
     }
 
@@ -226,9 +380,19 @@ public static class DevicesPatch
     {
         static void Postfix(Minigame __instance)
         {
-            if (__instance is not VitalsMinigame || !IsVitalRestrict)
+            if (__instance is VitalsMinigame)
+            {
+                // BlackHatHackerのバイタル状態をリセット
+                SuperNewRoles.Roles.Ability.BlackHatHackerVitalsState.IsUsingVitals = false;
+                if (DevicesPatch.DontCountBecausePortableVitals)
+                {
+                    DevicesPatch.DontCountBecausePortableVitals = false;
+                    return;
+                }
+            }
+
+            if (__instance is not VitalsMinigame || !(MapSettingOptions.DeviceOptions && MapSettingOptions.RestrictionMode == DeviceRestrictionModeType.TimeLimit && IsVitalRestrict))
                 return;
-            // RPCを送信
             RpcSetDeviceUseStatus(DeviceType.Vital, PlayerControl.LocalPlayer.PlayerId, false);
         }
     }
@@ -238,18 +402,35 @@ public static class DevicesPatch
     {
         static void Postfix(VitalsMinigame __instance)
         {
-            if (IsVitalRestrict && DeviceTimers[DeviceType.Vital.ToString()] <= 0)
+            if (MapSettingOptions.DeviceOptions && !DontCountBecausePortableVitals)
             {
-                __instance.Close();
-                return;
-            }
-            else if (MapSettingOptions.DeviceOptions && MapSettingOptions.DeviceVitalOrDoorLogOption == DeviceOptionType.CantUse)
-            {
-                __instance.Close();
-                return;
+                if (MapSettingOptions.RestrictionMode == DeviceRestrictionModeType.OnOff && IsVitalDisabled)
+                {
+                    __instance.Close();
+                    return;
+                }
+                if (MapSettingOptions.RestrictionMode == DeviceRestrictionModeType.TimeLimit && IsVitalRestrict && DeviceTimers[DeviceType.Vital.ToString()] <= 0)
+                {
+                    __instance.Close();
+                    return;
+                }
             }
 
-            if (!IsVitalRestrict) return;
+            // BlackHatHackerのバイタルフィルター
+            var blackHatHacker = SuperNewRoles.Roles.Ability.BlackHatHackerAbility.LocalInstance;
+            if (blackHatHacker != null && blackHatHacker.Data.CanInfectedVitals &&
+                SuperNewRoles.Roles.Ability.BlackHatHackerVitalsState.IsUsingVitals)
+            {
+                foreach (VitalsPanel vital in __instance.vitals)
+                {
+                    if (vital.PlayerInfo == null) continue;
+                    bool isInfected = blackHatHacker.InfectedPlayerId.Contains(vital.PlayerInfo.PlayerId) ||
+                                     vital.PlayerInfo.Object.AmOwner;
+                    vital.gameObject.SetActive(isInfected);
+                }
+            }
+
+            if (!(MapSettingOptions.DeviceOptions && MapSettingOptions.RestrictionMode == DeviceRestrictionModeType.TimeLimit && IsVitalRestrict)) return;
             if (PlayerControl.LocalPlayer.Data.IsDead)
             {
                 if (TimeRemaining != null) GameObject.Destroy(TimeRemaining.gameObject);
@@ -268,19 +449,27 @@ public static class DevicesPatch
     static void CameraClose()
     {
         IsCameraCloseNow = true;
-        if (!IsCameraRestrict)
+        if (!(MapSettingOptions.DeviceOptions && MapSettingOptions.RestrictionMode == DeviceRestrictionModeType.TimeLimit && IsCameraRestrict))
             return;
-        // RPCを送信
         RpcSetDeviceUseStatus(DeviceType.Camera, PlayerControl.LocalPlayer.PlayerId, false);
     }
 
     static void CameraOpen(Transform instance)
     {
-        if (MapSettingOptions.DeviceOptions && MapSettingOptions.DeviceCameraOption != DeviceOptionType.CantUse)
+        if (MapSettingOptions.DeviceOptions)
         {
-            IsCameraCloseNow = false;
-            if (IsCameraRestrict)
+            if (MapSettingOptions.RestrictionMode == DeviceRestrictionModeType.OnOff && IsCameraDisabled)
             {
+                return;
+            }
+
+            IsCameraCloseNow = false;
+            if (MapSettingOptions.RestrictionMode == DeviceRestrictionModeType.TimeLimit && IsCameraRestrict)
+            {
+                if (DeviceTimers[DeviceType.Camera.ToString()] <= 0)
+                {
+                    return;
+                }
                 if (TimeRemaining == null)
                 {
                     TimeRemaining = UnityEngine.Object.Instantiate(FastDestroyableSingleton<HudManager>.Instance.TaskPanel.taskText, instance);
@@ -294,7 +483,6 @@ public static class DevicesPatch
                     TimeRemaining.color = Palette.White;
                     TimeRemaining.text = "";
                 }
-                // RPCを送信
                 RpcSetDeviceUseStatus(DeviceType.Camera, PlayerControl.LocalPlayer.PlayerId, true);
             }
         }
@@ -338,17 +526,21 @@ public static class DevicesPatch
 
     private static void UpdateCameraTimer(Transform targetTransform, Action closeAction, Vector3 taskTextLocalPosition)
     {
-        if (IsCameraRestrict && DeviceTimers[DeviceType.Camera.ToString()] <= 0)
+        if (MapSettingOptions.DeviceOptions)
         {
-            closeAction();
-            return;
+            if (MapSettingOptions.RestrictionMode == DeviceRestrictionModeType.OnOff && IsCameraDisabled)
+            {
+                closeAction();
+                return;
+            }
+            if (MapSettingOptions.RestrictionMode == DeviceRestrictionModeType.TimeLimit && IsCameraRestrict && DeviceTimers[DeviceType.Camera.ToString()] <= 0)
+            {
+                closeAction();
+                return;
+            }
         }
-        if (MapSettingOptions.DeviceOptions && MapSettingOptions.DeviceCameraOption == DeviceOptionType.CantUse)
-        {
-            closeAction();
-            return;
-        }
-        if (!IsCameraRestrict)
+
+        if (!(MapSettingOptions.DeviceOptions && MapSettingOptions.RestrictionMode == DeviceRestrictionModeType.TimeLimit && IsCameraRestrict))
             return;
         if (PlayerControl.LocalPlayer.Data.IsDead)
         {
@@ -393,7 +585,6 @@ public static class DevicesPatch
     #endregion
 
     #region CustomRPC メソッド
-    // デバイスの使用時間を設定するRPC
     [CustomRPC(onlyOtherPlayer: true)]
     public static void RpcSetDeviceTime(string deviceType, float time)
     {
@@ -401,21 +592,30 @@ public static class DevicesPatch
         Logger.Info($"SET {deviceType}:{DeviceTimers[deviceType]}");
     }
 
-    // デバイスの使用状態を設定するRPC
     [CustomRPC]
     public static void RpcSetDeviceUseStatus(DeviceType deviceType, byte player, bool isOpen)
     {
-        Logger.Info($"SET {deviceType}:{player}:{isOpen}");
+        Logger.Info($"[RPC] RpcSetDeviceUseStatus Received: Device={deviceType}, Player={player}, IsOpen={isOpen}, IsHost={AmongUsClient.Instance.AmHost}");
+
+        string deviceTypeStr = deviceType.ToString();
+        if (!UsePlayers.ContainsKey(deviceTypeStr))
+        {
+            Logger.Warning($"[RPC] RpcSetDeviceUseStatus: Invalid device type string '{deviceTypeStr}' received.");
+            return;
+        }
+
+        Logger.Info($"[RPC] RpcSetDeviceUseStatus Before: UsePlayers[{deviceTypeStr}].Count={UsePlayers[deviceTypeStr].Count}, Contains({player})={UsePlayers[deviceTypeStr].Contains(player)}");
 
         if (isOpen)
         {
-            if (!UsePlayers[deviceType.ToString()].Contains(player))
-                UsePlayers[deviceType.ToString()].Add(player);
+            if (!UsePlayers[deviceTypeStr].Contains(player))
+                UsePlayers[deviceTypeStr].Add(player);
         }
         else
         {
-            UsePlayers[deviceType.ToString()].Remove(player);
+            UsePlayers[deviceTypeStr].Remove(player);
         }
+        Logger.Info($"[RPC] RpcSetDeviceUseStatus After: UsePlayers[{deviceTypeStr}].Count={UsePlayers[deviceTypeStr].Count}");
     }
     #endregion
 }

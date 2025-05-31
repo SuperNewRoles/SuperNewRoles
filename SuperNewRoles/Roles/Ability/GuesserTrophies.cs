@@ -26,11 +26,14 @@ public class GuesserPerfectShotTrophy : SuperTrophyAbility<GuesserPerfectShotTro
     private EventListener<MeetingStartEventData> _onMeetingStartEvent;
     private EventListener<MeetingCloseEventData> _onMeetingCloseEvent;
     private EventListener<GuesserShotEventData> _onGuesserShotEvent;
+    private EventListener<EndGameEventData> _onEndGameEvent;
 
     public override void OnRegister()
     {
         _onMeetingStartEvent = MeetingStartEvent.Instance.AddListener(HandleMeetingStartEvent);
         _onMeetingCloseEvent = MeetingCloseEvent.Instance.AddListener(HandleMeetingCloseEvent);
+        _onGuesserShotEvent = GuesserShotEvent.Instance.AddListener(HandleGuesserShotEvent);
+        _onEndGameEvent = EndGameEvent.Instance.AddListener(HandleEndGameEvent);
     }
 
     private void HandleMeetingStartEvent(MeetingStartEventData data)
@@ -56,9 +59,13 @@ public class GuesserPerfectShotTrophy : SuperTrophyAbility<GuesserPerfectShotTro
     {
         // ミーティングが終了したとき、ミスなしで少なくとも1回以上撃っていればトロフィー獲得
         if (!_hasMisfired && _shotsThisMeeting > 0)
-        {
             Complete();
-        }
+    }
+
+    private void HandleEndGameEvent(EndGameEventData data)
+    {
+        if (!_hasMisfired && _shotsThisMeeting > 0)
+            Complete();
     }
 
     public override void OnDetached()
@@ -80,9 +87,14 @@ public class GuesserPerfectShotTrophy : SuperTrophyAbility<GuesserPerfectShotTro
             GuesserShotEvent.Instance.RemoveListener(_onGuesserShotEvent);
             _onGuesserShotEvent = null;
         }
+
+        if (_onEndGameEvent != null)
+        {
+            EndGameEvent.Instance.RemoveListener(_onEndGameEvent);
+            _onEndGameEvent = null;
+        }
     }
 }
-
 /// <summary>
 /// 1回のミーティングで3人以上キルするトロフィー
 /// </summary>
@@ -94,7 +106,6 @@ public class GuesserTripleKillTrophy : SuperTrophyAbility<GuesserTripleKillTroph
     public override Type[] TargetAbilities => [typeof(GuesserAbility)];
 
     private int _killsThisMeeting = 0;
-    private int _currentMeetingId = -1;
     private const int RequiredKills = 3;
 
     private EventListener<MeetingStartEventData> _onMeetingStartEvent;
@@ -109,7 +120,6 @@ public class GuesserTripleKillTrophy : SuperTrophyAbility<GuesserTripleKillTroph
     private void HandleMeetingStartEvent(MeetingStartEventData data)
     {
         _killsThisMeeting = 0;
-        _currentMeetingId = data.meetingCount;
     }
 
     private void HandleGuesserShotEvent(GuesserShotEventData data)
@@ -142,7 +152,7 @@ public class GuesserTripleKillTrophy : SuperTrophyAbility<GuesserTripleKillTroph
 }
 
 /// <summary>
-/// インポスターを3人以上当てるトロフィー
+/// インポスターを100人以上当てるトロフィー
 /// </summary>
 public class GuesserImpostorHunterTrophy : SuperTrophyAbility<GuesserImpostorHunterTrophy>
 {
@@ -207,7 +217,7 @@ public class GuesserFirstMeetingKillTrophy : SuperTrophyAbility<GuesserFirstMeet
 
     private void HandleMeetingStartEvent(MeetingStartEventData data)
     {
-        _isFirstMeeting = data.meetingCount == 1;
+        _isFirstMeeting = data.meetingCount == 0;
     }
 
     private void HandleGuesserShotEvent(GuesserShotEventData data)
@@ -245,12 +255,10 @@ public class GuesserSharpshooterTrophy : SuperTrophyAbility<GuesserSharpshooterT
     public override Type[] TargetAbilities => [typeof(GuesserAbility)];
 
     private EventListener<GuesserShotEventData> _onGuesserShotEvent;
-    private int _consecutiveSuccessfulShots = 0;
     private const int RequiredConsecutiveShots = 5;
 
     public override void OnRegister()
     {
-        _consecutiveSuccessfulShots = (int)TrophyData;
         _onGuesserShotEvent = GuesserShotEvent.Instance.AddListener(HandleGuesserShotEvent);
     }
 
@@ -262,15 +270,14 @@ public class GuesserSharpshooterTrophy : SuperTrophyAbility<GuesserSharpshooterT
         if (data.isMisFire)
         {
             // 連続成功が途切れたらリセット
-            _consecutiveSuccessfulShots = 0;
+            TrophyData = 0;
         }
         else
         {
             // 成功したら連続カウントを増やす
-            _consecutiveSuccessfulShots++;
-            TrophyData = _consecutiveSuccessfulShots;
+            TrophyData++;
 
-            if (_consecutiveSuccessfulShots >= RequiredConsecutiveShots)
+            if (TrophyData >= RequiredConsecutiveShots)
             {
                 Complete();
             }

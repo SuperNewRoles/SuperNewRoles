@@ -1,4 +1,7 @@
+using System;
 using System.Collections;
+using System.Collections.Generic;
+using System.Diagnostics;
 using BepInEx.Unity.IL2CPP.Utils.Collections;
 using HarmonyLib;
 using UnityEngine;
@@ -9,100 +12,148 @@ namespace SuperNewRoles.Modules;
 
 public static class MapLoader
 {
-    private static ShipStatus skeld;
-    public static ShipStatus Skeld => skeld;
-
     private static ShipStatus airship;
-    public static ShipStatus Airship => airship;
-
-    private static ShipStatus polus;
-    public static ShipStatus Polus => polus;
-
     private static ShipStatus fungle;
-    public static ShipStatus Fungle => fungle;
 
-    public static GameObject SkeldObject => Skeld.gameObject;
+    private static HashSet<AssetReference> loadedMaps = new();
+    private static Dictionary<MapNames, List<Action<ShipStatus>>> loadingMaps = new();
 
-    public static GameObject AirshipObject => Airship.gameObject;
-
-    public static GameObject PolusObject => polus.gameObject;
-
-    public static GameObject FungleObject => fungle.gameObject;
-
-    public static IEnumerator LoadMaps()
+    public static void LoadMap(MapNames map, Action<ShipStatus> onLoaded)
+    {
+        switch (map)
+        {
+            case MapNames.Airship when airship != null:
+                onLoaded(airship);
+                break;
+            case MapNames.Fungle when fungle != null:
+                onLoaded(fungle);
+                break;
+            default:
+                AmongUsClient.Instance.StartCoroutine(LoadMapCoroutine(map, onLoaded).WrapToIl2Cpp());
+                break;
+        }
+    }
+    public static IEnumerator LoadMapAsync(MapNames map, Action<ShipStatus> onLoaded)
+    {
+        switch (map)
+        {
+            case MapNames.Airship when airship != null:
+                onLoaded(airship);
+                break;
+            case MapNames.Fungle when fungle != null:
+                onLoaded(fungle);
+                break;
+            default:
+                yield return LoadMapCoroutine(map, onLoaded).WrapToIl2Cpp();
+                break;
+        }
+    }
+    private static IEnumerator LoadMapCoroutine(MapNames map, Action<ShipStatus> onLoaded)
     {
         while (AmongUsClient.Instance == null) { yield return null; }
-        var prefabs = AmongUsClient.Instance.ShipPrefabs;
-        foreach (MapNames map in new MapNames[] { MapNames.Skeld, MapNames.Polus, MapNames.Airship, MapNames.Fungle })
+        Stopwatch sw = new();
+        sw.Start();
+        if (loadingMaps.ContainsKey(map) && loadingMaps[map] != null && loadingMaps[map].Count > 0)
         {
-            AssetReference ship = prefabs[(int)map];
-            int retryCount = 0;
-            while (retryCount < 10)
+            loadingMaps[map].Add(onLoaded);
+            while (loadingMaps.ContainsKey(map) && loadingMaps[map] != null && loadingMaps[map].Count > 0)
             {
-                if (ship.Asset != null) break;
-                AsyncOperationHandle op = ship.LoadAssetAsync<GameObject>();
-                if (!op.IsValid())
-                {
-                    SuperNewRoles.Logger.Warning($"Could not import [{ship.AssetGUID}] due to invalid Async Operation. Trying again in 5 seconds... (Retry {retryCount + 1}/10)");
-                    yield return new WaitForSeconds(5);
-                    retryCount++;
-                    continue;
-                }
-                yield return op;
-                if (op.Status != AsyncOperationStatus.Succeeded)
-                {
-                    SuperNewRoles.Logger.Warning($"Could not import [{ship.AssetGUID}] due to failed Async Operation. (Retry {retryCount + 1}/10)");
-                    retryCount++;
-                }
-                else
-                {
-                    break;
-                }
-            }
-            if (ship.Asset == null)
-            {
-                SuperNewRoles.Logger.Error($"Failed to load asset [{ship.AssetGUID}] after 10 retries. Ignoring...");
-            }
-            if (ship.Asset != null)
-            {
-                GameObject prefab = ship.Asset.Cast<GameObject>();
-                ShipStatus status = prefab.GetComponent<ShipStatus>();
-                switch (prefab.name)
-                {
-                    case "SkeldShip":
-                        skeld = status;
-                        break;
-                    case "PolusShip":
-                        polus = status;
-                        break;
-                    case "Airship":
-                        airship = status;
-                        break;
-                    case "FungleShip":
-                        fungle = status;
-                        break;
-                }
-
-                SuperNewRoles.Logger.Info($"...{prefab.name} Loaded");
                 yield return null;
             }
-            else SuperNewRoles.Logger.Warning($"Could not import [{ship.AssetGUID}]. Ignoring...");
+            yield break;
         }
-        SuperNewRoles.Logger.Info("Loading End Maps");
+        var prefabs = AmongUsClient.Instance.ShipPrefabs;
+        if (prefabs.Count <= (int)map)
+        {
+            Logger.Error($"Out of range: {map}");
+            yield break;
+        }
+        AssetReference ship = prefabs[(int)map];
+        int retryCount = 0;
+        while (retryCount < 10)
+        {
+            if (ship.Asset != null) break;
+            AsyncOperationHandle op = ship.LoadAssetAsync<GameObject>();
+            if (!op.IsValid())
+            {
+                Logger.Warning($"Could not import [{ship.AssetGUID}] due to invalid Async Operation. Trying again in 5 seconds... (Retry {retryCount + 1}/10)");
+                yield return new WaitForSeconds(5);
+                retryCount++;
+                continue;
+            }
+            yield return op;
+            if (op.Status != AsyncOperationStatus.Succeeded)
+            {
+                SuperNewRoles.Logger.Warning($"Could not import [{ship.AssetGUID}] due to failed Async Operation. (Retry {retryCount + 1}/10)");
+                retryCount++;
+            }
+            else
+            {
+                break;
+            }
+        }
+        if (ship.Asset == null)
+        {
+            SuperNewRoles.Logger.Error($"Failed to load asset [{ship.AssetGUID}] after 10 retries. Ignoring...");
+        }
+        if (ship.Asset != null)
+        {
+            GameObject prefab = ship.Asset.Cast<GameObject>();
+            ShipStatus status = prefab.GetComponent<ShipStatus>();
+            switch (map)
+            {
+                case MapNames.Airship:
+                    airship = status;
+                    break;
+                case MapNames.Fungle:
+                    fungle = status;
+                    break;
+            }
+            loadedMaps.Add(ship);
+            SuperNewRoles.Logger.Info($"...{prefab.name} Loaded");
+            if (loadingMaps.ContainsKey(map))
+            {
+                foreach (var action in loadingMaps[map])
+                {
+                    action(status);
+                }
+                loadingMaps[map].Clear();
+            }
+            yield return null;
+        }
+        else SuperNewRoles.Logger.Warning($"Could not import [{ship.AssetGUID}]. Ignoring...");
+        sw.Stop();
+        SuperNewRoles.Logger.Info($"Loading {map} End Maps: {sw.ElapsedMilliseconds}ms");
         yield break;
     }
 
-
-    [HarmonyPatch(typeof(AmongUsClient), nameof(AmongUsClient.Awake))]
-    public static class AmongUsClientAwakePatch
+    [HarmonyPatch(typeof(ShipStatus), nameof(ShipStatus.OnDestroy))]
+    public static class ShipStatus_OnDestroy_Patch
     {
-        static bool Loaded = false;
-
-        public static void Prefix(AmongUsClient __instance)
+        public static void Prefix()
         {
-            if (Loaded) return;
-            Loaded = true;
-            __instance.StartCoroutine(LoadMaps().WrapToIl2Cpp());
+            UnloadMaps();
         }
+    }
+    [HarmonyPatch(typeof(ShipStatus), nameof(ShipStatus.Awake))]
+    public static class ShipStatus_Awake_Patch
+    {
+        public static void Prefix()
+        {
+        }
+    }
+    private static void UnloadMaps()
+    {
+        foreach (var ship in loadedMaps)
+        {
+            ship.ReleaseAsset();
+        }
+        loadingMaps.Clear();
+        if (airship is not null)
+            airship = null;
+        if (fungle is not null)
+            fungle = null;
+        loadedMaps.Clear();
+        Resources.UnloadUnusedAssets();
     }
 }

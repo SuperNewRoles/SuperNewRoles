@@ -11,20 +11,39 @@ namespace SuperNewRoles.Roles.Ability;
 
 public class CustomTaskAbility : AbilityBase
 {
-    public Func<(bool isTaskTrigger, int all)> IsTaskTrigger { get; }
+    public Func<(bool isTaskTrigger, bool? countTask, int? all)> IsTaskTrigger { get; }
     public TaskOptionData? assignTaskData { get; }
-    public CustomTaskAbility(Func<(bool isTaskTrigger, int all)> isTaskTrigger, TaskOptionData? assignTaskData = null)
+    public CustomTaskAbility(Func<(bool isTaskTrigger, bool? countTask, int? all)> isTaskTrigger, TaskOptionData? assignTaskData = null)
     {
         IsTaskTrigger = isTaskTrigger;
         this.assignTaskData = assignTaskData;
     }
 
-    public (bool isTaskTrigger, int all)? CheckIsTaskTrigger()
+    public (bool isTaskTrigger, bool? countTask, int? all)? CheckIsTaskTrigger()
     {
         return IsTaskTrigger?.Invoke();
     }
     public void AssignTasks()
     {
+        // ローカルプレイヤーでない場合は処理しない（各プレイヤーが自分自身のタスクのみを設定するようにする）
+        if (!Player.AmOwner) return;
+
+        CustomTaskTypeAbility customTaskTypeAbility = Player.GetAbility<CustomTaskTypeAbility>();
+        if (customTaskTypeAbility != null && !customTaskTypeAbility.ShouldChangeTask())
+        {
+            int all = 0;
+            if (assignTaskData != null)
+            {
+                all = assignTaskData.Total;
+            }
+            else
+            {
+                var task = Player.GetAllTaskForShowProgress();
+                all = task.all;
+            }
+            customTaskTypeAbility.AssignTasks(all);
+            return;
+        }
         if (assignTaskData == null) return;
 
         // ShipStatusのインスタンスが存在しない場合は処理しない
@@ -32,9 +51,6 @@ public class CustomTaskAbility : AbilityBase
 
         // プレイヤーが存在しない場合は処理しない
         if (Player == null) return;
-
-        // ローカルプレイヤーでない場合は処理しない（各プレイヤーが自分自身のタスクのみを設定するようにする）
-        if (!Player.AmOwner) return;
 
         // タスクリストを作成
         Il2CppSystem.Collections.Generic.HashSet<TaskTypes> types = new();
@@ -58,12 +74,6 @@ public class CustomTaskAbility : AbilityBase
         var shuffledLongTasks = longTasks.ToSystemList().Shuffled();
         ShipStatus.Instance.AddTasksFromList(ref startIndex, assignTaskData.Long, taskList, types, shuffledLongTasks.ToIl2CppList());
 
-        Logger.Info($"タスク数: {taskList.Count}");
-        foreach (var task in taskList)
-        {
-            Logger.Info($"タスク: {task}");
-        }
-        Logger.Info("--------------------------------");
         // タスクをプレイヤーに割り当てる
         if (taskList.Count > 0)
         {
@@ -74,10 +84,6 @@ public class CustomTaskAbility : AbilityBase
     public static void RpcUncheckedSetTasks(PlayerControl player, System.Collections.Generic.List<byte> taskList)
     {
         player.Data.SetTasks(taskList.ToArray());
-    }
-
-    public override void AttachToLocalPlayer()
-    {
-
+        NameText.UpdateNameInfo(player);
     }
 }

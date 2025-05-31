@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
+using System.Threading.Tasks;
 using HarmonyLib;
 using Hazel;
 using InnerNet;
@@ -23,14 +24,27 @@ public class CustomRPCAttribute : Attribute
     }
 }
 
+public interface ICustomRpcObject
+{
+    void Serialize(MessageWriter writer);
+    void Deserialize(MessageReader reader);
+}
+
 public static class CustomRpcExts
 {
-    [CustomRPC]
-    public static void RpcEndGameForHost(GameOverReason reason)
+    /*[CustomRPC(onlyOtherPlayer: true)]
+    public static void RpcApplyDeadBodyImpulse(byte parentId, float impulseX, float impulseY)
     {
-        if (!AmongUsClient.Instance.AmHost) return;
-        GameManager.Instance.RpcEndGame(reason, false);
-    }
+        foreach (DeadBody deadBody in UnityEngine.Object.FindObjectsOfType<DeadBody>())
+        {
+            if (deadBody.ParentId == parentId)
+            {
+                // 小さなキックオフセットを適用
+                deadBody.transform.position += new UnityEngine.Vector3(impulseX, impulseY, 0f);
+                break;
+            }
+        }
+    }*/
 }
 /// <summary>
 /// カスタムRPCを管理するクラス
@@ -46,19 +60,48 @@ public static class CustomRPCManager
     /// RPC メソッドを保存するディクショナリ
     /// </summary>
     public static Dictionary<string, byte> RpcMethodIds = new();
+    /// <summary>
+    /// キャッシュ用：メソッドからRPC IDを高速取得
+    /// </summary>
+    private static Dictionary<MethodBase, byte> RpcIdsByMethod = new();
+    /// <summary>
+    /// キャッシュ用：メソッドからOnlyOtherPlayerフラグを高速取得
+    /// </summary>
+    private static Dictionary<MethodBase, bool> OnlyOtherFlagsByMethod = new();
+    /// <summary>
+    /// キャッシュ用：メソッドからパラメータ型配列を高速取得
+    /// </summary>
+    private static Dictionary<MethodBase, Type[]> ParamTypesByMethod = new();
+    /// <summary>
+    /// キャッシュ用：インスタンスメソッドかどうか
+    /// </summary>
+    private static HashSet<MethodBase> InstanceMethodSet = new();
 
     /// <summary>
     /// SuperNewRoles専用のRPC識別子
     /// </summary>
-    private static byte SNRRpcId = byte.MaxValue;
+    private const byte SNRRpcId = byte.MaxValue;
     /// <summary>
     /// バージョン同期用のRPC識別子
     /// </summary>
-    public static byte SNRSyncVersionRpc = byte.MaxValue - 1;
+    public const byte SNRSyncVersionRpc = byte.MaxValue - 1;
+    /// <summary>
+    /// ネットワーク移動用のRPC識別子
+    /// </summary>
+    public const byte SNRNetworkTransformRpc = byte.MaxValue - 2;
     /// <summary>
     /// RPCの受信状態を追跡するフラグ
     /// </summary>
     private static bool IsRpcReceived = false;
+
+    /// <summary>
+    /// Writeメソッドの型ごとの処理をキャッシュする辞書
+    /// </summary>
+    private static readonly Dictionary<Type, Action<MessageWriter, object>> WriteActions = new();
+    /// <summary>
+    /// ReadFromTypeメソッドの型ごとの処理をキャッシュする辞書
+    /// </summary>
+    private static readonly Dictionary<Type, Func<MessageReader, object>> ReadActions = new();
 
     /// <summary>
     /// メソッドのハッシュ値を生成
@@ -80,31 +123,47 @@ public static class CustomRPCManager
     /// <summary>
     /// すべてのRPCメソッドを読み込み、登録する
     /// </summary>
-    public static void Load()
+    public static List<Action> Load()
     {
         // すべてのRPCメソッドのハッシュ値を収集
-        var methods = Assembly.GetExecutingAssembly()
+        var methodsWithDetails = SuperNewRolesPlugin.Assembly
             .GetTypes()
             .SelectMany(t => t.GetMethods(BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance | BindingFlags.Static))
-            .Where(m => m.GetCustomAttribute<CustomRPCAttribute>() != null)
-            .OrderBy(m => RpcHashGenerate(m))
+            .Select(m => new
+            {
+                Method = m,
+                Attribute = m.GetCustomAttribute<CustomRPCAttribute>(),
+                Hash = RpcHashGenerate(m), // RpcHashGenerateを一度だけ呼び出す
+                ParamTypes = m.GetParameters().Select(p => p.ParameterType).ToArray() // パラメータ型もここで取得
+            })
+            .Where(m => m.Attribute != null)
+            .OrderBy(m => m.Hash) // 事前に計算したハッシュでソート
             .ToList();
-        SuperNewRolesPlugin.Logger.LogInfo($"[Splash] Start loading {methods.Count} RPC methods");
+
+        List<Action> tasks = new();
+
+        SuperNewRolesPlugin.Logger.LogInfo($"[Splash] Start loading {methodsWithDetails.Count} RPC methods");
 
         // ソートされたハッシュ値に基づいてIDを割り当て
-        for (byte i = 0; i < methods.Count; i++)
+        for (byte i = 0; i < methodsWithDetails.Count; i++)
         {
-            var attribute = methods[i].GetCustomAttribute<CustomRPCAttribute>();
-            // staticメソッドのみ許可
-            if (!methods[i].IsStatic)
+            var methodDetail = methodsWithDetails[i];
+            var method = methodDetail.Method;
+            var attribute = methodDetail.Attribute;
+            var hash = methodDetail.Hash; // 事前計算したハッシュ
+            var paramTypes = methodDetail.ParamTypes; // 事前取得したパラメータ型
+
+            // staticメソッドはもちろん、AbilityBaseのインスタンスメソッドも許可
+            if (!method.IsStatic && !typeof(AbilityBase).IsAssignableFrom(method.DeclaringType))
             {
-                Logger.Error($"CustomRPC: {methods[i].Name} is not static");
+                Logger.Error($"CustomRPC: {method.Name} is not static and not an AbilityBase instance method");
                 continue;
             }
-            SuperNewRolesPlugin.Logger.LogInfo($"[Splash] Loading RPC method ({i + 1}/{methods.Count}): {methods[i].Name}");
-            RegisterRPC(methods[i], attribute, i);
+            SuperNewRolesPlugin.Logger.LogInfo($"[Splash] Loading RPC method ({i + 1}/{methodsWithDetails.Count}): {method.Name}");
+            tasks.Add(RegisterRPC(method, attribute, i, hash, paramTypes)); // ハッシュとパラメータ型を渡す
         }
         SuperNewRolesPlugin.Logger.LogInfo($"[Splash] Registered {RpcMethods.Count} RPC methods");
+        return tasks;
     }
 
 
@@ -113,8 +172,19 @@ public static class CustomRPCManager
     /// </summary>
     /// <param name="method">登録するメソッド</param>
     /// <param name="attribute">CustomRPCAttribute</param>
-    private static void RegisterRPC(MethodInfo method, CustomRPCAttribute attribute, byte id)
+    /// <param name="id">RPC ID</param>
+    /// <param name="hash">メソッドのハッシュ値</param>
+    /// <param name="paramTypes">メソッドのパラメータ型配列</param>
+    private static Action RegisterRPC(MethodInfo method, CustomRPCAttribute attribute, byte id, string hash, Type[] paramTypes)
     {
+        // キャッシュにメソッド情報を登録
+        RpcIdsByMethod[method] = id;
+        OnlyOtherFlagsByMethod[method] = attribute.OnlyOtherPlayer;
+        ParamTypesByMethod[method] = paramTypes; // 事前取得したパラメータ型を使用
+        if (!method.IsStatic && typeof(AbilityBase).IsAssignableFrom(method.DeclaringType))
+        {
+            InstanceMethodSet.Add(method);
+        }
         // RPC送信用の新しいメソッドを定義
         static bool NewMethod(object? __instance, object[] __args, MethodBase __originalMethod)
         {
@@ -125,30 +195,38 @@ public static class CustomRPCManager
                 return true;
             }
 
-            var id = RpcMethodIds[RpcHashGenerate(__originalMethod)];
+            // RPC ID をキャッシュから取得
+            var rpcId = RpcIdsByMethod[__originalMethod];
+            var onlyOther = OnlyOtherFlagsByMethod[__originalMethod];
             // RPC送信の準備
-            MessageWriter writer = AmongUsClient.Instance.StartRpcImmediately(PlayerControl.LocalPlayer.NetId, SNRRpcId, SendOption.Reliable, -1);
-            writer.Write(id);
+            var writer = AmongUsClient.Instance.StartRpcImmediately(PlayerControl.LocalPlayer.NetId, SNRRpcId, SendOption.Reliable, -1);
+            writer.Write(rpcId);
 
-            // 引数を設定
-            foreach (var arg in __args)
+            // インスタンスメソッドならインスタンスを送信
+            if (__instance != null && InstanceMethodSet.Contains(__originalMethod))
             {
-                writer.Write(arg);
+                writer.Write(__instance, __originalMethod.DeclaringType);
+            }
+
+            // 引数を書き込み
+            var originalParamTypes = ParamTypesByMethod[__originalMethod];
+            for (int i = 0; i < __args.Length; i++)
+            {
+                writer.Write(__args[i], originalParamTypes[i]);
             }
 
             // RPC送信
             AmongUsClient.Instance.FinishRpcImmediately(writer);
-            var attr = __originalMethod.GetCustomAttribute<CustomRPCAttribute>();
-            Logger.Info($"Sent RPC: {__originalMethod.Name} {attr?.OnlyOtherPlayer}");
-            return !attr?.OnlyOtherPlayer ?? true;
+            Logger.Info($"Sent RPC: {__originalMethod.Name} OnlyOther={onlyOther}");
+            return !onlyOther;
         }
         Logger.Info($"Registering RPC: {method.Name} {id}");
-        var newMethod = NewMethod;
+        var newHarmonyMethod = NewMethod;
         RpcMethods[id] = method;
-        RpcMethodIds[RpcHashGenerate(method)] = id;
+        RpcMethodIds[hash] = id; // 事前計算したハッシュを使用
 
         // メソッドの中身をRPCを送信するものに入れ替える
-        SuperNewRolesPlugin.Instance.Harmony.Patch(method, new HarmonyMethod(newMethod.Method));
+        return () => SuperNewRolesPlugin.Instance.Harmony.Patch(method, new HarmonyMethod(newHarmonyMethod.Method));
     }
     private static string GetMethodFullName(MethodInfo method)
     {
@@ -169,29 +247,38 @@ public static class CustomRPCManager
         /// </summary>
         public static void Postfix(byte callId, MessageReader reader)
         {
-            Logger.Info($"Received RPC: {callId}");
+            if (callId != 253)
+                Logger.Info($"Received RPC: {callId}");
             // SuperNewRoles専用のRPCの場合
-            if (callId == SNRRpcId)
+            switch (callId)
             {
-                byte id = reader.ReadByte();
-                Logger.Info($"Received RPC: {id}");
-                if (!RpcMethods.TryGetValue(id, out var method))
-                    return;
-
-                // パラメーターを元にobject[]を作成
-                List<object> args = new();
-                for (int i = 0; i < method.GetParameters().Length; i++)
-                {
-                    args.Add(reader.ReadFromType(method.GetParameters()[i].ParameterType));
-                }
-
-                IsRpcReceived = true;
-                Logger.Info($"Received RPC: {method.Name}");
-                method.Invoke(null, args.ToArray());
-            }
-            else if (callId == SNRSyncVersionRpc)
-            {
-                SyncVersion.ReceivedSyncVersion(reader);
+                case SNRRpcId:
+                    byte id = reader.ReadByte();
+                    Logger.Info($"Received RPC: {id}");
+                    if (!RpcMethods.TryGetValue(id, out var method)) return;
+                    // インスタンスメソッドならインスタンスを読み込む
+                    object? instance = null;
+                    if (InstanceMethodSet.Contains(method))
+                    {
+                        instance = reader.ReadFromType(method.DeclaringType);
+                    }
+                    // パラメータを読み込み
+                    var paramTypesRecv = ParamTypesByMethod[method];
+                    var argsRecv = new object[paramTypesRecv.Length];
+                    for (int i = 0; i < paramTypesRecv.Length; i++)
+                    {
+                        argsRecv[i] = reader.ReadFromType(paramTypesRecv[i]);
+                    }
+                    IsRpcReceived = true;
+                    Logger.Info($"Received RPC: {method.Name}");
+                    method.Invoke(instance, argsRecv);
+                    break;
+                case SNRSyncVersionRpc:
+                    SyncVersion.ReceivedSyncVersion(reader);
+                    break;
+                case SNRNetworkTransformRpc:
+                    ModdedNetworkTransform.ReceivedNetworkTransform(reader);
+                    break;
             }
         }
     }
@@ -199,176 +286,436 @@ public static class CustomRPCManager
     /// <summary>
     /// オブジェクトをMessageWriterに書き込む拡張メソッド
     /// </summary>
-    private static void Write(this MessageWriter writer, object obj)
+    private static void Write(this MessageWriter writer, object obj, Type type)
     {
-        if (obj != null && obj.GetType().IsEnum)
+        if (obj != null && type.IsEnum)
         {
-            var underlyingType = Enum.GetUnderlyingType(obj.GetType());
+            var underlyingType = Enum.GetUnderlyingType(type);
             if (underlyingType == typeof(byte))
-                writer.Write((byte)(object)obj);
+                writer.Write((byte)obj);
             else if (underlyingType == typeof(short))
-                ModHelpers.Write(writer, (short)(object)obj);
+                ModHelpers.Write(writer, (short)obj);
             else if (underlyingType == typeof(ushort))
-                writer.Write((ushort)(object)obj);
+                writer.Write((ushort)obj);
             else if (underlyingType == typeof(int))
-                writer.Write((int)(object)obj);
+                writer.Write((int)obj);
             else if (underlyingType == typeof(uint))
-                writer.Write((uint)(object)obj);
+                writer.Write((uint)obj);
             else if (underlyingType == typeof(ulong))
-                writer.Write((ulong)(object)obj);
+                writer.Write((ulong)obj);
             else if (underlyingType == typeof(long))
                 ModHelpers.Write(writer, (long)obj);
             else
                 throw new Exception($"Unsupported enum underlying type: {underlyingType}");
             return;
         }
-        switch (obj)
+
+        if (WriteActions.TryGetValue(type, out var writeAction))
         {
-            case byte b:
-                writer.Write(b);
-                break;
-            case int i:
-                writer.Write(i);
-                break;
-            case short s:
-                ModHelpers.Write(writer, s);
-                break;
-            case ushort us:
-                writer.Write(us);
-                break;
-            case uint ui:
-                writer.Write(ui);
-                break;
-            case ulong ul:
-                writer.Write(ul);
-                break;
-            case long l:
-                ModHelpers.Write(writer, l);
-                break;
-            case float f:
-                writer.Write(f);
-                break;
-            case bool bl:
-                writer.Write(bl);
-                break;
-            case string s:
+            writeAction(writer, obj);
+        }
+        // AbilityBaseのインスタンスメソッドの場合
+        else if (obj is AbilityBase abilityBase)
+        {
+            writer.Write(abilityBase.Player.PlayerId);
+            writer.Write(abilityBase.AbilityId);
+        }
+        else if (obj is ICustomRpcObject customRpcObject) // ICustomRpcObject は WriteActions に登録しにくいので個別対応
+        {
+            customRpcObject.Serialize(writer);
+        }
+        else
+        {
+            // WriteActions にない型の場合は、従来の switch で処理（または例外）
+            // ここでは例外を投げるか、フォールバックのロジックを実装するか選択
+            // 今回は、事前に対応型を登録しておく方針なので、基本的にはここに来ない想定
+            throw new Exception($"Unsupported type for Write: {type}");
+        }
+    }
+
+    static CustomRPCManager() // 静的コンストラクタでWriteActionsとReadActionsを初期化
+    {
+        // WriteActionsの初期化 (既存のコード)
+        // 基本型
+        WriteActions[typeof(byte)] = (writer, val) => writer.Write((byte)val);
+        WriteActions[typeof(int)] = (writer, val) => writer.Write((int)val);
+        WriteActions[typeof(short)] = (writer, val) => ModHelpers.Write(writer, (short)val);
+        WriteActions[typeof(ushort)] = (writer, val) => writer.Write((ushort)val);
+        WriteActions[typeof(uint)] = (writer, val) => writer.Write((uint)val);
+        WriteActions[typeof(ulong)] = (writer, val) => writer.Write((ulong)val);
+        WriteActions[typeof(long)] = (writer, val) => ModHelpers.Write(writer, (long)val);
+        WriteActions[typeof(float)] = (writer, val) => writer.Write((float)val);
+        WriteActions[typeof(bool)] = (writer, val) => writer.Write((bool)val);
+        WriteActions[typeof(string)] = (writer, val) => writer.Write((string)val);
+
+        // リスト型
+        WriteActions[typeof(List<string>)] = (writer, val) =>
+        {
+            var list = val as List<string>;
+            writer.Write(list.Count);
+            foreach (var s in list)
+            {
                 writer.Write(s);
-                break;
-            case Color color:
-                writer.Write(color.r);
-                writer.Write(color.g);
-                writer.Write(color.b);
-                writer.Write(color.a);
-                break;
-            case Color32 color32:
-                writer.Write(color32.r);
-                writer.Write(color32.g);
-                writer.Write(color32.b);
-                writer.Write(color32.a);
-                break;
-            case Dictionary<string, string> dict:
+            }
+        };
+        WriteActions[typeof(List<byte>)] = (writer, val) =>
+        {
+            if (val == null)
+                writer.Write(0);
+            else
+            {
+                var byteList = val as List<byte>;
+                writer.Write(byteList.Count);
+                foreach (var b in byteList)
+                {
+                    writer.Write(b);
+                }
+            }
+        };
+        WriteActions[typeof(List<ExPlayerControl>)] = (writer, val) =>
+        {
+            if (val == null)
+                writer.Write(0);
+            else
+            {
+                var exPcList = val as List<ExPlayerControl>;
+                writer.Write(exPcList.Count);
+                foreach (var exPlayerControl in exPcList)
+                {
+                    if (exPlayerControl == null)
+                        writer.Write(byte.MaxValue);
+                    else
+                        writer.Write(exPlayerControl.PlayerId);
+                }
+            }
+        };
+
+
+        // 色
+        WriteActions[typeof(Color)] = (writer, val) =>
+        {
+            var color = (Color)val;
+            writer.Write(color.r);
+            writer.Write(color.g);
+            writer.Write(color.b);
+            writer.Write(color.a);
+        };
+        WriteActions[typeof(Color32)] = (writer, val) =>
+        {
+            var color32 = (Color32)val;
+            writer.Write(color32.r);
+            writer.Write(color32.g);
+            writer.Write(color32.b);
+            writer.Write(color32.a);
+        };
+
+        // ゲームオブジェクト関連
+        WriteActions[typeof(Vent)] = (writer, val) => writer.Write((byte)((Vent)val).Id);
+        WriteActions[typeof(PlayerControl)] = (writer, val) =>
+        {
+            if (val == null)
+                writer.Write(byte.MaxValue);
+            else
+                writer.Write((val as PlayerControl)?.PlayerId ?? byte.MaxValue);
+        };
+        WriteActions[typeof(PlayerControl[])] = (writer, val) =>
+        {
+            if (val == null)
+                writer.Write(0);
+            else
+            {
+                var pcArray = val as PlayerControl[];
+                writer.Write(pcArray.Length);
+                foreach (var playerControl in pcArray)
+                {
+                    if (playerControl == null)
+                        writer.Write(byte.MaxValue);
+                    else
+                        writer.Write(playerControl.PlayerId);
+                }
+            }
+        };
+        WriteActions[typeof(ExPlayerControl)] = (writer, val) =>
+        {
+            if (val == null)
+                writer.Write(byte.MaxValue);
+            else
+                writer.Write((val as ExPlayerControl)?.PlayerId ?? byte.MaxValue);
+        };
+        WriteActions[typeof(ExPlayerControl[])] = (writer, val) =>
+        {
+            if (val == null)
+                writer.Write(0);
+            else
+            {
+                var exPcArray = val as ExPlayerControl[];
+                writer.Write(exPcArray.Length);
+                foreach (var exPlayerControl in exPcArray)
+                {
+                    if (exPlayerControl == null)
+                        writer.Write(byte.MaxValue);
+                    else
+                        writer.Write(exPlayerControl.PlayerId);
+                }
+            }
+        };
+        WriteActions[typeof(NetworkedPlayerInfo)] = (writer, val) =>
+        {
+            if (val == null)
+                writer.Write(byte.MaxValue);
+            else
+                writer.Write((val as NetworkedPlayerInfo)?.PlayerId ?? byte.MaxValue);
+        };
+        WriteActions[typeof(InnerNetObject)] = (writer, val) => // これは厳密にはサブクラスを捉えられない
+        {
+            if (val == null)
+                writer.Write(uint.MaxValue);
+            else
+                writer.Write((val as InnerNetObject)?.NetId ?? uint.MaxValue);
+        };
+
+        WriteActions[typeof(AbilityBase)] = (writer, val) => // サブクラスはこれでは対応できない
+        {
+            var abilityBase = val as AbilityBase;
+            if (val == null || abilityBase?.Player == null)
+                writer.Write(byte.MaxValue);
+            else
+            {
+                writer.Write(abilityBase.Player.PlayerId);
+                writer.Write(abilityBase.AbilityId);
+            }
+        };
+
+        // Vector
+        WriteActions[typeof(Vector2)] = (writer, val) =>
+        {
+            if (val == null)
+            {
+                writer.Write(0f);
+                writer.Write(0f);
+            }
+            else
+            {
+                Vector2 v2 = (Vector2)val;
+                writer.Write(v2.x);
+                writer.Write(v2.y);
+            }
+        };
+        WriteActions[typeof(Vector3)] = (writer, val) =>
+        {
+            if (val == null)
+            {
+                writer.Write(0f);
+                writer.Write(0f);
+                writer.Write(0f);
+            }
+            else
+            {
+                Vector3 v3 = (Vector3)val;
+                writer.Write(v3.x);
+                writer.Write(v3.y);
+                writer.Write(v3.z);
+            }
+        };
+        WriteActions[typeof(Vector2[])] = (writer, val) =>
+        {
+            if (val == null)
+                writer.Write(0);
+            else
+            {
+                var v2Array = val as Vector2[];
+                writer.Write(v2Array.Length);
+                foreach (var v in v2Array)
+                {
+                    writer.Write(v.x);
+                    writer.Write(v.y);
+                }
+            }
+        };
+        WriteActions[typeof(Vector3[])] = (writer, val) =>
+        {
+            if (val == null)
+                writer.Write(0);
+            else
+            {
+                var v3Array = val as Vector3[];
+                writer.Write(v3Array.Length);
+                foreach (var v in v3Array)
+                {
+                    writer.Write(v.x);
+                    writer.Write(v.y);
+                    writer.Write(v.z);
+                }
+            }
+        };
+
+        // Dictionary
+        WriteActions[typeof(Dictionary<byte, byte>)] = (writer, val) =>
+        {
+            if (val == null)
+                writer.Write(0);
+            else
+            {
+                var dict = val as Dictionary<byte, byte>;
                 writer.Write(dict.Count);
                 foreach (var kvp in dict)
                 {
                     writer.Write(kvp.Key);
                     writer.Write(kvp.Value);
                 }
-                break;
-            case Dictionary<string, int> dictInt:
-                writer.Write(dictInt.Count);
-                foreach (var kvp in dictInt)
+            }
+        };
+        WriteActions[typeof(Dictionary<string, int>)] = (writer, val) =>
+        {
+            if (val == null)
+                writer.Write(0);
+            else
+            {
+                var dict = val as Dictionary<string, int>;
+                writer.Write(dict.Count);
+                foreach (var kvp in dict)
                 {
                     writer.Write(kvp.Key);
                     writer.Write(kvp.Value);
                 }
-                break;
-            case Dictionary<byte, byte> dictByte:
-                writer.Write(dictByte.Count);
-                foreach (var kvp in dictByte)
+            }
+        };
+        WriteActions[typeof(Dictionary<string, byte>)] = (writer, val) =>
+        {
+            if (val == null)
+                writer.Write(0);
+            else
+            {
+                var dict = val as Dictionary<string, byte>;
+                writer.Write(dict.Count);
+                foreach (var kvp in dict)
                 {
                     writer.Write(kvp.Key);
                     writer.Write(kvp.Value);
                 }
-                break;
-            case Dictionary<string, byte> dictStringByte:
-                writer.Write(dictStringByte.Count);
-                foreach (var kvp in dictStringByte)
+            }
+        };
+        WriteActions[typeof(Dictionary<ushort, byte>)] = (writer, val) =>
+        {
+            if (val == null)
+                writer.Write(0);
+            else
+            {
+                var dict = val as Dictionary<ushort, byte>;
+                writer.Write(dict.Count);
+                foreach (var kvp in dict)
                 {
                     writer.Write(kvp.Key);
                     writer.Write(kvp.Value);
                 }
-                break;
-            case Dictionary<ushort, byte> dictUshortByte:
-                writer.Write(dictUshortByte.Count);
-                foreach (var kvp in dictUshortByte)
-                {
-                    writer.Write(kvp.Key);
-                    writer.Write(kvp.Value);
-                }
-                break;
-            case Dictionary<byte, (byte, int)> dictByteWithTuple:
-                writer.Write(dictByteWithTuple.Count);
-                foreach (var kvp in dictByteWithTuple)
+            }
+        };
+        WriteActions[typeof(Dictionary<byte, (byte, int)>)] = (writer, val) =>
+        {
+            if (val == null)
+                writer.Write(0);
+            else
+            {
+                var dict = val as Dictionary<byte, (byte, int)>;
+                writer.Write(dict.Count);
+                foreach (var kvp in dict)
                 {
                     writer.Write(kvp.Key);
                     writer.Write(kvp.Value.Item1);
                     writer.Write(kvp.Value.Item2);
                 }
-                break;
-            case PlayerControl pc:
-                writer.Write(pc.PlayerId);
-                break;
-            case PlayerControl[] pcArray:
-                writer.Write(pcArray.Length);
-                foreach (var playerControl in pcArray)
+            }
+        };
+        WriteActions[typeof(Dictionary<byte, (byte, int, int, int, int, int, int, int)>)] = (writer, val) =>
+        {
+            if (val == null)
+                writer.Write(0);
+            else
+            {
+                var dict = val as Dictionary<byte, (byte, int, int, int, int, int, int, int)>;
+                writer.Write(dict.Count);
+                foreach (var kvp in dict)
                 {
-                    writer.Write(playerControl.PlayerId);
+                    writer.Write(kvp.Key);
+                    writer.Write(kvp.Value.Item1);
+                    writer.Write(kvp.Value.Item2);
+                    writer.Write(kvp.Value.Item3);
+                    writer.Write(kvp.Value.Item4);
+                    writer.Write(kvp.Value.Item5);
+                    writer.Write(kvp.Value.Item6);
+                    writer.Write(kvp.Value.Item7);
+                    writer.Write(kvp.Value.Item8);
                 }
-                break;
-            case ExPlayerControl exPc:
-                writer.Write(exPc.PlayerId);
-                break;
-            case ExPlayerControl[] exPcArray:
-                writer.Write(exPcArray.Length);
-                foreach (var exPlayerControl in exPcArray)
+            }
+        };
+        WriteActions[typeof(Dictionary<byte, float>)] = (writer, val) =>
+        {
+            if (val == null)
+                writer.Write(0);
+            else
+            {
+                var dict = val as Dictionary<byte, float>;
+                writer.Write(dict.Count);
+                foreach (var kvp in dict)
                 {
-                    writer.Write(exPlayerControl.PlayerId);
+                    writer.Write(kvp.Key);
+                    writer.Write(kvp.Value);
                 }
-                break;
-            case NetworkedPlayerInfo networkedPlayerInfo:
-                writer.Write(networkedPlayerInfo.PlayerId);
-                break;
-            case InnerNetObject innerNetObject:
-                writer.Write(innerNetObject.NetId);
-                break;
-            case List<byte> byteList:
-                writer.Write(byteList.Count);
-                foreach (var b in byteList)
+            }
+        };
+        WriteActions[typeof(Dictionary<byte, bool>)] = (writer, val) =>
+        {
+            if (val == null)
+                writer.Write(0);
+            else
+            {
+                var dict = val as Dictionary<byte, bool>;
+                writer.Write(dict.Count);
+                foreach (var kvp in dict)
                 {
-                    writer.Write(b);
+                    writer.Write(kvp.Key);
+                    writer.Write(kvp.Value);
                 }
-                break;
-            case Vector2 v2:
-                writer.Write(v2.x);
-                writer.Write(v2.y);
-                break;
-            case Vector3 v3:
-                writer.Write(v3.x);
-                writer.Write(v3.y);
-                writer.Write(v3.z);
-                break;
-            case AbilityBase abilityBase:
-                if (abilityBase == null || abilityBase.Player == null)
-                    writer.Write(byte.MaxValue);
-                else
-                {
-                    writer.Write(abilityBase.Player.PlayerId);
-                    writer.Write(abilityBase.AbilityId);
-                }
-                break;
-            default:
-                throw new Exception($"Invalid type: {obj.GetType()}");
-        }
+            }
+        };
+
+        // ReadActionsの初期化
+        ReadActions[typeof(byte)] = reader => reader.ReadByte();
+        ReadActions[typeof(int)] = reader => reader.ReadInt32();
+        ReadActions[typeof(short)] = reader => reader.ReadInt16();
+        ReadActions[typeof(ushort)] = reader => reader.ReadUInt16();
+        ReadActions[typeof(uint)] = reader => reader.ReadUInt32();
+        ReadActions[typeof(ulong)] = reader => reader.ReadUInt64();
+        ReadActions[typeof(float)] = reader => reader.ReadSingle();
+        ReadActions[typeof(bool)] = reader => reader.ReadBoolean();
+        ReadActions[typeof(string)] = reader => reader.ReadString();
+        ReadActions[typeof(Vent)] = reader => VentCache.VentById(reader.ReadByte());
+        ReadActions[typeof(List<string>)] = reader => ReadStringList(reader);
+        ReadActions[typeof(PlayerControl)] = reader => (PlayerControl)ExPlayerControl.ById(reader.ReadByte());
+        ReadActions[typeof(PlayerControl[])] = reader => ReadPlayerControlArray(reader);
+        ReadActions[typeof(ExPlayerControl)] = reader => ExPlayerControl.ById(reader.ReadByte());
+        ReadActions[typeof(ExPlayerControl[])] = reader => ReadExPlayerControlArray(reader);
+        ReadActions[typeof(NetworkedPlayerInfo)] = reader => GameData.Instance.GetPlayerById(reader.ReadByte());
+        ReadActions[typeof(RoleId)] = reader => (RoleId)reader.ReadInt32();
+        ReadActions[typeof(Dictionary<string, string>)] = reader => ReadDictionary<string, string>(reader, r => r.ReadString(), r => r.ReadString());
+        ReadActions[typeof(Dictionary<string, int>)] = reader => ReadDictionary<string, int>(reader, r => r.ReadString(), r => r.ReadInt32());
+        ReadActions[typeof(Dictionary<byte, byte>)] = reader => ReadDictionary<byte, byte>(reader, r => r.ReadByte(), r => r.ReadByte());
+        ReadActions[typeof(Dictionary<string, byte>)] = reader => ReadDictionary<string, byte>(reader, r => r.ReadString(), r => r.ReadByte());
+        ReadActions[typeof(Dictionary<ushort, byte>)] = reader => ReadDictionary<ushort, byte>(reader, r => r.ReadUInt16(), r => r.ReadByte());
+        ReadActions[typeof(Dictionary<byte, float>)] = reader => ReadDictionary<byte, float>(reader, r => r.ReadByte(), r => r.ReadSingle());
+        ReadActions[typeof(Dictionary<byte, (byte, int)>)] = reader => ReadDictionaryWithTuple(reader);
+        ReadActions[typeof(Dictionary<byte, (byte, int, int, int, int, int, int, int)>)] = reader => ReadDictionary<byte, (byte, int, int, int, int, int, int, int)>(reader, r => r.ReadByte(), r => (r.ReadByte(), r.ReadInt32(), r.ReadInt32(), r.ReadInt32(), r.ReadInt32(), r.ReadInt32(), r.ReadInt32(), r.ReadInt32()));
+        ReadActions[typeof(Dictionary<byte, bool>)] = reader => ReadDictionary<byte, bool>(reader, r => r.ReadByte(), r => r.ReadBoolean());
+        ReadActions[typeof(Color)] = reader => new Color(reader.ReadSingle(), reader.ReadSingle(), reader.ReadSingle(), reader.ReadSingle());
+        ReadActions[typeof(Color32)] = reader => new Color32(reader.ReadByte(), reader.ReadByte(), reader.ReadByte(), reader.ReadByte());
+        ReadActions[typeof(List<byte>)] = reader => ReadByteList(reader);
+        ReadActions[typeof(List<ExPlayerControl>)] = reader => ReadExPlayerControlList(reader);
+        ReadActions[typeof(Vector2)] = reader => new Vector2(reader.ReadSingle(), reader.ReadSingle());
+        ReadActions[typeof(Vector3)] = reader => new Vector3(reader.ReadSingle(), reader.ReadSingle(), reader.ReadSingle());
+        ReadActions[typeof(Vector2[])] = reader => ReadVector2Array(reader);
+        ReadActions[typeof(Vector3[])] = reader => ReadVector3Array(reader);
+        // IsSubclassOf(typeof(AbilityBase)) や typeof(ICustomRpcObject).IsAssignableFrom(t) は
+        // ReadFromType メソッド内で個別処理
     }
 
     /// <summary>
@@ -389,37 +736,24 @@ public static class CustomRPCManager
                          : throw new Exception($"Unsupported enum underlying type: {underlyingType}");
             return Enum.ToObject(type, value);
         }
-        return type switch
+
+        if (ReadActions.TryGetValue(type, out var readAction))
         {
-            Type t when t == typeof(byte) => reader.ReadByte(),
-            Type t when t == typeof(int) => reader.ReadInt32(),
-            Type t when t == typeof(short) => reader.ReadInt16(),
-            Type t when t == typeof(ushort) => reader.ReadUInt16(),
-            Type t when t == typeof(uint) => reader.ReadUInt32(),
-            Type t when t == typeof(ulong) => reader.ReadUInt64(),
-            Type t when t == typeof(float) => reader.ReadSingle(),
-            Type t when t == typeof(bool) => reader.ReadBoolean(),
-            Type t when t == typeof(string) => reader.ReadString(),
-            Type t when t == typeof(PlayerControl) => ModHelpers.GetPlayerById(reader.ReadByte()),
-            Type t when t == typeof(PlayerControl[]) => ReadPlayerControlArray(reader),
-            Type t when t == typeof(ExPlayerControl) => ExPlayerControl.ById(reader.ReadByte()),
-            Type t when t == typeof(ExPlayerControl[]) => ReadExPlayerControlArray(reader),
-            Type t when t == typeof(NetworkedPlayerInfo) => GameData.Instance.GetPlayerById(reader.ReadByte()),
-            Type t when t == typeof(RoleId) => (RoleId)reader.ReadInt32(),
-            Type t when t == typeof(Dictionary<string, string>) => ReadDictionary<string, string>(reader, r => r.ReadString(), r => r.ReadString()),
-            Type t when t == typeof(Dictionary<string, int>) => ReadDictionary<string, int>(reader, r => r.ReadString(), r => r.ReadInt32()),
-            Type t when t == typeof(Dictionary<byte, byte>) => ReadDictionary<byte, byte>(reader, r => r.ReadByte(), r => r.ReadByte()),
-            Type t when t == typeof(Dictionary<string, byte>) => ReadDictionary<string, byte>(reader, r => r.ReadString(), r => r.ReadByte()),
-            Type t when t == typeof(Dictionary<ushort, byte>) => ReadDictionary<ushort, byte>(reader, r => r.ReadUInt16(), r => r.ReadByte()),
-            Type t when t == typeof(Dictionary<byte, (byte, int)>) => ReadDictionaryWithTuple(reader),
-            Type t when t == typeof(Color) => new Color(reader.ReadSingle(), reader.ReadSingle(), reader.ReadSingle(), reader.ReadSingle()),
-            Type t when t == typeof(Color32) => new Color32(reader.ReadByte(), reader.ReadByte(), reader.ReadByte(), reader.ReadByte()),
-            Type t when t == typeof(List<byte>) => ReadByteList(reader),
-            Type t when t == typeof(Vector2) => new Vector2(reader.ReadSingle(), reader.ReadSingle()),
-            Type t when t == typeof(Vector3) => new Vector3(reader.ReadSingle(), reader.ReadSingle(), reader.ReadSingle()),
-            Type t when t.IsSubclassOf(typeof(AbilityBase)) => ReadAbilityBase(reader),
-            _ => throw new Exception($"Invalid type: {type}")
-        };
+            return readAction(reader);
+        }
+        // ReadActions にない型や特殊な処理が必要な型 (サブクラス、インターフェース)
+        else if (type.IsSubclassOf(typeof(AbilityBase)))
+        {
+            return ReadAbilityBase(reader);
+        }
+        else if (typeof(ICustomRpcObject).IsAssignableFrom(type))
+        {
+            return ReadCustomRpcObject(reader, type);
+        }
+        else
+        {
+            throw new Exception($"Invalid type for ReadFromType: {type}");
+        }
     }
     /// <summary>
     /// AbilityBaseを読み取るヘルパーメソッド
@@ -468,6 +802,16 @@ public static class CustomRPCManager
         }
         return dict;
     }
+    private static List<string> ReadStringList(MessageReader reader)
+    {
+        int count = reader.ReadInt32();
+        var list = new List<string>(count);
+        for (int i = 0; i < count; i++)
+        {
+            list.Add(reader.ReadString());
+        }
+        return list;
+    }
 
     /// <summary>
     /// PlayerControlの配列を読み取る
@@ -478,7 +822,7 @@ public static class CustomRPCManager
         PlayerControl[] array = new PlayerControl[length];
         for (int i = 0; i < length; i++)
         {
-            array[i] = ModHelpers.GetPlayerById(reader.ReadByte());
+            array[i] = (PlayerControl)ExPlayerControl.ById(reader.ReadByte());
         }
         return array;
     }
@@ -498,6 +842,20 @@ public static class CustomRPCManager
     }
 
     /// <summary>
+    /// List<ExPlayerControl>を読み取る
+    /// </summary>
+    private static List<ExPlayerControl> ReadExPlayerControlList(MessageReader reader)
+    {
+        int count = reader.ReadInt32();
+        List<ExPlayerControl> list = new(count);
+        for (int i = 0; i < count; i++)
+        {
+            list.Add(ExPlayerControl.ById(reader.ReadByte()));
+        }
+        return list;
+    }
+
+    /// <summary>
     /// List<byte>を読み取る
     /// </summary>
     private static List<byte> ReadByteList(MessageReader reader)
@@ -509,5 +867,36 @@ public static class CustomRPCManager
             list.Add(reader.ReadByte());
         }
         return list;
+    }
+
+    // Vector2[]を読み取るヘルパーメソッド
+    private static Vector2[] ReadVector2Array(MessageReader reader)
+    {
+        int length = reader.ReadInt32();
+        Vector2[] array = new Vector2[length];
+        for (int i = 0; i < length; i++)
+        {
+            array[i] = new Vector2(reader.ReadSingle(), reader.ReadSingle());
+        }
+        return array;
+    }
+
+    // Vector3[]を読み取るヘルパーメソッド
+    private static Vector3[] ReadVector3Array(MessageReader reader)
+    {
+        int length = reader.ReadInt32();
+        Vector3[] array = new Vector3[length];
+        for (int i = 0; i < length; i++)
+        {
+            array[i] = new Vector3(reader.ReadSingle(), reader.ReadSingle(), reader.ReadSingle());
+        }
+        return array;
+    }
+
+    private static object ReadCustomRpcObject(MessageReader reader, Type type)
+    {
+        var obj = Activator.CreateInstance(type) as ICustomRpcObject;
+        obj?.Deserialize(reader);
+        return obj;
     }
 }

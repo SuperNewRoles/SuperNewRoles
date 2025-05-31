@@ -22,6 +22,8 @@ namespace SuperNewRoles.Modules
             Long = longOption;
             Common = commonOption;
         }
+
+        public int Total => Short + Long + Common;
     }
 
     /// <summary>

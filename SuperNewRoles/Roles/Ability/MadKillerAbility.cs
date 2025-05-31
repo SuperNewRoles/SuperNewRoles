@@ -14,7 +14,9 @@ namespace SuperNewRoles.Roles.Ability;
 public record MadKillerData(
     bool hasImpostorVision,
     bool couldUseVent,
-    float killCooldown
+    float killCooldown,
+    bool cannotBeSeenBeforePromotion,
+    bool cannotSeeImpostorBeforePromotion
 );
 
 public class MadKillerAbility : AbilityBase
@@ -25,8 +27,7 @@ public class MadKillerAbility : AbilityBase
     private CustomVentAbility _ventAbility;
     private ImpostorVisionAbility _visionAbility;
     private KnowImpostorAbility _knowImpostorAbility;
-    private EventListener<DieEventData> _dieEventListener;
-    private EventListener<DisconnectEventData> _disconnectEventListener;
+    private EventListener _fixedUpdateEventListener;
     private EventListener<NameTextUpdateEventData> _nameTextUpdateEventListener;
     public SideKillerAbility ownerAbility;
     public CustomKillButtonAbility _killButtonAbility;
@@ -37,30 +38,24 @@ public class MadKillerAbility : AbilityBase
     {
         _data = data;
         _isAwakened = false;
-        _cannotBeSeenBeforePromotion = false;
+        _cannotBeSeenBeforePromotion = data.cannotBeSeenBeforePromotion;
         _currentKillCooldown = data.killCooldown;
-    }
-
-    public override void Attach(PlayerControl player, ulong abilityId, AbilityParentBase parent)
-    {
-        base.Attach(player, abilityId, parent);
-        _nameTextUpdateEventListener = NameTextUpdateEvent.Instance.AddListener(OnNameTextUpdate);
     }
     private void OnNameTextUpdate(NameTextUpdateEventData data)
     {
         if (data.Player == Player && ExPlayerControl.LocalPlayer.IsImpostor())
         {
-            if (!_cannotBeSeenBeforePromotion || !_isAwakened) return;
+            if (_cannotBeSeenBeforePromotion && !_isAwakened) return;
             NameText.SetNameTextColor(data.Player, Palette.ImpostorRed);
         }
     }
-    public override void AttachToLocalPlayer()
+    public override void AttachToAlls()
     {
-        _dieEventListener = DieEvent.Instance.AddListener(OnPlayerDead);
-        _disconnectEventListener = DisconnectEvent.Instance.AddListener(OnPlayerDisconnect);
+        base.AttachToAlls();
+        _nameTextUpdateEventListener = NameTextUpdateEvent.Instance.AddListener(OnNameTextUpdate);
         _ventAbility = new CustomVentAbility(() => _data.couldUseVent);
         _visionAbility = new ImpostorVisionAbility(() => _data.hasImpostorVision);
-        _knowImpostorAbility = new KnowImpostorAbility(() => !_cannotBeSeenBeforePromotion);
+        _knowImpostorAbility = new KnowImpostorAbility(() => !_cannotBeSeenBeforePromotion || !_data.cannotSeeImpostorBeforePromotion);
         _killButtonAbility = new CustomKillButtonAbility(() => _isAwakened, () => _currentKillCooldown, () => true, isTargetable: (player) => SetTargetPatch.ValidMadkiller(player));
 
         AbilityParentAbility parentAbility = new(this);
@@ -69,22 +64,31 @@ public class MadKillerAbility : AbilityBase
         Player.AttachAbility(_knowImpostorAbility, parentAbility);
         Player.AttachAbility(_killButtonAbility, parentAbility);
     }
-
-    private void OnPlayerDead(DieEventData data)
+    public override void DetachToAlls()
     {
-        if (ownerAbility?.Player != null && data.player.PlayerId == ownerAbility.Player.PlayerId)
+        base.DetachToAlls();
+        _nameTextUpdateEventListener?.RemoveListener();
+    }
+    public override void AttachToLocalPlayer()
+    {
+        base.AttachToLocalPlayer();
+        _fixedUpdateEventListener = FixedUpdateEvent.Instance.AddListener(OnFixedUpdate);
+    }
+    public override void DetachToLocalPlayer()
+    {
+        base.DetachToLocalPlayer();
+        _fixedUpdateEventListener?.RemoveListener();
+    }
+
+    private void OnFixedUpdate()
+    {
+        if (_isAwakened || Player.IsDead()) return;
+        if (ownerAbility?.Player == null || ownerAbility.Player.IsDead())
         {
             Awaken();
         }
     }
 
-    private void OnPlayerDisconnect(DisconnectEventData data)
-    {
-        if (ownerAbility?.Player != null && data.disconnectedPlayer.PlayerId == ownerAbility.Player.PlayerId)
-        {
-            Awaken();
-        }
-    }
 
     private void Awaken()
     {
@@ -99,13 +103,6 @@ public class MadKillerAbility : AbilityBase
         if (player.IsDead()) return;
         RoleManager.Instance.SetRole(player, RoleTypes.Impostor);
         NameText.UpdateAllNameInfo();
-    }
-
-    public override void DetachToLocalPlayer()
-    {
-        base.DetachToLocalPlayer();
-        DieEvent.Instance.RemoveListener(_dieEventListener);
-        DisconnectEvent.Instance.RemoveListener(_disconnectEventListener);
     }
 
     // 新しい設定を適用するメソッド

@@ -41,26 +41,30 @@ public static class MapSettingOptions
     [CustomOptionBool("DeviceOptions", false, parentFieldName: nameof(Categories.MapSettings))]
     public static bool DeviceOptions;
 
-    // アドミン設定
-    [CustomOptionSelect("DeviceAdminOption", typeof(DeviceOptionType), "DeviceOptionType.", parentFieldName: nameof(DeviceOptions))]
-    public static DeviceOptionType DeviceAdminOption;
+    // 新しい: 制限の方式
+    [CustomOptionSelect("RestrictionMode", typeof(DeviceRestrictionModeType), "DeviceRestrictionModeType.", parentFieldName: nameof(DeviceOptions))]
+    public static DeviceRestrictionModeType RestrictionMode;
 
-    [CustomOptionFloat("DeviceTimeSettingAdmin", 0f, 120f, 2.5f, 10f, parentFieldName: nameof(DeviceAdminOption), parentActiveValue: DeviceOptionType.Restrict)]
-    public static float DeviceUseAdminTime;
+    // --- 「ON/OFF」モード時の設定 ---
+    [CustomOptionBool("DeviceAdminEnabled", true, parentFieldName: nameof(RestrictionMode), parentActiveValue: DeviceRestrictionModeType.OnOff)]
+    public static bool DeviceAdminEnabled;
 
-    // バイタル/ドアログ設定
-    [CustomOptionSelect("DeviceVitalOrDoorLogOption", typeof(DeviceOptionType), "DeviceOptionType.", parentFieldName: nameof(DeviceOptions))]
-    public static DeviceOptionType DeviceVitalOrDoorLogOption;
+    [CustomOptionBool("DeviceVitalEnabled", true, parentFieldName: nameof(RestrictionMode), parentActiveValue: DeviceRestrictionModeType.OnOff)]
+    public static bool DeviceVitalEnabled;
 
-    [CustomOptionFloat("DeviceTimeSettingVitalOrDoorLog", 0f, 120f, 2.5f, 10f, parentFieldName: nameof(DeviceVitalOrDoorLogOption), parentActiveValue: DeviceOptionType.Restrict)]
-    public static float DeviceUseVitalOrDoorLogTime;
+    [CustomOptionBool("DeviceCameraEnabled", true, parentFieldName: nameof(RestrictionMode), parentActiveValue: DeviceRestrictionModeType.OnOff)]
+    public static bool DeviceCameraEnabled;
 
-    // カメラ設定
-    [CustomOptionSelect("DeviceCameraOption", typeof(DeviceOptionType), "DeviceOptionType.", parentFieldName: nameof(DeviceOptions))]
-    public static DeviceOptionType DeviceCameraOption;
+    // --- 「時間制限」モード時の設定 ---
+    [CustomOptionFloat("DeviceAdminTimeLimit", 0f, 120f, 2.5f, 10f, parentFieldName: nameof(RestrictionMode), parentActiveValue: DeviceRestrictionModeType.TimeLimit)]
+    public static float DeviceAdminTimeLimit;
 
-    [CustomOptionFloat("DeviceTimeSettingCamera", 0f, 120f, 2.5f, 10f, parentFieldName: nameof(DeviceCameraOption), parentActiveValue: DeviceOptionType.Restrict)]
-    public static float DeviceUseCameraTime;
+    [CustomOptionFloat("DeviceVitalTimeLimit", 0f, 120f, 2.5f, 10f, parentFieldName: nameof(RestrictionMode), parentActiveValue: DeviceRestrictionModeType.TimeLimit)]
+    public static float DeviceVitalTimeLimit;
+
+    [CustomOptionFloat("DeviceCameraTimeLimit", 0f, 120f, 2.5f, 10f, parentFieldName: nameof(RestrictionMode), parentActiveValue: DeviceRestrictionModeType.TimeLimit)]
+    public static float DeviceCameraTimeLimit;
+
     // |:========== 梯子クールダウンの設定 ==========:|
     [CustomOptionBool("LadderCoolChangeSetting", false, parentFieldName: nameof(Categories.MapSettings))]
     public static bool LadderCoolChangeOption;
@@ -86,4 +90,10 @@ public static class MapSettingOptions
 
     [CustomOptionFloat("ZiplineImpostorCoolTimeSetting", 0f, 60f, 2.5f, 7.5f, parentFieldName: nameof(ZiplineImpostorCoolChangeOption))]
     public static float ZiplineImpostorCoolTimeOption;
+}
+
+public enum DeviceRestrictionModeType
+{
+    OnOff,
+    TimeLimit
 }

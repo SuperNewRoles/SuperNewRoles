@@ -13,6 +13,11 @@ namespace SuperNewRoles.CustomCosmetics.UI;
 
 public static class CustomCosmeticsUIStart
 {
+    public enum FrameType
+    {
+        Main,
+        Category,
+    }
     private static class MenuPositions
     {
         public const float X_POSITION = -3.07f;
@@ -25,6 +30,7 @@ public static class CustomCosmeticsUIStart
     private static List<ICustomCosmeticsMenu> Menus = null;
     private static ICustomCosmeticsMenu CurrentMenu = null;
     private static GameObject MenuObject = null;
+    public static Dictionary<FrameType, GameObject> FrameObjects = new();
     public static void Start(PlayerCustomizationMenu menu)
     {
         Logger.Info("CustomCosmeticsUIStart Start");
@@ -35,11 +41,17 @@ public static class CustomCosmeticsUIStart
         if (menuObject != null)
             SetupCategoryButtons(menuObject);
         CreateMenuFrame(menuObject, menu);
-        HandleCategoryClick("cosmetic_costume", menuObject);
+        HandleCategoryClick($"cosmetic_{CustomCosmeticsMenuType.costume}", menuObject);
         MenuObject = menuObject;
     }
     public static void Update(PlayerCustomizationMenu menu)
     {
+        (int width, int height) = ModHelpers.GetAspectRatio(Screen.width, Screen.height);
+        if (Math.Abs(width - height) <= 2)
+            menu.transform.localScale = Vector3.one * 0.82f;
+        else
+            menu.transform.localScale = Vector3.one;
+
         // 現在のメニューが存在する場合は更新
         CurrentMenu?.Update();
 
@@ -87,7 +99,7 @@ public static class CustomCosmeticsUIStart
         }
 
         // AssemblyからCustomCosmeticsMenuBase<>を継承しているクラスを探す
-        var customMenuTypes = Assembly.GetExecutingAssembly()
+        var customMenuTypes = SuperNewRolesPlugin.Assembly
             .GetTypes()
             .Where(t => typeof(ICustomCosmeticsMenu).IsAssignableFrom(t)
                         && t != typeof(CustomCosmeticsMenuBase<>)
@@ -135,8 +147,11 @@ public static class CustomCosmeticsUIStart
     {
         var obj = GameObject.Instantiate(AssetManager.GetAsset<GameObject>(MENU_SELECTOR_ASSET_NAME));
         obj.transform.SetParent(menu.transform, false);
-        obj.transform.localPosition = new Vector3(MenuPositions.X_POSITION, MenuPositions.Y_POSITION, MenuPositions.Z_POSITION);
         obj.transform.localScale = Vector3.one * MenuPositions.SCALE;
+        var aspectPosition = obj.AddComponent<AspectPosition>();
+        aspectPosition.Alignment = AspectPosition.EdgeAlignments.Center;
+        aspectPosition.DistanceFromEdge = new(MenuPositions.X_POSITION, MenuPositions.Y_POSITION, MenuPositions.Z_POSITION);
+        aspectPosition.OnEnable();
         return obj;
     }
 
@@ -207,6 +222,7 @@ public static class CustomCosmeticsUIStart
         SetCurrentTab(categoryName, menuObject);
 
         PlayerCustomizationMenu.Instance.PreviewArea.UpdateFromDataManager(PlayerMaterial.MaskType.None);
+        SetFrameType(FrameType.Main);
 
         var menu = Menus.Find(m => "cosmetic_" + m.MenuType.ToString() == categoryName);
         if (CurrentMenu != null)
@@ -214,6 +230,14 @@ public static class CustomCosmeticsUIStart
         CurrentMenu = menu;
         if (menu != null)
             menu.Initialize();
+    }
+
+    public static void SetFrameType(FrameType frameType)
+    {
+        foreach (var frame in FrameObjects)
+        {
+            frame.Value.SetActive(frame.Key == frameType);
+        }
     }
 
     private static void SetCurrentTab(string categoryName, GameObject menuObject)
@@ -250,9 +274,30 @@ public static class CustomCosmeticsUIStart
     }
     private static void CreateMenuFrame(GameObject menuObject, PlayerCustomizationMenu menu)
     {
-        var frame = GameObject.Instantiate(AssetManager.GetAsset<GameObject>("CosmeticMenuFrame"), menu.transform);
-        frame.transform.localPosition = new(0, -0.1f, -11.5f);
-        frame.transform.localScale = Vector3.one * 0.28f;
+        foreach (FrameType frameType in Enum.GetValues(typeof(FrameType)))
+        {
+            string frameName = $"CosmeticMenuFrame{frameType}";
+            var frame = GameObject.Instantiate(AssetManager.GetAsset<GameObject>(frameName), menu.transform);
+            frame.transform.localScale = Vector3.one * 0.28f;
+            var aspectPosition = frame.AddComponent<AspectPosition>();
+            aspectPosition.Alignment = AspectPosition.EdgeAlignments.Center;
+            aspectPosition.DistanceFromEdge = new(0, -0.1f, -11.5f);
+            aspectPosition.OnEnable();
+
+            var closeButton = frame.transform.Find("CloseButtonCosmetics");
+            PassiveButton closeButtonButton = closeButton.gameObject.AddComponent<PassiveButton>();
+            closeButtonButton.Colliders = new Collider2D[] { closeButton.gameObject.GetComponent<Collider2D>() };
+            closeButtonButton.OnClick = new();
+            closeButtonButton.OnMouseOut = new();
+            closeButtonButton.OnMouseOver = new();
+            closeButtonButton.OnClick.AddListener((UnityAction)(() =>
+            {
+                menu.Close(true);
+            }));
+
+            frame.SetActive(false);
+            FrameObjects[frameType] = frame;
+        }
     }
 
 

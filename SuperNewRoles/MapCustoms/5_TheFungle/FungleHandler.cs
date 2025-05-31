@@ -8,20 +8,14 @@ using SuperNewRoles.CustomOptions.Categories;
 namespace SuperNewRoles.MapCustoms;
 public static class FungleHandler
 {
-    public enum FungleSpawnType
-    {
-        Default,
-        Random,
-        Select
-    }
-    public static FungleSpawnType GetFungleSpawnType()
+    public static SpawnTypeOptions GetFungleSpawnType()
     {
         if (!MapCustomHandler.IsMapCustom(MapCustomHandler.MapCustomId.TheFungle, false))
-            return FungleSpawnType.Default;
+            return SpawnTypeOptions.Normal;
         return MapEditSettingsOptions.TheFungleSpawnType;
     }
-    public static bool IsFungleSpawnType(FungleSpawnType fungleSpawnType)
+    public static bool IsFungleSpawnType(SpawnTypeOptions spawnTypeOptions)
     {
-        return GetFungleSpawnType() == fungleSpawnType;
+        return GetFungleSpawnType() == spawnTypeOptions;
     }
 }

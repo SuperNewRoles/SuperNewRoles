@@ -8,13 +8,14 @@ using System.Linq;
 using HarmonyLib;
 using System.Collections.Generic;
 using SuperNewRoles.CustomOptions;
+using SuperNewRoles.Roles;
 
 namespace SuperNewRoles.HelpMenus;
 
 public static class HelpMenuObjectManager
 {
     private static GameObject helpMenuObject;
-    private static FadeCoroutine fadeCoroutine;
+    public static FadeCoroutine fadeCoroutine;
     public static HelpMenuCategoryBase[] categories;
     public static Dictionary<string, GameObject> selectedButtons;
     public static HelpMenuCategoryBase? CurrentCategory;
@@ -43,6 +44,9 @@ public static class HelpMenuObjectManager
         // ヘルプメニューを表示するときにホスト情報のマスクエリアを非表示にする
         RoleOptionMenu.UpdateHostInfoMaskArea(false);
 
+        // 会議中の場合、playerStatesのMaskAreaを非表示にする
+        ModHelpers.UpdateMeetingHudMaskAreas(false);
+
         var defaultNow =
             AmongUsClient.Instance.GameState == InnerNet.InnerNetClient.GameStates.Started
             ? DEFAULT_MENU_GAME : DEFAULT_MENU_LOBBY;
@@ -53,7 +57,7 @@ public static class HelpMenuObjectManager
     private static void SetUpCategories()
     {
         // HelpMenuCategoryBaseを継承した全ての型を取得
-        var categoryTypes = Assembly.GetExecutingAssembly().GetTypes()
+        var categoryTypes = SuperNewRolesPlugin.Assembly.GetTypes()
             .Where(type => type.IsSubclassOf(typeof(HelpMenuCategoryBase)) && !type.IsAbstract)
             .ToArray();
 
@@ -88,7 +92,7 @@ public static class HelpMenuObjectManager
 
             // テキストを設定
             bulkRoleButton.transform.Find("Text").GetComponent<TextMeshPro>().text =
-                $"<b>{ModTranslation.GetString($"HelpMenu.{categories[i].Name}")}</b>";
+            $"{ModTranslation.GetString($"HelpMenu.{categories[i].Name}")}";
 
             // Selectedオブジェクトを取得
             GameObject selectedObject = bulkRoleButton.transform.Find("Selected").gameObject;
@@ -150,6 +154,7 @@ public static class HelpMenuObjectManager
             }));
         }
     }
+
     public static void ShowOrHideHelpMenu()
     {
         if (helpMenuObject == null)
@@ -203,20 +208,24 @@ public static class HelpMenuObjectManager
 
             // ヘルプメニューの表示状態によってマスクエリアの表示を切り替える
             // fadeCoroutine.isActiveが反転する前に呼ばれるため、現在の状態の逆を設定
-            RoleOptionMenu.UpdateHostInfoMaskArea(!fadeCoroutine.isAvtive);
+            bool shouldShowMaskAreas = !fadeCoroutine.isActive;
+            RoleOptionMenu.UpdateHostInfoMaskArea(shouldShowMaskAreas);
+            ModHelpers.UpdateMeetingHudMaskAreas(shouldShowMaskAreas);
         }
-        if (fadeCoroutine.isAvtive)
+        if (fadeCoroutine.isActive)
         {
             CurrentCategory?.UpdateShow();
         }
+        HelpMenusHudManagerStartPatch.helpMenuButton?.transform.Find("active").gameObject.SetActive(fadeCoroutine.isActive);
     }
     public static void HideHelpMenu()
     {
         if (helpMenuObject == null || fadeCoroutine == null) return;
         fadeCoroutine.StartFadeOut(helpMenuObject, 0.115f);
 
-        // ヘルプメニューを非表示にするときにホスト情報のマスクエリアを表示する
+        // ヘルプメニューを非表示にするときにホスト情報とMeetingHudのマスクエリアを表示する
         RoleOptionMenu.UpdateHostInfoMaskArea(true);
+        ModHelpers.UpdateMeetingHudMaskAreas(true);
     }
     // overlayを閉じる時。
     [HarmonyPatch(typeof(KeyboardJoystick), nameof(KeyboardJoystick.Update))]
@@ -225,7 +234,7 @@ public static class HelpMenuObjectManager
         public static void Postfix(KeyboardJoystick __instance)
         {
             // Overlayが非表示なら処理を省略する
-            if (helpMenuObject == null || fadeCoroutine == null || !fadeCoroutine.isAvtive)
+            if (helpMenuObject == null || fadeCoroutine == null || !fadeCoroutine.isActive)
             {
                 return;
             }
@@ -245,7 +254,7 @@ public static class HelpMenuObjectManager
     {
         public static void Postfix(GameStartManager __instance)
         {
-            bool enabled = helpMenuObject == null || fadeCoroutine == null || !fadeCoroutine.isAvtive;
+            bool enabled = helpMenuObject == null || fadeCoroutine == null || !fadeCoroutine.isActive;
             __instance.StartButton.enabled = enabled;
             __instance.LobbyInfoPane.EditButton.enabled = enabled;
             PassiveButton p = null;
@@ -261,25 +270,15 @@ public static class HelpMenuObjectManager
     {
         public static void Postfix()
         {
-            // ヘルプメニューが表示されている場合は自分の役職情報カテゴリに戻す
-            if (helpMenuObject != null && fadeCoroutine != null && fadeCoroutine.isAvtive)
+            GhostAssignRole.ClearAndReloads();
+            // ヘルプメニューが表示されている場合は破棄する
+            if (helpMenuObject != null)
             {
-                var rightContainer = helpMenuObject.transform.Find("RightContainer").gameObject;
-                if (CurrentCategory != null && CurrentCategory.Category != DEFAULT_MENU_GAME)
-                {
-                    CurrentCategory.Hide(rightContainer);
-                    if (selectedButtons.TryGetValue(CurrentCategory.Name, out var oldSelectedObject))
-                        oldSelectedObject.SetActive(false);
-
-                    CurrentCategory = categories.FirstOrDefault(c => c.Category == DEFAULT_MENU_GAME);
-                    if (CurrentCategory != null)
-                    {
-                        CurrentCategory.Show(rightContainer);
-                        if (selectedButtons.TryGetValue(CurrentCategory.Name, out var newSelectedObject))
-                            newSelectedObject.SetActive(true);
-                        CurrentCategory.UpdateShow();
-                    }
-                }
+                GameObject.Destroy(helpMenuObject);
+                helpMenuObject = null;
+                fadeCoroutine = null;
+                CurrentCategory = null;
+                selectedButtons?.Clear();
             }
         }
     }

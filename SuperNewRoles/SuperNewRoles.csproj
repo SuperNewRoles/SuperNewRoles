@@ -6,6 +6,7 @@
         <Authors>ykundesu</Authors>
         <langVersion>preview</langVersion>
         <IncludeSourceRevisionInInformationalVersion>false</IncludeSourceRevisionInInformationalVersion>
+        <DebugType>portable</DebugType>
     </PropertyGroup>
 
     <PropertyGroup>
@@ -14,6 +15,7 @@
         <ApplicationIcon />
         <Win32Resource />
         <AssemblyName>SuperNewRoles</AssemblyName>
+        <NoWarn>CS0649;CS863;</NoWarn>
     </PropertyGroup>
 
     <ItemGroup>
@@ -23,8 +25,6 @@
     <ItemGroup>
         <Reference Include="$(AmongUs)/BepInEx/core/*.dll" />
         <Reference Include="$(AmongUs)/BepInEx/interop/*.dll" />
-        <None Remove="CustomCosmetics\CustomCosmeticsData\CustomHatData.cs~RFbacc703.TMP" />
-        <Reference Include="$(AmongUs)/BepInEx/plugins/Agartha.dll" />
     </ItemGroup>
 
     <Target Name="CopyCustomContent" AfterTargets="AfterBuild">

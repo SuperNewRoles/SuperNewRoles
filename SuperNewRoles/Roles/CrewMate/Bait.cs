@@ -14,7 +14,6 @@ using SuperNewRoles.Patches;
 using SuperNewRoles.Roles.Ability;
 using SuperNewRoles.SuperTrophies;
 using UnityEngine;
-using UnityEngine.Networking.Types;
 
 namespace SuperNewRoles.Roles.CrewMate;
 
@@ -145,7 +144,7 @@ public class BaitAutoReportTrophy : SuperTrophyAbility<BaitAutoReportTrophy>
 
     private void HandleMurderEvent(MurderEventData data)
     {
-        Logger.Info("BaitAutoReportTrophy HandleMurderEvent: " + data.target.name + " " + data.killer.name);
+        Logger.Info("BaitAutoReportTrophy HandleMurderEvent: " + data.target.Player.name + " " + data.killer.Player.name);
         if (data.target != PlayerControl.LocalPlayer)
         {
             return;

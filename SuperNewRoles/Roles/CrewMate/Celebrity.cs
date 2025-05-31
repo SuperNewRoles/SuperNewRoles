@@ -12,7 +12,12 @@ class Celebrity : RoleBase<Celebrity>
 {
     public override RoleId Role { get; } = RoleId.Celebrity;
     public override Color32 RoleColor { get; } = new Color32(255, 215, 0, byte.MaxValue); // 黄金色
-    public override List<Func<AbilityBase>> Abilities { get; } = [() => new CelebrityAbility(new CelebrityData() { EnableGlowEffect = CelebrityEnableGlowEffect, GlowOnlyWhileAlive = CelebrityGlowOnlyWhileAlive })];
+    public override List<Func<AbilityBase>> Abilities { get; } = [() => new CelebrityAbility(
+        new CelebrityData() {
+            EnableGlowEffect = CelebrityEnableGlowEffect,
+            GlowOnlyWhileAlive = CelebrityGlowOnlyWhileAlive,
+            YellowChangedRole = CelebrityYellowChangedRole
+        })];
 
     public override QuoteMod QuoteMod { get; } = QuoteMod.SuperNewRoles;
     public override RoleTypes IntroSoundType { get; } = RoleTypes.Crewmate;
@@ -31,4 +36,8 @@ class Celebrity : RoleBase<Celebrity>
     // 画面が光るのは生きている間のみか(会議更新)
     [CustomOptionBool("CelebrityGlowOnlyWhileAlive", true, parentFieldName: nameof(CelebrityEnableGlowEffect))]
     public static bool CelebrityGlowOnlyWhileAlive;
+
+    // 役職が変わっても名前の色がスターのままになるか
+    [CustomOptionBool("CelebrityYellowChangedRole", true)]
+    public static bool CelebrityYellowChangedRole;
 }

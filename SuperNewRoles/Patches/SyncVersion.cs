@@ -46,7 +46,7 @@ public static class SyncVersion
 
     public static void Load()
     {
-        string dllPath = Assembly.GetExecutingAssembly().Location;
+        string dllPath = SuperNewRolesPlugin.Assembly.Location;
         byte[] bytes = File.ReadAllBytes(dllPath);
         string hash = ModHelpers.HashMD5(bytes);
         string rpcMap = GenerateRpcMap();
@@ -96,7 +96,7 @@ public static class SyncVersion
     }
     private static bool ValidatePlayer(byte playerId, out PlayerControl player)
     {
-        player = ModHelpers.GetPlayerById(playerId);
+        player = PlayerControl.AllPlayerControls.ToArray().FirstOrDefault(p => p.PlayerId == playerId);
         return player != null;
     }
     private static SyncErrorType ValidateSyncData((byte PlayerId, string Version, string Hash, string RpcMap) data)
@@ -280,7 +280,7 @@ internal static class SyncVersionErrorHandler
 
     private static string CreateErrorMessage(KeyValuePair<byte, SyncErrorType> kvp)
     {
-        PlayerControl player = ModHelpers.GetPlayerById(kvp.Key);
+        PlayerControl player = PlayerControl.AllPlayerControls.ToArray().FirstOrDefault(p => p.PlayerId == kvp.Key);
         if (player == null) return null;
 
         return kvp.Value switch

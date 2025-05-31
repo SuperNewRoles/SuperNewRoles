@@ -49,7 +49,7 @@ public class PavlovsOwnerAbility : AbilityBase
 
     private CustomSidekickButtonAbility CreateSidekickAbility(PlayerControl player)
     {
-        return new CustomSidekickButtonAbility(
+        return new CustomSidekickButtonAbility(new(
             _ => CanCreateSidekick(player),
             () => _data.sidekickCooldown,
             () => RoleId.PavlovsDog,
@@ -57,29 +57,30 @@ public class PavlovsOwnerAbility : AbilityBase
             AssetManager.GetAsset<Sprite>("PavlovsownerCreatedogButton.png"),
             ModTranslation.GetString("PavlovsDogButtonText"),
             isTargetable: x => !x.IsPavlovsTeam(),
-            sidekickCount: () => _sidekickCount,
+            sidekickCount: () => _data.maxSidekickCount > 0 ? _data.maxSidekickCount - _sidekickCount : 0,
             sidekickSuccess: (player) => !_data.suicideOnImpostorSidekick || !player.IsImpostor(),
             onSidekickCreated: (p) => OnSidekickCreated(player, p),
             showSidekickLimitText: () => _data.maxSidekickCount > 0
-        );
+        ));
     }
 
     private bool CanCreateSidekick(ExPlayerControl player)
     {
-        return (dogAbility == null || dogAbility.Player == null || dogAbility.Player.IsDead()) &&
-               (_data.maxSidekickCount <= 0 || _sidekickCount < _data.maxSidekickCount);
+        return player.IsAlive() &&
+            (dogAbility == null || dogAbility.Player == null || dogAbility.Player.IsDead()) &&
+            HasRemainingDogCount();
     }
 
     private void OnSidekickCreated(ExPlayerControl owner, ExPlayerControl sidekick)
     {
         _sidekickCount++;
-        if (_data.suicideOnImpostorSidekick && owner.IsImpostor())
+        if (_data.suicideOnImpostorSidekick && sidekick.IsImpostor())
         {
             owner.RpcCustomDeath(CustomDeathType.Suicide);
         }
         else
         {
-            RpcSetDogAbility(this, sidekick.PlayerAbilities.FirstOrDefault(x => x is PavlovsDogAbility) as PavlovsDogAbility);
+            RpcSetDogAbility(this, sidekick.GetAbility<PavlovsDogAbility>(), _sidekickCount);
         }
     }
 
@@ -92,9 +93,14 @@ public class PavlovsOwnerAbility : AbilityBase
         base.DetachToLocalPlayer();
     }
     [CustomRPC]
-    public static void RpcSetDogAbility(PavlovsOwnerAbility owner, PavlovsDogAbility dog)
+    public static void RpcSetDogAbility(PavlovsOwnerAbility owner, PavlovsDogAbility dog, int sidekickCount)
     {
         owner.dogAbility = dog;
         dog.ownerAbility = owner;
+        owner._sidekickCount = sidekickCount;
+    }
+    public bool HasRemainingDogCount()
+    {
+        return _data.maxSidekickCount <= 0 || _sidekickCount < _data.maxSidekickCount;
     }
 }

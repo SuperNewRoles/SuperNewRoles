@@ -13,27 +13,36 @@ public class SaboAndVent
     }
     public static void SaboAndVentUpdate()
     {
-        bool ventActive = ExPlayerControl.LocalPlayer.CanUseVent();
-        bool saboActive = ExPlayerControl.LocalPlayer.CanSabotage();
-        bool killDisabled = ExPlayerControl.LocalPlayer.HasCustomKillButton();
-        SetVentActive(ventActive);
-        SetSaboActive(saboActive);
-        SetKillActive(killDisabled);
+        bool canUseVent = ExPlayerControl.LocalPlayer.CanUseVent();
+        bool showVentButtonVanilla = ExPlayerControl.LocalPlayer.ShowVanillaVentButton();
+        bool canSabotage = ExPlayerControl.LocalPlayer.CanSabotage();
+        bool showSaboButtonVanilla = ExPlayerControl.LocalPlayer.ShowVanillaSabotageButton();
+        bool isShowKillButton = ExPlayerControl.LocalPlayer.showKillButtonVanilla();
+        bool killDisabled = ExPlayerControl.LocalPlayer.HasCustomKillButton() || !isShowKillButton;
+        SetVentActive(canUseVent, showVentButtonVanilla);
+        SetSaboActive(canSabotage, showSaboButtonVanilla);
+        SetKillActive(killDisabled, isShowKillButton);
     }
-    private static void SetVentActive(bool ventActive)
+    private static void SetVentActive(bool canUseVent, bool showVentButtonVanilla)
     {
-        if (!ventActive)
+        if (!canUseVent || !showVentButtonVanilla)
             HudManager.Instance.ImpostorVentButton.gameObject.SetActive(false);
+        else
+            HudManager.Instance.ImpostorVentButton.gameObject.SetActive(true);
     }
-    private static void SetSaboActive(bool saboActive)
+    private static void SetSaboActive(bool canSabotage, bool showSaboButtonVanilla)
     {
-        if (!saboActive)
+        if (!canSabotage || !showSaboButtonVanilla)
             HudManager.Instance.SabotageButton.gameObject.SetActive(false);
+        else
+            HudManager.Instance.SabotageButton.gameObject.SetActive(true);
     }
-    private static void SetKillActive(bool killDisabled)
+    private static void SetKillActive(bool killDisabled, bool isShowKillButton)
     {
         if (killDisabled)
             HudManager.Instance.KillButton.gameObject.SetActive(false);
+        else if (isShowKillButton && (HudManager.Instance.UseButton.gameObject.activeSelf || HudManager.Instance.PetButton.gameObject.activeSelf))
+            HudManager.Instance.KillButton.gameObject.SetActive(true);
     }
     [HarmonyPatch(typeof(MapBehaviour), nameof(MapBehaviour.ShowNormalMap))]
     class MapBehaviourShowNormalMapPatch

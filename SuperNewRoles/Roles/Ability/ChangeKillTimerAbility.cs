@@ -27,6 +27,7 @@ public class ChangeKillTimerAbility : AbilityBase
     {
         base.DetachToLocalPlayer();
         MurderEvent.Instance.RemoveListener(MurderEventListener);
+        WrapUpEvent.Instance.RemoveListener(WrapUpEventListener);
     }
 
     private void OnMurder(MurderEventData data)
@@ -40,7 +41,7 @@ public class ChangeKillTimerAbility : AbilityBase
             new LateTask(() =>
             {
                 ((ExPlayerControl)Player).SetKillTimerUnchecked(killTime, killTime);
-            }, 0.017f);
+            }, 0.05f);
         }
     }
 

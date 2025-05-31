@@ -4,8 +4,12 @@ using System.Linq;
 using HarmonyLib;
 using SuperNewRoles.Patches;
 using SuperNewRoles.Roles;
+using SuperNewRoles.Roles.Ability;
 using SuperNewRoles.Roles.Neutral;
 using UnityEngine;
+using SuperNewRoles.Roles.Modifiers;
+using Hazel;
+using SuperNewRoles.CustomOptions.Categories;
 
 namespace SuperNewRoles.Modules;
 
@@ -17,7 +21,11 @@ public enum VictoryType
     ImpostorSabotage,
     CrewmateTask,
     CrewmateVote,
-    JackalDomination
+    JackalDomination,
+    PavlovsWin,
+    OwlWin,
+
+    HitmanDomination
 }
 
 public enum SabotageSystemType
@@ -26,17 +34,50 @@ public enum SabotageSystemType
     Critical
 }
 
+[HarmonyPatch(typeof(AmongUsClient), nameof(AmongUsClient.CoStartGame))]
+public static class CoStartGamePatch
+{
+    public static void Postfix()
+    {
+        CheckGameEndPatch.CouldCheckEndGame = true;
+    }
+}
+
+[HarmonyPatch(typeof(LogicGameFlowHnS), nameof(LogicGameFlowHnS.CheckEndCriteria))]
+public static class CheckGameEndPatchHnS
+{
+    public static bool Prefix(LogicGameFlowHnS __instance)
+    {
+        if (!CheckGameEndPatch.CouldCheckEndGame) return false;
+        try
+        {
+            if (!DestroyableSingleton<TutorialManager>.InstanceExists && __instance.AllTimersExpired())
+            {
+                CheckGameEndPatch.EndGame(VictoryType.CrewmateVote);
+                return false;
+            }
+            return CheckGameEndPatch.HandleGameEndCheck(true);
+        }
+        catch (Exception ex)
+        {
+            Logger.Error($"ゲーム終了チェック中にエラーが発生: {ex}");
+            return true; // エラー時はバニラの処理に任せる
+        }
+    }
+}
 [HarmonyPatch(typeof(LogicGameFlowNormal), nameof(LogicGameFlowNormal.CheckEndCriteria))]
 public static class CheckGameEndPatch
 {
     private static readonly TimeSpan CheckInterval = TimeSpan.FromSeconds(0.15);
     private static float _nextCheckTime;
+    public static bool CouldCheckEndGame = true;
 
     public static bool Prefix()
     {
+        if (!CouldCheckEndGame) return false;
         try
         {
-            return HandleGameEndCheck();
+            return HandleGameEndCheck(false);
         }
         catch (Exception ex)
         {
@@ -45,14 +86,14 @@ public static class CheckGameEndPatch
         }
     }
 
-    private static bool HandleGameEndCheck()
+    public static bool HandleGameEndCheck(bool isHnS)
     {
         if (!ShouldCheckEndGame()) return false;
 
         using var gameState = new GameState();
         if (!gameState.IsValid) return false;
 
-        var victoryType = DetermineVictoryType(gameState);
+        var victoryType = DetermineVictoryType(gameState, isHnS);
         if (victoryType != VictoryType.None)
         {
             EndGame(victoryType);
@@ -73,13 +114,14 @@ public static class CheckGameEndPatch
                !DestroyableSingleton<TutorialManager>.InstanceExists;
     }
 
-    private static VictoryType DetermineVictoryType(GameState state)
+    private static VictoryType DetermineVictoryType(GameState state, bool isHnS)
     {
         if (!state.IsValid) return VictoryType.None;
 
-        return DeterminePriorityVictory(state) ??
-               DeterminePlayerBasedVictory(state) ??
-               VictoryType.None;
+        var victory = (isHnS ? null : DeterminePriorityVictory(state)) ??
+                     DeterminePlayerBasedVictory(state, isHnS) ??
+                     VictoryType.None;
+        return victory;
     }
 
     private static VictoryType? DeterminePriorityVictory(GameState state)
@@ -90,14 +132,14 @@ public static class CheckGameEndPatch
         if (state.IsSabotageActive())
             return VictoryType.ImpostorSabotage;
 
-        if (state.IsAllTasksCompleted())
+        if (state.IsAllTasksCompleted() && !GameSettingOptions.DisableTaskWin)
             return VictoryType.CrewmateTask;
 
         return null;
     }
-    private static VictoryType? DeterminePlayerBasedVictory(GameState state)
+    private static VictoryType? DeterminePlayerBasedVictory(GameState state, bool isHnS)
     {
-        var stats = new PlayerStatistics();
+        var stats = new PlayerStatistics(isHnS);
 
         // インポスター勝利
         if (stats.IsImpostorDominating)
@@ -109,30 +151,71 @@ public static class CheckGameEndPatch
         if (stats.IsJackalDominating)
             return VictoryType.JackalDomination;
 
+        // パブロフ勝利
+        if (stats.IsPavlovsWin)
+            return VictoryType.PavlovsWin;
+
+        // 殺し屋勝利
+        if (stats.IsHitmanDominating)
+            return VictoryType.HitmanDomination;
+
         // クルーメイト勝利
         if (stats.IsCrewmateVictory)
             return VictoryType.CrewmateVote;
 
+        // フクロウ勝利
+        if (stats.IsOwlWin)
+            return VictoryType.OwlWin;
+
         return null;
     }
 
-    private static void EndGame(VictoryType victoryType)
+    public static void EndGame(VictoryType victoryType)
     {
         if (ShipStatus.Instance != null)
             ShipStatus.Instance.enabled = false;
 
         var reason = MapVictoryTypeToGameOverReason(victoryType);
-        GameManager.Instance.RpcEndGame(reason, false);
+        (var winners, var color, var upperText) = GetEndGameData(victoryType);
+
+        EndGamer.EndGame(reason, WinType.Default, winners, color, upperText);
+    }
+
+    private static (HashSet<ExPlayerControl> winners, Color32 color, string upperText) GetEndGameData(VictoryType victoryType)
+    {
+        switch (victoryType)
+        {
+            case VictoryType.ImpostorKill:
+            case VictoryType.ImpostorVote:
+            case VictoryType.ImpostorSabotage:
+                return (ExPlayerControl.ExPlayerControls.Where(player => player.IsImpostorWinTeam()).ToHashSet(), Palette.ImpostorRed, "ImpostorWin");
+            case VictoryType.CrewmateTask:
+            case VictoryType.CrewmateVote:
+                return (ExPlayerControl.ExPlayerControls.Where(player => player.IsCrewmate()).ToHashSet(), Palette.CrewmateBlue, "CrewmateWin");
+            case VictoryType.JackalDomination:
+                return (ExPlayerControl.ExPlayerControls.Where(player => player.IsJackalTeam()).ToHashSet(), Jackal.Instance.RoleColor, "Jackal");
+            case VictoryType.PavlovsWin:
+                return (ExPlayerControl.ExPlayerControls.Where(player => player.IsPavlovsTeam()).ToHashSet(), PavlovsDog.Instance.RoleColor, "Pavlovs");
+            case VictoryType.OwlWin:
+                return (ExPlayerControl.ExPlayerControls.Where(player => player.Role == RoleId.Owl).ToHashSet(), Owl.Instance.RoleColor, "Owl");
+            case VictoryType.HitmanDomination:
+                return (ExPlayerControl.ExPlayerControls.Where(player => player.Role == RoleId.Hitman).ToHashSet(), Hitman.Instance.RoleColor, "Hitman");
+            default:
+                throw new ArgumentException($"Invalid victory type: {victoryType}");
+        }
     }
 
     private static GameOverReason MapVictoryTypeToGameOverReason(VictoryType victoryType) => victoryType switch
     {
-        VictoryType.ImpostorKill => GameOverReason.ImpostorByKill,
-        VictoryType.ImpostorVote => GameOverReason.ImpostorByVote,
-        VictoryType.ImpostorSabotage => GameOverReason.ImpostorBySabotage,
-        VictoryType.CrewmateTask => GameOverReason.HumansByTask,
-        VictoryType.CrewmateVote => GameOverReason.HumansByVote,
+        VictoryType.ImpostorKill => GameOverReason.ImpostorsByKill,
+        VictoryType.ImpostorVote => GameOverReason.ImpostorsByVote,
+        VictoryType.ImpostorSabotage => GameOverReason.ImpostorsBySabotage,
+        VictoryType.CrewmateTask => GameOverReason.CrewmatesByTask,
+        VictoryType.CrewmateVote => GameOverReason.CrewmatesByVote,
         VictoryType.JackalDomination => (GameOverReason)CustomGameOverReason.JackalWin,
+        VictoryType.PavlovsWin => (GameOverReason)CustomGameOverReason.PavlovsWin,
+        VictoryType.OwlWin => (GameOverReason)CustomGameOverReason.OwlWin,
+        VictoryType.HitmanDomination => (GameOverReason)CustomGameOverReason.HitmanWin,
         _ => throw new ArgumentException($"無効な勝利タイプ: {victoryType}")
     };
 }
@@ -202,42 +285,115 @@ public class PlayerStatistics
     public int CrewAlive { get; }
     public int TotalAlive { get; }
     public int TeamJackalAlive { get; }
+    public int PavlovsDogAlive { get; }
+    public int PavlovsOwnerAlive { get; }
     public int TeamPavlovsAlive { get; }
     public int TotalKiller { get; }
+    public int ArsonistAlive { get; }
+    public int OwlAlive { get; }
+    public int HitmanAlive { get; }
 
     public bool IsKillerExist => TotalKiller > 0;
-
-    public bool IsImpostorDominating => IsKillerWin(TeamImpostorsAlive);
-    public bool IsJackalDominating => IsKillerWin(TeamJackalAlive);
-    public bool IsPavlovsWin => IsKillerWin(TeamPavlovsAlive);
+    public bool IsImpostorDominating { get; }
+    public bool IsJackalDominating { get; }
+    public bool IsPavlovsWin { get; }
+    public bool IsHitmanDominating { get; }
     public bool IsCrewmateVictory => !IsKillerExist;
+    public bool IsOwlWin => IsKillerWin(OwlAlive) && OwlAlive == 1;
+    private bool isHnS;
 
-    public PlayerStatistics()
+    public PlayerStatistics(bool isHnS)
     {
-        // 生存中のプレイヤーのみを抽出
-        var alivePlayers = GetAlivePlayers();
+        this.isHnS = isHnS;
+        int teamImpostorsAlive = 0, crewAlive = 0, totalAlive = 0;
+        int teamJackalAlive = 0, jackalRoleAlive = 0;
+        int pavlovsDogAlive = 0, pavlovsOwnerAlive = 0, pavlovsOwnerRemaining = 0;
+        int arsonistAlive = 0, owlAlive = 0, hitmanAlive = 0, totalKiller = 0;
+        bool hasLoversImpostorTeam = false, hasLoversJackalTeam = false, hasLoversPavlovsTeam = false, hasLoversHitmanTeam = false;
+        bool isLoversBlock = Lovers.LoversWinType is LoversWinType.Normal or LoversWinType.Single;
 
-        // 各チームの生存者数をLINQで計算（条件が増えた場合もここを修正しやすい）
-        TeamImpostorsAlive = alivePlayers.Count(player => player.IsImpostor());
-        CrewAlive = alivePlayers.Count(player => player.IsCrewmate());
-        TeamJackalAlive = alivePlayers.Count(player => player.IsJackalTeam());
-        TeamPavlovsAlive = alivePlayers.Count(player => player.IsPavlovsTeam());
+        var players = ExPlayerControl.ExPlayerControls;
+        foreach (var player in players)
+        {
+            if (player == null || player.IsDead()) continue;
+            totalAlive++;
 
-        TotalAlive = alivePlayers.Count();
-        TotalKiller = TeamImpostorsAlive + TeamJackalAlive + TeamPavlovsAlive;
+            if (player.IsImpostor() || (isHnS && player.IsMadRoles())) teamImpostorsAlive++;
+            if (player.IsCrewmate()) crewAlive++;
+            if (player.IsJackalTeam()) teamJackalAlive++;
+            if (player.IsJackal()) jackalRoleAlive++;
+            if (player.IsPavlovsDog()) pavlovsDogAlive++;
+            if (player.Role == RoleId.PavlovsOwner)
+            {
+                pavlovsOwnerAlive++;
+                var ability = player.GetAbility<PavlovsOwnerAbility>();
+                if (ability != null && ability.HasRemainingDogCount()) pavlovsOwnerRemaining++;
+            }
+            if (player.Role == RoleId.Arsonist) arsonistAlive++;
+            if (player.Role == RoleId.Owl) owlAlive++;
+            if (player.Role == RoleId.Hitman) hitmanAlive++;
+            if (player.IsNonCrewKiller() || player.IsJackalTeam()) totalKiller++;
+
+            if (isLoversBlock && player.IsLovers())
+            {
+                if (player.IsImpostorWinTeam() || (isHnS && player.IsMadRoles())) hasLoversImpostorTeam = true;
+                if (player.IsJackalTeam()) hasLoversJackalTeam = true;
+                if (player.IsPavlovsTeam()) hasLoversPavlovsTeam = true;
+                if (player.Role == RoleId.Hitman) hasLoversHitmanTeam = true;
+            }
+        }
+
+        TeamImpostorsAlive = teamImpostorsAlive;
+        CrewAlive = crewAlive;
+        TeamJackalAlive = teamJackalAlive;
+        PavlovsDogAlive = pavlovsDogAlive;
+        PavlovsOwnerAlive = pavlovsOwnerAlive;
+        TeamPavlovsAlive = pavlovsDogAlive > 0
+            ? pavlovsDogAlive + pavlovsOwnerAlive
+            : pavlovsOwnerRemaining;
+        ArsonistAlive = arsonistAlive;
+        OwlAlive = owlAlive;
+        HitmanAlive = hitmanAlive;
+        TotalAlive = totalAlive;
+        TotalKiller = totalKiller;
+
+        bool impostorWin = IsKillerWin(teamImpostorsAlive);
+        bool jackalWin = IsKillerWin(teamJackalAlive);
+        bool pavlovWin = IsKillerWin(TeamPavlovsAlive);
+        bool hitmanWin = IsKillerWin(hitmanAlive);
+
+        if (isLoversBlock && impostorWin && teamImpostorsAlive > 1 && hasLoversImpostorTeam)
+        {
+            Logger.Info("Lovers追加勝利判定（Impostor）: ラバーズを含むため勝利取消");
+            impostorWin = false;
+        }
+        if (isLoversBlock && jackalWin && teamJackalAlive > 1 && hasLoversJackalTeam)
+        {
+            Logger.Info("Lovers追加勝利判定（Jackal）: ラバーズを含むため勝利取消");
+            jackalWin = false;
+        }
+        if (isLoversBlock && pavlovWin && TeamPavlovsAlive > 1 && hasLoversPavlovsTeam)
+        {
+            Logger.Info("Lovers追加勝利判定（Pavlovs）: ラバーズを含むため勝利取消");
+            pavlovWin = false;
+        }
+        if (isLoversBlock && hitmanWin && hitmanAlive > 1 && hasLoversHitmanTeam)
+        {
+            Logger.Info("Lovers追加勝利判定（Hitman）: ラバーズを含むため勝利取消");
+            hitmanWin = false;
+        }
+
+        IsImpostorDominating = impostorWin;
+        IsJackalDominating = jackalWin;
+        IsPavlovsWin = pavlovWin;
+        IsHitmanDominating = hitmanWin;
     }
 
-    // ExPlayerControl配列から生存しているプレイヤーを返すヘルパーメソッド
-    private static IEnumerable<ExPlayerControl> GetAlivePlayers()
-    {
-        return ExPlayerControl.ExPlayerControlsArray
-            .Where(player => player != null && !player.IsDead());
-    }
-
-    // 勝利条件の判定ロジックを切り出し、変更しやすいようにしている
-    // 対象チームのキラー数が、全体の半数以上かつ全キラーがそのチームである場合、勝利と判定
     private bool IsKillerWin(int teamAlive)
     {
-        return teamAlive >= TotalAlive - teamAlive && TotalKiller == teamAlive && teamAlive != 0;
+        return isHnS ? teamAlive >= TotalAlive : (teamAlive >= TotalAlive - teamAlive)
+            && TotalKiller <= teamAlive
+            && teamAlive != 0
+            && !(PavlovsDogAlive <= 0 && TeamPavlovsAlive > 0);
     }
 }

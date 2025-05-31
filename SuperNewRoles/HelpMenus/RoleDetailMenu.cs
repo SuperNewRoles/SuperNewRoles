@@ -17,7 +17,7 @@ public static class RoleDetailMenu
     /// </summary>
     /// <param name="role">選択された役職</param>
     /// <param name="buttonObject">クリックされたボタンオブジェクト</param>
-    public static void OnRoleButtonClicked(IRoleBase role, GameObject buttonObject)
+    public static void OnRoleButtonClicked(IRoleInformation role, GameObject buttonObject)
     {
         if (buttonObject == null) return;
 
@@ -33,7 +33,7 @@ public static class RoleDetailMenu
         if (newSelected != null) newSelected.gameObject.SetActive(true);
         selectedButton = buttonObject;
 
-        Logger.Info($"{role.Role} ボタンがクリックされました");
+        Logger.Info($"{role.RoleName} ボタンがクリックされました");
         ShowRoleInformation(role);
     }
 
@@ -41,7 +41,7 @@ public static class RoleDetailMenu
     /// 役職の情報を表示する
     /// </summary>
     /// <param name="role">表示する役職</param>
-    public static void ShowRoleInformation(IRoleBase role)
+    public static void ShowRoleInformation(IRoleInformation role)
     {
         if (menuObject == null)
         {
@@ -59,9 +59,9 @@ public static class RoleDetailMenu
         roleInformation.gameObject.SetActive(true);
 
         // テキスト設定処理を共通化
-        SetTextComponent(roleInformation, "RoleName", role.RoleColor, $"{role.Role}");
-        SetTextComponent(roleInformation, "RoleTeam", GetTeamColor(role.AssignedTeam), role.AssignedTeam.ToString());
-        SetTextComponent(roleInformation, "RoleDescription", Color.white, $"{role.Role}.Description");
+        SetTextComponent(roleInformation, "RoleName", role.RoleColor, role.RoleName);
+        SetTextComponent(roleInformation, "RoleTeam", Color.white, role.AssignedTeams.Count == 0 ? "HelpMenu.AllTeams" : string.Join(", ", role.AssignedTeams.Select(t => ModHelpers.CsWithTranslation(GetTeamColor(t), t.ToString()))));
+        SetTextComponent(roleInformation, "RoleDescription", Color.white, $"{role.RoleName}.Description");
         SetTextComponent(roleInformation, "RoleSettingsTitle", Color.white, "HelpMenu.MyRoleInformation.RoleSettingsTitle");
         string roleSettings = GenerateRoleSettingsText(role);
         SetTextComponent(roleInformation, "RoleSettings", Color.white, roleSettings);
@@ -104,28 +104,29 @@ public static class RoleDetailMenu
     /// </summary>
     /// <param name="role">対象の役職</param>
     /// <returns>設定テキスト</returns>
-    public static string GenerateRoleSettingsText(IRoleBase role)
+    public static string GenerateRoleSettingsText(IRoleInformation role)
     {
-        var roleOption = RoleOptionManager.RoleOptions.FirstOrDefault(o => o.RoleId == role.Role);
-        if (roleOption == null)
+        var scroller = menuObject.transform.Find("Scroller")?.GetComponent<Scroller>();
+        if (false)//roleOption == null)
         {
-            return $"{role.Role}.Settings";
+            // random 1~2
+            int num = Random.Range(1, 3);
+            if (scroller != null)
+                scroller.ContentYBounds.max = 0.2f;
+            return ModTranslation.GetString($"HelpMenu.NoneOptions{num}");
         }
-        var settings = roleOption.Options.Where(o => o.ShouldDisplay())
+        var settings = role.Options.Where(o => o.ShouldDisplay())
             .Select(o => $"{ModTranslation.GetString(o.Name)}: {o.GetCurrentSelectionString()}");
 
-        if (role.OptionTeam != RoleOptionMenuType.Hidden)
-            settings = settings.Prepend($"{ModTranslation.GetString("AssignPer")}: {roleOption.Percentage}%")
-                    .Prepend($"{ModTranslation.GetString("NumberOfCrews")}: {roleOption.NumberOfCrews}");
+        if (role.HiddenOption && role.PercentageOption != null && role.NumberOfCrews != null)
+            settings = settings.Prepend($"{ModTranslation.GetString("AssignPer")}: {role.PercentageOption}%")
+                    .Prepend($"{ModTranslation.GetString("NumberOfCrews")}: {role.NumberOfCrews}");
 
 
         // 設定項目数に応じてスクローラーの高さを調整
         float contentHeight = (settings.Count() - 2) * 0.267f + 0.15f; // 1項目あたり0.2の高さ
-        var scroller = menuObject.transform.Find("Scroller")?.GetComponent<Scroller>();
         if (scroller != null)
-        {
             scroller.ContentYBounds.max = contentHeight;
-        }
 
         return string.Join("\n", settings);
     }
@@ -159,6 +160,8 @@ public static class RoleDetailMenu
         {
             RoleOptionMenuType.Crewmate => Color.white,
             RoleOptionMenuType.Neutral => Color.gray,
+            RoleOptionMenuType.Ghost => Color.cyan,
+            RoleOptionMenuType.Modifier => new Color32(255, 112, 183, 255),
             _ => Palette.ImpostorRed
         };
     }

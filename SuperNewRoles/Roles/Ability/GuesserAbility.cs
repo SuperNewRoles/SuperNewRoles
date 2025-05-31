@@ -16,6 +16,7 @@ public class GuesserAbility : CustomMeetingButtonBase, IAbilityCount
     private readonly bool CelebrityLimitedTurns;
     private readonly int CelebrityLimitedTurnsCount;
     private readonly int maxShots;
+    private readonly bool madmateSuicide;
     // ※ 画面上に既にUIが存在しているか確認するためのフィールド
     private GameObject guesserUI;
     private bool HideButtons = false;
@@ -25,7 +26,7 @@ public class GuesserAbility : CustomMeetingButtonBase, IAbilityCount
     private TMPro.TextMeshPro limitText;
     public override Sprite Sprite => AssetManager.GetAsset<Sprite>("TargetIcon.png");
 
-    public GuesserAbility(int maxShots, int shotsPerMeeting, bool cannotShootCrewmate, bool cannotShootCelebrity, bool celebrityLimitedTurns = false, int celebrityLimitedTurnsCount = 3)
+    public GuesserAbility(int maxShots, int shotsPerMeeting, bool cannotShootCrewmate, bool cannotShootCelebrity, bool celebrityLimitedTurns = false, int celebrityLimitedTurnsCount = 3, bool madmateSuicide = false)
     {
         this.maxShots = maxShots;
         this.shotsPerMeeting = shotsPerMeeting;
@@ -33,6 +34,7 @@ public class GuesserAbility : CustomMeetingButtonBase, IAbilityCount
         this.cannotShootCelebrity = cannotShootCelebrity;
         this.CelebrityLimitedTurns = celebrityLimitedTurns;
         this.CelebrityLimitedTurnsCount = celebrityLimitedTurnsCount;
+        this.madmateSuicide = madmateSuicide;
         Count = maxShots;
     }
 
@@ -69,8 +71,9 @@ public class GuesserAbility : CustomMeetingButtonBase, IAbilityCount
         limitText.text = ModTranslation.GetString("GuesserLimitText", Count, Math.Min(maxShots, shotsPerMeeting) - ShotThisMeeting);
         limitText.enableWordWrapping = false;
         limitText.transform.localScale = Vector3.one * 0.5f;
-        limitText.transform.localPosition = new Vector3(-3.15f, 2.27f, -10);
+        limitText.transform.localPosition = new Vector3(-3.58f, 2.27f, -10);
         limitText.gameObject.SetActive(true);
+        limitText.alignment = TMPro.TextAlignmentOptions.Left;
     }
     public override void OnMeetingUpdate()
     {
@@ -154,7 +157,7 @@ public class GuesserAbility : CustomMeetingButtonBase, IAbilityCount
         exitButtonParent.localScale = new Vector3(0.25f, 0.9f, 1f);
         exitButtonParent.SetAsFirstSibling();
         var exitPassive = exitButton.GetComponent<PassiveButton>();
-        exitPassive.OnClick.RemoveAllListeners();
+        exitPassive.OnClick = new();
         exitPassive.ClickSound = null;
         exitPassive.OnClick.AddListener((UnityAction)(() =>
         {
@@ -195,7 +198,7 @@ public class GuesserAbility : CustomMeetingButtonBase, IAbilityCount
             void CreateTeamButton(Transform tb, AssignedTeamType type)
             {
                 var passiveButton = tb.GetComponent<PassiveButton>();
-                passiveButton.OnClick.RemoveAllListeners();
+                passiveButton.OnClick = new();
                 passiveButton.ClickSound = null;
                 passiveButton.OnClick.AddListener((UnityAction)(() =>
                 {
@@ -281,7 +284,7 @@ public class GuesserAbility : CustomMeetingButtonBase, IAbilityCount
             if (!isNext && Page <= 1)
                 pageButton.GetComponent<SpriteRenderer>().color = new Color(1, 1, 1, 0.1f);
             var pagePassive = pageButton.GetComponent<PassiveButton>();
-            pagePassive.OnClick.RemoveAllListeners();
+            pagePassive.OnClick = new();
             pagePassive.ClickSound = null;
             pagePassive.OnClick.AddListener((UnityAction)(() =>
             {
@@ -339,7 +342,7 @@ public class GuesserAbility : CustomMeetingButtonBase, IAbilityCount
             label.transform.localScale *= 1.6f;
             label.autoSizeTextContainer = true;
             PassiveButton passiveButton = button.GetComponent<PassiveButton>();
-            passiveButton.OnClick.RemoveAllListeners();
+            passiveButton.OnClick = new();
             passiveButton.ClickSound = null;
             if (ExPlayerControl.LocalPlayer.IsAlive())
             {
@@ -366,8 +369,12 @@ public class GuesserAbility : CustomMeetingButtonBase, IAbilityCount
 
                         var targetRole = exPlayer.Role;
                         ExPlayerControl dyingTarget = (targetRole == rolebase.Role) ? exPlayer : PlayerControl.LocalPlayer;
+                        if (madmateSuicide && (ExPlayerControl.LocalPlayer.IsMadRoles() || ExPlayerControl.LocalPlayer.IsFriendRoles()))
+                        {
+                            dyingTarget = ExPlayerControl.LocalPlayer;
+                        }
 
-                        RpcShotGuesser(PlayerControl.LocalPlayer, dyingTarget, PlayerControl.LocalPlayer == exPlayer);
+                        RpcShotGuesser(PlayerControl.LocalPlayer, dyingTarget, madmateSuicide && (dyingTarget.IsMadRoles() || dyingTarget.IsFriendRoles()), PlayerControl.LocalPlayer == exPlayer);
                         HideButtons = false;
                         SetActiveAllPlayerVoteArea(true);
                         UnityEngine.Object.Destroy(container.gameObject);
@@ -385,11 +392,27 @@ public class GuesserAbility : CustomMeetingButtonBase, IAbilityCount
         {
             if (!IsValidRole(roleBase)) continue;
 
-            CreateRoleAndRelated(roleBase, GeneratedButtons);
+            CreateRoleAndRelated(roleBase, ref GeneratedButtons);
         }
 
-        void CreateRoleAndRelated(IRoleBase role, List<RoleId> generated)
+        foreach (IGhostRoleBase roleBase in CustomRoleManager.AllGhostRoles)
         {
+            if (!IsValidGhostRole(roleBase)) continue;
+
+            RelatedGhostRole(roleBase, ref GeneratedButtons);
+        }
+
+        foreach (IModifierBase roleBase in CustomRoleManager.AllModifiers)
+        {
+            if (!IsValidModifierRole(roleBase)) continue;
+
+            RelatedModifierRole(roleBase, ref GeneratedButtons);
+        }
+
+        void CreateRoleAndRelated(IRoleBase role, ref List<RoleId> generated)
+        {
+            if (generated.Contains(role.Role)) return;
+
             CreateRole(role);
             generated.Add(role.Role);
 
@@ -402,8 +425,59 @@ public class GuesserAbility : CustomMeetingButtonBase, IAbilityCount
                 var relatedRole = CustomRoleManager.GetRoleById(relatedId);
                 if (relatedRole == null) continue;
 
-                CreateRoleAndRelated(relatedRole, generated);
+                CreateRoleAndRelated(relatedRole, ref generated);
             }
+        }
+
+        void RelatedGhostRole(IGhostRoleBase role, ref List<RoleId> generated)
+        {
+            if (role.RelatedRoleIds == null) return;
+
+            foreach (var relatedId in role.RelatedRoleIds)
+            {
+                if (generated.Contains(relatedId)) continue;
+
+                var relatedRole = CustomRoleManager.GetRoleById(relatedId);
+                if (relatedRole == null) continue;
+
+                CreateRoleAndRelated(relatedRole, ref generated);
+            }
+        }
+
+        void RelatedModifierRole(IModifierBase role, ref List<RoleId> generated)
+        {
+            if (role.RelatedRoleIds == null) return;
+
+            foreach (var relatedId in role.RelatedRoleIds)
+            {
+                if (generated.Contains(relatedId)) continue;
+
+                var relatedRole = CustomRoleManager.GetRoleById(relatedId);
+                if (relatedRole == null) continue;
+
+                CreateRoleAndRelated(relatedRole, ref generated);
+            }
+        }
+
+        bool IsValidGhostRole(IGhostRoleBase role)
+        {
+            if (role == null) return false;
+            if (RoleOptionManager.TryGetGhostRoleOption(role.Role, out var option)) return false;
+            if (option.NumberOfCrews == 0 || option.Percentage == 0) return false;
+            return true;
+        }
+
+        bool IsValidModifierRole(IModifierBase role)
+        {
+            if (role == null) return false;
+            if (!RoleOptionManager.TryGetModifierRoleOption(role.ModifierRole, out var option)) return false;
+            if (!role.UseTeamSpecificAssignment && (option.NumberOfCrews == 0 || option.Percentage == 0)) return false;
+            if (role.UseTeamSpecificAssignment && (
+                (role.CrewmateChance == 0 || option.NumberOfCrews == 0) &&
+                (role.ImpostorChance == 0 || option.MaxImpostors == 0) &&
+                (role.NeutralChance == 0 || option.MaxNeutrals == 0))
+                ) return false;
+            return true;
         }
 
         bool IsValidRole(IRoleBase role)
@@ -425,8 +499,7 @@ public class GuesserAbility : CustomMeetingButtonBase, IAbilityCount
                     return false;
             }
 
-            var option = RoleOptionManager.RoleOptions.FirstOrDefault(x => x.RoleId == role.Role);
-            if (option == null || option.NumberOfCrews == 0 || option.Percentage == 0)
+            if (!RoleOptionManager.TryGetRoleOption(role.Role, out var option) || option.NumberOfCrews == 0 || option.Percentage == 0)
             {
                 Logger.Info("continueになりました:" + role.Role, "Guesser");
                 return false;
@@ -439,19 +512,19 @@ public class GuesserAbility : CustomMeetingButtonBase, IAbilityCount
         ReloadPage();
     }
     [CustomRPC]
-    public static void RpcShotGuesser(PlayerControl killer, ExPlayerControl dyingTarget, bool isMisFire)
+    public static void RpcShotGuesser(PlayerControl killer, ExPlayerControl dyingTarget, bool isSuicide, bool isMisFire)
     {
         if (killer == null || dyingTarget == null)
             return;
         if (dyingTarget == null) return;
         dyingTarget.Player.Exiled();
 
-        if (isMisFire) dyingTarget.FinalStatus = FinalStatus.GuesserMisFire;
+        if (isMisFire || isSuicide) dyingTarget.FinalStatus = FinalStatus.GuesserMisFire;
         else dyingTarget.FinalStatus = FinalStatus.GuesserKill;
         if (Constants.ShouldPlaySfx()) SoundManager.Instance.PlaySound(dyingTarget.Player.KillSfx, false, 0.8f);
 
         // GuesserShotEventを発行
-        Events.GuesserShotEvent.Invoke(killer, dyingTarget.Player, isMisFire);
+        Events.GuesserShotEvent.Invoke(killer, dyingTarget.Player, isMisFire || isSuicide);
 
         if (MeetingHud.Instance)
         {

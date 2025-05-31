@@ -31,9 +31,9 @@ public class SideKillerAbility : AbilityBase
         _data = data;
     }
 
-    public override void Attach(PlayerControl player, ulong abilityId, AbilityParentBase parent)
+    public override void AttachToAlls()
     {
-        base.Attach(player, abilityId, parent);
+        base.AttachToAlls();
 
         _killAbility = new CustomKillButtonAbility(
             () => true,
@@ -42,15 +42,15 @@ public class SideKillerAbility : AbilityBase
             isTargetable: (player) => SetTargetPatch.ValidMadkiller(player)
         );
 
-        _sidekickAbility = new CustomSidekickButtonAbility(
+        _sidekickAbility = new CustomSidekickButtonAbility(new(
             (bool sidekickCreated) => !sidekickCreated,
             () => _data.killCooldown,
             () => RoleId.MadKiller,
             () => RoleTypes.Crewmate,
-            AssetManager.GetAsset<Sprite>("JackalSidekickButton.png"),
+            AssetManager.GetAsset<Sprite>("SideKillerSidekickButton.png"),
             ModTranslation.GetString("SideKillerSidekickButtonName"),
             sidekickCount: () => 1,
-            isTargetable: (player) => player.IsCrewmate(),
+            isTargetable: (player) => !player.IsImpostor(),
             sidekickedPromoteData: new(RoleId.MadKiller, RoleTypes.Impostor),
             onSidekickCreated: (player) =>
             {
@@ -60,6 +60,7 @@ public class SideKillerAbility : AbilityBase
                     RpcSetMadKillerAbility(this, madKillerAbility);
                 }
             }
+        )
         );
 
         _knowOtherAbility = new KnowOtherAbility(
@@ -67,11 +68,9 @@ public class SideKillerAbility : AbilityBase
             () => true
         );
 
-        ExPlayerControl exPlayer = (ExPlayerControl)player;
-        AbilityParentAbility parentAbility = new(this);
-        exPlayer.AttachAbility(_killAbility, parentAbility);
-        exPlayer.AttachAbility(_sidekickAbility, parentAbility);
-        exPlayer.AttachAbility(_knowOtherAbility, parentAbility);
+        Player.AttachAbility(_killAbility, new AbilityParentAbility(this));
+        Player.AttachAbility(_sidekickAbility, new AbilityParentAbility(this));
+        Player.AttachAbility(_knowOtherAbility, new AbilityParentAbility(this));
 
         if (Player.AmOwner)
         {

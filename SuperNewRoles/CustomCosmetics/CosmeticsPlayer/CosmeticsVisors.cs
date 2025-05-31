@@ -1,3 +1,5 @@
+using System.Collections.Generic;
+using System.Linq;
 using AmongUs.Data;
 using HarmonyLib;
 using Innersloth.Assets;
@@ -22,6 +24,8 @@ public class CustomVisorLayer : MonoBehaviour
 
     public SpriteRenderer Image;
 
+    public SpriteAnimNodeSync nodeSync;
+
     private PlayerMaterial.Properties matProperties;
 
     public float ZIndexSpacing { get; set; } = 0.0001f;
@@ -30,6 +34,8 @@ public class CustomVisorLayer : MonoBehaviour
     private float LocalZFrontLayer => ZIndexSpacing * -3f;
 
     private float LocalZBackLayer => ZIndexSpacing * -1.5f;
+
+    public List<SpriteAnimNodeSync> vanillaNodeSyncs = new();
 
     // SetLocalZ拡張メソッドの代わりに使用するメソッド
     public void SetLocalZ(float zPosition)
@@ -68,19 +74,22 @@ public class CustomVisorLayer : MonoBehaviour
                 visor = CustomCosmeticsLoader.GetModdedVisorData(visorId);
             else
                 visor = new CosmeticDataWrapperVisor(FastDestroyableSingleton<HatManager>.Instance.GetVisorById(visorId));
+            if (visor == null)
+                visor = new CosmeticDataWrapperVisor(FastDestroyableSingleton<HatManager>.Instance.GetVisorById(HatData.EmptyId));
             SetVisor(visor, colorId);
         }
     }
 
     public void SetVisor(ICosmeticData data, int color)
     {
+        Logger.Info($"SetVisor: {data.ProdId}");
         if (data == null || data != Visor)
         {
             Image.sprite = null;
         }
         CustomCosmeticVisor = data as ICustomCosmeticVisor;
         SetMaterialColor(color);
-        UnloadAsset();
+        // UnloadAsset();
         Visor.LoadAsync(() =>
         {
             PopulateFromViewData();
@@ -210,6 +219,29 @@ public class CustomVisorLayer : MonoBehaviour
     public void OnDestroy()
     {
         UnloadAsset();
+    }
+
+    private int count = 0;
+
+    public void Update()
+    {
+        count--;
+        if (count <= 0 && nodeSync != null)
+        {
+            count = 30;
+            var parentsync = vanillaNodeSyncs.FirstOrDefault(x => x.enabled);
+            if (parentsync == null)
+            {
+                nodeSync.enabled = false;
+            }
+            else
+            {
+                nodeSync.Parent = parentsync.Parent;
+                nodeSync.ParentRenderer = parentsync.ParentRenderer;
+                nodeSync.Renderer = parentsync.Renderer;
+                nodeSync.enabled = true;
+            }
+        }
     }
 
     private void UnloadAsset()

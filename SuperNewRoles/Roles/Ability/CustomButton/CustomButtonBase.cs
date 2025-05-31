@@ -4,7 +4,9 @@ using System.Configuration;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using HarmonyLib;
 using SuperNewRoles.Events;
+using SuperNewRoles.Modules;
 using SuperNewRoles.Modules.Events.Bases;
 using TMPro;
 using UnityEngine;
@@ -28,34 +30,46 @@ public enum ShowTextType
     Show,
     ShowWithCount,
 }
+public enum KeyType
+{
+    None,
+    Kill,
+    Ability1,
+    Ability2,
+    Vent,
+}
 public abstract class CustomButtonBase : AbilityBase
 {
     //エフェクトがある(≒押したらカウントダウンが始まる？)ボタンの場合は追加でIButtonEffectを継承すること
     //奪える能力の場合はIRobableを継承し、Serializer/DeSerializerを実装
     private EventListener hudUpdateEvent;
     private EventListener<WrapUpEventData> wrapUpEvent;
-    private ActionButton actionButton;
+    public ActionButton actionButton { get; private set; }
     private IButtonEffect buttonEffect;
     public virtual float Timer { get; set; }
     public abstract float DefaultTimer { get; }
+    private float DefaultTimerAdjusted => DefaultTimer <= 0f ? MaybeZero : DefaultTimer;
     public abstract string buttonText { get; }
-
+    private const float MaybeZero = 0.001f;
     public abstract Sprite Sprite { get; }
+    public virtual Action OnClickEventAction { get; set; } = () => { };
     private static readonly Color GrayOut = new(1f, 1f, 1f, 0.3f);
+
+    public virtual bool IsFirstCooldownTenSeconds => true;
 
     //TODO:未実装
     //Updateで感知するよりも、button押したのをトリガーにするべきな気がするけどそれは可能か？
-    protected abstract KeyCode? hotkey { get; }
+    protected abstract KeyType keytype { get; }
     // protected abstract int joystickkey { get; }
 
     public abstract bool CheckIsAvailable();
-    public virtual bool CheckHasButton() => !PlayerControl.LocalPlayer.Data.IsDead;
+    public virtual bool CheckHasButton() => Player == ExPlayerControl.LocalPlayer && !PlayerControl.LocalPlayer.Data.IsDead;
 
     public abstract void OnClick();
     public virtual void OnMeetingEnds() { ResetTimer(); }
 
     public virtual ShowTextType showTextType { get; } = ShowTextType.Hidden;
-    public virtual string showText { get; } = "";
+    public virtual string showText { get; } = string.Empty;
     private TextMeshPro _text;
 
     /// <summary>
@@ -66,10 +80,27 @@ public abstract class CustomButtonBase : AbilityBase
     /// <returns>trueならカウントが進む</returns>
     public virtual bool CheckDecreaseCoolCount()
     {
+        // イントロ中はカウントしない
+        if (DestroyableSingleton<HudManager>.Instance.IsIntroDisplayed)
+            return false;
+
         var localPlayer = PlayerControl.LocalPlayer;
-        var moveable = localPlayer.CanMove;
+        var moveable = !PlayerControl.LocalPlayer.inVent && PlayerControl.LocalPlayer.moveable;
 
         return !localPlayer.inVent && moveable;
+    }
+
+    private static KeyCode GetKeyCode(KeyType keyType)
+    {
+        return keyType switch
+        {
+            KeyType.None => KeyCode.None,
+            KeyType.Kill => KeyCode.Q,
+            KeyType.Ability1 => KeyCode.F,
+            KeyType.Ability2 => KeyCode.None,
+            KeyType.Vent => KeyCode.V,
+            _ => throw new Exception($"keyTypeが{keyType}の場合はGetKeyCodeを実装してください"),
+        };
     }
 
     /// <summary>
@@ -80,7 +111,14 @@ public abstract class CustomButtonBase : AbilityBase
         Timer -= Time.deltaTime;
     }
 
-    public virtual ActionButton textTemplate => HudManager.Instance.AbilityButton;
+    public virtual ActionButton textTemplate { get { return _template ?? _getTemplate(); } }
+    private ActionButton _template;
+    private ActionButton _getTemplate()
+    {
+        //_template = HudManager.Instance.KillButton;
+        _template = HudManager.Instance.AbilityButton;
+        return _template;
+    }
 
     public CustomButtonBase() { }
 
@@ -89,7 +127,7 @@ public abstract class CustomButtonBase : AbilityBase
         actionButton = UnityEngine.Object.Instantiate(textTemplate, textTemplate.transform.parent);
         actionButton.graphic.color = Color.white;
         PassiveButton button = actionButton.GetComponent<PassiveButton>();
-        button.OnClick = new Button.ButtonClickedEvent();
+        button.OnClick = new();
         button.Colliders = new Collider2D[] { button.GetComponent<BoxCollider2D>() };
         if (actionButton.usesRemainingText != null) actionButton.usesRemainingText.transform.parent.gameObject.SetActive(false);
         button.OnClick.AddListener((UnityEngine.Events.UnityAction)(() => OnClickEvent()));
@@ -100,6 +138,7 @@ public abstract class CustomButtonBase : AbilityBase
         {
             UnityEngine.Object.Destroy(actionButton.buttonLabelText);
             actionButton.buttonLabelText = UnityEngine.Object.Instantiate(textTemplate.buttonLabelText, actionButton.transform);
+            actionButton.buttonLabelText.transform.localPosition = new(0, -0.56f, -10);
         }
         SetActive(false);
         hudUpdateEvent = HudUpdateEvent.Instance.AddListener(OnUpdate);
@@ -118,9 +157,9 @@ public abstract class CustomButtonBase : AbilityBase
         _text.text = "";
     }
 
-    public override void Attach(PlayerControl player, ulong abilityId, AbilityParentBase parent)
+    public override void AttachToAlls()
     {
-        base.Attach(player, abilityId, parent);
+        base.AttachToAlls();
         buttonEffect = this as IButtonEffect;
     }
 
@@ -133,16 +172,16 @@ public abstract class CustomButtonBase : AbilityBase
         }
         bool active = HudManager.Instance.UseButton.isActiveAndEnabled || HudManager.Instance.PetButton.isActiveAndEnabled;
         SetActive(active);
-        if (Timer > 0 && CheckDecreaseCoolCount()) DecreaseTimer();
+        if (Timer > 0 && (Timer == MaybeZero || CheckDecreaseCoolCount()) && buttonEffect?.isEffectActive != true) DecreaseTimer();
         actionButton.graphic.sprite = Sprite;
         //エフェクト中は直後のbuttonEffect.Updateで表記が上書きされる……はず
-        actionButton.SetCoolDown(Timer, DefaultTimer);
+        actionButton.SetCoolDown(Timer, DefaultTimerAdjusted);
         actionButton.OverrideText(buttonText);
         if (CheckIsAvailable() && (buttonEffect == null || !buttonEffect.isEffectActive))
         {
             actionButton.graphic.color = actionButton.buttonLabelText.color = Palette.EnabledColor;
             actionButton.graphic.material.SetFloat("_Desat", 0f);
-            if (Input.GetKeyDown(hotkey ?? KeyCode.None))
+            if (Input.GetKeyDown(GetKeyCode(keytype)))
             {
                 OnClickEvent();
             }
@@ -151,7 +190,7 @@ public abstract class CustomButtonBase : AbilityBase
         {
             actionButton.graphic.color = actionButton.buttonLabelText.color = Palette.EnabledColor;
             actionButton.graphic.material.SetFloat("_Desat", 0f);
-            if (Input.GetKeyDown(hotkey ?? KeyCode.None))
+            if (Input.GetKeyDown(GetKeyCode(keytype)))
             {
                 buttonEffect.OnCancel(actionButton);
                 ResetTimer();
@@ -159,7 +198,8 @@ public abstract class CustomButtonBase : AbilityBase
         }
         else
         {
-            actionButton.graphic.color = actionButton.buttonLabelText.color = Palette.DisabledClear;
+            actionButton.graphic.color = GrayOut;
+            actionButton.buttonLabelText.color = Palette.DisabledClear;
             actionButton.graphic.material.SetFloat("_Desat", 1f);
         }
         UpdateText();
@@ -177,7 +217,10 @@ public abstract class CustomButtonBase : AbilityBase
                 _text.text = showText;
                 break;
             case ShowTextType.ShowWithCount:
-                _text.text = string.Format(showText, Count);
+                _text.text = string.Format(
+                    string.IsNullOrEmpty(showText)
+                    ? ModTranslation.GetString("RemainingText")
+                    : showText, Count);
                 break;
             default:
                 throw new Exception($"showTextTypeが{showTextType}の場合はshowTextを設定してください");
@@ -189,6 +232,7 @@ public abstract class CustomButtonBase : AbilityBase
         {
             actionButton.graphic.color = GrayOut;
             this.OnClick();
+            this.OnClickEventAction();
             ResetTimer();
             if (buttonEffect != null) buttonEffect.OnClick(actionButton);
         }
@@ -216,7 +260,12 @@ public abstract class CustomButtonBase : AbilityBase
     }
     public virtual void ResetTimer()
     {
-        Timer = DefaultTimer;
+        Timer = DefaultTimerAdjusted;
+        if (buttonEffect != null)
+        {
+            buttonEffect.EffectTimer = buttonEffect.EffectDuration;
+            buttonEffect.isEffectActive = false;
+        }
     }
     public override void DetachToLocalPlayer()
     {
@@ -224,5 +273,21 @@ public abstract class CustomButtonBase : AbilityBase
         HudUpdateEvent.Instance.RemoveListener(hudUpdateEvent);
         WrapUpEvent.Instance.RemoveListener(wrapUpEvent);
         GameObject.Destroy(actionButton.gameObject);
+    }
+    public void SetCoolTenSeconds()
+    {
+        Timer = 10f;
+    }
+
+    [HarmonyPatch(typeof(AbilityButton), nameof(AbilityButton.Update))]
+    public class AbilityUpdate
+    {
+        public static void Postfix(AbilityButton __instance)
+        {
+            if (PlayerControl.LocalPlayer.Data.Role.IsSimpleRole && __instance.commsDown.active)
+            {
+                __instance.commsDown.SetActive(false);
+            }
+        }
     }
 }

@@ -4,6 +4,7 @@ using HarmonyLib;
 using UnityEngine;
 using SuperNewRoles.CustomOptions.Categories;
 using System.Linq;
+using SuperNewRoles.CustomCosmetics;
 
 namespace SuperNewRoles.MapCustoms;
 
@@ -34,19 +35,50 @@ public static class CommonCustom
 
     // MODカラー禁止
     [HarmonyPatch(typeof(PlayerControl), nameof(PlayerControl.CheckColor))]
-    public static class PlayerControlCheckColorPatch
+    private static class PlayerControlCheckColorPatch
     {
         public static bool Prefix(PlayerControl __instance, [HarmonyArgument(0)] byte bodyColor)
         {
-            if (!GeneralSettingOptions.DisableModColor)
-                return true;
-
-            // MODカラーを禁止
-            if (bodyColor >= Palette.PlayerColors.Length)
+            if (CustomColors.DefaultPickAbleColors < PlayerControl.AllPlayerControls.Count) return true;
+            uint pickAble = GeneralSettingOptions.DisableModColor ? CustomColors.DefaultPickAbleColors : CustomColors.PickAbleColors;
+            // Fix incorrect color assignment
+            uint color = bodyColor;
+            if (IsTaken(__instance, color) || color >= pickAble)
             {
-                return false;
+                int num = 0;
+                while (num++ < 50 && (color >= pickAble || IsTaken(__instance, color)))
+                {
+                    color = (color + 1) % pickAble;
+                }
             }
-            return true;
+            //Logger.Info(color.ToString() + "をセット:" + isTaken(__instance, color).ToString()+":"+ (color >= Palette.PlayerColors.Length));
+            __instance.RpcSetColor((byte)color);
+            return false;
+        }
+        private static bool IsTaken(PlayerControl player, uint color)
+        {
+            foreach (NetworkedPlayerInfo p in GameData.Instance.AllPlayers)
+            {
+                //Logger.Info($"{!p.Disconnected} は {p.PlayerId != player.PlayerId} は {p.DefaultOutfit.ColorId == color}", "isTaken");
+                if (!p.Disconnected && p.PlayerId != player.PlayerId && p.DefaultOutfit.ColorId == color)
+                    return true;
+            }
+            return false;
+        }
+    }
+    [HarmonyPatch(typeof(GameStartManager), nameof(GameStartManager.Update))]
+    private static class GameStartManagerUpdatePatch
+    {
+        public static void Postfix(GameStartManager __instance)
+        {
+            if (!GeneralSettingOptions.DisableModColor) return;
+            if (CustomColors.DefaultPickAbleColors < PlayerControl.AllPlayerControls.Count) return;
+            foreach (PlayerControl player in PlayerControl.AllPlayerControls)
+            {
+                if (!player) continue;
+                if (player.Data.DefaultOutfit.ColorId < CustomColors.DefaultPickAbleColors) continue;
+                player.CheckColor((byte)player.Data.DefaultOutfit.ColorId);
+            }
         }
     }
 }

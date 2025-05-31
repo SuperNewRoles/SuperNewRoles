@@ -171,7 +171,7 @@ public class CustomColors
         var noLighterColorTemp = new List<KeyValuePair<ColorType, (Color32, Color32, bool)>>();
         CustomColorData = new();
 
-        var fileName = Assembly.GetExecutingAssembly().GetManifestResourceStream("SuperNewRoles.Resources.Color.csv");
+        using var fileName = SuperNewRolesPlugin.Assembly.GetManifestResourceStream("SuperNewRoles.Resources.Color.csv");
 
         //csvを開く
         StreamReader sr = new(fileName);

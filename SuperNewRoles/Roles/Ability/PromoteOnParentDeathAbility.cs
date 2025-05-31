@@ -10,15 +10,15 @@ namespace SuperNewRoles.Roles.Ability;
 
 public class PromoteOnParentDeathAbility : AbilityBase
 {
-    public AbilityParentBase Owner { get; }
+    public AbilityParentRole Owner { get; }
     public RoleId PromoteRole { get; }
     public RoleTypes PromoteRoleVanilla { get; }
-    public Action OnPromoted { get; set; }
+    public Action<ExPlayerControl> OnPromoted { get; set; } = (player) => { };
 
-    private EventListener<DieEventData> DieEventListener;
-    private EventListener<DisconnectEventData> DisconnectEventListener;
+    private EventListener _fixedUpdateEventListener;
+    private bool _hasPromoted = false;
 
-    public PromoteOnParentDeathAbility(AbilityParentBase owner, RoleId promoteRole, RoleTypes promoteRoleVanilla)
+    public PromoteOnParentDeathAbility(AbilityParentRole owner, RoleId promoteRole, RoleTypes promoteRoleVanilla)
     {
         Owner = owner;
         PromoteRole = promoteRole;
@@ -27,42 +27,30 @@ public class PromoteOnParentDeathAbility : AbilityBase
 
     public override void AttachToLocalPlayer()
     {
-        DieEventListener = DieEvent.Instance.AddListener(OnDie);
-        DisconnectEventListener = DisconnectEvent.Instance.AddListener(OnDisconnect);
+        base.AttachToLocalPlayer();
+        _fixedUpdateEventListener = FixedUpdateEvent.Instance.AddListener(OnFixedUpdate);
     }
     public override void DetachToLocalPlayer()
     {
         base.DetachToLocalPlayer();
-        DieEvent.Instance.RemoveListener(DieEventListener);
-        DisconnectEvent.Instance.RemoveListener(DisconnectEventListener);
+        _fixedUpdateEventListener?.RemoveListener();
     }
-    private void OnDisconnect(DisconnectEventData data)
+    private void OnFixedUpdate()
     {
-        if (Owner.Player == null) return;
-        if (data.disconnectedPlayer == null) return;
-        if (Owner.Player.PlayerId == data.disconnectedPlayer.PlayerId)
-        {
-            Promote();
-        }
-    }
-    private void OnDie(DieEventData data)
-    {
-        if (Owner.Player == null) return;
-        if (data.player == null) return;
-        if (Owner.Player.PlayerId == data.player.PlayerId)
-        {
-            Promote();
-        }
+        if (_hasPromoted) return;
+        if (Owner != null && Owner.Player != null && Owner.Player.IsAlive()) return;
+        Promote();
+        _hasPromoted = true;
     }
     private void Promote()
     {
-        if (Owner.Player == null) return;
         ExPlayerControl exPlayer = Player;
         if (exPlayer.Role == PromoteRole) return;
         if (exPlayer.IsDead()) return;
 
         RpcPromote(exPlayer, PromoteRole, PromoteRoleVanilla);
-        OnPromoted?.Invoke();
+        // Playerはこの時点でnullになってるのでexPlayerを渡す
+        OnPromoted?.Invoke(exPlayer);
     }
     [CustomRPC]
     public static void RpcPromote(ExPlayerControl player, RoleId roleId, RoleTypes roleType)

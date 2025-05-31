@@ -16,7 +16,7 @@ internal interface IButtonEffect
     public virtual bool IsEffectDurationInfinity => false;
     public virtual float FillUpTime => 0f;
 
-    private static readonly Color color = new(0F, 0.8F, 0F);
+    public static readonly Color color = new(0F, 0.8F, 0F);
     float EffectTimer { get; set; }
 
     public void OnClick(ActionButton actionButton)

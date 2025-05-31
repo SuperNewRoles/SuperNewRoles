@@ -12,6 +12,7 @@ public class KnowOtherAbility : AbilityBase
     public Func<bool> IsShowRole { get; }
     public Func<ExPlayerControl, Color32>? Color { get; }
     private EventListener<NameTextUpdateEventData> _nameTextUpdateEvent;
+    private EventListener<NameTextUpdateVisiableEventData> _nameTextUpdateVisiableEvent;
 
     public KnowOtherAbility(Func<ExPlayerControl, bool> canKnowOther, Func<bool> isShowRole, Func<ExPlayerControl, Color32>? color = null)
     {
@@ -23,35 +24,27 @@ public class KnowOtherAbility : AbilityBase
     public override void AttachToLocalPlayer()
     {
         _nameTextUpdateEvent = NameTextUpdateEvent.Instance.AddListener(OnNameTextUpdate);
+        _nameTextUpdateVisiableEvent = NameTextUpdateVisiableEvent.Instance.AddListener(OnNameTextUpdateVisiable);
     }
 
     private void OnNameTextUpdate(NameTextUpdateEventData data)
     {
-        UpdateImpostorNameColors();
+        if (!CanKnowOther(data.Player)) return;
+        Color32 color = Color?.Invoke(data.Player) ?? data.Player.roleBase.RoleColor;
+        NameText.SetNameTextColor(data.Player, color);
     }
 
-    private void UpdateImpostorNameColors()
+    private void OnNameTextUpdateVisiable(NameTextUpdateVisiableEventData data)
     {
-        foreach (var player in ExPlayerControl.ExPlayerControls)
-        {
-            if (!CanKnowOther(player))
-                continue;
-            if (IsShowRole())
-                NameText.UpdateVisiable(player, true);
-            Color32 color = Color?.Invoke(player) ?? player.roleBase.RoleColor;
-            UpdatePlayerNameColor(player, color);
-        }
-    }
-
-    private void UpdatePlayerNameColor(ExPlayerControl player, Color color)
-    {
-        player.Data.Role.NameColor = color;
-        player.Player.cosmetics.nameText.color = color;
+        if (!CanKnowOther(data.Player)) return;
+        if (IsShowRole())
+            NameText.UpdateVisiable(data.Player, data.Visiable);
     }
 
     public override void DetachToLocalPlayer()
     {
         base.DetachToLocalPlayer();
-        NameTextUpdateEvent.Instance.RemoveListener(_nameTextUpdateEvent);
+        _nameTextUpdateEvent?.RemoveListener();
+        _nameTextUpdateVisiableEvent?.RemoveListener();
     }
 }

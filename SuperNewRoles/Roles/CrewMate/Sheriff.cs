@@ -94,6 +94,7 @@ public class SheriffAbility : CustomKillButtonAbility, IAbilityCount
     public SheriffAbilityData SheriffAbilityData { get; set; }
     public override Sprite Sprite => AssetManager.GetAsset<Sprite>("SheriffKillButton.png");
     public override float DefaultTimer => SheriffAbilityData.KillCooldown;
+    public override ShowTextType showTextType => ShowTextType.ShowWithCount;
     public SheriffAbility(SheriffAbilityData sheriffAbilityData) : base(
         canKill: () => sheriffAbilityData.KillCount > 0,
         killCooldown: () => sheriffAbilityData.KillCooldown,
@@ -117,11 +118,13 @@ public class SheriffAbility : CustomKillButtonAbility, IAbilityCount
         {
             // 正当なキル
             ExPlayerControl.LocalPlayer.RpcCustomDeath(Target, CustomDeathType.Kill);
+            FinalStatusManager.RpcSetFinalStatus(ExPlayerControl.LocalPlayer, FinalStatus.SheriffKill);
         }
         else
         {
             // 誤射の場合は自分が死ぬ
             ExPlayerControl.LocalPlayer.RpcCustomDeath(ExPlayerControl.LocalPlayer, CustomDeathType.Kill);
+            FinalStatusManager.RpcSetFinalStatus(ExPlayerControl.LocalPlayer, FinalStatus.SheriffSelfDeath);
         }
         ResetTimer();
     }

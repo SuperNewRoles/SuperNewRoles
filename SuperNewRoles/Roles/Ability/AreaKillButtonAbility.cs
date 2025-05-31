@@ -4,6 +4,7 @@ using System.Linq;
 using UnityEngine;
 using SuperNewRoles.Modules;
 using SuperNewRoles.Roles.Ability.CustomButton;
+using SuperNewRoles.Events;
 
 namespace SuperNewRoles.Roles.Ability;
 
@@ -18,6 +19,7 @@ public class AreaKillButtonAbility : CustomButtonBase
     public Func<ExPlayerControl, bool> IsTargetableValue { get; }
     public Func<bool> IgnoreWallsValue { get; }
     public Action<List<ExPlayerControl>> KilledCallback { get; }
+    public Action<List<ExPlayerControl>> BeforeKillCallback { get; }
     public Sprite CustomSprite { get; }
     public string CustomButtonText { get; }
     public Color? CustomColor { get; }
@@ -25,9 +27,9 @@ public class AreaKillButtonAbility : CustomButtonBase
     public bool IsUsed { get; private set; }
     public override Sprite Sprite => CustomSprite ?? HudManager.Instance?.KillButton?.graphic?.sprite;
     public override string buttonText => CustomButtonText ?? FastDestroyableSingleton<TranslationController>.Instance.GetString(StringNames.KillLabel);
-    protected override KeyCode? hotkey => KeyCode.F;
+    protected override KeyType keytype => KeyType.Ability1;
     public override float DefaultTimer => KillCooldown?.Invoke() ?? 0;
-
+    public Action Callback { get; }
     public AreaKillButtonAbility(
         Func<bool> canKill,
         Func<float> killRadius,
@@ -41,7 +43,10 @@ public class AreaKillButtonAbility : CustomButtonBase
         Sprite customSprite = null,
         string customButtonText = null,
         Color? customColor = null,
-        CustomDeathType customDeathType = CustomDeathType.Kill)
+        CustomDeathType customDeathType = CustomDeathType.Kill,
+        Action<List<ExPlayerControl>> beforeKillCallback = null,
+        Action callback = null
+    )
     {
         CanKill = canKill;
         KillRadius = killRadius;
@@ -57,6 +62,8 @@ public class AreaKillButtonAbility : CustomButtonBase
         CustomColor = customColor;
         CustomDeathType = customDeathType;
         IsUsed = false;
+        BeforeKillCallback = beforeKillCallback;
+        Callback = callback;
     }
 
     public override void OnClick()
@@ -95,7 +102,6 @@ public class AreaKillButtonAbility : CustomButtonBase
                 Constants.ShipAndObjectsMask)))
             {
                 // キルを実行
-                localPlayer.RpcCustomDeath(player, CustomDeathType);
                 killedPlayers.Add(player);
 
                 // 最大キル数に達したらループを抜ける
@@ -103,10 +109,26 @@ public class AreaKillButtonAbility : CustomButtonBase
             }
         }
         IsUsed = true;
-        KilledCallback?.Invoke(killedPlayers);
-        if (ExPlayerControl.ExPlayerControls.Count(x => x.IsAlive()) == 0)
-            CustomRpcExts.RpcEndGameForHost(GameOverReason.ImpostorByKill);
+        RpcAreaKill(killedPlayers, CustomDeathType);
         ResetTimer();
+        Callback?.Invoke();
+    }
+
+    [CustomRPC]
+    public void RpcAreaKill(List<ExPlayerControl> killedPlayers, CustomDeathType customDeathType)
+    {
+        if (killedPlayers.Count == 0) return;
+        var localPlayer = ExPlayerControl.LocalPlayer;
+        BeforeKillCallback?.Invoke(killedPlayers);
+        foreach (var player in killedPlayers)
+        {
+            player.CustomDeath(customDeathType, source: localPlayer);
+        }
+        KilledCallback?.Invoke(killedPlayers);
+        if (killedPlayers.Count > 0)
+            AreaKillEvent.Invoke(localPlayer, killedPlayers, CustomDeathType);
+        if (ExPlayerControl.ExPlayerControls.Count(x => x.IsAlive()) == 0)
+            EndGamer.RpcEndGameImpostorWin();
     }
 
     public override bool CheckIsAvailable()
@@ -118,6 +140,6 @@ public class AreaKillButtonAbility : CustomButtonBase
 
     public override bool CheckHasButton()
     {
-        return CanKill() && !IsUsed;
+        return ExPlayerControl.LocalPlayer.IsAlive() && CanKill() && !IsUsed;
     }
 }

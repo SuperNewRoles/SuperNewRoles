@@ -22,7 +22,7 @@ class BlackCat : RoleBase<BlackCat>
         () => new RevengeExileAbility(BlackCatRevengeNotImpostorExile)
     ];
 
-    public override QuoteMod QuoteMod { get; } = QuoteMod.SuperNewRoles;
+    public override QuoteMod QuoteMod { get; } = QuoteMod.TheOtherRolesGMH;
     public override RoleTypes IntroSoundType { get; } = RoleTypes.Phantom;
     public override short IntroNum { get; } = 1;
 
@@ -35,10 +35,10 @@ class BlackCat : RoleBase<BlackCat>
     [CustomOptionBool("BlackCatRevengeNotImpostorExile", true)]
     public static bool BlackCatRevengeNotImpostorExile;
 
-    [CustomOptionBool("BlackCatCouldUseVent", true, translationName: "MadmateCouldUseVent")]
+    [CustomOptionBool("BlackCatCouldUseVent", true, translationName: "CanUseVent")]
     public static bool BlackCatCouldUseVent;
 
-    [CustomOptionBool("BlackCatHasImpostorVision", true, translationName: "MadmateHasImpostorVision")]
+    [CustomOptionBool("BlackCatHasImpostorVision", true, translationName: "HasImpostorVision")]
     public static bool BlackCatHasImpostorVision;
 
     [CustomOptionBool("BlackCatCanKnowImpostors", true, translationName: "MadmateCanKnowImpostors")]
@@ -63,12 +63,13 @@ public class RevengeExileAbility : AbilityBase
 
     public override void AttachToLocalPlayer()
     {
-        exileEvent = ExileEvent.Instance.AddListener(OnExile);
+        exileEvent = ExileEvent.Instance.AddListener(data =>
+        {
+            if (data.exiled?.PlayerId == PlayerControl.LocalPlayer.Data.PlayerId) RandomExile();
+        });
     }
-    private void OnExile(ExileEventData data)
+    public void RandomExile()
     {
-        if (data.exiled?.PlayerId != PlayerControl.LocalPlayer.Data.PlayerId) return;
-
         // 生きているプレイヤーをリストアップ
         var alivePlayers = ExPlayerControl.ExPlayerControls
             .Where(p => p != null && p.IsAlive() && (!IsNotImpostor || !p.IsImpostor()))

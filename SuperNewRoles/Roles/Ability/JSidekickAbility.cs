@@ -2,6 +2,7 @@ using System.Linq;
 using AmongUs.GameOptions;
 using Rewired;
 using SuperNewRoles.Modules;
+using SuperNewRoles.Roles.Neutral;
 
 namespace SuperNewRoles.Roles.Ability;
 
@@ -11,6 +12,7 @@ public class JSidekickAbility : AbilityBase
 
     public CustomVentAbility VentAbility { get; private set; }
     public KnowOtherAbility KnowJackalAbility { get; private set; }
+    public ImpostorVisionAbility ImpostorVisionAbility { get; private set; }
     public bool canInfinite { get; set; }
 
     public JSidekickAbility(bool canUseVent)
@@ -18,7 +20,7 @@ public class JSidekickAbility : AbilityBase
         CanUseVent = canUseVent;
     }
 
-    public override void Attach(PlayerControl player, ulong abilityId, AbilityParentBase parent)
+    public override void AttachToAlls()
     {
         VentAbility = new CustomVentAbility(
             () => CanUseVent
@@ -27,37 +29,30 @@ public class JSidekickAbility : AbilityBase
             (player) => player.IsJackalTeam(),
             () => true
         );
-        ExPlayerControl exPlayer = (ExPlayerControl)player;
+        ImpostorVisionAbility = new ImpostorVisionAbility(
+            () => Jackal.JackalImpostorVision
+        );
 
         AbilityParentAbility parentAbility = new(this);
-        exPlayer.AttachAbility(VentAbility, parentAbility);
-        base.Attach(player, abilityId, parent);
+        Player.AttachAbility(VentAbility, parentAbility);
+        Player.AttachAbility(KnowJackalAbility, parentAbility);
+        Player.AttachAbility(ImpostorVisionAbility, parentAbility);
     }
+
     [CustomRPC]
-    public static void RpcSetCanInfinite(bool canInfinite, ulong abilityId, ExPlayerControl player)
+    public void RpcSetCanInfinite(bool canInfinite)
     {
-        var jsidekick = player.GetAbility<JSidekickAbility>(abilityId);
-        if (jsidekick != null)
+        this.canInfinite = canInfinite;
+        var pOnParentDeathAbility = Player.GetAbility<PromoteOnParentDeathAbility>();
+        if (pOnParentDeathAbility is not PromoteOnParentDeathAbility promoteOnParentDeathAbility)
+            return;
+        if (canInfinite)
+            return;
+        promoteOnParentDeathAbility.OnPromoted += (player) =>
         {
-            jsidekick.canInfinite = canInfinite;
-            var pOnParentDeathAbility = player.PlayerAbilities.FirstOrDefault(x => x is PromoteOnParentDeathAbility);
-            if (pOnParentDeathAbility is PromoteOnParentDeathAbility promoteOnParentDeathAbility)
-            {
-                promoteOnParentDeathAbility.OnPromoted += () =>
-                {
-                    if (!canInfinite)
-                    {
-                        var jackal = player.PlayerAbilities.FirstOrDefault(x => x is JackalAbility);
-                        if (jackal is JackalAbility jackalAbility)
-                        {
-                            jackalAbility.JackData.CanCreateSidekick = false;
-                        }
-                    }
-                };
-            }
-        }
-    }
-    public override void AttachToLocalPlayer()
-    {
+            var jackal = player.GetAbility<JackalAbility>();
+            if (jackal != null)
+                jackal.JackData.CanCreateSidekick = false;
+        };
     }
 }

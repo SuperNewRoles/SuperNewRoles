@@ -15,32 +15,37 @@ public class WaveCannonAbility : CustomButtonBase, IButtonEffect
     private float coolDown;
     // IButtonEffect
     private float effectDuration;
-    public float EffectDuration => effectDuration;
-    public Action OnEffectEnds => () => { RpcShootCannon(PlayerControl.LocalPlayer, AbilityId); };
+    public float bulletDuration;
+    public float EffectDuration => bullet != null ? bulletDuration : effectDuration;
+    public Action OnEffectEnds => () => { RpcShootCannon(); };
     public bool isEffectActive { get; set; }
     public float EffectTimer { get; set; }
-
-    public override Sprite Sprite => AssetManager.GetAsset<Sprite>("WaveCannonButton.png");
+    public override Sprite Sprite => bullet != null ? AssetManager.GetAsset<Sprite>("WaveCannonLoadedBulletButton.png") : AssetManager.GetAsset<Sprite>("WaveCannonButton.png");
     public override string buttonText => ModTranslation.GetString("WaveCannonButtonText");
-    protected override KeyCode? hotkey => KeyCode.F;
+    protected override KeyType keytype => KeyType.Ability1;
     public override float DefaultTimer => coolDown;
     public WaveCannonObjectBase WaveCannonObject { get; private set; }
-    private WaveCannonType type;
+    public WaveCannonType Type { get { return bullet != null ? WaveCannonType.Bullet : _type; } }
+    public ExPlayerControl bullet;
+    private WaveCannonType _type;
     public bool isResetKillCooldown { get; }
     private EventListener<MurderEventData> _onMurderEvent;
     public WaveCannonAbility(float coolDown, float effectDuration, WaveCannonType type, bool isResetKillCooldown = false)
     {
         this.coolDown = coolDown;
         this.effectDuration = effectDuration;
-        this.type = type;
+        this._type = type;
         this.isResetKillCooldown = isResetKillCooldown;
     }
     public override void OnClick()
     {
-        //TODO:波動砲発射
-        Logger.Info("波動砲発射！");
-        WaveCannonObjectBase.RpcSpawnFromType(PlayerControl.LocalPlayer, type, this.AbilityId, PlayerControl.LocalPlayer.MyPhysics.FlipX, PlayerControl.LocalPlayer.transform.position);
+        WaveCannonObjectBase.RpcSpawnFromType(PlayerControl.LocalPlayer, Type, this.AbilityId, PlayerControl.LocalPlayer.MyPhysics.FlipX, PlayerControl.LocalPlayer.transform.position);
         ResetTimer();
+    }
+    [CustomRPC]
+    public static void RpcBulletSuicide(ExPlayerControl source)
+    {
+        source.CustomDeath(CustomDeathType.SuicideSecrets);
     }
     public override void AttachToLocalPlayer()
     {
@@ -60,7 +65,6 @@ public class WaveCannonAbility : CustomButtonBase, IButtonEffect
 
     public override bool CheckIsAvailable()
     {
-        //TODO:発射可能条件
         return PlayerControl.LocalPlayer.CanMove;
     }
     public override void Detach()
@@ -73,10 +77,12 @@ public class WaveCannonAbility : CustomButtonBase, IButtonEffect
         WaveCannonObject = waveCannonObject;
     }
     [CustomRPC]
-    public static void RpcShootCannon(ExPlayerControl source, ulong abilityId)
+    public void RpcShootCannon()
     {
-        var ability = source.GetAbility<WaveCannonAbility>(abilityId);
-        ability?.WaveCannonObject?.OnShoot();
+        WaveCannonObject?.OnShoot();
+        if (bullet != null)
+            bullet.CustomDeath(CustomDeathType.SuicideSecrets);
+        bullet = null;
     }
 }
 

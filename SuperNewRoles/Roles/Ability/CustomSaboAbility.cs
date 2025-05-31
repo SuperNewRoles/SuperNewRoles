@@ -13,7 +13,7 @@ public class CustomSaboAbility : CustomButtonBase
 
     public override Sprite Sprite => HudManager.Instance?.SabotageButton?.graphic?.sprite;
     public override string buttonText => FastDestroyableSingleton<TranslationController>.Instance.GetString(StringNames.SabotageLabel);
-    protected override KeyCode? hotkey => KeyCode.F;
+    protected override KeyType keytype => KeyType.None;
     public override float DefaultTimer => 0f;
 
     public CustomSaboAbility(Func<bool> canSabotage, Action sabotageCallback = null)
@@ -60,7 +60,7 @@ public class CustomSaboAbility : CustomButtonBase
 
     public override bool CheckHasButton()
     {
-        return CanSabotage() && !ExPlayerControl.LocalPlayer.IsImpostor();
+        return CanSabotage();
     }
 
     public override void AttachToLocalPlayer()

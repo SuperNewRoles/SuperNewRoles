@@ -16,6 +16,7 @@ public class SuicideTimerAbility : AbilityBase
     private EventListener<WrapUpEventData> WrapUpEventListener;
     private EventListener UpdateEventListener;
     private float timer;
+    public float CurrentTimer => timer;
     private bool firstKilled = false;
     private TextMeshPro timerText;
 

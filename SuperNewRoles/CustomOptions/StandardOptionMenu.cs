@@ -41,6 +41,8 @@ public static class StandardOptionMenu
         int index = 0;
         foreach (var category in CustomOptionManager.OptionCategories)
         {
+            if (category.IsModifier)
+                continue;
             GenerateRoleDetailButton(category, index++);
         }
     }
@@ -134,7 +136,7 @@ public static class StandardOptionMenu
         else
             StandardOptionMenuObjectData.Instance.ModeMenu.SetActive(true);
         var modeOptionText = StandardOptionMenuObjectData.Instance.ModeMenu.transform.Find("ModeOption/Text").GetComponent<TextMeshPro>();
-        modeOptionText.text = $"<b>{ModTranslation.GetString("ModeOption")}</b>";
+        modeOptionText.text = $"{ModTranslation.GetString("ModeOption")}";
         ConfigureModeOption(StandardOptionMenuObjectData.Instance.ModeMenu);
         ShowDefaultOptionMenu(Categories.Categories.ModeSettings, StandardOptionMenuObjectData.Instance.RightAreaInner.transform);
     }
@@ -465,6 +467,7 @@ public static class StandardOptionMenu
         GenerateOptionsForCategory(category, defaultMenu.transform);
         UpdateOptionsActive();
         RecalculateOptionsPosition(defaultMenu.transform, menuData.RightAreaScroller);
+        menuData.RightAreaInner.transform.localPosition = new(menuData.RightAreaInner.transform.localPosition.x, 0, menuData.RightAreaInner.transform.localPosition.z);
 
         menuData.StandardOptionMenus.Add(category.Name, defaultMenu);
         menuData.CurrentOptionMenu = defaultMenu;
@@ -725,6 +728,7 @@ public static class StandardOptionMenu
         existingMenu.SetActive(true);
         menuData.UpdateOptionDisplay();
         RecalculateOptionsPosition(existingMenu.transform, menuData.RightAreaScroller);
+        menuData.RightAreaInner.transform.localPosition = new Vector3(menuData.RightAreaInner.transform.localPosition.x, 0, menuData.RightAreaInner.transform.localPosition.z);
     }
 
     private static GameObject CreateDefaultMenu(string categoryName, Transform parent)

@@ -13,7 +13,7 @@ class Opportunist : RoleBase<Opportunist>
     public override Color32 RoleColor { get; } = new Color32(126, 217, 87, 255); // 明るい緑色
     public override List<Func<AbilityBase>> Abilities { get; } = [];
 
-    public override QuoteMod QuoteMod { get; } = QuoteMod.SuperNewRoles;
+    public override QuoteMod QuoteMod { get; } = QuoteMod.AuLibHalt;
     public override RoleTypes IntroSoundType { get; } = RoleTypes.Crewmate;
     public override short IntroNum { get; } = 1;
 

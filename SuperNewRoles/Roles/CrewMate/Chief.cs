@@ -31,9 +31,14 @@ class Chief : RoleBase<Chief>
     public override TeamTag TeamTag { get; } = TeamTag.Crewmate;
     public override RoleTag[] RoleTags { get; } = [];
     public override RoleOptionMenuType OptionTeam { get; } = RoleOptionMenuType.Crewmate;
+    public override RoleId[] RelatedRoleIds { get; } = [RoleId.Sheriff];
 
     [CustomOptionFloat("ChiefAppointCooldown", 0f, 60f, 2.5f, 30f)]
     public static float ChiefAppointCooldown;
+
+    [CustomOptionBool("ChiefCanSeeCreatedSheriff", false)]
+    public static bool ChiefCanSeeCreatedSheriff;
+
     [CustomOptionFloat("ChiefSheriffKillCooldown", 0f, 60f, 2.5f, 25f)]
     public static float ChiefSheriffKillCooldown;
 
@@ -54,10 +59,6 @@ class Chief : RoleBase<Chief>
 
     [CustomOptionBool("ChiefSheriffCanKillLovers", true)]
     public static bool ChiefSheriffCanKillLovers;
-
-    // 作成したシェリフがわかる設定を追加
-    [CustomOptionBool("ChiefCanSeeCreatedSheriff", false)]
-    public static bool ChiefCanSeeCreatedSheriff;
 }
 
 public class ChiefAbility : AbilityBase
@@ -74,10 +75,10 @@ public class ChiefAbility : AbilityBase
         _canSeeCreatedSheriff = canSeeCreatedSheriff;
     }
     private bool _hasOldTask = false;
-    public override void AttachToLocalPlayer()
+    public override void AttachToAlls()
     {
         // 任命ボタンの作成
-        _sidekickButton = new CustomSidekickButtonAbility(
+        _sidekickButton = new CustomSidekickButtonAbility(new(
             canCreateSidekick: created => _canAppointSheriff && !created,
             sidekickCooldown: () => Chief.ChiefAppointCooldown, // クールダウンを設定値に変更
             sidekickRole: () => RoleId.Sheriff,
@@ -92,13 +93,16 @@ public class ChiefAbility : AbilityBase
                 return !target.IsImpostor();
             },
             onSidekickCreated: OnSheriffAppointed
-        );
+        ));
 
-        ExPlayerControl exPlayer = ExPlayerControl.LocalPlayer;
+        ExPlayerControl exPlayer = Player;
         AbilityParentAbility abilityParentAbility = new(this);
         exPlayer.AttachAbility(_sidekickButton, abilityParentAbility);
 
         _nameTextUpdateEventListener = NameTextUpdateEvent.Instance.AddListener(OnNameTextUpdate);
+    }
+    public override void AttachToLocalPlayer()
+    {
     }
     public override void DetachToLocalPlayer()
     {
@@ -151,7 +155,7 @@ public class ChiefAbility : AbilityBase
         sheriffAbility.Count = maxKillCount;
         if (!isOldHasTak)
         {
-            CustomTaskAbility customTaskAbility = new(() => (false, 0));
+            CustomTaskAbility customTaskAbility = new(() => (false, false, 0));
             target.AttachAbility(customTaskAbility, new AbilityParentAbility(sheriffAbility));
         }
         NameText.UpdateAllNameInfo();

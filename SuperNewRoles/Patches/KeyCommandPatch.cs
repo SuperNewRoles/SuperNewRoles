@@ -1,5 +1,8 @@
 using System;
+using System.Linq;
 using HarmonyLib;
+using SuperNewRoles.HelpMenus;
+using SuperNewRoles.Modules;
 using UnityEngine;
 
 namespace SuperNewRoles.Patches;
@@ -12,7 +15,7 @@ class ControllerManagerUpdatePatch
     static int resolutionIndex = 0;
     static AudioSource source;
 
-    static KeyCode[] HaisonKeyCodes = [KeyCode.H, KeyCode.LeftShift, KeyCode.RightShift];
+    public static KeyCode[] HaisonKeyCodes = [KeyCode.H, KeyCode.LeftShift, KeyCode.RightShift];
     static KeyCode[] ForceEndMeetingKeyCodes = [KeyCode.M, KeyCode.LeftShift, KeyCode.RightShift];
     static KeyCode[] LogKeyCodes = [KeyCode.S, KeyCode.LeftShift, KeyCode.RightShift];
 
@@ -35,8 +38,6 @@ class ControllerManagerUpdatePatch
             throw new NotImplementedException("LogKey not supported");
             // LoggerPlus.SaveLog(via, via);
         }
-
-
         if (!AmongUsClient.Instance.AmHost) return;
         //　ゲーム中
         if (AmongUsClient.Instance.GameState == AmongUsClient.GameStates.Started)
@@ -45,7 +46,7 @@ class ControllerManagerUpdatePatch
             if (ModHelpers.GetManyKeyDown(HaisonKeyCodes))
             {
                 Logger.Info("===================== 廃村 ======================", "End Game");
-                GameManager.Instance.RpcEndGame((GameOverReason)CustomGameOverReason.Haison, false);
+                EndGameManagerSetUpPatch.RpcEndGameWithCondition((GameOverReason)CustomGameOverReason.Haison, ExPlayerControl.ExPlayerControls.Select(x => x.PlayerId).ToList(), "廃 of the 村", [], Color.white, true);
                 ShipStatus.Instance.enabled = false;
             }
             // 会議を強制終了

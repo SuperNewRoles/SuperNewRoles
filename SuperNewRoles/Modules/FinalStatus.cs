@@ -21,6 +21,21 @@ public enum FinalStatus
     BombBySelfBomb,
     SelfBomb,
     Tuna,
+    Push,
+    Ignite,
+    FalseCharges,
+    SheriffSelfDeath,
+    SheriffKill,
+    LoversSuicide,
+    LaunchByRocket,
+    VampireKill,
+    VampireWithDead,
+    SpelunkerSetRoleDeath,
+    SpelunkerVentDeath,
+    SpelunkerCommsElecDeath,
+    SpelunkerOpenDoor,
+    NunDeath,
+    LadderDeath,
 }
 
 public static class FinalStatusListener
@@ -44,7 +59,6 @@ public static class FinalStatusManager
     {
         SetFinalStatus(exPlayer, finalStatus);
     }
-    [CustomRPC]
     public static void SetFinalStatus(ExPlayerControl exPlayer, FinalStatus finalStatus)
     {
         exPlayer.FinalStatus = finalStatus;

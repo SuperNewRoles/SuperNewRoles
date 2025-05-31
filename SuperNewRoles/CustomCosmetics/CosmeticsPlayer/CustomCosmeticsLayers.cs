@@ -1,8 +1,12 @@
+using System;
 using System.Collections.Generic;
+using System.Linq;
 using Il2CppInterop.Runtime;
 using PowerTools;
 using SuperNewRoles.Modules;
+using TMPro;
 using UnityEngine;
+using UnityEngine.Rendering;
 
 namespace SuperNewRoles.CustomCosmetics.CosmeticsPlayer;
 
@@ -13,7 +17,7 @@ public static class CustomCosmeticsLayers
     public static Dictionary<int, CustomVisorLayer> visorLayer2s = new();
     public static bool Exists(CosmeticsLayer cosmeticsLayer, out CustomCosmeticsLayer layer)
     {
-        return layers.TryGetValue(cosmeticsLayer.GetInstanceID(), out layer);
+        return layers.TryGetValue(cosmeticsLayer.GetInstanceID(), out layer) ? layers != null : false;
     }
     public static CustomCosmeticsLayer ExistsOrInitialize(CosmeticsLayer cosmeticsLayer)
     {
@@ -23,7 +27,20 @@ public static class CustomCosmeticsLayers
     }
     public static CustomCosmeticsLayer Initialize(CosmeticsLayer cosmeticsLayer)
     {
-        return layers[cosmeticsLayer.GetInstanceID()] = new CustomCosmeticsLayer(cosmeticsLayer);
+        if (cosmeticsLayer.hat == null || cosmeticsLayer.visor == null)
+        {
+            Logger.Error("Initialize failed: " + cosmeticsLayer?.name ?? "NONAME");
+            return null;
+        }
+        try
+        {
+            return layers[cosmeticsLayer.GetInstanceID()] = new CustomCosmeticsLayer(cosmeticsLayer);
+        }
+        catch (Exception e)
+        {
+            Logger.Error("Initialize failed: " + e.Message);
+            return layers[cosmeticsLayer.GetInstanceID()] = null;
+        }
     }
     public static (CustomVisorLayer layer1, CustomVisorLayer layer2) GetVisorLayers(VisorLayer visorLayer)
     {
@@ -33,6 +50,7 @@ public static class CustomCosmeticsLayers
 public class CustomCosmeticsLayer
 {
     public CosmeticsLayer cosmeticsLayer;
+    public GameObject ModdedCosmetics;
     public CustomHatLayer hat1;
     public CustomHatLayer hat2;
     public CustomVisorLayer visor1;
@@ -41,34 +59,60 @@ public class CustomCosmeticsLayer
 
     public CustomCosmeticsLayer(CosmeticsLayer cosmeticsLayer)
     {
+        cosmeticsLayer.transform.parent.gameObject.AddComponent<SortingGroup>();
         this.cosmeticsLayer = cosmeticsLayer;
-        visor1 = CreateVisorLayer(cosmeticsLayer, "visor1", -0.8f);
-        hat1 = CreateHatLayer(cosmeticsLayer, "hat1", new Vector3(0f, 0f, -0.2f), new Vector3(0f, 0f, 0.7f));
+
+        foreach (var bodySprite in cosmeticsLayer.bodySprites)
+        {
+            bodySprite.BodySprite.sortingOrder = 6;
+        }
+        foreach (var spriteRenderer in cosmeticsLayer.skin.GetComponentsInChildren<SpriteRenderer>())
+        {
+            spriteRenderer.sortingOrder = 7;
+        }
+        foreach (var textMeshPro in cosmeticsLayer.nameTextContainer.GetComponentsInChildren<TextMeshPro>())
+        {
+            textMeshPro.sortingOrder = 500;
+        }
+
+        ModdedCosmetics = new GameObject("ModdedCosmetics");
+        ModdedCosmetics.transform.parent = cosmeticsLayer.transform;
+        ModdedCosmetics.transform.localPosition = new(0, 0, -0.0001f);
+        ModdedCosmetics.transform.localScale = Vector3.one;
+        ModdedCosmetics.transform.localRotation = Quaternion.identity;
+        ModdedCosmetics.layer = cosmeticsLayer.gameObject.layer;
+
+        cosmeticsLayer.transform.localPosition = new(0, 0, -0.0001f);
+
+        var hat = cosmeticsLayer.hat;
+        visor1 = CreateVisorLayer(cosmeticsLayer, "visor1", -0.8f, 40);
+        hat1 = CreateHatLayer(cosmeticsLayer, hat, "hat1", new Vector3(0f, 0f, 0), new Vector3(0f, 0f, 0.7f), 30, 4);
         hat1.LayerNumber = 1;
-        hat2 = CreateHatLayer(cosmeticsLayer, "hat2", new Vector3(0f, 0f, -0.1f), new Vector3(0f, 0f, 0.6f));
+        visor2 = CreateVisorLayer(cosmeticsLayer, "visor2", -0.51f, 20);
+        hat2 = CreateHatLayer(cosmeticsLayer, hat, "hat2", new Vector3(0f, 0f, 0), new Vector3(0f, 0f, 0.6f), 10, 5);
         hat2.LayerNumber = 2;
-        visor2 = CreateVisorLayer(cosmeticsLayer, "visor2", -0.51f);
+
         CustomCosmeticsLayers.visorLayer1s[cosmeticsLayer.visor.GetInstanceID()] = visor1;
         CustomCosmeticsLayers.visorLayer2s[cosmeticsLayer.visor.GetInstanceID()] = visor2;
     }
-    private CustomVisorLayer CreateVisorLayer(CosmeticsLayer cosmeticsLayer, string visorName, float z)
+    private CustomVisorLayer CreateVisorLayer(CosmeticsLayer cosmeticsLayer, string visorName, float z, int sortingOrder)
     {
-        CustomVisorLayer visorLayer = new GameObject(visorName, Il2CppType.Of<CustomVisorLayer>()).GetComponent<CustomVisorLayer>();
+        CustomVisorLayer visorLayer = new GameObject(visorName).AddComponent<CustomVisorLayer>();
         visorLayer.CosmeticLayer = cosmeticsLayer;
-        visorLayer.transform.parent = cosmeticsLayer.transform;
+        visorLayer.transform.parent = ModdedCosmetics.transform;
         visorLayer.transform.localScale = Vector3.one;
         visorLayer.transform.localRotation = Quaternion.identity;
         visorLayer.gameObject.layer = cosmeticsLayer.gameObject.layer;
         visorLayer.Image = visorLayer.gameObject.AddComponent<SpriteRenderer>();
+        visorLayer.Image.sortingOrder = sortingOrder;
 
         // 位置を設定する前に親子関係を確立
         visorLayer.transform.localPosition = Vector3.zero;
         // 明示的にワールド座標をリセット
         visorLayer.transform.position = cosmeticsLayer.transform.position;
         // その後、ローカル座標を設定
-        visorLayer.transform.localPosition = new Vector3(-0.04f, 0.575f, z);
+        visorLayer.transform.localPosition = new Vector3(cosmeticsLayer.visor.transform.localPosition.x, cosmeticsLayer.visor.transform.localPosition.y, z);
 
-        Logger.Info("visorLayer.transform.localPosition: " + visorLayer.transform.localPosition);
         visorLayer.SetLocalZ(z);
 
         var nodes = cosmeticsLayer.currentBodySprite.BodySprite.GetComponent<SpriteAnimNodes>();
@@ -81,51 +125,57 @@ public class CustomCosmeticsLayer
             nodeSync.Renderer = cosmeticsLayer.currentBodySprite.BodySprite;
             nodeSync.NodeId = 1;
             anims.group.NodeSyncs.Add(nodeSync);
+            visorLayer.nodeSync = nodeSync;
         }
-
+        visorLayer.vanillaNodeSyncs = cosmeticsLayer.visor.GetComponents<SpriteAnimNodeSync>().ToList();
         // if (cosmeticsLayer.visor)
         return visorLayer;
     }
-    private CustomHatLayer CreateHatLayer(CosmeticsLayer baseLayer, string hatName, Vector3 frontOffset, Vector3 backOffset)
+    private CustomHatLayer CreateHatLayer(CosmeticsLayer baseLayer, HatParent hatParent, string hatName, Vector3 frontOffset, Vector3 backOffset, int sortingOrder, int sortingOrderBack)
     {
         // 新しいCustomHatLayerの生成と共通設定の適用
-        CustomHatLayer hatLayer = new GameObject(hatName, Il2CppType.Of<CustomHatLayer>()).GetComponent<CustomHatLayer>();
-        hatLayer.transform.parent = baseLayer.hat.transform.parent;
-        hatLayer.transform.localPosition = new Vector3(-0.04f, 0.575f, -0.5999f);
+        CustomHatLayer hatLayer = new GameObject(hatName).AddComponent<CustomHatLayer>();
+        hatLayer.transform.parent = ModdedCosmetics.transform;
+        hatLayer.transform.localPosition = new Vector3(hatParent.transform.localPosition.x, hatParent.transform.localPosition.y, -0.5999f);
         hatLayer.transform.localScale = Vector3.one;
-        hatLayer.Parent = baseLayer.hat.Parent;
+        hatLayer.Parent = hatParent.Parent;
         hatLayer.gameObject.layer = baseLayer.gameObject.layer;
         hatLayer.CosmeticLayer = baseLayer;
 
-        if (baseLayer.hat.SpriteSyncNode == null)
-            baseLayer.hat.SpriteSyncNode = baseLayer.hat.GetComponent<SpriteAnimNodeSync>();
-        if (baseLayer.hat.SpriteSyncNode != null)
+        if (hatParent.SpriteSyncNode == null)
+            hatParent.SpriteSyncNode = hatParent.GetComponent<SpriteAnimNodeSync>();
+        if (hatParent.SpriteSyncNode != null)
         {
             SpriteAnimNodeSync nodeSync = hatLayer.gameObject.AddComponent<SpriteAnimNodeSync>();
             nodeSync.Parent = baseLayer.currentBodySprite.BodySprite.GetComponent<SpriteAnimNodes>();
             nodeSync.ParentRenderer = baseLayer.currentBodySprite.BodySprite;
             nodeSync.Renderer = baseLayer.currentBodySprite.BodySprite;
             nodeSync.NodeId = 1;
-            cosmeticsLayer.transform.parent.GetComponentInChildren<PlayerAnimations>().group.NodeSyncs.Add(nodeSync);
+            // ここで cosmeticsLayer ではなく baseLayer を使用するのが正しい
+            baseLayer.transform.parent.GetComponentInChildren<PlayerAnimations>()?.group?.NodeSyncs?.Add(nodeSync);
             hatLayer.spriteSyncNode = nodeSync;
         }
         else
             Logger.Info("NULLLLLLLLLLLLLLLLLLLLLL");
+        hatLayer.vanillaNodeSyncs = cosmeticsLayer.hat.GetComponents<SpriteAnimNodeSync>().ToList();
 
-        // フロントレイヤーの作成と設定
-        hatLayer.FrontLayer = new GameObject("front", Il2CppType.Of<SpriteRenderer>()).GetComponent<SpriteRenderer>();
-        hatLayer.FrontLayer.transform.parent = hatLayer.transform;
-        hatLayer.FrontLayer.transform.localPosition = frontOffset;
-        hatLayer.FrontLayer.transform.localScale = Vector3.one;
-        hatLayer.FrontLayer.gameObject.layer = baseLayer.gameObject.layer;
-        hatLayer.FrontLayer.material = baseLayer.hat.FrontLayer.material;
         // バックレイヤーの作成と設定
-        hatLayer.BackLayer = new GameObject("back", Il2CppType.Of<SpriteRenderer>()).GetComponent<SpriteRenderer>();
+        hatLayer.BackLayer = new GameObject("back").AddComponent<SpriteRenderer>();
         hatLayer.BackLayer.transform.parent = hatLayer.transform;
         hatLayer.BackLayer.transform.localPosition = backOffset;
         hatLayer.BackLayer.transform.localScale = Vector3.one;
         hatLayer.BackLayer.gameObject.layer = baseLayer.gameObject.layer;
-        hatLayer.BackLayer.material = baseLayer.hat.BackLayer.material;
+        hatLayer.BackLayer.material = hatParent.BackLayer.material;
+        hatLayer.BackLayer.sortingOrder = sortingOrderBack;
+        // フロントレイヤーの作成と設定
+        hatLayer.FrontLayer = new GameObject("front").AddComponent<SpriteRenderer>();
+        hatLayer.FrontLayer.transform.parent = hatLayer.transform;
+        hatLayer.FrontLayer.transform.localPosition = frontOffset;
+        hatLayer.FrontLayer.transform.localScale = Vector3.one;
+        hatLayer.FrontLayer.gameObject.layer = baseLayer.gameObject.layer;
+        hatLayer.FrontLayer.material = hatParent.FrontLayer.material;
+        hatLayer.FrontLayer.sortingOrder = sortingOrder;
+
         return hatLayer;
     }
 }

@@ -21,9 +21,9 @@ class Vulture : RoleBase<Vulture>
     public override List<Func<AbilityBase>> Abilities { get; } = [
         () => new EatDeadBodyAbility(new VultureData(
             cooldown: VultureCooldown,
-            requiredBodies: VultureRequiredBodies,
-            showArrows: VultureShowArrows
+            requiredBodies: VultureRequiredBodies
         )),
+        () => new DeadBodyArrowsAbility(() => VultureShowArrows, Vulture.Instance.RoleColor),
         () => new CustomVentAbility(
             canUseVent: () => VultureCanUseVent
         )
@@ -47,7 +47,7 @@ class Vulture : RoleBase<Vulture>
     [CustomOptionInt("VultureRequiredBodies", 1, 10, 1, 3)]
     public static int VultureRequiredBodies;
 
-    [CustomOptionBool("VultureCanUseVent", false)]
+    [CustomOptionBool("VultureCanUseVent", false, translationName: "CanUseVent")]
     public static bool VultureCanUseVent;
 
     [CustomOptionBool("VultureShowArrows", true)]
@@ -58,13 +58,11 @@ public class VultureData
 {
     public float Cooldown { get; }
     public int RequiredBodies { get; }
-    public bool ShowArrows { get; }
 
-    public VultureData(float cooldown, int requiredBodies, bool showArrows)
+    public VultureData(float cooldown, int requiredBodies)
     {
         Cooldown = cooldown;
         RequiredBodies = requiredBodies;
-        ShowArrows = showArrows;
     }
 }
 
@@ -72,9 +70,6 @@ public class EatDeadBodyAbility : CustomButtonBase
 {
     private readonly VultureData _data;
     private int _eatenBodies = 0;
-    private Dictionary<DeadBody, Arrow> _deadBodyArrows = new();
-    private EventListener _fixedUpdateEvent;
-    private EventListener<WrapUpEventData> _wrapUpEvent;
 
     public EatDeadBodyAbility(VultureData data)
     {
@@ -90,7 +85,7 @@ public class EatDeadBodyAbility : CustomButtonBase
     public override Sprite Sprite => _sprite;
     private Sprite _sprite;
     private string _buttonText;
-    protected override KeyCode? hotkey => KeyCode.F;
+    protected override KeyType keytype => KeyType.Ability1;
 
     public override bool CheckIsAvailable()
     {
@@ -156,103 +151,10 @@ public class EatDeadBodyAbility : CustomButtonBase
     {
         if (canWin)
         {
-            CustomRpcExts.RpcEndGameForHost((GameOverReason)CustomGameOverReason.VultureWin);
+            EndGamer.RpcEndGameWithWinner(CustomGameOverReason.VultureWin, WinType.SingleNeutral, [Player], Vulture.Instance.RoleColor, "Vulture", string.Empty);
         }
     }
 
-    public override void AttachToLocalPlayer()
-    {
-        base.AttachToLocalPlayer();
-
-        // 矢印表示のイベントリスナーを設定
-        if (_data.ShowArrows)
-        {
-            _fixedUpdateEvent = FixedUpdateEvent.Instance.AddListener(OnFixedUpdate);
-            _wrapUpEvent = WrapUpEvent.Instance.AddListener(OnWrapUp);
-        }
-    }
-
-    private void OnFixedUpdate()
-    {
-        if (Player.IsDead())
-        {
-            if (_deadBodyArrows.Count <= 0) return;
-            foreach (var arrow in _deadBodyArrows.Values)
-            {
-                if (arrow?.arrow != null)
-                    UnityEngine.Object.Destroy(arrow.arrow);
-            }
-            _deadBodyArrows.Clear();
-            return;
-        }
-        if (!_data.ShowArrows) return;
-
-        // DeadBodyの検索を一度だけ行い、ParentIdでグループ化してキャッシュ
-        DeadBody[] allDeadBodies = UnityEngine.Object.FindObjectsOfType<DeadBody>();
-        Dictionary<int, DeadBody> deadBodiesByParentId = new();
-        foreach (DeadBody dead in allDeadBodies)
-        {
-            if (!deadBodiesByParentId.ContainsKey(dead.ParentId))
-                deadBodiesByParentId.Add(dead.ParentId, dead);
-        }
-
-        // 色の取得を一度だけ行う
-        Color roleColor = Vulture.Instance.RoleColor;
-
-        // 既存の矢印を更新または不要な矢印を削除
-        foreach (var arrowEntry in _deadBodyArrows.ToList())
-        {
-            int parentId = arrowEntry.Key.ParentId;
-            if (deadBodiesByParentId.ContainsKey(parentId))
-            {
-                if (arrowEntry.Value == null)
-                    _deadBodyArrows[arrowEntry.Key] = new Arrow(roleColor);
-                _deadBodyArrows[arrowEntry.Key].Update(arrowEntry.Key.transform.position, roleColor);
-                _deadBodyArrows[arrowEntry.Key].arrow.SetActive(true);
-            }
-            else
-            {
-                if (arrowEntry.Value?.arrow != null)
-                    UnityEngine.Object.Destroy(arrowEntry.Value.arrow);
-                _deadBodyArrows.Remove(arrowEntry.Key);
-            }
-        }
-
-        // 新しい死体に対して矢印を追加（既に同じParentIdの矢印が存在しなければ）
-        foreach (var kv in deadBodiesByParentId)
-        {
-            if (_deadBodyArrows.Keys.Any(db => db.ParentId == kv.Key))
-                continue;
-            _deadBodyArrows.Add(kv.Value, new Arrow(roleColor));
-            _deadBodyArrows[kv.Value].Update(kv.Value.transform.position, roleColor);
-            _deadBodyArrows[kv.Value].arrow.SetActive(true);
-        }
-    }
-
-    private void OnWrapUp(WrapUpEventData data)
-    {
-        // 会議終了時の処理
-        ResetTimer();
-    }
-
-    public override void DetachToLocalPlayer()
-    {
-        base.DetachToLocalPlayer();
-
-        // イベントリスナーを削除
-        if (_fixedUpdateEvent != null)
-            FixedUpdateEvent.Instance.RemoveListener(_fixedUpdateEvent);
-        if (_wrapUpEvent != null)
-            WrapUpEvent.Instance.RemoveListener(_wrapUpEvent);
-
-        // 矢印を削除
-        foreach (var arrow in _deadBodyArrows.Values)
-        {
-            if (arrow?.arrow != null)
-                UnityEngine.Object.Destroy(arrow.arrow);
-        }
-        _deadBodyArrows.Clear();
-    }
     [CustomRPC]
     public static void RpcEatDeadBody(int parentId, EatDeadBodyAbility ability)
     {

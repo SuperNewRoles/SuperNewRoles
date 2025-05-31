@@ -39,7 +39,8 @@ public abstract class EventTargetBase<T, U> : InternalEventTargetBase<T, EventLi
 
     public EventListener<U> AddListener(Action<U> action)
     {
-        var listener = new EventListener<U>(action);
+        EventListener<U> listener = null;
+        listener = new EventListener<U>(action, () => RemoveListener(listener));
         listeners.Add(listener);
         return listener;
     }
@@ -89,7 +90,8 @@ public abstract class EventTargetBase<T> : InternalEventTargetBase<T, EventListe
 
     public EventListener AddListener(Action action)
     {
-        var listener = new EventListener(action);
+        EventListener listener = null;
+        listener = new EventListener(action, () => RemoveListener(listener));
         listeners.Add(listener);
         return listener;
     }

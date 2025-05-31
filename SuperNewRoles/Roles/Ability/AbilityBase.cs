@@ -24,11 +24,14 @@ public abstract class AbilityBase
             AttachToLocalPlayer();
         else
             AttachToOthers();
+        AttachToAlls();
     }
 
-    public abstract void AttachToLocalPlayer();
+    public virtual void AttachToLocalPlayer() { }
 
     public virtual void AttachToOthers() { }
+
+    public virtual void AttachToAlls() { }
 
     public virtual void Detach()
     {
@@ -36,13 +39,9 @@ public abstract class AbilityBase
             DetachToLocalPlayer();
         else
             DetachToOthers();
+        DetachToAlls();
     }
-    public virtual void DetachToLocalPlayer()
-    {
-
-    }
-    public virtual void DetachToOthers()
-    {
-
-    }
+    public virtual void DetachToLocalPlayer() { }
+    public virtual void DetachToOthers() { }
+    public virtual void DetachToAlls() { }
 }

@@ -75,18 +75,23 @@ public class AssignmentsSettingInfomationHelpMenu : HelpMenuCategoryBase
             ("Neutral", AssignedTeamType.Neutral, AssignRoles.MaxNeutrals),
             ("Crewmate", AssignedTeamType.Crewmate, AssignRoles.MaxCrews)
         ];
+        float maxContentYBoundsMax = 0;
         foreach (var team in teams)
         {
-            SetupInformation(roleInformation, team.Item1, team.Item2, team.Item3);
+            SetupInformation(roleInformation, team.Item1, team.Item2, team.Item3, out float ContentYBoundsMax);
+            maxContentYBoundsMax = Mathf.Max(maxContentYBoundsMax, ContentYBoundsMax);
         }
+        var scroller = MenuObject.transform.Find("Scroller").GetComponent<Scroller>();
+        scroller.ContentYBounds.max = maxContentYBoundsMax;
     }
-    private void SetupInformation(Transform infoObject, string team, AssignedTeamType assignedTeam, int maxRoles)
+    private void SetupInformation(Transform infoObject, string team, AssignedTeamType assignedTeam, int maxRoles, out float ContentYBoundsMax)
     {
         // 指定チームのオブジェクトを取得
         var info = infoObject.Find(team);
         if (info == null)
         {
             Logger.Error($"{team}オブジェクトが見つかりませんでした。");
+            ContentYBoundsMax = 0;
             return;
         }
 
@@ -106,6 +111,7 @@ public class AssignmentsSettingInfomationHelpMenu : HelpMenuCategoryBase
         if (rolesTemplate == null)
         {
             Logger.Error("Rolesテンプレートが見つかりませんでした。");
+            ContentYBoundsMax = 0;
             return;
         }
         rolesTemplate.gameObject.SetActive(false);
@@ -124,8 +130,9 @@ public class AssignmentsSettingInfomationHelpMenu : HelpMenuCategoryBase
 
         // ロールの基本テキストを生成するローカル関数
         string GetRoleText(RoleOptionManager.RoleOption role, Color? color = null) =>
-            $"{ModHelpers.CsWithTranslation(color ?? role.RoleColor, role.RoleId.ToString())} x{role.NumberOfCrews} ({role.Percentage}%)\n";
+        $"<b>{ModHelpers.CsWithTranslation(color ?? role.RoleColor, role.RoleId.ToString())}</b> x{role.NumberOfCrews} ({role.Percentage}%)\n";
 
+        int index = 0;
         // 各ロールについて処理
         foreach (var role in RoleOptionManager.RoleOptions)
         {
@@ -165,7 +172,9 @@ public class AssignmentsSettingInfomationHelpMenu : HelpMenuCategoryBase
             }));
 
             yPos -= 0.2f; // Y座標を調整
+            index++;
         }
+        ContentYBoundsMax = index <= 22 ? 0f : (index - 22) * 0.167f + 0.05f;
     }
 
     // 役職詳細を表示する

@@ -1,3 +1,4 @@
+using System;
 using SuperNewRoles.CustomOptions;
 
 namespace SuperNewRoles.Roles;
@@ -14,6 +15,7 @@ public enum RoleId : short
     EvilGuesser,
     Madmate,
     BlackCat,
+    MadRaccoon,
     Jackal,
     Sidekick,
     JackalFriends,
@@ -37,6 +39,85 @@ public enum RoleId : short
     Seer,
     Celebrity,
     Vulture,
+    Datahacker,
+    Santa,
+    Arsonist,
+    BlackSanta,
+    Penguin,
+    Pusher,
+    EvilHacker,
+    JumpDancer,
+    SuicideWisher,
+    WellBehaver,
+    NekoKabocha,
+    NiceNekomata,
+    EvilNekomata,
+    Matryoshka,
+    Amnesiac,
+    Conjurer,
+    Doppelganger,
+    FalseCharges,
+    Pteranodon,
+    Hitman,
+    LoversBreaker,
+    NiceButtoner,
+    EvilButtoner,
+    Mayor,
+    Worshiper,
+    Necromancer,
+    Teleporter,
+    Pursuer,
+    Bakery,
+    God,
+    Owl,
+    SchrodingersCat,
+    Truelover,
+    Cupid,
+    Crab,
+    VentTrapper,
+    SpeedBooster,
+    EvilSpeedBooster,
+    SatsumaAndImo,
+    NiceTeleporter,
+    Taskmaster,
+    ToiletFan,
+    Rocket,
+    Vampire,
+    VampireDependent,
+    SidekickWaveCannon,
+    Spelunker,
+    BlackHatHacker,
+    PartTimer,
+    NiceMechanic,
+    EvilMechanic,
+    BodyBuilder,
+    HamburgerShop,
+    NiceHawk,
+    EvilHawk,
+    MadHawk,
+    WiseMan,
+    Bullet,
+}
+
+public enum GhostRoleId : short
+{
+    None = 0,
+    Cantera,
+    Revenant,
+    Mirage,
+}
+
+[Flags]
+public enum ModifierRoleId : short
+{
+    None = 0,
+    ModifierGuesser = 1 << 0,
+    ModifierMadmate = 1 << 1,
+    RulerModifier = 1 << 2,
+    Lovers = 1 << 3,
+    JumboModifier = 1 << 4,
+    ModifierSpelunker = 1 << 5,
+    ModifierHawk = 1 << 6,
 }
 
 public enum QuoteMod : byte
@@ -46,6 +127,11 @@ public enum QuoteMod : byte
     NebulaOnTheShip,
     TownOfHost,
     TheOtherRoles,
+    TheOtherRolesGM,
+    TheOtherRolesGMH,
+    AuLibHalt,
+    ExtremeRoles,
+    exr
 }
 
 public enum TeamTag : byte
@@ -54,7 +140,6 @@ public enum TeamTag : byte
     Impostor,
     Neutral,
     Lover,
-    Arsonist,
     Jackal,
     Madmate,
     Agi,
@@ -63,6 +148,7 @@ public enum TeamTag : byte
 
 public enum WinnerTeamType : byte
 {
+    None,
     Crewmate,
     Impostor,
     Neutral,
@@ -80,4 +166,9 @@ public enum RoleTag : byte
     SpecialKiller,
     PowerPlayResistance,
     Information,
+    Killer,
+    CustomObject,
+    GhostRole,
+    Support,
+    ImpostorTeam,
 }

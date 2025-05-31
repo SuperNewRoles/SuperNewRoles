@@ -15,7 +15,7 @@ class Madmate : RoleBase<Madmate>
     public override List<Func<AbilityBase>> Abilities { get; } = [() => new MadmateAbility(
         new(MadmateHasImpostorVision, MadmateCouldUseVent, MadmateCanKnowImpostors, MadmateNeededTaskCount, MadmateIsSpecialTasks ? MadmateSpecialTasks : null))];
 
-    public override QuoteMod QuoteMod { get; } = QuoteMod.SuperNewRoles;
+    public override QuoteMod QuoteMod { get; } = QuoteMod.TheOtherRolesGM;
     public override RoleTypes IntroSoundType { get; } = RoleTypes.Shapeshifter;
     public override short IntroNum { get; } = 1;
 
@@ -34,8 +34,8 @@ class Madmate : RoleBase<Madmate>
     [CustomOptionTask("MadmateSpecialTasks", 1, 1, 1, parentFieldName: nameof(MadmateIsSpecialTasks))]
     public static TaskOptionData MadmateSpecialTasks;
 
-    [CustomOptionBool("MadmateCouldUseVent", false)]
+    [CustomOptionBool("MadmateCouldUseVent", false, translationName: "CanUseVent")]
     public static bool MadmateCouldUseVent;
-    [CustomOptionBool("MadmateHasImpostorVision", false)]
+    [CustomOptionBool("MadmateHasImpostorVision", false, translationName: "HasImpostorVision")]
     public static bool MadmateHasImpostorVision;
 }

@@ -4,16 +4,14 @@ using UnityEngine;
 
 namespace SuperNewRoles.Patches;
 
+// partialキーワードを最初のクラス定義に追加
 [HarmonyPatch(typeof(PlayerControl), nameof(PlayerControl.SetKillTimer))]
-public static class KillTimerPatch
+public static partial class KillTimerPatch
 {
+
     public static void Postfix(PlayerControl __instance, float time)
     {
-        float @float = GameOptionsManager.Instance.CurrentGameOptions.GetFloat(FloatOptionNames.KillCooldown);
-        if (!(@float <= 0f))
-        {
-            __instance.killTimer = time;
-            DestroyableSingleton<HudManager>.Instance.KillButton.SetCoolDown(time, @float);
-        }
+        __instance.killTimer = time;
+        DestroyableSingleton<HudManager>.Instance.KillButton.SetCoolDown(time, GameOptionsManager.Instance.CurrentGameOptions.GetFloat(FloatOptionNames.KillCooldown));
     }
 }

@@ -8,7 +8,7 @@ public class CustomCosmeticsSaver
     public static string CurrentVisor2Id { get; private set; } = string.Empty;
     public static void Save()
     {
-        DirectoryInfo directoryInfo = new("./SuperNewRolesNext/SaveData");
+        DirectoryInfo directoryInfo = new(SuperNewRolesPlugin.BaseDirectory + "/SaveData");
         if (!directoryInfo.Exists)
         {
             directoryInfo.Create();
@@ -21,7 +21,7 @@ public class CustomCosmeticsSaver
     }
     public static void Load()
     {
-        DirectoryInfo directoryInfo = new("./SuperNewRolesNext/SaveData");
+        DirectoryInfo directoryInfo = new(SuperNewRolesPlugin.BaseDirectory + "/SaveData");
         if (!directoryInfo.Exists)
         {
             directoryInfo.Create();
@@ -46,5 +46,4 @@ public class CustomCosmeticsSaver
         CurrentVisor2Id = visorId;
         Save();
     }
-
 }

@@ -13,6 +13,18 @@ public enum TrophiesEnum
     GuesserImpostorHunter,
     GuesserFirstMeetingKill,
     GuesserSharpshooter,
+    PenguinKill,
+    PenguinHundredKill,
+    // Samurai
+    SamuraiDoubleKill,
+    SamuraiWallKill,
+    SamuraiNearMeetingKill,
+    // SelfBomber
+    SelfBomberTripleKill,
+    SelfBomberSacrificeWin,
+    SelfBomberVentKill,
+    // SerialKiller
+    SerialKillerNearSuicideWin,
 }
 public enum TrophyRank
 {

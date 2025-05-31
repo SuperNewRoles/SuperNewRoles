@@ -21,7 +21,7 @@ public static class EventListenerManager
         listeners.Clear();
 
         // Assembly内の全ての型を取得
-        var types = Assembly.GetExecutingAssembly().GetTypes();
+        var types = SuperNewRolesPlugin.Assembly.GetTypes();
 
         // IEventTargetBaseを実装している型を抽出
         var eventTargetTypes = types.Where(t =>

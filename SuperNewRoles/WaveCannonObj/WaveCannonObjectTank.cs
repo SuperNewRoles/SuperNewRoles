@@ -6,7 +6,7 @@ namespace SuperNewRoles.WaveCannonObj;
 
 public class WaveCannonObjectTank : WaveCannonObjectBase
 {
-    public WaveCannonObjectTank(WaveCannonAbility ability, bool isFlipX, Vector3 startPosition, bool isResetKillCooldown) : base(ability, isFlipX, startPosition, isResetKillCooldown)
+    public WaveCannonObjectTank(WaveCannonAbility ability, bool isFlipX, Vector3 startPosition, bool isResetKillCooldown, string tankObjectName = "WaveCannonTank", string chargeSound = "WaveCannon.Charge.mp3") : base(ability, isFlipX, startPosition, isResetKillCooldown)
     {
         // 砲台のコンテナオブジェクトを生成
         _gameObject = new GameObject("WaveCannonObjectTank");
@@ -35,13 +35,13 @@ public class WaveCannonObjectTank : WaveCannonObjectBase
         SetChildrenLayer(_player.gameObject, 0);
 
         _player.cosmetics.nameText.gameObject.SetActive(false);
-        SoundManager.Instance.PlaySound(AssetManager.GetAsset<AudioClip>("WaveCannon.Charge.mp3"), false);
+        SoundManager.Instance.PlaySound(AssetManager.GetAsset<AudioClip>(chargeSound), false);
 
-        var tankObj = AssetManager.GetAsset<GameObject>("WaveCannonTank");
+        var tankObj = AssetManager.GetAsset<GameObject>(tankObjectName);
         _tankObj = GameObject.Instantiate(tankObj, _gameObject.transform);
-        _tankObj.transform.localScale = Vector3.one;
-        _tankObj.transform.localPosition = new(0.75f, 0, 1);
         _colliders = _tankObj.GetComponentsInChildren<Collider2D>(true);
+
+        _shootRenderer = _tankObj.transform.Find("Shooting").GetComponentInChildren<SpriteRenderer>();
     }
     public override void Detach()
     {
@@ -62,8 +62,12 @@ public class WaveCannonObjectTank : WaveCannonObjectBase
     private GameObject _gameObject;
     private GameObject _tankObj;
     public override GameObject WaveCannonObject => _gameObject;
-    public override bool HidePlayer => false;
+    public override bool HidePlayer => true;
     public override Vector3 startPositionOffset => new(0, 0f, 0);
+
+    public override SpriteRenderer ShootRenderer => _shootRenderer;
+    private SpriteRenderer _shootRenderer;
+
     private SpriteRenderer _tankspriteRenderer;
     private GameObject TankSpriteObject;
     private PoolablePlayer _player;
@@ -83,5 +87,33 @@ public class WaveCannonObjectTank : WaveCannonObjectBase
         SoundManager.Instance.PlaySound(AssetManager.GetAsset<AudioClip>("WaveCannon.Shoot.mp3"), false);
         _tankObj.transform.Find("Cannon_Charge").gameObject.SetActive(false);
         _tankObj.transform.Find("Shooting").gameObject.SetActive(true);
+    }
+
+    public override void OnAnimationWiseMan(float distanceX, Vector3 position, float angle)
+    {
+        // Shooting/wavecannon_beamオブジェクトを取得
+        var shootingObj = _tankObj.transform.Find("Shooting");
+        if (shootingObj == null) return;
+
+        var wavecannonBeam = shootingObj.Find("wavecannon_beam");
+        if (wavecannonBeam == null) return;
+
+        // wavecannon_beamを複製
+        var clonedBeam = GameObject.Instantiate(wavecannonBeam.gameObject, shootingObj);
+
+        // 複製したオブジェクトを指定された位置に移動
+        clonedBeam.transform.position = position;
+        // 指定された角度に回転
+        clonedBeam.transform.rotation = Quaternion.Euler(0, 0, angle);
+
+        // コライダーつけ直す
+        GameObject.Destroy(wavecannonBeam.GetComponent<PolygonCollider2D>());
+        wavecannonBeam.gameObject.AddComponent<PolygonCollider2D>().isTrigger = true;
+
+        // コライダーを再計算
+        _colliders = _tankObj.GetComponentsInChildren<Collider2D>(true);
+
+        var waveCannonBeamRenderer = wavecannonBeam.GetComponent<SpriteRenderer>();
+        waveCannonBeamRenderer.size = new Vector2(distanceX, waveCannonBeamRenderer.size.y);
     }
 }
