@@ -1,12 +1,12 @@
 {
   "profiles": {
     "SuperNewRoles": {
-      "commandName": "Executable",
-      "executablePath": "C:\\Program Files (x86)\\Steam\\steamapps\\common\\Among Us_mymod\\Among Us.exe",
-      "nativeDebugging": false
+      "commandName": "Project",
+      "remoteDebugEnabled": false
     },
-    "ビルドのみ": {
-      "commandName": "Project"
+    "プロファイル 1": {
+      "commandName": "Executable",
+      "executablePath": "C:\\Program Files (x86)\\Steam\\steamapps\\common\\Among Us_mymod\\Among Us.exe"
     }
   }
 }

@@ -1,164 +1,173 @@
-using System.Linq;
+using System;
+using System.Collections.Generic;
+using UnityEngine;
 using AmongUs.GameOptions;
-using Hazel;
-using SuperNewRoles.Mode;
-using SuperNewRoles.Mode.SuperHostRoles;
-using SuperNewRoles.Roles.Role;
-using SuperNewRoles.Roles.RoleBases;
-using SuperNewRoles.Roles.RoleBases.Interfaces;
+using SuperNewRoles.Roles.Ability;
+using SuperNewRoles.Roles.Ability.CustomButton;
+using SuperNewRoles.CustomOptions;
+using SuperNewRoles.Modules;
+using System.Linq;
+using SuperNewRoles.Events;
+using SuperNewRoles.Modules.Events.Bases;
+using UnityEngine.AddressableAssets;
 
 namespace SuperNewRoles.Roles.Crewmate;
 
-public class Chief : RoleBase, ICrewmate, ICustomButton, IRpcHandler, ISupportSHR, ICheckMurderHandler
+class Chief : RoleBase<Chief>
 {
-    public static new RoleInfo Roleinfo = new(
-        typeof(Chief),
-        (p) => new Chief(p),
-        RoleId.Chief,
-        "Chief",
-        RoleClass.SheriffYellow,
-        new(RoleId.Chief, TeamTag.Crewmate),
-        TeamRoleType.Crewmate,
-        TeamType.Crewmate
-        );
-    public static new OptionInfo Optioninfo =
-        new(RoleId.Chief, 400301, true,
-            optionCreator: CreateOption);
-    public static new IntroInfo Introinfo =
-        new(RoleId.Chief, introSound: RoleTypes.Tracker);
+    public override RoleId Role { get; } = RoleId.Chief;
+    public override Color32 RoleColor { get; } = Sheriff.Instance.RoleColor;
+    public override List<Func<AbilityBase>> Abilities { get; } = [() => new ChiefAbility(
+        new(ChiefSheriffKillCooldown, ChiefSheriffMaxKillCount, ChiefSheriffCanKillNeutral, ChiefSheriffCanKillImpostor, ChiefSheriffCanKillMadRoles, ChiefSheriffCanKillFriendRoles, ChiefSheriffCanKillLovers),
+        ChiefCanSeeCreatedSheriff
+    )];
 
-    public static CustomOption ChiefSheriffCoolTime;
-    public static CustomOption ChiefSheriffKillLimit;
-    public static CustomOption ChiefSheriffExecutionMode;
-    public static CustomOption ChiefSheriffCanKillImpostor;
-    public static CustomOption ChiefSheriffCanKillMadRole;
-    public static CustomOption ChiefSheriffCanKillNeutral;
-    public static CustomOption ChiefSheriffFriendsRoleKill;
-    public static CustomOption ChiefSheriffCanKillLovers;
-    public static CustomOption ChiefSheriffQuarreledKill;
+    public override QuoteMod QuoteMod { get; } = QuoteMod.SuperNewRoles;
+    public override RoleTypes IntroSoundType { get; } = RoleTypes.Crewmate;
+    public override short IntroNum { get; } = 1;
 
-    public CustomButtonInfo[] CustomButtonInfos { get; }
+    public override AssignedTeamType AssignedTeam { get; } = AssignedTeamType.Crewmate;
+    public override WinnerTeamType WinnerTeam { get; } = WinnerTeamType.Crewmate;
+    public override TeamTag TeamTag { get; } = TeamTag.Crewmate;
+    public override RoleTag[] RoleTags { get; } = [];
+    public override RoleOptionMenuType OptionTeam { get; } = RoleOptionMenuType.Crewmate;
+    public override RoleId[] RelatedRoleIds { get; } = [RoleId.Sheriff];
 
-    public RoleTypes RealRole => RoleTypes.Crewmate;
-    public RoleTypes DesyncRole => IsCreatedSheriff ? RealRole : RoleTypes.Impostor;
+    [CustomOptionFloat("ChiefAppointCooldown", 0f, 60f, 2.5f, 30f)]
+    public static float ChiefAppointCooldown;
 
-    private CustomButtonInfo SidekickButton;
+    [CustomOptionBool("ChiefCanSeeCreatedSheriff", false)]
+    public static bool ChiefCanSeeCreatedSheriff;
 
-    private bool IsCreatedSheriff;
-    public byte CreatedSheriff = byte.MaxValue;
+    [CustomOptionFloat("ChiefSheriffKillCooldown", 0f, 60f, 2.5f, 25f)]
+    public static float ChiefSheriffKillCooldown;
 
-    private static void CreateOption()
+    [CustomOptionInt("ChiefSheriffMaxKillCount", 1, 10, 1, 1)]
+    public static int ChiefSheriffMaxKillCount;
+
+    [CustomOptionBool("ChiefSheriffCanKillImpostor", true)]
+    public static bool ChiefSheriffCanKillImpostor;
+
+    [CustomOptionBool("ChiefSheriffCanKillMadRoles", true)]
+    public static bool ChiefSheriffCanKillMadRoles;
+
+    [CustomOptionBool("ChiefSheriffCanKillNeutral", true)]
+    public static bool ChiefSheriffCanKillNeutral;
+
+    [CustomOptionBool("ChiefSheriffCanKillFriendRoles", true)]
+    public static bool ChiefSheriffCanKillFriendRoles;
+
+    [CustomOptionBool("ChiefSheriffCanKillLovers", true)]
+    public static bool ChiefSheriffCanKillLovers;
+}
+
+public class ChiefAbility : AbilityBase
+{
+    private CustomSidekickButtonAbility _sidekickButton;
+    private bool _canAppointSheriff = true;
+    private SheriffAbilityData _sheriffAbilityData;
+    private SheriffAbility _createdSheriff = null;
+    private EventListener<NameTextUpdateEventData> _nameTextUpdateEventListener;
+    private bool _canSeeCreatedSheriff;
+    public ChiefAbility(SheriffAbilityData sheriffAbilityData, bool canSeeCreatedSheriff)
     {
-        ChiefSheriffCoolTime = CustomOption.Create(400303, Optioninfo.SupportSHR, CustomOptionType.Crewmate, "SheriffCooldownSetting", 30f, 2.5f, 60f, 2.5f, Optioninfo.RoleOption, format: "unitSeconds");
-        ChiefSheriffKillLimit = CustomOption.Create(400304, Optioninfo.SupportSHR, CustomOptionType.Crewmate, "SheriffMaxKillCountSetting", 1f, 1f, 20f, 1, Optioninfo.RoleOption, format: "unitSeconds");
-        ChiefSheriffExecutionMode = CustomOption.Create(400312, Optioninfo.SupportSHR, CustomOptionType.Crewmate, "SheriffExecutionMode", new string[] { "SheriffDefaultExecutionMode", "SheriffAlwaysSuicideMode", "SheriffAlwaysKillMode" }, Optioninfo.RoleOption);
-        ChiefSheriffCanKillImpostor = CustomOption.Create(400306, Optioninfo.SupportSHR, CustomOptionType.Crewmate, "SheriffIsKillImpostorSetting", true, Optioninfo.RoleOption);
-        ChiefSheriffCanKillMadRole = CustomOption.Create(400307, Optioninfo.SupportSHR, CustomOptionType.Crewmate, "SheriffIsKillMadRoleSetting", false, Optioninfo.RoleOption);
-        ChiefSheriffCanKillNeutral = CustomOption.Create(400308, Optioninfo.SupportSHR, CustomOptionType.Crewmate, "SheriffIsKillNeutralSetting", false, Optioninfo.RoleOption);
-        ChiefSheriffFriendsRoleKill = CustomOption.Create(400309, Optioninfo.SupportSHR, CustomOptionType.Crewmate, "SheriffIsKillFriendsRoleSetting", false, Optioninfo.RoleOption);
-        ChiefSheriffCanKillLovers = CustomOption.Create(400310, Optioninfo.SupportSHR, CustomOptionType.Crewmate, "SheriffIsKillLoversSetting", false, Optioninfo.RoleOption);
-        ChiefSheriffQuarreledKill = CustomOption.Create(400311, Optioninfo.SupportSHR, CustomOptionType.Crewmate, "SheriffIsKillQuarreledSetting", false, Optioninfo.RoleOption);
+        _sheriffAbilityData = sheriffAbilityData;
+        _canSeeCreatedSheriff = canSeeCreatedSheriff;
     }
-    public static bool IsSheriffCreatedByChief(byte playerId)
+    private bool _hasOldTask = false;
+    public override void AttachToAlls()
     {
-        return RoleBaseManager.GetRoleBaseOrigins<Chief>().Any(x => (x as Chief).CreatedSheriff == playerId);
+        // 任命ボタンの作成
+        _sidekickButton = new CustomSidekickButtonAbility(new(
+            canCreateSidekick: created => _canAppointSheriff && !created,
+            sidekickCooldown: () => Chief.ChiefAppointCooldown, // クールダウンを設定値に変更
+            sidekickRole: () => RoleId.Sheriff,
+            sidekickRoleVanilla: () => RoleTypes.Crewmate,
+            sidekickSprite: AssetManager.GetAsset<Sprite>("ChiefSidekickButton.png"), // 既存のスプライトを利用
+            sidekickText: ModTranslation.GetString("ChiefAppoint"),
+            sidekickCount: () => 1,
+            isTargetable: IsTargetable,
+            sidekickSuccess: target =>
+            {
+                _hasOldTask = target.IsTaskTriggerRole();
+                return !target.IsImpostor();
+            },
+            onSidekickCreated: OnSheriffAppointed
+        ));
+
+        ExPlayerControl exPlayer = Player;
+        AbilityParentAbility abilityParentAbility = new(this);
+        exPlayer.AttachAbility(_sidekickButton, abilityParentAbility);
+
+        _nameTextUpdateEventListener = NameTextUpdateEvent.Instance.AddListener(OnNameTextUpdate);
+    }
+    public override void AttachToLocalPlayer()
+    {
+    }
+    public override void DetachToLocalPlayer()
+    {
+        NameTextUpdateEvent.Instance.RemoveListener(_nameTextUpdateEventListener);
     }
 
-    public bool OnCheckMurderPlayerAmKiller(PlayerControl target)
+    // 対象を任命可能かどうかの判定
+    private bool IsTargetable(ExPlayerControl target)
     {
-        if (target.IsImpostor())
-        {
-            Player.RpcMurderPlayer(Player, true);
-            Player.RpcSetFinalStatus(FinalStatus.ChiefMisSet);
+        // 死亡者は対象外
+        if (target.IsDead())
             return false;
-        }
-        if (!IsCreatedSheriff)
-        {
-            MessageWriter writer = RpcWriter;
-            writer.Write(target.PlayerId);
-            writer.Write(target.IsClearTask());
-            SendRpc(writer);
-        }
-        return false;
+
+        // 自分自身は対象外
+        if (target.PlayerId == Player.PlayerId)
+            return false;
+
+        return true;
     }
 
-    public Chief(PlayerControl p) : base(p, Roleinfo, Optioninfo, Introinfo)
+    // シェリフ任命後の処理
+    private void OnSheriffAppointed(ExPlayerControl target)
     {
-        SidekickButton = new(null, this, SidekickOnClick,
-            (isAlive) => isAlive && !IsCreatedSheriff,
-            CustomButtonCouldType.CanMove | CustomButtonCouldType.SetTarget,
-            null, ModHelpers.LoadSpriteFromResources("SuperNewRoles.Resources.ChiefSidekickButton.png", 115f),
-            () => 0f, new(), "ChiefSidekickButtonName",
-            UnityEngine.KeyCode.F, 49);
-        CustomButtonInfos = [SidekickButton];
-    }
-    private void SidekickOnClick()
-    {
-        var target = SidekickButton.CurrentTarget;
-        if (!target || IsCreatedSheriff)
-            return;
+        _canAppointSheriff = false;
+
+        // インポスター判定
         if (target.IsImpostor())
         {
-            PlayerControl.LocalPlayer.RpcMurderPlayer(PlayerControl.LocalPlayer, true);
-            PlayerControl.LocalPlayer.RpcSetFinalStatus(FinalStatus.ChiefMisSet);
+            // インポスターを任命した場合は自身が死亡
+            new LateTask(() =>
+            {
+                ExPlayerControl.LocalPlayer.RpcCustomDeath(CustomDeathType.Suicide);
+            }, 0f);
         }
         else
         {
-            MessageWriter writer = RpcWriter;
-            writer.Write(target.PlayerId);
-            writer.Write(target.IsClearTask());
-            SendRpc(writer);
+            SheriffAbility sheriffAbility = target.PlayerAbilities.FirstOrDefault(ability => ability is SheriffAbility) as SheriffAbility;
+            if (sheriffAbility == null)
+                throw new Exception("SheriffAbilityが見つかりません");
+            _createdSheriff = sheriffAbility;
+            RpcChiefAppointSheriff(target, sheriffAbility, _sheriffAbilityData.KillCooldown, _sheriffAbilityData.KillCount, _sheriffAbilityData.CanKillNeutral, _sheriffAbilityData.CanKillImpostor, _sheriffAbilityData.CanKillMadRoles, _sheriffAbilityData.CanKillFriendRoles, _sheriffAbilityData.CanKillLovers, _hasOldTask);
         }
     }
-
-    public void RpcReader(MessageReader reader)
+    [CustomRPC]
+    public static void RpcChiefAppointSheriff(ExPlayerControl target, SheriffAbility sheriffAbility, float killCooldown, int maxKillCount, bool canKillNeutral, bool canKillImpostor, bool canKillMadRoles, bool canKillFriendRoles, bool canKillLovers, bool isOldHasTak)
     {
-        byte targetid = reader.ReadByte();
-        CreatedSheriff = targetid;
-        IsCreatedSheriff = true;
-        RPCProcedure.SetRole(targetid, (byte)RoleId.Sheriff);
-        if (targetid == CachedPlayer.LocalPlayer.PlayerId)
+        sheriffAbility.SheriffAbilityData = new(killCooldown, maxKillCount, canKillNeutral, canKillImpostor, canKillMadRoles, canKillFriendRoles, canKillLovers);
+        if (sheriffAbility.Player.AmOwner)
+            sheriffAbility.ResetTimer();
+        sheriffAbility.Count = maxKillCount;
+        if (!isOldHasTak)
         {
-            Sheriff.ResetKillCooldown();
-            RoleClass.Sheriff.KillMaxCount = ChiefSheriffKillLimit.GetFloat();
-            RoleClass.Sheriff.CoolTime = ChiefSheriffCoolTime.GetFloat();
+            CustomTaskAbility customTaskAbility = new(() => (false, false, 0));
+            target.AttachAbility(customTaskAbility, new AbilityParentAbility(sheriffAbility));
         }
-        if (AmongUsClient.Instance.AmHost && ModeHandler.IsMode(ModeId.SuperHostRoles))
-        {
-            PlayerControl target = ModHelpers.PlayerById(targetid);
-            target.RpcSetRole(target.IsMod() ? RoleTypes.Crewmate : RoleTypes.Tracker, true);
-            new LateTask(() =>
-            {
-                CustomRpcSender sender = CustomRpcSender.Create("CreateSheriffByChief", SendOption.Reliable);
-                if (!target.IsMod())
-                {
-                    Logger.Info("Target is not Modded.");
-                    int clientId = target.GetClientId();
-                    target.RpcSetRoleDesync(RoleTypes.Impostor, true);
-                    foreach (PlayerControl player in PlayerControl.AllPlayerControls)
-                    {
-                        if (player.PlayerId == target.PlayerId)
-                            continue;
-                        player.RpcSetRoleDesync(RoleTypes.Scientist, true, target);
-                    }
-                }
-                ChangeName.UpdateRoleName(target, ChangeNameType.SelfOnly);
-                target.RpcShowGuardEffect(target);
-            }, 0.25f);
-
-            // もうキルボタンを持たないように
-            Player.RpcSetRole(RoleTypes.Crewmate, true);
-            // 暗転対策のために、インポスターをちゃんとインポスターに変更する
-            foreach(PlayerControl seetarget in PlayerControl.AllPlayerControls)
-            {
-                if (seetarget.IsImpostor())
-                    seetarget.RpcSetRoleDesync(seetarget.Data.Role.Role, true, Player);
-            }
-        }
-        RPCProcedure.UncheckedSetVanillaRole(targetid, (byte)RoleTypes.Crewmate);
+        NameText.UpdateAllNameInfo();
     }
-    public void BuildSetting(IGameOptions gameOptions)
+
+    // 作成したシェリフを表示するための処理を追加
+    public void OnNameTextUpdate(NameTextUpdateEventData data)
     {
-        gameOptions.SetFloat(FloatOptionNames.KillCooldown, 0.01f);
+        if (_createdSheriff?.Player != null &&
+            _canSeeCreatedSheriff &&
+            data.Player.PlayerId == _createdSheriff.Player.PlayerId &&
+            _createdSheriff.Player.IsAlive())
+            NameText.SetNameTextColor(_createdSheriff.Player, Sheriff.Instance.RoleColor);
     }
 }

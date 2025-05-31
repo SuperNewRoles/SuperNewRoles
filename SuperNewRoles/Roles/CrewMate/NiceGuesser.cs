@@ -1,49 +1,44 @@
-
-using AmongUs.GameOptions;
-using SuperNewRoles.Roles.Attribute;
-using SuperNewRoles.Roles.Role;
-using SuperNewRoles.Roles.RoleBases;
-using SuperNewRoles.Roles.RoleBases.Interfaces;
+using System;
+using System.Collections.Generic;
 using UnityEngine;
+using AmongUs.GameOptions;
+using SuperNewRoles.CustomOptions;
+using SuperNewRoles.Roles.Ability;
+using SuperNewRoles.Modules;
 
-namespace SuperNewRoles.Roles.CrewMate;
-public class NiceGuesser : GuesserBase, ICrewmate
+namespace SuperNewRoles.Roles.Crewmate;
+
+class NiceGuesser : RoleBase<NiceGuesser>
 {
-    public static new RoleInfo Roleinfo = new(
-        typeof(NiceGuesser),
-        (p) => new NiceGuesser(p),
-        RoleId.NiceGuesser,
-        "NiceGuesser",
-        Color.yellow,
-        new(RoleId.NiceGuesser, TeamTag.Crewmate,
-            RoleTag.SpecialKiller, RoleTag.PowerPlayResistance),
-        TeamRoleType.Crewmate,
-        TeamType.Crewmate
-        );
-    public static new OptionInfo Optioninfo =
-        new(RoleId.NiceGuesser, 400400, true,
-            optionCreator: CreateOption);
-    public static new IntroInfo Introinfo =
-        new(RoleId.NiceGuesser, introSound: RoleTypes.Impostor);
+    public override RoleId Role { get; } = RoleId.NiceGuesser;
+    public override Color32 RoleColor { get; } = Color.yellow;
+    public override List<Func<AbilityBase>> Abilities { get; } = [() => new GuesserAbility(NiceGuesserMaxShots, NiceGuesserShotsPerMeeting, NiceGuesserCannotShootCrewmate, NiceGuesserCannotShootStar, NiceGuesserLimitedTurns, NiceGuesserLimitedTurnsCount)];
 
-    public override RoleTypes RealRole => RoleTypes.Crewmate;
+    public override QuoteMod QuoteMod { get; } = QuoteMod.TheOtherRoles;
+    public override RoleTypes IntroSoundType { get; } = RoleTypes.Crewmate;
+    public override short IntroNum { get; } = 1;
 
-    public static CustomOption ShotOneMeetingCount;
-    public static CustomOption ShotMaxCount;
-    public static CustomOption CannotShotCrewOption;
-    public static CustomOption CannotShotCelebrityOption;
-    public static CustomOption BecomeShotCelebrityOption;
-    public static CustomOption BecomeShotCelebrityTurn;
-    private static void CreateOption()
-    {
-        ShotMaxCount = CustomOption.Create(Optioninfo.OptionId++, Optioninfo.SupportSHR, CustomOptionType.Crewmate, "EvilGuesserShortMaxCountSetting", 2f, 1f, 15f, 1f, Optioninfo.RoleOption);
-        ShotOneMeetingCount = CustomOption.Create(Optioninfo.OptionId++, Optioninfo.SupportSHR, CustomOptionType.Crewmate, "EvilGuesserOneMeetingShortSetting", true, Optioninfo.RoleOption);
-        CannotShotCrewOption = CustomOption.Create(Optioninfo.OptionId++, Optioninfo.SupportSHR, CustomOptionType.Crewmate, "EvilGuesserCannotCrewShotSetting", false, Optioninfo.RoleOption);
-        CannotShotCelebrityOption = CustomOption.Create(Optioninfo.OptionId++, Optioninfo.SupportSHR, CustomOptionType.Crewmate, "EvilGuesserCannotCelebrityShotSetting", false, Optioninfo.RoleOption);
-        BecomeShotCelebrityOption = CustomOption.Create(Optioninfo.OptionId++, Optioninfo.SupportSHR, CustomOptionType.Crewmate, "EvilGuesserBecomeShotCelebritySetting", true, CannotShotCelebrityOption);
-        BecomeShotCelebrityTurn = CustomOption.Create(Optioninfo.OptionId++, Optioninfo.SupportSHR, CustomOptionType.Crewmate, "EvilGuesserBecomeShotCelebrityTurnSetting", 3f, 1f, 15f, 1f, BecomeShotCelebrityOption);
-    }
-    public NiceGuesser(PlayerControl p) : base(ShotMaxCount.GetInt(), ShotOneMeetingCount.GetBool(), CannotShotCrewOption.GetBool(), CannotShotCelebrityOption.GetBool(), BecomeShotCelebrityOption.GetBool(), BecomeShotCelebrityTurn.GetInt(), p, Roleinfo, Optioninfo, Introinfo)
-    {
-    }
+    public override AssignedTeamType AssignedTeam { get; } = AssignedTeamType.Crewmate;
+    public override WinnerTeamType WinnerTeam { get; } = WinnerTeamType.Crewmate;
+    public override TeamTag TeamTag { get; } = TeamTag.Crewmate;
+    public override RoleTag[] RoleTags { get; } = [RoleTag.SpecialKiller];
+    public override RoleOptionMenuType OptionTeam { get; } = RoleOptionMenuType.Crewmate;
+
+    [CustomOptionInt("NiceGuesserMaxShots", 1, 15, 1, 3)]
+    public static int NiceGuesserMaxShots;
+
+    [CustomOptionInt("NiceGuesserShotsPerMeeting", 1, 15, 1, 3)]
+    public static int NiceGuesserShotsPerMeeting;
+
+    [CustomOptionBool("NiceGuesserCannotShootStar", true)]
+    public static bool NiceGuesserCannotShootStar = true;
+
+    [CustomOptionBool("NiceGuesserLimitedTurns", true, parentFieldName: nameof(NiceGuesserCannotShootStar))]
+    public static bool NiceGuesserLimitedTurns = true;
+
+    [CustomOptionInt("NiceGuesserLimitedTurnsCount", 1, 15, 1, 3, parentFieldName: nameof(NiceGuesserLimitedTurns))]
+    public static int NiceGuesserLimitedTurnsCount = 3;
+
+    [CustomOptionBool("NiceGuesserCannotShootCrewmate", true)]
+    public static bool NiceGuesserCannotShootCrewmate = true;
 }
