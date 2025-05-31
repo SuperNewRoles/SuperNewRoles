@@ -142,9 +142,10 @@ public class SchrodingersCatAbility : AbilityBase
                 _suicideTarget = data.Killer;
                 if (_suicideTarget.AmOwner)
                 {
-                    _suicideText = GameObject.Instantiate(data.Killer.cosmetics.nameText, null);
-                    _suicideText.transform.localPosition = new(0, 0, 0);
+                    _suicideText = GameObject.Instantiate(HudManager.Instance.roomTracker.text, HudManager.Instance.roomTracker.transform);
+                    _suicideText.transform.localPosition = HudManager.Instance.roomTracker.transform.localPosition + new Vector3(0, 0.4f, 0f);
                     _suicideText.alignment = TextAlignmentOptions.Center;
+                    _suicideText.color = SchrodingersCat.Instance.RoleColor;
                     _suicideText.text = ModTranslation.GetString("SchrodingersCatSuicideText");
                 }
             }
@@ -238,14 +239,17 @@ public class SchrodingersCatAbility : AbilityBase
             case SchrodingersCatTeam.Crewmate:
                 break;
             case SchrodingersCatTeam.Impostor:
+            case SchrodingersCatTeam.Madmate:
                 if (data.Player.IsImpostor())
                     data.Player.PlayerInfoText.text = ModHelpers.Cs(Palette.ImpostorRed, data.Player.PlayerInfoText.text);
                 break;
             case SchrodingersCatTeam.Jackal:
+            case SchrodingersCatTeam.Friends:
                 if (data.Player.IsJackal())
                     data.Player.PlayerInfoText.text = ModHelpers.Cs(Jackal.Instance.RoleColor, data.Player.PlayerInfoText.text);
                 break;
             case SchrodingersCatTeam.Pavlovs:
+            case SchrodingersCatTeam.PavlovFriends:
                 if (data.Player.IsPavlovsTeam())
                     data.Player.PlayerInfoText.text = ModHelpers.Cs(PavlovsOwner.Instance.RoleColor, data.Player.PlayerInfoText.text);
                 break;
@@ -335,9 +339,9 @@ public class SchrodingersCatAbility : AbilityBase
                     TaskNeeded: JackalFriends.JackalFriendsTaskNeed,
                     SpecialTasks: JackalFriends.JackalFriendsTaskOption
                 ));
+                Player.AttachAbility(jackalFriendsAbility, new AbilityParentAbility(this));
                 if (Player.AmOwner)
                     jackalFriendsAbility.CustomTaskAbility.AssignTasks();
-                Player.AttachAbility(jackalFriendsAbility, new AbilityParentAbility(this));
                 break;
         }
     }

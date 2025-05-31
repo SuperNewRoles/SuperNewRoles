@@ -74,6 +74,12 @@ class WaveCannonJackal : RoleBase<WaveCannonJackal>
     [CustomOptionFloat("WaveCannonJackalBulletLoadedChargeTime", 0f, 15f, 0.5f, 5f, parentFieldName: nameof(WaveCannonJackalSidekickType), parentActiveValue: WaveCannonJackalSidekickType.Bullet)]
     public static float WaveCannonJackalBulletLoadedChargeTime;
 
+    [CustomOptionBool("WaveCannonJackalBulletCanSeeParent", true, parentFieldName: nameof(WaveCannonJackalSidekickType), parentActiveValue: WaveCannonJackalSidekickType.Bullet)]
+    public static bool WaveCannonJackalBulletCanSeeParent;
+
+    [CustomOptionBool("WaveCannonJackalCanSeeBullet", true, parentFieldName: nameof(WaveCannonJackalSidekickType), parentActiveValue: WaveCannonJackalSidekickType.Bullet)]
+    public static bool WaveCannonJackalCanSeeBullet;
+
     [CustomOptionFloat("WaveCannonJackalWaveCannonCooldown", 2.5f, 60f, 2.5f, 30f)]
     public static float WaveCannonJackalCooldown;
 

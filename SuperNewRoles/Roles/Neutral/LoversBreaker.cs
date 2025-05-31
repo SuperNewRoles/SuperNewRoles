@@ -109,25 +109,28 @@ public class LoversBreakerAbility : TargetCustomButtonBase
         if (!Data.IsDeathWin && Player.IsDead()) return;
         if (_successCount >= Data.WinKillCount && !ExPlayerControl.ExPlayerControls.Any(p => p.IsLovers() && p.IsAlive()))
         {
-            EndGamer.RpcEndGameWithWinner(CustomGameOverReason.LoversBreakerWin, WinType.SingleNeutral, [ExPlayerControl.LocalPlayer], LoversBreaker.Instance.RoleColor, "LoversBreaker", string.Empty);
+            EndGamer.RpcEndGameWithWinner(CustomGameOverReason.LoversBreakerWin, WinType.SingleNeutral, [Player], LoversBreaker.Instance.RoleColor, "LoversBreaker", string.Empty);
         }
     }
 
     private void OnDie(DieEventData data)
     {
-        if (data.player != Player) return;
-        CheckWin();
+        if (AmongUsClient.Instance.AmHost)
+            CheckWin();
     }
 
     public override void OnClick()
     {
         if (Target == null) return;
-        if (Target.IsLovers())
+        if (Target.IsLovers() || Target.Role is RoleId.Cupid or RoleId.Truelover)
         {
             ExPlayerControl.LocalPlayer.RpcCustomDeath(Target, CustomDeathType.Kill);
-            _successCount++;
+            if (Target.Role != RoleId.Cupid)
+            {
+                _successCount++;
+                RpcSyncCount(_successCount);
+            }
             CheckWin();
-            RpcSyncCount(_successCount);
         }
         else
         {

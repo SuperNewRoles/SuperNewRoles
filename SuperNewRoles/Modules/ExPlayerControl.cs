@@ -434,7 +434,7 @@ public class ExPlayerControl
     public bool IsNeutral()
         => roleBase != null ? roleBase.AssignedTeam == AssignedTeamType.Neutral : false;
     public bool IsImpostorWinTeam()
-        => IsImpostor() || IsMadRoles() || Role == RoleId.MadKiller || GhostRole == GhostRoleId.Revenant;
+        => IsImpostor() || IsMadRoles() || Role == RoleId.MadKiller;
     public bool IsPavlovsTeam()
         => Role is RoleId.PavlovsDog or RoleId.PavlovsOwner || GetAbility<SchrodingersCatAbility>()?.CurrentTeam is SchrodingersCatTeam.Pavlovs or SchrodingersCatTeam.PavlovFriends;
     public bool IsPavlovsDog()

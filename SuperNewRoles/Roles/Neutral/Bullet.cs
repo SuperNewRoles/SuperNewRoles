@@ -96,10 +96,22 @@ public class BulletAbility : TargetCustomButtonBase
     {
         if (data.Player == Player || data.Player == _parent?.Player)
         {
-            if (Player.AmOwner || _parent.Player.AmOwner)
+            if (Player.AmOwner || _parent?.Player?.AmOwner == true)
             {
                 NameText.AddNameText(data.Player, ModHelpers.Cs(Bullet.Instance.RoleColor, "☆"), true);
             }
+        }
+
+        // 親の位置がわかる設定
+        if (WaveCannonJackal.WaveCannonJackalBulletCanSeeParent && data.Player == _parent?.Player && Player.AmOwner)
+        {
+            NameText.AddNameText(data.Player, ModHelpers.Cs(Color.yellow, "★"), true);
+        }
+
+        // 弾の位置がわかる設定
+        if (WaveCannonJackal.WaveCannonJackalCanSeeBullet && data.Player == Player && _parent?.Player?.AmOwner == true)
+        {
+            NameText.AddNameText(data.Player, ModHelpers.Cs(Color.cyan, "●"), true);
         }
     }
     private void OnMeetingStart(MeetingStartEventData data)
@@ -122,7 +134,7 @@ public class BulletAbility : TargetCustomButtonBase
         if (_waveCannonAbility?.bullet != null)
         {
             Player.transform.position = _parent.Player.transform.position;
-            Player.NetTransform.SnapTo(_parent.Player.GetTruePosition());
+            Player.NetTransform.SnapTo(_parent.Player.transform.position);
             Player.MyPhysics.body.velocity = Vector2.zero;
         }
     }

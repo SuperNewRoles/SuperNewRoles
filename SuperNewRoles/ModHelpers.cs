@@ -668,6 +668,7 @@ public static class ModHelpers
         return value;
     }
 
+    // shhhhhh.....
     public static bool IsAndroid()
     {
         return Constants.GetPlatformType() == Platforms.Android;

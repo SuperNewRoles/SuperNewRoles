@@ -16,6 +16,7 @@ public static class MapLoader
     private static ShipStatus fungle;
 
     private static HashSet<AssetReference> loadedMaps = new();
+    private static Dictionary<MapNames, List<Action<ShipStatus>>> loadingMaps = new();
 
     public static void LoadMap(MapNames map, Action<ShipStatus> onLoaded)
     {
@@ -52,6 +53,15 @@ public static class MapLoader
         while (AmongUsClient.Instance == null) { yield return null; }
         Stopwatch sw = new();
         sw.Start();
+        if (loadingMaps.ContainsKey(map) && loadingMaps[map] != null && loadingMaps[map].Count > 0)
+        {
+            loadingMaps[map].Add(onLoaded);
+            while (loadingMaps.ContainsKey(map) && loadingMaps[map] != null && loadingMaps[map].Count > 0)
+            {
+                yield return null;
+            }
+            yield break;
+        }
         var prefabs = AmongUsClient.Instance.ShipPrefabs;
         if (prefabs.Count <= (int)map)
         {
@@ -101,7 +111,14 @@ public static class MapLoader
             }
             loadedMaps.Add(ship);
             SuperNewRoles.Logger.Info($"...{prefab.name} Loaded");
-            onLoaded(status);
+            if (loadingMaps.ContainsKey(map))
+            {
+                foreach (var action in loadingMaps[map])
+                {
+                    action(status);
+                }
+                loadingMaps[map].Clear();
+            }
             yield return null;
         }
         else SuperNewRoles.Logger.Warning($"Could not import [{ship.AssetGUID}]. Ignoring...");
@@ -131,6 +148,7 @@ public static class MapLoader
         {
             ship.ReleaseAsset();
         }
+        loadingMaps.Clear();
         if (airship is not null)
             airship = null;
         if (fungle is not null)

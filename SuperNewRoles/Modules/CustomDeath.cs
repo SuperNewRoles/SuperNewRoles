@@ -78,7 +78,7 @@ public static class CustomDeathExtensions
                 FinalStatusManager.SetFinalStatus(player, FinalStatus.LoversSuicide);
                 break;
             case CustomDeathType.WaveCannon:
-                source.Player.MurderPlayer(player.Player, MurderResultFlags.Succeeded);
+                player.Player.MurderPlayer(player.Player, MurderResultFlags.Succeeded);
                 FinalStatusManager.SetFinalStatus(player, FinalStatus.WaveCannon);
                 break;
             case CustomDeathType.Samurai:

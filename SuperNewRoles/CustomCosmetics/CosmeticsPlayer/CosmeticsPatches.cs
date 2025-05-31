@@ -165,16 +165,42 @@ public static class PoolablePlayer_UpdateFromDataManager
         customCosmeticsLayer?.visor2?.SetVisor(CustomCosmeticsSaver.CurrentVisor2Id, DataManager.Player.Customization.Color);
     }
 }
+[HarmonyPatch(typeof(VitalsPanel), nameof(VitalsPanel.SetPlayer))]
+public static class VitalsPanel_SetPlayer
+{
+    public static void Postfix(VitalsPanel __instance)
+    {
+        CustomCosmeticsLayer customCosmeticsLayer = CustomCosmeticsLayers.ExistsOrInitialize(__instance.PlayerIcon.cosmetics);
+        customCosmeticsLayer.hat1.FrontLayer.maskInteraction = SpriteMaskInteraction.VisibleInsideMask;
+        customCosmeticsLayer.hat1.BackLayer.maskInteraction = SpriteMaskInteraction.VisibleInsideMask;
+        customCosmeticsLayer.hat2.FrontLayer.maskInteraction = SpriteMaskInteraction.VisibleInsideMask;
+        customCosmeticsLayer.hat2.BackLayer.maskInteraction = SpriteMaskInteraction.VisibleInsideMask;
+        customCosmeticsLayer.visor1.Image.maskInteraction = SpriteMaskInteraction.VisibleInsideMask;
+        customCosmeticsLayer.visor2.Image.maskInteraction = SpriteMaskInteraction.VisibleInsideMask;
+    }
+}
 [HarmonyPatch(typeof(PoolablePlayer), nameof(PoolablePlayer.UpdateFromEitherPlayerDataOrCache))]
 public static class PoolablePlayer_UpdateFromEitherPlayerDataOrCache
 {
-    public static void Postfix(PoolablePlayer __instance, NetworkedPlayerInfo pData)
+    public static void Postfix(PoolablePlayer __instance, NetworkedPlayerInfo pData, PlayerMaterial.MaskType maskType)
     {
         if (pData.Object == null) return;
         CustomCosmeticsLayer customCosmeticsLayer = CustomCosmeticsLayers.ExistsOrInitialize(__instance.cosmetics);
         CustomCosmeticsLayer pcLayer = CustomCosmeticsLayers.ExistsOrInitialize(pData.Object.cosmetics);
         customCosmeticsLayer?.hat2?.SetHat(pcLayer.hat2.Hat?.ProdId ?? "", pData.DefaultOutfit.ColorId);
         customCosmeticsLayer?.visor2?.SetVisor(pcLayer.visor2.Visor?.ProdId ?? "", pData.DefaultOutfit.ColorId);
+        customCosmeticsLayer?.hat2?.SetMaskType(maskType);
+        customCosmeticsLayer?.visor2?.SetMaskType(maskType);
+    }
+}
+[HarmonyPatch(typeof(CosmeticsLayer), nameof(CosmeticsLayer.SetMaskType))]
+public static class CosmeticsLayer_SetMaskType
+{
+    public static void Postfix(CosmeticsLayer __instance, PlayerMaterial.MaskType type)
+    {
+        CustomCosmeticsLayer customCosmeticsLayer = CustomCosmeticsLayers.ExistsOrInitialize(__instance);
+        customCosmeticsLayer?.hat2?.SetMaskType(type);
+        customCosmeticsLayer?.visor2?.SetMaskType(type);
     }
 }
 [HarmonyPatch(typeof(CosmeticsLayer), nameof(CosmeticsLayer.AnimateClimb))]

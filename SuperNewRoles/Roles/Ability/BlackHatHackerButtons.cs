@@ -79,6 +79,7 @@ public class BlackHatHackerVitalsButton : CustomButtonBase
     public override string buttonText => FastDestroyableSingleton<TranslationController>.Instance.GetString(StringNames.VitalsLabel);
     protected override KeyType keytype => KeyType.Vent;
     public override float DefaultTimer => 0f;
+    public override bool IsFirstCooldownTenSeconds => false;
 
     public BlackHatHackerVitalsButton(BlackHatHackerAbility ability)
     {

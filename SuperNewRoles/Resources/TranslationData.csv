@@ -542,6 +542,7 @@ WaveCannonJackalBulletLoadedChargeTime,超波動砲のチャージ時間,Bullet 
 WaveCannonJackalCreateBulletToJackal,弾がジャッカルに昇格する,Bullet becomes Jackal,子弹成为杰克,子彈成為傑克
 WaveCannonJackalNewJackalHaveWaveCannon,弾が昇格した際波動砲を持つ,Bullet becomes Jackal and has Wave Cannon,子弹成为杰克并拥有波动炮,子彈成為傑克並擁有波動砲
 BulletEmergencyText,なんだか怖くて会議を開けない...,Something is scary and I can't open the meeting...,什么东西很可怕，我开不了会...,什麼東西很可怕，我開不了會...
+BulletButton,装填,Load,装填,裝填
 
 # Tuna
 TunaStopTimeLimit,停止可能時間,Tuna Stop Time Limit,金枪鱼停止时间,金槍魚停止時間

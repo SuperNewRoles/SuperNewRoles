@@ -62,7 +62,6 @@ public partial class SuperNewRolesPlugin : BasePlugin
     public static string SecretDirectory => Path.GetFullPath(Path.Combine(UnityEngine.Application.persistentDataPath, "SuperNewRolesNextSecrets"));
     private static Task TaskRunIfWindows(Action action)
     {
-        // AndroidでTask.Runを使わないか
         bool needed = false;
         if (needed && ModHelpers.IsAndroid())
             action();

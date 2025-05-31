@@ -417,7 +417,7 @@ public class RoleOptionSettings
         for (int i = 0; i < parentTransform.childCount; i++)
         {
             Transform child = parentTransform.GetChild(i);
-            if (!child.gameObject.active)
+            if (!child.gameObject.activeInHierarchy)
                 continue;
 
             // オプションの位置を更新

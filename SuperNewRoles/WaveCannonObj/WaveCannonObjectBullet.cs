@@ -7,7 +7,7 @@ namespace SuperNewRoles.WaveCannonObj;
 public class WaveCannonObjectBullet : WaveCannonObjectTank
 {
     public WaveCannonObjectBullet(WaveCannonAbility ability, bool isFlipX, Vector3 startPosition, bool isResetKillCooldown)
-        : base(ability, isFlipX, startPosition, isResetKillCooldown, "WaveCannonBulletTank")
+        : base(ability, isFlipX, startPosition, isResetKillCooldown, "WaveCannonBullet", "BulletChargeSound.mp3")
     {
 
     }

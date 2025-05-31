@@ -10,6 +10,7 @@ using Il2CppInterop.Runtime.InteropTypes.Arrays;
 using SuperNewRoles.Roles.Ability;
 using static SuperNewRoles.CustomOptions.Categories.MapSettingOptions;
 using System.Linq;
+using SuperNewRoles.Roles.Neutral;
 
 namespace SuperNewRoles.Patches;
 
@@ -251,10 +252,10 @@ public static class DevicesPatch
                                 if (((ExPlayerControl)component).GetAbility<HideInAdminAbility>()?.IsHideInAdmin ?? false) continue;
 
                                 // BlackHatHackerのフィルター
-                                var blackHatHacker = SuperNewRoles.Roles.Ability.BlackHatHackerAbility.LocalInstance;
+                                var blackHatHacker = ExPlayerControl.LocalPlayer.GetAbility<BlackHatHackerAbility>();
                                 if (DevicesPatch.DontCountBecausePortableAdmin && blackHatHacker != null && blackHatHacker.AdminAbility != null &&
                                     !blackHatHacker.InfectedPlayerId.Contains(component.PlayerId) && !component.AmOwner) continue;
-                                if (DevicesPatch.DontCountBecausePortableAdmin && blackHatHacker != null && blackHatHacker.AdminAbility != null)
+                                if (DevicesPatch.DontCountBecausePortableAdmin && blackHatHacker != null && blackHatHacker.AdminAbility != null && BlackHatHacker.BlackHatHackerIsAdminColor)
                                     colors.Add(component.Player.CurrentOutfit.ColorId);
                                 count++;
                                 if (canSeeImpostorIcon && component.IsImpostor())
