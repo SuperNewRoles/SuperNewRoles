@@ -193,6 +193,22 @@ public static class PoolablePlayer_UpdateFromEitherPlayerDataOrCache
         customCosmeticsLayer?.visor2?.SetMaskType(maskType);
     }
 }
+[HarmonyPatch(typeof(ChatBubble), nameof(ChatBubble.SetCosmetics))]
+public static class ChatBubble_SetCosmetics
+{
+    public static void Postfix(ChatBubble __instance)
+    {
+        Logger.Info("ChatBubble_SetCosmetics");
+        Logger.Info($"ChatBubble_SetCosmetics: {__instance.Player.name}");
+        CustomCosmeticsLayer customCosmeticsLayer = CustomCosmeticsLayers.ExistsOrInitialize(__instance.Player.cosmetics);
+        customCosmeticsLayer.hat1.FrontLayer.maskInteraction = SpriteMaskInteraction.VisibleInsideMask;
+        customCosmeticsLayer.hat1.BackLayer.maskInteraction = SpriteMaskInteraction.VisibleInsideMask;
+        customCosmeticsLayer.hat2.FrontLayer.maskInteraction = SpriteMaskInteraction.VisibleInsideMask;
+        customCosmeticsLayer.hat2.BackLayer.maskInteraction = SpriteMaskInteraction.VisibleInsideMask;
+        customCosmeticsLayer.visor1.Image.maskInteraction = SpriteMaskInteraction.VisibleInsideMask;
+        customCosmeticsLayer.visor2.Image.maskInteraction = SpriteMaskInteraction.VisibleInsideMask;
+    }
+}
 [HarmonyPatch(typeof(CosmeticsLayer), nameof(CosmeticsLayer.SetMaskType))]
 public static class CosmeticsLayer_SetMaskType
 {

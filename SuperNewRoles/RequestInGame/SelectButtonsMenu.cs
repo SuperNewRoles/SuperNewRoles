@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using HarmonyLib;
+using SuperNewRoles.CustomOptions;
 using SuperNewRoles.Modules;
 using TMPro;
 using UnityEngine;
@@ -102,6 +103,9 @@ public class SelectButtonsMenu
     private static void SetScreenMaskActive(bool active)
     {
         GameObject.Find("MainMenuManager/MainUI/AspectScaler/RightPanel/ScreenMask")?.SetActive(active);
+        if (MeetingHud.Instance != null)
+            ModHelpers.UpdateMeetingHudMaskAreas(active);
+        RoleOptionMenu.UpdateHostInfoMaskArea(active);
     }
 
     private static void UpdateButtons(GameObject top)

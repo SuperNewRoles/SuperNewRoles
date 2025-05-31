@@ -310,9 +310,11 @@ class BalancerAbility : AbilityBase, IAbilityCount
         if (AmongUsClient.Instance.AmHost && CheckAllPlayersVoted())
         {
             EndBalancing();
+            return;
         }
 
         UpdateAnimationByState();
+        if (MeetingHud.Instance?.SkipVoteButton != null) MeetingHud.Instance.SkipVoteButton.gameObject.SetActive(false);
     }
 
     private bool IsValidMeetingState()
@@ -701,7 +703,6 @@ class BalancerAbility : AbilityBase, IAbilityCount
 
         // 会議HUDの主要コンポーネントを表示/非表示
         if (MeetingHud.Instance.TitleText != null) MeetingHud.Instance.TitleText.gameObject.SetActive(active);
-        if (MeetingHud.Instance.SkipVoteButton != null) MeetingHud.Instance.SkipVoteButton.gameObject.SetActive(active);
         if (MeetingHud.Instance.SkippedVoting != null) MeetingHud.Instance.SkippedVoting.gameObject.SetActive(active);
     }
 
