@@ -1,7 +1,6 @@
 using System;
 using System.Collections.Generic;
 using UnityEngine;
-using static SuperNewRoles.Modules.CustomOptionHolder;
 
 namespace SuperNewRoles.Modules;
 
@@ -11,63 +10,67 @@ public class CustomMessage
     private static readonly List<CustomMessage> customMessages = new();
 
     /// <summary>
-    /// タスクフェイズ中画面下部にメッセージを表示する。
+    /// タスクフェイズ中、画面下部にメッセージを表示するクラス
     /// </summary>
-    /// <param name="message"></param>
-    /// <param name="duration">メッセージを表示する時間</param>
-    /// <param name="useCustomColor">メッセージの色を変更するか</param>
-    /// <param name="firstColor">最初に表示するMessageの色</param>
-    /// <param name="secondColor"></param>
-    /// <returns></returns>
-    public CustomMessage(string message, float duration, bool useCustomColor = false, Color firstColor = new(), Color secondColor = default)
+    /// <param name="message">表示するメッセージ</param>
+    /// <param name="duration">表示時間</param>
+    /// <param name="useCustomColor">メッセージの色をカスタムするかどうか</param>
+    /// <param name="firstColor">初回に使用する色（オプション）</param>
+    /// <param name="secondColor">次回に使用する色（オプション）</param>
+    public CustomMessage(string message, float duration, bool useCustomColor = false, Color firstColor = default, Color secondColor = default)
     {
-        RoomTracker roomTracker = FastDestroyableSingleton<HudManager>.Instance?.roomTracker;
-        if (roomTracker != null)
+        var hudManager = FastDestroyableSingleton<HudManager>.Instance;
+        if (hudManager?.roomTracker == null) return;
+
+        RoomTracker roomTracker = hudManager.roomTracker;
+        GameObject messageObject = UnityEngine.Object.Instantiate(roomTracker.gameObject);
+        messageObject.transform.SetParent(hudManager.transform);
+        UnityEngine.Object.DestroyImmediate(messageObject.GetComponent<RoomTracker>());
+
+        text = messageObject.GetComponent<TMPro.TMP_Text>();
+        text.text = message;
+
+        // プレイヤーのビュー内に配置するため、ローカル座標を設定
+        messageObject.transform.localPosition = new Vector3(0f, -1.8f, messageObject.transform.localPosition.z);
+        customMessages.Add(this);
+
+        // 有効な色を決定（パラメータがデフォルトの場合、既定の色を用いる）
+        Color effectiveFirstColor = (firstColor == default) ? Color.yellow : firstColor;
+        Color effectiveSecondColor = (secondColor == default) ? effectiveFirstColor : secondColor;
+
+        hudManager.StartCoroutine(Effects.Lerp(duration, new Action<float>(UpdateEffect)));
+
+        // ローカル関数により、表示中のテキストの色と内容を更新
+        void UpdateEffect(float progress)
         {
-            GameObject gameObject = UnityEngine.Object.Instantiate(roomTracker.gameObject);
-
-            gameObject.transform.SetParent(FastDestroyableSingleton<HudManager>.Instance.transform);
-            UnityEngine.Object.DestroyImmediate(gameObject.GetComponent<RoomTracker>());
-            text = gameObject.GetComponent<TMPro.TMP_Text>();
-            text.text = message;
-
-            // Use local position to place it in the player's view instead of the world location
-            gameObject.transform.localPosition = new Vector3(0, -1.8f, gameObject.transform.localPosition.z);
-            customMessages.Add(this);
-
-            FastDestroyableSingleton<HudManager>.Instance.StartCoroutine(Effects.Lerp(duration, new Action<float>((p) =>
+            if (text == null)
             {
-                if (text == null)
-                {
-                    customMessages.Remove(this);
-                    return;
-                }
-                bool even = ((int)(p * duration / 0.25f)) % 2 == 0; // Bool flips every 0.25 seconds
-                if (useCustomColor)
-                {
-                    firstColor = firstColor == default ? Color.yellow : firstColor;
-                    secondColor = secondColor == default ? firstColor : secondColor;
+                customMessages.Remove(this);
+                return;
+            }
 
-                    text.text = even
-                        ? ModHelpers.Cs(firstColor, message)
-                        : ModHelpers.Cs(secondColor, message);
+            // 0.25秒ごとに色を交互に切り替える
+            bool isEvenInterval = ((int)(progress * duration / 0.25f)) % 2 == 0;
 
-                    if (text != null)
-                        text.color = even ? firstColor : secondColor;
-                }
-                else
-                {
-                    string prefix = even ? "<color=#FCBA03FF>" : "<color=#FF0000FF>";
-                    text.text = prefix + message + "</color>";
-                    if (text != null)
-                        text.color = even ? Color.yellow : Color.red;
-                }
-                if (p == 1f && text != null && text.gameObject != null)
-                {
-                    UnityEngine.Object.Destroy(text.gameObject);
-                    customMessages.Remove(this);
-                }
-            })));
+            if (useCustomColor)
+            {
+                text.text = isEvenInterval
+                    ? ModHelpers.Cs(effectiveFirstColor, message)
+                    : ModHelpers.Cs(effectiveSecondColor, message);
+                text.color = isEvenInterval ? effectiveFirstColor : effectiveSecondColor;
+            }
+            else
+            {
+                string prefix = isEvenInterval ? "<color=#FCBA03FF>" : "<color=#FF0000FF>";
+                text.text = prefix + message + "</color>";
+                text.color = isEvenInterval ? Color.yellow : Color.red;
+            }
+
+            if (progress >= 1f && text != null && text.gameObject != null)
+            {
+                UnityEngine.Object.Destroy(text.gameObject);
+                customMessages.Remove(this);
+            }
         }
     }
 }

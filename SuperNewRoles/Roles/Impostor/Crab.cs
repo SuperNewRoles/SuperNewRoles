@@ -1,92 +1,98 @@
-
 using System;
-using System.Linq;
-using AmongUs.GameOptions;
-using HarmonyLib;
-using Hazel;
-using SuperNewRoles.Roles.Role;
-using SuperNewRoles.Roles.RoleBases;
-using SuperNewRoles.Roles.RoleBases.Interfaces;
+using System.Collections.Generic;
 using UnityEngine;
+using AmongUs.GameOptions;
+using SuperNewRoles.CustomOptions;
+using SuperNewRoles.Modules;
+using SuperNewRoles.Roles;
+using SuperNewRoles.Roles.Ability;
+using SuperNewRoles.Roles.Ability.CustomButton;
+using SuperNewRoles.Modules.Events;
+using SuperNewRoles.Modules.Events.Bases;
 
-namespace SuperNewRoles.Roles.Impostor.Crab;
-
-// 提案者：穴熊よしはる さん
-[HarmonyPatch]
-public class Crab : RoleBase, IImpostor, ICustomButton, IDeathHandler, IRpcHandler
+namespace SuperNewRoles.Roles.Impostor;
+internal class Crab : RoleBase<Crab>
 {
-    public static new RoleInfo Roleinfo = new(
-        typeof(Crab),
-        (p) => new Crab(p),
-        RoleId.Crab,
-        "Crab",
-        RoleClass.ImpostorRed,
-        new(RoleId.Crab, TeamTag.Impostor),
-        TeamRoleType.Impostor,
-        TeamType.Impostor
-        );
-    public static new OptionInfo Optioninfo =
-        new(RoleId.Crab, 206100, false,
-            CoolTimeOption: (17.5f, 2.5f, 90f, 2.5f, false),
-            DurationTimeOption: (5f, 0.5f, 30f, 0.5f, false));
-    public static new IntroInfo Introinfo =
-        new(RoleId.Crab, introSound: RoleTypes.Impostor);
+    public override RoleId Role => RoleId.Crab;
+    public override Color32 RoleColor => Palette.ImpostorRed;
+    public override List<Func<AbilityBase>> Abilities => new() { () => new CrabAbility(CrabCoolTime, CrabEffectDuration) };
 
-    public bool IsUsingAbility { get; private set; }
+    public override QuoteMod QuoteMod => QuoteMod.SuperNewRoles;
+    public override RoleTypes IntroSoundType => RoleTypes.Impostor;
+    public override short IntroNum => 1;
 
-    public Crab(PlayerControl p) : base(p, Roleinfo, Optioninfo, Introinfo)
+    public override AssignedTeamType AssignedTeam => AssignedTeamType.Impostor;
+    public override WinnerTeamType WinnerTeam => WinnerTeamType.Impostor;
+    public override TeamTag TeamTag => TeamTag.Impostor;
+    public override RoleTag[] RoleTags => Array.Empty<RoleTag>();
+    public override RoleOptionMenuType OptionTeam => RoleOptionMenuType.Impostor;
+
+    [CustomOptionFloat("CrabCoolTime", 2.5f, 180f, 2.5f, 20f, translationName: "CoolTime")]
+    public static float CrabCoolTime;
+    [CustomOptionFloat("CrabEffectDuration", 0f, 30f, 0.5f, 5f, translationName: "DurationTime")]
+    public static float CrabEffectDuration;
+}
+
+public class CrabAbility : CustomButtonBase, IButtonEffect
+{
+    // イベント購読用
+    private EventListener<PlayerPhysicsFixedUpdateEventData> _physicsUpdateListener;
+
+    private bool IsCrabActive;
+    public bool isEffectActive { get; set; }
+    public float EffectTimer { get; set; }
+    Action IButtonEffect.OnEffectEnds => () => { RpcSetCrab(false); };
+    public float EffectDuration => _effectDuration;
+    public bool effectCancellable => true;
+
+    public override float DefaultTimer => _coolTime;
+    public override string buttonText => ModTranslation.GetString("CrabButton");
+    public override Sprite Sprite => AssetManager.GetAsset<Sprite>("crabButton.png");
+    protected override KeyType keytype => KeyType.Ability1;
+
+    private float _coolTime;
+    private float _effectDuration;
+    public CrabAbility(float coolTime, float effectDuration)
     {
-        IsUsingAbility = false;
-        CrabButtonInfo = new(null, this, () => CrabButtonOnClick(),
-            (isAlive) => isAlive,
-            CustomButtonCouldType.CanMove,
-            () => ResetAbility(),
-            ModHelpers.LoadSpriteFromResources("SuperNewRoles.Resources.crabButton.png", 115f),
-            () => Optioninfo.CoolTime, new(-2f, 1, 0),
-            "CrabButtonName", KeyCode.F,
-            DurationTime: () => Optioninfo.DurationTime,
-            OnEffectEnds: () => ResetAbility());
-        CustomButtonInfos = new CustomButtonInfo[1] { CrabButtonInfo };
+        _coolTime = coolTime;
+        _effectDuration = effectDuration;
     }
 
-    // ボタン関係
-    public CustomButtonInfo[] CustomButtonInfos { get; }
-    private CustomButtonInfo CrabButtonInfo { get; }
-    private void CrabButtonOnClick()
-    {
-        MessageWriter writer = RpcWriter;
-        writer.Write(true);
-        SendRpc(writer);
-    }
-    private void ResetAbility()
-    {
-        CrabButtonInfo.ResetCoolTime();
+    public override bool CheckIsAvailable() => Player.IsAlive();
+    public override void OnClick() { RpcSetCrab(true); }
 
-        MessageWriter writer = RpcWriter;
-        writer.Write(false);
-        SendRpc(writer);
+    [CustomRPC]
+    public void RpcSetCrab(bool isCrabActive)
+    {
+        IsCrabActive = isCrabActive;
     }
 
-    // 能力関係
-    public void RpcReader(MessageReader reader)
+    public override void AttachToAlls()
     {
-        bool active = reader.ReadBoolean();
-        IsUsingAbility = active;
+        base.AttachToAlls();
+        _physicsUpdateListener = PlayerPhysicsFixedUpdateEvent.Instance.AddListener(OnPhysicsFixedUpdate);
     }
-    [HarmonyPatch(typeof(PlayerPhysics), nameof(PlayerPhysics.SetNormalizedVelocity)), HarmonyPrefix]
-    static bool SetVelocity(PlayerPhysics __instance, [HarmonyArgument(0)] Vector2 direction)
-    {
-        bool anyoneUsingAbility = RoleBaseManager.GetRoleBases<Crab>().Any(x => x.IsUsingAbility);
-        if (!anyoneUsingAbility) return true;
 
-        direction.y *= 0;
-        __instance.body.velocity = direction * __instance.TrueSpeed;
-        return false;
-    }
-    // 死んだとき強制解除
-    public void OnDeath(DeathInfo deathInfo)
+    public override void DetachToAlls()
     {
-        if (deathInfo.DeathPlayer.PlayerId != Player.PlayerId) return;
-        ResetAbility();
+        base.DetachToAlls();
+        _physicsUpdateListener?.RemoveListener();
+    }
+
+    private void OnPhysicsFixedUpdate(PlayerPhysicsFixedUpdateEventData data)
+    {
+        if (!data.Instance.AmOwner) return;
+        if (Player.IsDead()) return;
+
+        if (MeetingHud.Instance != null)
+        {
+            IsCrabActive = false;
+            return;
+        }
+        if (IsCrabActive)
+        {
+            var vel = data.Instance.body.velocity;
+            data.Instance.body.velocity = new Vector2(vel.x, 0f);
+        }
     }
 }

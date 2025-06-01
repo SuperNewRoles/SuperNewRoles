@@ -3,27 +3,19 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using SuperNewRoles.CustomOptions.Categories;
 
 namespace SuperNewRoles.MapCustoms;
 public static class FungleHandler
 {
-    public enum FungleSpawnType
-    {
-        Default,
-        Random,
-        Select
-    }
-    public static FungleSpawnType GetFungleSpawnType()
+    public static SpawnTypeOptions GetFungleSpawnType()
     {
         if (!MapCustomHandler.IsMapCustom(MapCustomHandler.MapCustomId.TheFungle, false))
-            return FungleSpawnType.Default;
-        FungleSpawnType spawntype = (FungleSpawnType)MapCustom.TheFungleSpawnType.GetSelection();
-        if (spawntype == FungleSpawnType.Select && !MapCustomHandler.IsMapCustom(MapCustomHandler.MapCustomId.TheFungle))
-            spawntype = FungleSpawnType.Default;
-        return spawntype;
+            return SpawnTypeOptions.Normal;
+        return MapEditSettingsOptions.TheFungleSpawnType;
     }
-    public static bool IsFungleSpawnType(FungleSpawnType fungleSpawnType)
+    public static bool IsFungleSpawnType(SpawnTypeOptions spawnTypeOptions)
     {
-        return GetFungleSpawnType() == fungleSpawnType;
+        return GetFungleSpawnType() == spawnTypeOptions;
     }
 }

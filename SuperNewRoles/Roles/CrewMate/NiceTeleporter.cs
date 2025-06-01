@@ -1,42 +1,39 @@
 using System;
 using System.Collections.Generic;
-using Hazel;
-using SuperNewRoles.Buttons;
+using System.Linq;
+using AmongUs.GameOptions;
+using SuperNewRoles.CustomOptions;
+using SuperNewRoles.Modules;
+using SuperNewRoles.Roles.Ability;
+using SuperNewRoles.Roles.Ability.CustomButton;
+using SuperNewRoles.Roles.Impostor;
+using UnityEngine;
 
+namespace SuperNewRoles.Roles.Crewmate;
 
-namespace SuperNewRoles.Roles;
-
-class NiceTeleporter
+internal class NiceTeleporter : RoleBase<NiceTeleporter>
 {
-    public static void ResetCooldown()
-    {
-        HudManagerStartPatch.TeleporterButton.MaxTimer = RoleClass.NiceTeleporter.CoolTime;
-        RoleClass.NiceTeleporter.ButtonTimer = DateTime.Now;
-    }
-    public static void TeleportStart()
-    {
-        List<PlayerControl> aliveplayers = new();
-        foreach (PlayerControl p in CachedPlayer.AllPlayers)
-        {
-            if (p.IsAlive() && p.CanMove)
-            {
-                aliveplayers.Add(p);
-            }
-        }
-        var player = ModHelpers.GetRandom(aliveplayers);
-        RPCProcedure.TeleporterTP(player.PlayerId);
+    public override RoleId Role { get; } = RoleId.NiceTeleporter;
+    public override Color32 RoleColor { get; } = Color.blue;
+    public override List<Func<AbilityBase>> Abilities { get; } = [
+        () => new TeleporterAbility(
+            new TeleporterAbilityData(NiceTeleporterCooldown, NiceTeleporterWaitingTime)
+        )
+    ];
 
-        MessageWriter Writer = AmongUsClient.Instance.StartRpcImmediately(PlayerControl.LocalPlayer.NetId, (byte)CustomRPC.TeleporterTP, SendOption.Reliable, -1);
-        Writer.Write(player.PlayerId);
-        AmongUsClient.Instance.FinishRpcImmediately(Writer);
-    }
-    public static bool IsNiceTeleporter(PlayerControl Player)
-    {
-        return Player.IsRole(RoleId.NiceTeleporter);
-    }
-    public static void EndMeeting()
-    {
-        HudManagerStartPatch.SheriffKillButton.MaxTimer = RoleClass.NiceTeleporter.CoolTime;
-        RoleClass.NiceTeleporter.ButtonTimer = DateTime.Now;
-    }
+    public override QuoteMod QuoteMod { get; } = QuoteMod.SuperNewRoles;
+    public override RoleTypes IntroSoundType { get; } = RoleTypes.Tracker;
+    public override short IntroNum { get; } = 1;
+
+    public override AssignedTeamType AssignedTeam { get; } = AssignedTeamType.Crewmate;
+    public override WinnerTeamType WinnerTeam { get; } = WinnerTeamType.Crewmate;
+    public override TeamTag TeamTag { get; } = TeamTag.Crewmate;
+    public override RoleTag[] RoleTags { get; } = [RoleTag.Support];
+    public override RoleOptionMenuType OptionTeam { get; } = RoleOptionMenuType.Crewmate;
+
+    [CustomOptionFloat("NiceTeleporterCooldown", 5f, 120f, 5f, 45f, translationName: "CoolTime")]
+    public static float NiceTeleporterCooldown;
+    [CustomOptionFloat("NiceTeleporterWaitingTime", 0f, 10f, 1f, 3f, translationName: "TeleporterWaitingTime")]
+    public static float NiceTeleporterWaitingTime;
+
 }

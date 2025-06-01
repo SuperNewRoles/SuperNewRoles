@@ -1,82 +1,40 @@
+using System;
 using System.Collections.Generic;
-using System.Linq;
 using AmongUs.GameOptions;
-using HarmonyLib;
-using SuperNewRoles.Buttons;
-using SuperNewRoles.CustomObject;
-using SuperNewRoles.Helpers;
-using SuperNewRoles.Mode;
-using SuperNewRoles.Roles.Crewmate;
+using SuperNewRoles.CustomOptions;
+using SuperNewRoles.Modules;
+using SuperNewRoles.Roles.Ability;
 using UnityEngine;
-using UnityEngine.Animations;
 
 namespace SuperNewRoles.Roles.Impostor;
 
-[HarmonyPatch]
-public static class Penguin
+class Penguin : RoleBase<Penguin>
 {
-    public static void FixedUpdate()
-    {
-        if (RoleClass.Penguin.PenguinData.Count <= 0) return;
-        foreach (var data in ((Dictionary<PlayerControl, PlayerControl>)RoleClass.Penguin.PenguinData).ToArray())
-        {
-            if (ModeHandler.IsMode(ModeId.SuperHostRoles) && data.Key != null)
-            {
-                if (!RoleClass.Penguin.PenguinTimer.ContainsKey(data.Key.PlayerId))
-                    RoleClass.Penguin.PenguinTimer.Add(data.Key.PlayerId, CustomOptionHolder.PenguinDurationTime.GetFloat());
-                RoleClass.Penguin.PenguinTimer[data.Key.PlayerId] -= Time.fixedDeltaTime;
-                if (RoleClass.Penguin.PenguinTimer[data.Key.PlayerId] <= 0 && data.Value != null && data.Value.IsAlive())
-                    data.Key.RpcMurderPlayer(data.Value, true);
-            }
-            if (data.Key == null || data.Value == null
-                || !data.Key.IsRole(RoleId.Penguin)
-                || data.Key.IsDead()
-                || data.Value.IsDead()
-                || (ModeHandler.IsMode(ModeId.SuperHostRoles) && RoleClass.Penguin.PenguinTimer[data.Key.PlayerId] <= 0))
-            {
+    public override RoleId Role { get; } = RoleId.Penguin;
+    public override Color32 RoleColor { get; } = Palette.ImpostorRed;
+    public override List<Func<AbilityBase>> Abilities { get; } = [
+        () => new PenguinAbility(PenguinCooldown, PenguinDuration, PenguinMeetingKill, PenguinCanDefaulKill)
+    ];
 
-                if (data.Key != null && data.Key.PlayerId == CachedPlayer.LocalPlayer.PlayerId)
-                {
-                    HudManagerStartPatch.PenguinButton.isEffectActive = false;
-                    HudManagerStartPatch.PenguinButton.MaxTimer = ModeHandler.IsMode(ModeId.Default) ? CustomOptionHolder.PenguinCoolTime.GetFloat() : GameOptionsManager.Instance.CurrentGameOptions.GetFloat(FloatOptionNames.KillCooldown);
-                    HudManagerStartPatch.PenguinButton.Timer = HudManagerStartPatch.PenguinButton.MaxTimer;
-                    HudManagerStartPatch.PenguinButton.actionButton.cooldownTimerText.color = Palette.EnabledColor;
-                }
-                RoleClass.Penguin.PenguinData.Remove(data.Key);
-                continue;
-            }
-            if (ModeHandler.IsMode(ModeId.Default) || !AmongUsClient.Instance.AmHost)
-            {
-                if (data.Value.IsRole(RoleId.WiseMan) && WiseMan.WiseManData.ContainsKey(data.Value.PlayerId) && WiseMan.WiseManData[data.Value.PlayerId] is not null)
-                    data.Key.transform.position = data.Value.transform.position;
-                else
-                    data.Value.transform.position = data.Key.transform.position;
-            }
-            else
-            {
-                data.Value.RpcSnapTo(data.Key.transform.position);
-            }
-        }
-    }
-    [HarmonyPatch(typeof(PlayerControl), nameof(PlayerControl.ReportDeadBody))]
-    public static void Prefix(PlayerControl __instance)
-    {
-        if (!AmongUsClient.Instance.AmHost) return;
-        if (CustomOptionHolder.PenguinMeetingKill.GetBool())
-        {
-            foreach (var data in ((Dictionary<PlayerControl, PlayerControl>)RoleClass.Penguin.PenguinData).ToArray())
-            {
-                if (ModeHandler.IsMode(ModeId.Default))
-                    ModHelpers.CheckMurderAttemptAndKill(data.Key, data.Value);
-                else
-                    data.Key.RpcMurderPlayer(data.Value, true);
-            }
-        }
-        else
-        {
-            RPCHelper.StartRPC(CustomRPC.PenguinMeetingEnd).EndRPC();
-            RPCProcedure.PenguinMeetingEnd();
-        }
-    }
+    public override QuoteMod QuoteMod { get; } = QuoteMod.SuperNewRoles;
+    public override RoleTypes IntroSoundType { get; } = RoleTypes.Shapeshifter;
+    public override short IntroNum { get; } = 1;
 
+    public override AssignedTeamType AssignedTeam { get; } = AssignedTeamType.Impostor;
+    public override WinnerTeamType WinnerTeam { get; } = WinnerTeamType.Impostor;
+    public override TeamTag TeamTag { get; } = TeamTag.Impostor;
+    public override RoleTag[] RoleTags { get; } = [RoleTag.SpecialKiller];
+    public override RoleOptionMenuType OptionTeam { get; } = RoleOptionMenuType.Impostor;
+
+    [CustomOptionFloat("PenguinCooldown", 5f, 60f, 2.5f, 30f)]
+    public static float PenguinCooldown;
+
+    [CustomOptionFloat("PenguinDuration", 5f, 60f, 2.5f, 15f)]
+    public static float PenguinDuration;
+
+    [CustomOptionBool("PenguinMeetingKill", true)]
+    public static bool PenguinMeetingKill;
+
+    [CustomOptionBool("PenguinCanDefaulKill", true)]
+    public static bool PenguinCanDefaulKill;
 }

@@ -1,132 +1,255 @@
 using System;
+using System.Collections.Generic;
 using System.Linq;
-using HarmonyLib;
-using SuperNewRoles.Replay.ReplayActions;
-using SuperNewRoles.Roles.Crewmate;
+using AmongUs.GameOptions;
+using SuperNewRoles.CustomOptions;
+using SuperNewRoles.Modules;
+using SuperNewRoles.Roles.Ability;
+using SuperNewRoles.Events;
+using SuperNewRoles.Events.PCEvents;
+using SuperNewRoles.Modules.Events.Bases;
 using UnityEngine;
+using HarmonyLib;
 
 namespace SuperNewRoles.Roles.Neutral;
 
-public static class Spelunker
+class Spelunker : RoleBase<Spelunker>
 {
-    public static bool CheckSetRole(PlayerControl player, RoleId role)
+    public override RoleId Role { get; } = RoleId.Spelunker;
+    public override Color32 RoleColor { get; } = new(255, 255, 0, byte.MaxValue); // 黄色
+    public override List<Func<AbilityBase>> Abilities { get; } = [
+        () => new SpelunkerAbility(new SpelunkerData(
+            VentDeathChance: SpelunkerVentDeathChance,
+            CommsDeathTime: SpelunkerIsDeathCommsOrPowerdown ? SpelunkerDeathCommsTime : -1f,
+            PowerdownDeathTime: SpelunkerIsDeathCommsOrPowerdown ? SpelunkerDeathPowerdownTime : -1f,
+            LiftDeathChance: SpelunkerLiftDeathChance,
+            DoorOpenChance: SpelunkerDoorOpenChance,
+            LadderDeathChance: SpelunkerLadderDeathChance
+        )),
+        () => new LadderDeathAbility(SpelunkerLadderDeathChance)
+    ];
+
+    public override QuoteMod QuoteMod { get; } = QuoteMod.SuperNewRoles;
+    public override RoleTypes IntroSoundType { get; } = RoleTypes.Shapeshifter;
+    public override short IntroNum { get; } = 1;
+
+    public override AssignedTeamType AssignedTeam { get; } = AssignedTeamType.Neutral;
+    public override WinnerTeamType WinnerTeam { get; } = WinnerTeamType.Neutral;
+    public override TeamTag TeamTag { get; } = TeamTag.Neutral;
+    public override RoleTag[] RoleTags { get; } = [];
+    public override RoleOptionMenuType OptionTeam { get; } = RoleOptionMenuType.Neutral;
+
+    [CustomOptionBool("SpelunkerIsDeathCommsOrPowerdown", true, translationName: "SpelunkerIsDeathCommsOrPowerdown")]
+    public static bool SpelunkerIsDeathCommsOrPowerdown;
+
+    [CustomOptionFloat("SpelunkerDeathCommsTime", 5f, 120f, 2.5f, 20f, parentFieldName: nameof(SpelunkerIsDeathCommsOrPowerdown), suffix: "s")]
+    public static float SpelunkerDeathCommsTime;
+
+    [CustomOptionFloat("SpelunkerDeathPowerdownTime", 5f, 120f, 2.5f, 20f, parentFieldName: nameof(SpelunkerIsDeathCommsOrPowerdown), suffix: "s")]
+    public static float SpelunkerDeathPowerdownTime;
+
+    [CustomOptionInt("SpelunkerVentDeathChance", 0, 100, 5, 20, translationName: "SpelunkerVentDeathChance", suffix: "%")]
+    public static int SpelunkerVentDeathChance;
+
+    [CustomOptionInt("SpelunkerLiftDeathChance", 0, 100, 5, 20, translationName: "SpelunkerLiftDeathChance", suffix: "%")]
+    public static int SpelunkerLiftDeathChance;
+
+    [CustomOptionInt("SpelunkerDoorOpenChance", 0, 100, 5, 20, translationName: "SpelunkerDoorOpenChance", suffix: "%")]
+    public static int SpelunkerDoorOpenChance;
+
+    [CustomOptionInt("SpelunkerLadderDeathChance", 0, 100, 5, 20, translationName: "LadderDeadChance", suffix: "%")]
+    public static int SpelunkerLadderDeathChance;
+
+    [CustomOptionBool("SpelunkerIsAdditionalWin", false, translationName: "AdditionalWin")]
+    public static bool SpelunkerIsAdditionalWin;
+}
+
+public record SpelunkerData(
+    int VentDeathChance,
+    float CommsDeathTime,
+    float PowerdownDeathTime,
+    int LiftDeathChance,
+    int DoorOpenChance,
+    int LadderDeathChance
+);
+
+public class SpelunkerAbility : AbilityBase
+{
+    public SpelunkerData Data { get; set; }
+
+    private EventListener _fixedUpdateListener;
+    private EventListener<ExileEventData> _exileListener;
+    private EventListener<UsePlatformEventData> _usePlatformListener;
+    private EventListener<DoorConsoleUseEventData> _doorConsoleUseListener;
+
+    // Spelunker specific variables
+    private bool _isVentChecked;
+    private float _commsDeathTimer;
+    private float _powerdownDeathTimer;
+    private Vector2? _deathPosition;
+
+    public SpelunkerAbility(SpelunkerData data)
     {
-        if (player.IsRole(RoleId.Spelunker))
-        {
-            if (role != RoleId.Spelunker)
-            {
-                player.RpcMurderPlayer(player, true);
-                player.RpcSetFinalStatus(FinalStatus.SpelunkerSetRoleDeath);
-                return false;
-            }
-        }
-        return true;
+        Data = data;
+        _commsDeathTimer = data.CommsDeathTime;
+        _powerdownDeathTimer = data.PowerdownDeathTime;
     }
-    const float VentDistance = 0.35f;
-    public static void FixedUpdate()
+
+    public override void AttachToLocalPlayer()
     {
-        if (RoleClass.IsMeeting) return;
-        //ベント判定
-        if (RoleClass.Spelunker.VentDeathChance > 0)
+        base.AttachToLocalPlayer();
+        _fixedUpdateListener = FixedUpdateEvent.Instance.AddListener(OnFixedUpdate);
+        _exileListener = ExileEvent.Instance.AddListener(OnExile);
+        _usePlatformListener = UsePlatformEvent.Instance.AddListener(OnUsePlatform);
+        _doorConsoleUseListener = DoorConsoleUseEvent.Instance.AddListener(OnDoorConsoleUse);
+    }
+
+    public override void DetachToLocalPlayer()
+    {
+        _fixedUpdateListener?.RemoveListener();
+        _exileListener?.RemoveListener();
+        _usePlatformListener?.RemoveListener();
+        _doorConsoleUseListener?.RemoveListener();
+    }
+
+    private void OnFixedUpdate()
+    {
+        if (ExPlayerControl.LocalPlayer.IsDead()) return;
+        if (FastDestroyableSingleton<HudManager>.Instance.IsIntroDisplayed || MeetingHud.Instance != null || ExileController.Instance != null) return;
+
+        // ベント判定
+        if (Data.VentDeathChance > 0)
         {
-            Vent CurrentVent = null;
-            if (!MapUtilities.CachedShipStatus.AllVents.ToList().TrueForAll(vent =>
-            {
-                bool isok = Vector2.Distance(vent.transform.position + new Vector3(0, 0.15f, 0), CachedPlayer.LocalPlayer.transform.position) < VentDistance;
-                if (isok)
-                {
-                    CurrentVent = vent;
-                }
-                return !isok;
-            }))
-            {
-                if (!RoleClass.Spelunker.IsVentChecked)
-                {
-                    RoleClass.Spelunker.IsVentChecked = true;
-                    if (ModHelpers.IsSuccessChance(RoleClass.Spelunker.VentDeathChance))
-                    {
-                        PlayerControl.LocalPlayer.RpcMurderPlayer(PlayerControl.LocalPlayer, true);
-                        PlayerControl.LocalPlayer.RpcSetFinalStatus(FinalStatus.SpelunkerVentDeath);
-                    }
-                }
-            }
-            else
-            {
-                RoleClass.Spelunker.IsVentChecked = false;
-            }
+            CheckVentDeath();
         }
-        //コミュと停電の不安死
-        if (RoleClass.Spelunker.CommsOrLightdownDeathTime != -1)
+
+        // コミュと停電の不安死
+        if (Data.CommsDeathTime != -1)
         {
-            if (RoleHelpers.IsComms() || RoleHelpers.IsLightdown())
-            {
-                if (!RoleClass.IsMeeting)
-                {
-                    RoleClass.Spelunker.CommsOrLightdownTime -= Time.fixedDeltaTime;
-                    if (RoleClass.Spelunker.CommsOrLightdownTime <= 0)
-                    {
-                        PlayerControl.LocalPlayer.RpcMurderPlayer(PlayerControl.LocalPlayer, true);
-                        PlayerControl.LocalPlayer.RpcSetFinalStatus(FinalStatus.SpelunkerCommsElecDeath);
-                    }
-                }
-            }
-            else
-            {
-                RoleClass.Spelunker.CommsOrLightdownTime = RoleClass.Spelunker.CommsOrLightdownDeathTime;
-            }
+            CheckCommsDeath();
         }
-        if (DeathPosition != null && Vector2.Distance((Vector2)DeathPosition, CachedPlayer.LocalPlayer.transform.position) < 0.5f)
+        if (Data.PowerdownDeathTime != -1)
         {
-            PlayerControl.LocalPlayer.RpcMurderPlayer(PlayerControl.LocalPlayer, true);
-            PlayerControl.LocalPlayer.RpcSetFinalStatus(FinalStatus.NunDeath);
+            CheckPowerdownDeath();
+        }
+
+        // 転落死判定
+        if (_deathPosition != null && Vector2.Distance((Vector2)_deathPosition, ExPlayerControl.LocalPlayer.transform.position) < 0.5f)
+        {
+            ExPlayerControl.LocalPlayer.RpcCustomDeath(CustomDeathType.Suicide);
+            FinalStatusManager.RpcSetFinalStatus(ExPlayerControl.LocalPlayer, FinalStatus.NunDeath);
+            _deathPosition = null;
         }
     }
-    public static void WrapUp()
+
+    private void CheckVentDeath()
     {
-        DeathPosition = null;
-    }
-    public static Vector2? DeathPosition;
-    [HarmonyPatch(typeof(MovingPlatformBehaviour), nameof(MovingPlatformBehaviour.Use), new Type[] { })]
-    class MovingPlatformUsePatch
-    {
-        public static bool Prefix()
+        Vent currentVent = null;
+        bool nearVent = false;
+
+        if (ShipStatus.Instance?.AllVents != null)
         {
-            return !Pteranodon.IsPteranodonNow;
-        }
-    }
-    [HarmonyPatch(typeof(MovingPlatformBehaviour), nameof(MovingPlatformBehaviour.UsePlatform))]
-    class MovingPlatformUsePlatformPatch
-    {
-        public static void Postfix(MovingPlatformBehaviour __instance, PlayerControl target)
-        {
-            ReplayActionMovingPlatform.Create(target.PlayerId);
-            if (target.PlayerId == CachedPlayer.LocalPlayer.PlayerId &&
-                target.IsRole(RoleId.Spelunker))
+            foreach (var vent in ShipStatus.Instance.AllVents)
             {
-                bool isok = ModHelpers.IsSuccessChance(RoleClass.Spelunker.LiftDeathChance);
-                Logger.Info($"{target.Data.PlayerName}のぬーん転落死の結果は{isok}でした ", "ぬーん転落死");
-                if (isok)
+                if (Vector2.Distance(vent.transform.position, ExPlayerControl.LocalPlayer.transform.position) < vent.UsableDistance)
                 {
-                    DeathPosition = __instance.transform.parent.TransformPoint((!__instance.IsLeft) ? __instance.LeftUsePosition : __instance.RightUsePosition);
-                    Logger.Info(DeathPosition.ToString());
+                    currentVent = vent;
+                    nearVent = true;
+                    break;
                 }
             }
         }
-    }
-    [HarmonyPatch(typeof(DoorConsole), nameof(DoorConsole.Use))]
-    class DoorConsoleOpenPatch
-    {
-        public static void Postfix(DoorConsole __instance)
+
+        if (nearVent)
         {
-            __instance.CanUse(PlayerControl.LocalPlayer.Data, out var canUse, out var _);
-            if (canUse)
+            if (!_isVentChecked)
             {
-                if (PlayerControl.LocalPlayer.IsRole(RoleId.Spelunker) && ModHelpers.IsSuccessChance(RoleClass.Spelunker.DoorOpenChance))
+                _isVentChecked = true;
+                if (ModHelpers.IsSuccessChance(Data.VentDeathChance))
                 {
-                    PlayerControl.LocalPlayer.RpcMurderPlayer(PlayerControl.LocalPlayer, true);
-                    PlayerControl.LocalPlayer.RpcSetFinalStatus(FinalStatus.SpelunkerOpenDoor);
+                    ExPlayerControl.LocalPlayer.RpcCustomDeath(CustomDeathType.Suicide);
+                    FinalStatusManager.RpcSetFinalStatus(ExPlayerControl.LocalPlayer, FinalStatus.SpelunkerVentDeath);
                 }
             }
+        }
+        else
+        {
+            _isVentChecked = false;
+        }
+    }
+
+    private void CheckCommsDeath()
+    {
+        if (ModHelpers.IsComms())
+        {
+            _commsDeathTimer -= Time.fixedDeltaTime;
+            if (_commsDeathTimer <= 0)
+            {
+                ExPlayerControl.LocalPlayer.RpcCustomDeath(CustomDeathType.Suicide);
+                FinalStatusManager.RpcSetFinalStatus(ExPlayerControl.LocalPlayer, FinalStatus.SpelunkerCommsElecDeath);
+            }
+        }
+        else
+        {
+            _commsDeathTimer = Data.CommsDeathTime;
+        }
+    }
+
+    private void CheckPowerdownDeath()
+    {
+        if (ModHelpers.IsElectrical())
+        {
+            _powerdownDeathTimer -= Time.fixedDeltaTime;
+            if (_powerdownDeathTimer <= 0)
+            {
+                ExPlayerControl.LocalPlayer.RpcCustomDeath(CustomDeathType.Suicide);
+                FinalStatusManager.RpcSetFinalStatus(ExPlayerControl.LocalPlayer, FinalStatus.SpelunkerCommsElecDeath);
+            }
+        }
+        else
+        {
+            _powerdownDeathTimer = Data.PowerdownDeathTime;
+        }
+    }
+    private void OnExile(ExileEventData data)
+    {
+        // 会議終了時のリセット
+        _deathPosition = null;
+    }
+
+    private void OnUsePlatform(UsePlatformEventData data)
+    {
+        if (data.player == ExPlayerControl.LocalPlayer)
+        {
+            OnMovingPlatformUsed(data.platform);
+        }
+    }
+
+    private void OnDoorConsoleUse(DoorConsoleUseEventData data)
+    {
+        if (data.player == ExPlayerControl.LocalPlayer)
+        {
+            OnDoorOpen();
+        }
+    }
+
+    // MovingPlatformの使用時の転落死判定
+    public void OnMovingPlatformUsed(MovingPlatformBehaviour platform)
+    {
+        if (ModHelpers.IsSuccessChance(Data.LiftDeathChance))
+        {
+            _deathPosition = platform.transform.parent.TransformPoint((!platform.IsLeft) ? platform.LeftUsePosition : platform.RightUsePosition);
+            Logger.Info($"Spelunker lift death position set: {_deathPosition}");
+        }
+    }
+
+    // ドア開放時の指挟み死
+    public void OnDoorOpen()
+    {
+        if (ModHelpers.IsSuccessChance(Data.DoorOpenChance))
+        {
+            ExPlayerControl.LocalPlayer.RpcCustomDeath(CustomDeathType.Suicide);
+            FinalStatusManager.RpcSetFinalStatus(ExPlayerControl.LocalPlayer, FinalStatus.SpelunkerOpenDoor);
         }
     }
 }

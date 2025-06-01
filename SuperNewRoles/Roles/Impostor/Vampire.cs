@@ -1,127 +1,219 @@
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using HarmonyLib;
-using Hazel;
-using SuperNewRoles.Buttons;
-using SuperNewRoles.Helpers;
 using UnityEngine;
+using AmongUs.GameOptions;
+using SuperNewRoles.CustomOptions;
+using SuperNewRoles.Modules;
+using SuperNewRoles.Roles.Ability;
+using SuperNewRoles.Modules.Events.Bases;
+using UnityEngine.PlayerLoop;
+using SuperNewRoles.Events;
+using SuperNewRoles.Events.PCEvents;
+using SuperNewRoles.CustomObject;
 
-namespace SuperNewRoles.Roles;
-
-class Vampire
+namespace SuperNewRoles.Roles.Impostor;
+class Vampire : RoleBase<Vampire>
 {
-    /// <summary>
-    /// ヴァンパイアの血痕処理
-    /// </summary>
-    public static void SetActiveBloodStaiWrapUpPatch()
-    {
-        foreach (var data in RoleClass.Vampire.NoActiveTurnWait.ToArray())
-        {
-            RoleClass.Vampire.NoActiveTurnWait[data.Key]--;
-            if (data.Value - 1 <= 0)
-            {
-                foreach (var bloodstain in data.Key) GameObject.Destroy(bloodstain.BloodStainObject);
-                RoleClass.Vampire.NoActiveTurnWait.Remove(data.Key);
-            }
-        }
-        foreach (var data in RoleClass.Vampire.WaitActiveBloodStains)
-            data.BloodStainObject.SetActive(true);
-        RoleClass.Vampire.NoActiveTurnWait.Add(RoleClass.Vampire.WaitActiveBloodStains, CustomOptionHolder.VampireViewBloodStainsTurn.GetInt());
-        RoleClass.Vampire.WaitActiveBloodStains = new();
-    }
+    public override RoleId Role => RoleId.Vampire;
+    public override Color32 RoleColor => Palette.ImpostorRed;
+    public override List<Func<AbilityBase>> Abilities { get; } = [() => new VampireAbility
+    (
+        nightFall: new VampireNightFallData(
+            canCreate: VampireCreateDependents,
+            cooldown: VampireNightFallCooldown
+        ),
+        kill: new VampireKillData(
+            killCooldown: VampireAbsorptionCooldown,
+            killDelay: VampireKillDelay,
+            blackBloodstains: VampireBlackBloodstains,
+            bloodStainDurationTurn: VampireBloodstainDurationTurn
+        )
+    )];
 
-    /// <summary>
-    /// 眷属の心中処理
-    /// </summary>
-    public static void DependentsExileWrapUpPatch(PlayerControl exiled)
+    public override QuoteMod QuoteMod => QuoteMod.SuperNewRoles;
+    public override RoleTypes IntroSoundType => RoleTypes.Shapeshifter;
+    public override short IntroNum => 1;
+
+    public override AssignedTeamType AssignedTeam => AssignedTeamType.Impostor;
+    public override WinnerTeamType WinnerTeam => WinnerTeamType.Impostor;
+    public override TeamTag TeamTag => TeamTag.Impostor;
+    public override RoleTag[] RoleTags => new RoleTag[] { RoleTag.SpecialKiller };
+    public override RoleOptionMenuType OptionTeam => RoleOptionMenuType.Hidden;
+
+    [CustomOptionFloat("VampireAbsorptionCooldown", 2.5f, 60f, 2.5f, 30f)]
+    public static float VampireAbsorptionCooldown;
+
+    [CustomOptionFloat("VampireKillDelay", 1f, 30f, 1f, 10f)]
+    public static float VampireKillDelay;
+
+    [CustomOptionInt("VampireBloodstainDuration", 1, 5, 1, 1)]
+    public static int VampireBloodstainDurationTurn;
+
+    [CustomOptionBool("VampireBlackBloodstains", false)]
+    public static bool VampireBlackBloodstains;
+
+    [CustomOptionBool("VampireCreateDependents", false)]
+    public static bool VampireCreateDependents;
+
+    [CustomOptionFloat("VampireNightFallCooldown", 2.5f, 60f, 2.5f, 30f, parentFieldName: nameof(VampireCreateDependents))]
+    public static float VampireNightFallCooldown;
+
+    [CustomOptionFloat("VampireDependentKillCooldown", 2.5f, 60f, 2.5f, 30f, parentFieldName: nameof(VampireCreateDependents))]
+    public static float VampireDependentKillCooldown;
+
+    [CustomOptionBool("VampireDependentCanUseVent", true, parentFieldName: nameof(VampireCreateDependents))]
+    public static bool VampireDependentCanUseVent;
+
+    [CustomOptionBool("VampireDependentImpostorVisionOnSabotage", true, parentFieldName: nameof(VampireCreateDependents))]
+    public static bool VampireDependentImpostorVisionOnSabotage;
+
+    [CustomOptionBool("VampireCannotFixSabotage", true)]
+    public static bool VampireCannotFixSabotage;
+
+    [CustomOptionBool("VampireInvisibleOnAdmin", true)]
+    public static bool VampireInvisibleOnAdmin;
+
+    [CustomOptionBool("VampireNoDeathOnVitals", true)]
+    public static bool VampireNoDeathOnVitals;
+
+    [CustomOptionBool("VampireCannotUseDevice", true)]
+    public static bool VampireCannotUseDevice;
+}
+public record VampireNightFallData(bool canCreate, float cooldown);
+public record VampireKillData(float killCooldown, float killDelay, bool blackBloodstains, int bloodStainDurationTurn);
+public class VampireAbility : AbilityBase
+{
+    private VampireDependentAbility dependent;
+    private CustomSidekickButtonAbility sidekickButtonAbility;
+    private CustomKillButtonAbility killButtonAbility;
+    private bool created = false;
+    public VampireNightFallData nightFall { get; }
+    public VampireKillData kill { get; }
+    public ExPlayerControl TargetingPlayer { get; private set; }
+
+    private EventListener _fixedUpdateListener;
+    private EventListener<MurderEventData> _murderListener;
+    private EventListener<WrapUpEventData> _wrapUpListener;
+
+    private float delayTimer;
+    private float bloodStainTimer;
+    private SabotageCanUseAbility sabotageCanUseAbility;
+    private Transform bloodStainsParentTargeting;
+    private List<(Transform bloodStainsParent, int limitedTurn)> bloodStainParent = new();
+    public VampireAbility(VampireNightFallData nightFall, VampireKillData kill)
     {
-        if (PlayerControl.LocalPlayer.IsRole(RoleId.Dependents) && PlayerControl.LocalPlayer.IsAlive())
-        {
-            bool Is = true;
-            foreach (PlayerControl p in RoleClass.Vampire.VampirePlayer) if (p.IsAlive() && (exiled == null || exiled.PlayerId != p.PlayerId)) Is = false;
-            if (Is)
+        this.nightFall = nightFall;
+        this.kill = kill;
+    }
+    public override void AttachToAlls()
+    {
+        base.AttachToAlls();
+        sidekickButtonAbility = new CustomSidekickButtonAbility(new(
+            canCreateSidekick: (_) => nightFall.canCreate && !created,
+            sidekickCooldown: () => nightFall.cooldown,
+            sidekickRole: () => RoleId.VampireDependent,
+            sidekickRoleVanilla: () => RoleTypes.Crewmate,
+            sidekickSprite: AssetManager.GetAsset<Sprite>("VampireSidekickButton.png"),
+            sidekickText: ModTranslation.GetString("VampireDependentsButtonText"),
+            sidekickCount: () => 1,
+            isTargetable: (player) => !player.IsImpostor(),
+            onSidekickCreated: (player) =>
             {
-                PlayerControl.LocalPlayer.RpcExiledUnchecked();
-                PlayerControl.LocalPlayer.RpcSetFinalStatus(FinalStatus.DependentsExiled);
+                new LateTask(() => RpcSetDependent(player), 0.1f, "VampireSetDependent");
+            }
+        ));
+        killButtonAbility = new CustomKillButtonAbility(
+            canKill: () => true,
+            killCooldown: () => kill.killCooldown,
+            onlyCrewmates: () => true,
+            isTargetable: (player) => !player.IsImpostor() && dependent?.Player != player,
+            customKillHandler: (target) =>
+            {
+                Logger.Info("CustomKILLED!!!!!!!!");
+                RpcSetTargetingPlayer(target);
+                return true;
+            }
+        );
+        sabotageCanUseAbility = new SabotageCanUseAbility(
+            () => SabotageType.Lights
+        );
+
+        Player.AttachAbility(sidekickButtonAbility, new AbilityParentAbility(this));
+        Player.AttachAbility(killButtonAbility, new AbilityParentAbility(this));
+        Player.AttachAbility(sabotageCanUseAbility, new AbilityParentAbility(this));
+        _fixedUpdateListener = FixedUpdateEvent.Instance.AddListener(OnFixedUpdate);
+        _murderListener = MurderEvent.Instance.AddListener(OnMurder);
+        _wrapUpListener = WrapUpEvent.Instance.AddListener(OnWrapUp);
+    }
+    public override void DetachToAlls()
+    {
+        base.DetachToAlls();
+        _fixedUpdateListener?.RemoveListener();
+        _murderListener?.RemoveListener();
+        _wrapUpListener?.RemoveListener();
+    }
+    private void OnWrapUp(WrapUpEventData data)
+    {
+        int index = 0;
+        foreach (var (parent, turn) in bloodStainParent.ToArray())
+        {
+            if (turn <= 0)
+            {
+                GameObject.Destroy(parent.gameObject);
+                bloodStainParent.RemoveAt(index);
+            }
+            else
+            {
+                bloodStainParent[index] = (parent, turn - 1);
+                index++;
             }
         }
+        if (bloodStainsParentTargeting == null) return;
+        bloodStainsParentTargeting.gameObject.SetActive(true);
+        bloodStainParent.Add((bloodStainsParentTargeting, kill.bloodStainDurationTurn - 1));
     }
-    [HarmonyPatch(typeof(VitalsPanel), nameof(VitalsPanel.SetDead))]
-    class VitalsPanelSetDeadPatch
+    private void OnMurder(MurderEventData data)
     {
-        static bool Prefix(VitalsPanel __instance)
-        {
-            return __instance.PlayerInfo.Object is null || !__instance.PlayerInfo.Object.IsRole(RoleId.Vampire, RoleId.Dependents);
-        }
+        if (Player.AmOwner && data.killer == dependent?.Player)
+            ExPlayerControl.LocalPlayer.ResetKillCooldown();
     }
-    [HarmonyPatch(typeof(VitalsPanel), nameof(VitalsPanel.SetDisconnected))]
-    class VitalsPanelSetDisconnectPatch
+    [CustomRPC]
+    public void RpcSetDependent(ExPlayerControl player)
     {
-        static bool Prefix(VitalsPanel __instance)
-        {
-            return __instance.PlayerInfo.Object is null || !__instance.PlayerInfo.Object.IsRole(RoleId.Vampire, RoleId.Dependents);
-        }
+        dependent = player.GetAbility<VampireDependentAbility>();
+        dependent.SetVampire(this);
+        this.created = true;
     }
-    public static void OnMurderPlayer(PlayerControl source, PlayerControl target)
+    [CustomRPC]
+    public void RpcSetTargetingPlayer(ExPlayerControl player)
     {
-        if (source.IsRole(RoleId.Vampire) && PlayerControl.LocalPlayer.IsRole(RoleId.Dependents))
-            HudManagerStartPatch.DependentsKillButton.Timer = HudManagerStartPatch.DependentsKillButton.MaxTimer;
-        else if (source.IsRole(RoleId.Dependents) && PlayerControl.LocalPlayer.IsRole(RoleId.Vampire))
-            PlayerControl.LocalPlayer.killTimer = RoleHelpers.GetCoolTime(CachedPlayer.LocalPlayer, target);
+        TargetingPlayer = player;
+        delayTimer = kill.killDelay;
+        bloodStainsParentTargeting = new GameObject($"BloodStainsTargeting to {player.PlayerId}").transform;
+        bloodStainsParentTargeting.gameObject.SetActive(false);
+        bloodStainTimer = 0;
+        if (dependent?.Player?.AmOwner == false)
+            return;
+        dependent?.Player.ResetKillCooldown();
     }
-    public static class FixedUpdate
+    private void OnFixedUpdate()
     {
-        static int Count = 0;
-        public static void DependentsOnly()
+        if (TargetingPlayer == null || TargetingPlayer.IsDead()) return;
+        delayTimer -= Time.fixedDeltaTime;
+        if (delayTimer <= 0)
         {
-            if (RoleClass.IsMeeting) return;
-            foreach (PlayerControl p in RoleClass.Vampire.VampirePlayer) if (p.IsAlive()) return;
-            PlayerControl.LocalPlayer.RpcMurderPlayer(PlayerControl.LocalPlayer, true);
+            delayTimer = 0;
+            new BloodStain(TargetingPlayer, isBlack: kill.blackBloodstains, parent: bloodStainsParentTargeting).BloodStainObject.transform.localScale *= 3f;
+            TargetingPlayer.CustomDeath(CustomDeathType.VampireKill, source: Player);
+            TargetingPlayer = null;
+            return;
         }
-        public static void AllClient()
+        bloodStainTimer -= Time.fixedDeltaTime;
+        if (bloodStainTimer <= 0)
         {
-            Count--;
-            if (Count > 0) return;
-            Count = 3;
-            foreach (KeyValuePair<PlayerControl, PlayerControl> data in (Dictionary<PlayerControl, PlayerControl>)RoleClass.Vampire.Targets)
-            {
-                if (data.Key == null || data.Value == null || !data.Key.IsRole(RoleId.Vampire) || data.Key.IsDead() || data.Value.IsDead())
-                {
-                    RoleClass.Vampire.Targets.Remove(data.Key);
-                    continue;
-                }
-                if (!RoleClass.Vampire.BloodStains.Contains(data.Value.PlayerId))
-                    RoleClass.Vampire.BloodStains[data.Value.PlayerId] = new();
-                RoleClass.Vampire.BloodStains[data.Value.PlayerId].Add(new(data.Value));
-            }
-        }
-        public static void VampireOnly()
-        {
-            if (RoleClass.Vampire.target == null) return;
-            FastDestroyableSingleton<HudManager>.Instance.KillButton.SetTarget(null);
-            PlayerControl.LocalPlayer.killTimer = RoleHelpers.GetCoolTime(CachedPlayer.LocalPlayer, RoleClass.Vampire.target);
-            var TimeSpanDate = new TimeSpan(0, 0, 0, (int)RoleClass.Vampire.KillDelay);
-            RoleClass.Vampire.Timer = (float)((RoleClass.Vampire.KillTimer + TimeSpanDate - DateTime.Now).TotalSeconds);
-            SuperNewRolesPlugin.Logger.LogInfo("ヴァンパイア:" + RoleClass.Vampire.Timer);
-            if (RoleClass.Vampire.Timer <= 0f)
-            {
-                MessageWriter writer = RPCHelper.StartRPC(CustomRPC.RPCMurderPlayer);
-                writer.Write(CachedPlayer.LocalPlayer.PlayerId);
-                writer.Write(RoleClass.Vampire.target.PlayerId);
-                writer.Write(0);
-                writer.EndRPC();
-                RPCProcedure.RPCMurderPlayer(CachedPlayer.LocalPlayer.PlayerId, RoleClass.Vampire.target.PlayerId, 0);
-                RoleClass.Vampire.target.RpcSetFinalStatus(FinalStatus.VampireKill);
-                writer = RPCHelper.StartRPC(CustomRPC.SetVampireStatus);
-                writer.Write(CachedPlayer.LocalPlayer.PlayerId);
-                writer.Write(RoleClass.Vampire.target.PlayerId);
-                writer.Write(false);
-                writer.Write(RoleClass.Vampire.target.IsDead());
-                writer.EndRPC();
-                RPCProcedure.SetVampireStatus(CachedPlayer.LocalPlayer.PlayerId, RoleClass.Vampire.target.PlayerId, false, RoleClass.Vampire.target.IsDead());
-                RoleClass.Vampire.target = null;
-            }
+            // 親で一括管理してる
+            new BloodStain(TargetingPlayer, isBlack: kill.blackBloodstains, parent: bloodStainsParentTargeting);
+            bloodStainTimer = 0.1f;
         }
     }
 }
