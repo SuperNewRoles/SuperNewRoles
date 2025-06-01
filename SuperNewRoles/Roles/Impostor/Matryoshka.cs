@@ -1,70 +1,47 @@
+using System;
 using System.Collections.Generic;
-using Hazel;
-using SuperNewRoles.Helpers;
+using SuperNewRoles.Patches;
+using SuperNewRoles.Roles.Ability;
+using SuperNewRoles.Modules;
 using UnityEngine;
+using AmongUs.GameOptions;
+using Hazel;
+using SuperNewRoles.CustomOptions;
 
 namespace SuperNewRoles.Roles.Impostor;
 
-public static class Matryoshka
+class Matryoshka : RoleBase<Matryoshka>
 {
-    public static void FixedUpdate()
-    {
-        foreach (KeyValuePair<PlayerControl, DeadBody> Data in (Dictionary<PlayerControl, DeadBody>)RoleClass.Matryoshka.Data)
-        {
-            if (Data.Value == null) continue;
-            Data.Value.Reported = !CustomOptionHolder.MatryoshkaWearReport.GetBool();
-            foreach (SpriteRenderer deadbody in Data.Value.bodyRenderers) deadbody.enabled = false;
-            Data.Value.transform.position = Data.Key.transform.position;
-            if (!Data.Key.IsRole(RoleId.Matryoshka))
-            {
-                Set(Data.Key, null, false);
-            }
-        }
-    }
-    public static void WrapUp()
-    {
-        RoleClass.Matryoshka.Data = new();
-    }
-    public static void Set(PlayerControl source, PlayerControl target, bool Is)
-    {
-        if (!Is)
-        {
-            source.setOutfit(source.Data.DefaultOutfit);
-            if (!RoleClass.Matryoshka.Data.TryGetValue(source.PlayerId, out DeadBody deadBody))
-                return;
-            RoleClass.Matryoshka.Data.Remove(source.PlayerId);
-            if (deadBody == null)
-                return; ;
-            deadBody.Reported = false;
-            foreach (SpriteRenderer render in deadBody.bodyRenderers)
-                render.enabled = true;
-            DeadBodyManager.EndedUseDeadbody(deadBody, DeadBodyUser.Matryoshka);
-        }
-        else
-        {
-            DeadBody targetDeadBody = null;
-            DeadBody[] array = UnityEngine.Object.FindObjectsOfType<DeadBody>();
-            foreach (DeadBody deadBody in array)
-            {
-                if (deadBody.ParentId != target.PlayerId)
-                    continue;
-                targetDeadBody = deadBody;
-                break;
-            }
-            if (targetDeadBody == null || DeadBodyManager.IsDeadbodyUsed(targetDeadBody))
-                return;
-            RoleClass.Matryoshka.Data[source.PlayerId] = targetDeadBody;
-            source.setOutfit(target.Data.DefaultOutfit);
-            DeadBodyManager.UseDeadbody(targetDeadBody, DeadBodyUser.Matryoshka);
-        }
-    }
-    public static void RpcSet(PlayerControl target, bool Is)
-    {
-        MessageWriter writer = RPCHelper.StartRPC(CustomRPC.SetMatryoshkaDeadbody);
-        writer.Write(CachedPlayer.LocalPlayer.PlayerId);
-        writer.Write(target == null ? (byte)255 : target.PlayerId);
-        writer.Write(Is);
-        writer.EndRPC();
-        RPCProcedure.SetMatryoshkaDeadBody(CachedPlayer.LocalPlayer.PlayerId, target == null ? (byte)255 : target.PlayerId, Is);
-    }
+    public override RoleId Role { get; } = RoleId.Matryoshka;
+    public override Color32 RoleColor { get; } = Palette.ImpostorRed;
+    public override List<Func<AbilityBase>> Abilities { get; } = [
+        () => new MatryoshkaAbility(new(
+            WearReport: MatryoshkaWearReport,
+            WearLimit: MatryoshkaWearLimit,
+            WearTime: MatryoshkaWearTime,
+            AdditionalKillCoolTime: MatryoshkaAddKillCoolTime,
+            CoolTime: MatryoshkaCoolTime
+        ))
+    ];
+
+    public override QuoteMod QuoteMod { get; } = QuoteMod.SuperNewRoles;
+    public override RoleTypes IntroSoundType { get; } = RoleTypes.Impostor;
+    public override short IntroNum { get; } = 1;
+
+    public override AssignedTeamType AssignedTeam { get; } = AssignedTeamType.Impostor;
+    public override WinnerTeamType WinnerTeam { get; } = WinnerTeamType.Impostor;
+    public override TeamTag TeamTag { get; } = TeamTag.Impostor;
+    public override RoleTag[] RoleTags { get; } = [];
+    public override RoleOptionMenuType OptionTeam { get; } = RoleOptionMenuType.Impostor;
+
+    [CustomOptionFloat("MatryoshkaCoolTime", 0f, 180f, 2.5f, 30f, translationName: "CoolTime")]
+    public static float MatryoshkaCoolTime;
+    [CustomOptionInt("MatryoshkaWearLimit", 1, 15, 1, 3)]
+    public static int MatryoshkaWearLimit;
+    [CustomOptionBool("MatryoshkaWearReport", false)]
+    public static bool MatryoshkaWearReport;
+    [CustomOptionFloat("MatryoshkaWearTime", 0.5f, 60f, 0.5f, 7.5f)]
+    public static float MatryoshkaWearTime;
+    [CustomOptionFloat("MatryoshkaAddKillCoolTime", 0f, 30f, 0.5f, 2.5f)]
+    public static float MatryoshkaAddKillCoolTime;
 }

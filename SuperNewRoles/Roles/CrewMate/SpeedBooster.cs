@@ -1,49 +1,36 @@
 using System;
-using HarmonyLib;
-using Hazel;
-using SuperNewRoles.Buttons;
-using SuperNewRoles.Mode;
+using System.Collections.Generic;
+using UnityEngine;
+using AmongUs.GameOptions;
+using SuperNewRoles.CustomOptions;
+using SuperNewRoles.Modules;
+using SuperNewRoles.Roles;
+using SuperNewRoles.Roles.Ability;
+using SuperNewRoles.Roles.Ability.CustomButton;
+using SuperNewRoles.Modules.Events;
+using SuperNewRoles.Modules.Events.Bases;
 
-namespace SuperNewRoles.Roles;
-
-class SpeedBooster
+namespace SuperNewRoles.Roles.Crewmate;
+class SpeedBooster : RoleBase<SpeedBooster>
 {
-    public static void ResetCooldown()
-    {
-        HudManagerStartPatch.SpeedBoosterBoostButton.MaxTimer = RoleClass.SpeedBooster.CoolTime;
-        RoleClass.SpeedBooster.ButtonTimer = DateTime.Now;
-    }
-    public static void BoostStart()
-    {
-        RoleClass.SpeedBooster.IsSpeedBoost = true;
-        MessageWriter writer = AmongUsClient.Instance.StartRpcImmediately(PlayerControl.LocalPlayer.NetId, (byte)CustomRPC.SetSpeedBoost, SendOption.Reliable, -1);
-        writer.Write(true);
-        writer.Write(CachedPlayer.LocalPlayer.PlayerId);
-        AmongUsClient.Instance.FinishRpcImmediately(writer);
-        RPCProcedure.SetSpeedBoost(true, CachedPlayer.LocalPlayer.PlayerId);
-        ResetCooldown();
-    }
-    public static void ResetSpeed()
-    {
-        MessageWriter writer = AmongUsClient.Instance.StartRpcImmediately(PlayerControl.LocalPlayer.NetId, (byte)CustomRPC.SetSpeedBoost, SendOption.Reliable, -1);
-        writer.Write(false);
-        writer.Write(CachedPlayer.LocalPlayer.PlayerId);
-        AmongUsClient.Instance.FinishRpcImmediately(writer);
-        RPCProcedure.SetSpeedBoost(false, CachedPlayer.LocalPlayer.PlayerId);
-    }
-    public static void SpeedBoostEnd() { ResetSpeed(); }
-    public static bool IsSpeedBooster(PlayerControl Player) { return Player.IsRole(RoleId.SpeedBooster); }
-    public static void EndMeeting()
-    {
-        HudManagerStartPatch.SpeedBoosterBoostButton.MaxTimer = RoleClass.SpeedBooster.CoolTime;
-        RoleClass.SpeedBooster.ButtonTimer = DateTime.Now;
-        ResetSpeed();
-    }
-    public static void PlayerPhysicsSpeedPatchPostfix(PlayerPhysics __instance)
-    {
-        if (RoleClass.SpeedBooster.IsBoostPlayers.TryGetValue(__instance.myPlayer.PlayerId, out bool result) && result)
-            __instance.body.velocity = __instance.body.velocity * RoleClass.SpeedBooster.Speed;
-        else if (RoleClass.EvilSpeedBooster.IsBoostPlayers.TryGetValue(__instance.myPlayer.PlayerId, out bool result2) && result2)
-            __instance.body.velocity = __instance.body.velocity * RoleClass.EvilSpeedBooster.Speed;
-    }   
+    public override RoleId Role => RoleId.SpeedBooster;
+    public override Color32 RoleColor => Palette.CrewmateBlue;
+    public override List<Func<AbilityBase>> Abilities => new() { () => new SpeedBoosterAbility(SpeedBoosterCooldown, SpeedBoosterDuration, SpeedBoosterMultiplier) };
+
+    public override QuoteMod QuoteMod => QuoteMod.SuperNewRoles;
+    public override RoleTypes IntroSoundType => RoleTypes.Crewmate;
+    public override short IntroNum => 1;
+
+    public override AssignedTeamType AssignedTeam => AssignedTeamType.Crewmate;
+    public override WinnerTeamType WinnerTeam => WinnerTeamType.Crewmate;
+    public override TeamTag TeamTag => TeamTag.Crewmate;
+    public override RoleTag[] RoleTags => Array.Empty<RoleTag>();
+    public override RoleOptionMenuType OptionTeam => RoleOptionMenuType.Crewmate;
+
+    [CustomOptionFloat("SpeedBoosterCooldown", 0f, 180f, 2.5f, 30f, translationName: "CoolTime")]
+    public static float SpeedBoosterCooldown;
+    [CustomOptionFloat("SpeedBoosterDuration", 0.5f, 30f, 0.5f, 5f, translationName: "DurationTime")]
+    public static float SpeedBoosterDuration;
+    [CustomOptionFloat("SpeedBoosterMultiplier", 1f, 5f, 0.1f, 2f, translationName: "SpeedBoosterMultiplier")]
+    public static float SpeedBoosterMultiplier;
 }

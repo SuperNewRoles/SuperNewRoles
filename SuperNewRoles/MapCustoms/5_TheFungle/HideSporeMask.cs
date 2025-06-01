@@ -4,7 +4,8 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using HarmonyLib;
-using SuperNewRoles.Roles.Impostor;
+using SuperNewRoles.CustomOptions.Categories;
+using SuperNewRoles.Modules;
 
 namespace SuperNewRoles.MapCustoms;
 public static class HideSporeMask
@@ -14,14 +15,11 @@ public static class HideSporeMask
     {
         public static bool CanUseGasMask()
         {
-            if (PlayerControl.LocalPlayer.IsRole(RoleId.Mushroomer) &&
-                Mushroomer.HasGasMask.GetBool())
-                return true;
             if (MapCustomHandler.IsMapCustom(MapCustomHandler.MapCustomId.TheFungle)
-                && MapCustom.TheFungleHideSporeMask.GetBool())
+                && MapEditSettingsOptions.TheFungleHideSporeMask)
             {
-                if (!MapCustom.TheFungleHideSporeMaskOnlyImpostor.GetBool() ||
-                PlayerControl.LocalPlayer.IsImpostor())
+                if (!MapEditSettingsOptions.TheFungleHideSporeMaskOnlyImpostor ||
+                ExPlayerControl.LocalPlayer.IsImpostor())
                     return true;
             }
             return false;

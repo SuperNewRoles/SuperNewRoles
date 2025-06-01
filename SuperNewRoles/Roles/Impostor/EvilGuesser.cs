@@ -1,48 +1,44 @@
+using System;
+using System.Collections.Generic;
+using UnityEngine;
 using AmongUs.GameOptions;
-using SuperNewRoles.Roles.Attribute;
-using SuperNewRoles.Roles.Role;
-using SuperNewRoles.Roles.RoleBases;
-using SuperNewRoles.Roles.RoleBases.Interfaces;
+using SuperNewRoles.CustomOptions;
+using SuperNewRoles.Roles.Ability;
+using SuperNewRoles.Modules;
 
 namespace SuperNewRoles.Roles.Impostor;
 
-public class EvilGuesser : GuesserBase, IImpostor
+class EvilGuesser : RoleBase<EvilGuesser>
 {
-    public static new RoleInfo Roleinfo = new(
-        typeof(EvilGuesser),
-        (p) => new EvilGuesser(p),
-        RoleId.EvilGuesser,
-        "EvilGuesser",
-        RoleClass.ImpostorRed,
-        new(RoleId.EvilGuesser, TeamTag.Impostor,
-            RoleTag.Killer, RoleTag.SpecialKiller),
-        TeamRoleType.Impostor,
-        TeamType.Impostor
-        );
-    public static new OptionInfo Optioninfo =
-        new(RoleId.EvilGuesser, 200400, true,
-            optionCreator: CreateOption);
-    public static new IntroInfo Introinfo =
-        new(RoleId.EvilGuesser, introSound: RoleTypes.Impostor);
+    public override RoleId Role { get; } = RoleId.EvilGuesser;
+    public override Color32 RoleColor { get; } = Palette.ImpostorRed;
+    public override List<Func<AbilityBase>> Abilities { get; } = [() => new GuesserAbility(EvilGuesserMaxShots, EvilGuesserShotsPerMeeting, EvilGuesserCannotShootCrewmate, EvilGuesserCannotShootStar, EvilGuesserLimitedTurns, EvilGuesserLimitedTurnsCount)];
 
-    public override RoleTypes RealRole => RoleTypes.Impostor;
+    public override QuoteMod QuoteMod { get; } = QuoteMod.TheOtherRoles;
+    public override RoleTypes IntroSoundType { get; } = RoleTypes.Impostor;
+    public override short IntroNum { get; } = 1;
 
-    public static CustomOption ShotOneMeetingCount;
-    public static CustomOption ShotMaxCount;
-    public static CustomOption CannotShotCrewOption;
-    public static CustomOption CannotShotCelebrityOption;
-    public static CustomOption BecomeShotCelebrityOption;
-    public static CustomOption BecomeShotCelebrityTurn;
-    private static void CreateOption()
-    {
-        ShotMaxCount = CustomOption.Create(Optioninfo.OptionId++, Optioninfo.SupportSHR, CustomOptionType.Impostor, "EvilGuesserShortMaxCountSetting", 2f, 1f, 15f, 1f, Optioninfo.RoleOption);
-        ShotOneMeetingCount = CustomOption.Create(Optioninfo.OptionId++, Optioninfo.SupportSHR, CustomOptionType.Impostor, "EvilGuesserOneMeetingShortSetting", true, Optioninfo.RoleOption);
-        CannotShotCrewOption = CustomOption.Create(Optioninfo.OptionId++, Optioninfo.SupportSHR, CustomOptionType.Impostor, "EvilGuesserCannotCrewShotSetting", false, Optioninfo.RoleOption);
-        CannotShotCelebrityOption = CustomOption.Create(Optioninfo.OptionId++, Optioninfo.SupportSHR, CustomOptionType.Impostor, "EvilGuesserCannotCelebrityShotSetting", false, Optioninfo.RoleOption);
-        BecomeShotCelebrityOption = CustomOption.Create(Optioninfo.OptionId++, Optioninfo.SupportSHR, CustomOptionType.Impostor, "EvilGuesserBecomeShotCelebritySetting", true, CannotShotCelebrityOption);
-        BecomeShotCelebrityTurn = CustomOption.Create(Optioninfo.OptionId++, Optioninfo.SupportSHR, CustomOptionType.Impostor, "EvilGuesserBecomeShotCelebrityTurnSetting", 3f, 1f, 15f, 1f, BecomeShotCelebrityOption);
-    }
-    public EvilGuesser(PlayerControl p) : base(ShotMaxCount.GetInt(), ShotOneMeetingCount.GetBool(), CannotShotCrewOption.GetBool(), CannotShotCelebrityOption.GetBool(), BecomeShotCelebrityOption.GetBool(), BecomeShotCelebrityTurn.GetInt(), p, Roleinfo, Optioninfo, Introinfo)
-    {
-    }
+    public override AssignedTeamType AssignedTeam { get; } = AssignedTeamType.Impostor;
+    public override WinnerTeamType WinnerTeam { get; } = WinnerTeamType.Impostor;
+    public override TeamTag TeamTag { get; } = TeamTag.Impostor;
+    public override RoleTag[] RoleTags { get; } = [RoleTag.SpecialKiller];
+    public override RoleOptionMenuType OptionTeam { get; } = RoleOptionMenuType.Impostor;
+
+    [CustomOptionInt("EvilGuesserMaxShots", 1, 15, 1, 3)]
+    public static int EvilGuesserMaxShots = 3;
+
+    [CustomOptionInt("EvilGuesserShotsPerMeeting", 1, 15, 1, 3)]
+    public static int EvilGuesserShotsPerMeeting = 3;
+
+    [CustomOptionBool("EvilGuesserCannotShootStar", true)]
+    public static bool EvilGuesserCannotShootStar = true;
+
+    [CustomOptionBool("EvilGuesserLimitedTurns", true, parentFieldName: nameof(EvilGuesserCannotShootStar))]
+    public static bool EvilGuesserLimitedTurns = true;
+
+    [CustomOptionInt("EvilGuesserLimitedTurnsCount", 1, 15, 1, 3, parentFieldName: nameof(EvilGuesserLimitedTurns))]
+    public static int EvilGuesserLimitedTurnsCount = 3;
+
+    [CustomOptionBool("EvilGuesserCannotShootCrewmate", true)]
+    public static bool EvilGuesserCannotShootCrewmate = true;
 }

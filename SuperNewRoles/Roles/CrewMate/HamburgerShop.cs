@@ -1,54 +1,41 @@
+using System;
 using System.Collections.Generic;
-using System.Linq;
-using Agartha;
-using HarmonyLib;
+using AmongUs.GameOptions;
+using SuperNewRoles.CustomOptions;
+using SuperNewRoles.Modules;
+using SuperNewRoles.Roles.Ability;
+using UnityEngine;
 
-namespace SuperNewRoles.Roles.CrewMate;
+namespace SuperNewRoles.Roles.Crewmate;
 
-public static class HamburgerShop
+class HamburgerShop : RoleBase<HamburgerShop>
 {
-    [HarmonyPatch(typeof(Console), nameof(Console.Use))]
-    public static class ConsolsUsePatch
-    {
-        static Minigame tempminigame;
-        public static void Prefix(Console __instance)
-        {
-            if (!PlayerControl.LocalPlayer.IsRole(RoleId.HamburgerShop)
-                || !CustomOptionHolder.HamburgerShopChangeTaskPrefab.GetBool()) return;
-            __instance.CanUse(PlayerControl.LocalPlayer.Data, out var canUse, out var _);
-            if (canUse)
-            {
-                PlayerTask task = __instance.FindTask(CachedPlayer.LocalPlayer);
-                tempminigame = task.MinigamePrefab;
-                if (task.TaskType is TaskTypes.FixLights or TaskTypes.RestoreOxy or TaskTypes.ResetReactor or TaskTypes.ResetSeismic or TaskTypes.FixComms or TaskTypes.StopCharles or TaskTypes.MushroomMixupSabotage) return;
-                ShipStatus ship = GameManager.Instance.LogicOptions.currentGameOptions.MapId == (int)MapNames.Airship ? ShipStatus.Instance : MapLoader.Airship;
-                task.MinigamePrefab = ship.ShortTasks.FirstOrDefault(x => x.TaskType == TaskTypes.MakeBurger).MinigamePrefab;
-            }
-        }
-        public static void Postfix(Console __instance)
-        {
-            if (!PlayerControl.LocalPlayer.IsRole(RoleId.HamburgerShop)
-                || !CustomOptionHolder.HamburgerShopChangeTaskPrefab.GetBool()) return;
-            __instance.CanUse(PlayerControl.LocalPlayer.Data, out var canUse, out var _);
-            if (canUse)
-            {
-                PlayerTask task = __instance.FindTask(CachedPlayer.LocalPlayer);
-                task.MinigamePrefab = tempminigame;
-                tempminigame = null;
-            }
-        }
-    }
-    public static List<byte> GenerateTasks(int count)
-    {
-        var tasks = new List<byte>();
+    public override RoleId Role { get; } = RoleId.HamburgerShop;
+    public override Color32 RoleColor { get; } = new(255, 165, 0, byte.MaxValue); // オレンジ色
+    public override List<Func<AbilityBase>> Abilities { get; } = [
+        () => new CustomTaskTypeAbility(TaskTypes.MakeBurger, HamburgerShopChangeAllTasksToBurger, MapNames.Airship),
+        () => new CustomTaskAbility(
+            () => (true, HamburgerShopTaskOptionAvailable, HamburgerShopTaskOptionAvailable ? HamburgerShopTaskOption.Total : null),
+            HamburgerShopTaskOptionAvailable ? HamburgerShopTaskOption : null
+        )
+    ];
 
-        var task = MapUtilities.CachedShipStatus.ShortTasks.FirstOrDefault(x => x.TaskType == TaskTypes.MakeBurger);
+    public override QuoteMod QuoteMod { get; } = QuoteMod.SuperNewRoles;
+    public override RoleTypes IntroSoundType { get; } = RoleTypes.Crewmate;
+    public override short IntroNum { get; } = 1;
 
-        for (int i = 0; i < count; i++)
-        {
-            tasks.Add((byte)task.Index);
-        }
+    public override AssignedTeamType AssignedTeam { get; } = AssignedTeamType.Crewmate;
+    public override WinnerTeamType WinnerTeam { get; } = WinnerTeamType.Crewmate;
+    public override TeamTag TeamTag { get; } = TeamTag.Crewmate;
+    public override RoleTag[] RoleTags { get; } = [];
+    public override RoleOptionMenuType OptionTeam { get; } = RoleOptionMenuType.Crewmate;
 
-        return tasks.ToArray().ToList();
-    }
+    [CustomOptionBool("HamburgerShopChangeAllTasksToBurger", true, displayMode: DisplayModeId.Default)]
+    public static bool HamburgerShopChangeAllTasksToBurger;
+
+    [CustomOptionBool("HamburgerShopTaskOptionAvailable", false)]
+    public static bool HamburgerShopTaskOptionAvailable;
+
+    [CustomOptionTask("HamburgerShopTaskOption", 2, 1, 1, parentFieldName: nameof(HamburgerShopTaskOptionAvailable), parentActiveValue: true)]
+    public static TaskOptionData HamburgerShopTaskOption;
 }

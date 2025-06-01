@@ -1,54 +1,37 @@
 using System;
-using Hazel;
-using SuperNewRoles.Buttons;
+using System.Collections.Generic;
+using UnityEngine;
+using AmongUs.GameOptions;
+using SuperNewRoles.CustomOptions;
+using SuperNewRoles.Modules;
+using SuperNewRoles.Roles;
+using SuperNewRoles.Roles.Ability;
+using SuperNewRoles.Roles.Ability.CustomButton;
+using SuperNewRoles.Modules.Events;
+using SuperNewRoles.Modules.Events.Bases;
+using SuperNewRoles.Roles.Crewmate;
 
-namespace SuperNewRoles.Roles;
-
-class EvilSpeedBooster
+namespace SuperNewRoles.Roles.Impostor;
+internal class EvilSpeedBooster : RoleBase<EvilSpeedBooster>
 {
-    public static void ResetCooldown()
-    {
-        HudManagerStartPatch.EvilSpeedBoosterBoostButton.MaxTimer = RoleClass.EvilSpeedBooster.CoolTime;
-        RoleClass.EvilSpeedBooster.ButtonTimer = DateTime.Now;
-    }
-    public static void BoostStart()
-    {
-        MessageWriter writer = AmongUsClient.Instance.StartRpcImmediately(PlayerControl.LocalPlayer.NetId, (byte)CustomRPC.SetSpeedBoost, SendOption.Reliable, -1);
-        writer.Write(true);
-        writer.Write(CachedPlayer.LocalPlayer.PlayerId);
-        AmongUsClient.Instance.FinishRpcImmediately(writer);
-        RPCProcedure.SetSpeedBoost(true, CachedPlayer.LocalPlayer.PlayerId);
-        RoleClass.EvilSpeedBooster.IsSpeedBoost = true;
-        ResetCooldown();
-    }
-    public static void ResetSpeed()
-    {
-        MessageWriter writer = AmongUsClient.Instance.StartRpcImmediately(PlayerControl.LocalPlayer.NetId, (byte)CustomRPC.SetSpeedBoost, SendOption.Reliable, -1);
-        writer.Write(false);
-        writer.Write(CachedPlayer.LocalPlayer.PlayerId);
-        AmongUsClient.Instance.FinishRpcImmediately(writer);
-        RPCProcedure.SetSpeedBoost(false, CachedPlayer.LocalPlayer.PlayerId);
-        RoleClass.EvilSpeedBooster.IsSpeedBoost = false;
-    }
+    public override RoleId Role => RoleId.EvilSpeedBooster;
+    public override Color32 RoleColor => Palette.ImpostorRed;
+    public override List<Func<AbilityBase>> Abilities => new() { () => new SpeedBoosterAbility(EvilSpeedBoosterCooldown, EvilSpeedBoosterDuration, EvilSpeedBoosterMultiplier) };
 
-    public static void SpeedBoostCheck()
-    {
-        if (!RoleClass.EvilSpeedBooster.IsSpeedBoost) return;
-        if (HudManagerStartPatch.EvilSpeedBoosterBoostButton.Timer + RoleClass.EvilSpeedBooster.DurationTime <= RoleClass.EvilSpeedBooster.CoolTime) SpeedBoostEnd();
-    }
-    public static void SpeedBoostEnd()
-    {
-        ResetSpeed();
-        ResetCooldown();
-    }
-    public static bool IsEvilSpeedBooster(PlayerControl Player)
-    {
-        return Player.IsRole(RoleId.EvilSpeedBooster);
-    }
-    public static void EndMeeting()
-    {
-        HudManagerStartPatch.EvilSpeedBoosterBoostButton.MaxTimer = RoleClass.EvilSpeedBooster.CoolTime;
-        RoleClass.EvilSpeedBooster.ButtonTimer = DateTime.Now;
-        ResetSpeed();
-    }
+    public override QuoteMod QuoteMod => QuoteMod.SuperNewRoles;
+    public override RoleTypes IntroSoundType => RoleTypes.Impostor;
+    public override short IntroNum => 1;
+
+    public override AssignedTeamType AssignedTeam => AssignedTeamType.Impostor;
+    public override WinnerTeamType WinnerTeam => WinnerTeamType.Impostor;
+    public override TeamTag TeamTag => TeamTag.Impostor;
+    public override RoleTag[] RoleTags => Array.Empty<RoleTag>();
+    public override RoleOptionMenuType OptionTeam => RoleOptionMenuType.Impostor;
+
+    [CustomOptionFloat("EvilSpeedBoosterCooldown", 0f, 180f, 2.5f, 30f, translationName: "CoolTime")]
+    public static float EvilSpeedBoosterCooldown;
+    [CustomOptionFloat("EvilSpeedBoosterDuration", 0.5f, 30f, 0.5f, 5f, translationName: "DurationTime")]
+    public static float EvilSpeedBoosterDuration;
+    [CustomOptionFloat("EvilSpeedBoosterMultiplier", 1f, 5f, 0.1f, 2f, translationName: "SpeedBoosterMultiplier")]
+    public static float EvilSpeedBoosterMultiplier;
 }
