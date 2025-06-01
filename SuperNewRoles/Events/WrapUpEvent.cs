@@ -44,7 +44,7 @@ public static class WrapUpPatch
 public static class AirshipWrapUpPatch
 {
     // スレッドセーフなHashSetを使用して処理済みインスタンスを管理
-    private static readonly ConcurrentDictionary<int, bool> _processedInstances = new();
+    private static readonly HashSet<int> _processedInstances = new();
 
     // 古いエントリを定期的にクリアするためのタイマー
     private static DateTime _lastCleanup = DateTime.UtcNow;
@@ -58,13 +58,10 @@ public static class AirshipWrapUpPatch
         var instanceId = airshipExileController.GetInstanceID();
 
         // より効率的な重複チェック
-        if (!_processedInstances.TryAdd(instanceId, true))
+        if (!_processedInstances.Add(instanceId))
         {
             return; // 既に処理済み
         }
-
-        // 定期的なクリーンアップ
-        PerformPeriodicCleanup();
 
         Logger.Info("AirshipWrapUpPatch 開始");
         WrapUpEvent.Invoke(airshipExileController.initData.networkedPlayer);
@@ -72,27 +69,6 @@ public static class AirshipWrapUpPatch
         new LateTask(() =>
         {
             CheckGameEndPatch.CouldCheckEndGame = true;
-            // 処理完了後にエントリを削除
-            _processedInstances.TryRemove(instanceId, out _);
         }, 0.5f);
-    }
-
-    /// <summary>
-    /// 定期的に古いエントリをクリーンアップします
-    /// </summary>
-    private static void PerformPeriodicCleanup()
-    {
-        var now = DateTime.UtcNow;
-        if (now - _lastCleanup > CleanupInterval)
-        {
-            _lastCleanup = now;
-
-            // エントリが多すぎる場合はクリア
-            if (_processedInstances.Count > 100)
-            {
-                _processedInstances.Clear();
-                Logger.Info("AirshipWrapUpPatch: 処理済みインスタンスキャッシュをクリアしました");
-            }
-        }
     }
 }
