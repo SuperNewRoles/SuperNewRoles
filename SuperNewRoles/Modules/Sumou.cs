@@ -2,8 +2,6 @@ using System.Collections.Generic;
 using HarmonyLib;
 using UnityEngine;
 using SuperNewRoles.Patches;
-using SuperNewRoles.Roles;
-using SuperNewRoles.Modules;
 using SuperNewRoles.CustomOptions.Categories;
 
 namespace SuperNewRoles.Modules
@@ -13,8 +11,15 @@ namespace SuperNewRoles.Modules
     {
         public static void Postfix()
         {
+            // Always clear lists on game start, regardless of SumouMode setting,
+            // to ensure clean state if the mode is toggled.
+            SumouPatch.playerColliders.Clear();
+            SumouPatch.playerStopCountdown.Clear(); // Clear the new dictionary
+
             if (!GeneralSettingOptions.SumouMode) return;
-            SumouPatch.playerColliders.Clear(); // ゲーム開始時にキャッシュをクリア
+
+            // SumouPatch.playerColliders.Clear(); // Already cleared above
+            // SumouPatch.playerStopCountdown.Clear(); // Already cleared above
             foreach (PlayerControl player in PlayerControl.AllPlayerControls)
             {
                 GameObject playerCollider = new("PlayerCollider");
@@ -33,17 +38,43 @@ namespace SuperNewRoles.Modules
     public static class SumouPatch
     {
         public static Dictionary<byte, Collider2D> playerColliders = new Dictionary<byte, Collider2D>(); // コライダーキャッシュ
+        internal static Dictionary<byte, float> playerStopCountdown = new Dictionary<byte, float>(); // PlayerId -> frames to wait until stop
         private const float PushMultiplier = 2.5f;
         private const float DeadBodyKickDistance = 0.2f;
         private const float DeadBodyKickRange = 0.6f;
+        private const float StopFramesDuration = 10 / 60f; // Frames to wait before stopping
 
         public static void Postfix(PlayerPhysics __instance)
         {
             if (!GeneralSettingOptions.SumouMode) return;
             if (AmongUsClient.Instance.GameState != InnerNet.InnerNetClient.GameStates.Started) return;
-            // ローカルプレイヤーのみ処理
+
             PlayerControl selfPlayer = __instance.myPlayer;
             if (selfPlayer == null) return;
+
+            // --- Timer countdown and velocity reset logic ---
+            if (playerStopCountdown.TryGetValue(selfPlayer.PlayerId, out float currentTimerValue))
+            {
+                currentTimerValue -= Time.fixedDeltaTime;
+                if (currentTimerValue <= 0)
+                {
+                    __instance.body.velocity = Vector2.zero;
+                    playerStopCountdown.Remove(selfPlayer.PlayerId);
+                    if (selfPlayer.AmOwner) // Only the owner should dictate their final velocity state for sync
+                    {
+                        ModdedNetworkTransform.skipNextBatchPlayers.Add(selfPlayer.PlayerId);
+                    }
+                }
+                else
+                {
+                    playerStopCountdown[selfPlayer.PlayerId] = currentTimerValue;
+                }
+            }
+            // --- End of timer logic ---
+
+            // ローカルプレイヤーのみ処理
+            // PlayerControl selfPlayer = __instance.myPlayer; // Already defined above
+            // if (selfPlayer == null) return; // Already checked above
 
             if (!playerColliders.TryGetValue(selfPlayer.PlayerId, out var myCollider) || myCollider == null) return; // キャッシュから取得
 
@@ -55,19 +86,31 @@ namespace SuperNewRoles.Modules
 
                 if (myCollider.IsTouching(otherCollider))
                 {
-                    var myVel = __instance.body.velocity;
+                    var myVelBeforeThisInteraction = __instance.body.velocity; // Velocity of selfPlayer *before* this specific push
                     var otherVel = other.MyPhysics.body.velocity;
                     var direction = ((Vector2)__instance.transform.position - (Vector2)other.transform.position).normalized;
 
                     var otherSpeedAlong = Vector2.Dot(otherVel, direction);
                     if (otherSpeedAlong <= 0) continue;
 
-                    var relSpeed = Vector2.Dot(otherVel - myVel, direction);
+                    var relSpeed = Vector2.Dot(otherVel - myVelBeforeThisInteraction, direction);
                     if (relSpeed > 0)
                     {
                         // Push処理
                         Vector2 selfChange = direction * relSpeed * (__instance.myPlayer.AmOwner ? PushMultiplier : 0.405f);
-                        __instance.body.velocity = myVel + selfChange;
+                        __instance.body.velocity = myVelBeforeThisInteraction + selfChange; // Apply push
+
+                        // --- Condition to start the stop timer ---
+                        bool shouldStartTimer = selfPlayer.AmOwner &&
+                                                (!selfPlayer.CanMove) &&
+                                                myVelBeforeThisInteraction.sqrMagnitude < 0.001f && // Check if velocity *before this push* was (near) zero
+                                                !playerStopCountdown.ContainsKey(selfPlayer.PlayerId); // Only start if not already counting down
+
+                        if (shouldStartTimer)
+                        {
+                            playerStopCountdown[selfPlayer.PlayerId] = StopFramesDuration;
+                        }
+                        // --- End of condition to start the stop timer ---
 
                         // 相手側はネットワーク同期をスキップして即座に反映
                         ModdedNetworkTransform.skipNextBatchPlayers.Add(__instance.myPlayer.PlayerId);
