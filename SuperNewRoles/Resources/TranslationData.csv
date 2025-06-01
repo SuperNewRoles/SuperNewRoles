@@ -398,6 +398,7 @@ HamburgerShop,ハンバーガー屋,Hamburger Shop
 BodyBuilder,ボディービルダー,Body Builder
 NiceHawk,ナイスホーク,Nice Hawk
 MadHawk,マッドホーク,Mad Hawk
+Clergy,聖職者,Clergy,牧师,牧師
 EvilHawk,イビルホーク,Evil Hawk
 ModifierHawk,モディファイアホーク,Modifier Hawk
 Bullet,弾,Bullet
@@ -1359,3 +1360,10 @@ SluggerChargeTime,チャージ時間,Charge Time,蓄力时间,蓄力時間
 SluggerIsMultiKill,複数キルを許可,Allow Multi-Kill,允许多重击杀,允许多重擊殺
 SluggerIsSyncKillCoolTime,キルクールタイム同期,Sync Kill Cooldown,同步击杀冷却,同步擊殺冷卻
 SluggerButtonName,スラッガー！,Slugger!,击杀,擊杀
+
+# Clergy
+ClergyButtonText,聖なる光,Holy Light,圣光,聖光
+ClergyEffectDuration,効果持続時間,Effect Duration,效果持续时间,效果持續時間
+ClergyVisionMultiplier,視界倍率,Vision Multiplier,视野倍率,視野倍率
+ClergyActiveForNeutralKiller,第三キラーも影響を受ける,The third killer is also affected.
+ClergyEffectMessage,聖職者に視界を妨害されている,My view is being obstructed by a Clergy.
