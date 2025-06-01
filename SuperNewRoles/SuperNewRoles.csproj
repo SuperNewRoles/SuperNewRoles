@@ -23,7 +23,7 @@
     </ItemGroup>
 
     <PropertyGroup>
-        <RestoreSources>https://nuget.bepinex.dev/v3/index.json;$(RestoreSources)</RestoreSources>
+        <RestoreSources>https://nuget.bepinex.dev/v3/index.json;https://api.nuget.org/v3/index.json</RestoreSources>
     </PropertyGroup>
 
     <ItemGroup Condition="'$(Configuration)' == 'Debug'">
