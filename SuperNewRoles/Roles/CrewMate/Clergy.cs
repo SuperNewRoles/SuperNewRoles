@@ -14,7 +14,7 @@ namespace SuperNewRoles.Roles.Crewmate;
 class Clergy : RoleBase<Clergy>
 {
     public override RoleId Role { get; } = RoleId.Clergy;
-    public override Color32 RoleColor { get; } = new(128, 0, 128, 255);
+    public override Color32 RoleColor { get; } = new(255, 244, 196, 255);
     public override List<Func<AbilityBase>> Abilities { get; } = [
         () => new ClergyAbility(new ClergyAbilityData(
             ClergyButtonCooldown,
