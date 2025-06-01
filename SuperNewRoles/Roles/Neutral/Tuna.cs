@@ -17,7 +17,8 @@ class Tuna : RoleBase<Tuna>
     public override List<Func<AbilityBase>> Abilities { get; } = [
         () => new DeathIfIdlingAbility(new TunaData(
             stopTimeLimit: TunaStopTimeLimit
-        ))
+        )),
+        () => new CustomVentAbility(() => TunaCanUseVent)
     ];
 
     public override QuoteMod QuoteMod { get; } = QuoteMod.SuperNewRoles;
@@ -35,6 +36,8 @@ class Tuna : RoleBase<Tuna>
     public static float TunaStopTimeLimit;
     [CustomOptionBool("EnableTunaSoloWin", false)]
     public static bool EnableTunaSoloWin;
+    [CustomOptionBool("TunaCanUseVent", false, translationName: "CanUseVent")]
+    public static bool TunaCanUseVent;
 
     public class DeathIfIdlingAbility : AbilityBase
     {
