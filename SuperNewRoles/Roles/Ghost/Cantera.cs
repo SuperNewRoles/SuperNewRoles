@@ -89,6 +89,7 @@ public class CanteraAbility : TargetCustomButtonBase, IButtonEffect
     public DisibleHauntAbility disibleHauntAbility;
 
     private EventListener<ShipStatusLightEventData> _shipStatusLightEvent;
+    private EventListener<WrapUpEventData> _wrapUpEvent;
 
     public CanteraAbility(CanteraAbilityOption data)
     {
@@ -108,12 +109,14 @@ public class CanteraAbility : TargetCustomButtonBase, IButtonEffect
         Player.AttachAbility(disibleHauntAbility, new AbilityParentAbility(this));
 
         _shipStatusLightEvent = ShipStatusLightEvent.Instance.AddListener(OnShipStatusLight);
+        _wrapUpEvent = WrapUpEvent.Instance.AddListener((_) => WrapUp());
     }
 
     public override void DetachToAlls()
     {
         base.DetachToAlls();
         _shipStatusLightEvent?.RemoveListener();
+        _wrapUpEvent?.RemoveListener();
     }
     public override bool CheckHasButton()
     {
@@ -137,6 +140,10 @@ public class CanteraAbility : TargetCustomButtonBase, IButtonEffect
         {
             RpcCantera(this, Target);
         }
+    }
+    public void WrapUp()
+    {
+        CurrentTarget = null;
     }
     [CustomRPC]
     public static void RpcCantera(CanteraAbility ability, ExPlayerControl target)
