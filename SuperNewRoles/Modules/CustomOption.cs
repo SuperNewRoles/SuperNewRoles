@@ -16,11 +16,9 @@ namespace SuperNewRoles.Modules;
 
 public static class CustomOptionManager
 {
-
-
     // [CustomOptionBool("DebugMode", false, parentFieldName: nameof(Categories.GeneralSettings))]
     public static bool DebugMode = true;
-    [CustomOptionBool("DebugModeNoGameEnd", false)]
+    [CustomOptionBool("DebugModeNoGameEnd", false, parentFieldName: nameof(Categories.GeneralSettings))]
     public static bool DebugModeNoGameEnd;
     [CustomOptionBool("SkipStartGameCountdown", false, parentFieldName: nameof(Categories.GeneralSettings))]
     public static bool SkipStartGameCountdown;
