@@ -59,14 +59,14 @@ internal class Santa : RoleBase<Santa>
     // 役職たちの設定
     // ==============================
 
-    [CustomOptionInt("SantaSpeedBoosterPercentage", 0, 100, 5, 0)]
+    /*[CustomOptionInt("SantaSpeedBoosterPercentage", 0, 100, 5, 0)]
     public static int SantaSpeedBoosterPercentage;
     [CustomOptionInt("SantaClergymanPercentage", 0, 100, 5, 0)]
-    public static int SantaClergymanPercentage;
+    public static int SantaClergymanPercentage;*/
     [CustomOptionInt("SantaNiceGuesserPercentage", 0, 100, 5, 0)]
     public static int SantaNiceGuesserPercentage;
-    [CustomOptionInt("SantaLighterPercentage", 0, 100, 5, 0)]
-    public static int SantaLighterPercentage;
+    /*[CustomOptionInt("SantaLighterPercentage", 0, 100, 5, 0)]
+    public static int SantaLighterPercentage;*/
     [CustomOptionInt("SantaSheriffPercentage", 0, 100, 5, 0)]
     public static int SantaSheriffPercentage;
     [CustomOptionInt("SantaBalancerPercentage", 0, 100, 5, 0)]

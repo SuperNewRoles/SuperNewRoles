@@ -12,7 +12,7 @@ public enum DisplayModeId
 public enum ModeId
 {
     Default,
-    BattleRoyal
+    //BattleRoyal,
 }
 
 public static class DisplayMode
@@ -28,8 +28,8 @@ public static class DisplayMode
         {
             case ModeId.Default:
                 return DisplayModeId.Default;
-            case ModeId.BattleRoyal:
-                return DisplayModeId.BattleRoyal;
+            //case ModeId.BattleRoyal:
+            //    return DisplayModeId.BattleRoyal;
             default:
                 return DisplayModeId.Default;
         }

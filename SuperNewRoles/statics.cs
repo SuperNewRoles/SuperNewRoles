@@ -19,10 +19,10 @@ public static class VersionInfo
 {
     private static Version _version;
     public static Version Current => _version ??= SuperNewRolesPlugin.Assembly.GetName().Version;
-    public static readonly string VersionString = Current.ToString() + SnapShotVersion.ToString();
+    public static string VersionString => Current.ToString() + SnapShotVersion.ToString();
 
     public static bool IsSnapShot => SnapShotVersion != null;
-    public static char? SnapShotVersion = 'a';
+    public static char? SnapShotVersion = null;
 
     public static string NewVersion = "";
     public static bool IsUpdate = false;

@@ -55,12 +55,12 @@ class BlackSanta : RoleBase<BlackSanta>
     // 役職配布設定
     [CustomOptionInt("BlackSantaEvilGuesserPercentage", 0, 100, 5, 0)]
     public static int BlackSantaEvilGuesserPercentage;
-    [CustomOptionInt("BlackSantaEvilMechanicPercentage", 0, 100, 5, 0)]
-    public static int BlackSantaEvilMechanicPercentage;
+    /*[CustomOptionInt("BlackSantaEvilMechanicPercentage", 0, 100, 5, 0)]
+    public static int BlackSantaEvilMechanicPercentage;*/
     [CustomOptionInt("BlackSantaSelfBomberPercentage", 0, 100, 5, 0)]
     public static int BlackSantaSelfBomberPercentage;
-    [CustomOptionInt("BlackSantaSluggerPercentage", 0, 100, 5, 0)]
-    public static int BlackSantaSluggerPercentage;
+    /*[CustomOptionInt("BlackSantaSluggerPercentage", 0, 100, 5, 0)]
+    public static int BlackSantaSluggerPercentage;*/
     [CustomOptionInt("BlackSantaPenguinPercentage", 0, 100, 5, 0)]
     public static int BlackSantaPenguinPercentage;
     [CustomOptionInt("BlackSantaWaveCannonPercentage", 0, 100, 5, 0)]
