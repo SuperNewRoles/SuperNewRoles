@@ -40,6 +40,6 @@ public static class GeneralSettingOptions
 
     [CustomOptionBool("SumouMode", false, parentFieldName: nameof(Categories.GeneralSettings))]
     public static bool SumouMode;
-    [CustomOptionBool("EnabledZoomOnDead", true, parentFieldName: nameof(GeneralSettingOptions))]
+    [CustomOptionBool("EnabledZoomOnDead", true, parentFieldName: nameof(Categories.GeneralSettings))]
     public static bool EnabledZoomOnDead;
 }
