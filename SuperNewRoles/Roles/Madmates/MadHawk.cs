@@ -60,7 +60,7 @@ class MadHawk : RoleBase<MadHawk>
     [CustomOptionBool("MadHawkCanKnowImpostors", false, translationName: "MadmateCanKnowImpostors")]
     public static bool MadHawkCanKnowImpostors;
 
-    [CustomOptionInt("MadHawkNeededTaskCount", 0, 30, 1, 6, parentFieldName: nameof(MadHawkCanKnowImpostors))]
+    [CustomOptionInt("MadHawkNeededTaskCount", 0, 30, 1, 6, parentFieldName: nameof(MadHawkCanKnowImpostors), translationName: "MadmateNeededTaskCount")]
     public static int MadHawkNeededTaskCount;
 
     [CustomOptionBool("MadHawkIsSpecialTasks", false, translationName: "MadmateIsSpecialTasks")]
