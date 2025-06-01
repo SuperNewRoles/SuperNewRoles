@@ -22,6 +22,10 @@
         <EmbeddedResource Include="Resources\**" />
     </ItemGroup>
 
+    <PropertyGroup>
+        <RestoreSources>https://nuget.bepinex.dev/v3/index.json;$(RestoreSources)</RestoreSources>
+    </PropertyGroup>
+
     <ItemGroup Condition="'$(Configuration)' == 'Debug'">
         <Reference Include="$(AmongUs)/BepInEx/core/*.dll" />
         <Reference Include="$(AmongUs)/BepInEx/interop/*.dll" />
