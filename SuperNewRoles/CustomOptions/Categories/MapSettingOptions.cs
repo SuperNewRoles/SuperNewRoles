@@ -56,13 +56,13 @@ public static class MapSettingOptions
     public static bool DeviceCameraEnabled;
 
     // --- 「時間制限」モード時の設定 ---
-    [CustomOptionFloat("DeviceAdminTimeLimit", 0f, 120f, 2.5f, 10f, parentFieldName: nameof(RestrictionMode), parentActiveValue: DeviceRestrictionModeType.TimeLimit)]
+    [CustomOptionFloat("DeviceAdminTimeLimit", 0f, 120f, 1f, 10f, parentFieldName: nameof(RestrictionMode), parentActiveValue: DeviceRestrictionModeType.TimeLimit)]
     public static float DeviceAdminTimeLimit;
 
-    [CustomOptionFloat("DeviceVitalTimeLimit", 0f, 120f, 2.5f, 10f, parentFieldName: nameof(RestrictionMode), parentActiveValue: DeviceRestrictionModeType.TimeLimit)]
+    [CustomOptionFloat("DeviceVitalTimeLimit", 0f, 120f, 1f, 10f, parentFieldName: nameof(RestrictionMode), parentActiveValue: DeviceRestrictionModeType.TimeLimit)]
     public static float DeviceVitalTimeLimit;
 
-    [CustomOptionFloat("DeviceCameraTimeLimit", 0f, 120f, 2.5f, 10f, parentFieldName: nameof(RestrictionMode), parentActiveValue: DeviceRestrictionModeType.TimeLimit)]
+    [CustomOptionFloat("DeviceCameraTimeLimit", 0f, 120f, 1f, 10f, parentFieldName: nameof(RestrictionMode), parentActiveValue: DeviceRestrictionModeType.TimeLimit)]
     public static float DeviceCameraTimeLimit;
 
     // |:========== 梯子クールダウンの設定 ==========:|
