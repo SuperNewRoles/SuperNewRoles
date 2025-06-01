@@ -15,7 +15,8 @@ public static class SetTargetPatch
     }
     private static void ImpostorSetTarget()
     {
-        FastDestroyableSingleton<HudManager>.Instance.KillButton.SetTarget(SetImpostorTarget());
+        if (FastDestroyableSingleton<HudManager>.Instance.KillButton.isActiveAndEnabled)
+            FastDestroyableSingleton<HudManager>.Instance.KillButton.SetTarget(SetImpostorTarget());
     }
     /// <summary>
     /// MadKillerのターゲット設定を行う
