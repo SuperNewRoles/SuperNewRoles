@@ -611,7 +611,7 @@ public static class ModHelpers
         result = obj.TryCast<T>();
         return result != null;
     }
-    public static void SetOpacity(PlayerControl player, float opacity, bool cansee)
+    public static void SetOpacity(PlayerControl player, float opacity)
     {
         // Sometimes it just doesn't work?
         var color = Color.Lerp(Palette.ClearWhite, Palette.White, opacity);

@@ -98,6 +98,9 @@ public enum RoleId : short
     WiseMan,
     Bullet,
     Clergy,
+    NiceScientist,
+    EvilScientist,
+    Lighter,
 }
 
 public enum GhostRoleId : short

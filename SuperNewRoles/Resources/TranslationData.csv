@@ -22,6 +22,7 @@ UseLimit,使用可能回数,Usage Limit,可使用次数,可使用次數
 RemainingText,残り{0}回,Remaining {0} times,剩余 {0} 次,剩餘 {0} 次
 DurationTimerText,残り{0}秒,Remaining {0} seconds,剩余 {0} 秒,剩餘 {0} 秒
 AdditionalWin,追加勝利,Additional Win,额外胜利,額外勝利
+Seconds,秒,Seconds,秒,秒
 
 # CustomColors
 colorSalmon,サーモン,Salmon,鲑鱼红,鮭魚紅
@@ -198,6 +199,21 @@ RequestInGame_SuccessReportReturnButton,戻る,Return,返回,返回
 RoleOptionMenuType.Impostor,インポスター,Impostor,内鬼,內鬼
 RoleOptionMenuType.Crewmate,クルーメイト,Crewmate,船员,船員
 RoleOptionMenuType.Neutral,第三陣営,Neutral,第三阵营,第三陣營
+
+# Scientist Roles
+Role.NiceScientist,ナイスサイエンティスト,Nice Scientist,善良科学家,善良科學家
+Role.EvilScientist,イビルサイエンティスト,Evil Scientist,邪恶科学家,邪惡科學家
+ScientistButtonName,透明化,Invisible,隐身,隱身
+
+# NiceScientist
+NiceScientistCoolTime,クールタイム,Cool Time,冷却时间,冷卻時間
+NiceScientistDurationTime,効果時間,Duration Time,持续时间,持續時間
+NiceScientistCanTheLighterSeeTheScientist,ライターが透明化を見破れる,Lighter can see invisible,灯光师可以看见隐身,燈光師可以看見隱身
+
+# EvilScientist
+EvilScientistCoolTime,クールタイム,Cool Time,冷却时间,冷卻時間
+EvilScientistDurationTime,効果時間,Duration Time,持续时间,持續時間
+EvilScientistCanTheLighterSeeTheScientist,ライターが透明化を見破れる,Lighter can see invisible,灯光师可以看见隐身,燈光師可以看見隱身
 RoleOptionMenuType.Ghost,幽霊役職,Ghost Role,幽灵角色,幽靈角色
 RoleOptionMenuType.Modifier,モディファイア,Modifier,修饰符,修飾符
 
@@ -402,6 +418,9 @@ Clergy,聖職者,Clergy,牧师,牧師
 EvilHawk,イビルホーク,Evil Hawk
 ModifierHawk,モディファイアホーク,Modifier Hawk
 Bullet,弾,Bullet
+NiceScientist,ナイスサイエンティスト,Nice Scientist
+EvilScientist,イビルサイエンティスト,Evil Scientist
+Lighter,ライター,Lighter
 
 
 # Descriptions_VanillaRoles
@@ -1369,3 +1388,10 @@ ClergyEffectDuration,効果持続時間,Effect Duration,效果持续时间,效�
 ClergyVisionMultiplier,視界倍率,Vision Multiplier,视野倍率,視野倍率
 ClergyActiveForNeutralKiller,第三キラーも影響を受ける,The third killer is also affected.
 ClergyEffectMessage,聖職者に視界を妨害されている,My view is being obstructed by a Clergy
+
+# Scientist
+ScientistCanTheLighterSeeTheScientist,ライターからは見える,Lighter can see scientist.
+
+# Lighter
+LighterButtonText,点灯,Light On,点亮,點亮
+LighterRadius,点灯時の視界の広さ,Field of view when lit
