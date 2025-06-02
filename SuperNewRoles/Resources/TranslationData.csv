@@ -406,6 +406,7 @@ NiceScientist,ナイスサイエンティスト,Nice Scientist
 EvilScientist,イビルサイエンティスト,Evil Scientist
 Lighter,ライター,Lighter
 Technician,技術者,Technician
+Medium,ミーディアム,Medium,灵媒师,靈媒師
 
 
 # Descriptions_VanillaRoles
@@ -1383,3 +1384,20 @@ LighterRadius,点灯時の視界の広さ,Field of view when lit
 
 # Technician
 TechnicianCanUseVentOnMushroomMixup,キノコカオス中にベントを使える,Can use vent during mushroom mixup
+
+# Medium
+MediumSpiritVisionCooldown,霊視クールタイム,Spirit Vision Cooldown,灵视冷却时间,靈視冷卻時間
+MediumSpiritVisionDuration,霊視持続時間,Spirit Vision Duration,灵视持续时间,靈視持續時間
+MediumSpiritTalkMaxUses,霊話使用可能回数,Spirit Talk Max Uses,灵话最大使用次数,靈話最大使用次數
+MediumSpiritVisionButtonText,霊視,Spirit Vision,灵视,靈視
+MediumSpiritTalkButtonText,霊話,Spirit Talk,灵话,靈話
+MediumSpiritVisionActiveMessage,霊視中...,Spirit Vision Active...,灵视中...,靈視中...
+MediumSpiritTalkExiledMessage,{0}は追放されました,{0} was exiled,{0}被放逐了,{0}被放逐了
+MediumSpiritTalkKillerRoleMessage,{0}をキルしたのは{1}です,{0} was killed by {1},{0}被{1}杀死了,{0}被{1}殺死了
+MediumSpiritTalkKillerColorMessage,{0}をキルしたのは{1}のクルーです,{0} was killed by a {1} crew,{0}被{1}的船员杀死了,{0}被{1}的船員殺死了
+MediumSpiritTalkDeathLocationMessage,{0}は{1}で死にました,{0} died at {1},{0}在{1}死亡了,{0}在{1}死亡了
+MediumSpiritTalkRoleMessage,{0}は{1}です,{0} is {1},{0}是{1},{0}是{1}
+DarkColor,暗い色,Dark Color,深色,深色
+LightColor,明るい色,Light Color,浅色,淺色
+Corridor,通路,Corridor,通道,通道
+Unknown,不明,Unknown,未知,未知

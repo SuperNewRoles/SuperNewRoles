@@ -102,6 +102,7 @@ public enum RoleId : short
     EvilScientist,
     Lighter,
     Technician,
+    Medium,
 
 }
 
