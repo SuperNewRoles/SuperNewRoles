@@ -15,7 +15,7 @@ internal class Lighter : RoleBase<Lighter>
     public override WinnerTeamType WinnerTeam => WinnerTeamType.Crewmate;
     public override TeamTag TeamTag => TeamTag.Crewmate;
     public override RoleTag[] RoleTags => [];
-    public override short IntroNum => 1;
+    public override short IntroNum => 2;
     public override QuoteMod QuoteMod => QuoteMod.SuperNewRoles;
     public override RoleOptionMenuType OptionTeam => RoleOptionMenuType.Crewmate;
 
