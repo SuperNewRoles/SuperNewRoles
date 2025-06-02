@@ -312,6 +312,7 @@ SyncError_NotInstalled,{player}にSuperNewRolesが導入されていません。
 Bait,ベイト,Bait,餌,餌
 BestFalseCharge,ベスト冤罪ヤー,Best False Charge,最佳冤罪者,最佳冤罪者
 Sheriff,シェリフ,Sheriff,警长,警長
+MeetingSheriff,ミーティングシェリフ,Meeting Sheriff,会议警长,會議警長
 NiceGuesser,ナイスゲッサー,Nice Guesser,好人猜疑者,好人猜疑者
 EvilGuesser,イビルゲッサー,Evil Guesser,内鬼猜疑者,內鬼猜疑者
 Madmate,マッドメイト,Madmate,疯友,瘋友
@@ -406,6 +407,7 @@ NiceScientist,ナイスサイエンティスト,Nice Scientist
 EvilScientist,イビルサイエンティスト,Evil Scientist
 Lighter,ライター,Lighter
 Technician,技術者,Technician
+DoubleKiller,ダブルキラー,DoubleKiller
 
 
 # Descriptions_VanillaRoles
@@ -1383,3 +1385,18 @@ LighterRadius,点灯時の視界の広さ,Field of view when lit
 
 # Technician
 TechnicianCanUseVentOnMushroomMixup,キノコカオス中にベントを使える,Can use vent during mushroom mixup
+
+# NiceRedRidingHood
+NiceRedRidingHood,ナイス赤ずきん,NiceRedRidingHood,小红帽,小紅帽
+NiceRedRidingHoodIntro1,生き返ろう,Come back to life,杀死你的凶手死亡后你将会复活,殺死你的凶手死亡後你將會復活
+NiceRedRidingHoodDescription,自身をキルしたクルーが死亡した場合、次のターンに復活するクルーメイト役職です。\n\nナイス赤ずきんは、復活可能回数が残っていて、且つ死体が発生するキルによって死亡した場合に復活する事ができます。\n(猫又役職による道ずれや、スラッガーによるキル等は復活の対象外です。)\n\nキル者がタスクフェイズ中に死亡した場合に復活するかは、設定によります。\nその設定が有効で、キル者がタスクフェイズ中に死亡した場合も、次の会議フェイズ終了時に復活します。\n\nナイス赤ずきんが復活可能な条件を満たしている場合は、霊界で他のクルーの役職を確認することができず、更に憑依能力を有しません。\n満たしていない場合は、霊界で他のクルーの役職が表示され、憑依能力も使用可能です。\n\n私を狼のお腹から引きずり出したのはどなた?,The Crew Mate role revives the crewmember who killed him or her on the next turn if he or she dies.\n\nNice Red Riding Hood can be revived if the number of times it can revive remains，and if it is killed by a kill that results in a corpse.\n(Excluded from resurrection are a wayward death by a nekomata role，a kill by a slugger，etc.)\n\nWhether or not a kill is resurrected if the kill is made during the Task Phase depends on the setting.\nIf the setting is enabled and the kill person dies during the Task Phase，he/she will be revived at the end of the next Meeting Phase.\n\nIf the Nice Red Riding Hood meets the requirements to be revivable，it will not be able to see the other crew members' roles in the spirit world，and furthermore，it will not have the ability to possess them.\nIf not met，the other crew members' roles will be visible in the spirit world and the possession ability will be available.\n\nWho pulled me out of the wolf's belly?,击杀小红帽的玩家死亡后，小红帽在下一轮开始时复活。\n\n小红帽的复活有一定的次数限制，且只有在留下尸体的场合才能复活。\n(如被猎人系职业连带而死，或被击球手击飞而死，小红帽均不能复活。)\n\n可以设置击杀小红帽的凶手若在行动阶段死亡，小红帽是否也能复活。\n若可以，当凶手在行动阶段死亡时，小红帽会在下个会议阶段结束时复活。\n\n如果小红帽有复活的可能，死亡的小红帽将不能确认所有玩家的职业，也不能使用幽幽鬼影。\n若小红帽没有复活的可能，则小红帽可以正常确认玩家职业与使用幽幽鬼影。\n\n真把我吓坏了！狼肚子里黑漆漆的……,小紅帽是一個可以在被殺死後，在下一輪復活的船員角色。\n(在被獵人帶走或者被擊球手擊飛等情況下不能復活)\n\n根據設定，小紅帽可在兇手於任務階段死亡後的下一輪會議結束時復活。\n\n如果小紅帽符合復活條件，則他將無法在靈界看到其他船員的角色，並且無法使用憑依能力。\n條件不符則如常。\n\n是誰把我從狼的肚子裡拉出來的?
+NiceRedRidingHoodCount,最大生き返り回数,Maximum number of revives,小红帽最大可复活次数,小紅帽最大可復活次數
+NiceRedRidinIsKillerDeathRevive,キル者がタスクターンに死亡した場合でも復活する,Resurrects even if the killers die in the task turn,若凶手在行动阶段死亡小红帽依然可以复活,若凶手在行動階段死亡小紅帽依然可以復活
+
+# MeetingSheriff Options
+MeetingSheriffLimitText,残り{0}回 (会議中:{1}回),Remaining {0} times (In meeting: {1} times),剩余{0}次 (会议中:{1}次),剩餘{0}次 (會議中:{1}次)
+MeetingSheriffShotsPerMeeting,1会議の最大キル数,Most kills in a single meeting
+
+# DoubleKiller
+DoubleKillerKillCountRemaining,サブキルボタンのキル回数制限,Sub kill button's kill remaining
+DoubleKillerMaxKillCount,キル可能回数,Max kill count
