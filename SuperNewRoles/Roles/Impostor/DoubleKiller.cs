@@ -37,7 +37,7 @@ class DoubleKiller : RoleBase<DoubleKiller>
     public static int DoubleKillerMaxKillCount;
 }
 
-public record DoubleKillerAbilityData(float? DoubleKillerCoolDown);
+public record DoubleKillerAbilityData(int? DoubleKillerCount);
 
 public class DoubleKillerAbility : AbilityBase, IAbilityCount
 {
@@ -53,7 +53,10 @@ public class DoubleKillerAbility : AbilityBase, IAbilityCount
         Player.AttachAbility(new CustomKillButtonAbility(
             () => true, () => GameOptionsManager.Instance.CurrentGameOptions.GetFloat(FloatOptionNames.KillCooldown), () => true), new AbilityParentAbility(this));
         Player.AttachAbility(new CustomKillButtonAbility(
-            () => DoubleKillerAbilityData.DoubleKillerCoolDown.HasValue ? Count <= DoubleKillerAbilityData.DoubleKillerCoolDown.Value : true, () => GameOptionsManager.Instance.CurrentGameOptions.GetFloat(FloatOptionNames.KillCooldown), () => true,
-            killedCallback: x => this.UseAbilityCount()), new AbilityParentAbility(this));
+            () => DoubleKillerAbilityData.DoubleKillerCount.HasValue ? Count <= DoubleKillerAbilityData.DoubleKillerCount.Value : true, () => GameOptionsManager.Instance.CurrentGameOptions.GetFloat(FloatOptionNames.KillCooldown), onlyCrewmates: () => true,
+            killedCallback: x => this.UseAbilityCount(),
+            showTextType: () => DoubleKillerAbilityData.DoubleKillerCount.HasValue ? ShowTextType.Show : ShowTextType.Hidden,
+            showText: () => DoubleKillerAbilityData.DoubleKillerCount.HasValue ? string.Format(ModTranslation.GetString("RemainingText"), (DoubleKillerAbilityData.DoubleKillerCount - Count).ToString()) : ""
+        ), new AbilityParentAbility(this));
     }
 }
