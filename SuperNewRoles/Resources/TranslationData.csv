@@ -328,6 +328,7 @@ SyncError_NotInstalled,{player}にSuperNewRolesが導入されていません。
 Bait,ベイト,Bait,餌,餌
 BestFalseCharge,ベスト冤罪ヤー,Best False Charge,最佳冤罪者,最佳冤罪者
 Sheriff,シェリフ,Sheriff,警长,警長
+MeetingSheriff,ミーティングシェリフ,Meeting Sheriff,会议警长,會議警長
 NiceGuesser,ナイスゲッサー,Nice Guesser,好人猜疑者,好人猜疑者
 EvilGuesser,イビルゲッサー,Evil Guesser,内鬼猜疑者,內鬼猜疑者
 Madmate,マッドメイト,Madmate,疯友,瘋友
@@ -422,6 +423,7 @@ NiceScientist,ナイスサイエンティスト,Nice Scientist
 EvilScientist,イビルサイエンティスト,Evil Scientist
 Lighter,ライター,Lighter
 Technician,技術者,Technician
+DoubleKiller,ダブルキラー,DoubleKiller
 
 
 # Descriptions_VanillaRoles
@@ -459,6 +461,7 @@ VampireDependent.Description,インポスター陣営に属する役職です。
 EvilMechanic.Description,タスクターンに使用出来る能力を有するインポスターです。\nベントに向かって「移設」ボタンを押すとベントの姿になり、そのベントを移動することが出来ます。\nベントの接続先は変更されません。,An Impostor with an ability usable during task turns.\nBy pressing the “Relocate” button near a vent, they transform into that vent and can move the vent’s position.\nThe vent’s connections remain unchanged.,这是一个在任务回合中可使用能力的内鬼。\n对准通风口按下“移位”按钮后，会变成通风口并可以移动该通风口。\n通风口的连接不发生变化。,這是一個在任務回合中可使用能力的內鬼。\n對準通風口按下「移位」按鈕後，會變成通風口並可以移動該通風口。\n通風口的連接不發生變化。,
 EvilHawk.Description,タスクターンに使用出来る能力を有するインポスターです。\n「ホークアイ」ボタンを押すと自分の視野が広がり、周囲の様子を見ることが出来ます。,An Impostor with an ability usable during task turns.\nBy pressing the “Hawkeye” button, they expand their vision to survey the surroundings.,这是一个在任务回合中可使用能力的内鬼。\n按下“鹰眼”按钮后，会扩大视野以观察周围情况。,這是一個在任務回合中可使用能力的內鬼。\n按下「鷹眼」按鈕後，會擴大視野以觀察周圍情況。,
 EvilScientist.Description,タスクターンに使用出来る能力を有するインポスターです。\n「透明化」ボタンを押すと、一定時間自身の姿が透明になります。\n透明化中であっても、能力の対象になります。\nまた、設定次第では能力使用中のライターには見えてしまいます。,An imposter with an ability that can be used during the Task Turn.\nWhen you press the 'Invisibility' button， your appearance becomes invisible for a certain period of time.\nEven while invisible， you can still be targeted by abilities.\nAlso， depending on the settings， writers may see you while you're using the ability。,是具有能够在任务轮回合使用能力的冒名顶替者。当你按下“隐身”按钮时，你的身影会在一定时间内变为隐形。即使在隐身状态下，你仍会成为能力的目标。另外，根据设置，在使用能力时，写手也可能会看到你。,是具有能夠在任務回合使用能力的冒名頂替者。當你按下「隱身」按鈕時，你的身影會在一定時間內變為隱形。即使在隱身狀態下，你仍會成為能力的目標。另外，根據設定，在使用能力時，寫手也可能會看到你。,
+DoubleKiller.Description,特殊なキル能力を有するインポスターです。\nキルボタンを2つ所持しています。\nクールタイムは独立しており、別々に使用することが出来ます。,
 
 # Descriptions_Neutral
 Jackal.Description,キル能力を有する第三陣営です。\n自陣営以外のキルが出来る陣営が全滅した上で、自陣営とクルーが同数以下になれば勝利します。\n設定次第で他のプレイヤーの役職を、自身の後継となるサイドキックや、手助けをしてくれるジャッカルフレンズに変更する能力を有することも出来ます。,A third-faction role with a kill ability.\nIt wins if all factions capable of killing outside its own are eliminated and its faction and the Crewmates are equal in number or fewer.\nDepending on the settings, it can change other players’ roles into a Sidekick (its successor) or Jackal Friends who assist it.,这是一个拥有击杀能力的第三阵营角色。\n当所有能够进行击杀的其他阵营被消灭，并且其阵营与船员人数相等或更少时，即可获胜。\n根据设定，它还可以将其他玩家的角色变更为边缘队员（其继任者）或协助的杰克朋友。,這是一個具備擊殺能力的第三陣營角色。\n當其他能進行擊殺的陣營全部被消滅，且其陣營與船員數量相等或更少時，即獲勝。\n根據設定，還可將其他玩家的角色變更為接班的邊翼或提供協助的傑克朋友。,
@@ -491,8 +494,8 @@ PartTimer.Description,キル能力を有さない第三陣営です。\n「バ�
 Bait.Description,タスクターンに発動する能力を有するクルーメイトです。\nキルされると、そのキル者に自身の死体を通報させます。,A Crewmate with an ability that activates during task turns.\nWhen killed, they force their killer to report their body.,一个在任务回合中可激活能力的船员。\n当被击杀时，会迫使击杀者报告他们的尸体。,一個在任務回合中可激活能力的船員。\n當被擊殺時，會迫使擊殺者報告他們的屍體。,
 BestFalseCharge.Description,特に能力を有さないクルーメイトです。\n死亡するまでこの役職だと自覚出来ません。\n最初の会議が終了すると、そのまま死亡します。,The ultimate red herring! A Crewmate with no abilities who lives in blissful ignorance.\nThey won’t realize they have this role until they’re dead—talk about a rude awakening!\nAfter the first meeting ends, they die faster than someone saying “I saw Blue vent!”,这是一个没有特殊能力的船员。\n在死亡之前他们不会意识到自己拥有这个角色。\n第一场会议结束后，他们会直接死亡。,這是一個沒有特殊能力的船員。\n在死亡之前他們不會察覺自己擁有這個角色。\n第一場會議結束後，他們會直接死亡。,
 Sheriff.Description,キル能力を有するクルーメイトです。\n「執行」ボタンを押すと、対象のプレイヤーに対してキル能力を行使します。\nその際、対象のプレイヤーがキル可能な陣営でなかった場合、自身が死亡してしまいます。\n基本的には、ライン精査等、白黒つけたいときに能力を使用すると良いでしょう。,A Crewmate with the ability to kill.\nBy pressing the “Execute” button, they can use their kill ability on a target player.\nHowever, if the target is not in a killable faction, they die.\nGenerally, this ability is best used when a clear decision is needed, such as during execution tests.,这是一个拥有击杀能力的船员。\n按下“执行”按钮后，可以对目标玩家施展击杀能力。\n但如果目标玩家不属于可被击杀的阵营，则自己会死亡。\n基本上，此能力适用于需要明确判定时使用，例如在排查时。 ,這是一個具備擊殺能力的船員。\n按下「執行」按鈕後，可以對目標玩家施展擊殺能力。\n若目標玩家不屬於可被擊殺的陣營，則使用者將會死亡。\n基本上，此能力適用於需要做出明確判斷時，例如進行排查時使用。,
-NiceGuesser.Description,会議に関する能力を有するクルーメイトです。\n会議中に出現するボタンを押し、対象のプレイヤーの役職が何か当てると、そのプレイヤーをキルすることが出来ます。\nただし、外すと自身が死亡してしまいます。,A Crewmate with a meeting-based ability.\nDuring meetings, they can press a button to guess a target player’s role; if correct, that player is killed.\nHowever, an incorrect guess results in their own death.,这是一个拥有会议相关能力的船员。\n在会议中，通过点击出现的按钮，若猜中目标玩家的角色，则能够将其击杀。\n但如果猜错，则自己会死亡。,這是一個具備會議相關能力的船員。\n在會議中，按下出現的按鈕後，若能猜中目標玩家的角色，便能將其擊殺。\n然而，若猜錯，則自己將會死亡。,
-Balancer.Description,会議に関する能力を有するクルーメイトです。\n会議中に出現するボタン2つを押すと、対象のプレイヤー二人のどちらか片方は最低でも追放される特殊な会議を開くことが出来ます。\n投票が同数だった場合、二人同時に追放されます。,A Crewmate with a meeting-focused ability.\nBy pressing the two buttons that appear during a meeting, a special meeting is initiated in which at least one of the two targeted players will be ejected.\nIn the event of a tie vote, both players are ejected simultaneously.,这是一个拥有会议相关能力的船员。\n在会议中按下出现的两个按钮后，便会发起一场特殊会议，确保目标的两名玩家中至少有一人被放逐。\n若投票数相同，则两人同时被放逐。,這是一個具備會議相關能力的船員。\n在會議中按下出現的兩個按鈕後，會啟動一個特殊會議，使目標的兩名玩家中至少有一人被逐出。\n若投票數相同，則兩人將同時被逐出。,
+NiceGuesser.Description,会議中に使用出来る能力を有するクルーメイトです。\n会議中に出現するボタンを押し、対象のプレイヤーの役職が何か当てると、そのプレイヤーをキルすることが出来ます。\nただし、外すと自身が死亡してしまいます。,A Crewmate with a meeting-based ability.\nDuring meetings, they can press a button to guess a target player’s role; if correct, that player is killed.\nHowever, an incorrect guess results in their own death.,这是一个拥有会议相关能力的船员。\n在会议中，通过点击出现的按钮，若猜中目标玩家的角色，则能够将其击杀。\n但如果猜错，则自己会死亡。,這是一個具備會議相關能力的船員。\n在會議中，按下出現的按鈕後，若能猜中目標玩家的角色，便能將其擊殺。\n然而，若猜錯，則自己將會死亡。,
+Balancer.Description,会議中に使用出来る能力を有するクルーメイトです。\n会議中に出現するボタン2つを押すと、対象のプレイヤー二人のどちらか片方は最低でも追放される特殊な会議を開くことが出来ます。\n投票が同数だった場合、二人同時に追放されます。,A Crewmate with a meeting-focused ability.\nBy pressing the two buttons that appear during a meeting, a special meeting is initiated in which at least one of the two targeted players will be ejected.\nIn the event of a tie vote, both players are ejected simultaneously.,这是一个拥有会议相关能力的船员。\n在会议中按下出现的两个按钮后，便会发起一场特殊会议，确保目标的两名玩家中至少有一人被放逐。\n若投票数相同，则两人同时被放逐。,這是一個具備會議相關能力的船員。\n在會議中按下出現的兩個按鈕後，會啟動一個特殊會議，使目標的兩名玩家中至少有一人被逐出。\n若投票數相同，則兩人將同時被逐出。,
 Chief.Description,タスクターンに使用出来る能力を有するクルーメイトです。\n「任命」ボタンを押すと、対象のプレイヤーの役職をシェリフに変更します。\nただし、対象のプレイヤーがインポスターだった場合、自殺してしまいます。,A Crewmate with an ability that can be used during task turns.\nBy pressing the “Appoint” button, they change a target player’s role to Sheriff.\nHowever, if the target player is an Impostor, they commit suicide.,这是一个在任务回合中能使用能力的船员。\n按下“任命”按钮后，会将目标玩家的角色更改为警长。\n但如果目标玩家是内鬼，则会自杀。,這是一個在任務回合中能夠使用能力的船員。\n按下「任命」按鈕後，會將目標玩家的角色變更為警長。\n不過，若目標玩家為內鬼，則會自動自殺。,
 HomeSecurityGuard.Description,特に能力を有さないクルーメイトです。\nタスクもありません。,A Crewmate with no special abilities.\nThey also have no tasks.,这是一个没有特殊能力的船员，也没有任务。,這是一個沒有特殊能力的船員，且沒有任務。,
 Seer.Description,タスクターンに発動する能力を有するクルーメイトです。\n誰かが死亡すると画面が青く発光します。\nまた、誰かが死亡した箇所に霊魂を確認することが出来ます。\nこれらの能力は設定によって、いずれかまたはどちらも保有します。,A Crewmate with an ability that activates during task turns.\nWhen someone dies, the screen emits a blue glow.\nThey can also detect a spirit at the location of the death.\nDepending on settings, they may have one or both of these abilities.,这是一个在任务回合中能发动能力的船员。\n当有人死亡时，屏幕会发出蓝光，并且可以在死亡地点检测到灵魂。\n这些能力依据设定可能单独或同时存在。,這是一個在任務回合中可發動能力的船員。\n當有人死亡時，螢幕會發出藍光，同時能在死亡地點察覺靈魂。\n這些能力可依據設定單獨或全部具備。,
@@ -520,6 +523,7 @@ Clergy.Description,タスクターンに使用出来る能力を有するクル�
 Lighter.Description,タスクターンに使用出来る能力を有するクルーメイトです。\n「点灯」ボタンを押すと一定時間自身の視野が広くなります。\nこの能力は停電を無視します。,
 Technician.Description,タスクターンに使用出来る能力を有するクルーメイトです。\nサボタージュ中のみベントを使用することが出来ます。\nベントの中にいるときにサボタージュが修理されると、ベントから脱出します。,
 NiceScientist.Description,タスクターンに使用出来る能力を有するクルーメイトです。\n「透明化」ボタンを押すと、一定時間自身の姿が透明になります。\n透明化中であっても、能力の対象になります。\nまた、設定次第では能力使用中のライターには見えてしまいます。,A crewmate with an ability that can be used during the Task Turn.\nWhen you press the 'Invisibility' button， your appearance becomes invisible for a certain period of time.\nEven while invisible， you can still be targeted by abilities.\nAlso， depending on the settings， writers may see you while you're using the ability。,是具有能够在任务轮回合使用能力的队员。当你按下“隐身”按钮时，你的身影会在一定时间内变为隐形。即使在隐身状态下，你仍会成为能力的目标。另外，根据设置，在使用能力时，写手也可能会看到你。,是具有能夠在任務回合使用能力的隊員。當你按下「隱身」按鈕時，你的身影會在一定時間內變為隱形。即使在隱身狀態下，你仍會成為能力的目標。另外，根據設定，在使用能力時，寫手也可能會看到你。,
+MeetingSheriff.Description,会議中に使用出来る能力を有するクルーメイトです。\n会議中に出現するボタンを押すと、対象のプレイヤーが人外だった場合キルをすることが出来ます。\nただし、対象がクルーメイトもしくはキル出来ない陣営だった場合、自らが死亡してしまいます。,
 
 # Descriptions_MadRoles
 Madmate.Description,インポスターの味方のクルーメイトです。\nいわゆる狂人と呼ばれる役職です。\n勝利条件はクルーメイトの勝利ではなく、インポスターの勝利です。\nその勝利に自身の生死は問われないので、あの手この手でインポスターを勝利に導きましょう。,A Crewmate allied with the Impostors.\nOften known as the Madmate.\nTheir win condition is not for the Crewmates to win, but for the Impostors to win.\nTheir own survival is irrelevant, so use any means necessary to secure an Impostor victory.,这是一个支持内鬼的船员，也称为疯友角色。\n他们的胜利条件不是船员获胜，而是内鬼获胜，并且他们的生死并不影响胜利。\n所以，尽可能地采用各种手段促成内鬼获胜。,這是一個支持內鬼的船員，俗稱瘋友角色。\n其勝利條件並非船員勝利，而是內鬼勝利，且自身生死不影響結果。\n因此，請用一切手段助內鬼取勝。,
@@ -576,6 +580,7 @@ VampireDependentIntro1,夜に魅入られし者,One enthralled by the night,夜�
 EvilMechanicIntro1,独善的な改造,Self-absorbed modification,自私的改造,自私的改造,
 EvilHawkIntro1,この目からは逃れられない,You cannot escape these eyes,无处可逃于此目,無處可逃於此目,
 EvilScientistIntro1,不可視の一撃,Invisible Strike,不可见的一击,不可見的一擊
+DoubleKillerIntro1,双つの刃を持ちし者,
 
 # Intros_Neutral
 JackalIntro1,暗躍するもう一人の殺人鬼,Another puppeteer of death in the shadows,另一个暗中操纵死亡者,另一個暗中操縱死亡者,
@@ -637,6 +642,7 @@ ClergyIntro1,聖なる光は闇を阻む,Holy light repels the darkness.
 LighterIntro1,暗いなら明るくすれば良いじゃん,If it’s dark，just make it bright,如果太暗，就把它弄亮吧,如果太暗，就把它弄亮吧
 TechnicianIntro1,通気口から参ります,I’ll come through the vent,我会从通风口过来,我會從通風口過來
 NiceScientistIntro1,不可視の観察者,Invisible observer,不可见的观察者,不可見的觀察者
+MeetingSheriffIntro1,正義の断罪は会議室で,
 
 # Intros_MadRoles
 MadmateIntro1,道を違えし者,One who has strayed from the path,误入歧途者,誤入歧途者,
@@ -1407,3 +1413,18 @@ LighterRadius,点灯時の視界の広さ,Field of view when lit
 
 # Technician
 TechnicianCanUseVentOnMushroomMixup,キノコカオス中にベントを使える,Can use vent during mushroom mixup
+
+# NiceRedRidingHood
+NiceRedRidingHood,ナイス赤ずきん,NiceRedRidingHood,小红帽,小紅帽
+NiceRedRidingHoodIntro1,生き返ろう,Come back to life,杀死你的凶手死亡后你将会复活,殺死你的凶手死亡後你將會復活
+NiceRedRidingHoodDescription,自身をキルしたクルーが死亡した場合、次のターンに復活するクルーメイト役職です。\n\nナイス赤ずきんは、復活可能回数が残っていて、且つ死体が発生するキルによって死亡した場合に復活する事ができます。\n(猫又役職による道ずれや、スラッガーによるキル等は復活の対象外です。)\n\nキル者がタスクフェイズ中に死亡した場合に復活するかは、設定によります。\nその設定が有効で、キル者がタスクフェイズ中に死亡した場合も、次の会議フェイズ終了時に復活します。\n\nナイス赤ずきんが復活可能な条件を満たしている場合は、霊界で他のクルーの役職を確認することができず、更に憑依能力を有しません。\n満たしていない場合は、霊界で他のクルーの役職が表示され、憑依能力も使用可能です。\n\n私を狼のお腹から引きずり出したのはどなた?,The Crew Mate role revives the crewmember who killed him or her on the next turn if he or she dies.\n\nNice Red Riding Hood can be revived if the number of times it can revive remains，and if it is killed by a kill that results in a corpse.\n(Excluded from resurrection are a wayward death by a nekomata role，a kill by a slugger，etc.)\n\nWhether or not a kill is resurrected if the kill is made during the Task Phase depends on the setting.\nIf the setting is enabled and the kill person dies during the Task Phase，he/she will be revived at the end of the next Meeting Phase.\n\nIf the Nice Red Riding Hood meets the requirements to be revivable，it will not be able to see the other crew members' roles in the spirit world，and furthermore，it will not have the ability to possess them.\nIf not met，the other crew members' roles will be visible in the spirit world and the possession ability will be available.\n\nWho pulled me out of the wolf's belly?,击杀小红帽的玩家死亡后，小红帽在下一轮开始时复活。\n\n小红帽的复活有一定的次数限制，且只有在留下尸体的场合才能复活。\n(如被猎人系职业连带而死，或被击球手击飞而死，小红帽均不能复活。)\n\n可以设置击杀小红帽的凶手若在行动阶段死亡，小红帽是否也能复活。\n若可以，当凶手在行动阶段死亡时，小红帽会在下个会议阶段结束时复活。\n\n如果小红帽有复活的可能，死亡的小红帽将不能确认所有玩家的职业，也不能使用幽幽鬼影。\n若小红帽没有复活的可能，则小红帽可以正常确认玩家职业与使用幽幽鬼影。\n\n真把我吓坏了！狼肚子里黑漆漆的……,小紅帽是一個可以在被殺死後，在下一輪復活的船員角色。\n(在被獵人帶走或者被擊球手擊飛等情況下不能復活)\n\n根據設定，小紅帽可在兇手於任務階段死亡後的下一輪會議結束時復活。\n\n如果小紅帽符合復活條件，則他將無法在靈界看到其他船員的角色，並且無法使用憑依能力。\n條件不符則如常。\n\n是誰把我從狼的肚子裡拉出來的?
+NiceRedRidingHoodCount,最大生き返り回数,Maximum number of revives,小红帽最大可复活次数,小紅帽最大可復活次數
+NiceRedRidinIsKillerDeathRevive,キル者がタスクターンに死亡した場合でも復活する,Resurrects even if the killers die in the task turn,若凶手在行动阶段死亡小红帽依然可以复活,若凶手在行動階段死亡小紅帽依然可以復活
+
+# MeetingSheriff Options
+MeetingSheriffLimitText,残り{0}回 (会議中:{1}回),Remaining {0} times (In meeting: {1} times),剩余{0}次 (会议中:{1}次),剩餘{0}次 (會議中:{1}次)
+MeetingSheriffShotsPerMeeting,1会議の最大キル数,Most kills in a single meeting
+
+# DoubleKiller
+DoubleKillerKillCountRemaining,サブキルボタンのキル回数制限,Sub kill button's kill remaining
+DoubleKillerMaxKillCount,キル可能回数,Max kill count
