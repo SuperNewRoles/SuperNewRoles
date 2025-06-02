@@ -421,6 +421,7 @@ Bullet,弾,Bullet
 NiceScientist,ナイスサイエンティスト,Nice Scientist
 EvilScientist,イビルサイエンティスト,Evil Scientist
 Lighter,ライター,Lighter
+Technician,技術者,Technician
 
 
 # Descriptions_VanillaRoles
@@ -1395,3 +1396,6 @@ ScientistCanTheLighterSeeTheScientist,ライターからは見える,Lighter can
 # Lighter
 LighterButtonText,点灯,Light On,点亮,點亮
 LighterRadius,点灯時の視界の広さ,Field of view when lit
+
+# Technician
+TechnicianCanUseVentOnMushroomMixup,キノコカオス中にベントを使える,Can use vent during mushroom mixup

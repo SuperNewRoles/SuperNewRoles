@@ -101,6 +101,8 @@ public enum RoleId : short
     NiceScientist,
     EvilScientist,
     Lighter,
+    Technician,
+
 }
 
 public enum GhostRoleId : short
@@ -135,7 +137,6 @@ public enum QuoteMod : byte
     TheOtherRolesGMH,
     AuLibHalt,
     ExtremeRoles,
-    exr
 }
 
 public enum TeamTag : byte
