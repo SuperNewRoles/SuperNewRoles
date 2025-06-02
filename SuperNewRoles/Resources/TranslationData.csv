@@ -1,4 +1,4 @@
-# Key，日本語，English,SChinese,TChinese
+# Key,日本語,English,SChinese,TChinese
 creditsMain,Created by ykundesu,Created by ykundesu,由 ykundesu 制作,由 ykundesu 製作
 WelcomeNextSuperNewRoles,新しいSuperNewRolesへ、ようこそ！,Welcome to the new SuperNewRoles!,欢迎来到全新的 SuperNewRoles!,歡迎來到全新的 SuperNewRoles!
 Close,閉じる,Close,关闭,關閉
@@ -229,7 +229,7 @@ MadRolesTest,マッド役職テスト,Mad Roles Test,疯狂角色测试,瘋狂�
 BulkRoleButton,役職数一括設定,Bulk Role Setting,批量设置角色,批量設定角色
 NumberOfCrews,人数,Number of Crewmates,船员人数,船員人數
 NumberOfCrewsSelected,{0}人,{0} people,{0}人,{0}人
-NumberOfCrewsPostfix,人，crews
+NumberOfCrewsPostfix,人, crews
 MaxPeople,最大人数,Maximum Number of People,最大人数,最大人數
 AssignPer,確率,Probability,概率,機率
 PresetSettings,プリセット設定,Preset Settings,预设设置,預設設定
@@ -320,9 +320,9 @@ AssignRoles_MaxNeutrals,最大   第三陣営   選出数,Max Neutrals,最大第
 # SyncError
 SyncError_Title,<size=150%>エラーが発生しました。</size>,<size=150%>Error occurred.</size>,<size=150%>发生错误。</size>,<size=150%>發生錯誤。</size>
 SyncError_VersionMismatch,{player}のバージョンが一致しません。(v{version}),{player}'s version does not match. (v{version}),{player}的版本不匹配。(v{version}),{player}的版本不符。(v{version})
-SyncError_RpcMapMismatch,{player}の通信番号が一致しません。，{player}'s communication numbers do not match.,{player}的通信编号不匹配。，{player}的通訊編號不符。
-SyncError_HashMismatch,{player}の実行ファイルが一致しません。，{player}'s executable files do not match.,{player}的执行文件不匹配。,{player}的執行檔不符。
-SyncError_NotInstalled,{player}にSuperNewRolesが導入されていません。，{player} does not have SuperNewRoles installed.,{player}没有安装SuperNewRoles.,{player}沒有安裝SuperNewRoles.
+SyncError_RpcMapMismatch,{player}の通信番号が一致しません。, {player}'s communication numbers do not match.,{player}的通信编号不匹配。，{player}的通訊編號不符。
+SyncError_HashMismatch,{player}の実行ファイルが一致しません。, {player}'s executable files do not match.,{player}的执行文件不匹配。,{player}的執行檔不符。
+SyncError_NotInstalled,{player}にSuperNewRolesが導入されていません。, {player} does not have SuperNewRoles installed.,{player}没有安装SuperNewRoles.,{player}沒有安裝SuperNewRoles.
 
 # Role
 Bait,ベイト,Bait,餌,餌
