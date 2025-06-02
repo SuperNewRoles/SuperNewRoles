@@ -22,6 +22,7 @@ UseLimit,使用可能回数,Usage Limit,可使用次数,可使用次數
 RemainingText,残り{0}回,Remaining {0} times,剩余 {0} 次,剩餘 {0} 次
 DurationTimerText,残り{0}秒,Remaining {0} seconds,剩余 {0} 秒,剩餘 {0} 秒
 AdditionalWin,追加勝利,Additional Win,额外胜利,額外勝利
+Seconds,秒,Seconds,秒,秒
 
 # CustomColors
 colorSalmon,サーモン,Salmon,鲑鱼红,鮭魚紅
@@ -198,6 +199,21 @@ RequestInGame_SuccessReportReturnButton,戻る,Return,返回,返回
 RoleOptionMenuType.Impostor,インポスター,Impostor,内鬼,內鬼
 RoleOptionMenuType.Crewmate,クルーメイト,Crewmate,船员,船員
 RoleOptionMenuType.Neutral,第三陣営,Neutral,第三阵营,第三陣營
+
+# Scientist Roles
+Role.NiceScientist,ナイスサイエンティスト,Nice Scientist,善良科学家,善良科學家
+Role.EvilScientist,イビルサイエンティスト,Evil Scientist,邪恶科学家,邪惡科學家
+ScientistButtonName,透明化,Invisible,隐身,隱身
+
+# NiceScientist
+NiceScientistCoolTime,クールタイム,Cool Time,冷却时间,冷卻時間
+NiceScientistDurationTime,効果時間,Duration Time,持续时间,持續時間
+NiceScientistCanTheLighterSeeTheScientist,ライターが透明化を見破れる,Lighter can see invisible,灯光师可以看见隐身,燈光師可以看見隱身
+
+# EvilScientist
+EvilScientistCoolTime,クールタイム,Cool Time,冷却时间,冷卻時間
+EvilScientistDurationTime,効果時間,Duration Time,持续时间,持續時間
+EvilScientistCanTheLighterSeeTheScientist,ライターが透明化を見破れる,Lighter can see invisible,灯光师可以看见隐身,燈光師可以看見隱身
 RoleOptionMenuType.Ghost,幽霊役職,Ghost Role,幽灵角色,幽靈角色
 RoleOptionMenuType.Modifier,モディファイア,Modifier,修饰符,修飾符
 
@@ -433,8 +449,8 @@ Matryoshka.Description,タスクターンに使用出来る能力を有するイ
 Conjurer.Description,特殊なキル能力を有するインポスターです。\nマーカーを三箇所に設置した状態で「圧縮」ボタンを押すと、マーカーを結んで出来る三角形の範囲内にいるプレイヤーを全てキルします。\nこの役職は通常キルは出来ません。,An Impostor with a special kill ability.\nBy placing markers at three locations and pressing the “Compress” button, they kill all players within the triangle formed by the markers.\nThis role cannot perform normal kills.,这是一个拥有特殊击杀能力的内鬼。\n在三个位置放置标记后，按下“压缩”按钮，会击杀所有位于标记构成的三角形范围内的玩家。\n此角色无法执行普通击杀。,這是一個具有特殊擊殺能力的內鬼。\n在三個位置放置標記後，按下「壓縮」按鈕，會擊殺所有位於標記構成的三角形範圍內的玩家。\n此角色無法執行普通擊殺。,
 Doppelganger.Description,キルに関係する能力を有するインポスターです。\n他プレイヤーの姿に変身することが出来ます。\n変身元のプレイヤーをキルすると、キルクールが短くなります。\n変身せずにキルをしたり、変身元以外のプレイヤーをキルするとキルクールが長くなります。,An Impostor with kill-related abilities.\nThey can transform into the appearance of another player.\nIf they kill the player they transformed into, their kill cooldown is reduced.\nIf they kill without transforming or kill a player other than the transformation target, their kill cooldown increases.,这是一个拥有击杀相关能力的内鬼。\n他们可以变身为其他玩家的外貌。\n如果杀死了他们变身的目标玩家，击杀冷却时间会缩短。\n如果没有变身就击杀，或击杀了变身目标以外的玩家，击杀冷却时间会增加。,這是一個具備擊殺相關能力的內鬼。\n他們可以變身為其他玩家的外貌。\n若殺死了他們變身的目標玩家，擊殺冷卻時間會縮短。\n若未變身就擊殺，或擊殺了變身目標以外的玩家，擊殺冷卻時間會增加。,
 EvilButtoner.Description,タスクターンに使用出来る能力を有するインポスターです。\n「ポチッ」ボタンを押すことでサボタージュ中以外ならいつでもどこでも緊急会議を開始出来ます。,An Impostor with an ability usable during task turns.\nBy pressing the “Button” button, they can call an emergency meeting anytime and anywhere, as long as no sabotage is in progress.,这是一个在任务回合中可使用能力的内鬼。\n按下“会议”按钮后，只要没有破坏进行，就可以随时随地发起紧急会议。,這是一個在任務回合中可使用能力的內鬼。\n按下「會議」按鈕後，只要沒有破壞進行，就可以隨時隨地發起緊急會議。,
-Necromancer.Description,自陣営を増やす能力を有するインポスターです。幽霊を見ることが出来、幽霊に「呪縛」ボタンを押すと、対象のプレイヤーの役職をレヴェナントに変更します。,An Impostor with the ability to increase their faction. They can see ghosts, and by pressing the “Curse” button on a ghost, they change the target player's role to Revenant.,一个拥有增加自身阵营能力的内鬼。\n他们可以看到幽灵，并按下“诅咒”按钮，对幽灵目标玩家的角色进行更改，将其变为灵魂。,一個具有增加自身陣營能力的內鬼。\n他們可以看到幽靈，並按下「詛咒」按鈕，將幽靈目標玩家的角色更改為亡靈。,
-Revenant.Description,インポスター陣営に属する幽霊役職です。タスクターンに使用出来る能力を有します。「呪う」ボタンを押すと対象に取り憑き、視界を奪います。,A ghost role belonging to the Impostor team. Has an ability that can be used during the task turn. Pressing the “Haunt” button possesses the target and steals their vision.,一个属于内鬼阵营的幽灵角色。\n在任务回合中可使用能力。\n按下“附身”按钮即可附身目标玩家，并夺取他们的视野。,一個屬於內鬼陣營的幽靈角色。\n在任務回合中可使用能力。\n按下「附身」按鈕即可附身目標玩家，並奪取他們的視野。,
+Necromancer.Description,自陣営を増やす能力を有するインポスターです。\n幽霊を見ることが出来、幽霊に「呪縛」ボタンを押すと、対象のプレイヤーの役職をレヴェナントに変更します。,An Impostor with the ability to increase their faction. \nThey can see ghosts, and by pressing the “Curse” button on a ghost, they change the target player's role to Revenant.,一个拥有增加自身阵营能力的内鬼。\n他们可以看到幽灵，并按下“诅咒”按钮，对幽灵目标玩家的角色进行更改，将其变为灵魂。,一個具有增加自身陣營能力的內鬼。\n他們可以看到幽靈，並按下「詛咒」按鈕，將幽靈目標玩家的角色更改為亡靈。,
+Revenant.Description,インポスター陣営に属する幽霊役職です。\nタスクターンに使用出来る能力を有します。\n「呪う」ボタンを押すと対象に取り憑き、視界を奪います。,A ghost role belonging to the Impostor team. \nHas an ability that can be used during the task turn. \nPressing the “Haunt” button possesses the target and steals their vision.,一个属于内鬼阵营的幽灵角色。\n在任务回合中可使用能力。\n按下“附身”按钮即可附身目标玩家，并夺取他们的视野。,一個屬於內鬼陣營的幽靈角色。\n在任務回合中可使用能力。\n按下「附身」按鈕即可附身目標玩家，並奪取他們的視野。,
 Teleporter.Description,タスクターンに使用出来る能力を有するインポスターです。\n「テレポート！」ボタンを押すことで自分を含む生存者の誰かのところへ生存者全員をテレポートさせます。,An Impostor with an ability usable during task turns.\nBy pressing the “Teleport!” button, they teleport all survivors, including themselves, to the location of any chosen survivor.,一个在任务回合中可使用能力的内鬼。\n按下“传送！”按钮后，可将包括自己在内的所有幸存者传送到任意幸存者的位置。,一個在任務回合中可使用能力的內鬼。\n按下「傳送！」按鈕後，可將包括自己在內的所有倖存者傳送到任意倖存者的位置。,
 Pursuer.Description,タスクターンに発動する能力を有するインポスターです。\nインポスター以外の自分から最も近い位置にいる生存者に向かって矢印が出ます。,An Impostor with an ability that activates during task turns.\nAn arrow appears pointing toward the closest survivor who is not an Impostor relative to them.,一个在任务回合中可激活能力的内鬼。\n会出现一支箭头，指向距离他们最近的非内鬼幸存者。,一個在任務回合中可激活能力的內鬼。\n會出現一支箭頭，指向距離他們最近的非內鬼倖存者。,
 Crab.Description,タスクターンに使用出来る能力を有するインポスターです。\n「カニ」ボタンを押すことで全てのプレイヤーを少しの間横方向にしか移動出来なくします。,An Impostor with an ability usable during task turns.\nBy pressing the “Crab” button, they restrict all players to move only horizontally for a short period.,一个在任务回合中可使用能力的内鬼。\n按下“螃蟹”按钮后，可使所有玩家在短时间内仅能横向移动。,一個在任務回合中可使用能力的內鬼。\n按下「螃蟹」按鈕後，可使所有玩家在短時間內僅能橫向移動。,
@@ -444,6 +460,7 @@ Vampire.Description,特殊なキル能力を有するインポスターです。
 VampireDependent.Description,インポスター陣営に属する役職です。\nキル能力を有します。\n通常時は視野が狭く、停電時は視野が広くなります。\nこの役職は、アドミンに映らず、死亡してもバイタル上では死亡表記になりません。\nまた、停電を直す気がありません。\nマッドメイト同様クルーメイト判定の役職です。\n自身を眷属に変化させたヴァンパイアが死亡すると、共に死亡します。,A role belonging to the Impostor faction.\nThey have a kill ability.\nTheir vision is narrow normally but becomes wide during a blackout.\nThis role does not appear on Admin and is not marked as dead on Vitals when killed.\nThey also do not repair lights.\nThey are considered a Crewmate similar to Madmate.\nIf the Vampire they turned into a Thrall dies, they die as well.,一个隶属于内鬼阵营的角色。\n他们具有击杀能力。\n在正常情况下视野狭窄，但在停电时视野变宽。\n此角色不会在管理员界面出现，也不会在生命迹象面板上显示死亡。\n此外，他们不会修复停电。\n他们被视为与疯友相同的船员角色。\n当将其变为眷属的吸血鬼死亡时，他们也会死亡。,一個隸屬於內鬼陣營的角色。\n他們具有擊殺能力。\n在正常情況下視野狹窄，但在停電時視野變寬。\n此角色不會在管理員介面出現，也不會在生命跡象面板上顯示死亡。\n此外，他們不會修復停電。\n他們被視為與瘋友相同的船員角色。\n當將其變為眷屬的吸血鬼死亡時，他們也會死亡。,
 EvilMechanic.Description,タスクターンに使用出来る能力を有するインポスターです。\nベントに向かって「移設」ボタンを押すとベントの姿になり、そのベントを移動することが出来ます。\nベントの接続先は変更されません。,An Impostor with an ability usable during task turns.\nBy pressing the “Relocate” button near a vent, they transform into that vent and can move the vent’s position.\nThe vent’s connections remain unchanged.,这是一个在任务回合中可使用能力的内鬼。\n对准通风口按下“移位”按钮后，会变成通风口并可以移动该通风口。\n通风口的连接不发生变化。,這是一個在任務回合中可使用能力的內鬼。\n對準通風口按下「移位」按鈕後，會變成通風口並可以移動該通風口。\n通風口的連接不發生變化。,
 EvilHawk.Description,タスクターンに使用出来る能力を有するインポスターです。\n「ホークアイ」ボタンを押すと自分の視野が広がり、周囲の様子を見ることが出来ます。,An Impostor with an ability usable during task turns.\nBy pressing the “Hawkeye” button, they expand their vision to survey the surroundings.,这是一个在任务回合中可使用能力的内鬼。\n按下“鹰眼”按钮后，会扩大视野以观察周围情况。,這是一個在任務回合中可使用能力的內鬼。\n按下「鷹眼」按鈕後，會擴大視野以觀察周圍情況。,
+EvilScientist.Description,タスクターンに使用出来る能力を有するインポスターです。\n「透明化」ボタンを押すと、一定時間自身の姿が透明になります。\n透明化中であっても、能力の対象になります。\nまた、設定次第では能力使用中のライターには見えてしまいます。,An imposter with an ability that can be used during the Task Turn.\nWhen you press the 'Invisibility' button， your appearance becomes invisible for a certain period of time.\nEven while invisible， you can still be targeted by abilities.\nAlso， depending on the settings， writers may see you while you're using the ability。,是具有能够在任务轮回合使用能力的冒名顶替者。当你按下“隐身”按钮时，你的身影会在一定时间内变为隐形。即使在隐身状态下，你仍会成为能力的目标。另外，根据设置，在使用能力时，写手也可能会看到你。,是具有能夠在任務回合使用能力的冒名頂替者。當你按下「隱身」按鈕時，你的身影會在一定時間內變為隱形。即使在隱身狀態下，你仍會成為能力的目標。另外，根據設定，在使用能力時，寫手也可能會看到你。,
 DoubleKiller.Description,特殊なキル能力を有するインポスターです。\nキルボタンを2つ所持しています。\nクールタイムは独立しており、別々に使用することが出来ます。,
 
 # Descriptions_Neutral
@@ -503,6 +520,9 @@ HamburgerShop.Description,特に能力を有さないクルーメイトです。
 NiceHawk.Description,タスクターンに使用出来る能力を有するクルーメイトです。\n「ホークアイ」ボタンを押すと自分の視野が広がり、周囲の様子を見ることが出来ます。,A Crewmate with an ability usable during task turns.\nBy pressing the “Hawkeye” button, they expand their vision to survey the surroundings.,这是一个在任务回合中可使用能力的船员。\n按下“鹰眼”按钮后，会扩大视野以观察周围情况。,這是一個在任務回合中可使用能力的船員。\n按下「鷹眼」按鈕後，會擴大視野以觀察周圍情況。,
 WiseMan.Description,タスクターンに使用出来る能力を有するクルーメイトです。\n「聖なるバリア」ボタンを押すと、一定時間動けなくなる代わりに、キルを跳ね返すバリアを貼ります。\n通常キルをされた場合、キルをしてきたプレイヤーが死亡します。\n波動砲が当たった場合、波動砲は真上、真下、斜め上、斜め下の4つのいずれかの角度に向かって跳ね返ります。,A Crewmate with an ability usable during task turns.\nBy pressing the “Holy Barrier” button, they become immobile for a set duration but place a barrier that reflects kills.\nIf a normal kill hits them, the killer dies instead.\nIf hit by a Wave Cannon, the beam is reflected in one of four directions—up, down, upward diagonal, or downward diagonal.,这是一个在任务回合中可使用能力的船员。\n按下“圣光屏障”按钮后，他们会在一段时间内无法移动，但会生成一个反射击杀的屏障。\n如果被普通击杀击中，击杀者会死亡。\n如果被波动炮击中，光束会向上，下，斜上或斜下四个方向中的一个反射。,這是一個在任務回合中可使用能力的船員。\n按下「聖光屏障」按鈕後，他們會在一段時間內無法移動，但會生成一個反射擊殺的屏障。\n如果被普通擊殺擊中，擊殺者會死亡。\n如果被波動砲擊中，光束會向上，下，斜上或斜下四個方向中的一個反射。,
 Clergy.Description,タスクターンに使用出来る能力を有するクルーメイトです。\n「聖なる光」ボタンを押すと、一定時間インポスターの視界を狭くすることが出来ます。\n設定次第ではキル能力を持つ第三陣営の視界を妨害することも出来ます。,I'm a crewmate with abilities usable during task turns.\nBy pressing the 'Holy Light' button，you can reduce the impostor's vision for a certain period of time.\nDepending on the settings，it can also obstruct the vision of third-party roles with kill abilities.
+Lighter.Description,タスクターンに使用出来る能力を有するクルーメイトです。\n「点灯」ボタンを押すと一定時間自身の視野が広くなります。\nこの能力は停電を無視します。,
+Technician.Description,タスクターンに使用出来る能力を有するクルーメイトです。\nサボタージュ中のみベントを使用することが出来ます。\nベントの中にいるときにサボタージュが修理されると、ベントから脱出します。,
+NiceScientist.Description,タスクターンに使用出来る能力を有するクルーメイトです。\n「透明化」ボタンを押すと、一定時間自身の姿が透明になります。\n透明化中であっても、能力の対象になります。\nまた、設定次第では能力使用中のライターには見えてしまいます。,A crewmate with an ability that can be used during the Task Turn.\nWhen you press the 'Invisibility' button， your appearance becomes invisible for a certain period of time.\nEven while invisible， you can still be targeted by abilities.\nAlso， depending on the settings， writers may see you while you're using the ability。,是具有能够在任务轮回合使用能力的队员。当你按下“隐身”按钮时，你的身影会在一定时间内变为隐形。即使在隐身状态下，你仍会成为能力的目标。另外，根据设置，在使用能力时，写手也可能会看到你。,是具有能夠在任務回合使用能力的隊員。當你按下「隱身」按鈕時，你的身影會在一定時間內變為隱形。即使在隱身狀態下，你仍會成為能力的目標。另外，根據設定，在使用能力時，寫手也可能會看到你。,
 MeetingSheriff.Description,会議中に使用出来る能力を有するクルーメイトです。\n会議中に出現するボタンを押すと、対象のプレイヤーが人外だった場合キルをすることが出来ます。\nただし、対象がクルーメイトもしくはキル出来ない陣営だった場合、自らが死亡してしまいます。,
 
 # Descriptions_MadRoles
@@ -559,6 +579,7 @@ VampireIntro1,闇に舞うは夜の帝王,The Night King dances in darkness,夜�
 VampireDependentIntro1,夜に魅入られし者,One enthralled by the night,夜之魅者,夜之魅者,
 EvilMechanicIntro1,独善的な改造,Self-absorbed modification,自私的改造,自私的改造,
 EvilHawkIntro1,この目からは逃れられない,You cannot escape these eyes,无处可逃于此目,無處可逃於此目,
+EvilScientistIntro1,不可視の一撃,Invisible Strike,不可见的一击,不可見的一擊
 DoubleKillerIntro1,双つの刃を持ちし者,
 
 # Intros_Neutral
@@ -618,6 +639,9 @@ HamburgerShopIntro1,ハンバーガーはいかがですか？,How about a hambu
 NiceHawkIntro1,この目は悪事を見逃さない,These eyes miss no evil deeds,此目不容恶行,此目不容惡行,
 WiseManIntro1,聖なる守りを授かりし者,Bearer of the holy ward,圣之守护者,聖之守護者,
 ClergyIntro1,聖なる光は闇を阻む,Holy light repels the darkness.
+LighterIntro1,暗いなら明るくすれば良いじゃん,If it’s dark，just make it bright,如果太暗，就把它弄亮吧,如果太暗，就把它弄亮吧
+TechnicianIntro1,通気口から参ります,I’ll come through the vent,我会从通风口过来,我會從通風口過來
+NiceScientistIntro1,不可視の観察者,Invisible observer,不可见的观察者,不可見的觀察者
 MeetingSheriffIntro1,正義の断罪は会議室で,
 
 # Intros_MadRoles
