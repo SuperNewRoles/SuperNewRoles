@@ -102,8 +102,7 @@ public enum RoleId : short
     EvilScientist,
     Lighter,
     Technician,
-    MeetingSheriff,
-    DoubleKiller,
+
 }
 
 public enum GhostRoleId : short

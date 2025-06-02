@@ -217,7 +217,7 @@ public class ExPlayerControl
     }
     public bool showKillButtonVanilla()
     {
-        return IsImpostor() && IsAlive() && (_killableAbility == null || _killableAbility.CanKill || _customKillButtonAbility == null);
+        return IsImpostor() && IsAlive() && _customKillButtonAbility == null && (_killableAbility == null || _killableAbility.CanKill);
     }
     private void DetachOldRole(RoleId roleId)
     {
