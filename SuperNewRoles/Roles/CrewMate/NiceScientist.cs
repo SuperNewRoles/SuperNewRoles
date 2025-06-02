@@ -16,7 +16,7 @@ internal class NiceScientist : RoleBase<NiceScientist>
     public override WinnerTeamType WinnerTeam => WinnerTeamType.Crewmate;
     public override TeamTag TeamTag => TeamTag.Crewmate;
     public override RoleTag[] RoleTags => [];
-    public override short IntroNum => 2;
+    public override short IntroNum => 1;
     public override RoleTypes IntroSoundType => RoleTypes.Scientist;
     public override QuoteMod QuoteMod => QuoteMod.SuperNewRoles;
     public override RoleOptionMenuType OptionTeam => RoleOptionMenuType.Crewmate;
