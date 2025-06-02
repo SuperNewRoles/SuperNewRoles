@@ -402,6 +402,10 @@ Clergy,聖職者,Clergy,牧师,牧師
 EvilHawk,イビルホーク,Evil Hawk
 ModifierHawk,モディファイアホーク,Modifier Hawk
 Bullet,弾,Bullet
+NiceScientist,ナイスサイエンティスト,Nice Scientist
+EvilScientist,イビルサイエンティスト,Evil Scientist
+Lighter,ライター,Lighter
+Technician,技術者,Technician
 
 
 # Descriptions_VanillaRoles
@@ -1369,3 +1373,13 @@ ClergyEffectDuration,効果持続時間,Effect Duration,效果持续时间,效�
 ClergyVisionMultiplier,視界倍率,Vision Multiplier,视野倍率,視野倍率
 ClergyActiveForNeutralKiller,第三キラーも影響を受ける,The third killer is also affected.
 ClergyEffectMessage,聖職者に視界を妨害されている,My view is being obstructed by a Clergy
+
+# Scientist
+ScientistCanTheLighterSeeTheScientist,ライターからは見える,Lighter can see scientist.
+
+# Lighter
+LighterButtonText,点灯,Light On,点亮,點亮
+LighterRadius,点灯時の視界の広さ,Field of view when lit
+
+# Technician
+TechnicianCanUseVentOnMushroomMixup,キノコカオス中にベントを使える,Can use vent during mushroom mixup
