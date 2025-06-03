@@ -10,6 +10,7 @@ public static class HudManagerUpdatePatch
 {
     public static void Postfix(HudManager __instance)
     {
+        if (AmongUsClient.Instance.GameState != InnerNet.InnerNetClient.GameStates.Started) return;
         if (!GameSettingOptions.DisableHauntNonCompleted) return;
         if (ExPlayerControl.LocalPlayer.IsAlive()) return;
         if (!ExPlayerControl.LocalPlayer.IsTaskTriggerRole()) return;
@@ -24,6 +25,7 @@ public static class PlayerControlCompleteTask
 {
     public static void Postfix(PlayerControl __instance)
     {
+        if (AmongUsClient.Instance.GameState != InnerNet.InnerNetClient.GameStates.Started) return;
         if (!GameSettingOptions.DisableHauntNonCompleted) return;
         if (!__instance.AmOwner) return;
         if (ExPlayerControl.LocalPlayer.IsAlive()) return;
