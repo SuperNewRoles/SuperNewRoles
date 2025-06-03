@@ -2,6 +2,7 @@ using HarmonyLib;
 using UnityEngine;
 using InnerNet;
 using SuperNewRoles.Modules;
+using SuperNewRoles.CustomOptions.Categories;
 
 namespace SuperNewRoles.Patches;
 
