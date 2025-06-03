@@ -161,7 +161,7 @@ public class CustomVentAbility : CustomButtonBase
 [HarmonyPatch(typeof(Vent), nameof(Vent.CanUse))]
 public class VentSetButtonsPatch
 {
-    public static bool Prefix(Vent __instance, ref float __result, out bool canUse, out bool couldUse)
+    public static bool Prefix(Vent __instance, NetworkedPlayerInfo pc, ref float __result, out bool canUse, out bool couldUse)
     {
         canUse = couldUse = false;
         __result = 0;
@@ -171,6 +171,21 @@ public class VentSetButtonsPatch
             canUse = couldUse = false;
             __result = 0;
             return false;
+        }
+        if (pc.Object.inVent && Vent.currentVent != null)
+        {
+            if (__instance.Id == Vent.currentVent.Id)
+            {
+                canUse = couldUse = true;
+                __result = 0f;
+                return false;
+            }
+            else
+            {
+                canUse = couldUse = false;
+                __result = float.MaxValue;
+                return false;
+            }
         }
         canUse = couldUse = true;
         return true;
