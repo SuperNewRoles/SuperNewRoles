@@ -103,6 +103,7 @@ public enum RoleId : short
     Lighter,
     Technician,
     Medium,
+    EvilSeer,
 
 }
 
