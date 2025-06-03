@@ -6,7 +6,7 @@ using SuperNewRoles.Modules;
 using SuperNewRoles.Roles.Ability;
 using UnityEngine;
 
-namespace SuperNewRoles.Roles.Impostor;
+namespace SuperNewRoles.Roles.Madmates;
 
 class Worshiper : RoleBase<Worshiper>
 {
@@ -25,7 +25,7 @@ class Worshiper : RoleBase<Worshiper>
 
     public override AssignedTeamType AssignedTeam { get; } = AssignedTeamType.Crewmate;
     public override WinnerTeamType WinnerTeam { get; } = WinnerTeamType.Impostor;
-    public override TeamTag TeamTag { get; } = TeamTag.Impostor;
+    public override TeamTag TeamTag { get; } = TeamTag.Madmate;
     public override RoleTag[] RoleTags { get; } = [RoleTag.Information];
     public override RoleOptionMenuType OptionTeam { get; } = RoleOptionMenuType.Crewmate;
 

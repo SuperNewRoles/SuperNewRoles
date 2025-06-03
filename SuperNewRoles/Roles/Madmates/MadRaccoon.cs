@@ -50,7 +50,7 @@ class MadRaccoon : RoleBase<MadRaccoon>
     [CustomOptionBool("MadRaccoonCanKnowImpostors", false, translationName: "MadmateCanKnowImpostors")]
     public static bool MadRaccoonCanKnowImpostors;
 
-    [CustomOptionInt("MadRaccoonNeededTaskCount", 0, 30, 1, 6, parentFieldName: nameof(MadRaccoonCanKnowImpostors))]
+    [CustomOptionInt("MadRaccoonNeededTaskCount", 0, 30, 1, 6, parentFieldName: nameof(MadRaccoonCanKnowImpostors), translationName: "MadmateNeededTaskCount")]
     public static int MadRaccoonNeededTaskCount;
 
     [CustomOptionBool("MadRaccoonIsSpecialTasks", false, translationName: "MadmateIsSpecialTasks")]
