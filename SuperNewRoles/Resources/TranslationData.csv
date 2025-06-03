@@ -146,6 +146,7 @@ AprilFoolsOutfitType.Horse,ウマングアス,Horse
 AprilFoolsOutfitType.AlongUs,ロングモード,aLONG us
 AprilFoolsEnableDleks,ドルクス,Dleks ehT
 DisableHauntNonCompleted,タスクを完了していないと憑依できない,Disable haunt if the task is not completed
+EnabledZoomOnDead,霊界千里眼を有効にする,Enable spectator clairvoyance after death
 
 # Analytics
 AnalyticsPopupTitle,解析データの送信,Send analytics data,发送分析数据,發送分析數據
@@ -1313,10 +1314,11 @@ BlackHatHackerIsNotInfectionIncrease,感染者が居なくなったらハック�
 BlackHatHackerHackInfectiousTime,感染時間,Infectious time,感染所需时间,感染所需時間
 BlackHatHackerNotInfectiousTime,会議後感染が進まない時間,Post-meeting time when infection does not progress,会议阶段结束后感染停止持续时间,會議結束感染停止的持續時間
 BlackHatHackerStartSelfPropagation,自己増殖が開始される感染度,Infection level at which self-propagation starts,感染度达到开始自增殖,感染度達到開始自增殖
+BlackHatHackerStartSelfPropagationType.Percent0,0%,0%
 BlackHatHackerStartSelfPropagationType.Percent25,25%,25%
 BlackHatHackerStartSelfPropagationType.Percent50,50%,50%
 BlackHatHackerStartSelfPropagationType.Percent75,75%,75%
-BlackHatHackerStartSelfPropagationType.Percent90,90%,90%
+BlackHatHackerStartSelfPropagationType.Percent100,100%,100%
 BlackHatHackerInfectionScope,感染範囲,Infection scope,感染范围,感染範圍
 BlackHatHackerInfectionScopeType.Short,近距離,Short,短距离,短距離
 BlackHatHackerInfectionScopeType.Medium,中距離,Medium,中距离,中距離
