@@ -35,6 +35,9 @@ public static class GameSettingOptions
     [CustomOptionBool("AprilFoolsEnableDleks", false, parentFieldName: nameof(CustomAprilFools))]
     public static bool AprilFoolsEnableDleks;
 
+    [CustomOptionBool("EnabledZoomOnDead", true, parentFieldName: nameof(Categories.GeneralSettings))]
+    public static bool EnabledZoomOnDead;
+
     [CustomOptionBool("DisableHauntNonCompleted", false, parentFieldName: nameof(Categories.GameSettings))]
     public static bool DisableHauntNonCompleted;
 }

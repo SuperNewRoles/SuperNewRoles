@@ -52,7 +52,7 @@ public static class HawkZoom
             zoomSpeed = 0f;
         }
         // ユーザーが編集した手動ズーム条件
-        else if (GeneralSettingOptions.EnabledZoomOnDead && !data.RefCancelZoom && ExPlayerControl.LocalPlayer != null && ExPlayerControl.LocalPlayer.IsDead() && MeetingHud.Instance == null)
+        else if (GameSettingOptions.EnabledZoomOnDead && !data.RefCancelZoom && ExPlayerControl.LocalPlayer != null && ExPlayerControl.LocalPlayer.IsDead() && MeetingHud.Instance == null)
         {
             if (!PlayerControl.LocalPlayer.CanMove)
             {
