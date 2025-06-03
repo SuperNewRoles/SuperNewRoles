@@ -145,6 +145,7 @@ AprilFoolsOutfitType.None,なし,None
 AprilFoolsOutfitType.Horse,ウマングアス,Horse
 AprilFoolsOutfitType.AlongUs,ロングモード,aLONG us
 AprilFoolsEnableDleks,ドルクス,Dleks ehT
+DisableHauntNonCompleted,タスクを完了していないと憑依できない,Disable haunt if the task is not completed
 
 # Analytics
 AnalyticsPopupTitle,解析データの送信,Send analytics data,发送分析数据,發送分析數據

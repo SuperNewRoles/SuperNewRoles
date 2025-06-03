@@ -34,6 +34,9 @@ public static class GameSettingOptions
     public static AprilFoolsOutfitType AprilFoolsOutfitType;
     [CustomOptionBool("AprilFoolsEnableDleks", false, parentFieldName: nameof(CustomAprilFools))]
     public static bool AprilFoolsEnableDleks;
+
+    [CustomOptionBool("DisableHauntNonCompleted", false, parentFieldName: nameof(Categories.GameSettings))]
+    public static bool DisableHauntNonCompleted;
 }
 public enum AprilFoolsOutfitType
 {
