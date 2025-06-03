@@ -102,6 +102,7 @@ public class WiseManAbility : CustomButtonBase, IButtonEffect
         if (Guarded) return;
         if (data.RefTarget != Player) return;
         if (data.Killer == data.RefTarget) return;
+        if (!Active) return;
         data.RefSuccess = false;
         data.Killer.CustomDeath(CustomDeathType.Suicide);
         Guarded = true;
