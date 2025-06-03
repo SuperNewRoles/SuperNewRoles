@@ -710,6 +710,10 @@ MadmateNeededTaskCount,必要タスク数,Required Task Count,需要完成任务
 BlackCatRevengeNotImpostorExile,インポスターを道連れしない,Do Not Exile Impostor,不带内鬼出局,不帶內鬼出局
 MadmateIsSpecialTasks,タスク数を変更する,Change Task Count,改变任务数,改變任務數
 MadmateSpecialTasks,タスク数,Task Count,任务数,任務數
+MadmateSettings,マッドメイトの設定,Madmate Settings,
+MadmateCannotFixComms,通信を修復できない,Cannot Fix Comms,不能修复通信,不能修復通信
+MadmateCannotFixElectrical,電気を修復できない,Cannot Fix Electrical,不能修复电力,不能修復電力
+MadmateCannotFixReactor,リアクターを修復できない,Cannot Fix Reactor,不能修复反应炉,不能修復反應爐
 
 # Jackal Options
 JackalKillCooldown,キルクールダウン,Kill Cooldown,杰克击杀冷却时间,傑克殺人冷卻時間
