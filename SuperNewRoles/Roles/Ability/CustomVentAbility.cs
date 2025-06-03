@@ -163,6 +163,9 @@ public class VentSetButtonsPatch
 {
     public static bool Prefix(Vent __instance, ref float __result, out bool canUse, out bool couldUse)
     {
+        canUse = couldUse = false;
+        __result = 0;
+        if (AmongUsClient.Instance.NetworkMode == NetworkModes.FreePlay) return true;
         if (!ExPlayerControl.LocalPlayer.CanUseVent())
         {
             canUse = couldUse = false;
