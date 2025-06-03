@@ -187,8 +187,8 @@ public static class PoolablePlayer_UpdateFromEitherPlayerDataOrCache
         if (pData.Object == null) return;
         CustomCosmeticsLayer customCosmeticsLayer = CustomCosmeticsLayers.ExistsOrInitialize(__instance.cosmetics);
         CustomCosmeticsLayer pcLayer = CustomCosmeticsLayers.ExistsOrInitialize(pData.Object.cosmetics);
-        customCosmeticsLayer?.hat2?.SetHat(pcLayer.hat2.Hat?.ProdId ?? "", pData.DefaultOutfit.ColorId);
-        customCosmeticsLayer?.visor2?.SetVisor(pcLayer.visor2.Visor?.ProdId ?? "", pData.DefaultOutfit.ColorId);
+        customCosmeticsLayer?.hat2?.SetHat(pcLayer.hat2.DefaultHat?.ProdId ?? "", pData.DefaultOutfit.ColorId);
+        customCosmeticsLayer?.visor2?.SetVisor(pcLayer.visor2.DefaultVisor?.ProdId ?? "", pData.DefaultOutfit.ColorId);
         customCosmeticsLayer?.hat2?.SetMaskType(maskType);
         customCosmeticsLayer?.visor2?.SetMaskType(maskType);
     }
@@ -331,9 +331,9 @@ public static class MeetingHud_PopulateButtons
                 ExPlayerControl player = ExPlayerControl.ById(playerState.TargetPlayerId);
                 CustomCosmeticsLayer customCosmeticsLayer = CustomCosmeticsLayers.ExistsOrInitialize(player.cosmetics);
                 CustomCosmeticsLayer pcLayer = CustomCosmeticsLayers.ExistsOrInitialize(player.cosmetics);
-                Logger.Info($"{player.Data.PlayerId} : {pcLayer.hat2.Hat?.ProdId} {pcLayer.visor2.Visor?.ProdId}");
-                customCosmeticsLayer?.hat2?.SetHat(pcLayer.hat2.Hat?.ProdId ?? "", player.Data.DefaultOutfit.ColorId);
-                customCosmeticsLayer?.visor2?.SetVisor(pcLayer.visor2.Visor?.ProdId ?? "", player.Data.DefaultOutfit.ColorId);
+                Logger.Info($"{player.Data.PlayerId} : {pcLayer.hat2.DefaultHat?.ProdId} {pcLayer.visor2.DefaultVisor?.ProdId}");
+                customCosmeticsLayer?.hat2?.SetHat(pcLayer.hat2.DefaultHat?.ProdId ?? "", player.Data.DefaultOutfit.ColorId);
+                customCosmeticsLayer?.visor2?.SetVisor(pcLayer.visor2.DefaultVisor?.ProdId ?? "", player.Data.DefaultOutfit.ColorId);
                 // fix mask
                 customCosmeticsLayer.visor1.Image.maskInteraction = SpriteMaskInteraction.VisibleInsideMask;
                 customCosmeticsLayer.visor2.Image.maskInteraction = SpriteMaskInteraction.VisibleInsideMask;
@@ -382,6 +382,35 @@ public static class MushroomMixupPlayerAnimation_CoPlay
         instance.sprite.sortingOrder = 1000;
         if (((ExPlayerControl)instance.player).TryGetAbility<JumboAbility>(out var jumboAbility))
             instance.transform.localScale = Vector3.one * ((jumboAbility._currentSize + 1f) / 2.7f);
+    }
+}
+[HarmonyPatch(typeof(RoleEffectAnimation), nameof(RoleEffectAnimation.Play))]
+public static class RoleEffectAnimation_Play
+{
+    public static void Postfix(RoleEffectAnimation __instance)
+    {
+        __instance.Renderer.sortingOrder = 1000;
+    }
+}
+[HarmonyPatch(typeof(PlayerControl), nameof(PlayerControl.Shapeshift))]
+public static class PlayerControl_Shapeshift
+{
+    public static void Postfix(PlayerControl __instance, PlayerControl targetPlayer, bool animate)
+    {
+        CustomCosmeticsLayer customCosmeticsLayer = CustomCosmeticsLayers.ExistsOrInitialize(__instance.cosmetics);
+        CustomCosmeticsLayer pcLayer = CustomCosmeticsLayers.ExistsOrInitialize(targetPlayer.cosmetics);
+        if (__instance == targetPlayer)
+        {
+            customCosmeticsLayer?.hat1?.FinishShapeshift(__instance.Data.DefaultOutfit.ColorId);
+            customCosmeticsLayer?.hat2?.FinishShapeshift(__instance.Data.DefaultOutfit.ColorId);
+            customCosmeticsLayer?.visor1?.FinishShapeshift(__instance.Data.DefaultOutfit.ColorId);
+            customCosmeticsLayer?.visor2?.FinishShapeshift(__instance.Data.DefaultOutfit.ColorId);
+            return;
+        }
+        customCosmeticsLayer?.hat1?.SetShapeshiftHat(pcLayer.hat1.DefaultHat?.ProdId ?? "", targetPlayer.Data.DefaultOutfit.ColorId);
+        customCosmeticsLayer?.visor1?.SetShapeshiftVisor(pcLayer.visor1.DefaultVisor?.ProdId ?? "", targetPlayer.Data.DefaultOutfit.ColorId);
+        customCosmeticsLayer?.hat2?.SetShapeshiftHat(pcLayer.hat2.DefaultHat?.ProdId ?? "", targetPlayer.Data.DefaultOutfit.ColorId);
+        customCosmeticsLayer?.visor2?.SetShapeshiftVisor(pcLayer.visor2.DefaultVisor?.ProdId ?? "", targetPlayer.Data.DefaultOutfit.ColorId);
     }
 }
 [HarmonyPatch(typeof(MushroomMixupSabotageSystem), nameof(MushroomMixupSabotageSystem.MushroomMixUp))]
