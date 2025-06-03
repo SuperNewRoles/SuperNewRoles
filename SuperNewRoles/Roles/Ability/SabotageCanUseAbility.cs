@@ -68,6 +68,7 @@ public static class ConsolsCanUsePatch
         canUse = false;
         couldUse = false;
         __result = 0;
+        if (AmongUsClient.Instance.NetworkMode == NetworkModes.FreePlay) return true;
         if (!ExPlayerControl.LocalPlayer.TryGetAbility<SabotageCanUseAbility>(out var ability))
             return true;
         return ability.TryUse(__instance.TaskTypes.FirstOrDefault());
