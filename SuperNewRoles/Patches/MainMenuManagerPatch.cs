@@ -64,6 +64,9 @@ public static class MainMenuManagerPatch
         public static void Postfix(MainMenuManager __instance)
         {
             SetBackgroundCover(__instance, false, false);
+            __instance.freePlayButton.gameObject.SetActive(false);
+            float avg = (__instance.howToPlayButton.transform.localPosition.x + __instance.freePlayButton.transform.localPosition.x) / 2;
+            __instance.howToPlayButton.transform.localPosition = new(avg, __instance.howToPlayButton.transform.localPosition.y, __instance.howToPlayButton.transform.localPosition.z);
         }
     }
     [HarmonyPatch(typeof(MainMenuManager), nameof(MainMenuManager.ResetScreen))]

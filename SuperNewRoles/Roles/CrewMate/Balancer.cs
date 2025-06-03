@@ -164,6 +164,17 @@ class BalancerAbility : AbilityBase, IAbilityCount
         CleanupAnimationObjects();
     }
 
+    // staticを絶対消し去りたい
+    [HarmonyPatch(typeof(MeetingHud), nameof(MeetingHud.Awake))]
+    public static class MeetingHudAwakePatch
+    {
+        public static void Postfix(MeetingHud __instance)
+        {
+            BalancingAbility = null;
+            currentMeetingHud = null;
+        }
+    }
+
     private void CleanupAnimationObjects()
     {
         if (BackObject != null)

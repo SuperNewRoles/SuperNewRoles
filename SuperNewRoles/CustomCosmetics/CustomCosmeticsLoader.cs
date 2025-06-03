@@ -368,6 +368,11 @@ public class CustomCosmeticsLoader
             {
                 loadedBundleInstance = assetBundle;
                 loadBundleFinished = true;
+            }, () =>
+            {
+                Logger.Error($"アセットバンドルのロードに失敗しました: {bundlePath}。キューから削除します。");
+                loadedBundleInstance = null;
+                loadBundleFinished = true;
             }));
 
             // 完了通知フラグが立つまで待機
@@ -497,7 +502,6 @@ public class CustomCosmeticsLoader
                 packageInfo["order"] != null ? (int)packageInfo["order"] : 1
             );
             loadedPackages.Add(cosmeticsPackage);
-            Logger.Info($"hats {cosmeticsPackage.name} {cosmeticsPackage.version}");
 
             JToken hatsToken = packageJsonObject["hats"];
             if (hatsToken != null)
@@ -551,7 +555,6 @@ public class CustomCosmeticsLoader
             {
                 loadedPackages.Add(cosmeticsPackage);
             }
-            Logger.Info($"visors {cosmeticsPackage.name} {cosmeticsPackage.version}");
 
             JToken visorsToken = packageJsonObject["visors"];
             if (visorsToken != null)
@@ -606,7 +609,6 @@ public class CustomCosmeticsLoader
             {
                 loadedPackages.Add(cosmeticsPackage);
             }
-            Logger.Info($"nameplates {cosmeticsPackage.name} {cosmeticsPackage.version}");
 
             JToken namePlatesToken = packageJsonObject["nameplates"];
             if (namePlatesToken != null)
@@ -731,13 +733,20 @@ public class CustomCosmeticsLoader
         return result;
     }
 
-    private static IEnumerator LoadAssetBundle(string assetBundlePath, Action<AssetBundle> onFinish)
+    private static IEnumerator LoadAssetBundle(string assetBundlePath, Action<AssetBundle> onFinish, Action onError)
     {
         Logger.Info("Loading!!! AssetBundle");
         // var assetBundleRequest = AssetBundle.LoadFromFileAsync(assetBundlePath);
-        var assetBundle = AssetBundle.LoadFromFile(assetBundlePath);
-        assetBundle.DontUnload();
-        onFinish(assetBundle);
+        try
+        {
+            var assetBundle = AssetBundle.LoadFromFile(assetBundlePath);
+            assetBundle.DontUnload();
+            onFinish(assetBundle);
+        }
+        catch (Exception e)
+        {
+            onError();
+        }
         yield break;
         /*
         yield return assetBundle;
@@ -997,7 +1006,6 @@ public class CustomCosmeticsLoader
         {
             while (downloadQueue.Count > 0 && activeDownloads < MAX_CONCURRENT_DOWNLOADS)
             {
-                Logger.Info("Downloading sprite: " + downloadQueue.Count);
                 var item = downloadQueue.Dequeue();
                 activeDownloads++;
                 string filePath = Path.Combine(item.packagePath, $"{item.spriteName}.png").Replace("\\", "/");
@@ -1028,7 +1036,6 @@ public class CustomCosmeticsLoader
 
     private static IEnumerator DownloadSingleSprite(string spriteName, string spriteUrl, string packageSavePath, string filePath, Action onComplete)
     {
-        Logger.Info($"Downloading sprite {spriteName} from {spriteUrl}");
         SNRHttpClient request = SNRHttpClient.Get(spriteUrl);
         request.timeout = 30; // 30 seconds timeout
         request.ignoreSslErrors = true;
