@@ -2,6 +2,7 @@ using HarmonyLib;
 using UnityEngine;
 using InnerNet;
 using SuperNewRoles.Modules;
+using SuperNewRoles.CustomOptions.Categories;
 
 namespace SuperNewRoles.Patches;
 
@@ -10,7 +11,16 @@ public static class HudManagerPatch
 {
     public static void Postfix()
     {
+        if (GameSettingOptions.DisableHauntNonCompleted)
+            DisableHaunt();
         WallHackUpdate();
+    }
+    private static void DisableHaunt()
+    {
+        if (ExPlayerControl.LocalPlayer.IsAlive()) return;
+        if (!ExPlayerControl.LocalPlayer.IsTaskTriggerRole()) return;
+        if (ExPlayerControl.LocalPlayer.IsTaskComplete()) return;
+        FastDestroyableSingleton<HudManager>.Instance.AbilityButton.gameObject.SetActive(false);
     }
     public static void WallHackUpdate()
     {
