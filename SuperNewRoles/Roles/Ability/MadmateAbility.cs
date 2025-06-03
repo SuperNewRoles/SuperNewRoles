@@ -2,6 +2,7 @@ using System;
 using UnityEngine;
 using SuperNewRoles.Modules;
 using SuperNewRoles.Roles.Ability.CustomButton;
+using SuperNewRoles.CustomOptions.Categories;
 
 namespace SuperNewRoles.Roles.Ability;
 
@@ -12,6 +13,7 @@ public class MadmateAbility : AbilityBase
     public KnowImpostorAbility KnowImpostorAbility { get; private set; }
     public ImpostorVisionAbility ImpostorVisionAbility { get; private set; }
     public CustomTaskAbility CustomTaskAbility { get; private set; }
+    public SabotageCanUseAbility SabotageCanUseAbility { get; private set; }
     public MadmateAbility(MadmateData madData)
     {
         MadData = madData;
@@ -22,15 +24,22 @@ public class MadmateAbility : AbilityBase
         KnowImpostorAbility = new KnowImpostorAbility(MadData.CouldKnowImpostors);
         ImpostorVisionAbility = new ImpostorVisionAbility(() => MadData.HasImpostorVision);
         CustomTaskAbility = new CustomTaskAbility(() => (true, false, MadData.TaskNeeded), MadData.SpecialTasks);
+        SabotageCanUseAbility = new SabotageCanUseAbility(() => getCannotSabotageType());
 
         Player.AttachAbility(VentAbility, new AbilityParentAbility(this));
         Player.AttachAbility(KnowImpostorAbility, new AbilityParentAbility(this));
         Player.AttachAbility(ImpostorVisionAbility, new AbilityParentAbility(this));
         Player.AttachAbility(CustomTaskAbility, new AbilityParentAbility(this));
+        Player.AttachAbility(SabotageCanUseAbility, new AbilityParentAbility(this));
     }
 
-    public override void AttachToLocalPlayer()
+    private SabotageType getCannotSabotageType()
     {
+        SabotageType type = SabotageType.None;
+        if (MadmateOptions.MadmateCannotFixComms) type |= SabotageType.Comms;
+        if (MadmateOptions.MadmateCannotFixElectrical) type |= SabotageType.Lights;
+        if (MadmateOptions.MadmateCannotFixReactor) type |= SabotageType.Reactor | SabotageType.O2;
+        return type;
     }
 }
 public class MadmateData
