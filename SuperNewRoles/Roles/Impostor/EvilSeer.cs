@@ -15,7 +15,7 @@ class EvilSeer : RoleBase<EvilSeer>
 {
     public override RoleId Role { get; } = RoleId.EvilSeer;
     public override Color32 RoleColor { get; } = Palette.ImpostorRed;
-    public override List<Func<AbilityBase>> Abilities { get; } = [() => new SeerAbility(new SeerData() { Mode = EvilSeerSeerMode, LimitSoulDuration = EvilSeerLimitSoulDuration, SoulDuration = EvilSeerSoulDuration, IsCustomSoulColor = true })];
+    public override List<Func<AbilityBase>> Abilities { get; } = [() => new SeerAbility(new SeerData() { Mode = EvilSeerSeerMode, LimitSoulDuration = EvilSeerLimitSoulDuration, SoulDuration = EvilSeerSoulDuration, ColorMode = EvilSeerColorMode })];
     public override QuoteMod QuoteMod { get; } = QuoteMod.SuperNewRoles;
     public override RoleTypes IntroSoundType { get; } = RoleTypes.Phantom;
     public override short IntroNum { get; } = 1;
@@ -34,4 +34,7 @@ class EvilSeer : RoleBase<EvilSeer>
 
     [CustomOptionFloat("EvilSeer.SoulDuration", 2.5f, 60f, 2.5f, 30f, translationName: "Seer.SoulDuration", parentFieldName: nameof(EvilSeerLimitSoulDuration))]
     public static float EvilSeerSoulDuration = 30f;
+
+    [CustomOptionSelect("EvilSeer.SeerColorMode", typeof(CrewMate.SeerColorMode), "Seer.SeerColorMode.", translationName: "Seer.SeerColorMode")]
+    public static CrewMate.SeerColorMode EvilSeerColorMode = CrewMate.SeerColorMode.None;
 }

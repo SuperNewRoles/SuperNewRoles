@@ -14,7 +14,8 @@ public record SeerData
     public SeerMode Mode;
     public bool LimitSoulDuration;
     public float SoulDuration;
-    public bool IsCustomSoulColor; // イビルシーアかどうかのフラグを追加
+    /// <summary>イビルシーアの霊魂, 矢印のカラーモード</summary>
+    public SeerColorMode ColorMode;
 }
 /// <summary>
 /// シーア役職の能力クラス
@@ -25,8 +26,13 @@ public class SeerAbility : AbilityBase
     private EventListener<DieEventData> dieEventListener;
     private EventListener<WrapUpEventData> wrapUpEventListener;
     public SeerData Data;
-    // 通常シーア用の固定霊魂カラーID
-    private const int DefaultSoulColorId = 0; // 赤色を使用
+
+    // 通常霊魂カラーID
+    private const int DefaultSoulColorId = 74; // Crasyublueを使用
+
+    // 明暗表示対応用の霊魂カラーID
+    private const int LightSoulColorId = 18; // Pitchwhite を使用
+    private const int DarknessSoulColorId = 74; // Crasyublueを使用
 
     public SeerAbility(SeerData data)
     {
@@ -46,18 +52,15 @@ public class SeerAbility : AbilityBase
         if (mode == SeerMode.Both || mode == SeerMode.SoulOnly)
         {
             // 死亡位置を記録
-            int colorId;
-            if (Data.IsCustomSoulColor)
-            {
-                // イビルシーアの場合はプレイヤーの色を使用
-                colorId = data.player.Data.DefaultOutfit.ColorId;
-            }
-            else
-            {
-                // 通常シーアの場合は固定色を使用
-                colorId = DefaultSoulColorId;
-            }
 
+            var colorId = Data.ColorMode switch
+            {
+                SeerColorMode.LightAndDarkness => CustomCosmetics.CustomColors.LighterColors.Contains(data.player.Data.DefaultOutfit.ColorId) // イビルシーアで明暗表示が有効な場合
+                                        ? LightSoulColorId // 明るい色を反映
+                                        : DarknessSoulColorId, // 暗い色を反映
+                SeerColorMode.Adadaptive => data.player.Data.DefaultOutfit.ColorId, // イビルシーアで設定が有効な場合は、プレイヤーの色を使用
+                _ => DefaultSoulColorId,
+            };
             deadBodyPositions.Add((data.player.transform.position, colorId));
 
             // 霊魂を即表示（会議を待たずに表示）

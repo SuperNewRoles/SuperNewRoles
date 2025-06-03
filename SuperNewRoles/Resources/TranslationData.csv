@@ -841,6 +841,12 @@ Seer.Mode.SoulOnly,霊魂のみ,Soul Only,仅灵魂,僅靈魂
 Seer.LimitSoulDuration,霊魂の表示時間を制限する,Limit Soul Duration,限制灵魂显示时间,限制靈魂顯示時間
 Seer.SoulDuration,霊魂の表示時間,Soul Duration,灵魂显示时间,靈魂顯示時間
 
+# EvilSeer
+Seer.SeerColorMode,色設定,
+Seer.SeerColorMode.None,無反映,
+Seer.SeerColorMode.LightAndDarkness,明暗反映,
+Seer.SeerColorMode.Adadaptive,ボディカラー反映,
+
 # Celebrity
 CelebrityIntro,みんなのスター！！,The Celebrity!!,大家的明星！！,大家的明星！！
 CelebrityKeepNameColorAfterRoleChange,役職が変わっても名前の色がスターのままになる,Keep name color as Celebrity even if role changes,即使角色改变也保持明星姓名颜色,即使角色改變也保持明星姓名顏色
