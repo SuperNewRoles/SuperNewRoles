@@ -250,8 +250,8 @@ public static class StandardOptionMenu
         int newPreset = maxPreset + 1;
 
         CustomOptionSaver.SetPresetName(newPreset, text);
-        CustomOptionSaver.Save();
         CustomOptionSaver.CurrentPreset = newPreset;
+        CustomOptionSaver.Save();
         writeBoxTextBoxTMP.Clear();
         writeBoxTMP.text = ModTranslation.GetString("PresetPleaseInput");
         GeneratePresetButtons(StandardOptionMenuObjectData.Instance.RightAreaInner);
