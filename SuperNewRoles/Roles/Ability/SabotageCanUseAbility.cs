@@ -14,7 +14,7 @@ public enum SabotageType
     Reactor = 1 << 3,
     Comms = 1 << 4,
 }
-class SabotageCanUseAbility : AbilityBase
+public class SabotageCanUseAbility : AbilityBase
 {
     private Func<SabotageType> _sabotageType;
     public SabotageCanUseAbility(Func<SabotageType> cannontUseSabotageType)
