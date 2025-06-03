@@ -221,9 +221,15 @@ public class EndGameManagerSetUpPatch
             {
                 textRenderer.gameObject.SetActive(false);
             }
+            foreach (var textMeshPro in textMeshPros)
+            {
+                textMeshPro.gameObject.SetActive(false);
+            }
         }
     }
     #region ProcessWinText
+
+    private static List<TextMeshPro> textMeshPros = new();
     static Color32 HaisonColor = new(163, 163, 162, byte.MaxValue);
     public static (string text, Color color, bool isHaison) ProcessWinText(WinCondition winCondition)
     {
@@ -372,6 +378,7 @@ public class EndGameManagerSetUpPatch
 
     private static void CreatePlayerObjects(EndGameManager instance)
     {
+        textMeshPros.Clear();
         // 既存のプレイヤーオブジェクトを削除
         foreach (PoolablePlayer pb in instance.transform.GetComponentsInChildren<PoolablePlayer>())
         {
@@ -414,6 +421,7 @@ public class EndGameManagerSetUpPatch
             nameText.color = Color.white;
             nameText.text = data.PlayerName;
             nameText.transform.position = playerObj.cosmetics.nameText.transform.position;
+            textMeshPros.Add(nameText);
             playerObj.cosmetics.nameText.gameObject.SetActive(false);
 
             CustomCosmeticsLayer customCosmeticsLayer = CustomCosmeticsLayers.ExistsOrInitialize(playerObj.cosmetics);

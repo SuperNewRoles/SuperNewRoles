@@ -44,7 +44,7 @@ class BlackCat : RoleBase<BlackCat>
     [CustomOptionBool("BlackCatCanKnowImpostors", true, translationName: "MadmateCanKnowImpostors")]
     public static bool BlackCatCanKnowImpostors;
 
-    [CustomOptionInt("BlackCatNeededTaskCount", 0, 10, 1, 1, parentFieldName: nameof(BlackCatCanKnowImpostors))]
+    [CustomOptionInt("BlackCatNeededTaskCount", 0, 10, 1, 1, parentFieldName: nameof(BlackCatCanKnowImpostors), translationName: "MadmateNeededTaskCount")]
     public static int BlackCatNeededTaskCount;
 
     [CustomOptionBool("BlackCatIsSpecialTasks", false, translationName: "MadmateIsSpecialTasks")]

@@ -90,7 +90,7 @@ public class MechanicAbility : VentTargetCustomButtonBase, IAbilityCount, IButto
         _onPlayerPhysicsFixedUpdateEvent?.RemoveListener();
         if (currentVent != null)
             SetVentStatus(Player, currentVent, false, moveableVentPosition);
-        ModHelpers.SetOpacity(Player, 1f, false);
+        ModHelpers.SetOpacity(Player, 1f);
     }
 
     private void OnMeetingStart(MeetingStartEventData data)
@@ -159,6 +159,6 @@ public class MechanicAbility : VentTargetCustomButtonBase, IAbilityCount, IButto
         {
             opacity = 1.5f;
         }
-        ModHelpers.SetOpacity(target, opacity, false);
+        ModHelpers.SetOpacity(target, opacity);
     }
 }
