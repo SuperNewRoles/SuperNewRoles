@@ -55,7 +55,7 @@ public class SeerAbility : AbilityBase
 
             var colorId = Data.ColorMode switch
             {
-                SeerColorMode.LightAndDarkness => CustomCosmetics.CustomColors.LighterColors.Contains(data.player.Data.DefaultOutfit.ColorId) // イビルシーアで明暗表示が有効な場合
+                SeerColorMode.LightAndDarkness => CustomCosmetics.CustomColors.IsLighter(data.player.Data) // イビルシーアで明暗表示が有効な場合
                                         ? LightSoulColorId // 明るい色を反映
                                         : DarknessSoulColorId, // 暗い色を反映
                 SeerColorMode.Adadaptive => data.player.Data.DefaultOutfit.ColorId, // イビルシーアで設定が有効な場合は、プレイヤーの色を使用
