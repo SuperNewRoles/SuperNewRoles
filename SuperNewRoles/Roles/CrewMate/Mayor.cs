@@ -14,7 +14,7 @@ class Mayor : RoleBase<Mayor>
 {
     public override RoleId Role { get; } = RoleId.Mayor;
     public override Color32 RoleColor { get; } = new(0, 128, 128, byte.MaxValue);
-    public override List<Func<AbilityBase>> Abilities { get; } = [() => new AdditionalVoteAbility(() => MayorVoteAdditionalVote)];
+    public override List<Func<AbilityBase>> Abilities { get; } = [() => new AdditionalVoteAbility(() => MayorVoteAdditionalVote - 1)];
 
     public override QuoteMod QuoteMod { get; } = QuoteMod.TheOtherRoles;
     public override RoleTypes IntroSoundType { get; } = RoleTypes.Crewmate;
