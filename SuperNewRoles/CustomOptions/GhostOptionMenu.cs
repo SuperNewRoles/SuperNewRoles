@@ -307,7 +307,16 @@ public static class GhostOptionMenu
         var spriteRenderer = passiveButton.GetComponent<SpriteRenderer>();
         ConfigurePassiveButton(passiveButton, () =>
         {
-            byte newSelection = option.Selection < option.Selections.Length - 1 ? (byte)(option.Selection + 1) : (byte)0;
+            byte newSelection = 0;
+            if (Input.GetKey(KeyCode.LeftControl) || Input.GetKey(KeyCode.RightControl))
+            {
+                newSelection = (byte)(option.Selections.Length - 1);
+            }
+            else
+            {
+                int additional = Input.GetKey(KeyCode.LeftShift) || Input.GetKey(KeyCode.RightShift) ? RoleOptionSettings.ShiftSelection : 1;
+                newSelection = option.Selection + additional < option.Selections.Length ? (byte)(option.Selection + additional) : (byte)0;
+            }
             option.UpdateSelection(newSelection);
             selectedText.text = UIHelper.FormatOptionValue(option.Selections[option.Selection], option);
             UpdateDisplayAfterOptionChange(selectedText.transform.parent.parent, option);
