@@ -25,7 +25,7 @@ public class PenguinAbility : TargetCustomButtonBase, IButtonEffect
     public float EffectTimer { get; set; }
     public bool effectCancellable => false;
     private bool meetingKill;
-    private EventListener<MeetingStartEventData> _onMeetingStartEvent;
+    private EventListener<CalledMeetingEventData> _calledMeeting;
     public override Sprite Sprite => _sprite;
     public override string buttonText => ModTranslation.GetString("PenguinButtonText");
     protected override KeyType keytype => KeyType.Ability1;
@@ -61,7 +61,7 @@ public class PenguinAbility : TargetCustomButtonBase, IButtonEffect
     {
         base.DetachToAlls();
         fixedUpdateEvent?.RemoveListener();
-        _onMeetingStartEvent?.RemoveListener();
+        _calledMeeting?.RemoveListener();
         wrapUpEvent?.RemoveListener();
     }
     private void OnFixedUpdate()
@@ -76,21 +76,18 @@ public class PenguinAbility : TargetCustomButtonBase, IButtonEffect
     public override void AttachToAlls()
     {
         SyncKillCoolTimeAbility.CreateAndAttach(this);
-        _onMeetingStartEvent = MeetingStartEvent.Instance.AddListener(OnMeetingStart);
+        _calledMeeting = CalledMeetingEvent.Instance.AddListener(OnCalledMeeting);
         customKillButtonAbility = new KillableAbility(() => CanKill || (targetPlayer != null && targetPlayer.IsAlive()));
         Player.AttachAbility(customKillButtonAbility, new AbilityParentAbility(this));
         fixedUpdateEvent = FixedUpdateEvent.Instance.AddListener(OnFixedUpdate);
         wrapUpEvent = WrapUpEvent.Instance.AddListener(OnWrapUp);
     }
 
-    private void OnMeetingStart(MeetingStartEventData data)
+    private void OnCalledMeeting(CalledMeetingEventData data)
     {
         if (targetPlayer != null && targetPlayer.IsAlive() && meetingKill)
         {
-            if (targetPlayer != null && targetPlayer.IsAlive())
-            {
-                targetPlayer.CustomDeath(CustomDeathType.Kill, source: Player);
-            }
+            targetPlayer.CustomDeath(CustomDeathType.Kill, source: Player);
             targetPlayer = null;
         }
     }
