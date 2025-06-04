@@ -1,6 +1,7 @@
 using AmongUs.GameOptions;
 using HarmonyLib;
 using UnityEngine;
+using SuperNewRoles.CustomOptions.Categories;
 
 namespace SuperNewRoles.Patches;
 
@@ -11,7 +12,12 @@ public static partial class KillTimerPatch
 
     public static void Postfix(PlayerControl __instance, float time)
     {
-        __instance.killTimer = time;
-        DestroyableSingleton<HudManager>.Instance.KillButton.SetCoolDown(time, GameOptionsManager.Instance.CurrentGameOptions.GetFloat(FloatOptionNames.KillCooldown));
+        float timer = time;
+        if (GameSettingOptions.ImmediateKillCooldown && Mathf.Approximately(time, 10f))
+        {
+            timer = GameOptionsManager.Instance.CurrentGameOptions.GetFloat(FloatOptionNames.KillCooldown);
+        }
+        __instance.killTimer = timer;
+        DestroyableSingleton<HudManager>.Instance.KillButton.SetCoolDown(timer, GameOptionsManager.Instance.CurrentGameOptions.GetFloat(FloatOptionNames.KillCooldown));
     }
 }

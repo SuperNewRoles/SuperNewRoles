@@ -354,6 +354,51 @@ public static class MeetingHud_Update
         }
     }
 }
+[HarmonyPatch(typeof(ExileController), nameof(ExileController.Begin))]
+public static class ExileController_Begin
+{
+    public static void Postfix(ExileController __instance)
+    {
+        if (__instance.initData.networkedPlayer == null) return;
+        if (__instance.initData.networkedPlayer.Object == null) return;
+        __instance.Player.UpdateFromEitherPlayerDataOrCache(__instance.initData.networkedPlayer, PlayerOutfitType.Default, PlayerMaterial.MaskType.Exile, false, (Il2CppSystem.Action)(() =>
+        {
+            SkinViewData skinViewData = null;
+            skinViewData = (!(GameManager.Instance != null)) ? __instance.Player.GetSkinView() : ShipStatus.Instance.CosmeticsCache.GetSkin(__instance.initData.outfit.SkinId);
+            if (GameManager.Instance != null && !DestroyableSingleton<HatManager>.Instance.CheckLongModeValidCosmetic(__instance.initData.outfit.SkinId, __instance.Player.GetIgnoreLongMode()))
+            {
+                skinViewData = ShipStatus.Instance.CosmeticsCache.GetSkin("skin_None");
+            }
+            if (__instance.useIdleAnim)
+            {
+                __instance.Player.FixSkinSprite(skinViewData.IdleFrame);
+            }
+            else
+            {
+                __instance.Player.FixSkinSprite(skinViewData.EjectFrame);
+            }
+        }));
+        if (!__instance.useIdleAnim)
+        {
+            CustomCosmeticsLayer customCosmeticsLayer = CustomCosmeticsLayers.ExistsOrInitialize(__instance.Player.cosmetics);
+            customCosmeticsLayer.hat1.transform.localPosition = __instance.exileHatPosition;
+            customCosmeticsLayer.hat2.transform.localPosition = __instance.exileHatPosition;
+            customCosmeticsLayer.visor1.transform.localPosition = __instance.exileVisorPosition;
+            customCosmeticsLayer.visor2.transform.localPosition = __instance.exileVisorPosition;
+            switch ((MapNames)GameOptionsManager.Instance.CurrentGameOptions.MapId)
+            {
+                case MapNames.Airship:
+                    customCosmeticsLayer.ModdedCosmetics.transform.localPosition = new(0.6f, 0.4f, -0.0001f);
+                    customCosmeticsLayer.ModdedCosmetics.transform.Rotate(new(0, 0, 50));
+                    break;
+                case MapNames.Polus:
+                    customCosmeticsLayer.ModdedCosmetics.transform.localPosition = new(0.4f, 0.2f, -0.0001f);
+                    customCosmeticsLayer.ModdedCosmetics.transform.Rotate(new(0, 0, 10));
+                    break;
+            }
+        }
+    }
+}
 [HarmonyPatch(typeof(MeetingIntroAnimation), nameof(MeetingIntroAnimation.Init))]
 public static class MeetingIntroAnimation_Init
 {

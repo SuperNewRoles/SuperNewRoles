@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using BepInEx.Unity.IL2CPP.Utils.Collections;
 using HarmonyLib;
 using SuperNewRoles.CustomOptions;
 using SuperNewRoles.Modules;
@@ -58,6 +59,7 @@ public class SelectButtonsMenu
         closeAnimator.onClose = () =>
         {
             SetScreenMaskActive(true);
+            CreateButtons.ModManagerLateUpdatePatch.ForceNotificationCheck = true;
         };
         openAnimator.Open();
 
@@ -85,7 +87,14 @@ public class SelectButtonsMenu
         top.transform.localScale = Vector3.one * 1f;
         UpdateTranslations(top);
         UpdateButtons(top);
+        AmongUsClient.Instance.StartCoroutine(RequestInGameManager.hasNotifications(hasNotifications => setHasNotification(hasNotifications, top)).WrapToIl2Cpp());
         SetReturnButtonNonActive(background);
+    }
+
+    private static void setHasNotification(bool hasNotifications, GameObject top)
+    {
+        if (top != null)
+            top.transform.Find("Buttons/Button_MessageBox/badge").gameObject.SetActive(hasNotifications);
     }
 
     public static void UpdateTranslations(GameObject top)
