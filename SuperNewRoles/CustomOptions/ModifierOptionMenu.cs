@@ -17,7 +17,7 @@ public static class ModifierOptionMenu
     {
         public const float ButtonSpacing = 0.6125f;
         public const float ButtonScale = 0.48f;
-        public const float InitialYPosition = 1.4f;
+        public const float InitialYPosition = 1.665f;
         public const float InitialXPosition = -3.614f;
     }
 
@@ -57,6 +57,7 @@ public static class ModifierOptionMenu
                 continue;
             GenerateRoleDetailButton(new ModifierOptionMenuObjectData.ModifierCategoryDataModifier(modifier), index++);
         }
+        ModifierOptionMenuObjectData.Instance.LeftAreaScroller.ContentYBounds.max = index <= 7 ? 0 : (index - 7) * 0.8f;
     }
 
     public static GameObject GenerateRoleDetailButton(ModifierOptionMenuObjectData.ModifierCategoryDataBase category, int index)
@@ -104,10 +105,6 @@ public static class ModifierOptionMenu
         if (menuData.CurrentOptionMenu != null)
             menuData.CurrentOptionMenu.SetActive(false);
         menuData.CurrentOptionMenu = null;
-
-        // プリセットボタンのコンテナを非表示に
-        if (menuData.PresetButtonsContainer != null)
-            menuData.PresetButtonsContainer.SetActive(false);
 
         // 現在の選択ボタンを更新
         if (menuData.CurrentSelectedButton != null)
@@ -436,7 +433,6 @@ public static class ModifierOptionMenu
                 writeBoxTMP.text = "";
         }), writeBoxSpriteRenderer, Color.green);
     }
-
 
     public static void ShowDefaultOptionMenu(ModifierOptionMenuObjectData.ModifierCategoryDataBase category, Transform parent)
     {
@@ -834,12 +830,6 @@ public static class ModifierOptionMenu
         option.UpdateSelection(newSelection);
         selectedText.text = option.GetCurrentSelectionString();
         ModifierOptionMenuObjectData.Instance.UpdateOptionDisplay();
-    }
-
-    private static void UpdatePresetText(TMPro.TextMeshPro textComponent, int preset)
-    {
-        string presetName = CustomOptionSaver.GetPresetName(preset);
-        textComponent.text = presetName;
     }
 
     private static void UpdateOptionUIValues(CustomOption option, Transform menuTransform)
