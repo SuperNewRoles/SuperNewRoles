@@ -239,18 +239,11 @@ public static class ModifierOptionMenu
     {
         var menuData = ModifierOptionMenuObjectData.Instance;
 
-        // 既存のコンテナを削除
-        if (menuData.PresetButtonsContainer != null)
-        {
-            GameObject.Destroy(menuData.PresetButtonsContainer);
-        }
-
         // 新しいコンテナを作成
         var buttonsContainer = new GameObject("PresetButtonsContainer");
         buttonsContainer.transform.SetParent(container.transform);
         buttonsContainer.transform.localScale = Vector3.one;
         buttonsContainer.transform.localPosition = new(0, 0, 4.7f);
-        menuData.PresetButtonsContainer = buttonsContainer;
         buttonsContainer.SetActive(true);
 
         float xPos = 1.25f;
