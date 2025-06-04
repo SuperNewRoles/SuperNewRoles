@@ -27,18 +27,21 @@ public class MessageListUI
                 new LateTask(() =>
                 {
                     int index = 0;
+                    Scroller scroller = messageListUI.GetComponent<Scroller>();
                     foreach (var thread in threads)
                     {
-                        GameObject messageTitleButton = GameObject.Instantiate(AssetManager.GetAsset<GameObject>("MessageTitleButton"), messageListUI.transform);
+                        GameObject messageTitleButton = GameObject.Instantiate(AssetManager.GetAsset<GameObject>("MessageTitleButton"), scroller.Inner);
                         messageTitleButton.transform.localPosition = new(0f, 3f - 1.5f * index, -10f);
                         PassiveButton passiveButton = messageTitleButton.AddComponent<PassiveButton>();
                         passiveButton.Colliders = new[] { messageTitleButton.GetComponent<Collider2D>() };
                         passiveButton.OnClick = new();
+                        Transform badge = messageTitleButton.transform.Find("badge");
                         passiveButton.OnClick.AddListener((UnityAction)(() =>
                         {
                             GameObject messagesUI = MessagesUI.ShowMessagesUI(messageListUI.transform.parent, thread);
                             SelectButtonsMenu.SetReturnButtonActive(parent.gameObject, () =>
                             {
+                                badge.gameObject.SetActive(false);
                                 messageListUI.SetActive(true);
                                 GameObject.Destroy(messagesUI);
                                 SelectButtonsMenu.SetReturnButtonNonActive(parent.gameObject);
@@ -56,8 +59,10 @@ public class MessageListUI
                             messageTitleButton.transform.Find("Selected").gameObject.SetActive(true);
                         }));
                         messageTitleButton.transform.Find("Text").GetComponent<TextMeshPro>().text = thread.title;
+                        badge.gameObject.SetActive(thread.unread);
                         index++;
                     }
+                    scroller.ContentYBounds.max = index <= 5 ? 0 : index == 6 ? 1.3f : (index - 6f) * 1.35f + 1.3f;
                 }, 0f, "MessageListUI");
             }
         }, unreadOnly: true).WrapToIl2Cpp());
