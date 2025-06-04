@@ -1,3 +1,4 @@
+using BepInEx.Unity.IL2CPP.Utils.Collections;
 using HarmonyLib;
 using SuperNewRoles.Modules;
 using TMPro;
@@ -9,8 +10,10 @@ namespace SuperNewRoles.RequestInGame;
 public class CreateButtons
 {
     public static AspectPosition button;
+    public static GameObject notificationBadge;
     public static void GenerateButtons(Transform parent, Vector3 position, AspectPosition.EdgeAlignments alignment)
     {
+        ModManagerLateUpdatePatch.ForceNotificationCheck = true;
         GameObject bugReportButton = GameObject.Instantiate(AssetManager.GetAsset<GameObject>("bugReport"), parent);
         bugReportButton.transform.localPosition = position;
         bugReportButton.transform.localScale = Vector3.one * 0.15f;
@@ -28,6 +31,31 @@ public class CreateButtons
         aspectPosition.DistanceFromEdge = position;
         aspectPosition.OnEnable();
         button = aspectPosition;
+        notificationBadge = bugReportButton.transform.Find("badge").gameObject;
+    }
+
+    [HarmonyPatch(typeof(ModManager), nameof(ModManager.LateUpdate))]
+    public class ModManagerLateUpdatePatch
+    {
+        private const float UpdateInterval = 10f;
+        private static float updateTimer = 0f;
+        public static bool ForceNotificationCheck = false;
+        public static void Postfix(ModManager __instance)
+        {
+            if (updateTimer >= UpdateInterval || ForceNotificationCheck)
+            {
+                if (notificationBadge != null)
+                {
+                    __instance.StartCoroutine(RequestInGameManager.hasNotifications(hasNotifications =>
+                    {
+                        notificationBadge.SetActive(hasNotifications);
+                    }).WrapToIl2Cpp());
+                }
+                updateTimer = 0f;
+                ForceNotificationCheck = false;
+            }
+            updateTimer += Time.deltaTime;
+        }
     }
 
     [HarmonyPatch(typeof(MainMenuManager), nameof(MainMenuManager.Start))]
