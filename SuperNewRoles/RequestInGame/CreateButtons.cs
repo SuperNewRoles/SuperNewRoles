@@ -46,7 +46,10 @@ public class CreateButtons
             {
                 if (notificationBadge != null)
                 {
-                    __instance.StartCoroutine(RequestInGameManager.hasNotifications(hasNotifications => notificationBadge.SetActive(hasNotifications)).WrapToIl2Cpp());
+                    __instance.StartCoroutine(RequestInGameManager.hasNotifications(hasNotifications =>
+                    {
+                        notificationBadge.SetActive(hasNotifications);
+                    }).WrapToIl2Cpp());
                 }
                 updateTimer = 0f;
                 ForceNotificationCheck = false;
