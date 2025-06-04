@@ -190,6 +190,7 @@ RequestInGameAgreement,利用規約はこちら,Agreement is here,利用規約�
 RequestInGameSendButton,同意して送信,Send with agreement,同意后发送,同意後發送
 RequestInGameLoadingData,データを取得中,Loading data
 RequestInGameSendingReport,レポートを送信中,Sending report
+RequestInGameSending,メッセージを送信中,Sending message
 RequestInGameSendingReportProgress,レポートを送信中... ({0}%),Sending report... {0}%,发送报告中...{0}%,發送報告中...{0}%
 RequestInGameLoading,読み込み中...,Loading...
 RequestInGame_MessageTooShort,メッセージが短すぎます。,The message is too short.,消息太短了。,消息太短了。
