@@ -39,14 +39,14 @@ public class PenguinAbility : TargetCustomButtonBase, IButtonEffect
     private EventListener fixedUpdateEvent;
     private EventListener<WrapUpEventData> wrapUpEvent;
     private KillableAbility customKillButtonAbility;
-    private bool CanKill;
+    private bool CanDefaultKill;
     private Sprite _sprite;
-    public PenguinAbility(float coolDown, float effectDuration, bool meetingKill, bool CanKill)
+    public PenguinAbility(float coolDown, float effectDuration, bool meetingKill, bool CanDefaultKill)
     {
         this.coolDown = coolDown;
         this.effectDuration = effectDuration;
         this.meetingKill = meetingKill;
-        this.CanKill = CanKill;
+        this.CanDefaultKill = CanDefaultKill;
         _sprite = AssetManager.GetAsset<Sprite>($"PenguinButton_{ModHelpers.GetRandomInt(min: 1, max: 2)}.png");
     }
 
@@ -77,7 +77,7 @@ public class PenguinAbility : TargetCustomButtonBase, IButtonEffect
     {
         SyncKillCoolTimeAbility.CreateAndAttach(this);
         _calledMeeting = CalledMeetingEvent.Instance.AddListener(OnCalledMeeting);
-        customKillButtonAbility = new KillableAbility(() => CanKill || (targetPlayer != null && targetPlayer.IsAlive()));
+        customKillButtonAbility = new KillableAbility(() => CanDefaultKill || (targetPlayer != null && targetPlayer.IsAlive()));
         Player.AttachAbility(customKillButtonAbility, new AbilityParentAbility(this));
         fixedUpdateEvent = FixedUpdateEvent.Instance.AddListener(OnFixedUpdate);
         wrapUpEvent = WrapUpEvent.Instance.AddListener(OnWrapUp);
