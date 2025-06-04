@@ -134,7 +134,7 @@ public class LoversAbility : AbilityBase
         if (!data.Player.IsLovers()) return;
         if (ExPlayerControl.LocalPlayer.IsAlive() && ExPlayerControl.LocalPlayer.Role != RoleId.God && !IsCoupleWith(ExPlayerControl.LocalPlayer)) return;
         if (data.Player.cosmetics.nameText.text.Contains("♥")) return;
-        data.Player.cosmetics.nameText.text += ModHelpers.Cs(ExPlayerControl.LocalPlayer.IsDead() || ExPlayerControl.LocalPlayer.Role == RoleId.God ? HeartColor : Lovers.Instance.RoleColor, "♥");
+        NameText.AddNameText(data.Player, ModHelpers.Cs(ExPlayerControl.LocalPlayer.IsDead() || ExPlayerControl.LocalPlayer.Role == RoleId.God ? HeartColor : Lovers.Instance.RoleColor, "♥"));
     }/*
     private void OnWrapUp(WrapUpEventData data)
     {
