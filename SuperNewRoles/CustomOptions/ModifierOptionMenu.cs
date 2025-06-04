@@ -353,53 +353,6 @@ public static class ModifierOptionMenu
         OptionMenuBase.UpdateOptionDisplayAll();
     }
 
-    private static void ConfigurePresetNavigationButtons(GameObject selectPresets, TMPro.TextMeshPro selectedText)
-    {
-        ConfigurePresetButton(selectPresets, "Button_Minus", selectedText, isIncrement: false);
-        ConfigurePresetButton(selectPresets, "Button_Plus", selectedText, isIncrement: true);
-    }
-
-    private static void ConfigurePresetButton(
-        GameObject selectPresets,
-        string buttonName,
-        TMPro.TextMeshPro selectedText,
-        bool isIncrement)
-    {
-        var button = selectPresets.transform.Find(buttonName).gameObject;
-        var passiveButton = button.AddComponent<PassiveButton>();
-        passiveButton.Colliders = new Collider2D[] { button.GetComponent<BoxCollider2D>() };
-        var spriteRenderer = passiveButton.GetComponent<SpriteRenderer>();
-
-        UIHelper.ConfigurePassiveButton(passiveButton, (UnityAction)(() =>
-        {
-            HandlePresetNavigation(selectedText, isIncrement);
-        }), spriteRenderer);
-    }
-
-    private static void HandlePresetNavigation(TMPro.TextMeshPro selectedText, bool isIncrement)
-    {
-        CustomOptionSaver.Save(); // 現在のプリセットを保存
-
-        int newPreset;
-        if (isIncrement)
-        {
-            newPreset = CustomOptionSaver.CurrentPreset < CustomOptionSaver.PresetNames.Keys.Max() ?
-                CustomOptionSaver.CurrentPreset + 1 :
-                0;
-        }
-        else
-        {
-            newPreset = CustomOptionSaver.CurrentPreset > 0 ?
-                CustomOptionSaver.CurrentPreset - 1 :
-                CustomOptionSaver.PresetNames.Keys.Max();
-        }
-
-        CustomOptionSaver.LoadPreset(newPreset);
-        UpdateNowPresetText(ModifierOptionMenuObjectData.Instance.CurrentOptionMenu);
-        OptionMenuBase.UpdateOptionDisplayAll();
-        selectedText.text = CustomOptionSaver.GetPresetName(newPreset);
-    }
-
     private static void ConfigurePresetWriteBox(GameObject presetMenu)
     {
         var writeBox = presetMenu.transform.Find("SubmitPreset/WriteBox").gameObject;
@@ -807,17 +760,14 @@ public static class ModifierOptionMenu
     private static void HandleOptionSelection(CustomOption option, TextMeshPro selectedText, bool isIncrement)
     {
         byte newSelection;
+        int additional = Input.GetKey(KeyCode.LeftShift) || Input.GetKey(KeyCode.RightShift) ? RoleOptionSettings.ShiftSelection : 1;
         if (isIncrement)
         {
-            newSelection = option.Selection < option.Selections.Length - 1 ?
-                (byte)(option.Selection + 1) :
-                (byte)0;
+            newSelection = option.Selection + additional < option.Selections.Length ? (byte)(option.Selection + additional) : (byte)0;
         }
         else
         {
-            newSelection = option.Selection > 0 ?
-                (byte)(option.Selection - 1) :
-                (byte)(option.Selections.Length - 1);
+            newSelection = option.Selection - additional >= 0 ? (byte)(option.Selection - additional) : (byte)(option.Selections.Length - additional);
         }
 
         UpdateOptionSelection(option, newSelection, selectedText);
@@ -962,15 +912,16 @@ public static class ModifierOptionMenu
     {
         float currentValue = getter();
         float newValue;
+        int additional = Input.GetKey(KeyCode.LeftShift) || Input.GetKey(KeyCode.RightShift) ? RoleOptionSettings.ShiftSelection : 1;
 
         if (isIncrement)
         {
-            newValue = currentValue + step;
+            newValue = currentValue + step * additional;
             if (newValue > max) newValue = min;
         }
         else
         {
-            newValue = currentValue - step;
+            newValue = currentValue - step * additional;
             if (newValue < min) newValue = max;
         }
 
