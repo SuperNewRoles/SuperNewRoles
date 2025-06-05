@@ -15,6 +15,7 @@ public class RoleOptionSettings
     private const float ElementZPosition = -5f;
     private const float ElementScale = 2f;
     private const float ScrollerXPosition = 18f;
+    public const int ShiftSelection = 10;
 
     private static readonly Color32 HoverColor = new(45, 235, 198, 255);
 
@@ -292,8 +293,16 @@ public class RoleOptionSettings
 
         ConfigurePassiveButton(passiveButton, () =>
         {
-            byte newSelection = option.Selection > 0 ? (byte)(option.Selection - 1) : (byte)(option.Selections.Length - 1);
-            UpdateOptionSelection(option, newSelection, selectedText);
+            int additional = Input.GetKey(KeyCode.LeftShift) || Input.GetKey(KeyCode.RightShift) ? ShiftSelection : 1;
+            if (Input.GetKey(KeyCode.LeftControl) || Input.GetKey(KeyCode.RightControl))
+            {
+                UpdateOptionSelection(option, 0, selectedText);
+            }
+            else
+            {
+                byte newSelection = (option.Selection - additional) >= 0 ? (byte)(option.Selection - additional) : (byte)(option.Selections.Length - additional);
+                UpdateOptionSelection(option, newSelection, selectedText);
+            }
         }, spriteRenderer);
     }
 
@@ -305,8 +314,16 @@ public class RoleOptionSettings
 
         ConfigurePassiveButton(passiveButton, () =>
         {
-            byte newSelection = option.Selection < option.Selections.Length - 1 ? (byte)(option.Selection + 1) : (byte)0;
-            UpdateOptionSelection(option, newSelection, selectedText);
+            int additional = Input.GetKey(KeyCode.LeftShift) || Input.GetKey(KeyCode.RightShift) ? ShiftSelection : 1;
+            if (Input.GetKey(KeyCode.LeftControl) || Input.GetKey(KeyCode.RightControl))
+            {
+                UpdateOptionSelection(option, (byte)(option.Selections.Length - 1), selectedText);
+            }
+            else
+            {
+                byte newSelection = option.Selection + additional < option.Selections.Length ? (byte)(option.Selection + additional) : (byte)0;
+                UpdateOptionSelection(option, newSelection, selectedText);
+            }
         }, spriteRenderer);
     }
 

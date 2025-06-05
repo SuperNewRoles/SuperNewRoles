@@ -110,8 +110,8 @@ public class MechanicAbility : VentTargetCustomButtonBase, IAbilityCount, IButto
         {
             // プレイヤーの位置にベントを移動
             PlayerControl player = Player;
-            Vector2 truepos = player.GetTruePosition();
-            currentVent.transform.position = new(truepos.x, truepos.y, player.transform.position.z + 0.0025f);
+            Vector2 truepos = player.transform.position;
+            currentVent.transform.position = new(truepos.x, truepos.y - 0.2f, player.transform.position.z + 0.0025f);
             SetHideStatus(player, true);
             if (data.Instance.myPlayer.moveable)
                 moveableVentPosition = currentVent.transform.position;

@@ -250,8 +250,8 @@ public static class StandardOptionMenu
         int newPreset = maxPreset + 1;
 
         CustomOptionSaver.SetPresetName(newPreset, text);
-        CustomOptionSaver.Save();
         CustomOptionSaver.CurrentPreset = newPreset;
+        CustomOptionSaver.Save();
         writeBoxTextBoxTMP.Clear();
         writeBoxTMP.text = ModTranslation.GetString("PresetPleaseInput");
         GeneratePresetButtons(StandardOptionMenuObjectData.Instance.RightAreaInner);
@@ -367,12 +367,6 @@ public static class StandardOptionMenu
         var rightAreaInner = StandardOptionMenuObjectData.Instance.RightAreaInner;
         GeneratePresetButtons(rightAreaInner);
         UpdateNowPresetText(StandardOptionMenuObjectData.Instance.CurrentOptionMenu);
-    }
-
-    private static void ConfigurePresetNavigationButtons(GameObject selectPresets, TMPro.TextMeshPro selectedText)
-    {
-        ConfigurePresetButton(selectPresets, "Button_Minus", selectedText, isIncrement: false);
-        ConfigurePresetButton(selectPresets, "Button_Plus", selectedText, isIncrement: true);
     }
 
     private static void ConfigurePresetButton(
@@ -653,17 +647,21 @@ public static class StandardOptionMenu
     private static void HandleOptionSelection(CustomOption option, TMPro.TextMeshPro selectedText, bool isIncrement)
     {
         byte newSelection;
-        if (isIncrement)
+        int additional = Input.GetKey(KeyCode.LeftShift) || Input.GetKey(KeyCode.RightShift) ? RoleOptionSettings.ShiftSelection : 1;
+        if (Input.GetKey(KeyCode.LeftControl) || Input.GetKey(KeyCode.RightControl))
         {
-            newSelection = option.Selection < option.Selections.Length - 1 ?
-                (byte)(option.Selection + 1) :
-                (byte)0;
+            newSelection = isIncrement ? (byte)(option.Selections.Length - 1) : (byte)0;
         }
         else
         {
-            newSelection = option.Selection > 0 ?
-                (byte)(option.Selection - 1) :
-                (byte)(option.Selections.Length - 1);
+            if (isIncrement)
+            {
+                newSelection = option.Selection + additional < option.Selections.Length ? (byte)(option.Selection + additional) : (byte)0;
+            }
+            else
+            {
+                newSelection = option.Selection - additional >= 0 ? (byte)(option.Selection - additional) : (byte)(option.Selections.Length - additional);
+            }
         }
 
         UpdateOptionSelection(option, newSelection, selectedText);

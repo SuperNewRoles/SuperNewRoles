@@ -147,6 +147,7 @@ AprilFoolsOutfitType.AlongUs,ロングモード,aLONG us
 AprilFoolsEnableDleks,ドルクス,Dleks ehT
 DisableHauntNonCompleted,タスクを完了していないと憑依できない,Disable haunt if the task is not completed
 EnabledZoomOnDead,霊界千里眼を有効にする,Enable spectator clairvoyance after death
+ImmediateKillCooldown,初手キルクールタイムを設定値から始める,Start kill cooldown from settings,初始击杀冷却遵循设置,初始擊殺冷卻遵循設定
 
 # Analytics
 AnalyticsPopupTitle,解析データの送信,Send analytics data,发送分析数据,發送分析數據
@@ -190,6 +191,7 @@ RequestInGameAgreement,利用規約はこちら,Agreement is here,利用規約�
 RequestInGameSendButton,同意して送信,Send with agreement,同意后发送,同意後發送
 RequestInGameLoadingData,データを取得中,Loading data
 RequestInGameSendingReport,レポートを送信中,Sending report
+RequestInGameSending,メッセージを送信中,Sending message
 RequestInGameSendingReportProgress,レポートを送信中... ({0}%),Sending report... {0}%,发送报告中...{0}%,發送報告中...{0}%
 RequestInGameLoading,読み込み中...,Loading...
 RequestInGame_MessageTooShort,メッセージが短すぎます。,The message is too short.,消息太短了。,消息太短了。
@@ -427,6 +429,7 @@ Lighter,ライター,Lighter
 Technician,技術者,Technician
 Medium,ミーディアム,Medium,灵媒师,靈媒師
 DoubleKiller,ダブルキラー,DoubleKiller
+Finder,ファインダー,Finder,Finder,Finder
 
 
 # Descriptions_VanillaRoles
@@ -465,6 +468,7 @@ EvilMechanic.Description,タスクターンに使用出来る能力を有する�
 EvilHawk.Description,タスクターンに使用出来る能力を有するインポスターです。\n「ホークアイ」ボタンを押すと自分の視野が広がり、周囲の様子を見ることが出来ます。,An Impostor with an ability usable during task turns.\nBy pressing the “Hawkeye” button，they expand their vision to survey the surroundings.,这是一个在任务回合中可使用能力的内鬼。\n按下“鹰眼”按钮后，会扩大视野以观察周围情况。,這是一個在任務回合中可使用能力的內鬼。\n按下「鷹眼」按鈕後，會擴大視野以觀察周圍情況。,
 EvilScientist.Description,タスクターンに使用出来る能力を有するインポスターです。\n「透明化」ボタンを押すと、一定時間自身の姿が透明になります。\n透明化中であっても、能力の対象になります。\nまた、設定次第では能力使用中のライターには見えてしまいます。,An imposter with an ability that can be used during the Task Turn.\nWhen you press the 'Invisibility' button， your appearance becomes invisible for a certain period of time.\nEven while invisible， you can still be targeted by abilities.\nAlso， depending on the settings， writers may see you while you're using the ability。,是具有能够在任务轮回合使用能力的冒名顶替者。当你按下“隐身”按钮时，你的身影会在一定时间内变为隐形。即使在隐身状态下，你仍会成为能力的目标。另外，根据设置，在使用能力时，写手也可能会看到你。,是具有能夠在任務回合使用能力的冒名頂替者。當你按下「隱身」按鈕時，你的身影會在一定時間內變為隱形。即使在隱身狀態下，你仍會成為能力的目標。另外，根據設定，在使用能力時，寫手也可能會看到你。,
 DoubleKiller.Description,特殊なキル能力を有するインポスターです。\nキルボタンを2つ所持しています。\nクールタイムは独立しており、別々に使用することが出来ます。,
+Finder.Description,指定のキル数を達成するとマッドメイトが分かるインポスターです。,An Impostor who identifies Madmates after reaching a set number of kills.,An Impostor who identifies Madmates after reaching a set number of kills.,An Impostor who identifies Madmates after reaching a set number of kills.
 
 # Descriptions_Neutral
 Jackal.Description,キル能力を有する第三陣営です。\n自陣営以外のキルが出来る陣営が全滅した上で、自陣営とクルーが同数以下になれば勝利します。\n設定次第で他のプレイヤーの役職を、自身の後継となるサイドキックや、手助けをしてくれるジャッカルフレンズに変更する能力を有することも出来ます。,A third-faction role with a kill ability.\nIt wins if all factions capable of killing outside its own are eliminated and its faction and the Crewmates are equal in number or fewer.\nDepending on the settings，it can change other players’ roles into a Sidekick (its successor) or Jackal Friends who assist it.,这是一个拥有击杀能力的第三阵营角色。\n当所有能够进行击杀的其他阵营被消灭，并且其阵营与船员人数相等或更少时，即可获胜。\n根据设定，它还可以将其他玩家的角色变更为边缘队员（其继任者）或协助的杰克朋友。,這是一個具備擊殺能力的第三陣營角色。\n當其他能進行擊殺的陣營全部被消滅，且其陣營與船員數量相等或更少時，即獲勝。\n根據設定，還可將其他玩家的角色變更為接班的邊翼或提供協助的傑克朋友。,
@@ -585,7 +589,7 @@ EvilMechanicIntro1,独善的な改造,Self-absorbed modification,自私的改造
 EvilHawkIntro1,この目からは逃れられない,You cannot escape these eyes,无处可逃于此目,無處可逃於此目,
 EvilScientistIntro1,不可視の一撃,Invisible Strike,不可见的一击,不可見的一擊
 DoubleKillerIntro1,双つの刃を持ちし者,
-
+FinderIntro1,仲間を知ろう,Know your allies,认识你的同伴,認識你的同伴
 # Intros_Neutral
 JackalIntro1,暗躍するもう一人の殺人鬼,Another puppeteer of death in the shadows,另一个暗中操纵死亡者,另一個暗中操縱死亡者,
 SidekickIntro1,暗躍せし者の右腕,The right hand of a hidden schemer,暗中谋划者之右臂,暗中謀劃者之右臂,
@@ -713,6 +717,10 @@ MadmateNeededTaskCount,必要タスク数,Required Task Count,需要完成任务
 BlackCatRevengeNotImpostorExile,インポスターを道連れしない,Do Not Exile Impostor,不带内鬼出局,不帶內鬼出局
 MadmateIsSpecialTasks,タスク数を変更する,Change Task Count,改变任务数,改變任務數
 MadmateSpecialTasks,タスク数,Task Count,任务数,任務數
+MadmateSettings,マッドメイトの設定,Madmate Settings,
+MadmateCannotFixComms,通信を修復できない,Cannot Fix Comms,不能修复通信,不能修復通信
+MadmateCannotFixElectrical,電気を修復できない,Cannot Fix Electrical,不能修复电力,不能修復電力
+MadmateCannotFixReactor,リアクターを修復できない,Cannot Fix Reactor,不能修复反应炉,不能修復反應爐
 
 # Jackal Options
 JackalKillCooldown,キルクールダウン,Kill Cooldown,杰克击杀冷却时间,傑克殺人冷卻時間
@@ -1451,3 +1459,8 @@ MeetingSheriffShotsPerMeeting,1会議の最大キル数,Most kills in a single m
 # DoubleKiller
 DoubleKillerKillCountRemaining,サブキルボタンのキル回数制限,Sub kill button's kill remaining
 DoubleKillerMaxKillCount,キル可能回数,Max kill count
+
+# Finder
+FinderKillCooldown,ファインダーのキルクール,Finder Kill Cooldown,Finder Kill Cooldown,Finder Kill Cooldown
+FinderRevealKillCount,マッドメイト判明キル数,Kill count to reveal Madmate,Kill count to reveal Madmate,Kill count to reveal Madmate
+

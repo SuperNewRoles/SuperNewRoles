@@ -19,6 +19,11 @@ public class ModifierOptionMenuObjectData : OptionMenuBase
     /// <summary>
     /// 左エリアの内部コンテンツ
     /// </summary>
+    public Scroller LeftAreaScroller { get; }
+
+    /// <summary>
+    /// 左エリアの内部コンテンツ
+    /// </summary>
     public GameObject LeftAreaInner { get; }
 
     /// <summary>
@@ -33,11 +38,6 @@ public class ModifierOptionMenuObjectData : OptionMenuBase
     /// 右エリアのスクローラー
     /// </summary>
     public Scroller RightAreaScroller { get; }
-
-    /// <summary>
-    /// プリセットボタンのコンテナ
-    /// </summary>
-    public GameObject PresetButtonsContainer { get; set; }
 
     /// <summary>
     /// 現在表示中のオプションメニュー
@@ -86,7 +86,8 @@ public class ModifierOptionMenuObjectData : OptionMenuBase
     {
         Instance = this;
         StandardOptionMenu = standardOptionMenu;
-        LeftAreaInner = StandardOptionMenu.transform.Find("LeftArea/Scroller/Inner").gameObject;
+        LeftAreaScroller = StandardOptionMenu.transform.Find("LeftArea/Scroller").GetComponent<Scroller>();
+        LeftAreaInner = LeftAreaScroller.transform.Find("Inner").gameObject;
         RightArea = StandardOptionMenu.transform.Find("RightArea").gameObject;
         RightAreaScroller = RightArea.transform.Find("Scroller").GetComponent<Scroller>();
         RightAreaInner = RightAreaScroller.transform.Find("Inner").gameObject;

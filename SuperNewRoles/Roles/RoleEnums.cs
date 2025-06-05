@@ -105,6 +105,7 @@ public enum RoleId : short
     Medium,
     MeetingSheriff,
     DoubleKiller,
+    Finder,
 }
 
 public enum GhostRoleId : short

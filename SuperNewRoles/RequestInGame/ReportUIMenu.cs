@@ -121,7 +121,7 @@ public class ReportUIMenu
                     {
                         text = ModTranslation.GetString("RequestInGameSendingReportProgress", 0);
                         Dictionary<string, string> additionalInfo = new();
-                        additionalInfo["version"] = Application.version;
+                        additionalInfo["version"] = "SNR:" + Statics.VersionString + "&AmongUs:" + Constants.GetBroadcastVersion();
                         additionalInfo["mode"] = Categories.ModeOption.ToString();
                         additionalInfo["log"] = SNRLogListener.Instance.logBuilder.ToString();
                         AmongUsClient.Instance.StartCoroutine(RequestInGameManager.SendReport(description, title, RequestInGameType.Bug.ToString(), additionalInfo, success =>

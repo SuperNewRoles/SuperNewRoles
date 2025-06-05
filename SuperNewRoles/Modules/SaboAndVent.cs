@@ -44,6 +44,15 @@ public class SaboAndVent
         else if (isShowKillButton && (HudManager.Instance.UseButton.gameObject.activeSelf || HudManager.Instance.PetButton.gameObject.activeSelf))
             HudManager.Instance.KillButton.gameObject.SetActive(true);
     }
+    [HarmonyPatch(typeof(HudManager), nameof(HudManager.Update))]
+    class HudManagerUpdatePatch
+    {
+        public static void Postfix(HudManager __instance)
+        {
+            if (Vent.currentVent != null)
+                __instance.ImpostorVentButton.SetTarget(Vent.currentVent);
+        }
+    }
     [HarmonyPatch(typeof(MapBehaviour), nameof(MapBehaviour.ShowNormalMap))]
     class MapBehaviourShowNormalMapPatch
     {

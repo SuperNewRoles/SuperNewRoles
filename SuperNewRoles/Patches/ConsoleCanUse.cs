@@ -11,6 +11,7 @@ public static class ConsoleCanUsePatch
     {
         canUse = couldUse = false;
         __result = 0f;
+        if (AmongUsClient.Instance.NetworkMode == NetworkModes.FreePlay) return true;
         if (!GameSettingOptions.CannotTaskTrigger) return true;
         if (__instance.AllowImpostor) return true;
         ExPlayerControl exPlayer = (ExPlayerControl)pc;

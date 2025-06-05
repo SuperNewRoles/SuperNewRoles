@@ -88,7 +88,7 @@ public static class NameText
             player.MeetingInfoText.text = meetingInfoText;
         player.cosmetics.nameText.text = player.Player.CurrentOutfit.PlayerName;
         if (player.VoteArea != null)
-            player.VoteArea.NameText.text = player.Player.CurrentOutfit.PlayerName;
+            player.VoteArea.NameText.text = player.Player.Data.DefaultOutfit.PlayerName;
         bool visiable = ExPlayerControl.LocalPlayer.PlayerId == player.PlayerId ||
                         (ExPlayerControl.LocalPlayer.IsDead() && !GameSettingOptions.HideGhostRoles);
         if (visiable)
