@@ -54,7 +54,7 @@ class EvilSeer : RoleBase<EvilSeer>
 
 
     [CustomOptionBool("EvilSeer.ShowArrows", true, translationName: "VultureShowArrows")]
-    public static bool EvilSeerShowArrows;
+    public static bool EvilSeerShowArrows = true;
 }
 
 public enum EvilSeerAbility
