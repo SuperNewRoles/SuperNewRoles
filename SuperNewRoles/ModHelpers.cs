@@ -694,4 +694,16 @@ public static class ModHelpers
         }
         return max;
     }
+
+    /// <summary>
+    /// 指定された位置がコライダーと重なっているかを確認します
+    /// </summary>
+    /// <param name="collider2D">チェック対象のコライダー</param>
+    /// <param name="position">チェックする位置</param>
+    /// <returns>重なっている場合はtrue</returns>
+    public static bool CheckCollision(Collider2D collider2D, Vector3 position)
+    {
+        if (collider2D == null) return false;
+        return collider2D.OverlapPoint(position);
+    }
 }

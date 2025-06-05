@@ -40,18 +40,19 @@ public static class CustomDeathExtensions
                 FinalStatusManager.SetFinalStatus(player, FinalStatus.Revange);
                 break;
             case CustomDeathType.Kill:
-                if (!TryKillEvent.Invoke(source, ref player).RefSuccess)
-                    break;
                 if (source == null)
                     throw new Exception("Source is null");
+                if (!TryKillEvent.Invoke(source, ref player).RefSuccess)
+                    break;
                 source.Player.MurderPlayer(player.Player, MurderResultFlags.Succeeded);
                 FinalStatusManager.SetFinalStatus(player, FinalStatus.Kill);
+                MurderDataManager.AddMurderData(source, player);
                 break;
             case CustomDeathType.KilLWithoutDeadbodyAndTeleport:
-                if (!TryKillEvent.Invoke(source, ref player).RefSuccess)
-                    break;
                 if (source == null)
                     throw new Exception("Source is null");
+                if (!TryKillEvent.Invoke(source, ref player).RefSuccess)
+                    break;
                 Vector2 pos = source.Player.GetTruePosition();
                 source.Player.MurderPlayer(player.Player, MurderResultFlags.Succeeded);
                 FinalStatusManager.SetFinalStatus(source, FinalStatus.Kill);
@@ -63,6 +64,7 @@ public static class CustomDeathExtensions
                     source.Player.NetTransform.SnapTo(pos);
                     source.Player.MyPhysics.body.velocity = Vector2.zero;
                 }, 0.1f);
+                MurderDataManager.AddMurderData(source, player);
                 break;
             case CustomDeathType.Suicide:
                 player.Player.MurderPlayer(player.Player, MurderResultFlags.Succeeded);
@@ -80,6 +82,7 @@ public static class CustomDeathExtensions
             case CustomDeathType.WaveCannon:
                 player.Player.MurderPlayer(player.Player, MurderResultFlags.Succeeded);
                 FinalStatusManager.SetFinalStatus(player, FinalStatus.WaveCannon);
+                MurderDataManager.AddMurderData(source, player);
                 break;
             case CustomDeathType.Samurai:
                 if (!TryKillEvent.Invoke(source, ref player).RefSuccess)
@@ -89,12 +92,14 @@ public static class CustomDeathExtensions
                 player.Player.NetTransform.SnapTo(pos2);
                 player.Player.MyPhysics.body.velocity = Vector2.zero;
                 FinalStatusManager.SetFinalStatus(player, FinalStatus.Samurai);
+                MurderDataManager.AddMurderData(source, player);
                 break;
             case CustomDeathType.BombBySelfBomb:
                 if (!TryKillEvent.Invoke(source, ref player).RefSuccess)
                     break;
                 player.Player.MurderPlayer(player.Player, MurderResultFlags.Succeeded);
                 FinalStatusManager.SetFinalStatus(player, FinalStatus.BombBySelfBomb);
+                MurderDataManager.AddMurderData(source, player);
                 break;
             case CustomDeathType.SelfBomb:
                 player.Player.MurderPlayer(player.Player, MurderResultFlags.Succeeded);
@@ -109,6 +114,7 @@ public static class CustomDeathExtensions
                     break;
                 player.Player.Exiled();
                 FinalStatusManager.SetFinalStatus(player, FinalStatus.Push);
+                MurderDataManager.AddMurderData(source, player);
                 break;
             case CustomDeathType.Ignite:
                 player.Player.Exiled();
@@ -119,12 +125,14 @@ public static class CustomDeathExtensions
                     break;
                 source.Player.MurderPlayer(player.Player, MurderResultFlags.Succeeded);
                 FinalStatusManager.SetFinalStatus(player, FinalStatus.FalseCharges);
+                MurderDataManager.AddMurderData(source, player);
                 break;
             case CustomDeathType.LaunchByRocket:
                 if (!TryKillEvent.Invoke(source, ref player).RefSuccess)
                     break;
                 player.Player.Exiled();
                 FinalStatusManager.SetFinalStatus(player, FinalStatus.LaunchByRocket);
+                MurderDataManager.AddMurderData(source, player);
                 break;
             case CustomDeathType.VampireKill:
                 if (!TryKillEvent.Invoke(source, ref player).RefSuccess)
@@ -133,6 +141,7 @@ public static class CustomDeathExtensions
                 source.Player.MurderPlayer(player.Player, MurderResultFlags.Succeeded);
                 FinalStatusManager.SetFinalStatus(player, FinalStatus.VampireKill);
                 source.Player.NetTransform.SnapTo(pos3);
+                MurderDataManager.AddMurderData(source, player);
                 break;
             case CustomDeathType.VampireWithDead:
                 player.Player.MurderPlayer(player.Player, MurderResultFlags.Succeeded);
@@ -144,6 +153,7 @@ public static class CustomDeathExtensions
                 player.Player.Exiled();
                 MurderEvent.Invoke(source, player, MurderResultFlags.Succeeded);
                 FinalStatusManager.SetFinalStatus(player, FinalStatus.Kill);
+                MurderDataManager.AddMurderData(source, player);
                 break;
             case CustomDeathType.SuicideSecrets:
                 player.Player.Exiled();
