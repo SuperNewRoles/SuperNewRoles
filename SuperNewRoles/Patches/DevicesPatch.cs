@@ -363,7 +363,7 @@ public static class DevicesPatch
                         TimeRemaining = UnityEngine.Object.Instantiate(FastDestroyableSingleton<HudManager>.Instance.TaskPanel.taskText, __instance.transform);
                         TimeRemaining.alignment = TextAlignmentOptions.BottomRight;
                         TimeRemaining.transform.position = Vector3.zero;
-                        TimeRemaining.transform.localPosition = new Vector3(1.7f, 4.45f);
+                        TimeRemaining.transform.localPosition = new Vector3(1.7f, 3.95f);
                         TimeRemaining.transform.localScale *= 1.8f;
                         TimeRemaining.color = Palette.White;
                         TimeRemaining.text = "";
@@ -478,7 +478,7 @@ public static class DevicesPatch
                     TimeRemaining.transform.localPosition =
                         GameManager.Instance.LogicOptions.currentGameOptions.MapId == 5 ?
                         new(2.3f, 4.2f, -10) :
-                        new(0.95f, 4.45f, -10f);
+                        new(-1.2609f, 0.6373f, -10f);
                     TimeRemaining.transform.localScale *= 1.8f;
                     TimeRemaining.color = Palette.White;
                     TimeRemaining.text = "";
@@ -561,7 +561,7 @@ public static class DevicesPatch
     {
         public static void Postfix(SurveillanceMinigame __instance)
         {
-            UpdateCameraTimer(__instance.transform, () => __instance.Close(), new Vector3(0.95f, 4.45f, -10f));
+            UpdateCameraTimer(__instance.transform, () => __instance.Close(), new Vector3(0.95f, 3.95f, -10f));
         }
     }
 
@@ -570,7 +570,7 @@ public static class DevicesPatch
     {
         public static void Postfix(PlanetSurveillanceMinigame __instance)
         {
-            UpdateCameraTimer(__instance.transform, () => __instance.Close(), new Vector3(0.95f, 4.45f, -10f));
+            UpdateCameraTimer(__instance.transform, () => __instance.Close(), new Vector3(0.95f, 3.95f, -10f));
         }
     }
 

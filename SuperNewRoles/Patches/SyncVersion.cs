@@ -27,7 +27,7 @@ public static class SyncVersion
     private const float SYNC_RETRY_DELAY = 0.5f;
     private const float PLAYER_JOIN_SYNC_DELAY = 1f;
     private const float SYNC_SHOWERROR_DELAY = 1f;
-    private const int MAX_RETRY_COUNT = 5;
+    private const int MAX_RETRY_COUNT = 100;
 
 
     public static class VersionData
