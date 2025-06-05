@@ -1,0 +1,20 @@
+using SuperNewRoles.Events;
+using SuperNewRoles.Modules.Events.Bases;
+
+namespace SuperNewRoles.Roles.Ability;
+
+public class ExitVentOnFixSabotageAbility : AbilityBase
+{
+    private EventListener<SaboEndEventData> saboEndEventListener;
+    public override void AttachToLocalPlayer()
+    {
+        base.AttachToLocalPlayer();
+        saboEndEventListener = SaboEndEvent.Instance.AddListener(OnSaboEnd);
+    }
+
+    private void OnSaboEnd(SaboEndEventData data)
+    {
+        if (!PlayerControl.LocalPlayer.inVent || Vent.currentVent == null) return;
+        PlayerControl.LocalPlayer.MyPhysics.RpcExitVent(Vent.currentVent.Id);
+    }
+}
