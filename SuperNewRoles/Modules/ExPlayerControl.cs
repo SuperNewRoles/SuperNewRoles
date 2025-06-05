@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using AmongUs.GameOptions;
@@ -208,7 +209,15 @@ public class ExPlayerControl
         {
             Logger.Error($"Role {roleId} not found");
         }
-        SetRoleEvent.Invoke(this, oldRole, roleId);
+        try
+        {
+            SetRoleEvent.Invoke(this, oldRole, roleId);
+        }
+        catch (Exception e)
+        {
+            Logger.Error($"SetRoleEvent.Invoke failed: {oldRole} -> {roleId}", "ExPlayerControl");
+            Logger.Error(e.ToString(), "ExPlayerControl");
+        }
     }
 
     public bool HasCustomKillButton()
@@ -460,7 +469,27 @@ public class ExPlayerControl
     public bool IsAlive()
         => !IsDead();
     public bool IsTaskTriggerRole()
-        => _customTaskAbility != null ? _customTaskAbility.CheckIsTaskTrigger()?.isTaskTrigger ?? IsCrewmate() : IsCrewmate();
+    {
+        bool hasDefinitiveFalseFromCustom = false;
+        foreach (var cta in PlayerAbilities.OfType<CustomTaskAbility>())
+        {
+            var triggerCheck = cta.CheckIsTaskTrigger();
+            if (triggerCheck != null)
+            {
+                if (triggerCheck.Value.isTaskTrigger)
+                {
+                    return true;
+                }
+                hasDefinitiveFalseFromCustom = true;
+            }
+        }
+
+        if (hasDefinitiveFalseFromCustom)
+        {
+            return false;
+        }
+        return IsCrewmate();
+    }
     public bool IsCountTask()
         => _customTaskAbility != null ? _customTaskAbility.CheckIsTaskTrigger()?.countTask ?? IsCrewmate() : IsCrewmate();
     public (int complete, int all) GetAllTaskForShowProgress()
