@@ -66,7 +66,7 @@ public class CustomVisorLayer : MonoBehaviour
     public PlayerOutfitType CurrentVisorType;
 
     public ICustomCosmeticVisor CustomCosmeticVisor => Visors.TryGetValue(CurrentVisorType, out var visor) ? visor as ICustomCosmeticVisor : null;
-    public ICosmeticData Visor => CustomCosmeticVisor as ICosmeticData;
+    public ICosmeticData Visor => CustomCosmeticVisor == null ? null : CustomCosmeticVisor as ICosmeticData;
 
     public ICosmeticData DefaultVisor => Visors.TryGetValue(PlayerOutfitType.Default, out var visor) ? visor as ICosmeticData : null;
 
@@ -250,11 +250,6 @@ public class CustomVisorLayer : MonoBehaviour
     public void SetVisorColor(Color color)
     {
         Image.color = color;
-    }
-
-    public void OnDestroy()
-    {
-        UnloadAsset();
     }
 
     private int count = 0;
