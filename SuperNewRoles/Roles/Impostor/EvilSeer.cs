@@ -35,6 +35,6 @@ class EvilSeer : RoleBase<EvilSeer>
     [CustomOptionFloat("EvilSeer.SoulDuration", 2.5f, 60f, 2.5f, 30f, translationName: "Seer.SoulDuration", parentFieldName: nameof(EvilSeerLimitSoulDuration))]
     public static float EvilSeerSoulDuration = 30f;
 
-    [CustomOptionSelect("EvilSeer.SeerColorMode", typeof(CrewMate.SeerColorMode), "Seer.SeerColorMode.", translationName: "Seer.SeerColorMode")]
-    public static CrewMate.SeerColorMode EvilSeerColorMode = CrewMate.SeerColorMode.None;
+    [CustomOptionSelect("EvilSeer.SeerColorMode", typeof(CrewMate.DeadBodyColorMode), "Seer.SeerColorMode.", translationName: "Seer.SeerColorMode")]
+    public static  CrewMate.DeadBodyColorMode EvilSeerColorMode = CrewMate.DeadBodyColorMode.None;
 }

@@ -15,7 +15,7 @@ public record SeerData
     public bool LimitSoulDuration;
     public float SoulDuration;
     /// <summary>イビルシーアの霊魂, 矢印のカラーモード</summary>
-    public SeerColorMode ColorMode;
+    public DeadBodyColorMode ColorMode;
 }
 /// <summary>
 /// シーア役職の能力クラス
@@ -55,10 +55,10 @@ public class SeerAbility : AbilityBase
 
             var colorId = Data.ColorMode switch
             {
-                SeerColorMode.LightAndDarkness => CustomCosmetics.CustomColors.IsLighter(data.player.Data) // イビルシーアで明暗表示が有効な場合
+                DeadBodyColorMode.LightAndDarkness => CustomCosmetics.CustomColors.IsLighter(data.player.Data) // イビルシーアで明暗表示が有効な場合
                                         ? LightSoulColorId // 明るい色を反映
                                         : DarknessSoulColorId, // 暗い色を反映
-                SeerColorMode.Adadaptive => data.player.Data.DefaultOutfit.ColorId, // イビルシーアで設定が有効な場合は、プレイヤーの色を使用
+                DeadBodyColorMode.Adadaptive => data.player.Data.DefaultOutfit.ColorId, // イビルシーアで設定が有効な場合は、プレイヤーの色を使用
                 _ => DefaultSoulColorId,
             };
             deadBodyPositions.Add((data.player.transform.position, colorId));

@@ -5,23 +5,27 @@ using SuperNewRoles.Events;
 using SuperNewRoles.Modules;
 using SuperNewRoles.Modules.Events.Bases;
 using SuperNewRoles.Roles.Ability;
+using SuperNewRoles.Roles.CrewMate;
 using SuperNewRoles.Roles.Neutral;
 using UnityEngine;
 
 public class DeadBodyArrowsAbility : AbilityBase
 {
     private readonly Func<bool> _showArrows;
-    private readonly Color _arrowColor;
+    private readonly Color _defaultArrowColor;
     public bool ShowArrows => _showArrows?.Invoke() ?? true;
+    /// <summary>死体矢印に反映させるボディカラーのモード</summary>
+    private readonly DeadBodyColorMode _deadBodyColorMode;
     private Dictionary<DeadBody, Arrow> _deadBodyArrows = new();
     private EventListener _fixedUpdateEvent;
 
     /// <param name="showArrows">矢印のを表示できるか</param>
     /// <param name="arrowColor">矢印の色(指定無しの場合Vultureのロールカラー)</param>
-    public DeadBodyArrowsAbility(Func<bool> showArrows, Color arrowColor = default)
+    public DeadBodyArrowsAbility(Func<bool> showArrows, Color arrowColor = default, DeadBodyColorMode colorMode = DeadBodyColorMode.None)
     {
         _showArrows = showArrows;
-        _arrowColor = arrowColor == default ? Vulture.Instance.RoleColor : arrowColor;
+        _defaultArrowColor = arrowColor == default ? Vulture.Instance.RoleColor : arrowColor;
+        _deadBodyColorMode = colorMode;
     }
 
     public override void AttachToLocalPlayer()
@@ -57,17 +61,17 @@ public class DeadBodyArrowsAbility : AbilityBase
                 deadBodiesByParentId.Add(dead.ParentId, dead);
         }
 
-        Color roleColor = _arrowColor;
-
         // 既存の矢印を更新または不要な矢印を削除
         foreach (var arrowEntry in _deadBodyArrows.ToList())
         {
             int parentId = arrowEntry.Key.ParentId;
             if (deadBodiesByParentId.ContainsKey(parentId))
             {
+                Color arrowColor = _deadBodyColorMode == DeadBodyColorMode.None ? _defaultArrowColor : ResolveDeadBodyArrowColor(arrowEntry.Key);
+
                 if (arrowEntry.Value == null)
-                    _deadBodyArrows[arrowEntry.Key] = new Arrow(roleColor);
-                _deadBodyArrows[arrowEntry.Key].Update(arrowEntry.Key.transform.position, roleColor);
+                    _deadBodyArrows[arrowEntry.Key] = new Arrow(arrowColor);
+                _deadBodyArrows[arrowEntry.Key].Update(arrowEntry.Key.transform.position, arrowColor);
                 _deadBodyArrows[arrowEntry.Key].arrow.SetActive(true);
             }
             else
@@ -81,10 +85,11 @@ public class DeadBodyArrowsAbility : AbilityBase
         // 新しい死体に対して矢印を追加（既に同じParentIdの矢印が存在しなければ）
         foreach (var kv in deadBodiesByParentId)
         {
-            if (_deadBodyArrows.Keys.Any(db => db.ParentId == kv.Key))
-                continue;
-            _deadBodyArrows.Add(kv.Value, new Arrow(roleColor));
-            _deadBodyArrows[kv.Value].Update(kv.Value.transform.position, roleColor);
+            if (_deadBodyArrows.Keys.Any(db => db.ParentId == kv.Key)) continue;
+
+            Color arrowColor = _deadBodyColorMode == DeadBodyColorMode.None ? _defaultArrowColor : ResolveDeadBodyArrowColor(kv.Value);
+            _deadBodyArrows.Add(kv.Value, new Arrow(arrowColor));
+            _deadBodyArrows[kv.Value].Update(kv.Value.transform.position, arrowColor);
             _deadBodyArrows[kv.Value].arrow.SetActive(true);
         }
     }
@@ -103,5 +108,37 @@ public class DeadBodyArrowsAbility : AbilityBase
                 UnityEngine.Object.Destroy(arrow.arrow);
         }
         _deadBodyArrows.Clear();
+    }
+
+    /// <summary>死体用矢印の色をモードに応じて取得する</summary>
+    /// <param name="db">色を取得したい死体</param>
+    /// <returns>死体用矢印の色</returns>
+    private Color ResolveDeadBodyArrowColor(DeadBody db)
+    {
+        var exp = ExPlayerControl.ById(db.ParentId);
+        int deadBodyColorId;
+
+        // 明暗表示関連
+        const int lightColorId = (int)SuperNewRoles.CustomCosmetics.CustomColors.ColorType.Pitchwhite;
+        const int darknessColorId = (int)SuperNewRoles.CustomCosmetics.CustomColors.ColorType.Crasyublue;
+
+        // 有効なプレイヤーカラーの範囲内か
+        var isValidColorId = exp.Data.DefaultOutfit.ColorId >= 0 && exp.Data.DefaultOutfit.ColorId < Palette.PlayerColors.Length;
+
+        switch (_deadBodyColorMode)
+        {
+            case DeadBodyColorMode.LightAndDarkness:
+            case DeadBodyColorMode.Adadaptive when !isValidColorId: // ボディカラー反映時に 無効なColorIdであれば明暗表示で返す
+                deadBodyColorId = SuperNewRoles.CustomCosmetics.CustomColors.IsLighter(exp) ? lightColorId : darknessColorId;
+                break;
+            case DeadBodyColorMode.Adadaptive when isValidColorId: // 有効なColorIdであれば 死体の色を返す
+                deadBodyColorId = exp.Data.DefaultOutfit.ColorId;
+                break;
+            default:
+                return _defaultArrowColor;
+        }
+
+        Color deadBodyColor = Palette.PlayerColors[deadBodyColorId];
+        return deadBodyColor;
     }
 }
