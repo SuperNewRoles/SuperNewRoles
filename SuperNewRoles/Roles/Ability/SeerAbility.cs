@@ -28,11 +28,11 @@ public class SeerAbility : AbilityBase
     public SeerData Data;
 
     // 通常霊魂カラーID
-    private const int DefaultSoulColorId = 74; // Crasyublueを使用
+    private const int DefaultSoulColorId = (int)CustomCosmetics.CustomColors.ColorType.Crasyublue;
 
     // 明暗表示対応用の霊魂カラーID
-    private const int LightSoulColorId = 18; // Pitchwhite を使用
-    private const int DarknessSoulColorId = 74; // Crasyublueを使用
+    private const int LightSoulColorId = (int)CustomCosmetics.CustomColors.ColorType.Pitchwhite;
+    private const int DarknessSoulColorId = (int)CustomCosmetics.CustomColors.ColorType.Crasyublue;
 
     public SeerAbility(SeerData data)
     {
