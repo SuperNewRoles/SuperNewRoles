@@ -76,6 +76,12 @@ public class SeerAbility : AbilityBase
         {
             // 死亡時に画面を光らせる
             FlashHandler.ShowFlash(FlashColor(data.player));
+
+            if (Data.FlashColorMode is DeadBodyColorMode.LightAndDarkness or DeadBodyColorMode.Adadaptive)
+            {
+                var colorText = FlashColorText(data.player);
+                if (colorText != null) new CustomMessage(colorText, 3f);
+            }
         }
     }
 
@@ -158,6 +164,29 @@ public class SeerAbility : AbilityBase
         }
 
         return flashColor;
+    }
+
+    private string FlashColorText(ExPlayerControl exp)
+    {
+        string colorText;
+
+        // 有効なプレイヤーカラーの範囲内か
+        var isValidColorId = CustomCosmetics.CustomColors.IsValidColorId(exp.Data.DefaultOutfit.ColorId);
+
+        switch (Data.FlashColorMode)
+        {
+            case DeadBodyColorMode.LightAndDarkness:
+            case DeadBodyColorMode.Adadaptive when !isValidColorId: // ボディカラー反映時に 不正なColorIdであれば明暗表示で返す
+                colorText = CustomCosmetics.CustomColors.IsLighter(exp) ? ModTranslation.GetString("EvilSeer.LightColor") : ModTranslation.GetString("EvilSeer.DarkColor");
+                break;
+            case DeadBodyColorMode.Adadaptive when isValidColorId: // 有効なColorIdであれば 死体の色を返す
+                colorText = Palette.GetColorName(exp.Data.DefaultOutfit.ColorId);
+                break;
+            default:
+                return null;
+        }
+
+        return string.Format(ModTranslation.GetString("EvilSeer.FlashColorText"), colorText);
     }
 
     private static Sprite soulSprite;

@@ -851,6 +851,9 @@ EvilSeer.AbilityColorModeSelect.All,全て,
 EvilSeer.AbilityColorModeSelect.FlashOnly,死の点滅のみ,
 EvilSeer.AbilityColorModeSelect.SoulOnly,霊魂のみ,
 EvilSeer.AbilityColorModeSelect.ArrowOnly,死体矢印のみ,
+EvilSeer.FlashColorText,{0}色のクルーの死の点滅を検知,
+EvilSeer.DarkColor,暗い,Dark Color,深色,深色
+EvilSeer.LightColor,明るい,Light Color,浅色,淺色
 
 # Celebrity
 CelebrityIntro,みんなのスター！！,The Celebrity!!,大家的明星！！,大家的明星！！
