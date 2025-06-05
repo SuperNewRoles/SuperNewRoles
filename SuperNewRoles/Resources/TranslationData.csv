@@ -848,6 +848,7 @@ Seer.SeerColorMode.LightAndDarkness,明暗反映,
 Seer.SeerColorMode.Adadaptive,ボディカラー反映,
 EvilSeer.AbilityColorModeSelect,色設定を反映するアビリティ,
 EvilSeer.AbilityColorModeSelect.All,全て,
+EvilSeer.AbilityColorModeSelect.FlashOnly,死の点滅のみ,
 EvilSeer.AbilityColorModeSelect.SoulOnly,霊魂のみ,
 EvilSeer.AbilityColorModeSelect.ArrowOnly,死体矢印のみ,
 

@@ -20,7 +20,8 @@ class EvilSeer : RoleBase<EvilSeer>
             Mode = EvilSeerSeerMode,
             LimitSoulDuration = EvilSeerLimitSoulDuration,
             SoulDuration = EvilSeerSoulDuration,
-            ColorMode = EvilSeerAbilityColorModeSelect is EvilSeerAbility.All or EvilSeerAbility.SoulOnly ? EvilSeerColorMode : CrewMate.DeadBodyColorMode.None
+            FlashColorMode =  EvilSeerAbilityColorModeSelect is EvilSeerAbility.All or EvilSeerAbility.FlashOnly ? EvilSeerColorMode : CrewMate.DeadBodyColorMode.None,
+            SoulColorMode = EvilSeerAbilityColorModeSelect is EvilSeerAbility.All or EvilSeerAbility.SoulOnly ? EvilSeerColorMode : CrewMate.DeadBodyColorMode.None
         }),
         () => new DeadBodyArrowsAbility(() => EvilSeerShowArrows, colorMode : EvilSeerAbilityColorModeSelect is EvilSeerAbility.All or EvilSeerAbility.ArrowOnly ? EvilSeerColorMode : CrewMate.DeadBodyColorMode.None),
     ];
@@ -59,6 +60,7 @@ class EvilSeer : RoleBase<EvilSeer>
 public enum EvilSeerAbility
 {
     All,
+    FlashOnly,
     SoulOnly,
     ArrowOnly
 }

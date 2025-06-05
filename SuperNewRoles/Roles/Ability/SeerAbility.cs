@@ -14,8 +14,10 @@ public record SeerData
     public SeerMode Mode;
     public bool LimitSoulDuration;
     public float SoulDuration;
-    /// <summary>イビルシーアの霊魂, 矢印のカラーモード</summary>
-    public DeadBodyColorMode ColorMode;
+    /// <summary>イビルシーアの死の点滅のカラーモード</summary>
+    public DeadBodyColorMode FlashColorMode = DeadBodyColorMode.None;
+    /// <summary>イビルシーアの霊魂のカラーモード</summary>
+    public DeadBodyColorMode SoulColorMode = DeadBodyColorMode.None;
 }
 /// <summary>
 /// シーア役職の能力クラス
@@ -53,7 +55,7 @@ public class SeerAbility : AbilityBase
         {
             // 死亡位置を記録
 
-            var colorId = Data.ColorMode switch
+            var colorId = Data.SoulColorMode switch
             {
                 DeadBodyColorMode.LightAndDarkness => CustomCosmetics.CustomColors.IsLighter(data.player.Data) // イビルシーアで明暗表示が有効な場合
                                         ? LightSoulColorId // 明るい色を反映
@@ -68,10 +70,10 @@ public class SeerAbility : AbilityBase
         }
 
         // モードが「死の点滅が見える」または「両方」の場合
-        if (mode == SeerMode.Both || mode == SeerMode.FlashOnly)
+        if (mode is SeerMode.Both or SeerMode.FlashOnly)
         {
-            // 死亡時に画面を青く光らせる
-            FlashHandler.ShowFlash(Seer.Instance.RoleColor);
+            // 死亡時に画面を光らせる
+            FlashHandler.ShowFlash(FlashColor(data.player));
         }
     }
 
@@ -126,6 +128,34 @@ public class SeerAbility : AbilityBase
                 if (p == 1f && rend != null && rend.gameObject != null) UnityEngine.Object.Destroy(rend.gameObject);
             })));
         }
+    }
+
+    private Color FlashColor(ExPlayerControl exp)
+    {
+        Color flashColor;
+
+        // 明暗表示関連
+        Color lightColor = Palette.PlayerColors[(int)CustomCosmetics.CustomColors.ColorType.Pitchwhite];
+        Color darknessColor = Palette.PlayerColors[(int)CustomCosmetics.CustomColors.ColorType.Crasyublue];
+
+        // 有効なプレイヤーカラーの範囲内か
+        var isValidColorId = exp.Data.DefaultOutfit.ColorId >= 0 && exp.Data.DefaultOutfit.ColorId < Palette.PlayerColors.Length;
+
+        switch (Data.FlashColorMode)
+        {
+            case DeadBodyColorMode.LightAndDarkness:
+            case DeadBodyColorMode.Adadaptive when !isValidColorId: // ボディカラー反映時に 無効なColorIdであれば明暗表示で返す
+                flashColor = CustomCosmetics.CustomColors.IsLighter(exp) ? lightColor : darknessColor;
+                break;
+            case DeadBodyColorMode.Adadaptive when isValidColorId: // 有効なColorIdであれば 死体の色を返す
+                flashColor = Palette.PlayerColors[exp.Data.DefaultOutfit.ColorId];
+                break;
+            default:
+                flashColor = Seer.Instance.RoleColor;
+                break;
+        }
+
+        return flashColor;
     }
 
     private static Sprite soulSprite;
