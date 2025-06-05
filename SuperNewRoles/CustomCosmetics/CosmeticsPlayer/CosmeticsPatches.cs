@@ -58,6 +58,16 @@ public static class AmongUsClient_CoStartGame
     {
         PlayerControlRpcExtensions.RpcCustomSetCosmetics(PlayerControl.LocalPlayer.PlayerId, CostumeTabType.Hat2, CustomCosmeticsSaver.CurrentHat2Id, (PlayerControl.LocalPlayer.Data?.DefaultOutfit?.ColorId).GetValueOrDefault());
         PlayerControlRpcExtensions.RpcCustomSetCosmetics(PlayerControl.LocalPlayer.PlayerId, CostumeTabType.Visor2, CustomCosmeticsSaver.CurrentVisor2Id, (PlayerControl.LocalPlayer.Data?.DefaultOutfit?.ColorId).GetValueOrDefault());
+        if (ModHelpers.IsHnS())
+        {
+            foreach (ExPlayerControl pc in PlayerControl.AllPlayerControls)
+            {
+                if (!pc.Data.Role.IsImpostor) continue;
+                CustomCosmeticsLayer customCosmeticsLayer = CustomCosmeticsLayers.ExistsOrInitialize(pc.cosmetics);
+                customCosmeticsLayer.visor1.gameObject.SetActive(false);
+                customCosmeticsLayer.visor2.gameObject.SetActive(false);
+            }
+        }
     }
 }
 [HarmonyPatch(typeof(VisorLayer), nameof(VisorLayer.SetFlipX))]
@@ -182,6 +192,20 @@ public static class VitalsPanel_SetPlayer
 }
 [HarmonyPatch(typeof(PoolablePlayer), nameof(PoolablePlayer.UpdateFromEitherPlayerDataOrCache))]
 public static class PoolablePlayer_UpdateFromEitherPlayerDataOrCache
+{
+    public static void Postfix(PoolablePlayer __instance, NetworkedPlayerInfo pData, PlayerMaterial.MaskType maskType)
+    {
+        if (pData.Object == null) return;
+        CustomCosmeticsLayer customCosmeticsLayer = CustomCosmeticsLayers.ExistsOrInitialize(__instance.cosmetics);
+        CustomCosmeticsLayer pcLayer = CustomCosmeticsLayers.ExistsOrInitialize(pData.Object.cosmetics);
+        customCosmeticsLayer?.hat2?.SetHat(pcLayer.hat2.DefaultHat?.ProdId ?? "", pData.DefaultOutfit.ColorId);
+        customCosmeticsLayer?.visor2?.SetVisor(pcLayer.visor2.DefaultVisor?.ProdId ?? "", pData.DefaultOutfit.ColorId);
+        customCosmeticsLayer?.hat2?.SetMaskType(maskType);
+        customCosmeticsLayer?.visor2?.SetMaskType(maskType);
+    }
+}
+[HarmonyPatch(typeof(PoolablePlayer), nameof(PoolablePlayer.UpdateFromPlayerData))]
+public static class PoolablePlayer_UpdateFromPlayerData
 {
     public static void Postfix(PoolablePlayer __instance, NetworkedPlayerInfo pData, PlayerMaterial.MaskType maskType)
     {
