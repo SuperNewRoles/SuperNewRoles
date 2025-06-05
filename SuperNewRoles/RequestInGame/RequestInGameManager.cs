@@ -12,6 +12,7 @@ using SuperNewRoles.Modules;
 using UnityEngine.Networking;
 using System.Text;
 using System.Collections;
+using System.IO.Compression;
 
 namespace SuperNewRoles.RequestInGame;
 
@@ -221,16 +222,29 @@ public class RequestInGameManager
         additionalInfo["message"] = description;
         additionalInfo["title"] = title;
         string data = JsonConvert.SerializeObject(additionalInfo.Wrap());
+
+        byte[] uncompressed = Encoding.UTF8.GetBytes(data);
+        byte[] compressed;
+        using (var ms = new MemoryStream())
+        {
+            using (var gzip = new GZipStream(ms, CompressionMode.Compress))
+            {
+                gzip.Write(uncompressed, 0, uncompressed.Length);
+            }
+            compressed = ms.ToArray();
+        }
+
         string url = $"{SNRURLs.ReportInGameAPI}/sendRequest/{type}";
         var request = new UnityWebRequest(url, "POST")
         {
-            uploadHandler = new UploadHandlerRaw(Encoding.UTF8.GetBytes(data)),
+            uploadHandler = new UploadHandlerRaw(compressed),
             downloadHandler = new DownloadHandlerBuffer()
         };
         request.chunkedTransfer = true;
         string token = string.Empty;
         yield return GetOrCreateToken(t => token = t);
         request.SetRequestHeader("Content-Type", "application/json");
+        request.SetRequestHeader("Content-Encoding", "gzip");
         request.SetRequestHeader("Authorization", $"Bearer {token}");
 
         var operation = request.SendWebRequest();

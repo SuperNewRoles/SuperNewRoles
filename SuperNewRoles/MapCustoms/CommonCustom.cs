@@ -39,7 +39,7 @@ public static class CommonCustom
     {
         public static bool Prefix(PlayerControl __instance, [HarmonyArgument(0)] byte bodyColor)
         {
-            if (CustomColors.DefaultPickAbleColors < PlayerControl.AllPlayerControls.Count) return true;
+            if (GeneralSettingOptions.DisableModColor && CustomColors.DefaultPickAbleColors < PlayerControl.AllPlayerControls.Count) return true;
             uint pickAble = GeneralSettingOptions.DisableModColor ? CustomColors.DefaultPickAbleColors : CustomColors.PickAbleColors;
             // Fix incorrect color assignment
             uint color = bodyColor;
