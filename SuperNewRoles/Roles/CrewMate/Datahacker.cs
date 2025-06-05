@@ -228,7 +228,7 @@ public class DatahackerAbility : AbilityBase
     /// </summary>
     private void UpdateArrow()
     {
-        if (!hackingData.ShowArrowWhenExposed || !ExPlayerControl.LocalPlayer.IsNonCrewKiller() || !exposedToImpostors)
+        if (!hackingData.ShowArrowWhenExposed || !ExPlayerControl.LocalPlayer.IsNonCrewKiller() || !exposedToImpostors || Player.IsDead())
         {
             if (arrow != null && arrow.arrow != null && arrow.arrow.activeSelf)
                 arrow.arrow.SetActive(false);
