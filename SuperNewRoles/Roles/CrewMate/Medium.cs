@@ -67,6 +67,8 @@ public class MediumSpiritVisionAbility : CustomButtonBase, IButtonEffect
     private EventListener<MeetingStartEventData> _meetingStartListener;
     private VisibleGhostAbility _visibleGhostAbility;
 
+    private CustomMessage message;
+
     public MediumSpiritVisionAbility(MediumSpiritVisionData data)
     {
         Data = data;
@@ -105,9 +107,12 @@ public class MediumSpiritVisionAbility : CustomButtonBase, IButtonEffect
     public void RpcSetSpiritVision(bool isActive)
     {
         isEffectActive = isActive;
-        if (isActive && Player.AmOwner)
+        if (Player.AmOwner)
         {
-            new CustomMessage(ModTranslation.GetString("MediumSpiritVisionActiveMessage"), EffectDuration);
+            if (isActive)
+                message = new CustomMessage(ModTranslation.GetString("MediumSpiritVisionActiveMessage"), EffectDuration);
+            else if (message?.text?.gameObject != null)
+                GameObject.Destroy(message.text.gameObject);
         }
     }
     public void FinishSpiritForce()
