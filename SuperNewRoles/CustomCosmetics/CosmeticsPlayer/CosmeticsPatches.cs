@@ -3,6 +3,7 @@ using HarmonyLib;
 using SuperNewRoles.CustomCosmetics.UI;
 using SuperNewRoles.Modules;
 using SuperNewRoles.Roles.Modifiers;
+using TMPro;
 using UnityEngine;
 using static CosmeticsLayer;
 
@@ -351,6 +352,22 @@ public static class MeetingHud_Update
             CustomCosmeticsLayer customCosmeticsLayer = CustomCosmeticsLayers.ExistsOrInitialize(playerState.PlayerIcon.cosmetics);
             customCosmeticsLayer.visor1.Image.maskInteraction = SpriteMaskInteraction.VisibleInsideMask;
             customCosmeticsLayer.visor2.Image.maskInteraction = SpriteMaskInteraction.VisibleInsideMask;
+        }
+    }
+}
+[HarmonyPatch(typeof(AmongUsClient), nameof(AmongUsClient.CoStartGame))]
+public static class AmongUsClient_CoStartGame_Patch
+{
+    public static void Postfix()
+    {
+        foreach (ExPlayerControl player in ExPlayerControl.ExPlayerControls)
+        {
+            CustomCosmeticsLayer customCosmeticsLayer = CustomCosmeticsLayers.ExistsOrInitialize(player.cosmetics);
+
+            foreach (var textMeshPro in player.cosmetics.nameTextContainer.GetComponentsInChildren<TextMeshPro>())
+            {
+                textMeshPro.sortingOrder = 500;
+            }
         }
     }
 }
