@@ -16,10 +16,12 @@ public class DeadBodyArrowsAbility : AbilityBase
     private Dictionary<DeadBody, Arrow> _deadBodyArrows = new();
     private EventListener _fixedUpdateEvent;
 
-    public DeadBodyArrowsAbility(Func<bool> showArrows, Color arrowColor)
+    /// <param name="showArrows">矢印のを表示できるか</param>
+    /// <param name="arrowColor">矢印の色(指定無しの場合Vultureのロールカラー)</param>
+    public DeadBodyArrowsAbility(Func<bool> showArrows, Color arrowColor = default)
     {
         _showArrows = showArrows;
-        _arrowColor = arrowColor;
+        _arrowColor = arrowColor == default ? Vulture.Instance.RoleColor : arrowColor;
     }
 
     public override void AttachToLocalPlayer()
