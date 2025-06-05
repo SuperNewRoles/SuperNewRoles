@@ -51,17 +51,19 @@ public class SeerAbility : AbilityBase
         if (ExileController.Instance != null) return;
         // モードが「霊魂が見える」または「両方」の場合
         var mode = Data.Mode;
-        if (mode == SeerMode.Both || mode == SeerMode.SoulOnly)
+        if (mode is SeerMode.Both or SeerMode.SoulOnly)
         {
             // 死亡位置を記録
 
             var colorId = Data.SoulColorMode switch
             {
-                DeadBodyColorMode.LightAndDarkness => CustomCosmetics.CustomColors.IsLighter(data.player.Data) // イビルシーアで明暗表示が有効な場合
+                DeadBodyColorMode.None => DefaultSoulColorId, // シーア 或いは EvilSeerで設定が無効な場合
+                // イビルシーアで明暗表示が有効, 又は死体色表示が有効でColorIdが不正な場合
+                DeadBodyColorMode.LightAndDarkness or DeadBodyColorMode.Adadaptive when !CustomCosmetics.CustomColors.IsValidColorId(data.player.Data.DefaultOutfit.ColorId) => CustomCosmetics.CustomColors.IsLighter(data.player.Data)
                                         ? LightSoulColorId // 明るい色を反映
                                         : DarknessSoulColorId, // 暗い色を反映
                 DeadBodyColorMode.Adadaptive => data.player.Data.DefaultOutfit.ColorId, // イビルシーアで設定が有効な場合は、プレイヤーの色を使用
-                _ => DefaultSoulColorId,
+                _ => DefaultSoulColorId, // その他
             };
             deadBodyPositions.Add((data.player.transform.position, colorId));
 
