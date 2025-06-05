@@ -13,7 +13,8 @@ class Technician : RoleBase<Technician>
     public override RoleId Role { get; } = RoleId.Technician;
     public override Color32 RoleColor { get; } = Color.blue;
     public override List<Func<AbilityBase>> Abilities { get; } = [
-        () => new CustomVentAbility(() => ModHelpers.IsSabotageAvailable(isMushroomMixAsSabotage: TechnicianCanUseVentOnMushroomMixup))
+        () => new CustomVentAbility(() => ModHelpers.IsSabotageAvailable(isMushroomMixAsSabotage: TechnicianCanUseVentOnMushroomMixup)),
+        () => new ExitVentOnFixSabotageAbility(),
     ];
 
     public override QuoteMod QuoteMod { get; } = QuoteMod.SuperNewRoles;
