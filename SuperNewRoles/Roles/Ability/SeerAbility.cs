@@ -59,7 +59,7 @@ public class SeerAbility : AbilityBase
             {
                 DeadBodyColorMode.None => DefaultSoulColorId, // シーア 或いは EvilSeerで設定が無効な場合
                 // イビルシーアで明暗表示が有効, 又は死体色表示が有効でColorIdが不正な場合
-                DeadBodyColorMode.LightAndDarkness or DeadBodyColorMode.Adaptive when !CustomCosmetics.CustomColors.IsValidColorId(data.player.Data.DefaultOutfit.ColorId) => CustomCosmetics.CustomColors.IsLighter(data.player.Data)
+                DeadBodyColorMode.LightAndDarkness or DeadBodyColorMode.Adaptive when !CustomCosmetics.CustomColors.IsValidColorId(data.player.Data.DefaultOutfit.ColorId) => CustomCosmetics.CustomColors.IsLighter(data.player)
                                         ? LightSoulColorId // 明るい色を反映
                                         : DarknessSoulColorId, // 暗い色を反映
                 DeadBodyColorMode.Adaptive => data.player.Data.DefaultOutfit.ColorId, // イビルシーアで設定が有効な場合は、プレイヤーの色を使用
