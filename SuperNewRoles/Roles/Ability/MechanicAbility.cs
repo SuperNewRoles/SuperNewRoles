@@ -90,7 +90,7 @@ public class MechanicAbility : VentTargetCustomButtonBase, IAbilityCount, IButto
         _onPlayerPhysicsFixedUpdateEvent?.RemoveListener();
         if (currentVent != null)
             SetVentStatus(Player, currentVent, false, moveableVentPosition);
-        ModHelpers.SetOpacity(Player, 1f, false);
+        ModHelpers.SetOpacity(Player, 1f);
     }
 
     private void OnMeetingStart(MeetingStartEventData data)
@@ -110,8 +110,8 @@ public class MechanicAbility : VentTargetCustomButtonBase, IAbilityCount, IButto
         {
             // プレイヤーの位置にベントを移動
             PlayerControl player = Player;
-            Vector2 truepos = player.GetTruePosition();
-            currentVent.transform.position = new(truepos.x, truepos.y, player.transform.position.z + 0.0025f);
+            Vector2 truepos = player.transform.position;
+            currentVent.transform.position = new(truepos.x, truepos.y - 0.2f, player.transform.position.z + 0.0025f);
             SetHideStatus(player, true);
             if (data.Instance.myPlayer.moveable)
                 moveableVentPosition = currentVent.transform.position;
@@ -159,6 +159,6 @@ public class MechanicAbility : VentTargetCustomButtonBase, IAbilityCount, IButto
         {
             opacity = 1.5f;
         }
-        ModHelpers.SetOpacity(target, opacity, false);
+        ModHelpers.SetOpacity(target, opacity);
     }
 }

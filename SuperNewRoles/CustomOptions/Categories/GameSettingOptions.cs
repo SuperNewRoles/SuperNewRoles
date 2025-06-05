@@ -34,6 +34,15 @@ public static class GameSettingOptions
     public static AprilFoolsOutfitType AprilFoolsOutfitType;
     [CustomOptionBool("AprilFoolsEnableDleks", false, parentFieldName: nameof(CustomAprilFools))]
     public static bool AprilFoolsEnableDleks;
+
+    [CustomOptionBool("EnabledZoomOnDead", true, parentFieldName: nameof(Categories.GameSettings))]
+    public static bool EnabledZoomOnDead;
+
+    [CustomOptionBool("ImmediateKillCooldown", false, parentFieldName: nameof(Categories.GameSettings))]
+    public static bool ImmediateKillCooldown;
+
+    [CustomOptionBool("DisableHauntNonCompleted", false, parentFieldName: nameof(Categories.GameSettings))]
+    public static bool DisableHauntNonCompleted;
 }
 public enum AprilFoolsOutfitType
 {

@@ -103,8 +103,10 @@ public enum RoleId : short
     Lighter,
     Technician,
     Medium,
+    MeetingSheriff,
+    DoubleKiller,
+    Finder,
     EvilSeer,
-
 }
 
 public enum GhostRoleId : short

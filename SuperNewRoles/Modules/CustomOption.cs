@@ -1195,7 +1195,6 @@ public static class CustomOptionSaver
     {
         if (preset < 0 || preset > 9) return;
         presetNames[preset] = name;
-        Save();
     }
 
     public static void RemovePreset(int preset)

@@ -373,7 +373,7 @@ public class JoinRoomURLGenerator // または既存のクラスに追加
             renderer.sprite = AssetManager.GetAsset<Sprite>("SNRDirectCopy.png");
             obj.transform.SetParent(__instance.LobbyInfoPane.CopyCodeText.transform.parent);
             obj.transform.localPosition = new(1.965f, -0.248f, -2f);
-            obj.transform.localScale = Vector3.one * 0.405f;
+            obj.transform.localScale = Vector3.one * 0.35f;
             PassiveButton button = obj.AddComponent<PassiveButton>();
             BoxCollider2D boxCollider = obj.AddComponent<BoxCollider2D>();
             button.Colliders = new Collider2D[] { boxCollider };

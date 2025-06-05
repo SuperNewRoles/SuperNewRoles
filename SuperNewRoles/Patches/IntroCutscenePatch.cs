@@ -100,7 +100,6 @@ public static class IntroCutscenePatch
             var sound = PlayerControl.LocalPlayer.Data.Role.IntroSound;
             if (rolebase != null)
                 sound = RoleManager.Instance.AllRoles.FirstOrDefault(x => x.Role == rolebase.IntroSoundType)?.IntroSound;
-            SoundManager.Instance.StopAllSound();
             SoundManager.Instance.PlaySound(sound, false, 1);
 
             //字幕やプレイヤーを再表示する(Prefixで消している)
@@ -251,11 +250,14 @@ public static class IntroCutscenePatch
         {
             DevicesPatch.ClearAndReload();
         }
-        foreach (var ability in ExPlayerControl.LocalPlayer.PlayerAbilities)
+        if (!GameSettingOptions.ImmediateKillCooldown)
         {
-            if (ability is CustomButtonBase customButtonBase && customButtonBase.IsFirstCooldownTenSeconds)
+            foreach (var ability in ExPlayerControl.LocalPlayer.PlayerAbilities)
             {
-                customButtonBase.SetCoolTenSeconds();
+                if (ability is CustomButtonBase customButtonBase && customButtonBase.IsFirstCooldownTenSeconds)
+                {
+                    customButtonBase.SetCoolTenSeconds();
+                }
             }
         }
     }
