@@ -520,6 +520,10 @@ public static class ModHelpers
     {
         return taskType is TaskTypes.FixLights or TaskTypes.RestoreOxy or TaskTypes.ResetReactor or TaskTypes.StopCharles or TaskTypes.ResetSeismic or TaskTypes.FixComms or TaskTypes.MushroomMixupSabotage;
     }
+    public static bool IsSabotage(SystemTypes systemType)
+    {
+        return systemType is SystemTypes.Electrical or SystemTypes.LifeSupp or SystemTypes.Reactor or SystemTypes.HeliSabotage or SystemTypes.Laboratory or SystemTypes.Comms;
+    }
 
     private static void FixingSabotage(TaskTypes taskType)
     {
