@@ -31,7 +31,7 @@ public class CustomHatLayer : MonoBehaviour
     public PlayerOutfitType CurrentHatType;
 
     public ICustomCosmeticHat CustomCosmeticHat => Hats.TryGetValue(CurrentHatType, out var hat) ? hat as ICustomCosmeticHat : null;
-    public ICosmeticData Hat => CustomCosmeticHat as ICosmeticData;
+    public ICosmeticData Hat => CustomCosmeticHat == null ? null : CustomCosmeticHat as ICosmeticData;
 
     public ICosmeticData DefaultHat => Hats.TryGetValue(PlayerOutfitType.Default, out var hat) ? hat as ICosmeticData : null;
 
@@ -60,11 +60,6 @@ public class CustomHatLayer : MonoBehaviour
             BackLayer.flipX = value;
             FrontLayer.flipX = value;
         }
-    }
-
-    public void OnDestroy()
-    {
-        // UnloadAsset();
     }
 
     public bool HasHat()

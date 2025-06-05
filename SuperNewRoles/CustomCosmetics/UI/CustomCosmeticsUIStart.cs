@@ -5,6 +5,7 @@ using System.Reflection;
 using AmongUs.Data;
 using HarmonyLib;
 using Rewired;
+using SuperNewRoles.CustomCosmetics.CosmeticsPlayer;
 using SuperNewRoles.Modules;
 using UnityEngine;
 using UnityEngine.Events;
@@ -350,6 +351,21 @@ public static class CustomCosmeticsUIStart
         __instance.nameplateMaskArea.SetActive(false);
         __instance.cubeArea.SetActive(false);
         __instance.equipButton.SetActive(false);
+    }
+    [HarmonyPatch(typeof(PlayerCustomizationMenu), nameof(PlayerCustomizationMenu.OnDestroy))]
+    public static class PlayerCustomizationMenu_OnDestroy_Patch
+    {
+        public static void Postfix(PlayerCustomizationMenu __instance)
+        {
+            if (PlayerControl.LocalPlayer == null) return;
+            foreach (PlayerControl player in PlayerControl.AllPlayerControls)
+            {
+                CustomCosmeticsLayer customCosmeticsLayer = CustomCosmeticsLayers.ExistsOrInitialize(player.cosmetics);
+                bool oldActive = customCosmeticsLayer?.ModdedCosmetics?.activeInHierarchy ?? true;
+                customCosmeticsLayer?.ModdedCosmetics?.SetActive(false);
+                customCosmeticsLayer.ModdedCosmetics?.SetActive(oldActive);
+            }
+        }
     }
     [HarmonyPatch(typeof(PlayerCustomizationMenu), nameof(PlayerCustomizationMenu.Update))]
     public static class PlayerCustomizationMenu_Update_Patch

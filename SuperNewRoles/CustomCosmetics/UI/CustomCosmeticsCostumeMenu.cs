@@ -1368,14 +1368,27 @@ public class CustomCosmeticsCostumeMenu : CustomCosmeticsMenuBase<CustomCosmetic
             GameObject.Destroy(CurrentCostumeTab);
             CurrentCostumeTab = null;
         }
-
+        HashSet<string> usingCosmetics = new();
+        if (PlayerControl.LocalPlayer != null)
+        {
+            foreach (PlayerControl player in PlayerControl.AllPlayerControls)
+            {
+                CustomCosmeticsLayer customCosmeticsLayer = CustomCosmeticsLayers.ExistsOrInitialize(player.cosmetics);
+                if (customCosmeticsLayer == null) continue;
+                usingCosmetics.Add(customCosmeticsLayer.hat1?.Hat?.ProdId);
+                usingCosmetics.Add(customCosmeticsLayer.hat2?.Hat?.ProdId);
+                usingCosmetics.Add(customCosmeticsLayer.visor1?.Visor?.ProdId);
+                usingCosmetics.Add(customCosmeticsLayer.visor2?.Visor?.ProdId);
+            }
+        }
         if (this.packagedCosmetics != null)
         {
             foreach (var cosmeticList in this.packagedCosmetics.Values)
             {
                 foreach (var cosmetic in cosmeticList)
                 {
-                    cosmetic.SetDoUnload();
+                    if (!usingCosmetics.Contains(cosmetic.ProdId))
+                        cosmetic.SetDoUnload();
                 }
             }
             this.packagedCosmetics.Clear();
