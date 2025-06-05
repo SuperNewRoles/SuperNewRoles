@@ -22,6 +22,10 @@ public class CustomColors
     /// <param name="exp">色の判定を確認したいプレイヤー</param>
     /// <returns>true => 明るい色 / false => 暗い色, expがnullの場合 暗い色として扱う</returns>
     public static bool IsLighter(ExPlayerControl exp) => exp?.Data.DefaultOutfit?.ColorId != null && LighterColors.Contains(exp.Data.DefaultOutfit.ColorId);
+    /// <summary>有効なColorIdか</summary>
+    /// <param name="colorId">判定したいColorId</param>
+    /// <returns>true: 有効 / false: 不正</returns>
+    public static bool IsValidColorId(int colorId) => colorId >= 0 && colorId < Palette.PlayerColors.Length;
 
     public enum ColorType
     {

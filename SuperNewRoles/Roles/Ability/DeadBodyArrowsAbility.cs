@@ -123,12 +123,12 @@ public class DeadBodyArrowsAbility : AbilityBase
         const int darknessColorId = (int)SuperNewRoles.CustomCosmetics.CustomColors.ColorType.Crasyublue;
 
         // 有効なプレイヤーカラーの範囲内か
-        var isValidColorId = exp.Data.DefaultOutfit.ColorId >= 0 && exp.Data.DefaultOutfit.ColorId < Palette.PlayerColors.Length;
+        var isValidColorId = SuperNewRoles.CustomCosmetics.CustomColors.IsValidColorId(exp.Data.DefaultOutfit.ColorId);
 
         switch (_deadBodyColorMode)
         {
             case DeadBodyColorMode.LightAndDarkness:
-            case DeadBodyColorMode.Adadaptive when !isValidColorId: // ボディカラー反映時に 無効なColorIdであれば明暗表示で返す
+            case DeadBodyColorMode.Adadaptive when !isValidColorId: // ボディカラー反映時に 不正なColorIdであれば明暗表示で返す
                 deadBodyColorId = SuperNewRoles.CustomCosmetics.CustomColors.IsLighter(exp) ? lightColorId : darknessColorId;
                 break;
             case DeadBodyColorMode.Adadaptive when isValidColorId: // 有効なColorIdであれば 死体の色を返す

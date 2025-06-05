@@ -139,12 +139,12 @@ public class SeerAbility : AbilityBase
         Color darknessColor = Palette.PlayerColors[(int)CustomCosmetics.CustomColors.ColorType.Crasyublue];
 
         // 有効なプレイヤーカラーの範囲内か
-        var isValidColorId = exp.Data.DefaultOutfit.ColorId >= 0 && exp.Data.DefaultOutfit.ColorId < Palette.PlayerColors.Length;
+        var isValidColorId = CustomCosmetics.CustomColors.IsValidColorId(exp.Data.DefaultOutfit.ColorId);
 
         switch (Data.FlashColorMode)
         {
             case DeadBodyColorMode.LightAndDarkness:
-            case DeadBodyColorMode.Adadaptive when !isValidColorId: // ボディカラー反映時に 無効なColorIdであれば明暗表示で返す
+            case DeadBodyColorMode.Adadaptive when !isValidColorId: // ボディカラー反映時に 不正なColorIdであれば明暗表示で返す
                 flashColor = CustomCosmetics.CustomColors.IsLighter(exp) ? lightColor : darknessColor;
                 break;
             case DeadBodyColorMode.Adadaptive when isValidColorId: // 有効なColorIdであれば 死体の色を返す
