@@ -46,6 +46,7 @@ public static class ShipStatusUpdateSystemPatch
 {
     public static void Postfix(ShipStatus __instance, SystemTypes systemType)
     {
+        ShipStatusUpdateSystemMessageReaderPatch.UpdateSabo(__instance, systemType);
     }
 }
 
@@ -54,6 +55,10 @@ public static class ShipStatusUpdateSystemMessageReaderPatch
 {
     public static HashSet<SystemTypes> activeSaboTypes { get; } = new();
     public static void Postfix(ShipStatus __instance, SystemTypes systemType)
+    {
+        UpdateSabo(__instance, systemType);
+    }
+    public static void UpdateSabo(ShipStatus __instance, SystemTypes systemType)
     {
         if (!__instance.Systems.TryGetValue(systemType, out var value)) return;
         value.TryCastOut(out IActivatable activatable);
