@@ -57,6 +57,7 @@ public static class AirshipCustom
             if (MapEditSettingsOptions.ModifyGapRoomOneWayShadow && ShipStatus.Instance.FastRooms.TryGetValue(SystemTypes.GapRoom, out var gapRoom))
             {
                 var gapRoomShadow = gapRoom.GetComponentInChildren<OneWayShadows>();
+                if (gapRoomShadow == null) return;
                 var amImpostorLight = ExPlayerControl.LocalPlayer.IsImpostor() || ExPlayerControl.LocalPlayer.HasImpostorVision();
                 if (MapEditSettingsOptions.GapRoomShadowIgnoresImpostors && amImpostorLight)
                 {

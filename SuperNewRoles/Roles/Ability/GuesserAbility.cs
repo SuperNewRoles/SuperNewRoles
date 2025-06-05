@@ -42,7 +42,7 @@ public class GuesserAbility : CustomMeetingButtonBase, IAbilityCount
     {
         // スターを撃てない設定がONで、撃てないターンを制限する設定がONの場合、
         // 指定されたターン数まではスターを撃てないようにする
-        if (cannotShootCelebrity && CelebrityLimitedTurns && MeetingCount < CelebrityLimitedTurnsCount && player.Role == RoleId.Celebrity)
+        if (cannotShootCelebrity && (!CelebrityLimitedTurns || MeetingCount < CelebrityLimitedTurnsCount) && player.Role == RoleId.Celebrity)
         {
             return false;
         }
