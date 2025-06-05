@@ -128,10 +128,10 @@ public class DeadBodyArrowsAbility : AbilityBase
         switch (_deadBodyColorMode)
         {
             case DeadBodyColorMode.LightAndDarkness:
-            case DeadBodyColorMode.Adadaptive when !isValidColorId: // ボディカラー反映時に 不正なColorIdであれば明暗表示で返す
+            case DeadBodyColorMode.Adaptive when !isValidColorId: // ボディカラー反映時に 不正なColorIdであれば明暗表示で返す
                 deadBodyColorId = SuperNewRoles.CustomCosmetics.CustomColors.IsLighter(exp) ? lightColorId : darknessColorId;
                 break;
-            case DeadBodyColorMode.Adadaptive when isValidColorId: // 有効なColorIdであれば 死体の色を返す
+            case DeadBodyColorMode.Adaptive when isValidColorId: // 有効なColorIdであれば 死体の色を返す
                 deadBodyColorId = exp.Data.DefaultOutfit.ColorId;
                 break;
             default:

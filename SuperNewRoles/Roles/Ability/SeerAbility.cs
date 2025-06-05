@@ -59,10 +59,10 @@ public class SeerAbility : AbilityBase
             {
                 DeadBodyColorMode.None => DefaultSoulColorId, // シーア 或いは EvilSeerで設定が無効な場合
                 // イビルシーアで明暗表示が有効, 又は死体色表示が有効でColorIdが不正な場合
-                DeadBodyColorMode.LightAndDarkness or DeadBodyColorMode.Adadaptive when !CustomCosmetics.CustomColors.IsValidColorId(data.player.Data.DefaultOutfit.ColorId) => CustomCosmetics.CustomColors.IsLighter(data.player.Data)
+                DeadBodyColorMode.LightAndDarkness or DeadBodyColorMode.Adaptive when !CustomCosmetics.CustomColors.IsValidColorId(data.player.Data.DefaultOutfit.ColorId) => CustomCosmetics.CustomColors.IsLighter(data.player.Data)
                                         ? LightSoulColorId // 明るい色を反映
                                         : DarknessSoulColorId, // 暗い色を反映
-                DeadBodyColorMode.Adadaptive => data.player.Data.DefaultOutfit.ColorId, // イビルシーアで設定が有効な場合は、プレイヤーの色を使用
+                DeadBodyColorMode.Adaptive => data.player.Data.DefaultOutfit.ColorId, // イビルシーアで設定が有効な場合は、プレイヤーの色を使用
                 _ => DefaultSoulColorId, // その他
             };
             deadBodyPositions.Add((data.player.transform.position, colorId));
@@ -77,7 +77,7 @@ public class SeerAbility : AbilityBase
             // 死亡時に画面を光らせる
             FlashHandler.ShowFlash(FlashColor(data.player));
 
-            if (Data.FlashColorMode is DeadBodyColorMode.LightAndDarkness or DeadBodyColorMode.Adadaptive)
+            if (Data.FlashColorMode is DeadBodyColorMode.LightAndDarkness or DeadBodyColorMode.Adaptive)
             {
                 var colorText = FlashColorText(data.player);
                 if (colorText != null) new CustomMessage(colorText, 3f);
@@ -152,10 +152,10 @@ public class SeerAbility : AbilityBase
         switch (Data.FlashColorMode)
         {
             case DeadBodyColorMode.LightAndDarkness:
-            case DeadBodyColorMode.Adadaptive when !isValidColorId: // ボディカラー反映時に 不正なColorIdであれば明暗表示で返す
+            case DeadBodyColorMode.Adaptive when !isValidColorId: // ボディカラー反映時に 不正なColorIdであれば明暗表示で返す
                 flashColor = CustomCosmetics.CustomColors.IsLighter(exp) ? lightColor : darknessColor;
                 break;
-            case DeadBodyColorMode.Adadaptive when isValidColorId: // 有効なColorIdであれば 死体の色を返す
+            case DeadBodyColorMode.Adaptive when isValidColorId: // 有効なColorIdであれば 死体の色を返す
                 flashColor = Palette.PlayerColors[exp.Data.DefaultOutfit.ColorId];
                 break;
             default:
@@ -176,10 +176,10 @@ public class SeerAbility : AbilityBase
         switch (Data.FlashColorMode)
         {
             case DeadBodyColorMode.LightAndDarkness:
-            case DeadBodyColorMode.Adadaptive when !isValidColorId: // ボディカラー反映時に 不正なColorIdであれば明暗表示で返す
+            case DeadBodyColorMode.Adaptive when !isValidColorId: // ボディカラー反映時に 不正なColorIdであれば明暗表示で返す
                 colorText = CustomCosmetics.CustomColors.IsLighter(exp) ? ModTranslation.GetString("EvilSeer.LightColor") : ModTranslation.GetString("EvilSeer.DarkColor");
                 break;
-            case DeadBodyColorMode.Adadaptive when isValidColorId: // 有効なColorIdであれば 死体の色を返す
+            case DeadBodyColorMode.Adaptive when isValidColorId: // 有効なColorIdであれば 死体の色を返す
                 colorText = Palette.GetColorName(exp.Data.DefaultOutfit.ColorId);
                 break;
             default:
