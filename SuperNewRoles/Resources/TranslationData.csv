@@ -427,6 +427,7 @@ NiceScientist,ナイスサイエンティスト,Nice Scientist
 EvilScientist,イビルサイエンティスト,Evil Scientist
 Lighter,ライター,Lighter
 Technician,技術者,Technician
+Medium,ミーディアム,Medium,灵媒师,靈媒師
 DoubleKiller,ダブルキラー,DoubleKiller
 Finder,ファインダー,Finder,Finder,Finder
 
@@ -530,6 +531,7 @@ Lighter.Description,タスクターンに使用出来る能力を有するクル
 Technician.Description,タスクターンに使用出来る能力を有するクルーメイトです。\nサボタージュ中のみベントを使用することが出来ます。\nベントの中にいるときにサボタージュが修理されると、ベントから脱出します。,
 NiceScientist.Description,タスクターンに使用出来る能力を有するクルーメイトです。\n「透明化」ボタンを押すと、一定時間自身の姿が透明になります。\n透明化中であっても、能力の対象になります。\nまた、設定次第では能力使用中のライターには見えてしまいます。,A crewmate with an ability that can be used during the Task Turn.\nWhen you press the 'Invisibility' button， your appearance becomes invisible for a certain period of time.\nEven while invisible， you can still be targeted by abilities.\nAlso， depending on the settings， writers may see you while you're using the ability。,是具有能够在任务轮回合使用能力的队员。当你按下“隐身”按钮时，你的身影会在一定时间内变为隐形。即使在隐身状态下，你仍会成为能力的目标。另外，根据设置，在使用能力时，写手也可能会看到你。,是具有能夠在任務回合使用能力的隊員。當你按下「隱身」按鈕時，你的身影會在一定時間內變為隱形。即使在隱身狀態下，你仍會成為能力的目標。另外，根據設定，在使用能力時，寫手也可能會看到你。,
 MeetingSheriff.Description,会議中に使用出来る能力を有するクルーメイトです。\n会議中に出現するボタンを押すと、対象のプレイヤーが人外だった場合キルをすることが出来ます。\nただし、対象がクルーメイトもしくはキル出来ない陣営だった場合、自らが死亡してしまいます。,
+Medium.Description,タスクターンに使用出来る能力を有するクルーメイトです。\n「霊視」ボタンを押すと、少しの間幽霊が視えるようになります。\nまた、霊視中に幽霊に対して「霊話」ボタンを押すと、その幽霊に関する情報を得られます。\n情報はチャットに送られます。,
 
 # Descriptions_MadRoles
 Madmate.Description,インポスターの味方のクルーメイトです。\nいわゆる狂人と呼ばれる役職です。\n勝利条件はクルーメイトの勝利ではなく、インポスターの勝利です。\nその勝利に自身の生死は問われないので、あの手この手でインポスターを勝利に導きましょう。,A Crewmate allied with the Impostors.\nOften known as the Madmate.\nTheir win condition is not for the Crewmates to win，but for the Impostors to win.\nTheir own survival is irrelevant，so use any means necessary to secure an Impostor victory.,这是一个支持内鬼的船员，也称为疯友角色。\n他们的胜利条件不是船员获胜，而是内鬼获胜，并且他们的生死并不影响胜利。\n所以，尽可能地采用各种手段促成内鬼获胜。,這是一個支持內鬼的船員，俗稱瘋友角色。\n其勝利條件並非船員勝利，而是內鬼勝利，且自身生死不影響結果。\n因此，請用一切手段助內鬼取勝。,
@@ -649,6 +651,7 @@ LighterIntro1,暗いなら明るくすれば良いじゃん,If it’s dark，jus
 TechnicianIntro1,通気口から参ります,I’ll come through the vent,我会从通风口过来,我會從通風口過來
 NiceScientistIntro1,不可視の観察者,Invisible observer,不可见的观察者,不可見的觀察者
 MeetingSheriffIntro1,正義の断罪は会議室で,
+MediumIntro1,鳴らぬ声を聴く,
 
 # Intros_MadRoles
 MadmateIntro1,道を違えし者,One who has strayed from the path,误入歧途者,誤入歧途者,
@@ -1425,6 +1428,23 @@ LighterRadius,点灯時の視界の広さ,Field of view when lit
 # Technician
 TechnicianCanUseVentOnMushroomMixup,キノコカオス中にベントを使える,Can use vent during mushroom mixup
 
+# Medium
+MediumSpiritVisionCooldown,霊視クールタイム,Spirit Vision Cooldown,灵视冷却时间,靈視冷卻時間
+MediumSpiritVisionDuration,霊視持続時間,Spirit Vision Duration,灵视持续时间,靈視持續時間
+MediumSpiritTalkMaxUses,霊話使用可能回数,Spirit Talk Max Uses,灵话最大使用次数,靈話最大使用次數
+MediumSpiritVisionButtonText,霊視,Spirit Vision,灵视,靈視
+MediumSpiritTalkButtonText,霊話,Spirit Talk,灵话,靈話
+MediumSpiritVisionActiveMessage,霊視中...,Spirit Vision Active...,灵视中...,靈視中...
+MediumSpiritTalkExiledMessage,{0}は追放されました,{0} was exiled,{0}被放逐了,{0}被放逐了
+MediumSpiritTalkKillerRoleMessage,{0}をキルしたのは{1}です,{0} was killed by {1},{0}被{1}杀死了,{0}被{1}殺死了
+MediumSpiritTalkKillerColorMessage,{0}をキルしたのは{1}のクルーです,{0} was killed by a {1} crew,{0}被{1}的船员杀死了,{0}被{1}的船員殺死了
+MediumSpiritTalkDeathLocationMessage,{0}は{1}で死にました,{0} died at {1},{0}在{1}死亡了,{0}在{1}死亡了
+MediumSpiritTalkRoleMessage,{0}は{1}です,{0} is {1},{0}是{1},{0}是{1}
+DarkColor,暗い色,Dark Color,深色,深色
+LightColor,明るい色,Light Color,浅色,淺色
+Corridor,通路,Corridor,通道,通道
+Unknown,不明,Unknown,未知,未知
+
 # NiceRedRidingHood
 NiceRedRidingHood,ナイス赤ずきん,NiceRedRidingHood,小红帽,小紅帽
 NiceRedRidingHoodIntro1,生き返ろう,Come back to life,杀死你的凶手死亡后你将会复活,殺死你的凶手死亡後你將會復活
@@ -1439,6 +1459,7 @@ MeetingSheriffShotsPerMeeting,1会議の最大キル数,Most kills in a single m
 # DoubleKiller
 DoubleKillerKillCountRemaining,サブキルボタンのキル回数制限,Sub kill button's kill remaining
 DoubleKillerMaxKillCount,キル可能回数,Max kill count
+
 # Finder
 FinderKillCooldown,ファインダーのキルクール,Finder Kill Cooldown,Finder Kill Cooldown,Finder Kill Cooldown
 FinderRevealKillCount,マッドメイト判明キル数,Kill count to reveal Madmate,Kill count to reveal Madmate,Kill count to reveal Madmate
