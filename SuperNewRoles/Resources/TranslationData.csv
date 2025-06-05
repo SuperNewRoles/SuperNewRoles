@@ -846,6 +846,10 @@ Seer.SeerColorMode,色設定,
 Seer.SeerColorMode.None,無反映,
 Seer.SeerColorMode.LightAndDarkness,明暗反映,
 Seer.SeerColorMode.Adadaptive,ボディカラー反映,
+EvilSeer.AbilityColorModeSelect,色設定を反映するアビリティ,
+EvilSeer.AbilityColorModeSelect.All,全て,
+EvilSeer.AbilityColorModeSelect.SoulOnly,霊魂のみ,
+EvilSeer.AbilityColorModeSelect.ArrowOnly,死体矢印のみ,
 
 # Celebrity
 CelebrityIntro,みんなのスター！！,The Celebrity!!,大家的明星！！,大家的明星！！
