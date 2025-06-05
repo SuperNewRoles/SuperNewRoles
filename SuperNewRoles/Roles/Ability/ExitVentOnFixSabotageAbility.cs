@@ -11,6 +11,11 @@ public class ExitVentOnFixSabotageAbility : AbilityBase
         base.AttachToLocalPlayer();
         saboEndEventListener = SaboEndEvent.Instance.AddListener(OnSaboEnd);
     }
+    public override void DetachToLocalPlayer()
+    {
+        base.DetachToLocalPlayer();
+        saboEndEventListener?.RemoveListener();
+    }
 
     private void OnSaboEnd(SaboEndEventData data)
     {
