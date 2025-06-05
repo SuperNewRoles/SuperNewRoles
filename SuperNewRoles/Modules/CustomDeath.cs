@@ -40,19 +40,19 @@ public static class CustomDeathExtensions
                 FinalStatusManager.SetFinalStatus(player, FinalStatus.Revange);
                 break;
             case CustomDeathType.Kill:
-                if (!TryKillEvent.Invoke(source, ref player).RefSuccess)
-                    break;
                 if (source == null)
                     throw new Exception("Source is null");
+                if (!TryKillEvent.Invoke(source, ref player).RefSuccess)
+                    break;
                 source.Player.MurderPlayer(player.Player, MurderResultFlags.Succeeded);
                 FinalStatusManager.SetFinalStatus(player, FinalStatus.Kill);
                 MurderDataManager.AddMurderData(source, player);
                 break;
             case CustomDeathType.KilLWithoutDeadbodyAndTeleport:
-                if (!TryKillEvent.Invoke(source, ref player).RefSuccess)
-                    break;
                 if (source == null)
                     throw new Exception("Source is null");
+                if (!TryKillEvent.Invoke(source, ref player).RefSuccess)
+                    break;
                 Vector2 pos = source.Player.GetTruePosition();
                 source.Player.MurderPlayer(player.Player, MurderResultFlags.Succeeded);
                 FinalStatusManager.SetFinalStatus(source, FinalStatus.Kill);

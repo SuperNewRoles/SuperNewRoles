@@ -60,7 +60,7 @@ public class MediumSpiritVisionAbility : CustomButtonBase, IButtonEffect
     protected override KeyType keytype => KeyType.Ability1;
 
     public bool isEffectActive { get; set; }
-    public Action OnEffectEnds => () => RpcSetSpiritVision(false);
+    public Action OnEffectEnds => () => SetSpiritVision(false);
     public float EffectDuration => Data.Duration;
     public float EffectTimer { get; set; }
 
@@ -95,7 +95,7 @@ public class MediumSpiritVisionAbility : CustomButtonBase, IButtonEffect
 
     public override void OnClick()
     {
-        RpcSetSpiritVision(true);
+        SetSpiritVision(true);
     }
 
     private void OnMeetingStart(MeetingStartEventData data)
@@ -103,8 +103,7 @@ public class MediumSpiritVisionAbility : CustomButtonBase, IButtonEffect
         isEffectActive = false;
     }
 
-    [CustomRPC]
-    public void RpcSetSpiritVision(bool isActive)
+    public void SetSpiritVision(bool isActive)
     {
         isEffectActive = isActive;
         if (Player.AmOwner)
