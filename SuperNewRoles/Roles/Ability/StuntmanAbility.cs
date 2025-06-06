@@ -18,9 +18,9 @@ public class StuntmanAbility : AbilityBase, IAbilityCount
         base.AttachToAlls();
         _tryKillEvent = TryKillEvent.Instance.AddListener(OnTryKill);
     }
-    public override void DetachToLocalPlayer()
+    public override void DetachToAlls()
     {
-        base.DetachToLocalPlayer();
+        base.DetachToAlls();
         _tryKillEvent?.RemoveListener();
     }
 
