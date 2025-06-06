@@ -15,7 +15,6 @@ public class ShapeshiftButtonAbility : CustomButtonBase, IButtonEffect
     public float DurationTime;
     public float CoolTime;
     public int MaxUseCount;
-    public int RemainingUseCount { get; private set; }
 
     public override Sprite Sprite => SpriteName != null ? AssetManager.GetAsset<Sprite>(SpriteName) : FastDestroyableSingleton<RoleManager>.Instance.GetRole(RoleTypes.Shapeshifter).Ability.Image;
     public override string buttonText => FastDestroyableSingleton<TranslationController>.Instance.GetString(StringNames.ShapeshiftAbility);
