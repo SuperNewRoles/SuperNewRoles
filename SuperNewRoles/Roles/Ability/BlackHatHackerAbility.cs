@@ -128,7 +128,7 @@ public class BlackHatHackerAbility : AbilityBase
         if (SharedTimer <= 0)
         {
             RpcSetInfectionTimer(InfectionTimer);
-            SharedTimer = 1;
+            SharedTimer = 10f;
         }
 
         // 勝利判定

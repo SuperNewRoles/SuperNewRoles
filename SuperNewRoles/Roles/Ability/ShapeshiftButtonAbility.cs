@@ -14,6 +14,8 @@ public class ShapeshiftButtonAbility : CustomButtonBase, IButtonEffect
 {
     public float DurationTime;
     public float CoolTime;
+    public int MaxUseCount;
+    public int RemainingUseCount { get; private set; }
 
     public override Sprite Sprite => SpriteName != null ? AssetManager.GetAsset<Sprite>(SpriteName) : FastDestroyableSingleton<RoleManager>.Instance.GetRole(RoleTypes.Shapeshifter).Ability.Image;
     public override string buttonText => FastDestroyableSingleton<TranslationController>.Instance.GetString(StringNames.ShapeshiftAbility);
@@ -35,23 +37,34 @@ public class ShapeshiftButtonAbility : CustomButtonBase, IButtonEffect
 
     private PlayerControl _shapeTarget;
     public PlayerControl ShapeTarget => _shapeTarget;
+
+    public override ShowTextType showTextType => MaxUseCount > 0 ? ShowTextType.ShowWithCount : ShowTextType.Hidden;
     public string SpriteName { get; }
 
-    public ShapeshiftButtonAbility(float coolTime, float durationTime, string spriteName = null)
+    public ShapeshiftButtonAbility(float coolTime, float durationTime, int maxUseCount = -1, string spriteName = null)
     {
         DurationTime = durationTime;
         CoolTime = coolTime;
+        MaxUseCount = maxUseCount;
+        Count = maxUseCount;
         SpriteName = spriteName;
     }
 
     public override void OnClick()
     {
+        if (MaxUseCount > 0 && Count <= 0)
+            return;
+
         RoleTypes baseRole = ExPlayerControl.LocalPlayer.Data.Role.Role;
         float killTimer = PlayerControl.LocalPlayer.killTimer;
         RoleManager.Instance.SetRole(Player, RoleTypes.Shapeshifter);
         ExPlayerControl.LocalPlayer.Data.Role.TryCast<ShapeshifterRole>()?.UseAbility();
         RoleManager.Instance.SetRole(Player, baseRole);
         PlayerControl.LocalPlayer.killTimer = killTimer;
+
+        if (Count > 0)
+            Count--;
+
         new LateTask(() =>
         {
             isEffectActive = false;
@@ -69,7 +82,7 @@ public class ShapeshiftButtonAbility : CustomButtonBase, IButtonEffect
 
     public override bool CheckHasButton()
     {
-        return ExPlayerControl.LocalPlayer.IsAlive();
+        return ExPlayerControl.LocalPlayer.IsAlive() && (MaxUseCount <= 0 || Count > 0);
     }
 
     private void OnShapeshift(ShapeshiftEventData data)

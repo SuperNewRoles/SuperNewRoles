@@ -202,7 +202,7 @@ public class DatahackerAbility : AbilityBase
         // 能力発動残りタスク数（人外にバレるタイミング）を計算
         int exposeTaskThreshold = Math.Max(0, (int)Math.Ceiling(totalTasks * hackingData.TaskRequirePercent / 100f) - hackingData.ExposeTasksLeft);
 
-        return (progress >= exposeTaskThreshold, progress >= hackingData.TaskRequirePercent);
+        return (taskCompletedCount >= exposeTaskThreshold, progress >= hackingData.TaskRequirePercent);
     }
 
     /// <summary>

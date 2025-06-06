@@ -9,7 +9,6 @@ Neutral,第三陣営,Neutral,第三阵营,第三陣營
 GhostRoles,幽霊役職,Ghost Roles,幽灵角色,幽靈角色
 Modifier,モディファイア,Modifier,修饰符,修飾符
 People,{0}人,{0} people,{0}人,{0}人
-Role.Slugger,スラッガー,Slugger,冲锋者,衝鋒者
 
 # 共通設定テキスト
 CoolTime,クールタイム,Cool Time,冷却时间,冷卻時間
@@ -205,8 +204,6 @@ RoleOptionMenuType.Crewmate,クルーメイト,Crewmate,船员,船員
 RoleOptionMenuType.Neutral,第三陣営,Neutral,第三阵营,第三陣營
 
 # Scientist Roles
-Role.NiceScientist,ナイスサイエンティスト,Nice Scientist,善良科学家,善良科學家
-Role.EvilScientist,イビルサイエンティスト,Evil Scientist,邪恶科学家,邪惡科學家
 ScientistButtonName,透明化,Invisible,隐身,隱身
 
 # NiceScientist
@@ -430,6 +427,9 @@ Technician,技術者,Technician
 Medium,ミーディアム,Medium,灵媒师,靈媒師
 DoubleKiller,ダブルキラー,DoubleKiller
 Finder,ファインダー,Finder,Finder,Finder
+Stuntman,スタントマン,Stuntman
+Nun,ぬーん,Nuuuuuun
+ShiftActor,シフトアクター,Shift Actor,变身演员,變身演員
 
 
 # Descriptions_VanillaRoles
@@ -1069,7 +1069,6 @@ FalseChargesExileTurn,冤罪の範囲のターン,Turn of the false accusation r
 FalseCharges.ButtonTitle,冤罪,False Charge,栽赃,栽贓
 
 # プテラノドン
-Role.Pteranodon,プテラノドン,Pteranodon,翼龙,翼龍
 Pteranodon,プテラノドン,Pteranodon,翼龙,翼龍
 Pteranodon.ButtonTitle,飛行,Fly,飞行,飛行
 
@@ -1465,3 +1464,10 @@ DoubleKillerMaxKillCount,キル可能回数,Max kill count
 FinderKillCooldown,ファインダーのキルクール,Finder Kill Cooldown,Finder Kill Cooldown,Finder Kill Cooldown
 FinderRevealKillCount,マッドメイト判明キル数,Kill count to reveal Madmate,Kill count to reveal Madmate,Kill count to reveal Madmate
 
+# ShiftActor
+ShiftActorDescription,完璧に演じ切ろう,Act perfectly,完美地演出,完美地演出
+ShiftActorCooldown,シェイプシフトクールタイム,Shapeshift Cooldown,变身冷却时间,變身冷卻時間
+ShiftActorDuration,シェイプシフト持続時間,Shapeshift Duration,变身持续时间,變身持續時間
+ShiftActorMaxUseCount,変身可能回数,Max Shapeshift Uses,最大变身次数,最大變身次數
+ShiftActorCanSeeSharedRoles,モディファイアも確認できる,Can see modifier roles
+ShiftActorRoleMessage,{0}の役職は{1}だった,{0}'s role is {1}.
