@@ -61,9 +61,6 @@ public class ShapeshiftButtonAbility : CustomButtonBase, IButtonEffect
         RoleManager.Instance.SetRole(Player, baseRole);
         PlayerControl.LocalPlayer.killTimer = killTimer;
 
-        if (Count > 0)
-            Count--;
-
         new LateTask(() =>
         {
             isEffectActive = false;
@@ -90,6 +87,8 @@ public class ShapeshiftButtonAbility : CustomButtonBase, IButtonEffect
         if (data.shapeshifter != Player || data.shapeshifter == data.target) return;
 
         _shapeTarget = data.target;
+        if (Count > 0)
+            Count--;
         if (!Player.AmOwner) return;
         ResetTimer();
         isEffectActive = true;

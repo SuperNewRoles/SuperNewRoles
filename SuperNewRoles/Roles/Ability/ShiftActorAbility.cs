@@ -22,6 +22,9 @@ public class ShiftActorAbility : ShapeshiftButtonAbility
     public int ShiftActorCount { get; private set; } // ShiftActor側の独自カウント
     public const float SHIFTACTOR_MESSAGE_DURATION = 5f;
 
+    public override ShowTextType showTextType => IsLimitUses ? CanShapeshiftAfterUsesExhausted ? ShowTextType.Show : ShowTextType.ShowWithCount : ShowTextType.Hidden;
+    public override string showText => ModTranslation.GetString("RemainingText", CanShapeshiftAfterUsesExhausted ? ShiftActorCount : Count);
+
     public ShiftActorAbility(float coolTime, float durationTime, int maxUseCount, bool canSeeSharedRoles, bool isLimitUses, bool canShapeshiftAfterUsesExhausted)
         : base(coolTime, durationTime, (isLimitUses && !canShapeshiftAfterUsesExhausted) ? maxUseCount : -1)
     {
@@ -107,6 +110,13 @@ public class ShiftActorAbility : ShapeshiftButtonAbility
 
         // ローカルプレイヤーにメッセージを表示
         string roleName = ModTranslation.GetString(targetRole.ToString());
+        if (CanSeeSharedRoles)
+        {
+            foreach (IModifierBase modifier in target.ModifierRoleBases)
+            {
+                roleName = modifier.ModifierMark(target).Replace("{0}", roleName);
+            }
+        }
         string message = ModTranslation.GetString("ShiftActorRoleMessage", target.Data.PlayerName, roleName);
 
         // メッセージをログに出力（自分にのみ）
