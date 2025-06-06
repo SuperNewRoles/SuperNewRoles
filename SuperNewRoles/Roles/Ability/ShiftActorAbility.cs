@@ -36,7 +36,7 @@ public class ShiftActorAbility : ShapeshiftButtonAbility
         if (IsLimitUses)
         {
             Count = maxUseCount;
-            ShiftActorCount = maxUseCount; // ShiftActor側の独自カウント
+            ShiftActorCount = maxUseCount + 1; // ShiftActor側の独自カウント
         }
         else
         {
@@ -63,15 +63,7 @@ public class ShiftActorAbility : ShapeshiftButtonAbility
     public override void OnClick()
     {
         base.OnClick();
-        // ShiftActor側の使用回数を減らす（役職発見機能の制限用）
-        if (IsLimitUses && ShiftActorCount > 0)
-        {
-            ShiftActorCount--;
-        }
     }
-
-    public override ShowTextType showTextType => (IsLimitUses && !CanShapeshiftAfterUsesExhausted) ? ShowTextType.ShowWithCount : ShowTextType.Hidden;
-
     public override void AttachToLocalPlayer()
     {
         base.AttachToLocalPlayer();
@@ -94,6 +86,8 @@ public class ShiftActorAbility : ShapeshiftButtonAbility
             // 使用回数制限が有効で、ShiftActor側の使用回数を使い切った場合は役職発見しない
             if (IsLimitUses && ShiftActorCount <= 0)
                 return;
+            if (IsLimitUses && ShiftActorCount > 0)
+                ShiftActorCount--;
 
             DiscoverTargetRole(data.target);
         }
