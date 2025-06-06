@@ -158,6 +158,7 @@ public class RoleDictionaryHelpMenu : HelpMenuCategoryBase
         var roles = CustomRoleManager.AllRoles
             .Where(r => r.QuoteMod != QuoteMod.Vanilla && (r.OptionTeam == teamType || (r.OptionTeam == RoleOptionMenuType.Hidden && r.AssignedTeam == (AssignedTeamType)teamType)))
             .OrderBy(r => r.Role.ToString())
+            .Where(r => r.Role != RoleId.Vampire && r.Role != RoleId.VampireDependent)
             .ToList();
 
         // ボタンの配置設定
