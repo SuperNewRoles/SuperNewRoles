@@ -16,7 +16,7 @@ public class DeadBodyArrowsAbility : AbilityBase
     public bool ShowArrows => _showArrows?.Invoke() ?? true;
     /// <summary>死体矢印に反映させるボディカラーのモード</summary>
     private readonly DeadBodyColorMode _deadBodyColorMode;
-    private Dictionary<DeadBody, Arrow> _deadBodyArrows = new();
+    private Dictionary<DeadBody, (Arrow, Color)> _deadBodyArrows = new();
     private EventListener _fixedUpdateEvent;
 
     /// <param name="showArrows">矢印のを表示できるか</param>
@@ -42,7 +42,7 @@ public class DeadBodyArrowsAbility : AbilityBase
         if (Player.IsDead())
         {
             if (_deadBodyArrows.Count <= 0) return;
-            foreach (var arrow in _deadBodyArrows.Values)
+            foreach (var (arrow, color) in _deadBodyArrows.Values)
             {
                 if (arrow?.arrow != null)
                     UnityEngine.Object.Destroy(arrow.arrow);
@@ -67,17 +67,19 @@ public class DeadBodyArrowsAbility : AbilityBase
             int parentId = arrowEntry.Key.ParentId;
             if (deadBodiesByParentId.ContainsKey(parentId))
             {
-                Color arrowColor = _deadBodyColorMode == DeadBodyColorMode.None ? _defaultArrowColor : ResolveDeadBodyArrowColor(arrowEntry.Key);
 
-                if (arrowEntry.Value == null)
-                    _deadBodyArrows[arrowEntry.Key] = new Arrow(arrowColor);
-                _deadBodyArrows[arrowEntry.Key].Update(arrowEntry.Key.transform.position, arrowColor);
-                _deadBodyArrows[arrowEntry.Key].arrow.SetActive(true);
+                if (arrowEntry.Value.Item1 == null)
+                {
+                    var arrowColor = _deadBodyColorMode == DeadBodyColorMode.None ? _defaultArrowColor : ResolveDeadBodyArrowColor(arrowEntry.Key);
+                    _deadBodyArrows[arrowEntry.Key] = (new Arrow(arrowColor), arrowColor);
+                }
+                _deadBodyArrows[arrowEntry.Key].Item1.Update(arrowEntry.Key.transform.position, arrowEntry.Value.Item2);
+                _deadBodyArrows[arrowEntry.Key].Item1.arrow.SetActive(true);
             }
             else
             {
-                if (arrowEntry.Value?.arrow != null)
-                    UnityEngine.Object.Destroy(arrowEntry.Value.arrow);
+                if (arrowEntry.Value.Item1?.arrow != null)
+                    UnityEngine.Object.Destroy(arrowEntry.Value.Item1.arrow);
                 _deadBodyArrows.Remove(arrowEntry.Key);
             }
         }
@@ -88,9 +90,9 @@ public class DeadBodyArrowsAbility : AbilityBase
             if (_deadBodyArrows.Keys.Any(db => db.ParentId == kv.Key)) continue;
 
             Color arrowColor = _deadBodyColorMode == DeadBodyColorMode.None ? _defaultArrowColor : ResolveDeadBodyArrowColor(kv.Value);
-            _deadBodyArrows.Add(kv.Value, new Arrow(arrowColor));
-            _deadBodyArrows[kv.Value].Update(kv.Value.transform.position, arrowColor);
-            _deadBodyArrows[kv.Value].arrow.SetActive(true);
+            _deadBodyArrows.Add(kv.Value, (new Arrow(arrowColor), arrowColor));
+            _deadBodyArrows[kv.Value].Item1.Update(kv.Value.transform.position, arrowColor);
+            _deadBodyArrows[kv.Value].Item1.arrow.SetActive(true);
         }
     }
     public override void DetachToLocalPlayer()
@@ -102,7 +104,7 @@ public class DeadBodyArrowsAbility : AbilityBase
             FixedUpdateEvent.Instance.RemoveListener(_fixedUpdateEvent);
 
         // 矢印を削除
-        foreach (var arrow in _deadBodyArrows.Values)
+        foreach (var (arrow, color) in _deadBodyArrows.Values)
         {
             if (arrow?.arrow != null)
                 UnityEngine.Object.Destroy(arrow.arrow);
