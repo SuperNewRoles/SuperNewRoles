@@ -1468,6 +1468,8 @@ FinderRevealKillCount,マッドメイト判明キル数,Kill count to reveal Mad
 ShiftActorDescription,完璧に演じ切ろう,Act perfectly,完美地演出,完美地演出
 ShiftActorCooldown,シェイプシフトクールタイム,Shapeshift Cooldown,变身冷却时间,變身冷卻時間
 ShiftActorDuration,シェイプシフト持続時間,Shapeshift Duration,变身持续时间,變身持續時間
+ShiftActorIsLimitUses,使用回数制限を有効にする,Enable use count limit,启用使用次数限制,啟用使用次數限制
 ShiftActorMaxUseCount,変身可能回数,Max Shapeshift Uses,最大变身次数,最大變身次數
+ShiftActorCanShapeshiftAfterUsesExhausted,使用回数を使い切ってもシェイプシフト可能,Can shapeshift after uses exhausted,用完次数后仍可变身,用完次數後仍可變身
 ShiftActorCanSeeSharedRoles,モディファイアも確認できる,Can see modifier roles
 ShiftActorRoleMessage,{0}の役職は{1}だった,{0}'s role is {1}.

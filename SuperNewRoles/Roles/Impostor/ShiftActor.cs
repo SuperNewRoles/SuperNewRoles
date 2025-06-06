@@ -17,7 +17,9 @@ class ShiftActor : RoleBase<ShiftActor>
             coolTime: ShiftActorCooldown,
             durationTime: ShiftActorDuration,
             maxUseCount: ShiftActorMaxUseCount,
-            canSeeSharedRoles: ShiftActorCanSeeSharedRoles
+            canSeeSharedRoles: ShiftActorCanSeeSharedRoles,
+            isLimitUses: ShiftActorIsLimitUses,
+            canShapeshiftAfterUsesExhausted: ShiftActorCanShapeshiftAfterUsesExhausted
         )
     ];
 
@@ -37,8 +39,14 @@ class ShiftActor : RoleBase<ShiftActor>
     [CustomOptionFloat("ShiftActorDuration", 2.5f, 60f, 2.5f, 10f)]
     public static float ShiftActorDuration = 10f;
 
-    [CustomOptionInt("ShiftActorMaxUseCount", 1, 10, 1, 3)]
+    [CustomOptionBool("ShiftActorIsLimitUses", true)]
+    public static bool ShiftActorIsLimitUses = false;
+
+    [CustomOptionInt("ShiftActorMaxUseCount", 1, 10, 1, 3, parentFieldName: nameof(ShiftActorIsLimitUses))]
     public static int ShiftActorMaxUseCount = 3;
+
+    [CustomOptionBool("ShiftActorCanShapeshiftAfterUsesExhausted", true, parentFieldName: nameof(ShiftActorIsLimitUses))]
+    public static bool ShiftActorCanShapeshiftAfterUsesExhausted = true;
 
     [CustomOptionBool("ShiftActorCanSeeSharedRoles", false)]
     public static bool ShiftActorCanSeeSharedRoles = false;
