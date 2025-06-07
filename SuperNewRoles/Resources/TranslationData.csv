@@ -471,6 +471,8 @@ EvilHawk.Description,タスクターンに使用出来る能力を有するイ�
 EvilScientist.Description,タスクターンに使用出来る能力を有するインポスターです。\n「透明化」ボタンを押すと、一定時間自身の姿が透明になります。\n透明化中であっても、能力の対象になります。\nまた、設定次第では能力使用中のライターには見えてしまいます。,An imposter with an ability that can be used during the Task Turn.\nWhen you press the 'Invisibility' button， your appearance becomes invisible for a certain period of time.\nEven while invisible， you can still be targeted by abilities.\nAlso， depending on the settings， writers may see you while you're using the ability。,是具有能够在任务轮回合使用能力的冒名顶替者。当你按下“隐身”按钮时，你的身影会在一定时间内变为隐形。即使在隐身状态下，你仍会成为能力的目标。另外，根据设置，在使用能力时，写手也可能会看到你。,是具有能夠在任務回合使用能力的冒名頂替者。當你按下「隱身」按鈕時，你的身影會在一定時間內變為隱形。即使在隱身狀態下，你仍會成為能力的目標。另外，根據設定，在使用能力時，寫手也可能會看到你。,
 DoubleKiller.Description,特殊なキル能力を有するインポスターです。\nキルボタンを2つ所持しています。\nクールタイムは独立しており、別々に使用することが出来ます。,
 Finder.Description,タスクターンに発動する能力を有するインポスターです。\n指定のキル数を達成するとマッドメイトが誰かわかります。,
+Nun.Description,タスクターンに使用出来る能力を有するインポスターです。\n「ぬーん」ボタンを押すと、エアシップの昇降機を遠隔で動かすことが出来ます。,
+ShiftActor.Description,タスクターンに使用出来る能力を有するインポスターです。\n変身すると、変身した相手の役職を知ることが出来ます。,
 
 # Descriptions_Neutral
 Jackal.Description,キル能力を有する第三陣営です。\n自陣営以外のキルが出来る陣営が全滅した上で、自陣営とクルーが同数以下になれば勝利します。\n設定次第で他のプレイヤーの役職を、自身の後継となるサイドキックや、手助けをしてくれるジャッカルフレンズに変更する能力を有することも出来ます。,A third-faction role with a kill ability.\nIt wins if all factions capable of killing outside its own are eliminated and its faction and the Crewmates are equal in number or fewer.\nDepending on the settings，it can change other players’ roles into a Sidekick (its successor) or Jackal Friends who assist it.,这是一个拥有击杀能力的第三阵营角色。\n当所有能够进行击杀的其他阵营被消灭，并且其阵营与船员人数相等或更少时，即可获胜。\n根据设定，它还可以将其他玩家的角色变更为边缘队员（其继任者）或协助的杰克朋友。,這是一個具備擊殺能力的第三陣營角色。\n當其他能進行擊殺的陣營全部被消滅，且其陣營與船員數量相等或更少時，即獲勝。\n根據設定，還可將其他玩家的角色變更為接班的邊翼或提供協助的傑克朋友。,
@@ -534,6 +536,7 @@ Technician.Description,タスクターンに使用出来る能力を有するク
 NiceScientist.Description,タスクターンに使用出来る能力を有するクルーメイトです。\n「透明化」ボタンを押すと、一定時間自身の姿が透明になります。\n透明化中であっても、能力の対象になります。\nまた、設定次第では能力使用中のライターには見えてしまいます。,A crewmate with an ability that can be used during the Task Turn.\nWhen you press the 'Invisibility' button， your appearance becomes invisible for a certain period of time.\nEven while invisible， you can still be targeted by abilities.\nAlso， depending on the settings， writers may see you while you're using the ability。,是具有能够在任务轮回合使用能力的队员。当你按下“隐身”按钮时，你的身影会在一定时间内变为隐形。即使在隐身状态下，你仍会成为能力的目标。另外，根据设置，在使用能力时，写手也可能会看到你。,是具有能夠在任務回合使用能力的隊員。當你按下「隱身」按鈕時，你的身影會在一定時間內變為隱形。即使在隱身狀態下，你仍會成為能力的目標。另外，根據設定，在使用能力時，寫手也可能會看到你。,
 MeetingSheriff.Description,会議中に使用出来る能力を有するクルーメイトです。\n会議中に出現するボタンを押すと、対象のプレイヤーが人外だった場合キルをすることが出来ます。\nただし、対象がクルーメイトもしくはキル出来ない陣営だった場合、自らが死亡してしまいます。,
 Medium.Description,タスクターンに使用出来る能力を有するクルーメイトです。\n「霊視」ボタンを押すと、少しの間幽霊が視えるようになります。\nまた、霊視中に幽霊に対して「霊話」ボタンを押すと、その幽霊に関する情報を得られます。\n情報はチャットに送られます。,
+Stuntman.Description,タスクターンに発動する能力を有するクルーメイトです。\n一定回数キルを自動で防ぎます。\nただし、キルされたことを自覚することは出来ません。,
 
 # Descriptions_MadRoles
 Madmate.Description,インポスターの味方のクルーメイトです。\nいわゆる狂人と呼ばれる役職です。\n勝利条件はクルーメイトの勝利ではなく、インポスターの勝利です。\nその勝利に自身の生死は問われないので、あの手この手でインポスターを勝利に導きましょう。,A Crewmate allied with the Impostors.\nOften known as the Madmate.\nTheir win condition is not for the Crewmates to win，but for the Impostors to win.\nTheir own survival is irrelevant，so use any means necessary to secure an Impostor victory.,这是一个支持内鬼的船员，也称为疯友角色。\n他们的胜利条件不是船员获胜，而是内鬼获胜，并且他们的生死并不影响胜利。\n所以，尽可能地采用各种手段促成内鬼获胜。,這是一個支持內鬼的船員，俗稱瘋友角色。\n其勝利條件並非船員勝利，而是內鬼勝利，且自身生死不影響結果。\n因此，請用一切手段助內鬼取勝。,
@@ -592,6 +595,8 @@ EvilHawkIntro1,この目からは逃れられない,You cannot escape these eyes
 EvilScientistIntro1,不可視の一撃,Invisible Strike,不可见的一击,不可見的一擊
 DoubleKillerIntro1,双つの刃を持ちし者,
 FinderIntro1,村に紛れし裏切り者を探し出せ,
+NunIntro1,ぬぬぬぬーん,
+ShiftActorIntro1,この身に映して演ず,
 
 # Intros_Neutral
 JackalIntro1,暗躍するもう一人の殺人鬼,Another puppeteer of death in the shadows,另一个暗中操纵死亡者,另一個暗中操縱死亡者,
@@ -655,6 +660,7 @@ TechnicianIntro1,通気口から参ります,I’ll come through the vent,我会
 NiceScientistIntro1,不可視の観察者,Invisible observer,不可见的观察者,不可見的觀察者
 MeetingSheriffIntro1,正義の断罪は会議室で,
 MediumIntro1,鳴らぬ声を聴く,
+StuntmanIntro1,無意識の攻防,
 
 # Intros_MadRoles
 MadmateIntro1,道を違えし者,One who has strayed from the path,误入歧途者,誤入歧途者,
