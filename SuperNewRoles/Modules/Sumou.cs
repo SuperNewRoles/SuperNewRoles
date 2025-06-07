@@ -43,6 +43,7 @@ namespace SuperNewRoles.Modules
         private const float DeadBodyKickDistance = 0.2f;
         private const float DeadBodyKickRange = 0.6f;
         private const float StopFramesDuration = 10 / 60f; // Frames to wait before stopping
+        public static bool HighPeformance = true;
 
         public static void Postfix(PlayerPhysics __instance)
         {
@@ -51,6 +52,7 @@ namespace SuperNewRoles.Modules
 
             PlayerControl selfPlayer = __instance.myPlayer;
             if (selfPlayer == null) return;
+            if (!__instance.myPlayer.AmOwner && Vector3.Distance(selfPlayer.transform.position, __instance.transform.position) > 6f) return;
 
             // --- Timer countdown and velocity reset logic ---
             if (playerStopCountdown.TryGetValue(selfPlayer.PlayerId, out float currentTimerValue))
@@ -78,43 +80,15 @@ namespace SuperNewRoles.Modules
 
             if (!playerColliders.TryGetValue(selfPlayer.PlayerId, out var myCollider) || myCollider == null) return; // キャッシュから取得
 
-            foreach (var other in PlayerControl.AllPlayerControls)
+            if (HighPeformance && !__instance.myPlayer.AmOwner)
             {
-                if (other == selfPlayer || other.Data.IsDead) continue;
-
-                if (!playerColliders.TryGetValue(other.PlayerId, out var otherCollider) || otherCollider == null) continue; // キャッシュから取得
-
-                if (myCollider.IsTouching(otherCollider))
+                CheckAndPushPlayer(selfPlayer, ExPlayerControl.LocalPlayer, __instance, myCollider);
+            }
+            else
+            {
+                foreach (var other in PlayerControl.AllPlayerControls)
                 {
-                    var myVelBeforeThisInteraction = __instance.body.velocity; // Velocity of selfPlayer *before* this specific push
-                    var otherVel = other.MyPhysics.body.velocity;
-                    var direction = ((Vector2)__instance.transform.position - (Vector2)other.transform.position).normalized;
-
-                    var otherSpeedAlong = Vector2.Dot(otherVel, direction);
-                    if (otherSpeedAlong <= 0) continue;
-
-                    var relSpeed = Vector2.Dot(otherVel - myVelBeforeThisInteraction, direction);
-                    if (relSpeed > 0)
-                    {
-                        // Push処理
-                        Vector2 selfChange = direction * relSpeed * (__instance.myPlayer.AmOwner ? PushMultiplier : 0.405f);
-                        __instance.body.velocity = myVelBeforeThisInteraction + selfChange; // Apply push
-
-                        // --- Condition to start the stop timer ---
-                        bool shouldStartTimer = selfPlayer.AmOwner &&
-                                                (!selfPlayer.CanMove) &&
-                                                myVelBeforeThisInteraction.sqrMagnitude < 0.001f && // Check if velocity *before this push* was (near) zero
-                                                !playerStopCountdown.ContainsKey(selfPlayer.PlayerId); // Only start if not already counting down
-
-                        if (shouldStartTimer)
-                        {
-                            playerStopCountdown[selfPlayer.PlayerId] = StopFramesDuration;
-                        }
-                        // --- End of condition to start the stop timer ---
-
-                        // 相手側はネットワーク同期をスキップして即座に反映
-                        ModdedNetworkTransform.skipNextBatchPlayers.Add(__instance.myPlayer.PlayerId);
-                    }
+                    CheckAndPushPlayer(selfPlayer, other, __instance, myCollider);
                 }
             }
             /*
@@ -146,6 +120,48 @@ namespace SuperNewRoles.Modules
                                 }
                             }
                         }*/
+        }
+        private static void CheckAndPushPlayer(PlayerControl selfPlayer, PlayerControl other, PlayerPhysics __instance, Collider2D myCollider)
+        {
+            if (other == selfPlayer || other.Data.IsDead) return;
+
+            // パフォーマンス対策で近くにいなかったら処理しない
+            if (Vector3.Distance(selfPlayer.transform.position, other.transform.position) > 3f) return;
+
+            if (!playerColliders.TryGetValue(other.PlayerId, out var otherCollider) || otherCollider == null) return; // キャッシュから取得
+
+            if (myCollider.IsTouching(otherCollider))
+            {
+                var myVelBeforeThisInteraction = __instance.body.velocity; // Velocity of selfPlayer *before* this specific push
+                var otherVel = other.MyPhysics.body.velocity;
+                var direction = ((Vector2)__instance.transform.position - (Vector2)other.transform.position).normalized;
+
+                var otherSpeedAlong = Vector2.Dot(otherVel, direction);
+                if (otherSpeedAlong <= 0) return;
+
+                var relSpeed = Vector2.Dot(otherVel - myVelBeforeThisInteraction, direction);
+                if (relSpeed > 0)
+                {
+                    // Push処理
+                    Vector2 selfChange = direction * relSpeed * (__instance.myPlayer.AmOwner ? PushMultiplier : 0.405f);
+                    __instance.body.velocity = myVelBeforeThisInteraction + selfChange; // Apply push
+
+                    // --- Condition to start the stop timer ---
+                    bool shouldStartTimer = selfPlayer.AmOwner &&
+                                            (!selfPlayer.CanMove) &&
+                                            myVelBeforeThisInteraction.sqrMagnitude < 0.001f && // Check if velocity *before this push* was (near) zero
+                                            !playerStopCountdown.ContainsKey(selfPlayer.PlayerId); // Only start if not already counting down
+
+                    if (shouldStartTimer)
+                    {
+                        playerStopCountdown[selfPlayer.PlayerId] = StopFramesDuration;
+                    }
+                    // --- End of condition to start the stop timer ---
+
+                    // 相手側はネットワーク同期をスキップして即座に反映
+                    ModdedNetworkTransform.skipNextBatchPlayers.Add(__instance.myPlayer.PlayerId);
+                }
+            }
         }
     }
 }
