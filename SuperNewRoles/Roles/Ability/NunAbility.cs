@@ -74,7 +74,7 @@ public class NunAbility : CustomButtonBase
         }
         else
         {
-            yield return Effects.All(Effects.Slide2D(platform.transform, platform.transform.localPosition, targetPos, ExPlayerControl.LocalPlayer.MyPhysics.Speed));
+            yield return Effects.All(Effects.Slide2D(platform.transform, platform.transform.localPosition, targetPos, PlayerControl.LocalPlayer.MyPhysics.Speed));
         }
 
         if (Constants.ShouldPlaySfx())

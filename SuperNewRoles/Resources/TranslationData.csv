@@ -1465,7 +1465,6 @@ FinderKillCooldown,ファインダーのキルクール,Finder Kill Cooldown,Fin
 FinderRevealKillCount,マッドメイト判明キル数,Kill count to reveal Madmate,Kill count to reveal Madmate,Kill count to reveal Madmate
 
 # ShiftActor
-ShiftActorDescription,完璧に演じ切ろう,Act perfectly,完美地演出,完美地演出
 ShiftActorCooldown,シェイプシフトクールタイム,Shapeshift Cooldown,变身冷却时间,變身冷卻時間
 ShiftActorDuration,シェイプシフト持続時間,Shapeshift Duration,变身持续时间,變身持續時間
 ShiftActorIsLimitUses,使用回数制限を有効にする,Enable use count limit,启用使用次数限制,啟用使用次數限制
