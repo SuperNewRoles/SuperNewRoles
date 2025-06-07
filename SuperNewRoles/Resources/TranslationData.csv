@@ -432,7 +432,8 @@ Finder,ファインダー,Finder,Finder,Finder
 Stuntman,スタントマン,Stuntman
 Nun,ぬーん,Nuuuuuun
 ShiftActor,シフトアクター,Shift Actor,变身演员,變身演員
-
+Phosphorus,ホスフォラス,Phosphorus,磷光术师,執燈者
+Safecracker,金庫破り,Safecracker,盗贼,盜賊
 
 # Descriptions_VanillaRoles
 Crewmate.Description,特に何も能力を持たない基本的なクルーメイト役職です。\n人狼ゲームにおける村人の役割を持ちます。\nキル能力を持つ人外を全て追放するか、タスクを全て完了すると勝利します。,A basic Crewmate role with no special abilities.\nThey serve the role of Villager from the Werewolf game.\nVictory is achieved by ejecting all non-Crewmate players with kill abilities or by completing all tasks.,一个没有特殊能力的基础船员角色。\n他们承担了狼人游戏中村民的角色。\n通过将所有拥有击杀能力的非船员玩家投出局或完成所有任务来获胜。,一個沒有特殊能力的基礎船員角色。\n他們承擔了狼人遊戲中村民的角色。\n通過將所有擁有擊殺能力的非船員玩家投出局或完成所有任務來獲勝。,
@@ -534,6 +535,7 @@ Technician.Description,タスクターンに使用出来る能力を有するク
 NiceScientist.Description,タスクターンに使用出来る能力を有するクルーメイトです。\n「透明化」ボタンを押すと、一定時間自身の姿が透明になります。\n透明化中であっても、能力の対象になります。\nまた、設定次第では能力使用中のライターには見えてしまいます。,A crewmate with an ability that can be used during the Task Turn.\nWhen you press the 'Invisibility' button， your appearance becomes invisible for a certain period of time.\nEven while invisible， you can still be targeted by abilities.\nAlso， depending on the settings， writers may see you while you're using the ability。,是具有能够在任务轮回合使用能力的队员。当你按下“隐身”按钮时，你的身影会在一定时间内变为隐形。即使在隐身状态下，你仍会成为能力的目标。另外，根据设置，在使用能力时，写手也可能会看到你。,是具有能夠在任務回合使用能力的隊員。當你按下「隱身」按鈕時，你的身影會在一定時間內變為隱形。即使在隱身狀態下，你仍會成為能力的目標。另外，根據設定，在使用能力時，寫手也可能會看到你。,
 MeetingSheriff.Description,会議中に使用出来る能力を有するクルーメイトです。\n会議中に出現するボタンを押すと、対象のプレイヤーが人外だった場合キルをすることが出来ます。\nただし、対象がクルーメイトもしくはキル出来ない陣営だった場合、自らが死亡してしまいます。,
 Medium.Description,タスクターンに使用出来る能力を有するクルーメイトです。\n「霊視」ボタンを押すと、少しの間幽霊が視えるようになります。\nまた、霊視中に幽霊に対して「霊話」ボタンを押すと、その幽霊に関する情報を得られます。\n情報はチャットに送られます。,
+PhosphorusDescription,マップに設定個数のランタンを設置することが出来ます。\nランタンは次のターン以降に実体化し、使えるようになります。\n能力を使用すると、一定時間の間ランタンが光り、周囲を照らします。,You can put lanterns.\nLanterns are activated next turn.\nLanterns are lighted when you use ability,你可以放置灯笼。\n灯笼在下一回合激活。\n使用能力时灯笼会发光,你可以放置燈籠。\n燈籠在下一回合啟動。\n使用能力時燈籠會發光
 
 # Descriptions_MadRoles
 Madmate.Description,インポスターの味方のクルーメイトです。\nいわゆる狂人と呼ばれる役職です。\n勝利条件はクルーメイトの勝利ではなく、インポスターの勝利です。\nその勝利に自身の生死は問われないので、あの手この手でインポスターを勝利に導きましょう。,A Crewmate allied with the Impostors.\nOften known as the Madmate.\nTheir win condition is not for the Crewmates to win，but for the Impostors to win.\nTheir own survival is irrelevant，so use any means necessary to secure an Impostor victory.,这是一个支持内鬼的船员，也称为疯友角色。\n他们的胜利条件不是船员获胜，而是内鬼获胜，并且他们的生死并不影响胜利。\n所以，尽可能地采用各种手段促成内鬼获胜。,這是一個支持內鬼的船員，俗稱瘋友角色。\n其勝利條件並非船員勝利，而是內鬼勝利，且自身生死不影響結果。\n因此，請用一切手段助內鬼取勝。,
@@ -655,6 +657,8 @@ TechnicianIntro1,通気口から参ります,I’ll come through the vent,我会
 NiceScientistIntro1,不可視の観察者,Invisible observer,不可见的观察者,不可見的觀察者
 MeetingSheriffIntro1,正義の断罪は会議室で,
 MediumIntro1,鳴らぬ声を聴く,
+PhosphorusIntro1,この暗闇に一筋の光明を,A ray of light in the darkness,照亮黑暗的一束光,暗夜中的一道明光
+
 
 # Intros_MadRoles
 MadmateIntro1,道を違えし者,One who has strayed from the path,误入歧途者,誤入歧途者,
@@ -1497,3 +1501,24 @@ OrientalShamanCannotFixComms,コミュニケーションを修復できない,Ca
 OrientalShamanCannotFixLights,ライトを修復できない,Cannot Fix Lights,无法修复灯光,無法修復燈光
 OrientalShamanCannotUseReportButton,レポートボタンを使用できない,Cannot Use Report Button,无法使用报告按钮,無法使用報告按鈕
 OrientalShamanCannotUseEmergencyButton,緊急ボタンを使用できない,Cannot Use Emergency Button,无法使用紧急按钮,無法使用緊急按鈕
+
+# Safecracker
+SafecrackerKillGuardTaskSetting,キルガードが出来るようになるタスク量(全タスク内),Amount of tasks to be able to kill guard (of all tasks),盗贼获得击杀保护需要打开的保险库数,盜賊獲得擊殺保護需要打開的保險箱數目
+SafecrackerMaxKillGuardCountSetting,キルガードできる回数,Kill guard max count,击杀保护次数,擊殺保護次數
+SafecrackerExiledGuardTaskSetting,追放ガードが出来るようになるタスク量(全タスク内),Amount of tasks to be able to be able to exiled guard (of all tasks),盗贼获得放逐保护需要打开的保险库数,盜賊獲得放逐保護需要打開的保險箱數目
+SafecrackerMaxExiledGuardCountSetting,追放ガードできる回数,Exiled guard max count,放逐保护次数,放逐保護次數
+SafecrackerUseVentTaskSetting,ベントが使用可能になるタスク量(全タスク内),Amount of tasks for which the vent will be available (of all tasks),盗贼获得使用管道能力需要打开的保险库数,盜賊獲得使用通風管道能力需要打開的保險箱數目
+SafecrackerUseSaboTaskSetting,サボタージュが使用可能になるタスク量(全タスク内),Amount of tasks for which sabotage will be available (of all tasks),盗贼获得破坏能力需要打开的保险库数,盜賊獲得破壞能力需要打開的保險箱數目
+SafecrackerIsImpostorLightTaskSetting,インポスターの視界になるタスク量(全タスク内),Amount of tasks for become an Impostor's field of view (of all tasks),盗贼获得内鬼视野需要打开的保险库数,盜賊獲得內鬼視野需要打開的保險箱數目
+SafecrackerCheckImpostorTaskSetting,インポスターを確認できるようになるタスク量(全タスク内),Amount of tasks that will allow you to check the Impostor (of all tasks),盗贼确认内鬼玩家需要打开的保险库数,盜賊確認內鬼玩家需要打開的保險箱數目
+SafecrackerChangeTaskPrefabSetting,全タスクを金庫タスクに置き換える,Replace all tasks with unlock safe tasks,盗贼的全部任务替换为解锁保险库的任务,盜賊的全部任務替換為解鎖保險箱的任務
+SafecrackerMaxKillGuardCount,キルガードできる回数,Kill guard max count,击杀保护次数,擊殺保護次數
+SafecrackerMaxExiledGuardCount,追放ガードできる回数,Exiled guard max count,放逐保护次数,放逐保護次數
+
+# Phosphorus
+PhosphorusPuttingLimit,ランタンの設置可能数,Putting lantern limit,磷光术师可放置的磷粉数,可放置的燈籠數
+PhosphorusLightingCooltime,点灯のクールタイム,Lighting cooltime,点燃磷粉冷却时间,點燈冷卻時間
+PhosphorusLightRange,ランタンの範囲,Light range,磷粉照明范围,照明範圍
+PhosphorusPutButtonName,設置,Put,放置,放置燈籠
+PhosphorusLightingButtonName,点灯,Lighting,点燃,點燈
+

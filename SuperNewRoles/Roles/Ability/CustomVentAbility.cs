@@ -25,13 +25,13 @@ public class CustomVentAbility : CustomButtonBase, IButtonEffect
 
     public Action OnEffectEnds => () => { if (VentDuration?.Invoke() != null && Vent.currentVent != null) PlayerControl.LocalPlayer.MyPhysics.RpcExitVent(Vent.currentVent.Id); };
 
-    public float EffectDuration => VentDuration?.Invoke() ?? 0;
+    public float EffectDuration => VentDuration?.Invoke() ?? 0f;
 
     public float EffectTimer { get; set; }
 
     public bool effectCancellable => true;
 
-    public bool IsEffectDurationInfinity => VentDuration?.Invoke() == null;
+    //public bool IsEffectDurationInfinity => VentDuration?.Invoke() == null;
 
     public CustomVentAbility(Func<bool> canUseVent, Func<float?> ventCooldown = null, Func<float?> ventDuration = null)
     {

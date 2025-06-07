@@ -111,6 +111,9 @@ public enum RoleId : short
     ShiftActor,
     OrientalShaman,
     ShermansServant,
+    Safecracker,
+    Phosphorus,
+    Ubiquitous,
 }
 
 public enum GhostRoleId : short
@@ -156,6 +159,7 @@ public enum TeamTag : byte
     Jackal,
     Madmate,
     Agi,
+    Safecracker,
     None
 }
 
@@ -184,4 +188,5 @@ public enum RoleTag : byte
     GhostRole,
     Support,
     ImpostorTeam,
+    SpecialWinner,
 }
