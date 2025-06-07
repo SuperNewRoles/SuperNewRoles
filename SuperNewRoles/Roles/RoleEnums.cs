@@ -114,6 +114,7 @@ public enum RoleId : short
     Safecracker,
     Phosphorus,
     Ubiquitous,
+    Busker,
 }
 
 public enum GhostRoleId : short

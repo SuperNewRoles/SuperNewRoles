@@ -435,6 +435,8 @@ ShiftActor,シフトアクター,Shift Actor,变身演员,變身演員
 Phosphorus,ホスフォラス,Phosphorus,磷光术师,執燈者
 Safecracker,金庫破り,Safecracker,盗贼,盜賊
 Ubiquitous,ユビキタス,Ubiquitous
+Busker,バスカー,Busker,街头艺人,街頭藝人
+
 
 # Descriptions_VanillaRoles
 Crewmate.Description,特に何も能力を持たない基本的なクルーメイト役職です。\n人狼ゲームにおける村人の役割を持ちます。\nキル能力を持つ人外を全て追放するか、タスクを全て完了すると勝利します。,A basic Crewmate role with no special abilities.\nThey serve the role of Villager from the Werewolf game.\nVictory is achieved by ejecting all non-Crewmate players with kill abilities or by completing all tasks.,一个没有特殊能力的基础船员角色。\n他们承担了狼人游戏中村民的角色。\n通过将所有拥有击杀能力的非船员玩家投出局或完成所有任务来获胜。,一個沒有特殊能力的基礎船員角色。\n他們承擔了狼人遊戲中村民的角色。\n通過將所有擁有擊殺能力的非船員玩家投出局或完成所有任務來獲勝。,
@@ -1542,4 +1544,10 @@ Ubiquitous.MapShowPlayerColor,マップにプレイヤー色表示,Show Player C
 UbiquitousCallButton,ドローン呼び出し,Call Drone
 UbiquitousCallHomeButton,ドローン帰還,Return Drone
 UbiquitousOperationButton,ドローン操作,Operate Drone
-UbiquitousDoorHackButton,ドアハック,Door Hack 
+UbiquitousDoorHackButton,ドアハック,Door Hack
+
+# Busker
+BuskerPseudocideButtonName,偽装死,Fake Death,假死,假死
+BuskerRebornButtonName,復活,Reborn,复活,復活
+BuskerPseudocideDurationOption,偽装死持続時間,Fake Death Duration,假死持续时间,假死持續時間
+BuskerReallyDeadTimeText,本当に死ぬまで: {0}秒,Really dead in: {0}s,真正死亡倒计时: {0}秒,真正死亡倒數: {0}秒

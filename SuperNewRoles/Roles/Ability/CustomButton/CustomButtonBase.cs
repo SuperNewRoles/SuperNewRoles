@@ -186,7 +186,7 @@ public abstract class CustomButtonBase : AbilityBase
                 OnClickEvent();
             }
         }
-        else if (buttonEffect != null && buttonEffect.isEffectActive && buttonEffect.effectCancellable)
+        else if (buttonEffect != null && buttonEffect.isEffectActive && buttonEffect.effectCancellable && buttonEffect.IsEffectAvailable())
         {
             actionButton.graphic.color = actionButton.buttonLabelText.color = Palette.EnabledColor;
             actionButton.graphic.material.SetFloat("_Desat", 0f);

@@ -72,10 +72,10 @@ public class Drone : MonoBehaviour
         if (IsActive)
         {
             Renderer.transform.localPosition = new(0f, Mathf.Sin(HoveringTimer) / 20f);
-            HoveringTimer += Time.fixedDeltaTime;
+            HoveringTimer += Time.deltaTime;
             if (HoveringTimer > Mathf.PI * 2) HoveringTimer -= Mathf.PI * 2;
 
-            SpriteTimer += Time.fixedDeltaTime;
+            SpriteTimer += Time.deltaTime;
             if (SpriteTimer > 0.25f)
             {
                 SpriteTimer -= 0.25f;

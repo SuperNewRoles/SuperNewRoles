@@ -37,6 +37,7 @@ internal interface IButtonEffect
         if (isEffectActive)
         {
             isEffectActive = false;
+            actionButton.cooldownTimerText.color = Palette.EnabledColor;
             OnEffectEnds();
         }
     }
@@ -60,6 +61,8 @@ internal interface IButtonEffect
 
         if (isEffectActive) actionButton.SetCoolDown(EffectTimer, IsEffectDurationInfinity ? 0f : EffectDuration);
     }
+
+    public virtual bool IsEffectAvailable() => true;
 
     public virtual void DoEffect(ActionButton actionButton, float effectStartTime = 3f)
     {
