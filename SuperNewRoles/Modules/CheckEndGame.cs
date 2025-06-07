@@ -316,7 +316,8 @@ public class PlayerStatistics
         foreach (var player in players)
         {
             if (player == null || player.IsDead()) continue;
-            totalAlive++;
+            if (player.Role != RoleId.OrientalShaman)
+                totalAlive++;
 
             if (player.IsImpostor() || (isHnS && player.IsMadRoles())) teamImpostorsAlive++;
             if (player.IsCrewmate()) crewAlive++;

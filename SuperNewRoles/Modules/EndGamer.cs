@@ -138,6 +138,20 @@ public static class EndGamer
                 }
             }
         }
+        foreach (ExPlayerControl player in ExPlayerControl.ExPlayerControls)
+        {
+            if (player.Role != RoleId.OrientalShaman || player.IsDead()) continue;
+            if (OrientalShaman.OrientalShamanCanHijackTaskWin && !player.IsTaskComplete())
+                continue;
+            if (player.TryGetAbility<OrientalShamanAbility>(out var orientalShamanAbility) && orientalShamanAbility.Data.canHijackTaskWin)
+            {
+                winners = [player, orientalShamanAbility._servant?.Player];
+                color = OrientalShaman.Instance.RoleColor;
+                upperText = "OrientalShamanWin";
+                winType = WinType.Hijackers;
+                break;
+            }
+        }
         if (!Spelunker.SpelunkerIsAdditionalWin)
         {
             foreach (ExPlayerControl player in ExPlayerControl.ExPlayerControls)

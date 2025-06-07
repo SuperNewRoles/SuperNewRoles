@@ -109,6 +109,8 @@ public enum RoleId : short
     Nun,
     Stuntman,
     ShiftActor,
+    OrientalShaman,
+    ShermansServant,
 }
 
 public enum GhostRoleId : short

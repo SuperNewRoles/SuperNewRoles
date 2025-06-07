@@ -15,6 +15,8 @@ CoolTime,クールタイム,Cool Time,冷却时间,冷卻時間
 KillCoolTime,キルクールタイム,Kill Cool Time,击杀冷却时间,擊殺冷卻時間
 DurationTime,効果時間,Duration Time,持续时间,持續時間
 CanUseVent,ベントを使用できる,Can Use Vent,可以使用通风口,可以使用通風口
+VentCooldown,ベントクールタイム,Vent Cool Time,通风口冷却时间,通風口冷卻時間
+VentDuration,ベント持続時間,Vent Duration Time,通风口持续时间,通風口持續時間
 HasImpostorVision,インポスターの視界を持つ,Has Impostor Vision,拥有内鬼视野,擁有內鬼視野
 TaskOption,タスクを個別で設定するか,Set tasks individually,独立设置任务,獨立設置任務
 UseLimit,使用可能回数,Usage Limit,可使用次数,可使用次數
@@ -1472,3 +1474,26 @@ ShiftActorMaxUseCount,変身可能回数,Max Shapeshift Uses,最大变身次数,
 ShiftActorCanShapeshiftAfterUsesExhausted,使用回数を使い切ってもシェイプシフト可能,Can shapeshift after uses exhausted,用完次数后仍可变身,用完次數後仍可變身
 ShiftActorCanSeeSharedRoles,モディファイアも確認できる,Can see modifier roles
 ShiftActorRoleMessage,{0}の役職は{1}だった,{0}'s role is {1}.
+
+
+# OrientalShaman
+OrientalShaman,陰陽師,Oriental Shaman,阴阳师,陰陽師
+OrientalShamanServantButton,式神作成,Create Servant,创建式神,創建式神
+OrientalShamanCanCreateServant,式神を作成できる,Can Create Servant,可以创建式神,可以創建式神
+OrientalShamanServantCooldown,式神作成クールタイム,Servant Creation Cooldown,式神创建冷却时间,式神創建冷卻時間
+OrientalShamanTaskWinCount,勝利に必要なタスク数,Tasks Required for Victory,胜利所需任务数,勝利所需任務數
+OrientalShamanCanHijackTaskWin,タスク勝利を横取りできる,Can Hijack Task Victory,可以劫持任务胜利,可以劫持任務勝利
+
+# ShermansServant
+ShermansServant,式神,Shermans Servant,式神,式神
+ShermansServantTransformButton,変身,Transform,变身,變身
+ShermansServantSuicideButton,自殺,Suicide,自杀,自殺
+ShermansServantTransformCooldown,変身クールタイム,Transform Cooldown,变身冷却时间,變身冷卻時間
+ShermansServantTransformDuration,変身持続時間,Transform Duration,变身持续时间,變身持續時間
+ShermansServantSuicideCooldown,自殺クールタイム,Suicide Cooldown,自杀冷却时间,自殺冷卻時間
+ShermansServantNeededTaskComplete,勝利にタスクが必要,Task Complete is Required,任务完成是必要的,任務完成是必要的
+OrientalShamanCannotFixReactor,リアクターを修復できない,Cannot Fix Reactor,无法修复反应堆,無法修復反應堆
+OrientalShamanCannotFixComms,コミュニケーションを修復できない,Cannot Fix Comms,无法修复通讯,無法修復通訊
+OrientalShamanCannotFixLights,ライトを修復できない,Cannot Fix Lights,无法修复灯光,無法修復燈光
+OrientalShamanCannotUseReportButton,レポートボタンを使用できない,Cannot Use Report Button,无法使用报告按钮,無法使用報告按鈕
+OrientalShamanCannotUseEmergencyButton,緊急ボタンを使用できない,Cannot Use Emergency Button,无法使用紧急按钮,無法使用緊急按鈕

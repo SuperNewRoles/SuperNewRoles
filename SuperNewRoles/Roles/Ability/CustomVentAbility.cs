@@ -9,7 +9,7 @@ using HarmonyLib;
 
 namespace SuperNewRoles.Roles.Ability;
 
-public class CustomVentAbility : CustomButtonBase
+public class CustomVentAbility : CustomButtonBase, IButtonEffect
 {
     public Func<bool> CanUseVent { get; }
     public Func<float?> VentCooldown { get; }
@@ -20,6 +20,18 @@ public class CustomVentAbility : CustomButtonBase
     protected override KeyType keytype => KeyType.Vent;
     public override float DefaultTimer => VentCooldown?.Invoke() ?? 0;
     public override bool IsFirstCooldownTenSeconds => DefaultTimer > 0.1f;
+
+    public bool isEffectActive { get; set; }
+
+    public Action OnEffectEnds => () => { if (VentDuration?.Invoke() != null && Vent.currentVent != null) PlayerControl.LocalPlayer.MyPhysics.RpcExitVent(Vent.currentVent.Id); };
+
+    public float EffectDuration => VentDuration?.Invoke() ?? 0;
+
+    public float EffectTimer { get; set; }
+
+    public bool effectCancellable => true;
+
+    public bool IsEffectDurationInfinity => VentDuration?.Invoke() == null;
 
     public CustomVentAbility(Func<bool> canUseVent, Func<float?> ventCooldown = null, Func<float?> ventDuration = null)
     {
