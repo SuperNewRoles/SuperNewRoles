@@ -7,6 +7,7 @@ using UnityEngine;
 
 namespace SuperNewRoles.Roles.Crewmate;
 
+// うるとらあつさん
 internal class Phosphorus : RoleBase<Phosphorus>
 {
     public override RoleId Role => RoleId.Phosphorus;

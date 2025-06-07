@@ -11,15 +11,19 @@ using SuperNewRoles.Events;
 using SuperNewRoles.Events.PCEvents;
 using SuperNewRoles.Modules.Events.Bases;
 using Hazel;
+using HarmonyLib;
+using Object = UnityEngine.Object;
 
 namespace SuperNewRoles.Roles.Crewmate;
 
+// むっちゃあつさん
 class Ubiquitous : RoleBase<Ubiquitous>
 {
     public override RoleId Role => RoleId.Ubiquitous;
     public override Color32 RoleColor => new(56, 155, 223, byte.MaxValue);
-    public override List<System.Func<AbilityBase>> Abilities => new() { () => new UbiquitousAbility(this) };
+    public override List<System.Func<AbilityBase>> Abilities => new() { () => new UbiquitousAbility() };
     public override QuoteMod QuoteMod => QuoteMod.NebulaOnTheShip;
+
     public override short IntroNum => 1;
 
     public override AssignedTeamType AssignedTeam => AssignedTeamType.Crewmate;
@@ -52,24 +56,28 @@ class Ubiquitous : RoleBase<Ubiquitous>
 
 class UbiquitousAbility : AbilityBase
 {
-    private readonly Ubiquitous _role;
     private CallAndHomeButton _callAndHomeButton;
     private OperationButton _operationButton;
     private DoorHackButton _doorHackButton;
     public Drone MyDrone;
     public bool UnderOperation => MyDrone?.UnderOperation ?? false;
     private bool _isInitialized = false;
+    public SpriteRenderer[] MapHerePoints;
 
-    public UbiquitousAbility(Ubiquitous role)
+    private EventListener<MeetingStartEventData> _meetingStartListener;
+    private EventListener<MeetingCloseEventData> _meetingCloseListener;
+
+    private EventListener<MapBehaviourAwakePostfixEventData> _mapBehaviourAwakeListener;
+    private EventListener<MapBehaviourFixedUpdatePostfixEventData> _mapBehaviourFixedUpdateListener;
+
+    public UbiquitousAbility()
     {
-        _role = role;
     }
 
-    public void OnAbilityUpdate()
+    public override void AttachToAlls()
     {
-        if (_isInitialized) return;
+        base.AttachToAlls();
 
-        //base.OnAbilityUpdate();
         Drone.DroneStayTurn = Ubiquitous.DroneStayTurn;
         Drone.FlyingSpeed = Ubiquitous.FlyingSpeed;
         Drone.DroneVisibilityRange = Ubiquitous.DroneVisibilityRange;
@@ -83,26 +91,97 @@ class UbiquitousAbility : AbilityBase
         _isInitialized = true;
     }
 
-    public void OnMeetingEnds()
-    {/*
-        base.OnMeetingEnds();
-        if (_callAndHomeButton.MyDrone)
+    public override void AttachToLocalPlayer()
+    {
+        base.AttachToLocalPlayer();
+        _meetingStartListener = MeetingStartEvent.Instance.AddListener(OnMeetingStart);
+        _meetingCloseListener = MeetingCloseEvent.Instance.AddListener(OnMeetingClose);
+        _mapBehaviourAwakeListener = MapBehaviourAwakePostfixEvent.Instance.AddListener(OnMapAwake);
+        _mapBehaviourFixedUpdateListener = MapBehaviourFixedUpdatePostfixEvent.Instance.AddListener(OnMapFixedUpdate);
+    }
+
+    public override void DetachToLocalPlayer()
+    {
+        base.DetachToLocalPlayer();
+        _meetingStartListener?.RemoveListener();
+        _meetingCloseListener?.RemoveListener();
+        _mapBehaviourAwakeListener?.RemoveListener();
+        _mapBehaviourFixedUpdateListener?.RemoveListener();
+    }
+
+    private void OnMeetingStart(MeetingStartEventData data)
+    {
+        if (!Player.AmOwner || !MyDrone) return;
+        UbiquitousRPC.RpcSyncDronePosition(MyDrone.transform.position.x, MyDrone.transform.position.y);
+        MyDrone.IsActive = false;
+        MyDrone = null;
+        Camera.main.GetComponent<FollowerCamera>().SetTarget(ExPlayerControl.LocalPlayer.Player);
+    }
+
+    private void OnMeetingClose(MeetingCloseEventData data)
+    {
+        if (_operationButton != null)
         {
-            var writer = RPC.GetWriter(UbiquitousRPC.RpcSyncDronePosition);
-            writer.Write(_callAndHomeButton.MyDrone.transform.position.x);
-            writer.Write(_callAndHomeButton.MyDrone.transform.position.y);
-            writer.Send(Player.PlayerId);
-            _callAndHomeButton.MyDrone.IsActive = false;
-            _callAndHomeButton.MyDrone = null;
+            _operationButton.OnEffectEnds?.Invoke();
         }
-        _callAndHomeButton._isCallMode = true;*/
+        if (_callAndHomeButton != null)
+        {
+            _callAndHomeButton._isCallMode = true;
+        }
+    }
+
+    public void OnDeath()
+    {
+        if (!Player.AmOwner) return;
+        _operationButton?.OnEffectEnds?.Invoke();
+        MyDrone?.Destroy();
+    }
+
+    public void OnMapAwake(MapBehaviourAwakePostfixEventData data)
+    {
+        if (!Player.AmOwner) return;
+        MapHerePoints = new SpriteRenderer[ExPlayerControl.ExPlayerControls.Count - 1];
+        for (int i = 0; i < MapHerePoints.Length; i++)
+        {
+            MapHerePoints[i] = Object.Instantiate(data.__instance.HerePoint, data.__instance.HerePoint.transform.parent);
+            MapHerePoints[i].gameObject.SetActive(false);
+        }
+    }
+
+    public void OnMapFixedUpdate(MapBehaviourFixedUpdatePostfixEventData data)
+    {
+        if (!Player.AmOwner || MapHerePoints == null) return;
+        List<ExPlayerControl> dronePlayer = Drone.GetPlayersVicinity(Player);
+        for (int i = 0; i < MapHerePoints.Length; i++)
+        {
+            SpriteRenderer renderer = MapHerePoints[i];
+            if (dronePlayer.Count > i)
+            {
+                ExPlayerControl player = dronePlayer[i];
+                if (Ubiquitous.MapShowPlayerColor)
+                {
+                    renderer.color = Palette.PlayerColors[player.Data.DefaultOutfit.ColorId];
+                }
+                else
+                {
+                    renderer.color = Color.white;
+                }
+                Vector3 pos = player.GetTruePosition();
+                pos /= ShipStatus.Instance.MapScale;
+                pos.x *= Mathf.Sign(ShipStatus.Instance.transform.localScale.x);
+                pos.z = -1f;
+                renderer.transform.localPosition = pos;
+                renderer.gameObject.SetActive(true);
+            }
+            else renderer.gameObject.SetActive(false);
+        }
     }
 }
 
 class CallAndHomeButton : CustomButtonBase
 {
     private readonly UbiquitousAbility _ability;
-    private bool _isCallMode = true;
+    public bool _isCallMode = true;
 
     public CallAndHomeButton(UbiquitousAbility ability)
     {
@@ -146,10 +225,20 @@ class OperationButton : CustomButtonBase, IButtonEffect
 
     public override void OnClick()
     {
-        // Effect
+        if (_ability.MyDrone != null)
+        {
+            Camera.main.GetComponent<FollowerCamera>().SetTarget(_ability.MyDrone);
+            ExPlayerControl.LocalPlayer.MyPhysics.body.velocity = Vector2.zero;
+        }
     }
 
-    public Action OnEffectEnds { get; set; } = () => { if (ExPlayerControl.LocalPlayer.AmOwner) { Camera.main.GetComponent<FollowerCamera>().SetTarget(ExPlayerControl.LocalPlayer.Player); } };
+    public Action OnEffectEnds { get; set; } = () =>
+    {
+        if (ExPlayerControl.LocalPlayer.AmOwner)
+        {
+            Camera.main.GetComponent<FollowerCamera>().SetTarget(ExPlayerControl.LocalPlayer.Player);
+        }
+    };
     public float EffectDuration => Ubiquitous.OperableTime;
     public bool isEffectActive { get; set; }
     public float EffectTimer { get; set; }
@@ -196,10 +285,23 @@ class DoorHackButton : CustomButtonBase
 public static class UbiquitousRPC
 {
     [CustomRPC]
-    public static void RpcSyncDronePosition(MessageReader reader)
+    public static void RpcSyncDronePosition(float x, float y)
     {
-        float x = reader.ReadSingle();
-        float y = reader.ReadSingle();
         Drone.CreateIdleDrone($"Idle {ExPlayerControl.LocalPlayer.PlayerId}", new(x, y), ExPlayerControl.LocalPlayer);
+    }
+}
+
+[HarmonyPatch(typeof(PlayerControl))]
+public static class UbiquitousPlayerControlPatch
+{
+    [HarmonyPatch(nameof(PlayerControl.CanMove), MethodType.Getter), HarmonyPostfix]
+    public static void CanMoveGetterPostfix(PlayerControl __instance, ref bool __result)
+    {
+        if (AmongUsClient.Instance.GameState != InnerNet.InnerNetClient.GameStates.Started) return;
+        if (HudManager.Instance.IsIntroDisplayed) return;
+        if (!__result) return;
+        var exPlayer = (ExPlayerControl)__instance;
+        if (!exPlayer.TryGetAbility<UbiquitousAbility>(out var ubiquitousAbility)) return;
+        __result = !ubiquitousAbility.UnderOperation;
     }
 }

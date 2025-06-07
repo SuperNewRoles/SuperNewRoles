@@ -14,12 +14,21 @@ public class Drone : MonoBehaviour
     public static GameObject AllDroneObject;
     public static GameObject InstantiateDrone;
 
-    public static Sprite[] Active = new Sprite[2]
-    {
+    public static Sprite[] Active =>
+    [
         AssetManager.GetAsset<Sprite>("UbiquitousDroneActiveAnim1.png"),
         AssetManager.GetAsset<Sprite>("UbiquitousDroneActiveAnim2.png")
-    };
+    ];
     public static Sprite Idle => AssetManager.GetAsset<Sprite>("UbiquitousDroneIdle.png");
+
+    [HarmonyPatch(typeof(AmongUsClient), nameof(AmongUsClient.CoStartGame))]
+    public static class AmongUsClientCoStartGamePatch
+    {
+        public static void Postfix()
+        {
+            ClearAndReload();
+        }
+    }
 
     public static void ClearAndReload()
     {
@@ -193,7 +202,7 @@ public class Drone : MonoBehaviour
             renderer.color = new Color(1f, 1f, 1f, 0.5f);
             renderer.sprite = Active[0];
 
-            GameObject light_child = new("LightChild") { layer = LayerMask.NameToLayer("Shadows") };
+            GameObject light_child = new("LightChild") { layer = LayerExpansion.GetShadowLayer() };
             light_child.transform.SetParent(InstantiateDrone.transform);
             light_child.transform.localPosition = new();
             light_child.transform.localScale = Vector3.zero;

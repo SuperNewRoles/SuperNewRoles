@@ -434,6 +434,7 @@ Nun,ぬーん,Nuuuuuun
 ShiftActor,シフトアクター,Shift Actor,变身演员,變身演員
 Phosphorus,ホスフォラス,Phosphorus,磷光术师,執燈者
 Safecracker,金庫破り,Safecracker,盗贼,盜賊
+Ubiquitous,ユビキタス,Ubiquitous
 
 # Descriptions_VanillaRoles
 Crewmate.Description,特に何も能力を持たない基本的なクルーメイト役職です。\n人狼ゲームにおける村人の役割を持ちます。\nキル能力を持つ人外を全て追放するか、タスクを全て完了すると勝利します。,A basic Crewmate role with no special abilities.\nThey serve the role of Villager from the Werewolf game.\nVictory is achieved by ejecting all non-Crewmate players with kill abilities or by completing all tasks.,一个没有特殊能力的基础船员角色。\n他们承担了狼人游戏中村民的角色。\n通过将所有拥有击杀能力的非船员玩家投出局或完成所有任务来获胜。,一個沒有特殊能力的基礎船員角色。\n他們承擔了狼人遊戲中村民的角色。\n通過將所有擁有擊殺能力的非船員玩家投出局或完成所有任務來獲勝。,
@@ -1527,3 +1528,18 @@ PhosphorusLightRange,ランタンの範囲,Light range,磷粉照明范围,照明
 PhosphorusPutButtonName,設置,Put,放置,放置燈籠
 PhosphorusLightingButtonName,点灯,Lighting,点燃,點燈
 
+# Ubiquitous
+Ubiquitous.CallCoolTime,コールクールタイム,Call Cool Time
+Ubiquitous.OperationCoolTime,操作クールタイム,Operation Cool Time
+Ubiquitous.IsLimitOperableTime,操作時間制限,Limit Operable Time
+Ubiquitous.OperableTime,操作可能時間,Operable Time
+Ubiquitous.DroneStayTurn,ドローン滞在ターン,Drone Stay Turn
+Ubiquitous.FlyingSpeed,飛行速度,Flying Speed
+Ubiquitous.DoorHackCoolTime,ドアハッククールタイム,Door Hack Cool Time
+Ubiquitous.DoorHackScope,ドアハック範囲,Door Hack Scope
+Ubiquitous.DroneVisibilityRange,ドローン視認範囲,Drone Visibility Range
+Ubiquitous.MapShowPlayerColor,マップにプレイヤー色表示,Show Player Color on Map
+UbiquitousCallButton,ドローン呼び出し,Call Drone
+UbiquitousCallHomeButton,ドローン帰還,Return Drone
+UbiquitousOperationButton,ドローン操作,Operate Drone
+UbiquitousDoorHackButton,ドアハック,Door Hack 
