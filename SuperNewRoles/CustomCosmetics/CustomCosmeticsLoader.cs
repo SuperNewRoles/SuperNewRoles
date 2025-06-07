@@ -1011,7 +1011,6 @@ public class CustomCosmeticsLoader
                 string filePath = Path.Combine(item.packagePath, $"{item.spriteName}.png").Replace("\\", "/");
                 if (File.Exists(filePath))
                 {
-                    Logger.Info($"Sprite already exists: {filePath}");
                     activeDownloads--;
                     continue;
                 }
