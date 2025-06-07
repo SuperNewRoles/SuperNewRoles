@@ -12,7 +12,7 @@ namespace SuperNewRoles.Roles.Ability;
 
 public class ShermansServantAbility : AbilityBase
 {
-    public ShermansServantData Data { get; set; }
+    public ShermansServantData Data { get; }
 
     private TransformButton _transformButton;
     private SuicideServantButton _suicideButton;
@@ -46,7 +46,7 @@ public class ShermansServantAbility : AbilityBase
         // 死体の矢印の初期化
         _deadBodyArrowsAbility = new DeadBodyArrowsAbility(() => true, new Color32(165, 42, 42, 255));
         // プレイヤーの矢印の初期化
-        _playerArrowsAbility = new PlayerArrowsAbility(() => [_orientalShamanAbility?.Player], (player) => OrientalShaman.Instance.RoleColor);
+        _playerArrowsAbility = new PlayerArrowsAbility(() => _orientalShamanAbility?.Player != null ? [_orientalShamanAbility.Player] : [], (player) => OrientalShaman.Instance.RoleColor);
 
         Player.AttachAbility(_transformButton, new AbilityParentAbility(this));
         Player.AttachAbility(_suicideButton, new AbilityParentAbility(this));
@@ -80,7 +80,7 @@ public class ShermansServantAbility : AbilityBase
     private void OnDie(DieEventData data)
     {
         // OrientalShamanが死んだ場合、ShermansServantも死ぬ
-        if (data.player == _orientalShamanAbility.Player && Player.IsAlive())
+        if (_orientalShamanAbility != null && data.player == _orientalShamanAbility.Player && Player.IsAlive())
         {
             Player.RpcCustomDeath(CustomDeathType.Suicide);
         }

@@ -10,7 +10,6 @@ public static class LogCompression
 {
     // 固定キー（実際の実装では、より安全なキー管理を検討してください）
     private static readonly byte[] EncryptionKey = GetFixedKey();
-    private static readonly byte[] IV = GetFixedIV();
 
     private static byte[] GetFixedKey()
     {
@@ -19,15 +18,6 @@ public static class LogCompression
         byte[] sourceKey = Encoding.UTF8.GetBytes("SNRLogKey2024!@#");
         Array.Copy(sourceKey, key, Math.Min(sourceKey.Length, key.Length));
         return key;
-    }
-
-    private static byte[] GetFixedIV()
-    {
-        // AESのIVは常に16バイトである必要があります
-        byte[] iv = new byte[16];
-        byte[] sourceIV = Encoding.UTF8.GetBytes("SNRInitVector16");
-        Array.Copy(sourceIV, iv, Math.Min(sourceIV.Length, iv.Length));
-        return iv;
     }
 
     /// <summary>
@@ -46,7 +36,7 @@ public static class LogCompression
         try
         {
             Logger.Info($"LogCompression: Starting compression and encryption. Original log size: {logText.Length} characters");
-            Logger.Info($"LogCompression: Encryption key size: {EncryptionKey.Length} bytes, IV size: {IV.Length} bytes");
+            Logger.Info($"LogCompression: Encryption key size: {EncryptionKey.Length} bytes");
 
             // 1. テキストをUTF-8バイト配列に変換
             byte[] textBytes = Encoding.UTF8.GetBytes(logText);
@@ -133,16 +123,23 @@ public static class LogCompression
         using (var aes = Aes.Create())
         {
             aes.Key = EncryptionKey;
-            aes.IV = IV;
+            // IVは自動生成される
             aes.Mode = CipherMode.CBC;
             aes.Padding = PaddingMode.PKCS7;
 
+            byte[] iv = aes.IV;
+
             using (var encryptor = aes.CreateEncryptor())
             using (var memoryStream = new MemoryStream())
-            using (var cryptoStream = new CryptoStream(memoryStream, encryptor, CryptoStreamMode.Write))
             {
-                cryptoStream.Write(data, 0, data.Length);
-                cryptoStream.FlushFinalBlock();
+                // ストリームの先頭にIVを書き込む
+                memoryStream.Write(iv, 0, iv.Length);
+
+                using (var cryptoStream = new CryptoStream(memoryStream, encryptor, CryptoStreamMode.Write))
+                {
+                    cryptoStream.Write(data, 0, data.Length);
+                    cryptoStream.FlushFinalBlock();
+                }
                 return memoryStream.ToArray();
             }
         }
@@ -153,12 +150,16 @@ public static class LogCompression
         using (var aes = Aes.Create())
         {
             aes.Key = EncryptionKey;
-            aes.IV = IV;
             aes.Mode = CipherMode.CBC;
             aes.Padding = PaddingMode.PKCS7;
 
+            // データからIVを読み取る (先頭16バイト)
+            byte[] iv = new byte[16];
+            Array.Copy(encryptedData, 0, iv, 0, iv.Length);
+            aes.IV = iv;
+
             using (var decryptor = aes.CreateDecryptor())
-            using (var memoryStream = new MemoryStream(encryptedData))
+            using (var memoryStream = new MemoryStream(encryptedData, iv.Length, encryptedData.Length - iv.Length))
             using (var cryptoStream = new CryptoStream(memoryStream, decryptor, CryptoStreamMode.Read))
             using (var resultStream = new MemoryStream())
             {

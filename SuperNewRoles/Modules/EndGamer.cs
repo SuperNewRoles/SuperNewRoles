@@ -145,7 +145,10 @@ public static class EndGamer
                 continue;
             if (player.TryGetAbility<OrientalShamanAbility>(out var orientalShamanAbility) && orientalShamanAbility.Data.canHijackTaskWin)
             {
-                winners = [player, orientalShamanAbility._servant?.Player];
+                var winnersList = new HashSet<ExPlayerControl> { player };
+                if (orientalShamanAbility._servant?.Player != null)
+                    winnersList.Add(orientalShamanAbility._servant.Player);
+                winners = winnersList;
                 color = OrientalShaman.Instance.RoleColor;
                 upperText = "OrientalShamanWin";
                 winType = WinType.Hijackers;
