@@ -50,7 +50,7 @@ namespace SuperNewRoles.Modules
         private const float DeadBodyKickDistance = 0.2f;
         private const float DeadBodyKickRange = 0.6f;
         private const float StopFramesDuration = 10 / 60f; // Frames to wait before stopping
-        public static bool HighPerformance => GeneralSettingOptions.SumouHighPeformance;
+        public static bool HighPerformance => GeneralSettingOptions.SumouHighPerformance;
 
         public static void Postfix(PlayerPhysics __instance)
         {

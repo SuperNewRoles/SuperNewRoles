@@ -41,6 +41,6 @@ public static class GeneralSettingOptions
     [CustomOptionBool("SumouMode", false, parentFieldName: nameof(Categories.GeneralSettings))]
     public static bool SumouMode;
 
-    [CustomOptionBool("SumouHighPeformance", true, parentFieldName: nameof(SumouMode))]
-    public static bool SumouHighPeformance;
+    [CustomOptionBool("SumouHighPerformance", true, parentFieldName: nameof(SumouMode))]
+    public static bool SumouHighPerformance;
 }
