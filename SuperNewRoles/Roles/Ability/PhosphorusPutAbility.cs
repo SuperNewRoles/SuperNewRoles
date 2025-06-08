@@ -8,7 +8,7 @@ using SuperNewRoles.Modules.Events.Bases;
 
 namespace SuperNewRoles.Roles.Ability;
 
-public class PhosphorusPutAbility : CustomButtonBase
+public class PhosphorusPutAbility : CustomButtonBase, IAbilityCount
 {
     public override Sprite Sprite => AssetManager.GetAsset<Sprite>("PhosphorusPutButton.png");
     public override string buttonText => ModTranslation.GetString("PhosphorusPutButtonName");

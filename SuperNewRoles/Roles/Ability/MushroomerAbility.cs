@@ -40,12 +40,6 @@ public class MushroomerAbility : AbilityBase
         this.hasGasMask = hasGasMask;
     }
 
-    public override void AttachToLocalPlayer()
-    {
-        base.AttachToLocalPlayer();
-        wrapUpEvent = WrapUpEvent.Instance.AddListener(OnWrapUp);
-    }
-
     public override void AttachToAlls()
     {
         base.AttachToAlls();
@@ -56,10 +50,12 @@ public class MushroomerAbility : AbilityBase
         // 事前読み込み
         if (!ModHelpers.IsMap(MapNames.Fungle))
             MapLoader.LoadMap(MapNames.Fungle, (map) => { });
+        wrapUpEvent = WrapUpEvent.Instance.AddListener(OnWrapUp);
     }
 
-    public override void DetachToLocalPlayer()
+    public override void DetachToAlls()
     {
+        base.DetachToAlls();
         WrapUpEvent.Instance.RemoveListener(wrapUpEvent);
     }
 
@@ -207,7 +203,7 @@ public class MushroomerAbility : AbilityBase
 
         public override bool CheckHasButton()
         {
-            return base.CheckHasButton() && ability.plantButton.Count <= 0 && ability.NextturnActivateMushrooms.Count <= 0;
+            return base.CheckHasButton() && ability.plantButton.Count <= 0 && ability.NextturnActivateMushrooms.Count <= 0 && HasCount;
         }
 
         public override bool CheckIsAvailable()
@@ -221,7 +217,6 @@ public class MushroomerAbility : AbilityBase
 
             ability.RpcExplodeMushrooms();
             this.UseAbilityCount();
-            ResetTimer();
         }
 
         public override ShowTextType showTextType => ShowTextType.ShowWithCount;

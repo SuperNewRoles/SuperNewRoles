@@ -36,7 +36,7 @@ internal class DimensionWalker : RoleBase<DimensionWalker>
     public override RoleTag[] RoleTags { get; } = [RoleTag.Support, RoleTag.ImpostorTeam];
     public override RoleOptionMenuType OptionTeam { get; } = RoleOptionMenuType.Impostor;
 
-    [CustomOptionFloat("DimensionWalkerCooldown", 5f, 120f, 5f, 15f, translationName: "CoolTime")]
+    [CustomOptionFloat("DimensionWalkerCooldown", 0f, 120f, 2.5f, 25f, translationName: "CoolTime")]
     public static float DimensionWalkerCooldown;
     [CustomOptionFloat("DimensionWalkerActivateTime", 0f, 600f, 15f, 195f)]
     public static float DimensionWalkerActivateTime;
@@ -77,7 +77,7 @@ internal class DimensionWalkerAbility : CustomButtonBase
         {
             return CanCollectWormHole();
         }
-        return PlayerControl.LocalPlayer.CanMove;
+        return PlayerControl.LocalPlayer.CanMove && HasCount;
     }
 
     public override void OnClick()

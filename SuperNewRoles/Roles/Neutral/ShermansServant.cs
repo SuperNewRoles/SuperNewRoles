@@ -15,7 +15,6 @@ class ShermansServant : RoleBase<ShermansServant>
     public override List<Func<AbilityBase>> Abilities { get; } = [
         () => new ShermansServantAbility(new ShermansServantData(
             transformCooldown: OrientalShaman.ShermansServantTransformCooldown,
-            transformDuration: OrientalShaman.ShermansServantTransformDuration,
             suicideCooldown: OrientalShaman.ShermansServantSuicideCooldown
         ))
     ];
@@ -33,6 +32,5 @@ class ShermansServant : RoleBase<ShermansServant>
 
 public record ShermansServantData(
     float transformCooldown,
-    float transformDuration,
     float suicideCooldown
 );

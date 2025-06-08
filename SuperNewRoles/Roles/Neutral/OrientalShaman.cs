@@ -21,12 +21,11 @@ class OrientalShaman : RoleBase<OrientalShaman>
             isImpostorVision: OrientalShamanImpostorVision,
             neededTaskComplete: OrientalShamanNeededTaskComplete,
             task: OrientalShamanTask,
-            ventDuration: OrientalShamanVentDuration,
-            canHijackTaskWin: OrientalShamanCanHijackTaskWin
+            ventDuration: OrientalShamanVentDuration
         )),
         () => new SabotageCanUseAbility(() => sabotageCantUse()),
         () => new CanUseReportButtonAbility(() => !OrientalShamanCannotUseReportButton),
-        () => new CanUseEmergencyButtonAbility(() => !OrientalShamanCannotUseEmergencyButton, () => ModTranslation.GetString("GodCannotUseEmergencyButtonText"))
+        () => new CanUseEmergencyButtonAbility(() => !OrientalShamanCannotUseEmergencyButton, () => ModTranslation.GetString("GodCannotUseEmergencyButtonText")),
     ];
 
     public override QuoteMod QuoteMod { get; } = QuoteMod.SuperNewRoles;
@@ -43,7 +42,7 @@ class OrientalShaman : RoleBase<OrientalShaman>
     [CustomOptionBool("OrientalShamanCanUseVent", true, translationName: "CanUseVent")]
     public static bool OrientalShamanCanUseVent;
 
-    [CustomOptionFloat("OrientalShamanVentCooldown", 0f, 60f, 2.5f, 30f, parentFieldName: nameof(OrientalShamanCanUseVent), translationName: "VentCooldown")]
+    [CustomOptionFloat("OrientalShamanVentCooldown", 0f, 60f, 2.5f, 10f, parentFieldName: nameof(OrientalShamanCanUseVent), translationName: "VentCooldown")]
     public static float OrientalShamanVentCooldown;
 
     [CustomOptionFloat("OrientalShamanVentDuration", 0f, 60f, 2.5f, 10f, parentFieldName: nameof(OrientalShamanCanUseVent), translationName: "VentDuration")]
@@ -64,9 +63,6 @@ class OrientalShaman : RoleBase<OrientalShaman>
     [CustomOptionTask("OrientalShamanTask", 1, 1, 1, parentFieldName: nameof(OrientalShamanNeededTaskComplete))]
     public static TaskOptionData OrientalShamanTask;
 
-    [CustomOptionBool("OrientalShamanCanHijackTaskWin", true)]
-    public static bool OrientalShamanCanHijackTaskWin;
-
     [CustomOptionBool("OrientalShamanCannotFixReactor", true)]
     public static bool OrientalShamanCannotFixReactor;
 
@@ -82,13 +78,10 @@ class OrientalShaman : RoleBase<OrientalShaman>
     [CustomOptionBool("OrientalShamanCannotUseEmergencyButton", false)]
     public static bool OrientalShamanCannotUseEmergencyButton;
 
-    [CustomOptionFloat("ShermansServantTransformCooldown", 2.5f, 60f, 2.5f, 30f)]
+    [CustomOptionFloat("ShermansServantTransformCooldown", 0f, 60f, 2.5f, 0f)]
     public static float ShermansServantTransformCooldown;
 
-    [CustomOptionFloat("ShermansServantTransformDuration", 5f, 60f, 2.5f, 15f)]
-    public static float ShermansServantTransformDuration;
-
-    [CustomOptionFloat("ShermansServantSuicideCooldown", 2.5f, 60f, 2.5f, 30f)]
+    [CustomOptionFloat("ShermansServantSuicideCooldown", 2.5f, 120f, 2.5f, 30f)]
     public static float ShermansServantSuicideCooldown;
 
     private static SabotageType sabotageCantUse()
@@ -118,6 +111,5 @@ public record OrientalShamanData(
     float servantCooldown,
     bool isImpostorVision,
     bool neededTaskComplete,
-    TaskOptionData task,
-    bool canHijackTaskWin
+    TaskOptionData task
 );

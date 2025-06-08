@@ -240,12 +240,12 @@ public class ExPlayerControl
             {
                 switch (parent)
                 {
-                    case AbilityParentRole parentRole when parentRole.ParentRole.Role == roleId:
+                    case AbilityParentRole parentRole when parentRole.ParentRole != null && parentRole.ParentRole.Role == roleId:
                         abilitiesToDetach.Add(ability);
                         abilitiesToDetachParentRole.Add(parentRole);
                         parent = null;
                         break;
-                    case AbilityParentAbility parentAbility:
+                    case AbilityParentAbility parentAbility when parentAbility.ParentAbility != null:
                         parent = parentAbility.ParentAbility.Parent;
                         break;
                     default:
@@ -272,11 +272,11 @@ public class ExPlayerControl
             {
                 switch (parent)
                 {
-                    case AbilityParentGhostRole parentGhostRole when parentGhostRole.ParentGhostRole.Role == ghostRoleId:
+                    case AbilityParentGhostRole parentGhostRole when parentGhostRole.ParentGhostRole != null && parentGhostRole.ParentGhostRole.Role == ghostRoleId:
                         abilitiesToDetach.Add(ability);
                         parent = null;
                         break;
-                    case AbilityParentAbility parentAbility:
+                    case AbilityParentAbility parentAbility when parentAbility.ParentAbility != null:
                         parent = parentAbility.ParentAbility.Parent;
                         break;
                     default:
@@ -303,11 +303,11 @@ public class ExPlayerControl
             {
                 switch (parent)
                 {
-                    case AbilityParentModifier parentModifier when modifierRoleId.HasFlag(parentModifier.ParentModifier.ModifierRole):
+                    case AbilityParentModifier parentModifier when parentModifier.ParentModifier != null && modifierRoleId.HasFlag(parentModifier.ParentModifier.ModifierRole):
                         abilitiesToDetach.Add(ability);
                         parent = null;
                         break;
-                    case AbilityParentAbility parentAbility:
+                    case AbilityParentAbility parentAbility when parentAbility.ParentAbility != null:
                         parent = parentAbility.ParentAbility.Parent;
                         break;
                     default:

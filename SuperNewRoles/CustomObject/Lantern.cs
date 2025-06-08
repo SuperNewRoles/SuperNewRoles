@@ -33,7 +33,7 @@ public class Lantern : MonoBehaviour
         myRend.color = new(1f, 1f, 1f, Owner.AmOwner ? 0.5f : 0f);
         myRend.sprite = InactiveSprite;
 
-        light = CreateCustomLight(gameObject.transform.position, Phosphorus.LightRange, false);
+        light = CreateCustomLight(gameObject.transform.position, Phosphorus.PhosphorusLightRange, false);
         light.gameObject.transform.parent = transform;
 
         AllLanterns.Add(this);

@@ -15,6 +15,7 @@ internal interface IButtonEffect
     public virtual bool effectCancellable => false;
     public virtual bool IsEffectDurationInfinity => false;
     public virtual float FillUpTime => 0f;
+    public virtual bool doAdditionalEffect => true;
 
     public static readonly Color color = new(0F, 0.8F, 0F);
     float EffectTimer { get; set; }
@@ -67,7 +68,7 @@ internal interface IButtonEffect
     public virtual void DoEffect(ActionButton actionButton, float effectStartTime = 3f)
     {
         //以下はFillup。もし別のeffectにしたくなったらoverrideして自分でなんとかする。
-        if (isEffectActive && actionButton.isCoolingDown && EffectTimer < effectStartTime)
+        if (isEffectActive && actionButton.isCoolingDown && EffectTimer < effectStartTime && doAdditionalEffect)
         {
             actionButton.graphic.transform.localPosition = actionButton.position + (Vector3)UnityEngine.Random.insideUnitCircle * 0.05f;
         }

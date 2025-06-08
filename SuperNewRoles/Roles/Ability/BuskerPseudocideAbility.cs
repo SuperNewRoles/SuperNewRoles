@@ -16,14 +16,19 @@ namespace SuperNewRoles.Roles.Ability;
 
 public class BuskerPseudocideAbility : CustomButtonBase, IButtonEffect
 {
-    public override float DefaultTimer => 30f;
+    public BuskerPseudocideAbility(float coolTime, float duration)
+    {
+        DefaultTimer = coolTime;
+        EffectDuration = duration;
+    }
+    public override float DefaultTimer { get; }
     public override Sprite Sprite => AssetManager.GetAsset<Sprite>(isEffectActive ? "BuskerRebornButton.png" : "BuskerPseudocideButton.png");
     protected override KeyType keytype => KeyType.Ability1;
 
     // IButtonEffect implementation
     public bool isEffectActive { get; set; }
     public Action OnEffectEnds => () => { if (EffectTimer > 0) OnReborn(); else OnPseudocideEnd(); };
-    public float EffectDuration => Busker.BuskerPseudocideDuration;
+    public float EffectDuration { get; set; }
     public float EffectTimer { get; set; }
 
     public bool effectCancellable => true;

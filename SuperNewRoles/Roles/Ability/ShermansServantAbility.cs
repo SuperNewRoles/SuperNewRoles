@@ -18,7 +18,7 @@ public class ShermansServantAbility : AbilityBase
     private SuicideServantButton _suicideButton;
     private DeadBodyArrowsAbility _deadBodyArrowsAbility;
     private PlayerArrowsAbility _playerArrowsAbility;
-    private EventListener<DieEventData> _dieListener;
+    private EventListener _fixedUpdateListener;
     private EventListener<WrapUpEventData> _wrapUpListener;
 
     // ShermansServant specific variables
@@ -33,7 +33,7 @@ public class ShermansServantAbility : AbilityBase
     public override void AttachToLocalPlayer()
     {
         base.AttachToLocalPlayer();
-        _dieListener = DieEvent.Instance.AddListener(OnDie);
+        _fixedUpdateListener = FixedUpdateEvent.Instance.AddListener(OnFixedUpdate);
     }
 
     public override void AttachToAlls()
@@ -69,7 +69,7 @@ public class ShermansServantAbility : AbilityBase
     }
     public override void DetachToLocalPlayer()
     {
-        _dieListener?.RemoveListener();
+        _fixedUpdateListener?.RemoveListener();
     }
 
     public void SetParent(OrientalShamanAbility orientalShamanAbility)
@@ -77,13 +77,12 @@ public class ShermansServantAbility : AbilityBase
         _orientalShamanAbility = orientalShamanAbility;
     }
 
-    private void OnDie(DieEventData data)
+    private void OnFixedUpdate()
     {
         // OrientalShamanが死んだ場合、ShermansServantも死ぬ
-        if (_orientalShamanAbility != null && data.player == _orientalShamanAbility.Player && Player.IsAlive())
-        {
-            Player.RpcCustomDeath(CustomDeathType.Suicide);
-        }
+        if (Player.IsDead()) return;
+        if (_orientalShamanAbility != null && _orientalShamanAbility.Player != null && _orientalShamanAbility.Player.IsAlive()) return;
+        Player.RpcCustomDeath(CustomDeathType.Suicide);
     }
 
     public void StartTransform()
@@ -128,7 +127,7 @@ public class ShermansServantAbility : AbilityBase
     }
 
     // カスタムボタンクラス
-    private class TransformButton : CustomButtonBase, IButtonEffect
+    private class TransformButton : CustomButtonBase
     {
         private readonly ShermansServantAbility _ability;
 
@@ -141,24 +140,14 @@ public class ShermansServantAbility : AbilityBase
         public override string buttonText => ModTranslation.GetString("ShermansServantTransformButton");
         protected override KeyType keytype => KeyType.Ability1;
         public override float DefaultTimer => _ability.Data.transformCooldown;
-
-        public bool isEffectActive { get; set; }
-
-        public Action OnEffectEnds => () => { if (_ability._isTransformed) _ability.EndTransform(); };
-
-        public float EffectDuration => _ability.Data.transformDuration;
-
-        public float EffectTimer { get; set; }
-
-        public bool effectCancellable => true;
-
-        public bool IsEffectDurationInfinity => _ability.Data.transformDuration <= 0;
         public float FillUpTime => 0f;
 
         public override void OnClick()
         {
             if (!_ability._isTransformed)
                 _ability.StartTransform();
+            else
+                _ability.EndTransform();
         }
 
         public override bool CheckIsAvailable()

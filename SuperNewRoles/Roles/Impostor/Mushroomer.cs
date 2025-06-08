@@ -37,13 +37,13 @@ class Mushroomer : RoleBase<Mushroomer>
     [CustomOptionBool("MushroomerHasGasMask", true)]
     public static bool MushroomerHasGasMask;
 
-    [CustomOptionFloat("MushroomerMushroomPlantCoolTime", 2.5f, 60f, 2.5f, 20f, translationName: "MushroomPlantCoolTime")]
+    [CustomOptionFloat("MushroomerMushroomPlantCoolTime", 2.5f, 60f, 2.5f, 20f)]
     public static float MushroomPlantCoolTime;
 
     [CustomOptionInt("MushroomerMushroomPlantCount", 1, 10, 1, 3)]
     public static int MushroomPlantCount;
 
-    [CustomOptionFloat("MushroomerMushroomExplosionCoolTime", 2.5f, 60f, 2.5f, 30f, translationName: "MushroomExplosionCoolTime")]
+    [CustomOptionFloat("MushroomerMushroomExplosionCoolTime", 2.5f, 60f, 2.5f, 30f)]
     public static float MushroomExplosionCoolTime;
 
     [CustomOptionInt("MushroomerMushroomExplosionCount", 1, 10, 1, 2)]

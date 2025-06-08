@@ -1501,19 +1501,20 @@ OrientalShamanCanCreateServant,式神を作成できる,Can Create Servant,可�
 OrientalShamanServantCooldown,式神作成クールタイム,Servant Creation Cooldown,式神创建冷却时间,式神創建冷卻時間
 OrientalShamanTaskWinCount,勝利に必要なタスク数,Tasks Required for Victory,胜利所需任务数,勝利所需任務數
 OrientalShamanCanHijackTaskWin,タスク勝利を横取りできる,Can Hijack Task Victory,可以劫持任务胜利,可以劫持任務勝利
+OrientalShamanNeededTaskComplete,タスクが完了していないと勝利できない,Task Complete is Required,任务完成是必要的,任務完成是必要的
 
 # ShermansServant
 ShermansServant,式神,Shermans Servant,式神,式神
 ShermansServantTransformButton,変身,Transform,变身,變身
 ShermansServantSuicideButton,自殺,Suicide,自杀,自殺
-ShermansServantTransformCooldown,変身クールタイム,Transform Cooldown,变身冷却时间,變身冷卻時間
-ShermansServantTransformDuration,変身持続時間,Transform Duration,变身持续时间,變身持續時間
+ShermansServantTransformCooldown,式神の変身クールタイム,Transform Cooldown,变身冷却时间,變身冷卻時間
+ShermansServantTransformDuration,式神の変身持続時間,Transform Duration,变身持续时间,變身持續時間
 ShermansServantSuicideCooldown,自殺クールタイム,Suicide Cooldown,自杀冷却时间,自殺冷卻時間
 ShermansServantNeededTaskComplete,勝利にタスクが必要,Task Complete is Required,任务完成是必要的,任務完成是必要的
-OrientalShamanCannotFixReactor,リアクターを修復できない,Cannot Fix Reactor,无法修复反应堆,無法修復反應堆
+OrientalShamanCannotFixReactor,リアクターとO2を修復できない,Cannot Fix Reactor,无法修复反应堆,無法修復反應堆
 OrientalShamanCannotFixComms,コミュニケーションを修復できない,Cannot Fix Comms,无法修复通讯,無法修復通訊
-OrientalShamanCannotFixLights,ライトを修復できない,Cannot Fix Lights,无法修复灯光,無法修復燈光
-OrientalShamanCannotUseReportButton,レポートボタンを使用できない,Cannot Use Report Button,无法使用报告按钮,無法使用報告按鈕
+OrientalShamanCannotFixLights,停電を修復できない,Cannot Fix Lights,无法修复灯光,無法修復燈光
+OrientalShamanCannotUseReportButton,死体を通報できない,Cannot Use Report Button,无法使用报告按钮,無法使用報告按鈕
 OrientalShamanCannotUseEmergencyButton,緊急ボタンを使用できない,Cannot Use Emergency Button,无法使用紧急按钮,無法使用緊急按鈕
 
 # Safecracker
@@ -1597,6 +1598,8 @@ MushroomerHasGasMask,ガスマスクを持つ,Has Gas Mask,拥有防毒面具,�
 MushroomerMushroomPlantCount,キノコ設置可能数,Mushroom Plant Count,蘑菇设置数量,蘑菇設置數量
 MushroomerMushroomExplosionCount,爆発可能回数,Explosion Count,爆炸次数,爆炸次數
 MushroomerMushroomExplosionRange,爆発範囲,Explosion Range,爆炸范围,爆炸範圍
+MushroomerMushroomPlantCoolTime,キノコ設置クールタイム,Mushroom Plant Cool Time,蘑菇设置冷却时间,蘑菇設置冷卻時間
+MushroomerMushroomExplosionCoolTime,爆発クールタイム,Explosion Cool Time,爆炸冷却时间,爆炸冷卻時間
 MushroomerPlantButtonName,キノコ設置,Plant Mushroom,设置蘑菇,設置蘑菇
 MushroomerExplosionButtonName,爆発,Explode,爆炸,爆炸
 
@@ -1605,8 +1608,3 @@ DimensionWalkerActivateTime,ワームホール有効化時間,Wormhole Activatio
 DimensionWalkerPlayAnimation,ワームホールアニメーションを再生する,Play Wormhole Animation,播放虫洞动画,播放蟲洞動畫
 DimensionWalkerPutButtonText,ワームホール設置,Place Wormhole,放置虫洞,放置蟲洞
 DimensionWalkerCollectButtonText,ワームホール回収,Collect Wormhole,回收虫洞,回收蟲洞
-M u s h r o o m P l a n t C o o l T i m e , �0�0�0-�n�0�0�0�0�0�0, M u s h r o o m   P l a n t   C o o l   T i m e , �ǃ>en�QtS�e��, �ǃ>en�Q{SBf��
- 
- M u s h r o o m E x p l o s i o n C o o l T i m e , �0�0�0rzv�0�0�0�0�0�0, M u s h r o o m   E x p l o s i o n   C o o l   T i m e , �ǃr�p�QtS�e��, �ǃr�p�Q{SBf��
- 
- 

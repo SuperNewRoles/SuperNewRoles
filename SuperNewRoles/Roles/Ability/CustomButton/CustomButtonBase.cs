@@ -236,7 +236,7 @@ public abstract class CustomButtonBase : AbilityBase
             ResetTimer();
             if (buttonEffect != null) buttonEffect.OnClick(actionButton);
         }
-        else if (buttonEffect != null && buttonEffect.isEffectActive && buttonEffect.effectCancellable)
+        else if (buttonEffect != null && buttonEffect.isEffectActive && buttonEffect.effectCancellable && buttonEffect.IsEffectAvailable())
         {
             actionButton.graphic.color = Palette.EnabledColor;
             buttonEffect.OnCancel(actionButton);

@@ -77,9 +77,10 @@ public class OrientalShamanAbility : AbilityBase
         _playerArrowsAbility = new PlayerArrowsAbility(() => [_servant?.Player], (player) => OrientalShaman.Instance.RoleColor);
 
         _servantAbility = new CustomSidekickButtonAbility(servantOptions);
+
         // インポスター視界の設定
         Player.AttachAbility(_knowOtherAbility, new AbilityParentAbility(this));
-        Player.AttachAbility(new ImpostorVisionAbility(() => Data.isImpostorVision), new AbilityParentRole(Player, Player.roleBase));
+        Player.AttachAbility(new ImpostorVisionAbility(() => Data.isImpostorVision), new AbilityParentAbility(this));
         Player.AttachAbility(_servantAbility, new AbilityParentAbility(this));
         Player.AttachAbility(_ventAbility, new AbilityParentAbility(this));
         Player.AttachAbility(new HideVentAnimationAbility(() => true), new AbilityParentAbility(this));
@@ -118,6 +119,9 @@ public class OrientalShamanAbility : AbilityBase
         {
             Logger.Error($"OrientalShaman created servant: {target.Data.PlayerName} but servant ability not found");
         }
+        // 名前の更新
+        NameText.UpdateNameInfo(target);
+        NameText.UpdateNameInfo(Player);
         // 式神作成時の処理
         Logger.Info($"OrientalShaman created servant: {target.Data.PlayerName}");
     }

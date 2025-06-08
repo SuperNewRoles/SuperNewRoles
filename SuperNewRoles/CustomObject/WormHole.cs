@@ -77,11 +77,6 @@ public class WormHole : MonoBehaviour
         _vent.myRend.enabled = false;
         _vent.gameObject.SetActive(false);
 
-        foreach (var button in _vent.Buttons)
-        {
-            button.transform.localScale *= ShipStatus.Instance.transform.localScale.x;
-        }
-
         Id = _vent.Id;
 
         // インポスター以外には見えないようにする
@@ -151,7 +146,7 @@ public class WormHole : MonoBehaviour
 
     private void Update()
     {
-        if (!gameObject.active)
+        if (!gameObject.activeInHierarchy)
             return;
 
         // アニメーション更新
