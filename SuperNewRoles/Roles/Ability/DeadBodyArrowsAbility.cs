@@ -15,7 +15,7 @@ public class DeadBodyArrowsAbility : AbilityBase
     public bool ShowArrows => _showArrows?.Invoke() ?? true;
     /// <summary>死体矢印に反映させるボディカラーのモード</summary>
     private readonly DeadBodyColorMode _deadBodyColorMode;
-    private Dictionary<DeadBody, (Arrow, Color)> _deadBodyArrows = new();
+    private Dictionary<DeadBody, (Arrow arrow, Color color)> _deadBodyArrows = new();
     private EventListener _fixedUpdateEvent;
 
     /// <param name="showArrows">矢印のを表示できるか</param>
@@ -67,18 +67,18 @@ public class DeadBodyArrowsAbility : AbilityBase
             if (deadBodiesByParentId.ContainsKey(parentId))
             {
 
-                if (arrowEntry.Value.Item1 == null)
+                if (arrowEntry.Value.arrow == null)
                 {
                     var arrowColor = _deadBodyColorMode == DeadBodyColorMode.None ? _defaultArrowColor : ResolveDeadBodyArrowColor(arrowEntry.Key);
                     _deadBodyArrows[arrowEntry.Key] = (new Arrow(arrowColor), arrowColor);
                 }
-                _deadBodyArrows[arrowEntry.Key].Item1.Update(arrowEntry.Key.transform.position, arrowEntry.Value.Item2);
-                _deadBodyArrows[arrowEntry.Key].Item1.arrow.SetActive(true);
+                _deadBodyArrows[arrowEntry.Key].arrow.Update(arrowEntry.Key.transform.position, arrowEntry.Value.color);
+                _deadBodyArrows[arrowEntry.Key].arrow.arrow.SetActive(true);
             }
             else
             {
-                if (arrowEntry.Value.Item1?.arrow != null)
-                    UnityEngine.Object.Destroy(arrowEntry.Value.Item1.arrow);
+                if (arrowEntry.Value.arrow?.arrow != null)
+                    UnityEngine.Object.Destroy(arrowEntry.Value.arrow.arrow);
                 _deadBodyArrows.Remove(arrowEntry.Key);
             }
         }
@@ -90,8 +90,8 @@ public class DeadBodyArrowsAbility : AbilityBase
 
             Color arrowColor = _deadBodyColorMode == DeadBodyColorMode.None ? _defaultArrowColor : ResolveDeadBodyArrowColor(kv.Value);
             _deadBodyArrows.Add(kv.Value, (new Arrow(arrowColor), arrowColor));
-            _deadBodyArrows[kv.Value].Item1.Update(kv.Value.transform.position, arrowColor);
-            _deadBodyArrows[kv.Value].Item1.arrow.SetActive(true);
+            _deadBodyArrows[kv.Value].arrow.Update(kv.Value.transform.position, arrowColor);
+            _deadBodyArrows[kv.Value].arrow.arrow.SetActive(true);
         }
     }
     public override void DetachToLocalPlayer()
