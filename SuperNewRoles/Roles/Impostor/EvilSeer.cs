@@ -20,10 +20,10 @@ class EvilSeer : RoleBase<EvilSeer>
             Mode = EvilSeerSeerMode,
             LimitSoulDuration = EvilSeerLimitSoulDuration,
             SoulDuration = EvilSeerSoulDuration,
-            FlashColorMode =  EvilSeerAbilityColorModeSelect is EvilSeerAbility.All or EvilSeerAbility.FlashOnly ? EvilSeerColorMode : CrewMate.DeadBodyColorMode.None,
-            SoulColorMode = EvilSeerAbilityColorModeSelect is EvilSeerAbility.All or EvilSeerAbility.SoulOnly ? EvilSeerColorMode : CrewMate.DeadBodyColorMode.None
+            FlashColorMode =  EvilSeerAbilityColorModeSelect is EvilSeerAbility.All or EvilSeerAbility.FlashOnly ? EvilSeerColorMode : DeadBodyColorMode.None,
+            SoulColorMode = EvilSeerAbilityColorModeSelect is EvilSeerAbility.All or EvilSeerAbility.SoulOnly ? EvilSeerColorMode : DeadBodyColorMode.None
         }),
-        () => new DeadBodyArrowsAbility(() => EvilSeerShowArrows, colorMode : EvilSeerAbilityColorModeSelect is EvilSeerAbility.All or EvilSeerAbility.ArrowOnly ? EvilSeerColorMode : CrewMate.DeadBodyColorMode.None),
+        () => new DeadBodyArrowsAbility(() => EvilSeerShowArrows, colorMode : EvilSeerAbilityColorModeSelect is EvilSeerAbility.All or EvilSeerAbility.ArrowOnly ? EvilSeerColorMode : DeadBodyColorMode.None),
     ];
     public override QuoteMod QuoteMod { get; } = QuoteMod.SuperNewRoles;
     public override RoleTypes IntroSoundType { get; } = RoleTypes.Phantom;
@@ -36,8 +36,8 @@ class EvilSeer : RoleBase<EvilSeer>
     public override RoleOptionMenuType OptionTeam { get; } = RoleOptionMenuType.Impostor;
 
 
-    [CustomOptionSelect("EvilSeer.SeerColorMode", typeof(CrewMate.DeadBodyColorMode), "Seer.SeerColorMode.", translationName: "Seer.SeerColorMode")]
-    public static CrewMate.DeadBodyColorMode EvilSeerColorMode = CrewMate.DeadBodyColorMode.None;
+    [CustomOptionSelect("EvilSeer.SeerColorMode", typeof(DeadBodyColorMode), "Seer.SeerColorMode.", translationName: "Seer.SeerColorMode")]
+    public static DeadBodyColorMode EvilSeerColorMode = DeadBodyColorMode.None;
     [CustomOptionSelect("EvilSeer.AbilityColorModeSelect", typeof(EvilSeerAbility), "EvilSeer.AbilityColorModeSelect.", translationName: "EvilSeer.AbilityColorModeSelect", parentFieldName: nameof(EvilSeerColorMode))]
     public static EvilSeerAbility EvilSeerAbilityColorModeSelect = EvilSeerAbility.SoulOnly;
 

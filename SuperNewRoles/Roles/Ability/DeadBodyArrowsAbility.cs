@@ -146,3 +146,13 @@ public class DeadBodyArrowsAbility : AbilityBase
         return deadBodyColor;
     }
 }
+
+public enum DeadBodyColorMode
+{
+    /// <summary>死体色を反映しない</summary>
+    None,
+    /// <summary>死体の明暗のみ反映する</summary>
+    LightAndDarkness,
+    /// <summary>死体色を反映する</summary>
+    Adaptive,
+}
