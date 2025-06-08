@@ -5,7 +5,6 @@ using SuperNewRoles.Events;
 using SuperNewRoles.Modules;
 using SuperNewRoles.Modules.Events.Bases;
 using SuperNewRoles.Roles.Ability;
-using SuperNewRoles.Roles.CrewMate;
 using SuperNewRoles.Roles.Neutral;
 using UnityEngine;
 
