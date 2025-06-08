@@ -116,6 +116,8 @@ public enum RoleId : short
     Ubiquitous,
     Busker,
     Camouflager,
+    Doorr,
+    EvilDoorr,
 }
 
 public enum GhostRoleId : short

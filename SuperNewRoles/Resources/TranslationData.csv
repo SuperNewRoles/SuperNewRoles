@@ -438,7 +438,8 @@ Safecracker,金庫破り,Safecracker,盗贼,盜賊
 Ubiquitous,ユビキタス,Ubiquitous
 Busker,バスカー,Busker,街头艺人,街頭藝人
 Camouflager,カモフラージャー,Camouflager,伪装者,偽裝者
-
+Doorr,ドアー,Doorr,门卫,門衛
+EvilDoorr,イビルドアー,Evil Doorr,邪恶门卫,邪惡門衛
 
 # Descriptions_VanillaRoles
 Crewmate.Description,特に何も能力を持たない基本的なクルーメイト役職です。\n人狼ゲームにおける村人の役割を持ちます。\nキル能力を持つ人外を全て追放するか、タスクを全て完了すると勝利します。,A basic Crewmate role with no special abilities.\nThey serve the role of Villager from the Werewolf game.\nVictory is achieved by ejecting all non-Crewmate players with kill abilities or by completing all tasks.,一个没有特殊能力的基础船员角色。\n他们承担了狼人游戏中村民的角色。\n通过将所有拥有击杀能力的非船员玩家投出局或完成所有任务来获胜。,一個沒有特殊能力的基礎船員角色。\n他們承擔了狼人遊戲中村民的角色。\n通過將所有擁有擊殺能力的非船員玩家投出局或完成所有任務來獲勝。,
@@ -1584,3 +1585,6 @@ CamouflagerCamouflageColor.Banana,バナナ,Banana,香蕉色,香蕉色
 CamouflagerCamouflageColor.Gray,グレー,Gray,灰色,灰色
 CamouflagerCamouflageColor.Tan,タン,Tan,棕褐色,棕褐色
 CamouflagerCamouflageColor.Coral,コーラル,Coral,珊瑚色,珊瑚色
+
+# Doorr
+DoorrButtonText,ドアーー!!,Doorr,门卫,門衛
