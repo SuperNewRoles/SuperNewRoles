@@ -443,6 +443,8 @@ EvilDoorr,イビルドアー,Evil Doorr,邪恶门卫,邪惡門衛
 Mushroomer,マッシュルーマー,Mushroomer,蘑菇师,蘑菇師
 DimensionWalker,ディメンションウォーカー,Dimension Walker,次元行者,次元行者
 DarkKiller,ダークキラー,Dark killer
+OrientalShaman,陰陽師,Oriental Shaman,阴阳师,陰陽師
+ShermansServant,式神,Shermans Servant,式神,式神
 
 # Descriptions_VanillaRoles
 Crewmate.Description,特に何も能力を持たない基本的なクルーメイト役職です。\n人狼ゲームにおける村人の役割を持ちます。\nキル能力を持つ人外を全て追放するか、タスクを全て完了すると勝利します。,A basic Crewmate role with no special abilities.\nThey serve the role of Villager from the Werewolf game.\nVictory is achieved by ejecting all non-Crewmate players with kill abilities or by completing all tasks.,一个没有特殊能力的基础船员角色。\n他们承担了狼人游戏中村民的角色。\n通过将所有拥有击杀能力的非船员玩家投出局或完成所有任务来获胜。,一個沒有特殊能力的基礎船員角色。\n他們承擔了狼人遊戲中村民的角色。\n通過將所有擁有擊殺能力的非船員玩家投出局或完成所有任務來獲勝。,
@@ -483,6 +485,11 @@ DoubleKiller.Description,特殊なキル能力を有するインポスターで�
 Finder.Description,タスクターンに発動する能力を有するインポスターです。\n指定のキル数を達成するとマッドメイトが誰かわかります。,
 Nun.Description,タスクターンに使用出来る能力を有するインポスターです。\n「ぬーん」ボタンを押すと、エアシップの昇降機を遠隔で動かすことが出来ます。,
 ShiftActor.Description,タスクターンに使用出来る能力を有するインポスターです。\n変身すると、変身した相手の役職を知ることが出来ます。,
+Camouflager.Description,タスクターンに使用出来る能力を有するインポスターです。\n「カモフラージュ」ボタンを押すと、一定時間全員の見た目を変更します。,
+EvilDoorr.Description,タスクターンに使用出来る能力を有するインポスターです。\n「ドアーー!!」ボタンを押すと、目の前のドアを開閉出来ます。,
+Mushroomer.Description,タスクターンに使用出来る能力を有するインポスターです。\nThe Fungleのジャングルにあるキノコを設置することが出来ます。\nキノコは設置した次のターンに有効化します。\nまた、全てのキノコを設置するとキノコ爆発が使えるようになります。\n「爆発」ボタンを押すと、最初から設置されているキノコを含め、全てのキノコを一斉に爆発させます。,
+DimensionWalker.Description,タスクターンに使用出来る能力を有するインポスターです。\n「設置」ボタンを押すとワームホールを設置出来ます。\nワームホールは一定時間経過後有効化し、ワームホール間を行き来出来るベントとして機能します。\nワームホールはディメンションウォーカー以外のインポスターも使用可能です。\n「回収」ボタンでワームホールを回収し、使用回数を回復させることが出来ます。,
+DarkKiller.Description,キルに関係する能力を有するインポスターです。\nキルクールが短い代わりに、停電中しかキルが出来ません。,
 
 # Descriptions_Neutral
 Jackal.Description,キル能力を有する第三陣営です。\n自陣営以外のキルが出来る陣営が全滅した上で、自陣営とクルーが同数以下になれば勝利します。\n設定次第で他のプレイヤーの役職を、自身の後継となるサイドキックや、手助けをしてくれるジャッカルフレンズに変更する能力を有することも出来ます。,A third-faction role with a kill ability.\nIt wins if all factions capable of killing outside its own are eliminated and its faction and the Crewmates are equal in number or fewer.\nDepending on the settings，it can change other players’ roles into a Sidekick (its successor) or Jackal Friends who assist it.,这是一个拥有击杀能力的第三阵营角色。\n当所有能够进行击杀的其他阵营被消灭，并且其阵营与船员人数相等或更少时，即可获胜。\n根据设定，它还可以将其他玩家的角色变更为边缘队员（其继任者）或协助的杰克朋友。,這是一個具備擊殺能力的第三陣營角色。\n當其他能進行擊殺的陣營全部被消滅，且其陣營與船員數量相等或更少時，即獲勝。\n根據設定，還可將其他玩家的角色變更為接班的邊翼或提供協助的傑克朋友。,
@@ -510,6 +517,9 @@ Cupid.Description,キル能力を有さない独自の勝利条件を持つ第�
 Spelunker.Description,キル能力を有さない独自の勝利条件を持つ第三陣営です。\nベントを踏んだり、ドアを開けたり、昇降機に乗ったり、はしごを降りたりすると一定確率で死亡してしまいます。\nまた、サボタージュが長引くと不安で死んでしまいます。\nゲーム終了まで生存していると、一部役職の勝利を除き、勝利を横取りして単独勝利します。,A third-faction role without a kill ability that has its own win condition.\nThey risk death at random if they step on vents，open doors，use elevators，or climb down ladders.\nThey also may die of fear if a sabotage continues too long.\nIf they survive until the end of the game，they steal the victory and win solo—except in cases of certain roles with special win conditions.,这是一个没有击杀能力、拥有独特胜利条件的第三阵营角色。\n如果踩到通风口、打开门、乘坐电梯或爬梯，他们有一定概率会死亡。\n如果破坏持续过久，他们也可能因恐惧而死亡。\n如果他们存活到游戏结束，他们会窃取胜利并独自获胜——除非某些角色具有特殊胜利条件。,這是一個沒有擊殺能力且具備獨特勝利條件的第三陣營角色。\n如果踩到通風口、打開門、乘坐電梯或爬梯，他們有一定概率會死亡。\n如果破壞持續過久，他們也可能因恐懼而死亡。\n如果他們存活到遊戲結束，他們會竊取勝利並單獨獲勝——除非某些角色具有特殊勝利條件。,
 BlackHatHacker.Description,キル能力を有さない独自の勝利条件を持つ第三陣営です。\n「感染」ボタンを押すと、任意のプレイヤーに感染させることが出来ます。\nそのプレイヤーが他プレイヤーに接近すると、感染率が上昇していき、100%になると新たな感染源となります。\n生存者全員が感染源になると、その時点で単独勝利します。,A third-faction role without a kill ability that has a unique win condition.\nBy pressing the “Infect” button，you infect a chosen player.\nWhen that player approaches others，the infection rate increases，and once it reaches 100%，they become a new infection source.\nWhen all surviving players are infection sources，you win instantly on your own.,这是一个没有击杀能力、拥有独特胜利条件的第三阵营角色。\n按下“感染”按钮后，可感染任意玩家。\n当该玩家接近其他玩家时，感染率会上升，一旦达到100%，他就会成为新的感染源。\n当所有幸存玩家都成为感染源时，你会立即单独获胜。,這是一個沒有擊殺能力且具備獨特勝利條件的第三陣營角色。\n按下「感染」按鈕後，可感染任意玩家。\n當該玩家接近其他玩家時，感染率會上升，一旦達到100%，他就會成為新的感染源。\n當所有倖存玩家都成為感染源時，你會立即單獨獲勝。,
 PartTimer.Description,キル能力を有さない第三陣営です。\n「バイト」ボタンを押すと対象のプレイヤーに就職出来ます。\n就職先のプレイヤーが生存した状態で勝利条件を満たすと、共に勝利します。\nこの役職は、生存者が減れば減るほど、能力のクールタイムが延長されていきます。\nまた、就職先のプレイヤーが死亡すると勝利条件を失うため、再度就職する必要があります。\nなお、一定の期間無職でいると死亡してしまいます。,A third-faction role without a kill ability.\nBy pressing the “Work” button，you “get a job” with a target player.\nIf that player survives and fulfills their win condition，you also win alongside them.\nYour ability’s cooldown lengthens as the number of survivors decreases.\nAdditionally，if your “employer” dies，you lose the win condition and must “find a new job.”\nNote that remaining unemployed for too long results in death.,这是一个没有击杀能力的第三阵营角色。\n按下“工作”按钮后，你可以与目标玩家“共事”。\n如果该玩家存活并满足其胜利条件，你会与他们共同获胜。\n随着幸存者的减少，你的能力冷却时间会延长。\n此外，如果你“工作”的玩家死亡，你会失去胜利条件，需要重新“找工作”。\n注意，长时间失业会导致死亡。,這是一個沒有擊殺能力的第三陣營角色。\n按下「工作」按鈕後，你可以與目標玩家「共事」。\n如果該玩家存活並滿足其勝利條件，你會與他們共同獲勝。\n隨著倖存者的減少，你的能力冷卻時間會延長。\n此外，如果你「工作」的玩家死亡，你會失去勝利條件，需要重新「找工作」。\n注意，長時間失業會導致死亡。,
+Safecracker.Description,キル能力を有さない第三陣営です。\nタスクが全てAirShipの金庫解錠タスクになります。\nタスクを全て完了すると、その時点で単独勝利します。
+OrientalShaman.Description,キル能力を有さない独自の勝利条件を持つ第三陣営です。\nキル能力を持つプレイヤーが誰かわかります。\nゲーム終了まで生存していると、一部役職の特殊勝利を除き、その勝利を横取りして勝利することが出来ます。\nベントを使用する際、使用モーション及び開閉モーションがありません。\nその代わり、滞在時間に制限があります。\nまた、設定次第では「式神」という仲間を作ることが出来ます。\n式神と相互に位置がわかります。,
+ShermansServant.Description,陰陽師陣営に属する第三陣営です。\n陰陽師が勝利すると共に勝利します。\n「変身」ボタンを押すと陰陽師の姿に変身します。\n「自決」ボタンを押すと自決します。\n死体の位置がわかります。\nこの役職は陰陽師に課せられた制限を受けません。\nこの役職はクルーメイトとして判定されます。\n陰陽師が死亡、または役職が代わるとその時点で死亡します。\n陰陽師と相互に位置がわかります。,
 
 # Descriptions_Crewmate
 Bait.Description,タスクターンに発動する能力を有するクルーメイトです。\nキルされると、そのキル者に自身の死体を通報させます。,A Crewmate with an ability that activates during task turns.\nWhen killed，they force their killer to report their body.,一个在任务回合中可激活能力的船员。\n当被击杀时，会迫使击杀者报告他们的尸体。,一個在任務回合中可激活能力的船員。\n當被擊殺時，會迫使擊殺者報告他們的屍體。,
@@ -546,8 +556,11 @@ Technician.Description,タスクターンに使用出来る能力を有するク
 NiceScientist.Description,タスクターンに使用出来る能力を有するクルーメイトです。\n「透明化」ボタンを押すと、一定時間自身の姿が透明になります。\n透明化中であっても、能力の対象になります。\nまた、設定次第では能力使用中のライターには見えてしまいます。,A crewmate with an ability that can be used during the Task Turn.\nWhen you press the 'Invisibility' button， your appearance becomes invisible for a certain period of time.\nEven while invisible， you can still be targeted by abilities.\nAlso， depending on the settings， writers may see you while you're using the ability。,是具有能够在任务轮回合使用能力的队员。当你按下“隐身”按钮时，你的身影会在一定时间内变为隐形。即使在隐身状态下，你仍会成为能力的目标。另外，根据设置，在使用能力时，写手也可能会看到你。,是具有能夠在任務回合使用能力的隊員。當你按下「隱身」按鈕時，你的身影會在一定時間內變為隱形。即使在隱身狀態下，你仍會成為能力的目標。另外，根據設定，在使用能力時，寫手也可能會看到你。,
 MeetingSheriff.Description,会議中に使用出来る能力を有するクルーメイトです。\n会議中に出現するボタンを押すと、対象のプレイヤーが人外だった場合キルをすることが出来ます。\nただし、対象がクルーメイトもしくはキル出来ない陣営だった場合、自らが死亡してしまいます。,
 Medium.Description,タスクターンに使用出来る能力を有するクルーメイトです。\n「霊視」ボタンを押すと、少しの間幽霊が視えるようになります。\nまた、霊視中に幽霊に対して「霊話」ボタンを押すと、その幽霊に関する情報を得られます。\n情報はチャットに送られます。,
-PhosphorusDescription,マップに設定個数のランタンを設置することが出来ます。\nランタンは次のターン以降に実体化し、使えるようになります。\n能力を使用すると、一定時間の間ランタンが光り、周囲を照らします。,You can put lanterns.\nLanterns are activated next turn.\nLanterns are lighted when you use ability,你可以放置灯笼。\n灯笼在下一回合激活。\n使用能力时灯笼会发光,你可以放置燈籠。\n燈籠在下一回合啟動。\n使用能力時燈籠會發光
+PhosphorusDescription,タスクターンに使用出来る能力を有するクルーメイトです。\nマップに設定個数のランタンを設置することが出来ます。\nランタンは次のターン以降に実体化し、全プレイヤーに見えるようになります。\n能力を使用すると、一定時間の間ランタンが光り、周囲を照らします。,
 Stuntman.Description,タスクターンに発動する能力を有するクルーメイトです。\n一定回数キルを自動で防ぎます。\nただし、キルされたことを自覚することは出来ません。,
+Ubiquitous.Description,タスクターンに使用出来る能力を有するクルーメイトです。\n「呼び出し」ボタンを押すと、マップ上に自視点でのみ視認出来るドローンを呼び出します。\n「操作」ボタンを押すと、呼び出したドローンに視点が切り替わり、操作出来るようになります。\n「帰還」ボタンを押すと、ドローンをマップ上から削除します。\n「ドアハック」ボタンを押すと近くのドアを開けます。\nドローンがマップ上に存在する状態で会議が招集されると、実体化しマップ上に固定されます。\n実体化したドローンは他プレイヤーも視認出来ます。\nまた、マップ上に固定されたドローンの近くを他プレイヤーが通過すると、ユビキタスのタスクマップ上に表示されます。,
+Busker.Description,タスクターンに使用出来る能力を有するクルーメイトです。\n「偽装死」ボタンを押すと、幽霊状態になります。\n偽装死状態のときに会議が招集されたり、一定時間が経過すると本当に死亡してしまいます。\nまた、戻るべき死体が消えてしまっても本当に死亡してしまいます。,
+Doorr.Description,タスクターンに使用出来る能力を有するクルーメイトです。\n「ドアーー!!」ボタンを押すと、目の前のドアを開閉出来ます。,
 
 # Descriptions_MadRoles
 Madmate.Description,インポスターの味方のクルーメイトです。\nいわゆる狂人と呼ばれる役職です。\n勝利条件はクルーメイトの勝利ではなく、インポスターの勝利です。\nその勝利に自身の生死は問われないので、あの手この手でインポスターを勝利に導きましょう。,A Crewmate allied with the Impostors.\nOften known as the Madmate.\nTheir win condition is not for the Crewmates to win，but for the Impostors to win.\nTheir own survival is irrelevant，so use any means necessary to secure an Impostor victory.,这是一个支持内鬼的船员，也称为疯友角色。\n他们的胜利条件不是船员获胜，而是内鬼获胜，并且他们的生死并不影响胜利。\n所以，尽可能地采用各种手段促成内鬼获胜。,這是一個支持內鬼的船員，俗稱瘋友角色。\n其勝利條件並非船員勝利，而是內鬼勝利，且自身生死不影響結果。\n因此，請用一切手段助內鬼取勝。,
@@ -608,6 +621,11 @@ DoubleKillerIntro1,双つの刃を持ちし者,
 FinderIntro1,村に紛れし裏切り者を探し出せ,
 NunIntro1,ぬぬぬぬーん,
 ShiftActorIntro1,この身に映して演ず,
+CamouflagerIntro1,襲い来る無機質な喧騒,
+EvilDoorrIntro1,限定的証拠隠滅,
+MushroomerIntro1,繁茂する菌糸,
+DimensionWalkerIntro1,次元を越えて,
+DarkKillerIntro1,疾風漆黒,
 
 # Intros_Neutral
 JackalIntro1,暗躍するもう一人の殺人鬼,Another puppeteer of death in the shadows,另一个暗中操纵死亡者,另一個暗中操縱死亡者,
@@ -635,6 +653,9 @@ CupidIntro1,運命の糸を紡ぐ,Spinning the threads of fate,纺织命运之�
 SpelunkerIntro1,ひ、ひぃ！死んじゃうよ！,Eek，I’m going to die!,啊啊！我要死了！,啊啊！我要死了！,
 BlackHatHackerIntro1,拡散する侵略者,The invasive spreader,扩散之侵略者,擴散之侵略者,
 PartTimerIntro1,精一杯働きます！,I’ll work my hardest!,我会全力工作！,我會全力工作！,
+SafecrackerIntro1,世紀の大泥棒,
+OrientalShamanIntro1,星の導く命運と共に,
+ShermansServantIntro1,星標の従者,
 
 # Intros_Crewmate
 BaitIntro1,この身を餌に真実を,Use my body as bait for the truth,以我肉身诱引真相,以我肉身誘引真相,
@@ -671,8 +692,11 @@ TechnicianIntro1,通気口から参ります,I’ll come through the vent,我会
 NiceScientistIntro1,不可視の観察者,Invisible observer,不可见的观察者,不可見的觀察者
 MeetingSheriffIntro1,正義の断罪は会議室で,
 MediumIntro1,鳴らぬ声を聴く,
-PhosphorusIntro1,この暗闇に一筋の光明を,A ray of light in the darkness,照亮黑暗的一束光,暗夜中的一道明光
+PhosphorusIntro1,闇を払う仄かな灯火
 StuntmanIntro1,無意識の攻防,
+UbiquitousIntro1,偏在する監視眼,
+BuskerIntro1,バスカー,危険な大道芸人,
+DoorrIntro1,ドアー,ノンストレス移動,
 
 # Intros_MadRoles
 MadmateIntro1,道を違えし者,One who has strayed from the path,误入歧途者,誤入歧途者,
@@ -1495,7 +1519,6 @@ ShiftActorRoleMessage,{0}の役職は{1}だった,{0}'s role is {1}.
 
 
 # OrientalShaman
-OrientalShaman,陰陽師,Oriental Shaman,阴阳师,陰陽師
 OrientalShamanServantButton,式神作成,Create Servant,创建式神,創建式神
 OrientalShamanCanCreateServant,式神を作成できる,Can Create Servant,可以创建式神,可以創建式神
 OrientalShamanServantCooldown,式神作成クールタイム,Servant Creation Cooldown,式神创建冷却时间,式神創建冷卻時間
@@ -1504,7 +1527,6 @@ OrientalShamanCanHijackTaskWin,タスク勝利を横取りできる,Can Hijack T
 OrientalShamanNeededTaskComplete,タスクが完了していないと勝利できない,Task Complete is Required,任务完成是必要的,任務完成是必要的
 
 # ShermansServant
-ShermansServant,式神,Shermans Servant,式神,式神
 ShermansServantTransformButton,変身,Transform,变身,變身
 ShermansServantSuicideButton,自殺,Suicide,自杀,自殺
 ShermansServantTransformCooldown,式神の変身クールタイム,Transform Cooldown,变身冷却时间,變身冷卻時間
@@ -1606,5 +1628,5 @@ MushroomerExplosionButtonName,爆発,Explode,爆炸,爆炸
 # DimensionWalker
 DimensionWalkerActivateTime,ワームホール有効化時間,Wormhole Activation Time,虫洞激活时间,蟲洞啟動時間
 DimensionWalkerPlayAnimation,ワームホールアニメーションを再生する,Play Wormhole Animation,播放虫洞动画,播放蟲洞動畫
-DimensionWalkerPutButtonText,ワームホール設置,Place Wormhole,放置虫洞,放置蟲洞
-DimensionWalkerCollectButtonText,ワームホール回収,Collect Wormhole,回收虫洞,回收蟲洞
+DimensionWalkerPutButtonText,設置,Place Wormhole,放置虫洞,放置蟲洞
+DimensionWalkerCollectButtonText,回収,Collect Wormhole,回收虫洞,回收蟲洞
