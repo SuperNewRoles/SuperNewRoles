@@ -118,6 +118,9 @@ public enum RoleId : short
     Camouflager,
     Doorr,
     EvilDoorr,
+    DimensionWalker,
+    DarkKiller,
+    Mushroomer,
 }
 
 public enum GhostRoleId : short

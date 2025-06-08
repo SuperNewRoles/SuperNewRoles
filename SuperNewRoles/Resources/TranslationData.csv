@@ -440,6 +440,9 @@ Busker,バスカー,Busker,街头艺人,街頭藝人
 Camouflager,カモフラージャー,Camouflager,伪装者,偽裝者
 Doorr,ドアー,Doorr,门卫,門衛
 EvilDoorr,イビルドアー,Evil Doorr,邪恶门卫,邪惡門衛
+Mushroomer,マッシュルーマー,Mushroomer,蘑菇师,蘑菇師
+DimensionWalker,ディメンションウォーカー,Dimension Walker,次元行者,次元行者
+DarkKiller,ダークキラー,Dark killer
 
 # Descriptions_VanillaRoles
 Crewmate.Description,特に何も能力を持たない基本的なクルーメイト役職です。\n人狼ゲームにおける村人の役割を持ちます。\nキル能力を持つ人外を全て追放するか、タスクを全て完了すると勝利します。,A basic Crewmate role with no special abilities.\nThey serve the role of Villager from the Werewolf game.\nVictory is achieved by ejecting all non-Crewmate players with kill abilities or by completing all tasks.,一个没有特殊能力的基础船员角色。\n他们承担了狼人游戏中村民的角色。\n通过将所有拥有击杀能力的非船员玩家投出局或完成所有任务来获胜。,一個沒有特殊能力的基礎船員角色。\n他們承擔了狼人遊戲中村民的角色。\n通過將所有擁有擊殺能力的非船員玩家投出局或完成所有任務來獲勝。,
@@ -1588,3 +1591,22 @@ CamouflagerCamouflageColor.Coral,コーラル,Coral,珊瑚色,珊瑚色
 
 # Doorr
 DoorrButtonText,ドアーー!!,Doorr,门卫,門衛
+
+# Mushroomer
+MushroomerHasGasMask,ガスマスクを持つ,Has Gas Mask,拥有防毒面具,擁有防毒面具
+MushroomerMushroomPlantCount,キノコ設置可能数,Mushroom Plant Count,蘑菇设置数量,蘑菇設置數量
+MushroomerMushroomExplosionCount,爆発可能回数,Explosion Count,爆炸次数,爆炸次數
+MushroomerMushroomExplosionRange,爆発範囲,Explosion Range,爆炸范围,爆炸範圍
+MushroomerPlantButtonName,キノコ設置,Plant Mushroom,设置蘑菇,設置蘑菇
+MushroomerExplosionButtonName,爆発,Explode,爆炸,爆炸
+
+# DimensionWalker
+DimensionWalkerActivateTime,ワームホール有効化時間,Wormhole Activation Time,虫洞激活时间,蟲洞啟動時間
+DimensionWalkerPlayAnimation,ワームホールアニメーションを再生する,Play Wormhole Animation,播放虫洞动画,播放蟲洞動畫
+DimensionWalkerPutButtonText,ワームホール設置,Place Wormhole,放置虫洞,放置蟲洞
+DimensionWalkerCollectButtonText,ワームホール回収,Collect Wormhole,回收虫洞,回收蟲洞
+M u s h r o o m P l a n t C o o l T i m e , �0�0�0-�n�0�0�0�0�0�0, M u s h r o o m   P l a n t   C o o l   T i m e , �ǃ>en�QtS�e��, �ǃ>en�Q{SBf��
+ 
+ M u s h r o o m E x p l o s i o n C o o l T i m e , �0�0�0rzv�0�0�0�0�0�0, M u s h r o o m   E x p l o s i o n   C o o l   T i m e , �ǃr�p�QtS�e��, �ǃr�p�Q{SBf��
+ 
+ 

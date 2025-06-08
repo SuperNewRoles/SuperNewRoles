@@ -6,6 +6,8 @@ using System.Threading.Tasks;
 using HarmonyLib;
 using SuperNewRoles.CustomOptions.Categories;
 using SuperNewRoles.Modules;
+using SuperNewRoles.Roles;
+using SuperNewRoles.Roles.Impostor;
 
 namespace SuperNewRoles.MapCustoms;
 public static class HideSporeMask
@@ -15,6 +17,11 @@ public static class HideSporeMask
     {
         public static bool CanUseGasMask()
         {
+            // マッシュルーマーのガスマスク設定をチェック
+            if (ExPlayerControl.LocalPlayer.Role is RoleId.Mushroomer &&
+                Mushroomer.MushroomerHasGasMask)
+                return true;
+
             if (MapCustomHandler.IsMapCustom(MapCustomHandler.MapCustomId.TheFungle)
                 && MapEditSettingsOptions.TheFungleHideSporeMask)
             {
