@@ -20,13 +20,16 @@ public static class CustomSpores
         FungleShipStatus fungleShipStatus = ShipStatus.Instance.TryCast<FungleShipStatus>();
         Mushroom mushroom = null;
         if (fungleShipStatus != null)
+        {
             mushroom = AddMushroomAsync(fungleShipStatus, position, id);
+            callback(mushroom);
+        }
         else
             MapLoader.LoadMap(MapNames.Fungle, (map) =>
             {
                 mushroom = AddMushroomAsync(map.TryCast<FungleShipStatus>(), position, id);
+                callback(mushroom);
             });
-        callback(mushroom);
     }
 
     public static Mushroom AddMushroomAsync(FungleShipStatus ship, Vector2 position, int id = -1)
@@ -98,6 +101,16 @@ public static class CustomSpores
 
     public static void TriggerSporesFromMushroom(int id)
     {
+        FungleShipStatus fungleShipStatus = ShipStatus.Instance.TryCast<FungleShipStatus>();
+        if (fungleShipStatus != null)
+        {
+            var mushroom = fungleShipStatus.GetMushroomFromId(id);
+            if (mushroom != null)
+            {
+                mushroom.TriggerSpores();
+                return;
+            }
+        }
         if (mushRooms.TryGetValue(id, out var value))
             value.TriggerSpores();
         else

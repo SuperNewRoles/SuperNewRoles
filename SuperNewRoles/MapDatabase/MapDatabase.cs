@@ -18,7 +18,13 @@ public abstract class MapDatabase
     public bool CheckMapArea(Vector2 position)
     {
         int num = Physics2D.OverlapCircleNonAlloc(position, 0.1f, PhysicsHelpers.colliderHits, Constants.ShipAndAllObjectsMask);
-        if (num > 0) for (int i = 0; i < num; i++) if (!PhysicsHelpers.colliderHits[i].isTrigger) return false;
+        if (num > 0 && num <= PhysicsHelpers.colliderHits.Length)
+        {
+            for (int i = 0; i < num; i++)
+            {
+                if (!PhysicsHelpers.colliderHits[i].isTrigger) return false;
+            }
+        }
 
         return CheckMapAreaInternal(position);
     }

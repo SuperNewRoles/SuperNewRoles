@@ -72,6 +72,7 @@ public class MushroomerAbility : AbilityBase
         NextturnActivateMushrooms.Clear();
     }
 
+    // このactiveは実際に使用できるかで。falseの場合は薄く見えるが使用できない。
     private void SetActiveMushroom(Mushroom mushroom, bool active)
     {
         mushroom.gameObject.SetActive(true);

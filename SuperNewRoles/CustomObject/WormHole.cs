@@ -161,7 +161,7 @@ public class WormHole : MonoBehaviour
             return;
 
         if (TimerText != null)
-            TimerText.text = System.Math.Clamp(Mathf.CeilToInt(ActivateTimer), 0, (int)ActivateTimer).ToString();
+            TimerText.text = Mathf.Clamp(Mathf.CeilToInt(ActivateTimer), 0, (int)ActivateTimer).ToString();
 
         if (ActivateTimer <= 0)
             Activate();
@@ -260,6 +260,12 @@ public class WormHole : MonoBehaviour
 
         if (myHoles == null || myHoles.Count == 0)
             return;
+
+        foreach (var h in myHoles)
+        {
+            h._vent.Left = null;
+            h._vent.Right = null;
+        }
 
         for (var i = 0; i < myHoles.Count - 1; i++)
         {

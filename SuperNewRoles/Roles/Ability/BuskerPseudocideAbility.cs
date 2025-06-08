@@ -30,8 +30,6 @@ public class BuskerPseudocideAbility : CustomButtonBase, IButtonEffect
 
     private DeadBody CurrentDeadbody;
 
-    private bool isDead = false;
-
     private DisibleHauntAbility _disableHauntAbility;
 
     public override bool CheckHasButton()
@@ -85,14 +83,8 @@ public class BuskerPseudocideAbility : CustomButtonBase, IButtonEffect
     }
     private void CleanDeadbody()
     {
-        DeadBody[] array = GameObject.FindObjectsOfType<DeadBody>();
-        for (int i = 0; i < array.Length; i++)
-        {
-            if (GameData.Instance.GetPlayerById(array[i].ParentId).PlayerId == Player.PlayerId)
-            {
-                GameObject.Destroy(array[i].gameObject);
-            }
-        }
+        if (CurrentDeadbody != null)
+            GameObject.Destroy(CurrentDeadbody.gameObject);
         CurrentDeadbody = null;
     }
 
@@ -101,7 +93,6 @@ public class BuskerPseudocideAbility : CustomButtonBase, IButtonEffect
     {
         // プレイヤーを死亡状態にする（偽装）
         Player.CustomDeath(CustomDeathType.BuskerFakeDeath);
-        isDead = false;
         GenerateDeadbody();
         RoleManager.Instance.SetRole(Player, RoleTypes.CrewmateGhost);
     }
