@@ -34,7 +34,7 @@ class Safecracker : RoleBase<Safecracker>
 
     public override AssignedTeamType AssignedTeam { get; } = AssignedTeamType.Neutral;
     public override WinnerTeamType WinnerTeam { get; } = WinnerTeamType.Neutral;
-    public override TeamTag TeamTag { get; } = TeamTag.Safecracker;
+    public override TeamTag TeamTag { get; } = TeamTag.Neutral;
     public override RoleTag[] RoleTags { get; } = [RoleTag.SpecialWinner];
     public override RoleOptionMenuType OptionTeam { get; } = RoleOptionMenuType.Neutral;
 

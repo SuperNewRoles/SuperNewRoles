@@ -166,7 +166,6 @@ public enum TeamTag : byte
     Jackal,
     Madmate,
     Agi,
-    Safecracker,
     None
 }
 
