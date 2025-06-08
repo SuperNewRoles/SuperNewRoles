@@ -52,7 +52,14 @@ namespace SuperNewRoles.Modules
         private const float StopFramesDuration = 10 / 60f; // Frames to wait before stopping
         public static bool HighPerformance => GeneralSettingOptions.SumouHighPerformance;
 
-        public static void Postfix(PlayerPhysics __instance)
+        public static void Prefix(PlayerPhysics __instance, out Vector2 __state)
+        {
+            __state = Vector2.zero;
+            if (!GeneralSettingOptions.SumouMode || __instance.myPlayer == null || !__instance.myPlayer.AmOwner) return;
+            __state = __instance.transform.position;
+        }
+
+        public static void Postfix(PlayerPhysics __instance, Vector2 __state)
         {
             if (!GeneralSettingOptions.SumouMode) return;
             if (AmongUsClient.Instance.GameState != InnerNet.InnerNetClient.GameStates.Started) return;
@@ -93,6 +100,29 @@ namespace SuperNewRoles.Modules
                     CheckAndPushPlayer(selfPlayer, other, __instance, playerColliders[selfPlayer.PlayerId]);
                 }
             }
+
+            // 壁の外に出た場合のロールバック処理
+            if (selfPlayer.AmOwner && __state != Vector2.zero)
+            {
+                int shipAndObjectsMask = Constants.ShipAndObjectsMask;
+                Collider2D[] hitColliders = Physics2D.OverlapPointAll(selfPlayer.GetTruePosition(), shipAndObjectsMask);
+                bool isInsideWall = false;
+                foreach (var hitCollider in hitColliders)
+                {
+                    if (hitCollider != null && !hitCollider.isTrigger)
+                    {
+                        isInsideWall = true;
+                        break;
+                    }
+                }
+                if (isInsideWall)
+                {
+                    __instance.transform.position = __state;
+                    __instance.body.velocity = Vector2.zero;
+                    // ネットワーク同期をスキップして即座に反映
+                    ModdedNetworkTransform.skipNextBatchPlayers.Add(selfPlayer.PlayerId);
+                }
+            }
         }
         private static void CheckAndPushPlayer(PlayerControl selfPlayer, PlayerControl other, PlayerPhysics __instance, Collider2D myCollider)
         {
@@ -102,6 +132,9 @@ namespace SuperNewRoles.Modules
             if (Vector3.Distance(selfPlayer.transform.position, other.transform.position) > 10f) return;
 
             if (playerColliders[other.PlayerId] == null) return; // キャッシュから取得
+
+            if (other.Collider == null || !other.Collider.enabled) return;
+            if (selfPlayer.Collider == null || !selfPlayer.Collider.enabled) return;
 
             if (myCollider.IsTouching(playerColliders[other.PlayerId]))
             {

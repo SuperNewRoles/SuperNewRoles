@@ -36,7 +36,7 @@ public class BuskerPseudocideAbility : CustomButtonBase, IButtonEffect
 
     public override bool CheckHasButton()
     {
-        return Player == ExPlayerControl.LocalPlayer;
+        return Player == ExPlayerControl.LocalPlayer && (isEffectActive || ExPlayerControl.LocalPlayer.IsAlive());
     }
 
     public override bool CheckIsAvailable()

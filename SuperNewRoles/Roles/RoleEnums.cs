@@ -115,6 +115,7 @@ public enum RoleId : short
     Phosphorus,
     Ubiquitous,
     Busker,
+    Camouflager,
 }
 
 public enum GhostRoleId : short

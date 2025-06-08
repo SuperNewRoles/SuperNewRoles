@@ -437,6 +437,7 @@ Phosphorus,ホスフォラス,Phosphorus,磷光术师,執燈者
 Safecracker,金庫破り,Safecracker,盗贼,盜賊
 Ubiquitous,ユビキタス,Ubiquitous
 Busker,バスカー,Busker,街头艺人,街頭藝人
+Camouflager,カモフラージャー,Camouflager,伪装者,偽裝者
 
 
 # Descriptions_VanillaRoles
@@ -1552,3 +1553,34 @@ BuskerPseudocideButtonName,偽装死,Fake Death,假死,假死
 BuskerRebornButtonName,復活,Reborn,复活,復活
 BuskerPseudocideDurationOption,偽装死持続時間,Fake Death Duration,假死持续时间,假死持續時間
 BuskerReallyDeadTimeText,本当に死ぬまで: {0}秒,Really dead in: {0}s,真正死亡倒计时: {0}秒,真正死亡倒數: {0}秒
+
+# Camouflager
+CamouflagerButtonText,カモフラージュ,Camouflage,伪装,偽裝
+CamouflagerCoolTime,カモフラージュクールタイム,Camouflage Cool Time,伪装冷却时间,偽裝冷卻時間
+CamouflagerDurationTime,カモフラージュ持続時間,Camouflage Duration,伪装持续时间,偽裝持續時間
+CamouflagerCamouflageChangeColor,カモフラージュ色設定,Camouflage Color Setting,伪装颜色设置,偽裝顏色設置
+CamouflagerCamouflageColor,カモフラージュ色,Camouflage Color,伪装颜色,偽裝顏色
+CamouflagerCamouflageChangeColorFixed,固定色,Fixed Color,固定颜色,固定顏色
+CamouflagerCamouflageChangeColorSelect,選択色,Selected Color,选择颜色,選擇顏色
+CamouflagerCamouflageChangeColorRandom,ランダム色,Random Color,随机颜色,隨機顏色
+CamouflagerCamouflageChangeColor.Fixed,固定色,Fixed Color,固定颜色,固定顏色
+CamouflagerCamouflageChangeColor.Select,選択色,Selected Color,选择颜色,選擇顏色
+CamouflagerCamouflageChangeColor.Random,ランダム色,Random Color,随机颜色,隨機顏色
+CamouflagerCamouflageColor.Red,赤,Red,红色,紅色
+CamouflagerCamouflageColor.Blue,青,Blue,蓝色,藍色
+CamouflagerCamouflageColor.Green,緑,Green,绿色,綠色
+CamouflagerCamouflageColor.Pink,ピンク,Pink,粉色,粉色
+CamouflagerCamouflageColor.Orange,オレンジ,Orange,橙色,橙色
+CamouflagerCamouflageColor.Yellow,黄,Yellow,黄色,黃色
+CamouflagerCamouflageColor.Black,黒,Black,黑色,黑色
+CamouflagerCamouflageColor.White,白,White,白色,白色
+CamouflagerCamouflageColor.Purple,紫,Purple,紫色,紫色
+CamouflagerCamouflageColor.Brown,茶,Brown,棕色,棕色
+CamouflagerCamouflageColor.Cyan,水色,Cyan,青色,青色
+CamouflagerCamouflageColor.Lime,黄緑,Lime,黄绿色,黃綠色
+CamouflagerCamouflageColor.Maroon,マルーン,Maroon,栗色,栗色
+CamouflagerCamouflageColor.Rose,ローズ,Rose,玫瑰色,玫瑰色
+CamouflagerCamouflageColor.Banana,バナナ,Banana,香蕉色,香蕉色
+CamouflagerCamouflageColor.Gray,グレー,Gray,灰色,灰色
+CamouflagerCamouflageColor.Tan,タン,Tan,棕褐色,棕褐色
+CamouflagerCamouflageColor.Coral,コーラル,Coral,珊瑚色,珊瑚色
