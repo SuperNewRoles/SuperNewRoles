@@ -80,7 +80,7 @@ public class WormHole : MonoBehaviour
         Id = _vent.Id;
 
         // インポスター以外には見えないようにする
-        if (!PlayerControl.LocalPlayer.Data.Role.IsImpostor)
+        if (!ExPlayerControl.LocalPlayer.IsImpostor())
         {
             TimerText.gameObject.SetActive(false);
             spriteRenderer.enabled = false;
@@ -115,33 +115,6 @@ public class WormHole : MonoBehaviour
     {
         idleSprites = CustomPlayerAnimationSimple.GetSprites("DimensionWalkerIdle_{0}.png", 1, 60, zeroPadding: 1);
         useSprites = CustomPlayerAnimationSimple.GetSprites("DimensionWalkerOpen_{0}.png", 1, 14, zeroPadding: 1);
-    }
-    //
-    private Sprite CreateDefaultSprite()
-    {
-        // デフォルトの円形スプライトを作成
-        var texture = new Texture2D(64, 64);
-        var center = new Vector2(32, 32);
-        var radius = 30f;
-
-        for (int x = 0; x < 64; x++)
-        {
-            for (int y = 0; y < 64; y++)
-            {
-                float distance = Vector2.Distance(new Vector2(x, y), center);
-                if (distance <= radius)
-                {
-                    texture.SetPixel(x, y, new Color(0.5f, 0f, 1f, 0.8f)); // 紫色
-                }
-                else
-                {
-                    texture.SetPixel(x, y, Color.clear);
-                }
-            }
-        }
-        texture.Apply();
-
-        return Sprite.Create(texture, new Rect(0, 0, 64, 64), new Vector2(0.5f, 0.5f));
     }
 
     private void Update()
