@@ -143,8 +143,7 @@ public class CamouflagerAbility : AbilityBase
         var availableColors = allColors.Where(c => c != playerOriginalColor).ToList();
         if (availableColors.Count == 0) return 15;
 
-        var random = new System.Random((int)(DateTime.Now.Ticks + playerId));
-        return availableColors[random.Next(availableColors.Count)];
+        return ModHelpers.GetRandom(availableColors);
     }
 
     private void EndCamouflage()
