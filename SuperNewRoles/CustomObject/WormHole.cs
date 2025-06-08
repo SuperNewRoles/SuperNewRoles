@@ -161,7 +161,7 @@ public class WormHole : MonoBehaviour
             return;
 
         if (TimerText != null)
-            TimerText.text = Mathf.Clamp(Mathf.CeilToInt(ActivateTimer), 0, (int)ActivateTimer).ToString();
+            TimerText.text = Mathf.Max(0, Mathf.CeilToInt(ActivateTimer)).ToString();
 
         if (ActivateTimer <= 0)
             Activate();

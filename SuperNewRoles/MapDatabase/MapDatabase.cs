@@ -82,7 +82,7 @@ public abstract class MapDatabase
         return count;
     }
 
-    private static Texture2D CreateReadabeTexture(Texture texture, int margin = 0)
+    private static Texture2D CreateReadableTexture(Texture texture, int margin = 0)
     {
         RenderTexture renderTexture = RenderTexture.GetTemporary(
                     texture.width,
@@ -90,17 +90,23 @@ public abstract class MapDatabase
                     0,
                     RenderTextureFormat.Default,
                     RenderTextureReadWrite.Linear);
+        Texture2D readableTexture2D = null;
+        try
+        {
+            Graphics.Blit(texture, renderTexture);
+            RenderTexture previous = RenderTexture.active;
+            RenderTexture.active = renderTexture;
+            readableTexture2D = new Texture2D(texture.width + margin * 2, texture.height + margin * 2);
+            readableTexture2D.ReadPixels(new Rect(0, 0, renderTexture.width, renderTexture.height), margin, margin);
+            readableTexture2D.Apply();
+            RenderTexture.active = previous;
+        }
+        finally
+        {
+            RenderTexture.ReleaseTemporary(renderTexture);
+        }
 
-        Graphics.Blit(texture, renderTexture);
-        RenderTexture previous = RenderTexture.active;
-        RenderTexture.active = renderTexture;
-        Texture2D readableTextur2D = new Texture2D(texture.width + margin * 2, texture.height + margin * 2);
-        readableTextur2D.ReadPixels(new Rect(0, 0, renderTexture.width, renderTexture.height), margin, margin);
-        readableTextur2D.Apply();
-        RenderTexture.active = previous;
-        RenderTexture.ReleaseTemporary(renderTexture);
-
-        return readableTextur2D;
+        return readableTexture2D;
     }
     public Texture2D OutputMap(Vector2 center, Vector2 size, float resolution = 10f)
     {
@@ -140,7 +146,7 @@ public abstract class MapDatabase
 
         texture.Apply();
 
-        return CreateReadabeTexture(texture);
+        return CreateReadableTexture(texture);
     }
 
     static private MapDatabase[] AllMapData = new MapDatabase[] { new SkeldData(), new MiraData(), new PolusData(), null!, new AirshipData(), new FungleData() };
