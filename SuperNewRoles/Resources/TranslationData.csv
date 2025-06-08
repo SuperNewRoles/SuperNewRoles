@@ -1548,9 +1548,9 @@ Ubiquitous.DoorHackCoolTime,ドアハッククールタイム,Door Hack Cool Tim
 Ubiquitous.DoorHackScope,ドアハック範囲,Door Hack Scope
 Ubiquitous.DroneVisibilityRange,ドローン視認範囲,Drone Visibility Range
 Ubiquitous.MapShowPlayerColor,マップにプレイヤー色表示,Show Player Color on Map
-UbiquitousCallButton,ドローン呼び出し,Call Drone
-UbiquitousCallHomeButton,ドローン帰還,Return Drone
-UbiquitousOperationButton,ドローン操作,Operate Drone
+UbiquitousCallButton,呼び出し,Call
+UbiquitousCallHomeButton,帰還,Return
+UbiquitousOperationButton,操作,Operate
 UbiquitousDoorHackButton,ドアハック,Door Hack
 
 # Busker

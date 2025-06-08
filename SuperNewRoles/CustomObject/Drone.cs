@@ -76,9 +76,9 @@ public class Drone : MonoBehaviour
             if (HoveringTimer > Mathf.PI * 2) HoveringTimer -= Mathf.PI * 2;
 
             SpriteTimer += Time.deltaTime;
-            if (SpriteTimer > 0.25f)
+            if (SpriteTimer > 0.125f)
             {
-                SpriteTimer -= 0.25f;
+                SpriteTimer = 0f;
                 SpriteNumber = (SpriteNumber + 1) % 2;
                 Renderer.sprite = Active[SpriteNumber];
             }
@@ -143,6 +143,15 @@ public class Drone : MonoBehaviour
         Drone drone = CreateActiveDrone(id, pos, owner);
         drone.IsActive = false;
         return drone;
+    }
+
+    [HarmonyPatch(typeof(MeetingHud), nameof(MeetingHud.OnDestroy))]
+    public static class MeetingHudOnDestroyPatch
+    {
+        public static void Postfix()
+        {
+            CloseMeeting();
+        }
     }
 
     public static void CloseMeeting()

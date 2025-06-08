@@ -77,7 +77,25 @@ internal class DimensionWalkerAbility : CustomButtonBase
         {
             return CanCollectWormHole();
         }
-        return PlayerControl.LocalPlayer.CanMove && HasCount;
+        return PlayerControl.LocalPlayer.CanMove && !IsNearDoor(PlayerControl.LocalPlayer) && HasCount;
+    }
+
+    /// <summary>
+    /// プレイヤーがドアの近くにいるか判定する
+    /// </summary>
+    /// <returns>playerがドアの近くにいる</returns>
+    public bool IsNearDoor(PlayerControl player)
+    {
+        var all = ShipStatus.Instance.AllDoors;
+
+        foreach (OpenableDoor door in all)
+        {
+            var distance = Vector2.Distance(player.GetTruePosition(), door.gameObject.transform.position);
+            if (distance <= 1f)
+                return true;
+        }
+
+        return false;
     }
 
     public override void OnClick()

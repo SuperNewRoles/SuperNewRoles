@@ -13,6 +13,7 @@ using SuperNewRoles.Modules.Events.Bases;
 using Hazel;
 using HarmonyLib;
 using Object = UnityEngine.Object;
+using SuperNewRoles.CustomCosmetics;
 
 namespace SuperNewRoles.Roles.Crewmate;
 
@@ -61,7 +62,6 @@ class UbiquitousAbility : AbilityBase
     private DoorHackButton _doorHackButton;
     public Drone MyDrone;
     public bool UnderOperation => MyDrone?.UnderOperation ?? false;
-    private bool _isInitialized = false;
     public SpriteRenderer[] MapHerePoints;
 
     private EventListener<MeetingStartEventData> _meetingStartListener;
@@ -88,7 +88,6 @@ class UbiquitousAbility : AbilityBase
         Player.AttachAbility(_callAndHomeButton, new AbilityParentAbility(this));
         Player.AttachAbility(_operationButton, new AbilityParentAbility(this));
         Player.AttachAbility(_doorHackButton, new AbilityParentAbility(this));
-        _isInitialized = true;
     }
 
     public override void AttachToLocalPlayer()
@@ -164,7 +163,7 @@ class UbiquitousAbility : AbilityBase
                 }
                 else
                 {
-                    renderer.color = Color.white;
+                    renderer.color = CustomColors.LighterColors.Contains(player.Data.DefaultOutfit.ColorId) ? Color.white : Color.black;
                 }
                 Vector3 pos = player.GetTruePosition();
                 pos /= ShipStatus.Instance.MapScale;
@@ -244,6 +243,7 @@ class OperationButton : CustomButtonBase, IButtonEffect
     public float EffectTimer { get; set; }
     public bool IsEffectDurationInfinity => !Ubiquitous.IsLimitOperableTime;
     public bool effectCancellable => true;
+    public bool doAdditionalEffect => false;
 }
 
 class DoorHackButton : CustomButtonBase
