@@ -40,7 +40,6 @@ class DoubleKiller : RoleBase<DoubleKiller>
 
     [CustomOptionBool("DoubleKillerCanSabotage", true, translationName: "SamuraiCanSabotage")]
     public static bool DoubleKillerCanSabotage;
-
 }
 
 public record DoubleKillerAbilityData(int? DoubleKillerCount);
