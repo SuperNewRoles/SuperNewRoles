@@ -164,8 +164,13 @@ public static class SelectSpawn
         public static void Postfix(ExileController __instance)
         {
             Logger.Info("ExileController_WrapUp_Patch");
-            DestroyableSingleton<HudManager>.Instance.StopAllCoroutines();
-            AmongUsClient.Instance.StartCoroutine(SelectSpawnCoroutine(GetMapData()).WrapToIl2Cpp());
+            MapSpawnData currentMapData = GetMapData();
+
+            if (currentMapData != null && currentMapData.IsSpawnTypeSelect(SpawnTypeOptions.Select)) // Double check IsSpawnTypeSelect for safety
+            {
+                DestroyableSingleton<HudManager>.Instance.StopAllCoroutines();
+                AmongUsClient.Instance.StartCoroutine(SelectSpawnCoroutine(currentMapData).WrapToIl2Cpp());
+            }
         }
     }
     [HarmonyPatch(typeof(AmongUsClient), nameof(AmongUsClient.CoStartGame))]
