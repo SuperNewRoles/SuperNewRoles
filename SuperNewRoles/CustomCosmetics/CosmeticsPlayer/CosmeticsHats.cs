@@ -282,10 +282,19 @@ public class CustomHatLayer : MonoBehaviour
         }
         if (!CustomCosmeticHat.Options.front.HasFlag(HatOptionType.None))
         {
-            FrontLayer.enabled = true;
-            FrontLayer.sprite = CustomCosmeticHat.Front;
+            if (!CustomCosmeticHat.Options.behind || CustomCosmeticHat.Back != null)
+            {
+                FrontLayer.enabled = true;
+                FrontLayer.sprite = CustomCosmeticHat.Front;
+            }
+            else
+            {
+                FrontLayer.enabled = false;
+                BackLayer.enabled = true;
+                BackLayer.sprite = CustomCosmeticHat.Front;
+            }
         }
-        if (!CustomCosmeticHat.Options.back.HasFlag(HatOptionType.None))
+        if (!CustomCosmeticHat.Options.back.HasFlag(HatOptionType.None) && CustomCosmeticHat.Back != null)
         {
             BackLayer.enabled = true;
             BackLayer.sprite = CustomCosmeticHat.Back;
