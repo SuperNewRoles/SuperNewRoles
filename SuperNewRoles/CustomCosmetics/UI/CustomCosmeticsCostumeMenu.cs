@@ -106,7 +106,8 @@ public class CosmeticDataWrapperHat : CosmeticDataWrapper, ICustomCosmeticHat
         flip: HatOptionType.None,
         flip_back: HatOptionType.None,
         climb: HatOptionType.None,
-        hideBody: false);
+        hideBody: false,
+        behind: !data.InFront);
     }
     public void SetDontUnload()
     {
@@ -147,6 +148,7 @@ public class CosmeticDataWrapperHat : CosmeticDataWrapper, ICustomCosmeticHat
                 {
                     onSuccess();
                     _options.climb = hatViewData?.GetAsset()?.ClimbImage != null ? hat.PreviewCrewmateColor ? HatOptionType.Adaptive : HatOptionType.NoAdaptive : HatOptionType.None;
+                    _options.behind = !hat.InFront;
                 }));
         }
     }
