@@ -158,7 +158,7 @@ class UbiquitousAbility : AbilityBase
             {
                 ExPlayerControl player = dronePlayer[i];
                 if (Ubiquitous.MapShowPlayerColor) player.Player.SetPlayerMaterialColors(renderer);
-                else PlayerMaterial.SetColors(CustomColors.LighterColors.Contains(player.Player.CurrentOutfit.ColorId) ? 7 : 6, renderer);
+                else PlayerMaterial.SetColors(CustomColors.IsLighter(player) ? 7 : 6, renderer);
                 Vector3 pos = player.GetTruePosition();
                 pos /= ShipStatus.Instance.MapScale;
                 pos.x *= Mathf.Sign(ShipStatus.Instance.transform.localScale.x);
