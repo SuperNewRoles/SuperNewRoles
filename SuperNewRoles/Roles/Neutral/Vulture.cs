@@ -23,7 +23,7 @@ class Vulture : RoleBase<Vulture>
             cooldown: VultureCooldown,
             requiredBodies: VultureRequiredBodies
         )),
-        () => new DeadBodyArrowsAbility(() => VultureShowArrows, Vulture.Instance.RoleColor),
+        () => new DeadBodyArrowsAbility(() => VultureShowArrows),
         () => new CustomVentAbility(
             canUseVent: () => VultureCanUseVent
         )
