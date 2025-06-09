@@ -282,7 +282,7 @@ public class CustomHatLayer : MonoBehaviour
         }
         if (!CustomCosmeticHat.Options.front.HasFlag(HatOptionType.None))
         {
-            if (!CustomCosmeticHat.Options.behind)
+            if (!CustomCosmeticHat.Options.behind || CustomCosmeticHat.Back != null)
             {
                 FrontLayer.enabled = true;
                 FrontLayer.sprite = CustomCosmeticHat.Front;
