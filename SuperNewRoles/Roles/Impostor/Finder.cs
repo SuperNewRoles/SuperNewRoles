@@ -53,8 +53,8 @@ public class FinderAbility : AbilityBase
     public override void AttachToAlls()
     {
         _knowMadmateAbility = new KnowOtherAbility(
-            player => player.IsMadRoles(),
-            () => _revealed
+            player => _revealed && player.IsMadRoles(),
+            () => false
         );
         Player.AttachAbility(_knowMadmateAbility, new AbilityParentAbility(this));
     }

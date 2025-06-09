@@ -112,6 +112,7 @@ class PlayerArrowsAbility : AbilityBase
         // 2. 各ターゲットプレイヤーに矢印を割り当てる/更新する
         foreach (PlayerControl targetPlayer in currentTargetPlayers)
         {
+            if (targetPlayer == null) continue;
             if (activeArrows.TryGetValue(targetPlayer, out Arrow arrow))
             {
                 // 既に矢印が割り当てられている場合は更新

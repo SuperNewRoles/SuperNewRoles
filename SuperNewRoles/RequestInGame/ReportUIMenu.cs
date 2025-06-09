@@ -123,7 +123,8 @@ public class ReportUIMenu
                         Dictionary<string, string> additionalInfo = new();
                         additionalInfo["version"] = "SNR:" + Statics.VersionString + "&AmongUs:" + Constants.GetBroadcastVersion();
                         additionalInfo["mode"] = Categories.ModeOption.ToString();
-                        additionalInfo["log"] = SNRLogListener.Instance.logBuilder.ToString();
+                        additionalInfo["log_compressed"] = LogCompression.CompressAndEncryptLog(SNRLogListener.Instance.logBuilder.ToString());
+
                         AmongUsClient.Instance.StartCoroutine(RequestInGameManager.SendReport(description, title, RequestInGameType.Bug.ToString(), additionalInfo, success =>
                         {
                             if (!success)

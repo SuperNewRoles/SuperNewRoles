@@ -161,6 +161,10 @@ public static class CustomDeathExtensions
                 player.Player.Exiled();
                 FinalStatusManager.SetFinalStatus(player, FinalStatus.Suicide);
                 break;
+            case CustomDeathType.BuskerFakeDeath:
+                player.Player.Exiled();
+                FinalStatusManager.SetFinalStatus(player, FinalStatus.Suicide);
+                break;
             default:
                 throw new Exception($"Invalid death type: {deathType}");
         }
@@ -199,4 +203,5 @@ public enum CustomDeathType
     KilLWithoutDeadbodyAndTeleport,
     PenguinAfterMeeting,
     SuicideSecrets,
+    BuskerFakeDeath,
 }

@@ -122,19 +122,21 @@ public class BlackHatHackerAbility : AbilityBase
     private void OnFixedUpdate()
     {
         if (!Player.AmOwner) return;
+        if (ExPlayerControl.LocalPlayer == null) return;
 
         // 共有タイマーの更新
         SharedTimer -= Time.fixedDeltaTime;
         if (SharedTimer <= 0)
         {
             RpcSetInfectionTimer(InfectionTimer);
-            SharedTimer = 1;
+            SharedTimer = 10f;
         }
 
         // 勝利判定
         if (IsAllInfected() && (Data.CanDeadWin || !ExPlayerControl.LocalPlayer.IsDead()))
         {
             // BlackHatHacker勝利
+            if (BlackHatHacker.Instance == null) return;
             EndGamer.RpcEndGameWithWinner(
                 CustomGameOverReason.BlackHatHackerWin,
                 WinType.SingleNeutral,
@@ -167,6 +169,8 @@ public class BlackHatHackerAbility : AbilityBase
         {
             PlayerControl player = GameData.Instance.GetPlayerById(id)?.Object;
             if (!player || player.Data.IsDead) continue;
+
+            if (GameManager.Instance == null || GameManager.Instance.LogicOptions == null) continue;
 
             float scope = GameManager.Instance.LogicOptions.GetKillDistance();
             var infection = PlayerControl.AllPlayerControls.ToArray()
