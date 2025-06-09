@@ -19,9 +19,9 @@ public class HideVentAnimationPatch
     }
     private static bool HideVentAnimation(ExPlayerControl pc)
     {
-        if (pc.AmOwner) return false;
         if (pc.TryGetAbility<HideVentAnimationAbility>(out var ability) && ability.CanHideVentAnimation())
             return true;
+        if (pc.AmOwner) return false;
         if (GameSettingOptions.VentAnimationPlaySetting) return false;
         return false;
     }

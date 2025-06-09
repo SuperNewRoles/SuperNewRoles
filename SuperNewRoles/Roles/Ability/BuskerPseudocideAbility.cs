@@ -36,6 +36,7 @@ public class BuskerPseudocideAbility : CustomButtonBase, IButtonEffect
     private DeadBody CurrentDeadbody;
 
     private DisibleHauntAbility _disableHauntAbility;
+    private HideRoleOnGhostAbility _hideRoleOnGhostAbility;
 
     public override bool CheckHasButton()
     {
@@ -53,7 +54,9 @@ public class BuskerPseudocideAbility : CustomButtonBase, IButtonEffect
     {
         base.AttachToAlls();
         _disableHauntAbility = new DisibleHauntAbility(() => isEffectActive);
+        _hideRoleOnGhostAbility = new HideRoleOnGhostAbility((player) => isEffectActive);
         Player.AttachAbility(_disableHauntAbility, new AbilityParentAbility(this));
+        Player.AttachAbility(_hideRoleOnGhostAbility, new AbilityParentAbility(this));
     }
 
     public override void OnClick()
