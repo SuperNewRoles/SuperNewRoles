@@ -106,6 +106,7 @@ public enum RoleId : short
     MeetingSheriff,
     DoubleKiller,
     Finder,
+    EvilSeer,
 }
 
 public enum GhostRoleId : short

@@ -15,7 +15,7 @@ class Amnesiac : RoleBase<Amnesiac>
     public override List<Func<AbilityBase>> Abilities { get; } =
     [
         () => new AmnesiacAbility(),
-        () => new DeadBodyArrowsAbility(() => AmnesiacShowDeadBodyArrows, Amnesiac.Instance.RoleColor)
+        () => new DeadBodyArrowsAbility(() => AmnesiacShowDeadBodyArrows)
     ];
 
     public override QuoteMod QuoteMod { get; } = QuoteMod.SuperNewRoles;

@@ -174,7 +174,7 @@ public class MediumSpiritTalkAbility : TargetCustomButtonBase, IAbilityCount
                     break;
 
                 case 2: // キルした人の色の明暗
-                    string colorType = CustomColors.LighterColors.Contains(murderData.Killer?.Data.DefaultOutfit?.ColorId ?? 0) ? ModTranslation.GetString("LightColor") : ModTranslation.GetString("DarkColor");
+                    string colorType = CustomColors.IsLighter(murderData.Killer) ? ModTranslation.GetString("LightColor") : ModTranslation.GetString("DarkColor");
                     message = ModTranslation.GetString("MediumSpiritTalkKillerColorMessage", Target.Data.PlayerName, colorType);
                     break;
 
