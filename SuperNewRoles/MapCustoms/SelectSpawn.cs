@@ -104,29 +104,41 @@ public static class SelectSpawn
     public static IEnumerator SelectSpawnCoroutine(MapSpawnData mapData)
     {
         SpawnInMinigame spawnInMinigame = null;
+        yield return DestroyableSingleton<HudManager>.Instance.CoFadeFullScreen(Color.clear, Color.black);
+        bool loaded = false;
         yield return MapLoader.LoadMapAsync(MapNames.Airship, (ship) =>
         {
+            FastDestroyableSingleton<HudManager>.Instance.FullScreen.gameObject.SetActive(true);
+            FastDestroyableSingleton<HudManager>.Instance.FullScreen.color = Color.black;
+            loaded = true;
             spawnInMinigame = GameObject.Instantiate<SpawnInMinigame>(ship.TryCast<AirshipStatus>().SpawnInGame);
             spawnInMinigame.transform.SetParent(Camera.main.transform, false);
             spawnInMinigame.transform.localPosition = new Vector3(0f, 0f, -600f);
-        });
-        List<SpawnInMinigame.SpawnLocation> locations = new(mapData.Locations.Length);
-        foreach (var loc in mapData.Locations)
-        {
-            locations.Add(CreateSpawnLocation(loc, mapData.AssetPrefix));
-        }
-        spawnInMinigame.Locations = new(locations.ToArray());
-        spawnInMinigame.Begin(null);
+            List<SpawnInMinigame.SpawnLocation> locations = new(mapData.Locations.Length);
+            foreach (var loc in mapData.Locations)
+            {
+                locations.Add(CreateSpawnLocation(loc, mapData.AssetPrefix));
+            }
+            spawnInMinigame.Locations = new(locations.ToArray());
+            spawnInMinigame.Begin(null);
 
-        foreach (PassiveButton button in spawnInMinigame.LocationButtons)
+            foreach (PassiveButton button in spawnInMinigame.LocationButtons)
+            {
+                button.transform.localPosition = new(button.transform.localPosition.x, 0.5f, 0);
+                button.GetComponentInChildren<TextMeshPro>().transform.localPosition = new(0f, -1.09f, 0f);
+                BoxCollider2D collider = button.GetComponent<BoxCollider2D>();
+                collider.size = new(1.7f, 1.5f);
+                collider.offset = new(0f, 0.03f);
+            }
+        });
+        new LateTask(() =>
         {
-            button.transform.localPosition = new(button.transform.localPosition.x, 0.5f, 0);
-            button.GetComponentInChildren<TextMeshPro>().transform.localPosition = new(0f, -1.09f, 0f);
-            BoxCollider2D collider = button.GetComponent<BoxCollider2D>();
-            collider.size = new(1.7f, 1.5f);
-            collider.offset = new(0f, 0.03f);
-        }
+            FastDestroyableSingleton<HudManager>.Instance.FullScreen.gameObject.SetActive(true);
+            FastDestroyableSingleton<HudManager>.Instance.FullScreen.color = Color.black;
+        }, 0.02f);
+        while (!loaded) yield return null;
         yield return spawnInMinigame.WaitForFinish();
+        yield return DestroyableSingleton<HudManager>.Instance.CoFadeFullScreen(Color.black, Color.clear);
     }
 
     [HarmonyPatch(typeof(ShipStatus), nameof(ShipStatus.PrespawnStep))]
@@ -143,6 +155,17 @@ public static class SelectSpawn
             }
 
             return true; // Proceed with original method if not Polus or Fungle with select spawn
+        }
+    }
+
+    [HarmonyPatch(typeof(ExileController), nameof(ExileController.WrapUp))]
+    public static class ExileController_WrapUp_Patch
+    {
+        public static void Postfix(ExileController __instance)
+        {
+            Logger.Info("ExileController_WrapUp_Patch");
+            DestroyableSingleton<HudManager>.Instance.StopAllCoroutines();
+            AmongUsClient.Instance.StartCoroutine(SelectSpawnCoroutine(GetMapData()).WrapToIl2Cpp());
         }
     }
     [HarmonyPatch(typeof(AmongUsClient), nameof(AmongUsClient.CoStartGame))]

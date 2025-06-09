@@ -20,7 +20,7 @@ class MadRaccoon : RoleBase<MadRaccoon>
             MadRaccoonCanKnowImpostors,
             MadRaccoonNeededTaskCount,
             MadRaccoonIsSpecialTasks ? MadRaccoonSpecialTasks : null)),
-        () => new ShapeshiftButtonAbility(MadRaccoonShapeshiftCooldown, MadRaccoonShapeshiftDuration, "MadRacoonButton.png")
+        () => new ShapeshiftButtonAbility(MadRaccoonShapeshiftCooldown, MadRaccoonShapeshiftDuration, spriteName: "MadRacoonButton.png")
     ];
 
     public override QuoteMod QuoteMod { get; } = QuoteMod.SuperNewRoles;

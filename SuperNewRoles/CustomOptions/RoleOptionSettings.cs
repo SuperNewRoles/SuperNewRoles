@@ -15,7 +15,7 @@ public class RoleOptionSettings
     private const float ElementZPosition = -5f;
     private const float ElementScale = 2f;
     private const float ScrollerXPosition = 18f;
-    public const int ShiftSelection = 10;
+    public const int ShiftSelection = 4;
 
     private static readonly Color32 HoverColor = new(45, 235, 198, 255);
 

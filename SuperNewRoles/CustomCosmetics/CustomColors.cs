@@ -6,6 +6,7 @@ using System.Reflection;
 using AmongUs.Data.Legacy;
 using HarmonyLib;
 using Il2CppInterop.Runtime.InteropTypes.Arrays;
+using SuperNewRoles.Modules;
 using UnityEngine;
 
 namespace SuperNewRoles.CustomCosmetics;
@@ -13,9 +14,23 @@ namespace SuperNewRoles.CustomCosmetics;
 public class CustomColors
 {
     protected static Dictionary<int, string> ColorStrings = new();
-    public static List<int> LighterColors = new() { 3, 4, 5, 7, 10, 11, 13, 14, 17 };
+    private static List<int> LighterColors = new() { 3, 4, 5, 7, 10, 11, 13, 14, 17 };
     public static readonly uint DefaultPickAbleColors = (uint)Palette.ColorNames.Length;
     public static uint PickAbleColors = DefaultPickAbleColors;
+
+    /// <summary>プレイヤーカラーは明るい色か</summary>
+    /// <param name="exp">色の判定を確認したいプレイヤー</param>
+    /// <returns>true => 明るい色 / false => 暗い色, expがnullの場合 暗い色として扱う</returns>
+    public static bool IsLighter(ExPlayerControl exp) => exp?.Data.DefaultOutfit?.ColorId != null && LighterColors.Contains(exp.Data.DefaultOutfit.ColorId);
+    /// <summary>プレイヤーカラーは明るい色か</summary>
+    /// <param name="pi">色の判定を確認したいプレイヤー情報</param>
+    /// <returns>true => 明るい色 / false => 暗い色, piがnullの場合 暗い色として扱う</returns>
+    public static bool IsLighter(NetworkedPlayerInfo pi) => pi?.DefaultOutfit?.ColorId != null && LighterColors.Contains(pi.DefaultOutfit.ColorId);
+
+    /// <summary>有効なColorIdか</summary>
+    /// <param name="colorId">判定したいColorId</param>
+    /// <returns>true: 有効 / false: 不正</returns>
+    public static bool IsValidColorId(int colorId) => colorId >= 0 && colorId < Palette.PlayerColors.Length;
 
     public enum ColorType
     {

@@ -18,7 +18,7 @@ class Seer : RoleBase<Seer>
 {
     public override RoleId Role { get; } = RoleId.Seer;
     public override Color32 RoleColor { get; } = new(42, 187, 245, byte.MaxValue); // 青色
-    public override List<Func<AbilityBase>> Abilities { get; } = [() => new SeerAbility(new SeerData() { Mode = Mode, LimitSoulDuration = LimitSoulDuration, SoulDuration = SoulDuration, IsCustomSoulColor = false })];
+    public override List<Func<AbilityBase>> Abilities { get; } = [() => new SeerAbility(new SeerData() { Mode = Mode, LimitSoulDuration = LimitSoulDuration, SoulDuration = SoulDuration })];
     public override QuoteMod QuoteMod { get; } = QuoteMod.TheOtherRoles;
     public override RoleTypes IntroSoundType { get; } = RoleTypes.Crewmate;
     public override short IntroNum { get; } = 1;
