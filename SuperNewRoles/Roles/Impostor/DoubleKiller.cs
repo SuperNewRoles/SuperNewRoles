@@ -35,6 +35,12 @@ class DoubleKiller : RoleBase<DoubleKiller>
 
     [CustomOptionInt("DoubleKillerMaxKillCount", 1, 10, 1, 1)]
     public static int DoubleKillerMaxKillCount;
+    [CustomOptionBool("DoubleKillerCanUseVent", true, translationName: "SamuraiCanUseVent")]
+    public static bool DoubleKillerCanUseVent;
+
+    [CustomOptionBool("DoubleKillerCanSabotage", true, translationName: "SamuraiCanSabotage")]
+    public static bool DoubleKillerCanSabotage;
+
 }
 
 public record DoubleKillerAbilityData(int? DoubleKillerCount);
