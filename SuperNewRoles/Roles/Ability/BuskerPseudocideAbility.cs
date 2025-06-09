@@ -48,7 +48,9 @@ public class BuskerPseudocideAbility : CustomButtonBase, IButtonEffect
         return !Player.Data.IsDead && !isEffectActive;
     }
 
-    public bool IsEffectAvailable() => MapDatabase.MapDatabase.GetCurrentMapData()?.CheckMapArea(PlayerControl.LocalPlayer.transform.position) ?? true;
+    public bool IsEffectAvailable() =>
+        (CurrentDeadbody != null && CurrentDeadbody.enabled && CurrentDeadbody.gameObject.activeInHierarchy && !CurrentDeadbody.Reported) &&
+        (MapDatabase.MapDatabase.GetCurrentMapData()?.CheckMapArea(PlayerControl.LocalPlayer.transform.position) ?? true);
 
     public override void AttachToAlls()
     {
