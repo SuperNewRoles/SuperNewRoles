@@ -93,7 +93,8 @@ public class HawkAbility : CustomButtonBase, IButtonEffect
     private void OnStartMeeting()
     {
         isEffectActive = false;
-        FastDestroyableSingleton<HudManager>.Instance.ShadowQuad.gameObject.SetActive(true);
+        if (ExPlayerControl.LocalPlayer.IsAlive())
+            FastDestroyableSingleton<HudManager>.Instance.ShadowQuad.gameObject.SetActive(true);
         ResetTimer();
     }
 

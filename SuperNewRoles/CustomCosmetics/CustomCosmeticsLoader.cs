@@ -70,6 +70,18 @@ public class CustomCosmeticsLoader
     public static bool SpritesDownloading = false;
 
     public static readonly int MAX_CONCURRENT_DOWNLOADS = ModHelpers.IsAndroid() ? 10 : 30;
+
+    private static string SanitizeFileName(string fileName)
+    {
+        string sanitized = fileName.Replace("...", ".");
+        foreach (char c in Path.GetInvalidFileNameChars())
+        {
+            sanitized = sanitized.Replace(c.ToString(), "");
+        }
+        sanitized = sanitized.Replace("?", ""); // Explicitly remove question mark
+        return sanitized;
+    }
+
     public static IEnumerator LoadAsync(Func<IEnumerator, Coroutine> startCoroutine)
     {
         switch (Application.internetReachability)
@@ -184,6 +196,9 @@ public class CustomCosmeticsLoader
                         bool back_bounce = hat["backresource"]?.ToString().Contains("bounce") ?? false;
                         bool backflip_bounce = hat["backflipresource"]?.ToString().Contains("bounce") ?? false;
 
+                        string hatName = hat["name"].ToString();
+                        string sanitizedHatName = SanitizeFileName(hatName);
+
                         var front = adaptive ? HatOptionType.Adaptive : HatOptionType.NoAdaptive;
                         if (resource_bounce)
                             front |= HatOptionType.Bounce;
@@ -213,10 +228,10 @@ public class CustomCosmeticsLoader
                         );
 
                         CustomCosmeticsHat customCosmeticsHat = new(
-                            hat["name"].ToString(),
+                            hatName,
                             hat["name"]?.ToString(),
-                            hat["name"].ToString(),
-                            $"{SuperNewRolesPlugin.BaseDirectory}/CustomCosmetics/{currentPackage.name}/{hat["name"].ToString()}_",
+                            hatName,
+                            $"{SuperNewRolesPlugin.BaseDirectory}/CustomCosmetics/{currentPackage.name}/{sanitizedHatName}_",
                             hat["author"].ToString(),
                             currentPackage,
                             hatOption,
@@ -228,19 +243,19 @@ public class CustomCosmeticsLoader
                         string packagenamed = currentPackage.name;
                         if (!willDownloads.ContainsKey(packagenamed))
                             willDownloads.Add(packagenamed, []);
-                        willDownloads[packagenamed].Add((hat["name"].ToString() + "_front", getpath(url, "hats/" + hat["resource"]?.ToString())));
+                        willDownloads[packagenamed].Add((hatName + "_front", getpath(url, "hats/" + hat["resource"]?.ToString())));
                         if (hat["resourceleft"] != null)
-                            willDownloads[packagenamed].Add((hat["name"].ToString() + "_front_left", getpath(url, "hats/" + hat["resourceleft"]?.ToString())));
+                            willDownloads[packagenamed].Add((hatName + "_front_left", getpath(url, "hats/" + hat["resourceleft"]?.ToString())));
                         if (hat["backresource"] != null)
-                            willDownloads[packagenamed].Add((hat["name"].ToString() + "_back", getpath(url, "hats/" + hat["backresource"]?.ToString())));
+                            willDownloads[packagenamed].Add((hatName + "_back", getpath(url, "hats/" + hat["backresource"]?.ToString())));
                         if (hat["backresourceleft"] != null)
-                            willDownloads[packagenamed].Add((hat["name"].ToString() + "_back_left", getpath(url, "hats/" + hat["backresourceleft"]?.ToString())));
+                            willDownloads[packagenamed].Add((hatName + "_back_left", getpath(url, "hats/" + hat["backresourceleft"]?.ToString())));
                         if (hat["backflipresource"] != null)
-                            willDownloads[packagenamed].Add((hat["name"].ToString() + "_backflip", getpath(url, "hats/" + hat["backflipresource"]?.ToString())));
+                            willDownloads[packagenamed].Add((hatName + "_backflip", getpath(url, "hats/" + hat["backflipresource"]?.ToString())));
                         if (hat["flipresource"] != null)
-                            willDownloads[packagenamed].Add((hat["name"].ToString() + "_flip", getpath(url, "hats/" + hat["flipresource"]?.ToString())));
+                            willDownloads[packagenamed].Add((hatName + "_flip", getpath(url, "hats/" + hat["flipresource"]?.ToString())));
                         if (hat["climbresource"] != null)
-                            willDownloads[packagenamed].Add((hat["name"].ToString() + "_climb", getpath(url, "hats/" + hat["climbresource"]?.ToString())));
+                            willDownloads[packagenamed].Add((hatName + "_climb", getpath(url, "hats/" + hat["climbresource"]?.ToString())));
                     }
                 }
                 else
@@ -266,17 +281,21 @@ public class CustomCosmeticsLoader
                         }
                         bool adaptive = visor["adaptive"] != null ? (bool)visor["adaptive"] : false;
 
+                        string visorName = visor["name"].ToString();
+                        string sanitizedVisorName = SanitizeFileName(visorName);
+
                         var visorOption = new CustomCosmeticsVisorOptions(
                             adaptive,
                             visor["flipresource"] != null,
-                            visor["IsSNR"] != null ? (bool)visor["IsSNR"] : false
+                            visor["isSNR"] != null ? (bool)visor["isSNR"] : false
                         );
+                        visorOption.climb = visor["climbresource"] != null;
 
                         CustomCosmeticsVisor customCosmeticsVisor = new(
-                            visor["name"].ToString(),
+                            visorName,
                             visor["name"]?.ToString(),
-                            visor["name"].ToString(),
-                            $"{SuperNewRolesPlugin.BaseDirectory}/CustomCosmetics/{currentPackage.name}/{visor["name"].ToString()}_",
+                            visorName,
+                            $"{SuperNewRolesPlugin.BaseDirectory}/CustomCosmetics/{currentPackage.name}/{sanitizedVisorName}_",
                             visor["author"].ToString(),
                             currentPackage,
                             visorOption,
@@ -288,11 +307,11 @@ public class CustomCosmeticsLoader
                         string packagenamed = currentPackage.name;
                         if (!willDownloads.ContainsKey(packagenamed))
                             willDownloads.Add(packagenamed, []);
-                        willDownloads[packagenamed].Add((visor["name"].ToString() + "_idle", getpath(url, (json["visors"] != null ? "visors/" : "Visors/") + visor["resource"]?.ToString())));
-                        if (visor["resourceleft"] != null)
-                            willDownloads[packagenamed].Add((visor["name"].ToString() + "_idle_left", getpath(url, (json["visors"] != null ? "visors/" : "Visors/") + visor["resourceleft"]?.ToString())));
+                        willDownloads[packagenamed].Add((visorName + "_idle", getpath(url, (json["visors"] != null ? "visors/" : "Visors/") + visor["resource"]?.ToString())));
                         if (visor["flipresource"] != null)
-                            willDownloads[packagenamed].Add((visor["name"].ToString() + "_flip", getpath(url, (json["visors"] != null ? "visors/" : "Visors/") + visor["flipresource"]?.ToString())));
+                            willDownloads[packagenamed].Add((visorName + "_flip", getpath(url, (json["visors"] != null ? "visors/" : "Visors/") + visor["flipresource"]?.ToString())));
+                        if (visor["climbresource"] != null)
+                            willDownloads[packagenamed].Add((visorName + "_climb", getpath(url, (json["visors"] != null ? "visors/" : "Visors/") + visor["climbresource"]?.ToString())));
                     }
                 }
                 else
@@ -317,11 +336,14 @@ public class CustomCosmeticsLoader
                             loadedPackages.Add(currentPackage);
                         }
 
+                        string namePlateName = namePlate["name"].ToString();
+                        string sanitizedNamePlateName = SanitizeFileName(namePlateName);
+
                         CustomCosmeticsNamePlate customCosmeticsNamePlate = new(
-                            namePlate["name"].ToString(),
+                            namePlateName,
                             namePlate["name"]?.ToString(),
-                            namePlate["name"].ToString(),
-                            $"{SuperNewRolesPlugin.BaseDirectory}/CustomCosmetics/{currentPackage.name}/{namePlate["name"].ToString()}_",
+                            namePlateName,
+                            $"{SuperNewRolesPlugin.BaseDirectory}/CustomCosmetics/{currentPackage.name}/{sanitizedNamePlateName}_",
                             namePlate["author"].ToString(),
                             currentPackage,
                             null
@@ -332,7 +354,7 @@ public class CustomCosmeticsLoader
                         string packagenamed = currentPackage.name;
                         if (!willDownloads.ContainsKey(packagenamed))
                             willDownloads.Add(packagenamed, []);
-                        willDownloads[packagenamed].Add((namePlate["name"].ToString() + "_plate", getpath(url, "nameplates/" + namePlate["resource"]?.ToString())));
+                        willDownloads[packagenamed].Add((namePlateName + "_nameplate", getpath(url, "nameplates/" + namePlate["resource"]?.ToString())));
                     }
                 }
             }
@@ -1008,10 +1030,10 @@ public class CustomCosmeticsLoader
             {
                 var item = downloadQueue.Dequeue();
                 activeDownloads++;
-                string filePath = Path.Combine(item.packagePath, $"{item.spriteName}.png").Replace("\\", "/");
+                string sanitizedSpriteName = SanitizeFileName(item.spriteName);
+                string filePath = Path.Combine(item.packagePath, $"{sanitizedSpriteName}.png").Replace("\\", "/");
                 if (File.Exists(filePath))
                 {
-                    Logger.Info($"Sprite already exists: {filePath}");
                     activeDownloads--;
                     continue;
                 }

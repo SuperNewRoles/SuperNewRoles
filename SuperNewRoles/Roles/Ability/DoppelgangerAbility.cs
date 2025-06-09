@@ -59,7 +59,7 @@ public class DoppelgangerAbility : AbilityBase
     {
         base.AttachToAlls();
 
-        _shapeshiftButtonAbility = new ShapeshiftButtonAbility(CoolTime, DurationTime, "DoppelgangerButton.png");
+        _shapeshiftButtonAbility = new ShapeshiftButtonAbility(CoolTime, DurationTime, spriteName: "DoppelgangerButton.png");
         Player.AttachAbility(_shapeshiftButtonAbility, new AbilityParentAbility(this));
     }
 
