@@ -136,7 +136,7 @@ public class ShermansServantAbility : AbilityBase
             _ability = ability;
         }
 
-        public override Sprite Sprite => null; // TODO: Add sprite
+        public override Sprite Sprite => AssetManager.GetAsset<Sprite>("ShermansServantTransformButton.png");
         public override string buttonText => ModTranslation.GetString("ShermansServantTransformButton");
         protected override KeyType keytype => KeyType.Ability1;
         public override float DefaultTimer => _ability.Data.transformCooldown;
@@ -170,7 +170,7 @@ public class ShermansServantAbility : AbilityBase
             _ability = ability;
         }
 
-        public override Sprite Sprite => null; // TODO: Add sprite
+        public override Sprite Sprite => AssetManager.GetAsset<Sprite>("ShermansServantSuicideButton.png");
         public override string buttonText => ModTranslation.GetString("ShermansServantSuicideButton");
         protected override KeyType keytype => KeyType.Ability2;
         public override float DefaultTimer => _ability.Data.suicideCooldown;

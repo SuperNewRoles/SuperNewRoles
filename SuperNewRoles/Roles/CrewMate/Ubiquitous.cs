@@ -157,14 +157,8 @@ class UbiquitousAbility : AbilityBase
             if (dronePlayer.Count > i)
             {
                 ExPlayerControl player = dronePlayer[i];
-                if (Ubiquitous.MapShowPlayerColor)
-                {
-                    renderer.color = Palette.PlayerColors[player.Data.DefaultOutfit.ColorId];
-                }
-                else
-                {
-                    renderer.color = CustomColors.LighterColors.Contains(player.Data.DefaultOutfit.ColorId) ? Color.white : Color.black;
-                }
+                if (Ubiquitous.MapShowPlayerColor) player.Player.SetPlayerMaterialColors(renderer);
+                else PlayerMaterial.SetColors(CustomColors.LighterColors.Contains(player.Player.CurrentOutfit.ColorId) ? 7 : 6, renderer);
                 Vector3 pos = player.GetTruePosition();
                 pos /= ShipStatus.Instance.MapScale;
                 pos.x *= Mathf.Sign(ShipStatus.Instance.transform.localScale.x);
@@ -243,7 +237,7 @@ class OperationButton : CustomButtonBase, IButtonEffect
     public float EffectTimer { get; set; }
     public bool IsEffectDurationInfinity => !Ubiquitous.IsLimitOperableTime;
     public bool effectCancellable => true;
-    public bool doAdditionalEffect => false;
+    public bool doAdditionalEffect => Ubiquitous.IsLimitOperableTime;
 }
 
 class DoorHackButton : CustomButtonBase

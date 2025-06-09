@@ -191,7 +191,7 @@ public static class CheckGameEndPatch
                 return (ExPlayerControl.ExPlayerControls.Where(player => player.IsImpostorWinTeam()).ToHashSet(), Palette.ImpostorRed, "ImpostorWin");
             case VictoryType.CrewmateTask:
             case VictoryType.CrewmateVote:
-                return (ExPlayerControl.ExPlayerControls.Where(player => player.IsCrewmate()).ToHashSet(), Palette.CrewmateBlue, "CrewmateWin");
+                return (ExPlayerControl.ExPlayerControls.Where(player => player.IsCrewmateWin()).ToHashSet(), Palette.CrewmateBlue, "CrewmateWin");
             case VictoryType.JackalDomination:
                 return (ExPlayerControl.ExPlayerControls.Where(player => player.IsJackalTeam()).ToHashSet(), Jackal.Instance.RoleColor, "Jackal");
             case VictoryType.PavlovsWin:

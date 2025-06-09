@@ -54,7 +54,7 @@ public class OrientalShamanAbility : AbilityBase
             sidekickCooldown: () => Data.servantCooldown,
             sidekickRole: () => RoleId.ShermansServant,
             sidekickRoleVanilla: () => RoleTypes.Crewmate,
-            sidekickSprite: null, // TODO: Add sprite resource
+            sidekickSprite: AssetManager.GetAsset<Sprite>("OrientalShamanButton.png"),
             sidekickText: ModTranslation.GetString("OrientalShamanServantButton"),
             sidekickCount: () => 1,
             isTargetable: (player) => player.IsAlive() && !player.IsImpostor() && player.Role != RoleId.OrientalShaman,

@@ -182,9 +182,9 @@ public static class NameText
         bool visiable = player.Player.Visible &&
                         (ExPlayerControl.LocalPlayer.PlayerId == player.PlayerId ||
                         (ExPlayerControl.LocalPlayer.IsDead() &&
-                        (!GameSettingOptions.HideGhostRoles || (ExPlayerControl.LocalPlayer.IsImpostor() && GameSettingOptions.ShowGhostRolesToImpostor))) &&
+                        (!GameSettingOptions.HideGhostRoles || (ExPlayerControl.LocalPlayer.IsImpostor() && GameSettingOptions.ShowGhostRolesToImpostor)) &&
                         (LocalHideRoleOnGhostAbility == null || !LocalHideRoleOnGhostAbility.IsHideRole(player))
-                        );
+                        ));
         UpdateVisiable(player, visiable);
     }
     public static void UpdateVisiable(ExPlayerControl player, bool visiable)

@@ -23,7 +23,7 @@ class ShermansServant : RoleBase<ShermansServant>
     public override RoleTypes IntroSoundType { get; } = RoleTypes.Crewmate;
     public override short IntroNum { get; } = 1;
 
-    public override AssignedTeamType AssignedTeam { get; } = AssignedTeamType.Neutral;
+    public override AssignedTeamType AssignedTeam { get; } = AssignedTeamType.Crewmate;
     public override WinnerTeamType WinnerTeam { get; } = WinnerTeamType.Neutral;
     public override TeamTag TeamTag { get; } = TeamTag.Neutral;
     public override RoleTag[] RoleTags { get; } = [];

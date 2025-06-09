@@ -20,16 +20,16 @@ internal class Phosphorus : RoleBase<Phosphorus>
     public override QuoteMod QuoteMod => QuoteMod.NebulaOnTheShip;
     public override RoleOptionMenuType OptionTeam => RoleOptionMenuType.Crewmate;
 
-    [CustomOptionFloat("PhosphorusLightingCooltime", 2.5f, 60f, 2.5f, 30f, suffix: "Seconds")]
-    public static float PhosphorusLightingCooltime;
-    [CustomOptionInt("PhosphorusPuttingLimit", 1, 10, 1, 1)]
-    public static int PhosphorusPuttingLimit;
-    [CustomOptionFloat("PhosphorusLightRange", 0.1f, 5f, 0.1f, 0.5f)]
-    public static float PhosphorusLightRange;
     [CustomOptionFloat("PhosphorusCoolTime", 2.5f, 60f, 2.5f, 30f, translationName: "CoolTime", suffix: "Seconds")]
     public static float PhosphorusCoolTime;
+    [CustomOptionInt("PhosphorusPuttingLimit", 1, 10, 1, 1)]
+    public static int PhosphorusPuttingLimit;
+    [CustomOptionFloat("PhosphorusLightingCooltime", 2.5f, 60f, 2.5f, 30f, suffix: "Seconds")]
+    public static float PhosphorusLightingCooltime;
     [CustomOptionFloat("PhosphorusDurationTime", 2.5f, 120f, 2.5f, 10f, translationName: "DurationTime", suffix: "Seconds")]
     public static float PhosphorusDurationTime;
+    [CustomOptionFloat("PhosphorusLightRange", 0.1f, 5f, 0.1f, 0.5f)]
+    public static float PhosphorusLightRange;
 
     public override List<Func<AbilityBase>> Abilities => [
         () => new PhosphorusPutAbility(
