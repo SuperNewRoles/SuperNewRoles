@@ -5,6 +5,7 @@ using SuperNewRoles.CustomOptions.Categories;
 using SuperNewRoles.Events;
 using SuperNewRoles.Events.PCEvents;
 using SuperNewRoles.Roles;
+using SuperNewRoles.Roles.Ability;
 using SuperNewRoles.Roles.CrewMate;
 using UnityEngine;
 
@@ -106,7 +107,7 @@ public static class NameText
             player.Data.Role.NameColor = Color.white;
             SetNameTextColor(player, Color.white);
         }
-        UpdateVisiable(player);
+        UpdateVisiable(player, ExPlayerControl.LocalPlayer.GetAbility<HideRoleOnGhostAbility>());
         NameTextUpdateEvent.Invoke(player, visiable);
         NameTextUpdateVisiableEvent.Invoke(player, visiable);
     }
@@ -167,21 +168,23 @@ public static class NameText
     private static Dictionary<ExPlayerControl, bool> _lastDead = new();
     private static void UpdateAllVisiable()
     {
+        HideRoleOnGhostAbility hideRoleOnGhostAbility = ExPlayerControl.LocalPlayer.GetAbility<HideRoleOnGhostAbility>();
         foreach (var player in ExPlayerControl.ExPlayerControls)
         {
-            UpdateVisiable(player);
+            UpdateVisiable(player, hideRoleOnGhostAbility);
             NameTextUpdateVisiableEvent.Invoke(player, player.Player.Visible);
         }
     }
-    public static void UpdateVisiable(ExPlayerControl player)
+    public static void UpdateVisiable(ExPlayerControl player, HideRoleOnGhostAbility LocalHideRoleOnGhostAbility)
     {
         if (player == null || player.Player == null)
             return;
         bool visiable = player.Player.Visible &&
                         (ExPlayerControl.LocalPlayer.PlayerId == player.PlayerId ||
                         (ExPlayerControl.LocalPlayer.IsDead() &&
-                            (!GameSettingOptions.HideGhostRoles || (ExPlayerControl.LocalPlayer.IsImpostor() && GameSettingOptions.ShowGhostRolesToImpostor)))
-                        );
+                        (!GameSettingOptions.HideGhostRoles || (ExPlayerControl.LocalPlayer.IsImpostor() && GameSettingOptions.ShowGhostRolesToImpostor)) &&
+                        (LocalHideRoleOnGhostAbility == null || !LocalHideRoleOnGhostAbility.IsHideRole(player))
+                        ));
         UpdateVisiable(player, visiable);
     }
     public static void UpdateVisiable(ExPlayerControl player, bool visiable)

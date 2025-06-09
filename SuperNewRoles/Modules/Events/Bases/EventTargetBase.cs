@@ -22,7 +22,16 @@ public abstract class EventTargetBase<T, U> : InternalEventTargetBase<T, EventLi
         foreach (EventListener<U> listener in listeners)
         {
             if (!_pendingRemoval.Contains(listener))
-                listener.Do(obj);
+            {
+                try
+                {
+                    listener.Do(obj);
+                }
+                catch (Exception e)
+                {
+                    SuperNewRolesPlugin.Logger.LogError($"Error in {listener.GetType().Name}: {e}");
+                }
+            }
         }
         _isAwaking = false;
 

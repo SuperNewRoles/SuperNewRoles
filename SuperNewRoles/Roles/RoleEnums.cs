@@ -106,6 +106,21 @@ public enum RoleId : short
     MeetingSheriff,
     DoubleKiller,
     Finder,
+    Nun,
+    Stuntman,
+    ShiftActor,
+    OrientalShaman,
+    ShermansServant,
+    Safecracker,
+    Phosphorus,
+    Ubiquitous,
+    Busker,
+    Camouflager,
+    Doorr,
+    EvilDoorr,
+    DimensionWalker,
+    DarkKiller,
+    Mushroomer,
     EvilSeer,
 }
 
@@ -180,4 +195,5 @@ public enum RoleTag : byte
     GhostRole,
     Support,
     ImpostorTeam,
+    SpecialWinner,
 }
