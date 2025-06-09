@@ -13,6 +13,7 @@ public enum SabotageType
     O2 = 1 << 2,
     Reactor = 1 << 3,
     Comms = 1 << 4,
+    All = Lights | O2 | Reactor | Comms,
 }
 public class SabotageCanUseAbility : AbilityBase
 {
