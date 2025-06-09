@@ -438,6 +438,7 @@ public class CustomCosmeticsHatOptions
     public HatOptionType flip { get; }
     public HatOptionType flip_back { get; }
     public HatOptionType climb { get; set; }
+    public bool behind { get; set; }
     public bool blockVisors { get; }
     public bool HideBody { get; }
     /*
@@ -464,8 +465,9 @@ public class CustomCosmeticsHatOptions
         climb = GetOption(optionsJson, "climb", adaptive: adaptive, bounce: bounce, behind: behind);
         HideBody = GetBool(optionsJson["hideBody"]);
         blockVisors = GetBool(optionsJson["block_visors"]);
+        behind = GetBool(optionsJson["behind"]);
     }
-    public CustomCosmeticsHatOptions(HatOptionType front, HatOptionType back, HatOptionType flip, HatOptionType flip_back, HatOptionType climb, bool hideBody, bool blockVisors = false)
+    public CustomCosmeticsHatOptions(HatOptionType front, HatOptionType back, HatOptionType flip, HatOptionType flip_back, HatOptionType climb, bool hideBody, bool blockVisors = false, bool behind = false)
     {
         this.front = front;
         this.back = back;
@@ -474,6 +476,7 @@ public class CustomCosmeticsHatOptions
         this.climb = climb;
         this.blockVisors = blockVisors;
         this.HideBody = hideBody;
+        this.behind = behind;
     }
 
     /// <summary>
