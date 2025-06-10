@@ -17,7 +17,13 @@ class DoubleKiller : RoleBase<DoubleKiller>
     public override RoleId Role { get; } = RoleId.DoubleKiller;
     public override Color32 RoleColor { get; } = Palette.ImpostorRed;
     public override List<Func<AbilityBase>> Abilities { get; } = [
-        () => new DoubleKillerAbility(new(DoubleKillerKillCountRemaining ? DoubleKillerMaxKillCount : null))
+        () => new DoubleKillerAbility(new(DoubleKillerKillCountRemaining ? DoubleKillerMaxKillCount : null)),
+                () => new CustomSaboAbility(
+            canSabotage: () => DoubleKillerCanSabotage
+        ),
+        () => new CustomVentAbility(
+            canUseVent: () => DoubleKillerCanUseVent
+        )
     ];
 
     public override QuoteMod QuoteMod { get; } = QuoteMod.SuperNewRoles;
@@ -35,10 +41,10 @@ class DoubleKiller : RoleBase<DoubleKiller>
 
     [CustomOptionInt("DoubleKillerMaxKillCount", 1, 10, 1, 1)]
     public static int DoubleKillerMaxKillCount;
-    [CustomOptionBool("DoubleKillerCanUseVent", true, translationName: "SamuraiCanUseVent")]
+    [CustomOptionBool("DoubleKillerCanUseVent", true, translationName: "CanUseVent")]
     public static bool DoubleKillerCanUseVent;
 
-    [CustomOptionBool("DoubleKillerCanSabotage", true, translationName: "SamuraiCanSabotage")]
+    [CustomOptionBool("DoubleKillerCanSabotage", true, translationName: "CanSabotage")]
     public static bool DoubleKillerCanSabotage;
 }
 
