@@ -53,6 +53,18 @@ public static class ModHelpers
         return RandomNumberGenerator.GetInt32(min, max + 1);
     }
 
+    public static float GetRandomFloat(float max, float min = 0)
+    {
+        if (min > max)
+        {
+            (min, max) = (max, min);
+        }
+        byte[] bytes = new byte[4];
+        Rng.GetBytes(bytes);
+        float randomValue = BitConverter.ToSingle(bytes, 0);
+        return min + (Math.Abs(randomValue) % (max - min + 1));
+    }
+
     /// <summary>
     /// 指定された確率（パーセンテージ）で成功を判定する
     /// </summary>

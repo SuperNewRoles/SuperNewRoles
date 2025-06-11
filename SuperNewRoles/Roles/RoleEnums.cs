@@ -122,6 +122,10 @@ public enum RoleId : short
     DarkKiller,
     Mushroomer,
     EvilSeer,
+    Slugger,
+    Magaziner,
+    Robber,
+    OverKiller,
 }
 
 public enum GhostRoleId : short

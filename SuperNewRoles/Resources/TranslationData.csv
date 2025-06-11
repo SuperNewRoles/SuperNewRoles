@@ -174,6 +174,12 @@ VersionUpdateReleaseNoteLoading,リリースノートを読み込み中...,Loadi
 VersionUpdateReleaseNoteLoadingError,リリースノートの読み込みに失敗しました。,Failed to load release note..
 VersionUpdateReleaseNoteNotFound,リリースノートが見つかりませんでした。,Release note not found.
 
+# Robber
+RobberName,泥棒,Robber,小偷,小偷
+RobberTitle1,その進捗、頂戴するぜ,I'll take that progress.,把你手上的东西交出来！,這些進度條就由我收下了
+RobberDescription,キルをしたクルーメイトのタスク進捗を設定数巻き戻します。\n「ああもう、クルーというやつらは困ったらすーぐタスクで俺たちを追い出しやがる！\nそうはさせない、そのタスクの進捗を奪い取ってやるぜ！」,Rewinds the task progress of the crewmate who made the kill by a set number.\nThe crewmembers are so quick to kick us out of a task when we're in trouble,\nI won't let them, I'm going to take that task progress away from you!,被小偷击杀的玩家需要重新做若干个任务。\n该死，那帮人任务做的也太快了，这样下去我们就要没命了！\n哼，我不会让他们就这样得逞的……,小偷屬於內鬼陣營。\n當船員進行擊殺時小偷可以偷走一定數量的任務進度。\n「當遇到麻煩時，船員們總是很快地把我們逐出！」\n「我不會讓他們這麼做的，我會把這些完成的任務通通收下來！」
+RobberRewindTaskCount,巻き戻すタスクの個数,Number of tasks to rewind,回卷任务的个数,任務回溯的數量
+
 # RequestInGame
 RequestInGameButtonText,バグ報告、要望、質問、感謝メールなどはこちらから,Bug reports，requests，questions，and thank you messages can be sent here
 RequestInGameDiscordText,Discordはこちら,Discord is this,Discord 是這裡,Discord 是這裡
@@ -446,6 +452,8 @@ DimensionWalker,ディメンションウォーカー,Dimension Walker,次元行�
 DarkKiller,ダークキラー,Dark killer
 OrientalShaman,陰陽師,Oriental Shaman,阴阳师,陰陽師
 ShermansServant,式神,Shermans Servant,式神,式神
+Robber,泥棒,Robber
+OverKiller,オーバーキラー,Overkiller
 
 # Descriptions_VanillaRoles
 Crewmate.Description,特に何も能力を持たない基本的なクルーメイト役職です。\n人狼ゲームにおける村人の役割を持ちます。\nキル能力を持つ人外を全て追放するか、タスクを全て完了すると勝利します。,A basic Crewmate role with no special abilities.\nThey serve the role of Villager from the Werewolf game.\nVictory is achieved by ejecting all non-Crewmate players with kill abilities or by completing all tasks.,一个没有特殊能力的基础船员角色。\n他们承担了狼人游戏中村民的角色。\n通过将所有拥有击杀能力的非船员玩家投出局或完成所有任务来获胜。,一個沒有特殊能力的基礎船員角色。\n他們承擔了狼人遊戲中村民的角色。\n通過將所有擁有擊殺能力的非船員玩家投出局或完成所有任務來獲勝。,
@@ -1644,3 +1652,19 @@ DimensionWalkerActivateTime,ワームホール有効化時間,Wormhole Activatio
 DimensionWalkerPlayAnimation,ワームホールアニメーションを再生する,Play Wormhole Animation,播放虫洞动画,播放蟲洞動畫
 DimensionWalkerPutButtonText,設置,Place Wormhole,放置虫洞,放置蟲洞
 DimensionWalkerCollectButtonText,回収,Collect Wormhole,回收虫洞,回收蟲洞
+
+# Magaziner
+Magaziner,マガジナー,Magaziner,弹匣师,彈匣師
+MagazinerDescription,<color=#FF1919>マガジナー</color>はキルボタンのクールダウンを操作できるインポスターです。\n弾薬を消費してキルクールダウンを短縮したり、弾薬を補充して通常のキルクールダウンをリセットできます。,<color=#FF1919>Magaziner</color> is an Impostor who can manipulate kill button cooldowns.\nYou can consume ammunition to reduce kill cooldown or replenish ammunition to reset normal kill cooldown.,<color=#FF1919>弹匣师</color>是一个可以操作击杀按钮冷却时间的内鬼。\n可以消耗弹药来减少击杀冷却时间，或者补充弹药来重置正常的击杀冷却时间。,<color=#FF1919>彈匣師</color>是一個可以操作擊殺按鈕冷卻時間的內鬼。\n可以消耗彈藥來減少擊殺冷卻時間，或者補充彈藥來重置正常的擊殺冷卻時間。
+MagazinerSetKillTime,クールダウン短縮時間,Cooldown Reduction Time,冷却缩短时间,冷卻縮短時間
+MagazinerPlayerCount,初期弾薬数,Initial Ammunition Count,初始弹药数,初始彈藥數
+MagazinerGetButtonName,消費,Consume,消费,消費
+MagazinerAddButtonName,補充,Replenish,补充,補充
+
+# Robber
+RobberRewindTaskCount,巻き戻すタスクの個数,Number of tasks to rewind,回卷任务的个数,任務回溯的數量
+
+# OverKiller
+OverKillerKillCount,1回でキルする回数,Kill count per kill,一次击杀次数,一次擊殺次數
+OverKillerScatterBodies,死体を散乱する,Scatter Bodies,散乱死体,散亂死體
+OverKillerScatterRange,散乱範囲,Scatter Range,散乱范围,散亂範圍
