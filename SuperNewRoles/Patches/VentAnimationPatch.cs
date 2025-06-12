@@ -22,7 +22,7 @@ public class HideVentAnimationPatch
         if (pc.TryGetAbility<HideVentAnimationAbility>(out var ability) && ability.CanHideVentAnimation())
             return true;
         if (pc.AmOwner) return false;
-        if (GameSettingOptions.VentAnimationPlaySetting) return false;
+        if (GameSettingOptions.VentAnimationPlaySetting) return true;
         return false;
     }
 
