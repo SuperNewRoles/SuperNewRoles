@@ -6,6 +6,7 @@ using System.Collections.Generic;
 using Il2CppInterop.Runtime.InteropTypes.Arrays;
 using System.Linq;
 using HarmonyLib;
+using SuperNewRoles.CustomObject;
 
 namespace SuperNewRoles.Roles.Ability;
 
@@ -190,6 +191,15 @@ public class VentSetButtonsPatch
             __result = 0;
             return false;
         }
+
+        if (WormHole.IsWormHole(__instance) && !pc.Object.Data.Role.IsImpostor)
+        {
+            __result = float.MaxValue;
+            canUse = false;
+            couldUse = false;
+            return false;
+        }
+
         if (pc.Object.inVent && Vent.currentVent != null)
         {
             if (__instance.Id == Vent.currentVent.Id)
