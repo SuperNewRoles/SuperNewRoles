@@ -192,7 +192,7 @@ public class VentSetButtonsPatch
             return false;
         }
 
-        if (WormHole.IsWormHole(__instance) && !pc.Object.Data.Role.IsImpostor)
+        if (WormHole.IsWormHole(__instance) && !((ExPlayerControl)pc.Object).IsImpostor())
         {
             __result = float.MaxValue;
             canUse = false;
