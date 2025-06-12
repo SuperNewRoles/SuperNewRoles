@@ -1661,9 +1661,6 @@ MagazinerPlayerCount,初期弾薬数,Initial Ammunition Count,初始弹药数,�
 MagazinerGetButtonName,消費,Consume,消费,消費
 MagazinerAddButtonName,補充,Replenish,补充,補充
 
-# Robber
-RobberRewindTaskCount,巻き戻すタスクの個数,Number of tasks to rewind,回卷任务的个数,任務回溯的數量
-
 # OverKiller
 OverKillerKillCount,1回でキルする回数,Kill count per kill,一次击杀次数,一次擊殺次數
 OverKillerScatterBodies,死体を散乱する,Scatter Bodies,散乱死体,散亂死體
