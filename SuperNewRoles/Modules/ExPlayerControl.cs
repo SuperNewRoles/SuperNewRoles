@@ -339,23 +339,9 @@ public class ExPlayerControl
         var myCompletedTaskIds = myTasks.Where(x => x.IsComplete).Select(x => (byte)x.Id);
         var targetCompletedTaskIds = targetTasks.Where(x => x.IsComplete).Select(x => (byte)x.Id);
 
-        Logger.Info("----------------");
-        Logger.Info($"myTasks: {string.Join(",", myTasks.Select(x => x.Index))}");
-        Logger.Info($"targetTasks: {string.Join(",", targetTasks.Select(x => x.Index))}");
-        Logger.Info("----------------");
-
         // タスク一覧を入れ替え
         Data.SetTasks(targetTaskIds);
-        Logger.Info("----------------");
-        Logger.Info($"myTasks: {string.Join(",", myTasks.Select(x => x.Index))}");
-        Logger.Info($"targetTasks: {string.Join(",", targetTasks.Select(x => x.Index))}");
-        Logger.Info("----------------");
         target.Data.SetTasks(myTaskIds);
-        Logger.Info("----------------");
-        Logger.Info($"myTasks: {string.Join(",", myTasks.Select(x => x.Index))}");
-        Logger.Info($"targetTasks: {string.Join(",", targetTasks.Select(x => x.Index))}");
-        Logger.Info("----------------");
-
         // 交換後のタスクに完了状態を反映
         foreach (var taskId in targetCompletedTaskIds)
         {
