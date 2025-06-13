@@ -17,6 +17,7 @@ DurationTime,効果時間,Duration Time,持续时间,持續時間
 CanUseVent,ベントを使用できる,Can Use Vent,可以使用通风口,可以使用通風口
 VentCooldown,ベントクールタイム,Vent Cool Time,通风口冷却时间,通風口冷卻時間
 VentDuration,ベント持続時間,Vent Duration Time,通风口持续时间,通風口持續時間
+CanSabotage,サボタージュを使用できる,Can Sabotage,可以使用破坏,可以使用破壞
 HasImpostorVision,インポスターの視界を持つ,Has Impostor Vision,拥有内鬼视野,擁有內鬼視野
 TaskOption,タスクを個別で設定するか,Set tasks individually,独立设置任务,獨立設置任務
 UseLimit,使用可能回数,Usage Limit,可使用次数,可使用次數
