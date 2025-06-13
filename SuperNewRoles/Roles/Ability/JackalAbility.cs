@@ -93,7 +93,7 @@ public class JackalAbility : AbilityBase
             case RoleId.SidekickWaveCannon:
                 return new(RoleId.WaveCannonJackal, RoleTypes.Crewmate);
             case RoleId.Bullet:
-                return new(RoleId.Bullet, RoleTypes.Crewmate);
+                return new(WaveCannonJackal.WaveCannonJackalCreateBulletToJackal ? RoleId.WaveCannonJackal : RoleId.Bullet, RoleTypes.Crewmate);
             default:
                 throw new Exception("Invalid sidekick type in getPromoteData: " + sidekickType);
         }
