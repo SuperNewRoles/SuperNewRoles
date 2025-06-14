@@ -20,7 +20,8 @@ class Mushroomer : RoleBase<Mushroomer>
             MushroomExplosionCount,
             MushroomExplosionRange,
             MushroomExplosionDurationTime,
-            MushroomerHasGasMask
+            MushroomerHasGasMask,
+            MushroomerActiveUsedMushroom
         )
     ];
 
@@ -54,4 +55,7 @@ class Mushroomer : RoleBase<Mushroomer>
 
     [CustomOptionFloat("MushroomerMushroomExplosionDurationTime", 0.5f, 10f, 0.5f, 2.5f, translationName: "DurationTime")]
     public static float MushroomExplosionDurationTime;
+
+    [CustomOptionBool("MushroomerActiveUsedMushroom", true)]
+    public static bool MushroomerActiveUsedMushroom;
 }

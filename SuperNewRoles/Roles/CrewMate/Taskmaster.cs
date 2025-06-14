@@ -64,6 +64,7 @@ public static class TaskmasterPatch
         if (ExPlayerControl.LocalPlayer.Role != RoleId.Taskmaster) return;
         if (ModHelpers.IsSabotage(__instance.TaskTypes.FirstOrDefault()))
         {
+            if (!Taskmaster.TaskmasterCanFixSabotageInstantly) return;
             ModHelpers.RpcFixingSabotage(__instance.TaskTypes.FirstOrDefault());
             Minigame.Instance.Close();
         }
