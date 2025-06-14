@@ -260,21 +260,6 @@ public class WormHole : MonoBehaviour
     static void useButtonTargetReset()
         => HudManager.Instance.UseButton.currentTarget = null;
 
-    [HarmonyPatch(typeof(Vent), nameof(Vent.CanUse)), HarmonyPrefix]
-    static bool CanUseVent(Vent __instance, ref float __result, [HarmonyArgument(0)] NetworkedPlayerInfo pc, [HarmonyArgument(1)] out bool canUse, [HarmonyArgument(2)] out bool couldUse)
-    {
-        if (IsWormHole(__instance) && !pc.Object.Data.Role.IsImpostor)
-        {
-            __result = float.MaxValue;
-            canUse = false;
-            couldUse = false;
-            return false;
-        }
-        canUse = true;
-        couldUse = true;
-        return true;
-    }
-
     [HarmonyPatch(typeof(Vent), nameof(Vent.EnterVent)), HarmonyPostfix]
     static void enterVent(Vent __instance, [HarmonyArgument(0)] PlayerControl pc)
     {
