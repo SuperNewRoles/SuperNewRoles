@@ -1640,6 +1640,7 @@ MushroomerMushroomPlantCoolTime,キノコ設置クールタイム,Mushroom Plant
 MushroomerMushroomExplosionCoolTime,爆発クールタイム,Explosion Cool Time,爆炸冷却时间,爆炸冷卻時間
 MushroomerPlantButtonName,キノコ設置,Plant Mushroom,设置蘑菇,設置蘑菇
 MushroomerExplosionButtonName,爆発,Explode,爆炸,爆炸
+MushroomerActiveUsedMushroom,キノコ有効化後、発動するまで見えない,Mushroom active after use,蘑菇使用后，激活前不可见,蘑菇使用後，激活前不可見
 
 # DimensionWalker
 DimensionWalkerActivateTime,ワームホール有効化時間,Wormhole Activation Time,虫洞激活时间,蟲洞啟動時間
