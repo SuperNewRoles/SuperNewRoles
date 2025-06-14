@@ -24,12 +24,15 @@ public class MushroomerAbility : AbilityBase
     private readonly float explosionDurationTime;
     private readonly bool hasGasMask;
 
+    // 有効化後、発動するまで見えない
+    private readonly bool activeUsedMushroom;
+
     private PlantButton plantButton;
     private ExplosionButton explosionButton;
     private EventListener<WrapUpEventData> wrapUpEvent;
 
     public MushroomerAbility(float plantCoolTime, int plantCount, float explosionCoolTime, int explosionCount,
-                           float explosionRange, float explosionDurationTime, bool hasGasMask)
+                             float explosionRange, float explosionDurationTime, bool hasGasMask, bool activeUsedMushroom)
     {
         this.plantCoolTime = plantCoolTime;
         this.plantCount = plantCount;
@@ -38,6 +41,7 @@ public class MushroomerAbility : AbilityBase
         this.explosionRange = explosionRange;
         this.explosionDurationTime = explosionDurationTime;
         this.hasGasMask = hasGasMask;
+        this.activeUsedMushroom = activeUsedMushroom;
     }
 
     public override void AttachToAlls()
@@ -82,6 +86,7 @@ public class MushroomerAbility : AbilityBase
         CustomSpores.AddMushroom(position, (mushRoom) =>
         {
             mushRoom.gameObject.SetActive(false);
+            mushRoom.mushroom.enabled = !activeUsedMushroom || Player.AmOwner;
             CreatedMushrooms.Add(mushRoom);
             NextturnActivateMushrooms.Add(mushRoom);
 

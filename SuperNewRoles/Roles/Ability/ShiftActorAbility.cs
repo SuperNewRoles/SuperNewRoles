@@ -36,7 +36,7 @@ public class ShiftActorAbility : ShapeshiftButtonAbility
         if (IsLimitUses)
         {
             Count = maxUseCount;
-            ShiftActorCount = maxUseCount + 1; // ShiftActor側の独自カウント
+            ShiftActorCount = maxUseCount; // ShiftActor側の独自カウント
         }
         else
         {
@@ -47,6 +47,10 @@ public class ShiftActorAbility : ShapeshiftButtonAbility
     public override bool CheckHasButton()
     {
         if (!ExPlayerControl.LocalPlayer.IsAlive()) return false;
+
+        // シフトアクターのエフェクトが有効な場合はボタンを表示
+        if (isEffectActive)
+            return true;
 
         // ShiftActorIsLimitUsesがfalseなら制限なし
         if (!IsLimitUses)
