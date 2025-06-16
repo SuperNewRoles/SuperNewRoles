@@ -41,6 +41,9 @@ public enum KeyType
     /// <summary>非キラー : ActiveAbility_3 / キラー ActiveAbility_2 (ショートカット無し)</summary>
     Ability3,
     Vent,
+    Use,
+    Report,
+    Sabotage
 }
 public abstract class CustomButtonBase : AbilityBase
 {
@@ -118,9 +121,9 @@ public abstract class CustomButtonBase : AbilityBase
             KeyType.Ability2 => 8,
             KeyType.Ability3 => -1,
             KeyType.Vent => 50, // PS4 R1 (Impostor Vent)
-            // KeyType.Use => 6,  // PS4 ×
-            // KeyType.Report => 7, // PS4 △
-            // KeyType.Sabotage => 4, // PS4 L2
+            KeyType.Use => 6,  // PS4 ×
+            KeyType.Report => 7, // PS4 △
+            KeyType.Sabotage => 4, // PS4 L2
             _ => throw new Exception($"keyTypeが{keyType}の場合はGetJoystickKeyを実装してください"),
         };
 
