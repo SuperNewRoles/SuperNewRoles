@@ -209,7 +209,10 @@ public abstract class CustomButtonBase : AbilityBase
         {
             actionButton.graphic.color = actionButton.buttonLabelText.color = Palette.EnabledColor;
             actionButton.graphic.material.SetFloat("_Desat", 0f);
-            if (Input.GetKeyDown(GetKeyCode(keytype)) || ConsoleJoystick.player.GetButtonDown(GetJoystickKey(keytype)))
+
+            int joyKey = GetJoystickKey(keytype);
+            KeyCode kCode = GetKeyCode(keytype);
+            if ((kCode != KeyCode.None && Input.GetKeyDown(kCode)) || (joyKey >= 0 && ConsoleJoystick.player.GetButtonDown(joyKey)))
             {
                 OnClickEvent();
             }
@@ -218,7 +221,10 @@ public abstract class CustomButtonBase : AbilityBase
         {
             actionButton.graphic.color = actionButton.buttonLabelText.color = Palette.EnabledColor;
             actionButton.graphic.material.SetFloat("_Desat", 0f);
-            if (Input.GetKeyDown(GetKeyCode(keytype)) || ConsoleJoystick.player.GetButtonDown(GetJoystickKey(keytype)))
+
+            int joyKey = GetJoystickKey(keytype);
+            KeyCode kCode = GetKeyCode(keytype);
+            if ((kCode != KeyCode.None && Input.GetKeyDown(kCode)) || (joyKey >= 0 && ConsoleJoystick.player.GetButtonDown(joyKey)))
             {
                 buttonEffect.OnCancel(actionButton);
                 ResetTimer();
