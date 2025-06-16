@@ -34,8 +34,12 @@ public enum KeyType
 {
     None,
     Kill,
+    /// <summary>非キラー & キラー : ActiveAbility_1 (Fキー動作)</summary>
     Ability1,
+    /// <summary>非キラー : ActiveAbility_2 (Qキー動作)</summary>
     Ability2,
+    /// <summary>非キラー : ActiveAbility_3 / キラー ActiveAbility_2 (ショートカット無し)</summary>
+    Ability3,
     Vent,
 }
 public abstract class CustomButtonBase : AbilityBase
@@ -97,7 +101,8 @@ public abstract class CustomButtonBase : AbilityBase
             KeyType.None => KeyCode.None,
             KeyType.Kill => KeyCode.Q,
             KeyType.Ability1 => KeyCode.F,
-            KeyType.Ability2 => KeyCode.None,
+            KeyType.Ability2 => KeyCode.Q,
+            KeyType.Ability3 => KeyCode.None,
             KeyType.Vent => KeyCode.V,
             _ => throw new Exception($"keyTypeが{keyType}の場合はGetKeyCodeを実装してください"),
         };
@@ -110,7 +115,8 @@ public abstract class CustomButtonBase : AbilityBase
             KeyType.None => -1, // Rewired.Player.GetButtonDownは 0未満が引数として渡された時falseを返す為 -1
             KeyType.Kill => 8, // PS4 □
             KeyType.Ability1 => 49, // PS4 R2
-            KeyType.Ability2 => -1,
+            KeyType.Ability2 => 8,
+            KeyType.Ability3 => -1,
             KeyType.Vent => 50, // PS4 R1 (Impostor Vent)
             // KeyType.Use => 6,  // PS4 ×
             // KeyType.Report => 7, // PS4 △
