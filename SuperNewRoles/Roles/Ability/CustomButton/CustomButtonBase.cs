@@ -103,6 +103,25 @@ public abstract class CustomButtonBase : AbilityBase
         };
     }
 
+    private static int GetJoystickKey(KeyType keyType)
+    {
+        return keyType switch
+        {
+            KeyType.None => -1, // Rewired.Player.GetButtonDownは 0未満が引数として渡された時falseを返す為 -1
+            KeyType.Kill => 8, // PS4 □
+            KeyType.Ability1 => 49, // PS4 R2
+            KeyType.Ability2 => -1,
+            KeyType.Vent => 50, // PS4 R1 (Impostor Vent)
+            // KeyType.Use => 6,  // PS4 ×
+            // KeyType.Report => 7, // PS4 △
+            // KeyType.Sabotage => 4, // PS4 L2
+            _ => throw new Exception($"keyTypeが{keyType}の場合はGetJoystickKeyを実装してください"),
+        };
+
+        // その他コントローラー - ショートカットキー対応
+        // Tab => 5(PS4 L1)
+    }
+
     /// <summary>
     /// カウントの進み方を変えたい場合はここをoverrideして変更すること
     /// </summary>
@@ -181,7 +200,7 @@ public abstract class CustomButtonBase : AbilityBase
         {
             actionButton.graphic.color = actionButton.buttonLabelText.color = Palette.EnabledColor;
             actionButton.graphic.material.SetFloat("_Desat", 0f);
-            if (Input.GetKeyDown(GetKeyCode(keytype)))
+            if (Input.GetKeyDown(GetKeyCode(keytype)) || ConsoleJoystick.player.GetButtonDown(GetJoystickKey(keytype)))
             {
                 OnClickEvent();
             }
@@ -190,7 +209,7 @@ public abstract class CustomButtonBase : AbilityBase
         {
             actionButton.graphic.color = actionButton.buttonLabelText.color = Palette.EnabledColor;
             actionButton.graphic.material.SetFloat("_Desat", 0f);
-            if (Input.GetKeyDown(GetKeyCode(keytype)))
+            if (Input.GetKeyDown(GetKeyCode(keytype)) || ConsoleJoystick.player.GetButtonDown(GetJoystickKey(keytype)))
             {
                 buttonEffect.OnCancel(actionButton);
                 ResetTimer();
