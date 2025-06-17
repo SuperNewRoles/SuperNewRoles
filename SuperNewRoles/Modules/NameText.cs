@@ -195,6 +195,21 @@ public static class NameText
             visiable = false;
         if (visiable && player.PlayerInfoText == null)
             UpdateNameInfo(player);
+        if (visiable)
+        {
+            player.Data.Role.NameColor = player.roleBase.RoleColor;
+            SetNameTextColor(player, player.roleBase.RoleColor);
+        }
+        else if (ExPlayerControl.LocalPlayer.IsImpostor() && player.IsImpostor())
+        {
+            player.Data.Role.NameColor = Palette.ImpostorRed;
+            SetNameTextColor(player, Palette.ImpostorRed);
+        }
+        else
+        {
+            player.Data.Role.NameColor = Color.white;
+            SetNameTextColor(player, Color.white);
+        }
         player.PlayerInfoText.gameObject.SetActive(visiable);
         if (player.MeetingInfoText != null)
             player.MeetingInfoText.gameObject.SetActive(visiable);
