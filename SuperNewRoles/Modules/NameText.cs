@@ -92,21 +92,6 @@ public static class NameText
             player.VoteArea.NameText.text = player.Player.Data.DefaultOutfit.PlayerName;
         bool visiable = ExPlayerControl.LocalPlayer.PlayerId == player.PlayerId ||
                         (ExPlayerControl.LocalPlayer.IsDead() && !GameSettingOptions.HideGhostRoles);
-        if (visiable)
-        {
-            player.Data.Role.NameColor = player.roleBase.RoleColor;
-            SetNameTextColor(player, player.roleBase.RoleColor);
-        }
-        else if (ExPlayerControl.LocalPlayer.IsImpostor() && player.IsImpostor())
-        {
-            player.Data.Role.NameColor = Palette.ImpostorRed;
-            SetNameTextColor(player, Palette.ImpostorRed);
-        }
-        else
-        {
-            player.Data.Role.NameColor = Color.white;
-            SetNameTextColor(player, Color.white);
-        }
         UpdateVisiable(player, ExPlayerControl.LocalPlayer.GetAbility<HideRoleOnGhostAbility>());
         NameTextUpdateEvent.Invoke(player, visiable);
         NameTextUpdateVisiableEvent.Invoke(player, visiable);
@@ -119,9 +104,10 @@ public static class NameText
         if (player.MeetingInfoText != null && showOnMeeting)
             player.MeetingInfoText.text += text;
     }
-    public static void SetNameTextColor(ExPlayerControl player, Color color)
+    public static void SetNameTextColor(ExPlayerControl player, Color color, bool nonLog = false)
     {
-        Logger.Info($"SetNameTextColor: {player.Data.PlayerName} {color}");
+        if (!nonLog)
+            Logger.Info($"SetNameTextColor: {player.Data.PlayerName} {color}");
         player.Player.cosmetics.nameText.color = color;
         if (player.VoteArea != null)
             player.VoteArea.NameText.color = color;
@@ -198,17 +184,17 @@ public static class NameText
         if (visiable)
         {
             player.Data.Role.NameColor = player.roleBase.RoleColor;
-            SetNameTextColor(player, player.roleBase.RoleColor);
+            SetNameTextColor(player, player.roleBase.RoleColor, true);
         }
         else if (ExPlayerControl.LocalPlayer.IsImpostor() && player.IsImpostor())
         {
             player.Data.Role.NameColor = Palette.ImpostorRed;
-            SetNameTextColor(player, Palette.ImpostorRed);
+            SetNameTextColor(player, Palette.ImpostorRed, true);
         }
         else
         {
             player.Data.Role.NameColor = Color.white;
-            SetNameTextColor(player, Color.white);
+            SetNameTextColor(player, Color.white, true);
         }
         player.PlayerInfoText.gameObject.SetActive(visiable);
         if (player.MeetingInfoText != null)
