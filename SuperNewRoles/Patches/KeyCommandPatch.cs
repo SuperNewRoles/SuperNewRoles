@@ -68,3 +68,32 @@ class ControllerManagerUpdatePatch
         }
     }
 }
+
+
+[HarmonyPatch(typeof(KeyboardJoystick), nameof(KeyboardJoystick.Update))]
+class Pastepatch
+{
+    static readonly KeyCode[] PasteKeyCodes = [KeyCode.LeftControl, KeyCode.V];
+    static readonly KeyCode[] CopyKeyCodes = [KeyCode.LeftControl, KeyCode.X];
+    static readonly KeyCode[] CutKeyCodes = [KeyCode.LeftControl, KeyCode.C];
+
+    static void Postfix()
+    {
+        if (FastDestroyableSingleton<HudManager>.Instance.Chat.IsOpenOrOpening)
+        {
+            if (ModHelpers.GetManyKeyDown(PasteKeyCodes))
+            {
+                FastDestroyableSingleton<HudManager>.Instance.Chat.freeChatField.textArea.SetText(FastDestroyableSingleton<HudManager>.Instance.Chat.freeChatField.textArea.text + GUIUtility.systemCopyBuffer);
+            }
+            if (ModHelpers.GetManyKeyDown(CopyKeyCodes))
+            {
+                GUIUtility.systemCopyBuffer = FastDestroyableSingleton<HudManager>.Instance.Chat.freeChatField.textArea.text;
+                FastDestroyableSingleton<HudManager>.Instance.Chat.freeChatField.textArea.Clear();
+            }
+            if (ModHelpers.GetManyKeyDown(CutKeyCodes))
+            {
+                GUIUtility.systemCopyBuffer = FastDestroyableSingleton<HudManager>.Instance.Chat.freeChatField.textArea.text;
+            }
+        }
+    }
+}

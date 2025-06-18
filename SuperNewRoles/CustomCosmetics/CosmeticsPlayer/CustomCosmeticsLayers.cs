@@ -10,6 +10,13 @@ using UnityEngine.Rendering;
 
 namespace SuperNewRoles.CustomCosmetics.CosmeticsPlayer;
 
+public enum CustomOutfitType
+{
+    None,
+    Default,
+    Camouflager,
+    Shapeshifter,
+}
 public static class CustomCosmeticsLayers
 {
     public static Dictionary<int, CustomCosmeticsLayer> layers = new();
