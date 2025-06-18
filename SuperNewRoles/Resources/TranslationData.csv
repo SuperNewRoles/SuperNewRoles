@@ -430,6 +430,7 @@ EvilScientist,イビルサイエンティスト,Evil Scientist
 Lighter,ライター,Lighter
 Technician,技術者,Technician
 Medium,ミーディアム,Medium,灵媒师,靈媒師
+Psychometrist,サイコメトラー,Psychometrist,心灵测量师,心靈測量師
 DoubleKiller,ダブルキラー,DoubleKiller
 Finder,ファインダー,Finder,Finder,Finder
 Stuntman,スタントマン,Stuntman
@@ -447,6 +448,7 @@ DimensionWalker,ディメンションウォーカー,Dimension Walker,次元行�
 DarkKiller,ダークキラー,Dark killer
 OrientalShaman,陰陽師,Oriental Shaman,阴阳师,陰陽師
 ShermansServant,式神,Shermans Servant,式神,式神
+SilverBullet,シルバーバレット,Silver Bullet
 
 # Descriptions_VanillaRoles
 Crewmate.Description,特に何も能力を持たない基本的なクルーメイト役職です。\n人狼ゲームにおける村人の役割を持ちます。\nキル能力を持つ人外を全て追放するか、タスクを全て完了すると勝利します。,A basic Crewmate role with no special abilities.\nThey serve the role of Villager from the Werewolf game.\nVictory is achieved by ejecting all non-Crewmate players with kill abilities or by completing all tasks.,一个没有特殊能力的基础船员角色。\n他们承担了狼人游戏中村民的角色。\n通过将所有拥有击杀能力的非船员玩家投出局或完成所有任务来获胜。,一個沒有特殊能力的基礎船員角色。\n他們承擔了狼人遊戲中村民的角色。\n通過將所有擁有擊殺能力的非船員玩家投出局或完成所有任務來獲勝。,
@@ -699,6 +701,7 @@ StuntmanIntro1,無意識の攻防、,Unconscious offense and defense,无意识�
 UbiquitousIntro1,偏在する監視眼,Ubiquitous watchful eye,无处不在的监视之眼,無處不在的監視之眼
 BuskerIntro1,危険な大道芸人,Dangerous street performer,危险的街头艺人,危險的街頭藝人
 DoorrIntro1,ノンストレス移動,stress-free movement,门，零压力移动,門，零壓力移動
+PsychometristIntro1,この手は真実を読み取る,These hands read the truth,此手读取真相,此手讀取真相
 
 # Intros_MadRoles
 MadmateIntro1,道を違えし者,One who has strayed from the path,误入歧途者,誤入歧途者,
@@ -1647,3 +1650,15 @@ DimensionWalkerActivateTime,ワームホール有効化時間,Wormhole Activatio
 DimensionWalkerPlayAnimation,ワームホールアニメーションを再生する,Play Wormhole Animation,播放虫洞动画,播放蟲洞動畫
 DimensionWalkerPutButtonText,設置,Place Wormhole,放置虫洞,放置蟲洞
 DimensionWalkerCollectButtonText,回収,Collect Wormhole,回收虫洞,回收蟲洞
+
+# SilverBullet
+SilverBulletAnalyzeButtonName,分析,Analyze
+SilverBulletRepairButtonName,修理,Repair
+SilverBulletVentNotUsed,このベントは今回のターン使用されていません。,This vent was not used this round.
+SilverBulletVentUsed,このベントは{0}人に使用されました。,This vent was used by {0} player(s).
+SilverBulletVentUsedColorLight,プレイヤー{0}は明るい色です。,Player {0} is a light color.
+SilverBulletVentUsedColorDark,プレイヤー{0}は暗い色です。,Player {0} is a dark color.
+SilverBulletAnalyzeCanUseCountOption,分析回数,Analyze Count
+SilverBulletAnalyzeCanCheckSentimentOption,色分析,Analyze Color
+SilverBulletCanUseRepairOption,修理を使用できる,Can Use Repair
+SilverBulletCanRepairUseCountOption,修理回数,Repair Count
