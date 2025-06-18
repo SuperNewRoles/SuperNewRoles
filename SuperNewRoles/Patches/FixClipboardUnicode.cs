@@ -19,7 +19,7 @@ public static class FixClipboardUnicodePatch
         // 1) Unicode テキスト形式かどうかチェック
         if (!ClipboardHelper.IsClipboardFormatAvailable(CF_UNICODETEXT))
         {
-            return false;
+            return true;
         }
 
         // 2) クリップボードをオープン
