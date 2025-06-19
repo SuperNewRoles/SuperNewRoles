@@ -260,6 +260,8 @@ PresetMenuTitle,プリセット,Preset,预设,預設
 PresetPleaseInput,ここにプリセット名を入力,Please enter preset name here,请输入预设名称,請在此輸入預設名稱
 PresetSettings.NowPreset,現在のプリセット:,Current Preset:,当前预设:,現在的預設:
 ModeId.Default,通常,Normal,通常,通常
+ModeId.SuperHostRoles,SuperHostRoles,SuperHostRoles,SuperHostRoles
+DisplayText.CanNotUseSHR,未実装,Not implemented.,未实施,未實施
 ModeId.BattleRoyal,バトルロイヤル,Battle Royale,戰鬥皇家,戰鬥皇家
 ModeOption,モード,Mode,模式,模式
 ExclusivityOptionMenuTitle,排他設定,Exclusivity Settings,排他設定,排他設定
