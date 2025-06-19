@@ -62,13 +62,13 @@ public class CustomVisorLayer : MonoBehaviour
         }
     }
 
-    public Dictionary<PlayerOutfitType, ICosmeticData> Visors = new();
-    public PlayerOutfitType CurrentVisorType;
+    public Dictionary<CustomOutfitType, ICosmeticData> Visors = new();
+    public CustomOutfitType CurrentVisorType;
 
     public ICustomCosmeticVisor CustomCosmeticVisor => Visors.TryGetValue(CurrentVisorType, out var visor) ? visor as ICustomCosmeticVisor : null;
     public ICosmeticData Visor => CustomCosmeticVisor == null ? null : CustomCosmeticVisor as ICosmeticData;
 
-    public ICosmeticData DefaultVisor => Visors.TryGetValue(PlayerOutfitType.Default, out var visor) ? visor as ICosmeticData : null;
+    public ICosmeticData DefaultVisor => Visors.TryGetValue(CustomOutfitType.Default, out var visor) ? visor as ICosmeticData : null;
 
     public void SetVisor(string visorId, int colorId)
     {
@@ -94,8 +94,8 @@ public class CustomVisorLayer : MonoBehaviour
                 visor = CustomCosmeticsLoader.GetModdedVisorData(visorId);
             else
                 visor = new CosmeticDataWrapperVisor(FastDestroyableSingleton<HatManager>.Instance.GetVisorById(visorId));
-            Visors[PlayerOutfitType.Shapeshifted] = visor;
-            CurrentVisorType = PlayerOutfitType.Shapeshifted;
+            Visors[CustomOutfitType.Shapeshifter] = visor;
+            CurrentVisorType = CustomOutfitType.Shapeshifter;
             SetMaterialColor(colorId);
             // UnloadAsset();
             Visor.LoadAsync(() =>
@@ -105,9 +105,21 @@ public class CustomVisorLayer : MonoBehaviour
         }
     }
 
+    public void StartCamouflage(int colorId)
+    {
+        CurrentVisorType = CustomOutfitType.Camouflager;
+        Visors[CustomOutfitType.Camouflager] = new CosmeticDataWrapperVisor(FastDestroyableSingleton<HatManager>.Instance.GetVisorById(VisorData.EmptyId));
+        SetMaterialColor(colorId);
+        // UnloadAsset();
+        Visor.LoadAsync(() =>
+        {
+            PopulateFromViewData();
+        });
+    }
+
     public void FinishShapeshift(int colorId)
     {
-        CurrentVisorType = PlayerOutfitType.Default;
+        CurrentVisorType = CustomOutfitType.Default;
         SetMaterialColor(colorId);
         // UnloadAsset();
         Visor.LoadAsync(() =>
