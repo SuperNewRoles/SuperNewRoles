@@ -6,9 +6,9 @@ namespace SuperNewRoles.Modules;
 public enum DisplayModeId
 {
     Default = 1 << 0,
-    SuperHostRolesOnry = 1 << 1, // 元々の SHR true とは異なる挙動(通常モード 非表示)を目的に使用している。 ( SHRモードに設定された時のみ、「SHR 未実装」と 表記するのに使用中。)
+    SuperHostRolesOnly = 1 << 1, // 元々の SHR true とは異なる挙動(通常モード 非表示)を目的に使用している。 ( SHRモードに設定された時のみ、「SHR 未実装」と 表記するのに使用中。)
     BattleRoyal = 1 << 2,
-    All = Default | SuperHostRolesOnry | BattleRoyal
+    All = Default | SuperHostRolesOnly | BattleRoyal
 }
 public enum ModeId
 {
@@ -31,7 +31,7 @@ public static class DisplayMode
             case ModeId.Default:
                 return DisplayModeId.Default;
             case ModeId.SuperHostRoles: // FIXME SHR実装時 想定通りの挙動をしない記述になっている
-                return DisplayModeId.SuperHostRolesOnry;
+                return DisplayModeId.SuperHostRolesOnly;
             //case ModeId.BattleRoyal:
             //    return DisplayModeId.BattleRoyal;
             default:
@@ -42,7 +42,7 @@ public static class DisplayMode
 
 public static class DisplayCanNotUseSHR // TODO SHR実装時 削除
 {
-    [CustomOptionSelect("SuperHostRoles", typeof(DisplayText), "DisplayText.", parentFieldName: nameof(Categories.ModeOption), displayMode: DisplayModeId.SuperHostRolesOnry, parentActiveValue: ModeId.SuperHostRoles)]
+    [CustomOptionSelect("SuperHostRoles", typeof(DisplayText), "DisplayText.", parentFieldName: nameof(Categories.ModeOption), displayMode: DisplayModeId.SuperHostRolesOnly, parentActiveValue: ModeId.SuperHostRoles)]
     public static DisplayText CanNotUseSHR;
 
     public enum DisplayText { CanNotUseSHR }
