@@ -11,7 +11,7 @@ class HauntedWolf : RoleBase<HauntedWolf>
 {
     public override RoleId Role { get; } = RoleId.HauntedWolf;
     public override Color32 RoleColor => new(123, 108, 62, byte.MaxValue);
-    public override List<Func<AbilityBase>> Abilities { get; } = [];
+    public override List<Func<AbilityBase>> Abilities { get; } = [() => new HideMyRoleWhenAliveAbility()];
 
     public override QuoteMod QuoteMod { get; } = QuoteMod.SuperNewRoles;
     public override RoleTypes IntroSoundType { get; } = RoleTypes.Crewmate;

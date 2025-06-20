@@ -59,8 +59,9 @@ public static class IntroCutscenePatch
             ExPlayerControl player = PlayerControl.LocalPlayer;
             RoleId myrole = player.Role;
 
-            if (player.Role is RoleId.BestFalseCharge)
-                myrole = RoleId.Crewmate;
+            var hideRoleAbility = player.GetAbility<HideMyRoleWhenAliveAbility>();
+            if (hideRoleAbility != null) myrole = hideRoleAbility.FalseRoleId(player);
+
             var rolebase = CustomRoleManager.GetRoleById(myrole);
             if (rolebase != null)
             {
