@@ -132,6 +132,7 @@ public enum GhostRoleId : short
     Cantera,
     Revenant,
     Mirage,
+    GhostMechanic,
 }
 
 [Flags]

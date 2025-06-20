@@ -449,6 +449,7 @@ DarkKiller,ダークキラー,Dark killer
 OrientalShaman,陰陽師,Oriental Shaman,阴阳师,陰陽師
 ShermansServant,式神,Shermans Servant,式神,式神
 SilverBullet,シルバーバレット,Silver Bullet
+GhostMechanic,亡霊整備士,Ghost Mechanic,Ghost Mechanic,Ghost Mechanic
 
 # Descriptions_VanillaRoles
 Crewmate.Description,特に何も能力を持たない基本的なクルーメイト役職です。\n人狼ゲームにおける村人の役割を持ちます。\nキル能力を持つ人外を全て追放するか、タスクを全て完了すると勝利します。,A basic Crewmate role with no special abilities.\nThey serve the role of Villager from the Werewolf game.\nVictory is achieved by ejecting all non-Crewmate players with kill abilities or by completing all tasks.,一个没有特殊能力的基础船员角色。\n他们承担了狼人游戏中村民的角色。\n通过将所有拥有击杀能力的非船员玩家投出局或完成所有任务来获胜。,一個沒有特殊能力的基礎船員角色。\n他們承擔了狼人遊戲中村民的角色。\n通過將所有擁有擊殺能力的非船員玩家投出局或完成所有任務來獲勝。,
@@ -1662,3 +1663,6 @@ SilverBulletAnalyzeCanUseCountOption,分析回数,Analyze Count
 SilverBulletAnalyzeCanCheckSentimentOption,色分析,Analyze Color
 SilverBulletCanUseRepairOption,修理を使用できる,Can Use Repair
 SilverBulletCanRepairUseCountOption,修理回数,Repair Count
+
+# GhostMechanic
+GhostMechanicCannotFixMushroomMixup,キノコカオスを修復できない,Cannot Fix Mushroom Mixup
