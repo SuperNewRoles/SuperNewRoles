@@ -39,6 +39,7 @@ public enum WinCondition
     OwlWin,
     LoversWin,
     LoversBreakerWin,
+    MadJesterWin
 }
 public enum CustomGameOverReason
 {
@@ -60,6 +61,7 @@ public enum CustomGameOverReason
     OwlWin,
     BlackHatHackerWin,
     SpelunkerWin,
+    MadJesterWin
 }
 
 static class AdditionalTempData
@@ -304,6 +306,10 @@ public class EndGameManagerSetUpPatch
             case WinCondition.LoversBreakerWin:
                 baseText = "LoversBreaker";
                 roleColor = LoversBreaker.Instance.RoleColor;
+                break;
+            case WinCondition.MadJesterWin:
+                baseText = "MadJester";
+                roleColor = MadJester.Instance.RoleColor;
                 break;
             default:
                 baseText = "Unknown";

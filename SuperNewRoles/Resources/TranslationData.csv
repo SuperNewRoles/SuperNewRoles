@@ -450,6 +450,7 @@ OrientalShaman,陰陽師,Oriental Shaman,阴阳师,陰陽師
 ShermansServant,式神,Shermans Servant,式神,式神
 SilverBullet,シルバーバレット,Silver Bullet
 GhostMechanic,亡霊整備士,Ghost Mechanic,Ghost Mechanic,Ghost Mechanic
+MadJester,マッドてるてる,Mad Jester,疯狂小丑,瘋狂小丑
 
 # Descriptions_VanillaRoles
 Crewmate.Description,特に何も能力を持たない基本的なクルーメイト役職です。\n人狼ゲームにおける村人の役割を持ちます。\nキル能力を持つ人外を全て追放するか、タスクを全て完了すると勝利します。,A basic Crewmate role with no special abilities.\nThey serve the role of Villager from the Werewolf game.\nVictory is achieved by ejecting all non-Crewmate players with kill abilities or by completing all tasks.,一个没有特殊能力的基础船员角色。\n他们承担了狼人游戏中村民的角色。\n通过将所有拥有击杀能力的非船员玩家投出局或完成所有任务来获胜。,一個沒有特殊能力的基礎船員角色。\n他們承擔了狼人遊戲中村民的角色。\n通過將所有擁有擊殺能力的非船員玩家投出局或完成所有任務來獲勝。,
@@ -1666,3 +1667,14 @@ SilverBulletCanRepairUseCountOption,修理回数,Repair Count
 
 # GhostMechanic
 GhostMechanicCannotFixMushroomMixup,キノコカオスを修復できない,Cannot Fix Mushroom Mixup
+
+# MadJester
+MadJesterKnowImpostorHeader,インポスター認知設定,Know Impostor Setting,认识内鬼设置,認識內鬼設置
+MadJesterCanKnowImpostors,インポスターを知ることができる,Can Know Impostors,可以知道内鬼,可以知道內鬼
+MadJesterNeededTaskCount,知るために必要なタスク数,Needed Task Count,需要完成的任务数,需要完成的任務數
+MadJesterIsSpecialTasks,固有タスクを使用する,Use special tasks,使用特殊任务,使用特殊任務
+MadJesterSpecialTasks,固有タスク,Special Tasks,特殊任务,特殊任務
+MadJesterAbilityHeader,能力設定,Ability Setting,能力设置,能力設定
+MadJesterWinConditionHeader,勝利条件設定,Win Condition Setting,胜利条件设置,勝利條件設定
+MadJesterWinOnTaskComplete,タスク完了で勝利,Win on task completion,完成任务胜利,完成任務勝利
+Win.MadJesterWin,マッドてるてる 勝利,Mad Jester Win,疯狂小丑 胜利,瘋狂小丑 勝利
