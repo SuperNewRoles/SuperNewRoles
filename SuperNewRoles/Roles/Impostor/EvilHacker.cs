@@ -132,7 +132,8 @@ public class EvilHackerAbility : AbilityBase
             sidekickSprite: AssetManager.GetAsset<Sprite>("CreateMadmateButton.png"),
             sidekickText: ModTranslation.GetString("CreateMadmateButtonText"),
             sidekickCount: () => 1,
-            isTargetable: (player) => !player.IsImpostor()
+            isTargetable: (player) => !player.IsImpostor(),
+            isSubButton: true
         ));
 
         ((ExPlayerControl)player).AttachAbility(_portableAdminAbility, new AbilityParentAbility(this));
