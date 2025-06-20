@@ -42,7 +42,7 @@ public static class DisplayMode
 
 public static class DisplayCanNotUseSHR // TODO SHR実装時 削除
 {
-    [CustomOptionSelect("SuperHostRoles", typeof(DisplayText), "DisplayText.", parentFieldName: nameof(Categories.ModeOption), displayMode: DisplayModeId.SuperHostRolesOnly, parentActiveValue: ModeId.SuperHostRoles)]
+    [CustomOptionSelect("NoSuperHostRoles", typeof(DisplayText), "DisplayText.", parentFieldName: nameof(Categories.ModeOption), displayMode: DisplayModeId.SuperHostRolesOnly, parentActiveValue: ModeId.SuperHostRoles)]
     public static DisplayText CanNotUseSHR;
 
     public enum DisplayText { CanNotUseSHR }
