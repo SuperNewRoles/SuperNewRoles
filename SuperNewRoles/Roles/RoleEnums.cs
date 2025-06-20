@@ -122,6 +122,7 @@ public enum RoleId : short
     DarkKiller,
     Mushroomer,
     EvilSeer,
+    HauntedWolf,
 }
 
 public enum GhostRoleId : short
