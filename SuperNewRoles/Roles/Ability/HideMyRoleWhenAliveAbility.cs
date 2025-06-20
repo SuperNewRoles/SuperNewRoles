@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using SuperNewRoles.Events;
 using SuperNewRoles.Modules;
 using SuperNewRoles.Modules.Events.Bases;
@@ -42,5 +43,23 @@ public class HideMyRoleWhenAliveAbility : AbilityBase
         if (!IsHide(player)) return;
 
         roleName = $"{(player.Data.Role.IsImpostor ? ImpostorName : CrewmateName)}";
+    }
+
+    /// <summary>役職表示用のRoleBaseを取得する</summary>
+    /// <param name="player">取得対象</param>
+    /// <param name="roleBase">表示する役職のRoleBase</param>
+    public void DisplayFalseRoleBase(ExPlayerControl player, ref IRoleBase roleBase)
+    {
+        if (!IsHide(player)) return;
+
+        var canGetRoleBase = CustomRoleManager.TryGetRoleById(
+                player.Data.Role.IsImpostor
+                ? RoleId.Impostor
+                : RoleId.Crewmate, out var falseRole
+                );
+
+        if (!canGetRoleBase) return;
+
+        roleBase = falseRole;
     }
 }

@@ -2,6 +2,7 @@ using System.Collections.Generic;
 using System.Linq;
 using SuperNewRoles.Modules;
 using SuperNewRoles.Roles;
+using SuperNewRoles.Roles.Ability;
 using TMPro;
 using UnityEngine;
 
@@ -71,8 +72,14 @@ public class MyRoleInfomationMenu : HelpMenuCategoryBase
                     GameObject.Destroy(child);
             }
 
+            // 役職を取得
+            var roleBase = ExPlayerControl.LocalPlayer.roleBase;
+            var hideMyRoleAbility = ExPlayerControl.LocalPlayer.GetAbility<HideMyRoleWhenAliveAbility>();
+            if (hideMyRoleAbility != null) hideMyRoleAbility.DisplayFalseRoleBase(ExPlayerControl.LocalPlayer, ref roleBase);
+
             // 役職IDのリストを取得
-            List<IRoleInformation> roles = [ExPlayerControl.LocalPlayer.roleBase];
+            List<IRoleInformation> roles = [roleBase];
+
             foreach (var modifier in ExPlayerControl.LocalPlayer.ModifierRoleBases)
                 roles.Add(modifier);
             if (ExPlayerControl.LocalPlayer.GhostRoleBase != null)
@@ -108,10 +115,11 @@ public class MyRoleInfomationMenu : HelpMenuCategoryBase
                 if (i == 0)
                     firstButton = button;
             }
+
             if (firstButton != null)
-                RoleDetailMenu.OnRoleButtonClicked(ExPlayerControl.LocalPlayer.roleBase, firstButton);
+                RoleDetailMenu.OnRoleButtonClicked(roleBase, firstButton);
             else
-                RoleDetailMenu.OnRoleButtonClicked(ExPlayerControl.LocalPlayer.roleBase, null);
+                RoleDetailMenu.OnRoleButtonClicked(roleBase, null);
         }
         else
         {
