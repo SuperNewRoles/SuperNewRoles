@@ -75,7 +75,7 @@ public class SheriffAbilityData
     }
     public bool CanKill(PlayerControl killer, ExPlayerControl target)
     {
-        if (target.IsImpostor() || target.Role == RoleId.HauntedWolf)
+        if (target.IsImpostor() || target.Role == RoleId.HauntedWolf || target.ModifierRole.HasFlag(ModifierRoleId.ModifierHauntedWolf))
             return CanKillImpostor;
         else if (target.IsNeutral())
             return CanKillNeutral;
