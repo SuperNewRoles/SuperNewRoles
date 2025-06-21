@@ -85,6 +85,12 @@ public class NecromancerCurseButtonAbility : TargetCustomButtonBase, IAbilityCou
     [CustomRPC]
     public static void RpcAssignRevenant(ExPlayerControl player)
     {
+        // 憑依で動けなくなることへの対策
+        if (player.AmOwner)
+        {
+            if (Minigame.Instance != null)
+                Minigame.Instance.Close();
+        }
         player.SetGhostRole(GhostRoleId.Revenant);
         RoleManager.Instance.SetRole(player, RoleTypes.CrewmateGhost);
         NameText.UpdateNameInfo(player);
