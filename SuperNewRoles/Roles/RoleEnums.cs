@@ -125,6 +125,7 @@ public enum RoleId : short
     Jammer,
     Moving,
     EvilMoving,
+    NiceRedRidingHood,
 }
 
 public enum GhostRoleId : short
