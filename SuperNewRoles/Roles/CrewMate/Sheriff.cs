@@ -75,17 +75,30 @@ public class SheriffAbilityData
     }
     public bool CanKill(PlayerControl killer, ExPlayerControl target)
     {
-        if (target.IsImpostor() || target.Role == RoleId.HauntedWolf || target.ModifierRole.HasFlag(ModifierRoleId.ModifierHauntedWolf))
-            return CanKillImpostor;
+        bool canKill = false;
+
+        if (target.IsImpostor())
+            canKill = CanKillImpostor;
         else if (target.IsNeutral())
-            return CanKillNeutral;
+            canKill = CanKillNeutral;
+        else if (target.Role == RoleId.HauntedWolf || target.ModifierRole.HasFlag(ModifierRoleId.ModifierHauntedWolf))
+            canKill = CanKillImpostor;
         else if (target.IsMadRoles())
-            return CanKillMadRoles;
+            canKill = CanKillMadRoles;
         else if (target.IsFriendRoles())
-            return CanKillFriendRoles;
+            canKill = CanKillFriendRoles;
         else if (target.IsLovers())
-            return CanKillLovers;
-        return false;
+            canKill = CanKillLovers;
+
+        // 狼憑きシェリフの判定反転
+        if (Modifiers.ModifierHauntedWolf.ModifierHauntedWolfIsReverseSheriffDecision)
+        {
+            var killExP = ExPlayerControl.ById(killer.PlayerId);
+            if (killExP.ModifierRole.HasFlag(ModifierRoleId.ModifierHauntedWolf))
+                canKill ^= true;
+        }
+
+        return canKill;
     }
 }
 
