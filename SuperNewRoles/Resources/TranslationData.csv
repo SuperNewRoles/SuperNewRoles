@@ -1655,5 +1655,5 @@ DimensionWalkerPutButtonText,設置,Place Wormhole,放置虫洞,放置蟲洞
 DimensionWalkerCollectButtonText,回収,Collect Wormhole,回收虫洞,回收蟲洞
 
 # ModifierHauntedWolf
-ModifierHauntedWolfIsAssignMadAndFriendRoles,マッドやフレンズロールと重複しない,No overlap with Mud or Friends rolls.,不会被分配给叛徒阵营或狈系职业,不重複分配给叛徒或狽系角色
+ModifierHauntedWolfIsAssignMadAndFriendRoles,マッドやフレンズロールと重複しない(一括設定),No overlap with Mud or Friends rolls.,不会被分配给叛徒阵营或狈系职业,不重複分配给叛徒或狽系角色
 ModifierHauntedWolfIsReverseSheriffDecision,シェリフや占い師等に重複した時，判定を反転する。,Reverses the kill decision when duplicated on a sheriff.,被分配给警长、占卜师等职业时技能判定反转,當狼憑於警長或占卜師等職業時，判定會反轉
