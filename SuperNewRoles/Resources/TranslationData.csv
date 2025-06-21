@@ -447,6 +447,10 @@ DimensionWalker,ディメンションウォーカー,Dimension Walker,次元行�
 DarkKiller,ダークキラー,Dark killer
 OrientalShaman,陰陽師,Oriental Shaman,阴阳师,陰陽師
 ShermansServant,式神,Shermans Servant,式神,式神
+Jammer,ジャマー,Jammer,干扰者,干擾者
+Shielder,シールダー,Shielder
+Moving,ムービング,Moving,移动者,移動者
+EvilMoving,イビルムービング,Evil Moving,邪恶移动者,邪惡移動者
 
 # Descriptions_VanillaRoles
 Crewmate.Description,特に何も能力を持たない基本的なクルーメイト役職です。\n人狼ゲームにおける村人の役割を持ちます。\nキル能力を持つ人外を全て追放するか、タスクを全て完了すると勝利します。,A basic Crewmate role with no special abilities.\nThey serve the role of Villager from the Werewolf game.\nVictory is achieved by ejecting all non-Crewmate players with kill abilities or by completing all tasks.,一个没有特殊能力的基础船员角色。\n他们承担了狼人游戏中村民的角色。\n通过将所有拥有击杀能力的非船员玩家投出局或完成所有任务来获胜。,一個沒有特殊能力的基礎船員角色。\n他們承擔了狼人遊戲中村民的角色。\n通過將所有擁有擊殺能力的非船員玩家投出局或完成所有任務來獲勝。,
@@ -1647,3 +1651,12 @@ DimensionWalkerActivateTime,ワームホール有効化時間,Wormhole Activatio
 DimensionWalkerPlayAnimation,ワームホールアニメーションを再生する,Play Wormhole Animation,播放虫洞动画,播放蟲洞動畫
 DimensionWalkerPutButtonText,設置,Place Wormhole,放置虫洞,放置蟲洞
 DimensionWalkerCollectButtonText,回収,Collect Wormhole,回收虫洞,回收蟲洞
+
+# Jammer
+JammerButtonName,透明化,Invisibility,隐形,隱形
+JammerCanUseAbilitiesAgainstImposter,インポスターに対しても能力を使用できる,Can use abilities against Impostors,可以对内鬼使用能力,可以對內鬼使用能力
+
+# Moving
+MovingAbilityButtonText,位置記録,Record Position,记录位置,記錄位置
+MovingPositionSetText,位置を記録しました,Position recorded,位置已记录,位置已記錄
+MovingTeleportText,テレポートしました,Teleported,已传送,已傳送
