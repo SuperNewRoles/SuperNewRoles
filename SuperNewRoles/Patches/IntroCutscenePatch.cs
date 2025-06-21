@@ -59,8 +59,8 @@ public static class IntroCutscenePatch
             ExPlayerControl player = PlayerControl.LocalPlayer;
             RoleId myrole = player.Role;
 
-            var hideRoleAbility = player.GetAbility<HideMyRoleWhenAliveAbility>();
-            if (hideRoleAbility != null) myrole = hideRoleAbility.FalseRoleId(player);
+            var hideMyRoleAbility = player.GetAbility<HideMyRoleWhenAliveAbility>();
+            if (hideMyRoleAbility != null) myrole = hideMyRoleAbility.FalseRoleId(player);
 
             var rolebase = CustomRoleManager.GetRoleById(myrole);
             if (rolebase != null)
@@ -87,6 +87,9 @@ public static class IntroCutscenePatch
 
             foreach (var modifier in player.ModifierRoleBases)
             {
+                // 生きている時は役職を自覚できないモディファイアは処理をスキップ
+                if (hideMyRoleAbility != null && hideMyRoleAbility.IsCheckTargetModifierRoleHidden(player, modifier.ModifierRole)) continue;
+
                 var randomIntroNum = Random.Range(1, modifier.IntroNum + 1);
                 introCutscene.RoleBlurbText.text += "\n" + ModHelpers.CsWithTranslation(modifier.RoleColor, $"{modifier.ModifierRole}Intro{randomIntroNum}");
             }
