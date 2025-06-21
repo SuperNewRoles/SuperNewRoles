@@ -80,6 +80,8 @@ public static class NameText
             roleName += " ";
         foreach (var modifier in player.ModifierRoleBases)
         {
+            // 生きている時は役職を自覚できないモディファイアは処理をスキップ
+            if (hideMyRoleAbility != null && hideMyRoleAbility.IsCheckTargetModifierRoleHidden(player, modifier.ModifierRole)) continue;
             roleName = modifier.ModifierMark(player).Replace("{0}", roleName);
         }
         playerInfoText = roleName;
@@ -94,7 +96,7 @@ public static class NameText
         bool visiable = ExPlayerControl.LocalPlayer.PlayerId == player.PlayerId ||
                         (ExPlayerControl.LocalPlayer.IsDead() && !GameSettingOptions.HideGhostRoles);
         // 生きている時は役職を自覚できない役の名前色を設定
-        if (hideMyRoleAbility != null && hideMyRoleAbility.IsHide(player))
+        if (hideMyRoleAbility != null && hideMyRoleAbility.IsHide(player).role)
         {
             var roleColor = player.Data.Role.IsImpostor ? Impostor.Instance.RoleColor : Crewmate.Instance.RoleColor;
             player.Data.Role.NameColor = roleColor;

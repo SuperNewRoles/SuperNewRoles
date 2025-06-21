@@ -74,6 +74,8 @@ public class MyRoleInfomationMenu : HelpMenuCategoryBase
 
             // 役職を取得
             var roleBase = ExPlayerControl.LocalPlayer.roleBase;
+
+            // 生きている時は役職を自覚できない役職の場合は 偽装情報を取得
             var hideMyRoleAbility = ExPlayerControl.LocalPlayer.GetAbility<HideMyRoleWhenAliveAbility>();
             if (hideMyRoleAbility != null) hideMyRoleAbility.DisplayFalseRoleBase(ExPlayerControl.LocalPlayer, ref roleBase);
 
@@ -81,7 +83,11 @@ public class MyRoleInfomationMenu : HelpMenuCategoryBase
             List<IRoleInformation> roles = [roleBase];
 
             foreach (var modifier in ExPlayerControl.LocalPlayer.ModifierRoleBases)
+            {
+                // 生きている時は役職を自覚できないモディファイアは処理をスキップ
+                if (hideMyRoleAbility != null && hideMyRoleAbility.IsCheckTargetModifierRoleHidden(ExPlayerControl.LocalPlayer, modifier.ModifierRole)) continue;
                 roles.Add(modifier);
+            }
             if (ExPlayerControl.LocalPlayer.GhostRoleBase != null)
                 roles.Add(ExPlayerControl.LocalPlayer.GhostRoleBase);
 
