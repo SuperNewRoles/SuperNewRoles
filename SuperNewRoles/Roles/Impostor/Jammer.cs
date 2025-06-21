@@ -126,6 +126,12 @@ public class JammerAbility : TargetCustomButtonBase, IButtonEffect
     public override void DetachToLocalPlayer()
     {
         base.DetachToLocalPlayer();
+        // クリーンアップ：透明効果を確実に解除
+        if (_invisibleTarget != null)
+        {
+            RpcSetInvisible(_invisibleTarget, false);
+            _invisibleTarget = null;
+        }
         _onMeetingStart?.RemoveListener();
     }
 
