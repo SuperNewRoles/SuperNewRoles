@@ -112,14 +112,15 @@ public class NecromancerRevenantArrowAbility : AbilityBase
 
     public void OnMeetingClose(MeetingCloseEventData _)
     {
-        foreach (var data in _arrows.ToArray())
+        for (int i = _arrows.Count - 1; i >= 0; i--)
         {
+            var data = _arrows[i];
             if (data.player?.GhostRole != GhostRoleId.Revenant)
             {
                 GameObject.Destroy(data.arrow.arrow);
+                _arrows.RemoveAt(i);
             }
         }
-        _arrows.RemoveAll(x => x.player?.GhostRole != GhostRoleId.Revenant);
     }
 
     public override void DetachToLocalPlayer()

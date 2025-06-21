@@ -106,7 +106,11 @@ public class JumpDancerAbility : CustomButtonBase, IAbilityCount
     {
         if (JumpingPlayerIds.Count <= 0)
             return;
-        foreach (var data in JumpingPlayerIds.ToArray())
+
+        // ToArray()を使わずに、削除対象を別リストに保存
+        List<byte> toRemove = null;
+
+        foreach (var data in JumpingPlayerIds)
         {
             ExPlayerControl player = ExPlayerControl.ById(data.Key);
             if (player == null) continue;
@@ -116,7 +120,10 @@ public class JumpDancerAbility : CustomButtonBase, IAbilityCount
                 player.transform.localScale = new(0.7f, 0.7f, 1);
                 player.Player.moveable = true;
                 if (player.IsAlive()) player.Player.Collider.enabled = true;
-                JumpingPlayerIds.Remove(data.Key);
+
+                // 削除対象をリストに追加
+                if (toRemove == null) toRemove = new List<byte>();
+                toRemove.Add(data.Key);
                 continue;
             }
             if (data.Value <= 0.1f)
@@ -144,6 +151,15 @@ public class JumpDancerAbility : CustomButtonBase, IAbilityCount
                 player.transform.position -= new Vector3(0, Time.fixedDeltaTime, 0);
             }
             JumpingPlayerIds[data.Key] += Time.fixedDeltaTime;
+        }
+
+        // ループ後に削除
+        if (toRemove != null)
+        {
+            foreach (var key in toRemove)
+            {
+                JumpingPlayerIds.Remove(key);
+            }
         }
     }
 
