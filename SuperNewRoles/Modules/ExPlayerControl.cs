@@ -13,16 +13,24 @@ using UnityEngine;
 
 namespace SuperNewRoles.Modules;
 
-// 型情報キャッシュシステム
+// 型情報キャッシュシステム - 静的型IDによる高速ルックアップ
 internal static class TypeCache<T> where T : AbilityBase
 {
-    internal static readonly int TypeId = System.Threading.Interlocked.Increment(ref TypeIdGenerator.NextId);
-    internal static readonly string TypeName = typeof(T).Name;
+    internal static readonly int TypeId;
+    internal static readonly Type Type;
+    internal static readonly string TypeName;
+
+    static TypeCache()
+    {
+        TypeId = System.Threading.Interlocked.Increment(ref TypeIdGenerator.NextId);
+        Type = typeof(T);
+        TypeName = Type.Name;
+    }
 }
 
 internal static class TypeIdGenerator
 {
-    internal static int NextId = 0;
+    internal static int NextId = -1; // 0から始まるように-1で初期化
 }
 
 public class ExPlayerControl
@@ -30,7 +38,7 @@ public class ExPlayerControl
     public static ExPlayerControl LocalPlayer;
     private static List<ExPlayerControl> _exPlayerControls { get; } = new();
     public static List<ExPlayerControl> ExPlayerControls => _exPlayerControls;
-    private static ExPlayerControl[] _exPlayerControlsArray;
+    private static ExPlayerControl[] _exPlayerControlsArray = new ExPlayerControl[256];
     public PlayerControl Player { get; }
     public NetworkedPlayerInfo Data { get; }
     public PlayerPhysics MyPhysics => Player?.MyPhysics;
@@ -102,17 +110,38 @@ public class ExPlayerControl
     [System.Runtime.CompilerServices.MethodImpl(System.Runtime.CompilerServices.MethodImplOptions.AggressiveInlining)]
     public static implicit operator ExPlayerControl(PlayerControl player)
     {
-        return player == null ? null : _exPlayerControlsArray[player.PlayerId];
+        if (player == null) return null;
+        unsafe
+        {
+            fixed (ExPlayerControl* ptr = _exPlayerControlsArray)
+            {
+                return *(ptr + player.PlayerId);
+            }
+        }
     }
     [System.Runtime.CompilerServices.MethodImpl(System.Runtime.CompilerServices.MethodImplOptions.AggressiveInlining)]
     public static implicit operator ExPlayerControl(PlayerVoteArea player)
     {
-        return player == null ? null : _exPlayerControlsArray[player.TargetPlayerId];
+        if (player == null) return null;
+        unsafe
+        {
+            fixed (ExPlayerControl* ptr = _exPlayerControlsArray)
+            {
+                return *(ptr + player.TargetPlayerId);
+            }
+        }
     }
     [System.Runtime.CompilerServices.MethodImpl(System.Runtime.CompilerServices.MethodImplOptions.AggressiveInlining)]
     public static implicit operator ExPlayerControl(NetworkedPlayerInfo data)
     {
-        return data == null ? null : _exPlayerControlsArray[data.PlayerId];
+        if (data == null) return null;
+        unsafe
+        {
+            fixed (ExPlayerControl* ptr = _exPlayerControlsArray)
+            {
+                return *(ptr + data.PlayerId);
+            }
+        }
     }
     public bool HasAbility(string abilityName)
     {
@@ -465,7 +494,13 @@ public class ExPlayerControl
     [System.Runtime.CompilerServices.MethodImpl(System.Runtime.CompilerServices.MethodImplOptions.AggressiveInlining)]
     public static ExPlayerControl ById(byte playerId)
     {
-        return _exPlayerControlsArray[playerId];
+        unsafe
+        {
+            fixed (ExPlayerControl* ptr = _exPlayerControlsArray)
+            {
+                return *(ptr + playerId);
+            }
+        }
     }
     public bool IsKiller()
         => IsImpostor() || IsPavlovsDog() || Role == RoleId.MadKiller || IsJackal() || HasCustomKillButton() || Role == RoleId.Hitman;
