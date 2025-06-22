@@ -61,9 +61,6 @@ class EvilSeer : RoleBase<EvilSeer>
 
     [CustomOptionFloat("EvilSeer.CreateAbilityCooldown", 2.5f, 60f, 2.5f, 30f, parentFieldName: nameof(EvilSeerHauntMode))]
     public static float EvilSeerCreateAbilityCooldown;
-
-    [CustomOptionBool("EvilSeer.AbilityHauntedWolfIsReverseSheriffDecision", true, parentFieldName: nameof(EvilSeerHauntMode))]
-    public static bool EvilSeerAbilityHauntedWolfIsReverseSheriffDecision;
 }
 
 public enum EvilSeerAbility

@@ -954,7 +954,6 @@ EvilSeer.EvilSeerHauntMode.Both,両方,
 EvilSeer.EvilSeerHauntMode.OnlyOthersHaunt,「取り憑かせる」のみ,
 EvilSeer.EvilSeerHauntMode.OnlyEvilSeerHaunt,「取り憑く」のみ,
 EvilSeer.CreateAbilityCooldown,「取り憑かせる」クールタイム,
-EvilSeer.AbilityHauntedWolfIsReverseSheriffDecision,付与した狼憑きは陣営判定を反転させるか,
 EvilSeerHauntButtonText,取り憑かせる,
 
 # Celebrity
