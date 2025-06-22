@@ -55,6 +55,15 @@ class EvilSeer : RoleBase<EvilSeer>
 
     [CustomOptionBool("EvilSeer.ShowArrows", true, translationName: "VultureShowArrows")]
     public static bool EvilSeerShowArrows = true;
+
+    [CustomOptionSelect("EvilSeer.EvilSeerHauntMode", typeof(EvilSeerHauntMode), "EvilSeer.EvilSeerHauntMode.", translationName: "EvilSeer.EvilSeerHauntMode")]
+    public static EvilSeerHauntMode EvilSeerHauntMode;
+
+    [CustomOptionFloat("EvilSeer.CreateAbilityCooldown", 2.5f, 60f, 2.5f, 30f, parentFieldName: nameof(EvilSeerHauntMode))]
+    public static float EvilSeerCreateAbilityCooldown;
+
+    [CustomOptionBool("EvilSeer.AbilityHauntedWolfIsReverseSheriffDecision", true, parentFieldName: nameof(EvilSeerHauntMode))]
+    public static bool EvilSeerAbilityHauntedWolfIsReverseSheriffDecision;
 }
 
 public enum EvilSeerAbility
@@ -63,4 +72,12 @@ public enum EvilSeerAbility
     FlashOnly,
     SoulOnly,
     ArrowOnly
+}
+
+public enum EvilSeerHauntMode
+{
+    None, // 無し
+    Both, // 両方
+    OnlyOthersHaunt, // 取り憑かせる
+    OnlyEvilSeerHaunt, // 取り憑く
 }

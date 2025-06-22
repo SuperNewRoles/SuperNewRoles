@@ -948,6 +948,14 @@ EvilSeer.AbilityColorModeSelect.ArrowOnly,死体矢印のみ,
 EvilSeer.FlashColorText,{0}色のクルーの死の点滅を検知,
 EvilSeer.DarkColor,暗い,Dark Color,深色,深色
 EvilSeer.LightColor,明るい,Light Color,浅色,淺色
+EvilSeer.EvilSeerHauntMode,狼憑き付与能力のモード,
+EvilSeer.EvilSeerHauntMode.None,能力オフ,
+EvilSeer.EvilSeerHauntMode.Both,両方,
+EvilSeer.EvilSeerHauntMode.OnlyOthersHaunt,「取り憑かせる」のみ,
+EvilSeer.EvilSeerHauntMode.OnlyEvilSeerHaunt,「取り憑く」のみ,
+EvilSeer.CreateAbilityCooldown,「取り憑かせる」クールタイム,
+EvilSeer.AbilityHauntedWolfIsReverseSheriffDecision,付与した狼憑きは陣営判定を反転させるか,
+EvilSeerHauntButtonText,取り憑かせる,
 
 # Celebrity
 CelebrityIntro,みんなのスター！！,The Celebrity!!,大家的明星！！,大家的明星！！
