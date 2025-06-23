@@ -79,17 +79,30 @@ public class MeetingSheriffAbilityData
 
     public bool CanKill(PlayerControl killer, ExPlayerControl target)
     {
+        bool canKill = false;
+
         if (target.IsImpostor())
-            return CanKillImpostor;
+            canKill = CanKillImpostor;
         else if (target.IsNeutral())
-            return CanKillNeutral;
+            canKill = CanKillNeutral;
+        else if (target.Role == RoleId.HauntedWolf || target.ModifierRole.HasFlag(ModifierRoleId.ModifierHauntedWolf)) // 第三陣営に付与される事はEvilSeerのAbilityによる付与時のみの為、第三陣営としての判定を優先
+            canKill = CanKillImpostor;
         else if (target.IsMadRoles())
-            return CanKillMadRoles;
+            canKill = CanKillMadRoles;
         else if (target.IsFriendRoles())
-            return CanKillFriendRoles;
+            canKill = CanKillFriendRoles;
         else if (target.IsLovers())
-            return CanKillLovers;
-        return false;
+            canKill = CanKillLovers;
+
+        // 狼憑きシェリフの判定反転
+        if (Modifiers.ModifierHauntedWolf.ModifierHauntedWolfIsReverseSheriffDecision)
+        {
+            var killExP = ExPlayerControl.ById(killer.PlayerId);
+            if (killExP.ModifierRole.HasFlag(ModifierRoleId.ModifierHauntedWolf))
+                canKill ^= true;
+        }
+
+        return canKill;
     }
 }
 
