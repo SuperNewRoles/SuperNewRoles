@@ -203,7 +203,10 @@ public class MeetingSheriffAbility : CustomMeetingButtonBase, IAbilityCount
         if (isMisFire || isSuicide)
             dyingTarget.FinalStatus = FinalStatus.SheriffSelfDeath;
         else
+        {
             dyingTarget.FinalStatus = FinalStatus.SheriffKill;
+            MurderDataManager.AddMurderData(killer, dyingTarget);
+        }
 
         if (Constants.ShouldPlaySfx())
             SoundManager.Instance.PlaySound(dyingTarget.Player.KillSfx, false, 0.8f);
