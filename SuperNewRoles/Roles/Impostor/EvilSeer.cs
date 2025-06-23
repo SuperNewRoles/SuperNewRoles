@@ -24,7 +24,8 @@ class EvilSeer : RoleBase<EvilSeer>
             SoulColorMode = EvilSeerAbilityColorModeSelect is EvilSeerAbility.All or EvilSeerAbility.SoulOnly ? EvilSeerColorMode : DeadBodyColorMode.None
         }),
         () => new DeadBodyArrowsAbility(() => EvilSeerShowArrows, colorMode : EvilSeerAbilityColorModeSelect is EvilSeerAbility.All or EvilSeerAbility.ArrowOnly ? EvilSeerColorMode : DeadBodyColorMode.None),
-        ()=> new CustomModifierGrantedButtonAbility(new(
+        () => new EvilSeerHauntAbility(EvilSeerHauntMode is EvilSeerHauntMode.Both or EvilSeerHauntMode.OnlyEvilSeerHaunt),
+        () => new CustomModifierGrantedButtonAbility(new(
         canGrantModifier: (granted) => !granted && EvilSeerHauntMode is EvilSeerHauntMode.Both or EvilSeerHauntMode.OnlyOthersHaunt,
         cooldown: () => EvilSeerCreateAbilityCooldown,
         modifierRole: () => ModifierRoleId.ModifierHauntedWolf,
@@ -85,4 +86,35 @@ public enum EvilSeerHauntMode
     Both, // 両方
     OnlyOthersHaunt, // 取り憑かせる
     OnlyEvilSeerHaunt, // 取り憑く
+}
+
+public class EvilSeerHauntAbility(bool canHaunt) : AbilityBase
+{
+    private EventListener<DieEventData> dieEventListener;
+
+    private readonly bool CanHaunt = canHaunt;
+
+    public override void AttachToLocalPlayer() =>
+        dieEventListener = DieEvent.Instance.AddListener(OnPlayerDead);
+    public override void DetachToLocalPlayer()
+    {
+        dieEventListener?.RemoveListener();
+        base.DetachToLocalPlayer();
+    }
+
+    private void OnPlayerDead(DieEventData data)
+    {
+        if (!CanHaunt) return;
+        if (data.player != PlayerControl.LocalPlayer) return;
+
+        // MurderData 記録待ちの為に遅延を入れている
+        new LateTask(() =>
+        {
+            if (MurderDataManager.TryGetMurderData(data.player, out var murderData))
+            {
+                if (murderData.Target != murderData.Killer)
+                    murderData.Killer.RpcCustomSetModifierRoleInGame(ModifierRoleId.ModifierHauntedWolf);
+            }
+        }, 1f);
+    }
 }
