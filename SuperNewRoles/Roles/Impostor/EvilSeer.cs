@@ -24,7 +24,15 @@ class EvilSeer : RoleBase<EvilSeer>
             SoulColorMode = EvilSeerAbilityColorModeSelect is EvilSeerAbility.All or EvilSeerAbility.SoulOnly ? EvilSeerColorMode : DeadBodyColorMode.None
         }),
         () => new DeadBodyArrowsAbility(() => EvilSeerShowArrows, colorMode : EvilSeerAbilityColorModeSelect is EvilSeerAbility.All or EvilSeerAbility.ArrowOnly ? EvilSeerColorMode : DeadBodyColorMode.None),
+        ()=> new CustomModifierGrantedButtonAbility(new(
+        canGrantModifier: (granted) => !granted && EvilSeerHauntMode is EvilSeerHauntMode.Both or EvilSeerHauntMode.OnlyOthersHaunt,
+        cooldown: () => EvilSeerCreateAbilityCooldown,
+        modifierRole: () => ModifierRoleId.ModifierHauntedWolf,
+        buttonSprite: AssetManager.GetAsset<Sprite>("CreateHauntedWolfButton.png"),
+        buttonText: ModTranslation.GetString("EvilSeerHauntButtonText")
+        ))
     ];
+
     public override QuoteMod QuoteMod { get; } = QuoteMod.SuperNewRoles;
     public override RoleTypes IntroSoundType { get; } = RoleTypes.Phantom;
     public override short IntroNum { get; } = 1;
