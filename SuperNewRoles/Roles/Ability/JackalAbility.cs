@@ -62,7 +62,8 @@ public class JackalAbility : AbilityBase
                         }
                     }
                 }, 0.5f, "JackalAbility.OnSidekickCreated");
-            }
+            },
+            isSubButton: JackData.HasOtherButton
         ));
 
         KnowJackalAbility = new KnowOtherAbility(
@@ -110,7 +111,20 @@ public class JackalData
     public bool IsImpostorVision { get; }
     public bool IsInfiniteJackal { get; }
     public RoleId SidekickType { get; }
+    /// <summary>Kill能力とSK能力以外のパッシブアビリティを有するジャッカル役職か</summary>
+    /// <value>true => 有する, false => 有さない</value>
+    public bool HasOtherButton { get; private set; }
 
+    /// <summary>ジャッカルの基本能力(Kill, Vent, SK, ImpostorVision)</summary>
+    /// <param name="canKill"></param>
+    /// <param name="killCooldown"></param>
+    /// <param name="canUseVent"></param>
+    /// <param name="canCreateSidekick"></param>
+    /// <param name="sidekickCooldown"></param>
+    /// <param name="isImpostorVision"></param>
+    /// <param name="isInfiniteJackal">無限ジャッカル</param>
+    /// <param name="sidekickType">SK先の役職</param>
+    /// <param name="hasOtherButton">基本能力以外のパッシブアビリティを有するジャッカル役職か</param>
     public JackalData(
         bool canKill,
         float killCooldown,
@@ -119,7 +133,8 @@ public class JackalData
         float sidekickCooldown,
         bool isImpostorVision = true,
         bool isInfiniteJackal = true,
-        RoleId sidekickType = RoleId.Sidekick)
+        RoleId sidekickType = RoleId.Sidekick,
+        bool hasOtherButton = false)
     {
         CanKill = canKill;
         KillCooldown = killCooldown;
@@ -129,5 +144,6 @@ public class JackalData
         IsImpostorVision = isImpostorVision;
         IsInfiniteJackal = isInfiniteJackal;
         SidekickType = sidekickType;
+        HasOtherButton = hasOtherButton;
     }
 }

@@ -64,11 +64,11 @@ public class CustomSidekickButtonAbility : TargetCustomButtonBase
     public override Color32 OutlineColor => new(0, 255, 255, 255);
     public override Sprite Sprite => _options.SidekickSprite;
     public override string buttonText => _options.SidekickText;
-    protected override KeyType keytype => _options.IsSubButton ? KeyType.Ability2 : KeyType.Ability1;
+    protected override KeyType keytype => _options.IsSubButton ? KeyType.Ability3 : KeyType.Ability1;
     public override float DefaultTimer => _options.SidekickCooldown?.Invoke() ?? 0;
     public override bool OnlyCrewmates => false;
     public override Func<ExPlayerControl, bool>? IsTargetable => _options.IsTargetable;
-    public override ShowTextType showTextType => _options.ShowSidekickLimitText == null ? ShowTextType.Hidden : ShowTextType.ShowWithCount;
+    public override ShowTextType showTextType => _options.ShowSidekickLimitText == null ? ShowTextType.Hidden : !_options.ShowSidekickLimitText.Invoke() ? ShowTextType.Hidden : ShowTextType.ShowWithCount;
     public override string showText => ModTranslation.GetString("RemainingText");
     public CustomSidekickButtonAbility(CustomSidekickButtonAbilityOptions options)
     {

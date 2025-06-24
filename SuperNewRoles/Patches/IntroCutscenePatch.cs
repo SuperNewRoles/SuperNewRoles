@@ -23,7 +23,6 @@ public static class IntroCutscenePatch
     {
         public static void Postfix(IntroCutscene __instance)
         {
-            Logger.Info("AASAAAAAAAAAAAAAAAAAAAAjhygtrfegtyjut5refrgdbAaaa");
             // なんかバグるからとりあえず
             if (ModHelpers.IsHnS())
             {
@@ -149,9 +148,10 @@ public static class IntroCutscenePatch
             if (ExPlayerControl.LocalPlayer.IsCrewmate())
             {
                 yourTeam = new();
-
+                yourTeam.Add(PlayerControl.LocalPlayer);
                 foreach (PlayerControl p in PlayerControl.AllPlayerControls)
                 {
+                    if (p == PlayerControl.LocalPlayer) continue;
                     yourTeam.Add(p);
                 }
             }
@@ -162,6 +162,7 @@ public static class IntroCutscenePatch
                 {
                     if (player.IsImpostor())
                     {
+                        if (player == ExPlayerControl.LocalPlayer) continue;
                         yourTeam.Add(player);
                     }
                 }
