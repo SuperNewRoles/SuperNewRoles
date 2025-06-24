@@ -538,7 +538,7 @@ public static class ModHelpers
 
     public static bool IsSabotage(TaskTypes taskType)
     {
-        return taskType is TaskTypes.FixLights or TaskTypes.RestoreOxy or TaskTypes.ResetReactor or TaskTypes.StopCharles or TaskTypes.ResetSeismic or TaskTypes.FixComms or TaskTypes.MushroomMixupSabotage or TaskTypes.StopCharles;
+        return taskType is TaskTypes.FixLights or TaskTypes.RestoreOxy or TaskTypes.ResetReactor or TaskTypes.StopCharles or TaskTypes.ResetSeismic or TaskTypes.FixComms or TaskTypes.MushroomMixupSabotage;
     }
     public static bool IsSabotage(SystemTypes systemType)
     {
