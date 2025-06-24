@@ -90,13 +90,15 @@ public class RobberAbility : AbilityBase
 
         // 巻き戻すタスク数を制限
         int actualRewindCount = Math.Min(rewindCount, completedTasks.Count);
-
-        // ランダムに選択して巻き戻し対象のIDを返す
-        return completedTasks
-            .OrderBy(x => UnityEngine.Random.value)
-            .Take(actualRewindCount)
-            .Select(task => task.Id)
-            .ToList();
+        var taskList = completedTasks.ToList();
+        for (int i = taskList.Count - 1; i > 0; i--)
+        {
+            int j = UnityEngine.Random.Range(0, i + 1);
+            var temp = taskList[i];
+            taskList[i] = taskList[j];
+            taskList[j] = temp;
+        }
+        return taskList.Take(actualRewindCount).Select(task => task.Id).ToList();
     }
 
     [CustomRPC]

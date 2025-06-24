@@ -41,7 +41,7 @@ public class SluggerAbility : CustomButtonBase, IButtonEffect
     private void PlayChargeAnimation(PlayerControl player)
     {
         // チャージアニメーション（4フレーム、ループ）
-        var sprites = CustomPlayerAnimationSimple.GetSprites("tame_{0}", 1, 4, zeroPadding: 3);
+        var sprites = CustomPlayerAnimationSimple.GetSprites("tame_{0}.png", 1, 4, zeroPadding: 3);
         var option = new CustomPlayerAnimationSimpleOption(
             Sprites: sprites,
             PlayerFlipX: true,

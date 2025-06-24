@@ -62,7 +62,9 @@ public static class ModHelpers
         byte[] bytes = new byte[4];
         Rng.GetBytes(bytes);
         float randomValue = BitConverter.ToSingle(bytes, 0);
-        return min + (Math.Abs(randomValue) % (max - min + 1));
+        // 0.0～1.0の範囲に正規化してからmin～maxの範囲に変換
+        float normalized = (randomValue - float.MinValue) / (float.MaxValue - float.MinValue);
+        return min + (normalized * (max - min));
     }
 
     /// <summary>
