@@ -78,7 +78,7 @@ public class CustomModifierGrantedButtonAbility : TargetCustomButtonBase
 
     private bool _granted = false;
 
-    public override Color32 OutlineColor => new(0, 255, 255, 255);
+    public override Color32 OutlineColor => ExPlayerControl.LocalPlayer.roleBase.RoleColor;
     public override Sprite Sprite => _options.ButtonSprite;
     public override string buttonText => _options.ButtonText;
     protected override KeyType keytype => _options.IsSubButton ? KeyType.None : KeyType.Ability1; // FIXME : #1169(Dev_Fix) で仕様を変更している為、マージ後 下のコードに変更
