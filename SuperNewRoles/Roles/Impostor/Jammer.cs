@@ -99,6 +99,11 @@ public class JammerAbility : TargetCustomButtonBase, IButtonEffect
     {
         if (Target == null) return;
 
+        if (_invisibleTarget != null && _invisibleTarget != Target)
+        {
+            RpcSetInvisible(_invisibleTarget, false);
+        }
+
         _invisibleTarget = Target;
         RpcSetInvisible(Target, true);
         _usedCount++;

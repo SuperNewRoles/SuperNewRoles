@@ -14,7 +14,7 @@ internal class NiceRedRidingHood : RoleBase<NiceRedRidingHood>
     public override RoleId Role { get; } = RoleId.NiceRedRidingHood;
     public override Color32 RoleColor { get; } = new(250, 128, 114, byte.MaxValue);
     public override List<Func<AbilityBase>> Abilities { get; } = [
-        () => new NiceRedRidingHoodReviveAbility(NiceRedRidingHoodCount, NiceRedRidinIsKillerDeathRevive), () => new NiceRedRidingHoodGhostAbility()
+        () => new NiceRedRidingHoodReviveAbility(NiceRedRidingHoodCount, NiceRedRidingHoodIsKillerDeathRevive), () => new NiceRedRidingHoodGhostAbility()
         ];
     public override QuoteMod QuoteMod { get; } = QuoteMod.SuperNewRoles;
     public override RoleTypes IntroSoundType { get; } = RoleTypes.Crewmate;
@@ -29,7 +29,7 @@ internal class NiceRedRidingHood : RoleBase<NiceRedRidingHood>
     [CustomOptionInt("NiceRedRidingHoodCount", 1, 15, 1, 1)]
     public static int NiceRedRidingHoodCount;
 
-    [CustomOptionBool("NiceRedRidinIsKillerDeathRevive", true)]
-    public static bool NiceRedRidinIsKillerDeathRevive;
+    [CustomOptionBool("NiceRedRidingHoodIsKillerDeathRevive", true)]
+    public static bool NiceRedRidingHoodIsKillerDeathRevive;
 
 }
