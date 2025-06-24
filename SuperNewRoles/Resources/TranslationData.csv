@@ -501,6 +501,8 @@ Mushroomer.Description,タスクターンに使用出来る能力を有するイ
 DimensionWalker.Description,タスクターンに使用出来る能力を有するインポスターです。\n「設置」ボタンを押すとワームホールを設置出来ます。\nワームホールは一定時間経過後有効化し、ワームホール間を行き来出来るベントとして機能します。\nワームホールはディメンションウォーカー以外のインポスターも使用可能です。\n「回収」ボタンでワームホールを回収し、使用回数を回復させることが出来ます。,An impostor with an ability usable on the task turn。\nPressing the “Place” button lets you deploy a wormhole。\nAfter a set time、the wormhole activates and functions as a vent、allowing travel between wormholes。\nOther impostors besides the Dimension Walker can also use the wormholes。\nPressing the “Retract” button retrieves a wormhole and restores its uses。,具有在任务回合使用能力的冒充者。\n按下“Place”按钮可以部署虫洞。\n一定时间后、虫洞激活并作为通风口运行、可以在虫洞间来回移动。\n除了Dimension Walker之外的冒充者也能使用虫洞。\n按下“Retract”按钮可以收回虫洞并恢复使用次数。,具有在任務回合使用能力的冒充者。\n按下「Place」按鈕可以部署蟲洞。\n一定時間後、蟲洞激活並作為通風口運行、可以在蟲洞間來回移動。\n除了Dimension Walker之外的冒充者也能使用蟲洞。\n按下「Retract」按鈕可以收回蟲洞並恢復使用次數。
 DarkKiller.Description,キルに関係する能力を有するインポスターです。\nキルクールが短い代わりに、停電中しかキルが出来ません。,An impostor with kill-related abilities。\nWhile the kill cooldown is short、you can only kill during a blackout。,具有击杀相关能力的冒充者。\n虽然击杀冷却较短、但只能在停电时击杀。,具有擊殺相關能力的冒充者。\n雖然擊殺冷卻較短、但只能在停電時擊殺。
 EvilSeer.Description,タスクターンに発動する能力を有するインポスターです。\n誰かが死亡すると画面が発光します。\nまた、誰かが死亡した箇所に霊魂を確認することが出来ます。\n死体が発生した場合、その死体の方向に矢印を表示する事もできます。\nこれらの能力は設定によって、死者の色を反映させる事もできます。,An impostor with an ability activated on the task turn。\nWhen someone dies、the screen flashes。\nYou can also see a soul at the spot where they died。\nIf a body appears、an arrow can indicate its direction。\nDepending on settings、these abilities can reflect the color of the deceased。,具有在任务回合发动能力的冒充者。\n有人死亡时、屏幕会闪光。\n你还可以在死亡地点看到灵魂。\n如果出现尸体、屏幕上会显示指向尸体的箭头。\n这些能力可根据设置反映死者的颜色。,具有在任務回合發動能力的冒充者。\n有人死亡時、螢幕會閃光。\n你還可以在死亡地點看到靈魂。\n如果出現屍體、螢幕上會顯示指向屍體的箭頭。\n這些能力可根據設定反映死者的顏色。
+Robber.Description,キルに関係する能力を有するインポスターです。\nキルをした対象のタスク進捗を巻き戻します。,
+OverKiller.Description,キルに関係する能力を有するインポスターです。\nキルをした対象の死体を増やします。,
 
 # Descriptions_Neutral
 Jackal.Description,キル能力を有する第三陣営です。\n自陣営以外のキルが出来る陣営が全滅した上で、自陣営とクルーが同数以下になれば勝利します。\n設定次第で他のプレイヤーの役職を、自身の後継となるサイドキックや、手助けをしてくれるジャッカルフレンズに変更する能力を有することも出来ます。,A third-faction role with a kill ability.\nIt wins if all factions capable of killing outside its own are eliminated and its faction and the Crewmates are equal in number or fewer.\nDepending on the settings，it can change other players’ roles into a Sidekick (its successor) or Jackal Friends who assist it.,这是一个拥有击杀能力的第三阵营角色。\n当所有能够进行击杀的其他阵营被消灭，并且其阵营与船员人数相等或更少时，即可获胜。\n根据设定，它还可以将其他玩家的角色变更为边缘队员（其继任者）或协助的杰克朋友。,這是一個具備擊殺能力的第三陣營角色。\n當其他能進行擊殺的陣營全部被消滅，且其陣營與船員數量相等或更少時，即獲勝。\n根據設定，還可將其他玩家的角色變更為接班的邊翼或提供協助的傑克朋友。,
@@ -636,6 +638,8 @@ MushroomerIntro1,繁茂する菌糸,Proliferating mycelium,繁茂的菌丝,繁�
 DimensionWalkerIntro1,次元を越えて,Crossing dimensions,跨越次元,跨越次元
 DarkKillerIntro1,疾風漆黒,Jet-black gale,漆黑暴风,漆黑暴風
 EvilSeerIntro1,彼らは共に在る,They exist together,他们同在,他們同在
+RobberIntro1,その進捗、頂戴するぜ,
+OverKillerIntro1,何度だって切り刻む,
 
 # Intros_Neutral
 JackalIntro1,暗躍するもう一人の殺人鬼,Another puppeteer of death in the shadows,另一个暗中操纵死亡者,另一個暗中操縱死亡者,
