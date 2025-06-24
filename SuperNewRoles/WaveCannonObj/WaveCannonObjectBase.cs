@@ -207,7 +207,11 @@ public abstract class WaveCannonObjectBase
     public static void RpcSpawnFromType(ExPlayerControl source, WaveCannonType type, ulong abilityId, bool isFlipX, Vector3 startPosition)
     {
         WaveCannonAbility ability = source.GetAbility<WaveCannonAbility>(abilityId);
-        if (ability == null) return;
+        if (ability == null)
+        {
+            Logger.Error($"WaveCannonAbility is null. source: {source.PlayerId}, type: {type}, isFlipX: {isFlipX}, startPosition: {startPosition}");
+            return;
+        }
         WaveCannonObjectBase obj = SpawnFromType(type, ability, isFlipX, startPosition, ability.isResetKillCooldown);
         ability.SpawnedWaveCannonObject(obj);
     }
