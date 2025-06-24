@@ -78,6 +78,9 @@ public class ExPlayerControl
     // パフォーマンス最適化用キャッシュ
     private readonly Dictionary<int, AbilityBase> _typeIdAbilityCache = new();
     private readonly Dictionary<int, List<AbilityBase>> _typeIdAbilitiesCache = new();
+    private readonly Dictionary<int, IReadOnlyList<object>> _typeIdReadOnlyCache = new();
+
+    // 型IDキャッシュ用配列。1024種類を超える型はキャッシュされないが、動作は継続する
     private readonly bool[] _hasAbilityByTypeId = new bool[1024]; // 最大1024種類のアビリティタイプを想定
     private readonly bool[] _hasAbilityByTypeIdCached = new bool[1024];
 
@@ -256,9 +259,12 @@ public class ExPlayerControl
         if (AmOwner)
             SuperTrophyManager.DetachTrophy(Role);
         Role = roleId;
+        Logger.Info($"[SetRole] Player {Player?.name} ({PlayerId}) changing role from {oldRole} to {roleId}, AmOwner: {AmOwner}");
         if (CustomRoleManager.TryGetRoleById(roleId, out var role))
         {
+            Logger.Info($"[SetRole] Calling OnSetRole for player {Player?.name} ({PlayerId})");
             role.OnSetRole(Player);
+            Logger.Info($"[SetRole] OnSetRole completed, PlayerAbilities count: {PlayerAbilities.Count}");
             if (AmOwner)
                 SuperTrophyManager.RegisterTrophy(Role);
             roleBase = role;
@@ -471,6 +477,7 @@ public class ExPlayerControl
         _hasAbilityCache.Clear();
         _typeIdAbilityCache.Clear();
         _typeIdAbilitiesCache.Clear();
+        _typeIdReadOnlyCache.Clear();
         System.Array.Clear(_hasAbilityByTypeIdCached, 0, _hasAbilityByTypeIdCached.Length);
         System.Array.Clear(_hasAbilityByTypeId, 0, _hasAbilityByTypeId.Length);
     }
@@ -659,6 +666,7 @@ public class ExPlayerControl
         // 新しいキャッシュシステムのクリア（最適化版）
         _typeIdAbilityCache.Clear();
         _typeIdAbilitiesCache.Clear();
+        _typeIdReadOnlyCache.Clear();
         System.Array.Clear(_hasAbilityByTypeIdCached, 0, _hasAbilityByTypeIdCached.Length);
     }
     public void AttachAbility(AbilityBase ability, AbilityParentBase parent)
@@ -705,6 +713,7 @@ public class ExPlayerControl
         // 新しいキャッシュシステムのクリア（最適化版）
         _typeIdAbilityCache.Clear();
         _typeIdAbilitiesCache.Clear();
+        _typeIdReadOnlyCache.Clear();
         System.Array.Clear(_hasAbilityByTypeIdCached, 0, _hasAbilityByTypeIdCached.Length);
     }
     public T GetAbility<T>() where T : AbilityBase
@@ -726,17 +735,29 @@ public class ExPlayerControl
         _typeIdAbilityCache[typeId] = null;
         return null;
     }
-    public List<T> GetAbilities<T>() where T : AbilityBase
+    public IReadOnlyList<T> GetAbilities<T>() where T : AbilityBase
     {
         var typeId = TypeCache<T>.TypeId;
-        if (_typeIdAbilitiesCache.TryGetValue(typeId, out var cachedList))
+
+        // ReadOnlyキャッシュをチェック
+        if (_typeIdReadOnlyCache.TryGetValue(typeId, out var cachedReadOnly))
         {
-            var cachedResult = new List<T>(cachedList.Count);
-            for (var i = 0; i < cachedList.Count; i++)
-                cachedResult.Add((T)cachedList[i]);
-            return cachedResult;
+            return (IReadOnlyList<T>)cachedReadOnly;
         }
 
+        // 既存のキャッシュをチェック
+        if (_typeIdAbilitiesCache.TryGetValue(typeId, out var cachedList))
+        {
+            var typedList = new List<T>(cachedList.Count);
+            for (var i = 0; i < cachedList.Count; i++)
+                typedList.Add((T)cachedList[i]);
+
+            var readOnlyResult = typedList.AsReadOnly();
+            _typeIdReadOnlyCache[typeId] = readOnlyResult;
+            return readOnlyResult;
+        }
+
+        // 新規作成
         var result = new List<T>();
         var cacheList = new List<AbilityBase>();
         var count = PlayerAbilities.Count;
@@ -751,7 +772,9 @@ public class ExPlayerControl
         }
 
         _typeIdAbilitiesCache[typeId] = cacheList;
-        return result;
+        var readOnlyCollection = result.AsReadOnly();
+        _typeIdReadOnlyCache[typeId] = readOnlyCollection;
+        return readOnlyCollection;
     }
     public override string ToString()
     {

@@ -286,8 +286,17 @@ internal unsafe struct FastHashTable
         if (stringData != null)
         {
             Marshal.FreeHGlobal((IntPtr)stringData);
+            stringData = null;
         }
-        Marshal.FreeHGlobal((IntPtr)Unsafe.AsPointer(ref this));
+    }
+
+    public static void DestroyTable(FastHashTable* table)
+    {
+        if (table != null)
+        {
+            table->Destroy();
+            Marshal.FreeHGlobal((IntPtr)table);
+        }
     }
 }
 
@@ -453,7 +462,7 @@ public static unsafe partial class ModTranslation
         {
             if (CurrentTranslations != null)
             {
-                CurrentTranslations->Destroy();
+                FastHashTable.DestroyTable(CurrentTranslations);
             }
             CurrentTranslations = FastHashTable.Create(1024 * 1024);
             LoadCurrentLanguageOnly();
@@ -531,6 +540,30 @@ public static unsafe partial class ModTranslation
     public static string GetString(string key, params object[] format)
     {
         return string.Format(GetString(key), format);
+    }
+
+    public static void Cleanup()
+    {
+        if (ModHelpers.IsAndroid())
+        {
+            if (CurrentTranslations != null)
+            {
+                FastHashTable.DestroyTable(CurrentTranslations);
+                CurrentTranslations = null;
+            }
+        }
+        else
+        {
+            for (int i = 0; i < AllTranslations.Length; i++)
+            {
+                if (AllTranslations[i] != null)
+                {
+                    FastHashTable.DestroyTable(AllTranslations[i]);
+                    AllTranslations[i] = null;
+                }
+            }
+        }
+        CurrentLang = null;
     }
 
     [HarmonyPatch(typeof(TranslationController), nameof(TranslationController.SetLanguage))]

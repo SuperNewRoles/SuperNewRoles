@@ -211,7 +211,12 @@ public class PusherAbility : TargetCustomButtonBase
 
         target.CustomDeath(CustomDeathType.Push, source: source);
         if (_revengeRole)
-            target.GetAbilities<RevengeExileAbility>().ForEach(x => x.RandomExile());
+        {
+            foreach (var ability in target.GetAbilities<RevengeExileAbility>())
+            {
+                ability.RandomExile();
+            }
+        }
     }
 
     private static void PushAnimation(PlayerControl player)
