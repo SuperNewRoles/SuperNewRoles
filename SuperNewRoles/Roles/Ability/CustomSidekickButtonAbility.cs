@@ -68,7 +68,7 @@ public class CustomSidekickButtonAbility : TargetCustomButtonBase
     public override float DefaultTimer => _options.SidekickCooldown?.Invoke() ?? 0;
     public override bool OnlyCrewmates => false;
     public override Func<ExPlayerControl, bool>? IsTargetable => _options.IsTargetable;
-    public override ShowTextType showTextType => _options.ShowSidekickLimitText == null ? ShowTextType.Hidden : ShowTextType.ShowWithCount;
+    public override ShowTextType showTextType => _options.ShowSidekickLimitText == null ? ShowTextType.Hidden : !_options.ShowSidekickLimitText.Invoke() ? ShowTextType.Hidden : ShowTextType.ShowWithCount;
     public override string showText => ModTranslation.GetString("RemainingText");
     public CustomSidekickButtonAbility(CustomSidekickButtonAbilityOptions options)
     {
