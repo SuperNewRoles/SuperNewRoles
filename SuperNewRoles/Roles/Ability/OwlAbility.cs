@@ -287,7 +287,7 @@ public class OwlSpecialBlackoutAbility : CustomButtonBase, IButtonEffect
     public override float DefaultTimer => _cooldown;
     public override string buttonText => ModTranslation.GetString("OwlSpecialBlackoutButton");
     public override Sprite Sprite => AssetManager.GetAsset<Sprite>("OwlSpecialBlackoutButton.png");
-    protected override KeyType keytype => KeyType.Ability2;
+    protected override KeyType keytype => KeyType.Ability3;
     bool IButtonEffect.isEffectActive { get; set; }
     Action IButtonEffect.OnEffectEnds => OnEffectEnds;
     float IButtonEffect.EffectDuration => _effectDuration;

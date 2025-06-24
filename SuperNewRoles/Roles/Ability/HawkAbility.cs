@@ -68,6 +68,10 @@ public class HawkAbility : CustomButtonBase, IButtonEffect
         hawkEventListener?.RemoveListener();
         meetingStartEventListener?.RemoveListener();
         dieEventListener?.RemoveListener();
+        if (isEffectActive)
+        {
+            OnEffectEnds();
+        }
     }
 
     public override void OnClick()
