@@ -25,6 +25,7 @@ internal unsafe struct FastHashTable
     public static FastHashTable* Create(int capacity)
     {
         var table = (FastHashTable*)Marshal.AllocHGlobal(sizeof(FastHashTable));
+        Unsafe.InitBlock(table, 0, (uint)sizeof(FastHashTable));
         table->stringDataCapacity = capacity;
         table->stringData = (byte*)Marshal.AllocHGlobal(capacity);
         table->stringDataSize = 0;
@@ -140,8 +141,10 @@ internal unsafe struct FastHashTable
 
     public void Add(string key, string value)
     {
+        if (string.IsNullOrEmpty(key)) return;
+
         var keyBytes = Encoding.UTF8.GetBytes(key);
-        var valueBytes = Encoding.UTF8.GetBytes(value);
+        var valueBytes = Encoding.UTF8.GetBytes(value ?? "");
 
         fixed (byte* keyPtr = keyBytes)
         fixed (byte* valuePtr = valueBytes)
@@ -155,11 +158,33 @@ internal unsafe struct FastHashTable
         if (stringDataSize + keyLen + valueLen + 2 > stringDataCapacity)
         {
             // 容量拡張
-            stringDataCapacity *= 2;
-            var newData = (byte*)Marshal.AllocHGlobal(stringDataCapacity);
-            Buffer.MemoryCopy(stringData, newData, stringDataCapacity, stringDataSize);
-            Marshal.FreeHGlobal((IntPtr)stringData);
+            int newCapacity = stringDataCapacity == 0 ? 1024 * 16 : stringDataCapacity * 2;
+            int requiredSize = stringDataSize + keyLen + valueLen + 2;
+            if (newCapacity < requiredSize)
+            {
+                newCapacity = requiredSize;
+            }
+
+            var newData = (byte*)Marshal.AllocHGlobal(newCapacity);
+            try
+            {
+                if (stringData != null)
+                {
+                    Buffer.MemoryCopy(stringData, newData, newCapacity, stringDataSize);
+                }
+            }
+            catch
+            {
+                Marshal.FreeHGlobal((IntPtr)newData);
+                throw;
+            }
+
+            if (stringData != null)
+            {
+                Marshal.FreeHGlobal((IntPtr)stringData);
+            }
             stringData = newData;
+            stringDataCapacity = newCapacity;
         }
 
         ulong hash = FastHash(key, keyLen);
