@@ -167,7 +167,7 @@ public class JammerAbility : TargetCustomButtonBase, IButtonEffect
     {
         if (isInvisible)
         {
-            ModHelpers.SetOpacity(target.Player, CanSeeTranslucentState(target) ? 0.4f : 0f);
+            ModHelpers.SetOpacity(target.Player, CanSeeTranslucentState(target, out var opacity) ? opacity : 0f);
         }
         else
         {
@@ -175,12 +175,19 @@ public class JammerAbility : TargetCustomButtonBase, IButtonEffect
         }
     }
 
-    private bool CanSeeTranslucentState(ExPlayerControl invisibleTarget)
+    private bool CanSeeTranslucentState(ExPlayerControl invisibleTarget, out float opacity)
     {
         if (invisibleTarget == ExPlayerControl.LocalPlayer)
+        {
+            opacity = 1f;
             return true;
+        }
         if (ExPlayerControl.LocalPlayer.IsImpostor())
+        {
+            opacity = 0.4f;
             return true;
+        }
+        opacity = 0f;
         return false;
     }
 }
