@@ -64,7 +64,7 @@ public static class EndGamer
 
         if (winType != WinType.NoWinner)
         {
-            if (winType != WinType.SingleNeutral)
+            if (winType != WinType.SingleNeutral && reason != (GameOverReason)CustomGameOverReason.LoversWin)
                 UpdateHijackers(ref reason, ref winners, ref color, ref upperText, ref winText, ref winType);
             // 独自単独勝利とは同時勝利できない
             UpdateAdditionalWinners(reason, ref winners, out addWinners, winType == WinType.SingleNeutral);
@@ -155,6 +155,7 @@ public static class EndGamer
                 break;
             }
         }
+        // ラバーズ勝利を優先する
         if (!Spelunker.SpelunkerIsAdditionalWin)
         {
             foreach (ExPlayerControl player in ExPlayerControl.ExPlayerControls)

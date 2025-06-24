@@ -154,18 +154,17 @@ public class VampireAbility : AbilityBase
     }
     private void OnWrapUp(WrapUpEventData data)
     {
-        int index = 0;
-        foreach (var (parent, turn) in bloodStainParent.ToArray())
+        for (int i = bloodStainParent.Count - 1; i >= 0; i--)
         {
+            var (parent, turn) = bloodStainParent[i];
             if (turn <= 0)
             {
                 GameObject.Destroy(parent.gameObject);
-                bloodStainParent.RemoveAt(index);
+                bloodStainParent.RemoveAt(i);
             }
             else
             {
-                bloodStainParent[index] = (parent, turn - 1);
-                index++;
+                bloodStainParent[i] = (parent, turn - 1);
             }
         }
         if (bloodStainsParentTargeting == null) return;

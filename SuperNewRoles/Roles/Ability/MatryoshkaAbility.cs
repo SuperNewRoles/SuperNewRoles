@@ -57,7 +57,7 @@ public class MatryoshkaAbility : CustomButtonBase, IButtonEffect, IAbilityCount
     }
     public override bool CheckHasButton()
     {
-        return base.CheckHasButton() && HasCount;
+        return base.CheckHasButton() && (HasCount || isEffectActive);
     }
 
     public override void AttachToAlls()

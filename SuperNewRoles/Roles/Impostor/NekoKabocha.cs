@@ -71,22 +71,24 @@ public class NekoKabochaRevenge : AbilityBase
 
     private void OnMurder(MurderEventData data)
     {
-        if (data.target != null && data.target == ExPlayerControl.LocalPlayer && data.killer != null)
-        {
-            bool canRevenge = false;
-            ExPlayerControl killer = data.killer;
+        if (data.target == null || data.killer == null) return;
+        if (data.target != ExPlayerControl.LocalPlayer) return;
+        // 無限ループ防止
+        if (data.killer == data.target) return;
 
-            // 殺害したプレイヤーのタイプに基づいて復讐できるかどうかを判断
-            if (killer.IsCrewmate() && Data.CanRevengeCrewmate)
-                canRevenge = true;
-            else if (killer.IsNeutral() && Data.CanRevengeNeutral)
-                canRevenge = true;
-            else if (killer.IsImpostor() && Data.CanRevengeImpostor)
-                canRevenge = true;
+        bool canRevenge = false;
+        ExPlayerControl killer = data.killer;
 
-            if (canRevenge)
-                ExPlayerControl.LocalPlayer.RpcCustomDeath(killer, CustomDeathType.Kill);
-        }
+        // 殺害したプレイヤーのタイプに基づいて復讐できるかどうかを判断
+        if (killer.IsCrewmate() && Data.CanRevengeCrewmate)
+            canRevenge = true;
+        else if (killer.IsNeutral() && Data.CanRevengeNeutral)
+            canRevenge = true;
+        else if (killer.IsImpostor() && Data.CanRevengeImpostor)
+            canRevenge = true;
+
+        if (canRevenge)
+            ExPlayerControl.LocalPlayer.RpcCustomDeath(killer, CustomDeathType.Kill);
     }
 
     private void OnWrapUp(WrapUpEventData data)

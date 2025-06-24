@@ -33,6 +33,7 @@ using AmongUs.Data.Player;
 using SuperNewRoles.RequestInGame;
 using System.Diagnostics;
 using UnityEngine.SceneManagement;
+using AmongUs.GameOptions;
 
 namespace SuperNewRoles;
 
@@ -112,6 +113,7 @@ public partial class SuperNewRolesPlugin : BasePlugin
         CustomColors.Load();
         ApiServerManager.Initialize();
         RequestInGameManager.Load();
+        FixOver15();
 
         CustomServer.UpdateRegions();
 
@@ -158,6 +160,17 @@ public partial class SuperNewRolesPlugin : BasePlugin
             // コルーチンパッチを処理
             HarmonyCoroutinePatchProcessor.ProcessCoroutinePatches(harmony, assembly);
         }
+    }
+    private void FixOver15()
+    {
+        int[] ints = new int[255];
+        for (int i = 0; i < 255; i++)
+        {
+            ints[i] = 255;
+        }
+        NormalGameOptionsV07.MaxImpostors = ints;
+        NormalGameOptionsV08.MaxImpostors = ints;
+        NormalGameOptionsV09.MaxImpostors = ints;
     }
 
     // CPUのコア割当を変更してパフォーマンスを改善する
