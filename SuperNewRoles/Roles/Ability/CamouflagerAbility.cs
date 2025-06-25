@@ -76,13 +76,17 @@ public class CamouflagerAbility : AbilityBase
         {
             if (player == null || player.Data.Disconnected) continue;
 
+            CustomCosmeticsLayer layer = CustomCosmeticsLayers.ExistsOrInitialize(player.cosmetics);
+
             _originalOutfits[player.PlayerId] = new PlayerOutfitData
             {
                 PlayerName = player.Data.PlayerName,
                 ColorId = player.Data.DefaultOutfit.ColorId,
                 SkinId = player.Data.DefaultOutfit.SkinId,
-                HatId = player.Data.DefaultOutfit.HatId,
-                VisorId = player.Data.DefaultOutfit.VisorId,
+                Hat1Id = layer.hat1?.DefaultHat?.ProdId ?? "ERROR",
+                Hat2Id = layer.hat2?.DefaultHat?.ProdId ?? "ERROR",
+                Visor1Id = layer.visor1?.DefaultVisor?.ProdId ?? "ERROR",
+                Visor2Id = layer.visor2?.DefaultVisor?.ProdId ?? "ERROR",
                 PetId = player.Data.DefaultOutfit.PetId
             };
         }
@@ -116,8 +120,8 @@ public class CamouflagerAbility : AbilityBase
             player.setOutfit(camouflageOutfit);
 
             CustomCosmeticsLayer layer = CustomCosmeticsLayers.ExistsOrInitialize(player.cosmetics);
-            layer.hat2.gameObject.SetActive(false);
-            layer.visor2.gameObject.SetActive(false);
+            layer.visor2.StartCamouflage(camouflageOutfit.ColorId);
+            layer.hat2.StartCamouflage(camouflageOutfit.ColorId);
         }
     }
 
@@ -167,8 +171,8 @@ public class CamouflagerAbility : AbilityBase
                 PlayerName = originalOutfit.PlayerName,
                 ColorId = originalOutfit.ColorId,
                 SkinId = originalOutfit.SkinId,
-                HatId = originalOutfit.HatId,
-                VisorId = originalOutfit.VisorId,
+                HatId = originalOutfit.Hat1Id,
+                VisorId = originalOutfit.Visor2Id,
                 PetId = originalOutfit.PetId
             };
 
@@ -176,7 +180,9 @@ public class CamouflagerAbility : AbilityBase
 
             CustomCosmeticsLayer layer = CustomCosmeticsLayers.ExistsOrInitialize(player.cosmetics);
             layer.hat2.gameObject.SetActive(true);
+            layer.hat2.FinishShapeshift(originalOutfit.ColorId);
             layer.visor2.gameObject.SetActive(true);
+            layer.visor2.FinishShapeshift(originalOutfit.ColorId);
         }
 
         _originalOutfits.Clear();
@@ -203,8 +209,10 @@ public class CamouflagerAbility : AbilityBase
         public string PlayerName { get; set; }
         public int ColorId { get; set; }
         public string SkinId { get; set; }
-        public string HatId { get; set; }
-        public string VisorId { get; set; }
+        public string Hat1Id { get; set; }
+        public string Hat2Id { get; set; }
+        public string Visor1Id { get; set; }
+        public string Visor2Id { get; set; }
         public string PetId { get; set; }
     }
 }

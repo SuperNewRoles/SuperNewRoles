@@ -27,6 +27,13 @@ class Vampire : RoleBase<Vampire>
             killDelay: VampireKillDelay,
             blackBloodstains: VampireBlackBloodstains,
             bloodStainDurationTurn: VampireBloodstainDurationTurn
+        ),
+        vampire: new VampireData(
+            vampireInvisibleOnAdmin: VampireInvisibleOnAdmin,
+            vampireCannotFixSabotage: VampireCannotFixSabotage,
+            vampireCannotUseDevice: VampireCannotUseDevice,
+            vampireDependentHasReverseVision: VampireDependentHasReverseVision,
+            vampireDependentHasImpostorVisionInLightsoff: VampireDependentHasImpostorVisionInLightsoff
         )
     )];
 
@@ -64,8 +71,11 @@ class Vampire : RoleBase<Vampire>
     [CustomOptionBool("VampireDependentCanUseVent", true, parentFieldName: nameof(VampireCreateDependents))]
     public static bool VampireDependentCanUseVent;
 
-    [CustomOptionBool("VampireDependentImpostorVisionOnSabotage", true, parentFieldName: nameof(VampireCreateDependents))]
-    public static bool VampireDependentImpostorVisionOnSabotage;
+    [CustomOptionBool("VampireDependentHasReverseVision", true, parentFieldName: nameof(VampireCreateDependents))]
+    public static bool VampireDependentHasReverseVision;
+
+    [CustomOptionBool("VampireDependentHasImpostorVisionInLightsoff", true, parentFieldName: nameof(VampireCreateDependents))]
+    public static bool VampireDependentHasImpostorVisionInLightsoff;
 
     [CustomOptionBool("VampireCannotFixSabotage", true)]
     public static bool VampireCannotFixSabotage;
@@ -81,6 +91,7 @@ class Vampire : RoleBase<Vampire>
 }
 public record VampireNightFallData(bool canCreate, float cooldown);
 public record VampireKillData(float killCooldown, float killDelay, bool blackBloodstains, int bloodStainDurationTurn);
+public record VampireData(bool vampireInvisibleOnAdmin, bool vampireCannotFixSabotage, bool vampireCannotUseDevice, bool vampireDependentHasReverseVision, bool vampireDependentHasImpostorVisionInLightsoff);
 public class VampireAbility : AbilityBase
 {
     private VampireDependentAbility dependent;
@@ -90,7 +101,7 @@ public class VampireAbility : AbilityBase
     public VampireNightFallData nightFall { get; }
     public VampireKillData kill { get; }
     public ExPlayerControl TargetingPlayer { get; private set; }
-
+    public VampireData Vampire { get; }
     private EventListener _fixedUpdateListener;
     private EventListener<MurderEventData> _murderListener;
     private EventListener<WrapUpEventData> _wrapUpListener;
@@ -98,12 +109,15 @@ public class VampireAbility : AbilityBase
     private float delayTimer;
     private float bloodStainTimer;
     private SabotageCanUseAbility sabotageCanUseAbility;
+    private DeviceCanUseAbility deviceCanUseAbility;
     private Transform bloodStainsParentTargeting;
     private List<(Transform bloodStainsParent, int limitedTurn)> bloodStainParent = new();
-    public VampireAbility(VampireNightFallData nightFall, VampireKillData kill)
+    private HideInAdminAbility hideInAdminAbility;
+    public VampireAbility(VampireNightFallData nightFall, VampireKillData kill, VampireData vampire)
     {
         this.nightFall = nightFall;
         this.kill = kill;
+        this.Vampire = vampire;
     }
     public override void AttachToAlls()
     {
@@ -134,13 +148,21 @@ public class VampireAbility : AbilityBase
                 return true;
             }
         );
+        hideInAdminAbility = new HideInAdminAbility(
+            () => Vampire.vampireInvisibleOnAdmin
+        );
         sabotageCanUseAbility = new SabotageCanUseAbility(
-            () => SabotageType.Lights
+            () => Vampire.vampireCannotFixSabotage ? SabotageType.Lights : SabotageType.None
+        );
+        deviceCanUseAbility = new DeviceCanUseAbility(
+            () => Vampire.vampireCannotUseDevice ? DeviceTypeFlag.All : DeviceTypeFlag.None
         );
 
         Player.AttachAbility(sidekickButtonAbility, new AbilityParentAbility(this));
         Player.AttachAbility(killButtonAbility, new AbilityParentAbility(this));
         Player.AttachAbility(sabotageCanUseAbility, new AbilityParentAbility(this));
+        Player.AttachAbility(deviceCanUseAbility, new AbilityParentAbility(this));
+        Player.AttachAbility(hideInAdminAbility, new AbilityParentAbility(this));
         _fixedUpdateListener = FixedUpdateEvent.Instance.AddListener(OnFixedUpdate);
         _murderListener = MurderEvent.Instance.AddListener(OnMurder);
         _wrapUpListener = WrapUpEvent.Instance.AddListener(OnWrapUp);
@@ -154,18 +176,17 @@ public class VampireAbility : AbilityBase
     }
     private void OnWrapUp(WrapUpEventData data)
     {
-        int index = 0;
-        foreach (var (parent, turn) in bloodStainParent.ToArray())
+        for (int i = bloodStainParent.Count - 1; i >= 0; i--)
         {
+            var (parent, turn) = bloodStainParent[i];
             if (turn <= 0)
             {
                 GameObject.Destroy(parent.gameObject);
-                bloodStainParent.RemoveAt(index);
+                bloodStainParent.RemoveAt(i);
             }
             else
             {
-                bloodStainParent[index] = (parent, turn - 1);
-                index++;
+                bloodStainParent[i] = (parent, turn - 1);
             }
         }
         if (bloodStainsParentTargeting == null) return;

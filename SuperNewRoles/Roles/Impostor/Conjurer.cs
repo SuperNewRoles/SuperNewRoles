@@ -172,7 +172,7 @@ public class ConjurerBeaconButton : CustomButtonBase
     public override float DefaultTimer => ability.Data.ConjurerBeaconCooldown;
     public override string buttonText => ModTranslation.GetString("ConjurerBeaconName");
     public override Sprite Sprite => AssetManager.GetAsset<Sprite>("ConjurerBeaconButton.png");
-    protected override KeyType keytype => KeyType.Ability2;
+    protected override KeyType keytype => KeyType.Ability1;
 
     public override bool CheckIsAvailable() => CanAddBeacon();
 
@@ -208,7 +208,7 @@ public class ConjurerStartButton : CustomButtonBase
     public override float DefaultTimer => 0;
     public override string buttonText => ModTranslation.GetString("ConjurerAddName");
     public override Sprite Sprite => AssetManager.GetAsset<Sprite>("ConjurerStartButton.png");
-    protected override KeyType keytype => KeyType.Ability1;
+    protected override KeyType keytype => KeyType.Kill;
 
     public override bool CheckIsAvailable() => ability.Count >= 3;
 

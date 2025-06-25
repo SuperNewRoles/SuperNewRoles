@@ -18,9 +18,9 @@ public enum SabotageType
 public class SabotageCanUseAbility : AbilityBase
 {
     private Func<SabotageType> _sabotageType;
-    public SabotageCanUseAbility(Func<SabotageType> cannontUseSabotageType)
+    public SabotageCanUseAbility(Func<SabotageType> cannotUseSabotageType)
     {
-        _sabotageType = cannontUseSabotageType;
+        _sabotageType = cannotUseSabotageType;
     }
     public bool TryUse(TaskTypes taskTypes)
     {

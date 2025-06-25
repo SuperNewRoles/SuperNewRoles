@@ -168,14 +168,21 @@ class RevenantAbility : TargetCustomButtonBase
             checkcount = 0;
         }
         UpdateArrows();
-        List<(float time, ExPlayerControl player)> hauntedPlayersFinished = [];
-        foreach (var haunted in HauntedPlayers.ToArray())
+        List<(float time, ExPlayerControl player)> hauntedPlayersFinished = null;
+        foreach (var haunted in HauntedPlayers)
         {
             if (haunted.time <= Time.time)
+            {
+                if (hauntedPlayersFinished == null)
+                    hauntedPlayersFinished = new List<(float time, ExPlayerControl player)>();
                 hauntedPlayersFinished.Add(haunted);
+            }
         }
-        foreach (var haunted in hauntedPlayersFinished)
-            RpcSetRevenantStatus(this, haunted.player, false);
+        if (hauntedPlayersFinished != null)
+        {
+            foreach (var haunted in hauntedPlayersFinished)
+                RpcSetRevenantStatus(this, haunted.player, false);
+        }
     }
     private void UpdateArrows()
     {

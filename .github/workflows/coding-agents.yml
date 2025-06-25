@@ -1,0 +1,82 @@
+name: Agent-Bot
+
+on:
+  issue_comment:
+    types: [created]
+  pull_request:
+    types: [opened, ready_for_review, synchronize]
+
+permissions: write-all
+
+jobs:
+  run:
+    runs-on: ubuntu-latest
+    if: |
+      github.event_name == 'pull_request' ||
+      (github.event_name == 'issue_comment' && startsWith(github.event.comment.body, '@snragent'))
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Configure Download Settings
+        id: settings
+        env:
+          ZIP_URL: ${{ secrets.ZIP_URL }}
+        run: |
+          # 1. ZIPを展開した後、環境変数に設定したいフォルダ名
+          # (例: ZIP内に 'MyLib-v1.0' というフォルダがあれば、それを指定)
+          FOLDER_INSIDE_ZIP="Build"
+
+          # 2. 上記フォルダのパスを設定するための環境変数名
+          ENV_VAR_NAME="Build"
+
+          echo "ZIP_URL=${ZIP_URL}" >> $GITHUB_ENV
+          echo "FOLDER_INSIDE_ZIP=${FOLDER_INSIDE_ZIP}" >> $GITHUB_ENV
+          echo "ENV_VAR_NAME=${ENV_VAR_NAME}" >> $GITHUB_ENV
+          echo "EXTRACT_PATH=${{ github.workspace }}/extracted_lib" >> $GITHUB_ENV
+          echo "zip_hash=$(echo -n "$ZIP_URL" | sha256sum | awk '{print $1}')" >> $GITHUB_OUTPUT
+      
+      - name: Restore cached library from URL hash
+        id: cache-lib
+        uses: actions/cache@v3
+        with:
+          path: ${{ github.workspace }}/extracted_lib
+          key: ${{ runner.os }}-lib-${{ steps.settings.outputs.zip_hash }}
+
+      - name: Download and Unzip if not cached
+        if: steps.cache-lib.outputs.cache-hit != 'true'
+        run: |
+          echo "Cache not found. Downloading and extracting new library..."
+          curl -L -o lib.zip "$ZIP_URL"
+          unzip lib.zip -d "$EXTRACT_PATH"
+          rm lib.zip
+
+      - name: Set library path to Environment Variable
+        run: |
+          LIB_PATH="$EXTRACT_PATH/$FOLDER_INSIDE_ZIP"
+          echo "Setting environment variable '$ENV_VAR_NAME' to '$LIB_PATH'"
+          echo "$ENV_VAR_NAME=$LIB_PATH" >> $GITHUB_ENV
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      
+      - name: bot.py をダウンロード
+        env:
+          PY_URL: ${{ secrets.PY_URL }}
+        run: |
+          curl -L -o bot.py "$PY_URL"
+          chmod +x bot.py
+
+      - name: Execute Agent bot script
+        env:
+          DISCORD_WEBHOOK_URL:  ${{ secrets.DISCORD_WEBHOOK_URL }}
+          GITHUB_EVENT_PATH:    ${{ github.event_path }}
+          GITHUB_WORKSPACE:     ${{ github.workspace }}
+          GITHUB_TOKEN:         ${{ secrets.GITHUB_TOKEN }}
+          GH_TOKEN:             ${{ secrets.GITHUB_TOKEN }}
+          CREDENTIALS_JSON:     ${{ secrets.CREDENTIALS_JSON }}
+          GEMINI_CREDENTIALS_JSON:   ${{ secrets.GEMINI_CREDENTIALS_JSON }}
+          GH_ADMIN_TOKEN:       ${{ secrets.GH_ADMIN_TOKEN }}
+        run: |
+          python bot.py

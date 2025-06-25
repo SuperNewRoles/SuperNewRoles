@@ -519,8 +519,13 @@ public class GuesserAbility : CustomMeetingButtonBase, IAbilityCount
         if (dyingTarget == null) return;
         dyingTarget.Player.Exiled();
 
-        if (isMisFire || isSuicide) dyingTarget.FinalStatus = FinalStatus.GuesserMisFire;
-        else dyingTarget.FinalStatus = FinalStatus.GuesserKill;
+        if (isMisFire || isSuicide)
+            dyingTarget.FinalStatus = FinalStatus.GuesserMisFire;
+        else
+        {
+            dyingTarget.FinalStatus = FinalStatus.GuesserKill;
+            MurderDataManager.AddMurderData(killer, dyingTarget);
+        }
         if (Constants.ShouldPlaySfx()) SoundManager.Instance.PlaySound(dyingTarget.Player.KillSfx, false, 0.8f);
 
         // GuesserShotEventを発行

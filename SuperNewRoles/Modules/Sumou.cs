@@ -52,14 +52,7 @@ namespace SuperNewRoles.Modules
         private const float StopFramesDuration = 10 / 60f; // Frames to wait before stopping
         public static bool HighPerformance => GeneralSettingOptions.SumouHighPerformance;
 
-        public static void Prefix(PlayerPhysics __instance, out Vector2 __state)
-        {
-            __state = Vector2.zero;
-            if (!GeneralSettingOptions.SumouMode || __instance.myPlayer == null || !__instance.myPlayer.AmOwner) return;
-            __state = __instance.transform.position;
-        }
-
-        public static void Postfix(PlayerPhysics __instance, Vector2 __state)
+        public static void Postfix(PlayerPhysics __instance)
         {
             if (!GeneralSettingOptions.SumouMode) return;
             if (AmongUsClient.Instance.GameState != InnerNet.InnerNetClient.GameStates.Started) return;
@@ -99,7 +92,7 @@ namespace SuperNewRoles.Modules
                 {
                     CheckAndPushPlayer(selfPlayer, other, __instance, playerColliders[selfPlayer.PlayerId]);
                 }
-            }
+            }/*
 
             // 壁の外に出た場合のロールバック処理
             if (selfPlayer.AmOwner && __state != Vector2.zero)
@@ -122,7 +115,7 @@ namespace SuperNewRoles.Modules
                     // ネットワーク同期をスキップして即座に反映
                     ModdedNetworkTransform.skipNextBatchPlayers.Add(selfPlayer.PlayerId);
                 }
-            }
+            }*/
         }
         private static void CheckAndPushPlayer(PlayerControl selfPlayer, PlayerControl other, PlayerPhysics __instance, Collider2D myCollider)
         {
