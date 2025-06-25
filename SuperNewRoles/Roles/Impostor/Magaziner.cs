@@ -25,7 +25,4 @@ internal class Magaziner : RoleBase<Magaziner>
 
     [CustomOptionFloat("MagazinerSetKillTime", 0f, 60f, 2.5f, 10f)]
     public static float MagazinerSetKillTime;
-
-    [CustomOptionInt("MagazinerPlayerCount", 1, 10, 1, 3)]
-    public static int MagazinerPlayerCount;
 }
