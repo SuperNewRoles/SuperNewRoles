@@ -81,8 +81,7 @@ public class CustomModifierGrantedButtonAbility : TargetCustomButtonBase
     public override Color32 OutlineColor => ExPlayerControl.LocalPlayer.roleBase.RoleColor;
     public override Sprite Sprite => _options.ButtonSprite;
     public override string buttonText => _options.ButtonText;
-    protected override KeyType keytype => _options.IsSubButton ? KeyType.None : KeyType.Ability1; // FIXME : #1169(Dev_Fix) で仕様を変更している為、マージ後 下のコードに変更
-    // protected override KeyType keytype => _options.IsSubButton ? KeyType.Ability3 : KeyType.Ability1;
+    protected override KeyType keytype => _options.IsSubButton ? KeyType.Ability3 : KeyType.Ability1;
     public override bool OnlyCrewmates => false;
     public override Func<ExPlayerControl, bool>? IsTargetable => _options.IsTargetable;
     public override float DefaultTimer => _options.Cooldown?.Invoke() ?? 0;
