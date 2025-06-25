@@ -464,6 +464,7 @@ Moving,ムービング,Moving,移动者,移動者
 EvilMoving,イビルムービング,Evil Moving,邪恶移动者,邪惡移動者
 HauntedWolf,狼憑き,HauntedWolf,灵咒,狼憑者
 ModifierHauntedWolf,モディファイア狼憑き,Modifier Haunted Wolf
+Magaziner,マガジナー,Magaziner,弹匣师,彈匣師
 
 # Descriptions_VanillaRoles
 Crewmate.Description,特に何も能力を持たない基本的なクルーメイト役職です。\n人狼ゲームにおける村人の役割を持ちます。\nキル能力を持つ人外を全て追放するか、タスクを全て完了すると勝利します。,A basic Crewmate role with no special abilities.\nThey serve the role of Villager from the Werewolf game.\nVictory is achieved by ejecting all non-Crewmate players with kill abilities or by completing all tasks.,一个没有特殊能力的基础船员角色。\n他们承担了狼人游戏中村民的角色。\n通过将所有拥有击杀能力的非船员玩家投出局或完成所有任务来获胜。,一個沒有特殊能力的基礎船員角色。\n他們承擔了狼人遊戲中村民的角色。\n通過將所有擁有擊殺能力的非船員玩家投出局或完成所有任務來獲勝。,
@@ -515,6 +516,7 @@ OverKiller.Description,キルに関係する能力を有するインポスター
 EvilSeer.Description,タスクターンに発動する能力を有するインポスターです。\n誰かが死亡すると画面が発光します。\n誰かが死亡した箇所に霊魂を確認することも出来ます。\n死体が発生した場合、その死体の方向に矢印を表示する事もできます。\nこれらの能力は設定によって、死者の色を反映させる事もできます。\nまた、設定次第では「取り憑かせる」ボタンを押すことで、対象のプレイヤーにモディファイア狼憑きを付与することが出来ます。,This is an impostor with abilities that activate during task turns.\nWhen someone dies，the screen flashes.\nYou can also confirm the spirit at the location where someone died.\nWhen a corpse appears，you can also display an arrow pointing in the direction of the corpse.\nDepending on the settings，these abilities can also reflect the color of the deceased.\nDepending on the settings，you can also press the “Haunt!” button to apply the Modifier Haunted Wolf to the target player.
 Jammer.Description,タスクターンに使用出来る能力を有するインポスターです。\n「透明化」ボタンを押すと対象のプレイヤーを他人から見えなくすることが出来ます。\n透明化された当事者は自覚することが出来ません。\nインポスター視点は透明にされている人が半透明で見えます。,
 EvilMoving.Description,タスクターンに使用出来る能力を有するインポスターです。\n「位置記録」ボタンを押すと、その場所をテレポート先として登録します。\n「テレポート」ボタンを押すと記録した場所にテレポート出来ます。,
+Magaziner.Description,タスクターンに使用出来る能力を有するインポスターです。\n「補充」ボタンを押すと、キルクールがリセットされる代わりに、弾を補充出来ます。\n「消費」ボタンを押すとキルクールを設定値にリセットします。,
 
 # Descriptions_Neutral
 Jackal.Description,キル能力を有する第三陣営です。\n自陣営以外のキルが出来る陣営が全滅した上で、自陣営とクルーが同数以下になれば勝利します。\n設定次第で他のプレイヤーの役職を、自身の後継となるサイドキックや、手助けをしてくれるジャッカルフレンズに変更する能力を有することも出来ます。,A third-faction role with a kill ability.\nIt wins if all factions capable of killing outside its own are eliminated and its faction and the Crewmates are equal in number or fewer.\nDepending on the settings，it can change other players’ roles into a Sidekick (its successor) or Jackal Friends who assist it.,这是一个拥有击杀能力的第三阵营角色。\n当所有能够进行击杀的其他阵营被消灭，并且其阵营与船员人数相等或更少时，即可获胜。\n根据设定，它还可以将其他玩家的角色变更为边缘队员（其继任者）或协助的杰克朋友。,這是一個具備擊殺能力的第三陣營角色。\n當其他能進行擊殺的陣營全部被消滅，且其陣營與船員數量相等或更少時，即獲勝。\n根據設定，還可將其他玩家的角色變更為接班的邊翼或提供協助的傑克朋友。,
@@ -660,6 +662,7 @@ OverKillerIntro1,何度だって切り刻む,
 EvilSeerIntro1,彼岸の呼び声,
 JammerIntro1,隠蔽工作,
 EvilMovingIntro1,不意の急襲,
+Magaziner,殺意の弾倉,
 
 # Intros_Neutral
 JackalIntro1,暗躍するもう一人の殺人鬼,Another puppeteer of death in the shadows,另一个暗中操纵死亡者,另一個暗中操縱死亡者,
@@ -1692,8 +1695,6 @@ DimensionWalkerPutButtonText,設置,Place Wormhole,放置虫洞,放置蟲洞
 DimensionWalkerCollectButtonText,回収,Collect Wormhole,回收虫洞,回收蟲洞
 
 # Magaziner
-Magaziner,マガジナー,Magaziner,弹匣师,彈匣師
-MagazinerDescription,<color=#FF1919>マガジナー</color>はキルボタンのクールダウンを操作できるインポスターです。\n弾薬を消費してキルクールダウンを短縮したり、弾薬を補充して通常のキルクールダウンをリセットできます。,<color=#FF1919>Magaziner</color> is an Impostor who can manipulate kill button cooldowns.\nYou can consume ammunition to reduce kill cooldown or replenish ammunition to reset normal kill cooldown.,<color=#FF1919>弹匣师</color>是一个可以操作击杀按钮冷却时间的内鬼。\n可以消耗弹药来减少击杀冷却时间，或者补充弹药来重置正常的击杀冷却时间。,<color=#FF1919>彈匣師</color>是一個可以操作擊殺按鈕冷卻時間的內鬼。\n可以消耗彈藥來減少擊殺冷卻時間，或者補充彈藥來重置正常的擊殺冷卻時間。
 MagazinerSetKillTime,クールダウン短縮時間,Cooldown Reduction Time,冷却缩短时间,冷卻縮短時間
 MagazinerPlayerCount,初期弾薬数,Initial Ammunition Count,初始弹药数,初始彈藥數
 MagazinerGetButtonName,消費,Consume,消费,消費
