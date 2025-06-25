@@ -126,6 +126,10 @@ public enum RoleId : short
     Magaziner,
     Robber,
     OverKiller,
+    Jammer,
+    Moving,
+    EvilMoving,
+    NiceRedRidingHood,
 }
 
 public enum GhostRoleId : short

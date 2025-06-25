@@ -455,6 +455,10 @@ OrientalShaman,陰陽師,Oriental Shaman,阴阳师,陰陽師
 ShermansServant,式神,Shermans Servant,式神,式神
 Robber,泥棒,Robber
 OverKiller,オーバーキラー,Overkiller
+Jammer,ジャマー,Jammer,干扰者,干擾者
+Shielder,シールダー,Shielder
+Moving,ムービング,Moving,移动者,移動者
+EvilMoving,イビルムービング,Evil Moving,邪恶移动者,邪惡移動者
 
 # Descriptions_VanillaRoles
 Crewmate.Description,特に何も能力を持たない基本的なクルーメイト役職です。\n人狼ゲームにおける村人の役割を持ちます。\nキル能力を持つ人外を全て追放するか、タスクを全て完了すると勝利します。,A basic Crewmate role with no special abilities.\nThey serve the role of Villager from the Werewolf game.\nVictory is achieved by ejecting all non-Crewmate players with kill abilities or by completing all tasks.,一个没有特殊能力的基础船员角色。\n他们承担了狼人游戏中村民的角色。\n通过将所有拥有击杀能力的非船员玩家投出局或完成所有任务来获胜。,一個沒有特殊能力的基礎船員角色。\n他們承擔了狼人遊戲中村民的角色。\n通過將所有擁有擊殺能力的非船員玩家投出局或完成所有任務來獲勝。,
@@ -503,6 +507,8 @@ DarkKiller.Description,キルに関係する能力を有するインポスター
 EvilSeer.Description,タスクターンに発動する能力を有するインポスターです。\n誰かが死亡すると画面が発光します。\nまた、誰かが死亡した箇所に霊魂を確認することが出来ます。\n死体が発生した場合、その死体の方向に矢印を表示する事もできます。\nこれらの能力は設定によって、死者の色を反映させる事もできます。,An impostor with an ability activated on the task turn。\nWhen someone dies、the screen flashes。\nYou can also see a soul at the spot where they died。\nIf a body appears、an arrow can indicate its direction。\nDepending on settings、these abilities can reflect the color of the deceased。,具有在任务回合发动能力的冒充者。\n有人死亡时、屏幕会闪光。\n你还可以在死亡地点看到灵魂。\n如果出现尸体、屏幕上会显示指向尸体的箭头。\n这些能力可根据设置反映死者的颜色。,具有在任務回合發動能力的冒充者。\n有人死亡時、螢幕會閃光。\n你還可以在死亡地點看到靈魂。\n如果出現屍體、螢幕上會顯示指向屍體的箭頭。\n這些能力可根據設定反映死者的顏色。
 Robber.Description,キルに関係する能力を有するインポスターです。\nキルをした対象のタスク進捗を巻き戻します。,
 OverKiller.Description,キルに関係する能力を有するインポスターです。\nキルをした対象の死体を増やします。,
+Jammer.Description,タスクターンに使用出来る能力を有するインポスターです。\n「透明化」ボタンを押すと対象のプレイヤーを他人から見えなくすることが出来ます。\n透明化された当事者は自覚することが出来ません。\nインポスター視点は透明にされている人が半透明で見えます。,
+EvilMoving.Description,タスクターンに使用出来る能力を有するインポスターです。\n「位置記録」ボタンを押すと、その場所をテレポート先として登録します。\n「テレポート」ボタンを押すと記録した場所にテレポート出来ます。,
 
 # Descriptions_Neutral
 Jackal.Description,キル能力を有する第三陣営です。\n自陣営以外のキルが出来る陣営が全滅した上で、自陣営とクルーが同数以下になれば勝利します。\n設定次第で他のプレイヤーの役職を、自身の後継となるサイドキックや、手助けをしてくれるジャッカルフレンズに変更する能力を有することも出来ます。,A third-faction role with a kill ability.\nIt wins if all factions capable of killing outside its own are eliminated and its faction and the Crewmates are equal in number or fewer.\nDepending on the settings，it can change other players’ roles into a Sidekick (its successor) or Jackal Friends who assist it.,这是一个拥有击杀能力的第三阵营角色。\n当所有能够进行击杀的其他阵营被消灭，并且其阵营与船员人数相等或更少时，即可获胜。\n根据设定，它还可以将其他玩家的角色变更为边缘队员（其继任者）或协助的杰克朋友。,這是一個具備擊殺能力的第三陣營角色。\n當其他能進行擊殺的陣營全部被消滅，且其陣營與船員數量相等或更少時，即獲勝。\n根據設定，還可將其他玩家的角色變更為接班的邊翼或提供協助的傑克朋友。,
@@ -572,6 +578,9 @@ Stuntman.Description,タスクターンに発動する能力を有するクル�
 Ubiquitous.Description,タスクターンに使用出来る能力を有するクルーメイトです。\n「呼び出し」ボタンを押すと、マップ上に自視点でのみ視認出来るドローンを呼び出します。\n「操作」ボタンを押すと、呼び出したドローンに視点が切り替わり、操作出来るようになります。\n「帰還」ボタンを押すと、ドローンをマップ上から削除します。\n「ドアハック」ボタンを押すと近くのドアを開けます。\nドローンがマップ上に存在する状態で会議が招集されると、実体化しマップ上に固定されます。\n実体化したドローンは他プレイヤーも視認出来ます。\nまた、マップ上に固定されたドローンの近くを他プレイヤーが通過すると、ユビキタスのタスクマップ上に表示されます。,A crewmate with an ability usable during the Task Turn。\nWhen you press the 'Call' button、 you summon a drone visible only to you on the map。\nWhen you press the 'Operate' button、 your view switches to the summoned drone and you can operate it。\nWhen you press the 'Return' button、 the drone is removed from the map。\nWhen you press the 'Door Hack' button、 you open nearby doors。\nIf a meeting is called while the drone exists on the map、 it materializes and becomes fixed on the map。\nA materialized drone can be seen by other players。\nAlso、 when another player passes near a fixed drone on the map、 it will appear on Ubiquitous’s task map。,是具有能够在任务回合使用能力的队员。\n按下「呼叫」按钮，可以在地图上召唤一个只有自己可见的无人机。\n按下「操作」按钮，视角会切换到召唤的无人机并可以操作它。\n按下「返回」按钮，可以将无人机从地图上移除。\n按下「门锁破解」按钮，可以打开附近的门。\n如果在无人机存在于地图上时召开会议，它会实体化并固定在地图上。\n实体化的无人机可以被其他玩家看到。\n此外，当其他玩家经过固定的无人机附近时，会在偏在者的任务地图上显示。,是具有能夠在任務回合使用能力的隊員。\n按下「呼叫」按鈕，可以在地圖上召喚一個只有自己可見的無人機。\n按下「操作」按鈕，視角會切換到召喚的無人機並可以操作它。\n按下「返回」按鈕，可以將無人機從地圖上移除。\n按下「門鎖破解」按鈕，可以打開附近的門。\n如果在無人機存在於地圖上時召開會議，它會實體化並固定在地圖上。\n實體化的無人機可以被其他玩家看到。\n此外，當其他玩家經過固定的無人機附近時，會在偏在者的任務地圖上顯示。
 Busker.Description,タスクターンに使用出来る能力を有するクルーメイトです。\n「偽装死」ボタンを押すと、幽霊状態になります。\n偽装死状態のときに会議が招集されたり、一定時間が経過すると本当に死亡してしまいます。\nまた、戻るべき死体が消えてしまっても本当に死亡してしまいます。,A crewmate with an ability usable during the Task Turn。\nWhen you press the 'Feign Death' button、 you become a ghost。\nWhile feigning death、 if a meeting is called or a certain time passes、 you will actually die。\nAlso、 if your corpse to return to disappears、 you will actually die。,是具有能够在任务回合使用能力的队员。\n按下「假死」按钮，会变为幽灵状态。\n在假死状态下，如果召开会议或经过一定时间，你会真正死亡。\n另外，即使复活的尸体消失，你也会真正死亡。,是具有能夠在任務回合使用能力的隊員。\n按下「假死」按鈕，會變為幽靈狀態。\n在假死狀態下，如果召開會議或經過一定時間，你會真正死亡。\n另外，即使復活的屍體消失，你也會真正死亡。
 Doorr.Description,タスクターンに使用出来る能力を有するクルーメイトです。\n「ドアーー!!」ボタンを押すと、目の前のドアを開閉出来ます。,A crewmate with an ability usable during the Task Turn。\nWhen you press the 'Doorーー!!' button、 you can open and close the door in front of you。,是具有能够在任务回合使用能力的队员。\n按下「门ーー!!」按钮，可以开关面前的门。,是具有能夠在任務回合使用能力的隊員。\n按下「門ーー!!」按鈕，可以開關面前的門。
+Shielder.Description,タスクターンに使用出来る能力を有するクルーメイトです。\n「シールド」ボタンを押すと、一定時間の間キルを防ぐシールドを貼ります。\nキルを防いだときのガードエフェクトは、自身及びキラー視点で見えます。,
+Moving.Description,タスクターンに使用出来る能力を有するクルーメイトです。\n「位置記録」ボタンを押すと、その場所をテレポート先として登録します。\n「テレポート」ボタンを押すと記録した場所にテレポート出来ます。,
+
 
 # Descriptions_MadRoles
 Madmate.Description,インポスターの味方のクルーメイトです。\nいわゆる狂人と呼ばれる役職です。\n勝利条件はクルーメイトの勝利ではなく、インポスターの勝利です。\nその勝利に自身の生死は問われないので、あの手この手でインポスターを勝利に導きましょう。,A Crewmate allied with the Impostors.\nOften known as the Madmate.\nTheir win condition is not for the Crewmates to win，but for the Impostors to win.\nTheir own survival is irrelevant，so use any means necessary to secure an Impostor victory.,这是一个支持内鬼的船员，也称为疯友角色。\n他们的胜利条件不是船员获胜，而是内鬼获胜，并且他们的生死并不影响胜利。\n所以，尽可能地采用各种手段促成内鬼获胜。,這是一個支持內鬼的船員，俗稱瘋友角色。\n其勝利條件並非船員勝利，而是內鬼勝利，且自身生死不影響結果。\n因此，請用一切手段助內鬼取勝。,
@@ -640,6 +649,8 @@ DarkKillerIntro1,疾風漆黒,Jet-black gale,漆黑暴风,漆黑暴風
 EvilSeerIntro1,彼らは共に在る,They exist together,他们同在,他們同在
 RobberIntro1,その進捗、頂戴するぜ,
 OverKillerIntro1,何度だって切り刻む,
+JammerIntro1,隠蔽工作,
+EvilMovingIntro1,不意の急襲,
 
 # Intros_Neutral
 JackalIntro1,暗躍するもう一人の殺人鬼,Another puppeteer of death in the shadows,另一个暗中操纵死亡者,另一個暗中操縱死亡者,
@@ -711,6 +722,8 @@ StuntmanIntro1,無意識の攻防、,Unconscious offense and defense,无意识�
 UbiquitousIntro1,偏在する監視眼,Ubiquitous watchful eye,无处不在的监视之眼,無處不在的監視之眼
 BuskerIntro1,危険な大道芸人,Dangerous street performer,危险的街头艺人,危險的街頭藝人
 DoorrIntro1,ノンストレス移動,stress-free movement,门，零压力移动,門，零壓力移動
+ShielderIntro1,全てを受け止める盾,
+MovingIntro1,どんな距離も飛び越える,
 
 # Intros_MadRoles
 MadmateIntro1,道を違えし者,One who has strayed from the path,误入歧途者,誤入歧途者,
@@ -1522,7 +1535,7 @@ NiceRedRidingHood,ナイス赤ずきん,NiceRedRidingHood,小红帽,小紅帽
 NiceRedRidingHoodIntro1,生き返ろう,Come back to life,杀死你的凶手死亡后你将会复活,殺死你的凶手死亡後你將會復活
 NiceRedRidingHoodDescription,自身をキルしたクルーが死亡した場合、次のターンに復活するクルーメイト役職です。\n\nナイス赤ずきんは、復活可能回数が残っていて、且つ死体が発生するキルによって死亡した場合に復活する事ができます。\n(猫又役職による道ずれや、スラッガーによるキル等は復活の対象外です。)\n\nキル者がタスクフェイズ中に死亡した場合に復活するかは、設定によります。\nその設定が有効で、キル者がタスクフェイズ中に死亡した場合も、次の会議フェイズ終了時に復活します。\n\nナイス赤ずきんが復活可能な条件を満たしている場合は、霊界で他のクルーの役職を確認することができず、更に憑依能力を有しません。\n満たしていない場合は、霊界で他のクルーの役職が表示され、憑依能力も使用可能です。\n\n私を狼のお腹から引きずり出したのはどなた?,The Crew Mate role revives the crewmember who killed him or her on the next turn if he or she dies.\n\nNice Red Riding Hood can be revived if the number of times it can revive remains，and if it is killed by a kill that results in a corpse.\n(Excluded from resurrection are a wayward death by a nekomata role，a kill by a slugger，etc.)\n\nWhether or not a kill is resurrected if the kill is made during the Task Phase depends on the setting.\nIf the setting is enabled and the kill person dies during the Task Phase，he/she will be revived at the end of the next Meeting Phase.\n\nIf the Nice Red Riding Hood meets the requirements to be revivable，it will not be able to see the other crew members' roles in the spirit world，and furthermore，it will not have the ability to possess them.\nIf not met，the other crew members' roles will be visible in the spirit world and the possession ability will be available.\n\nWho pulled me out of the wolf's belly?,击杀小红帽的玩家死亡后，小红帽在下一轮开始时复活。\n\n小红帽的复活有一定的次数限制，且只有在留下尸体的场合才能复活。\n(如被猎人系职业连带而死，或被击球手击飞而死，小红帽均不能复活。)\n\n可以设置击杀小红帽的凶手若在行动阶段死亡，小红帽是否也能复活。\n若可以，当凶手在行动阶段死亡时，小红帽会在下个会议阶段结束时复活。\n\n如果小红帽有复活的可能，死亡的小红帽将不能确认所有玩家的职业，也不能使用幽幽鬼影。\n若小红帽没有复活的可能，则小红帽可以正常确认玩家职业与使用幽幽鬼影。\n\n真把我吓坏了！狼肚子里黑漆漆的……,小紅帽是一個可以在被殺死後，在下一輪復活的船員角色。\n(在被獵人帶走或者被擊球手擊飛等情況下不能復活)\n\n根據設定，小紅帽可在兇手於任務階段死亡後的下一輪會議結束時復活。\n\n如果小紅帽符合復活條件，則他將無法在靈界看到其他船員的角色，並且無法使用憑依能力。\n條件不符則如常。\n\n是誰把我從狼的肚子裡拉出來的?
 NiceRedRidingHoodCount,最大生き返り回数,Maximum number of revives,小红帽最大可复活次数,小紅帽最大可復活次數
-NiceRedRidinIsKillerDeathRevive,キル者がタスクターンに死亡した場合でも復活する,Resurrects even if the killers die in the task turn,若凶手在行动阶段死亡小红帽依然可以复活,若凶手在行動階段死亡小紅帽依然可以復活
+NiceRedRidingIsKillerDeathRevive,キル者がタスクターンに死亡した場合でも復活する,Resurrects even if the killers die in the task turn,若凶手在行动阶段死亡小红帽依然可以复活,若凶手在行動階段死亡小紅帽依然可以復活
 
 # MeetingSheriff Options
 MeetingSheriffLimitText,残り{0}回 (会議中:{1}回),Remaining {0} times (In meeting: {1} times),剩余{0}次 (会议中:{1}次),剩餘{0}次 (會議中:{1}次)
@@ -1672,3 +1685,12 @@ MagazinerAddButtonName,補充,Replenish,补充,補充
 OverKillerKillCount,1回でキルする回数,Kill count per kill,一次击杀次数,一次擊殺次數
 OverKillerScatterBodies,死体を散乱する,Scatter Bodies,散乱死体,散亂死體
 OverKillerScatterRange,散乱範囲,Scatter Range,散乱范围,散亂範圍
+
+# Jammer
+JammerButtonName,透明化,Invisibility,隐形,隱形
+JammerCanUseAbilitiesAgainstImposter,インポスターに対しても能力を使用できる,Can use abilities against Impostors,可以对内鬼使用能力,可以對內鬼使用能力
+
+# Moving
+MovingAbilityButtonText,位置記録,Record Position,记录位置,記錄位置
+MovingPositionSetText,位置を記録しました,Position recorded,位置已记录,位置已記錄
+MovingTeleportText,テレポートしました,Teleported,已传送,已傳送
