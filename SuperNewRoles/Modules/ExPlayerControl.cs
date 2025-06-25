@@ -268,11 +268,23 @@ public class ExPlayerControl
             if (AmOwner)
                 SuperTrophyManager.RegisterTrophy(Role);
             roleBase = role;
-            foreach (var modifier in ModifierRoleBases.ToArray())
+            // ToArray()を使わずに、削除対象を後で処理
+            List<ModifierRoleId> toDetach = null;
+            foreach (var modifier in ModifierRoleBases)
             {
                 Logger.Info($"ModifierRole: {modifier.ModifierRole} AssignedTeams: {string.Join(",", modifier.AssignedTeams)} RoleBaseAssignedTeam: {roleBase.AssignedTeam}", "ExPlayerControl");
                 if (modifier.AssignedTeams.Count != 0 && !modifier.AssignedTeams.Contains(roleBase.AssignedTeam))
-                    DetachOldModifierRole(modifier.ModifierRole);
+                {
+                    if (toDetach == null) toDetach = new List<ModifierRoleId>();
+                    toDetach.Add(modifier.ModifierRole);
+                }
+            }
+            if (toDetach != null)
+            {
+                foreach (var modifierId in toDetach)
+                {
+                    DetachOldModifierRole(modifierId);
+                }
             }
         }
         else
@@ -403,7 +415,8 @@ public class ExPlayerControl
         List<(AbilityBase ability, ulong abilityId)> myAbilities = new();
         List<(AbilityBase ability, ulong abilityId)> targetAbilities = new();
 
-        foreach (var ability in PlayerAbilities.ToArray())
+        // ToArray()を使わずに直接リストから収集
+        foreach (var ability in PlayerAbilities)
         {
             if (ability != null && ability.Parent != null && ability.Parent is not AbilityParentPlayer)
             {
@@ -411,7 +424,7 @@ public class ExPlayerControl
             }
         }
 
-        foreach (var ability in target.PlayerAbilities.ToArray())
+        foreach (var ability in target.PlayerAbilities)
         {
             if (ability != null && ability.Parent != null && ability.Parent is not AbilityParentPlayer)
             {

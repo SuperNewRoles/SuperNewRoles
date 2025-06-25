@@ -85,6 +85,12 @@ public class NecromancerCurseButtonAbility : TargetCustomButtonBase, IAbilityCou
     [CustomRPC]
     public static void RpcAssignRevenant(ExPlayerControl player)
     {
+        // 憑依で動けなくなることへの対策
+        if (player.AmOwner)
+        {
+            if (Minigame.Instance != null)
+                Minigame.Instance.Close();
+        }
         player.SetGhostRole(GhostRoleId.Revenant);
         RoleManager.Instance.SetRole(player, RoleTypes.CrewmateGhost);
         NameText.UpdateNameInfo(player);
@@ -106,14 +112,15 @@ public class NecromancerRevenantArrowAbility : AbilityBase
 
     public void OnMeetingClose(MeetingCloseEventData _)
     {
-        foreach (var data in _arrows.ToArray())
+        for (int i = _arrows.Count - 1; i >= 0; i--)
         {
+            var data = _arrows[i];
             if (data.player?.GhostRole != GhostRoleId.Revenant)
             {
                 GameObject.Destroy(data.arrow.arrow);
+                _arrows.RemoveAt(i);
             }
         }
-        _arrows.RemoveAll(x => x.player?.GhostRole != GhostRoleId.Revenant);
     }
 
     public override void DetachToLocalPlayer()

@@ -36,7 +36,7 @@ class Lovers : ModifierBase<Lovers>
     public override bool HiddenOption => true;
 
     [Modifier(ModifierRoleId.Lovers)]
-    [AssignFilter([], [RoleId.Truelover, RoleId.LoversBreaker])]
+    [AssignFilter([], [RoleId.Truelover, RoleId.LoversBreaker, RoleId.Busker])]
     public static CustomOptionCategory LoversCategory;
 
     [CustomOptionInt("LoversMaxCoupleCount", 0, 15, 1, 0, parentFieldName: nameof(LoversCategory))]

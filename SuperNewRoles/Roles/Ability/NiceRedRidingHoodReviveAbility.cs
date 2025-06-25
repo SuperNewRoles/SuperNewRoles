@@ -24,12 +24,12 @@ public class NiceRedRidingHoodReviveAbility : AbilityBase, IAbilityCount
     public bool IsRevivable { get; set; }
     public int RemainingReviveCount { get; set; }
     public int NiceRedRidingHoodCount { get; set; }
-    public bool NiceRedRidinIsKillerDeathRevive { get; set; }
+    public bool NiceRedRidingHoodIsKillerDeathRevive { get; set; }
 
-    public NiceRedRidingHoodReviveAbility(int niceRedRidingHoodCount, bool niceRedRidinIsKillerDeathRevive)
+    public NiceRedRidingHoodReviveAbility(int niceRedRidingHoodCount, bool niceRedRidingHoodIsKillerDeathRevive)
     {
         NiceRedRidingHoodCount = niceRedRidingHoodCount;
-        NiceRedRidinIsKillerDeathRevive = niceRedRidinIsKillerDeathRevive;
+        NiceRedRidingHoodIsKillerDeathRevive = niceRedRidingHoodIsKillerDeathRevive;
     }
 
     // IAbilityCount実装
@@ -82,7 +82,7 @@ public class NiceRedRidingHoodReviveAbility : AbilityBase, IAbilityCount
     private void OnDieEvent(DieEventData data)
     {
         // タスクフェイズ中にキラーが死亡した場合の復活判定
-        if (!Player.IsAlive() && IsRevivable && NiceRedRidinIsKillerDeathRevive && data.player == Killer)
+        if (!Player.IsAlive() && IsRevivable && NiceRedRidingHoodIsKillerDeathRevive && data.player == Killer)
         {
             Logger.Info($"復活判定(キル者死亡) : 可", "NiceRedRidingHood");
             Revive();
