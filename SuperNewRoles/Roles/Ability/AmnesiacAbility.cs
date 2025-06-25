@@ -66,6 +66,7 @@ public class AmnesiacAbility : AbilityBase
 
         // 忘却者の役職を変更
         amnesiac.ReverseRole(deadPlayer);
+        amnesiac.ReverseTask(deadPlayer);
 
         deadPlayer.SetRole(targetRoleId);
     }

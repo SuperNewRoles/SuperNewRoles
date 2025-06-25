@@ -17,6 +17,7 @@ public class DeadBodyArrowsAbility : AbilityBase
     private readonly DeadBodyColorMode _deadBodyColorMode;
     private Dictionary<DeadBody, (Arrow arrow, Color color)> _deadBodyArrows = new();
     private EventListener _fixedUpdateEvent;
+    private EventListener<WrapUpEventData> _wrapUpEvent;
 
     /// <param name="showArrows">矢印のを表示できるか</param>
     /// <param name="arrowColor">矢印の色(指定無しの場合Vultureのロールカラー)</param>
@@ -30,10 +31,19 @@ public class DeadBodyArrowsAbility : AbilityBase
     public override void AttachToLocalPlayer()
     {
         // 矢印表示のイベントリスナーを設定
-        if (ShowArrows)
+        _fixedUpdateEvent = FixedUpdateEvent.Instance.AddListener(OnFixedUpdate);
+        _wrapUpEvent = WrapUpEvent.Instance.AddListener(OnWrapUp);
+    }
+
+    private void OnWrapUp(WrapUpEventData data)
+    {
+        // reset
+        foreach (var (arrow, color) in _deadBodyArrows.Values)
         {
-            _fixedUpdateEvent = FixedUpdateEvent.Instance.AddListener(OnFixedUpdate);
+            if (arrow?.arrow != null)
+                UnityEngine.Object.Destroy(arrow.arrow);
         }
+        _deadBodyArrows.Clear();
     }
 
     private void OnFixedUpdate()
@@ -63,6 +73,15 @@ public class DeadBodyArrowsAbility : AbilityBase
         // 既存の矢印を更新または不要な矢印を削除
         foreach (var arrowEntry in _deadBodyArrows.ToList())
         {
+            // DeadBody オブジェクトが Destroy 済みの場合はクリーンアップしてスキップ
+            if (arrowEntry.Key == null)
+            {
+                if (arrowEntry.Value.arrow?.arrow != null)
+                    UnityEngine.Object.Destroy(arrowEntry.Value.arrow.arrow);
+                _deadBodyArrows.Remove(arrowEntry.Key);
+                continue;
+            }
+
             int parentId = arrowEntry.Key.ParentId;
             if (deadBodiesByParentId.ContainsKey(parentId))
             {
@@ -99,8 +118,8 @@ public class DeadBodyArrowsAbility : AbilityBase
         base.DetachToLocalPlayer();
 
         // イベントリスナーを削除
-        if (_fixedUpdateEvent != null)
-            FixedUpdateEvent.Instance.RemoveListener(_fixedUpdateEvent);
+        _fixedUpdateEvent?.RemoveListener();
+        _wrapUpEvent?.RemoveListener();
 
         // 矢印を削除
         foreach (var (arrow, color) in _deadBodyArrows.Values)

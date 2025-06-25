@@ -4,6 +4,7 @@ using System.Linq;
 using AmongUs.GameOptions;
 using SuperNewRoles.Ability;
 using SuperNewRoles.Events;
+using SuperNewRoles.Extensions;
 using SuperNewRoles.Roles;
 using SuperNewRoles.Roles.Ability;
 using SuperNewRoles.Roles.Neutral;
@@ -406,6 +407,36 @@ public class ExPlayerControl
             SuperTrophyManager.DetachTrophy(abilitiesToDetach);
         ModifierRole &= ~modifierRoleId;
         ModifierRoleBases.RemoveAll(x => modifierRoleId.HasFlag(x.ModifierRole));
+    }
+    public void ReverseTask(ExPlayerControl target)
+    {
+        if (target == null || target.Player == null) return;
+
+        var myTasks = Player.myTasks.Where(x => x.TryCast<NormalPlayerTask>() != null).ToArray();
+        var myTaskIds = myTasks.Select(x => (byte)x.Index).ToArray();
+        var targetTasks = target.Player.myTasks.Where(x => x.TryCast<NormalPlayerTask>() != null).ToArray();
+        var targetTaskIds = targetTasks.Select(x => (byte)x.Index).ToArray();
+
+        // それぞれの完了済みタスクを保存 (TypeId ベース)
+        var myCompletedTaskIds = myTasks.Where(x => x.IsComplete).Select(x => (byte)x.Id);
+        var targetCompletedTaskIds = targetTasks.Where(x => x.IsComplete).Select(x => (byte)x.Id);
+
+        // タスク一覧を入れ替え
+        Data.SetTasks(targetTaskIds);
+        target.Data.SetTasks(myTaskIds);
+        // 交換後のタスクに完了状態を反映
+        foreach (var taskId in targetCompletedTaskIds)
+        {
+            Player.CompleteTask((uint)taskId);
+        }
+        foreach (var taskId in myCompletedTaskIds)
+        {
+            target.Player.CompleteTask((uint)taskId);
+        }
+
+        // 表示を更新
+        NameText.UpdateNameInfo(this);
+        NameText.UpdateNameInfo(target);
     }
     public void ReverseRole(ExPlayerControl target)
     {

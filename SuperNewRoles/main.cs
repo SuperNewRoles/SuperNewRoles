@@ -273,6 +273,7 @@ public partial class SuperNewRolesPlugin : BasePlugin
         ClassInjector.RegisterTypeInIl2Cpp<Lantern>();
         ClassInjector.RegisterTypeInIl2Cpp<Drone>();
         ClassInjector.RegisterTypeInIl2Cpp<WormHole>();
+        ClassInjector.RegisterTypeInIl2Cpp<SluggerDeadbody>();
         // lassInjector.RegisterTypeInIl2Cpp<AddressableReleaseOnDestroy>();
     }
 
