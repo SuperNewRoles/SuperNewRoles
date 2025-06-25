@@ -39,7 +39,7 @@ public class WaveCannonAbility : CustomButtonBase, IButtonEffect
     }
     public override void OnClick()
     {
-        WaveCannonObjectBase.RpcSpawnFromType(PlayerControl.LocalPlayer, Type, this.AbilityId, PlayerControl.LocalPlayer.MyPhysics.FlipX, PlayerControl.LocalPlayer.transform.position);
+        WaveCannonObjectBase.RpcSpawnFromType(PlayerControl.LocalPlayer, Type, PlayerControl.LocalPlayer.MyPhysics.FlipX, PlayerControl.LocalPlayer.transform.position);
         ResetTimer();
     }
     [CustomRPC]

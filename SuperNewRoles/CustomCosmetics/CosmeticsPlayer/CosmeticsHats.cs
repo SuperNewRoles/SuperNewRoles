@@ -27,13 +27,13 @@ public class CustomHatLayer : MonoBehaviour
     private const float ClimbZOffset = -0.02f;
     public SpriteAnimNodeSync spriteSyncNode;
 
-    public Dictionary<PlayerOutfitType, ICosmeticData> Hats = new();
-    public PlayerOutfitType CurrentHatType;
+    public Dictionary<CustomOutfitType, ICosmeticData> Hats = new();
+    public CustomOutfitType CurrentHatType;
 
     public ICustomCosmeticHat CustomCosmeticHat => Hats.TryGetValue(CurrentHatType, out var hat) ? hat as ICustomCosmeticHat : null;
     public ICosmeticData Hat => CustomCosmeticHat == null ? null : CustomCosmeticHat as ICosmeticData;
 
-    public ICosmeticData DefaultHat => Hats.TryGetValue(PlayerOutfitType.Default, out var hat) ? hat as ICosmeticData : null;
+    public ICosmeticData DefaultHat => Hats.TryGetValue(CustomOutfitType.Default, out var hat) ? hat as ICosmeticData : null;
 
     public bool Visible
     {
@@ -80,15 +80,23 @@ public class CustomHatLayer : MonoBehaviour
                 hat = CustomCosmeticsLoader.GetModdedHatData(hatId);
             else
                 hat = new CosmeticDataWrapperHat(FastDestroyableSingleton<HatManager>.Instance.GetHatById(hatId));
-            Hats[PlayerOutfitType.Shapeshifted] = hat;
-            CurrentHatType = PlayerOutfitType.Shapeshifted;
+            Hats[CustomOutfitType.Shapeshifter] = hat;
+            CurrentHatType = CustomOutfitType.Shapeshifter;
             SetHat(color);
         }
     }
 
+    public void StartCamouflage(int colorId)
+    {
+        Hats[CustomOutfitType.Camouflager] = new CosmeticDataWrapperHat(FastDestroyableSingleton<HatManager>.Instance.GetHatById(HatData.EmptyId));
+        CurrentHatType = CustomOutfitType.Camouflager;
+        SetMaterialColor(colorId);
+        PopulateFromViewData();
+    }
+
     public void FinishShapeshift(int color)
     {
-        CurrentHatType = PlayerOutfitType.Default;
+        CurrentHatType = CustomOutfitType.Default;
         SetHat(color);
         PopulateFromViewData();
     }

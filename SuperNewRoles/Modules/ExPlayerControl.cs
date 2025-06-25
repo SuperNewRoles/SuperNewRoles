@@ -13,13 +13,32 @@ using UnityEngine;
 
 namespace SuperNewRoles.Modules;
 
+// 型情報キャッシュシステム - 静的型IDによる高速ルックアップ
+internal static class TypeCache<T> where T : AbilityBase
+{
+    internal static readonly int TypeId;
+    internal static readonly Type Type;
+    internal static readonly string TypeName;
+
+    static TypeCache()
+    {
+        TypeId = System.Threading.Interlocked.Increment(ref TypeIdGenerator.NextId);
+        Type = typeof(T);
+        TypeName = Type.Name;
+    }
+}
+
+internal static class TypeIdGenerator
+{
+    internal static int NextId = -1; // 0から始まるように-1で初期化
+}
+
 public class ExPlayerControl
 {
-    public static ExPlayerControl LocalPlayer => _localPlayer;
-    private static ExPlayerControl _localPlayer;
+    public static ExPlayerControl LocalPlayer;
     private static List<ExPlayerControl> _exPlayerControls { get; } = new();
     public static List<ExPlayerControl> ExPlayerControls => _exPlayerControls;
-    private static ExPlayerControl[] _exPlayerControlsArray;
+    private static ExPlayerControl[] _exPlayerControlsArray = new ExPlayerControl[256];
     public PlayerControl Player { get; }
     public NetworkedPlayerInfo Data { get; }
     public PlayerPhysics MyPhysics => Player?.MyPhysics;
@@ -56,10 +75,21 @@ public class ExPlayerControl
     private List<ImpostorVisionAbility> _impostorVisionAbilities = new();
     private Dictionary<string, bool> _hasAbilityCache = new();
 
+    // パフォーマンス最適化用キャッシュ
+    private readonly Dictionary<int, AbilityBase> _typeIdAbilityCache = new();
+    private readonly Dictionary<int, List<AbilityBase>> _typeIdAbilitiesCache = new();
+    private readonly Dictionary<int, IReadOnlyList<object>> _typeIdReadOnlyCache = new();
+
+    // 型IDキャッシュ用配列。1024種類を超える型はキャッシュされないが、動作は継続する
+    private readonly bool[] _hasAbilityByTypeId = new bool[1024]; // 最大1024種類のアビリティタイプを想定
+    private readonly bool[] _hasAbilityByTypeIdCached = new bool[1024];
+
+    [System.Runtime.CompilerServices.MethodImpl(System.Runtime.CompilerServices.MethodImplOptions.AggressiveInlining)]
     public override int GetHashCode()
     {
         return PlayerId;
     }
+    [System.Runtime.CompilerServices.MethodImpl(System.Runtime.CompilerServices.MethodImplOptions.AggressiveInlining)]
     public override bool Equals(object obj)
     {
         if (obj is ExPlayerControl other)
@@ -75,25 +105,46 @@ public class ExPlayerControl
         this.lastAbilityId = 0;
         this.AmOwner = player.AmOwner;
     }
+    [System.Runtime.CompilerServices.MethodImpl(System.Runtime.CompilerServices.MethodImplOptions.AggressiveInlining)]
     public static implicit operator PlayerControl(ExPlayerControl exPlayer)
     {
-        if (exPlayer == null) return null;
-        return exPlayer.Player;
+        return exPlayer?.Player;
     }
+    [System.Runtime.CompilerServices.MethodImpl(System.Runtime.CompilerServices.MethodImplOptions.AggressiveInlining)]
     public static implicit operator ExPlayerControl(PlayerControl player)
     {
         if (player == null) return null;
-        return ById(player.PlayerId);
+        unsafe
+        {
+            fixed (ExPlayerControl* ptr = _exPlayerControlsArray)
+            {
+                return *(ptr + player.PlayerId);
+            }
+        }
     }
+    [System.Runtime.CompilerServices.MethodImpl(System.Runtime.CompilerServices.MethodImplOptions.AggressiveInlining)]
     public static implicit operator ExPlayerControl(PlayerVoteArea player)
     {
         if (player == null) return null;
-        return ById(player.TargetPlayerId);
+        unsafe
+        {
+            fixed (ExPlayerControl* ptr = _exPlayerControlsArray)
+            {
+                return *(ptr + player.TargetPlayerId);
+            }
+        }
     }
+    [System.Runtime.CompilerServices.MethodImpl(System.Runtime.CompilerServices.MethodImplOptions.AggressiveInlining)]
     public static implicit operator ExPlayerControl(NetworkedPlayerInfo data)
     {
         if (data == null) return null;
-        return ById(data.PlayerId);
+        unsafe
+        {
+            fixed (ExPlayerControl* ptr = _exPlayerControlsArray)
+            {
+                return *(ptr + data.PlayerId);
+            }
+        }
     }
     public bool HasAbility(string abilityName)
     {
@@ -108,14 +159,30 @@ public class ExPlayerControl
     }
     public bool HasAbility<T>() where T : AbilityBase
     {
-        if (_hasAbilityCache.TryGetValue(typeof(T).Name, out bool hasAbility))
+        var typeId = TypeCache<T>.TypeId;
+        if (typeId < 1024 && _hasAbilityByTypeIdCached[typeId])
+            return _hasAbilityByTypeId[typeId];
+
+        var count = PlayerAbilities.Count;
+        for (var i = 0; i < count; i++)
         {
-            return hasAbility;
+            if (PlayerAbilities[i] is T)
+            {
+                if (typeId < 1024)
+                {
+                    _hasAbilityByTypeId[typeId] = true;
+                    _hasAbilityByTypeIdCached[typeId] = true;
+                }
+                return true;
+            }
         }
 
-        hasAbility = PlayerAbilities.Any(x => x is T);
-        _hasAbilityCache[typeof(T).Name] = hasAbility;
-        return hasAbility;
+        if (typeId < 1024)
+        {
+            _hasAbilityByTypeId[typeId] = false;
+            _hasAbilityByTypeIdCached[typeId] = true;
+        }
+        return false;
     }
     public bool IsTaskComplete()
     {
@@ -192,17 +259,32 @@ public class ExPlayerControl
         if (AmOwner)
             SuperTrophyManager.DetachTrophy(Role);
         Role = roleId;
+        Logger.Info($"[SetRole] Player {Player?.name} ({PlayerId}) changing role from {oldRole} to {roleId}, AmOwner: {AmOwner}");
         if (CustomRoleManager.TryGetRoleById(roleId, out var role))
         {
+            Logger.Info($"[SetRole] Calling OnSetRole for player {Player?.name} ({PlayerId})");
             role.OnSetRole(Player);
+            Logger.Info($"[SetRole] OnSetRole completed, PlayerAbilities count: {PlayerAbilities.Count}");
             if (AmOwner)
                 SuperTrophyManager.RegisterTrophy(Role);
             roleBase = role;
-            foreach (var modifier in ModifierRoleBases.ToArray())
+            // ToArray()を使わずに、削除対象を後で処理
+            List<ModifierRoleId> toDetach = null;
+            foreach (var modifier in ModifierRoleBases)
             {
                 Logger.Info($"ModifierRole: {modifier.ModifierRole} AssignedTeams: {string.Join(",", modifier.AssignedTeams)} RoleBaseAssignedTeam: {roleBase.AssignedTeam}", "ExPlayerControl");
                 if (modifier.AssignedTeams.Count != 0 && !modifier.AssignedTeams.Contains(roleBase.AssignedTeam))
-                    DetachOldModifierRole(modifier.ModifierRole);
+                {
+                    if (toDetach == null) toDetach = new List<ModifierRoleId>();
+                    toDetach.Add(modifier.ModifierRole);
+                }
+            }
+            if (toDetach != null)
+            {
+                foreach (var modifierId in toDetach)
+                {
+                    DetachOldModifierRole(modifierId);
+                }
             }
         }
         else
@@ -333,7 +415,8 @@ public class ExPlayerControl
         List<(AbilityBase ability, ulong abilityId)> myAbilities = new();
         List<(AbilityBase ability, ulong abilityId)> targetAbilities = new();
 
-        foreach (var ability in PlayerAbilities.ToArray())
+        // ToArray()を使わずに直接リストから収集
+        foreach (var ability in PlayerAbilities)
         {
             if (ability != null && ability.Parent != null && ability.Parent is not AbilityParentPlayer)
             {
@@ -341,7 +424,7 @@ public class ExPlayerControl
             }
         }
 
-        foreach (var ability in target.PlayerAbilities.ToArray())
+        foreach (var ability in target.PlayerAbilities)
         {
             if (ability != null && ability.Parent != null && ability.Parent is not AbilityParentPlayer)
             {
@@ -405,6 +488,11 @@ public class ExPlayerControl
         PlayerAbilities.Clear();
         PlayerAbilitiesDictionary.Clear();
         _hasAbilityCache.Clear();
+        _typeIdAbilityCache.Clear();
+        _typeIdAbilitiesCache.Clear();
+        _typeIdReadOnlyCache.Clear();
+        System.Array.Clear(_hasAbilityByTypeIdCached, 0, _hasAbilityByTypeIdCached.Length);
+        System.Array.Clear(_hasAbilityByTypeId, 0, _hasAbilityByTypeId.Length);
     }
     public static void SetUpExPlayers()
     {
@@ -415,7 +503,7 @@ public class ExPlayerControl
             _exPlayerControls.Add(new ExPlayerControl(player));
             _exPlayerControlsArray[player.PlayerId] = _exPlayerControls[^1];
         }
-        _localPlayer = _exPlayerControlsArray[PlayerControl.LocalPlayer.PlayerId];
+        LocalPlayer = _exPlayerControlsArray[PlayerControl.LocalPlayer.PlayerId];
         DisconnectEvent.Instance.AddListener(x =>
         {
             ExPlayerControl exPlayer = (ExPlayerControl)x.disconnectedPlayer;
@@ -423,10 +511,16 @@ public class ExPlayerControl
                 exPlayer.Disconnected();
         });
     }
+    [System.Runtime.CompilerServices.MethodImpl(System.Runtime.CompilerServices.MethodImplOptions.AggressiveInlining)]
     public static ExPlayerControl ById(byte playerId)
     {
-        if (_exPlayerControlsArray == null) return null;
-        return _exPlayerControlsArray[playerId];
+        unsafe
+        {
+            fixed (ExPlayerControl* ptr = _exPlayerControlsArray)
+            {
+                return *(ptr + playerId);
+            }
+        }
     }
     public bool IsKiller()
         => IsImpostor() || IsPavlovsDog() || Role == RoleId.MadKiller || IsJackal() || HasCustomKillButton() || Role == RoleId.Hitman;
@@ -434,6 +528,7 @@ public class ExPlayerControl
     public bool IsNonCrewKiller()
         => IsKiller() && !IsCrewmate();
 
+    [System.Runtime.CompilerServices.MethodImpl(System.Runtime.CompilerServices.MethodImplOptions.AggressiveInlining)]
     public bool IsCrewmate()
         => roleBase != null ? (Role == RoleId.SchrodingersCat && GetAbility<SchrodingersCatAbility>()?.CurrentTeam == SchrodingersCatTeam.Crewmate) || (roleBase.AssignedTeam == AssignedTeamType.Crewmate && !IsMadRoles() && !IsFriendRoles()) : !Data.Role.IsImpostor;
 
@@ -442,6 +537,7 @@ public class ExPlayerControl
 
     public bool IsCrewmateOrMadRoles()
         => IsCrewmate() || IsMadRoles() || IsFriendRoles();
+    [System.Runtime.CompilerServices.MethodImpl(System.Runtime.CompilerServices.MethodImplOptions.AggressiveInlining)]
     public bool IsImpostor()
         => Data.Role.IsImpostor || GetAbility<SchrodingersCatAbility>()?.CurrentTeam == SchrodingersCatTeam.Impostor;
     public bool IsNeutral()
@@ -468,8 +564,10 @@ public class ExPlayerControl
         => IsJackal() || IsSidekick() || IsFriendRoles();
     public bool IsLovers()
         => ModifierRole.HasFlag(ModifierRoleId.Lovers);
+    [System.Runtime.CompilerServices.MethodImpl(System.Runtime.CompilerServices.MethodImplOptions.AggressiveInlining)]
     public bool IsDead()
         => Data == null || Data.Disconnected || Data.IsDead;
+    [System.Runtime.CompilerServices.MethodImpl(System.Runtime.CompilerServices.MethodImplOptions.AggressiveInlining)]
     public bool IsAlive()
         => !IsDead();
     public bool IsTaskTriggerRole()
@@ -518,13 +616,30 @@ public class ExPlayerControl
     {
         return PlayerAbilitiesDictionary.TryGetValue(abilityId, out var ability) ? ability : null;
     }
+    [System.Runtime.CompilerServices.MethodImpl(System.Runtime.CompilerServices.MethodImplOptions.AggressiveInlining)]
     public bool TryGetAbility<T>(out T result) where T : AbilityBase
     {
+        var typeId = TypeCache<T>.TypeId;
+        if (_typeIdAbilityCache.TryGetValue(typeId, out var cachedAbility))
+        {
+            result = cachedAbility as T;
+            return result != null;
+        }
+
+        var count = PlayerAbilities.Count;
+        for (var i = 0; i < count; i++)
+        {
+            if (PlayerAbilities[i] is T ability)
+            {
+                _typeIdAbilityCache[typeId] = ability;
+                result = ability;
+                return true;
+            }
+        }
+
+        _typeIdAbilityCache[typeId] = null;
         result = null;
-        if (!_abilityCache.TryGetValue(typeof(T).Name, out var ability))
-            return false;
-        result = (T)ability;
-        return true;
+        return false;
     }
     public T GetAbility<T>(ulong abilityId) where T : AbilityBase
     {
@@ -560,6 +675,12 @@ public class ExPlayerControl
         }
         ability.Attach(Player, abilityId, parent);
         _hasAbilityCache.Clear();
+
+        // 新しいキャッシュシステムのクリア（最適化版）
+        _typeIdAbilityCache.Clear();
+        _typeIdAbilitiesCache.Clear();
+        _typeIdReadOnlyCache.Clear();
+        System.Array.Clear(_hasAbilityByTypeIdCached, 0, _hasAbilityByTypeIdCached.Length);
     }
     public void AttachAbility(AbilityBase ability, AbilityParentBase parent)
     {
@@ -601,14 +722,72 @@ public class ExPlayerControl
         PlayerAbilitiesDictionary.Remove(abilityId);
         _abilityCache.Remove(ability.GetType().Name);
         _hasAbilityCache.Clear();
+
+        // 新しいキャッシュシステムのクリア（最適化版）
+        _typeIdAbilityCache.Clear();
+        _typeIdAbilitiesCache.Clear();
+        _typeIdReadOnlyCache.Clear();
+        System.Array.Clear(_hasAbilityByTypeIdCached, 0, _hasAbilityByTypeIdCached.Length);
     }
     public T GetAbility<T>() where T : AbilityBase
     {
-        return _abilityCache.TryGetValue(typeof(T).Name, out var ability) ? ability as T : null;
+        var typeId = TypeCache<T>.TypeId;
+        if (_typeIdAbilityCache.TryGetValue(typeId, out var cachedAbility))
+            return cachedAbility as T;
+
+        var count = PlayerAbilities.Count;
+        for (var i = 0; i < count; i++)
+        {
+            if (PlayerAbilities[i] is T ability)
+            {
+                _typeIdAbilityCache[typeId] = ability;
+                return ability;
+            }
+        }
+
+        _typeIdAbilityCache[typeId] = null;
+        return null;
     }
-    public List<T> GetAbilities<T>() where T : AbilityBase
+    public IReadOnlyList<T> GetAbilities<T>() where T : AbilityBase
     {
-        return PlayerAbilities.Where(x => x is T).Cast<T>().ToList();
+        var typeId = TypeCache<T>.TypeId;
+
+        // ReadOnlyキャッシュをチェック
+        if (_typeIdReadOnlyCache.TryGetValue(typeId, out var cachedReadOnly))
+        {
+            return (IReadOnlyList<T>)cachedReadOnly;
+        }
+
+        // 既存のキャッシュをチェック
+        if (_typeIdAbilitiesCache.TryGetValue(typeId, out var cachedList))
+        {
+            var typedList = new List<T>(cachedList.Count);
+            for (var i = 0; i < cachedList.Count; i++)
+                typedList.Add((T)cachedList[i]);
+
+            var readOnlyResult = typedList.AsReadOnly();
+            _typeIdReadOnlyCache[typeId] = readOnlyResult;
+            return readOnlyResult;
+        }
+
+        // 新規作成
+        var result = new List<T>();
+        var cacheList = new List<AbilityBase>();
+        var count = PlayerAbilities.Count;
+
+        for (var i = 0; i < count; i++)
+        {
+            if (PlayerAbilities[i] is T ability)
+            {
+                result.Add(ability);
+                cacheList.Add(ability);
+            }
+        }
+
+        _typeIdAbilitiesCache[typeId] = cacheList;
+        var readOnlyCollection = result.AsReadOnly();
+        _typeIdReadOnlyCache[typeId] = readOnlyCollection;
+        return readOnlyCollection;
     }
     public override string ToString()
     {
