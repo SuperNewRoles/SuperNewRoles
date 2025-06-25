@@ -261,7 +261,7 @@ public class RocketLaunchAbility : CustomButtonBase
     // Use a placeholder sprite path for now
     public override Sprite Sprite => AssetManager.GetAsset<Sprite>("RocketLaunchButton.png");
     public override string buttonText => ModTranslation.GetString("RocketLaunchButtonText");
-    protected override KeyType keytype => KeyType.Ability2;
+    protected override KeyType keytype => KeyType.Kill;
 
     // Method called by RocketAbility during Attach
     public void SetGrabAbility(RocketGrabAbility grabAbility)

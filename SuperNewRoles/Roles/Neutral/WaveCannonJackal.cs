@@ -22,7 +22,8 @@ class WaveCannonJackal : RoleBase<WaveCannonJackal>
             sidekickCooldown: WaveCannonJackalSidekickCooldown,
             isImpostorVision: WaveCannonJackalImpostorVision,
             isInfiniteJackal: WaveCannonJackalInfiniteJackal,
-            sidekickType: (RoleId)WaveCannonJackalSidekickType
+            sidekickType: (RoleId)WaveCannonJackalSidekickType,
+            hasOtherButton: true
         )),
         () => new WaveCannonAbility(
             coolDown: WaveCannonJackalCooldown,

@@ -72,7 +72,7 @@ public static class NameText
 
         // 生きている時は役職を自覚できない役の役職名を上書き
         var hideMyRoleAbility = !player.AmOwner || player.IsDead() ? null : player.GetAbility<HideMyRoleWhenAliveAbility>();
-        if (hideMyRoleAbility != null) { hideMyRoleAbility.DisplayRoleName(player, ref roleName); }
+        hideMyRoleAbility?.DisplayRoleName(player, ref roleName);
 
         if (player.GhostRole != GhostRoleId.None && player.GhostRoleBase != null)
             roleName = $"{ModHelpers.CsWithTranslation(player.GhostRoleBase.RoleColor, player.GhostRole.ToString())} ({roleName}) ";
@@ -95,28 +95,7 @@ public static class NameText
             player.VoteArea.NameText.text = player.Player.Data.DefaultOutfit.PlayerName;
         bool visiable = ExPlayerControl.LocalPlayer.PlayerId == player.PlayerId ||
                         (ExPlayerControl.LocalPlayer.IsDead() && !GameSettingOptions.HideGhostRoles);
-        // 生きている時は役職を自覚できない役の名前色を設定
-        if (hideMyRoleAbility != null && hideMyRoleAbility.IsHide(player).role)
-        {
-            var roleColor = player.Data.Role.IsImpostor ? Impostor.Instance.RoleColor : Crewmate.Instance.RoleColor;
-            player.Data.Role.NameColor = roleColor;
-            SetNameTextColor(player, roleColor);
-        }
-        else if (visiable)
-        {
-            player.Data.Role.NameColor = player.roleBase.RoleColor;
-            SetNameTextColor(player, player.roleBase.RoleColor);
-        }
-        else if (ExPlayerControl.LocalPlayer.IsImpostor() && player.IsImpostor())
-        {
-            player.Data.Role.NameColor = Palette.ImpostorRed;
-            SetNameTextColor(player, Palette.ImpostorRed);
-        }
-        else
-        {
-            player.Data.Role.NameColor = Color.white;
-            SetNameTextColor(player, Color.white);
-        }
+
         UpdateVisiable(player, ExPlayerControl.LocalPlayer.GetAbility<HideRoleOnGhostAbility>());
         NameTextUpdateEvent.Invoke(player, visiable);
         NameTextUpdateVisiableEvent.Invoke(player, visiable);
@@ -129,9 +108,10 @@ public static class NameText
         if (player.MeetingInfoText != null && showOnMeeting)
             player.MeetingInfoText.text += text;
     }
-    public static void SetNameTextColor(ExPlayerControl player, Color color)
+    public static void SetNameTextColor(ExPlayerControl player, Color color, bool nonLog = false)
     {
-        Logger.Info($"SetNameTextColor: {player.Data.PlayerName} {color}");
+        if (!nonLog)
+            Logger.Info($"SetNameTextColor: {player.Data.PlayerName} {color}");
         player.Player.cosmetics.nameText.color = color;
         if (player.VoteArea != null)
             player.VoteArea.NameText.color = color;
@@ -205,6 +185,34 @@ public static class NameText
             visiable = false;
         if (visiable && player.PlayerInfoText == null)
             UpdateNameInfo(player);
+
+        var hideMyRoleAbility = !player.AmOwner || player.IsDead() ? null : player.GetAbility<HideMyRoleWhenAliveAbility>();
+
+        if (hideMyRoleAbility == null || !hideMyRoleAbility.IsHide(player).role)
+        { // 通常の役職表示
+            if (visiable)
+            {
+                player.Data.Role.NameColor = player.roleBase.RoleColor;
+                SetNameTextColor(player, player.roleBase.RoleColor, true);
+            }
+            else if (ExPlayerControl.LocalPlayer.IsImpostor() && player.IsImpostor())
+            {
+                player.Data.Role.NameColor = Palette.ImpostorRed;
+                SetNameTextColor(player, Palette.ImpostorRed, true);
+            }
+            else
+            {
+                player.Data.Role.NameColor = Color.white;
+                SetNameTextColor(player, Color.white, true);
+            }
+        }
+        else // 生きている時は役職を自覚できない役の名前色を設定
+        {
+            var roleColor = player.Data.Role.IsImpostor ? Impostor.Instance.RoleColor : Crewmate.Instance.RoleColor;
+            player.Data.Role.NameColor = roleColor;
+            SetNameTextColor(player, roleColor);
+        }
+
         player.PlayerInfoText.gameObject.SetActive(visiable);
         if (player.MeetingInfoText != null)
             player.MeetingInfoText.gameObject.SetActive(visiable);
