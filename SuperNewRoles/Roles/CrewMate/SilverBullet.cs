@@ -20,7 +20,7 @@ namespace SuperNewRoles.Roles.Crewmate
             () => new CustomVentAbility(() => SilverBulletCanUseVent)
         };
 
-        public override QuoteMod QuoteMod => QuoteMod.TheOtherRolesGM;
+        public override QuoteMod QuoteMod => QuoteMod.SuperNewRoles;
 
         public override RoleTypes IntroSoundType => RoleTypes.Engineer;
         public override short IntroNum => 1;

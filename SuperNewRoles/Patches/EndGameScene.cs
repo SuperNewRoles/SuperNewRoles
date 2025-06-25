@@ -15,6 +15,7 @@ using UnityEngine.UI;
 using BepInEx.Unity.IL2CPP.Utils.Collections;
 using SuperNewRoles.Roles.Modifiers;
 using TMPro;
+using SuperNewRoles.Roles.Madmates;
 
 namespace SuperNewRoles.Patches;
 

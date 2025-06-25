@@ -6,7 +6,7 @@ using SuperNewRoles.CustomOptions;
 using SuperNewRoles.Roles.Ability;
 using SuperNewRoles.Modules;
 
-namespace SuperNewRoles.Roles.Neutral;
+namespace SuperNewRoles.Roles.Madmates;
 class MadJester : RoleBase<MadJester>
 {
     public override RoleId Role => RoleId.MadJester;
@@ -25,15 +25,15 @@ class MadJester : RoleBase<MadJester>
             ))
         };
 
-    public override QuoteMod QuoteMod => QuoteMod.TheOtherRolesGM;
+    public override QuoteMod QuoteMod => QuoteMod.SuperNewRoles;
     public override RoleTypes IntroSoundType => RoleTypes.Shapeshifter;
     public override short IntroNum => 1;
 
-    public override AssignedTeamType AssignedTeam => AssignedTeamType.Neutral;
-    public override WinnerTeamType WinnerTeam => WinnerTeamType.Neutral;
-    public override TeamTag TeamTag => TeamTag.Neutral;
-    public override RoleTag[] RoleTags => new RoleTag[] { };
-    public override RoleOptionMenuType OptionTeam => RoleOptionMenuType.Neutral;
+    public override AssignedTeamType AssignedTeam => AssignedTeamType.Crewmate;
+    public override WinnerTeamType WinnerTeam => WinnerTeamType.Impostor;
+    public override TeamTag TeamTag => TeamTag.Madmate;
+    public override RoleTag[] RoleTags => [];
+    public override RoleOptionMenuType OptionTeam => RoleOptionMenuType.Crewmate;
 
     [CustomOptionBool("MadJesterCanKnowImpostors", false)]
     public static bool MadJesterCanKnowImpostors;
