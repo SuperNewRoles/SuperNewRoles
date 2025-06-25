@@ -521,6 +521,26 @@ public static class ModHelpers
         FixingSabotage(taskType);
     }
 
+    /// <summary>
+    /// リペア処理を行います。
+    /// </summary>
+    /// <param name="ignoreMushroomMixup">マッシュルームミックスアップのリペアを無視するかどうか</param>
+    public static void RpcFixingSabotage(bool ignoreMushroomMixup = false)
+    {
+        if (PlayerControl.LocalPlayer.IsMushroomMixupActive())
+        {
+            if (ignoreMushroomMixup) return;
+            RpcFixingSabotage(TaskTypes.MushroomMixupSabotage);
+            return;
+        }
+        foreach (PlayerTask task in PlayerControl.LocalPlayer.myTasks)
+        {
+            if (!ModHelpers.IsSabotage(task.TaskType))
+                continue;
+            RpcFixingSabotage(task.TaskType);
+        }
+    }
+
     [CustomRPC]
     public static void RpcFixLight()
     {
@@ -536,7 +556,7 @@ public static class ModHelpers
     }
     public static bool IsSabotage(SystemTypes systemType)
     {
-        return systemType is SystemTypes.Electrical or SystemTypes.LifeSupp or SystemTypes.Reactor or SystemTypes.HeliSabotage or SystemTypes.Laboratory or SystemTypes.Comms;
+        return systemType is SystemTypes.Electrical or SystemTypes.LifeSupp or SystemTypes.Reactor or SystemTypes.HeliSabotage or SystemTypes.Laboratory or SystemTypes.Comms or SystemTypes.MushroomMixupSabotage;
     }
 
     private static void FixingSabotage(TaskTypes taskType)

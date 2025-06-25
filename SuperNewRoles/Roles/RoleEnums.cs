@@ -97,12 +97,14 @@ public enum RoleId : short
     MadHawk,
     WiseMan,
     Bullet,
+    SilverBullet,
     Clergy,
     NiceScientist,
     EvilScientist,
     Lighter,
     Technician,
     Medium,
+    Psychometrist,
     MeetingSheriff,
     DoubleKiller,
     Finder,
@@ -122,6 +124,7 @@ public enum RoleId : short
     DarkKiller,
     Mushroomer,
     EvilSeer,
+    MadJester,
     Slugger,
     Magaziner,
     Robber,
@@ -139,6 +142,7 @@ public enum GhostRoleId : short
     Cantera,
     Revenant,
     Mirage,
+    GhostMechanic,
 }
 
 [Flags]

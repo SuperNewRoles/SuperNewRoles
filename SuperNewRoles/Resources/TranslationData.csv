@@ -439,6 +439,7 @@ EvilScientist,イビルサイエンティスト,Evil Scientist
 Lighter,ライター,Lighter
 Technician,技術者,Technician
 Medium,ミーディアム,Medium,灵媒师,靈媒師
+Psychometrist,サイコメトラー,Psychometrist,心灵测量师,心靈測量師
 DoubleKiller,ダブルキラー,DoubleKiller
 Finder,ファインダー,Finder,Finder,Finder
 Stuntman,スタントマン,Stuntman
@@ -456,6 +457,9 @@ DimensionWalker,ディメンションウォーカー,Dimension Walker,次元行�
 DarkKiller,ダークキラー,Dark killer
 OrientalShaman,陰陽師,Oriental Shaman,阴阳师,陰陽師
 ShermansServant,式神,Shermans Servant,式神,式神
+SilverBullet,シルバーバレット,Silver Bullet
+GhostMechanic,亡霊整備士,Ghost Mechanic,Ghost Mechanic,Ghost Mechanic
+MadJester,マッドてるてる,Mad Jester,疯狂小丑,瘋狂小丑
 Robber,泥棒,Robber
 OverKiller,オーバーキラー,Overkiller
 Jammer,ジャマー,Jammer,干扰者,干擾者
@@ -585,10 +589,10 @@ Stuntman.Description,タスクターンに発動する能力を有するクル�
 Ubiquitous.Description,タスクターンに使用出来る能力を有するクルーメイトです。\n「呼び出し」ボタンを押すと、マップ上に自視点でのみ視認出来るドローンを呼び出します。\n「操作」ボタンを押すと、呼び出したドローンに視点が切り替わり、操作出来るようになります。\n「帰還」ボタンを押すと、ドローンをマップ上から削除します。\n「ドアハック」ボタンを押すと近くのドアを開けます。\nドローンがマップ上に存在する状態で会議が招集されると、実体化しマップ上に固定されます。\n実体化したドローンは他プレイヤーも視認出来ます。\nまた、マップ上に固定されたドローンの近くを他プレイヤーが通過すると、ユビキタスのタスクマップ上に表示されます。,A crewmate with an ability usable during the Task Turn。\nWhen you press the 'Call' button、 you summon a drone visible only to you on the map。\nWhen you press the 'Operate' button、 your view switches to the summoned drone and you can operate it。\nWhen you press the 'Return' button、 the drone is removed from the map。\nWhen you press the 'Door Hack' button、 you open nearby doors。\nIf a meeting is called while the drone exists on the map、 it materializes and becomes fixed on the map。\nA materialized drone can be seen by other players。\nAlso、 when another player passes near a fixed drone on the map、 it will appear on Ubiquitous’s task map。,是具有能够在任务回合使用能力的队员。\n按下「呼叫」按钮，可以在地图上召唤一个只有自己可见的无人机。\n按下「操作」按钮，视角会切换到召唤的无人机并可以操作它。\n按下「返回」按钮，可以将无人机从地图上移除。\n按下「门锁破解」按钮，可以打开附近的门。\n如果在无人机存在于地图上时召开会议，它会实体化并固定在地图上。\n实体化的无人机可以被其他玩家看到。\n此外，当其他玩家经过固定的无人机附近时，会在偏在者的任务地图上显示。,是具有能夠在任務回合使用能力的隊員。\n按下「呼叫」按鈕，可以在地圖上召喚一個只有自己可見的無人機。\n按下「操作」按鈕，視角會切換到召喚的無人機並可以操作它。\n按下「返回」按鈕，可以將無人機從地圖上移除。\n按下「門鎖破解」按鈕，可以打開附近的門。\n如果在無人機存在於地圖上時召開會議，它會實體化並固定在地圖上。\n實體化的無人機可以被其他玩家看到。\n此外，當其他玩家經過固定的無人機附近時，會在偏在者的任務地圖上顯示。
 Busker.Description,タスクターンに使用出来る能力を有するクルーメイトです。\n「偽装死」ボタンを押すと、幽霊状態になります。\n偽装死状態のときに会議が招集されたり、一定時間が経過すると本当に死亡してしまいます。\nまた、戻るべき死体が消えてしまっても本当に死亡してしまいます。,A crewmate with an ability usable during the Task Turn。\nWhen you press the 'Feign Death' button、 you become a ghost。\nWhile feigning death、 if a meeting is called or a certain time passes、 you will actually die。\nAlso、 if your corpse to return to disappears、 you will actually die。,是具有能够在任务回合使用能力的队员。\n按下「假死」按钮，会变为幽灵状态。\n在假死状态下，如果召开会议或经过一定时间，你会真正死亡。\n另外，即使复活的尸体消失，你也会真正死亡。,是具有能夠在任務回合使用能力的隊員。\n按下「假死」按鈕，會變為幽靈狀態。\n在假死狀態下，如果召開會議或經過一定時間，你會真正死亡。\n另外，即使復活的屍體消失，你也會真正死亡。
 Doorr.Description,タスクターンに使用出来る能力を有するクルーメイトです。\n「ドアーー!!」ボタンを押すと、目の前のドアを開閉出来ます。,A crewmate with an ability usable during the Task Turn。\nWhen you press the 'Doorーー!!' button、 you can open and close the door in front of you。,是具有能够在任务回合使用能力的队员。\n按下「门ーー!!」按钮，可以开关面前的门。,是具有能夠在任務回合使用能力的隊員。\n按下「門ーー!!」按鈕，可以開關面前的門。
+SilverBullet.Description,タスクターンに使用出来る能力を有するクルーメイトです。\nベントに向かって「分析」ボタンを押すと、そのベントの前のターンの使用情報を得られます。\n情報はチャットに送られます。
 Shielder.Description,タスクターンに使用出来る能力を有するクルーメイトです。\n「シールド」ボタンを押すと、一定時間の間キルを防ぐシールドを貼ります。\nキルを防いだときのガードエフェクトは、自身及びキラー視点で見えます。,
 Moving.Description,タスクターンに使用出来る能力を有するクルーメイトです。\n「位置記録」ボタンを押すと、その場所をテレポート先として登録します。\n「テレポート」ボタンを押すと記録した場所にテレポート出来ます。,
 HauntedWolf.Description,特に能力を有さないクルーメイトです。\n死亡するまでこの役職だと自覚出来ません。\nシェリフ等陣営の判定が可能な役職から、インポスターとして判定されます。,
-
 
 # Descriptions_MadRoles
 Madmate.Description,インポスターの味方のクルーメイトです。\nいわゆる狂人と呼ばれる役職です。\n勝利条件はクルーメイトの勝利ではなく、インポスターの勝利です。\nその勝利に自身の生死は問われないので、あの手この手でインポスターを勝利に導きましょう。,A Crewmate allied with the Impostors.\nOften known as the Madmate.\nTheir win condition is not for the Crewmates to win，but for the Impostors to win.\nTheir own survival is irrelevant，so use any means necessary to secure an Impostor victory.,这是一个支持内鬼的船员，也称为疯友角色。\n他们的胜利条件不是船员获胜，而是内鬼获胜，并且他们的生死并不影响胜利。\n所以，尽可能地采用各种手段促成内鬼获胜。,這是一個支持內鬼的船員，俗稱瘋友角色。\n其勝利條件並非船員勝利，而是內鬼勝利，且自身生死不影響結果。\n因此，請用一切手段助內鬼取勝。,
@@ -598,12 +602,14 @@ BlackSanta.Description,インポスターの味方のクルーメイトです。
 Worshiper.Description,インポスターの味方のクルーメイトです。\nいわゆる狂人と呼ばれる役職です。\n勝利条件はクルーメイトの勝利ではなく、インポスターの勝利です。\nその勝利に自身の生死は問われないので、あの手この手でインポスターを勝利に導きましょう。\nこの役職は、任意のタイミングで自殺をすることが出来ます。,A Crewmate allied with the Impostors.\nOften known as the Madmate.\nTheir win condition is for the Impostors to win，not the Crewmates.\nTheir own survival is irrelevant，so use any means necessary to secure an Impostor victory.\nThis role can choose to commit suicide at any time.,这是一个支持内鬼的船员，也称为“信徒角色”。\n他们的胜利条件不是船员获胜，而是内鬼获胜，并且他们的生死无关紧要。\n此角色可随时选择自杀。,這是一個支持內鬼的船員，也稱為「信徒角色」。\n他們的勝利條件不是船員勝利，而是內鬼勝利，且他們的生死無關緊要。\n此角色可隨時選擇自殺。,
 SatsumaAndImo.Description,特に能力を有さないクルーメイト兼マッドメイトです。\n会議を挟むごとにクルーメイトとマッドメイトに交互に変化します。\n勝利条件もターンごとに変化します。,A Crewmate/Madmate with no special abilities.\nThey alternate between Crewmate and Madmate after each meeting.\nTheir win condition changes accordingly each turn.,一个没有特殊能力的船员兼疯友角色。\n他们在每次会议后在船员和疯友之间交替。\n他们的胜利条件也随回合变化。,這是一個沒有特殊能力的船員兼瘋友角色。\n他們在每次會議後在船員和瘋友之間交替。\n他們的勝利條件也隨回合變化。,
 MadHawk.Description,インポスターの味方のクルーメイトです。\nいわゆる狂人と呼ばれる役職です。\n勝利条件はクルーメイトの勝利ではなく、インポスターの勝利です。\nその勝利に自身の生死は問われないので、あの手この手でインポスターを勝利に導きましょう。この役職は、タスクターンに使用出来る能力を有します。\n「ホークアイ」ボタンを押すと自分の視野が広がり、周囲の様子を見ることが出来ます。,A Crewmate allied with the Impostors.\nOften known as a Madmate.\nTheir win condition is for the Impostors to win，not the Crewmates.\nTheir own survival is irrelevant，so use any means necessary to secure an Impostor victory.\nThis role has an ability usable during task turns.\nBy pressing the “Hawkeye” button，they expand their vision to observe their surroundings.,这是一个支持内鬼的船员，也称为“疯鹰角色”。\n他们的胜利条件不是船员获胜，而是内鬼获胜，并且他们的生死无关紧要。\n此角色在任务回合中可使用能力。\n按下“鹰眼”按钮后，可扩大视野以观察周围情况。,這是一個支持內鬼的船員，也稱為「瘋鷹角色」。\n他們的勝利條件不是船員勝利，而是內鬼勝利，且他們的生死無關緊要。\n此角色在任務回合中可使用能力。\n按下「鷹眼」按鈕後，可擴大視野以觀察周圍情況。,
+MadJester.Description,インポスターの味方のクルーメイトです。\nいわゆる狂人と呼ばれる役職です。\n勝利条件はクルーメイトの勝利ではなく、インポスターの勝利です。\nその勝利に自身の生死は問われないので、あの手この手でインポスターを勝利に導きましょう。この役職は、特別な勝利条件を有します。\nタスクを完了した状態で追放されると、インポスター勝利となります。,
 
 JackalFriends.Description,ジャッカルの味方のクルーメイトです。\nいわゆる狂人と呼ばれる役職のジャッカル版です。\n勝利条件はクルーメイトの勝利ではなく、ジャッカルの勝利です。\nその勝利に自身の生死は問われないので、あの手この手でジャッカルを勝利に導きましょう。,A Crewmate allied with the Jackal faction.\nKnown as Jackal Friends—a Jackal version of Madmate.\nTheir win condition is for Jackal to win，not the Crewmates.\nTheir own survival is irrelevant，so use any means necessary to ensure Jackal’s victory.,这是一个支持杰克阵营的船员，也称为杰克朋友。\n他们的胜利条件不是船员获胜，而是杰克获胜，并且他们的生死无关紧要。\n所以，请尽一切可能帮助杰克取得胜利。,這是一個支持傑克陣營的船員，也稱為傑克朋友。\n他們的勝利條件不是船員勝利，而是傑克勝利，且他們的生死無關緊要。\n因此，請盡一切可能協助傑克取得勝利。,
 
 # Descriptions_GhostRoles
 Cantera.Description,タスクターンに使用出来る能力を有するクルーメイトです。\n「灯火」ボタンを押すと、対象のプレイヤーに取り憑き、一定時間視界を明るくします。\nこの役職は死亡したプレイヤーに割り当てられます。,A Crewmate with an ability usable during task turns.\nBy pressing the “Beacon” button，they possess a target player，illuminating their vision for a set duration.\nThis role is assigned to dead players.,这是一个在任务回合中可使用能力的船员。\n按下“灯火”按钮后，会附身目标玩家，使其视野在一段时间内变亮。\n此角色死后由下一位死亡玩家继承。,這是一個在任務回合中可使用能力的船員。\n按下「燈火」按鈕後，會附身目標玩家，使其視野在一段時間內變亮。\n此角色死後由下一位死亡玩家繼承。,
 Mirage.Description,タスクターンに発動する能力と、使用出来る能力を有するインポスターです。\n誰かが死亡すると画面が青く発光します。\n死体が発生すると能力を使用出来るようになります。\n「複製」ボタンを押すと、そのターンに発生した死体をその場に複製して設置します。\n生成された死体はリポートすることが出来ます。\nまた、複製した数だけ同じ死体が発見されます。\nこの役職は死亡したプレイヤーに割り当てられます。,An Impostor with an ability that activates during task turns and an additional usable ability.\nWhen someone dies，the screen emits a blue glow.\nWhen a body appears，they gain the ability to use their power.\nBy pressing the “Duplicate” button，they create a copy of that turn’s newly spawned body at the same location.\nThe generated body can be reported，and as many bodies as duplicated appear for discovery.\nThis role is assigned to dead players.,这是一个具有任务回合可激活能力和可使用能力的内鬼。\n当有人死亡时，屏幕会发出蓝光。\n当尸体出现时，他们获得使用能力的机会。\n按下“复制”按钮后，会在同一位置生成本回合新出现的尸体副本。\n生成的尸体可以被举报，并且与复制次数相同数量的尸体同时被发现。\n此角色死后由下一位死亡玩家继承。,這是一個具有任務回合可激活能力和可使用能力的內鬼。\n當有人死亡時，螢幕會發出藍光。\n當屍體出現時，他們獲得使用能力的機會。\n按下「複製」按鈕後，會在同一位置生成本回合新出現的屍體副本。\n生成的屍體可以被舉報，並且與複製次數相同數量的屍體同時被發現。\n此角色死後由下一位死亡玩家繼承。,
+GhostMechanic.Description,タスクターンに使用出来る能力を有するクルーメイトです。\n「修理」ボタンを押すとサボタージュを即座に修理することが出来ます。,
 
 # Descriptions_Modifier
 ModifierGuesser.Description,会議に関する能力を有する追加役職です。\n元の役職の能力に加えてこの能力を有します。\n会議中に出現するボタンを押し、対象のプレイヤーの役職が何か当てると、そのプレイヤーをキルすることが出来ます。\nただし、外すと自身が死亡してしまいます。\n\nホストモードでは、以下のコマンドを使用して推測します。\n/bt 色の名前 役職名,An additional role with a meeting-related ability.\nThey retain their original role’s powers and gain this extra ability.\nDuring meetings，by pressing the appearing button and correctly guessing a target player’s role，they can kill that player.\nHowever，an incorrect guess results in their own death.\n\nIn Host mode，use the following command to guess:\n/bt <color> <role>.,这是一个具有会议相关能力的额外角色。\n他们保留原始角色的能力，并获得此额外能力。\n会议期间，通过按下出现的按钮并正确猜测目标玩家的角色，可以将其击杀。\n但是，猜错自己就会死亡。\n\n在主机模式下，请使用以下命令进行推测：\n/bt <颜色> <角色>。,這是一個具有會議相關能力的額外角色。\n他們保留原始角色的能力，並獲得此額外能力。\n會議期間，通過按下出現的按鈕並正確猜測目標玩家的角色，可以將其擊殺。\n但是，猜錯自己就會死亡。\n\n在主機模式下，請使用以下命令進行推測：\n/bt <顏色> <角色>。,
@@ -733,6 +739,8 @@ StuntmanIntro1,無意識の攻防、,Unconscious offense and defense,无意识�
 UbiquitousIntro1,偏在する監視眼,Ubiquitous watchful eye,无处不在的监视之眼,無處不在的監視之眼
 BuskerIntro1,危険な大道芸人,Dangerous street performer,危险的街头艺人,危險的街頭藝人
 DoorrIntro1,ノンストレス移動,stress-free movement,门，零压力移动,門，零壓力移動
+PsychometristIntro1,この手は真実を読み取る,These hands read the truth,此手读取真相,此手讀取真相
+SilverBulletIntro1,暗雲払う銀弾,
 ShielderIntro1,全てを受け止める盾,
 MovingIntro1,どんな距離も飛び越える,
 HauntedWolfIntro1,過る獣の幻影,
@@ -745,12 +753,14 @@ BlackSantaIntro1,悪い子には圧倒的力を授けよう,Grant overwhelming p
 WorshiperIntro1,この命を捧げても,Even if I must give up this life,即使献出此命,即使獻出此命,
 SatsumaAndImoIntro1,今宵はどちらに味方しようか,Tonight，which side shall I choose?,今晚我将扶哪一方?,今晚我將扶哪一方?,
 MadHawkIntro1,この目は悪事に目を瞑る,These eyes turn a blind eye to evil deeds,此目视而不见恶行,此目視而不見惡行,
+MadJesterIntro1,吊り上げたのは。,
 
 JackalFriendsIntro1,暗躍者に心酔せし者,One enamored with the clandestine operator,迷恋暗中操作者,迷戀暗中操作者,
 
 # Intros_GhostRoles
 CanteraIntro1,暗闇に灯る道標,Beacons glowing in the darkness,黑暗中的灯塔,黑暗中的燈塔,
 MirageIntro1,虚空を舞う幻影,A phantom dancing in the void,虚空舞动的幻影,虛空舞動的幻影,
+GhostMechanicIntro1,霊界ワーカーホリック,
 
 # Intros_Modifier
 ModifierGuesserIntro1,そして、推察せよ,And now，make your guess,现在，请推测,現在，請推測,
@@ -1692,6 +1702,32 @@ DimensionWalkerActivateTime,ワームホール有効化時間,Wormhole Activatio
 DimensionWalkerPlayAnimation,ワームホールアニメーションを再生する,Play Wormhole Animation,播放虫洞动画,播放蟲洞動畫
 DimensionWalkerPutButtonText,設置,Place Wormhole,放置虫洞,放置蟲洞
 DimensionWalkerCollectButtonText,回収,Collect Wormhole,回收虫洞,回收蟲洞
+
+# SilverBullet
+SilverBulletAnalyzeButtonName,分析,Analyze
+SilverBulletRepairButtonName,修理,Repair
+SilverBulletVentNotUsed,このベントは今回のターン使用されていません。,This vent was not used this round.
+SilverBulletVentUsed,このベントは{0}人に使用されました。,This vent was used by {0} player(s).
+SilverBulletVentUsedColorLight,プレイヤー{0}は明るい色です。,Player {0} is a light color.
+SilverBulletVentUsedColorDark,プレイヤー{0}は暗い色です。,Player {0} is a dark color.
+SilverBulletAnalyzeCanUseCountOption,分析回数,Analyze Count
+SilverBulletAnalyzeCanCheckSentimentOption,色分析,Analyze Color
+SilverBulletCanUseRepairOption,修理を使用できる,Can Use Repair
+SilverBulletCanRepairUseCountOption,修理回数,Repair Count
+
+# GhostMechanic
+GhostMechanicCannotFixMushroomMixup,キノコカオスを修復できない,Cannot Fix Mushroom Mixup
+
+# MadJester
+MadJesterKnowImpostorHeader,インポスター認知設定,Know Impostor Setting,认识内鬼设置,認識內鬼設置
+MadJesterCanKnowImpostors,インポスターを知ることができる,Can Know Impostors,可以知道内鬼,可以知道內鬼
+MadJesterNeededTaskCount,知るために必要なタスク数,Needed Task Count,需要完成的任务数,需要完成的任務數
+MadJesterIsSpecialTasks,固有タスクを使用する,Use special tasks,使用特殊任务,使用特殊任務
+MadJesterSpecialTasks,固有タスク,Special Tasks,特殊任务,特殊任務
+MadJesterAbilityHeader,能力設定,Ability Setting,能力设置,能力設定
+MadJesterWinConditionHeader,勝利条件設定,Win Condition Setting,胜利条件设置,勝利條件設定
+MadJesterWinOnTaskComplete,タスク完了で勝利,Win on task completion,完成任务胜利,完成任務勝利
+Win.MadJesterWin,マッドてるてる 勝利,Mad Jester Win,疯狂小丑 胜利,瘋狂小丑 勝利
 
 # Magaziner
 MagazinerSetKillTime,クールダウン短縮時間,Cooldown Reduction Time,冷却缩短时间,冷卻縮短時間
