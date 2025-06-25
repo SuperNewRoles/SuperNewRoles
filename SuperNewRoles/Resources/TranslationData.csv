@@ -266,6 +266,9 @@ PresetMenuTitle,プリセット,Preset,预设,預設
 PresetPleaseInput,ここにプリセット名を入力,Please enter preset name here,请输入预设名称,請在此輸入預設名稱
 PresetSettings.NowPreset,現在のプリセット:,Current Preset:,当前预设:,現在的預設:
 ModeId.Default,通常,Normal,通常,通常
+ModeId.SuperHostRoles,SuperHostRoles(未実装),SuperHostRoles(not implemented),SuperHostRoles
+NoSuperHostRoles,SuperHostRolesは未実装です。使用できません。,SuperHostRoles is not implemented and cannot be used.
+DisplayText.CanNotUseSHR,未実装,Not implemented.,未实施,未實施
 ModeId.BattleRoyal,バトルロイヤル,Battle Royale,戰鬥皇家,戰鬥皇家
 ModeOption,モード,Mode,模式,模式
 ExclusivityOptionMenuTitle,排他設定,Exclusivity Settings,排他設定,排他設定
@@ -459,6 +462,8 @@ Jammer,ジャマー,Jammer,干扰者,干擾者
 Shielder,シールダー,Shielder
 Moving,ムービング,Moving,移动者,移動者
 EvilMoving,イビルムービング,Evil Moving,邪恶移动者,邪惡移動者
+HauntedWolf,狼憑き,HauntedWolf,灵咒,狼憑者
+ModifierHauntedWolf,モディファイア狼憑き,Modifier Haunted Wolf
 
 # Descriptions_VanillaRoles
 Crewmate.Description,特に何も能力を持たない基本的なクルーメイト役職です。\n人狼ゲームにおける村人の役割を持ちます。\nキル能力を持つ人外を全て追放するか、タスクを全て完了すると勝利します。,A basic Crewmate role with no special abilities.\nThey serve the role of Villager from the Werewolf game.\nVictory is achieved by ejecting all non-Crewmate players with kill abilities or by completing all tasks.,一个没有特殊能力的基础船员角色。\n他们承担了狼人游戏中村民的角色。\n通过将所有拥有击杀能力的非船员玩家投出局或完成所有任务来获胜。,一個沒有特殊能力的基礎船員角色。\n他們承擔了狼人遊戲中村民的角色。\n通過將所有擁有擊殺能力的非船員玩家投出局或完成所有任務來獲勝。,
@@ -507,6 +512,7 @@ DarkKiller.Description,キルに関係する能力を有するインポスター
 EvilSeer.Description,タスクターンに発動する能力を有するインポスターです。\n誰かが死亡すると画面が発光します。\nまた、誰かが死亡した箇所に霊魂を確認することが出来ます。\n死体が発生した場合、その死体の方向に矢印を表示する事もできます。\nこれらの能力は設定によって、死者の色を反映させる事もできます。,An impostor with an ability activated on the task turn。\nWhen someone dies、the screen flashes。\nYou can also see a soul at the spot where they died。\nIf a body appears、an arrow can indicate its direction。\nDepending on settings、these abilities can reflect the color of the deceased。,具有在任务回合发动能力的冒充者。\n有人死亡时、屏幕会闪光。\n你还可以在死亡地点看到灵魂。\n如果出现尸体、屏幕上会显示指向尸体的箭头。\n这些能力可根据设置反映死者的颜色。,具有在任務回合發動能力的冒充者。\n有人死亡時、螢幕會閃光。\n你還可以在死亡地點看到靈魂。\n如果出現屍體、螢幕上會顯示指向屍體的箭頭。\n這些能力可根據設定反映死者的顏色。
 Robber.Description,キルに関係する能力を有するインポスターです。\nキルをした対象のタスク進捗を巻き戻します。,
 OverKiller.Description,キルに関係する能力を有するインポスターです。\nキルをした対象の死体を増やします。,
+EvilSeer.Description,タスクターンに発動する能力を有するインポスターです。\n誰かが死亡すると画面が発光します。\n誰かが死亡した箇所に霊魂を確認することも出来ます。\n死体が発生した場合、その死体の方向に矢印を表示する事もできます。\nこれらの能力は設定によって、死者の色を反映させる事もできます。\nまた、設定次第では「取り憑かせる」ボタンを押すことで、対象のプレイヤーにモディファイア狼憑きを付与することが出来ます。,This is an impostor with abilities that activate during task turns.\nWhen someone dies，the screen flashes.\nYou can also confirm the spirit at the location where someone died.\nWhen a corpse appears，you can also display an arrow pointing in the direction of the corpse.\nDepending on the settings，these abilities can also reflect the color of the deceased.\nDepending on the settings，you can also press the “Haunt!” button to apply the Modifier Haunted Wolf to the target player.
 Jammer.Description,タスクターンに使用出来る能力を有するインポスターです。\n「透明化」ボタンを押すと対象のプレイヤーを他人から見えなくすることが出来ます。\n透明化された当事者は自覚することが出来ません。\nインポスター視点は透明にされている人が半透明で見えます。,
 EvilMoving.Description,タスクターンに使用出来る能力を有するインポスターです。\n「位置記録」ボタンを押すと、その場所をテレポート先として登録します。\n「テレポート」ボタンを押すと記録した場所にテレポート出来ます。,
 
@@ -580,6 +586,7 @@ Busker.Description,タスクターンに使用出来る能力を有するクル�
 Doorr.Description,タスクターンに使用出来る能力を有するクルーメイトです。\n「ドアーー!!」ボタンを押すと、目の前のドアを開閉出来ます。,A crewmate with an ability usable during the Task Turn。\nWhen you press the 'Doorーー!!' button、 you can open and close the door in front of you。,是具有能够在任务回合使用能力的队员。\n按下「门ーー!!」按钮，可以开关面前的门。,是具有能夠在任務回合使用能力的隊員。\n按下「門ーー!!」按鈕，可以開關面前的門。
 Shielder.Description,タスクターンに使用出来る能力を有するクルーメイトです。\n「シールド」ボタンを押すと、一定時間の間キルを防ぐシールドを貼ります。\nキルを防いだときのガードエフェクトは、自身及びキラー視点で見えます。,
 Moving.Description,タスクターンに使用出来る能力を有するクルーメイトです。\n「位置記録」ボタンを押すと、その場所をテレポート先として登録します。\n「テレポート」ボタンを押すと記録した場所にテレポート出来ます。,
+HauntedWolf.Description,特に能力を有さないクルーメイトです。\n死亡するまでこの役職だと自覚出来ません。\nシェリフ等陣営の判定が可能な役職から、インポスターとして判定されます。,
 
 
 # Descriptions_MadRoles
@@ -605,6 +612,7 @@ Lovers.Description,独自の勝利条件を持つモディファイアです。\
 JumboModifier.Description,見た目に変化のあるモディファイアです。\n時間経過でどんどん大きくなっていきます。\nクルーメイトのジャンボが成長しきる前に追放されると、全員敗北になります。\nインポスターのジャンボは最大まで成長すると、一度だけ使えるサブキルボタンを獲得します。,A modifier that visibly changes a player’s size.\nThey grow continuously over time.\nIf a large Crewmate is ejected before fully growing，everyone loses.\nIf a large Impostor fully grows，they gain a one-time-use Subkill button.,这是一个视觉上会改变玩家体型的修改器。\n随着时间推移，他们会不断变大。\n如果一个变大的船员在完全变大前被投出，所有玩家都将输掉比赛。\n如果一个变大的内鬼完全成长，他们会获得一个一次性使用的子击杀按钮。,這是一個視覺上會改變玩家體型的修改器。\n隨著時間推移，他們會不斷變大。\n如果一個變大的船員在完全變大前被投出，所有玩家都將輸掉比賽。\n如果一個變大的內鬼完全成長，他們會獲得一個一次性使用的子擊殺按鈕。,
 ModifierSpelunker.Description,プレイヤーを虚弱にするモディファイアです。\nベントを踏んだり、ドアを開けたり、昇降機に乗ったり、はしごを降りたりすると一定確率で死亡してしまいます。\nまた、サボタージュが長引くと不安で死んでしまいます。,A modifier that makes players frail.\nStepping on vents，opening doors，using elevators，or climbing down ladders carries a chance of instant death.\nAdditionally，prolonged sabotages may cause them to panic and die.,这是一个使玩家变得虚弱的修改器。\n踩到通风口、打开门、乘坐电梯或爬下梯子都可能有一定概率瞬死。\n此外，长时间的破坏可能导致玩家因恐慌而死亡。,這是一個使玩家變得虛弱的修改器。\n踩到通風口、打開門、乘坐電梯或爬下梯子都可能有一定概率瞬死。\n此外，長時間的破壞可能導致玩家因恐慌而死亡。,
 ModifierHawk.Description,タスクターンに使用出来る能力を追加するモディファイアです。\n「ホークアイ」ボタンを押すと自分の視野が広がり、周囲の様子を見ることが出来ます。,A modifier that adds an ability usable during task turns.\nBy pressing the “Hawkeye” button，they expand their vision to observe the surroundings.,这是一个添加任务回合中可使用能力的修改器。\n按下“鹰眼”按钮后，会扩大视野以观察周围情况。,這是一個添加任務回合中可使用能力的修改器。\n按下「鷹眼」按鈕後，會擴大視野以觀察周圍情況。,
+ModifierHauntedWolf.Description,特に能力を有さない、クルーメイト役職専用モディファイアです。\n死亡するまでこの役職だと自覚出来ません。\nシェリフ等陣営の判定が可能な役職から、インポスターとして判定されます。\nシェリフ役職に重複していた場合、陣営の判定を反転する設定も有します。,,
 
 # Intros_Impostor
 EvilGuesserIntro1,名乗りはあの世への片道切符,Claiming your title is a one-way ticket to the afterlife,宣称你的身份是一张前往来世的单程票,宣稱你的身份是一張前往來世的單程票,
@@ -649,6 +657,7 @@ DarkKillerIntro1,疾風漆黒,Jet-black gale,漆黑暴风,漆黑暴風
 EvilSeerIntro1,彼らは共に在る,They exist together,他们同在,他們同在
 RobberIntro1,その進捗、頂戴するぜ,
 OverKillerIntro1,何度だって切り刻む,
+EvilSeerIntro1,彼岸の呼び声,
 JammerIntro1,隠蔽工作,
 EvilMovingIntro1,不意の急襲,
 
@@ -724,6 +733,7 @@ BuskerIntro1,危険な大道芸人,Dangerous street performer,危险的街头艺
 DoorrIntro1,ノンストレス移動,stress-free movement,门，零压力移动,門，零壓力移動
 ShielderIntro1,全てを受け止める盾,
 MovingIntro1,どんな距離も飛び越える,
+HauntedWolfIntro1,過る獣の幻影,
 
 # Intros_MadRoles
 MadmateIntro1,道を違えし者,One who has strayed from the path,误入歧途者,誤入歧途者,
@@ -748,6 +758,7 @@ LoversIntro1,そして、あなたは恋をしている,And now，you are in lov
 JumboModifierIntro1,どんどん大きくなっちゃう,Growing bigger and bigger,越来越大,越來越大,
 ModifierSpelunkerIntro1,そして、あなたは貧弱だ,And now，you are frail,现在，你已虚弱,現在，你已虛弱,
 ModifierHawkIntro1,そして、あなたは鋭い目を持つ,And now，you have sharp eyes,现在，你拥有锐眼,現在，你擁有銳眼,
+ModifierHauntedWolfIntro1,そして、あなたは憑りつかれている,And now，you are haunted.
 
 # wins
 WinText,勝利,Win
@@ -967,6 +978,13 @@ EvilSeer.AbilityColorModeSelect.ArrowOnly,死体矢印のみ,
 EvilSeer.FlashColorText,{0}色のクルーの死の点滅を検知,
 EvilSeer.DarkColor,暗い,Dark Color,深色,深色
 EvilSeer.LightColor,明るい,Light Color,浅色,淺色
+EvilSeer.EvilSeerHauntMode,狼憑き付与能力のモード,
+EvilSeer.EvilSeerHauntMode.None,能力オフ,
+EvilSeer.EvilSeerHauntMode.Both,両方,
+EvilSeer.EvilSeerHauntMode.OnlyOthersHaunt,「取り憑かせる」のみ,
+EvilSeer.EvilSeerHauntMode.OnlyEvilSeerHaunt,「取り憑く」のみ,
+EvilSeer.CreateAbilityCooldown,「取り憑かせる」クールタイム,
+EvilSeerHauntButtonText,取り憑かせる,Haunt!
 
 # Celebrity
 CelebrityIntro,みんなのスター！！,The Celebrity!!,大家的明星！！,大家的明星！！
@@ -1694,3 +1712,7 @@ JammerCanUseAbilitiesAgainstImposter,インポスターに対しても能力を�
 MovingAbilityButtonText,位置記録,Record Position,记录位置,記錄位置
 MovingPositionSetText,位置を記録しました,Position recorded,位置已记录,位置已記錄
 MovingTeleportText,テレポートしました,Teleported,已传送,已傳送
+
+# ModifierHauntedWolf
+ModifierHauntedWolfIsAssignMadAndFriendRoles,マッドやフレンズロールと重複しない(一括設定),No overlap with Mud or Friends rolls.,不会被分配给叛徒阵营或狈系职业,不重複分配给叛徒或狽系角色
+ModifierHauntedWolfIsReverseSheriffDecision,シェリフや占い師等に重複した時，判定を反転する。,Reverses the kill decision when duplicated on a sheriff.,被分配给警长、占卜师等职业时技能判定反转,當狼憑於警長或占卜師等職業時，判定會反轉
