@@ -95,7 +95,7 @@ public class SheriffAbilityData
         {
             var killExP = ExPlayerControl.ById(killer.PlayerId);
             if (killExP.ModifierRole.HasFlag(ModifierRoleId.ModifierHauntedWolf))
-                canKill ^= true;
+                canKill = !canKill;
         }
 
         return canKill;

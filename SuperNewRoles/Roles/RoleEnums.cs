@@ -144,7 +144,7 @@ public enum ModifierRoleId : short
     JumboModifier = 1 << 4,
     ModifierSpelunker = 1 << 5,
     ModifierHawk = 1 << 6,
-    ModifierHauntedWolf = 1<< 7,
+    ModifierHauntedWolf = 1 << 7,
 }
 
 public enum QuoteMod : byte
