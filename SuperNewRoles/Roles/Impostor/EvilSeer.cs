@@ -29,7 +29,7 @@ class EvilSeer : RoleBase<EvilSeer>
         canGrantModifier: (granted) => !granted && EvilSeerHauntMode is EvilSeerHauntMode.Both or EvilSeerHauntMode.OnlyOthersHaunt,
         cooldown: () => EvilSeerCreateAbilityCooldown,
         modifierRole: () => ModifierRoleId.ModifierHauntedWolf,
-        buttonSprite: AssetManager.GetAsset<Sprite>("CreateHauntedWolfButton.png"),
+        buttonSprite: AssetManager.GetAsset<Sprite>("EvilSeerHauntButton.png"),
         buttonText: ModTranslation.GetString("EvilSeerHauntButtonText")
         ))
     ];
