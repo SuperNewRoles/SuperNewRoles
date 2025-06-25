@@ -53,6 +53,20 @@ public static class ModHelpers
         return RandomNumberGenerator.GetInt32(min, max + 1);
     }
 
+    public static float GetRandomFloat(float max, float min = 0)
+    {
+        if (min > max)
+        {
+            (min, max) = (max, min);
+        }
+        byte[] bytes = new byte[4];
+        Rng.GetBytes(bytes);
+        float randomValue = BitConverter.ToSingle(bytes, 0);
+        // 0.0～1.0の範囲に正規化してからmin～maxの範囲に変換
+        float normalized = (randomValue - float.MinValue) / (float.MaxValue - float.MinValue);
+        return min + (normalized * (max - min));
+    }
+
     /// <summary>
     /// 指定された確率（パーセンテージ）で成功を判定する
     /// </summary>
@@ -726,4 +740,5 @@ public static class ModHelpers
         if (collider2D == null) return false;
         return collider2D.OverlapPoint(position);
     }
+
 }
