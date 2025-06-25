@@ -455,7 +455,7 @@ Shielder,シールダー,Shielder
 Moving,ムービング,Moving,移动者,移動者
 EvilMoving,イビルムービング,Evil Moving,邪恶移动者,邪惡移動者
 HauntedWolf,狼憑き,HauntedWolf,灵咒,狼憑者
-ModifierHauntedWolf,モディファイア狼憑き,Modifier HauntedWolf
+ModifierHauntedWolf,モディファイア狼憑き,Modifier Haunted Wolf
 
 # Descriptions_VanillaRoles
 Crewmate.Description,特に何も能力を持たない基本的なクルーメイト役職です。\n人狼ゲームにおける村人の役割を持ちます。\nキル能力を持つ人外を全て追放するか、タスクを全て完了すると勝利します。,A basic Crewmate role with no special abilities.\nThey serve the role of Villager from the Werewolf game.\nVictory is achieved by ejecting all non-Crewmate players with kill abilities or by completing all tasks.,一个没有特殊能力的基础船员角色。\n他们承担了狼人游戏中村民的角色。\n通过将所有拥有击杀能力的非船员玩家投出局或完成所有任务来获胜。,一個沒有特殊能力的基礎船員角色。\n他們承擔了狼人遊戲中村民的角色。\n通過將所有擁有擊殺能力的非船員玩家投出局或完成所有任務來獲勝。,
@@ -501,7 +501,7 @@ EvilDoorr.Description,タスクターンに使用出来る能力を有するイ�
 Mushroomer.Description,タスクターンに使用出来る能力を有するインポスターです。\nThe Fungleのジャングルにあるキノコを設置することが出来ます。\nキノコは設置した次のターンに有効化します。\nまた、全てのキノコを設置するとキノコ爆発が使えるようになります。\n「爆発」ボタンを押すと、最初から設置されているキノコを含め、全てのキノコを一斉に爆発させます。,An impostor with an ability usable on the task turn。\nYou can place mushrooms in The Fungle jungle。\nMushrooms activate on the turn after placement。\nAlso、once all mushrooms are placed、you gain the mushroom explosion ability。\nPressing the “Explode” button triggers all mushrooms、including the originals、to explode simultaneously。,具有在任务回合使用能力的冒充者。\n可以在The Fungle丛林中放置蘑菇。\n蘑菇在放置后的下一回合生效。\n此外、放置所有蘑菇后、可使用蘑菇爆炸。\n按下“爆炸”按钮、会同时引爆所有蘑菇（包括最初放置的）。,具有在任務回合使用能力的冒充者。\n可以在The Fungle叢林中放置蘑菇。\n蘑菇在放置後的下一回合生效。\n此外、放置所有蘑菇後、可使用蘑菇爆炸。\n按下「爆炸」按鈕、會同時引爆所有蘑菇（包括最初放置的）。
 DimensionWalker.Description,タスクターンに使用出来る能力を有するインポスターです。\n「設置」ボタンを押すとワームホールを設置出来ます。\nワームホールは一定時間経過後有効化し、ワームホール間を行き来出来るベントとして機能します。\nワームホールはディメンションウォーカー以外のインポスターも使用可能です。\n「回収」ボタンでワームホールを回収し、使用回数を回復させることが出来ます。,An impostor with an ability usable on the task turn。\nPressing the “Place” button lets you deploy a wormhole。\nAfter a set time、the wormhole activates and functions as a vent、allowing travel between wormholes。\nOther impostors besides the Dimension Walker can also use the wormholes。\nPressing the “Retract” button retrieves a wormhole and restores its uses。,具有在任务回合使用能力的冒充者。\n按下“Place”按钮可以部署虫洞。\n一定时间后、虫洞激活并作为通风口运行、可以在虫洞间来回移动。\n除了Dimension Walker之外的冒充者也能使用虫洞。\n按下“Retract”按钮可以收回虫洞并恢复使用次数。,具有在任務回合使用能力的冒充者。\n按下「Place」按鈕可以部署蟲洞。\n一定時間後、蟲洞激活並作為通風口運行、可以在蟲洞間來回移動。\n除了Dimension Walker之外的冒充者也能使用蟲洞。\n按下「Retract」按鈕可以收回蟲洞並恢復使用次數。
 DarkKiller.Description,キルに関係する能力を有するインポスターです。\nキルクールが短い代わりに、停電中しかキルが出来ません。,An impostor with kill-related abilities。\nWhile the kill cooldown is short、you can only kill during a blackout。,具有击杀相关能力的冒充者。\n虽然击杀冷却较短、但只能在停电时击杀。,具有擊殺相關能力的冒充者。\n雖然擊殺冷卻較短、但只能在停電時擊殺。
-EvilSeer.Description,タスクターンに発動する能力を有するインポスターです。\n誰かが死亡すると画面が発光します。\nまた、誰かが死亡した箇所に霊魂を確認することが出来ます。\n死体が発生した場合、その死体の方向に矢印を表示する事もできます。\nこれらの能力は設定によって、死者の色を反映させる事もできます。,An impostor with an ability activated on the task turn。\nWhen someone dies、the screen flashes。\nYou can also see a soul at the spot where they died。\nIf a body appears、an arrow can indicate its direction。\nDepending on settings、these abilities can reflect the color of the deceased。,具有在任务回合发动能力的冒充者。\n有人死亡时、屏幕会闪光。\n你还可以在死亡地点看到灵魂。\n如果出现尸体、屏幕上会显示指向尸体的箭头。\n这些能力可根据设置反映死者的颜色。,具有在任務回合發動能力的冒充者。\n有人死亡時、螢幕會閃光。\n你還可以在死亡地點看到靈魂。\n如果出現屍體、螢幕上會顯示指向屍體的箭頭。\n這些能力可根據設定反映死者的顏色。
+EvilSeer.Description,タスクターンに発動する能力を有するインポスターです。\n誰かが死亡すると画面が発光します。\n誰かが死亡した箇所に霊魂を確認することも出来ます。\n死体が発生した場合、その死体の方向に矢印を表示する事もできます。\nこれらの能力は設定によって、死者の色を反映させる事もできます。\nまた、設定次第では「取り憑かせる」ボタンを押すことで、対象のプレイヤーにモディファイア狼憑きを付与することが出来ます。,This is an impostor with abilities that activate during task turns.\nWhen someone dies，the screen flashes.\nYou can also confirm the spirit at the location where someone died.\nWhen a corpse appears，you can also display an arrow pointing in the direction of the corpse.\nDepending on the settings，these abilities can also reflect the color of the deceased.\nDepending on the settings，you can also press the “Haunt!” button to apply the Modifier Haunted Wolf to the target player.
 Jammer.Description,タスクターンに使用出来る能力を有するインポスターです。\n「透明化」ボタンを押すと対象のプレイヤーを他人から見えなくすることが出来ます。\n透明化された当事者は自覚することが出来ません。\nインポスター視点は透明にされている人が半透明で見えます。,
 EvilMoving.Description,タスクターンに使用出来る能力を有するインポスターです。\n「位置記録」ボタンを押すと、その場所をテレポート先として登録します。\n「テレポート」ボタンを押すと記録した場所にテレポート出来ます。,
 
@@ -643,7 +643,7 @@ EvilDoorrIntro1,限定的証拠隠滅,Targeted evidence destruction,有针对性
 MushroomerIntro1,繁茂する菌糸,Proliferating mycelium,繁茂的菌丝,繁茂的菌絲
 DimensionWalkerIntro1,次元を越えて,Crossing dimensions,跨越次元,跨越次元
 DarkKillerIntro1,疾風漆黒,Jet-black gale,漆黑暴风,漆黑暴風
-EvilSeerIntro1,彼らは共に在る,They exist together,他们同在,他們同在
+EvilSeerIntro1,彼岸の呼び声,
 JammerIntro1,隠蔽工作,
 EvilMovingIntro1,不意の急襲,
 
@@ -719,7 +719,7 @@ BuskerIntro1,危険な大道芸人,Dangerous street performer,危险的街头艺
 DoorrIntro1,ノンストレス移動,stress-free movement,门，零压力移动,門，零壓力移動
 ShielderIntro1,全てを受け止める盾,
 MovingIntro1,どんな距離も飛び越える,
-HauntedWolfIntro1,憑依されし者,
+HauntedWolfIntro1,過る獣の幻影,
 
 # Intros_MadRoles
 MadmateIntro1,道を違えし者,One who has strayed from the path,误入歧途者,誤入歧途者,
@@ -964,6 +964,13 @@ EvilSeer.AbilityColorModeSelect.ArrowOnly,死体矢印のみ,
 EvilSeer.FlashColorText,{0}色のクルーの死の点滅を検知,
 EvilSeer.DarkColor,暗い,Dark Color,深色,深色
 EvilSeer.LightColor,明るい,Light Color,浅色,淺色
+EvilSeer.EvilSeerHauntMode,狼憑き付与能力のモード,
+EvilSeer.EvilSeerHauntMode.None,能力オフ,
+EvilSeer.EvilSeerHauntMode.Both,両方,
+EvilSeer.EvilSeerHauntMode.OnlyOthersHaunt,「取り憑かせる」のみ,
+EvilSeer.EvilSeerHauntMode.OnlyEvilSeerHaunt,「取り憑く」のみ,
+EvilSeer.CreateAbilityCooldown,「取り憑かせる」クールタイム,
+EvilSeerHauntButtonText,取り憑かせる,Haunt!
 
 # Celebrity
 CelebrityIntro,みんなのスター！！,The Celebrity!!,大家的明星！！,大家的明星！！

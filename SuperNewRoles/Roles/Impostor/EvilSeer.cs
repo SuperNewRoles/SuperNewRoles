@@ -24,7 +24,16 @@ class EvilSeer : RoleBase<EvilSeer>
             SoulColorMode = EvilSeerAbilityColorModeSelect is EvilSeerAbility.All or EvilSeerAbility.SoulOnly ? EvilSeerColorMode : DeadBodyColorMode.None
         }),
         () => new DeadBodyArrowsAbility(() => EvilSeerShowArrows, colorMode : EvilSeerAbilityColorModeSelect is EvilSeerAbility.All or EvilSeerAbility.ArrowOnly ? EvilSeerColorMode : DeadBodyColorMode.None),
+        () => new EvilSeerHauntAbility(EvilSeerHauntMode is EvilSeerHauntMode.Both or EvilSeerHauntMode.OnlyEvilSeerHaunt),
+        () => new CustomModifierGrantedButtonAbility(new(
+        canGrantModifier: (granted) => !granted && EvilSeerHauntMode is EvilSeerHauntMode.Both or EvilSeerHauntMode.OnlyOthersHaunt,
+        cooldown: () => EvilSeerCreateAbilityCooldown,
+        modifierRole: () => ModifierRoleId.ModifierHauntedWolf,
+        buttonSprite: AssetManager.GetAsset<Sprite>("EvilSeerHauntButton.png"),
+        buttonText: ModTranslation.GetString("EvilSeerHauntButtonText")
+        ))
     ];
+
     public override QuoteMod QuoteMod { get; } = QuoteMod.SuperNewRoles;
     public override RoleTypes IntroSoundType { get; } = RoleTypes.Phantom;
     public override short IntroNum { get; } = 1;
@@ -55,6 +64,12 @@ class EvilSeer : RoleBase<EvilSeer>
 
     [CustomOptionBool("EvilSeer.ShowArrows", true, translationName: "VultureShowArrows")]
     public static bool EvilSeerShowArrows = true;
+
+    [CustomOptionSelect("EvilSeer.EvilSeerHauntMode", typeof(EvilSeerHauntMode), "EvilSeer.EvilSeerHauntMode.", translationName: "EvilSeer.EvilSeerHauntMode")]
+    public static EvilSeerHauntMode EvilSeerHauntMode;
+
+    [CustomOptionFloat("EvilSeer.CreateAbilityCooldown", 2.5f, 60f, 2.5f, 30f, parentFieldName: nameof(EvilSeerHauntMode))]
+    public static float EvilSeerCreateAbilityCooldown;
 }
 
 public enum EvilSeerAbility
@@ -63,4 +78,43 @@ public enum EvilSeerAbility
     FlashOnly,
     SoulOnly,
     ArrowOnly
+}
+
+public enum EvilSeerHauntMode
+{
+    None, // 無し
+    Both, // 両方
+    OnlyOthersHaunt, // 取り憑かせる
+    OnlyEvilSeerHaunt, // 取り憑く
+}
+
+public class EvilSeerHauntAbility(bool canHaunt) : AbilityBase
+{
+    private EventListener<DieEventData> dieEventListener;
+
+    private readonly bool CanHaunt = canHaunt;
+
+    public override void AttachToLocalPlayer() =>
+        dieEventListener = DieEvent.Instance.AddListener(OnPlayerDead);
+    public override void DetachToLocalPlayer()
+    {
+        dieEventListener?.RemoveListener();
+        base.DetachToLocalPlayer();
+    }
+
+    private void OnPlayerDead(DieEventData data)
+    {
+        if (!CanHaunt) return;
+        if (data.player != PlayerControl.LocalPlayer) return;
+
+        // MurderData 記録待ちの為に遅延を入れている
+        new LateTask(() =>
+        {
+            if (MurderDataManager.TryGetMurderData(data.player, out var murderData))
+            {
+                if (murderData.Target != murderData.Killer)
+                    murderData.Killer.RpcCustomSetModifierRoleInGame(ModifierRoleId.ModifierHauntedWolf);
+            }
+        }, 1f);
+    }
 }
