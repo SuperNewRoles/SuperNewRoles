@@ -72,7 +72,7 @@ public static class NameText
 
         // 生きている時は役職を自覚できない役の役職名を上書き
         var hideMyRoleAbility = !player.AmOwner || player.IsDead() ? null : player.GetAbility<HideMyRoleWhenAliveAbility>();
-        if (hideMyRoleAbility != null) { hideMyRoleAbility.DisplayRoleName(player, ref roleName); }
+        hideMyRoleAbility?.DisplayRoleName(player, ref roleName);
 
         if (player.GhostRole != GhostRoleId.None && player.GhostRoleBase != null)
             roleName = $"{ModHelpers.CsWithTranslation(player.GhostRoleBase.RoleColor, player.GhostRole.ToString())} ({roleName}) ";
