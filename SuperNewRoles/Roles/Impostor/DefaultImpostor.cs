@@ -11,7 +11,7 @@ using SuperNewRoles.Patches;
 using SuperNewRoles.Roles.Ability;
 using UnityEngine;
 
-namespace SuperNewRoles.Roles.CrewMate;
+namespace SuperNewRoles.Roles.Impostor;
 
 class Impostor : RoleBase<Impostor>
 {

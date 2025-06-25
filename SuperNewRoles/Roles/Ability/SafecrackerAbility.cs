@@ -8,6 +8,7 @@ using SuperNewRoles.Events.PCEvents;
 using SuperNewRoles.Modules;
 using SuperNewRoles.Modules.Events.Bases;
 using SuperNewRoles.Roles.Ability.CustomButton;
+using SuperNewRoles.Roles.Neutral;
 using UnityEngine;
 
 namespace SuperNewRoles.Roles.Ability;
@@ -138,6 +139,16 @@ public class SafecrackerAbility : AbilityBase
         if (data.player != Player) return;
 
         CheckAllAbilities();
+
+        // すべてのタスクが完了したかチェック
+        if (GetCompletedTaskCount() >= _allTaskCount)
+        {
+            // Safecrackerの勝利
+            if (AmongUsClient.Instance.AmHost)
+            {
+                EndGamer.RpcEndGameWithWinner(Patches.CustomGameOverReason.SafecrackerWin, WinType.SingleNeutral, [Player], Safecracker.Instance.RoleColor, "Safecracker", "WinText");
+            }
+        }
     }
 
     // todo

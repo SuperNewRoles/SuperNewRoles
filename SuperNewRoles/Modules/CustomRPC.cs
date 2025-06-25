@@ -395,6 +395,20 @@ public static class CustomRPCManager
                 }
             }
         };
+        WriteActions[typeof(List<uint>)] = (writer, val) =>
+        {
+            if (val == null)
+                writer.Write(0);
+            else
+            {
+                var uintList = val as List<uint>;
+                writer.Write(uintList.Count);
+                foreach (var u in uintList)
+                {
+                    writer.Write(u);
+                }
+            }
+        };
         WriteActions[typeof(List<ExPlayerControl>)] = (writer, val) =>
         {
             if (val == null)
@@ -701,6 +715,34 @@ public static class CustomRPCManager
                 }
             }
         };
+        WriteActions[typeof(uint[])] = (writer, val) =>
+        {
+            if (val == null)
+                writer.Write(0);
+            else
+            {
+                var uintArray = val as uint[];
+                writer.Write(uintArray.Length);
+                foreach (var u in uintArray)
+                {
+                    writer.Write(u);
+                }
+            }
+        };
+        WriteActions[typeof(ulong[])] = (writer, val) =>
+        {
+            if (val == null)
+                writer.Write(0);
+            else
+            {
+                var ulongArray = val as ulong[];
+                writer.Write(ulongArray.Length);
+                foreach (var ul in ulongArray)
+                {
+                    writer.Write(ul);
+                }
+            }
+        };
 
         // ReadActionsの初期化
         ReadActions[typeof(byte)] = reader => reader.ReadByte();
@@ -732,11 +774,14 @@ public static class CustomRPCManager
         ReadActions[typeof(Color)] = reader => new Color(reader.ReadSingle(), reader.ReadSingle(), reader.ReadSingle(), reader.ReadSingle());
         ReadActions[typeof(Color32)] = reader => new Color32(reader.ReadByte(), reader.ReadByte(), reader.ReadByte(), reader.ReadByte());
         ReadActions[typeof(List<byte>)] = reader => ReadByteList(reader);
+        ReadActions[typeof(List<uint>)] = reader => ReadUIntList(reader);
         ReadActions[typeof(List<ExPlayerControl>)] = reader => ReadExPlayerControlList(reader);
         ReadActions[typeof(Vector2)] = reader => new Vector2(reader.ReadSingle(), reader.ReadSingle());
         ReadActions[typeof(Vector3)] = reader => new Vector3(reader.ReadSingle(), reader.ReadSingle(), reader.ReadSingle());
         ReadActions[typeof(Vector2[])] = reader => ReadVector2Array(reader);
         ReadActions[typeof(Vector3[])] = reader => ReadVector3Array(reader);
+        ReadActions[typeof(uint[])] = reader => ReadUIntArray(reader);
+        ReadActions[typeof(ulong[])] = reader => ReadULongArray(reader);
         // IsSubclassOf(typeof(AbilityBase)) や typeof(ICustomRpcObject).IsAssignableFrom(t) は
         // ReadFromType メソッド内で個別処理
     }
@@ -892,6 +937,20 @@ public static class CustomRPCManager
         return list;
     }
 
+    /// <summary>
+    /// List<uint>を読み取る
+    /// </summary>
+    private static List<uint> ReadUIntList(MessageReader reader)
+    {
+        int count = reader.ReadInt32();
+        List<uint> list = new List<uint>(count);
+        for (int i = 0; i < count; i++)
+        {
+            list.Add(reader.ReadUInt32());
+        }
+        return list;
+    }
+
     // Vector2[]を読み取るヘルパーメソッド
     private static Vector2[] ReadVector2Array(MessageReader reader)
     {
@@ -912,6 +971,34 @@ public static class CustomRPCManager
         for (int i = 0; i < length; i++)
         {
             array[i] = new Vector3(reader.ReadSingle(), reader.ReadSingle(), reader.ReadSingle());
+        }
+        return array;
+    }
+
+    /// <summary>
+    /// uint[]を読み取るヘルパーメソッド
+    /// </summary>
+    private static uint[] ReadUIntArray(MessageReader reader)
+    {
+        int length = reader.ReadInt32();
+        uint[] array = new uint[length];
+        for (int i = 0; i < length; i++)
+        {
+            array[i] = reader.ReadUInt32();
+        }
+        return array;
+    }
+
+    /// <summary>
+    /// ulong[]を読み取るヘルパーメソッド
+    /// </summary>
+    private static ulong[] ReadULongArray(MessageReader reader)
+    {
+        int length = reader.ReadInt32();
+        ulong[] array = new ulong[length];
+        for (int i = 0; i < length; i++)
+        {
+            array[i] = reader.ReadUInt64();
         }
         return array;
     }

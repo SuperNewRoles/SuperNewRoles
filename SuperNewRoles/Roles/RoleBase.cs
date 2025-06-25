@@ -92,10 +92,14 @@ public interface IRoleBase : IRoleInformation
     {
         ExPlayerControl exPlayer = player;
         AbilityParentRole parent = new(exPlayer, this);
+        Logger.Info($"[OnSetRole] Setting abilities for role {Role} on player {player?.name} ({player?.PlayerId}), Abilities count: {Abilities.Count}");
         foreach (var abilityFactory in Abilities)
         {
-            exPlayer.AddAbility(abilityFactory(), parent);
+            var ability = abilityFactory();
+            Logger.Info($"[OnSetRole] Adding ability {ability.GetType().Name} to player {player?.name}");
+            exPlayer.AddAbility(ability, parent);
         }
+        Logger.Info($"[OnSetRole] Completed setting abilities for player {player?.name}, Total abilities: {exPlayer.PlayerAbilities.Count}");
     }
 
     public static ulong GenerateAbilityId(byte playerId, RoleId role, int abilityIndex)

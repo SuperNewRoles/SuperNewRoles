@@ -97,12 +97,14 @@ public enum RoleId : short
     MadHawk,
     WiseMan,
     Bullet,
+    SilverBullet,
     Clergy,
     NiceScientist,
     EvilScientist,
     Lighter,
     Technician,
     Medium,
+    Psychometrist,
     MeetingSheriff,
     DoubleKiller,
     Finder,
@@ -122,6 +124,16 @@ public enum RoleId : short
     DarkKiller,
     Mushroomer,
     EvilSeer,
+    MadJester,
+    Slugger,
+    Magaziner,
+    Robber,
+    OverKiller,
+    Jammer,
+    Moving,
+    EvilMoving,
+    NiceRedRidingHood,
+    HauntedWolf,
 }
 
 public enum GhostRoleId : short
@@ -130,6 +142,7 @@ public enum GhostRoleId : short
     Cantera,
     Revenant,
     Mirage,
+    GhostMechanic,
 }
 
 [Flags]
@@ -143,6 +156,7 @@ public enum ModifierRoleId : short
     JumboModifier = 1 << 4,
     ModifierSpelunker = 1 << 5,
     ModifierHawk = 1 << 6,
+    ModifierHauntedWolf = 1 << 7,
 }
 
 public enum QuoteMod : byte
