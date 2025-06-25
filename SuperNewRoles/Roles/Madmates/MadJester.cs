@@ -38,10 +38,10 @@ class MadJester : RoleBase<MadJester>
     [CustomOptionBool("MadJesterCanKnowImpostors", false)]
     public static bool MadJesterCanKnowImpostors;
 
-    [CustomOptionInt("MadJesterNeededTaskCount", 0, 30, 1, 6, parentFieldName: nameof(MadJesterCanKnowImpostors))]
+    [CustomOptionInt("MadJesterNeededTaskCount", 0, 30, 1, 6, parentFieldName: nameof(MadJesterWinOnTaskComplete))]
     public static int MadJesterNeededTaskCount;
 
-    [CustomOptionBool("MadJesterIsSpecialTasks", false, parentFieldName: nameof(MadJesterCanKnowImpostors))]
+    [CustomOptionBool("MadJesterIsSpecialTasks", false)]
     public static bool MadJesterIsSpecialTasks;
 
     [CustomOptionTask("MadJesterSpecialTasks", 1, 1, 1, parentFieldName: nameof(MadJesterIsSpecialTasks))]
