@@ -15,11 +15,22 @@ public abstract class EventTargetBase<T, U> : InternalEventTargetBase<T, EventLi
 {
     private List<EventListener<U>> _pendingRemoval = new();
     private bool _isAwaking = false;
+    private EventListener<U>[] _listenersCache = null;
+    private bool _listenersCacheDirty = true;
 
     public void Awake(U obj)
     {
         _isAwaking = true;
-        foreach (EventListener<U> listener in listeners)
+
+        // キャッシュが無効な場合は再生成
+        if (_listenersCacheDirty || _listenersCache == null)
+        {
+            _listenersCache = listeners.ToArray();
+            _listenersCacheDirty = false;
+        }
+
+        // 配列でイテレート（高速）
+        foreach (EventListener<U> listener in _listenersCache)
         {
             if (!_pendingRemoval.Contains(listener))
             {
@@ -43,6 +54,7 @@ public abstract class EventTargetBase<T, U> : InternalEventTargetBase<T, EventLi
                 listeners.Remove(listener);
             }
             _pendingRemoval.Clear();
+            _listenersCacheDirty = true;
         }
     }
 
@@ -51,6 +63,7 @@ public abstract class EventTargetBase<T, U> : InternalEventTargetBase<T, EventLi
         EventListener<U> listener = null;
         listener = new EventListener<U>(action, () => RemoveListener(listener));
         listeners.Add(listener);
+        _listenersCacheDirty = true;
         return listener;
     }
 
@@ -65,6 +78,7 @@ public abstract class EventTargetBase<T, U> : InternalEventTargetBase<T, EventLi
         else
         {
             listeners.Remove(listener);
+            _listenersCacheDirty = true;
         }
     }
 }
@@ -75,11 +89,22 @@ public abstract class EventTargetBase<T> : InternalEventTargetBase<T, EventListe
 {
     private List<EventListener> _pendingRemoval = new();
     private bool _isAwaking = false;
+    private EventListener[] _listenersCache = null;
+    private bool _listenersCacheDirty = true;
 
     public void Awake()
     {
         _isAwaking = true;
-        foreach (EventListener listener in listeners)
+
+        // キャッシュが無効な場合は再生成
+        if (_listenersCacheDirty || _listenersCache == null)
+        {
+            _listenersCache = listeners.ToArray();
+            _listenersCacheDirty = false;
+        }
+
+        // 配列でイテレート（高速）
+        foreach (EventListener listener in _listenersCache)
         {
             if (!_pendingRemoval.Contains(listener))
                 listener.Do();
@@ -94,6 +119,7 @@ public abstract class EventTargetBase<T> : InternalEventTargetBase<T, EventListe
                 listeners.Remove(listener);
             }
             _pendingRemoval.Clear();
+            _listenersCacheDirty = true;
         }
     }
 
@@ -102,6 +128,7 @@ public abstract class EventTargetBase<T> : InternalEventTargetBase<T, EventListe
         EventListener listener = null;
         listener = new EventListener(action, () => RemoveListener(listener));
         listeners.Add(listener);
+        _listenersCacheDirty = true;
         return listener;
     }
 
@@ -116,6 +143,7 @@ public abstract class EventTargetBase<T> : InternalEventTargetBase<T, EventListe
         else
         {
             listeners.Remove(listener);
+            _listenersCacheDirty = true;
         }
     }
 }

@@ -27,6 +27,6 @@ class Nun : RoleBase<Nun>
     public override RoleOptionMenuType OptionTeam { get; } = RoleOptionMenuType.Impostor;
     public override MapNames[] AvailableMaps { get; } = [MapNames.Airship];
 
-    [CustomOptionFloat("NunCoolTime", 0f, 180f, 2.5f, 30f, translationName: "CoolTime")]
+    [CustomOptionFloat("NunCoolTime", 2.5f, 180f, 2.5f, 30f, translationName: "CoolTime")]
     public static float NunCoolTime;
 }
