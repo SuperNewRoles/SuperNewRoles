@@ -17,6 +17,13 @@ class VampireDependent : RoleBase<VampireDependent>
         data: new VampireDependentData(
             killCooldown: Vampire.VampireDependentKillCooldown,
             canUseVent: Vampire.VampireDependentCanUseVent
+        ),
+        vampire: new VampireData(
+            vampireInvisibleOnAdmin: Vampire.VampireInvisibleOnAdmin,
+            vampireCannotFixSabotage: Vampire.VampireCannotFixSabotage,
+            vampireCannotUseDevice: Vampire.VampireCannotUseDevice,
+            vampireDependentHasReverseVision: Vampire.VampireDependentHasReverseVision,
+            vampireDependentHasImpostorVisionInLightsoff: Vampire.VampireDependentHasImpostorVisionInLightsoff
         )
     )];
 
@@ -34,14 +41,19 @@ public record VampireDependentData(float killCooldown, bool canUseVent);
 public class VampireDependentAbility : AbilityBase
 {
     public VampireAbility vampire { get; private set; }
+    public VampireData VampireData { get; }
     public CustomVentAbility ventAbility;
     private CustomKillButtonAbility killButtonAbility;
     public VampireDependentData Data { get; }
     private EventListener<MurderEventData> _murderListener;
     private SabotageCanUseAbility sabotageCanUseAbility;
-    public VampireDependentAbility(VampireDependentData data)
+    private DeviceCanUseAbility deviceCanUseAbility;
+    private HideInAdminAbility hideInAdminAbility;
+    private ReverseVisionAbility reverseVisionAbility;
+    public VampireDependentAbility(VampireDependentData data, VampireData vampire)
     {
         this.Data = data;
+        this.VampireData = vampire;
     }
     public override void AttachToAlls()
     {
@@ -54,11 +66,24 @@ public class VampireDependentAbility : AbilityBase
         );
         ventAbility = new CustomVentAbility(() => Data.canUseVent);
         sabotageCanUseAbility = new SabotageCanUseAbility(
-            () => SabotageType.Lights
+            () => VampireData.vampireCannotFixSabotage ? SabotageType.Lights : SabotageType.None
+        );
+        deviceCanUseAbility = new DeviceCanUseAbility(
+            () => VampireData.vampireCannotUseDevice ? DeviceTypeFlag.All : DeviceTypeFlag.None
+        );
+        hideInAdminAbility = new HideInAdminAbility(
+            () => VampireData.vampireInvisibleOnAdmin
+        );
+        reverseVisionAbility = new ReverseVisionAbility(
+            () => VampireData.vampireDependentHasReverseVision,
+            () => VampireData.vampireDependentHasImpostorVisionInLightsoff
         );
         Player.AttachAbility(killButtonAbility, new AbilityParentAbility(this));
         Player.AttachAbility(ventAbility, new AbilityParentAbility(this));
         Player.AttachAbility(sabotageCanUseAbility, new AbilityParentAbility(this));
+        Player.AttachAbility(deviceCanUseAbility, new AbilityParentAbility(this));
+        Player.AttachAbility(hideInAdminAbility, new AbilityParentAbility(this));
+        Player.AttachAbility(reverseVisionAbility, new AbilityParentAbility(this));
     }
     public override void DetachToAlls()
     {

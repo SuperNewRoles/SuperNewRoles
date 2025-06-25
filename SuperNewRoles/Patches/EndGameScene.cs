@@ -15,6 +15,7 @@ using UnityEngine.UI;
 using BepInEx.Unity.IL2CPP.Utils.Collections;
 using SuperNewRoles.Roles.Modifiers;
 using TMPro;
+using SuperNewRoles.Roles.Madmates;
 
 namespace SuperNewRoles.Patches;
 
@@ -39,6 +40,7 @@ public enum WinCondition
     OwlWin,
     LoversWin,
     LoversBreakerWin,
+    MadJesterWin
 }
 public enum CustomGameOverReason
 {
@@ -60,6 +62,8 @@ public enum CustomGameOverReason
     OwlWin,
     BlackHatHackerWin,
     SpelunkerWin,
+    MadJesterWin,
+    SafecrackerWin,
 }
 
 static class AdditionalTempData
@@ -304,6 +308,10 @@ public class EndGameManagerSetUpPatch
             case WinCondition.LoversBreakerWin:
                 baseText = "LoversBreaker";
                 roleColor = LoversBreaker.Instance.RoleColor;
+                break;
+            case WinCondition.MadJesterWin:
+                baseText = "MadJester";
+                roleColor = MadJester.Instance.RoleColor;
                 break;
             default:
                 baseText = "Unknown";

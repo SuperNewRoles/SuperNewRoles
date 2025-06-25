@@ -175,6 +175,12 @@ VersionUpdateReleaseNoteLoading,リリースノートを読み込み中...,Loadi
 VersionUpdateReleaseNoteLoadingError,リリースノートの読み込みに失敗しました。,Failed to load release note..
 VersionUpdateReleaseNoteNotFound,リリースノートが見つかりませんでした。,Release note not found.
 
+# Robber
+RobberName,泥棒,Robber,小偷,小偷
+RobberTitle1,その進捗、頂戴するぜ,I'll take that progress.,把你手上的东西交出来！,這些進度條就由我收下了
+RobberDescription,キルをしたクルーメイトのタスク進捗を設定数巻き戻します。\n「ああもう、クルーというやつらは困ったらすーぐタスクで俺たちを追い出しやがる！\nそうはさせない、そのタスクの進捗を奪い取ってやるぜ！」,Rewinds the task progress of the crewmate who made the kill by a set number.\nThe crewmembers are so quick to kick us out of a task when we're in trouble,\nI won't let them, I'm going to take that task progress away from you!,被小偷击杀的玩家需要重新做若干个任务。\n该死，那帮人任务做的也太快了，这样下去我们就要没命了！\n哼，我不会让他们就这样得逞的……,小偷屬於內鬼陣營。\n當船員進行擊殺時小偷可以偷走一定數量的任務進度。\n「當遇到麻煩時，船員們總是很快地把我們逐出！」\n「我不會讓他們這麼做的，我會把這些完成的任務通通收下來！」
+RobberRewindTaskCount,巻き戻すタスクの個数,Number of tasks to rewind,回卷任务的个数,任務回溯的數量
+
 # RequestInGame
 RequestInGameButtonText,バグ報告、要望、質問、感謝メールなどはこちらから,Bug reports，requests，questions，and thank you messages can be sent here
 RequestInGameDiscordText,Discordはこちら,Discord is this,Discord 是這裡,Discord 是這裡
@@ -260,6 +266,9 @@ PresetMenuTitle,プリセット,Preset,预设,預設
 PresetPleaseInput,ここにプリセット名を入力,Please enter preset name here,请输入预设名称,請在此輸入預設名稱
 PresetSettings.NowPreset,現在のプリセット:,Current Preset:,当前预设:,現在的預設:
 ModeId.Default,通常,Normal,通常,通常
+ModeId.SuperHostRoles,SuperHostRoles(未実装),SuperHostRoles(not implemented),SuperHostRoles
+NoSuperHostRoles,SuperHostRolesは未実装です。使用できません。,SuperHostRoles is not implemented and cannot be used.
+DisplayText.CanNotUseSHR,未実装,Not implemented.,未实施,未實施
 ModeId.BattleRoyal,バトルロイヤル,Battle Royale,戰鬥皇家,戰鬥皇家
 ModeOption,モード,Mode,模式,模式
 ExclusivityOptionMenuTitle,排他設定,Exclusivity Settings,排他設定,排他設定
@@ -430,6 +439,7 @@ EvilScientist,イビルサイエンティスト,Evil Scientist
 Lighter,ライター,Lighter
 Technician,技術者,Technician
 Medium,ミーディアム,Medium,灵媒师,靈媒師
+Psychometrist,サイコメトラー,Psychometrist,心灵测量师,心靈測量師
 DoubleKiller,ダブルキラー,DoubleKiller
 Finder,ファインダー,Finder,Finder,Finder
 Stuntman,スタントマン,Stuntman
@@ -447,6 +457,18 @@ DimensionWalker,ディメンションウォーカー,Dimension Walker,次元行�
 DarkKiller,ダークキラー,Dark killer
 OrientalShaman,陰陽師,Oriental Shaman,阴阳师,陰陽師
 ShermansServant,式神,Shermans Servant,式神,式神
+SilverBullet,シルバーバレット,Silver Bullet
+GhostMechanic,亡霊整備士,Ghost Mechanic,Ghost Mechanic,Ghost Mechanic
+MadJester,マッドてるてる,Mad Jester,疯狂小丑,瘋狂小丑
+Robber,泥棒,Robber
+OverKiller,オーバーキラー,Overkiller
+Jammer,ジャマー,Jammer,干扰者,干擾者
+Shielder,シールダー,Shielder
+Moving,ムービング,Moving,移动者,移動者
+EvilMoving,イビルムービング,Evil Moving,邪恶移动者,邪惡移動者
+HauntedWolf,狼憑き,HauntedWolf,灵咒,狼憑者
+ModifierHauntedWolf,モディファイア狼憑き,Modifier Haunted Wolf
+Magaziner,マガジナー,Magaziner,弹匣师,彈匣師
 
 # Descriptions_VanillaRoles
 Crewmate.Description,特に何も能力を持たない基本的なクルーメイト役職です。\n人狼ゲームにおける村人の役割を持ちます。\nキル能力を持つ人外を全て追放するか、タスクを全て完了すると勝利します。,A basic Crewmate role with no special abilities.\nThey serve the role of Villager from the Werewolf game.\nVictory is achieved by ejecting all non-Crewmate players with kill abilities or by completing all tasks.,一个没有特殊能力的基础船员角色。\n他们承担了狼人游戏中村民的角色。\n通过将所有拥有击杀能力的非船员玩家投出局或完成所有任务来获胜。,一個沒有特殊能力的基礎船員角色。\n他們承擔了狼人遊戲中村民的角色。\n通過將所有擁有擊殺能力的非船員玩家投出局或完成所有任務來獲勝。,
@@ -492,7 +514,12 @@ EvilDoorr.Description,タスクターンに使用出来る能力を有するイ�
 Mushroomer.Description,タスクターンに使用出来る能力を有するインポスターです。\nThe Fungleのジャングルにあるキノコを設置することが出来ます。\nキノコは設置した次のターンに有効化します。\nまた、全てのキノコを設置するとキノコ爆発が使えるようになります。\n「爆発」ボタンを押すと、最初から設置されているキノコを含め、全てのキノコを一斉に爆発させます。,An impostor with an ability usable on the task turn。\nYou can place mushrooms in The Fungle jungle。\nMushrooms activate on the turn after placement。\nAlso、once all mushrooms are placed、you gain the mushroom explosion ability。\nPressing the “Explode” button triggers all mushrooms、including the originals、to explode simultaneously。,具有在任务回合使用能力的冒充者。\n可以在The Fungle丛林中放置蘑菇。\n蘑菇在放置后的下一回合生效。\n此外、放置所有蘑菇后、可使用蘑菇爆炸。\n按下“爆炸”按钮、会同时引爆所有蘑菇（包括最初放置的）。,具有在任務回合使用能力的冒充者。\n可以在The Fungle叢林中放置蘑菇。\n蘑菇在放置後的下一回合生效。\n此外、放置所有蘑菇後、可使用蘑菇爆炸。\n按下「爆炸」按鈕、會同時引爆所有蘑菇（包括最初放置的）。
 DimensionWalker.Description,タスクターンに使用出来る能力を有するインポスターです。\n「設置」ボタンを押すとワームホールを設置出来ます。\nワームホールは一定時間経過後有効化し、ワームホール間を行き来出来るベントとして機能します。\nワームホールはディメンションウォーカー以外のインポスターも使用可能です。\n「回収」ボタンでワームホールを回収し、使用回数を回復させることが出来ます。,An impostor with an ability usable on the task turn。\nPressing the “Place” button lets you deploy a wormhole。\nAfter a set time、the wormhole activates and functions as a vent、allowing travel between wormholes。\nOther impostors besides the Dimension Walker can also use the wormholes。\nPressing the “Retract” button retrieves a wormhole and restores its uses。,具有在任务回合使用能力的冒充者。\n按下“Place”按钮可以部署虫洞。\n一定时间后、虫洞激活并作为通风口运行、可以在虫洞间来回移动。\n除了Dimension Walker之外的冒充者也能使用虫洞。\n按下“Retract”按钮可以收回虫洞并恢复使用次数。,具有在任務回合使用能力的冒充者。\n按下「Place」按鈕可以部署蟲洞。\n一定時間後、蟲洞激活並作為通風口運行、可以在蟲洞間來回移動。\n除了Dimension Walker之外的冒充者也能使用蟲洞。\n按下「Retract」按鈕可以收回蟲洞並恢復使用次數。
 DarkKiller.Description,キルに関係する能力を有するインポスターです。\nキルクールが短い代わりに、停電中しかキルが出来ません。,An impostor with kill-related abilities。\nWhile the kill cooldown is short、you can only kill during a blackout。,具有击杀相关能力的冒充者。\n虽然击杀冷却较短、但只能在停电时击杀。,具有擊殺相關能力的冒充者。\n雖然擊殺冷卻較短、但只能在停電時擊殺。
-EvilSeer.Description,タスクターンに発動する能力を有するインポスターです。\n誰かが死亡すると画面が発光します。\nまた、誰かが死亡した箇所に霊魂を確認することが出来ます。\n死体が発生した場合、その死体の方向に矢印を表示する事もできます。\nこれらの能力は設定によって、死者の色を反映させる事もできます。,An impostor with an ability activated on the task turn。\nWhen someone dies、the screen flashes。\nYou can also see a soul at the spot where they died。\nIf a body appears、an arrow can indicate its direction。\nDepending on settings、these abilities can reflect the color of the deceased。,具有在任务回合发动能力的冒充者。\n有人死亡时、屏幕会闪光。\n你还可以在死亡地点看到灵魂。\n如果出现尸体、屏幕上会显示指向尸体的箭头。\n这些能力可根据设置反映死者的颜色。,具有在任務回合發動能力的冒充者。\n有人死亡時、螢幕會閃光。\n你還可以在死亡地點看到靈魂。\n如果出現屍體、螢幕上會顯示指向屍體的箭頭。\n這些能力可根據設定反映死者的顏色。
+Robber.Description,キルに関係する能力を有するインポスターです。\nキルをした対象のタスク進捗を巻き戻します。,
+OverKiller.Description,キルに関係する能力を有するインポスターです。\nキルをした対象の死体を増やします。,
+EvilSeer.Description,タスクターンに発動する能力を有するインポスターです。\n誰かが死亡すると画面が発光します。\n誰かが死亡した箇所に霊魂を確認することも出来ます。\n死体が発生した場合、その死体の方向に矢印を表示する事もできます。\nこれらの能力は設定によって、死者の色を反映させる事もできます。\nまた、設定次第では「取り憑かせる」ボタンを押すことで、対象のプレイヤーにモディファイア狼憑きを付与することが出来ます。,This is an impostor with abilities that activate during task turns.\nWhen someone dies，the screen flashes.\nYou can also confirm the spirit at the location where someone died.\nWhen a corpse appears，you can also display an arrow pointing in the direction of the corpse.\nDepending on the settings，these abilities can also reflect the color of the deceased.\nDepending on the settings，you can also press the “Haunt!” button to apply the Modifier Haunted Wolf to the target player.
+Jammer.Description,タスクターンに使用出来る能力を有するインポスターです。\n「透明化」ボタンを押すと対象のプレイヤーを他人から見えなくすることが出来ます。\n透明化された当事者は自覚することが出来ません。\nインポスター視点は透明にされている人が半透明で見えます。,
+EvilMoving.Description,タスクターンに使用出来る能力を有するインポスターです。\n「位置記録」ボタンを押すと、その場所をテレポート先として登録します。\n「テレポート」ボタンを押すと記録した場所にテレポート出来ます。,
+Magaziner.Description,タスクターンに使用出来る能力を有するインポスターです。\n「補充」ボタンを押すと、キルクールがリセットされる代わりに、弾を補充出来ます。\n「消費」ボタンを押すとキルクールを設定値にリセットします。,
 
 # Descriptions_Neutral
 Jackal.Description,キル能力を有する第三陣営です。\n自陣営以外のキルが出来る陣営が全滅した上で、自陣営とクルーが同数以下になれば勝利します。\n設定次第で他のプレイヤーの役職を、自身の後継となるサイドキックや、手助けをしてくれるジャッカルフレンズに変更する能力を有することも出来ます。,A third-faction role with a kill ability.\nIt wins if all factions capable of killing outside its own are eliminated and its faction and the Crewmates are equal in number or fewer.\nDepending on the settings，it can change other players’ roles into a Sidekick (its successor) or Jackal Friends who assist it.,这是一个拥有击杀能力的第三阵营角色。\n当所有能够进行击杀的其他阵营被消灭，并且其阵营与船员人数相等或更少时，即可获胜。\n根据设定，它还可以将其他玩家的角色变更为边缘队员（其继任者）或协助的杰克朋友。,這是一個具備擊殺能力的第三陣營角色。\n當其他能進行擊殺的陣營全部被消滅，且其陣營與船員數量相等或更少時，即獲勝。\n根據設定，還可將其他玩家的角色變更為接班的邊翼或提供協助的傑克朋友。,
@@ -541,7 +568,7 @@ Pteranodon.Description,タスクターンに使用出来る能力を有するク
 NiceButtoner.Description,タスクターンに使用出来る能力を有するクルーメイトです。\n「ポチッ」ボタンを押すことでサボタージュ中以外ならいつでもどこでも緊急会議を開始出来ます。,A Crewmate with an ability usable during task turns.\nBy pressing the “Button” button，they can call an emergency meeting anytime and anywhere，as long as no sabotage is in progress.,这是一个在任务回合中可使用能力的船员。\n按下“会议”按钮后，只要没有破坏进行，就可以随时随地发起紧急会议。,這是一個在任務回合中可使用能力的船員。\n按下「會議」按鈕後，只要沒有破壞進行，就可以隨時隨地發起緊急會議。,
 Mayor.Description,会議に関する能力を有するクルーメイトです。\nこの役職は、他の役職よりも多くの票を投票することが出来ます。,A Crewmate with a meeting-related ability.\nThis role can cast more votes than any other role during meetings.,这是一个拥有会议相关能力的船员。\n此角色在会议中可以投出比其他任何角色更多的票。,這是一個具備會議相關能力的船員。\n此角色在會議中可以投出比其他任何角色更多的票。,
 Bakery.Description,会議に関する能力を有するクルーメイトです。\nこの役職が生存していると、会議終了時にパンを焼いたことが通知されます。,A Crewmate with a meeting-related ability.\nWhen this role is alive，the game notifies everyone at the end of each meeting that bread has been baked.,这是一个拥有会议相关能力的船员。\n当此角色存活时，每次会议结束时会通知大家面包已烤好。,這是一個具備會議相關能力的船員。\n當此角色存活時，每次會議結束時會通知大家麵包已烤好。,
-VentTrapper.Description,タスクターンに使用出来る能力を有するクルーメイトです。,A Crewmate with an ability usable during task turns.,一个在任务回合中可使用能力的船员。,一個在任務回合中可使用能力的船員。,
+VentTrapper.Description,タスクターンに使用出来る能力を有するクルーメイトです。\nベントの上で「トラップ！」ボタンを押すと、そのベントにトラップを仕掛けることが出来ます。\nトラップが仕掛けられたベントを仕掛けた本人以外が使用すると、一度だけそのベントの上に一定時間拘束されます。\n発動したことはわかりません。\nトラップは1つのベントにつき1回だけ仕掛けられます。,A crewmate with the ability to use Task Turn.\nIf you press the “Trap!” button while standing over a vent，you can set a trap on that vent.\nWhen anyone other than the trap-setter uses that vent，they’ll be held in place on it for a brief time—just once—and they won’t know it was triggered.\nYou can only set one trap per vent.
 SpeedBooster.Description,タスクターンに使用出来る能力を有するクルーメイトです。\n「ブースト！」ボタンを押すことでしばらくの間素早く動けるようになります。,A Crewmate with an ability usable during task turns.\nBy pressing the “Boost!” button，they can move quickly for a short period.,这是一个在任务回合中可使用能力的船员。\n按下“加速！”按钮后，可在短时间内快速移动。,這是一個在任務回合中可使用能力的船員。\n按下「加速！」按鈕後，可在短時間內快速移動。,
 NiceTeleporter.Description,タスクターンに使用出来る能力を有するクルーメイトです。\n「テレポート！」ボタンを押すことで自分を含む生存者の誰かのところへ生存者全員をテレポートさせます。,A Crewmate with an ability usable during task turns.\nBy pressing the “Teleport!” button，they teleport all survivors，including themselves，to the location of any chosen survivor.,这是一个在任务回合中可使用能力的船员。\n按下“传送！”按钮后，可将包括自己在内的所有幸存者传送到任意幸存者的位置。,這是一個在任務回合中可使用能力的船員。\n按下「傳送！」按鈕後，可將包括自己在內的所有倖存者傳送到任意倖存者的位置。,
 Taskmaster.Description,タスクターンに発動する能力を有するクルーメイトです。\nタスクを触るだけで完了することが出来ます。\nまた、設定次第で、サボタージュも触るだけで修理することが出来ます。,A Crewmate with an ability that activates during task turns.\nThey can complete tasks merely by touching them.\nAdditionally，depending on settings，they can fix sabotages just by touching them.,这是一个在任务回合中可激活能力的船员。\n他们只需触碰任务即可完成。\n此外，根据设定，他们仅需触碰即可修复破坏。,這是一個在任務回合中可激活能力的船員。\n他們只需觸碰任務即可完成。\n此外，依據設定，他們僅需觸碰即可修復破壞。,
@@ -562,6 +589,10 @@ Stuntman.Description,タスクターンに発動する能力を有するクル�
 Ubiquitous.Description,タスクターンに使用出来る能力を有するクルーメイトです。\n「呼び出し」ボタンを押すと、マップ上に自視点でのみ視認出来るドローンを呼び出します。\n「操作」ボタンを押すと、呼び出したドローンに視点が切り替わり、操作出来るようになります。\n「帰還」ボタンを押すと、ドローンをマップ上から削除します。\n「ドアハック」ボタンを押すと近くのドアを開けます。\nドローンがマップ上に存在する状態で会議が招集されると、実体化しマップ上に固定されます。\n実体化したドローンは他プレイヤーも視認出来ます。\nまた、マップ上に固定されたドローンの近くを他プレイヤーが通過すると、ユビキタスのタスクマップ上に表示されます。,A crewmate with an ability usable during the Task Turn。\nWhen you press the 'Call' button、 you summon a drone visible only to you on the map。\nWhen you press the 'Operate' button、 your view switches to the summoned drone and you can operate it。\nWhen you press the 'Return' button、 the drone is removed from the map。\nWhen you press the 'Door Hack' button、 you open nearby doors。\nIf a meeting is called while the drone exists on the map、 it materializes and becomes fixed on the map。\nA materialized drone can be seen by other players。\nAlso、 when another player passes near a fixed drone on the map、 it will appear on Ubiquitous’s task map。,是具有能够在任务回合使用能力的队员。\n按下「呼叫」按钮，可以在地图上召唤一个只有自己可见的无人机。\n按下「操作」按钮，视角会切换到召唤的无人机并可以操作它。\n按下「返回」按钮，可以将无人机从地图上移除。\n按下「门锁破解」按钮，可以打开附近的门。\n如果在无人机存在于地图上时召开会议，它会实体化并固定在地图上。\n实体化的无人机可以被其他玩家看到。\n此外，当其他玩家经过固定的无人机附近时，会在偏在者的任务地图上显示。,是具有能夠在任務回合使用能力的隊員。\n按下「呼叫」按鈕，可以在地圖上召喚一個只有自己可見的無人機。\n按下「操作」按鈕，視角會切換到召喚的無人機並可以操作它。\n按下「返回」按鈕，可以將無人機從地圖上移除。\n按下「門鎖破解」按鈕，可以打開附近的門。\n如果在無人機存在於地圖上時召開會議，它會實體化並固定在地圖上。\n實體化的無人機可以被其他玩家看到。\n此外，當其他玩家經過固定的無人機附近時，會在偏在者的任務地圖上顯示。
 Busker.Description,タスクターンに使用出来る能力を有するクルーメイトです。\n「偽装死」ボタンを押すと、幽霊状態になります。\n偽装死状態のときに会議が招集されたり、一定時間が経過すると本当に死亡してしまいます。\nまた、戻るべき死体が消えてしまっても本当に死亡してしまいます。,A crewmate with an ability usable during the Task Turn。\nWhen you press the 'Feign Death' button、 you become a ghost。\nWhile feigning death、 if a meeting is called or a certain time passes、 you will actually die。\nAlso、 if your corpse to return to disappears、 you will actually die。,是具有能够在任务回合使用能力的队员。\n按下「假死」按钮，会变为幽灵状态。\n在假死状态下，如果召开会议或经过一定时间，你会真正死亡。\n另外，即使复活的尸体消失，你也会真正死亡。,是具有能夠在任務回合使用能力的隊員。\n按下「假死」按鈕，會變為幽靈狀態。\n在假死狀態下，如果召開會議或經過一定時間，你會真正死亡。\n另外，即使復活的屍體消失，你也會真正死亡。
 Doorr.Description,タスクターンに使用出来る能力を有するクルーメイトです。\n「ドアーー!!」ボタンを押すと、目の前のドアを開閉出来ます。,A crewmate with an ability usable during the Task Turn。\nWhen you press the 'Doorーー!!' button、 you can open and close the door in front of you。,是具有能够在任务回合使用能力的队员。\n按下「门ーー!!」按钮，可以开关面前的门。,是具有能夠在任務回合使用能力的隊員。\n按下「門ーー!!」按鈕，可以開關面前的門。
+SilverBullet.Description,タスクターンに使用出来る能力を有するクルーメイトです。\nベントに向かって「分析」ボタンを押すと、そのベントの前のターンの使用情報を得られます。\n情報はチャットに送られます。
+Shielder.Description,タスクターンに使用出来る能力を有するクルーメイトです。\n「シールド」ボタンを押すと、一定時間の間キルを防ぐシールドを貼ります。\nキルを防いだときのガードエフェクトは、自身及びキラー視点で見えます。,
+Moving.Description,タスクターンに使用出来る能力を有するクルーメイトです。\n「位置記録」ボタンを押すと、その場所をテレポート先として登録します。\n「テレポート」ボタンを押すと記録した場所にテレポート出来ます。,
+HauntedWolf.Description,特に能力を有さないクルーメイトです。\n死亡するまでこの役職だと自覚出来ません。\nシェリフ等陣営の判定が可能な役職から、インポスターとして判定されます。,
 
 # Descriptions_MadRoles
 Madmate.Description,インポスターの味方のクルーメイトです。\nいわゆる狂人と呼ばれる役職です。\n勝利条件はクルーメイトの勝利ではなく、インポスターの勝利です。\nその勝利に自身の生死は問われないので、あの手この手でインポスターを勝利に導きましょう。,A Crewmate allied with the Impostors.\nOften known as the Madmate.\nTheir win condition is not for the Crewmates to win，but for the Impostors to win.\nTheir own survival is irrelevant，so use any means necessary to secure an Impostor victory.,这是一个支持内鬼的船员，也称为疯友角色。\n他们的胜利条件不是船员获胜，而是内鬼获胜，并且他们的生死并不影响胜利。\n所以，尽可能地采用各种手段促成内鬼获胜。,這是一個支持內鬼的船員，俗稱瘋友角色。\n其勝利條件並非船員勝利，而是內鬼勝利，且自身生死不影響結果。\n因此，請用一切手段助內鬼取勝。,
@@ -571,12 +602,14 @@ BlackSanta.Description,インポスターの味方のクルーメイトです。
 Worshiper.Description,インポスターの味方のクルーメイトです。\nいわゆる狂人と呼ばれる役職です。\n勝利条件はクルーメイトの勝利ではなく、インポスターの勝利です。\nその勝利に自身の生死は問われないので、あの手この手でインポスターを勝利に導きましょう。\nこの役職は、任意のタイミングで自殺をすることが出来ます。,A Crewmate allied with the Impostors.\nOften known as the Madmate.\nTheir win condition is for the Impostors to win，not the Crewmates.\nTheir own survival is irrelevant，so use any means necessary to secure an Impostor victory.\nThis role can choose to commit suicide at any time.,这是一个支持内鬼的船员，也称为“信徒角色”。\n他们的胜利条件不是船员获胜，而是内鬼获胜，并且他们的生死无关紧要。\n此角色可随时选择自杀。,這是一個支持內鬼的船員，也稱為「信徒角色」。\n他們的勝利條件不是船員勝利，而是內鬼勝利，且他們的生死無關緊要。\n此角色可隨時選擇自殺。,
 SatsumaAndImo.Description,特に能力を有さないクルーメイト兼マッドメイトです。\n会議を挟むごとにクルーメイトとマッドメイトに交互に変化します。\n勝利条件もターンごとに変化します。,A Crewmate/Madmate with no special abilities.\nThey alternate between Crewmate and Madmate after each meeting.\nTheir win condition changes accordingly each turn.,一个没有特殊能力的船员兼疯友角色。\n他们在每次会议后在船员和疯友之间交替。\n他们的胜利条件也随回合变化。,這是一個沒有特殊能力的船員兼瘋友角色。\n他們在每次會議後在船員和瘋友之間交替。\n他們的勝利條件也隨回合變化。,
 MadHawk.Description,インポスターの味方のクルーメイトです。\nいわゆる狂人と呼ばれる役職です。\n勝利条件はクルーメイトの勝利ではなく、インポスターの勝利です。\nその勝利に自身の生死は問われないので、あの手この手でインポスターを勝利に導きましょう。この役職は、タスクターンに使用出来る能力を有します。\n「ホークアイ」ボタンを押すと自分の視野が広がり、周囲の様子を見ることが出来ます。,A Crewmate allied with the Impostors.\nOften known as a Madmate.\nTheir win condition is for the Impostors to win，not the Crewmates.\nTheir own survival is irrelevant，so use any means necessary to secure an Impostor victory.\nThis role has an ability usable during task turns.\nBy pressing the “Hawkeye” button，they expand their vision to observe their surroundings.,这是一个支持内鬼的船员，也称为“疯鹰角色”。\n他们的胜利条件不是船员获胜，而是内鬼获胜，并且他们的生死无关紧要。\n此角色在任务回合中可使用能力。\n按下“鹰眼”按钮后，可扩大视野以观察周围情况。,這是一個支持內鬼的船員，也稱為「瘋鷹角色」。\n他們的勝利條件不是船員勝利，而是內鬼勝利，且他們的生死無關緊要。\n此角色在任務回合中可使用能力。\n按下「鷹眼」按鈕後，可擴大視野以觀察周圍情況。,
+MadJester.Description,インポスターの味方のクルーメイトです。\nいわゆる狂人と呼ばれる役職です。\n勝利条件はクルーメイトの勝利ではなく、インポスターの勝利です。\nその勝利に自身の生死は問われないので、あの手この手でインポスターを勝利に導きましょう。この役職は、特別な勝利条件を有します。\nタスクを完了した状態で追放されると、インポスター勝利となります。,
 
 JackalFriends.Description,ジャッカルの味方のクルーメイトです。\nいわゆる狂人と呼ばれる役職のジャッカル版です。\n勝利条件はクルーメイトの勝利ではなく、ジャッカルの勝利です。\nその勝利に自身の生死は問われないので、あの手この手でジャッカルを勝利に導きましょう。,A Crewmate allied with the Jackal faction.\nKnown as Jackal Friends—a Jackal version of Madmate.\nTheir win condition is for Jackal to win，not the Crewmates.\nTheir own survival is irrelevant，so use any means necessary to ensure Jackal’s victory.,这是一个支持杰克阵营的船员，也称为杰克朋友。\n他们的胜利条件不是船员获胜，而是杰克获胜，并且他们的生死无关紧要。\n所以，请尽一切可能帮助杰克取得胜利。,這是一個支持傑克陣營的船員，也稱為傑克朋友。\n他們的勝利條件不是船員勝利，而是傑克勝利，且他們的生死無關緊要。\n因此，請盡一切可能協助傑克取得勝利。,
 
 # Descriptions_GhostRoles
 Cantera.Description,タスクターンに使用出来る能力を有するクルーメイトです。\n「灯火」ボタンを押すと、対象のプレイヤーに取り憑き、一定時間視界を明るくします。\nこの役職は死亡したプレイヤーに割り当てられます。,A Crewmate with an ability usable during task turns.\nBy pressing the “Beacon” button，they possess a target player，illuminating their vision for a set duration.\nThis role is assigned to dead players.,这是一个在任务回合中可使用能力的船员。\n按下“灯火”按钮后，会附身目标玩家，使其视野在一段时间内变亮。\n此角色死后由下一位死亡玩家继承。,這是一個在任務回合中可使用能力的船員。\n按下「燈火」按鈕後，會附身目標玩家，使其視野在一段時間內變亮。\n此角色死後由下一位死亡玩家繼承。,
 Mirage.Description,タスクターンに発動する能力と、使用出来る能力を有するインポスターです。\n誰かが死亡すると画面が青く発光します。\n死体が発生すると能力を使用出来るようになります。\n「複製」ボタンを押すと、そのターンに発生した死体をその場に複製して設置します。\n生成された死体はリポートすることが出来ます。\nまた、複製した数だけ同じ死体が発見されます。\nこの役職は死亡したプレイヤーに割り当てられます。,An Impostor with an ability that activates during task turns and an additional usable ability.\nWhen someone dies，the screen emits a blue glow.\nWhen a body appears，they gain the ability to use their power.\nBy pressing the “Duplicate” button，they create a copy of that turn’s newly spawned body at the same location.\nThe generated body can be reported，and as many bodies as duplicated appear for discovery.\nThis role is assigned to dead players.,这是一个具有任务回合可激活能力和可使用能力的内鬼。\n当有人死亡时，屏幕会发出蓝光。\n当尸体出现时，他们获得使用能力的机会。\n按下“复制”按钮后，会在同一位置生成本回合新出现的尸体副本。\n生成的尸体可以被举报，并且与复制次数相同数量的尸体同时被发现。\n此角色死后由下一位死亡玩家继承。,這是一個具有任務回合可激活能力和可使用能力的內鬼。\n當有人死亡時，螢幕會發出藍光。\n當屍體出現時，他們獲得使用能力的機會。\n按下「複製」按鈕後，會在同一位置生成本回合新出現的屍體副本。\n生成的屍體可以被舉報，並且與複製次數相同數量的屍體同時被發現。\n此角色死後由下一位死亡玩家繼承。,
+GhostMechanic.Description,タスクターンに使用出来る能力を有するクルーメイトです。\n「修理」ボタンを押すとサボタージュを即座に修理することが出来ます。,
 
 # Descriptions_Modifier
 ModifierGuesser.Description,会議に関する能力を有する追加役職です。\n元の役職の能力に加えてこの能力を有します。\n会議中に出現するボタンを押し、対象のプレイヤーの役職が何か当てると、そのプレイヤーをキルすることが出来ます。\nただし、外すと自身が死亡してしまいます。\n\nホストモードでは、以下のコマンドを使用して推測します。\n/bt 色の名前 役職名,An additional role with a meeting-related ability.\nThey retain their original role’s powers and gain this extra ability.\nDuring meetings，by pressing the appearing button and correctly guessing a target player’s role，they can kill that player.\nHowever，an incorrect guess results in their own death.\n\nIn Host mode，use the following command to guess:\n/bt <color> <role>.,这是一个具有会议相关能力的额外角色。\n他们保留原始角色的能力，并获得此额外能力。\n会议期间，通过按下出现的按钮并正确猜测目标玩家的角色，可以将其击杀。\n但是，猜错自己就会死亡。\n\n在主机模式下，请使用以下命令进行推测：\n/bt <颜色> <角色>。,這是一個具有會議相關能力的額外角色。\n他們保留原始角色的能力，並獲得此額外能力。\n會議期間，通過按下出現的按鈕並正確猜測目標玩家的角色，可以將其擊殺。\n但是，猜錯自己就會死亡。\n\n在主機模式下，請使用以下命令進行推測：\n/bt <顏色> <角色>。,
@@ -586,6 +619,7 @@ Lovers.Description,独自の勝利条件を持つモディファイアです。\
 JumboModifier.Description,見た目に変化のあるモディファイアです。\n時間経過でどんどん大きくなっていきます。\nクルーメイトのジャンボが成長しきる前に追放されると、全員敗北になります。\nインポスターのジャンボは最大まで成長すると、一度だけ使えるサブキルボタンを獲得します。,A modifier that visibly changes a player’s size.\nThey grow continuously over time.\nIf a large Crewmate is ejected before fully growing，everyone loses.\nIf a large Impostor fully grows，they gain a one-time-use Subkill button.,这是一个视觉上会改变玩家体型的修改器。\n随着时间推移，他们会不断变大。\n如果一个变大的船员在完全变大前被投出，所有玩家都将输掉比赛。\n如果一个变大的内鬼完全成长，他们会获得一个一次性使用的子击杀按钮。,這是一個視覺上會改變玩家體型的修改器。\n隨著時間推移，他們會不斷變大。\n如果一個變大的船員在完全變大前被投出，所有玩家都將輸掉比賽。\n如果一個變大的內鬼完全成長，他們會獲得一個一次性使用的子擊殺按鈕。,
 ModifierSpelunker.Description,プレイヤーを虚弱にするモディファイアです。\nベントを踏んだり、ドアを開けたり、昇降機に乗ったり、はしごを降りたりすると一定確率で死亡してしまいます。\nまた、サボタージュが長引くと不安で死んでしまいます。,A modifier that makes players frail.\nStepping on vents，opening doors，using elevators，or climbing down ladders carries a chance of instant death.\nAdditionally，prolonged sabotages may cause them to panic and die.,这是一个使玩家变得虚弱的修改器。\n踩到通风口、打开门、乘坐电梯或爬下梯子都可能有一定概率瞬死。\n此外，长时间的破坏可能导致玩家因恐慌而死亡。,這是一個使玩家變得虛弱的修改器。\n踩到通風口、打開門、乘坐電梯或爬下梯子都可能有一定概率瞬死。\n此外，長時間的破壞可能導致玩家因恐慌而死亡。,
 ModifierHawk.Description,タスクターンに使用出来る能力を追加するモディファイアです。\n「ホークアイ」ボタンを押すと自分の視野が広がり、周囲の様子を見ることが出来ます。,A modifier that adds an ability usable during task turns.\nBy pressing the “Hawkeye” button，they expand their vision to observe the surroundings.,这是一个添加任务回合中可使用能力的修改器。\n按下“鹰眼”按钮后，会扩大视野以观察周围情况。,這是一個添加任務回合中可使用能力的修改器。\n按下「鷹眼」按鈕後，會擴大視野以觀察周圍情況。,
+ModifierHauntedWolf.Description,特に能力を有さない、クルーメイト役職専用モディファイアです。\n死亡するまでこの役職だと自覚出来ません。\nシェリフ等陣営の判定が可能な役職から、インポスターとして判定されます。\nシェリフ役職に重複していた場合、陣営の判定を反転する設定も有します。,,
 
 # Intros_Impostor
 EvilGuesserIntro1,名乗りはあの世への片道切符,Claiming your title is a one-way ticket to the afterlife,宣称你的身份是一张前往来世的单程票,宣稱你的身份是一張前往來世的單程票,
@@ -628,6 +662,12 @@ MushroomerIntro1,繁茂する菌糸,Proliferating mycelium,繁茂的菌丝,繁�
 DimensionWalkerIntro1,次元を越えて,Crossing dimensions,跨越次元,跨越次元
 DarkKillerIntro1,疾風漆黒,Jet-black gale,漆黑暴风,漆黑暴風
 EvilSeerIntro1,彼らは共に在る,They exist together,他们同在,他們同在
+RobberIntro1,その進捗、頂戴するぜ,
+OverKillerIntro1,何度だって切り刻む,
+EvilSeerIntro1,彼岸の呼び声,
+JammerIntro1,隠蔽工作,
+EvilMovingIntro1,不意の急襲,
+Magaziner,殺意の弾倉,
 
 # Intros_Neutral
 JackalIntro1,暗躍するもう一人の殺人鬼,Another puppeteer of death in the shadows,另一个暗中操纵死亡者,另一個暗中操縱死亡者,
@@ -699,6 +739,11 @@ StuntmanIntro1,無意識の攻防、,Unconscious offense and defense,无意识�
 UbiquitousIntro1,偏在する監視眼,Ubiquitous watchful eye,无处不在的监视之眼,無處不在的監視之眼
 BuskerIntro1,危険な大道芸人,Dangerous street performer,危险的街头艺人,危險的街頭藝人
 DoorrIntro1,ノンストレス移動,stress-free movement,门，零压力移动,門，零壓力移動
+PsychometristIntro1,この手は真実を読み取る,These hands read the truth,此手读取真相,此手讀取真相
+SilverBulletIntro1,暗雲払う銀弾,
+ShielderIntro1,全てを受け止める盾,
+MovingIntro1,どんな距離も飛び越える,
+HauntedWolfIntro1,過る獣の幻影,
 
 # Intros_MadRoles
 MadmateIntro1,道を違えし者,One who has strayed from the path,误入歧途者,誤入歧途者,
@@ -708,12 +753,14 @@ BlackSantaIntro1,悪い子には圧倒的力を授けよう,Grant overwhelming p
 WorshiperIntro1,この命を捧げても,Even if I must give up this life,即使献出此命,即使獻出此命,
 SatsumaAndImoIntro1,今宵はどちらに味方しようか,Tonight，which side shall I choose?,今晚我将扶哪一方?,今晚我將扶哪一方?,
 MadHawkIntro1,この目は悪事に目を瞑る,These eyes turn a blind eye to evil deeds,此目视而不见恶行,此目視而不見惡行,
+MadJesterIntro1,吊り上げたのは。,
 
 JackalFriendsIntro1,暗躍者に心酔せし者,One enamored with the clandestine operator,迷恋暗中操作者,迷戀暗中操作者,
 
 # Intros_GhostRoles
 CanteraIntro1,暗闇に灯る道標,Beacons glowing in the darkness,黑暗中的灯塔,黑暗中的燈塔,
 MirageIntro1,虚空を舞う幻影,A phantom dancing in the void,虚空舞动的幻影,虛空舞動的幻影,
+GhostMechanicIntro1,霊界ワーカーホリック,
 
 # Intros_Modifier
 ModifierGuesserIntro1,そして、推察せよ,And now，make your guess,现在，请推测,現在，請推測,
@@ -723,6 +770,7 @@ LoversIntro1,そして、あなたは恋をしている,And now，you are in lov
 JumboModifierIntro1,どんどん大きくなっちゃう,Growing bigger and bigger,越来越大,越來越大,
 ModifierSpelunkerIntro1,そして、あなたは貧弱だ,And now，you are frail,现在，你已虚弱,現在，你已虛弱,
 ModifierHawkIntro1,そして、あなたは鋭い目を持つ,And now，you have sharp eyes,现在，你拥有锐眼,現在，你擁有銳眼,
+ModifierHauntedWolfIntro1,そして、あなたは憑りつかれている,And now，you are haunted.
 
 # wins
 WinText,勝利,Win
@@ -942,6 +990,13 @@ EvilSeer.AbilityColorModeSelect.ArrowOnly,死体矢印のみ,
 EvilSeer.FlashColorText,{0}色のクルーの死の点滅を検知,
 EvilSeer.DarkColor,暗い,Dark Color,深色,深色
 EvilSeer.LightColor,明るい,Light Color,浅色,淺色
+EvilSeer.EvilSeerHauntMode,狼憑き付与能力のモード,
+EvilSeer.EvilSeerHauntMode.None,能力オフ,
+EvilSeer.EvilSeerHauntMode.Both,両方,
+EvilSeer.EvilSeerHauntMode.OnlyOthersHaunt,「取り憑かせる」のみ,
+EvilSeer.EvilSeerHauntMode.OnlyEvilSeerHaunt,「取り憑く」のみ,
+EvilSeer.CreateAbilityCooldown,「取り憑かせる」クールタイム,
+EvilSeerHauntButtonText,取り憑かせる,Haunt!
 
 # Celebrity
 CelebrityIntro,みんなのスター！！,The Celebrity!!,大家的明星！！,大家的明星！！
@@ -1510,7 +1565,7 @@ NiceRedRidingHood,ナイス赤ずきん,NiceRedRidingHood,小红帽,小紅帽
 NiceRedRidingHoodIntro1,生き返ろう,Come back to life,杀死你的凶手死亡后你将会复活,殺死你的凶手死亡後你將會復活
 NiceRedRidingHoodDescription,自身をキルしたクルーが死亡した場合、次のターンに復活するクルーメイト役職です。\n\nナイス赤ずきんは、復活可能回数が残っていて、且つ死体が発生するキルによって死亡した場合に復活する事ができます。\n(猫又役職による道ずれや、スラッガーによるキル等は復活の対象外です。)\n\nキル者がタスクフェイズ中に死亡した場合に復活するかは、設定によります。\nその設定が有効で、キル者がタスクフェイズ中に死亡した場合も、次の会議フェイズ終了時に復活します。\n\nナイス赤ずきんが復活可能な条件を満たしている場合は、霊界で他のクルーの役職を確認することができず、更に憑依能力を有しません。\n満たしていない場合は、霊界で他のクルーの役職が表示され、憑依能力も使用可能です。\n\n私を狼のお腹から引きずり出したのはどなた?,The Crew Mate role revives the crewmember who killed him or her on the next turn if he or she dies.\n\nNice Red Riding Hood can be revived if the number of times it can revive remains，and if it is killed by a kill that results in a corpse.\n(Excluded from resurrection are a wayward death by a nekomata role，a kill by a slugger，etc.)\n\nWhether or not a kill is resurrected if the kill is made during the Task Phase depends on the setting.\nIf the setting is enabled and the kill person dies during the Task Phase，he/she will be revived at the end of the next Meeting Phase.\n\nIf the Nice Red Riding Hood meets the requirements to be revivable，it will not be able to see the other crew members' roles in the spirit world，and furthermore，it will not have the ability to possess them.\nIf not met，the other crew members' roles will be visible in the spirit world and the possession ability will be available.\n\nWho pulled me out of the wolf's belly?,击杀小红帽的玩家死亡后，小红帽在下一轮开始时复活。\n\n小红帽的复活有一定的次数限制，且只有在留下尸体的场合才能复活。\n(如被猎人系职业连带而死，或被击球手击飞而死，小红帽均不能复活。)\n\n可以设置击杀小红帽的凶手若在行动阶段死亡，小红帽是否也能复活。\n若可以，当凶手在行动阶段死亡时，小红帽会在下个会议阶段结束时复活。\n\n如果小红帽有复活的可能，死亡的小红帽将不能确认所有玩家的职业，也不能使用幽幽鬼影。\n若小红帽没有复活的可能，则小红帽可以正常确认玩家职业与使用幽幽鬼影。\n\n真把我吓坏了！狼肚子里黑漆漆的……,小紅帽是一個可以在被殺死後，在下一輪復活的船員角色。\n(在被獵人帶走或者被擊球手擊飛等情況下不能復活)\n\n根據設定，小紅帽可在兇手於任務階段死亡後的下一輪會議結束時復活。\n\n如果小紅帽符合復活條件，則他將無法在靈界看到其他船員的角色，並且無法使用憑依能力。\n條件不符則如常。\n\n是誰把我從狼的肚子裡拉出來的?
 NiceRedRidingHoodCount,最大生き返り回数,Maximum number of revives,小红帽最大可复活次数,小紅帽最大可復活次數
-NiceRedRidinIsKillerDeathRevive,キル者がタスクターンに死亡した場合でも復活する,Resurrects even if the killers die in the task turn,若凶手在行动阶段死亡小红帽依然可以复活,若凶手在行動階段死亡小紅帽依然可以復活
+NiceRedRidingIsKillerDeathRevive,キル者がタスクターンに死亡した場合でも復活する,Resurrects even if the killers die in the task turn,若凶手在行动阶段死亡小红帽依然可以复活,若凶手在行動階段死亡小紅帽依然可以復活
 
 # MeetingSheriff Options
 MeetingSheriffLimitText,残り{0}回 (会議中:{1}回),Remaining {0} times (In meeting: {1} times),剩余{0}次 (会议中:{1}次),剩餘{0}次 (會議中:{1}次)
@@ -1647,3 +1702,53 @@ DimensionWalkerActivateTime,ワームホール有効化時間,Wormhole Activatio
 DimensionWalkerPlayAnimation,ワームホールアニメーションを再生する,Play Wormhole Animation,播放虫洞动画,播放蟲洞動畫
 DimensionWalkerPutButtonText,設置,Place Wormhole,放置虫洞,放置蟲洞
 DimensionWalkerCollectButtonText,回収,Collect Wormhole,回收虫洞,回收蟲洞
+
+# SilverBullet
+SilverBulletAnalyzeButtonName,分析,Analyze
+SilverBulletRepairButtonName,修理,Repair
+SilverBulletVentNotUsed,このベントは今回のターン使用されていません。,This vent was not used this round.
+SilverBulletVentUsed,このベントは{0}人に使用されました。,This vent was used by {0} player(s).
+SilverBulletVentUsedColorLight,プレイヤー{0}は明るい色です。,Player {0} is a light color.
+SilverBulletVentUsedColorDark,プレイヤー{0}は暗い色です。,Player {0} is a dark color.
+SilverBulletAnalyzeCanUseCountOption,分析回数,Analyze Count
+SilverBulletAnalyzeCanCheckSentimentOption,色分析,Analyze Color
+SilverBulletCanUseRepairOption,修理を使用できる,Can Use Repair
+SilverBulletCanRepairUseCountOption,修理回数,Repair Count
+
+# GhostMechanic
+GhostMechanicCannotFixMushroomMixup,キノコカオスを修復できない,Cannot Fix Mushroom Mixup
+
+# MadJester
+MadJesterKnowImpostorHeader,インポスター認知設定,Know Impostor Setting,认识内鬼设置,認識內鬼設置
+MadJesterCanKnowImpostors,インポスターを知ることができる,Can Know Impostors,可以知道内鬼,可以知道內鬼
+MadJesterNeededTaskCount,知るために必要なタスク数,Needed Task Count,需要完成的任务数,需要完成的任務數
+MadJesterIsSpecialTasks,固有タスクを使用する,Use special tasks,使用特殊任务,使用特殊任務
+MadJesterSpecialTasks,固有タスク,Special Tasks,特殊任务,特殊任務
+MadJesterAbilityHeader,能力設定,Ability Setting,能力设置,能力設定
+MadJesterWinConditionHeader,勝利条件設定,Win Condition Setting,胜利条件设置,勝利條件設定
+MadJesterWinOnTaskComplete,タスク完了で勝利,Win on task completion,完成任务胜利,完成任務勝利
+Win.MadJesterWin,マッドてるてる 勝利,Mad Jester Win,疯狂小丑 胜利,瘋狂小丑 勝利
+
+# Magaziner
+MagazinerSetKillTime,クールダウン短縮時間,Cooldown Reduction Time,冷却缩短时间,冷卻縮短時間
+MagazinerPlayerCount,初期弾薬数,Initial Ammunition Count,初始弹药数,初始彈藥數
+MagazinerGetButtonName,消費,Consume,消费,消費
+MagazinerAddButtonName,補充,Replenish,补充,補充
+
+# OverKiller
+OverKillerKillCount,1回でキルする回数,Kill count per kill,一次击杀次数,一次擊殺次數
+OverKillerScatterBodies,死体を散乱する,Scatter Bodies,散乱死体,散亂死體
+OverKillerScatterRange,散乱範囲,Scatter Range,散乱范围,散亂範圍
+
+# Jammer
+JammerButtonName,透明化,Invisibility,隐形,隱形
+JammerCanUseAbilitiesAgainstImposter,インポスターに対しても能力を使用できる,Can use abilities against Impostors,可以对内鬼使用能力,可以對內鬼使用能力
+
+# Moving
+MovingAbilityButtonText,位置記録,Record Position,记录位置,記錄位置
+MovingPositionSetText,位置を記録しました,Position recorded,位置已记录,位置已記錄
+MovingTeleportText,テレポートしました,Teleported,已传送,已傳送
+
+# ModifierHauntedWolf
+ModifierHauntedWolfIsAssignMadAndFriendRoles,マッドやフレンズロールと重複しない(一括設定),No overlap with Mud or Friends rolls.,不会被分配给叛徒阵营或狈系职业,不重複分配给叛徒或狽系角色
+ModifierHauntedWolfIsReverseSheriffDecision,シェリフや占い師等に重複した時，判定を反転する。,Reverses the kill decision when duplicated on a sheriff.,被分配给警长、占卜师等职业时技能判定反转,當狼憑於警長或占卜師等職業時，判定會反轉

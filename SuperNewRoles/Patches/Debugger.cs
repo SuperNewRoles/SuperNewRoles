@@ -40,3 +40,12 @@ public static class GameStartManagerUpdatePatch
         }
     }
 }
+
+[HarmonyPatch(typeof(NetworkedPlayerInfo), nameof(NetworkedPlayerInfo.RpcSetTasks))]
+public static class NetworkedPlayerInfoRpcSetTasksPatch
+{
+    public static void Postfix(NetworkedPlayerInfo __instance, Il2CppInterop.Runtime.InteropTypes.Arrays.Il2CppStructArray<byte> taskTypeIds)
+    {
+        Logger.Info($"SetTasks: {string.Join(",", taskTypeIds)}");
+    }
+}
