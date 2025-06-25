@@ -140,9 +140,9 @@ public abstract class WaveCannonObjectBase
         isShooting = true;
     }
     [CustomRPC(true)]
-    public static void RpcDetach(ExPlayerControl source, ulong abilityId)
+    public static void RpcDetach(ExPlayerControl source)
     {
-        WaveCannonAbility ability = source.GetAbility<WaveCannonAbility>(abilityId);
+        WaveCannonAbility ability = source.GetAbility<WaveCannonAbility>();
         if (ability == null) return;
         WaveCannonObjectBase obj = ability.WaveCannonObject;
         if (obj == null) return;
@@ -188,7 +188,7 @@ public abstract class WaveCannonObjectBase
     public virtual void Detach()
     {
         if (ability?.Player?.AmOwner == true)
-            RpcDetach(ability.Player, ability.AbilityId);
+            RpcDetach(ability.Player);
         new LateTask(() => FixedUpdateEvent.Instance.RemoveListener(fixedUpdateEvent), 0f);
         detached = true;
         if (WaveCannonObject != null)
@@ -204,16 +204,28 @@ public abstract class WaveCannonObjectBase
             ExPlayerControl.LocalPlayer.ResetKillCooldown();
     }
     [CustomRPC]
-    public static void RpcSpawnFromType(ExPlayerControl source, WaveCannonType type, ulong abilityId, bool isFlipX, Vector3 startPosition)
+    public static void RpcSpawnFromType(ExPlayerControl source, WaveCannonType type, bool isFlipX, Vector3 startPosition)
     {
-        WaveCannonAbility ability = source.GetAbility<WaveCannonAbility>(abilityId);
-        if (ability == null)
+        Logger.Info($"[WaveCannon] RpcSpawnFromType called - source: {source?.Player?.name}, type: {type}, isFlipX: {isFlipX}, position: {startPosition}");
+
+        if (source == null)
         {
-            Logger.Error($"WaveCannonAbility is null. source: {source.PlayerId}, type: {type}, isFlipX: {isFlipX}, startPosition: {startPosition}");
+            Logger.Error("[WaveCannon] source is null!");
             return;
         }
-        WaveCannonObjectBase obj = SpawnFromType(type, ability, isFlipX, startPosition, ability.isResetKillCooldown);
-        ability.SpawnedWaveCannonObject(obj);
+
+        // AbilityIdではなく、WaveCannonAbilityタイプで検索
+        WaveCannonAbility waveCannonAbility = source.GetAbility<WaveCannonAbility>();
+        if (waveCannonAbility == null)
+        {
+            Logger.Error($"[WaveCannon] WaveCannonAbility not found for player: {source.Player.name}");
+            return;
+        }
+
+        Logger.Info($"[WaveCannon] WaveCannonAbility found, spawning object...");
+        WaveCannonObjectBase obj = SpawnFromType(type, waveCannonAbility, isFlipX, startPosition, waveCannonAbility.isResetKillCooldown);
+        waveCannonAbility.SpawnedWaveCannonObject(obj);
+        Logger.Info($"[WaveCannon] Wave cannon object spawned successfully");
     }
     public static WaveCannonObjectBase SpawnFromType(WaveCannonType type, WaveCannonAbility ability, bool isFlipX, Vector3 startPosition, bool isResetKillCooldown = false)
     {
