@@ -18,6 +18,7 @@ class Sheriff : RoleBase<Sheriff>
     public override List<Func<AbilityBase>> Abilities { get; } = [() => new SheriffAbility(new SheriffAbilityData(
         killCooldown: SheriffKillCooldown,
         killCount: SheriffMaxKillCount,
+        mode: SheriffSuicideMode,
         canKillNeutral: SheriffCanKillNeutral,
         canKillImpostor: SheriffCanKillImpostor,
         canKillMadRoles: SheriffCanKillMadRoles,
@@ -61,15 +62,18 @@ public class SheriffAbilityData
 {
     public float KillCooldown { get; set; }
     public int KillCount { get; set; }
+    public SheriffSuicideMode Mode { get; set; }
     public bool CanKillNeutral { get; set; }
     public bool CanKillImpostor { get; set; }
     public bool CanKillMadRoles { get; set; }
     public bool CanKillFriendRoles { get; set; }
     public bool CanKillLovers { get; set; }
-    public SheriffAbilityData(float killCooldown, int killCount, bool canKillNeutral, bool canKillImpostor, bool canKillMadRoles, bool canKillFriendRoles, bool canKillLovers)
+    public SheriffAbilityData(float killCooldown, int killCount, SheriffSuicideMode mode, bool canKillNeutral, bool canKillImpostor, bool canKillMadRoles, bool canKillFriendRoles, bool canKillLovers)
     {
         KillCooldown = killCooldown;
         KillCount = killCount;
+        Mode = mode;
+
         CanKillNeutral = canKillNeutral;
         CanKillImpostor = canKillImpostor;
         CanKillMadRoles = canKillMadRoles;

@@ -18,6 +18,7 @@ class MeetingSheriff : RoleBase<MeetingSheriff>
     public override List<Func<AbilityBase>> Abilities { get; } = [() => new MeetingSheriffAbility(new MeetingSheriffAbilityData(
         killCount: MeetingSheriffMaxKillCount,
         shotsPerMeeting: MeetingSheriffShotsPerMeeting,
+        mode: MeetingSheriffSuicideMode,
         canKillNeutral: MeetingSheriffCanKillNeutral,
         canKillImpostor: MeetingSheriffCanKillImpostor,
         canKillMadRoles: MeetingSheriffCanKillMadRoles,
@@ -64,15 +65,18 @@ public class MeetingSheriffAbilityData
     public int KillCount { get; set; }
     public int ShotsPerMeeting { get; set; }
     public bool CanKillNeutral { get; set; }
+    public SheriffSuicideMode Mode { get; set; }
     public bool CanKillImpostor { get; set; }
     public bool CanKillMadRoles { get; set; }
     public bool CanKillFriendRoles { get; set; }
     public bool CanKillLovers { get; set; }
 
-    public MeetingSheriffAbilityData(int killCount, int shotsPerMeeting, bool canKillNeutral, bool canKillImpostor, bool canKillMadRoles, bool canKillFriendRoles, bool canKillLovers)
+    public MeetingSheriffAbilityData(int killCount, int shotsPerMeeting, SheriffSuicideMode mode, bool canKillNeutral, bool canKillImpostor, bool canKillMadRoles, bool canKillFriendRoles, bool canKillLovers)
     {
         KillCount = killCount;
         ShotsPerMeeting = shotsPerMeeting;
+        Mode = mode;
+
         CanKillNeutral = canKillNeutral;
         CanKillImpostor = canKillImpostor;
         CanKillMadRoles = canKillMadRoles;
