@@ -1,19 +1,27 @@
 using System;
+using System.Reflection;
 using System.Runtime.InteropServices;
 using HarmonyLib;
 using SuperNewRoles.Modules;
 
 namespace SuperNewRoles.Patches;
 
-[HarmonyPatch(typeof(ClipboardHelper), nameof(ClipboardHelper.GetClipboardString))]
+[HarmonyPatch]
 public static class FixClipboardUnicodePatch
 {
     private const uint CF_UNICODETEXT = 13;
+    
+    public static MethodInfo TargetMethod()
+    {
+        // Androidプラットフォームの場合はnullを返してパッチを無効化
+        if (ModHelpers.IsAndroid())
+            return null;
+            
+        return typeof(ClipboardHelper).GetMethod(nameof(ClipboardHelper.GetClipboardString));
+    }
+    
     public static bool Prefix(ref string __result)
     {
-        if (ModHelpers.IsAndroid())
-            return true;
-
         __result = null;
 
         // 1) Unicode テキスト形式かどうかチェック
