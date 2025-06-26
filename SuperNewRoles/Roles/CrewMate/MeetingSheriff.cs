@@ -40,6 +40,9 @@ class MeetingSheriff : RoleBase<MeetingSheriff>
     [CustomOptionInt("MeetingSheriffShotsPerMeeting", 1, 5, 1, 1)]
     public static int MeetingSheriffShotsPerMeeting;
 
+    [CustomOptionSelect("Sheriff.SuicideMode", typeof(SheriffSuicideMode), "Sheriff.SuicideMode.")]
+    public static SheriffSuicideMode MeetingSheriffSuicideMode = SheriffSuicideMode.Default;
+
     [CustomOptionBool("MeetingSheriffCanKillImpostor", true, translationName: "SheriffCanKillImpostor")]
     public static bool MeetingSheriffCanKillImpostor;
 

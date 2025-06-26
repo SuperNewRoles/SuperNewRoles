@@ -39,6 +39,9 @@ class Sheriff : RoleBase<Sheriff>
     [CustomOptionInt("SheriffMaxKillCount", 1, 10, 1, 1)]
     public static int SheriffMaxKillCount;
 
+    [CustomOptionSelect("Sheriff.SuicideMode", typeof(SheriffSuicideMode), "Sheriff.SuicideMode.")]
+    public static SheriffSuicideMode SheriffSuicideMode = SheriffSuicideMode.Default;
+
     [CustomOptionBool("SheriffCanKillImpostor", true)]
     public static bool SheriffCanKillImpostor;
 
@@ -141,4 +144,11 @@ public class SheriffAbility : CustomKillButtonAbility, IAbilityCount
         }
         ResetTimer();
     }
+}
+
+public enum SheriffSuicideMode
+{
+    Default, // 通常 (成功時のみ対象を殺害, 誤射時のみ自殺)
+    AlwaysSuicide, // 常に自殺する
+    AlwaysKill // 誤射時も対象を殺す
 }
