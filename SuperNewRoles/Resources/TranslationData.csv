@@ -790,7 +790,7 @@ SheriffCanKillLovers,ラバーズをキルできる,Can Kill Lovers
 Sheriff.SuicideMode,自決とキルのモード,Suicide & Kill Mode
 Sheriff.SuicideMode.Default,通常,Default
 Sheriff.SuicideMode.AlwaysSuicide,常に自決する,Always commit Suicide
-Sheriff.SuicideMode.AlwaysKill,誤射時も\n対象をキルする,When misfired，\nKills.
+Sheriff.SuicideMode.AlwaysKill,誤射時も対象をキルする,When misfired，\nKills.
 
 # Guesser Options
 NiceGuesserMaxShots,打てる最大数,Maximum Number of Shots,最大射击次数,最大射擊次數
