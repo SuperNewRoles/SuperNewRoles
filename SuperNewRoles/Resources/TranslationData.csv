@@ -14,6 +14,7 @@ People,{0}人,{0} people,{0}人,{0}人
 CoolTime,クールタイム,Cool Time,冷却时间,冷卻時間
 KillCoolTime,キルクールタイム,Kill Cool Time,击杀冷却时间,擊殺冷卻時間
 DurationTime,効果時間,Duration Time,持续时间,持續時間
+AbilityCount,,
 CanUseVent,ベントを使用できる,Can Use Vent,可以使用通风口,可以使用通風口
 VentCooldown,ベントクールタイム,Vent Cool Time,通风口冷却时间,通風口冷卻時間
 VentDuration,ベント持続時間,Vent Duration Time,通风口持续时间,通風口持續時間
