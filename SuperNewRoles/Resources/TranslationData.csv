@@ -296,9 +296,9 @@ FinalResults,最終結果,Final Results,最终结果,最終結果
 # FinalStatus
 FinalStatus.Alive,生存,Alive,生存,生存
 FinalStatus.Kill,キル,Kill,击杀,擊殺
+FinalStatus.Disconnect,切断,Disonnected,切断,切斷
 FinalStatus.Exiled,追放,Exiled,追放,追放
 FinalStatus.Sabotage,サボタージュ,Sabotage,破坏,破壞
-FinalStatus.Disonnect,切断,Disonnected,切断,切斷
 FinalStatus.WaveCannon,蒸発,Vaporize,蒸发,蒸發
 FinalStatus.FalseCharge,冤罪,False Charge,冤罪,冤罪
 FinalStatus.Revange,道連れ,Revange,道連れ,道連れ
