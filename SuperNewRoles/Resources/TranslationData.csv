@@ -548,6 +548,8 @@ Safecracker.Description,キル能力を有さない第三陣営です。\nタス
 OrientalShaman.Description,キル能力を有さない独自の勝利条件を持つ第三陣営です。\nキル能力を持つプレイヤーが誰かわかります。\nゲーム終了まで生存していると、一部役職の特殊勝利を除き、その勝利を横取りして勝利することが出来ます。\nベントを使用する際、使用モーション及び開閉モーションがありません。\nその代わり、滞在時間に制限があります。\nまた、設定次第では「式神」という仲間を作ることが出来ます。\n式神と相互に位置がわかります。\nまた、この役職は生存者の人数にカウントされません。,
 ShermansServant.Description,陰陽師陣営に属する第三陣営です。\n陰陽師が勝利すると共に勝利します。\n「変身」ボタンを押すと陰陽師の姿に変身します。\n「自決」ボタンを押すと自決します。\n死体の位置がわかります。\nこの役職は陰陽師に課せられた制限を受けません。\nこの役職はクルーメイトとして判定されます。\n陰陽師が死亡、または役職が代わるとその時点で死亡します。\n陰陽師と相互に位置がわかります。,A third faction aligned with the Onmyoji faction.\nYou win together when the Onmyoji wins.\nPress the "Transform" button to transform into the Onmyoji's form.\nPress the "Self-Destruct" button to commit self-destruction.\nYou can see the location of corpses.\nThis role is not subject to the restrictions imposed on the Onmyoji.\nThis role is considered a Crewmate.\nIf the Onmyoji dies or the role changes，you die at that moment.\nYou and the Onmyoji can see each other's locations.,一个属于阴阳师阵营的第三阵营。\n当阴阳师获胜时，你也一起获胜。\n按下「变身」按钮会变身为阴阳师的外形。\n按下「自决」按钮会自杀。\n你可以看到尸体的位置。\n该角色不受阴阳师所受限制的影响。\n该角色被判定为船员。\n当阴阳师死亡，或角色发生更换时，你会在那一刻死亡。\n你与你的阴阳师可以互相看到位置。,一個屬於陰陽師陣營的第三陣營。\n當陰陽師獲勝時，你也一起獲勝。\n按下「變身」按鈕會變身為陰陽師的外形。\n按下「自決」按鈕會自殺。\n你可以看到屍體的位置。\n該角色不受陰陽師所受限制的影響。\n該角色被判定為船員。\n當陰陽師死亡，或角色發生更換時，你會在那一刻死亡。\n你與你的陰陽師可以互相看到位置。
 BlackHatHacker.Description,キル能力を有さない独自の勝利条件を持つ第三陣営です。\n「ハック」ボタンを押すと対象のプレイヤーをウィルスに感染させます。\nそのプレイヤーに接近した他のプレイヤーもウィルスに感染し、感染度が100%になるとそのプレイヤーも感染源となります。\n生存者の全てが感染済になるとその時点で単独勝利します。,
+PartTimer.Description,,
+
 
 # Descriptions_Crewmate
 Bait.Description,タスクターンに発動する能力を有するクルーメイトです。\nキルされると、そのキル者に自身の死体を通報させます。,A Crewmate with an ability that activates during task turns.\nWhen killed，they force their killer to report their body.,一个在任务回合中可激活能力的船员。\n当被击杀时，会迫使击杀者报告他们的尸体。,一個在任務回合中可激活能力的船員。\n當被擊殺時，會迫使擊殺者報告他們的屍體。,
@@ -1463,7 +1465,6 @@ BlackHatHackerWin,ブラックハットハッカーの勝利,Black Hat Hacker Wi
 
 
 # PartTimerPartTimer,フリーター,PartTimer,打工仔,打工仔
-PartTimerDescription,バイトするなら…！,If you want a part-time job...!,打工的话...!,打工的話...!
 PartTimerDeathTurn,無職で死亡までのターン数,Turns until death when unemployed,无工作时死亡倒计时回合,無工作時死亡倒計時回合
 PartTimerInitialCooldown,初期クールタイム,Initial Cooldown,初期冷却时间,初期冷卻時間
 PartTimerFinalCooldown,最終クールタイム,Final Cooldown,最终冷却时间,最終冷卻時間
