@@ -81,6 +81,20 @@ public abstract class EventTargetBase<T, U> : InternalEventTargetBase<T, EventLi
             _listenersCacheDirty = true;
         }
     }
+
+    public override void RemoveListenerAll()
+    {
+        var listenerCount = listeners.Count;
+        var pendingCount = _pendingRemoval.Count;
+        SuperNewRolesPlugin.Logger.LogInfo($"[{GetType().Name}] RemoveListenerAll: {listenerCount} listeners, {pendingCount} pending removal");
+
+        base.RemoveListenerAll();
+        _pendingRemoval.Clear();
+        _listenersCacheDirty = true;
+        _listenersCache = null;
+
+        SuperNewRolesPlugin.Logger.LogInfo($"[{GetType().Name}] RemoveListenerAll completed");
+    }
 }
 /// <summary>
 /// <para><typeparamref name="T" />: Singletonとする自分自身を指定</para>
@@ -146,6 +160,20 @@ public abstract class EventTargetBase<T> : InternalEventTargetBase<T, EventListe
             _listenersCacheDirty = true;
         }
     }
+
+    public override void RemoveListenerAll()
+    {
+        var listenerCount = listeners.Count;
+        var pendingCount = _pendingRemoval.Count;
+        SuperNewRolesPlugin.Logger.LogInfo($"[{GetType().Name}] RemoveListenerAll: {listenerCount} listeners, {pendingCount} pending removal");
+
+        base.RemoveListenerAll();
+        _pendingRemoval.Clear();
+        _listenersCacheDirty = true;
+        _listenersCache = null;
+
+        SuperNewRolesPlugin.Logger.LogInfo($"[{GetType().Name}] RemoveListenerAll completed");
+    }
 }
 
 /// <summary>
@@ -158,7 +186,7 @@ public abstract class InternalEventTargetBase<T, U> : BaseSingleton<T>, IEventTa
     {
         listeners = new();
     }
-    public void RemoveListenerAll()
+    public virtual void RemoveListenerAll()
     {
         listeners.Clear();
     }

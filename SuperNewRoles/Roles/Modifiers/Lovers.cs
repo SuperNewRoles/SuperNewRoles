@@ -155,6 +155,14 @@ public class LoversAbility : AbilityBase
         if (ExPlayerControl.LocalPlayer.IsDead()) return;
         if (IsCoupleWith(data.player))
         {
+            // 相方が実際に死亡しているかを確認する安全チェック
+            // スタントマンなどの防御能力により相方が生存している場合は心中しない
+            if (((ExPlayerControl)data.player).IsAlive())
+            {
+                Logger.Info($"Lovers suicide aborted: Partner {data.player.name} is still alive");
+                return;
+            }
+
             if (ExileController.Instance != null)
                 ExPlayerControl.LocalPlayer.RpcCustomDeath(CustomDeathType.LoversSuicideMurderWithoutDeadbody);
             else

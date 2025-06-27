@@ -57,6 +57,8 @@ public static class ModifierOptionMenu
                 continue;
             GenerateRoleDetailButton(new ModifierOptionMenuObjectData.ModifierCategoryDataModifier(modifier), index++);
         }
+        // 特別に明示的にallowYを有効化
+        ModifierOptionMenuObjectData.Instance.LeftAreaScroller.allowY = true;
         ModifierOptionMenuObjectData.Instance.LeftAreaScroller.ContentYBounds.max = index <= 7 ? 0 : (index - 7) * 0.8f;
     }
 

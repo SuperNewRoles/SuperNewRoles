@@ -162,6 +162,7 @@ public static class IntroCutscenePatch
             else if (ExPlayerControl.LocalPlayer.IsImpostor())
             {
                 yourTeam = new();
+                yourTeam.Add(PlayerControl.LocalPlayer);
                 foreach (ExPlayerControl player in ExPlayerControl.ExPlayerControls)
                 {
                     if (player.IsImpostor())
