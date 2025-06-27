@@ -5,7 +5,7 @@ using UnityEngine;
 
 namespace SuperNewRoles.Roles.Ability;
 
-public record MagazinerAbilityData(float setKillTime);
+public record MagazinerAbilityData(float setKillTime, bool ammoLimitEnabled, int maxAmmo);
 
 public class MagazinerAbility : CustomButtonBase, IAbilityCount
 {
@@ -42,8 +42,10 @@ public class MagazinerAbility : CustomButtonBase, IAbilityCount
         }
         else
         {
-            // キルボタンがクールダウン中でない場合のみ使用可能
-            return PlayerControl.LocalPlayer.killTimer <= 0f;
+            // キルボタンがクールダウン中でない場合で、弾数制限がない場合または最大弾数未満の場合のみ使用可能
+            bool killTimerReady = PlayerControl.LocalPlayer.killTimer <= 0f;
+            bool canAddAmmo = !Data.ammoLimitEnabled || Count < Data.maxAmmo;
+            return killTimerReady && canAddAmmo;
         }
     }
 
@@ -81,6 +83,10 @@ public class MagazinerAbility : CustomButtonBase, IAbilityCount
 
     public void AddAmmunition()
     {
+        // 弾数制限チェック
+        if (Data.ammoLimitEnabled && Count >= Data.maxAmmo)
+            return;
+            
         RpcAddCount();
         // キルクールダウンをリセット
         Player.ResetKillCooldown();

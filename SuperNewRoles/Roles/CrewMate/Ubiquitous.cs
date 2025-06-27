@@ -66,6 +66,7 @@ class UbiquitousAbility : AbilityBase
 
     private EventListener<MeetingStartEventData> _meetingStartListener;
     private EventListener<MeetingCloseEventData> _meetingCloseListener;
+    private EventListener<DieEventData> _dieListener;
 
     private EventListener<MapBehaviourAwakePostfixEventData> _mapBehaviourAwakeListener;
     private EventListener<MapBehaviourFixedUpdatePostfixEventData> _mapBehaviourFixedUpdateListener;
@@ -95,6 +96,7 @@ class UbiquitousAbility : AbilityBase
         base.AttachToLocalPlayer();
         _meetingStartListener = MeetingStartEvent.Instance.AddListener(OnMeetingStart);
         _meetingCloseListener = MeetingCloseEvent.Instance.AddListener(OnMeetingClose);
+        _dieListener = DieEvent.Instance.AddListener(OnPlayerDie);
         _mapBehaviourAwakeListener = MapBehaviourAwakePostfixEvent.Instance.AddListener(OnMapAwake);
         _mapBehaviourFixedUpdateListener = MapBehaviourFixedUpdatePostfixEvent.Instance.AddListener(OnMapFixedUpdate);
     }
@@ -104,6 +106,7 @@ class UbiquitousAbility : AbilityBase
         base.DetachToLocalPlayer();
         _meetingStartListener?.RemoveListener();
         _meetingCloseListener?.RemoveListener();
+        _dieListener?.RemoveListener();
         _mapBehaviourAwakeListener?.RemoveListener();
         _mapBehaviourFixedUpdateListener?.RemoveListener();
     }
@@ -126,6 +129,14 @@ class UbiquitousAbility : AbilityBase
         if (_callAndHomeButton != null)
         {
             _callAndHomeButton._isCallMode = true;
+        }
+    }
+
+    private void OnPlayerDie(DieEventData data)
+    {
+        if (data.player == Player.Player)
+        {
+            OnDeath();
         }
     }
 
