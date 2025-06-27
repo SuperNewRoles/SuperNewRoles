@@ -10,10 +10,14 @@ public static class EventListenerManager
     public static List<IEventTargetBase> listeners { get; } = new();
     public static void ResetAllListener()
     {
+        SuperNewRolesPlugin.Logger.LogInfo($"[EventListenerManager] Resetting {listeners.Count} listeners");
         foreach (var listener in listeners)
         {
+            var typeName = listener.GetType().Name;
+            SuperNewRolesPlugin.Logger.LogInfo($"[EventListenerManager] Resetting listener: {typeName}");
             listener.RemoveListenerAll();
         }
+        SuperNewRolesPlugin.Logger.LogInfo("[EventListenerManager] All listeners reset completed");
     }
 
     public static void Load()
@@ -66,6 +70,8 @@ public static class EventListenerManager
     {
         public static void Postfix()
         {
+            Logger.Info("GameStartManagerStartPatch");
+            Logger.Info($"listeners.Count: {listeners.Count}");
             ResetAllListener();
         }
     }
