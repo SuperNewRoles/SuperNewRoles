@@ -12,7 +12,7 @@ internal class Magaziner : RoleBase<Magaziner>
     public override RoleId Role => RoleId.Magaziner;
     public override Color32 RoleColor => Palette.ImpostorRed;
     public override List<Func<AbilityBase>> Abilities => [
-        () => new MagazinerAbility(new MagazinerAbilityData(MagazinerSetKillTime))
+        () => new MagazinerAbility(new MagazinerAbilityData(MagazinerSetKillTime, MagazinerAmmoLimitEnabled, MagazinerMaxAmmo))
     ];
 
     public override QuoteMod QuoteMod => QuoteMod.SuperNewRoles;
@@ -25,4 +25,10 @@ internal class Magaziner : RoleBase<Magaziner>
 
     [CustomOptionFloat("MagazinerSetKillTime", 0f, 60f, 2.5f, 10f)]
     public static float MagazinerSetKillTime;
+
+    [CustomOptionBool("MagazinerAmmoLimitEnabled", true)]
+    public static bool MagazinerAmmoLimitEnabled;
+
+    [CustomOptionInt("MagazinerMaxAmmo", 1, 15, 3, 6)]
+    public static int MagazinerMaxAmmo;
 }

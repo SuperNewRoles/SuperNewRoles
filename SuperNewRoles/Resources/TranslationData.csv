@@ -1734,6 +1734,8 @@ MagazinerSetKillTime,クールダウン短縮時間,Cooldown Reduction Time,冷�
 MagazinerPlayerCount,初期弾薬数,Initial Ammunition Count,初始弹药数,初始彈藥數
 MagazinerGetButtonName,消費,Consume,消费,消費
 MagazinerAddButtonName,補充,Replenish,补充,補充
+MagazinerAmmoLimitEnabled,弾薬制限を有効にする,Enable Ammunition Limit,启用弹药限制,啟用彈藥限制
+MagazinerMaxAmmo,最大弾薬数,Maximum Ammunition,最大弹药数,最大彈藥數
 
 # OverKiller
 OverKillerKillCount,1回でキルする回数,Kill count per kill,一次击杀次数,一次擊殺次數
