@@ -107,6 +107,29 @@ public class SheriffAbilityData
 
         return canKill;
     }
+
+    /// <summary>
+    /// シェリフは自決するか
+    /// </summary>
+    /// <param name="canKill">キルが可能か</param>
+    /// <param name="suicideReason">シェリフの死因</param>
+    /// <returns>true => 自決する / false => 自決しない</returns>
+    public bool IsSuicide(bool canKill, out FinalStatus suicideReason)
+    {
+        // 常に自決する場合
+        if (Mode == SheriffSuicideMode.AlwaysSuicide)
+        {
+            suicideReason = FinalStatus.SheriffSuicide;
+            return true;
+        }
+
+        // 自決判定は通常の場合 ("通常" & "誤射時も対象をキルする")
+        suicideReason = canKill ? FinalStatus.Alive : FinalStatus.SheriffMisFire;
+        return !canKill;
+    }
+
+    /// <summary>誤射時も対象をキルする設定が有効か</summary>
+    public bool IsAlwaysKilling => Mode == SheriffSuicideMode.AlwaysKill;
 }
 
 public class SheriffAbility : CustomKillButtonAbility, IAbilityCount
@@ -134,17 +157,19 @@ public class SheriffAbility : CustomKillButtonAbility, IAbilityCount
 
         this.UseAbilityCount();
 
-        if (SheriffAbilityData.CanKill(PlayerControl.LocalPlayer, Target))
+        var canKill = SheriffAbilityData.CanKill(PlayerControl.LocalPlayer, Target);
+        var isSuicide = SheriffAbilityData.IsSuicide(canKill, out FinalStatus suicideReason);
+
+        if (canKill || SheriffAbilityData.IsAlwaysKilling) // 殺害処理
         {
-            // 正当なキル
             ExPlayerControl.LocalPlayer.RpcCustomDeath(Target, CustomDeathType.Kill);
-            FinalStatusManager.RpcSetFinalStatus(ExPlayerControl.LocalPlayer, FinalStatus.SheriffKill);
+            FinalStatusManager.RpcSetFinalStatus(Target, canKill ? FinalStatus.SheriffKill : FinalStatus.SheriffWrongfulMurder);
         }
-        else
+
+        if (isSuicide && suicideReason != FinalStatus.Alive) // 自害処理
         {
-            // 誤射の場合は自分が死ぬ
-            ExPlayerControl.LocalPlayer.RpcCustomDeath(ExPlayerControl.LocalPlayer, CustomDeathType.Kill);
-            FinalStatusManager.RpcSetFinalStatus(ExPlayerControl.LocalPlayer, FinalStatus.SheriffSelfDeath);
+            ExPlayerControl.LocalPlayer.RpcCustomDeath(ExPlayerControl.LocalPlayer, CustomDeathType.Suicide);
+            FinalStatusManager.RpcSetFinalStatus(ExPlayerControl.LocalPlayer, suicideReason);
         }
         ResetTimer();
     }
