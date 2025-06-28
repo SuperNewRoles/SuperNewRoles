@@ -121,7 +121,12 @@ public static class AssignRoles
                 role.AvailableMaps.Length != 0 &&
                 !role.AvailableMaps.Any(map => (byte)map == GameOptionsManager.Instance.CurrentGameOptions.MapId))
                 continue;
-
+            //HiddenOptionのチェック
+            if (CustomRoleManager.TryGetRoleById(roleOption.RoleId, out var roleBase) && roleBase.HiddenOption)
+            {
+                Logger.Info($"CreateTickets: Role {roleOption.RoleId} はHiddenOptionのためスキップします。");
+                continue;
+            }
             // LoversBreaker役職の特別な選出条件をチェック
             if (roleOption.RoleId == RoleId.LoversBreaker && ShouldSkipLoversBreakerAssignment())
                 continue;
