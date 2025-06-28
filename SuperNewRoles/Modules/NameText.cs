@@ -96,7 +96,34 @@ public static class NameText
         bool visiable = ExPlayerControl.LocalPlayer.PlayerId == player.PlayerId ||
                         (ExPlayerControl.LocalPlayer.IsDead() && !GameSettingOptions.HideGhostRoles);
 
-        UpdateVisiable(player, ExPlayerControl.LocalPlayer.GetAbility<HideRoleOnGhostAbility>());
+        var hrg = ExPlayerControl.LocalPlayer.GetAbility<HideRoleOnGhostAbility>();
+
+        if (player.TryGetAbility<HideMyRoleWhenAliveAbility>(out var hmr) && !hmr.IsHide(player).role)
+        { // 通常の役職表示
+            if (visiable && (hrg == null || !hrg.IsHideRole(player)))
+            {
+                player.Data.Role.NameColor = player.roleBase.RoleColor;
+                SetNameTextColor(player, player.roleBase.RoleColor, true);
+            }
+            else if (ExPlayerControl.LocalPlayer.IsImpostor() && player.IsImpostor())
+            {
+                player.Data.Role.NameColor = Palette.ImpostorRed;
+                SetNameTextColor(player, Palette.ImpostorRed, true);
+            }
+            else
+            {
+                player.Data.Role.NameColor = Color.white;
+                SetNameTextColor(player, Color.white, true);
+            }
+        }
+        else // 生きている時は役職を自覚できない役の名前色を設定
+        {
+            var roleColor = player.Data.Role.IsImpostor ? Impostor.Instance.RoleColor : Crewmate.Instance.RoleColor;
+            player.Data.Role.NameColor = roleColor;
+            SetNameTextColor(player, roleColor);
+        }
+
+        UpdateVisiable(player, hrg);
         NameTextUpdateEvent.Invoke(player, visiable);
         NameTextUpdateVisiableEvent.Invoke(player, visiable);
     }
