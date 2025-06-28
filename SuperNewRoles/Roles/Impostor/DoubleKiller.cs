@@ -34,7 +34,7 @@ class DoubleKiller : RoleBase<DoubleKiller>
     public override WinnerTeamType WinnerTeam { get; } = WinnerTeamType.Impostor;
     public override TeamTag TeamTag { get; } = TeamTag.Impostor;
     public override RoleTag[] RoleTags { get; } = [];
-    public override RoleOptionMenuType OptionTeam { get; } = RoleOptionMenuType.Impostor;
+    public override RoleOptionMenuType OptionTeam { get; } = RoleOptionMenuType.Hidden;
 
     [CustomOptionBool("DoubleKillerKillCountRemaining", true)]
     public static bool DoubleKillerKillCountRemaining;
