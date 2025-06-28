@@ -10,6 +10,7 @@ using UnityEngine.PlayerLoop;
 using SuperNewRoles.Events;
 using SuperNewRoles.Events.PCEvents;
 using SuperNewRoles.CustomObject;
+using HarmonyLib;
 
 namespace SuperNewRoles.Roles.Impostor;
 class Vampire : RoleBase<Vampire>
@@ -235,6 +236,29 @@ public class VampireAbility : AbilityBase
             // 親で一括管理してる
             new BloodStain(TargetingPlayer, isBlack: kill.blackBloodstains, parent: bloodStainsParentTargeting);
             bloodStainTimer = 0.1f;
+        }
+    }
+
+    private static bool CancelVitalsDead(ExPlayerControl player)
+    {
+        return player.Role is RoleId.Vampire or RoleId.VampireDependent;
+    }
+
+
+    [HarmonyPatch(typeof(VitalsPanel), nameof(VitalsPanel.SetDead))]
+    class VitalsPanelSetDeadPatch
+    {
+        static bool Prefix(VitalsPanel __instance)
+        {
+            return __instance.PlayerInfo.Object == null || !CancelVitalsDead(__instance.PlayerInfo.Object);
+        }
+    }
+    [HarmonyPatch(typeof(VitalsPanel), nameof(VitalsPanel.SetDisconnected))]
+    class VitalsPanelSetDisconnectPatch
+    {
+        static bool Prefix(VitalsPanel __instance)
+        {
+            return __instance.PlayerInfo.Object == null || !CancelVitalsDead(__instance.PlayerInfo.Object);
         }
     }
 }
