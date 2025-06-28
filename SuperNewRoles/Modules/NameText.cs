@@ -176,6 +176,37 @@ public static class NameText
                         (LocalHideRoleOnGhostAbility == null || !LocalHideRoleOnGhostAbility.IsHideRole(player))
                         ));
         UpdateVisiable(player, visiable);
+        if (!visiable && LocalHideRoleOnGhostAbility != null && LocalHideRoleOnGhostAbility.IsHideRole(player))
+        {
+
+            var hideMyRoleAbility = !player.AmOwner || player.IsDead() ? null : player.GetAbility<HideMyRoleWhenAliveAbility>();
+
+            if (hideMyRoleAbility == null || !hideMyRoleAbility.IsHide(player).role)
+            { // 通常の役職表示
+                if (visiable)
+                {
+                    player.Data.Role.NameColor = player.roleBase.RoleColor;
+                    SetNameTextColor(player, player.roleBase.RoleColor, true);
+                }
+                else if (ExPlayerControl.LocalPlayer.IsImpostor() && player.IsImpostor())
+                {
+                    player.Data.Role.NameColor = Palette.ImpostorRed;
+                    SetNameTextColor(player, Palette.ImpostorRed, true);
+                }
+                else
+                {
+                    player.Data.Role.NameColor = Color.white;
+                    SetNameTextColor(player, Color.white, true);
+                }
+            }
+            else // 生きている時は役職を自覚できない役の名前色を設定
+            {
+                var roleColor = player.Data.Role.IsImpostor ? Impostor.Instance.RoleColor : Crewmate.Instance.RoleColor;
+                player.Data.Role.NameColor = roleColor;
+                SetNameTextColor(player, roleColor);
+            }
+        }
+
     }
     public static void UpdateVisiable(ExPlayerControl player, bool visiable)
     {
@@ -185,33 +216,33 @@ public static class NameText
             visiable = false;
         if (visiable && player.PlayerInfoText == null)
             UpdateNameInfo(player);
+        /*
+                var hideMyRoleAbility = !player.AmOwner || player.IsDead() ? null : player.GetAbility<HideMyRoleWhenAliveAbility>();
 
-        var hideMyRoleAbility = !player.AmOwner || player.IsDead() ? null : player.GetAbility<HideMyRoleWhenAliveAbility>();
-
-        if (hideMyRoleAbility == null || !hideMyRoleAbility.IsHide(player).role)
-        { // 通常の役職表示
-            if (visiable)
-            {
-                player.Data.Role.NameColor = player.roleBase.RoleColor;
-                SetNameTextColor(player, player.roleBase.RoleColor, true);
-            }
-            else if (ExPlayerControl.LocalPlayer.IsImpostor() && player.IsImpostor())
-            {
-                player.Data.Role.NameColor = Palette.ImpostorRed;
-                SetNameTextColor(player, Palette.ImpostorRed, true);
-            }
-            else
-            {
-                player.Data.Role.NameColor = Color.white;
-                SetNameTextColor(player, Color.white, true);
-            }
-        }
-        else // 生きている時は役職を自覚できない役の名前色を設定
-        {
-            var roleColor = player.Data.Role.IsImpostor ? Impostor.Instance.RoleColor : Crewmate.Instance.RoleColor;
-            player.Data.Role.NameColor = roleColor;
-            SetNameTextColor(player, roleColor);
-        }
+                if (hideMyRoleAbility == null || !hideMyRoleAbility.IsHide(player).role)
+                { // 通常の役職表示
+                    if (visiable)
+                    {
+                        player.Data.Role.NameColor = player.roleBase.RoleColor;
+                        SetNameTextColor(player, player.roleBase.RoleColor, true);
+                    }
+                    else if (ExPlayerControl.LocalPlayer.IsImpostor() && player.IsImpostor())
+                    {
+                        player.Data.Role.NameColor = Palette.ImpostorRed;
+                        SetNameTextColor(player, Palette.ImpostorRed, true);
+                    }
+                    else
+                    {
+                        player.Data.Role.NameColor = Color.white;
+                        SetNameTextColor(player, Color.white, true);
+                    }
+                }
+                else // 生きている時は役職を自覚できない役の名前色を設定
+                {
+                    var roleColor = player.Data.Role.IsImpostor ? Impostor.Instance.RoleColor : Crewmate.Instance.RoleColor;
+                    player.Data.Role.NameColor = roleColor;
+                    SetNameTextColor(player, roleColor);
+                }*/
 
         player.PlayerInfoText.gameObject.SetActive(visiable);
         if (player.MeetingInfoText != null)
