@@ -35,10 +35,10 @@ class ModifierHawk : ModifierBase<ModifierHawk>
     public override Func<ExPlayerControl, string> ModifierMark => (player) => "{0}" + ModHelpers.Cs(RoleColor, "<size=80%>Φ</size>");
 
 
-    [CustomOptionFloat("ModifierHawkCoolTime", 0f, 120f, 2.5f, 30f, translationName: "CoolTime")]
+    [CustomOptionFloat("ModifierHawkCoolTime", 2.5f, 120f, 2.5f, 30f, translationName: "CoolTime")]
     public static float ModifierHawkCoolTime;
 
-    [CustomOptionFloat("ModifierHawkDurationTime", 0f, 60f, 0.5f, 10f, translationName: "DurationTime")]
+    [CustomOptionFloat("ModifierHawkDurationTime", 1f, 60f, 0.5f, 10f, translationName: "DurationTime")]
     public static float ModifierHawkDurationTime;
 
     [CustomOptionFloat("ModifierHawkZoomMagnification", 1.25f, 10f, 0.25f, 2f, translationName: "HawkZoomMagnification")]
