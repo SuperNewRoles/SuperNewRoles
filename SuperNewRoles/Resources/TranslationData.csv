@@ -125,6 +125,8 @@ NetworkTransformTypeLowLatencyLevel.SuperLow,超低,Super Low,超低,超低
 NetworkTransformTypeLowLatencyLevel.Bad,絶対ダメ(超高遅延),Bad (Very Very High Latency),差(超高延迟),差(超高延遲)
 SumouMode,相撲モード(ベータ),Sumo Mode (Beta),相扑模式(测试版),相撲模式(測試版)
 SumouHighPerformance,高いパフォーマンス(遅延増),High Performance (Increased Latency),高性能(延迟增加),高性能(延遲增加)
+FixSpawnPacketSize,ホストが切断されにくくする(推奨:オン),Fix Spawn Packet Size(Recommended active) ,修复出生点数据包大小,修復出生點數據包大小
+
 # SyncSpawn
 WaitingSpawnText,ロドー中... 残り:{0}/{1}クルー,Waiting... {0}/{1} Crewmates,等待中... {0}/{1} 船员,等待中... {0}/{1} 船員
 
