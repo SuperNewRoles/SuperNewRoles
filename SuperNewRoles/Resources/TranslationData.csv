@@ -308,7 +308,9 @@ FinalStatus.SelfBomb,自爆,Self Bomb,自爆,自爆
 FinalStatus.Tuna,水揚げ,Tuna,水揚げ,水揚げ
 FinalStatus.Ignite,炎上,Ignite,着火,著火
 FinalStatus.SheriffKill,正義執行,Sheriff Kill,警長擊殺,警長擊殺
-FinalStatus.SheriffSelfDeath,失意の自殺,Sheriff Self Death,失意,失意
+FinalStatus.SheriffWrongfulMurder,過失殺人,Wrongful Murder
+FinalStatus.SheriffMisFire,失意の自殺,Sheriff Self Death,失意,失意
+FinalStatus.SheriffSuicide,自決,Die in the line of duty
 
 # HelpMenu
 HelpMenu.MyRoleInformation,自分の役職,My Role Information,我的角色信息,我的角色資訊
@@ -785,6 +787,10 @@ SheriffCanKillNeutral,第三陣営をキルできる,Can Kill Neutral,可以杀�
 SheriffCanKillImpostor,インポスターをキルできる,Can Kill Impostor,可以杀内鬼,可以殺內鬼
 SheriffCanKillFriendRoles,フレンズをキルできる,Can Kill FriendRoles
 SheriffCanKillLovers,ラバーズをキルできる,Can Kill Lovers
+Sheriff.SuicideMode,自決とキルのモード,Suicide & Kill Mode
+Sheriff.SuicideMode.Default,通常,Default
+Sheriff.SuicideMode.AlwaysSuicide,常に自決する,Always commit Suicide
+Sheriff.SuicideMode.AlwaysKill,誤射時も対象をキルする,When misfired，\nKills.
 
 # Guesser Options
 NiceGuesserMaxShots,打てる最大数,Maximum Number of Shots,最大射击次数,最大射擊次數
