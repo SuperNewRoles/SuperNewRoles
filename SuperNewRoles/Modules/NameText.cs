@@ -77,11 +77,6 @@ public static class NameText
             return false;
         }
 
-        if (localPlayerHrg != null && localPlayerHrg.IsHideRole(player))
-        {
-            return false;
-        }
-
         return true;
     }
     private static void SetPlayerNameColor(ExPlayerControl player, bool isRoleInfoVisible)
@@ -235,9 +230,11 @@ public static class NameText
             return;
         bool isVisible = GetRoleInfoVisibility(player, localHideRoleOnGhostAbility);
         UpdateVisible(player, isVisible);
-
-        // When role info is not visible, the name color may need to be updated (e.g. to red for fellow impostors).
-        SetPlayerNameColor(player, isVisible);
+        if (!isVisible && localHideRoleOnGhostAbility != null && localHideRoleOnGhostAbility.IsHideRole(player))
+        {
+            // When role info is not visible, the name color may need to be updated (e.g. to red for fellow impostors).
+            SetPlayerNameColor(player, isVisible);
+        }
     }
     public static void UpdateVisible(ExPlayerControl player, bool visiable)
     {
