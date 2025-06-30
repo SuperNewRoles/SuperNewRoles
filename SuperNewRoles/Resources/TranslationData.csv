@@ -305,7 +305,7 @@ FinalStatus.WaveCannon,蒸発,Vaporize,蒸发,蒸發
 FinalStatus.FalseCharge,冤罪,False Charge,冤罪,冤罪
 FinalStatus.Revange,道連れ,Revange,道連れ,道連れ
 FinalStatus.Suicide,自殺,Suicide,自殺,自殺
-FinalStatus.Samurai,切り捨て御免,Permission to cut down granted．,斩无赦．,斬無赦．
+FinalStatus.Samurai,切り捨て御免,Permission to cut down granted,斩无赦,斬無赦
 FinalStatus.BombBySelfBomb,爆破,Bomb by Self Bomber,自爆被卷入,自爆被卷入
 FinalStatus.SelfBomb,自爆,Self Bomb,自爆,自爆
 FinalStatus.Tuna,水揚げ,Tuna,水揚げ,水揚げ
@@ -314,20 +314,20 @@ FinalStatus.SheriffKill,正義執行,Sheriff Kill,警長擊殺,警長擊殺
 FinalStatus.SheriffWrongfulMurder,過失殺人,Wrongful Murder
 FinalStatus.SheriffMisFire,失意の自殺,Sheriff Self Death,失意,失意
 FinalStatus.SheriffSuicide,自決,Die in the line of duty
-FinalStatus.FalseCharges,冤罪死,Death by false accusation．,冤枉致死．,冤枉致死．
-FinalStatus.GuesserKill,推殺,Guess kill．,推测击杀．,推測擊殺．
-FinalStatus.GuesserMisFire,推殺失敗,Guess misfire．,推测失败．,推測失敗．
-FinalStatus.Push,突き落とし,Shoved off．,被推下．,被推下．
-FinalStatus.LoversSuicide,心中,Lovers’ double suicide．,恋人自尽．,戀人自盡．
-FinalStatus.LaunchByRocket,花火,Launched like a firework．,如烟花般升空．,如煙火般升空．
-FinalStatus.VampireKill,吸血死,Death by vampire．,被吸血而死．,被吸血而死．
-FinalStatus.VampireWithDead,夜に呑まれた,Swallowed by the night．,被夜晚吞噬．,被夜晚吞噬．
+FinalStatus.FalseCharges,冤罪死,Death by false accusation,冤枉致死,冤枉致死
+FinalStatus.GuesserKill,推殺,Guess kill,推测击杀,推測擊殺
+FinalStatus.GuesserMisFire,推殺失敗,Guess misfire,推测失败,推測失敗
+FinalStatus.Push,突き落とし,Shoved off,被推下,被推下
+FinalStatus.LoversSuicide,心中,Lovers’ double suicide,恋人自尽,戀人自盡
+FinalStatus.LaunchByRocket,花火,Launched like a firework,如烟花般升空,如煙火般升空
+FinalStatus.VampireKill,吸血死,Death by vampire,被吸血而死,被吸血而死
+FinalStatus.VampireWithDead,夜に呑まれた,Swallowed by the night,被夜晚吞噬,被夜晚吞噬
 FinalStatus.SpelunkerSetRoleDeath,,
-FinalStatus.SpelunkerVentDeath,転倒,Slipped and fell．,滑倒致死．,滑倒致死．
-FinalStatus.SpelunkerCommsElecDeath,不安死,Died of anxiety．,因不安而死．,因不安而死．
-FinalStatus.SpelunkerOpenDoor,指挟み,Fingers caught in door．,手指被门夹伤．,手指被門夾傷．
-FinalStatus.NunDeath,ぬーんから転落,Fell off the Nun platform．,从“ぬーん”跌落．,從「ぬーん」跌落．
-FinalStatus.LadderDeath,はしごから転落,Fell off a ladder．,从梯子上摔落．,從梯子上摔落．
+FinalStatus.SpelunkerVentDeath,転倒,Slipped and fell,滑倒致死,滑倒致死
+FinalStatus.SpelunkerCommsElecDeath,不安死,Died of anxiety,因不安而死,因不安而死
+FinalStatus.SpelunkerOpenDoor,指挟み,Fingers caught in door,手指被门夹伤,手指被門夾傷
+FinalStatus.NunDeath,ぬーんから転落,Fell off the Nun platform,从“ぬーん”跌落,從「ぬーん」跌落
+FinalStatus.LadderDeath,はしごから転落,Fell off a ladder,从梯子上摔落,從梯子上摔落
 
 # HelpMenu
 HelpMenu.MyRoleInformation,自分の役職,My Role Information,我的角色信息,我的角色資訊
