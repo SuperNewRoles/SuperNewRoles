@@ -314,20 +314,20 @@ FinalStatus.SheriffKill,正義執行,Sheriff Kill,警長擊殺,警長擊殺
 FinalStatus.SheriffWrongfulMurder,過失殺人,Wrongful Murder
 FinalStatus.SheriffMisFire,失意の自殺,Sheriff Self Death,失意,失意
 FinalStatus.SheriffSuicide,自決,Die in the line of duty
-FinalStatus.FalseCharges,冤罪死,
-FinalStatus.GuesserKill,推殺,
-FinalStatus.GuesserMisFire,推殺失敗,
-FinalStatus.Push,突き落とし,
-FinalStatus.LoversSuicide,心中,
-FinalStatus.LaunchByRocket,花火,
-FinalStatus.VampireKill,吸血死,
-FinalStatus.VampireWithDead,夜に呑まれた,
+FinalStatus.FalseCharges,冤罪死,,
+FinalStatus.GuesserKill,推殺,,
+FinalStatus.GuesserMisFire,推殺失敗,,
+FinalStatus.Push,突き落とし,,
+FinalStatus.LoversSuicide,心中,,
+FinalStatus.LaunchByRocket,花火,,
+FinalStatus.VampireKill,吸血死,,
+FinalStatus.VampireWithDead,夜に呑まれた,,
 FinalStatus.SpelunkerSetRoleDeath,,
-FinalStatus.SpelunkerVentDeath,転倒,
-FinalStatus.SpelunkerCommsElecDeath,不安死,
-FinalStatus.SpelunkerOpenDoor,指挟み,
-FinalStatus.NunDeath,ぬーんから転落,
-FinalStatus.LadderDeath,はしごから転落,
+FinalStatus.SpelunkerVentDeath,転倒,,
+FinalStatus.SpelunkerCommsElecDeath,不安死,,
+FinalStatus.SpelunkerOpenDoor,指挟み,,
+FinalStatus.NunDeath,ぬーんから転落,,
+FinalStatus.LadderDeath,はしごから転落,,
 
 # HelpMenu
 HelpMenu.MyRoleInformation,自分の役職,My Role Information,我的角色信息,我的角色資訊
@@ -683,11 +683,11 @@ MushroomerIntro1,繁茂する菌糸,Proliferating mycelium,繁茂的菌丝,繁�
 DimensionWalkerIntro1,次元を越えて,Crossing dimensions,跨越次元,跨越次元
 DarkKillerIntro1,疾風漆黒,Jet-black gale,漆黑暴风,漆黑暴風
 EvilSeerIntro1,彼らは共に在る,They exist together,他们同在,他們同在
-RobberIntro1,その進捗、頂戴するぜ,
-OverKillerIntro1,何度だって切り刻む,
-EvilSeerIntro1,彼岸の呼び声,
-JammerIntro1,隠蔽工作,
-EvilMovingIntro1,不意の急襲,
+RobberIntro1,その進捗、頂戴するぜ,,
+OverKillerIntro1,何度だって切り刻む,,
+EvilSeerIntro1,彼岸の呼び声,,
+JammerIntro1,隠蔽工作,,
+EvilMovingIntro1,不意の急襲,,
 MagazinerIntro1,殺意の弾倉,,
 
 # Intros_Neutral
@@ -761,10 +761,10 @@ UbiquitousIntro1,偏在する監視眼,Ubiquitous watchful eye,无处不在的�
 BuskerIntro1,危険な大道芸人,Dangerous street performer,危险的街头艺人,危險的街頭藝人
 DoorrIntro1,ノンストレス移動,stress-free movement,门，零压力移动,門，零壓力移動
 PsychometristIntro1,この手は真実を読み取る,These hands read the truth,此手读取真相,此手讀取真相
-SilverBulletIntro1,暗雲払う銀弾,
-ShielderIntro1,全てを受け止める盾,
-MovingIntro1,どんな距離も飛び越える,
-HauntedWolfIntro1,過る獣の幻影,
+SilverBulletIntro1,暗雲払う銀弾,,
+ShielderIntro1,全てを受け止める盾,,
+MovingIntro1,どんな距離も飛び越える,,
+HauntedWolfIntro1,過る獣の幻影,,
 
 # Intros_MadRoles
 MadmateIntro1,道を違えし者,One who has strayed from the path,误入歧途者,誤入歧途者,
