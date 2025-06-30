@@ -305,7 +305,7 @@ FinalStatus.WaveCannon,蒸発,Vaporize,蒸发,蒸發
 FinalStatus.FalseCharge,冤罪,False Charge,冤罪,冤罪
 FinalStatus.Revange,道連れ,Revange,道連れ,道連れ
 FinalStatus.Suicide,自殺,Suicide,自殺,自殺
-FinalStatus.Samurai,サムライ,Samurai,侍,侍
+FinalStatus.Samurai,切り捨て御免,
 FinalStatus.BombBySelfBomb,爆破,Bomb by Self Bomber,自爆被卷入,自爆被卷入
 FinalStatus.SelfBomb,自爆,Self Bomb,自爆,自爆
 FinalStatus.Tuna,水揚げ,Tuna,水揚げ,水揚げ
@@ -314,6 +314,20 @@ FinalStatus.SheriffKill,正義執行,Sheriff Kill,警長擊殺,警長擊殺
 FinalStatus.SheriffWrongfulMurder,過失殺人,Wrongful Murder
 FinalStatus.SheriffMisFire,失意の自殺,Sheriff Self Death,失意,失意
 FinalStatus.SheriffSuicide,自決,Die in the line of duty
+FinalStatus.FalseCharges,冤罪死,,
+FinalStatus.GuesserKill,推殺,,
+FinalStatus.GuesserMisFire,推殺失敗,,
+FinalStatus.Push,突き落とし,,
+FinalStatus.LoversSuicide,心中,,
+FinalStatus.LaunchByRocket,花火,,
+FinalStatus.VampireKill,吸血死,,
+FinalStatus.VampireWithDead,夜に呑まれた,,
+FinalStatus.SpelunkerSetRoleDeath,,
+FinalStatus.SpelunkerVentDeath,転倒,,
+FinalStatus.SpelunkerCommsElecDeath,不安死,,
+FinalStatus.SpelunkerOpenDoor,指挟み,,
+FinalStatus.NunDeath,ぬーんから転落,,
+FinalStatus.LadderDeath,はしごから転落,,
 
 # HelpMenu
 HelpMenu.MyRoleInformation,自分の役職,My Role Information,我的角色信息,我的角色資訊
@@ -553,8 +567,8 @@ Safecracker.Description,キル能力を有さない第三陣営です。\nタス
 OrientalShaman.Description,キル能力を有さない独自の勝利条件を持つ第三陣営です。\nキル能力を持つプレイヤーが誰かわかります。\nゲーム終了まで生存していると、一部役職の特殊勝利を除き、その勝利を横取りして勝利することが出来ます。\nベントを使用する際、使用モーション及び開閉モーションがありません。\nその代わり、滞在時間に制限があります。\nまた、設定次第では「式神」という仲間を作ることが出来ます。\n式神と相互に位置がわかります。\nまた、この役職は生存者の人数にカウントされません。,
 ShermansServant.Description,陰陽師陣営に属する第三陣営です。\n陰陽師が勝利すると共に勝利します。\n「変身」ボタンを押すと陰陽師の姿に変身します。\n「自決」ボタンを押すと自決します。\n死体の位置がわかります。\nこの役職は陰陽師に課せられた制限を受けません。\nこの役職はクルーメイトとして判定されます。\n陰陽師が死亡、または役職が代わるとその時点で死亡します。\n陰陽師と相互に位置がわかります。,A third faction aligned with the Onmyoji faction.\nYou win together when the Onmyoji wins.\nPress the "Transform" button to transform into the Onmyoji's form.\nPress the "Self-Destruct" button to commit self-destruction.\nYou can see the location of corpses.\nThis role is not subject to the restrictions imposed on the Onmyoji.\nThis role is considered a Crewmate.\nIf the Onmyoji dies or the role changes，you die at that moment.\nYou and the Onmyoji can see each other's locations.,一个属于阴阳师阵营的第三阵营。\n当阴阳师获胜时，你也一起获胜。\n按下「变身」按钮会变身为阴阳师的外形。\n按下「自决」按钮会自杀。\n你可以看到尸体的位置。\n该角色不受阴阳师所受限制的影响。\n该角色被判定为船员。\n当阴阳师死亡，或角色发生更换时，你会在那一刻死亡。\n你与你的阴阳师可以互相看到位置。,一個屬於陰陽師陣營的第三陣營。\n當陰陽師獲勝時，你也一起獲勝。\n按下「變身」按鈕會變身為陰陽師的外形。\n按下「自決」按鈕會自殺。\n你可以看到屍體的位置。\n該角色不受陰陽師所受限制的影響。\n該角色被判定為船員。\n當陰陽師死亡，或角色發生更換時，你會在那一刻死亡。\n你與你的陰陽師可以互相看到位置。
 BlackHatHacker.Description,キル能力を有さない独自の勝利条件を持つ第三陣営です。\n「ハック」ボタンを押すと対象のプレイヤーをウィルスに感染させます。\nそのプレイヤーに接近した他のプレイヤーもウィルスに感染し、感染度が100%になるとそのプレイヤーも感染源となります。\n生存者の全てが感染済になるとその時点で単独勝利します。,
-PartTimer.Description,,
-Spelunker.Description,,
+PartTimer.Description,キル能力を有さない独自の勝利条件を持つ第三陣営です。\n「バイト」ボタンを押すと、対象のプレイヤーの味方になります。\nそのプレイヤーが生存した状態で勝利すると、共に勝利します。\nバイト先が死亡した場合、フリーターは未バイト状態となり、再度バイト先を選ぶことが出来るようになります(スポーンタイミングで更新)。,
+Spelunker.Description,キル能力を有さない独自の勝利条件を持つ第三陣営です。\nベントを踏んだり、ドアを開けたり、昇降機に乗ったり、はしごを降りたりすると一定確率で死亡してしまいます。\nまた、サボタージュが長引くと不安で死んでしまいます。\nそれらを乗り越えゲーム終了まで生存していると、一部役職の特殊勝利を除き、その勝利を横取りして勝利することが出来ます。,
 
 # Descriptions_Crewmate
 Bait.Description,タスクターンに発動する能力を有するクルーメイトです。\nキルされると、そのキル者に自身の死体を通報させます。,A Crewmate with an ability that activates during task turns.\nWhen killed，they force their killer to report their body.,一个在任务回合中可激活能力的船员。\n当被击杀时，会迫使击杀者报告他们的尸体。,一個在任務回合中可激活能力的船員。\n當被擊殺時，會迫使擊殺者報告他們的屍體。,
@@ -669,12 +683,12 @@ MushroomerIntro1,繁茂する菌糸,Proliferating mycelium,繁茂的菌丝,繁�
 DimensionWalkerIntro1,次元を越えて,Crossing dimensions,跨越次元,跨越次元
 DarkKillerIntro1,疾風漆黒,Jet-black gale,漆黑暴风,漆黑暴風
 EvilSeerIntro1,彼らは共に在る,They exist together,他们同在,他們同在
-RobberIntro1,その進捗、頂戴するぜ,
-OverKillerIntro1,何度だって切り刻む,
-EvilSeerIntro1,彼岸の呼び声,
-JammerIntro1,隠蔽工作,
-EvilMovingIntro1,不意の急襲,
-Magaziner,殺意の弾倉,
+RobberIntro1,その進捗、頂戴するぜ,,
+OverKillerIntro1,何度だって切り刻む,,
+EvilSeerIntro1,彼岸の呼び声,,
+JammerIntro1,隠蔽工作,,
+EvilMovingIntro1,不意の急襲,,
+MagazinerIntro1,殺意の弾倉,,
 
 # Intros_Neutral
 JackalIntro1,暗躍するもう一人の殺人鬼,Another puppeteer of death in the shadows,另一个暗中操纵死亡者,另一個暗中操縱死亡者,
@@ -747,10 +761,10 @@ UbiquitousIntro1,偏在する監視眼,Ubiquitous watchful eye,无处不在的�
 BuskerIntro1,危険な大道芸人,Dangerous street performer,危险的街头艺人,危險的街頭藝人
 DoorrIntro1,ノンストレス移動,stress-free movement,门，零压力移动,門，零壓力移動
 PsychometristIntro1,この手は真実を読み取る,These hands read the truth,此手读取真相,此手讀取真相
-SilverBulletIntro1,暗雲払う銀弾,
-ShielderIntro1,全てを受け止める盾,
-MovingIntro1,どんな距離も飛び越える,
-HauntedWolfIntro1,過る獣の幻影,
+SilverBulletIntro1,暗雲払う銀弾,,
+ShielderIntro1,全てを受け止める盾,,
+MovingIntro1,どんな距離も飛び越える,,
+HauntedWolfIntro1,過る獣の幻影,,
 
 # Intros_MadRoles
 MadmateIntro1,道を違えし者,One who has strayed from the path,误入歧途者,誤入歧途者,
