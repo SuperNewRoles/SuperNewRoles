@@ -14,7 +14,6 @@ People,{0}人,{0} people,{0}人,{0}人
 CoolTime,クールタイム,Cool Time,冷却时间,冷卻時間
 KillCoolTime,キルクールタイム,Kill Cool Time,击杀冷却时间,擊殺冷卻時間
 DurationTime,効果時間,Duration Time,持续时间,持續時間
-AbilityCount,,
 CanUseVent,ベントを使用できる,Can Use Vent,可以使用通风口,可以使用通風口
 VentCooldown,ベントクールタイム,Vent Cool Time,通风口冷却时间,通風口冷卻時間
 VentDuration,ベント持続時間,Vent Duration Time,通风口持续时间,通風口持續時間
@@ -177,12 +176,6 @@ VersionLoaded,適用済み,Applied,已適用,已適用
 VersionUpdateReleaseNoteLoading,リリースノートを読み込み中...,Loading release note...
 VersionUpdateReleaseNoteLoadingError,リリースノートの読み込みに失敗しました。,Failed to load release note..
 VersionUpdateReleaseNoteNotFound,リリースノートが見つかりませんでした。,Release note not found.
-
-# Robber
-RobberName,泥棒,Robber,小偷,小偷
-RobberTitle1,その進捗、頂戴するぜ,I'll take that progress.,把你手上的东西交出来！,這些進度條就由我收下了
-RobberDescription,キルをしたクルーメイトのタスク進捗を設定数巻き戻します。\n「ああもう、クルーというやつらは困ったらすーぐタスクで俺たちを追い出しやがる！\nそうはさせない、そのタスクの進捗を奪い取ってやるぜ！」,Rewinds the task progress of the crewmate who made the kill by a set number.\nThe crewmembers are so quick to kick us out of a task when we're in trouble,\nI won't let them, I'm going to take that task progress away from you!,被小偷击杀的玩家需要重新做若干个任务。\n该死，那帮人任务做的也太快了，这样下去我们就要没命了！\n哼，我不会让他们就这样得逞的……,小偷屬於內鬼陣營。\n當船員進行擊殺時小偷可以偷走一定數量的任務進度。\n「當遇到麻煩時，船員們總是很快地把我們逐出！」\n「我不會讓他們這麼做的，我會把這些完成的任務通通收下來！」
-RobberRewindTaskCount,巻き戻すタスクの個数,Number of tasks to rewind,回卷任务的个数,任務回溯的數量
 
 # RequestInGame
 RequestInGameButtonText,バグ報告、要望、質問、感謝メールなどはこちらから,Bug reports，requests，questions，and thank you messages can be sent here
@@ -479,7 +472,7 @@ ShermansServant,式神,Shermans Servant,式神,式神
 SilverBullet,シルバーバレット,Silver Bullet
 GhostMechanic,亡霊整備士,Ghost Mechanic,Ghost Mechanic,Ghost Mechanic
 MadJester,マッドてるてる,Mad Jester,疯狂小丑,瘋狂小丑
-Robber,泥棒,Robber
+Robber,泥棒,Robber,小偷,小偷
 OverKiller,オーバーキラー,Overkiller
 Jammer,ジャマー,Jammer,干扰者,干擾者
 Shielder,シールダー,Shielder
@@ -1765,6 +1758,9 @@ MagazinerMaxAmmo,最大弾薬数,Maximum Ammunition,最大弹药数,最大彈藥
 OverKillerKillCount,1回でキルする回数,Kill count per kill,一次击杀次数,一次擊殺次數
 OverKillerScatterBodies,死体を散乱する,Scatter Bodies,散乱死体,散亂死體
 OverKillerScatterRange,散乱範囲,Scatter Range,散乱范围,散亂範圍
+
+# Robber
+RobberRewindTaskCount,巻き戻すタスクの個数,Number of tasks to rewind,回卷任务的个数,任務回溯的數量
 
 # Jammer
 JammerButtonName,透明化,Invisibility,隐形,隱形
