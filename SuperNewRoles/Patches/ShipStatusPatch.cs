@@ -1,6 +1,8 @@
 using AmongUs.GameOptions;
 using HarmonyLib;
+using SuperNewRoles.Events;
 using SuperNewRoles.Modules;
+using SuperNewRoles.Roles.Ability;
 using UnityEngine;
 
 namespace SuperNewRoles.Patches;
@@ -11,6 +13,11 @@ class LightPatch
 {
     public static bool Prefix(ShipStatus __instance, [HarmonyArgument(0)] NetworkedPlayerInfo player, ref float __result)
     {
+        if (DestroyableSingleton<TutorialManager>.InstanceExists) return true;
+
+        ExPlayerControl exPlayer = (ExPlayerControl)player;
+        if (exPlayer == null) return true;
+
         // 電気系システムから明るさ補正値を計算
         float num = 1f;
         if (__instance.Systems.ContainsKey(SystemTypes.Electrical))
@@ -21,7 +28,22 @@ class LightPatch
                 num = switchSystem.Value / 255f;
             }
         }
-        ExPlayerControl exPlayer = (ExPlayerControl)player;
+
+        var reverseVisionAbility = exPlayer.GetAbility<ReverseVisionAbility>();
+        if (reverseVisionAbility != null && reverseVisionAbility.HasReverseVision())
+        {
+            if (num < 1f) // Lights are off
+            {
+                __result = GetNeutralLightRadius(__instance, reverseVisionAbility.IsImpostorVision());
+            }
+            else // Lights are on
+            {
+                __result = __instance.MinLightRadius;
+            }
+            __result = ShipStatusLightEvent.Invoke(player, __result);
+            return false;
+        }
+
         // プレイヤーが null または死亡状態の場合は最大光量を返す
         if (player == null || player.IsDead)
         {
@@ -37,6 +59,7 @@ class LightPatch
         {
             __result = GetNeutralLightRadius(__instance, false);
         }
+        __result = ShipStatusLightEvent.Invoke(player, __result);
         return false;
     }
 
@@ -45,8 +68,8 @@ class LightPatch
         if (isImpostor) return shipStatus.MaxLightRadius * GameManager.Instance.LogicOptions.currentGameOptions.GetFloat(FloatOptionNames.ImpostorLightMod);
 
         float lerpValue = 1;
-        if (shipStatus.Systems.TryGetValue(SystemTypes.Electrical, out ISystemType elec)) lerpValue = elec.TryCast<SwitchSystem>().Value / 255f;
         if (timer.HasValue) lerpValue = timer.Value;
+        else if (shipStatus.Systems.TryGetValue(SystemTypes.Electrical, out ISystemType elec)) lerpValue = elec.TryCast<SwitchSystem>().Value / 255f;
         var LocalPlayer = PlayerControl.LocalPlayer;
         // 反転
         // lerpValue = 1 - lerpValue;

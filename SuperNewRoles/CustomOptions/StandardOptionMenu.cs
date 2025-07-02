@@ -41,6 +41,8 @@ public static class StandardOptionMenu
         int index = 0;
         foreach (var category in CustomOptionManager.OptionCategories)
         {
+            if (category.IsModifier)
+                continue;
             GenerateRoleDetailButton(category, index++);
         }
     }
@@ -107,11 +109,11 @@ public static class StandardOptionMenu
         selectedObject?.SetActive(true);
 
         // 適切なメニューを表示
-        if (category == CustomOptionManager.PresetSettings)
+        if (category == Categories.Categories.PresetSettings)
         {
             ShowPresetOptionMenu();
         }
-        else if (category == CustomOptionManager.ModeSettings)
+        else if (category == Categories.Categories.ModeSettings)
         {
             ShowModeOptionMenu();
         }
@@ -134,14 +136,14 @@ public static class StandardOptionMenu
         else
             StandardOptionMenuObjectData.Instance.ModeMenu.SetActive(true);
         var modeOptionText = StandardOptionMenuObjectData.Instance.ModeMenu.transform.Find("ModeOption/Text").GetComponent<TextMeshPro>();
-        modeOptionText.text = $"<b>{ModTranslation.GetString("ModeOption")}</b>";
+        modeOptionText.text = $"{ModTranslation.GetString("ModeOption")}";
         ConfigureModeOption(StandardOptionMenuObjectData.Instance.ModeMenu);
-        ShowDefaultOptionMenu(CustomOptionManager.ModeSettings, StandardOptionMenuObjectData.Instance.RightAreaInner.transform);
+        ShowDefaultOptionMenu(Categories.Categories.ModeSettings, StandardOptionMenuObjectData.Instance.RightAreaInner.transform);
     }
     private static void ConfigureModeOption(GameObject modeMenu)
     {
         var modeOption = modeMenu.transform.Find("ModeOption").gameObject;
-        ConfigureSelectOptionButtons(modeOption, modeOption.transform.Find("SelectedText").GetComponent<TextMeshPro>(), CustomOptionManager.GetCustomOptionByFieldName(nameof(CustomOptionManager.ModeOption)));
+        ConfigureSelectOptionButtons(modeOption, modeOption.transform.Find("SelectedText").GetComponent<TextMeshPro>(), CustomOptionManager.GetCustomOptionByFieldName(nameof(Categories.Categories.ModeOption)));
     }
     private static void ConfigureButtonHoverEffects(PassiveButton button, GameObject selectedObject, CustomOptionCategory category)
     {
@@ -166,7 +168,7 @@ public static class StandardOptionMenu
         // プリセットボタンを生成
         var rightAreaInner = StandardOptionMenuObjectData.Instance.RightAreaInner;
         GeneratePresetButtons(rightAreaInner);
-        if (menuData.StandardOptionMenus.TryGetValue(CustomOptionManager.PresetSettings.Name, out var menu))
+        if (menuData.StandardOptionMenus.TryGetValue(Categories.Categories.PresetSettings.Name, out var menu))
         {
             menuData.CurrentOptionMenu = menu;
             menu.SetActive(true);
@@ -179,7 +181,7 @@ public static class StandardOptionMenu
         ConfigurePresetTitle(presetMenu);
         ConfigureNowPresetText(presetMenu);
 
-        menuData.StandardOptionMenus[CustomOptionManager.PresetSettings.Name] = presetMenu;
+        menuData.StandardOptionMenus[Categories.Categories.PresetSettings.Name] = presetMenu;
         menuData.CurrentOptionMenu = presetMenu;
     }
     private static void ConfigureNowPresetText(GameObject presetMenu)
@@ -248,8 +250,8 @@ public static class StandardOptionMenu
         int newPreset = maxPreset + 1;
 
         CustomOptionSaver.SetPresetName(newPreset, text);
-        CustomOptionSaver.Save();
         CustomOptionSaver.CurrentPreset = newPreset;
+        CustomOptionSaver.Save();
         writeBoxTextBoxTMP.Clear();
         writeBoxTMP.text = ModTranslation.GetString("PresetPleaseInput");
         GeneratePresetButtons(StandardOptionMenuObjectData.Instance.RightAreaInner);
@@ -367,12 +369,6 @@ public static class StandardOptionMenu
         UpdateNowPresetText(StandardOptionMenuObjectData.Instance.CurrentOptionMenu);
     }
 
-    private static void ConfigurePresetNavigationButtons(GameObject selectPresets, TMPro.TextMeshPro selectedText)
-    {
-        ConfigurePresetButton(selectPresets, "Button_Minus", selectedText, isIncrement: false);
-        ConfigurePresetButton(selectPresets, "Button_Plus", selectedText, isIncrement: true);
-    }
-
     private static void ConfigurePresetButton(
         GameObject selectPresets,
         string buttonName,
@@ -465,6 +461,7 @@ public static class StandardOptionMenu
         GenerateOptionsForCategory(category, defaultMenu.transform);
         UpdateOptionsActive();
         RecalculateOptionsPosition(defaultMenu.transform, menuData.RightAreaScroller);
+        menuData.RightAreaInner.transform.localPosition = new(menuData.RightAreaInner.transform.localPosition.x, 0, menuData.RightAreaInner.transform.localPosition.z);
 
         menuData.StandardOptionMenus.Add(category.Name, defaultMenu);
         menuData.CurrentOptionMenu = defaultMenu;
@@ -481,19 +478,7 @@ public static class StandardOptionMenu
             gameObject.SetActive(shouldBeActive);
         }
     }
-    private static bool ShouldOptionBeActive(CustomOption option)
-    {
-        if (!option.ShouldDisplay())
-            return false;
-        var parent = option.ParentOption;
-        while (parent != null)
-        {
-            if (parent.Selection == 0)
-                return false;
-            parent = parent.ParentOption;
-        }
-        return true;
-    }
+    private static bool ShouldOptionBeActive(CustomOption option) => option.ShouldDisplay();
     private static void RecalculateOptionsPosition(Transform menuTransform, Scroller scroller)
     {
         float lastY = 1.6f;
@@ -662,17 +647,21 @@ public static class StandardOptionMenu
     private static void HandleOptionSelection(CustomOption option, TMPro.TextMeshPro selectedText, bool isIncrement)
     {
         byte newSelection;
-        if (isIncrement)
+        int additional = Input.GetKey(KeyCode.LeftShift) || Input.GetKey(KeyCode.RightShift) ? RoleOptionSettings.ShiftSelection : 1;
+        if (Input.GetKey(KeyCode.LeftControl) || Input.GetKey(KeyCode.RightControl))
         {
-            newSelection = option.Selection < option.Selections.Length - 1 ?
-                (byte)(option.Selection + 1) :
-                (byte)0;
+            newSelection = isIncrement ? (byte)(option.Selections.Length - 1) : (byte)0;
         }
         else
         {
-            newSelection = option.Selection > 0 ?
-                (byte)(option.Selection - 1) :
-                (byte)(option.Selections.Length - 1);
+            if (isIncrement)
+            {
+                newSelection = option.Selection + additional < option.Selections.Length ? (byte)(option.Selection + additional) : (byte)0;
+            }
+            else
+            {
+                newSelection = option.Selection - additional >= 0 ? (byte)(option.Selection - additional) : (byte)(option.Selections.Length - additional);
+            }
         }
 
         UpdateOptionSelection(option, newSelection, selectedText);
@@ -691,23 +680,6 @@ public static class StandardOptionMenu
         option.UpdateSelection(newSelection);
         selectedText.text = option.GetCurrentSelectionString();
         StandardOptionMenuObjectData.Instance.UpdateOptionDisplay();
-    }
-
-    private static string FormatOptionValue(object value, CustomOption option)
-    {
-        if (value is float floatValue)
-        {
-            var attribute = option.Attribute as CustomOptionFloatAttribute;
-            if (attribute != null)
-            {
-                float step = attribute.Step;
-                if (step >= 1f) return string.Format("{0:F0}", floatValue);
-                else if (step >= 0.1f) return string.Format("{0:F1}", floatValue);
-                else return string.Format("{0:F2}", floatValue);
-            }
-            return floatValue.ToString();
-        }
-        return value.ToString();
     }
 
     private static void UpdatePresetText(TMPro.TextMeshPro textComponent, int preset)
@@ -732,7 +704,7 @@ public static class StandardOptionMenu
                 }
                 else if (!option.IsBooleanOption && optionUIData is StandardOptionMenuObjectData.SelectOptionUIData selectData)
                 {
-                    selectData.SelectedText.text = FormatOptionValue(option.Selections[option.Selection], option);
+                    selectData.SelectedText.text = UIHelper.FormatOptionValue(option.Selections[option.Selection], option);
                 }
                 break;
             }
@@ -754,6 +726,7 @@ public static class StandardOptionMenu
         existingMenu.SetActive(true);
         menuData.UpdateOptionDisplay();
         RecalculateOptionsPosition(existingMenu.transform, menuData.RightAreaScroller);
+        menuData.RightAreaInner.transform.localPosition = new Vector3(menuData.RightAreaInner.transform.localPosition.x, 0, menuData.RightAreaInner.transform.localPosition.z);
     }
 
     private static GameObject CreateDefaultMenu(string categoryName, Transform parent)

@@ -10,10 +10,14 @@ public static class EventListenerManager
     public static List<IEventTargetBase> listeners { get; } = new();
     public static void ResetAllListener()
     {
+        SuperNewRolesPlugin.Logger.LogInfo($"[EventListenerManager] Resetting {listeners.Count} listeners");
         foreach (var listener in listeners)
         {
+            var typeName = listener.GetType().Name;
+            SuperNewRolesPlugin.Logger.LogInfo($"[EventListenerManager] Resetting listener: {typeName}");
             listener.RemoveListenerAll();
         }
+        SuperNewRolesPlugin.Logger.LogInfo("[EventListenerManager] All listeners reset completed");
     }
 
     public static void Load()
@@ -21,16 +25,19 @@ public static class EventListenerManager
         listeners.Clear();
 
         // Assembly内の全ての型を取得
-        var types = Assembly.GetExecutingAssembly().GetTypes();
+        var types = SuperNewRolesPlugin.Assembly.GetTypes();
 
         // IEventTargetBaseを実装している型を抽出
         var eventTargetTypes = types.Where(t =>
             !t.IsInterface &&
             !t.IsAbstract &&
-            typeof(IEventTargetBase).IsAssignableFrom(t));
+            typeof(IEventTargetBase).IsAssignableFrom(t)).ToList();
 
+        SuperNewRolesPlugin.Logger.LogInfo($"[Splash] Found {eventTargetTypes.Count} event target types");
+        int index = 0;
         foreach (var type in eventTargetTypes)
         {
+            index++;
             // BaseSingletonを継承しているか確認
             if (type.IsSubclassOf(typeof(BaseSingleton<>).MakeGenericType(type)))
             {
@@ -55,11 +62,7 @@ public static class EventListenerManager
                     listeners.Add(instance);
                 }
             }
-        }
-        Logger.Info($"Loaded {listeners.Count} listeners");
-        foreach (var listener in listeners)
-        {
-            Logger.Info($"Loaded {listener.GetType().Name}");
+            SuperNewRolesPlugin.Logger.LogInfo($"[Splash] Loaded listeners ({index}/{eventTargetTypes.Count}): {type.Name}");
         }
     }
     [HarmonyPatch(typeof(GameStartManager), nameof(GameStartManager.Start))]
@@ -67,6 +70,8 @@ public static class EventListenerManager
     {
         public static void Postfix()
         {
+            Logger.Info("GameStartManagerStartPatch");
+            Logger.Info($"listeners.Count: {listeners.Count}");
             ResetAllListener();
         }
     }

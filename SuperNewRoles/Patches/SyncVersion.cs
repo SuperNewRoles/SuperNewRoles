@@ -26,7 +26,8 @@ public static class SyncVersion
     public const float ERROR_TEXT_Y_POSITION = 0.25f;
     private const float SYNC_RETRY_DELAY = 0.5f;
     private const float PLAYER_JOIN_SYNC_DELAY = 1f;
-    private const int MAX_RETRY_COUNT = 5;
+    private const float SYNC_SHOWERROR_DELAY = 1f;
+    private const int MAX_RETRY_COUNT = 100;
 
 
     public static class VersionData
@@ -45,7 +46,7 @@ public static class SyncVersion
 
     public static void Load()
     {
-        string dllPath = Assembly.GetExecutingAssembly().Location;
+        string dllPath = SuperNewRolesPlugin.Assembly.Location;
         byte[] bytes = File.ReadAllBytes(dllPath);
         string hash = ModHelpers.HashMD5(bytes);
         string rpcMap = GenerateRpcMap();
@@ -95,7 +96,7 @@ public static class SyncVersion
     }
     private static bool ValidatePlayer(byte playerId, out PlayerControl player)
     {
-        player = ModHelpers.GetPlayerById(playerId);
+        player = PlayerControl.AllPlayerControls.ToArray().FirstOrDefault(p => p.PlayerId == playerId);
         return player != null;
     }
     private static SyncErrorType ValidateSyncData((byte PlayerId, string Version, string Hash, string RpcMap) data)
@@ -149,6 +150,7 @@ public static class SyncVersion
                 MAX_RETRY_COUNT,
                 SYNC_RETRY_DELAY
             );
+            RoleOptionManager.DelayedSyncTasks.Clear();
 
         }
     }
@@ -184,7 +186,7 @@ public static class SyncVersion
             VersionData.IsError[playerId] = SyncErrorType.NotMismatch;
             VersionData.VersionMap[playerId] = "";
 
-            new LateTask(() => CheckPlayerVersion(data, clientId, playerId), SYNC_RETRY_DELAY);
+            new LateTask(() => CheckPlayerVersion(data, clientId, playerId), SYNC_SHOWERROR_DELAY);
         }
 
         private static void CheckPlayerVersion(InnerNet.ClientData data, int clientId, byte playerId)
@@ -255,7 +257,7 @@ internal static class SyncVersionErrorHandler
 
     private static bool ShouldDisplayErrors(HudManager hudManager)
     {
-        if (!GameStartManager.InstanceExists)
+        if (AmongUsClient.Instance.GameState != InnerNet.InnerNetClient.GameStates.Joined)
         {
             if (ErrorText != null) ErrorText.gameObject.SetActive(false);
             return false;
@@ -278,7 +280,7 @@ internal static class SyncVersionErrorHandler
 
     private static string CreateErrorMessage(KeyValuePair<byte, SyncErrorType> kvp)
     {
-        PlayerControl player = ModHelpers.GetPlayerById(kvp.Key);
+        PlayerControl player = PlayerControl.AllPlayerControls.ToArray().FirstOrDefault(p => p.PlayerId == kvp.Key);
         if (player == null) return null;
 
         return kvp.Value switch

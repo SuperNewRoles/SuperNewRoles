@@ -12,9 +12,9 @@ class NiceGuesser : RoleBase<NiceGuesser>
 {
     public override RoleId Role { get; } = RoleId.NiceGuesser;
     public override Color32 RoleColor { get; } = Color.yellow;
-    public override List<Func<AbilityBase>> Abilities { get; } = [() => new GuesserAbility(NiceGuesserMaxShots, NiceGuesserShotsPerMeeting, NiceGuesserCannotShootCrewmate, NiceGuesserCannotShootStar)];
+    public override List<Func<AbilityBase>> Abilities { get; } = [() => new GuesserAbility(NiceGuesserMaxShots, NiceGuesserShotsPerMeeting, NiceGuesserCannotShootCrewmate, NiceGuesserCannotShootStar, NiceGuesserLimitedTurns, NiceGuesserLimitedTurnsCount)];
 
-    public override QuoteMod QuoteMod { get; } = QuoteMod.SuperNewRoles;
+    public override QuoteMod QuoteMod { get; } = QuoteMod.TheOtherRoles;
     public override RoleTypes IntroSoundType { get; } = RoleTypes.Crewmate;
     public override short IntroNum { get; } = 1;
 
@@ -30,9 +30,15 @@ class NiceGuesser : RoleBase<NiceGuesser>
     [CustomOptionInt("NiceGuesserShotsPerMeeting", 1, 15, 1, 3)]
     public static int NiceGuesserShotsPerMeeting;
 
-    [CustomOptionBool("NiceGuesserCannotShootCrewmate", true)]
-    public static bool NiceGuesserCannotShootCrewmate = true;
-
     [CustomOptionBool("NiceGuesserCannotShootStar", true)]
     public static bool NiceGuesserCannotShootStar = true;
+
+    [CustomOptionBool("NiceGuesserLimitedTurns", true, parentFieldName: nameof(NiceGuesserCannotShootStar))]
+    public static bool NiceGuesserLimitedTurns = true;
+
+    [CustomOptionInt("NiceGuesserLimitedTurnsCount", 1, 15, 1, 3, parentFieldName: nameof(NiceGuesserLimitedTurns))]
+    public static int NiceGuesserLimitedTurnsCount = 3;
+
+    [CustomOptionBool("NiceGuesserCannotShootCrewmate", true)]
+    public static bool NiceGuesserCannotShootCrewmate = true;
 }

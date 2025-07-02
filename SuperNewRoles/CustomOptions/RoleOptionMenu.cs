@@ -16,9 +16,12 @@ namespace SuperNewRoles.CustomOptions;
 /// </summary>
 public enum RoleOptionMenuType
 {
-    Impostor,
     Crewmate,
+    Impostor,
     Neutral,
+    Hidden,
+    Ghost,
+    Modifier,
 }
 
 /// <summary>
@@ -91,6 +94,7 @@ public class RoleOptionMenuObjectData : OptionMenuBase
     /// 一括設定メニューのスクローラーとその内部コンテンツ
     /// </summary>
     public Scroller BulkSettingsScroller { get; set; }
+    public int CurrentBulkSettingsIndex { get; set; }
     public Transform BulkSettingsInner { get; set; }
     public GameObject CurrentBulkSettingsParent { get; set; }
 
@@ -265,11 +269,19 @@ public static class RoleOptionMenu
         targetScroll.SetActive(true);
     }
 
+    /// <summary>
+    /// ロールオプションメニューのスクロール位置と表示状態をリセットする
+    /// </summary>
     private static void ResetScrollUIState(GameObject targetScroll, RoleOptionMenuType type)
     {
         RoleOptionMenuObjectData.CurrentScrollParent = targetScroll.transform;
         UpdateMenuTitle(type);
+        // 子オブジェクト数に基づいてスクロール範囲を再計算
+        int count = targetScroll.transform.childCount;
+        RoleOptionMenuObjectData.Scroller.ContentYBounds.max = CalculateContentYBounds(count);
+        // スクロール位置の前回位置に移動
         ReSyncScrollbarPosition(type);
+        // メニューを表示
         ShowMenu();
     }
 
@@ -293,7 +305,7 @@ public static class RoleOptionMenu
     /// </summary>
     private static void UpdateMenuTitle(RoleOptionMenuType type)
     {
-        RoleOptionMenuObjectData.TitleText.text = $"<b>{ModTranslation.GetString($"RoleOptionMenuType.{type}")}</b>";
+        RoleOptionMenuObjectData.TitleText.text = $"{ModTranslation.GetString($"RoleOptionMenuType.{type}")}";
     }
 
     /// <summary>
@@ -401,7 +413,7 @@ public static class RoleOptionMenu
                 }
         */
         // スクロール範囲の調整
-        data.Scroller.ContentYBounds.max = index < 25 ? 0f : (0.38f * ((index - 24) / 4 + 1)) - 0.5f;
+        data.Scroller.ContentYBounds.max = CalculateContentYBounds(index);
         data.RoleScrollDictionary[type] = parent;
         return parent;
     }
@@ -499,7 +511,7 @@ public static class RoleOptionMenu
     {
         if (roleOption == null) throw new Exception("roleOption is null");
         if (spriteRenderer == null) throw new Exception("spriteRenderer is null");
-        if (roleOption.NumberOfCrews >= 1)
+        if (roleOption.NumberOfCrews > 0 && roleOption.Percentage > 0)
             spriteRenderer.color = Color.white;
         else
             spriteRenderer.color = new Color(1, 1f, 1f, 0.6f);
@@ -566,6 +578,7 @@ public static class RoleOptionMenu
             }
             UpdateRoleDetailButtonColor(spriteRenderer, roleOption);
             UpdateNumOfCrewsSelect(roleOption);
+            RoleOptionManager.RpcSyncRoleOptionDelay(roleOption.RoleId, roleOption.NumberOfCrews, roleOption.Percentage);
         }));
 
         // RoleDetailButtonDictionaryに追加
@@ -595,8 +608,10 @@ public static class RoleOptionMenu
                 CustomOptionSaver.Save();
         }
     }
-    private static void UpdateHostInfoMaskArea(bool active)
+    public static void UpdateHostInfoMaskArea(bool active)
     {
+        if (AmongUsClient.Instance.GameState != InnerNet.InnerNetClient.GameStates.Joined)
+            return;
         var maskArea = GameStartManager.Instance.transform.FindChild("StartGameArea/Host Info/Content/Player Area/MaskArea");
         if (maskArea != null)
             maskArea.gameObject.SetActive(active);
@@ -674,5 +689,11 @@ public static class RoleOptionMenu
         float targetY = RoleOptionMenuObjectData.ScrollPositionDictionary.TryGetValue(type, out float y) ? y : 0;
         RoleOptionMenuObjectData.InnerScroll.transform.localPosition = new(innerPos.x, targetY, innerPos.z);
         RoleOptionMenuObjectData.Scroller.UpdateScrollBars();
+    }
+
+    // 新規関数: 指定された子オブジェクト数からContentYBounds.max値を計算する
+    private static float CalculateContentYBounds(int count)
+    {
+        return count < 25 ? 0f : (0.38f * ((count - 24) / 4 + 1)) - 0.25f;
     }
 }

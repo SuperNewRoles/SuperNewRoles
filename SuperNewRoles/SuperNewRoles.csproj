@@ -1,11 +1,12 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
     <PropertyGroup>
         <TargetFramework>net6.0</TargetFramework>
-        <Version>3.0.0.0</Version>
+        <Version>3.0.0.1</Version>
         <Description>SuperNewRoles</Description>
         <Authors>ykundesu</Authors>
         <langVersion>preview</langVersion>
         <IncludeSourceRevisionInInformationalVersion>false</IncludeSourceRevisionInInformationalVersion>
+        <DebugType>portable</DebugType>
     </PropertyGroup>
 
     <PropertyGroup>
@@ -14,27 +15,34 @@
         <ApplicationIcon />
         <Win32Resource />
         <AssemblyName>SuperNewRoles</AssemblyName>
+        <NoWarn>CS0649;CS863;</NoWarn>
     </PropertyGroup>
 
     <ItemGroup>
         <EmbeddedResource Include="Resources\**" />
     </ItemGroup>
 
-    <ItemGroup>
+    <PropertyGroup>
+        <RestoreSources>https://nuget.bepinex.dev/v3/index.json;https://api.nuget.org/v3/index.json</RestoreSources>
+    </PropertyGroup>
+
+    <ItemGroup Condition="'$(Configuration)' != 'Release'">
         <Reference Include="$(AmongUs)/BepInEx/core/*.dll" />
         <Reference Include="$(AmongUs)/BepInEx/interop/*.dll" />
-        <None Remove="CustomCosmetics\CustomCosmeticsData\CustomHatData.cs~RFbacc703.TMP" />
-        <Reference Include="$(AmongUs)/BepInEx/plugins/Agartha.dll" />
+    </ItemGroup>
+    <ItemGroup Condition="'$(Configuration)' == 'Release'">
+        <Reference Include="$(Build)/core/*.dll" />
+        <Reference Include="$(Build)/interop/*.dll" />
     </ItemGroup>
 
-    <Target Name="CopyCustomContent" AfterTargets="AfterBuild">
+    <Target Name="CopyCustomContent" AfterTargets="AfterBuild" Condition="'$(Configuration)' == 'Debug'">
         <Message Text="Second occurrence" />
         <Copy SourceFiles="$(ProjectDir)bin\$(Configuration)\net6.0\SuperNewRoles.dll" DestinationFolder="$(AmongUs)/BepInEx/plugins/" />
         <Exec Command="start &quot;&quot; &quot;$(AmongUs)/Among Us.exe&quot;" />
     </Target>
 
     <ItemGroup>
-        <PackageReference Include="GitInfo" Version="2.0.20">
+    <PackageReference Include="GitInfo" Version="2.0.20">
             <PrivateAssets>all</PrivateAssets>
             <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
         </PackageReference>

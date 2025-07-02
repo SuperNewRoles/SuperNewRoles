@@ -200,7 +200,14 @@ public static class BulkRoleSettings
         }
         RoleOptionMenu.UpdateNumOfCrewsSelect(roleOption);
         if (RoleOptionMenu.RoleOptionMenuObjectData.RoleDetailButtonDictionary.TryGetValue(roleOption.RoleId, out var roleDetailButton))
+        {
             RoleOptionMenu.UpdateRoleDetailButtonColor(roleDetailButton.GetComponent<SpriteRenderer>(), roleOption);
+        }
+        if (newValue == 0)
+        {
+            RoleOptionMenu.RoleOptionMenuObjectData.CurrentBulkSettingsIndex--;
+            UpdateSettingsScroller(RoleOptionMenu.RoleOptionMenuObjectData.CurrentBulkSettingsIndex);
+        }
     }
     private static void UpdatePercentageValue(TextMeshPro text, int delta, RoleOptionManager.RoleOption roleOption)
     {
@@ -265,8 +272,12 @@ public static class BulkRoleSettings
             {
                 var roleBase = CustomRoleManager.AllRoles.FirstOrDefault(r => r.Role == roleOption.RoleId);
                 if (roleBase != null && roleBase.OptionTeam == RoleOptionMenu.RoleOptionMenuObjectData.CurrentRoleType && roleOption.NumberOfCrews > 0)
+                {
                     GenerateBulkRoleSetting(RoleOptionMenu.RoleOptionMenuObjectData.CurrentBulkSettingsParent.transform, index++, roleOption);
+                }
             }
+            RoleOptionMenu.RoleOptionMenuObjectData.CurrentBulkSettingsIndex = index;
+            UpdateSettingsScroller(index);
         }));
         passiveButton.OnMouseOut = new();
         passiveButton.OnMouseOut.AddListener((UnityAction)(() =>
@@ -295,10 +306,14 @@ public static class BulkRoleSettings
             headerBar.Find("AssignPer_Back").GetComponent<SpriteRenderer>().color = bulkRoleColor.LightHeaderColor;
         }
     }
+    public static void UpdateSettingsScroller(int index)
+    {
+        RoleOptionMenu.RoleOptionMenuObjectData.BulkSettingsScroller.ContentYBounds.max = index <= 20 ? 0f : (0.145f * (index - 20));
+    }
     public static void SetupBulkHeaderBar(string side, GameObject obj)
     {
         var headerBar = obj.transform.Find($"HeaderBar_{side}");
-        headerBar.Find("MaxPeople_Text").GetComponent<TextMeshPro>().text = $"<b>{ModTranslation.GetString("MaxPeople")}</b>";
-        headerBar.Find("AssignPer_Text").GetComponent<TextMeshPro>().text = $"<b>{ModTranslation.GetString("AssignPer")}</b>";
+        headerBar.Find("MaxPeople_Text").GetComponent<TextMeshPro>().text = $"{ModTranslation.GetString("MaxPeople")}";
+        headerBar.Find("AssignPer_Text").GetComponent<TextMeshPro>().text = $"{ModTranslation.GetString("AssignPer")}";
     }
 }

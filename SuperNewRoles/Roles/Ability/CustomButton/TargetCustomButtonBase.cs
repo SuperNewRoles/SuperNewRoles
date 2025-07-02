@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using AmongUs.GameOptions;
@@ -16,11 +17,14 @@ public abstract class TargetCustomButtonBase : CustomButtonBase
     public virtual bool TargetPlayersInVents { get; } = false;
     public virtual IEnumerable<PlayerControl> UntargetablePlayers { get; } = null;
     public virtual PlayerControl TargetingPlayer => PlayerControl.LocalPlayer;
+    public virtual Func<ExPlayerControl, bool>? IsTargetable { get; } = null;
+    public virtual Func<bool> IsDeadPlayerOnly { get; } = null;
     public bool TargetIsExist => Target != null;
+    public virtual bool IgnoreWalls => false;
     public override void OnUpdate()
     {
         base.OnUpdate();
-        Target = SetTarget(onlyCrewmates: OnlyCrewmates, targetPlayersInVents: TargetPlayersInVents, untargetablePlayers: UntargetablePlayers, targetingPlayer: PlayerControl.LocalPlayer);
+        Target = SetTarget(onlyCrewmates: OnlyCrewmates, targetPlayersInVents: TargetPlayersInVents, untargetablePlayers: UntargetablePlayers, targetingPlayer: TargetingPlayer, isTargetable: IsTargetable, isDeadPlayerOnly: IsDeadPlayerOnly, ignoreWalls: IgnoreWalls);
         if (ShowOutline && _lastShowTarget != Target)
         {
             if (_lastShowTarget != null)
@@ -38,13 +42,15 @@ public abstract class TargetCustomButtonBase : CustomButtonBase
         if (show)
             rend.material.SetColor("_OutlineColor", color);
     }
-    public static PlayerControl SetTarget(bool onlyCrewmates = false, bool targetPlayersInVents = false, IEnumerable<PlayerControl> untargetablePlayers = null, PlayerControl targetingPlayer = null)
+    public static PlayerControl SetTarget(bool onlyCrewmates = false, bool targetPlayersInVents = false, IEnumerable<PlayerControl> untargetablePlayers = null, PlayerControl targetingPlayer = null, Func<ExPlayerControl, bool> isTargetable = null, Func<bool> isDeadPlayerOnly = null, bool ignoreWalls = false)
     {
         PlayerControl result = null;
-        float num = GameOptionsData.KillDistances[Mathf.Clamp(GameManager.Instance.LogicOptions.currentGameOptions.GetInt(Int32OptionNames.KillDistance), 0, 2)];
+        float num = GameManager.Instance.LogicOptions.GetKillDistance();
         if (!ShipStatus.Instance) return result;
         if (targetingPlayer == null) targetingPlayer = PlayerControl.LocalPlayer;
-        if (targetingPlayer.Data.IsDead || targetingPlayer.inVent) return result;
+        if (targetingPlayer.inVent) return result;
+
+        bool IsDeadPlayerOnly = isDeadPlayerOnly != null && isDeadPlayerOnly();
 
         Vector2 truePosition = targetingPlayer.GetTruePosition();
         Il2CppSystem.Collections.Generic.List<NetworkedPlayerInfo> allPlayers = GameData.Instance.AllPlayers;
@@ -53,9 +59,12 @@ public abstract class TargetCustomButtonBase : CustomButtonBase
             NetworkedPlayerInfo playerInfo = allPlayers[i];
             if (playerInfo.Disconnected ||
                 playerInfo.PlayerId == targetingPlayer.PlayerId ||
-                playerInfo.IsDead ||
+                (playerInfo.IsDead && !IsDeadPlayerOnly) ||
+                (!playerInfo.IsDead && IsDeadPlayerOnly) ||
                 (onlyCrewmates && playerInfo.Role.IsImpostor)
                )
+                continue;
+            if (isTargetable != null && !isTargetable(playerInfo))
                 continue;
             PlayerControl @object = playerInfo.Object;
             if (untargetablePlayers != null &&
@@ -70,7 +79,7 @@ public abstract class TargetCustomButtonBase : CustomButtonBase
             Vector2 vector = @object.GetTruePosition() - truePosition;
             float magnitude = vector.magnitude;
             if (magnitude > num ||
-                PhysicsHelpers.AnyNonTriggersBetween(truePosition, vector.normalized, magnitude, Constants.ShipAndObjectsMask)
+                (!IsDeadPlayerOnly && !ignoreWalls && PhysicsHelpers.AnyNonTriggersBetween(truePosition, vector.normalized, magnitude, Constants.ShipAndObjectsMask))
                 )
                 continue;
             result = @object;

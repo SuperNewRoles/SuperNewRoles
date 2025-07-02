@@ -1,6 +1,13 @@
+using System.Collections.Generic;
 using System.Linq;
+using HarmonyLib;
+using SuperNewRoles.CustomOptions.Categories;
 using SuperNewRoles.Events;
 using SuperNewRoles.Events.PCEvents;
+using SuperNewRoles.Roles;
+using SuperNewRoles.Roles.Ability;
+using SuperNewRoles.Roles.CrewMate;
+using SuperNewRoles.Roles.Impostor;
 using UnityEngine;
 
 namespace SuperNewRoles.Modules;
@@ -24,26 +31,79 @@ public static class NameText
             player.PlayerInfoText = playerInfoText;
         }
 
-        // Set the position every time bc it sometimes ends up in the wrong place due to camoflauge
         playerInfoText.transform.localPosition = player.Player.cosmetics.nameText.transform.localPosition + Vector3.up * 0.2f;
 
         var meetingInfo = player.MeetingInfoText;
-        if (MeetingHud.Instance != null)
+        if (MeetingHud.Instance != null && player.VoteArea != null)
         {
-            var playerVoteArea = MeetingHud.Instance.playerStates.FirstOrDefault(x => x.TargetPlayerId == player.PlayerId);
-            if (meetingInfo == null && playerVoteArea != null)
+            if (meetingInfo == null)
             {
-                meetingInfo = UnityEngine.Object.Instantiate(playerVoteArea.NameText, playerVoteArea.NameText.transform.parent);
+                meetingInfo = Object.Instantiate(player.VoteArea.NameText, player.VoteArea.NameText.transform.parent);
                 meetingInfo.transform.localPosition += Vector3.down * 0.1f;
                 meetingInfo.fontSize = 1.5f;
                 meetingInfo.gameObject.name = "Info";
                 player.MeetingInfoText = meetingInfo;
             }
-            // Set player name higher to align in middle
-            if (meetingInfo != null && playerVoteArea != null)
+            if (meetingInfo != null)
             {
-                var playerName = playerVoteArea.NameText;
+                var playerName = player.VoteArea.NameText;
                 playerName.transform.localPosition = new Vector3(0.3384f, 0.0311f + 0.0683f, -0.1f);
+            }
+        }
+    }
+    private static bool GetRoleInfoVisibility(ExPlayerControl player, HideRoleOnGhostAbility localPlayerHrg)
+    {
+        if (player == null || player.Player == null || !player.Player.Visible)
+        {
+            return false;
+        }
+
+        if (ExPlayerControl.LocalPlayer.PlayerId == player.PlayerId)
+        {
+            return true;
+        }
+
+        if (!ExPlayerControl.LocalPlayer.IsDead())
+        {
+            return false;
+        }
+
+        // Local player is ghost
+        bool canSeeGhostRoles = !GameSettingOptions.HideGhostRoles ||
+                                (ExPlayerControl.LocalPlayer.IsImpostor() && GameSettingOptions.ShowGhostRolesToImpostor);
+
+        if (!canSeeGhostRoles)
+        {
+            return false;
+        }
+
+        return true;
+    }
+    private static void SetPlayerNameColor(ExPlayerControl player, bool isRoleInfoVisible)
+    {
+        if (player.TryGetAbility<HideMyRoleWhenAliveAbility>(out var hmr) && hmr.IsHide(player).role)
+        {
+            // 生きている時は役職を自覚できない役の名前色を設定
+            var roleColor = player.Data.Role.IsImpostor ? Impostor.Instance.RoleColor : Crewmate.Instance.RoleColor;
+            player.Data.Role.NameColor = roleColor;
+            SetNameTextColor(player, roleColor);
+        }
+        else
+        { // 通常の役職表示
+            if (isRoleInfoVisible)
+            {
+                player.Data.Role.NameColor = player.roleBase.RoleColor;
+                SetNameTextColor(player, player.roleBase.RoleColor, true);
+            }
+            else if (ExPlayerControl.LocalPlayer.IsImpostor() && player.IsImpostor())
+            {
+                player.Data.Role.NameColor = Palette.ImpostorRed;
+                SetNameTextColor(player, Palette.ImpostorRed, true);
+            }
+            else
+            {
+                player.Data.Role.NameColor = Color.white;
+                SetNameTextColor(player, Color.white, true);
             }
         }
     }
@@ -57,62 +117,139 @@ public static class NameText
         {
             if (player.IsTaskTriggerRole())
             {
-                var (complete, all) = ModHelpers.TaskCompletedData(player.Data);
+                var (complete, all) = player.GetAllTaskForShowProgress();
                 TaskText += ModHelpers.Cs(Color.yellow, "(" + (ModHelpers.IsComms() ? "?" : complete.ToString()) + "/" + all.ToString() + ")");
             }
         }
         catch { }
         string playerInfoText = "";
         string meetingInfoText = "";
-        playerInfoText = $"{ModHelpers.Cs(player.roleBase.RoleColor, ModTranslation.GetString(player.Role.ToString()))}";
+        string roleName = $"{ModHelpers.CsWithTranslation(player.roleBase.RoleColor, player.roleBase.Role.ToString())}";
+
+        // 生きている時は役職を自覚できない役の役職名を上書き
+        var hideMyRoleAbility = !player.AmOwner || player.IsDead() ? null : player.GetAbility<HideMyRoleWhenAliveAbility>();
+        hideMyRoleAbility?.DisplayRoleName(player, ref roleName);
+
+        if (player.GhostRole != GhostRoleId.None && player.GhostRoleBase != null)
+            roleName = $"{ModHelpers.CsWithTranslation(player.GhostRoleBase.RoleColor, player.GhostRole.ToString())} ({roleName}) ";
+        if (player.ModifierRoleBases.Count > 0)
+            roleName += " ";
+        foreach (var modifier in player.ModifierRoleBases)
+        {
+            // 生きている時は役職を自覚できないモディファイアは処理をスキップ
+            if (hideMyRoleAbility != null && hideMyRoleAbility.IsCheckTargetModifierRoleHidden(player, modifier.ModifierRole)) continue;
+            roleName = modifier.ModifierMark(player).Replace("{0}", roleName);
+        }
+        playerInfoText = roleName;
         playerInfoText += TaskText;
         meetingInfoText = playerInfoText.Trim();
         player.PlayerInfoText.text = playerInfoText;
-        bool visiable = ExPlayerControl.LocalPlayer.PlayerId == player.PlayerId || ExPlayerControl.LocalPlayer.IsDead();
-        if (visiable)
+        if (player.MeetingInfoText != null)
+            player.MeetingInfoText.text = meetingInfoText;
+        player.cosmetics.nameText.text = player.Player.CurrentOutfit.PlayerName;
+        if (player.VoteArea != null)
+            player.VoteArea.NameText.text = player.Player.Data.DefaultOutfit.PlayerName;
+
+        var hrg = ExPlayerControl.LocalPlayer.GetAbility<HideRoleOnGhostAbility>();
+        bool isVisible = GetRoleInfoVisibility(player, hrg);
+
+        SetPlayerNameColor(player, isVisible);
+
+        UpdateVisible(player, hrg);
+        NameTextUpdateEvent.Invoke(player, isVisible);
+        NameTextUpdateVisiableEvent.Invoke(player, isVisible);
+    }
+    public static void SetCustomTaskCount(ExPlayerControl player, int completed, int total, bool showOnMeeting = false, bool showCompletedOnComms = false)
+    {
+        string text = ModHelpers.Cs(Color.yellow, "(" + (showOnMeeting ? (ModHelpers.IsComms() ? "?" : completed.ToString()) : (showCompletedOnComms ? completed.ToString() : "?")) + "/" + total.ToString() + ")");
+        if (player.PlayerInfoText != null)
+            player.PlayerInfoText.text += text;
+        if (player.MeetingInfoText != null && showOnMeeting)
+            player.MeetingInfoText.text += text;
+    }
+    public static void SetNameTextColor(ExPlayerControl player, Color color, bool nonLog = false)
+    {
+        if (!nonLog)
+            Logger.Info($"SetNameTextColor: {player.Data.PlayerName} {color}");
+        player.Player.cosmetics.nameText.color = color;
+        if (player.VoteArea != null)
+            player.VoteArea.NameText.color = color;
+    }
+    public static void AddNameText(ExPlayerControl player, string text, bool checkContains = false)
+    {
+        if (checkContains)
         {
-            player.Data.Role.NameColor = player.roleBase.RoleColor;
-            player.Player.cosmetics.nameText.color = player.roleBase.RoleColor;
+            if (player.Player.cosmetics.nameText.text.Contains(text))
+                return;
         }
-        else
-        {
-            player.Data.Role.NameColor = Color.white;
-            player.Player.cosmetics.nameText.color = Color.white;
-        }
-        UpdateVisiable(player);
-        NameTextUpdateEvent.Invoke(player);
+        player.Player.cosmetics.nameText.text += text;
+        if (player.VoteArea != null && player.VoteArea.PlayerIcon?.cosmetics?.nameText != null)
+            player.VoteArea.NameText.text += text;
     }
     public static void RegisterNameTextUpdateEvent()
     {
         TaskCompleteEvent.Instance.AddListener(new(x => UpdateNameInfo(x.player)));
         MurderEvent.Instance.AddListener(new(x =>
         {
-            if (x.target?.PlayerId == ExPlayerControl.LocalPlayer?.PlayerId)
-            {
-                UpdateAllNameInfo();
-            }
             UpdateNameInfo(x.killer);
             UpdateNameInfo(x.target);
         }));
+        DieEvent.Instance.AddListener(x => { if (x.player?.PlayerId == ExPlayerControl.LocalPlayer?.PlayerId) new LateTask(() => UpdateAllNameInfo(), 0.5f); });
         WrapUpEvent.Instance.AddListener(x => UpdateAllNameInfo());
-        MeetingStartEvent.Instance.AddListener(UpdateAllNameInfo);
-        FixedUpdateEvent.Instance.AddListener(UpdateAllVisiable);
+        MeetingStartEvent.Instance.AddListener(x => UpdateAllNameInfo());
+        FixedUpdateEvent.Instance.AddListener(UpdateAllVisible);
+        _lastDead = new();
     }
-    private static void UpdateAllVisiable()
+    [HarmonyPatch(typeof(HudOverrideSystemType), nameof(HudOverrideSystemType.UpdateSystem))]
+    public static class HudOverrideSystemTypePatch
     {
-        foreach (var player in ExPlayerControl.ExPlayerControls)
-            UpdateVisiable(player);
+        private static bool _lastActive = false;
+        public static void Prefix(HudOverrideSystemType __instance)
+        {
+            _lastActive = __instance.IsActive;
+        }
+        public static void Postfix(HudOverrideSystemType __instance)
+        {
+            if (__instance.IsActive && !_lastActive)
+                UpdateAllNameInfo();
+        }
     }
-    private static void UpdateVisiable(ExPlayerControl player)
+    private static Dictionary<ExPlayerControl, bool> _lastDead = new();
+    private static void UpdateAllVisible()
+    {
+        HideRoleOnGhostAbility hideRoleOnGhostAbility = ExPlayerControl.LocalPlayer.GetAbility<HideRoleOnGhostAbility>();
+        foreach (var player in ExPlayerControl.ExPlayerControls)
+        {
+            UpdateVisible(player, hideRoleOnGhostAbility);
+            NameTextUpdateVisiableEvent.Invoke(player, player.Player.Visible);
+        }
+    }
+    public static void UpdateVisible(ExPlayerControl player, HideRoleOnGhostAbility localHideRoleOnGhostAbility)
     {
         if (player == null || player.Player == null)
             return;
-        bool visiable = player.Player.Visible && (ExPlayerControl.LocalPlayer.PlayerId == player.PlayerId || ExPlayerControl.LocalPlayer.IsDead());
+        bool isVisible = GetRoleInfoVisibility(player, localHideRoleOnGhostAbility);
+        UpdateVisible(player, isVisible);
+        if (!isVisible && localHideRoleOnGhostAbility != null && localHideRoleOnGhostAbility.IsHideRole(player))
+        {
+            // When role info is not visible, the name color may need to be updated (e.g. to red for fellow impostors).
+            SetPlayerNameColor(player, isVisible);
+        }
+    }
+    public static void UpdateVisible(ExPlayerControl player, bool visiable)
+    {
+        if (player == null || player.Player == null)
+            return;
+        if (!player.Player.Visible)
+            visiable = false;
+        if (visiable && player.PlayerInfoText == null)
+            Initialize(player);
+
         player.PlayerInfoText.gameObject.SetActive(visiable);
         if (player.MeetingInfoText != null)
             player.MeetingInfoText.gameObject.SetActive(visiable);
     }
-    private static void UpdateAllNameInfo()
+    public static void UpdateAllNameInfo()
     {
         foreach (var player in ExPlayerControl.ExPlayerControls)
             UpdateNameInfo(player);

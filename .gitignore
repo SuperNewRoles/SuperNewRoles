@@ -1,6 +1,12 @@
 SuperNewRoles/SuperNewRoles.csproj.user
 SuperNewRoles/obj/
 SuperNewRoles/bin/
+Build/
+Claude.md
 *.v2
 *.dll
 .vs/
+OldSuperNewRoles_readonly/
+.cursor/
+AmongUsCS/
+hatstest.bundle

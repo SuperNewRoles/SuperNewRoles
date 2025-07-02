@@ -114,16 +114,15 @@ public static class VersionTextHandler
     [HarmonyPatch(typeof(HudManager), nameof(HudManager.Start))]
     public static class ShowInGameLogosPatch
     {
-        public static GameObject _logoObject;
-        private static SpriteRenderer _logoRenderer;
+        public static AspectPosition _aspectPosition { get; private set; }
         public static void Postfix(HudManager __instance)
         {
-            _logoObject = new("Logo");
+            GameObject _logoObject = new("Logo");
             _logoObject.layer = 5;
             _logoObject.transform.SetParent(__instance.transform);
-            _logoObject.transform.localScale = Vector3.one * 0.35f;
+            _logoObject.transform.localScale = Vector3.one * 0.2f;
             _logoObject.transform.localPosition = new(-3.8f, 2.5f, -1f);
-            _logoRenderer = _logoObject.AddComponent<SpriteRenderer>();
+            var _logoRenderer = _logoObject.AddComponent<SpriteRenderer>();
             _logoRenderer.sprite = AssetManager.GetAsset<Sprite>("banner", AssetManager.AssetBundleType.Sprite);
             // バージョンテキスト
             var versionText = GameObject.Instantiate(__instance.roomTracker.text);
@@ -131,19 +130,22 @@ public static class VersionTextHandler
             GameObject.Destroy(versionText.GetComponent<RoomTracker>());
             versionText.transform.SetParent(_logoObject.transform);
             versionText.transform.localScale = Vector3.one * 2.55f;
-            versionText.transform.localPosition = new(-3f, -0.74f, 0f);
+            versionText.transform.localPosition = new(-3.45f, -0.88f, 0f);
             versionText.SetText($"<color=#ffa500>v{VersionInfo.VersionString}</color>");
+            _aspectPosition = _logoObject.AddComponent<AspectPosition>();
+            _aspectPosition.Alignment = AspectPosition.EdgeAlignments.LeftTop;
+            _aspectPosition.DistanceFromEdge = new(1, 0.27f);
+            _aspectPosition.OnEnable();
         }
     }
     [HarmonyPatch(typeof(ShipStatus), nameof(ShipStatus.Start))]
     public static class ShipStatusPatch
     {
-        public static void Postfix(ShipStatus __instance)
+        public static void Postfix()
         {
-            ShowInGameLogosPatch._logoObject.transform.SetPositionAndScale(
-                new(2.55f, 2.5f, -1f),
-                Vector3.one * 0.25f
-            );
+            ShowInGameLogosPatch._aspectPosition.Alignment = AspectPosition.EdgeAlignments.RightTop;
+            ShowInGameLogosPatch._aspectPosition.DistanceFromEdge = new(4.13f, 0.5f);
+            ShowInGameLogosPatch._aspectPosition.OnEnable();
         }
     }
 }

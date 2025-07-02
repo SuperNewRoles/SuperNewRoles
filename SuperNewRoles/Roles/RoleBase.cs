@@ -5,7 +5,6 @@ using System.Text;
 using System.Threading.Tasks;
 using AmongUs.GameOptions;
 using SuperNewRoles.Modules;
-using UnityEngine.Networking.Types;
 using UnityEngine;
 using SuperNewRoles.Roles.Ability;
 using SuperNewRoles.CustomOptions;
@@ -19,6 +18,12 @@ internal abstract class RoleBase<T> : BaseSingleton<T>, IRoleBase where T : Role
 
     public abstract RoleId Role { get; }
     public abstract Color32 RoleColor { get; }
+    public virtual string RoleName => Role.ToString();
+    public virtual bool HiddenOption => OptionTeam == RoleOptionMenuType.Hidden;
+    public virtual List<AssignedTeamType> AssignedTeams => [AssignedTeam];
+    public virtual CustomOption[] Options => RoleOptionManager.TryGetRoleOption(Role, out var role) ? role.Options : [];
+    public virtual int? PercentageOption => RoleOptionManager.TryGetRoleOption(Role, out var role) ? role.Percentage : null;
+    public virtual int? NumberOfCrews => RoleOptionManager.TryGetRoleOption(Role, out var role) ? role.NumberOfCrews : null;
     public abstract List<Func<AbilityBase>> Abilities { get; }
     public abstract QuoteMod QuoteMod { get; }
     public abstract AssignedTeamType AssignedTeam { get; }
@@ -28,6 +33,7 @@ internal abstract class RoleBase<T> : BaseSingleton<T>, IRoleBase where T : Role
     public abstract short IntroNum { get; }
     public virtual RoleTypes IntroSoundType { get; } = RoleTypes.Crewmate;
     public virtual AudioClip CustomIntroSound { get; } = null;
+    public virtual RoleId[] RelatedRoleIds { get; } = [];
     public AudioClip IntroSound
     {
         get
@@ -47,14 +53,14 @@ internal abstract class RoleBase<T> : BaseSingleton<T>, IRoleBase where T : Role
     }
 
     public abstract RoleOptionMenuType OptionTeam { get; }
+    public virtual MapNames[] AvailableMaps { get; } = [];
 
     // public abstract void CreateCustomOption();
 }
 
-public interface IRoleBase
+public interface IRoleBase : IRoleInformation
 {
     public RoleId Role { get; }
-    public Color32 RoleColor { get; }
     /// <summary>
     /// 追加したいAbilityを[ typeof(HogeAbility), typeof(FugaAbility) ]の形でListとして用意する
     /// 役職選出時(OnSetRole)に自動でnewされます
@@ -77,20 +83,38 @@ public interface IRoleBase
     /// </summary>
     public AudioClip CustomIntroSound { get; }
 
+    public RoleId[] RelatedRoleIds { get; }
+    public MapNames[] AvailableMaps { get; }
     /// <summary>
     /// AbilityはAbilitiesから自動でセットされるが、追加で他の処理を行いたい場合はOverrideすること
     /// </summary>
     public virtual void OnSetRole(PlayerControl player)
     {
         ExPlayerControl exPlayer = player;
+        AbilityParentRole parent = new(exPlayer, this);
+        Logger.Info($"[OnSetRole] Setting abilities for role {Role} on player {player?.name} ({player?.PlayerId}), Abilities count: {Abilities.Count}");
         foreach (var abilityFactory in Abilities)
         {
-            exPlayer.AddAbility(abilityFactory());
+            var ability = abilityFactory();
+            Logger.Info($"[OnSetRole] Adding ability {ability.GetType().Name} to player {player?.name}");
+            exPlayer.AddAbility(ability, parent);
         }
+        Logger.Info($"[OnSetRole] Completed setting abilities for player {player?.name}, Total abilities: {exPlayer.PlayerAbilities.Count}");
     }
 
     public static ulong GenerateAbilityId(byte playerId, RoleId role, int abilityIndex)
     {
         return (ulong)(playerId * 1000000) + (ulong)((int)role * 1000) + (ulong)abilityIndex;
     }
+}
+
+public interface IRoleInformation
+{
+    public string RoleName { get; }
+    public Color32 RoleColor { get; }
+    public bool HiddenOption { get; }
+    public List<AssignedTeamType> AssignedTeams { get; }
+    public CustomOption[] Options { get; }
+    public int? PercentageOption { get; }
+    public int? NumberOfCrews { get; }
 }

@@ -9,9 +9,35 @@ public enum FinalStatus
     Alive,
     Kill,
     Disconnect,
+    Revange,
     Exiled,
     GuesserKill,
     GuesserMisFire,
+    Sabotage,
+    WaveCannon,
+    FalseCharge,
+    Suicide,
+    Samurai,
+    BombBySelfBomb,
+    SelfBomb,
+    Tuna,
+    Push,
+    Ignite,
+    FalseCharges,
+    SheriffKill,
+    SheriffWrongfulMurder,
+    SheriffMisFire,
+    SheriffSuicide,
+    LoversSuicide,
+    LaunchByRocket,
+    VampireKill,
+    VampireWithDead,
+    SpelunkerSetRoleDeath,
+    SpelunkerVentDeath,
+    SpelunkerCommsElecDeath,
+    SpelunkerOpenDoor,
+    NunDeath,
+    LadderDeath,
 }
 
 public static class FinalStatusListener
@@ -25,6 +51,18 @@ public static class FinalStatusListener
     private static void SetFinalStatus(ExPlayerControl exPlayer, FinalStatus finalStatus)
     {
         if (exPlayer == null) return;
+        exPlayer.FinalStatus = finalStatus;
+    }
+}
+public static class FinalStatusManager
+{
+    [CustomRPC]
+    public static void RpcSetFinalStatus(ExPlayerControl exPlayer, FinalStatus finalStatus)
+    {
+        SetFinalStatus(exPlayer, finalStatus);
+    }
+    public static void SetFinalStatus(ExPlayerControl exPlayer, FinalStatus finalStatus)
+    {
         exPlayer.FinalStatus = finalStatus;
     }
 }

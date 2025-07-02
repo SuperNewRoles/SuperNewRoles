@@ -2,6 +2,7 @@ using System;
 using UnityEngine;
 using SuperNewRoles.Modules;
 using SuperNewRoles.Roles.Ability.CustomButton;
+using SuperNewRoles.CustomOptions.Categories;
 
 namespace SuperNewRoles.Roles.Ability;
 
@@ -11,49 +12,59 @@ public class MadmateAbility : AbilityBase
     public CustomVentAbility VentAbility { get; private set; }
     public KnowImpostorAbility KnowImpostorAbility { get; private set; }
     public ImpostorVisionAbility ImpostorVisionAbility { get; private set; }
+    public CustomTaskAbility CustomTaskAbility { get; private set; }
+    public SabotageCanUseAbility SabotageCanUseAbility { get; private set; }
     public MadmateAbility(MadmateData madData)
     {
         MadData = madData;
     }
-    public override void Attach(PlayerControl player, ulong abilityId)
+    public override void AttachToAlls()
     {
-
         VentAbility = new CustomVentAbility(() => MadData.CouldUseVent);
         KnowImpostorAbility = new KnowImpostorAbility(MadData.CouldKnowImpostors);
         ImpostorVisionAbility = new ImpostorVisionAbility(() => MadData.HasImpostorVision);
-        ExPlayerControl exPlayer = (ExPlayerControl)player;
+        CustomTaskAbility = new CustomTaskAbility(() => (true, false, MadData.TaskNeeded), MadData.SpecialTasks);
+        SabotageCanUseAbility = new SabotageCanUseAbility(() => getCannotSabotageType());
 
-        exPlayer.AttachAbility(VentAbility);
-        exPlayer.AttachAbility(KnowImpostorAbility);
-        exPlayer.AttachAbility(ImpostorVisionAbility);
-
-        base.Attach(player, abilityId);
+        Player.AttachAbility(VentAbility, new AbilityParentAbility(this));
+        Player.AttachAbility(KnowImpostorAbility, new AbilityParentAbility(this));
+        Player.AttachAbility(ImpostorVisionAbility, new AbilityParentAbility(this));
+        Player.AttachAbility(CustomTaskAbility, new AbilityParentAbility(this));
+        Player.AttachAbility(SabotageCanUseAbility, new AbilityParentAbility(this));
     }
 
-    public override void AttachToLocalPlayer()
+    private SabotageType getCannotSabotageType()
     {
+        SabotageType type = SabotageType.None;
+        if (MadmateOptions.MadmateCannotFixComms) type |= SabotageType.Comms;
+        if (MadmateOptions.MadmateCannotFixElectrical) type |= SabotageType.Lights;
+        if (MadmateOptions.MadmateCannotFixReactor) type |= SabotageType.Reactor | SabotageType.O2;
+        return type;
     }
 }
 public class MadmateData
 {
     public bool HasImpostorVision { get; }
     public bool CouldUseVent { get; }
+    public TaskOptionData SpecialTasks { get; }
+    public int TaskNeeded { get; }
+
     private bool _couldKnowImpostors;
-    private int _taskNeeded;
     private bool _lastTaskChecked;
-    public bool CouldKnowImpostors(ExPlayerControl exPlayer)
+    public bool CouldKnowImpostors()
     {
         if (!_couldKnowImpostors) return false;
         if (_lastTaskChecked) return true;
-        var (complete, all) = ModHelpers.TaskCompletedData(exPlayer.Data);
+        var (complete, all) = ModHelpers.TaskCompletedData(ExPlayerControl.LocalPlayer.Data);
         if (complete == -1 || all == -1) return false;
-        return _lastTaskChecked = complete >= _taskNeeded;
+        return _lastTaskChecked = complete >= Math.Min(TaskNeeded, all);
     }
-    public MadmateData(bool hasImpostorVision, bool couldUseVent, bool couldKnowImpostors, int taskNeeded)
+    public MadmateData(bool hasImpostorVision, bool couldUseVent, bool couldKnowImpostors, int taskNeeded, TaskOptionData specialTasks)
     {
         HasImpostorVision = hasImpostorVision;
         CouldUseVent = couldUseVent;
         _couldKnowImpostors = couldKnowImpostors;
-        _taskNeeded = taskNeeded;
+        TaskNeeded = taskNeeded;
+        SpecialTasks = specialTasks;
     }
 }

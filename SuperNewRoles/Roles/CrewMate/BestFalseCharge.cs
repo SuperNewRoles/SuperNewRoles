@@ -7,6 +7,8 @@ using SuperNewRoles.Roles.Ability;
 using SuperNewRoles.Modules;
 using SuperNewRoles.Events;
 using SuperNewRoles.Modules.Events.Bases;
+using SuperNewRoles.SuperTrophies;
+using SuperNewRoles.Events.PCEvents;
 
 namespace SuperNewRoles.Roles.CrewMate;
 
@@ -14,7 +16,7 @@ class BestFalseCharge : RoleBase<BestFalseCharge>
 {
     public override RoleId Role { get; } = RoleId.BestFalseCharge;
     public override Color32 RoleColor { get; } = Color.white;
-    public override List<Func<AbilityBase>> Abilities { get; } = [() => new AutoExileAfterMeeting()];
+    public override List<Func<AbilityBase>> Abilities { get; } = [() => new AutoExileAfterMeeting(), () => new HideMyRoleWhenAliveAbility()];
 
     public override QuoteMod QuoteMod { get; } = QuoteMod.SuperNewRoles;
     public override RoleTypes IntroSoundType { get; } = RoleTypes.Crewmate;
@@ -36,20 +38,45 @@ public class AutoExileAfterMeeting : AbilityBase
     }
     private void OnWrapUp(WrapUpEventData data)
     {
-        PlayerControl.LocalPlayer.RpcExiledCustom();
+        if (ExPlayerControl.LocalPlayer.IsDead())
+            return;
+        ExPlayerControl.LocalPlayer.RpcCustomDeath(CustomDeathType.FalseCharge);
+    }
+    public override void DetachToLocalPlayer()
+    {
+        base.DetachToLocalPlayer();
         if (wrapUpEventListener != null)
         {
             WrapUpEvent.Instance.RemoveListener(wrapUpEventListener);
             wrapUpEventListener = null;
         }
     }
-    public override void Detach()
+}
+
+public class BestFalseChargeNotExiledGameEndTrophy : SuperTrophyRole<BestFalseChargeNotExiledGameEndTrophy>
+{
+    public override TrophiesEnum TrophyId => TrophiesEnum.BestFalseChargeNotExiledGameEnd;
+
+    public override TrophyRank TrophyRank => TrophyRank.Gold;
+
+    public override RoleId[] TargetRoles => [RoleId.BestFalseCharge];
+
+    private EventListener<DieEventData> dieEventListener;
+
+    public override void OnRegister()
     {
-        base.Detach();
-        if (wrapUpEventListener != null)
-        {
-            WrapUpEvent.Instance.RemoveListener(wrapUpEventListener);
-            wrapUpEventListener = null;
-        }
+        Complete();
+        dieEventListener = DieEvent.Instance.AddListener(OnDie);
+    }
+    private void OnDie(DieEventData data)
+    {
+        if (data.player != ExPlayerControl.LocalPlayer)
+            return;
+        InComplete();
+    }
+
+    public override void OnDetached()
+    {
+        // 役職変わってもいいから問題なし
     }
 }

@@ -18,11 +18,11 @@ class BlackCat : RoleBase<BlackCat>
     public override Color32 RoleColor { get; } = Palette.ImpostorRed;
 
     public override List<Func<AbilityBase>> Abilities { get; } = [
-        () => new MadmateAbility(new(BlackCatHasImpostorVision, BlackCatCouldUseVent, BlackCatCanKnowImpostors, BlackCatNeededTaskCount)),
+        () => new MadmateAbility(new(BlackCatHasImpostorVision, BlackCatCouldUseVent, BlackCatCanKnowImpostors, BlackCatNeededTaskCount, BlackCatIsSpecialTasks ? BlackCatSpecialTasks : null)),
         () => new RevengeExileAbility(BlackCatRevengeNotImpostorExile)
     ];
 
-    public override QuoteMod QuoteMod { get; } = QuoteMod.SuperNewRoles;
+    public override QuoteMod QuoteMod { get; } = QuoteMod.TheOtherRolesGMH;
     public override RoleTypes IntroSoundType { get; } = RoleTypes.Phantom;
     public override short IntroNum { get; } = 1;
 
@@ -35,17 +35,22 @@ class BlackCat : RoleBase<BlackCat>
     [CustomOptionBool("BlackCatRevengeNotImpostorExile", true)]
     public static bool BlackCatRevengeNotImpostorExile;
 
-    [CustomOptionBool("MadmateCouldUseVent", true)]
+    [CustomOptionBool("BlackCatCouldUseVent", true, translationName: "CanUseVent")]
     public static bool BlackCatCouldUseVent;
 
-    [CustomOptionBool("MadmateHasImpostorVision", true)]
+    [CustomOptionBool("BlackCatHasImpostorVision", true, translationName: "HasImpostorVision")]
     public static bool BlackCatHasImpostorVision;
 
-    [CustomOptionBool("MadmateCanKnowImpostors", true)]
+    [CustomOptionBool("BlackCatCanKnowImpostors", true, translationName: "MadmateCanKnowImpostors")]
     public static bool BlackCatCanKnowImpostors;
 
-    [CustomOptionInt("MadmateNeededTaskCount", 0, 10, 1, 1, parentFieldName: nameof(BlackCatCanKnowImpostors))]
+    [CustomOptionInt("BlackCatNeededTaskCount", 0, 10, 1, 1, parentFieldName: nameof(BlackCatCanKnowImpostors), translationName: "MadmateNeededTaskCount")]
     public static int BlackCatNeededTaskCount;
+
+    [CustomOptionBool("BlackCatIsSpecialTasks", false, translationName: "MadmateIsSpecialTasks")]
+    public static bool BlackCatIsSpecialTasks;
+    [CustomOptionTask("BlackCatSpecialTasks", 1, 1, 1, translationName: "MadmateSpecialTasks", parentFieldName: nameof(BlackCatIsSpecialTasks))]
+    public static TaskOptionData BlackCatSpecialTasks;
 }
 public class RevengeExileAbility : AbilityBase
 {
@@ -58,12 +63,13 @@ public class RevengeExileAbility : AbilityBase
 
     public override void AttachToLocalPlayer()
     {
-        exileEvent = ExileEvent.Instance.AddListener(OnExile);
+        exileEvent = ExileEvent.Instance.AddListener(data =>
+        {
+            if (data.exiled?.PlayerId == PlayerControl.LocalPlayer.Data.PlayerId) RandomExile();
+        });
     }
-    private void OnExile(ExileEventData data)
+    public void RandomExile()
     {
-        if (data.exiled?.PlayerId != PlayerControl.LocalPlayer.Data.PlayerId) return;
-
         // 生きているプレイヤーをリストアップ
         var alivePlayers = ExPlayerControl.ExPlayerControls
             .Where(p => p != null && p.IsAlive() && (!IsNotImpostor || !p.IsImpostor()))
