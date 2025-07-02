@@ -111,7 +111,8 @@ public abstract class WaveCannonObjectBase
                     {
                         _touchedWiseman = player;
                         RpcWaveCannonWiseMan(ability, player, GetRandomAngle());
-                        ExPlayerControl.LocalPlayer.RpcCustomDeath(player, CustomDeathType.SuperWaveCannon);
+                        var deathType = this is WaveCannonObjectBullet ? CustomDeathType.SuperWaveCannon : CustomDeathType.WaveCannon;
+                        ExPlayerControl.LocalPlayer.RpcCustomDeath(player, deathType);
                         continue;
                     }
                     ExPlayerControl.LocalPlayer.RpcCustomDeath(player, CustomDeathType.WaveCannon);
