@@ -30,5 +30,6 @@ def main():
     with open("public_key.pem","wb") as file:
         file.write(public_key)
     print("作成が完了しました")
+    return
 
 main()

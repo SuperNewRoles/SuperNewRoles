@@ -20,18 +20,15 @@ public static class Encryption
     -----END PUBLIC KEY-----";
 
     //AESキーを設定する。一度のみ呼び出すこと
-    public static void SetEncryptKey(){
+    public static void SetEncryptKey()
+    {
         Key = RandomByte(16);
         SuperNewRolesPlugin.Instance.Log.LogInfo(EncryptKey());
     }
 
     //安全な乱数を生成する
     private static byte[] RandomByte(int length){
-        byte[] randomBytes = new byte[length];
-        for(int i = 0; i < length; i++){
-            randomBytes[i] = (byte)RandomNumberGenerator.GetInt32(0,255);
-        }
-        return randomBytes;
+        return RandomNumberGenerator.GetBytes(length);
     }
 
     //AESキーをRSAで暗号化して返却する
