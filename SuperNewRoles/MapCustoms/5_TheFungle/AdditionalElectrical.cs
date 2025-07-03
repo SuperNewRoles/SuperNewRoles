@@ -76,7 +76,7 @@ public static class FungleAdditionalElectrical
                 Consoles.Add(console3);
                 ShipStatus.Instance.AllConsoles = Consoles.ToArray();
 
-                Logger.Info($"Successfully created {Consoles.Count - ShipStatus.Instance.AllConsoles.Length + 3} electrical consoles for The Fungle");
+                Logger.Info("Successfully created 3 electrical consoles for The Fungle");
             }
             catch (Exception ex)
             {
