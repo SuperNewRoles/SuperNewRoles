@@ -88,7 +88,7 @@ public static class IntroCutscenePatch
 
                 introCutscene.RoleText.text = ModTranslation.GetString(rolebase.Role.ToString());               //役職名を変更
 
-                var randomIntroNum = Random.Range(1, rolebase.IntroNum + 1); // 1からrolebase.IntroNumまでのランダムな数を取得
+                var randomIntroNum = UnityEngine.Random.Range(1, rolebase.IntroNum + 1); // 1からrolebase.IntroNumまでのランダムな数を取得
                 introCutscene.RoleBlurbText.text = ModTranslation.GetString($"{rolebase.Role}Intro{randomIntroNum}");     //イントロの簡易説明をランダムに変更
             }
 
@@ -106,7 +106,7 @@ public static class IntroCutscenePatch
                 // 生きている時は役職を自覚できないモディファイアは処理をスキップ
                 if (hideMyRoleAbility != null && hideMyRoleAbility.IsCheckTargetModifierRoleHidden(player, modifier.ModifierRole)) continue;
 
-                var randomIntroNum = Random.Range(1, modifier.IntroNum + 1);
+                var randomIntroNum = UnityEngine.Random.Range(1, modifier.IntroNum + 1);
                 introCutscene.RoleBlurbText.text += "\n" + ModHelpers.CsWithTranslation(modifier.RoleColor, $"{modifier.ModifierRole}Intro{randomIntroNum}");
             }
 
