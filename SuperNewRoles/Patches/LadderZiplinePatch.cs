@@ -101,6 +101,11 @@ public static class ZiplineConsolePatch
             __result = ZiplineCoolTimeOption;
             if (ZiplineImpostorCoolChangeOption && ExPlayerControl.LocalPlayer.IsImpostor())
                 __result = ZiplineImpostorCoolTimeOption;
+            
+            // 0秒以下の場合は0にする
+            if (__result <= 0f)
+                __result = 0f;
+            
             return false;
         }
         return true;
@@ -111,9 +116,16 @@ public static class ZiplineConsolePatch
     {
         if (ZiplineCoolChangeOption)
         {
-            __instance.CoolDown = ZiplineCoolTimeOption; // MaxCoolDownの値が使われるはずなので、これは不要になる可能性
+            float cooldownTime = ZiplineCoolTimeOption;
             if (ZiplineImpostorCoolChangeOption && ExPlayerControl.LocalPlayer.IsImpostor())
-                __instance.CoolDown = ZiplineImpostorCoolTimeOption; // 同上
+                cooldownTime = ZiplineImpostorCoolTimeOption;
+            
+            __instance.CoolDown = cooldownTime;
+            // 0秒の場合は即座に再利用可能にする
+            if (cooldownTime <= 0f)
+            {
+                __instance.CoolDown = 0f;
+            }
         }
     }
 
@@ -122,10 +134,16 @@ public static class ZiplineConsolePatch
     {
         if (ZiplineCoolChangeOption)
         {
-            // Useと同様の理由で、MaxCoolDown側で設定されていれば不要な可能性あり
-            __instance.destination.CoolDown = ZiplineCoolTimeOption;
+            float cooldownTime = ZiplineCoolTimeOption;
             if (ZiplineImpostorCoolChangeOption && ExPlayerControl.LocalPlayer.IsImpostor())
-                __instance.destination.CoolDown = ZiplineImpostorCoolTimeOption;
+                cooldownTime = ZiplineImpostorCoolTimeOption;
+            
+            __instance.destination.CoolDown = cooldownTime;
+            // 0秒の場合は即座に再利用可能にする
+            if (cooldownTime <= 0f)
+            {
+                __instance.destination.CoolDown = 0f;
+            }
         }
     }
 }
