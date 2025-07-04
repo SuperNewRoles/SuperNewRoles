@@ -115,7 +115,14 @@ public abstract class WaveCannonObjectBase
                         ExPlayerControl.LocalPlayer.RpcCustomDeath(player, deathType);
                         continue;
                     }
-                    ExPlayerControl.LocalPlayer.RpcCustomDeath(player, CustomDeathType.WaveCannon);
+                    if (player.TryGetAbility<WiseManAbility>(out var wiseManAbility2) && this is WaveCannonObjectBullet)
+                    {
+                        ExPlayerControl.LocalPlayer.RpcCustomDeath(player, CustomDeathType.SuperWaveCannon);
+                    }
+                    else
+                    {
+                        ExPlayerControl.LocalPlayer.RpcCustomDeath(player, CustomDeathType.WaveCannon);
+                    }
                 }
             }
             if (!willCheckWiseman)
