@@ -94,7 +94,7 @@ public static class MapLoader
             try
             {
                 currentOp = ship.LoadAssetAsync<GameObject>();
-                if (!currentOp.Value.IsValid())
+                if (!currentOp.IsValid())
                 {
                     Logger.Warning($"Could not import [{ship.AssetGUID}] due to invalid Async Operation. Trying again in 5 seconds... (Retry {retryCount + 1}/10)");
                     shouldRetry = true;
@@ -126,19 +126,19 @@ public static class MapLoader
             
             if (op != null)
             {
-                yield return op.Value;
+                yield return op;
                 
-                if (op.Value.Status == AsyncOperationStatus.Succeeded)
+                if (op.Status == AsyncOperationStatus.Succeeded)
                 {
                     loadSucceeded = true;
                     break;
                 }
                 else
                 {
-                    SuperNewRoles.Logger.Warning($"Could not import [{ship.AssetGUID}] due to failed Async Operation. Status: {op.Value.Status} (Retry {retryCount + 1}/10)");
-                    if (op.Value.Status == AsyncOperationStatus.Failed)
+                    SuperNewRoles.Logger.Warning($"Could not import [{ship.AssetGUID}] due to failed Async Operation. Status: {op.Status} (Retry {retryCount + 1}/10)");
+                    if (op.Status == AsyncOperationStatus.Failed)
                     {
-                        SuperNewRoles.Logger.Error($"Operation failed with error: {op.Value.OperationException}");
+                        SuperNewRoles.Logger.Error($"Operation failed with error: {op.OperationException}");
                     }
                     retryCount++;
                     if (retryCount < 10)
