@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using SuperNewRoles.Events;
+using SuperNewRoles.Events.PCEvents;
 using SuperNewRoles.Modules;
 using SuperNewRoles.Modules.Events.Bases;
 using SuperNewRoles.Roles.Ability;
@@ -122,10 +123,11 @@ public abstract class WaveCannonObjectBase
                         RpcWaveCannonWiseMan(ability, player, GetRandomAngle());
                         // 通常の波動砲は賢者の能力でキルを無効化・反射可能
                         // TryKillEventを通してから処理する
-                        var tryKillData = TryKillEvent.Invoke(ability.Player, ref player);
+                        var playerRef = player;
+                        var tryKillData = TryKillEvent.Invoke(ability.Player, ref playerRef);
                         if (tryKillData.RefSuccess)
                         {
-                            ExPlayerControl.LocalPlayer.RpcCustomDeath(player, CustomDeathType.WaveCannon);
+                            ExPlayerControl.LocalPlayer.RpcCustomDeath(playerRef, CustomDeathType.WaveCannon);
                         }
                         continue;
                     }
