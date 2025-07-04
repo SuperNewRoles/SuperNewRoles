@@ -76,26 +76,61 @@ public static class MapLoader
         }
         AssetReference ship = prefabs[(int)map];
         int retryCount = 0;
-        AsyncOperationHandle? op = null;
-        while (retryCount < 10)
+        AsyncOperationHandle<GameObject>? op = null;
+        bool loadSucceeded = false;
+        
+        while (retryCount < 10 && !loadSucceeded)
         {
-            if (ship.Asset != null) break;
+            if (ship.Asset != null) 
+            {
+                loadSucceeded = true;
+                break;
+            }
+            
+            bool shouldRetry = false;
+            Exception loadException = null;
+            AsyncOperationHandle<GameObject>? currentOp = null;
             
             try
             {
-                op = ship.LoadAssetAsync<GameObject>();
-                if (!op.Value.IsValid())
+                currentOp = ship.LoadAssetAsync<GameObject>();
+                if (!currentOp.Value.IsValid())
                 {
                     Logger.Warning($"Could not import [{ship.AssetGUID}] due to invalid Async Operation. Trying again in 5 seconds... (Retry {retryCount + 1}/10)");
-                    yield return new WaitForSeconds(5);
-                    retryCount++;
-                    continue;
+                    shouldRetry = true;
                 }
-                
+                else
+                {
+                    op = currentOp;
+                }
+            }
+            catch (Exception ex)
+            {
+                loadException = ex;
+                shouldRetry = true;
+            }
+            
+            if (shouldRetry)
+            {
+                if (loadException != null)
+                {
+                    SuperNewRoles.Logger.Error($"Exception during asset loading: {loadException}");
+                }
+                retryCount++;
+                if (retryCount < 10)
+                {
+                    yield return new WaitForSeconds(loadException != null ? 1 : 5);
+                }
+                continue;
+            }
+            
+            if (op != null)
+            {
                 yield return op.Value;
                 
                 if (op.Value.Status == AsyncOperationStatus.Succeeded)
                 {
+                    loadSucceeded = true;
                     break;
                 }
                 else
@@ -106,14 +141,11 @@ public static class MapLoader
                         SuperNewRoles.Logger.Error($"Operation failed with error: {op.Value.OperationException}");
                     }
                     retryCount++;
-                    yield return new WaitForSeconds(1);
+                    if (retryCount < 10)
+                    {
+                        yield return new WaitForSeconds(1);
+                    }
                 }
-            }
-            catch (Exception ex)
-            {
-                SuperNewRoles.Logger.Error($"Exception during asset loading: {ex}");
-                retryCount++;
-                yield return new WaitForSeconds(1);
             }
         }
         if (ship.Asset == null)
