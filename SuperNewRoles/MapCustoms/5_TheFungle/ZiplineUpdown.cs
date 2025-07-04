@@ -1,5 +1,7 @@
 using SuperNewRoles.CustomOptions.Categories;
 using SuperNewRoles.Modules;
+using UnityEngine;
+using static SuperNewRoles.CustomOptions.Categories.MapSettingOptions;
 
 namespace SuperNewRoles.MapCustoms;
 public static class ZiplineUpdown
@@ -30,10 +32,55 @@ public static class ZiplineUpdown
             fungleShipStatus.Zipline.downTravelTime = MapEditSettingsOptions.TheFungleZiplineDownTime;
             
             Logger.Info($"Successfully set zipline times: up={MapEditSettingsOptions.TheFungleZiplineUpTime}s, down={MapEditSettingsOptions.TheFungleZiplineDownTime}s");
+            
+            // Set initial cooldown values for zipline consoles if cooldown change is enabled
+            if (ZiplineCoolChangeOption)
+            {
+                SetZiplineCooldowns();
+            }
         }
         catch (System.Exception ex)
         {
             Logger.Error($"Error setting zipline travel times: {ex}");
+        }
+    }
+
+    private static void SetZiplineCooldowns()
+    {
+        try
+        {
+            var ziplineConsoles = GameObject.FindObjectsOfType<ZiplineConsole>();
+            if (ziplineConsoles == null || ziplineConsoles.Length == 0)
+            {
+                Logger.Warning("No zipline consoles found to set cooldowns");
+                return;
+            }
+
+            float cooldownTime = ZiplineCoolTimeOption;
+            if (ZiplineImpostorCoolChangeOption && ExPlayerControl.LocalPlayer.IsImpostor())
+                cooldownTime = ZiplineImpostorCoolTimeOption;
+
+            // 0秒以下の場合は0にする
+            if (cooldownTime <= 0f)
+                cooldownTime = 0f;
+
+            foreach (var ziplineConsole in ziplineConsoles)
+            {
+                if (ziplineConsole != null)
+                {
+                    ziplineConsole.CoolDown = cooldownTime;
+                    if (ziplineConsole.destination != null)
+                    {
+                        ziplineConsole.destination.CoolDown = cooldownTime;
+                    }
+                }
+            }
+
+            Logger.Info($"Successfully set zipline cooldowns: {cooldownTime}s for {ziplineConsoles.Length} zipline consoles");
+        }
+        catch (System.Exception ex)
+        {
+            Logger.Error($"Error setting zipline cooldowns: {ex}");
         }
     }
 }
