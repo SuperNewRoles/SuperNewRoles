@@ -11,5 +11,5 @@ public class WaveCannonObjectBullet : WaveCannonObjectTank
     {
 
     }
-    public override bool EnabledWiseMan => true;
+    public override bool EnabledWiseMan => false;
 }

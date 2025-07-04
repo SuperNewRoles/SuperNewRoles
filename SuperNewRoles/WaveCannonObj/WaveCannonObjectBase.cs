@@ -107,22 +107,31 @@ public abstract class WaveCannonObjectBase
                     if (player.PlayerId == ability.Player.PlayerId) continue;
                     if (!collider.IsTouching(player.Player.Collider)) continue;
                     if (player == _touchedWiseman) continue;
+                    
+                    // Bulletタイプの波動砲の場合、賢者の能力を貫通する
+                    if (this is WaveCannonObjectBullet)
+                    {
+                        ExPlayerControl.LocalPlayer.RpcCustomDeath(player, CustomDeathType.SuperWaveCannon);
+                        continue;
+                    }
+                    
+                    // 通常の波動砲の場合、賢者の能力チェックを行う
                     if (EnabledWiseMan && !checkedWiseman && _touchedWiseman == null && player.TryGetAbility<WiseManAbility>(out var wiseManAbility) && wiseManAbility.Active && !wiseManAbility.Guarded)
                     {
                         _touchedWiseman = player;
                         RpcWaveCannonWiseMan(ability, player, GetRandomAngle());
-                        var deathType = this is WaveCannonObjectBullet ? CustomDeathType.SuperWaveCannon : CustomDeathType.WaveCannon;
-                        ExPlayerControl.LocalPlayer.RpcCustomDeath(player, deathType);
+                        // 通常の波動砲は賢者の能力でキルを無効化・反射可能
+                        // TryKillEventを通してから処理する
+                        var tryKillData = TryKillEvent.Invoke(ability.Player, ref player);
+                        if (tryKillData.RefSuccess)
+                        {
+                            ExPlayerControl.LocalPlayer.RpcCustomDeath(player, CustomDeathType.WaveCannon);
+                        }
                         continue;
                     }
-                    if (player.TryGetAbility<WiseManAbility>(out var wiseManAbility2) && this is WaveCannonObjectBullet)
-                    {
-                        ExPlayerControl.LocalPlayer.RpcCustomDeath(player, CustomDeathType.SuperWaveCannon);
-                    }
-                    else
-                    {
-                        ExPlayerControl.LocalPlayer.RpcCustomDeath(player, CustomDeathType.WaveCannon);
-                    }
+                    
+                    // 通常の波動砲で賢者以外、または賢者の能力が無効な場合
+                    ExPlayerControl.LocalPlayer.RpcCustomDeath(player, CustomDeathType.WaveCannon);
                 }
             }
             if (!willCheckWiseman)
