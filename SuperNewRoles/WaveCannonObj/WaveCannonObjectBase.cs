@@ -119,14 +119,15 @@ public abstract class WaveCannonObjectBase
                     // 通常の波動砲の場合、賢者に対してはTryKillEventを通して処理する
                     if (EnabledWiseMan && !checkedWiseman && _touchedWiseman == null && player.TryGetAbility<WiseManAbility>(out var wiseManAbility))
                     {
-                        // 賢者の能力がアクティブかつガードされていない場合のみエフェクトを表示
+                        // 賢者の能力がアクティブかつガードされていない場合、エフェクトを表示して攻撃を防ぐ
                         if (wiseManAbility.Active && !wiseManAbility.Guarded)
                         {
                             _touchedWiseman = player;
                             RpcWaveCannonWiseMan(ability, player, GetRandomAngle());
+                            continue;
                         }
                         
-                        // 賢者に対しては能力の状態に関係なく、常にTryKillEventを呼び出す
+                        // 賢者の能力がアクティブでない場合のみTryKillEventを呼び出す
                         var playerRef = player;
                         var tryKillData = TryKillEvent.Invoke(ability.Player, ref playerRef);
                         if (tryKillData.RefSuccess)
