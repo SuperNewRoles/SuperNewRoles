@@ -36,7 +36,11 @@ public static class ZiplineUpdown
             // Set initial cooldown values for zipline consoles if cooldown change is enabled
             if (ZiplineCoolChangeOption)
             {
+                // 即座に設定
                 SetZiplineCooldowns();
+                
+                // 少し遅延してもう一度設定（確実にするため）
+                new LateTask(() => SetZiplineCooldowns(), 0.5f, "SetZiplineCooldowns");
             }
         }
         catch (System.Exception ex)

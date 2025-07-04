@@ -120,11 +120,19 @@ public static class ZiplineConsolePatch
             if (ZiplineImpostorCoolChangeOption && ExPlayerControl.LocalPlayer.IsImpostor())
                 cooldownTime = ZiplineImpostorCoolTimeOption;
             
-            __instance.CoolDown = cooldownTime;
             // 0秒の場合は即座に再利用可能にする
             if (cooldownTime <= 0f)
             {
                 __instance.CoolDown = 0f;
+                // 次のフレームで再度0に設定（確実にするため）
+                new LateTask(() => {
+                    if (__instance != null)
+                        __instance.CoolDown = 0f;
+                }, 0.01f, "No Name Task");
+            }
+            else
+            {
+                __instance.CoolDown = cooldownTime;
             }
         }
     }
@@ -138,11 +146,19 @@ public static class ZiplineConsolePatch
             if (ZiplineImpostorCoolChangeOption && ExPlayerControl.LocalPlayer.IsImpostor())
                 cooldownTime = ZiplineImpostorCoolTimeOption;
             
-            __instance.destination.CoolDown = cooldownTime;
             // 0秒の場合は即座に再利用可能にする
             if (cooldownTime <= 0f)
             {
                 __instance.destination.CoolDown = 0f;
+                // 次のフレームで再度0に設定（確実にするため）
+                new LateTask(() => {
+                    if (__instance != null && __instance.destination != null)
+                        __instance.destination.CoolDown = 0f;
+                }, 0.01f, "No Name Task");
+            }
+            else
+            {
+                __instance.destination.CoolDown = cooldownTime;
             }
         }
     }

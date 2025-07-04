@@ -15,26 +15,41 @@ public static class FungleAdditionalElectrical
     {
         if (!MapCustomHandler.IsMapCustom(MapCustomHandler.MapCustomId.TheFungle) ||
             !MapEditSettingsOptions.TheFunglePowerOutageSabotage)
+        {
+            Logger.Info("The Fungle electrical system creation skipped: not on The Fungle map or option disabled");
             return;
+        }
 
         FungleShipStatus fungleShipStatus = ShipStatus.Instance.TryCast<FungleShipStatus>();
         if (fungleShipStatus == null)
-            return;
-
-        // 電気系統の初期化を確実に行う
-        SwitchSystem system = new();
-        fungleShipStatus.Systems[SystemTypes.Electrical] = system.TryCast<ISystemType>();
-        var sabotageSystem = fungleShipStatus.Systems[SystemTypes.Sabotage].TryCast<SabotageSystemType>();
-        if (sabotageSystem != null)
         {
-            sabotageSystem.specials.Add(system.TryCast<IActivatable>());
+            Logger.Warning("Failed to get FungleShipStatus for electrical system");
+            return;
+        }
+
+        try
+        {
+            // 電気系統の初期化を確実に行う
+            SwitchSystem system = new();
+            fungleShipStatus.Systems[SystemTypes.Electrical] = system.TryCast<ISystemType>();
+            var sabotageSystem = fungleShipStatus.Systems[SystemTypes.Sabotage].TryCast<SabotageSystemType>();
+            if (sabotageSystem != null)
+            {
+                sabotageSystem.specials.Add(system.TryCast<IActivatable>());
+            }
+            
+            Logger.Info("Successfully initialized electrical system for The Fungle");
+        }
+        catch (Exception ex)
+        {
+            Logger.Error($"Error initializing electrical system: {ex}");
         }
 
         MapLoader.LoadMap(MapNames.Airship, (ship) =>
         {
             if (ship == null)
             {
-                Logger.Info("Failed to load Airship map for electrical system");
+                Logger.Warning("Failed to load Airship map for electrical system");
                 return;
             }
 
@@ -47,13 +62,18 @@ public static class FungleAdditionalElectrical
                 {
                     Tasks.Add(fixLightsTask);
                     ShipStatus.Instance.SpecialTasks = new(Tasks.ToArray());
+                    Logger.Info("Successfully added FixLights task to The Fungle");
+                }
+                else
+                {
+                    Logger.Warning("FixLights task not found in Airship map");
                 }
 
                 // 電気修理コンソールの作成
                 var electricalPrefab = ship.transform.FindChild("Storage/task_lightssabotage (cargo)");
                 if (electricalPrefab == null)
                 {
-                    Logger.Info("Failed to find electrical prefab from Airship");
+                    Logger.Warning("Failed to find electrical prefab from Airship");
                     return;
                 }
 
@@ -77,6 +97,7 @@ public static class FungleAdditionalElectrical
                 ShipStatus.Instance.AllConsoles = Consoles.ToArray();
 
                 Logger.Info("Successfully created 3 electrical consoles for The Fungle");
+                Logger.Info($"Current console count: {ShipStatus.Instance.AllConsoles.Length}");
             }
             catch (Exception ex)
             {
