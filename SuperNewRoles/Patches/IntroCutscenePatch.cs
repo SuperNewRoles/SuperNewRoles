@@ -222,7 +222,7 @@ public static class IntroCutscenePatch
             if (moddedCosmetics != null)
             {
                 moddedCosmetics.SetActive(false);
-                new LateTask(() => moddedCosmetics.SetActive(true), 0.1f);
+                moddedCosmetics.SetActive(true);
             }
         }
         NameText.RegisterNameTextUpdateEvent();
