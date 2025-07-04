@@ -188,7 +188,7 @@ public abstract class WaveCannonObjectBase
             obj.OnAnimationShoot();
         obj.isShootingStarted = true;
         obj.checkedWiseman = true;
-        obj.OnAnimationWiseMan(Mathf.Abs(ability.Player.transform.position.x - wiseMan.transform.position.x) - 0.8f, wiseMan.transform.position, angle);
+        obj.OnAnimationWiseMan(Mathf.Abs(ability.Player.transform.position.x - wiseMan.transform.position.x) - 1.8f, wiseMan.transform.position, angle);
 
         RoleEffectAnimation roleEffectAnimation = GameObject.Instantiate<RoleEffectAnimation>(DestroyableSingleton<RoleManager>.Instance.protectAnim, wiseMan.Player.gameObject.transform);
         roleEffectAnimation.SetMaskLayerBasedOnWhoShouldSee(shouldBeVisible: true);
