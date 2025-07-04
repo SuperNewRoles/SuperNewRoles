@@ -2,6 +2,7 @@ using System.Collections;
 using System.Linq;
 using BepInEx.Unity.IL2CPP.Utils.Collections;
 using HarmonyLib;
+using SuperNewRoles.CustomCosmetics;
 using SuperNewRoles.CustomCosmetics.CosmeticsPlayer;
 using SuperNewRoles.CustomCosmetics.UI;
 using SuperNewRoles.CustomOptions.Categories;
