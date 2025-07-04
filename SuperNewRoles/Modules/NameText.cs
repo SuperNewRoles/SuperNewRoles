@@ -169,9 +169,13 @@ public static class NameText
     {
         if (player == null || player.Player == null)
             return;
+        
+        // バスカーの偽装死時は他のプレイヤーの役職を見えないようにする
+        bool isBuskerFakeDeath = ExPlayerControl.LocalPlayer.DeathType == CustomDeathType.BuskerFakeDeath;
+        
         bool visiable = player.Player.Visible &&
                         (ExPlayerControl.LocalPlayer.PlayerId == player.PlayerId ||
-                        (ExPlayerControl.LocalPlayer.IsDead() &&
+                        (ExPlayerControl.LocalPlayer.IsDead() && !isBuskerFakeDeath &&
                         (!GameSettingOptions.HideGhostRoles || (ExPlayerControl.LocalPlayer.IsImpostor() && GameSettingOptions.ShowGhostRolesToImpostor)) &&
                         (LocalHideRoleOnGhostAbility == null || !LocalHideRoleOnGhostAbility.IsHideRole(player))
                         ));
