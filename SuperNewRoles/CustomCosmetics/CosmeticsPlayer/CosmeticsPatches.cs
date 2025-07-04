@@ -197,8 +197,20 @@ public static class PoolablePlayer_UpdateFromEitherPlayerDataOrCache
         if (pData.Object == null) return;
         CustomCosmeticsLayer customCosmeticsLayer = CustomCosmeticsLayers.ExistsOrInitialize(__instance.cosmetics);
         CustomCosmeticsLayer pcLayer = CustomCosmeticsLayers.ExistsOrInitialize(pData.Object.cosmetics);
-        customCosmeticsLayer?.hat2?.SetHat(pcLayer.hat2.DefaultHat?.ProdId ?? "", pData.DefaultOutfit.ColorId);
-        customCosmeticsLayer?.visor2?.SetVisor(pcLayer.visor2.DefaultVisor?.ProdId ?? "", pData.DefaultOutfit.ColorId);
+        
+        // Hat2/Visor2の設定時、DefaultHat/DefaultVisorがnullの場合はCustomCosmeticsSaverから取得
+        string hat2Id = pcLayer.hat2.DefaultHat?.ProdId;
+        if (string.IsNullOrEmpty(hat2Id) && pData.Object == PlayerControl.LocalPlayer)
+            hat2Id = CustomCosmeticsSaver.CurrentHat2Id;
+        if (!string.IsNullOrEmpty(hat2Id))
+            customCosmeticsLayer?.hat2?.SetHat(hat2Id, pData.DefaultOutfit.ColorId);
+        
+        string visor2Id = pcLayer.visor2.DefaultVisor?.ProdId;
+        if (string.IsNullOrEmpty(visor2Id) && pData.Object == PlayerControl.LocalPlayer)
+            visor2Id = CustomCosmeticsSaver.CurrentVisor2Id;
+        if (!string.IsNullOrEmpty(visor2Id))
+            customCosmeticsLayer?.visor2?.SetVisor(visor2Id, pData.DefaultOutfit.ColorId);
+        
         customCosmeticsLayer?.hat2?.SetMaskType(maskType);
         customCosmeticsLayer?.visor2?.SetMaskType(maskType);
     }
@@ -211,8 +223,20 @@ public static class PoolablePlayer_UpdateFromPlayerData
         if (pData.Object == null) return;
         CustomCosmeticsLayer customCosmeticsLayer = CustomCosmeticsLayers.ExistsOrInitialize(__instance.cosmetics);
         CustomCosmeticsLayer pcLayer = CustomCosmeticsLayers.ExistsOrInitialize(pData.Object.cosmetics);
-        customCosmeticsLayer?.hat2?.SetHat(pcLayer.hat2.DefaultHat?.ProdId ?? "", pData.DefaultOutfit.ColorId);
-        customCosmeticsLayer?.visor2?.SetVisor(pcLayer.visor2.DefaultVisor?.ProdId ?? "", pData.DefaultOutfit.ColorId);
+        
+        // Hat2/Visor2の設定時、DefaultHat/DefaultVisorがnullの場合はCustomCosmeticsSaverから取得
+        string hat2Id = pcLayer.hat2.DefaultHat?.ProdId;
+        if (string.IsNullOrEmpty(hat2Id) && pData.Object == PlayerControl.LocalPlayer)
+            hat2Id = CustomCosmeticsSaver.CurrentHat2Id;
+        if (!string.IsNullOrEmpty(hat2Id))
+            customCosmeticsLayer?.hat2?.SetHat(hat2Id, pData.DefaultOutfit.ColorId);
+        
+        string visor2Id = pcLayer.visor2.DefaultVisor?.ProdId;
+        if (string.IsNullOrEmpty(visor2Id) && pData.Object == PlayerControl.LocalPlayer)
+            visor2Id = CustomCosmeticsSaver.CurrentVisor2Id;
+        if (!string.IsNullOrEmpty(visor2Id))
+            customCosmeticsLayer?.visor2?.SetVisor(visor2Id, pData.DefaultOutfit.ColorId);
+        
         customCosmeticsLayer?.hat2?.SetMaskType(maskType);
         customCosmeticsLayer?.visor2?.SetMaskType(maskType);
     }
@@ -354,8 +378,19 @@ public static class MeetingHud_PopulateButtons
             CustomCosmeticsLayer customCosmeticsLayer = CustomCosmeticsLayers.ExistsOrInitialize(player.cosmetics);
             CustomCosmeticsLayer pcLayer = CustomCosmeticsLayers.ExistsOrInitialize(player.cosmetics);
             Logger.Info($"{player.Data.PlayerId} : {pcLayer.hat2.DefaultHat?.ProdId} {pcLayer.visor2.DefaultVisor?.ProdId}");
-            customCosmeticsLayer?.hat2?.SetHat(pcLayer.hat2.DefaultHat?.ProdId ?? "", player.Data.DefaultOutfit.ColorId);
-            customCosmeticsLayer?.visor2?.SetVisor(pcLayer.visor2.DefaultVisor?.ProdId ?? "", player.Data.DefaultOutfit.ColorId);
+            
+            // Hat2/Visor2の設定時、DefaultHat/DefaultVisorがnullの場合はCustomCosmeticsSaverから取得
+            string hat2Id = pcLayer.hat2.DefaultHat?.ProdId;
+            if (string.IsNullOrEmpty(hat2Id) && player == PlayerControl.LocalPlayer)
+                hat2Id = CustomCosmeticsSaver.CurrentHat2Id;
+            if (!string.IsNullOrEmpty(hat2Id))
+                customCosmeticsLayer?.hat2?.SetHat(hat2Id, player.Data.DefaultOutfit.ColorId);
+            
+            string visor2Id = pcLayer.visor2.DefaultVisor?.ProdId;
+            if (string.IsNullOrEmpty(visor2Id) && player == PlayerControl.LocalPlayer)
+                visor2Id = CustomCosmeticsSaver.CurrentVisor2Id;
+            if (!string.IsNullOrEmpty(visor2Id))
+                customCosmeticsLayer?.visor2?.SetVisor(visor2Id, player.Data.DefaultOutfit.ColorId);
             
             // Hat2/Visor2の表示を確実に有効化
             if (customCosmeticsLayer?.hat2 != null)
