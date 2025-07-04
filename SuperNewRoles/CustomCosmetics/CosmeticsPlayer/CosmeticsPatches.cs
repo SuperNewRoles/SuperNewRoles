@@ -28,26 +28,22 @@ public static class PlayerControl_Start
         customCosmeticsLayer?.hat2?.SetLocalPlayer(true);
         customCosmeticsLayer?.visor1?.SetLocalPlayer(true);
         customCosmeticsLayer?.visor2?.SetLocalPlayer(true);
-        new LateTask(() =>
-        {
-            PlayerControlRpcExtensions.RpcCustomSetCosmetics(PlayerControl.LocalPlayer.PlayerId, CostumeTabType.Hat2, CustomCosmeticsSaver.CurrentHat2Id, (PlayerControl.LocalPlayer.Data?.DefaultOutfit?.ColorId).GetValueOrDefault());
-            PlayerControlRpcExtensions.RpcCustomSetCosmetics(PlayerControl.LocalPlayer.PlayerId, CostumeTabType.Visor2, CustomCosmeticsSaver.CurrentVisor2Id, (PlayerControl.LocalPlayer.Data?.DefaultOutfit?.ColorId).GetValueOrDefault());
-        }, 0.1f, "SetHat2");
+        
+        // 遅延を削除し、即座に設定
+        PlayerControlRpcExtensions.RpcCustomSetCosmetics(PlayerControl.LocalPlayer.PlayerId, CostumeTabType.Hat2, CustomCosmeticsSaver.CurrentHat2Id, (PlayerControl.LocalPlayer.Data?.DefaultOutfit?.ColorId).GetValueOrDefault());
+        PlayerControlRpcExtensions.RpcCustomSetCosmetics(PlayerControl.LocalPlayer.PlayerId, CostumeTabType.Visor2, CustomCosmeticsSaver.CurrentVisor2Id, (PlayerControl.LocalPlayer.Data?.DefaultOutfit?.ColorId).GetValueOrDefault());
     }
 }
 [HarmonyPatch(typeof(AmongUsClient), nameof(AmongUsClient.OnPlayerJoined))]
 public static class AmongUsClient_OnPlayerJoined
 {
-    private static DelayTask delayTask;
     public static void Postfix(InnerNet.ClientData data)
     {
         if (PlayerControl.LocalPlayer != null)
         {
-            DelayTask.UpdateOrAdd(() =>
-            {
-                PlayerControlRpcExtensions.RpcCustomSetCosmetics(PlayerControl.LocalPlayer.PlayerId, CostumeTabType.Hat2, CustomCosmeticsSaver.CurrentHat2Id, (PlayerControl.LocalPlayer.Data?.DefaultOutfit?.ColorId).GetValueOrDefault());
-                PlayerControlRpcExtensions.RpcCustomSetCosmetics(PlayerControl.LocalPlayer.PlayerId, CostumeTabType.Visor2, CustomCosmeticsSaver.CurrentVisor2Id, (PlayerControl.LocalPlayer.Data?.DefaultOutfit?.ColorId).GetValueOrDefault());
-            }, 0.15f, ref delayTask, "SetHat2");
+            // 遅延を削除し、即座に設定
+            PlayerControlRpcExtensions.RpcCustomSetCosmetics(PlayerControl.LocalPlayer.PlayerId, CostumeTabType.Hat2, CustomCosmeticsSaver.CurrentHat2Id, (PlayerControl.LocalPlayer.Data?.DefaultOutfit?.ColorId).GetValueOrDefault());
+            PlayerControlRpcExtensions.RpcCustomSetCosmetics(PlayerControl.LocalPlayer.PlayerId, CostumeTabType.Visor2, CustomCosmeticsSaver.CurrentVisor2Id, (PlayerControl.LocalPlayer.Data?.DefaultOutfit?.ColorId).GetValueOrDefault());
         }
     }
 }
@@ -116,11 +112,9 @@ public static class PlayerControl_ClientInitialize
         // ローカルプレイヤーのみにスキンを設定
         if (__instance == PlayerControl.LocalPlayer)
         {
-            new LateTask(() =>
-            {
-                PlayerControlRpcExtensions.RpcCustomSetCosmetics(__instance.PlayerId, CostumeTabType.Hat2, CustomCosmeticsSaver.CurrentHat2Id, __instance.CurrentOutfit.ColorId);
-                PlayerControlRpcExtensions.RpcCustomSetCosmetics(__instance.PlayerId, CostumeTabType.Visor2, CustomCosmeticsSaver.CurrentVisor2Id, __instance.CurrentOutfit.ColorId);
-            }, 0.05f, "PlayerControl_ClientInitialize");
+            // 遅延を削除し、即座に設定
+            PlayerControlRpcExtensions.RpcCustomSetCosmetics(__instance.PlayerId, CostumeTabType.Hat2, CustomCosmeticsSaver.CurrentHat2Id, __instance.CurrentOutfit.ColorId);
+            PlayerControlRpcExtensions.RpcCustomSetCosmetics(__instance.PlayerId, CostumeTabType.Visor2, CustomCosmeticsSaver.CurrentVisor2Id, __instance.CurrentOutfit.ColorId);
         }
 
         customCosmeticsLayer?.hat1?.SetLocalPlayer(__instance == PlayerControl.LocalPlayer);
@@ -362,6 +356,19 @@ public static class MeetingHud_PopulateButtons
             Logger.Info($"{player.Data.PlayerId} : {pcLayer.hat2.DefaultHat?.ProdId} {pcLayer.visor2.DefaultVisor?.ProdId}");
             customCosmeticsLayer?.hat2?.SetHat(pcLayer.hat2.DefaultHat?.ProdId ?? "", player.Data.DefaultOutfit.ColorId);
             customCosmeticsLayer?.visor2?.SetVisor(pcLayer.visor2.DefaultVisor?.ProdId ?? "", player.Data.DefaultOutfit.ColorId);
+            
+            // Hat2/Visor2の表示を確実に有効化
+            if (customCosmeticsLayer?.hat2 != null)
+            {
+                customCosmeticsLayer.hat2.Visible = true;
+                customCosmeticsLayer.hat2.gameObject.SetActive(true);
+            }
+            if (customCosmeticsLayer?.visor2 != null)
+            {
+                customCosmeticsLayer.visor2.Visible = true;
+                customCosmeticsLayer.visor2.gameObject.SetActive(true);
+            }
+            
             // fix mask
             customCosmeticsLayer.visor1.Image.maskInteraction = SpriteMaskInteraction.VisibleInsideMask;
             customCosmeticsLayer.visor2.Image.maskInteraction = SpriteMaskInteraction.VisibleInsideMask;
