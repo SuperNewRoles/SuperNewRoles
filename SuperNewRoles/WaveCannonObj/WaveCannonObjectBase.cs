@@ -116,13 +116,17 @@ public abstract class WaveCannonObjectBase
                         continue;
                     }
                     
-                    // 通常の波動砲の場合、賢者の能力チェックを行う
-                    if (EnabledWiseMan && !checkedWiseman && _touchedWiseman == null && player.TryGetAbility<WiseManAbility>(out var wiseManAbility) && wiseManAbility.Active && !wiseManAbility.Guarded)
+                    // 通常の波動砲の場合、賢者に対してはTryKillEventを通して処理する
+                    if (EnabledWiseMan && !checkedWiseman && _touchedWiseman == null && player.TryGetAbility<WiseManAbility>(out var wiseManAbility))
                     {
-                        _touchedWiseman = player;
-                        RpcWaveCannonWiseMan(ability, player, GetRandomAngle());
-                        // 通常の波動砲は賢者の能力でキルを無効化・反射可能
-                        // TryKillEventを通してから処理する
+                        // 賢者の能力がアクティブかつガードされていない場合のみエフェクトを表示
+                        if (wiseManAbility.Active && !wiseManAbility.Guarded)
+                        {
+                            _touchedWiseman = player;
+                            RpcWaveCannonWiseMan(ability, player, GetRandomAngle());
+                        }
+                        
+                        // 賢者に対しては能力の状態に関係なく、常にTryKillEventを呼び出す
                         var playerRef = player;
                         var tryKillData = TryKillEvent.Invoke(ability.Player, ref playerRef);
                         if (tryKillData.RefSuccess)
@@ -132,7 +136,7 @@ public abstract class WaveCannonObjectBase
                         continue;
                     }
                     
-                    // 通常の波動砲で賢者以外、または賢者の能力が無効な場合
+                    // 通常の波動砲で賢者以外の場合
                     ExPlayerControl.LocalPlayer.RpcCustomDeath(player, CustomDeathType.WaveCannon);
                 }
             }
