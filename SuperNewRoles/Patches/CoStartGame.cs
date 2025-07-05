@@ -3,6 +3,7 @@ using SuperNewRoles.CustomObject;
 using SuperNewRoles.Modules;
 using SuperNewRoles.Modules.Events.Bases;
 using SuperNewRoles.SuperTrophies;
+using SuperNewRoles.Mode;
 
 namespace SuperNewRoles.Patches;
 
@@ -17,5 +18,6 @@ class AmongUsClientStartPatch
         SuperTrophyManager.CoStartGame();
         Garbage.ClearAndReload();
         CustomKillAnimationManager.ClearCurrentCustomKillAnimation();
+        ModeManager.OnGameStart();
     }
 }

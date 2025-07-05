@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using HarmonyLib;
 using SuperNewRoles.Modules;
 using SuperNewRoles.Modules.Events.Bases;
+using SuperNewRoles.Mode;
 using UnityEngine;
 
 namespace SuperNewRoles.Events.PCEvents;
@@ -70,5 +71,11 @@ public static class MurderPatch
     public static void Postfix(PlayerControl __instance, PlayerControl target, MurderResultFlags resultFlags)
     {
         MurderEvent.Invoke(__instance, target, resultFlags);
+
+        // ModeManagerに通知
+        if (resultFlags.HasFlag(MurderResultFlags.Succeeded))
+        {
+            ModeManager.OnPlayerDeath(target, __instance);
+        }
     }
 }

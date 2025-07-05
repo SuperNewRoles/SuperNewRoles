@@ -13,8 +13,8 @@ public enum DisplayModeId
 public enum ModeId
 {
     Default,
-    SuperHostRoles
-    //BattleRoyal,
+    SuperHostRoles,
+    BattleRoyal,
 }
 
 public static class DisplayMode
@@ -32,8 +32,8 @@ public static class DisplayMode
                 return DisplayModeId.Default;
             case ModeId.SuperHostRoles: // FIXME SHR実装時 想定通りの挙動をしない記述になっている
                 return DisplayModeId.SuperHostRolesOnly;
-            //case ModeId.BattleRoyal:
-            //    return DisplayModeId.BattleRoyal;
+            case ModeId.BattleRoyal:
+                return DisplayModeId.BattleRoyal;
             default:
                 return DisplayModeId.Default;
         }

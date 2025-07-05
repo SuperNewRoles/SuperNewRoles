@@ -5,6 +5,8 @@ using SuperNewRoles.Events;
 using SuperNewRoles.Modules;
 using SuperNewRoles.Modules.Events.Bases;
 using SuperNewRoles.Roles.Ability;
+using SuperNewRoles.Mode;
+using SuperNewRoles.CustomOptions.Categories;
 using UnityEngine;
 using UnityEngine.PlayerLoop;
 
@@ -107,6 +109,34 @@ public abstract class WaveCannonObjectBase
                     if (player.PlayerId == ability.Player.PlayerId) continue;
                     if (!collider.IsTouching(player.Player.Collider)) continue;
                     if (player == _touchedWiseman) continue;
+
+                    // フレンドリーファイアのチェック
+                    if (Categories.ModeOption == ModeId.BattleRoyal &&
+                        Categories.WaveCannonBattleRoyalTeamMode &&
+                        !ability.friendlyFire &&
+                        BattleRoyalMode.Instance != null &&
+                        BattleRoyalMode.Instance.IsOnSameTeam(ability.Player.Player, player.Player))
+                    {
+                        continue; // 同じチームの味方は攻撃しない
+                    }
+
+                    if (Categories.ModeOption != ModeId.BattleRoyal &&
+                        !ability.friendlyFire)
+                    {
+                        if (ability.Player.IsImpostor() && player.IsImpostor())
+                        {
+                            continue;
+                        }
+                        else if (ability.Player.IsCrewmate() && player.IsCrewmate())
+                        {
+                            continue;
+                        }
+                        else if (ability.Player.IsJackal() && player.IsJackal())
+                        {
+                            continue;
+                        }
+                    }
+
                     if (EnabledWiseMan && !checkedWiseman && _touchedWiseman == null && player.TryGetAbility<WiseManAbility>(out var wiseManAbility) && wiseManAbility.Active && !wiseManAbility.Guarded)
                     {
                         _touchedWiseman = player;
