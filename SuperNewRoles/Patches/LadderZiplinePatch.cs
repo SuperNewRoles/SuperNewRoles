@@ -180,8 +180,8 @@ public static class ZiplineConsolePatch
         }
     }
 
-    [HarmonyPatch(nameof(ZiplineConsole.FixedUpdate)), HarmonyPostfix]
-    public static void ZiplineConsoleFixedUpdatePostfix(ZiplineConsole __instance)
+    [HarmonyPatch(nameof(ZiplineConsole.Update)), HarmonyPostfix]
+    public static void ZiplineConsoleUpdatePostfix(ZiplineConsole __instance)
     {
         // カスタムクールダウンが有効な場合のみ処理
         if (!ZiplineCoolChangeOption) return;
