@@ -34,7 +34,8 @@ class Vampire : RoleBase<Vampire>
             vampireCannotFixSabotage: VampireCannotFixSabotage,
             vampireCannotUseDevice: VampireCannotUseDevice,
             vampireDependentHasReverseVision: VampireDependentHasReverseVision,
-            vampireDependentHasImpostorVisionInLightsoff: VampireDependentHasImpostorVisionInLightsoff
+            vampireDependentHasImpostorVisionInLightsoff: VampireDependentHasImpostorVisionInLightsoff,
+            vampireNoDeathOnVitals: VampireNoDeathOnVitals
         )
     )];
 
@@ -46,7 +47,7 @@ class Vampire : RoleBase<Vampire>
     public override WinnerTeamType WinnerTeam => WinnerTeamType.Impostor;
     public override TeamTag TeamTag => TeamTag.Impostor;
     public override RoleTag[] RoleTags => new RoleTag[] { RoleTag.SpecialKiller };
-    public override RoleOptionMenuType OptionTeam => RoleOptionMenuType.Hidden;
+    public override RoleOptionMenuType OptionTeam => RoleOptionMenuType.Impostor;
 
     [CustomOptionFloat("VampireAbsorptionCooldown", 2.5f, 60f, 2.5f, 30f)]
     public static float VampireAbsorptionCooldown;
@@ -92,7 +93,7 @@ class Vampire : RoleBase<Vampire>
 }
 public record VampireNightFallData(bool canCreate, float cooldown);
 public record VampireKillData(float killCooldown, float killDelay, bool blackBloodstains, int bloodStainDurationTurn);
-public record VampireData(bool vampireInvisibleOnAdmin, bool vampireCannotFixSabotage, bool vampireCannotUseDevice, bool vampireDependentHasReverseVision, bool vampireDependentHasImpostorVisionInLightsoff);
+public record VampireData(bool vampireInvisibleOnAdmin, bool vampireCannotFixSabotage, bool vampireCannotUseDevice, bool vampireDependentHasReverseVision, bool vampireDependentHasImpostorVisionInLightsoff, bool vampireNoDeathOnVitals);
 public class VampireAbility : AbilityBase
 {
     private VampireDependentAbility dependent;
@@ -106,14 +107,19 @@ public class VampireAbility : AbilityBase
     private EventListener _fixedUpdateListener;
     private EventListener<MurderEventData> _murderListener;
     private EventListener<WrapUpEventData> _wrapUpListener;
+    private EventListener<MeetingCalledAnimationInitializeEventData> _meetingCalledListener;
+    private EventListener<NameTextUpdateEventData> _nameTextUpdateListener;
 
     private float delayTimer;
     private float bloodStainTimer;
+    private bool isKillDelayed = false;
+    private Vector3 killPosition;
     private SabotageCanUseAbility sabotageCanUseAbility;
     private DeviceCanUseAbility deviceCanUseAbility;
-    private Transform bloodStainsParentTargeting;
+    private Dictionary<ExPlayerControl, Transform> bloodStainsParents = new();
     private List<(Transform bloodStainsParent, int limitedTurn)> bloodStainParent = new();
     private HideInAdminAbility hideInAdminAbility;
+
     public VampireAbility(VampireNightFallData nightFall, VampireKillData kill, VampireData vampire)
     {
         this.nightFall = nightFall;
@@ -128,7 +134,7 @@ public class VampireAbility : AbilityBase
             sidekickCooldown: () => nightFall.cooldown,
             sidekickRole: () => RoleId.VampireDependent,
             sidekickRoleVanilla: () => RoleTypes.Crewmate,
-            sidekickSprite: AssetManager.GetAsset<Sprite>("VampireSidekickButton.png"),
+            sidekickSprite: AssetManager.GetAsset<Sprite>("VampireNightFallButton.png"),
             sidekickText: ModTranslation.GetString("VampireDependentsButtonText"),
             sidekickCount: () => 1,
             isTargetable: (player) => !player.IsImpostor(),
@@ -167,6 +173,12 @@ public class VampireAbility : AbilityBase
         _fixedUpdateListener = FixedUpdateEvent.Instance.AddListener(OnFixedUpdate);
         _murderListener = MurderEvent.Instance.AddListener(OnMurder);
         _wrapUpListener = WrapUpEvent.Instance.AddListener(OnWrapUp);
+        _meetingCalledListener = MeetingCalledAnimationInitializeEvent.Instance.AddListener(OnMeetingCalled);
+    }
+    public override void AttachToLocalPlayer()
+    {
+        base.AttachToLocalPlayer();
+        _nameTextUpdateListener = NameTextUpdateEvent.Instance.AddListener(OnNameTextUpdate);
     }
     public override void DetachToAlls()
     {
@@ -174,7 +186,32 @@ public class VampireAbility : AbilityBase
         _fixedUpdateListener?.RemoveListener();
         _murderListener?.RemoveListener();
         _wrapUpListener?.RemoveListener();
+        _meetingCalledListener?.RemoveListener();
     }
+    public override void DetachToLocalPlayer()
+    {
+        base.DetachToLocalPlayer();
+        _nameTextUpdateListener?.RemoveListener();
+    }
+
+    private void OnNameTextUpdate(NameTextUpdateEventData data)
+    {
+        // 眷属の名前に印を付ける
+        if (dependent?.Player == data.Player)
+        {
+            NameText.SetNameTextColor(data.Player, Palette.ImpostorRed, true);
+        }
+    }
+
+    private void OnMeetingCalled(MeetingCalledAnimationInitializeEventData data)
+    {
+        // 会議が呼ばれた時、遅延キル中なら即座にキルを実行
+        if (TargetingPlayer != null && TargetingPlayer.IsAlive())
+        {
+            ExecuteDelayedKill();
+        }
+    }
+
     private void OnWrapUp(WrapUpEventData data)
     {
         for (int i = bloodStainParent.Count - 1; i >= 0; i--)
@@ -190,15 +227,25 @@ public class VampireAbility : AbilityBase
                 bloodStainParent[i] = (parent, turn - 1);
             }
         }
-        if (bloodStainsParentTargeting == null) return;
-        bloodStainsParentTargeting.gameObject.SetActive(true);
-        bloodStainParent.Add((bloodStainsParentTargeting, kill.bloodStainDurationTurn - 1));
+
+        // 各プレイヤーの血痕を有効化
+        foreach (var kvp in bloodStainsParents)
+        {
+            if (kvp.Value != null)
+            {
+                kvp.Value.gameObject.SetActive(true);
+                bloodStainParent.Add((kvp.Value, kill.bloodStainDurationTurn - 1));
+            }
+        }
+        bloodStainsParents.Clear();
     }
+
     private void OnMurder(MurderEventData data)
     {
         if (Player.AmOwner && data.killer == dependent?.Player)
             ExPlayerControl.LocalPlayer.ResetKillCooldown();
     }
+
     [CustomRPC]
     public void RpcSetDependent(ExPlayerControl player)
     {
@@ -206,44 +253,86 @@ public class VampireAbility : AbilityBase
         dependent.SetVampire(this);
         this.created = true;
     }
+
     [CustomRPC]
     public void RpcSetTargetingPlayer(ExPlayerControl player)
     {
         TargetingPlayer = player;
         delayTimer = kill.killDelay;
-        bloodStainsParentTargeting = new GameObject($"BloodStainsTargeting to {player.PlayerId}").transform;
-        bloodStainsParentTargeting.gameObject.SetActive(false);
+        isKillDelayed = true;
+        killPosition = Player.transform.position;
+
+        // プレイヤーごとの血痕親オブジェクトを作成
+        if (!bloodStainsParents.ContainsKey(player))
+        {
+            var parent = new GameObject($"BloodStains_{player.PlayerId}").transform;
+            parent.gameObject.SetActive(false);
+            bloodStainsParents[player] = parent;
+        }
+
         bloodStainTimer = 0;
-        if (dependent?.Player?.AmOwner == false)
-            return;
-        dependent?.Player.ResetKillCooldown();
+
+        // 眷属のキルクールをリセット（ヴァンパイアがキルボタンを押した瞬間）
+        if (dependent?.Player?.AmOwner == true)
+            dependent.Player.ResetKillCooldown();
     }
+
+    private void ExecuteDelayedKill()
+    {
+        if (TargetingPlayer == null || TargetingPlayer.IsDead()) return;
+
+        var targetParent = bloodStainsParents.GetValueOrDefault(TargetingPlayer);
+        if (targetParent != null)
+        {
+            new BloodStain(TargetingPlayer, isBlack: kill.blackBloodstains, parent: targetParent).BloodStainObject.transform.localScale *= 3f;
+        }
+
+        TargetingPlayer.CustomDeath(CustomDeathType.VampireKill, source: Player);
+
+        // 遅延キルが完了したらキルクールを開始
+        if (Player.AmOwner)
+            Player.ResetKillCooldown();
+
+        TargetingPlayer = null;
+        isKillDelayed = false;
+    }
+
     private void OnFixedUpdate()
     {
         if (TargetingPlayer == null || TargetingPlayer.IsDead()) return;
+
         delayTimer -= Time.fixedDeltaTime;
         if (delayTimer <= 0)
         {
-            delayTimer = 0;
-            new BloodStain(TargetingPlayer, isBlack: kill.blackBloodstains, parent: bloodStainsParentTargeting).BloodStainObject.transform.localScale *= 3f;
-            TargetingPlayer.CustomDeath(CustomDeathType.VampireKill, source: Player);
-            TargetingPlayer = null;
+            ExecuteDelayedKill();
             return;
         }
+
         bloodStainTimer -= Time.fixedDeltaTime;
         if (bloodStainTimer <= 0)
         {
-            // 親で一括管理してる
-            new BloodStain(TargetingPlayer, isBlack: kill.blackBloodstains, parent: bloodStainsParentTargeting);
+            var targetParent = bloodStainsParents.GetValueOrDefault(TargetingPlayer);
+            if (targetParent != null)
+            {
+                new BloodStain(TargetingPlayer, isBlack: kill.blackBloodstains, parent: targetParent);
+            }
             bloodStainTimer = 0.1f;
         }
     }
 
     private static bool CancelVitalsDead(ExPlayerControl player)
     {
-        return player.Role is RoleId.Vampire or RoleId.VampireDependent;
-    }
+        if (player.Role is RoleId.Vampire or RoleId.VampireDependent)
+        {
+            var vampireAbility = player.GetAbility<VampireAbility>();
+            var dependentAbility = player.GetAbility<VampireDependentAbility>();
 
+            // VampireNoDeathOnVitals設定がtrueの場合のみバイタル表示を隠す
+            return (vampireAbility?.Vampire.vampireNoDeathOnVitals ?? false) ||
+                   (dependentAbility?.VampireData.vampireNoDeathOnVitals ?? false);
+        }
+        return false;
+    }
 
     [HarmonyPatch(typeof(VitalsPanel), nameof(VitalsPanel.SetDead))]
     class VitalsPanelSetDeadPatch

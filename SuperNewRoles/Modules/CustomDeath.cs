@@ -139,10 +139,8 @@ public static class CustomDeathExtensions
             case CustomDeathType.VampireKill:
                 if (!TryKillEvent.Invoke(source, ref player).RefSuccess)
                     break;
-                var pos3 = source.Player.GetTruePosition();
-                source.Player.MurderPlayer(player.Player, MurderResultFlags.Succeeded);
+                player.Player.MurderPlayer(player.Player, MurderResultFlags.Succeeded);
                 FinalStatusManager.SetFinalStatus(player, FinalStatus.VampireKill);
-                source.Player.NetTransform.SnapTo(pos3);
                 MurderDataManager.AddMurderData(source, player);
                 break;
             case CustomDeathType.VampireWithDead:

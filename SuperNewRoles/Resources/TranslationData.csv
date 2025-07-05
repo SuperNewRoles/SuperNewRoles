@@ -1373,10 +1373,12 @@ VampireNightFallCooldown,夜に堕とすクールダウン,Night Fall Cooldown,�
 VampireDependentKillCooldown,眷属キルクールダウン,Dependent Kill Cooldown,眷属击杀冷却时间,眷屬擊殺冷卻時間
 VampireDependentCanUseVent,眷属ベント使用可,Dependent Can Use Vents,眷属可使用通风口,眷屬可使用通風口
 VampireDependentImpostorVisionOnSabotage,眷属停電時インポスター視界,Dependent Impostor Vision on Sabotage,眷属停电时内鬼视野,眷屬停電時內鬼視野
-VampireCannotFixSabotage,サボタージュ修復不可,Cannot Fix Sabotage,无法修复破坏,無法修復破壞
-VampireInvisibleOnAdmin,管理マップ非表示,Invisible on Admin Map,管理地图不可见,管理地圖不可見
+VampireCannotFixSabotage,停電修理不可,Cannot Fix Sabotage,无法修复破坏,無法修復破壞
+VampireInvisibleOnAdmin,アドミンに映らない,Invisible on Admin Map,管理地图不可见,管理地圖不可見
 VampireNoDeathOnVitals,バイタル死亡表示なし,No Death on Vitals,生命体征不显示死亡,生命徵象不顯示死亡
 VampireCannotUseDevice,情報機器使用不可,Cannot Use Device,无法使用设备,無法使用裝置
+VampireDependentHasReverseVision,眷属視野反転,Dependent Has Reverse Vision,眷属视野反转,眷屬視野反轉
+VampireDependentHasImpostorVisionInLightsoff,眷属停電時インポスター視野,Dependent Has Impostor Vision in Lights Off,眷属停电时内鬼视野,眷屬停電時內鬼視野
 
 # 新しい情報機器制限の翻訳
 RestrictionMode,制限の方式,Restriction Mode,限制方式,限制方式
