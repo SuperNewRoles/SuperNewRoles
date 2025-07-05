@@ -87,16 +87,33 @@ public static class ZiplineUpdown
             {
                 if (ziplineConsole != null)
                 {
-                    // クールダウンが進行中（設定値より小さい）の場合は設定しない
-                    if (ziplineConsole.CoolDown > cooldownTime || ziplineConsole.CoolDown <= 0f)
+                    // 0秒クールダウンの場合は常に0に設定
+                    if (cooldownTime <= 0f)
                     {
-                        ziplineConsole.CoolDown = cooldownTime;
+                        ziplineConsole.CoolDown = 0f;
                     }
+                    else
+                    {
+                        // クールダウンが進行中（設定値より小さい）の場合は設定しない
+                        if (ziplineConsole.CoolDown > cooldownTime || ziplineConsole.CoolDown <= 0f)
+                        {
+                            ziplineConsole.CoolDown = cooldownTime;
+                        }
+                    }
+                    
                     if (ziplineConsole.destination != null)
                     {
-                        if (ziplineConsole.destination.CoolDown > cooldownTime || ziplineConsole.destination.CoolDown <= 0f)
+                        // 0秒クールダウンの場合は常に0に設定
+                        if (cooldownTime <= 0f)
                         {
-                            ziplineConsole.destination.CoolDown = cooldownTime;
+                            ziplineConsole.destination.CoolDown = 0f;
+                        }
+                        else
+                        {
+                            if (ziplineConsole.destination.CoolDown > cooldownTime || ziplineConsole.destination.CoolDown <= 0f)
+                            {
+                                ziplineConsole.destination.CoolDown = cooldownTime;
+                            }
                         }
                     }
                 }
