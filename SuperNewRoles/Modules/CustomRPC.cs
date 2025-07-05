@@ -316,7 +316,7 @@ public static class CustomRPCManager
                             }
                             catch (Exception ex)
                             {
-                                Logger.Error($"Failed to read parameter {i} for RPC {method.Name}: {ex.Message}");
+                                Logger.Error($"Failed to read parameter {i} for RPC {method.Name}: {ex.Message}\n{ex.StackTrace}");
                                 return;
                             }
                         }
