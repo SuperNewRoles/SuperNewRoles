@@ -171,7 +171,7 @@ public static class NameText
             return;
         
         // バスカーの偽装死時は他のプレイヤーの役職を見えないようにする
-        bool isBuskerFakeDeath = ExPlayerControl.LocalPlayer.DeathType == CustomDeathType.BuskerFakeDeath;
+        bool isBuskerFakeDeath = ExPlayerControl.LocalPlayer.GetAbility<BuskerPseudocideAbility>()?.isEffectActive == true;
         
         bool visiable = player.Player.Visible &&
                         (ExPlayerControl.LocalPlayer.PlayerId == player.PlayerId ||
