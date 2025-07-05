@@ -223,4 +223,26 @@ public static class ZiplineConsolePatch
         }
     }
 
+    [HarmonyPatch(nameof(ZiplineConsole.Update)), HarmonyPostfix]
+    public static void ZiplineConsoleUpdatePostfix(ZiplineConsole __instance)
+    {
+        // カスタムクールダウンが有効な場合のみ処理
+        if (!ZiplineCoolChangeOption) return;
+        
+        // The Fungleマップでのみ処理
+        if (!IsFungleMap()) return;
+        
+        // クールダウンを手動で減らす処理（元のUpdate処理を補完）
+        if (__instance.CoolDown > 0f)
+        {
+            __instance.CoolDown = Mathf.Max(__instance.CoolDown - Time.deltaTime, 0f);
+        }
+        
+        // 目的地のクールダウンも手動で減らす処理
+        if (__instance.destination != null && __instance.destination.CoolDown > 0f)
+        {
+            __instance.destination.CoolDown = Mathf.Max(__instance.destination.CoolDown - Time.deltaTime, 0f);
+        }
+    }
+
 }
