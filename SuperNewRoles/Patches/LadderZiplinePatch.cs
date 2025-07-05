@@ -222,4 +222,30 @@ public static class ZiplineConsolePatch
             Logger.Info($"Zipline destination cooldown set to {cooldownTime}s (current: {__instance.destination?.CoolDown}s)");
         }
     }
+
+    [HarmonyPatch(nameof(ZiplineConsole.FixedUpdate)), HarmonyPostfix]
+    public static void ZiplineConsoleFixedUpdatePostfix(ZiplineConsole __instance)
+    {
+        // カスタムクールダウンが有効な場合のみ処理
+        if (!ZiplineCoolChangeOption) return;
+        
+        // The Fungleマップでのみ処理
+        if (!IsFungleMap()) return;
+        
+        // クールダウンを手動で減らす処理
+        if (__instance.CoolDown > 0f)
+        {
+            __instance.CoolDown -= Time.fixedDeltaTime;
+            if (__instance.CoolDown < 0f)
+                __instance.CoolDown = 0f;
+        }
+        
+        // 目的地のクールダウンも手動で減らす処理
+        if (__instance.destination != null && __instance.destination.CoolDown > 0f)
+        {
+            __instance.destination.CoolDown -= Time.fixedDeltaTime;
+            if (__instance.destination.CoolDown < 0f)
+                __instance.destination.CoolDown = 0f;
+        }
+    }
 }
