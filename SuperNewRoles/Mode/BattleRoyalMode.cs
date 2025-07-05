@@ -36,13 +36,29 @@ public class BattleRoyalMode : ModeBase<BattleRoyalMode>, IModeBase
     // チーム名（A, B, C...）
     private static readonly string[] TeamNames = "ABCDEFGHIJKLMNOPQRSTUVWXYZ".Select(c => c.ToString()).ToArray();
 
+    // バトルロワイヤルモード設定
+    [CustomOptionBool("WaveCannonBattleRoyalTeamMode", false, displayMode: DisplayModeId.BattleRoyal, parentFieldName: nameof(Categories.ModeOption), parentActiveValue: ModeId.BattleRoyal)]
+    public static bool WaveCannonBattleRoyalTeamMode;
+
+    [CustomOptionInt("WaveCannonBattleRoyalTeamCount", 2, 10, 1, 2, displayMode: DisplayModeId.BattleRoyal, parentFieldName: nameof(WaveCannonBattleRoyalTeamMode), parentActiveValue: true)]
+    public static int WaveCannonBattleRoyalTeamCount;
+
+    [CustomOptionBool("WaveCannonBattleRoyalFriendlyFire", true, displayMode: DisplayModeId.BattleRoyal, parentFieldName: nameof(WaveCannonBattleRoyalTeamMode), parentActiveValue: true)]
+    public static bool WaveCannonBattleRoyalFriendlyFire;
+
+    [CustomOptionFloat("WaveCannonBattleRoyalCooldown", 2.5f, 60f, 2.5f, 15f, displayMode: DisplayModeId.BattleRoyal, parentFieldName: nameof(Categories.ModeOption), parentActiveValue: ModeId.BattleRoyal)]
+    public static float WaveCannonBattleRoyalCooldown;
+
+    [CustomOptionFloat("WaveCannonBattleRoyalDuration", 0f, 10f, 0.5f, 3f, displayMode: DisplayModeId.BattleRoyal, parentFieldName: nameof(Categories.ModeOption), parentActiveValue: ModeId.BattleRoyal)]
+    public static float WaveCannonBattleRoyalDuration;
+
     public override void OnGameStart()
     {
         Logger.Info("BattleRoyalMode.OnGameStart");
 
         // モード設定を取得
-        isTeamMode = Categories.WaveCannonBattleRoyalTeamMode;
-        totalTeams = isTeamMode ? Categories.WaveCannonBattleRoyalTeamCount : 1;
+        isTeamMode = WaveCannonBattleRoyalTeamMode;
+        totalTeams = isTeamMode ? WaveCannonBattleRoyalTeamCount : 1;
 
         // 全プレイヤーを取得してチーム分け
         var allPlayers = PlayerControl.AllPlayerControls.ToArray().Where(p => p != null).ToList();

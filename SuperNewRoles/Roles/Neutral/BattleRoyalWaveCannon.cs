@@ -5,6 +5,7 @@ using SuperNewRoles.Modules;
 using SuperNewRoles.Roles.Ability;
 using SuperNewRoles.WaveCannonObj;
 using SuperNewRoles.CustomOptions;
+using SuperNewRoles.Mode;
 
 namespace SuperNewRoles.Roles.Neutral;
 
@@ -15,11 +16,11 @@ class BattleRoyalWaveCannon : RoleBase<BattleRoyalWaveCannon>, IRoleBase
     public override string RoleName => "BattleRoyalWaveCannon";
     public override List<Func<AbilityBase>> Abilities => [
         () => new WaveCannonAbility(
-            CustomOptions.Categories.Categories.WaveCannonBattleRoyalCooldown,
-            CustomOptions.Categories.Categories.WaveCannonBattleRoyalDuration,
+            BattleRoyalMode.WaveCannonBattleRoyalCooldown,
+            BattleRoyalMode.WaveCannonBattleRoyalDuration,
             WaveCannonType.Tank,
             false,
-            CustomOptions.Categories.Categories.WaveCannonBattleRoyalFriendlyFire
+            BattleRoyalMode.WaveCannonBattleRoyalFriendlyFire
         )
     ];
     public override QuoteMod QuoteMod => QuoteMod.SuperNewRoles;

@@ -111,8 +111,8 @@ public abstract class WaveCannonObjectBase
                     if (player == _touchedWiseman) continue;
 
                     // フレンドリーファイアのチェック
-                    if (Categories.ModeOption == ModeId.BattleRoyal &&
-                        Categories.WaveCannonBattleRoyalTeamMode &&
+                    if (ModeManager.IsMode(ModeId.BattleRoyal) &&
+                        BattleRoyalMode.WaveCannonBattleRoyalTeamMode &&
                         !ability.friendlyFire &&
                         BattleRoyalMode.Instance != null &&
                         BattleRoyalMode.Instance.IsOnSameTeam(ability.Player.Player, player.Player))

@@ -82,4 +82,9 @@ public static class ModeManager
     {
         return currentMode?.CheckWinCondition() ?? false;
     }
+
+    public static bool IsMode(ModeId mode)
+    {
+        return Categories.ModeOption == mode;
+    }
 }
