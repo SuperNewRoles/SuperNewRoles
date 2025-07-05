@@ -110,30 +110,29 @@ public abstract class WaveCannonObjectBase
                     if (!collider.IsTouching(player.Player.Collider)) continue;
                     if (player == _touchedWiseman) continue;
 
-                    // フレンドリーファイアのチェック
-                    if (ModeManager.IsMode(ModeId.BattleRoyal) &&
-                        BattleRoyalMode.WaveCannonBattleRoyalTeamMode &&
-                        !ability.friendlyFire &&
-                        BattleRoyalMode.Instance != null &&
-                        BattleRoyalMode.Instance.IsOnSameTeam(ability.Player.Player, player.Player))
+                    if (!ability.friendlyFire)
                     {
-                        continue; // 同じチームの味方は攻撃しない
-                    }
-
-                    if (Categories.ModeOption != ModeId.BattleRoyal &&
-                        !ability.friendlyFire)
-                    {
-                        if (ability.Player.IsImpostor() && player.IsImpostor())
+                        if (ModeManager.IsMode(ModeId.BattleRoyal))
                         {
-                            continue;
+                            if (BattleRoyalMode.Instance.IsOnSameTeam(ability.Player.Player, player.Player))
+                            {
+                                continue;
+                            }
                         }
-                        else if (ability.Player.IsCrewmate() && player.IsCrewmate())
+                        else
                         {
-                            continue;
-                        }
-                        else if (ability.Player.IsJackal() && player.IsJackal())
-                        {
-                            continue;
+                            if (ability.Player.IsImpostor() && player.IsImpostor())
+                            {
+                                continue;
+                            }
+                            else if (ability.Player.IsCrewmate() && player.IsCrewmate())
+                            {
+                                continue;
+                            }
+                            else if (ability.Player.IsJackal() && player.IsJackal())
+                            {
+                                continue;
+                            }
                         }
                     }
 

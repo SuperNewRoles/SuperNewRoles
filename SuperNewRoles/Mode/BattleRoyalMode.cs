@@ -56,12 +56,13 @@ public class BattleRoyalMode : ModeBase<BattleRoyalMode>, IModeBase
     {
         Logger.Info("BattleRoyalMode.OnGameStart");
 
-        // モード設定を取得
-        isTeamMode = WaveCannonBattleRoyalTeamMode;
-        totalTeams = isTeamMode ? WaveCannonBattleRoyalTeamCount : 1;
-
         // 全プレイヤーを取得してチーム分け
         var allPlayers = PlayerControl.AllPlayerControls.ToArray().Where(p => p != null).ToList();
+
+        // モード設定を取得
+        isTeamMode = WaveCannonBattleRoyalTeamMode;
+        // チーム数をプレイヤー数に制限（空のチームを防ぐ）
+        totalTeams = isTeamMode ? Math.Min(WaveCannonBattleRoyalTeamCount, allPlayers.Count) : 1;
 
         if (isTeamMode)
         {
@@ -167,6 +168,10 @@ public class BattleRoyalMode : ModeBase<BattleRoyalMode>, IModeBase
 
     public override bool CheckWinCondition()
     {
+        if (ExPlayerControl.ExPlayerControls.Where(x => x.IsAlive()).Count() <= 1)
+        {
+            EndGame();
+        }
         return true;
     }
 
@@ -245,7 +250,16 @@ public class BattleRoyalMode : ModeBase<BattleRoyalMode>, IModeBase
         }
         else
         {
-            winners = BattleRoyalMode.Instance.teams[winnerTeam];
+            // チームインデックスの境界チェックを追加
+            if (winnerTeam >= 0 && winnerTeam < BattleRoyalMode.Instance.teams.Count)
+            {
+                winners = BattleRoyalMode.Instance.teams[winnerTeam];
+            }
+            else
+            {
+                Logger.Error($"Invalid winnerTeam index: {winnerTeam}");
+                return;
+            }
         }
         string winnerName = string.Empty;
         if (BattleRoyalMode.Instance.isTeamMode)
@@ -254,7 +268,16 @@ public class BattleRoyalMode : ModeBase<BattleRoyalMode>, IModeBase
         }
         else
         {
-            winnerName = ExPlayerControl.ById(BattleRoyalMode.Instance.teams[winnerTeam].First()).Player.name;
+            // チームメンバーが存在するかチェック
+            if (BattleRoyalMode.Instance.teams[winnerTeam].Count > 0)
+            {
+                winnerName = ExPlayerControl.ById(BattleRoyalMode.Instance.teams[winnerTeam].First()).Player.name;
+            }
+            else
+            {
+                Logger.Error($"No players in winner team: {winnerTeam}");
+                return;
+            }
         }
         EndGameManagerSetUpPatch.EndGameWithCondition(
             GameOverReason.ImpostorsByKill,
