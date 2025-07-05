@@ -111,6 +111,7 @@ public static class ZiplineConsolePatch
         return true;
     }
 
+
     [HarmonyPatch(nameof(ZiplineConsole.Use)), HarmonyPostfix]
     public static void ZiplineConsoleUsePostfix(ZiplineConsole __instance)
     {
@@ -134,6 +135,9 @@ public static class ZiplineConsolePatch
             {
                 __instance.CoolDown = cooldownTime;
             }
+            
+            // ログ出力してクールダウンが正しく設定されたことを確認
+            Logger.Info($"Zipline cooldown set to {cooldownTime}s (current: {__instance.CoolDown}s)");
         }
     }
 
@@ -160,6 +164,9 @@ public static class ZiplineConsolePatch
             {
                 __instance.destination.CoolDown = cooldownTime;
             }
+            
+            // ログ出力してクールダウンが正しく設定されたことを確認
+            Logger.Info($"Zipline destination cooldown set to {cooldownTime}s (current: {__instance.destination?.CoolDown}s)");
         }
     }
 }

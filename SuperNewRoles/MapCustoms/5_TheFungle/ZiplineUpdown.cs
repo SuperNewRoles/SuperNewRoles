@@ -7,6 +7,9 @@ namespace SuperNewRoles.MapCustoms;
 public static class ZiplineUpdown
 {
     private static bool _isInitialized = false;
+    private static float _lastCooldownValue = -1f;
+    private static LateTask _periodicUpdateTask;
+    
     public static void Initialize()
     {
         if (!MapEditSettingsOptions.TheFungleZiplineOption)
@@ -48,6 +51,9 @@ public static class ZiplineUpdown
                 
                 // 少し遅延してもう一度設定（確実にするため）
                 new LateTask(() => SetZiplineCooldowns(), 0.5f, "SetZiplineCooldowns");
+                
+                // 設定値の監視を開始
+                StartPeriodicUpdate();
             }
             
             _isInitialized = true;
@@ -89,6 +95,9 @@ public static class ZiplineUpdown
                 }
             }
 
+            // 最後に設定したクールダウン値を記録
+            _lastCooldownValue = cooldownTime;
+
             Logger.Info($"Successfully set zipline cooldowns: {cooldownTime}s for {ziplineConsoles.Length} zipline consoles");
         }
         catch (System.Exception ex)
@@ -97,9 +106,70 @@ public static class ZiplineUpdown
         }
     }
 
+    /// <summary>
+    /// 設定値が変更された際にジップラインのクールダウンを動的に更新する
+    /// </summary>
+    public static void UpdateZiplineCooldowns()
+    {
+        if (!_isInitialized) return;
+        if (!ZiplineCoolChangeOption) return;
+        if (!MapCustomHandler.IsMapCustom(MapCustomHandler.MapCustomId.TheFungle)) return;
+        
+        SetZiplineCooldowns();
+    }
+
+    /// <summary>
+    /// 定期的に設定値をチェックし、変更されていれば更新する
+    /// </summary>
+    private static void StartPeriodicUpdate()
+    {
+        if (_periodicUpdateTask != null) return;
+        
+        _periodicUpdateTask = new LateTask(() =>
+        {
+            PeriodicCheck();
+            // 2秒間隔で定期チェックを継続
+            if (_isInitialized && ZiplineCoolChangeOption)
+            {
+                _periodicUpdateTask = new LateTask(() => PeriodicCheck(), 2f, "ZiplinePeriodicCheck");
+            }
+        }, 2f, "ZiplinePeriodicCheck");
+    }
+
+    private static void PeriodicCheck()
+    {
+        if (!_isInitialized) return;
+        if (!ZiplineCoolChangeOption) return;
+        if (!MapCustomHandler.IsMapCustom(MapCustomHandler.MapCustomId.TheFungle)) return;
+
+        try
+        {
+            float currentCooldownSetting = ZiplineCoolTimeOption;
+            if (ZiplineImpostorCoolChangeOption && ExPlayerControl.LocalPlayer.IsImpostor())
+                currentCooldownSetting = ZiplineImpostorCoolTimeOption;
+
+            // 設定値が変更された場合のみ更新
+            if (Mathf.Abs(_lastCooldownValue - currentCooldownSetting) > 0.01f)
+            {
+                Logger.Info($"Zipline cooldown setting changed from {_lastCooldownValue}s to {currentCooldownSetting}s, updating consoles");
+                _lastCooldownValue = currentCooldownSetting;
+                SetZiplineCooldowns();
+            }
+        }
+        catch (System.Exception ex)
+        {
+            Logger.Error($"Error in zipline periodic check: {ex}");
+        }
+    }
+
     public static void Reset()
     {
         _isInitialized = false;
+        _lastCooldownValue = -1f;
+        
+        // 定期タスクを停止
+        _periodicUpdateTask = null;
+        
         Logger.Info("The Fungle zipline initialization flag reset");
     }
 }
