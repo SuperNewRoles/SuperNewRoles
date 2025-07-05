@@ -33,14 +33,14 @@ jobs:
           echo "ZIP_URL=${ZIP_URL}" >> $GITHUB_ENV
           echo "FOLDER_INSIDE_ZIP=${FOLDER_INSIDE_ZIP}" >> $GITHUB_ENV
           echo "ENV_VAR_NAME=${ENV_VAR_NAME}" >> $GITHUB_ENV
-          echo "EXTRACT_PATH=${{ github.workspace }}" >> $GITHUB_ENV
+          echo "EXTRACT_PATH=${{ github.workspace }}/extracted_lib" >> $GITHUB_ENV
           echo "zip_hash=$(echo -n "$ZIP_URL" | sha256sum | awk '{print $1}')" >> $GITHUB_OUTPUT
       
       - name: Restore cached library from URL hash
         id: cache-lib
         uses: actions/cache@v3
         with:
-          path: ${{ github.workspace }}
+          path: ${{ github.workspace }}/extracted_lib
           key: ${{ runner.os }}-lib-${{ steps.settings.outputs.zip_hash }}
 
       - name: Download and Unzip if not cached
