@@ -151,8 +151,14 @@ public static class ZiplineConsolePatch
             // 即座にクールダウンを設定
             __instance.CoolDown = cooldownTime;
             
+            // destinationのクールダウンも同時に設定
+            if (__instance.destination != null)
+            {
+                __instance.destination.CoolDown = cooldownTime;
+            }
+            
             // ログ出力してクールダウンが正しく設定されたことを確認
-            Logger.Info($"Zipline cooldown set to {cooldownTime}s (current: {__instance.CoolDown}s)");
+            Logger.Info($"Zipline cooldown set to {cooldownTime}s (current: {__instance.CoolDown}s, destination: {__instance.destination?.CoolDown}s)");
         }
     }
 
@@ -180,5 +186,27 @@ public static class ZiplineConsolePatch
         }
     }
 
+    [HarmonyPatch(nameof(ZiplineConsole.Update)), HarmonyPostfix]
+    public static void ZiplineConsoleUpdatePostfix(ZiplineConsole __instance)
+    {
+        if (!ZiplineCoolChangeOption) return;
+        if (!IsFungleMap()) return;
+        
+        // クールダウンが進行中の場合、時間を消費する
+        if (__instance.CoolDown > 0f)
+        {
+            __instance.CoolDown -= Time.deltaTime;
+            if (__instance.CoolDown < 0f)
+                __instance.CoolDown = 0f;
+        }
+        
+        // destinationのクールダウンも同様に処理
+        if (__instance.destination != null && __instance.destination.CoolDown > 0f)
+        {
+            __instance.destination.CoolDown -= Time.deltaTime;
+            if (__instance.destination.CoolDown < 0f)
+                __instance.destination.CoolDown = 0f;
+        }
+    }
 
 }
