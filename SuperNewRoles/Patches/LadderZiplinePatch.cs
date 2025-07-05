@@ -180,34 +180,5 @@ public static class ZiplineConsolePatch
         }
     }
 
-    [HarmonyPatch(nameof(ZiplineConsole.Update)), HarmonyPostfix]
-    public static void ZiplineConsoleUpdatePostfix(ZiplineConsole __instance)
-    {
-        // カスタムクールダウンが有効な場合のみ処理
-        if (!ZiplineCoolChangeOption) return;
-        
-        // The Fungleマップでのみ処理
-        if (!IsFungleMap()) return;
-        
-        // クールダウンの設定値を確認し、必要に応じて修正
-        float expectedCooldown = ZiplineCoolTimeOption;
-        if (ZiplineImpostorCoolChangeOption && ExPlayerControl.LocalPlayer.IsImpostor())
-            expectedCooldown = ZiplineImpostorCoolTimeOption;
-        
-        if (expectedCooldown <= 0f)
-            expectedCooldown = 0f;
-        
-        // クールダウンが設定値より大きい場合のみ修正（クールダウン中は触らない）
-        if (__instance.CoolDown > expectedCooldown + 0.01f)
-        {
-            __instance.CoolDown = expectedCooldown;
-        }
-        
-        // 目的地のクールダウンも同様に処理
-        if (__instance.destination != null && __instance.destination.CoolDown > expectedCooldown + 0.01f)
-        {
-            __instance.destination.CoolDown = expectedCooldown;
-        }
-    }
 
 }
