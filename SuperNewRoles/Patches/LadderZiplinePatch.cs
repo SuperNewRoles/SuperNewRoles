@@ -57,29 +57,7 @@ public static class ZiplineConsolePatch
     {
         canUse = true;
         couldUse = true;
-        
-        // ジップラインのクールダウンを設定値に合わせて更新
-        if (ZiplineCoolChangeOption && IsFungleMap())
-        {
-            float cooldownTime = ZiplineCoolTimeOption;
-            if (ZiplineImpostorCoolChangeOption && ExPlayerControl.LocalPlayer.IsImpostor())
-                cooldownTime = ZiplineImpostorCoolTimeOption;
-            
-            if (cooldownTime <= 0f)
-                cooldownTime = 0f;
-            
-            // 現在のクールダウンが設定値と異なる場合、修正する
-            if (Mathf.Abs(__instance.CoolDown - cooldownTime) > 0.01f)
-            {
-                __instance.CoolDown = cooldownTime;
-            }
-            
-            if (__instance.destination != null && Mathf.Abs(__instance.destination.CoolDown - cooldownTime) > 0.01f)
-            {
-                __instance.destination.CoolDown = cooldownTime;
-            }
-        }
-        
+
         if (ModHelpers.Not(IsFungleMap() && TheFungleSetting && TheFungleZiplineOption)) return true;
         if (!TheFungleCanUseZiplineOption)
         {
@@ -124,11 +102,11 @@ public static class ZiplineConsolePatch
             __result = ZiplineCoolTimeOption;
             if (ZiplineImpostorCoolChangeOption && ExPlayerControl.LocalPlayer.IsImpostor())
                 __result = ZiplineImpostorCoolTimeOption;
-            
+
             // 0秒以下の場合は0にする
             if (__result <= 0f)
                 __result = 0f;
-            
+
             return false;
         }
         return true;
@@ -143,20 +121,20 @@ public static class ZiplineConsolePatch
             float cooldownTime = ZiplineCoolTimeOption;
             if (ZiplineImpostorCoolChangeOption && ExPlayerControl.LocalPlayer.IsImpostor())
                 cooldownTime = ZiplineImpostorCoolTimeOption;
-            
+
             // 0秒以下の場合は0にする
             if (cooldownTime <= 0f)
                 cooldownTime = 0f;
-            
+
             // 即座にクールダウンを設定
             __instance.CoolDown = cooldownTime;
-            
+
             // destinationのクールダウンも同時に設定
             if (__instance.destination != null)
             {
                 __instance.destination.CoolDown = cooldownTime;
             }
-            
+
             // ログ出力してクールダウンが正しく設定されたことを確認
             Logger.Info($"Zipline cooldown set to {cooldownTime}s (current: {__instance.CoolDown}s, destination: {__instance.destination?.CoolDown}s)");
         }
@@ -170,43 +148,19 @@ public static class ZiplineConsolePatch
             float cooldownTime = ZiplineCoolTimeOption;
             if (ZiplineImpostorCoolChangeOption && ExPlayerControl.LocalPlayer.IsImpostor())
                 cooldownTime = ZiplineImpostorCoolTimeOption;
-            
+
             // 0秒以下の場合は0にする
             if (cooldownTime <= 0f)
                 cooldownTime = 0f;
-            
+
             // 即座に目的地のクールダウンを設定
             if (__instance.destination != null)
             {
                 __instance.destination.CoolDown = cooldownTime;
             }
-            
+
             // ログ出力してクールダウンが正しく設定されたことを確認
             Logger.Info($"Zipline destination cooldown set to {cooldownTime}s (current: {__instance.destination?.CoolDown}s)");
         }
     }
-
-    [HarmonyPatch(nameof(ZiplineConsole.Update)), HarmonyPostfix]
-    public static void ZiplineConsoleUpdatePostfix(ZiplineConsole __instance)
-    {
-        if (!ZiplineCoolChangeOption) return;
-        if (!IsFungleMap()) return;
-        
-        // クールダウンが進行中の場合、時間を消費する
-        if (__instance.CoolDown > 0f)
-        {
-            __instance.CoolDown -= Time.deltaTime;
-            if (__instance.CoolDown < 0f)
-                __instance.CoolDown = 0f;
-        }
-        
-        // destinationのクールダウンも同様に処理
-        if (__instance.destination != null && __instance.destination.CoolDown > 0f)
-        {
-            __instance.destination.CoolDown -= Time.deltaTime;
-            if (__instance.destination.CoolDown < 0f)
-                __instance.destination.CoolDown = 0f;
-        }
-    }
-
 }
