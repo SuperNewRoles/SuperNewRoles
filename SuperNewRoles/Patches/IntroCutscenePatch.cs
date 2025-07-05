@@ -2,7 +2,9 @@ using System.Collections;
 using System.Linq;
 using BepInEx.Unity.IL2CPP.Utils.Collections;
 using HarmonyLib;
+using SuperNewRoles.CustomCosmetics;
 using SuperNewRoles.CustomCosmetics.CosmeticsPlayer;
+using SuperNewRoles.CustomCosmetics.UI;
 using SuperNewRoles.CustomOptions.Categories;
 using SuperNewRoles.Events;
 using SuperNewRoles.MapCustoms;
@@ -222,7 +224,14 @@ public static class IntroCutscenePatch
             if (moddedCosmetics != null)
             {
                 moddedCosmetics.SetActive(false);
-                new LateTask(() => moddedCosmetics.SetActive(true), 0.1f);
+                moddedCosmetics.SetActive(true);
+            }
+            
+            // ローカルプレイヤーのHat2/Visor2を確実に設定
+            if (player == PlayerControl.LocalPlayer)
+            {
+                PlayerControlRpcExtensions.RpcCustomSetCosmetics(player.PlayerId, CostumeTabType.Hat2, CustomCosmeticsSaver.CurrentHat2Id, player.Data.DefaultOutfit.ColorId);
+                PlayerControlRpcExtensions.RpcCustomSetCosmetics(player.PlayerId, CostumeTabType.Visor2, CustomCosmeticsSaver.CurrentVisor2Id, player.Data.DefaultOutfit.ColorId);
             }
         }
         NameText.RegisterNameTextUpdateEvent();
