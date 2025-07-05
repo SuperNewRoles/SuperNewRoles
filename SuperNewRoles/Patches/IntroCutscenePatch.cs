@@ -231,10 +231,11 @@ public static class IntroCutscenePatch
         CustomDeathExtensions.Register();
         SetTargetPatch.Register();
 
-        FungleAdditionalAdmin.AddAdmin();
-        FungleAdditionalElectrical.CreateElectrical();
-        MushroomMixup.Initialize();
-        ZiplineUpdown.Initialize();
+        // The Fungle マップ初期化処理を適切な間隔で実行
+        new LateTask(() => FungleAdditionalAdmin.AddAdmin(), 0.1f, "FungleAdminInit");
+        new LateTask(() => FungleAdditionalElectrical.CreateElectrical(), 0.3f, "FungleElectricalInit");
+        new LateTask(() => MushroomMixup.Initialize(), 0.5f, "MushroomMixupInit");
+        new LateTask(() => ZiplineUpdown.Initialize(), 0.7f, "ZiplineInit");
         ReportDistancePatch.Init();
 
         ReAssignTasks();

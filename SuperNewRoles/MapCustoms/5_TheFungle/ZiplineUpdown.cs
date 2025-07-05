@@ -6,12 +6,19 @@ using static SuperNewRoles.CustomOptions.Categories.MapSettingOptions;
 namespace SuperNewRoles.MapCustoms;
 public static class ZiplineUpdown
 {
+    private static bool _isInitialized = false;
     public static void Initialize()
     {
         if (!MapEditSettingsOptions.TheFungleZiplineOption)
             return;
         if (!MapCustomHandler.IsMapCustom(MapCustomHandler.MapCustomId.TheFungle))
             return;
+        
+        if (_isInitialized)
+        {
+            Logger.Info("The Fungle zipline already initialized, skipping");
+            return;
+        }
         
         try
         {
@@ -42,6 +49,8 @@ public static class ZiplineUpdown
                 // 少し遅延してもう一度設定（確実にするため）
                 new LateTask(() => SetZiplineCooldowns(), 0.5f, "SetZiplineCooldowns");
             }
+            
+            _isInitialized = true;
         }
         catch (System.Exception ex)
         {
@@ -86,5 +95,11 @@ public static class ZiplineUpdown
         {
             Logger.Error($"Error setting zipline cooldowns: {ex}");
         }
+    }
+
+    public static void Reset()
+    {
+        _isInitialized = false;
+        Logger.Info("The Fungle zipline initialization flag reset");
     }
 }

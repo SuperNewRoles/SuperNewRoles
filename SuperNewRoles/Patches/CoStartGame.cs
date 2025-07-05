@@ -3,6 +3,7 @@ using SuperNewRoles.CustomObject;
 using SuperNewRoles.Modules;
 using SuperNewRoles.Modules.Events.Bases;
 using SuperNewRoles.SuperTrophies;
+using SuperNewRoles.MapCustoms;
 
 namespace SuperNewRoles.Patches;
 
@@ -17,5 +18,10 @@ class AmongUsClientStartPatch
         SuperTrophyManager.CoStartGame();
         Garbage.ClearAndReload();
         CustomKillAnimationManager.ClearCurrentCustomKillAnimation();
+        
+        // The Fungle マップ初期化フラグをリセット
+        FungleAdditionalAdmin.Reset();
+        FungleAdditionalElectrical.Reset();
+        ZiplineUpdown.Reset();
     }
 }

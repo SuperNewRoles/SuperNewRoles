@@ -10,12 +10,19 @@ using SuperNewRoles.Modules;
 namespace SuperNewRoles.MapCustoms;
 public class FungleAdditionalAdmin
 {
+    private static bool _isInitialized = false;
     public static void AddAdmin()
     {
         if (!MapCustomHandler.IsMapCustom(MapCustomHandler.MapCustomId.TheFungle) ||
             !MapEditSettingsOptions.TheFungleAdditionalAdmin)
         {
             Logger.Info("The Fungle admin console creation skipped: not on The Fungle map or option disabled");
+            return;
+        }
+
+        if (_isInitialized)
+        {
+            Logger.Info("The Fungle admin console already initialized, skipping");
             return;
         }
 
@@ -29,6 +36,18 @@ public class FungleAdditionalAdmin
 
             try
             {
+                // 既存のアドミンコンソールをチェック
+                var existingAdminConsoles = GameObject.FindObjectsOfType<MapBehaviour>()
+                    .Where(mb => mb.name.Contains("panel_cockpit_map"))
+                    .ToList();
+
+                if (existingAdminConsoles.Count > 0)
+                {
+                    Logger.Info($"The Fungle admin console already exists ({existingAdminConsoles.Count}), skipping creation");
+                    _isInitialized = true;
+                    return;
+                }
+
                 var adminPrefab = ship.transform.FindChild("Cockpit/panel_cockpit_map");
                 if (adminPrefab == null)
                 {
@@ -42,11 +61,19 @@ public class FungleAdditionalAdmin
                 
                 Logger.Info("Successfully added admin console to The Fungle");
                 Logger.Info($"Admin console position: {Admin.transform.position}, rotation: {Admin.transform.rotation}");
+                
+                _isInitialized = true;
             }
             catch (Exception ex)
             {
                 Logger.Error($"Error adding admin console: {ex}");
             }
         });
+    }
+
+    public static void Reset()
+    {
+        _isInitialized = false;
+        Logger.Info("The Fungle admin console initialization flag reset");
     }
 }
