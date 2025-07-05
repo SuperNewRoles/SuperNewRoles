@@ -117,6 +117,18 @@ public static class ZiplineUpdown
         
         SetZiplineCooldowns();
     }
+    
+    /// <summary>
+    /// オプション値が変更されたときに即座にクールダウンを更新する
+    /// </summary>
+    public static void ForceUpdateZiplineCooldowns()
+    {
+        if (!_isInitialized) return;
+        if (!MapCustomHandler.IsMapCustom(MapCustomHandler.MapCustomId.TheFungle)) return;
+        
+        Logger.Info("Force updating zipline cooldowns due to option change");
+        SetZiplineCooldowns();
+    }
 
     /// <summary>
     /// 定期的に設定値をチェックし、変更されていれば更新する
@@ -128,12 +140,12 @@ public static class ZiplineUpdown
         _periodicUpdateTask = new LateTask(() =>
         {
             PeriodicCheck();
-            // 2秒間隔で定期チェックを継続
+            // 0.5秒間隔で定期チェックを継続（より頻繁にチェック）
             if (_isInitialized && ZiplineCoolChangeOption)
             {
-                _periodicUpdateTask = new LateTask(() => PeriodicCheck(), 2f, "ZiplinePeriodicCheck");
+                _periodicUpdateTask = new LateTask(() => PeriodicCheck(), 0.5f, "ZiplinePeriodicCheck");
             }
-        }, 2f, "ZiplinePeriodicCheck");
+        }, 0.5f, "ZiplinePeriodicCheck");
     }
 
     private static void PeriodicCheck()
@@ -148,12 +160,41 @@ public static class ZiplineUpdown
             if (ZiplineImpostorCoolChangeOption && ExPlayerControl.LocalPlayer.IsImpostor())
                 currentCooldownSetting = ZiplineImpostorCoolTimeOption;
 
+            // 0秒以下の場合は0にする
+            if (currentCooldownSetting <= 0f)
+                currentCooldownSetting = 0f;
+
             // 設定値が変更された場合のみ更新
             if (Mathf.Abs(_lastCooldownValue - currentCooldownSetting) > 0.01f)
             {
                 Logger.Info($"Zipline cooldown setting changed from {_lastCooldownValue}s to {currentCooldownSetting}s, updating consoles");
-                _lastCooldownValue = currentCooldownSetting;
                 SetZiplineCooldowns();
+            }
+            else
+            {
+                // 設定値が変更されていない場合でも、実際のコンソールのクールダウンを確認して修正する
+                var ziplineConsoles = GameObject.FindObjectsOfType<ZiplineConsole>();
+                bool needsUpdate = false;
+                
+                foreach (var console in ziplineConsoles)
+                {
+                    if (console != null && Mathf.Abs(console.CoolDown - currentCooldownSetting) > 0.01f)
+                    {
+                        needsUpdate = true;
+                        break;
+                    }
+                    if (console != null && console.destination != null && Mathf.Abs(console.destination.CoolDown - currentCooldownSetting) > 0.01f)
+                    {
+                        needsUpdate = true;
+                        break;
+                    }
+                }
+                
+                if (needsUpdate)
+                {
+                    Logger.Info($"Zipline console cooldown mismatch detected, forcing update to {currentCooldownSetting}s");
+                    SetZiplineCooldowns();
+                }
             }
         }
         catch (System.Exception ex)

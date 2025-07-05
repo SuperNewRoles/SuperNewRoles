@@ -57,6 +57,29 @@ public static class ZiplineConsolePatch
     {
         canUse = true;
         couldUse = true;
+        
+        // ジップラインのクールダウンを設定値に合わせて更新
+        if (ZiplineCoolChangeOption && IsFungleMap())
+        {
+            float cooldownTime = ZiplineCoolTimeOption;
+            if (ZiplineImpostorCoolChangeOption && ExPlayerControl.LocalPlayer.IsImpostor())
+                cooldownTime = ZiplineImpostorCoolTimeOption;
+            
+            if (cooldownTime <= 0f)
+                cooldownTime = 0f;
+            
+            // 現在のクールダウンが設定値と異なる場合、修正する
+            if (Mathf.Abs(__instance.CoolDown - cooldownTime) > 0.01f)
+            {
+                __instance.CoolDown = cooldownTime;
+            }
+            
+            if (__instance.destination != null && Mathf.Abs(__instance.destination.CoolDown - cooldownTime) > 0.01f)
+            {
+                __instance.destination.CoolDown = cooldownTime;
+            }
+        }
+        
         if (ModHelpers.Not(IsFungleMap() && TheFungleSetting && TheFungleZiplineOption)) return true;
         if (!TheFungleCanUseZiplineOption)
         {
@@ -130,10 +153,22 @@ public static class ZiplineConsolePatch
                     if (__instance != null)
                         __instance.CoolDown = 0f;
                 }, 0.01f, "No Name Task");
+                
+                // さらに確実にするため、0.1秒後にもう一度設定
+                new LateTask(() => {
+                    if (__instance != null)
+                        __instance.CoolDown = 0f;
+                }, 0.1f, "No Name Task");
             }
             else
             {
                 __instance.CoolDown = cooldownTime;
+                
+                // 少し遅延してもう一度設定（確実にするため）
+                new LateTask(() => {
+                    if (__instance != null)
+                        __instance.CoolDown = cooldownTime;
+                }, 0.01f, "No Name Task");
             }
             
             // ログ出力してクールダウンが正しく設定されたことを確認
@@ -153,16 +188,34 @@ public static class ZiplineConsolePatch
             // 0秒の場合は即座に再利用可能にする
             if (cooldownTime <= 0f)
             {
-                __instance.destination.CoolDown = 0f;
-                // 次のフレームで再度0に設定（確実にするため）
-                new LateTask(() => {
-                    if (__instance != null && __instance.destination != null)
-                        __instance.destination.CoolDown = 0f;
-                }, 0.01f, "No Name Task");
+                if (__instance.destination != null)
+                {
+                    __instance.destination.CoolDown = 0f;
+                    // 次のフレームで再度0に設定（確実にするため）
+                    new LateTask(() => {
+                        if (__instance != null && __instance.destination != null)
+                            __instance.destination.CoolDown = 0f;
+                    }, 0.01f, "No Name Task");
+                    
+                    // さらに確実にするため、0.1秒後にもう一度設定
+                    new LateTask(() => {
+                        if (__instance != null && __instance.destination != null)
+                            __instance.destination.CoolDown = 0f;
+                    }, 0.1f, "No Name Task");
+                }
             }
             else
             {
-                __instance.destination.CoolDown = cooldownTime;
+                if (__instance.destination != null)
+                {
+                    __instance.destination.CoolDown = cooldownTime;
+                    
+                    // 少し遅延してもう一度設定（確実にするため）
+                    new LateTask(() => {
+                        if (__instance != null && __instance.destination != null)
+                            __instance.destination.CoolDown = cooldownTime;
+                    }, 0.01f, "No Name Task");
+                }
             }
             
             // ログ出力してクールダウンが正しく設定されたことを確認
