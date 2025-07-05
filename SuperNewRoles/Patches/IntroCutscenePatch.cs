@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Linq;
 using BepInEx.Unity.IL2CPP.Utils.Collections;
@@ -51,14 +52,30 @@ public static class IntroCutscenePatch
         }
         public static void Postfix(object __instance) // IEnumerator<object>などの具体的な型ではなくobject型で受け取る
         {
-            IntroCutscene introCutscene = HarmonyCoroutinePatchProcessor.GetParentFromCoroutine<IntroCutscene>(__instance);
-            if (introCutscene == null) return;
+            try
+            {
+                IntroCutscene introCutscene = HarmonyCoroutinePatchProcessor.GetParentFromCoroutine<IntroCutscene>(__instance);
+                if (introCutscene == null) return;
 
-            if (introCutscene.GetInstanceID() == last)
-                return;
-            last = introCutscene.GetInstanceID();
-            ExPlayerControl player = PlayerControl.LocalPlayer;
-            RoleId myrole = player.Role;
+                if (introCutscene.GetInstanceID() == last)
+                    return;
+                last = introCutscene.GetInstanceID();
+                
+                // プレイヤーの存在確認
+                if (PlayerControl.LocalPlayer == null)
+                {
+                    Logger.Warning("LocalPlayer is null in IntroCutscene");
+                    return;
+                }
+                
+                ExPlayerControl player = PlayerControl.LocalPlayer;
+                if (player == null)
+                {
+                    Logger.Warning("ExPlayerControl is null in IntroCutscene");
+                    return;
+                }
+                
+                RoleId myrole = player.Role;
 
             var hideMyRoleAbility = player.GetAbility<HideMyRoleWhenAliveAbility>();
             if (hideMyRoleAbility != null) myrole = hideMyRoleAbility.FalseRoleId(player);
@@ -73,7 +90,7 @@ public static class IntroCutscenePatch
 
                 introCutscene.RoleText.text = ModTranslation.GetString(rolebase.Role.ToString());               //役職名を変更
 
-                var randomIntroNum = Random.Range(1, rolebase.IntroNum + 1); // 1からrolebase.IntroNumまでのランダムな数を取得
+                var randomIntroNum = UnityEngine.Random.Range(1, rolebase.IntroNum + 1); // 1からrolebase.IntroNumまでのランダムな数を取得
                 introCutscene.RoleBlurbText.text = ModTranslation.GetString($"{rolebase.Role}Intro{randomIntroNum}");     //イントロの簡易説明をランダムに変更
             }
 
@@ -91,7 +108,7 @@ public static class IntroCutscenePatch
                 // 生きている時は役職を自覚できないモディファイアは処理をスキップ
                 if (hideMyRoleAbility != null && hideMyRoleAbility.IsCheckTargetModifierRoleHidden(player, modifier.ModifierRole)) continue;
 
-                var randomIntroNum = Random.Range(1, modifier.IntroNum + 1);
+                var randomIntroNum = UnityEngine.Random.Range(1, modifier.IntroNum + 1);
                 introCutscene.RoleBlurbText.text += "\n" + ModHelpers.CsWithTranslation(modifier.RoleColor, $"{modifier.ModifierRole}Intro{randomIntroNum}");
             }
 
@@ -112,6 +129,12 @@ public static class IntroCutscenePatch
             introCutscene.YouAreText.gameObject.SetActive(true);
             introCutscene.RoleText.gameObject.SetActive(true);
             introCutscene.RoleBlurbText.gameObject.SetActive(true);
+            }
+            catch (Exception ex)
+            {
+                Logger.Error($"Error in IntroCutscene.SetUpRoleTextPatch: {ex.Message}\n{ex.StackTrace}");
+                // エラーが発生してもイントロを続行できるようにする
+            }
         }
     }
 
