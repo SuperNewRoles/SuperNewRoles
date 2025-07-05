@@ -87,10 +87,17 @@ public static class ZiplineUpdown
             {
                 if (ziplineConsole != null)
                 {
-                    ziplineConsole.CoolDown = cooldownTime;
+                    // クールダウンが進行中（設定値より小さい）の場合は設定しない
+                    if (ziplineConsole.CoolDown > cooldownTime || ziplineConsole.CoolDown <= 0f)
+                    {
+                        ziplineConsole.CoolDown = cooldownTime;
+                    }
                     if (ziplineConsole.destination != null)
                     {
-                        ziplineConsole.destination.CoolDown = cooldownTime;
+                        if (ziplineConsole.destination.CoolDown > cooldownTime || ziplineConsole.destination.CoolDown <= 0f)
+                        {
+                            ziplineConsole.destination.CoolDown = cooldownTime;
+                        }
                     }
                 }
             }
@@ -173,17 +180,19 @@ public static class ZiplineUpdown
             else
             {
                 // 設定値が変更されていない場合でも、実際のコンソールのクールダウンを確認して修正する
+                // ただし、クールダウンが進行中（設定値より小さい）の場合は更新しない
                 var ziplineConsoles = GameObject.FindObjectsOfType<ZiplineConsole>();
                 bool needsUpdate = false;
                 
                 foreach (var console in ziplineConsoles)
                 {
-                    if (console != null && Mathf.Abs(console.CoolDown - currentCooldownSetting) > 0.01f)
+                    // クールダウンが設定値より大きい場合のみ修正が必要
+                    if (console != null && console.CoolDown > currentCooldownSetting + 0.01f)
                     {
                         needsUpdate = true;
                         break;
                     }
-                    if (console != null && console.destination != null && Mathf.Abs(console.destination.CoolDown - currentCooldownSetting) > 0.01f)
+                    if (console != null && console.destination != null && console.destination.CoolDown > currentCooldownSetting + 0.01f)
                     {
                         needsUpdate = true;
                         break;
