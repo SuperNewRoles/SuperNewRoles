@@ -288,6 +288,8 @@ public class RocketLaunchAbility : CustomButtonBase
         if (playersToLaunch.Count > 0)
         {
             RpcLaunchPlayers(playersToLaunch);
+            // Reset grab ability cooldown to initial cooldown after launch
+            grabAbility.ResetTimer();
         }
     }
 
