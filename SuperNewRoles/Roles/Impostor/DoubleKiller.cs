@@ -36,22 +36,22 @@ class DoubleKiller : RoleBase<DoubleKiller>
     public override RoleTag[] RoleTags { get; } = [];
     public override RoleOptionMenuType OptionTeam { get; } = RoleOptionMenuType.Impostor;
 
+    [CustomOptionFloat("DoubleKillerMainKillCooldown", 2.5f, 60f, 2.5f, 30f)]
+    public static float DoubleKillerMainKillCooldown;
+
+    [CustomOptionFloat("DoubleKillerSubKillCooldown", 2.5f, 60f, 2.5f, 30f)]
+    public static float DoubleKillerSubKillCooldown;
+
     [CustomOptionBool("DoubleKillerKillCountRemaining", true)]
     public static bool DoubleKillerKillCountRemaining;
 
-    [CustomOptionInt("DoubleKillerMaxKillCount", 1, 10, 1, 1)]
+    [CustomOptionInt("DoubleKillerMaxKillCount", 1, 10, 1, 1,parentFieldName: nameof(DoubleKillerKillCountRemaining))]
     public static int DoubleKillerMaxKillCount;
     [CustomOptionBool("DoubleKillerCanUseVent", true, translationName: "CanUseVent")]
     public static bool DoubleKillerCanUseVent;
 
     [CustomOptionBool("DoubleKillerCanSabotage", true, translationName: "CanSabotage")]
     public static bool DoubleKillerCanSabotage;
-
-    [CustomOptionFloat("DoubleKillerMainKillCooldown", 10f, 60f, 5f, 30f)]
-    public static float DoubleKillerMainKillCooldown;
-
-    [CustomOptionFloat("DoubleKillerSubKillCooldown", 10f, 60f, 5f, 30f)]
-    public static float DoubleKillerSubKillCooldown;
 }
 
 public record DoubleKillerAbilityData(int? DoubleKillerCount);
@@ -152,16 +152,16 @@ public class DoubleKillerAbility : AbilityBase, IAbilityCount
             () => 0f,
             onlyCrewmates: () => true
         ), new AbilityParentAbility(this));
-        
+
         // メインキルボタン（独立したクールダウン）
         Player.AttachAbility(new IndependentKillButtonAbility(
-            () => true, 
-            () => DoubleKiller.DoubleKillerMainKillCooldown, 
+            () => true,
+            () => DoubleKiller.DoubleKillerMainKillCooldown,
             onlyCrewmates: () => true,
             showTextType: () => ShowTextType.Hidden, // テキストを非表示に変更
             showText: () => ""
         ), new AbilityParentAbility(this));
-        
+
         // サブキルボタン（独立したクールダウン）
         Player.AttachAbility(new IndependentKillButtonAbility(
             () => {
@@ -169,8 +169,8 @@ public class DoubleKillerAbility : AbilityBase, IAbilityCount
                 if (DoubleKillerAbilityData?.DoubleKillerCount == null) return true;
                 // 実際のCountプロパティを使用してカウントを確認
                 return HasCount;
-            }, 
-            () => DoubleKiller.DoubleKillerSubKillCooldown, 
+            },
+            () => DoubleKiller.DoubleKillerSubKillCooldown,
             onlyCrewmates: () => true,
             killedCallback: x => {
                 // 安全性を確保するためのnull参照チェック
