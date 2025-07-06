@@ -46,6 +46,12 @@ class DoubleKiller : RoleBase<DoubleKiller>
 
     [CustomOptionBool("DoubleKillerCanSabotage", true, translationName: "CanSabotage")]
     public static bool DoubleKillerCanSabotage;
+
+    [CustomOptionFloat("DoubleKillerMainKillCooldown", 10f, 60f, 5f, 30f)]
+    public static float DoubleKillerMainKillCooldown;
+
+    [CustomOptionFloat("DoubleKillerSubKillCooldown", 10f, 60f, 5f, 30f)]
+    public static float DoubleKillerSubKillCooldown;
 }
 
 public record DoubleKillerAbilityData(int? DoubleKillerCount);
@@ -135,15 +141,22 @@ public class DoubleKillerAbility : AbilityBase, IAbilityCount
     public override void AttachToAlls()
     {
         base.AttachToAlls();
-        // 通常のキルボタン（Murder イベントでクールダウンされる）
-        Player.AttachAbility(new CustomKillButtonAbility(
-            () => true, () => GameOptionsManager.Instance.CurrentGameOptions.GetFloat(FloatOptionNames.KillCooldown), () => true), new AbilityParentAbility(this));
-        // 独立したキルボタン（Murder イベントでクールダウンされない）
+        // メインキルボタン（独立したクールダウン）
         Player.AttachAbility(new IndependentKillButtonAbility(
-            () => DoubleKillerAbilityData.DoubleKillerCount.HasValue ? Count <= DoubleKillerAbilityData.DoubleKillerCount.Value : true, () => GameOptionsManager.Instance.CurrentGameOptions.GetFloat(FloatOptionNames.KillCooldown), onlyCrewmates: () => true,
+            () => true, 
+            () => DoubleKiller.DoubleKillerMainKillCooldown, 
+            onlyCrewmates: () => true,
+            showTextType: () => ShowTextType.Show,
+            showText: () => ModTranslation.GetString("DoubleKillerMainKillButton")
+        ), new AbilityParentAbility(this));
+        // サブキルボタン（独立したクールダウン）
+        Player.AttachAbility(new IndependentKillButtonAbility(
+            () => DoubleKillerAbilityData.DoubleKillerCount.HasValue ? Count <= DoubleKillerAbilityData.DoubleKillerCount.Value : true, 
+            () => DoubleKiller.DoubleKillerSubKillCooldown, 
+            onlyCrewmates: () => true,
             killedCallback: x => this.UseAbilityCount(),
             showTextType: () => DoubleKillerAbilityData.DoubleKillerCount.HasValue ? ShowTextType.Show : ShowTextType.Hidden,
-            showText: () => DoubleKillerAbilityData.DoubleKillerCount.HasValue ? string.Format(ModTranslation.GetString("RemainingText"), (DoubleKillerAbilityData.DoubleKillerCount - Count).ToString()) : ""
+            showText: () => DoubleKillerAbilityData.DoubleKillerCount.HasValue ? string.Format(ModTranslation.GetString("RemainingText"), (DoubleKillerAbilityData.DoubleKillerCount - Count).ToString()) : ModTranslation.GetString("DoubleKillerSubKillButton")
         ), new AbilityParentAbility(this));
     }
 }
