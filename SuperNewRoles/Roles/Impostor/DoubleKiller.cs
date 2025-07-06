@@ -137,26 +137,61 @@ public class DoubleKillerAbility : AbilityBase, IAbilityCount
     public DoubleKillerAbility(DoubleKillerAbilityData doubleKillerAbilityData)
     {
         DoubleKillerAbilityData = doubleKillerAbilityData;
+        // 初期カウントを設定
+        if (DoubleKillerAbilityData.DoubleKillerCount.HasValue)
+        {
+            Count = DoubleKillerAbilityData.DoubleKillerCount.Value;
+        }
     }
     public override void AttachToAlls()
     {
         base.AttachToAlls();
+        // バニラキルボタンを無効化するためのCustomKillButtonAbilityを追加
+        Player.AttachAbility(new CustomKillButtonAbility(
+            () => false, // 常に無効化
+            () => 0f,
+            onlyCrewmates: () => true
+        ), new AbilityParentAbility(this));
+        
         // メインキルボタン（独立したクールダウン）
         Player.AttachAbility(new IndependentKillButtonAbility(
             () => true, 
             () => DoubleKiller.DoubleKillerMainKillCooldown, 
             onlyCrewmates: () => true,
-            showTextType: () => ShowTextType.Show,
-            showText: () => ModTranslation.GetString("DoubleKillerMainKillButton")
+            showTextType: () => ShowTextType.Hidden, // テキストを非表示に変更
+            showText: () => ""
         ), new AbilityParentAbility(this));
+        
         // サブキルボタン（独立したクールダウン）
         Player.AttachAbility(new IndependentKillButtonAbility(
-            () => DoubleKillerAbilityData.DoubleKillerCount.HasValue ? Count <= DoubleKillerAbilityData.DoubleKillerCount.Value : true, 
+            () => {
+                // 安全性を確保するためのnull参照チェック
+                if (DoubleKillerAbilityData?.DoubleKillerCount == null) return true;
+                // 実際のCountプロパティを使用してカウントを確認
+                return HasCount;
+            }, 
             () => DoubleKiller.DoubleKillerSubKillCooldown, 
             onlyCrewmates: () => true,
-            killedCallback: x => this.UseAbilityCount(),
-            showTextType: () => DoubleKillerAbilityData.DoubleKillerCount.HasValue ? ShowTextType.Show : ShowTextType.Hidden,
-            showText: () => DoubleKillerAbilityData.DoubleKillerCount.HasValue ? string.Format(ModTranslation.GetString("RemainingText"), (DoubleKillerAbilityData.DoubleKillerCount - Count).ToString()) : ModTranslation.GetString("DoubleKillerSubKillButton")
+            killedCallback: x => {
+                // 安全性を確保するためのnull参照チェック
+                if (DoubleKillerAbilityData?.DoubleKillerCount != null && HasCount)
+                {
+                    try
+                    {
+                        this.UseAbilityCount();
+                    }
+                    catch (Exception ex)
+                    {
+                        Logger.Error($"DoubleKiller UseAbilityCount error: {ex.Message}", "DoubleKiller");
+                    }
+                }
+            },
+            showTextType: () => DoubleKillerAbilityData?.DoubleKillerCount != null ? ShowTextType.Show : ShowTextType.Hidden,
+            showText: () => {
+                // 安全性を確保するためのnull参照チェック
+                if (DoubleKillerAbilityData?.DoubleKillerCount == null) return "";
+                return string.Format(ModTranslation.GetString("RemainingText"), Count.ToString());
+            }
         ), new AbilityParentAbility(this));
     }
 }
