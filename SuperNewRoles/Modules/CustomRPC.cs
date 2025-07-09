@@ -276,25 +276,60 @@ public static class CustomRPCManager
             switch (callId)
             {
                 case SNRRpcId:
-                    byte id = reader.ReadByte();
-                    Logger.Info($"Received RPC: {id}");
-                    if (!RpcMethods.TryGetValue(id, out var method)) return;
-                    // インスタンスメソッドならインスタンスを読み込む
-                    object? instance = null;
-                    if (InstanceMethodSet.Contains(method))
+                    try
                     {
-                        instance = reader.ReadFromType(method.DeclaringType);
+                        byte id = reader.ReadByte();
+                        Logger.Info($"Received RPC: {id}");
+                        if (!RpcMethods.TryGetValue(id, out var method))
+                        {
+                            Logger.Warning($"Unknown RPC method ID: {id}");
+                            return;
+                        }
+                        
+                        // プレイヤー接続状態をチェック
+                        if (PlayerControl.LocalPlayer == null || PlayerControl.AllPlayerControls == null)
+                        {
+                            Logger.Warning("Player control not initialized, skipping RPC");
+                            return;
+                        }
+                        
+                        // インスタンスメソッドならインスタンスを読み込む
+                        object? instance = null;
+                        if (InstanceMethodSet.Contains(method))
+                        {
+                            instance = reader.ReadFromType(method.DeclaringType);
+                            if (instance == null)
+                            {
+                                Logger.Warning($"Failed to read instance for RPC method: {method.Name}");
+                                return;
+                            }
+                        }
+                        
+                        // パラメータを読み込み
+                        var paramTypesRecv = ParamTypesByMethod[method];
+                        var argsRecv = new object[paramTypesRecv.Length];
+                        for (int i = 0; i < paramTypesRecv.Length; i++)
+                        {
+                            try
+                            {
+                                argsRecv[i] = reader.ReadFromType(paramTypesRecv[i]);
+                            }
+                            catch (Exception ex)
+                            {
+                                Logger.Error($"Failed to read parameter {i} for RPC {method.Name}: {ex.Message}\n{ex.StackTrace}");
+                                return;
+                            }
+                        }
+                        
+                        IsRpcReceived = true;
+                        Logger.Info($"Invoking RPC: {method.Name}");
+                        method.Invoke(instance, argsRecv);
                     }
-                    // パラメータを読み込み
-                    var paramTypesRecv = ParamTypesByMethod[method];
-                    var argsRecv = new object[paramTypesRecv.Length];
-                    for (int i = 0; i < paramTypesRecv.Length; i++)
+                    catch (Exception ex)
                     {
-                        argsRecv[i] = reader.ReadFromType(paramTypesRecv[i]);
+                        Logger.Error($"Error processing CustomRPC: {ex.Message}\n{ex.StackTrace}");
+                        // エラーが発生してもゲームを続行できるようにする
                     }
-                    IsRpcReceived = true;
-                    Logger.Info($"Received RPC: {method.Name}");
-                    method.Invoke(instance, argsRecv);
                     break;
                 case SNRSyncVersionRpc:
                     SyncVersion.ReceivedSyncVersion(reader);
