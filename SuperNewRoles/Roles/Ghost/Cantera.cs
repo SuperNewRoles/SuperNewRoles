@@ -24,7 +24,7 @@ class Cantera : GhostRoleBase<Cantera>
             IsLimitUses: CanteraIsLimitUses,
             MaxUses: CanteraMaxUses
         )
-    )];
+    ), () => new HideRoleOnGhostAbility((player) => CanteraHideRoles)];
     public override QuoteMod QuoteMod => QuoteMod.SuperNewRoles;
 
     public override AssignedTeamType AssignedTeam => AssignedTeamType.Crewmate;
@@ -51,6 +51,9 @@ class Cantera : GhostRoleBase<Cantera>
 
     [CustomOptionInt("CanteraMaxUses", 1, 15, 1, 3, parentFieldName: nameof(CanteraIsLimitUses))]
     public static int CanteraMaxUses;
+
+    [CustomOptionBool("CanteraHideRoles", false)]
+    public static bool CanteraHideRoles;
 }
 
 public record CanteraAbilityOption(float Cooldown, float Duration, float ChangedVision, bool IsLimitUses, int MaxUses);

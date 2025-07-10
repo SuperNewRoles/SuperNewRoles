@@ -1236,6 +1236,7 @@ RevenantHauntVision,効果中の視界,Vision During Haunt,,
 RevenantCannotReportWhileHaunted,呪われている間会議を起こせない,Cannot Report While Haunted,,
 RevenantHauntCannotReportText,呪われていて押せない,Cannot press because cursed,,
 RevenantHauntButtonText,呪う,Haunt,詛咒,詛咒
+RevenantHideRoles,死亡時に他のプレイヤーの役職を隠す,Hide other players' roles when dead,死亡时隐藏其他玩家角色,死亡時隱藏其他玩家角色
 
 # Teleporter
 TeleporterWaitingText,テレポート中... 残り{0}秒,Teleporting... Remaining {0}s,Teleporting... 剩餘{0}秒,Teleporting... 剩餘{0}秒
@@ -1250,11 +1251,13 @@ PursuerUpdateInterval,追跡更新間隔,Update Interval,更新间隔,更新間�
 CanteraChangedVision,変更後の視界,Changed Vision,改变后的视野,改變後的視野
 CanteraIsLimitUses,使用回数制限を有効にする,Enable Limit Uses,启用使用次数限制,啟用使用次數限制
 CanteraMaxUses,使用可能回数,Max Uses,最大使用次数,最大使用次數
+CanteraHideRoles,死亡時に他のプレイヤーの役職を隠す,Hide other players' roles when dead,死亡时隐藏其他玩家角色,死亡時隱藏其他玩家角色
 CanteraButtonText,灯火,Light,灯火,燈火
 
 # Mirage
 MirageLimitUse,使用回数制限を有効にする,Enable Limit Uses,启用使用次数限制,啟用使用次數限制
 MirageLimitCount,使用可能回数,Max Uses,最大使用次数,最大使用次數
+MirageHideRoles,死亡時に他のプレイヤーの役職を隠す,Hide other players' roles when dead,死亡时隐藏其他玩家角色,死亡時隱藏其他玩家角色
 
 # Bakery
 BakeryExileText,パン屋がパンを焼いたようだ...,Bakery baked bread,面包屋烤了面包,麵包屋烤了麵包
@@ -1738,6 +1741,7 @@ SilverBulletCanRepairUseCountOption,修理回数,Repair Count
 
 # GhostMechanic
 GhostMechanicCannotFixMushroomMixup,キノコカオスを修復できない,Cannot Fix Mushroom Mixup
+GhostMechanicHideRoles,死亡時に他のプレイヤーの役職を隠す,Hide other players' roles when dead,死亡时隐藏其他玩家角色,死亡時隱藏其他玩家角色
 
 # MadJester
 MadJesterKnowImpostorHeader,インポスター認知設定,Know Impostor Setting,认识内鬼设置,認識內鬼設置

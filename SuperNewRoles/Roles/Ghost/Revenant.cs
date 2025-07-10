@@ -25,6 +25,7 @@ class Revenant : GhostRoleBase<Revenant>
             HauntVision: Necromancer.RevenantHauntVision,
             CannotReportWhileHaunted: Necromancer.RevenantCannotReportWhileHaunted
         )),
+        () => new HideRoleOnGhostAbility((player) => RevenantHideRoles),
     ];
 
     public override QuoteMod QuoteMod { get; } = QuoteMod.SuperNewRoles;
@@ -36,6 +37,9 @@ class Revenant : GhostRoleBase<Revenant>
     public override RoleTag[] RoleTags { get; } = [RoleTag.GhostRole];
     public override RoleId[] RelatedRoleIds => [RoleId.Necromancer];
     public override bool HiddenOption => true;
+
+    [CustomOptionBool("RevenantHideRoles", false)]
+    public static bool RevenantHideRoles;
 }
 
 public record RevenantAbilityData(int RequiredTasks, int HauntDuration, float HauntVision, bool CannotReportWhileHaunted);

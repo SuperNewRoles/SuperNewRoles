@@ -18,6 +18,7 @@ class Mirage : GhostRoleBase<Mirage>
     public override List<Func<AbilityBase>> Abilities => [
         () => new MirageAbility(MirageLimitUse, MirageLimitCount),
         () => new DisibleHauntAbility(() => true),
+        () => new HideRoleOnGhostAbility((player) => MirageHideRoles),
     ];
 
     public override QuoteMod QuoteMod => QuoteMod.SuperNewRoles;
@@ -36,6 +37,9 @@ class Mirage : GhostRoleBase<Mirage>
     public static bool MirageLimitUse;
     [CustomOptionInt("MirageLimitCount", 1, 10, 1, 2, parentFieldName: nameof(MirageLimitUse))]
     public static int MirageLimitCount;
+
+    [CustomOptionBool("MirageHideRoles", false)]
+    public static bool MirageHideRoles;
 }
 
 public class MirageAbility : CustomButtonBase, IAbilityCount
