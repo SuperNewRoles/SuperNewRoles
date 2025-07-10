@@ -24,7 +24,7 @@ class Busker : RoleBase<Busker>
     public override RoleTag[] RoleTags { get; } = [];
     public override RoleOptionMenuType OptionTeam { get; } = RoleOptionMenuType.Crewmate;
 
-    [CustomOptionFloat("BuskerCoolTime", 0f, 60f, 2.5f, 20f, translationName: "CoolTime")]
+    [CustomOptionFloat("BuskerCoolTime", 2.5f, 60f, 2.5f, 20f, translationName: "CoolTime")]
     public static float BuskerCoolTime;
 
     [CustomOptionFloat("BuskerPseudocideDurationOption", 5f, 60f, 5f, 30f, translationName: "BuskerPseudocideDurationOption")]
