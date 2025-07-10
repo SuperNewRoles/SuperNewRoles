@@ -233,11 +233,11 @@ public static class NameText
         bool isBuskerFakeDeath = ExPlayerControl.LocalPlayer.GetAbility<BuskerPseudocideAbility>()?.isEffectActive == true;
         
         bool visiable = !isBuskerFakeDeath &&  GetRoleInfoVisibility(player, localHideRoleOnGhostAbility);
-        UpdateVisiable(player, visiable);
+        UpdateVisible(player, visiable);
         if (!visiable && localHideRoleOnGhostAbility != null && localHideRoleOnGhostAbility.IsHideRole(player))
         {
             // When role info is not visible, the name color may need to be updated (e.g. to red for fellow impostors).
-            SetPlayerNameColor(player, isible);
+            SetPlayerNameColor(player, visiable);
         }
     }
     public static void UpdateVisible(ExPlayerControl player, bool visiable)
