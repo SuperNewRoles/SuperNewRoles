@@ -3,6 +3,7 @@ using System.Linq;
 using AmongUs.GameOptions;
 using HarmonyLib;
 using SuperNewRoles.Modules;
+using SuperNewRoles.Roles.Ability;
 
 namespace SuperNewRoles.Roles;
 
@@ -95,6 +96,12 @@ public class GhostAssignRole
 
     public static bool HandleAssign(ExPlayerControl player)
     {
+        // バスカーの偽装死時は幽霊役職を配布しない
+        if (player.GetAbility<BuskerPseudocideAbility>()?.isEffectActive == true)
+        {
+            return false;
+        }
+
         var assignTeam = player.IsCrewmate() ? AssignedTeamType.Crewmate : player.IsNeutral() ? AssignedTeamType.Neutral : AssignedTeamType.Impostor;
         List<RoleOptionManager.GhostRoleOption> ghostRoles = new();
         foreach (var opt in RoleOptionManager.GhostRoleOptions)
