@@ -151,7 +151,7 @@ public static class NameText
             player.VoteArea.NameText.text = player.Player.Data.DefaultOutfit.PlayerName;
 
         var hrg = ExPlayerControl.LocalPlayer.GetAbility<HideRoleOnGhostAbility>();
-        bool isVisible = GetRoleInfoVisibility(player, hrg);
+        bool isVisible =  GetRoleInfoVisibility(player, hrg);
 
         SetPlayerNameColor(player, isVisible);
 
@@ -232,7 +232,7 @@ public static class NameText
         // バスカーの偽装死時は他のプレイヤーの役職を見えないようにする
         bool isBuskerFakeDeath = ExPlayerControl.LocalPlayer.GetAbility<BuskerPseudocideAbility>()?.isEffectActive == true;
         
-        bool visiable = GetRoleInfoVisibility(player, localHideRoleOnGhostAbility);;
+        bool visiable = !isBuskerFakeDeath &&  GetRoleInfoVisibility(player, localHideRoleOnGhostAbility);
         UpdateVisiable(player, visiable);
         if (!visiable && localHideRoleOnGhostAbility != null && localHideRoleOnGhostAbility.IsHideRole(player))
         {
