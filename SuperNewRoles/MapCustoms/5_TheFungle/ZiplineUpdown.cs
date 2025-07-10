@@ -161,15 +161,20 @@ public static class ZiplineUpdown
     {
         if (_periodicUpdateTask != null) return;
         
-        _periodicUpdateTask = new LateTask(() =>
+        // 定期実行を継続するためのAction
+        System.Action periodicAction = null;
+        periodicAction = () =>
         {
             PeriodicCheck();
-            // 0.5秒間隔で定期チェックを継続（より頻繁にチェック）
+            // 次回の実行をスケジュール（再帰的に自分自身を呼び出す）
             if (_isInitialized && ZiplineCoolChangeOption)
             {
-                _periodicUpdateTask = new LateTask(() => PeriodicCheck(), 0.5f, "ZiplinePeriodicCheck");
+                _periodicUpdateTask = new LateTask(periodicAction, 0.5f, "ZiplinePeriodicCheck");
             }
-        }, 0.5f, "ZiplinePeriodicCheck");
+        };
+        
+        // 最初の実行をスケジュール
+        _periodicUpdateTask = new LateTask(periodicAction, 0.5f, "ZiplinePeriodicCheck");
     }
 
     private static void PeriodicCheck()
