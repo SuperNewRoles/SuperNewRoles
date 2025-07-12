@@ -1591,6 +1591,10 @@ MeetingSheriffShotsPerMeeting,1会議の最大キル数,Most kills in a single m
 # DoubleKiller
 DoubleKillerKillCountRemaining,サブキルボタンのキル回数制限,Sub kill button's kill remaining
 DoubleKillerMaxKillCount,キル可能回数,Max kill count
+DoubleKillerMainKillButton,メインキルボタン,Main Kill Button,主要击杀按钮,主要擊殺按鈕
+DoubleKillerSubKillButton,サブキルボタン,Sub Kill Button,副击杀按钮,副擊殺按鈕
+DoubleKillerMainKillCooldown,メインキルクールダウン,Main Kill Cooldown,主要击杀冷却时间,主要擊殺冷卻時間
+DoubleKillerSubKillCooldown,サブキルクールダウン,Sub Kill Cooldown,副击杀冷却时间,副擊殺冷卻時間
 
 # Finder
 FinderKillCooldown,ファインダーのキルクール,Finder Kill Cooldown,Finder Kill Cooldown,Finder Kill Cooldown
