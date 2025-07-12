@@ -49,4 +49,3 @@ public static class FixedUpdatePatch
         FixedUpdateWithInstanceEvent.Invoke(__instance);
     }
 }
-

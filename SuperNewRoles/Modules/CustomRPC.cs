@@ -285,14 +285,14 @@ public static class CustomRPCManager
                             Logger.Warning($"Unknown RPC method ID: {id}");
                             return;
                         }
-                        
+
                         // プレイヤー接続状態をチェック
                         if (PlayerControl.LocalPlayer == null || PlayerControl.AllPlayerControls == null)
                         {
                             Logger.Warning("Player control not initialized, skipping RPC");
                             return;
                         }
-                        
+
                         // インスタンスメソッドならインスタンスを読み込む
                         object? instance = null;
                         if (InstanceMethodSet.Contains(method))
@@ -304,7 +304,7 @@ public static class CustomRPCManager
                                 return;
                             }
                         }
-                        
+
                         // パラメータを読み込み
                         var paramTypesRecv = ParamTypesByMethod[method];
                         var argsRecv = new object[paramTypesRecv.Length];
@@ -320,7 +320,7 @@ public static class CustomRPCManager
                                 return;
                             }
                         }
-                        
+
                         IsRpcReceived = true;
                         Logger.Info($"Invoking RPC: {method.Name}");
                         method.Invoke(instance, argsRecv);

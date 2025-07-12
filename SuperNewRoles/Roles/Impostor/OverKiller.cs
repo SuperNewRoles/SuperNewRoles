@@ -1,15 +1,15 @@
 using System;
 using System.Collections.Generic;
-using UnityEngine;
+using System.Linq;
 using AmongUs.GameOptions;
+using SuperNewRoles.Ability;
 using SuperNewRoles.CustomOptions;
+using SuperNewRoles.Events.PCEvents;
+using SuperNewRoles.Modules;
+using SuperNewRoles.Modules.Events.Bases;
 using SuperNewRoles.Roles.Ability;
 using SuperNewRoles.Roles.Ability.CustomButton;
-using SuperNewRoles.Modules;
-using SuperNewRoles.Events.PCEvents;
-using SuperNewRoles.Modules.Events.Bases;
-using SuperNewRoles.Ability;
-using System.Linq;
+using UnityEngine;
 
 namespace SuperNewRoles.Roles.Impostor;
 

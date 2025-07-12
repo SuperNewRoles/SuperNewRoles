@@ -1,10 +1,10 @@
 using System.Collections.Generic;
+using System.Linq;
 using HarmonyLib;
+using Hazel;
 using SuperNewRoles.CustomOptions.Categories;
 using SuperNewRoles.Modules;
 using UnityEngine;
-using System.Linq;
-using Hazel;
 
 namespace SuperNewRoles.Patches;
 public static class ModdedNetworkTransform

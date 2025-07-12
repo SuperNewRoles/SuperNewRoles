@@ -1,16 +1,16 @@
 using System;
-using UnityEngine;
-using SuperNewRoles.Roles.Ability.CustomButton;
-using SuperNewRoles.Modules;
+using System.Collections;
+using System.Linq;
+using AmongUs.GameOptions;
+using BepInEx.Unity.IL2CPP.Utils.Collections;
 using SuperNewRoles.Events;
 using SuperNewRoles.Events.PCEvents;
-using SuperNewRoles.Roles.Crewmate;
-using System.Linq;
-using System.Collections;
-using BepInEx.Unity.IL2CPP.Utils.Collections;
-using SuperNewRoles.Modules.Events.Bases;
-using AmongUs.GameOptions;
 using SuperNewRoles.MapDatabase;
+using SuperNewRoles.Modules;
+using SuperNewRoles.Modules.Events.Bases;
+using SuperNewRoles.Roles.Ability.CustomButton;
+using SuperNewRoles.Roles.Crewmate;
+using UnityEngine;
 
 namespace SuperNewRoles.Roles.Ability;
 
@@ -115,7 +115,7 @@ public class BuskerPseudocideAbility : CustomButtonBase, IButtonEffect
         RoleManager.Instance.SetRole(Player, RoleTypes.Crewmate);
         CleanDeadbody();
         Player.MyPhysics.StartCoroutine(PlayExitVent(Player).WrapToIl2Cpp());
-        
+
         // 名前色と役職表示をリセット
         NameText.UpdateAllNameInfo();
     }

@@ -1,10 +1,10 @@
 using System;
 using System.Collections.Generic;
-using UnityEngine;
 using AmongUs.GameOptions;
 using SuperNewRoles.CustomOptions;
-using SuperNewRoles.Roles.Ability;
 using SuperNewRoles.Modules;
+using SuperNewRoles.Roles.Ability;
+using UnityEngine;
 
 namespace SuperNewRoles.Roles.Crewmate;
 
@@ -13,7 +13,8 @@ class Celebrity : RoleBase<Celebrity>
     public override RoleId Role { get; } = RoleId.Celebrity;
     public override Color32 RoleColor { get; } = new Color32(255, 215, 0, byte.MaxValue); // 黄金色
     public override List<Func<AbilityBase>> Abilities { get; } = [() => new CelebrityAbility(
-        new CelebrityData() {
+        new CelebrityData()
+        {
             EnableGlowEffect = CelebrityEnableGlowEffect,
             GlowOnlyWhileAlive = CelebrityGlowOnlyWhileAlive,
             YellowChangedRole = CelebrityYellowChangedRole
