@@ -223,6 +223,7 @@ public abstract class WaveCannonObjectBase
             ability.Player.cosmetics.currentBodySprite.BodySprite.gameObject.SetActive(true);
             ability.Player.cosmetics.gameObject.SetActive(true);
         }
+        ability.DetachWaveCannonObject();
         ability.Player.Player.moveable = true;
         ability.Player.MyPhysics.Animations.PlayIdleAnimation();
         if (ability.Player.AmOwner && isResetKillCooldown)
