@@ -13,8 +13,7 @@ class GhostMechanic : GhostRoleBase<GhostMechanic>
     public override Color32 RoleColor { get; } = new(138, 142, 153, 255);
     public override List<Func<AbilityBase>> Abilities { get; } = new List<Func<AbilityBase>>
     {
-        () => new RepairSabotageAbility(GhostMechanicCoolTime, true, GhostMechanicCannotFixMushroomMixup),
-        () => new HideRoleOnGhostAbility((player) => GhostMechanicHideRoles)
+        () => new RepairSabotageAbility(GhostMechanicCoolTime, true, GhostMechanicCannotFixMushroomMixup)
     };
 
     public override QuoteMod QuoteMod { get; } = QuoteMod.SuperNewRoles;
@@ -29,7 +28,4 @@ class GhostMechanic : GhostRoleBase<GhostMechanic>
     public static float GhostMechanicCoolTime;
     [CustomOptionBool("GhostMechanicCannotFixMushroomMixup", true)]
     public static bool GhostMechanicCannotFixMushroomMixup;
-
-    [CustomOptionBool("GhostMechanicHideRoles", false)]
-    public static bool GhostMechanicHideRoles;
 }
