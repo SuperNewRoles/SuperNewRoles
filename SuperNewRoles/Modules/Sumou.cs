@@ -1,9 +1,9 @@
+using System;
 using System.Collections.Generic;
 using HarmonyLib;
-using UnityEngine;
-using SuperNewRoles.Patches;
 using SuperNewRoles.CustomOptions.Categories;
-using System;
+using SuperNewRoles.Patches;
+using UnityEngine;
 
 namespace SuperNewRoles.Modules
 {

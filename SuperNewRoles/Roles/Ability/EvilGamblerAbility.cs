@@ -1,10 +1,10 @@
 using System;
+using AmongUs.GameOptions;
 using SuperNewRoles.Events;
 using SuperNewRoles.Events.PCEvents;
 using SuperNewRoles.Modules;
 using SuperNewRoles.Modules.Events.Bases;
 using UnityEngine;
-using AmongUs.GameOptions;
 
 namespace SuperNewRoles.Roles.Ability;
 

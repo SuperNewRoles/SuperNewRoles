@@ -24,5 +24,3 @@ public enum CustomCosmeticsMenuType
     plate,
     cube,
 }
-
-

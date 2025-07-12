@@ -4,9 +4,9 @@ using System.Linq;
 using HarmonyLib;
 using SuperNewRoles.Modules;
 using UnityEngine;
-using Object = UnityEngine.Object;
 using Action = System.Action;
 using IEnumerator = Il2CppSystem.Collections.IEnumerator;
+using Object = UnityEngine.Object;
 
 namespace SuperNewRoles.Roles.Ability;
 

@@ -140,7 +140,7 @@ public static class NameText
         // 幽霊役職の表示は役職可視性チェックに従う
         var hrg = ExPlayerControl.LocalPlayer.GetAbility<HideRoleOnGhostAbility>();
         bool isRoleVisible = GetRoleInfoVisibility(player, hrg);
-        
+
         if (player.GhostRole != GhostRoleId.None && player.GhostRoleBase != null && isRoleVisible)
             roleName = $"{ModHelpers.CsWithTranslation(player.GhostRoleBase.RoleColor, player.GhostRole.ToString())} ({roleName}) ";
         if (player.ModifierRoleBases.Count > 0)
@@ -236,11 +236,11 @@ public static class NameText
     {
         if (player == null || player.Player == null)
             return;
-        
+
         // バスカーの偽装死時は他のプレイヤーの役職を見えないようにする
         bool isBuskerFakeDeath = ExPlayerControl.LocalPlayer.GetAbility<BuskerPseudocideAbility>()?.isEffectActive == true;
-        
-        bool visiable = !isBuskerFakeDeath &&  GetRoleInfoVisibility(player, localHideRoleOnGhostAbility);
+
+        bool visiable = !isBuskerFakeDeath && GetRoleInfoVisibility(player, localHideRoleOnGhostAbility);
         UpdateVisible(player, visiable);
         if (!visiable && localHideRoleOnGhostAbility != null && localHideRoleOnGhostAbility.IsHideRole(player))
         {

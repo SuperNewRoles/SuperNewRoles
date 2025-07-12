@@ -1,12 +1,12 @@
+using System;
 using AmongUs.GameOptions;
-using UnityEngine;
-using SuperNewRoles.Modules;
-using SuperNewRoles.Roles.Ability.CustomButton;
 using SuperNewRoles.Events;
 using SuperNewRoles.Events.PCEvents;
+using SuperNewRoles.Modules;
 using SuperNewRoles.Modules.Events.Bases;
-using System;
+using SuperNewRoles.Roles.Ability.CustomButton;
 using SuperNewRoles.Roles.Impostor;
+using UnityEngine;
 
 namespace SuperNewRoles.Roles.Ability;
 
@@ -134,4 +134,3 @@ public class ShapeshiftButtonAbility : CustomButtonBase, IButtonEffect
         }
     }
 }
-
