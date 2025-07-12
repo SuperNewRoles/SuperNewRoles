@@ -21,7 +21,8 @@ class MadJester : RoleBase<MadJester>
                 MadJesterNeededTaskCount,
                 MadJesterIsSpecialTasks,
                 MadJesterSpecialTasks,
-                MadJesterWinOnTaskComplete
+                MadJesterWinOnTaskComplete,
+                MadJesterWinOnExiled
             ))
         };
 
@@ -38,9 +39,6 @@ class MadJester : RoleBase<MadJester>
     [CustomOptionBool("MadJesterCanKnowImpostors", false)]
     public static bool MadJesterCanKnowImpostors;
 
-    [CustomOptionInt("MadJesterNeededTaskCount", 0, 30, 1, 6, parentFieldName: nameof(MadJesterWinOnTaskComplete))]
-    public static int MadJesterNeededTaskCount;
-
     [CustomOptionBool("MadJesterIsSpecialTasks", false)]
     public static bool MadJesterIsSpecialTasks;
 
@@ -53,6 +51,12 @@ class MadJester : RoleBase<MadJester>
     [CustomOptionBool("MadJesterHasImpostorVision", false, translationName: "HasImpostorVision")]
     public static bool MadJesterHasImpostorVision;
 
-    [CustomOptionBool("MadJesterWinOnTaskComplete", false)]
+    [CustomOptionBool("MadJesterWinOnExiled", true, translationName: "勝利にタスク完了が必要")]
+    public static bool MadJesterWinOnExiled;
+
+    [CustomOptionInt("MadJesterNeededTaskCount", 5, 0, 30, 1, parentFieldName: nameof(MadJesterWinOnExiled), translationName: "必要なタスク完了数")]
+    public static int MadJesterNeededTaskCount;
+
+    [CustomOptionBool("MadJesterWinOnTaskComplete", false, displayMode: DisplayModeId.None)]
     public static bool MadJesterWinOnTaskComplete;
 }

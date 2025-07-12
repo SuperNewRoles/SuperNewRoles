@@ -44,7 +44,18 @@ public class MadJesterAbility : AbilityBase
         if (!AmongUsClient.Instance.AmHost) return;
         if (data.exiled == null || data.exiled.PlayerId != Player.PlayerId) return;
 
-        EndGamer.RpcEndGameImpostorWin();
+        if (_data.WinOnExiled)
+        {
+            var (tasksCompleted, _) = ModHelpers.TaskCompletedData(Player.Data);
+            if (tasksCompleted >= _data.RequiredTaskCount)
+            {
+                EndGamer.RpcEndGameImpostorWin();
+            }
+        }
+        else
+        {
+            EndGamer.RpcEndGameImpostorWin();
+        }
     }
 
     private void OnTaskComplete(TaskCompleteEventData data)
@@ -76,8 +87,9 @@ public class MadJesterData
     public bool IsSpecialTasks { get; }
     public TaskOptionData CustomTasks { get; }
     public bool WinOnTaskComplete { get; }
+    public bool WinOnExiled { get; }
 
-    public MadJesterData(bool canUseVent, bool hasImpostorVision, bool canKnowImpostors, int requiredTaskCount, bool isSpecialTasks, TaskOptionData customTasks, bool winOnTaskComplete)
+    public MadJesterData(bool canUseVent, bool hasImpostorVision, bool canKnowImpostors, int requiredTaskCount, bool isSpecialTasks, TaskOptionData customTasks, bool winOnTaskComplete, bool winOnExiled)
     {
         CanUseVent = canUseVent;
         HasImpostorVision = hasImpostorVision;
@@ -86,5 +98,6 @@ public class MadJesterData
         IsSpecialTasks = isSpecialTasks;
         CustomTasks = customTasks;
         WinOnTaskComplete = winOnTaskComplete;
+        WinOnExiled = winOnExiled;
     }
 }
