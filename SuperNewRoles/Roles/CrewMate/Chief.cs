@@ -18,7 +18,7 @@ class Chief : RoleBase<Chief>
     public override RoleId Role { get; } = RoleId.Chief;
     public override Color32 RoleColor { get; } = Sheriff.Instance.RoleColor;
     public override List<Func<AbilityBase>> Abilities { get; } = [() => new ChiefAbility(
-        new(ChiefSheriffKillCooldown, ChiefSheriffMaxKillCount, ChiefSheriffSuicideMode, ChiefSheriffCanKillNeutral, ChiefSheriffCanKillImpostor, ChiefSheriffCanKillMadRoles, ChiefSheriffCanKillFriendRoles, ChiefSheriffCanKillLovers),
+        new(ChiefSheriffKillCooldown, ChiefSheriffMaxKillCount, ChiefSheriffCanKillNeutral, ChiefSheriffCanKillImpostor, ChiefSheriffCanKillMadRoles, ChiefSheriffCanKillFriendRoles, ChiefSheriffCanKillLovers),
         ChiefCanSeeCreatedSheriff
     )];
 
@@ -44,9 +44,6 @@ class Chief : RoleBase<Chief>
 
     [CustomOptionInt("ChiefSheriffMaxKillCount", 1, 10, 1, 1)]
     public static int ChiefSheriffMaxKillCount;
-
-    [CustomOptionSelect("Sheriff.SuicideMode", typeof(SheriffSuicideMode), "Sheriff.SuicideMode.")]
-    public static SheriffSuicideMode ChiefSheriffSuicideMode = SheriffSuicideMode.Default;
 
     [CustomOptionBool("ChiefSheriffCanKillImpostor", true)]
     public static bool ChiefSheriffCanKillImpostor;
@@ -146,13 +143,13 @@ public class ChiefAbility : AbilityBase
             if (sheriffAbility == null)
                 throw new Exception("SheriffAbilityが見つかりません");
             _createdSheriff = sheriffAbility;
-            RpcChiefAppointSheriff(target, sheriffAbility, _sheriffAbilityData.KillCooldown, _sheriffAbilityData.KillCount, _sheriffAbilityData.Mode, _sheriffAbilityData.CanKillNeutral, _sheriffAbilityData.CanKillImpostor, _sheriffAbilityData.CanKillMadRoles, _sheriffAbilityData.CanKillFriendRoles, _sheriffAbilityData.CanKillLovers, _hasOldTask);
+            RpcChiefAppointSheriff(target, sheriffAbility, _sheriffAbilityData.KillCooldown, _sheriffAbilityData.KillCount, _sheriffAbilityData.CanKillNeutral, _sheriffAbilityData.CanKillImpostor, _sheriffAbilityData.CanKillMadRoles, _sheriffAbilityData.CanKillFriendRoles, _sheriffAbilityData.CanKillLovers, _hasOldTask);
         }
     }
     [CustomRPC]
-    public static void RpcChiefAppointSheriff(ExPlayerControl target, SheriffAbility sheriffAbility, float killCooldown, int maxKillCount, SheriffSuicideMode mode, bool canKillNeutral, bool canKillImpostor, bool canKillMadRoles, bool canKillFriendRoles, bool canKillLovers, bool isOldHasTak)
+    public static void RpcChiefAppointSheriff(ExPlayerControl target, SheriffAbility sheriffAbility, float killCooldown, int maxKillCount, bool canKillNeutral, bool canKillImpostor, bool canKillMadRoles, bool canKillFriendRoles, bool canKillLovers, bool isOldHasTak)
     {
-        sheriffAbility.SheriffAbilityData = new(killCooldown, maxKillCount, mode, canKillNeutral, canKillImpostor, canKillMadRoles, canKillFriendRoles, canKillLovers);
+        sheriffAbility.SheriffAbilityData = new(killCooldown, maxKillCount, canKillNeutral, canKillImpostor, canKillMadRoles, canKillFriendRoles, canKillLovers);
         if (sheriffAbility.Player.AmOwner)
             sheriffAbility.ResetTimer();
         sheriffAbility.Count = maxKillCount;

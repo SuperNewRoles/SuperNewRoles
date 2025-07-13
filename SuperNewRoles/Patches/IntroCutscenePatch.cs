@@ -1,11 +1,8 @@
-using System;
 using System.Collections;
 using System.Linq;
 using BepInEx.Unity.IL2CPP.Utils.Collections;
 using HarmonyLib;
-using SuperNewRoles.CustomCosmetics;
 using SuperNewRoles.CustomCosmetics.CosmeticsPlayer;
-using SuperNewRoles.CustomCosmetics.UI;
 using SuperNewRoles.CustomOptions.Categories;
 using SuperNewRoles.Events;
 using SuperNewRoles.MapCustoms;
@@ -52,30 +49,14 @@ public static class IntroCutscenePatch
         }
         public static void Postfix(object __instance) // IEnumerator<object>などの具体的な型ではなくobject型で受け取る
         {
-            try
-            {
-                IntroCutscene introCutscene = HarmonyCoroutinePatchProcessor.GetParentFromCoroutine<IntroCutscene>(__instance);
-                if (introCutscene == null) return;
+            IntroCutscene introCutscene = HarmonyCoroutinePatchProcessor.GetParentFromCoroutine<IntroCutscene>(__instance);
+            if (introCutscene == null) return;
 
-                if (introCutscene.GetInstanceID() == last)
-                    return;
-                last = introCutscene.GetInstanceID();
-                
-                // プレイヤーの存在確認
-                if (PlayerControl.LocalPlayer == null)
-                {
-                    Logger.Warning("LocalPlayer is null in IntroCutscene");
-                    return;
-                }
-                
-                ExPlayerControl player = PlayerControl.LocalPlayer;
-                if (player == null)
-                {
-                    Logger.Warning("ExPlayerControl is null in IntroCutscene");
-                    return;
-                }
-                
-                RoleId myrole = player.Role;
+            if (introCutscene.GetInstanceID() == last)
+                return;
+            last = introCutscene.GetInstanceID();
+            ExPlayerControl player = PlayerControl.LocalPlayer;
+            RoleId myrole = player.Role;
 
             var hideMyRoleAbility = player.GetAbility<HideMyRoleWhenAliveAbility>();
             if (hideMyRoleAbility != null) myrole = hideMyRoleAbility.FalseRoleId(player);
@@ -90,7 +71,7 @@ public static class IntroCutscenePatch
 
                 introCutscene.RoleText.text = ModTranslation.GetString(rolebase.Role.ToString());               //役職名を変更
 
-                var randomIntroNum = UnityEngine.Random.Range(1, rolebase.IntroNum + 1); // 1からrolebase.IntroNumまでのランダムな数を取得
+                var randomIntroNum = Random.Range(1, rolebase.IntroNum + 1); // 1からrolebase.IntroNumまでのランダムな数を取得
                 introCutscene.RoleBlurbText.text = ModTranslation.GetString($"{rolebase.Role}Intro{randomIntroNum}");     //イントロの簡易説明をランダムに変更
             }
 
@@ -108,7 +89,7 @@ public static class IntroCutscenePatch
                 // 生きている時は役職を自覚できないモディファイアは処理をスキップ
                 if (hideMyRoleAbility != null && hideMyRoleAbility.IsCheckTargetModifierRoleHidden(player, modifier.ModifierRole)) continue;
 
-                var randomIntroNum = UnityEngine.Random.Range(1, modifier.IntroNum + 1);
+                var randomIntroNum = Random.Range(1, modifier.IntroNum + 1);
                 introCutscene.RoleBlurbText.text += "\n" + ModHelpers.CsWithTranslation(modifier.RoleColor, $"{modifier.ModifierRole}Intro{randomIntroNum}");
             }
 
@@ -129,12 +110,6 @@ public static class IntroCutscenePatch
             introCutscene.YouAreText.gameObject.SetActive(true);
             introCutscene.RoleText.gameObject.SetActive(true);
             introCutscene.RoleBlurbText.gameObject.SetActive(true);
-            }
-            catch (Exception ex)
-            {
-                Logger.Error($"Error in IntroCutscene.SetUpRoleTextPatch: {ex.Message}\n{ex.StackTrace}");
-                // エラーが発生してもイントロを続行できるようにする
-            }
         }
     }
 
@@ -247,14 +222,7 @@ public static class IntroCutscenePatch
             if (moddedCosmetics != null)
             {
                 moddedCosmetics.SetActive(false);
-                moddedCosmetics.SetActive(true);
-            }
-            
-            // ローカルプレイヤーのHat2/Visor2を確実に設定
-            if (player == PlayerControl.LocalPlayer)
-            {
-                PlayerControlRpcExtensions.RpcCustomSetCosmetics(player.PlayerId, CostumeTabType.Hat2, CustomCosmeticsSaver.CurrentHat2Id, player.Data.DefaultOutfit.ColorId);
-                PlayerControlRpcExtensions.RpcCustomSetCosmetics(player.PlayerId, CostumeTabType.Visor2, CustomCosmeticsSaver.CurrentVisor2Id, player.Data.DefaultOutfit.ColorId);
+                new LateTask(() => moddedCosmetics.SetActive(true), 0.1f);
             }
         }
         NameText.RegisterNameTextUpdateEvent();

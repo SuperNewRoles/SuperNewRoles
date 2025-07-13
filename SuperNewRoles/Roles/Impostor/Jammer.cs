@@ -39,7 +39,7 @@ class Jammer : RoleBase<Jammer>
     public static float JammerCoolTime;
     [CustomOptionFloat("JammerDurationTime", 2.5f, 120f, 2.5f, 10f, translationName: "DurationTime")]
     public static float JammerDurationTime;
-    [CustomOptionInt("JammerAbilityCount", 1, 15, 1, 3, translationName: "UseLimit")]
+    [CustomOptionInt("JammerAbilityCount", 1, 15, 1, 3, translationName: "AbilityCount")]
     public static int JammerAbilityCount;
     [CustomOptionBool("JammerCanUseAbilitiesAgainstImposter", false, translationName: "JammerCanUseAbilitiesAgainstImposter")]
     public static bool JammerCanUseAbilitiesAgainstImposter;

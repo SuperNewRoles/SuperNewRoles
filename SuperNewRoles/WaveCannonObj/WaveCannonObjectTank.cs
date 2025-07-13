@@ -6,10 +6,8 @@ namespace SuperNewRoles.WaveCannonObj;
 
 public class WaveCannonObjectTank : WaveCannonObjectBase
 {
-    private string _shootSound;
-    public WaveCannonObjectTank(WaveCannonAbility ability, bool isFlipX, Vector3 startPosition, bool isResetKillCooldown, string tankObjectName = "WaveCannonTank", string chargeSound = "WaveCannon.Charge.mp3", string shootSound = "WaveCannon.Shoot.mp3") : base(ability, isFlipX, startPosition, isResetKillCooldown)
+    public WaveCannonObjectTank(WaveCannonAbility ability, bool isFlipX, Vector3 startPosition, bool isResetKillCooldown, string tankObjectName = "WaveCannonTank", string chargeSound = "WaveCannon.Charge.mp3") : base(ability, isFlipX, startPosition, isResetKillCooldown)
     {
-        _shootSound = shootSound;
         // 砲台のコンテナオブジェクトを生成
         _gameObject = new GameObject("WaveCannonObjectTank");
         _gameObject.transform.localScale = new Vector3(isFlipX ? -1 : 1, 1, 1);
@@ -86,7 +84,7 @@ public class WaveCannonObjectTank : WaveCannonObjectBase
     public override void OnAnimationShoot()
     {
         // 実装を追加
-        SoundManager.Instance.PlaySound(AssetManager.GetAsset<AudioClip>(_shootSound), false);
+        SoundManager.Instance.PlaySound(AssetManager.GetAsset<AudioClip>("WaveCannon.Shoot.mp3"), false);
         _tankObj.transform.Find("Cannon_Charge").gameObject.SetActive(false);
         _tankObj.transform.Find("Shooting").gameObject.SetActive(true);
     }

@@ -34,7 +34,9 @@ class DoubleKiller : RoleBase<DoubleKiller>
     public override WinnerTeamType WinnerTeam { get; } = WinnerTeamType.Impostor;
     public override TeamTag TeamTag { get; } = TeamTag.Impostor;
     public override RoleTag[] RoleTags { get; } = [];
-    public override RoleOptionMenuType OptionTeam => RoleOptionMenuType.Impostor;
+
+    public override RoleOptionMenuType OptionTeam { get; } = RoleOptionMenuType.Impostor;
+
 
     [CustomOptionFloat("DoubleKillerMainKillCooldown", 2.5f, 60f, 2.5f, 30f)]
     public static float DoubleKillerMainKillCooldown;
@@ -45,7 +47,7 @@ class DoubleKiller : RoleBase<DoubleKiller>
     [CustomOptionBool("DoubleKillerKillCountRemaining", true)]
     public static bool DoubleKillerKillCountRemaining;
 
-    [CustomOptionInt("DoubleKillerMaxKillCount", 1, 10, 1, 1,parentFieldName: nameof(DoubleKillerKillCountRemaining))]
+    [CustomOptionInt("DoubleKillerMaxKillCount", 1, 10, 1, 1)]
     public static int DoubleKillerMaxKillCount;
     [CustomOptionBool("DoubleKillerCanUseVent", true, translationName: "CanUseVent")]
     public static bool DoubleKillerCanUseVent;
@@ -137,61 +139,19 @@ public class DoubleKillerAbility : AbilityBase, IAbilityCount
     public DoubleKillerAbility(DoubleKillerAbilityData doubleKillerAbilityData)
     {
         DoubleKillerAbilityData = doubleKillerAbilityData;
-        // 初期カウントを設定
-        if (DoubleKillerAbilityData.DoubleKillerCount.HasValue)
-        {
-            Count = DoubleKillerAbilityData.DoubleKillerCount.Value;
-        }
     }
     public override void AttachToAlls()
     {
         base.AttachToAlls();
-        // バニラキルボタンを無効化するためのCustomKillButtonAbilityを追加
+        // 通常のキルボタン（Murder イベントでクールダウンされる）
         Player.AttachAbility(new CustomKillButtonAbility(
-            () => false, // 常に無効化
-            () => 0f,
-            onlyCrewmates: () => true
-        ), new AbilityParentAbility(this));
-
-        // メインキルボタン（独立したクールダウン）
+            () => true, () => GameOptionsManager.Instance.CurrentGameOptions.GetFloat(FloatOptionNames.KillCooldown), () => true), new AbilityParentAbility(this));
+        // 独立したキルボタン（Murder イベントでクールダウンされない）
         Player.AttachAbility(new IndependentKillButtonAbility(
-            () => true,
-            () => DoubleKiller.DoubleKillerMainKillCooldown,
-            onlyCrewmates: () => true,
-            showTextType: () => ShowTextType.Hidden, // テキストを非表示に変更
-            showText: () => ""
-        ), new AbilityParentAbility(this));
-
-        // サブキルボタン（独立したクールダウン）
-        Player.AttachAbility(new IndependentKillButtonAbility(
-            () => {
-                // 安全性を確保するためのnull参照チェック
-                if (DoubleKillerAbilityData?.DoubleKillerCount == null) return true;
-                // 実際のCountプロパティを使用してカウントを確認
-                return HasCount;
-            },
-            () => DoubleKiller.DoubleKillerSubKillCooldown,
-            onlyCrewmates: () => true,
-            killedCallback: x => {
-                // 安全性を確保するためのnull参照チェック
-                if (DoubleKillerAbilityData?.DoubleKillerCount != null && HasCount)
-                {
-                    try
-                    {
-                        this.UseAbilityCount();
-                    }
-                    catch (Exception ex)
-                    {
-                        Logger.Error($"DoubleKiller UseAbilityCount error: {ex.Message}", "DoubleKiller");
-                    }
-                }
-            },
-            showTextType: () => DoubleKillerAbilityData?.DoubleKillerCount != null ? ShowTextType.Show : ShowTextType.Hidden,
-            showText: () => {
-                // 安全性を確保するためのnull参照チェック
-                if (DoubleKillerAbilityData?.DoubleKillerCount == null) return "";
-                return string.Format(ModTranslation.GetString("RemainingText"), Count.ToString());
-            }
+            () => DoubleKillerAbilityData.DoubleKillerCount.HasValue ? Count <= DoubleKillerAbilityData.DoubleKillerCount.Value : true, () => GameOptionsManager.Instance.CurrentGameOptions.GetFloat(FloatOptionNames.KillCooldown), onlyCrewmates: () => true,
+            killedCallback: x => this.UseAbilityCount(),
+            showTextType: () => DoubleKillerAbilityData.DoubleKillerCount.HasValue ? ShowTextType.Show : ShowTextType.Hidden,
+            showText: () => DoubleKillerAbilityData.DoubleKillerCount.HasValue ? string.Format(ModTranslation.GetString("RemainingText"), (DoubleKillerAbilityData.DoubleKillerCount - Count).ToString()) : ""
         ), new AbilityParentAbility(this));
     }
 }

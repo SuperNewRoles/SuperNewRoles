@@ -17,10 +17,7 @@ public class WaveCannonAbility : CustomButtonBase, IButtonEffect
     private float effectDuration;
     public float bulletDuration;
     public float EffectDuration => bullet != null ? bulletDuration : effectDuration;
-    public Action OnEffectEnds => () =>
-    {
-        RpcShootCannon();
-    };
+    public Action OnEffectEnds => () => { RpcShootCannon(); };
     public bool isEffectActive { get; set; }
     public float EffectTimer { get; set; }
     public override Sprite Sprite => bullet != null ? AssetManager.GetAsset<Sprite>("WaveCannonLoadedBulletButton.png") : AssetManager.GetAsset<Sprite>("WaveCannonButton.png");
@@ -78,10 +75,6 @@ public class WaveCannonAbility : CustomButtonBase, IButtonEffect
     public void SpawnedWaveCannonObject(WaveCannonObjectBase waveCannonObject)
     {
         WaveCannonObject = waveCannonObject;
-    }
-    public void DetachWaveCannonObject()
-    {
-        WaveCannonObject = null;
     }
     [CustomRPC]
     public void RpcShootCannon()

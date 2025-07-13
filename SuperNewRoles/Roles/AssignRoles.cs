@@ -69,39 +69,14 @@ public static class AssignRoles
 
     public static void AssignCustomRoles()
     {
-        try
-        {
-            Logger.Info("AssignCustomRoles() 開始: カスタム役職のアサイン処理を開始します。");
-            
-            // プレイヤーの接続状態を確認
-            if (PlayerControl.AllPlayerControls == null)
-            {
-                Logger.Error("PlayerControl.AllPlayerControls is null in AssignCustomRoles");
-                return;
-            }
-            
-            var disconnectedPlayers = PlayerControl.AllPlayerControls.ToArray()
-                .Where(p => p == null || p.Data == null || p.Data.Disconnected)
-                .ToArray();
-                
-            if (disconnectedPlayers.Length > 0)
-            {
-                Logger.Warning($"Found {disconnectedPlayers.Length} disconnected players during role assignment");
-            }
-            
-            CreateTickets();
-            AssignedRoleIds.Clear(); // 役職アサイン前にクリア
+        Logger.Info("AssignCustomRoles() 開始: カスタム役職のアサイン処理を開始します。");
+        CreateTickets();
+        AssignedRoleIds.Clear(); // 役職アサイン前にクリア
 
-            foreach (PlayerControl player in PlayerControl.AllPlayerControls)
-            {
-                if (player == null || player.Data == null || player.Data.Disconnected)
-                {
-                    Logger.Warning($"Skipping disconnected player in role assignment");
-                    continue;
-                }
-                
-                if (!player.Data.Role.IsSimpleRole)
-                    AssignRole(player, player.Data.Role.IsImpostor ? RoleId.Impostor : RoleId.Crewmate);
+        foreach (PlayerControl player in PlayerControl.AllPlayerControls)
+        {
+            if (!player.Data.Role.IsSimpleRole)
+                AssignRole(player, player.Data.Role.IsImpostor ? RoleId.Impostor : RoleId.Crewmate);
         }
 
         // Assign Impostors
@@ -130,14 +105,6 @@ public static class AssignRoles
 
         // Assign Lovers
         AssignLovers();
-        
-        Logger.Info("AssignCustomRoles() 終了: カスタム役職のアサイン処理が完了しました。");
-        }
-        catch (Exception ex)
-        {
-            Logger.Error($"Error in AssignCustomRoles: {ex.Message}\n{ex.StackTrace}");
-            // エラーが発生してもゲームを続行できるようにする
-        }
     }
     private static void CreateTickets()
     {
@@ -154,12 +121,7 @@ public static class AssignRoles
                 role.AvailableMaps.Length != 0 &&
                 !role.AvailableMaps.Any(map => (byte)map == GameOptionsManager.Instance.CurrentGameOptions.MapId))
                 continue;
-            //HiddenOptionのチェック
-            if (CustomRoleManager.TryGetRoleById(roleOption.RoleId, out var roleBase) && roleBase.HiddenOption)
-            {
-                Logger.Info($"CreateTickets: Role {roleOption.RoleId} はHiddenOptionのためスキップします。");
-                continue;
-            }
+
             // LoversBreaker役職の特別な選出条件をチェック
             if (roleOption.RoleId == RoleId.LoversBreaker && ShouldSkipLoversBreakerAssignment())
                 continue;

@@ -86,11 +86,6 @@ public static class CustomDeathExtensions
                 FinalStatusManager.SetFinalStatus(player, FinalStatus.WaveCannon);
                 MurderDataManager.AddMurderData(source, player);
                 break;
-            case CustomDeathType.SuperWaveCannon:
-                player.Player.MurderPlayer(player.Player, MurderResultFlags.Succeeded);
-                FinalStatusManager.SetFinalStatus(player, FinalStatus.WaveCannon);
-                MurderDataManager.AddMurderData(source, player);
-                break;
             case CustomDeathType.Samurai:
                 if (!TryKillEvent.Invoke(source, ref player).RefSuccess)
                     break;
@@ -209,5 +204,4 @@ public enum CustomDeathType
     PenguinAfterMeeting,
     SuicideSecrets,
     BuskerFakeDeath,
-    SuperWaveCannon,
 }

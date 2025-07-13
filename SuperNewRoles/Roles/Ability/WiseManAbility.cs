@@ -104,13 +104,7 @@ public class WiseManAbility : CustomButtonBase, IButtonEffect
         if (data.Killer == data.RefTarget) return;
         if (!Active) return;
         data.RefSuccess = false;
-        
-        // 波動砲による攻撃の場合、攻撃者をカウンターキルしない
-        if (!data.Killer.TryGetAbility<WaveCannonAbility>(out var waveCannonAbility))
-        {
-            data.Killer.CustomDeath(CustomDeathType.Suicide);
-        }
-        
+        data.Killer.CustomDeath(CustomDeathType.Suicide);
         Guarded = true;
     }
 

@@ -1,4 +1,3 @@
-using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
@@ -181,54 +180,32 @@ public static class SyncSpawn
     [CustomRPC]
     public static void RpcAllSelectedFromHost()
     {
-        try
+        Logger.Info($"[SyncSpawn] RpcAllSelectedFromHost executed on client {PlayerControl.LocalPlayer.name}({PlayerControl.LocalPlayer.PlayerId}). SpawnLocation: {SpawnLocation?.Name.ToString() ?? "null"}. Current SpawnedPlayers.Count on this client: {SpawnedPlayers.Count}. Players: {string.Join(", ", SpawnedPlayers.Select(p => p.Player.name))}");
+        spawnSuccess = true;
+        if (!GameSettingOptions.SyncSpawn)
         {
-            // プレイヤー接続状態を確認
-            if (PlayerControl.LocalPlayer == null)
-            {
-                Logger.Warning("[SyncSpawn] LocalPlayer is null in RpcAllSelectedFromHost");
-                return;
-            }
-            
-            Logger.Info($"[SyncSpawn] RpcAllSelectedFromHost executed on client {PlayerControl.LocalPlayer.name}({PlayerControl.LocalPlayer.PlayerId}). SpawnLocation: {SpawnLocation?.Name.ToString() ?? "null"}. Current SpawnedPlayers.Count on this client: {SpawnedPlayers.Count}. Players: {string.Join(", ", SpawnedPlayers.Select(p => p.Player.name))}");
-            spawnSuccess = true;
-            if (!GameSettingOptions.SyncSpawn)
-            {
-                Logger.Info("[SyncSpawn] SyncSpawn option is disabled, RpcAllSelectedFromHost doing nothing further.");
-                return;
-            }
-
-            SpawnInMinigame spawnInMinigame = GameObject.FindObjectOfType<SpawnInMinigame>();
-            if (spawnInMinigame == null)
-            {
-                Logger.Error("[SyncSpawn] SpawnInMinigame instance not found in RpcAllSelectedFromHost. Aborting.");
-                return;
-            }
-            
-            // SpawnLocationの有効性を確認
-            if (SpawnLocation == null)
-            {
-                Logger.Error("[SyncSpawn] SpawnLocation is null, cannot proceed with spawn");
-                return;
-            }
-
-            PlayerControl.LocalPlayer.SetKinematic(b: true);
-            PlayerControl.LocalPlayer.NetTransform.SetPaused(isPaused: true);
-            PlayerControl.LocalPlayer.NetTransform.RpcSnapTo(SpawnLocation.Location);
-
-            Logger.Info("RpcAllSelectedFromHost4");
-            DestroyableSingleton<HudManager>.Instance.PlayerCam.SnapToTarget();
-
-            spawnInMinigame.StopAllCoroutines();
-            spawnInMinigame.StartCoroutine(spawnInMinigame.CoSpawnAt(PlayerControl.LocalPlayer, SpawnLocation));
-
-            Logger.Info($"[SyncSpawn] RpcAllSelectedFromHost finished for {PlayerControl.LocalPlayer.name}({PlayerControl.LocalPlayer.PlayerId})");
+            Logger.Info("[SyncSpawn] SyncSpawn option is disabled, RpcAllSelectedFromHost doing nothing further.");
+            return;
         }
-        catch (Exception ex)
+
+        SpawnInMinigame spawnInMinigame = GameObject.FindObjectOfType<SpawnInMinigame>();
+        if (spawnInMinigame == null)
         {
-            Logger.Error($"[SyncSpawn] Error in RpcAllSelectedFromHost: {ex.Message}\n{ex.StackTrace}");
-            spawnSuccess = true; // エラーが発生してもゲームを続行
+            Logger.Error("[SyncSpawn] SpawnInMinigame instance not found in RpcAllSelectedFromHost. Aborting.");
+            return;
         }
+
+        PlayerControl.LocalPlayer.SetKinematic(b: true);
+        PlayerControl.LocalPlayer.NetTransform.SetPaused(isPaused: true);
+        PlayerControl.LocalPlayer.NetTransform.RpcSnapTo(SpawnLocation.Location);
+
+        Logger.Info("RpcAllSelectedFromHost4");
+        DestroyableSingleton<HudManager>.Instance.PlayerCam.SnapToTarget();
+
+        spawnInMinigame.StopAllCoroutines();
+        spawnInMinigame.StartCoroutine(spawnInMinigame.CoSpawnAt(PlayerControl.LocalPlayer, SpawnLocation));
+
+        Logger.Info($"[SyncSpawn] RpcAllSelectedFromHost finished for {PlayerControl.LocalPlayer.name}({PlayerControl.LocalPlayer.PlayerId})");
     }
     public static void ClearAndReloads()
     {

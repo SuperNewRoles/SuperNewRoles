@@ -31,10 +31,10 @@ class NiceHawk : RoleBase<NiceHawk>
     public override RoleTag[] RoleTags { get; } = [];
     public override RoleOptionMenuType OptionTeam { get; } = RoleOptionMenuType.Crewmate;
 
-    [CustomOptionFloat("NiceHawkCoolTime", 2.5f, 120f, 2.5f, 30f, translationName: "CoolTime")]
+    [CustomOptionFloat("NiceHawkCoolTime", 0f, 120f, 2.5f, 30f, translationName: "CoolTime")]
     public static float NiceHawkCoolTime;
 
-    [CustomOptionFloat("NiceHawkDurationTime", 1f, 60f, 0.5f, 10f, translationName: "DurationTime")]
+    [CustomOptionFloat("NiceHawkDurationTime", 0f, 60f, 0.5f, 10f, translationName: "DurationTime")]
     public static float NiceHawkDurationTime;
 
     [CustomOptionFloat("NiceHawkZoomMagnification", 1.25f, 10f, 0.25f, 2f, translationName: "HawkZoomMagnification")]

@@ -115,9 +115,6 @@ public class BuskerPseudocideAbility : CustomButtonBase, IButtonEffect
         RoleManager.Instance.SetRole(Player, RoleTypes.Crewmate);
         CleanDeadbody();
         Player.MyPhysics.StartCoroutine(PlayExitVent(Player).WrapToIl2Cpp());
-        
-        // 名前色と役職表示をリセット
-        NameText.UpdateAllNameInfo();
     }
     private static IEnumerator PlayExitVent(PlayerControl player)
     {

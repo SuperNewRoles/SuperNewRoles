@@ -38,10 +38,10 @@ class MadHawk : RoleBase<MadHawk>
     public override RoleOptionMenuType OptionTeam { get; } = RoleOptionMenuType.Crewmate;
 
     // --- Hawk Ability ---
-    [CustomOptionFloat("MadHawkCoolTime", 2.5f, 120f, 2.5f, 30f, translationName: "CoolTime")]
+    [CustomOptionFloat("MadHawkCoolTime", 0f, 120f, 2.5f, 30f, translationName: "CoolTime")]
     public static float MadHawkCoolTime;
 
-    [CustomOptionFloat("MadHawkDurationTime", 1f, 60f, 0.5f, 10f, translationName: "DurationTime")]
+    [CustomOptionFloat("MadHawkDurationTime", 0f, 60f, 0.5f, 10f, translationName: "DurationTime")]
     public static float MadHawkDurationTime;
 
     [CustomOptionFloat("MadHawkZoomMagnification", 1.25f, 10f, 0.25f, 2f, translationName: "HawkZoomMagnification")]

@@ -69,13 +69,6 @@ public class AmnesiacAbility : AbilityBase
         amnesiac.ReverseTask(deadPlayer);
 
         deadPlayer.SetRole(targetRoleId);
-
-        // 役職変更後にゲーム状態を再チェック
-        new LateTask(() =>
-        {
-            // エクスプレイヤーコントロールの名前テキストを更新
-            NameText.UpdateAllNameInfo();
-        }, 0.1f);
     }
 
     public override void DetachToLocalPlayer()

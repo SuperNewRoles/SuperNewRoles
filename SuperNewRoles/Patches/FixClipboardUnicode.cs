@@ -11,12 +11,6 @@ public static class FixClipboardUnicodePatch
 {
     private const uint CF_UNICODETEXT = 13;
     
-    public static bool Prepare()
-    {
-        // Androidプラットフォームの場合はパッチを適用しない
-        return !ModHelpers.IsAndroid();
-    }
-    
     public static MethodInfo TargetMethod()
     {
         // Androidプラットフォームの場合はnullを返してパッチを無効化

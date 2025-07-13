@@ -38,7 +38,7 @@ public class KnowOtherAbility : AbilityBase
     {
         if (!CanKnowOther(data.Player)) return;
         if (IsShowRole())
-            NameText.UpdateVisible(data.Player, data.Visiable);
+            NameText.UpdateVisiable(data.Player, data.Visiable);
     }
 
     public override void DetachToLocalPlayer()

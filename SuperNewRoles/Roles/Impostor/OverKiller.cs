@@ -37,10 +37,10 @@ class OverKiller : RoleBase<OverKiller>
     [CustomOptionInt("OverKillerKillCount", 1, 60, 1, 30)]
     public static int OverKillerKillCount;
 
-    [CustomOptionBool("OverKillerScatterBodies", true)]
+    [CustomOptionBool("OverKillerScatterBodies", true, translationName: "ScatterBodies")]
     public static bool OverKillerScatterBodies;
 
-    [CustomOptionFloat("OverKillerScatterRange", 0f, 5f, 0.1f, 1.5f)]
+    [CustomOptionFloat("OverKillerScatterRange", 0f, 5f, 0.1f, 1.5f, translationName: "ScatterRange")]
     public static float OverKillerScatterRange;
 }
 
