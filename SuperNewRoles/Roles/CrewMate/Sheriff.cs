@@ -18,6 +18,7 @@ class Sheriff : RoleBase<Sheriff>
     public override List<Func<AbilityBase>> Abilities { get; } = [() => new SheriffAbility(new SheriffAbilityData(
         killCooldown: SheriffKillCooldown,
         killCount: SheriffMaxKillCount,
+        mode: SheriffSuicideMode,
         canKillNeutral: SheriffCanKillNeutral,
         canKillImpostor: SheriffCanKillImpostor,
         canKillMadRoles: SheriffCanKillMadRoles,
@@ -39,6 +40,9 @@ class Sheriff : RoleBase<Sheriff>
     [CustomOptionInt("SheriffMaxKillCount", 1, 10, 1, 1)]
     public static int SheriffMaxKillCount;
 
+    [CustomOptionSelect("Sheriff.SuicideMode", typeof(SheriffSuicideMode), "Sheriff.SuicideMode.")]
+    public static SheriffSuicideMode SheriffSuicideMode = SheriffSuicideMode.Default;
+
     [CustomOptionBool("SheriffCanKillImpostor", true)]
     public static bool SheriffCanKillImpostor;
 
@@ -58,15 +62,18 @@ public class SheriffAbilityData
 {
     public float KillCooldown { get; set; }
     public int KillCount { get; set; }
+    public SheriffSuicideMode Mode { get; set; }
     public bool CanKillNeutral { get; set; }
     public bool CanKillImpostor { get; set; }
     public bool CanKillMadRoles { get; set; }
     public bool CanKillFriendRoles { get; set; }
     public bool CanKillLovers { get; set; }
-    public SheriffAbilityData(float killCooldown, int killCount, bool canKillNeutral, bool canKillImpostor, bool canKillMadRoles, bool canKillFriendRoles, bool canKillLovers)
+    public SheriffAbilityData(float killCooldown, int killCount, SheriffSuicideMode mode, bool canKillNeutral, bool canKillImpostor, bool canKillMadRoles, bool canKillFriendRoles, bool canKillLovers)
     {
         KillCooldown = killCooldown;
         KillCount = killCount;
+        Mode = mode;
+
         CanKillNeutral = canKillNeutral;
         CanKillImpostor = canKillImpostor;
         CanKillMadRoles = canKillMadRoles;
@@ -100,6 +107,29 @@ public class SheriffAbilityData
 
         return canKill;
     }
+
+    /// <summary>
+    /// シェリフは自決するか
+    /// </summary>
+    /// <param name="canKill">キルが可能か</param>
+    /// <param name="suicideReason">シェリフの死因</param>
+    /// <returns>true => 自決する / false => 自決しない</returns>
+    public bool IsSuicide(bool canKill, out FinalStatus suicideReason)
+    {
+        // 常に自決する場合
+        if (Mode == SheriffSuicideMode.AlwaysSuicide)
+        {
+            suicideReason = FinalStatus.SheriffSuicide;
+            return true;
+        }
+
+        // 自決判定は通常の場合 ("通常" & "誤射時も対象をキルする")
+        suicideReason = canKill ? FinalStatus.Alive : FinalStatus.SheriffMisFire;
+        return !canKill;
+    }
+
+    /// <summary>誤射時も対象をキルする設定が有効か</summary>
+    public bool IsAlwaysKilling => Mode == SheriffSuicideMode.AlwaysKill;
 }
 
 public class SheriffAbility : CustomKillButtonAbility, IAbilityCount
@@ -127,18 +157,27 @@ public class SheriffAbility : CustomKillButtonAbility, IAbilityCount
 
         this.UseAbilityCount();
 
-        if (SheriffAbilityData.CanKill(PlayerControl.LocalPlayer, Target))
+        var canKill = SheriffAbilityData.CanKill(PlayerControl.LocalPlayer, Target);
+        var isSuicide = SheriffAbilityData.IsSuicide(canKill, out FinalStatus suicideReason);
+
+        if (canKill || SheriffAbilityData.IsAlwaysKilling) // 殺害処理
         {
-            // 正当なキル
             ExPlayerControl.LocalPlayer.RpcCustomDeath(Target, CustomDeathType.Kill);
-            FinalStatusManager.RpcSetFinalStatus(ExPlayerControl.LocalPlayer, FinalStatus.SheriffKill);
+            FinalStatusManager.RpcSetFinalStatus(Target, canKill ? FinalStatus.SheriffKill : FinalStatus.SheriffWrongfulMurder);
         }
-        else
+
+        if (isSuicide && suicideReason != FinalStatus.Alive) // 自害処理
         {
-            // 誤射の場合は自分が死ぬ
-            ExPlayerControl.LocalPlayer.RpcCustomDeath(ExPlayerControl.LocalPlayer, CustomDeathType.Kill);
-            FinalStatusManager.RpcSetFinalStatus(ExPlayerControl.LocalPlayer, FinalStatus.SheriffSelfDeath);
+            ExPlayerControl.LocalPlayer.RpcCustomDeath(ExPlayerControl.LocalPlayer, CustomDeathType.Suicide);
+            FinalStatusManager.RpcSetFinalStatus(ExPlayerControl.LocalPlayer, suicideReason);
         }
         ResetTimer();
     }
+}
+
+public enum SheriffSuicideMode
+{
+    Default, // 通常 (成功時のみ対象を殺害, 誤射時のみ自殺)
+    AlwaysSuicide, // 常に自殺する
+    AlwaysKill // 誤射時も対象を殺す
 }

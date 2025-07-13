@@ -30,10 +30,10 @@ class EvilHawk : RoleBase<EvilHawk>
     public override RoleTag[] RoleTags { get; } = [];
     public override RoleOptionMenuType OptionTeam { get; } = RoleOptionMenuType.Impostor;
 
-    [CustomOptionFloat("EvilHawkCoolTime", 0f, 120f, 2.5f, 30f, translationName: "CoolTime")]
+    [CustomOptionFloat("EvilHawkCoolTime", 2.5f, 120f, 2.5f, 30f, translationName: "CoolTime")]
     public static float EvilHawkCoolTime;
 
-    [CustomOptionFloat("EvilHawkDurationTime", 0f, 60f, 0.5f, 10f, translationName: "DurationTime")]
+    [CustomOptionFloat("EvilHawkDurationTime", 1f, 60f, 0.5f, 10f, translationName: "DurationTime")]
     public static float EvilHawkDurationTime;
 
     [CustomOptionFloat("EvilHawkZoomMagnification", 1.25f, 10f, 0.25f, 2f, translationName: "HawkZoomMagnification")]
