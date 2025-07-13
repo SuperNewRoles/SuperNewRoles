@@ -1740,9 +1740,9 @@ SilverBulletCanRepairUseCountOption,修理回数,Repair Count
 GhostMechanicCannotFixMushroomMixup,キノコカオスを修復できない,Cannot Fix Mushroom Mixup
 
 # MadJester
-MadJesterWinOnExiled,勝利にタスク完了が必要,
-MadJesterWinRequiredTaskCount,勝利に必要なタスク数,
-MadJesterKnowImpostorTaskCount,狂信発動に必要なタスク数,
+MadJesterWinOnExiled,勝利にタスク完了が必要,Tasks must be completed to win when exiled,放逐获胜需完成任务,被逐出獲勝需完成任務
+MadJesterWinRequiredTaskCount,勝利に必要なタスク数,Number of tasks required for victory,获胜所需任务数量,獲勝所需任務數量
+MadJesterKnowImpostorTaskCount,狂信発動に必要なタスク数,Tasks required to activate Impostor insight,发动狂信需完成的任务数量,啟動狂信需完成的任務數量
 Win.MadJesterWin,マッドてるてる 勝利,Mad Jester Win,疯狂小丑 胜利,瘋狂小丑 勝利
 
 # Magaziner
