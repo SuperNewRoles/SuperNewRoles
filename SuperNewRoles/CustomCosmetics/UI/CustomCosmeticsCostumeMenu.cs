@@ -1,16 +1,16 @@
-using SuperNewRoles.Modules;
-using UnityEngine;
-using TMPro;
-using UnityEngine.Events;
-using System.Linq;
-using System.Collections.Generic;
-using AmongUs.Data;
 using System;
-using Innersloth.Assets;
-using SuperNewRoles.CustomCosmetics.CosmeticsPlayer;
-using Sentry.Unity.NativeUtils;
 using System.Collections;
+using System.Collections.Generic;
+using System.Linq;
+using AmongUs.Data;
 using BepInEx.Unity.IL2CPP.Utils.Collections;
+using Innersloth.Assets;
+using Sentry.Unity.NativeUtils;
+using SuperNewRoles.CustomCosmetics.CosmeticsPlayer;
+using SuperNewRoles.Modules;
+using TMPro;
+using UnityEngine;
+using UnityEngine.Events;
 
 namespace SuperNewRoles.CustomCosmetics.UI;
 

@@ -1,13 +1,13 @@
 using System;
+using AmongUs.GameOptions;
 using SuperNewRoles.Events;
 using SuperNewRoles.Events.PCEvents;
 using SuperNewRoles.Modules;
 using SuperNewRoles.Modules.Events.Bases;
+using SuperNewRoles.Patches;
 using SuperNewRoles.Roles.Ability.CustomButton;
 using SuperNewRoles.Roles.Impostor;
 using UnityEngine;
-using AmongUs.GameOptions;
-using SuperNewRoles.Patches;
 
 namespace SuperNewRoles.Roles.Ability;
 

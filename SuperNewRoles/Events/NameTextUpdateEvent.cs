@@ -40,4 +40,3 @@ public class NameTextUpdateVisiableEvent : EventTargetBase<NameTextUpdateVisiabl
         Instance.Awake(data);
     }
 }
-

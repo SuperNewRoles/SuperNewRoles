@@ -108,4 +108,3 @@ public static class CustomRoleManager
         return AllGhostRolesByRoleId.TryGetValue((int)roleId, out ghostRole);
     }
 }
-

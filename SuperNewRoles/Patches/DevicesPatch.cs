@@ -1,16 +1,16 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using HarmonyLib;
+using Il2CppInterop.Runtime.InteropTypes.Arrays;
 using SuperNewRoles.CustomOptions.Categories;
 using SuperNewRoles.Events;
 using SuperNewRoles.Modules;
+using SuperNewRoles.Roles.Ability;
+using SuperNewRoles.Roles.Neutral;
 using TMPro;
 using UnityEngine;
-using Il2CppInterop.Runtime.InteropTypes.Arrays;
-using SuperNewRoles.Roles.Ability;
 using static SuperNewRoles.CustomOptions.Categories.MapSettingOptions;
-using System.Linq;
-using SuperNewRoles.Roles.Neutral;
 
 namespace SuperNewRoles.Patches;
 

@@ -1,9 +1,9 @@
+using System.Linq;
 using SuperNewRoles.Events;
 using SuperNewRoles.Modules;
 using SuperNewRoles.Roles.Ability;
 using SuperNewRoles.Roles.Ability.CustomButton;
 using SuperNewRoles.Roles.Impostor;
-using System.Linq;
 
 namespace SuperNewRoles.Patches;
 

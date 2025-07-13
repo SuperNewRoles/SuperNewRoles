@@ -1,13 +1,13 @@
 using System;
 using System.Collections.Generic;
-using UnityEngine;
-using SuperNewRoles.Modules;
-using SuperNewRoles.Roles.Ability.CustomButton;
-using SuperNewRoles.Events;
-using SuperNewRoles.Modules.Events.Bases;
-using SuperNewRoles.Events.PCEvents;
-using SuperNewRoles.Modules.Events;
 using Il2CppSystem.Collections.Generic;
+using SuperNewRoles.Events;
+using SuperNewRoles.Events.PCEvents;
+using SuperNewRoles.Modules;
+using SuperNewRoles.Modules.Events;
+using SuperNewRoles.Modules.Events.Bases;
+using SuperNewRoles.Roles.Ability.CustomButton;
+using UnityEngine;
 
 namespace SuperNewRoles.Roles.Ability;
 
@@ -104,13 +104,13 @@ public class WiseManAbility : CustomButtonBase, IButtonEffect
         if (data.Killer == data.RefTarget) return;
         if (!Active) return;
         data.RefSuccess = false;
-        
+
         // 波動砲による攻撃の場合、攻撃者をカウンターキルしない
         if (!data.Killer.TryGetAbility<WaveCannonAbility>(out var waveCannonAbility))
         {
             data.Killer.CustomDeath(CustomDeathType.Suicide);
         }
-        
+
         Guarded = true;
     }
 

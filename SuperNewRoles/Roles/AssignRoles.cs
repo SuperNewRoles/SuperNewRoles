@@ -72,23 +72,23 @@ public static class AssignRoles
         try
         {
             Logger.Info("AssignCustomRoles() 開始: カスタム役職のアサイン処理を開始します。");
-            
+
             // プレイヤーの接続状態を確認
             if (PlayerControl.AllPlayerControls == null)
             {
                 Logger.Error("PlayerControl.AllPlayerControls is null in AssignCustomRoles");
                 return;
             }
-            
+
             var disconnectedPlayers = PlayerControl.AllPlayerControls.ToArray()
                 .Where(p => p == null || p.Data == null || p.Data.Disconnected)
                 .ToArray();
-                
+
             if (disconnectedPlayers.Length > 0)
             {
                 Logger.Warning($"Found {disconnectedPlayers.Length} disconnected players during role assignment");
             }
-            
+
             CreateTickets();
             AssignedRoleIds.Clear(); // 役職アサイン前にクリア
 
@@ -99,39 +99,39 @@ public static class AssignRoles
                     Logger.Warning($"Skipping disconnected player in role assignment");
                     continue;
                 }
-                
+
                 if (!player.Data.Role.IsSimpleRole)
                     AssignRole(player, player.Data.Role.IsImpostor ? RoleId.Impostor : RoleId.Crewmate);
-        }
+            }
 
-        // Assign Impostors
-        AssignTickets(AssignTickets_HundredPercent[AssignedTeamType.Impostor],
-        AssignTickets_NotHundredPercent[AssignedTeamType.Impostor],
-        true, MaxImpostors);
+            // Assign Impostors
+            AssignTickets(AssignTickets_HundredPercent[AssignedTeamType.Impostor],
+            AssignTickets_NotHundredPercent[AssignedTeamType.Impostor],
+            true, MaxImpostors);
 
-        // Assign Neutral
-        AssignTickets(AssignTickets_HundredPercent[AssignedTeamType.Neutral],
-        AssignTickets_NotHundredPercent[AssignedTeamType.Neutral],
-        false, MaxNeutrals);
+            // Assign Neutral
+            AssignTickets(AssignTickets_HundredPercent[AssignedTeamType.Neutral],
+            AssignTickets_NotHundredPercent[AssignedTeamType.Neutral],
+            false, MaxNeutrals);
 
-        if (JackalFriends.JackalFriendsDontAssignIfJackalNotAssigned && !ExPlayerControl.ExPlayerControls.Any(player => player.IsJackalTeam()))
-        {
-            AssignTickets_HundredPercent[AssignedTeamType.Crewmate].RemoveAll(ticket => ticket.RoleOption.RoleId == RoleId.JackalFriends);
-            AssignTickets_NotHundredPercent[AssignedTeamType.Crewmate].RemoveAll(ticket => ticket.RoleOption.RoleId == RoleId.JackalFriends);
-        }
+            if (JackalFriends.JackalFriendsDontAssignIfJackalNotAssigned && !ExPlayerControl.ExPlayerControls.Any(player => player.IsJackalTeam()))
+            {
+                AssignTickets_HundredPercent[AssignedTeamType.Crewmate].RemoveAll(ticket => ticket.RoleOption.RoleId == RoleId.JackalFriends);
+                AssignTickets_NotHundredPercent[AssignedTeamType.Crewmate].RemoveAll(ticket => ticket.RoleOption.RoleId == RoleId.JackalFriends);
+            }
 
-        // Assign Crews
-        AssignTickets(AssignTickets_HundredPercent[AssignedTeamType.Crewmate],
-        AssignTickets_NotHundredPercent[AssignedTeamType.Crewmate],
-        false, MaxCrews);
+            // Assign Crews
+            AssignTickets(AssignTickets_HundredPercent[AssignedTeamType.Crewmate],
+            AssignTickets_NotHundredPercent[AssignedTeamType.Crewmate],
+            false, MaxCrews);
 
-        // Assign Modifiers
-        AssignModifiers();
+            // Assign Modifiers
+            AssignModifiers();
 
-        // Assign Lovers
-        AssignLovers();
-        
-        Logger.Info("AssignCustomRoles() 終了: カスタム役職のアサイン処理が完了しました。");
+            // Assign Lovers
+            AssignLovers();
+
+            Logger.Info("AssignCustomRoles() 終了: カスタム役職のアサイン処理が完了しました。");
         }
         catch (Exception ex)
         {

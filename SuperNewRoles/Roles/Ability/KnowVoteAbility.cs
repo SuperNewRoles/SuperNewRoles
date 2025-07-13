@@ -1,8 +1,8 @@
 using System;
 using System.Linq;
 using HarmonyLib;
-using SuperNewRoles.Modules;
 using SuperNewRoles.CustomOptions.Categories;
+using SuperNewRoles.Modules;
 
 namespace SuperNewRoles.Roles.Ability;
 
