@@ -34,7 +34,7 @@ class DoubleKiller : RoleBase<DoubleKiller>
     public override WinnerTeamType WinnerTeam { get; } = WinnerTeamType.Impostor;
     public override TeamTag TeamTag { get; } = TeamTag.Impostor;
     public override RoleTag[] RoleTags { get; } = [];
-    public override RoleOptionMenuType OptionTeam { get; } = RoleOptionMenuType.Hidden;
+    public override RoleOptionMenuType OptionTeam => RoleOptionMenuType.Impostor;
 
     [CustomOptionFloat("DoubleKillerMainKillCooldown", 2.5f, 60f, 2.5f, 30f)]
     public static float DoubleKillerMainKillCooldown;
