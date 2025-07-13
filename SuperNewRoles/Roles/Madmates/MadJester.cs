@@ -55,7 +55,7 @@ class MadJester : RoleBase<MadJester>
     [CustomOptionBool("MadJesterWinOnExiled", true, translationName: "勝利にタスク完了が必要")]
     public static bool MadJesterWinOnExiled;
 
-    [CustomOptionInt("MadJesterWinRequiredTaskCount", 5, 0, 30, 1, parentFieldName: nameof(MadJesterWinOnExiled), translationName: "必要なタスク完了数")]
+    [CustomOptionInt("MadJesterWinRequiredTaskCount", 5, 0, 30, 1, parentFieldName: nameof(MadJesterWinOnExiled), translationName: "必要なタスク数")]
     public static int MadJesterWinRequiredTaskCount;
 
     [CustomOptionInt("MadJesterKnowImpostorTaskCount", 5, 0, 30, 1, parentFieldName: nameof(MadJesterCanKnowImpostors), translationName: "知るためのひつようなタスク数")]
