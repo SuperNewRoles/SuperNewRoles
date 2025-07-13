@@ -40,7 +40,7 @@ class MadJester : RoleBase<MadJester>
     [CustomOptionBool("MadJesterCanKnowImpostors", false)]
     public static bool MadJesterCanKnowImpostors;
 
-    [CustomOptionInt("MadJesterKnowImpostorTaskCount", 5, 0, 30, 1, parentFieldName: nameof(MadJesterCanKnowImpostors))]
+    [CustomOptionInt("MadJesterKnowImpostorTaskCount", 0, 30, 1, 5, parentFieldName: nameof(MadJesterCanKnowImpostors))]
     public static int MadJesterKnowImpostorTaskCount;
 
     [CustomOptionBool("MadJesterIsSpecialTasks", false, translationName: "MadmateIsSpecialTasks")]
@@ -58,7 +58,7 @@ class MadJester : RoleBase<MadJester>
     [CustomOptionBool("MadJesterWinOnExiled", true)]
     public static bool MadJesterWinOnExiled;
 
-    [CustomOptionInt("MadJesterWinRequiredTaskCount", 5, 0, 30, 1, parentFieldName: nameof(MadJesterWinOnExiled))]
+    [CustomOptionInt("MadJesterWinRequiredTaskCount", 0, 30, 1, 5, parentFieldName: nameof(MadJesterWinOnExiled))]
     public static int MadJesterWinRequiredTaskCount;
 
 
