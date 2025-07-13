@@ -126,7 +126,7 @@ public static class NameText
             {
                 var (complete, all) = player.GetAllTaskForShowProgress();
                 // MadJesterの場合は3つの数値を表示 (現在のタスク数/狂信発動タスク数/勝利タスク数)
-                if (player.IsRole(RoleId.MadJester))
+                if (player.Role == RoleId.MadJester)
                 {
                     var madJesterWinRequiredTaskCount = SuperNewRoles.Roles.Madmates.MadJester.MadJesterWinRequiredTaskCount;
                     TaskText += ModHelpers.Cs(Color.yellow, "(" + (ModHelpers.IsComms() ? "?" : complete.ToString()) + "/" + all.ToString() + "/" + madJesterWinRequiredTaskCount.ToString() + ")");
