@@ -150,7 +150,7 @@ public class CupidAbility : AbilityBase
         }
         if (shouldBeVisible)
         {
-            NameText.UpdateVisiable(data.Player, true);
+            NameText.UpdateVisible(data.Player, true);
         }
     }
 }

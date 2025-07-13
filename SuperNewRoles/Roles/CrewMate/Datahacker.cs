@@ -180,7 +180,7 @@ public class DatahackerAbility : AbilityBase
         if (Player.AmOwner && hackingCompleted && hackingData.CanSeeRoleNames)
         {
             if (CanSeeRole(data.Player, out _))
-                NameText.UpdateVisiable(data.Player, data.Player.IsAlive());
+                NameText.UpdateVisible(data.Player, data.Player.IsAlive());
         }
     }
 
