@@ -37,7 +37,13 @@ class MadJester : RoleBase<MadJester>
     public override RoleTag[] RoleTags => [];
     public override RoleOptionMenuType OptionTeam => RoleOptionMenuType.Crewmate;
 
-    [CustomOptionBool("MadJesterCanKnowImpostors", false)]
+    [CustomOptionBool("MadJesterWinOnExiled", true)]
+    public static bool MadJesterWinOnExiled;
+
+    [CustomOptionInt("MadJesterWinRequiredTaskCount", 0, 30, 1, 5, parentFieldName: nameof(MadJesterWinOnExiled))]
+    public static int MadJesterWinRequiredTaskCount;
+
+    [CustomOptionBool("MadJesterCanKnowImpostors", false, translationName: "MadmateCanKnowImpostors")]
     public static bool MadJesterCanKnowImpostors;
 
     [CustomOptionInt("MadJesterKnowImpostorTaskCount", 0, 30, 1, 5, parentFieldName: nameof(MadJesterCanKnowImpostors))]
@@ -54,13 +60,6 @@ class MadJester : RoleBase<MadJester>
 
     [CustomOptionBool("MadJesterHasImpostorVision", false, translationName: "HasImpostorVision")]
     public static bool MadJesterHasImpostorVision;
-
-    [CustomOptionBool("MadJesterWinOnExiled", true)]
-    public static bool MadJesterWinOnExiled;
-
-    [CustomOptionInt("MadJesterWinRequiredTaskCount", 0, 30, 1, 5, parentFieldName: nameof(MadJesterWinOnExiled))]
-    public static int MadJesterWinRequiredTaskCount;
-
 
     [CustomOptionBool("MadJesterWinOnTaskComplete", false, displayMode: DisplayModeId.None)]
     public static bool MadJesterWinOnTaskComplete;
