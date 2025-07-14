@@ -222,7 +222,12 @@ internal unsafe struct FastHashTable
         var keyBytes = Encoding.UTF8.GetBytes(key);
         fixed (byte* keyPtr = keyBytes)
         {
-            return GetRaw(keyPtr, keyBytes.Length) ?? key;
+            string value = GetRaw(keyPtr, keyBytes.Length);
+            if (value == null)
+            { // keyがCSVにない場合にログを出力
+                Logger.Warning($"Missing translation for key: {key}");
+            }
+            return value ?? key;
         }
     }
 
