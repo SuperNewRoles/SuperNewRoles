@@ -14,6 +14,8 @@ dotnet_diagnostic.IDE0052.severity = silent
 dotnet_diagnostic.CA2211.severity = none
 # メソッドの結果を無視しないを無効化
 dotnet_diagnostic.CA1806.severity = none
+# ’nullable’注釈コンテキスト内のコードでのみ、Null許容参照型の注釈を使用する必要がありますを無効化
+dotnet_diagnostic.CS8632.severity = none
 # usingをディレクティブごとにスペースで分けるか
 dotnet_separate_import_directive_groups = false
 # usingの先頭をSystemに並び変えるか
@@ -104,5 +106,3 @@ csharp_style_prefer_index_operator = true:suggestion
 csharp_style_prefer_range_operator = true:suggestion
 # throw ステートメントの代わりに throw 式を使用します
 csharp_style_throw_expression = true:suggestion
-# Nullable 注釈コンテキスト外でのnull許容参照型の使用を検知する CS8632 の重大度を指定
-dotnet_diagnostic.CS8632.severity = none
