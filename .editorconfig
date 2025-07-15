@@ -28,7 +28,7 @@ dotnet_style_qualification_for_property = false:silent
 # 型参照のためのフレームワーク型名の代わりに言語キーワードを使用するか
 dotnet_style_predefined_type_for_locals_parameters_members = true:silent
 dotnet_style_predefined_type_for_member_access = true:silent
-# 二幸演算子の括弧の設定
+# 二項演算子の括弧の設定
 dotnet_style_parentheses_in_other_binary_operators = always_for_clarity:suggestion
 # その他の演算子の括弧の設定
 dotnet_style_parentheses_in_other_operators = never_if_unnecessary:suggestion
