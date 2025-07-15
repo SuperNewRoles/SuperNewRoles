@@ -223,9 +223,12 @@ internal unsafe struct FastHashTable
         fixed (byte* keyPtr = keyBytes)
         {
             string value = GetRaw(keyPtr, keyBytes.Length);
-            if (value == null)
-            { // keyがCSVにない場合にログを出力
-                Logger.Warning($"Missing translation for key: {key}");
+            if (value == null) // keyがCSVにない場合にログを出力
+            {
+                if (!key.Contains("<color=") && !key.Contains("</color>") && value != "CrewmateIntro1")
+                {  // colorタグが含まれている場合・CrewmateIntro1(本体純正)は出力しない
+                    Logger.Warning($"Missing translation for key: {key}");
+                }
             }
             return value ?? key;
         }
