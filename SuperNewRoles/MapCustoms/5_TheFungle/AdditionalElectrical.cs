@@ -67,12 +67,6 @@ public static class FungleAdditionalElectrical
                     .Where(c => c != null && c.TaskTypes != null && c.TaskTypes.Any(t => t == TaskTypes.FixLights))
                     .ToList();
 
-                if (existingElectricalConsoles.Count >= 3)
-                {
-                    Logger.Info($"The Fungle electrical consoles already exist ({existingElectricalConsoles.Count}), skipping creation");
-                    _isInitialized = true;
-                    return;
-                }
 
                 // タスクリストの追加
                 List<PlayerTask> Tasks = ShipStatus.Instance.SpecialTasks.ToList();
@@ -88,6 +82,14 @@ public static class FungleAdditionalElectrical
                     Logger.Warning("FixLights task not found in Airship map");
                 }
 
+                // 既存のコンソールが1つでも存在する場合は生成をスキップ（FungleAdditionalAdminと同様の安全な実装）
+                if (existingElectricalConsoles.Count > 0)
+                {
+                    Logger.Info($"The Fungle electrical consoles already exist ({existingElectricalConsoles.Count}), skipping creation to avoid ID conflicts");
+                    _isInitialized = true;
+                    return;
+                }
+
                 // 電気修理コンソールの作成（既存がない場合のみ）
                 var electricalPrefab = ship.transform.FindChild("Storage/task_lightssabotage (cargo)");
                 if (electricalPrefab == null)
@@ -96,31 +98,21 @@ public static class FungleAdditionalElectrical
                     return;
                 }
 
-                int consolesToCreate = 3 - existingElectricalConsoles.Count;
+                // 3つのコンソールを全て作成
                 List<Console> newConsoles = new();
-
-                if (consolesToCreate > 0)
+                Vector3[] positions = new Vector3[]
                 {
-                    Console console1 = GameObject.Instantiate(electricalPrefab, fungleShipStatus.transform).GetComponent<Console>();
-                    console1.transform.localPosition = new(-16.2f, 7.67f, 0);
-                    console1.ConsoleId = 0;
-                    newConsoles.Add(console1);
-                }
+                    new(-16.2f, 7.67f, 0),
+                    new(-5.7f, -7.7f, -1.008f),
+                    new(21.48f, 4.27f, 0f)
+                };
 
-                if (consolesToCreate > 1)
+                for (int i = 0; i < positions.Length; i++)
                 {
-                    Console console2 = GameObject.Instantiate(electricalPrefab, fungleShipStatus.transform).GetComponent<Console>();
-                    console2.transform.localPosition = new(-5.7f, -7.7f, -1.008f);
-                    console2.ConsoleId = 1;
-                    newConsoles.Add(console2);
-                }
-
-                if (consolesToCreate > 2)
-                {
-                    Console console3 = GameObject.Instantiate(electricalPrefab, fungleShipStatus.transform).GetComponent<Console>();
-                    console3.transform.localPosition = new(21.48f, 4.27f, 0f);
-                    console3.ConsoleId = 2;
-                    newConsoles.Add(console3);
+                    Console console = GameObject.Instantiate(electricalPrefab, fungleShipStatus.transform).GetComponent<Console>();
+                    console.transform.localPosition = positions[i];
+                    console.ConsoleId = i;
+                    newConsoles.Add(console);
                 }
 
                 // コンソールリストに追加

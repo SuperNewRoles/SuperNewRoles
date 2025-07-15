@@ -9,6 +9,7 @@ public static class ZiplineUpdown
     private static bool _isInitialized = false;
     private static float _lastCooldownValue = -1f;
     private static LateTask _periodicUpdateTask;
+    private static ZiplineConsole[] _cachedZiplineConsoles = null;
     
     public static void Initialize()
     {
@@ -46,6 +47,9 @@ public static class ZiplineUpdown
             // Set initial cooldown values for zipline consoles if cooldown change is enabled
             if (ZiplineCoolChangeOption)
             {
+                // ジップラインコンソールをキャッシュ
+                CacheZiplineConsoles();
+                
                 // 即座に設定
                 SetZiplineCooldowns();
                 
@@ -64,11 +68,26 @@ public static class ZiplineUpdown
         }
     }
 
+    private static void CacheZiplineConsoles()
+    {
+        try
+        {
+            _cachedZiplineConsoles = GameObject.FindObjectsOfType<ZiplineConsole>();
+            Logger.Info($"Cached {_cachedZiplineConsoles?.Length ?? 0} zipline consoles for performance optimization");
+        }
+        catch (System.Exception ex)
+        {
+            Logger.Error($"Error caching zipline consoles: {ex}");
+            _cachedZiplineConsoles = null;
+        }
+    }
+
     private static void SetZiplineCooldowns()
     {
         try
         {
-            var ziplineConsoles = GameObject.FindObjectsOfType<ZiplineConsole>();
+            // キャッシュされたコンソールを使用、なければ再取得
+            var ziplineConsoles = _cachedZiplineConsoles ?? GameObject.FindObjectsOfType<ZiplineConsole>();
             if (ziplineConsoles == null || ziplineConsoles.Length == 0)
             {
                 Logger.Warning("No zipline consoles found to set cooldowns");
@@ -203,7 +222,8 @@ public static class ZiplineUpdown
             {
                 // 設定値が変更されていない場合でも、実際のコンソールのクールダウンを確認して修正する
                 // ただし、クールダウンが進行中（設定値より小さい）の場合は更新しない
-                var ziplineConsoles = GameObject.FindObjectsOfType<ZiplineConsole>();
+                // キャッシュされたコンソールを使用してパフォーマンスを改善
+                var ziplineConsoles = _cachedZiplineConsoles ?? GameObject.FindObjectsOfType<ZiplineConsole>();
                 bool needsUpdate = false;
                 
                 foreach (var console in ziplineConsoles)
@@ -241,6 +261,9 @@ public static class ZiplineUpdown
         
         // 定期タスクを停止
         _periodicUpdateTask = null;
+        
+        // キャッシュをクリア
+        _cachedZiplineConsoles = null;
         
         Logger.Info("The Fungle zipline initialization flag reset");
     }
