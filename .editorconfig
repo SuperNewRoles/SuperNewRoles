@@ -104,3 +104,5 @@ csharp_style_prefer_index_operator = true:suggestion
 csharp_style_prefer_range_operator = true:suggestion
 # throw ステートメントの代わりに throw 式を使用します
 csharp_style_throw_expression = true:suggestion
+# Nullable 注釈コンテキスト外でのnull許容参照型の使用を検知する CS8632 の重大度を指定
+dotnet_diagnostic.CS8632.severity = none
