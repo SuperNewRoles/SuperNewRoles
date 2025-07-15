@@ -14,6 +14,8 @@ dotnet_diagnostic.IDE0052.severity = silent
 dotnet_diagnostic.CA2211.severity = none
 # メソッドの結果を無視しないを無効化
 dotnet_diagnostic.CA1806.severity = none
+# ’nullable’注釈コンテキスト内のコードでのみ、Null許容参照型の注釈を使用する必要がありますを無効化
+dotnet_diagnostic.CS8632.severity = none
 # usingをディレクティブごとにスペースで分けるか
 dotnet_separate_import_directive_groups = false
 # usingの先頭をSystemに並び変えるか
@@ -28,7 +30,7 @@ dotnet_style_qualification_for_property = false:silent
 # 型参照のためのフレームワーク型名の代わりに言語キーワードを使用するか
 dotnet_style_predefined_type_for_locals_parameters_members = true:silent
 dotnet_style_predefined_type_for_member_access = true:silent
-# 二幸演算子の括弧の設定
+# 二項演算子の括弧の設定
 dotnet_style_parentheses_in_other_binary_operators = always_for_clarity:suggestion
 # その他の演算子の括弧の設定
 dotnet_style_parentheses_in_other_operators = never_if_unnecessary:suggestion
