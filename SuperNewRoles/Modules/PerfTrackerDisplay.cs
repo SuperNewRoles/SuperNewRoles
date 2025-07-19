@@ -101,7 +101,6 @@ public static class PerfTrackerDisplay
                 perfTextObject.transform.SetParent(GameObject.FindObjectOfType<Canvas>().transform);
 
             // 表示サイズ・位置を調整
-            perfTextObject.transform.localScale = Vector3.one * 2.5f;
             perfTextObject.transform.localPosition = new Vector3(-3.45f, -1.4f, 0); // 配置は調整してください
 
             // TextMeshProコンポーネント取得
@@ -114,7 +113,8 @@ public static class PerfTrackerDisplay
 
             // テキスト表示プロパティを調整
             _perfText.alignment = TextAlignmentOptions.TopLeft;
-            _perfText.fontSize = 4.0f;     // 見やすいサイズに
+            _perfText.transform.localScale = Vector3.one * 5f; // サイズ調
+            _perfText.fontSize = 2.5f;     // 見やすいサイズに
             _perfText.color = Color.white;
 
             // AspectPosition等で位置固定する場合はここで設定
