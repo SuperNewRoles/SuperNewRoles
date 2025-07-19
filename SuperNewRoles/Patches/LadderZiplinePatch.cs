@@ -143,24 +143,23 @@ public static class ZiplineConsolePatch
     [HarmonyPatch(nameof(ZiplineConsole.SetDestinationCooldown)), HarmonyPostfix]
     public static void ZiplineConsoleSetDestinationCooldownPostfix(ZiplineConsole __instance)
     {
-        if (ZiplineCoolChangeOption)
-        {
-            float cooldownTime = ZiplineCoolTimeOption;
-            if (ZiplineImpostorCoolChangeOption && ExPlayerControl.LocalPlayer.IsImpostor())
-                cooldownTime = ZiplineImpostorCoolTimeOption;
+        if (!ZiplineCoolChangeOption) return;
+        
+        // destinationのnullチェックを最初に行う
+        if (__instance.destination == null) return;
 
-            // 0秒以下の場合は0にする
-            if (cooldownTime <= 0f)
-                cooldownTime = 0f;
+        float cooldownTime = ZiplineCoolTimeOption;
+        if (ZiplineImpostorCoolChangeOption && ExPlayerControl.LocalPlayer.IsImpostor())
+            cooldownTime = ZiplineImpostorCoolTimeOption;
 
-            // 即座に目的地のクールダウンを設定
-            if (__instance.destination != null)
-            {
-                __instance.destination.CoolDown = cooldownTime;
-            }
+        // 0秒以下の場合は0にする
+        if (cooldownTime <= 0f)
+            cooldownTime = 0f;
 
-            // ログ出力してクールダウンが正しく設定されたことを確認
-            Logger.Info($"Zipline destination cooldown set to {cooldownTime}s (current: {__instance.destination?.CoolDown}s)");
-        }
+        // 即座に目的地のクールダウンを設定
+        __instance.destination.CoolDown = cooldownTime;
+
+        // ログ出力してクールダウンが正しく設定されたことを確認
+        Logger.Info($"Zipline destination cooldown set to {cooldownTime}s (current: {__instance.destination.CoolDown}s)");
     }
 }

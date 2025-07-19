@@ -73,7 +73,8 @@ public static class ZiplineUpdown
         try
         {
             _cachedZiplineConsoles = GameObject.FindObjectsOfType<ZiplineConsole>();
-            // キャッシュ情報はログ出力しない（頻繁な出力を避けるため）
+            // 初期化時のみキャッシュ情報をログ出力
+            Logger.Info($"Cached {_cachedZiplineConsoles?.Length ?? 0} zipline consoles for cooldown management");
         }
         catch (System.Exception ex)
         {
