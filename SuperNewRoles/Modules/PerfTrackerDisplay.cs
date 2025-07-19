@@ -15,7 +15,7 @@ namespace SuperNewRoles.Modules;
 // このクラス全体が表示と操作のロジックを管理します
 public static class PerfTrackerDisplay
 {
-    private static TextMeshPro _perfText;
+    private static TextMeshProUGUI _perfText;
     private static bool _isVisible = true;
     private static readonly StringBuilder _stringBuilder = new(512);
 
@@ -86,8 +86,9 @@ public static class PerfTrackerDisplay
             var originalText = __instance.roomTracker.text;
             var perfTextObject = GameObject.Instantiate(originalText.gameObject);
 
-            // 元のコンポーネントは不要なので削除
-            Object.Destroy(perfTextObject.GetComponent<RoomTracker>());
+            // 元の Unity UI Text コンポーネントを削除
+            var oldText = perfTextObject.GetComponent<UnityEngine.UI.Text>();
+            if (oldText != null) Object.Destroy(oldText);
 
             // わかりやすいように名前を設定
             perfTextObject.name = "PerfTrackerText";
@@ -95,12 +96,17 @@ public static class PerfTrackerDisplay
             // HudManagerの子要素にして、追従するようにする
             perfTextObject.transform.SetParent(__instance.transform);
 
-            // TextMeshProコンポーネントを取得して保持
-            _perfText = perfTextObject.GetComponent<TextMeshPro>();
+            // TextMeshProUGUIコンポーネントを取得して保持
+            _perfText = perfTextObject.GetComponent<TMPro.TextMeshProUGUI>();
+            if (_perfText == null)
+            {
+                Logger.Error("PerfTrackerText に TextMeshProUGUI がアタッチされていません");
+                return;
+            }
 
             // --- TextMeshProのプロパティ設定 ---
             _perfText.alignment = TextAlignmentOptions.TopLeft;
-            _perfText.fontSize = 1.5f; // サイズは環境に合わせて調整してください
+            _perfText.fontSize = 2.5f; // サイズは環境に合わせて調整してください
             _perfText.color = Color.white;
 
             // --- 位置の設定 (画面左上) ---
