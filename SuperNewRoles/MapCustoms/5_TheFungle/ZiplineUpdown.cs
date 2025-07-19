@@ -180,20 +180,22 @@ public static class ZiplineUpdown
     {
         if (_periodicUpdateTask != null) return;
         
-        // 定期実行を継続するためのAction
-        System.Action periodicAction = null;
-        periodicAction = () =>
+        ScheduleNextPeriodicCheck();
+    }
+    
+    /// <summary>
+    /// 次の定期チェックをスケジュールする
+    /// </summary>
+    private static void ScheduleNextPeriodicCheck()
+    {
+        if (!_isInitialized || !ZiplineCoolChangeOption) return;
+        
+        _periodicUpdateTask = new LateTask(() =>
         {
             PeriodicCheck();
-            // 次回の実行をスケジュール（再帰的に自分自身を呼び出す）
-            if (_isInitialized && ZiplineCoolChangeOption)
-            {
-                _periodicUpdateTask = new LateTask(periodicAction, 0.5f, "ZiplinePeriodicCheck");
-            }
-        };
-        
-        // 最初の実行をスケジュール
-        _periodicUpdateTask = new LateTask(periodicAction, 0.5f, "ZiplinePeriodicCheck");
+            // 継続的に次回の実行をスケジュール
+            ScheduleNextPeriodicCheck();
+        }, 0.5f, "ZiplinePeriodicCheck");
     }
 
     private static void PeriodicCheck()
@@ -260,7 +262,11 @@ public static class ZiplineUpdown
         _lastCooldownValue = -1f;
         
         // 定期タスクを停止
-        _periodicUpdateTask = null;
+        if (_periodicUpdateTask != null)
+        {
+            _periodicUpdateTask = null;
+            Logger.Info("Stopped periodic zipline cooldown checking");
+        }
         
         // キャッシュをクリア
         _cachedZiplineConsoles = null;
