@@ -122,9 +122,10 @@ public static class ZiplineConsolePatch
             if (ZiplineImpostorCoolChangeOption && ExPlayerControl.LocalPlayer.IsImpostor())
                 cooldownTime = ZiplineImpostorCoolTimeOption;
 
-            // 0秒以下の場合は0にする
             if (cooldownTime <= 0f)
+            {
                 cooldownTime = 0f;
+            }
 
             // 即座にクールダウンを設定
             __instance.CoolDown = cooldownTime;
@@ -152,9 +153,10 @@ public static class ZiplineConsolePatch
         if (ZiplineImpostorCoolChangeOption && ExPlayerControl.LocalPlayer.IsImpostor())
             cooldownTime = ZiplineImpostorCoolTimeOption;
 
-        // 0秒以下の場合は0にする
         if (cooldownTime <= 0f)
+        {
             cooldownTime = 0f;
+        }
 
         // 即座に目的地のクールダウンを設定
         __instance.destination.CoolDown = cooldownTime;
