@@ -1,13 +1,10 @@
-// PerfTrackerDisplay.cs
 // PerfTrackerで計測した情報をTextMeshProを使用して画面に表示します。
 // F10キーでの表示/非表示切り替え、Shift+F10でのリセット機能も担当します。
-// このスクリプトは、シーン内のいずれかのGameObjectにアタッチしてください。
 
 using UnityEngine;
 using TMPro;
 using System.Text;
 using System.Linq;
-using UnityEngine.UI;
 using HarmonyLib;
 
 namespace SuperNewRoles.Modules;

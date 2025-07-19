@@ -1,5 +1,4 @@
 // 処理時間の計測、記録、集計を行う静的クラスです。
-// このスクリプトはGameObjectにアタッチする必要はありません。
 
 using System.Collections.Generic;
 using System.Diagnostics;
