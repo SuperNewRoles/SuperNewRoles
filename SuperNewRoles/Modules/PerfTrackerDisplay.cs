@@ -81,6 +81,11 @@ public static class PerfTrackerDisplay
     [HarmonyPatch(typeof(HudManager), nameof(HudManager.Start))]
     public static class HudManager_Start_Patch
     {
+        // ベータ版かどうかを判定。false の場合、以下の Prefix/Postfix は一切登録されない
+        public static bool Prepare()
+        {
+            return Statics.IsBeta;
+        }
         public static void Postfix(HudManager __instance)
         {
             // 既存UI要素(roomTracker.text)を複製
@@ -143,6 +148,11 @@ public static class PerfTrackerDisplay
     [HarmonyPatch(typeof(HudManager), nameof(HudManager.Update))]
     public static class HudManager_Update_Patch
     {
+        // ベータ版かどうかを判定。false の場合、以下の Prefix/Postfix は一切登録されない
+        public static bool Prepare()
+        {
+            return Statics.IsBeta;
+        }
         public static void Postfix()
         {
             // 毎フレーム、キー入力のチェックと表示更新を行う

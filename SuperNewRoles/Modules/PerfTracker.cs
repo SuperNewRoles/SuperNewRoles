@@ -1,4 +1,3 @@
-// PerfTracker.cs
 // 処理時間の計測、記録、集計を行う静的クラスです。
 // このスクリプトはGameObjectにアタッチする必要はありません。
 
@@ -41,6 +40,11 @@ public static class PerfTracker
     /// <param name="key">計測対象を識別する一意のキー（処理名など）</param>
     public static void Begin(string key)
     {
+        // ベータ版でない場合は計測を行わない
+        if (Statics.IsBeta == false)
+        {
+            return;
+        }
         // 辞書にキーが存在しない場合は新しくDataオブジェクトを作成して追加
         if (!_data.ContainsKey(key))
         {
@@ -56,6 +60,10 @@ public static class PerfTracker
     /// <param name="key">計測対象を識別する一意のキー</param>
     public static void End(string key)
     {
+        if (Statics.IsBeta == false)
+        {
+            return;
+        }
         // 辞書にキーが存在しない場合は何もしない
         if (!_data.TryGetValue(key, out var d))
         {
@@ -95,6 +103,10 @@ public static class PerfTracker
     /// <param name="key">リセットするデータのキー。nullの場合は全てのデータをリセットします。</param>
     public static void Reset(string key = null)
     {
+        if (Statics.IsBeta == false)
+        {
+            return;
+        }
         if (string.IsNullOrEmpty(key))
         {
             // 全てのデータをクリア
