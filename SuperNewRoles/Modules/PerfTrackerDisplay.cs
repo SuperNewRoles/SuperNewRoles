@@ -15,7 +15,7 @@ namespace SuperNewRoles.Modules;
 // このクラス全体が表示と操作のロジックを管理します
 public static class PerfTrackerDisplay
 {
-    private static TextMeshProUGUI _perfText;
+    private static TextMeshPro _perfText;
     private static bool _isVisible = true;
     private static readonly StringBuilder _stringBuilder = new(512);
 
@@ -82,23 +82,24 @@ public static class PerfTrackerDisplay
     {
         public static void Postfix(HudManager __instance)
         {
-            // 既存のUI要素(roomTracker.text)を複製して利用する
+            // 既存のUI要素(roomTracker.text)を複製して利用
             var originalText = __instance.roomTracker.text;
             var perfTextObject = GameObject.Instantiate(originalText.gameObject);
 
-            // 元の UI Text を削除します
+            // 元のUnityEngine.UI.Textを削除（TextMeshProの場合、たいてい付いていないので不要なら省略可能）
             var oldText = perfTextObject.GetComponent<UnityEngine.UI.Text>();
             if (oldText != null) Object.Destroy(oldText);
 
-            // TextMeshProUGUI を取得または追加します
-            if (!perfTextObject.TryGetComponent<TextMeshProUGUI>(out _perfText))
-                _perfText = perfTextObject.AddComponent<TextMeshProUGUI>();
+            // TextMeshProを取得または追加
+            if (!perfTextObject.TryGetComponent<TextMeshPro>(out _perfText))
+                _perfText = perfTextObject.AddComponent<TextMeshPro>();
 
             if (_perfText == null)
             {
-                Logger.Error("PerfTrackerText に TextMeshProUGUI がアタッチされていません");
+                Logger.Error("PerfTrackerText に TextMeshPro がアタッチされていません");
                 return;
             }
+
 
             // わかりやすいように名前を設定
             perfTextObject.name = "PerfTrackerText";
@@ -109,7 +110,7 @@ public static class PerfTrackerDisplay
 
             // --- TextMeshProのプロパティ設定 ---
             _perfText.alignment = TextAlignmentOptions.TopLeft;
-            _perfText.fontSize = 2.5f; // サイズは環境に合わせて調整してください
+            _perfText.fontSize = 5.5f; // サイズは環境に合わせて調整してください
             _perfText.color = Color.white;
 
             // --- 位置の設定 (画面左上) ---
