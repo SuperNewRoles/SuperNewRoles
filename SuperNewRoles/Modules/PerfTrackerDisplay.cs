@@ -63,10 +63,11 @@ public static class PerfTrackerDisplay
         else
         {
             // 固定幅フォントのような表示にするため、書式を調整
-            _stringBuilder.AppendLine("<font_mono>Key                  Last(ms)   Avg(ms)</font_mono>");
+            _stringBuilder.AppendLine(">Key                         Last(ms)  Avg(ms)".ToMonospace());
             foreach (var stat in stats)
             {
-                _stringBuilder.AppendFormat("<font_mono>{0,-20}: {1,8:F2} {2,8:F2}</font_mono>\n", stat.Key, stat.LastMs, stat.AvgMs);
+                var line = $"{stat.Key,-25}: {stat.LastMs,8:F2} {stat.AvgMs,8:F2}";
+                _stringBuilder.AppendLine(line.ToMonospace());
             }
         }
 
