@@ -14,21 +14,10 @@ class AmongUsClientStartPatch
 {
     public static void Postfix(AmongUsClient __instance)
     {
-        Logger.Info("CoStartGame");
-        ExPlayerControl.SetUpExPlayers();
-        EventListenerManager.ResetAllListener();
-        SuperTrophyManager.CoStartGame();
-        Garbage.ClearAndReload();
-        CustomKillAnimationManager.ClearCurrentCustomKillAnimation();
-
-        // The Fungle マップ初期化フラグをリセット
-        FungleAdditionalAdmin.Reset();
-        FungleAdditionalElectrical.Reset();
-        ZiplineUpdown.Reset();
         try
         {
             Logger.Info("CoStartGame");
-
+            
             // プレイヤー接続状態を確認
             if (PlayerControl.LocalPlayer == null || PlayerControl.AllPlayerControls == null)
             {
@@ -46,11 +35,17 @@ class AmongUsClientStartPatch
                 Logger.Info($"Found {disconnectedPlayers.Length} disconnected players during game start");
             }
 
+            // 初期化処理を一箇所に統合
             ExPlayerControl.SetUpExPlayers();
             EventListenerManager.ResetAllListener();
             SuperTrophyManager.CoStartGame();
             Garbage.ClearAndReload();
             CustomKillAnimationManager.ClearCurrentCustomKillAnimation();
+
+            // The Fungle マップ初期化フラグをリセット
+            FungleAdditionalAdmin.Reset();
+            FungleAdditionalElectrical.Reset();
+            ZiplineUpdown.Reset();
         }
         catch (Exception ex)
         {
