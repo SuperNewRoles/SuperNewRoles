@@ -84,26 +84,34 @@ public static class PerfTrackerDisplay
         {
             // 既存UI要素(roomTracker.text)を複製
             var originalText = __instance.roomTracker.text;
+            if (originalText == null)
+            {
+                Logger.Error("roomTracker.textがnullです");
+                return;
+            }
+
             var perfTextObject = GameObject.Instantiate(originalText.gameObject);
 
-            // RoomTracker等不要なコンポーネントを削除
-            Object.Destroy(perfTextObject.GetComponent<RoomTracker>());
+            // 不要なRoomTrackerだけを消す（他コンポーネントは消さない）
+            var roomTracker = perfTextObject.GetComponent<RoomTracker>();
+            if (roomTracker != null) Object.Destroy(roomTracker);
 
             // 分かりやすい名前に
             perfTextObject.name = "PerfTrackerText";
-
-            // 親をAmong Usロゴ等いつも存在するUIオブジェクトに付け換える
-            // 例: _logoObjectが既設の場合。なければCanvas直下に配置推奨
-            var logoObject = GameObject.Find("Logo (1)") ?? GameObject.Find("Logo"); // 例: ロゴオブジェクト名
+            // 親の設定
+            var logoObject = GameObject.Find("Logo (1)") ?? GameObject.Find("Logo");
             if (logoObject != null)
                 perfTextObject.transform.SetParent(logoObject.transform);
             else
                 perfTextObject.transform.SetParent(GameObject.FindObjectOfType<Canvas>().transform);
 
-            // 表示サイズ・位置を調整
-            perfTextObject.transform.localPosition = new Vector3(-3.45f, -1.4f, 0); // 配置は調整してください
+            Logger.Info($"PerfTrackerText を生成しました: {logoObject.name}", "PerfTrackerDisplay");
 
-            // TextMeshProコンポーネント取得
+            // 表示サイズ・位置
+            perfTextObject.transform.localScale = Vector3.one * 2.5f;
+            perfTextObject.transform.localPosition = new Vector3(-5f, -2f, 0f);
+
+            // TextMeshProコンポーネント取得（型を明示）
             _perfText = perfTextObject.GetComponent<TextMeshPro>();
             if (_perfText == null)
             {
@@ -111,17 +119,16 @@ public static class PerfTrackerDisplay
                 return;
             }
 
-            // テキスト表示プロパティを調整
+            // アライメントや色など
             _perfText.alignment = TextAlignmentOptions.TopLeft;
             _perfText.transform.localScale = Vector3.one * 5f; // サイズ調
-            _perfText.fontSize = 2.5f;     // 見やすいサイズに
+            _perfText.fontSize = 4.0f;     // 必要なら大きめに
             _perfText.color = Color.white;
-            perfTextObject.transform.localPosition = new Vector3(0f, 0f, 0f); // 左上ぴったり
 
-            // AspectPosition等で位置固定する場合はここで設定
+            // AspectPosition設定（省略可）
             var aspectPosition = perfTextObject.AddComponent<AspectPosition>();
             aspectPosition.Alignment = AspectPosition.EdgeAlignments.LeftTop;
-            aspectPosition.DistanceFromEdge = new Vector3(0.0f, 0.0f); // 0に近いほど端に寄る
+            aspectPosition.DistanceFromEdge = new Vector3(0.0f, 3.0f); // 上が見切れるので対策
             aspectPosition.OnEnable();
 
             // 初期表示
