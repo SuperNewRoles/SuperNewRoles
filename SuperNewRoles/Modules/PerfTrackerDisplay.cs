@@ -86,9 +86,19 @@ public static class PerfTrackerDisplay
             var originalText = __instance.roomTracker.text;
             var perfTextObject = GameObject.Instantiate(originalText.gameObject);
 
-            // 元の Unity UI Text コンポーネントを削除
+            // 元の UI Text を削除します
             var oldText = perfTextObject.GetComponent<UnityEngine.UI.Text>();
             if (oldText != null) Object.Destroy(oldText);
+
+            // TextMeshProUGUI を取得または追加します
+            if (!perfTextObject.TryGetComponent<TextMeshProUGUI>(out _perfText))
+                _perfText = perfTextObject.AddComponent<TextMeshProUGUI>();
+
+            if (_perfText == null)
+            {
+                Logger.Error("PerfTrackerText に TextMeshProUGUI がアタッチされていません");
+                return;
+            }
 
             // わかりやすいように名前を設定
             perfTextObject.name = "PerfTrackerText";
@@ -96,13 +106,6 @@ public static class PerfTrackerDisplay
             // HudManagerの子要素にして、追従するようにする
             perfTextObject.transform.SetParent(__instance.transform);
 
-            // TextMeshProUGUIコンポーネントを取得して保持
-            _perfText = perfTextObject.GetComponent<TMPro.TextMeshProUGUI>();
-            if (_perfText == null)
-            {
-                Logger.Error("PerfTrackerText に TextMeshProUGUI がアタッチされていません");
-                return;
-            }
 
             // --- TextMeshProのプロパティ設定 ---
             _perfText.alignment = TextAlignmentOptions.TopLeft;
