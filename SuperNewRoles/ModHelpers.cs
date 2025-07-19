@@ -743,14 +743,12 @@ public static class ModHelpers
     }
 
     /// <summary>
-    /// 文字列を指定の mspace 幅で等幅化します。
+    /// 等幅になるよう mspace タグで囲む
     /// </summary>
     /// <param name="src">等幅化したい文字列</param>
     /// <param name="emWidth">文字幅（em単位）。デフォルトは0.6f</param>
     /// <returns>mspaceタグで囲まれた等幅化された文字列</returns>
     public static string ToMonospace(this string src, float emWidth = 0.6f)
-    {
-        return $"<mspace={emWidth}em>{src}</mspace>";
-    }
+        => $"<mspace={emWidth}em>{src ?? string.Empty}</mspace>";
 
 }
