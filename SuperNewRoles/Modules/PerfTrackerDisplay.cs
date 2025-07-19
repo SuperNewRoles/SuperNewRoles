@@ -13,7 +13,7 @@ namespace SuperNewRoles.Modules;
 public static class PerfTrackerDisplay
 {
     private static TextMeshPro _perfText;
-    private static bool _isVisible = true;
+    private static bool _isVisible = false;  // デフォルト非表示
     private static readonly StringBuilder _stringBuilder = new(512);
 
     /// <summary>
