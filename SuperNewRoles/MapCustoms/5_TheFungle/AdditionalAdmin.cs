@@ -16,13 +16,13 @@ public class FungleAdditionalAdmin
         if (!MapCustomHandler.IsMapCustom(MapCustomHandler.MapCustomId.TheFungle) ||
             !MapEditSettingsOptions.TheFungleAdditionalAdmin)
         {
-            Logger.Info("The Fungle admin console creation skipped: not on The Fungle map or option disabled");
+            // ログを削除（頻繁な出力を避けるため）
             return;
         }
 
         if (_isInitialized)
         {
-            Logger.Info("The Fungle admin console already initialized, skipping");
+            // ログを削除（頻繁な出力を避けるため）
             return;
         }
 
@@ -43,7 +43,7 @@ public class FungleAdditionalAdmin
 
                 if (existingAdminConsoles.Count > 0)
                 {
-                    Logger.Info($"The Fungle admin console already exists ({existingAdminConsoles.Count}), skipping creation");
+                    // ログを削除（頻繁な出力を避けるため）
                     _isInitialized = true;
                     return;
                 }
@@ -74,6 +74,6 @@ public class FungleAdditionalAdmin
     public static void Reset()
     {
         _isInitialized = false;
-        Logger.Info("The Fungle admin console initialization flag reset");
+        // ログを削除（頻繁な出力を避けるため）
     }
 }

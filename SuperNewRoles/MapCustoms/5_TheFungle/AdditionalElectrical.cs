@@ -17,13 +17,13 @@ public static class FungleAdditionalElectrical
         if (!MapCustomHandler.IsMapCustom(MapCustomHandler.MapCustomId.TheFungle) ||
             !MapEditSettingsOptions.TheFunglePowerOutageSabotage)
         {
-            Logger.Info("The Fungle electrical system creation skipped: not on The Fungle map or option disabled");
+            // ログを削除（頻繁な出力を避けるため）
             return;
         }
 
         if (_isInitialized)
         {
-            Logger.Info("The Fungle electrical system already initialized, skipping");
+            // ログを削除（頻繁な出力を避けるため）
             return;
         }
 
@@ -85,7 +85,7 @@ public static class FungleAdditionalElectrical
                 // 既存のコンソールが1つでも存在する場合は生成をスキップ（FungleAdditionalAdminと同様の安全な実装）
                 if (existingElectricalConsoles.Count > 0)
                 {
-                    Logger.Info($"The Fungle electrical consoles already exist ({existingElectricalConsoles.Count}), skipping creation to avoid ID conflicts");
+                    // ログを削除（頻繁な出力を避けるため）
                     _isInitialized = true;
                     return;
                 }
@@ -138,7 +138,7 @@ public static class FungleAdditionalElectrical
     public static void Reset()
     {
         _isInitialized = false;
-        Logger.Info("The Fungle electrical system initialization flag reset");
+        // ログを削除（頻繁な出力を避けるため）
     }
 
     [HarmonyPatch(typeof(MapBehaviour), nameof(MapBehaviour.Awake))]
@@ -154,7 +154,7 @@ public static class FungleAdditionalElectrical
             {
                 if (ship == null)
                 {
-                    Logger.Info("Failed to load Airship map for electrical map UI");
+                    // ログを削除（頻繁な出力を避けるため）
                     return;
                 }
 
@@ -163,7 +163,7 @@ public static class FungleAdditionalElectrical
                     var electricalRoom = ship.MapPrefab.infectedOverlay.rooms.FirstOrDefault(x => x.room == SystemTypes.Electrical);
                     if (electricalRoom == null)
                     {
-                        Logger.Info("Failed to find electrical room from Airship map");
+                        // ログを削除（頻繁な出力を避けるため）
                         return;
                     }
 

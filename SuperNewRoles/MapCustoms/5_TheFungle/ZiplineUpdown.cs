@@ -20,7 +20,7 @@ public static class ZiplineUpdown
         
         if (_isInitialized)
         {
-            Logger.Info("The Fungle zipline already initialized, skipping");
+            // ログを削除（頻繁な出力を避けるため）
             return;
         }
         
@@ -73,7 +73,7 @@ public static class ZiplineUpdown
         try
         {
             _cachedZiplineConsoles = GameObject.FindObjectsOfType<ZiplineConsole>();
-            Logger.Info($"Cached {_cachedZiplineConsoles?.Length ?? 0} zipline consoles for performance optimization");
+            // キャッシュ情報はログ出力しない（頻繁な出力を避けるため）
         }
         catch (System.Exception ex)
         {
@@ -141,7 +141,7 @@ public static class ZiplineUpdown
             // 最後に設定したクールダウン値を記録
             _lastCooldownValue = cooldownTime;
 
-            Logger.Info($"Successfully set zipline cooldowns: {cooldownTime}s for {ziplineConsoles.Length} zipline consoles");
+            // クールダウン設定成功はログ出力しない（頻繁な出力を避けるため）
         }
         catch (System.Exception ex)
         {
@@ -169,6 +169,7 @@ public static class ZiplineUpdown
         if (!_isInitialized) return;
         if (!MapCustomHandler.IsMapCustom(MapCustomHandler.MapCustomId.TheFungle)) return;
         
+        // 強制更新は重要な操作なのでログを残す
         Logger.Info("Force updating zipline cooldowns due to option change");
         SetZiplineCooldowns();
     }
@@ -245,7 +246,7 @@ public static class ZiplineUpdown
                 
                 if (needsUpdate)
                 {
-                    Logger.Info($"Zipline console cooldown mismatch detected, forcing update to {currentCooldownSetting}s");
+                    // クールダウン不一致検出はログ出力しない（頻繁な出力を避けるため）
                     SetZiplineCooldowns();
                 }
             }
@@ -265,12 +266,12 @@ public static class ZiplineUpdown
         if (_periodicUpdateTask != null)
         {
             _periodicUpdateTask = null;
-            Logger.Info("Stopped periodic zipline cooldown checking");
+            // ログを削除（頻繁な出力を避けるため）
         }
         
         // キャッシュをクリア
         _cachedZiplineConsoles = null;
         
-        Logger.Info("The Fungle zipline initialization flag reset");
+        // ログを削除（頻繁な出力を避けるため）
     }
 }

@@ -263,11 +263,21 @@ public static class IntroCutscenePatch
         CustomDeathExtensions.Register();
         SetTargetPatch.Register();
 
-        // The Fungle マップ初期化処理を適切な間隔で実行
-        new LateTask(() => FungleAdditionalAdmin.AddAdmin(), 0.1f, "FungleAdminInit");
-        new LateTask(() => FungleAdditionalElectrical.CreateElectrical(), 0.3f, "FungleElectricalInit");
-        new LateTask(() => MushroomMixup.Initialize(), 0.5f, "MushroomMixupInit");
-        new LateTask(() => ZiplineUpdown.Initialize(), 0.7f, "ZiplineInit");
+        // The Fungle マップ初期化処理を段階的に実行（競合状態を回避）
+        new LateTask(() => 
+        {
+            try
+            {
+                FungleAdditionalAdmin.AddAdmin();
+                FungleAdditionalElectrical.CreateElectrical();
+                MushroomMixup.Initialize();
+                ZiplineUpdown.Initialize();
+            }
+            catch (Exception ex)
+            {
+                Logger.Error($"Error during Fungle map initialization: {ex}");
+            }
+        }, 0.5f, "FungleMapInit");
         ReportDistancePatch.Init();
 
         ReAssignTasks();
