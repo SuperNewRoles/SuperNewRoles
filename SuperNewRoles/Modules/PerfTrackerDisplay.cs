@@ -116,11 +116,12 @@ public static class PerfTrackerDisplay
             _perfText.transform.localScale = Vector3.one * 5f; // サイズ調
             _perfText.fontSize = 2.5f;     // 見やすいサイズに
             _perfText.color = Color.white;
+            perfTextObject.transform.localPosition = new Vector3(0f, 0f, 0f); // 左上ぴったり
 
             // AspectPosition等で位置固定する場合はここで設定
             var aspectPosition = perfTextObject.AddComponent<AspectPosition>();
             aspectPosition.Alignment = AspectPosition.EdgeAlignments.LeftTop;
-            aspectPosition.DistanceFromEdge = new Vector3(1.0f, 0.6f); // 画面端からの距離（調整可）
+            aspectPosition.DistanceFromEdge = new Vector3(0.0f, 0.0f); // 0に近いほど端に寄る
             aspectPosition.OnEnable();
 
             // 初期表示
