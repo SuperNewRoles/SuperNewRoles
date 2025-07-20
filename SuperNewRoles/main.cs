@@ -137,6 +137,25 @@ public partial class SuperNewRolesPlugin : BasePlugin
         Logger.LogInfo("--------------------------------");
         Logger.LogInfo(ModTranslation.GetString("WelcomeNextSuperNewRoles"));
         Logger.LogInfo("--------------------------------");
+
+        // ログにバージョン情報を出力
+        SuperNewRoles.Logger.Info(DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss.fff"), "DateTime Now"); // 現在の日時 ex. 2000-01-01 12:34:56.789
+        SuperNewRoles.Logger.Info($"{Application.version}({Constants.GetPurchasingPlatformType()})", "AmongUsVersion"); // アモングアス本体のバージョン(プレイしているプラットフォーム)
+        SuperNewRoles.Logger.Info($"{Statics.ModName} v{Statics.VersionString}", "ModVersion"); // Mod名 v バージョン(タイトル画面と同様の仕様)
+        SuperNewRoles.Logger.Info(Version, nameof(Version)); // AutoPluginからもバージョンを出力しておく
+
+        if (Statics.IsBeta)
+        {
+            SuperNewRoles.Logger.Info("This is a beta version", "BetaVersion"); // ベータ版であることを明示
+            SuperNewRoles.Logger.Info("--- Git Information ---", "GitInfoHeader"); // Git情報のヘッダー
+            SuperNewRoles.Logger.Info(ThisAssembly.Git.Branch, "Branch"); // 現在のブランチ名（CI環境変数から取得）
+            SuperNewRoles.Logger.Info(ThisAssembly.Git.Commit, "Commit"); // 現在のコミットハッシュ
+            SuperNewRoles.Logger.Info(ThisAssembly.Git.Sha, "Sha"); // コミットハッシュの先頭9文字
+            SuperNewRoles.Logger.Info(ThisAssembly.Git.Tag, "Tag"); // タグ情報
+            SuperNewRoles.Logger.Info(ThisAssembly.Git.BaseTag, "BaseTag"); // 現在のコミットが属する ベースのGitタグ
+            SuperNewRoles.Logger.Info(ThisAssembly.Git.Commits, "Commits"); //  ベースバージョンからのコミット数
+            SuperNewRoles.Logger.Info($"{ThisAssembly.Git.IsDirty}", "IsDirty"); // ワーキングツリーに未コミット変更があるか}
+        }
     }
     public void PatchAll(Harmony harmony)
     {
