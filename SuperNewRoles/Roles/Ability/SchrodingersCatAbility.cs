@@ -1,5 +1,3 @@
-using System;
-using AmongUs.GameOptions;
 using SuperNewRoles.Events;
 using SuperNewRoles.Events.PCEvents;
 using SuperNewRoles.Modules;

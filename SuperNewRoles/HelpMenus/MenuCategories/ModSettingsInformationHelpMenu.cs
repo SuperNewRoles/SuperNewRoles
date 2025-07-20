@@ -1,11 +1,8 @@
 using System.Linq;
 using System.Text;
-using SuperNewRoles.CustomOptions;
 using SuperNewRoles.Modules;
 using TMPro;
-using Unity.Services.Core.Internal;
 using UnityEngine;
-using UnityEngine.Events;
 
 namespace SuperNewRoles.HelpMenus.MenuCategories;
 

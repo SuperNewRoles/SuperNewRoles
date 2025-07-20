@@ -1,7 +1,5 @@
-using System;
 using System.Collections.Generic;
 using AmongUs.Data;
-using Innersloth.Assets;
 using SuperNewRoles.Modules;
 using TMPro;
 using UnityEngine;

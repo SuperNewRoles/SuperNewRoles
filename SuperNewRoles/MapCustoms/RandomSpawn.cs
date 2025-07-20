@@ -2,7 +2,6 @@ using System.Collections;
 using BepInEx.Unity.IL2CPP.Utils.Collections;
 using HarmonyLib;
 using SuperNewRoles.CustomOptions.Categories;
-using SuperNewRoles.Modules; // Assuming MapCustomHandler and Handlers (PolusHandler, FungleHandler) are here
 using UnityEngine;
 
 namespace SuperNewRoles.MapCustoms;

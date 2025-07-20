@@ -1,10 +1,6 @@
 using System.Collections.Generic;
-using System.Linq;
 using AmongUs.GameOptions;
-using Hazel;
 using SuperNewRoles.Modules;
-using SuperNewRoles.Roles.Ability.CustomButton;
-using SuperNewRoles.Roles.Crewmate;
 using UnityEngine;
 
 namespace SuperNewRoles.Roles.Ability;

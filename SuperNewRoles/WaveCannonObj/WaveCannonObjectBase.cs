@@ -7,7 +7,6 @@ using SuperNewRoles.Modules;
 using SuperNewRoles.Modules.Events.Bases;
 using SuperNewRoles.Roles.Ability;
 using UnityEngine;
-using UnityEngine.PlayerLoop;
 
 namespace SuperNewRoles.WaveCannonObj;
 

@@ -1,6 +1,5 @@
 using System;
 using System.Collections.Generic;
-using SuperNewRoles.CustomOptions;
 using SuperNewRoles.Events;
 using SuperNewRoles.Modules;
 using SuperNewRoles.Modules.Events.Bases;

@@ -4,7 +4,6 @@ using AmongUs.GameOptions;
 using SuperNewRoles.CustomOptions;
 using SuperNewRoles.Modules;
 using SuperNewRoles.Roles.Ability;
-using SuperNewRoles.WaveCannonObj;
 using UnityEngine;
 
 namespace SuperNewRoles.Roles.Neutral;

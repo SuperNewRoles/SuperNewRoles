@@ -1,7 +1,6 @@
 using System.Collections.Generic;
 using System.Linq;
 using HarmonyLib;
-using SuperNewRoles.CustomCosmetics;
 using SuperNewRoles.Modules;
 using UnityEngine;
 

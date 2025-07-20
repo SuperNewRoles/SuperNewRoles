@@ -1,6 +1,5 @@
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using SuperNewRoles.CustomObject;
 using SuperNewRoles.Modules;
 using SuperNewRoles.Roles.Ability.CustomButton;

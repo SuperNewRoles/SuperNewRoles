@@ -1,6 +1,4 @@
 using System;
-using System.Linq;
-using HarmonyLib;
 using SuperNewRoles.Modules;
 using SuperNewRoles.Patches;
 using SuperNewRoles.Roles.Ability.CustomButton;

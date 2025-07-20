@@ -1,10 +1,8 @@
 using System;
 using System.Collections.Generic;
 using AmongUs.GameOptions;
-using Hazel;
 using SuperNewRoles.CustomOptions;
 using SuperNewRoles.Modules;
-using SuperNewRoles.Patches;
 using SuperNewRoles.Roles.Ability;
 using UnityEngine;
 

@@ -1,5 +1,4 @@
 using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
@@ -23,17 +22,13 @@ using SuperNewRoles.CustomCosmetics.UI;
 using SuperNewRoles.CustomObject;
 using SuperNewRoles.CustomOptions;
 using SuperNewRoles.HelpMenus;
-using SuperNewRoles.MapCustoms;
 using SuperNewRoles.Modules;
 using SuperNewRoles.Modules.Events.Bases;
 using SuperNewRoles.Patches;
 using SuperNewRoles.RequestInGame;
 using SuperNewRoles.Roles;
 using SuperNewRoles.SuperTrophies;
-using TMPro;
 using UnityEngine;
-using UnityEngine.EventSystems;
-using UnityEngine.SceneManagement;
 
 namespace SuperNewRoles;
 

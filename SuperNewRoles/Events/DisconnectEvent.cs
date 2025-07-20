@@ -1,5 +1,3 @@
-using System;
-using AmongUs.GameOptions;
 using HarmonyLib;
 using SuperNewRoles.Modules.Events.Bases;
 

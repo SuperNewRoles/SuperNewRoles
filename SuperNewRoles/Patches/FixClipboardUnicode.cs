@@ -2,7 +2,6 @@ using System;
 using System.Reflection;
 using System.Runtime.InteropServices;
 using HarmonyLib;
-using SuperNewRoles.Modules;
 
 namespace SuperNewRoles.Patches;
 

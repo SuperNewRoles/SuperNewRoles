@@ -1,6 +1,5 @@
 using System;
 using System.Linq;
-using BepInEx.Unity.IL2CPP.Utils.Collections;
 
 namespace SuperNewRoles.Modules;
 public static class Il2CppExtensions

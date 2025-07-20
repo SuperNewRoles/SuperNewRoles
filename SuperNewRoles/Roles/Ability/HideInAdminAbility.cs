@@ -1,5 +1,4 @@
 using System;
-using SuperNewRoles.Modules;
 
 namespace SuperNewRoles.Roles.Ability;
 

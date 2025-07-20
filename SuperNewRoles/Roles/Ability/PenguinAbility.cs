@@ -1,7 +1,5 @@
 using System;
-using System.Collections.Generic;
 using System.Linq;
-using AmongUs.GameOptions;
 using SuperNewRoles.Ability;
 using SuperNewRoles.Events;
 using SuperNewRoles.Events.PCEvents;

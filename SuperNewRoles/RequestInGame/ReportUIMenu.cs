@@ -1,7 +1,5 @@
 using System.Collections.Generic;
-using BepInEx;
 using BepInEx.Unity.IL2CPP.Utils.Collections;
-using SuperNewRoles.CustomOptions;
 using SuperNewRoles.CustomOptions.Categories;
 using SuperNewRoles.Modules;
 using TMPro;

@@ -6,7 +6,6 @@ using BepInEx.Unity.IL2CPP.Utils.Collections;
 using HarmonyLib;
 using SuperNewRoles.CustomCosmetics.CosmeticsPlayer;
 using SuperNewRoles.Events;
-using SuperNewRoles.HelpMenus;
 using SuperNewRoles.Modules;
 using SuperNewRoles.Roles;
 using SuperNewRoles.Roles.Madmates;
@@ -15,7 +14,6 @@ using SuperNewRoles.Roles.Neutral;
 using SuperNewRoles.SuperTrophies;
 using TMPro;
 using UnityEngine;
-using UnityEngine.UI;
 
 namespace SuperNewRoles.Patches;
 

@@ -5,7 +5,6 @@ using System.Linq;
 using AmongUs.Data;
 using BepInEx.Unity.IL2CPP.Utils.Collections;
 using Innersloth.Assets;
-using Sentry.Unity.NativeUtils;
 using SuperNewRoles.CustomCosmetics.CosmeticsPlayer;
 using SuperNewRoles.Modules;
 using TMPro;

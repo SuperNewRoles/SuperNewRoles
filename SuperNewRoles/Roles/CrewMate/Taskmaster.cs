@@ -1,14 +1,10 @@
 using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using AmongUs.GameOptions;
-using BepInEx.Unity.IL2CPP.Utils.Collections;
 using HarmonyLib;
-using Hazel;
 using SuperNewRoles.CustomOptions;
 using SuperNewRoles.Modules;
-using SuperNewRoles.Patches;
 using SuperNewRoles.Roles.Ability;
 using UnityEngine;
 

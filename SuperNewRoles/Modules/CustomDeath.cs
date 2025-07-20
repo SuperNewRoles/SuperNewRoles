@@ -3,7 +3,6 @@ using System.Linq;
 using SuperNewRoles.Events;
 using SuperNewRoles.Events.PCEvents;
 using UnityEngine;
-using UnityEngine.Rendering;
 
 namespace SuperNewRoles.Modules;
 

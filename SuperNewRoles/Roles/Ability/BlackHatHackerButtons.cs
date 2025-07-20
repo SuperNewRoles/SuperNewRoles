@@ -1,10 +1,6 @@
-using System;
-using AmongUs.GameOptions;
 using SuperNewRoles.Modules;
 using SuperNewRoles.Patches;
 using SuperNewRoles.Roles.Ability.CustomButton;
-using SuperNewRoles.Roles.Neutral;
-using TMPro;
 using UnityEngine;
 
 namespace SuperNewRoles.Roles.Ability;

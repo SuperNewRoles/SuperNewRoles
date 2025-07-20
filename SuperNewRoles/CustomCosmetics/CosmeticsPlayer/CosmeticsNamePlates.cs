@@ -1,12 +1,7 @@
 using System;
-using System.Collections.Generic;
 using AmongUs.Data;
 using HarmonyLib;
 using Innersloth.Assets;
-using Sentry.Unity.NativeUtils;
-using SuperNewRoles.CustomCosmetics.UI;
-using SuperNewRoles.Modules;
-using UnityEngine;
 
 namespace SuperNewRoles.CustomCosmetics.CosmeticsPlayer;
 

@@ -1,16 +1,10 @@
 using System;
-using System.Collections.Generic;
-using System.Configuration;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using HarmonyLib;
 using SuperNewRoles.Events;
 using SuperNewRoles.Modules;
 using SuperNewRoles.Modules.Events.Bases;
 using TMPro;
 using UnityEngine;
-using UnityEngine.UI;
 
 namespace SuperNewRoles.Roles.Ability.CustomButton;
 

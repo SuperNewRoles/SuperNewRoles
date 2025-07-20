@@ -7,7 +7,6 @@ using SuperNewRoles.Roles;
 using TMPro;
 using UnityEngine;
 using UnityEngine.Events;
-using UnityEngine.PlayerLoop;
 
 namespace SuperNewRoles.CustomOptions;
 

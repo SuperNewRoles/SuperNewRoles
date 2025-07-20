@@ -1,7 +1,5 @@
 using System;
-using System.Collections.Generic;
 using System.Linq;
-using HarmonyLib;
 using SuperNewRoles.CustomOptions.Data;
 using SuperNewRoles.Modules;
 using SuperNewRoles.Roles;

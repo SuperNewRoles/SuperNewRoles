@@ -1,10 +1,7 @@
-using SuperNewRoles.CustomOptions;
 using SuperNewRoles.Events;
 using SuperNewRoles.Events.PCEvents;
 using SuperNewRoles.Modules;
 using SuperNewRoles.Modules.Events.Bases;
-using SuperNewRoles.Patches;
-using SuperNewRoles.Roles.Neutral;
 
 namespace SuperNewRoles.Roles.Ability;
 public class MadJesterAbility : AbilityBase

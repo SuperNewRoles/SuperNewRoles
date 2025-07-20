@@ -1,4 +1,3 @@
-using HarmonyLib;
 using SuperNewRoles.CustomOptions.Categories;
 
 namespace SuperNewRoles.Patches;

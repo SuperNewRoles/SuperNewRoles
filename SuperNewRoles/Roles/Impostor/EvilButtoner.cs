@@ -1,13 +1,8 @@
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Hazel;
 using SuperNewRoles.CustomOptions;
 using SuperNewRoles.Modules;
 using SuperNewRoles.Roles.Ability;
-using SuperNewRoles.Roles.Ability.CustomButton;
 using UnityEngine;
 
 namespace SuperNewRoles.Roles.Impostor;

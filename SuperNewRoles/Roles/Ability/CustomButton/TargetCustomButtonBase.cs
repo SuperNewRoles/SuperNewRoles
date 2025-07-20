@@ -1,7 +1,6 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using AmongUs.GameOptions;
 using SuperNewRoles.Modules;
 using UnityEngine;
 

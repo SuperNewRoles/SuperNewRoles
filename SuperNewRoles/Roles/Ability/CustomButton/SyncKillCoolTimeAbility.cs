@@ -1,6 +1,4 @@
-using AmongUs.GameOptions;
 using SuperNewRoles.Events.PCEvents;
-using SuperNewRoles.Modules;
 using SuperNewRoles.Modules.Events.Bases;
 
 namespace SuperNewRoles.Roles.Ability.CustomButton;

@@ -3,13 +3,11 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using AmongUs.GameOptions;
-using HarmonyLib;
 using SuperNewRoles.CustomOptions;
 using SuperNewRoles.Events;
 using SuperNewRoles.Modules;
 using SuperNewRoles.Modules.Events.Bases;
 using SuperNewRoles.Roles.Ability;
-using SuperNewRoles.Roles.Crewmate;
 using TMPro;
 using UnityEngine;
 

@@ -1,6 +1,3 @@
-using System.Linq;
-using AmongUs.GameOptions;
-using Rewired;
 using SuperNewRoles.Modules;
 using SuperNewRoles.Roles.Neutral;
 

@@ -7,9 +7,7 @@ using SuperNewRoles.Events;
 using SuperNewRoles.Modules;
 using SuperNewRoles.Modules.Events.Bases;
 using SuperNewRoles.Roles.Ability;
-using SuperNewRoles.Roles.Ability.CustomButton;
 using UnityEngine;
-using UnityEngine.AddressableAssets;
 
 namespace SuperNewRoles.Roles.Crewmate;
 

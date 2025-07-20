@@ -1,10 +1,5 @@
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using SuperNewRoles.Modules;
-using SuperNewRoles.Roles.Ability;
 using SuperNewRoles.Roles.Impostor;
 using UnityEngine;
 

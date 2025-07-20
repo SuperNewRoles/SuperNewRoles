@@ -1,7 +1,5 @@
 using System.Collections.Generic;
 using SuperNewRoles.Modules;
-using SuperNewRoles.Roles;
-using TMPro;
 using UnityEngine;
 
 namespace SuperNewRoles.CustomOptions.Data

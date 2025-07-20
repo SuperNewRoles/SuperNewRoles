@@ -3,24 +3,17 @@ using System.Collections;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Net;
 using System.Net.Http;
 using System.Security.Cryptography;
 using System.Threading;
 using System.Threading.Tasks;
-using BepInEx.Unity.IL2CPP.Utils.Collections;
-using HarmonyLib;
 using Il2CppInterop.Runtime;
 using Il2CppInterop.Runtime.InteropTypes.Arrays;
-using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using SuperNewRoles.CustomCosmetics.UI;
 using SuperNewRoles.Modules;
-using Unity.Collections;
 using UnityEngine;
 using UnityEngine.Networking;
-using UnityEngine.ProBuilder;
-using UnityEngine.Scripting;
 
 namespace SuperNewRoles.CustomCosmetics;
 public class CustomCosmeticsData

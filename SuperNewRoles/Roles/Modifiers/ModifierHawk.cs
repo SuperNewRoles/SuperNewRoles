@@ -1,8 +1,6 @@
 using System;
 using System.Collections.Generic;
-using AmongUs.GameOptions;
 using SuperNewRoles;
-using SuperNewRoles.CustomOptions;
 using SuperNewRoles.Modules;
 using SuperNewRoles.Roles;
 using SuperNewRoles.Roles.Ability;

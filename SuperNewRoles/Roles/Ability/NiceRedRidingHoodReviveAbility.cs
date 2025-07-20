@@ -1,14 +1,9 @@
-using System;
-using System.Collections.Generic;
 using System.Linq;
 using AmongUs.GameOptions;
-using SuperNewRoles.CustomOptions;
 using SuperNewRoles.Events;
 using SuperNewRoles.Events.PCEvents;
 using SuperNewRoles.Modules;
 using SuperNewRoles.Modules.Events.Bases;
-using SuperNewRoles.Roles.Crewmate;
-using UnityEngine;
 
 namespace SuperNewRoles.Roles.Ability;
 

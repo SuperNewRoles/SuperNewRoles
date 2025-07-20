@@ -1,14 +1,7 @@
-using System.Collections;
-using System.Collections.Generic;
-using System.Linq;
-using BepInEx.Unity.IL2CPP.Utils.Collections;
 using HarmonyLib;
-using SuperNewRoles.CustomOptions;
 using SuperNewRoles.HelpMenus;
 using SuperNewRoles.Modules;
-using TMPro;
 using UnityEngine;
-using UnityEngine.Events;
 
 namespace SuperNewRoles.Patches;
 

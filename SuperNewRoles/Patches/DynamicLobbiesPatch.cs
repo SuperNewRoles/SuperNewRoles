@@ -1,5 +1,3 @@
-using System;
-using System.Collections.Generic;
 using AmongUs.Data;
 using AmongUs.GameOptions;
 using HarmonyLib;

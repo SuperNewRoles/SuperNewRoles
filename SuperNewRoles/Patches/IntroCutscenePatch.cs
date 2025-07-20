@@ -1,16 +1,12 @@
 using System;
-using System.Collections;
 using System.Linq;
-using BepInEx.Unity.IL2CPP.Utils.Collections;
 using HarmonyLib;
 using SuperNewRoles.CustomCosmetics;
 using SuperNewRoles.CustomCosmetics.CosmeticsPlayer;
 using SuperNewRoles.CustomCosmetics.UI;
 using SuperNewRoles.CustomOptions.Categories;
-using SuperNewRoles.Events;
 using SuperNewRoles.MapCustoms;
 using SuperNewRoles.Modules;
-using SuperNewRoles.Modules.Events.Bases;
 using SuperNewRoles.Roles;
 using SuperNewRoles.Roles.Ability;
 using SuperNewRoles.Roles.Ability.CustomButton;

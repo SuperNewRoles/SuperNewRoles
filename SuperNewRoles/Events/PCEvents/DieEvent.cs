@@ -1,4 +1,3 @@
-using System;
 using HarmonyLib;
 using SuperNewRoles.Modules.Events.Bases;
 

@@ -1,6 +1,5 @@
 using System.Collections.Generic;
 using System.IO;
-using SuperNewRoles.Patches; // For JsonParser
 
 namespace SuperNewRoles.Modules;
 public class VersionConfigData

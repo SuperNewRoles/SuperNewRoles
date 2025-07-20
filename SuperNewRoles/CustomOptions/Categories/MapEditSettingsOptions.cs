@@ -1,4 +1,3 @@
-using SuperNewRoles.MapCustoms;
 using SuperNewRoles.Modules;
 
 namespace SuperNewRoles.CustomOptions.Categories;

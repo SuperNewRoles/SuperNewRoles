@@ -1,11 +1,9 @@
-using System;
 using System.Collections.Generic;
 using System.Linq;
 using HarmonyLib;
 using Il2CppInterop.Runtime.InteropTypes.Arrays;
 using SuperNewRoles.Modules;
 using SuperNewRoles.Modules.Events.Bases;
-using UnityEngine;
 
 namespace SuperNewRoles.Events;
 

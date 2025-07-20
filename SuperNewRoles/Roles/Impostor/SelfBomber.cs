@@ -6,7 +6,6 @@ using SuperNewRoles.CustomOptions;
 using SuperNewRoles.Events;
 using SuperNewRoles.Modules;
 using SuperNewRoles.Modules.Events.Bases;
-using SuperNewRoles.Patches; // CheckGameEndEventData のため
 using SuperNewRoles.Roles.Ability;
 using SuperNewRoles.SuperTrophies;
 using UnityEngine;

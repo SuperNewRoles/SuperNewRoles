@@ -1,8 +1,6 @@
 using HarmonyLib;
-using InnerNet; // ShipStatus を使うため
 using SuperNewRoles.CustomOptions.Categories;
 using SuperNewRoles.Modules;
-using UnityEngine;
 using static SuperNewRoles.CustomOptions.Categories.MapEditSettingsOptions;
 using static SuperNewRoles.CustomOptions.Categories.MapSettingOptions; // ZiplineCoolChangeOptionなど汎用設定のため
 

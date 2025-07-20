@@ -4,7 +4,6 @@ using SuperNewRoles.CustomOptions;
 using SuperNewRoles.Modules;
 using SuperNewRoles.Roles.Ability;
 using UnityEngine;
-using UnityEngine.UI;
 
 namespace SuperNewRoles.Roles.Neutral;
 

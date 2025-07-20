@@ -2,7 +2,6 @@ using System;
 using System.Linq;
 using System.Text;
 using HarmonyLib;
-using SuperNewRoles.Events;
 using SuperNewRoles.Modules;
 using SuperNewRoles.Roles.Neutral;
 using TMPro;

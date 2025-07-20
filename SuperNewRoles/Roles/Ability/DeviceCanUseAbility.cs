@@ -2,7 +2,6 @@ using System;
 using HarmonyLib;
 using SuperNewRoles.Modules;
 using SuperNewRoles.Patches;
-using UnityEngine;
 
 namespace SuperNewRoles.Roles.Ability;
 

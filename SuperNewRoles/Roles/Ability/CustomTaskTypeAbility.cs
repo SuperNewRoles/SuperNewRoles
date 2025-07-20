@@ -3,8 +3,6 @@ using System.Collections.Generic;
 using System.Linq;
 using HarmonyLib;
 using SuperNewRoles.Modules;
-using UnityEngine;
-using Object = UnityEngine.Object;
 
 namespace SuperNewRoles.Roles.Ability;
 

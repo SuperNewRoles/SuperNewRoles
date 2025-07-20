@@ -1,6 +1,5 @@
 using HarmonyLib;
 using SuperNewRoles.CustomCosmetics.CosmeticsPlayer;
-using SuperNewRoles.Modules;
 
 namespace SuperNewRoles.Patches;
 

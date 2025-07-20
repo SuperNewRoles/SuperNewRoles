@@ -1,14 +1,10 @@
 using System;
-using System.Collections.Generic;
 using System.Linq;
-using Hazel;
 using SuperNewRoles.Events;
 using SuperNewRoles.Events.PCEvents;
 using SuperNewRoles.Modules;
 using SuperNewRoles.Modules.Events.Bases;
-using SuperNewRoles.Patches;
 using SuperNewRoles.Roles.Ability.CustomButton;
-using SuperNewRoles.Roles.Impostor;
 using UnityEngine;
 
 namespace SuperNewRoles.Roles.Ability;

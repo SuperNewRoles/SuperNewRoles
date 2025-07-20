@@ -1,5 +1,4 @@
 using System.Collections.Generic;
-using System.Linq;
 using SuperNewRoles.Modules;
 using SuperNewRoles.Roles;
 using SuperNewRoles.Roles.Ability;

@@ -3,11 +3,7 @@ using System.Collections.Generic;
 using AmongUs.GameOptions;
 using SuperNewRoles.CustomOptions;
 using SuperNewRoles.Modules;
-using SuperNewRoles.Modules.Events;
-using SuperNewRoles.Modules.Events.Bases;
-using SuperNewRoles.Roles;
 using SuperNewRoles.Roles.Ability;
-using SuperNewRoles.Roles.Ability.CustomButton;
 using UnityEngine;
 
 namespace SuperNewRoles.Roles.Crewmate;

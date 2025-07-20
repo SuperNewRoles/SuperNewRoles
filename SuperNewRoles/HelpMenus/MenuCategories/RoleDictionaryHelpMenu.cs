@@ -1,7 +1,5 @@
-using System.Collections.Generic;
 using System.Linq;
 using SuperNewRoles.CustomOptions;
-using SuperNewRoles.HelpMenus;
 using SuperNewRoles.Modules;
 using SuperNewRoles.Roles;
 using TMPro;

@@ -1,13 +1,8 @@
 using System.Collections.Generic;
 using System.Linq;
-using AmongUs.Data;
-using HarmonyLib;
-using Innersloth.Assets;
 using PowerTools;
 using SuperNewRoles.CustomCosmetics.UI;
-using SuperNewRoles.Modules;
 using UnityEngine;
-using static CosmeticsLayer;
 
 namespace SuperNewRoles.CustomCosmetics.CosmeticsPlayer;
 

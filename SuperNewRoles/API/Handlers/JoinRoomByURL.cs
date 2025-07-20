@@ -4,7 +4,6 @@ using System.Linq;
 using System.Net;
 using System.Security.Cryptography; // 追加: AES用ライブラリ
 using System.Text;                   // 追加: 文字列変換用
-using System.Threading;                     // 追加: 入出力操作用
 using System.Web;
 using HarmonyLib;
 using InnerNet;

@@ -1,7 +1,6 @@
 using System;
 using System.Collections.Generic;
 using AmongUs.GameOptions;
-using Hazel;
 using SuperNewRoles.Ability;
 using SuperNewRoles.CustomObject;
 using SuperNewRoles.CustomOptions;

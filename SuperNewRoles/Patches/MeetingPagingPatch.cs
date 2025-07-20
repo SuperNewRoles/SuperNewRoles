@@ -2,7 +2,6 @@ using System.Collections.Generic;
 using System.Linq;
 using HarmonyLib;
 using SuperNewRoles.Modules;
-using SuperNewRoles.Roles;
 using UnityEngine;
 
 namespace SuperNewRoles.Patches

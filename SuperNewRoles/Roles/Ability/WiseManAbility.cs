@@ -1,6 +1,4 @@
 using System;
-using System.Collections.Generic;
-using Il2CppSystem.Collections.Generic;
 using SuperNewRoles.Events;
 using SuperNewRoles.Events.PCEvents;
 using SuperNewRoles.Modules;

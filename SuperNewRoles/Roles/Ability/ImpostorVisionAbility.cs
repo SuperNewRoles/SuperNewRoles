@@ -1,6 +1,4 @@
 using System;
-using SuperNewRoles.Modules;
-using UnityEngine;
 
 namespace SuperNewRoles.Roles.Ability;
 

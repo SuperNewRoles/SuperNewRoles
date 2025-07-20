@@ -1,4 +1,3 @@
-using System;
 using SuperNewRoles.CustomObject;
 using SuperNewRoles.Events;
 using SuperNewRoles.Modules;

@@ -1,6 +1,5 @@
 using HarmonyLib;
 using SuperNewRoles.CustomOptions.Categories;
-using SuperNewRoles.Modules;
 
 namespace SuperNewRoles.Patches;
 

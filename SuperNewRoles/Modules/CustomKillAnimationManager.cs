@@ -2,7 +2,6 @@ using System;
 using System.Collections;
 using BepInEx.Unity.IL2CPP.Utils.Collections;
 using HarmonyLib;
-using PowerTools;
 
 namespace SuperNewRoles.Modules;
 

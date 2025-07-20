@@ -2,15 +2,8 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.IO;
-using System.IO.Compression;
-using System.Linq;
-using System.Net.Http;
 using System.Text;
-using System.Threading.Tasks;
-using BepInEx.Unity.IL2CPP.Utils.Collections;
-using Il2CppInterop.Runtime;
 using Newtonsoft.Json;
-using Newtonsoft.Json.Linq;
 using SuperNewRoles.Modules;
 using UnityEngine.Networking;
 
