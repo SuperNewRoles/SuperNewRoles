@@ -51,12 +51,12 @@ public static class PerfTracker
         // Begin重複検出
         if (data.IsRunning)
         {
-            Logger.Warning($"PerfTracker.Begin(\"{key}\") was called but the previous Begin has not been ended yet.", "PerfTracker");
+            Logger.Warning($"PerfTracker.Begin(\"{key}\")が呼ばれましたが、前回の計測でEndが呼ばれていません。", "PerfTracker");
 
             // 既存計測を強制終了
             data.Sw.Stop();
             var elapsedMs = data.Sw.Elapsed.TotalMilliseconds;
-            Logger.Info($"Previous incomplete measurement for \"{key}\" took {elapsedMs:F2}ms (forced end)", "PerfTracker");
+            Logger.Info($"以前の未終了計測 \"{key}\" は{elapsedMs:F2}ミリ秒かかりました（強制終了）", "PerfTracker");
         }
         // ストップウォッチをリスタートして計測を開始
         _data[key].Sw.Restart();
@@ -75,14 +75,14 @@ public static class PerfTracker
         // 辞書にキーが存在しない場合は何もしない
         if (!_data.TryGetValue(key, out var d))
         {
-            Logger.Warning($"PerfTracker.End(\"{key}\") was called but Begin was never called for this key.", "PerfTracker");
+            Logger.Warning($"PerfTracker.End(\"{key}\")が呼ばれましたが、対応するBeginは呼ばれていません。", "PerfTracker");
             return;
         }
 
         // Begin未実行でのEnd検出
         if (!d.IsRunning)
         {
-            Logger.Warning($"PerfTracker.End(\"{key}\") was called but Begin is not currently active for this key.", "PerfTracker");
+            Logger.Warning($"PerfTracker.End(\"{key}\")が呼ばれましたが、現在Beginが有効ではありません。", "PerfTracker");
             return;
         }
         // ストップウォッチを停止
@@ -96,10 +96,10 @@ public static class PerfTracker
         d.TotalMs += elapsedMs;
         d.Count++;
 
-        // 異常に長い処理時間の検出
+        // 長い処理時間の検出
         if (elapsedMs > 100.0)
         {
-            Logger.Info($"PerfTracker: \"{key}\" took {elapsedMs:F2}ms (relatively long execution)", "PerfTracker");
+            Logger.Info($"PerfTracker: \"{key}\" の処理に{elapsedMs:F2}ミリ秒かかりました（やや長い処理時間）", "PerfTracker");
         }
     }
 
