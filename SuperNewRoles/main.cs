@@ -43,7 +43,6 @@ namespace SuperNewRoles;
 [BepInIncompatibility("me.eisbison.theotherroles")]
 [BepInIncompatibility("me.yukieiji.extremeroles")]
 [BepInIncompatibility("com.tugaru.TownOfPlus")]
-[BepInIncompatibility("com.emptybottle.townofhost")]
 public partial class SuperNewRolesPlugin : BasePlugin
 {
     public Harmony Harmony { get; } = new Harmony(PluginConfig.Id);
