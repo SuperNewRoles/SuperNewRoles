@@ -34,6 +34,7 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.SceneManagement;
+using System.Globalization;
 
 namespace SuperNewRoles;
 
@@ -140,7 +141,7 @@ public partial class SuperNewRolesPlugin : BasePlugin
 
         // ログにバージョン情報を出力
         SuperNewRoles.Logger.Info("----- Version Information -----"); // バージョン情報のヘッダー
-        SuperNewRoles.Logger.Info(DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss.fff"), nameof(DateTime)); // 現在の日時 ex. 2000-01-01 12:34:56.789
+        SuperNewRoles.Logger.Info(DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss.fff", CultureInfo.InvariantCulture), nameof(DateTime)); // 現在の日時 ex. 2000-01-01 12:34:56.789
         SuperNewRoles.Logger.Info($"{Application.version}({Constants.GetPurchasingPlatformType()})", nameof(Application.version)); // アモングアス本体のバージョン(プレイしているプラットフォーム)
         SuperNewRoles.Logger.Info($"{Statics.ModName} v{Statics.VersionString}", "ModVersion"); // Mod名 v バージョン(タイトル画面と同様の仕様)
         SuperNewRoles.Logger.Info(Version, nameof(Version)); // AutoPluginからもバージョンを出力しておく
