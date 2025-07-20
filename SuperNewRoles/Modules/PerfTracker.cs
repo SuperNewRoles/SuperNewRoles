@@ -28,6 +28,8 @@ public static class PerfTracker
         public double TotalMs;
         // 計測回数
         public int Count;
+        // 実行中状態を追跡するフラグ
+        public bool IsRunning = false;
     }
 
     // 計測データを保持する辞書。キーは処理名(string)、値は計測データ(Data)。
@@ -40,17 +42,26 @@ public static class PerfTracker
     public static void Begin(string key)
     {
         // ベータ版でない場合は計測を行わない
-        if (Statics.IsBeta == false)
-        {
-            return;
-        }
+        if (Statics.IsBeta == false) return;
+
         // 辞書にキーが存在しない場合は新しくDataオブジェクトを作成して追加
-        if (!_data.ContainsKey(key))
+        if (!_data.ContainsKey(key)) _data[key] = new Data();
+        var data = _data[key];
+
+        // Begin重複検出
+        if (data.IsRunning)
         {
-            _data[key] = new Data();
+            Logger.Warning($"PerfTracker.Begin(\"{key}\") was called but the previous Begin has not been ended yet.", "PerfTracker");
+
+            // 既存計測を強制終了
+            data.Sw.Stop();
+            var elapsedMs = data.Sw.Elapsed.TotalMilliseconds;
+            Logger.Info($"Previous incomplete measurement for \"{key}\" took {elapsedMs:F2}ms (forced end)", "PerfTracker");
         }
         // ストップウォッチをリスタートして計測を開始
         _data[key].Sw.Restart();
+
+        data.IsRunning = true;
     }
 
     /// <summary>
@@ -59,25 +70,37 @@ public static class PerfTracker
     /// <param name="key">計測対象を識別する一意のキー</param>
     public static void End(string key)
     {
-        if (Statics.IsBeta == false)
-        {
-            return;
-        }
+        if (Statics.IsBeta == false) return;
+
         // 辞書にキーが存在しない場合は何もしない
         if (!_data.TryGetValue(key, out var d))
         {
+            Logger.Warning($"PerfTracker.End(\"{key}\") was called but Begin was never called for this key.", "PerfTracker");
             return;
         }
 
+        // Begin未実行でのEnd検出
+        if (!d.IsRunning)
+        {
+            Logger.Warning($"PerfTracker.End(\"{key}\") was called but Begin is not currently active for this key.", "PerfTracker");
+            return;
+        }
         // ストップウォッチを停止
         d.Sw.Stop();
+        d.IsRunning = false;
+
         // 経過時間をミリ秒で取得
         var elapsedMs = d.Sw.Elapsed.TotalMilliseconds;
-
         // 各種データを更新
         d.LastMs = elapsedMs;
         d.TotalMs += elapsedMs;
         d.Count++;
+
+        // 異常に長い処理時間の検出
+        if (elapsedMs > 100.0)
+        {
+            Logger.Info($"PerfTracker: \"{key}\" took {elapsedMs:F2}ms (relatively long execution)", "PerfTracker");
+        }
     }
 
     /// <summary>
