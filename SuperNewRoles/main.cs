@@ -34,6 +34,7 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.SceneManagement;
+using System.Globalization;
 
 namespace SuperNewRoles;
 
@@ -137,6 +138,26 @@ public partial class SuperNewRolesPlugin : BasePlugin
         Logger.LogInfo("--------------------------------");
         Logger.LogInfo(ModTranslation.GetString("WelcomeNextSuperNewRoles"));
         Logger.LogInfo("--------------------------------");
+
+        // ログにバージョン情報を出力
+        SuperNewRoles.Logger.Info("----- Version Information -----"); // バージョン情報のヘッダー
+        SuperNewRoles.Logger.Info(DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss.fff", CultureInfo.InvariantCulture), nameof(DateTime)); // 現在の日時 ex. 2000-01-01 12:34:56.789
+        SuperNewRoles.Logger.Info($"{Application.version}({Constants.GetPurchasingPlatformType()})", nameof(Application.version)); // アモングアス本体のバージョン(プレイしているプラットフォーム)
+        SuperNewRoles.Logger.Info($"{Statics.ModName} v{Statics.VersionString}", "ModVersion"); // Mod名 v バージョン(タイトル画面と同様の仕様)
+        SuperNewRoles.Logger.Info(Version, nameof(Version)); // AutoPluginからもバージョンを出力しておく
+
+        if (Statics.IsBeta)
+        {
+            SuperNewRoles.Logger.Info("This is a beta version", nameof(Statics.IsBeta)); // ベータ版であることを明示
+            SuperNewRoles.Logger.Info("----- Git Information -----"); // Git情報のヘッダー
+            SuperNewRoles.Logger.Info(ThisAssembly.Git.Branch, nameof(ThisAssembly.Git.Branch)); // 現在のブランチ名（CI環境変数から取得）
+            SuperNewRoles.Logger.Info(ThisAssembly.Git.Commit, nameof(ThisAssembly.Git.Commit)); // 現在のコミットハッシュ
+            SuperNewRoles.Logger.Info(ThisAssembly.Git.Sha, nameof(ThisAssembly.Git.Sha)); // コミットハッシュの先頭9文字
+            SuperNewRoles.Logger.Info(ThisAssembly.Git.Tag, nameof(ThisAssembly.Git.Tag)); // タグ情報
+            SuperNewRoles.Logger.Info(ThisAssembly.Git.BaseTag, nameof(ThisAssembly.Git.BaseTag)); // 現在のコミットが属する ベースのGitタグ
+            SuperNewRoles.Logger.Info(ThisAssembly.Git.Commits, nameof(ThisAssembly.Git.Commits)); //  ベースバージョンからのコミット数
+            SuperNewRoles.Logger.Info($"{ThisAssembly.Git.IsDirty}", nameof(ThisAssembly.Git.IsDirty)); // ワーキングツリーに未コミット変更があるか
+        }
     }
     public void PatchAll(Harmony harmony)
     {
