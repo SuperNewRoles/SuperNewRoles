@@ -254,9 +254,9 @@ public class JoinRoomURLGenerator // または既存のクラスに追加
             aesAlg.IV = Encoding.UTF8.GetBytes(iv);
             aesAlg.Padding = PaddingMode.PKCS7; // 暗号化時もPKCS7を使用
 
-            using (MemoryStream msEncrypt = new MemoryStream())
+            using (MemoryStream msEncrypt = new())
             {
-                using (CryptoStream csEncrypt = new CryptoStream(msEncrypt, aesAlg.CreateEncryptor(), CryptoStreamMode.Write))
+                using (CryptoStream csEncrypt = new(msEncrypt, aesAlg.CreateEncryptor(), CryptoStreamMode.Write))
                 {
                     csEncrypt.Write(plainBytes, 0, plainBytes.Length);
                     csEncrypt.FlushFinalBlock(); // Ensure all data is written
@@ -308,7 +308,7 @@ public class JoinRoomURLGenerator // または既存のクラスに追加
         }
 
         // クエリ文字列を構築
-        StringBuilder queryStringBuilder = new StringBuilder();
+        StringBuilder queryStringBuilder = new();
         foreach (string key in queryParameters)
         {
             if (queryStringBuilder.Length > 0)

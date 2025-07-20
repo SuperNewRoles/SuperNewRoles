@@ -379,7 +379,7 @@ public static class VersionUpdatesUI
         if (string.IsNullOrEmpty(inputText) || maxVisibleCharsPerLine <= 0)
             return inputText;
 
-        System.Text.StringBuilder resultBuilder = new System.Text.StringBuilder();
+        System.Text.StringBuilder resultBuilder = new();
         int currentVisibleCharCount = 0;
         bool tagActive = false;
 

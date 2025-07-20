@@ -480,7 +480,7 @@ public class CustomCosmeticsLoader
             // url から基底URLを作成し、相対パスを解決する
             if (Uri.TryCreate(url, UriKind.Absolute, out Uri baseUri))
             {
-                Uri resultUri = new Uri(baseUri, path);
+                Uri resultUri = new(baseUri, path);
                 return resultUri.ToString();
             }
             else
@@ -1023,7 +1023,7 @@ public class CustomCosmeticsLoader
         }
 
         // Main download loop - outside the initial try-catch for yield compatibility
-        List<Coroutine> runningCoroutines = new List<Coroutine>();
+        List<Coroutine> runningCoroutines = new();
         while (downloadQueue.Count > 0 || activeDownloads > 0)
         {
             while (downloadQueue.Count > 0 && activeDownloads < MAX_CONCURRENT_DOWNLOADS)

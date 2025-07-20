@@ -11,7 +11,7 @@ namespace SuperNewRoles.Roles.Crewmate
     internal class SilverBullet : RoleBase<SilverBullet>
     {
         public override RoleId Role => RoleId.SilverBullet;
-        public override Color32 RoleColor => new Color32(204, 204, 204, byte.MaxValue);
+        public override Color32 RoleColor => new(204, 204, 204, byte.MaxValue);
 
         public override List<Func<AbilityBase>> Abilities { get; } = new()
         {

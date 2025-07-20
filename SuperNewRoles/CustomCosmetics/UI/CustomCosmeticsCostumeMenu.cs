@@ -731,7 +731,7 @@ public class CustomCosmeticsCostumeMenu : CustomCosmeticsMenuBase<CustomCosmetic
     public List<string> didNotCreateCategory = new();
     private int allISTATIC;
     public Func<ICosmeticData> currentCosmeticFunc_cached;
-    private HashSet<string> generatingCategories = new HashSet<string>();
+    private HashSet<string> generatingCategories = new();
 
     public SortedDictionary<string, List<ICosmeticData>> packagedCosmetics;
     public Func<ICosmeticData> emptyCosmeticFunc;
@@ -1092,7 +1092,7 @@ public class CustomCosmeticsCostumeMenu : CustomCosmeticsMenuBase<CustomCosmetic
             {
                 // Process categories that are pending and not currently generating
                 // Iterate over a copy in case didNotCreateCategory is modified by the coroutine completion
-                List<string> categoriesToConsider = new List<string>(didNotCreateCategory);
+                List<string> categoriesToConsider = new(didNotCreateCategory);
 
                 foreach (string categoryToGenerate in categoriesToConsider)
                 {
@@ -1217,8 +1217,8 @@ public class CustomCosmeticsCostumeMenu : CustomCosmeticsMenuBase<CustomCosmetic
 
         int currentLocalSlotIndex = categoryStartIndex; // Use local index
 
-        List<CustomCosmeticsCostumeSlot> generatedSlots = new List<CustomCosmeticsCostumeSlot>();
-        List<ICosmeticData> slotDataMapping = new List<ICosmeticData>();
+        List<CustomCosmeticsCostumeSlot> generatedSlots = new();
+        List<ICosmeticData> slotDataMapping = new();
 
         // Phase 1: スロット枠の一括生成
         if (!cosmeticsInPackage.Any(x => x.ProdId == localEmptyCosmetic.ProdId))

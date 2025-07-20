@@ -68,7 +68,7 @@ public enum CustomGameOverReason
 
 static class AdditionalTempData
 {
-    private static readonly object _lock = new object();
+    private static readonly object _lock = new();
 
     private static List<PlayerRoleInfo> _playerRoles = new();
     private static List<WinCondition> _additionalWinConditions = new();
@@ -409,7 +409,7 @@ public class EndGameManagerSetUpPatch
             playerObj.transform.localPosition = new Vector3(direction * index * scaleFactor, FloatRange.SpreadToEdges(-1.125f, 0f, index, totalCount), zOffset + index * 0.01f) * 0.9f;
 
             float playerScale = Mathf.Lerp(1f, 0.65f, factor) * 0.9f;
-            Vector3 scaleVector = new Vector3(playerScale, playerScale, 1f);
+            Vector3 scaleVector = new(playerScale, playerScale, 1f);
             playerObj.transform.localScale = scaleVector;
 
             if (data.IsDead)

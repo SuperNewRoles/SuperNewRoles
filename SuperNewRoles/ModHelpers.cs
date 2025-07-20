@@ -212,7 +212,7 @@ public static class ModHelpers
             return text;
         }
 
-        StringBuilder overallResult = new StringBuilder();
+        StringBuilder overallResult = new();
         // 改行を CRLF/LF/R すべてで分割
         string[] lines = text.Split(new[] { "\r\n", "\r", "\n" }, StringSplitOptions.None);
 
@@ -225,8 +225,8 @@ public static class ModHelpers
                 continue;
             }
 
-            StringBuilder wrappedLineBuilder = new StringBuilder(); // 現在の入力行をラップした結果を保持
-            StringBuilder currentSegmentForWrapping = new StringBuilder(); // ラップ処理中の一部分
+            StringBuilder wrappedLineBuilder = new(); // 現在の入力行をラップした結果を保持
+            StringBuilder currentSegmentForWrapping = new(); // ラップ処理中の一部分
             float currentVisualWidth = 0f;
 
             foreach (char c in singleInputLine)

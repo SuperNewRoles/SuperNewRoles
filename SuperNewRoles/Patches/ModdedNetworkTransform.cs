@@ -72,7 +72,7 @@ public static class ModdedNetworkTransform
     private static Dictionary<byte, Vector2> externalImpulses;
 
     // 次のBatchMovementをスキップするプレイヤーIDセット
-    public static HashSet<byte> skipNextBatchPlayers = new HashSet<byte>();
+    public static HashSet<byte> skipNextBatchPlayers = new();
 
     public static void Initialize()
     {
@@ -303,8 +303,8 @@ public static class ModdedNetworkTransform
                 break;
             case (byte)MovementRpcType.StartMovement:
                 playerId = reader.ReadByte();
-                Vector3 position = new Vector3(reader.ReadSingle(), reader.ReadSingle(), reader.ReadSingle());
-                Vector2 velocity = new Vector2(reader.ReadSingle(), reader.ReadSingle());
+                Vector3 position = new(reader.ReadSingle(), reader.ReadSingle(), reader.ReadSingle());
+                Vector2 velocity = new(reader.ReadSingle(), reader.ReadSingle());
                 RpcStartMovement(playerId, position, velocity);
                 break;
             case (byte)MovementRpcType.StopMovement:
@@ -314,7 +314,7 @@ public static class ModdedNetworkTransform
                 break;
             case (byte)MovementRpcType.ApplyExternalImpulse:
                 playerId = reader.ReadByte();
-                Vector2 impulse = new Vector2(reader.ReadSingle(), reader.ReadSingle());
+                Vector2 impulse = new(reader.ReadSingle(), reader.ReadSingle());
                 externalImpulses[playerId] = externalImpulses.GetValueOrDefault(playerId, Vector2.zero) + impulse;
                 // 次のバッチ移動をスキップ
                 skipNextBatchPlayers.Add(playerId);
@@ -413,7 +413,7 @@ public static class ModdedNetworkTransform
         if (movementQueues.TryGetValue(player.PlayerId, out var queue) && queue.Count > 0)
         {
             var record = queue.Dequeue();
-            Vector3 targetPosition3D = new Vector3(record.position.x, record.position.y, player.transform.position.z);
+            Vector3 targetPosition3D = new(record.position.x, record.position.y, player.transform.position.z);
             float distance = Vector2.Distance(player.transform.position, record.position);
 
             // Interpolate position smoothly

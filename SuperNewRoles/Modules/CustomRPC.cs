@@ -964,7 +964,7 @@ public static class CustomRPCManager
     private static List<byte> ReadByteList(MessageReader reader)
     {
         int count = reader.ReadInt32();
-        List<byte> list = new List<byte>(count);
+        List<byte> list = new(count);
         for (int i = 0; i < count; i++)
         {
             list.Add(reader.ReadByte());
@@ -978,7 +978,7 @@ public static class CustomRPCManager
     private static List<uint> ReadUIntList(MessageReader reader)
     {
         int count = reader.ReadInt32();
-        List<uint> list = new List<uint>(count);
+        List<uint> list = new(count);
         for (int i = 0; i < count; i++)
         {
             list.Add(reader.ReadUInt32());

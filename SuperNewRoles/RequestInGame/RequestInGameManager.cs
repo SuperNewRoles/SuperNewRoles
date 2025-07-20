@@ -119,7 +119,7 @@ public class RequestInGameManager
         yield return GetOrCreateToken(t => token = t);
         request.SetRequestHeader("Authorization", $"Bearer {token}");
         yield return request.SendWebRequest();
-        List<Thread> threads = new List<Thread>();
+        List<Thread> threads = new();
         if (request.result != UnityWebRequest.Result.Success)
         {
             Logger.Error($"Failed to get threads: {request.responseCode}");
@@ -156,7 +156,7 @@ public class RequestInGameManager
         yield return GetOrCreateToken(t => token = t);
         request.SetRequestHeader("Authorization", $"Bearer {token}");
         yield return request.SendWebRequest();
-        List<Message> messages = new List<Message>();
+        List<Message> messages = new();
         if (request.result != UnityWebRequest.Result.Success)
         {
             Logger.Error($"Failed to get messages: {request.responseCode}");

@@ -159,7 +159,7 @@ public class DouseButtonAbility : TargetCustomButtonBase, IButtonEffect
     public bool effectCancellable => true;
     public float EffectTimer { get; set; }
 
-    public override Color32 OutlineColor => new Color32(255, 102, 0, 255); // オレンジ
+    public override Color32 OutlineColor => new(255, 102, 0, 255); // オレンジ
     public override Sprite Sprite => AssetManager.GetAsset<Sprite>("ArsonistDouseButton.png") ?? HudManager.Instance.KillButton.graphic.sprite;
     public override string buttonText => ModTranslation.GetString("ArsonistDouseButtonText");
     protected override KeyType keytype => KeyType.Ability1;

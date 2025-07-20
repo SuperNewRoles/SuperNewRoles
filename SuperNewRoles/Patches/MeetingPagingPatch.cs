@@ -37,7 +37,7 @@ namespace SuperNewRoles.Patches
 
         // キャッシュ
         private static Sprite _pagingButtonSprite;
-        private static readonly Vector3 OffScreen = new Vector3(100, 100, 100);
+        private static readonly Vector3 OffScreen = new(100, 100, 100);
         private static readonly Vector3[] PlayerVoteAreaPositions = GeneratePlayerVoteAreaPositions();
 
         private static int TotalPages => AllPlayerVoteAreas == null ? 1 :

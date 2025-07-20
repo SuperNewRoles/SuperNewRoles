@@ -189,7 +189,7 @@ public class ModSettingsInformationHelpMenu : HelpMenuCategoryBase
     // カテゴリの設定ハッシュを生成するメソッド（変更検知用）
     private string GenerateSettingsHash()
     {
-        StringBuilder sb = new StringBuilder();
+        StringBuilder sb = new();
         foreach (var category in CustomOptionManager.GetOptionCategories())
         {
             sb.Append(category.Name).Append(":");
