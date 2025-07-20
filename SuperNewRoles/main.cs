@@ -154,7 +154,7 @@ public partial class SuperNewRolesPlugin : BasePlugin
             SuperNewRoles.Logger.Info(ThisAssembly.Git.Tag, "Tag"); // タグ情報
             SuperNewRoles.Logger.Info(ThisAssembly.Git.BaseTag, "BaseTag"); // 現在のコミットが属する ベースのGitタグ
             SuperNewRoles.Logger.Info(ThisAssembly.Git.Commits, "Commits"); //  ベースバージョンからのコミット数
-            SuperNewRoles.Logger.Info($"{ThisAssembly.Git.IsDirty}", "IsDirty"); // ワーキングツリーに未コミット変更があるか}
+            SuperNewRoles.Logger.Info($"{ThisAssembly.Git.IsDirty}", "IsDirty"); // ワーキングツリーに未コミット変更があるか
         }
     }
     public void PatchAll(Harmony harmony)
