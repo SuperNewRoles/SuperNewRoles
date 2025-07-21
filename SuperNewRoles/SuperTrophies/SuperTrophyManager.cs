@@ -14,7 +14,7 @@ public static class SuperTrophyManager
     {
         Logger.Info("SuperTrophyManager: Load");
         trophies = new();
-        return;
+        /*
         var allTypes = SuperNewRolesPlugin.Assembly.GetTypes().Where(x => IsSuperTrophyType(x)).ToList();
         SuperNewRolesPlugin.Logger.LogInfo($"[Splash] Found {allTypes.Count} super trophy types");
         int index = 0;
@@ -37,6 +37,7 @@ public static class SuperTrophyManager
         SuperNewRolesPlugin.Logger.LogInfo($"[Splash] SuperTrophyManager: Loaded {trophies.Count} trophies");
         // トロフィーデータを読み込む
         SuperTrophySaver.Initialize();
+        */
     }
     private static bool IsSuperTrophyType(Type type)
     {
@@ -94,7 +95,7 @@ public static class SuperTrophyManager
     }
     public static void RegisterTrophy(AbilityBase ability)
     {
-        return;
+        /*
         foreach (var trophy in trophies)
         {
             if (trophy.Completed) continue;
@@ -106,10 +107,11 @@ public static class SuperTrophyManager
                 }
             }
         }
+        */
     }
     public static void DetachTrophy(AbilityBase ability)
     {
-        return;
+        /*
         foreach (var trophy in trophies)
         {
             if (trophy.Completed) continue;
@@ -121,14 +123,16 @@ public static class SuperTrophyManager
                 }
             }
         }
+        */
     }
     public static void DetachTrophy(List<AbilityBase> abilities)
     {
-        return;
+        /*
         foreach (var ability in abilities)
         {
             DetachTrophy(ability);
         }
+        */
     }
     public static void RegisterTrophy(RoleId roleId)
     {
@@ -146,7 +150,7 @@ public static class SuperTrophyManager
     }
     public static void RegisterTrophy(ModifierRoleId modifierRoleId)
     {
-        return;
+        /*
         foreach (var trophy in trophies)
         {
             if (trophy.Completed) continue;
@@ -158,10 +162,11 @@ public static class SuperTrophyManager
                 }
             }
         }
+        */
     }
     public static void RegisterTrophy(GhostRoleId ghostRoleId)
     {
-        return;
+        /*
         foreach (var trophy in trophies)
         {
             if (trophy.Completed) continue;
@@ -173,10 +178,11 @@ public static class SuperTrophyManager
                 }
             }
         }
+        */
     }
     public static void DetachTrophy(RoleId roleId)
     {
-        return;
+        /*
         foreach (var trophy in trophies)
         {
             if (trophy.Completed) continue;
@@ -188,10 +194,11 @@ public static class SuperTrophyManager
                 }
             }
         }
+        */
     }
     public static void DetachTrophy(GhostRoleId ghostRoleId)
     {
-        return;
+        /*
         foreach (var trophy in trophies)
         {
             if (trophy.Completed) continue;
@@ -203,5 +210,6 @@ public static class SuperTrophyManager
                 }
             }
         }
+        */
     }
 }

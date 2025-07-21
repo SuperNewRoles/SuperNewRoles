@@ -107,14 +107,6 @@ public static class RoleDetailMenu
     public static string GenerateRoleSettingsText(IRoleInformation role)
     {
         var scroller = menuObject.transform.Find("Scroller")?.GetComponent<Scroller>();
-        if (false)//roleOption == null)
-        {
-            // random 1~2
-            int num = Random.Range(1, 3);
-            if (scroller != null)
-                scroller.ContentYBounds.max = 0.2f;
-            return ModTranslation.GetString($"HelpMenu.NoneOptions{num}");
-        }
         var settings = role.Options.Where(o => o.ShouldDisplay())
             .Select(o => $"{ModTranslation.GetString(o.Name)}: {o.GetCurrentSelectionString()}");
 
