@@ -136,8 +136,6 @@ public static class ZiplineConsolePatch
                 __instance.destination.CoolDown = cooldownTime;
             }
 
-            // ログ出力してクールダウンが正しく設定されたことを確認
-            Logger.Info($"Zipline cooldown set to {cooldownTime}s (current: {__instance.CoolDown}s, destination: {__instance.destination?.CoolDown}s)");
         }
     }
 
@@ -161,7 +159,5 @@ public static class ZiplineConsolePatch
         // 即座に目的地のクールダウンを設定
         __instance.destination.CoolDown = cooldownTime;
 
-        // ログ出力してクールダウンが正しく設定されたことを確認
-        Logger.Info($"Zipline destination cooldown set to {cooldownTime}s (current: {__instance.destination.CoolDown}s)");
     }
 }
