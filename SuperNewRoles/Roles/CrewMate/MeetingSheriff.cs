@@ -18,6 +18,7 @@ class MeetingSheriff : RoleBase<MeetingSheriff>
     public override List<Func<AbilityBase>> Abilities { get; } = [() => new MeetingSheriffAbility(new MeetingSheriffAbilityData(
         killCount: MeetingSheriffMaxKillCount,
         shotsPerMeeting: MeetingSheriffShotsPerMeeting,
+        mode: MeetingSheriffSuicideMode,
         canKillNeutral: MeetingSheriffCanKillNeutral,
         canKillImpostor: MeetingSheriffCanKillImpostor,
         canKillMadRoles: MeetingSheriffCanKillMadRoles,
@@ -40,6 +41,9 @@ class MeetingSheriff : RoleBase<MeetingSheriff>
     [CustomOptionInt("MeetingSheriffShotsPerMeeting", 1, 5, 1, 1)]
     public static int MeetingSheriffShotsPerMeeting;
 
+    [CustomOptionSelect("Sheriff.SuicideMode", typeof(SheriffSuicideMode), "Sheriff.SuicideMode.")]
+    public static SheriffSuicideMode MeetingSheriffSuicideMode = SheriffSuicideMode.Default;
+
     [CustomOptionBool("MeetingSheriffCanKillImpostor", true, translationName: "SheriffCanKillImpostor")]
     public static bool MeetingSheriffCanKillImpostor;
 
@@ -61,15 +65,18 @@ public class MeetingSheriffAbilityData
     public int KillCount { get; set; }
     public int ShotsPerMeeting { get; set; }
     public bool CanKillNeutral { get; set; }
+    public SheriffSuicideMode Mode { get; set; }
     public bool CanKillImpostor { get; set; }
     public bool CanKillMadRoles { get; set; }
     public bool CanKillFriendRoles { get; set; }
     public bool CanKillLovers { get; set; }
 
-    public MeetingSheriffAbilityData(int killCount, int shotsPerMeeting, bool canKillNeutral, bool canKillImpostor, bool canKillMadRoles, bool canKillFriendRoles, bool canKillLovers)
+    public MeetingSheriffAbilityData(int killCount, int shotsPerMeeting, SheriffSuicideMode mode, bool canKillNeutral, bool canKillImpostor, bool canKillMadRoles, bool canKillFriendRoles, bool canKillLovers)
     {
         KillCount = killCount;
         ShotsPerMeeting = shotsPerMeeting;
+        Mode = mode;
+
         CanKillNeutral = canKillNeutral;
         CanKillImpostor = canKillImpostor;
         CanKillMadRoles = canKillMadRoles;
@@ -104,6 +111,38 @@ public class MeetingSheriffAbilityData
 
         return canKill;
     }
+
+    /// <summary>ミーティングシェリフのキルと自害の状態を取得する</summary>
+    /// <param name="killer">ミーティングシェリフ</param>
+    /// <param name="target">キル対象</param>
+    /// <param name="isMurdering">対象を殺害するか</param>
+    /// <param name="isSuicide">シェリフは自害するか</param>
+    public void JudgmentData(PlayerControl killer, ExPlayerControl target, out bool isMurdering, out bool isSuicide)
+    {
+        var canKill = CanKill(killer, target);
+
+        // 常に自決する場合
+        if (IsAlwaysSuicide)
+        {
+            isMurdering = canKill;
+            isSuicide = true;
+            return;
+        }
+
+        // 自決判定は通常の場合 ("通常" & "誤射時も対象をキルする")
+        isMurdering = canKill || Mode == SheriffSuicideMode.AlwaysKill;
+        isSuicide = !canKill;
+
+        return;
+    }
+
+    /// <summary>対象のキルは誤射によるものか</summary>
+    /// <param name="isSuicide">シェリフは自殺しているか</param>
+    /// <returns>true : 誤射によるキル, false : 正当なキル(正義執行)</returns>
+    public bool IsWrongMurder(bool isSuicide) => isSuicide && Mode == SheriffSuicideMode.AlwaysKill;
+
+    /// <summary>常に自決する設定が有効か</summary>
+    public bool IsAlwaysSuicide => Mode == SheriffSuicideMode.AlwaysSuicide;
 }
 
 public class MeetingSheriffAbility : CustomMeetingButtonBase, IAbilityCount
@@ -180,42 +219,60 @@ public class MeetingSheriffAbility : CustomMeetingButtonBase, IAbilityCount
         if (limitText != null)
             limitText.text = ModTranslation.GetString("MeetingSheriffLimitText", Count, MeetingSheriffAbilityData.ShotsPerMeeting - ShotThisMeeting);
 
-        if (MeetingSheriffAbilityData.CanKill(PlayerControl.LocalPlayer, exPlayer))
-        {
-            // 正当なキル
-            RpcShotMeetingSheriff(PlayerControl.LocalPlayer, exPlayer, false, false);
-        }
-        else
-        {
-            // 誤射の場合は自分が死ぬ
-            RpcShotMeetingSheriff(PlayerControl.LocalPlayer, ExPlayerControl.LocalPlayer, true, true);
-        }
+        // キルと自害の状態を取得
+        MeetingSheriffAbilityData.JudgmentData(PlayerControl.LocalPlayer, exPlayer, out bool isMurdering, out bool isSuicide);
+
+        // キル&自害の実行
+        RpcShotMeetingSheriff(PlayerControl.LocalPlayer, exPlayer, isMurdering, isSuicide);
     }
 
     [CustomRPC]
-    public static void RpcShotMeetingSheriff(PlayerControl killer, ExPlayerControl dyingTarget, bool isSuicide, bool isMisFire)
+    /// <summary>ミーティングシェリフのキル及び自害の実行</summary>
+    /// <param name="killer">ミーティングシェリフ</param>
+    /// <param name="target">キル対象</param>
+    /// <param name="isMurdering">対象をキルするか</param>
+    /// <param name="isSuicide">自害するか</param>
+    public static void RpcShotMeetingSheriff(PlayerControl killer, ExPlayerControl target, bool isMurdering, bool isSuicide)
     {
-        if (killer == null || dyingTarget == null)
+        if (killer == null || target == null)
             return;
 
-        dyingTarget.Player.Exiled();
+        ExPlayerControl expKiller = killer;
+        var abilityData = expKiller.GetAbility<MeetingSheriffAbility>().MeetingSheriffAbilityData;
 
-        if (isMisFire || isSuicide)
-            dyingTarget.FinalStatus = FinalStatus.SheriffSelfDeath;
-        else
+        if (isMurdering) // 殺害処理
         {
-            dyingTarget.FinalStatus = FinalStatus.SheriffKill;
-            MurderDataManager.AddMurderData(killer, dyingTarget);
+            target.Player.Exiled();
+            target.FinalStatus = abilityData.IsWrongMurder(isSuicide) ? FinalStatus.SheriffWrongfulMurder : FinalStatus.SheriffKill;
+            MurderDataManager.AddMurderData(expKiller, target);
+
+            if (Constants.ShouldPlaySfx())
+                SoundManager.Instance.PlaySound(target.Player.KillSfx, false, 0.8f);
+
+            if (expKiller != null && PlayerControl.LocalPlayer == target && FastDestroyableSingleton<HudManager>.Instance != null)
+                FastDestroyableSingleton<HudManager>.Instance.KillOverlay.ShowKillAnimation(expKiller.Data, target.Data);
         }
 
-        if (Constants.ShouldPlaySfx())
-            SoundManager.Instance.PlaySound(dyingTarget.Player.KillSfx, false, 0.8f);
+        if (isSuicide) // 自害処理
+        {
+            expKiller.Player.Exiled();
+            expKiller.FinalStatus = abilityData.IsAlwaysSuicide ? FinalStatus.SheriffSuicide : FinalStatus.SheriffMisFire;
+
+            if (Constants.ShouldPlaySfx())
+                SoundManager.Instance.PlaySound(expKiller.Player.KillSfx, false, 0.8f);
+
+            if (expKiller != null && PlayerControl.LocalPlayer == killer && FastDestroyableSingleton<HudManager>.Instance != null)
+                FastDestroyableSingleton<HudManager>.Instance.KillOverlay.ShowKillAnimation(expKiller.Data, expKiller.Data);
+        }
 
         if (MeetingHud.Instance)
         {
             foreach (PlayerVoteArea pva in MeetingHud.Instance.playerStates)
             {
-                if (pva.TargetPlayerId == dyingTarget.PlayerId)
+                var isTargetPlayer = isMurdering && pva.TargetPlayerId == target.PlayerId;
+                var isSuicidePlayer = isSuicide && pva.TargetPlayerId == expKiller.PlayerId;
+
+                if (isTargetPlayer || isSuicidePlayer)
                 {
                     pva.SetDead(pva.DidReport, true);
                     pva.Overlay.gameObject.SetActive(true);
@@ -225,14 +282,6 @@ public class MeetingSheriffAbility : CustomMeetingButtonBase, IAbilityCount
             MeetingHud.Instance.ClearVote();
             if (AmongUsClient.Instance.AmHost)
                 MeetingHud.Instance.CheckForEndVoting();
-        }
-
-        if (FastDestroyableSingleton<HudManager>.Instance != null && killer != null)
-        {
-            if (PlayerControl.LocalPlayer == dyingTarget)
-            {
-                FastDestroyableSingleton<HudManager>.Instance.KillOverlay.ShowKillAnimation(killer.Data, dyingTarget.Data);
-            }
         }
     }
 }

@@ -43,4 +43,7 @@ public static class GeneralSettingOptions
 
     [CustomOptionBool("SumouHighPerformance", true, parentFieldName: nameof(SumouMode))]
     public static bool SumouHighPerformance;
+
+    [CustomOptionBool("FixSpawnPacketSize", true, parentFieldName: nameof(Categories.GeneralSettings))]
+    public static bool FixSpawnPacketSize;
 }

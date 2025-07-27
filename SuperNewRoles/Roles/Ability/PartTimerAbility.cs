@@ -66,7 +66,7 @@ public class PartTimerAbility : TargetCustomButtonBase
         if (!_isEmployed) return;
         if (!_data.canSeeTargetRole) return;
         if (data.Player == _employer)
-            NameText.UpdateVisiable(data.Player, true);
+            NameText.UpdateVisible(data.Player, true);
     }
 
     /// <summary>
