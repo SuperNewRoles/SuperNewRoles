@@ -1,10 +1,10 @@
+using System.Collections.Generic;
+using System.Linq;
 using SuperNewRoles.Modules;
 using SuperNewRoles.Roles;
 using TMPro;
 using UnityEngine;
 using UnityEngine.Events;
-using System.Linq;
-using System.Collections.Generic;
 
 namespace SuperNewRoles.CustomOptions;
 public static class BulkRoleSettings

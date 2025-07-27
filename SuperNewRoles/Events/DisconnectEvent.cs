@@ -1,7 +1,7 @@
 using System;
+using AmongUs.GameOptions;
 using HarmonyLib;
 using SuperNewRoles.Modules.Events.Bases;
-using AmongUs.GameOptions;
 
 namespace SuperNewRoles.Events;
 

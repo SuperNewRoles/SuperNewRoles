@@ -1,9 +1,9 @@
 using System;
-using UnityEngine;
+using System.Linq;
+using AmongUs.GameOptions;
 using SuperNewRoles.Modules;
 using SuperNewRoles.Roles.Ability.CustomButton;
-using AmongUs.GameOptions;
-using System.Linq;
+using UnityEngine;
 
 namespace SuperNewRoles.Roles.Ability;
 
