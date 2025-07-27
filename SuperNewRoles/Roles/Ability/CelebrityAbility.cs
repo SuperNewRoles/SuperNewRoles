@@ -1,12 +1,12 @@
 using System;
 using System.Collections.Generic;
-using UnityEngine;
+using System.Linq;
+using AmongUs.GameOptions;
+using SuperNewRoles.Events;
 using SuperNewRoles.Modules;
 using SuperNewRoles.Modules.Events.Bases;
-using SuperNewRoles.Events;
 using SuperNewRoles.Roles.Crewmate;
-using AmongUs.GameOptions;
-using System.Linq;
+using UnityEngine;
 
 namespace SuperNewRoles.Roles.Ability;
 

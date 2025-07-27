@@ -1,10 +1,10 @@
+using System.Collections.Generic;
 using System.Globalization;
 using HarmonyLib;
-using InnerNet;
-using UnityEngine;
 using Hazel;
-using System.Collections.Generic;
+using InnerNet;
 using SuperNewRoles.CustomOptions.Categories;
+using UnityEngine;
 
 // https://github.com/tukasa0001/TownOfHost/blob/main/Patches/ClientPatch.cs
 

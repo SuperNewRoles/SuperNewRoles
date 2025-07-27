@@ -33,7 +33,7 @@ class Owl : RoleBase<Owl>
 
     [CustomOptionFloat(nameof(OwlKillCooldown), 2.5f, 60f, 2.5f, 30f, translationName: "KillCoolTime")]
     public static float OwlKillCooldown;
-    
+
     [CustomOptionBool(nameof(OwlCanUseVent), false, translationName: "CanUseVent")]
     public static bool OwlCanUseVent;
 

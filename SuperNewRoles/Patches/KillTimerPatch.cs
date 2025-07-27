@@ -1,7 +1,7 @@
 using AmongUs.GameOptions;
 using HarmonyLib;
-using UnityEngine;
 using SuperNewRoles.CustomOptions.Categories;
+using UnityEngine;
 
 namespace SuperNewRoles.Patches;
 

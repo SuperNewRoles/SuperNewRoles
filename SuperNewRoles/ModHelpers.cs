@@ -21,6 +21,7 @@ using UnityEngine.Audio;
 using UnityEngine.Networking;
 
 namespace SuperNewRoles;
+
 public static class ModHelpers
 {
     private static readonly RandomNumberGenerator Rng = RandomNumberGenerator.Create();
@@ -740,5 +741,14 @@ public static class ModHelpers
         if (collider2D == null) return false;
         return collider2D.OverlapPoint(position);
     }
+
+    /// <summary>
+    /// 等幅になるよう mspace タグで囲む
+    /// </summary>
+    /// <param name="src">等幅化したい文字列</param>
+    /// <param name="emWidth">文字幅（em単位）。デフォルトは0.6f</param>
+    /// <returns>mspaceタグで囲まれた等幅化された文字列</returns>
+    public static string ToMonospace(this string src, float emWidth = 0.6f)
+        => $"<mspace={emWidth}em>{src ?? string.Empty}</mspace>";
 
 }

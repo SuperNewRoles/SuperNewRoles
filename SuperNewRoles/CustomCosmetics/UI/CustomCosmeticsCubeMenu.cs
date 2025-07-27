@@ -42,4 +42,3 @@ public class CustomCosmeticsCubeMenu : CustomCosmeticsMenuBase<CustomCosmeticsCu
     }
 
 }
-
