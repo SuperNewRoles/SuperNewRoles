@@ -1,10 +1,10 @@
-using System.Collections.Generic;
 using System;
-using UnityEngine;
-using SuperNewRoles.CustomOptions;
-using SuperNewRoles.Roles.Ability;
-using SuperNewRoles.Modules;
+using System.Collections.Generic;
 using AmongUs.GameOptions;
+using SuperNewRoles.CustomOptions;
+using SuperNewRoles.Modules;
+using SuperNewRoles.Roles.Ability;
+using UnityEngine;
 
 namespace SuperNewRoles.Roles.Crewmate
 {

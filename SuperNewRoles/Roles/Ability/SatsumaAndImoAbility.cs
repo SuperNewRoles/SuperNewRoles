@@ -1,8 +1,8 @@
 using SuperNewRoles.Events;
 using SuperNewRoles.Modules;
 using SuperNewRoles.Modules.Events.Bases;
-using SuperNewRoles.Roles.CrewMate;
 using SuperNewRoles.Roles.Ability;
+using SuperNewRoles.Roles.CrewMate;
 
 namespace SuperNewRoles.Roles.Ability;
 public class SatsumaAndImoAbility : AbilityBase

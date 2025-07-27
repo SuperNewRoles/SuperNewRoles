@@ -3,12 +3,12 @@ using System.Collections.Generic;
 using System.Linq;
 using AmongUs.GameOptions;
 using SuperNewRoles.CustomOptions;
-using SuperNewRoles.Modules;
 using SuperNewRoles.Events;
+using SuperNewRoles.Modules;
 using SuperNewRoles.Modules.Events.Bases;
 using SuperNewRoles.Roles.Ability;
-using UnityEngine;
 using SuperNewRoles.Roles.Madmates;
+using UnityEngine;
 
 namespace SuperNewRoles.Roles.Neutral;
 

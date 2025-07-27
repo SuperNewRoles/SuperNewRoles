@@ -1,10 +1,10 @@
 using System;
 using System.Collections.Generic;
-using UnityEngine;
 using AmongUs.GameOptions;
 using SuperNewRoles.CustomOptions;
-using SuperNewRoles.Roles.Ability;
 using SuperNewRoles.Modules;
+using SuperNewRoles.Roles.Ability;
+using UnityEngine;
 
 namespace SuperNewRoles.Roles.CrewMate;
 
@@ -13,7 +13,8 @@ class HomeSecurityGuard : RoleBase<HomeSecurityGuard>
     public override RoleId Role { get; } = RoleId.HomeSecurityGuard;
     public override Color32 RoleColor { get; } = new(0, 255, 0, byte.MaxValue);
     public override List<Func<AbilityBase>> Abilities { get; } = [() => new CustomTaskAbility(
-        () => {
+        () =>
+        {
             var exPlayer = ExPlayerControl.LocalPlayer;
             return (false, null, 0);
         },

@@ -1,16 +1,16 @@
-using AmongUs.GameOptions;
-using UnityEngine;
-using SuperNewRoles.Modules;
-using SuperNewRoles.Roles.Ability.CustomButton;
-using SuperNewRoles.Events;
-using SuperNewRoles.Events.PCEvents;
-using SuperNewRoles.Modules.Events.Bases;
 using System;
-using SuperNewRoles.Roles.Impostor;
-using HarmonyLib;
-using Hazel;
 using System.Collections.Generic;
 using System.Linq;
+using AmongUs.GameOptions;
+using HarmonyLib;
+using Hazel;
+using SuperNewRoles.Events;
+using SuperNewRoles.Events.PCEvents;
+using SuperNewRoles.Modules;
+using SuperNewRoles.Modules.Events.Bases;
+using SuperNewRoles.Roles.Ability.CustomButton;
+using SuperNewRoles.Roles.Impostor;
+using UnityEngine;
 
 namespace SuperNewRoles.Roles.Ability;
 

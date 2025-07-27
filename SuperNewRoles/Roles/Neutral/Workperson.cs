@@ -19,10 +19,10 @@ class Workperson : RoleBase<Workperson>
         () => (true, false, WorkpersonTaskData.Total),
         WorkpersonTaskData
     ),
-    () => new WorkpersonAbility(WorkpersonNeedAliveToWin),
-    () => new CustomVentAbility(
-        canUseVent: () => WorkpersonCanUseVent
-    )];
+        () => new WorkpersonAbility(WorkpersonNeedAliveToWin),
+        () => new CustomVentAbility(
+            canUseVent: () => WorkpersonCanUseVent
+        )];
 
     public override QuoteMod QuoteMod { get; } = QuoteMod.SuperNewRoles;
     public override RoleTypes IntroSoundType { get; } = RoleTypes.Crewmate;
