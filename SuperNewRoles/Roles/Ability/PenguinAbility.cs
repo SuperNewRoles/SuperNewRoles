@@ -116,7 +116,7 @@ public class PenguinAbility : TargetCustomButtonBase, IButtonEffect
     [CustomRPC]
     public static void RpcKillPenguinTarget(ExPlayerControl source, PenguinAbility ability, ExPlayerControl target, bool afterMeeting)
     {
-        if (target != null && target.IsAlive())
+        if (source != null && source.IsAlive() && target != null && target.IsAlive())
         {
             if (afterMeeting)
                 target.CustomDeath(CustomDeathType.PenguinAfterMeeting, source: source);
