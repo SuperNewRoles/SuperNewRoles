@@ -27,6 +27,9 @@ public class GhostAssignRole
         ExPlayerControl exPlayer = player;
         if (exPlayer.IsAlive()) return false; //生存者は弾く
 
+        // バスカーが偽装死を使っている場合は処理をスキップ
+        if (IsBuskerInFakeDeath(exPlayer)) return false;
+
         if (GetReleaseHauntAbility(player))
         {
             if (!player.Data.Role.IsImpostor && specialRolesAllowed)
@@ -76,6 +79,10 @@ public class GhostAssignRole
     public static bool GetReleaseHauntAbility(ExPlayerControl player)
     {
         if (player.IsAlive()) return false; // 生存している場合は開放しない物として早期return
+        
+        // バスカーが偽装死を使っている場合は憑依能力を開放しない
+        if (IsBuskerInFakeDeath(player)) return false;
+        
         return true;
         /*
                 // 無効化しない設定なら早期リターン
@@ -100,7 +107,7 @@ public class GhostAssignRole
     public static bool HandleAssign(ExPlayerControl player)
     {
         // バスカーの偽装死時は幽霊役職を配布しない
-        if (player.GetAbility<BuskerPseudocideAbility>()?.isEffectActive == true)
+        if (IsBuskerInFakeDeath(player))
         {
             return false;
         }
