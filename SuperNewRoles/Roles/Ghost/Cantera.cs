@@ -64,7 +64,7 @@ public class CanteraAbility : TargetCustomButtonBase, IButtonEffect
 
     public override string buttonText => ModTranslation.GetString("CanteraButtonText");
 
-    public override Sprite Sprite => AssetManager.GetAsset<Sprite>("RepairButton.png");
+    public override Sprite Sprite => AssetManager.GetAsset<Sprite>("PhosphorusLightingButton.png");
 
     public bool isEffectActive { get; set; }
 
