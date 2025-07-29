@@ -203,23 +203,11 @@ public class GhostAssignRole
     /// <returns>true : 偽装死中 / false : 偽装死中ではない</returns>
     private static bool IsBuskerInFakeDeath(ExPlayerControl player)
     {
-        if (player == null) 
-        {
-            Logger.Info($"IsBuskerInFakeDeath: player is null");
-            return false;
-        }
-        
-        Logger.Info($"IsBuskerInFakeDeath: Checking player {player.PlayerId} (Role: {player.Role})");
+        if (player == null) return false;
         
         // バスカーの偽装死アビリティを取得
         var buskerAbility = player.GetAbility<BuskerPseudocideAbility>();
-        if (buskerAbility == null) 
-        {
-            Logger.Info($"IsBuskerInFakeDeath: No BuskerPseudocideAbility found for player {player.PlayerId}");
-            return false;
-        }
-        
-        Logger.Info($"IsBuskerInFakeDeath: BuskerPseudocideAbility found, isEffectActive = {buskerAbility.isEffectActive}");
+        if (buskerAbility == null) return false;
         
         // 偽装死エフェクトがアクティブかどうかを確認
         return buskerAbility.isEffectActive;

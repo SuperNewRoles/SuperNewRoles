@@ -110,7 +110,6 @@ public class BuskerPseudocideAbility : CustomButtonBase, IButtonEffect
         GenerateDeadbody();
         RoleManager.Instance.SetRole(Player, RoleTypes.CrewmateGhost);
         
-        Logger.Info($"StartPseudocide: Busker {Player.PlayerId} fake death started, isEffectActive = {isEffectActive}");
     }
 
     [CustomRPC]
@@ -129,7 +128,6 @@ public class BuskerPseudocideAbility : CustomButtonBase, IButtonEffect
         // 名前色と役職表示をリセット
         NameText.UpdateAllNameInfo();
         
-        Logger.Info($"OnReborn: Busker {Player.PlayerId} revived, isEffectActive = {isEffectActive}");
     }
     private static IEnumerator PlayExitVent(PlayerControl player)
     {
@@ -149,7 +147,6 @@ public class BuskerPseudocideAbility : CustomButtonBase, IButtonEffect
         Player.CustomDeath(CustomDeathType.SuicideSecrets);
         CleanDeadbody();
         
-        Logger.Info($"OnPseudocideEnd: Busker {Player.PlayerId} really died, isEffectActive = {isEffectActive}");
     }
 
     public override void OnMeetingEnds()
@@ -190,7 +187,6 @@ public class BuskerPseudocideAbility : CustomButtonBase, IButtonEffect
     {
         if (isEffectActive)
         {
-            Logger.Info($"OnMeetingStart: Busker {Player.PlayerId} fake death interrupted by meeting");
             // 会議が始まったら本当に死ぬ
             OnPseudocideEnd();
             // OnPseudocideEndで既にisEffectActiveは false に設定されるので、ここでは不要
