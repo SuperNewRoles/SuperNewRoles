@@ -25,10 +25,11 @@ public class GhostAssignRole
     public static bool Prefix([HarmonyArgument(0)] PlayerControl player, bool specialRolesAllowed)
     {
         ExPlayerControl exPlayer = player;
-        if (exPlayer.IsAlive()) return false; //生存者は弾く
-
+        
         // バスカーが偽装死を使っている場合は処理をスキップ
         if (IsBuskerInFakeDeath(exPlayer)) return false;
+        
+        if (exPlayer.IsAlive()) return false; //生存者は弾く
 
         if (GetReleaseHauntAbility(player))
         {
@@ -62,11 +63,12 @@ public class GhostAssignRole
     public static void Postfix([HarmonyArgument(0)] PlayerControl player)
     {
         ExPlayerControl exPlayer = player;
-        if (exPlayer.IsAlive() || exPlayer.GhostRole != GhostRoleId.None) return; // 生存者と割り当て済みの人は弾く
-        if (player.Data.Role.Role == RoleTypes.GuardianAngel) return; // 守護天使がアサインされていたら, Mod幽霊役職をアサインしない
-
+        
         // バスカーが偽装死を使っている場合は幽霊役職を配布しない
         if (IsBuskerInFakeDeath(exPlayer)) return;
+        
+        if (exPlayer.IsAlive() || exPlayer.GhostRole != GhostRoleId.None) return; // 生存者と割り当て済みの人は弾く
+        if (player.Data.Role.Role == RoleTypes.GuardianAngel) return; // 守護天使がアサインされていたら, Mod幽霊役職をアサインしない
 
         bool isAssign = HandleAssign(player);
     }
@@ -78,10 +80,10 @@ public class GhostAssignRole
     /// <returns>true : 開放する / false : 開放しない</returns>
     public static bool GetReleaseHauntAbility(ExPlayerControl player)
     {
-        if (player.IsAlive()) return false; // 生存している場合は開放しない物として早期return
-        
         // バスカーが偽装死を使っている場合は憑依能力を開放しない
         if (IsBuskerInFakeDeath(player)) return false;
+        
+        if (player.IsAlive()) return false; // 生存している場合は開放しない物として早期return
         
         return true;
         /*
