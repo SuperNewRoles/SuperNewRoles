@@ -56,7 +56,7 @@ class Cantera : GhostRoleBase<Cantera>
 public record CanteraAbilityOption(float Cooldown, float Duration, float ChangedVision, bool IsLimitUses, int MaxUses);
 public class CanteraAbility : TargetCustomButtonBase, IButtonEffect
 {
-    public override Color32 OutlineColor => Cantera.Instance.RoleColor;
+    public override Color32 OutlineColor => new(255, 237, 194, byte.MaxValue);
 
     public override bool OnlyCrewmates => false;
 
