@@ -220,10 +220,10 @@ public class GhostAssignRole
         // 偽装死エフェクトがアクティブかどうかを確認
         bool isActive = buskerAbility.isEffectActive;
         
-        // デバッグログを出力（本番環境では削除予定）
+        // デバッグログを出力して動作を追跡
         if (isActive)
         {
-            Logger.Info($"バスカー {player.Data.PlayerName} の偽装死を検出: isEffectActive={isActive}", "GhostAssignRoles");
+            Logger.Info($"バスカー {player.Data?.PlayerName ?? "Unknown"} の偽装死を検出: isEffectActive={isActive}, EffectTimer={buskerAbility.EffectTimer}", "GhostAssignRoles");
         }
         
         return isActive;
