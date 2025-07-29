@@ -213,6 +213,9 @@ public class GhostAssignRole
     {
         if (player == null) return false;
         
+        // バスカーの役職チェック（念のため追加）
+        if (player.Role != RoleId.Busker) return false;
+        
         // バスカーの偽装死アビリティを取得
         var buskerAbility = player.GetAbility<BuskerPseudocideAbility>();
         if (buskerAbility == null) return false;
@@ -220,12 +223,18 @@ public class GhostAssignRole
         // 偽装死エフェクトがアクティブかどうかを確認
         bool isActive = buskerAbility.isEffectActive;
         
+        // 死因がBuskerFakeDeathかどうかもチェック
+        bool isBuskerFakeDeath = player.DeathType == CustomDeathType.BuskerFakeDeath;
+        
+        // どちらかが true なら偽装死中と判定
+        bool result = isActive || isBuskerFakeDeath;
+        
         // デバッグログを出力して動作を追跡
-        if (isActive)
+        if (result)
         {
-            Logger.Info($"バスカー {player.Data?.PlayerName ?? "Unknown"} の偽装死を検出: isEffectActive={isActive}, EffectTimer={buskerAbility.EffectTimer}", "GhostAssignRoles");
+            Logger.Info($"バスカー {player.Data?.PlayerName ?? "Unknown"} の偽装死を検出: isEffectActive={isActive}, isBuskerFakeDeath={isBuskerFakeDeath}, DeathType={player.DeathType}, EffectTimer={buskerAbility.EffectTimer}", "GhostAssignRoles");
         }
         
-        return isActive;
+        return result;
     }
 }
