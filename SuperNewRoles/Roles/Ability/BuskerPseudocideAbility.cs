@@ -101,15 +101,25 @@ public class BuskerPseudocideAbility : CustomButtonBase, IButtonEffect
     [CustomRPC]
     private void StartPseudocide()
     {
+        // 偽装死エフェクトを開始
+        isEffectActive = true;
+        EffectTimer = EffectDuration;
+        
         // プレイヤーを死亡状態にする（偽装）
         Player.CustomDeath(CustomDeathType.BuskerFakeDeath);
         GenerateDeadbody();
         RoleManager.Instance.SetRole(Player, RoleTypes.CrewmateGhost);
+        
+        Logger.Info($"StartPseudocide: Busker {Player.PlayerId} fake death started, isEffectActive = {isEffectActive}");
     }
 
     [CustomRPC]
     private void OnReborn()
     {
+        // 偽装死エフェクトを終了
+        isEffectActive = false;
+        EffectTimer = 0f;
+        
         // プレイヤーを復活させる
         Player.Player.Revive();
         RoleManager.Instance.SetRole(Player, RoleTypes.Crewmate);
@@ -118,6 +128,8 @@ public class BuskerPseudocideAbility : CustomButtonBase, IButtonEffect
         
         // 名前色と役職表示をリセット
         NameText.UpdateAllNameInfo();
+        
+        Logger.Info($"OnReborn: Busker {Player.PlayerId} revived, isEffectActive = {isEffectActive}");
     }
     private static IEnumerator PlayExitVent(PlayerControl player)
     {
@@ -129,8 +141,15 @@ public class BuskerPseudocideAbility : CustomButtonBase, IButtonEffect
     }
     private void OnPseudocideEnd()
     {
+        // 偽装死エフェクトを終了
+        isEffectActive = false;
+        EffectTimer = 0f;
+        
         // 時間切れで本当に死ぬ
         Player.CustomDeath(CustomDeathType.SuicideSecrets);
+        CleanDeadbody();
+        
+        Logger.Info($"OnPseudocideEnd: Busker {Player.PlayerId} really died, isEffectActive = {isEffectActive}");
     }
 
     public override void OnMeetingEnds()
@@ -171,9 +190,10 @@ public class BuskerPseudocideAbility : CustomButtonBase, IButtonEffect
     {
         if (isEffectActive)
         {
+            Logger.Info($"OnMeetingStart: Busker {Player.PlayerId} fake death interrupted by meeting");
             // 会議が始まったら本当に死ぬ
             OnPseudocideEnd();
-            isEffectActive = false;
+            // OnPseudocideEndで既にisEffectActiveは false に設定されるので、ここでは不要
         }
     }
 
