@@ -26,10 +26,10 @@ public class BuskerPseudocideAbility : CustomButtonBase, IButtonEffect
     protected override KeyType keytype => KeyType.Ability1;
 
     // IButtonEffect implementation
-    public bool isEffectActive { get; set; }
+    public bool isEffectActive { get; set; } = false;
     public Action OnEffectEnds => () => { if (EffectTimer > 0) OnReborn(); else OnPseudocideEnd(); };
     public float EffectDuration { get; set; }
-    public float EffectTimer { get; set; }
+    public float EffectTimer { get; set; } = 0f;
 
     public bool effectCancellable => true;
 
@@ -104,6 +104,9 @@ public class BuskerPseudocideAbility : CustomButtonBase, IButtonEffect
         // 偽装死エフェクトを開始
         isEffectActive = true;
         EffectTimer = EffectDuration;
+        
+        // デバッグログを出力
+        Logger.Info($"{Player.Data.PlayerName} が偽装死を開始: isEffectActive={isEffectActive}", "BuskerPseudocide");
         
         // プレイヤーを死亡状態にする（偽装）
         Player.CustomDeath(CustomDeathType.BuskerFakeDeath);

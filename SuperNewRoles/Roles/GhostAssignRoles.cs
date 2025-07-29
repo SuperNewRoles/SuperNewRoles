@@ -27,7 +27,11 @@ public class GhostAssignRole
         ExPlayerControl exPlayer = player;
         
         // バスカーが偽装死を使っている場合は処理をスキップ
-        if (IsBuskerInFakeDeath(exPlayer)) return false;
+        if (IsBuskerInFakeDeath(exPlayer)) 
+        {
+            Logger.Info($"Prefix: バスカー {player.Data.PlayerName} の偽装死により幽霊役職配布をスキップ", "GhostAssignRoles");
+            return false;
+        }
         
         if (exPlayer.IsAlive()) return false; //生存者は弾く
 
@@ -65,7 +69,11 @@ public class GhostAssignRole
         ExPlayerControl exPlayer = player;
         
         // バスカーが偽装死を使っている場合は幽霊役職を配布しない
-        if (IsBuskerInFakeDeath(exPlayer)) return;
+        if (IsBuskerInFakeDeath(exPlayer)) 
+        {
+            Logger.Info($"Postfix: バスカー {player.Data.PlayerName} の偽装死により幽霊役職配布をスキップ", "GhostAssignRoles");
+            return;
+        }
         
         if (exPlayer.IsAlive() || exPlayer.GhostRole != GhostRoleId.None) return; // 生存者と割り当て済みの人は弾く
         if (player.Data.Role.Role == RoleTypes.GuardianAngel) return; // 守護天使がアサインされていたら, Mod幽霊役職をアサインしない
@@ -210,6 +218,14 @@ public class GhostAssignRole
         if (buskerAbility == null) return false;
         
         // 偽装死エフェクトがアクティブかどうかを確認
-        return buskerAbility.isEffectActive;
+        bool isActive = buskerAbility.isEffectActive;
+        
+        // デバッグログを出力（本番環境では削除予定）
+        if (isActive)
+        {
+            Logger.Info($"バスカー {player.Data.PlayerName} の偽装死を検出: isEffectActive={isActive}", "GhostAssignRoles");
+        }
+        
+        return isActive;
     }
 }
