@@ -16,7 +16,16 @@ jobs:
       (github.event_name == 'issue_comment' && startsWith(github.event.comment.body, '@snragent'))
 
     steps:
-      - uses: actions/checkout@v4
+      - name: Checkout (pull_request)
+        if: github.event_name == 'pull_request'
+        uses: actions/checkout@v3
+
+      # コメントトリガー時は PR の最新コミット（HEAD SHA）を checkout
+      - name: Checkout PR HEAD (issue_comment)
+        if: github.event_name == 'issue_comment' && github.event.issue.pull_request
+        uses: actions/checkout@v3
+        with:
+          ref: ${{ github.event.issue.pull_request.head.sha }}
 
       - name: Configure Download Settings
         id: settings
