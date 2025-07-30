@@ -29,7 +29,7 @@ public class GhostAssignRole
         // バスカーが偽装死を使っている場合は処理をスキップ
         if (IsBuskerInFakeDeath(exPlayer)) 
         {
-            Logger.Info($"Prefix: バスカー {player.Data.PlayerName} の偽装死により幽霊役職配布をスキップ", "GhostAssignRoles");
+            Logger.Debug($"Prefix: バスカー {player.Data.PlayerName} の偽装死により幽霊役職配布をスキップ", "GhostAssignRoles");
             return false;
         }
         
@@ -71,7 +71,7 @@ public class GhostAssignRole
         // バスカーが偽装死を使っている場合は幽霊役職を配布しない
         if (IsBuskerInFakeDeath(exPlayer)) 
         {
-            Logger.Info($"Postfix: バスカー {player.Data.PlayerName} の偽装死により幽霊役職配布をスキップ", "GhostAssignRoles");
+            Logger.Debug($"Postfix: バスカー {player.Data.PlayerName} の偽装死により幽霊役職配布をスキップ", "GhostAssignRoles");
             return;
         }
         
@@ -224,7 +224,7 @@ public class GhostAssignRole
         bool isActive = buskerAbility.isEffectActive;
         
         // デバッグログを出力
-        Logger.Info($"バスカー偽装死判定: {player.Data?.PlayerName ?? "Unknown"} - Role={player.Role}, isEffectActive={isActive}, EffectTimer={buskerAbility.EffectTimer}", "GhostAssignRoles");
+        Logger.Debug($"バスカー偽装死判定: {player.Data?.PlayerName ?? "Unknown"} - Role={player.Role}, isEffectActive={isActive}, EffectTimer={buskerAbility.EffectTimer}", "GhostAssignRoles");
         
         return isActive;
     }

@@ -106,7 +106,7 @@ public class BuskerPseudocideAbility : CustomButtonBase, IButtonEffect
         EffectTimer = EffectDuration;
         
         // デバッグログを出力
-        Logger.Info($"{Player.Data?.PlayerName ?? "Unknown"} が偽装死を開始: isEffectActive={isEffectActive}, EffectTimer={EffectTimer}", "BuskerPseudocide");
+        Logger.Debug($"{Player.Data?.PlayerName ?? "Unknown"} が偽装死を開始: isEffectActive={isEffectActive}, EffectTimer={EffectTimer}", "BuskerPseudocide");
         
         // プレイヤーを死亡状態にする（偽装）
         Player.CustomDeath(CustomDeathType.BuskerFakeDeath);
@@ -123,7 +123,7 @@ public class BuskerPseudocideAbility : CustomButtonBase, IButtonEffect
         EffectTimer = 0f;
         
         // デバッグログを出力
-        Logger.Info($"{Player.Data?.PlayerName ?? "Unknown"} が偽装死から復活: isEffectActive={isEffectActive}", "BuskerPseudocide");
+        Logger.Debug($"{Player.Data?.PlayerName ?? "Unknown"} が偽装死から復活: isEffectActive={isEffectActive}", "BuskerPseudocide");
         
         // プレイヤーを復活させる
         Player.Player.Revive();
@@ -150,7 +150,7 @@ public class BuskerPseudocideAbility : CustomButtonBase, IButtonEffect
         EffectTimer = 0f;
         
         // デバッグログを出力
-        Logger.Info($"{Player.Data?.PlayerName ?? "Unknown"} の偽装死が時間切れで終了: isEffectActive={isEffectActive}", "BuskerPseudocide");
+        Logger.Debug($"{Player.Data?.PlayerName ?? "Unknown"} の偽装死が時間切れで終了: isEffectActive={isEffectActive}", "BuskerPseudocide");
         
         // 時間切れで本当に死ぬ
         Player.CustomDeath(CustomDeathType.SuicideSecrets);
