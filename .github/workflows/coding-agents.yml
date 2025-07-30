@@ -25,7 +25,8 @@ jobs:
         if: github.event_name == 'issue_comment' && github.event.issue.pull_request
         uses: actions/checkout@v3
         with:
-          ref: ${{ github.event.issue.pull_request.head.sha }}
+          # PR 番号は issue.number で取れる
+          ref: refs/pull/${{ github.event.issue.number }}/head
       
       # PR がない場合は fallback として github.ref を checkout
       - name: Checkout by ref (fallback)
