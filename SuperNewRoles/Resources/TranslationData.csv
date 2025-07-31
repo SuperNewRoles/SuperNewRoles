@@ -1219,7 +1219,7 @@ CustomGameOverReason.HitmanWin,殺し屋の勝利,Victory of the Hitman,刺客�
 ButtonerButtonText,ポチッ,Push!
 
 # メイヤー
-MayorVoteAdditionalVote,追加投票数,Additional Vote
+MayorVoteAdditionalVote,所持票数,Number of votes held,持有票数,持有票數
 
 # Worshiper
 SuicideButtonText,自滅,Suicide,自杀,自殺
