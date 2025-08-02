@@ -1166,17 +1166,22 @@ public static class ModifierOptionMenu
             _ => AssignedTeamType.Impostor,
         };
 
+        // HashSetを使用して重複を除去
+        var validRolesSet = new HashSet<RoleId>();
+        var validRolesList = new List<IRoleBase>();
+
         // vanilla Roles
-        var vanillaRoles = CustomRoleManager.AllRoles.Where(x => x.IsVanillaRole).ToList();
-        List<IRoleBase> validRoles = new();
+        var vanillaRoles = CustomRoleManager.AllRoles.Where(x => x.IsVanillaRole);
         foreach (var role in vanillaRoles)
         {
             if (!CanShowAssignFilterRole(role, teamType)) continue;
-            validRoles.Add(role);
+            if (validRolesSet.Add(role.Role)) // 重複チェックして追加
+            {
+                validRolesList.Add(role);
+            }
         }
-        // ExclusivityOptionMenuのGenerateRoleDetailButtonsを参考にする
-        // var roles = RoleOptionManager.RoleOptions.Where(...) // フィルタリングロジック
-        // 仮のロールリスト
+
+        // custom roles
         var roles = CustomRoleManager.AllRoles.Where(x =>
         {
             // ダミー実装: IsHiddenは常にfalseとして扱う
@@ -1185,11 +1190,16 @@ public static class ModifierOptionMenu
             return true;
         });
 
-        validRoles.AddRange(roles);
-
+        foreach (var role in roles)
+        {
+            if (validRolesSet.Add(role.Role)) // 重複チェックして追加
+            {
+                validRolesList.Add(role);
+            }
+        }
 
         int index = 0;
-        foreach (var roleOption in validRoles)
+        foreach (var roleOption in validRolesList)
         {
             string roleName = ModTranslation.GetString($"{roleOption.Role}");
             // ExclusivityOptionMenuのGenerateRoleDetailButtonを参考にする
