@@ -28,7 +28,7 @@ public class CustomHatLayer : MonoBehaviour
     public SpriteAnimNodeSync spriteSyncNode;
 
     public Dictionary<CustomOutfitType, ICosmeticData> Hats = new();
-    public CustomOutfitType CurrentHatType;
+    public CustomOutfitType CurrentHatType = CustomOutfitType.Default;
 
     public ICustomCosmeticHat CustomCosmeticHat => Hats.TryGetValue(CurrentHatType, out var hat) ? hat as ICustomCosmeticHat : null;
     public ICosmeticData Hat => CustomCosmeticHat == null ? null : CustomCosmeticHat as ICosmeticData;
@@ -281,6 +281,7 @@ public class CustomHatLayer : MonoBehaviour
     private void PopulateFromViewData()
     {
         UpdateMaterial();
+        if (Hat == null) return;
         if (Hat.Asset == null) return;
 
         SpriteAnimNodeSync spriteAnimNodeSync = spriteSyncNode ?? GetComponent<SpriteAnimNodeSync>();
