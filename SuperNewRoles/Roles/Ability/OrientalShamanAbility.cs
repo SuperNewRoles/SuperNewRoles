@@ -57,7 +57,7 @@ public class OrientalShamanAbility : AbilityBase
             sidekickSprite: AssetManager.GetAsset<Sprite>("OrientalShamanButton.png"),
             sidekickText: ModTranslation.GetString("OrientalShamanServantButton"),
             sidekickCount: () => 1,
-            isTargetable: (player) => player.IsAlive() && !player.IsImpostor() && player.Role != RoleId.OrientalShaman,
+            isTargetable: (player) => player.IsAlive() && !player.IsKiller() && player.Role != RoleId.OrientalShaman,
             sidekickSuccess: (target) =>
             {
                 RpcServantCreate(target);
