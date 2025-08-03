@@ -225,8 +225,6 @@ public class RequestInGameManager
                                 messages.Add(new Message(messageId, createdAt, msgContent2, sender));
                                 break;
                             case nameof(MessageType.status):
-                                Logger.Debug("AAAAAAAAAAA");
-                                Logger.Info("AAAAAAAAAAA");
                                 Logger.Debug(string.Join(", ", msgDict.Select(kv => $"{kv.Key}: {kv.Value}")));
                                 string status = msgDict.TryGetValue("content", out var statusVal) && statusVal is string statusStr ? statusStr : string.Empty;
                                 string color = msgDict.TryGetValue("color", out var colorVal) && colorVal is string colorStr ? colorStr : string.Empty;
