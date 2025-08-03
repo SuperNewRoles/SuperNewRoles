@@ -2,14 +2,14 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using HarmonyLib;
-using Hazel;
-using SuperNewRoles.CustomOptions.Categories;
 using SuperNewRoles.Patches;
 using SuperNewRoles.Roles;
 using SuperNewRoles.Roles.Ability;
-using SuperNewRoles.Roles.Modifiers;
 using SuperNewRoles.Roles.Neutral;
 using UnityEngine;
+using SuperNewRoles.Roles.Modifiers;
+using Hazel;
+using SuperNewRoles.CustomOptions.Categories;
 
 namespace SuperNewRoles.Modules;
 

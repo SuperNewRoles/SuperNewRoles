@@ -2,20 +2,20 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using BepInEx.Unity.IL2CPP.Utils.Collections;
 using HarmonyLib;
 using SuperNewRoles.CustomCosmetics.CosmeticsPlayer;
-using SuperNewRoles.Events;
-using SuperNewRoles.HelpMenus;
 using SuperNewRoles.Modules;
 using SuperNewRoles.Roles;
-using SuperNewRoles.Roles.Madmates;
-using SuperNewRoles.Roles.Modifiers;
 using SuperNewRoles.Roles.Neutral;
 using SuperNewRoles.SuperTrophies;
-using TMPro;
 using UnityEngine;
+using SuperNewRoles.Events;
+using SuperNewRoles.HelpMenus;
 using UnityEngine.UI;
+using BepInEx.Unity.IL2CPP.Utils.Collections;
+using SuperNewRoles.Roles.Modifiers;
+using TMPro;
+using SuperNewRoles.Roles.Madmates;
 
 namespace SuperNewRoles.Patches;
 

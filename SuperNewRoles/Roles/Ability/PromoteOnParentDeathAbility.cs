@@ -1,10 +1,10 @@
 using System;
-using System.Linq;
 using AmongUs.GameOptions;
 using SuperNewRoles.Events;
 using SuperNewRoles.Events.PCEvents;
 using SuperNewRoles.Modules;
 using SuperNewRoles.Modules.Events.Bases;
+using System.Linq;
 
 namespace SuperNewRoles.Roles.Ability;
 
@@ -61,3 +61,4 @@ public class PromoteOnParentDeathAbility : AbilityBase
         NameText.UpdateAllNameInfo();
     }
 }
+

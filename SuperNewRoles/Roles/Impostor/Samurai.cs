@@ -1,15 +1,15 @@
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using AmongUs.GameOptions;
 using SuperNewRoles.CustomOptions;
-using SuperNewRoles.Events;
 using SuperNewRoles.Modules;
-using SuperNewRoles.Modules.Events.Bases;
-using SuperNewRoles.Patches; // CalledMeetingEventData のため
 using SuperNewRoles.Roles.Ability;
-using SuperNewRoles.SuperTrophies;
 using UnityEngine;
+using System.Linq;
+using SuperNewRoles.Events;
+using SuperNewRoles.Modules.Events.Bases;
+using SuperNewRoles.SuperTrophies;
+using SuperNewRoles.Patches; // CalledMeetingEventData のため
 
 namespace SuperNewRoles.Roles.Impostor;
 
