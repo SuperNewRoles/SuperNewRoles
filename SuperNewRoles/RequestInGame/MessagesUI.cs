@@ -110,9 +110,9 @@ public class MessagesUI
                                         index++;
                                         break;
                                     case RequestInGameManager.StatusUpdate statusUpdate:
-                                        GenerateMessage($"<color={statusUpdate.status.color}> {statusUpdate.status.mark} </color>: " + ModTranslation.GetString("RequestInGame.UpdateStatusTo", $"\"{statusUpdate.status.status}\""), scroller, false, ModTranslation.GetString("RequestInGame.UpdateStatus"), lastSender == "StatusUpdater", lastSender != "StatusUpdater", false, ref lastY, false);
-                                        lastSender = "StatusUpdater";
-                                        lastMessageSender = "StatusUpdater"; // 最後のメッセージの送信者を更新
+                                        GenerateMessage($"<color={statusUpdate.status.color}> {statusUpdate.status.mark} </color>: " + ModTranslation.GetString("RequestInGame.UpdateStatusTo", $"\"{statusUpdate.status.status}\""), scroller, false, ModTranslation.GetString("RequestInGame.UpdateStatus"), lastSender == RequestInGameManager.StatusUpdater, lastSender != RequestInGameManager.StatusUpdater, false, ref lastY, false);
+                                        lastSender = RequestInGameManager.StatusUpdater;
+                                        lastMessageSender = RequestInGameManager.StatusUpdater; // 最後のメッセージの送信者を更新
                                         lastTarget = true;
                                         Logger.Debug($"Status: {statusUpdate.status.status}");
                                         Logger.Debug($"Color: {statusUpdate.status.color}");

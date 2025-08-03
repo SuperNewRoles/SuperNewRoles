@@ -97,6 +97,8 @@ public class RequestInGameManager
     private static string Token = string.Empty;
     private static bool ValidatedToken = false;
     private static string FilePath = Path.Combine(SuperNewRolesPlugin.SecretDirectory, "RequestInGame.token");
+    public const string StatusUpdater = "StatusUpdater";
+
     public static void Load()
     {
         if (File.Exists(FilePath))
