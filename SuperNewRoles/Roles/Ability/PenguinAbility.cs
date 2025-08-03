@@ -75,6 +75,7 @@ public class PenguinAbility : TargetCustomButtonBase, IButtonEffect
     }
     public override void AttachToAlls()
     {
+        base.AttachToAlls();
         SyncKillCoolTimeAbility.CreateAndAttach(this);
         _calledMeeting = CalledMeetingEvent.Instance.AddListener(OnCalledMeeting);
         customKillButtonAbility = new KillableAbility(() => CanDefaultKill || (targetPlayer != null && targetPlayer.IsAlive()));

@@ -63,7 +63,7 @@ public class CustomVisorLayer : MonoBehaviour
     }
 
     public Dictionary<CustomOutfitType, ICosmeticData> Visors = new();
-    public CustomOutfitType CurrentVisorType;
+    public CustomOutfitType CurrentVisorType = CustomOutfitType.Default;
 
     public ICustomCosmeticVisor CustomCosmeticVisor => Visors.TryGetValue(CurrentVisorType, out var visor) ? visor as ICustomCosmeticVisor : null;
     public ICosmeticData Visor => CustomCosmeticVisor == null ? null : CustomCosmeticVisor as ICosmeticData;
@@ -122,6 +122,7 @@ public class CustomVisorLayer : MonoBehaviour
         CurrentVisorType = CustomOutfitType.Default;
         SetMaterialColor(colorId);
         // UnloadAsset();
+        if (Visor == null) return;
         Visor.LoadAsync(() =>
         {
             PopulateFromViewData();
