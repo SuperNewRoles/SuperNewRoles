@@ -378,8 +378,6 @@ public class EndGameManagerSetUpPatch
             __instance.BackgroundBar.material.SetColor("_Color", endGameCondition.UpperTextColor);
         }
 
-        AdditionalTempData.Clear();
-
         // トロフィー処理を実行
         SuperTrophyManager.OnEndGame();
     }

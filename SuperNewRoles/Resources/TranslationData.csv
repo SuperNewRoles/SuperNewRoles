@@ -163,6 +163,9 @@ AnalyticsOK,わかった,understand,我明白了,我明白了
 ClientOptionsVanilla,バニラ設定,Vanilla Settings,原版设置,原版設置
 ClientOptionsMod,Mod設定,Mod Settings,模组设置,模組設置
 
+# winners
+Winners.NoData,データがありません,No data,没有数据,沒有數據
+
 # VersionUpdates
 VersionUpdateType.stability,安定版,Stability,稳定版,穩定版
 VersionUpdateType.all,全て,All,全部,全部

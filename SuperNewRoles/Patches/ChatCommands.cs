@@ -1,7 +1,11 @@
 using System;
+using System.Linq;
+using System.Text;
 using AmongUs.GameOptions;
 using HarmonyLib;
 using InnerNet;
+using SuperNewRoles.Modules;
+using SuperNewRoles.Roles;
 
 namespace SuperNewRoles.Patches;
 
@@ -51,6 +55,11 @@ public static class SendChatPatch
                     SuperNewRolesPlugin.Logger.LogWarning($"ホストでない時に{text}を使用しました。ホストでない時は/renameは使用できません。");
                 }
             }
+            else if (text.ToLower().StartsWith("/w") || text.ToLower().StartsWith("/winners"))
+            {
+                handled = true;
+                __instance.AddChat(PlayerControl.LocalPlayer, GetWinnerMessage());
+            }
             if (AmongUsClient.Instance.NetworkMode == NetworkModes.FreePlay)
             {
                 if (text.ToLower().Equals("/murder"))
@@ -86,5 +95,42 @@ public static class SendChatPatch
             FastDestroyableSingleton<HudManager>.Instance.Chat.timeSinceLastMessage = 0f;
         }
         return !handled;
+    }
+    private static string GetWinnerMessage()
+    {
+        StringBuilder builder = new();
+        var cond = EndGameManagerSetUpPatch.endGameCondition;
+        if (cond == null)
+            return ModTranslation.GetString("Winners.NoData");
+        var upperText = cond.UpperText;
+        if (cond.additionalWinTexts != null && cond.additionalWinTexts.Any())
+        {
+            upperText += " & " + string.Join(" & ", cond.additionalWinTexts);
+        }
+        upperText += " " + cond.winText;
+        if (cond.IsHaison)
+            upperText = ModTranslation.GetString("Haison");
+        builder.AppendLine($"<size=150%>{ModHelpers.Cs(cond.UpperTextColor, upperText)}</size>");
+        foreach (var data in AdditionalTempData.playerRoles)
+        {
+            builder.Append("<size=80%>");
+            if (cond.winners.Contains((byte)data.PlayerId))
+                builder.Append("★");
+            else
+                builder.Append("　");
+            var taskInfo = data.TasksTotal > 0 ? $"<color=#FAD934FF>({data.TasksCompleted}/{data.TasksTotal})</color>" : "";
+            string roleText = ModHelpers.CsWithTranslation(data.roleBase.RoleColor, data.roleBase.Role.ToString());
+            if (data.modifierMarks.Count > 0)
+                roleText += " ";
+            foreach (var modifier in data.modifierMarks)
+                roleText = modifier.Replace("{0}", roleText);
+            string playerName = ModHelpers.Cs(Palette.PlayerColors[data.ColorId], data.PlayerName);
+            if (data.LoversHeartColor != null)
+                playerName += ModHelpers.Cs(data.LoversHeartColor.Value, " ♥");
+            string result = $"{playerName}{data.NameSuffix} {taskInfo} - {ModTranslation.GetString("FinalStatus." + data.Status)} - {roleText}";
+            builder.AppendLine(result);
+            builder.Append("</size>");
+        }
+        return builder.ToString();
     }
 }
