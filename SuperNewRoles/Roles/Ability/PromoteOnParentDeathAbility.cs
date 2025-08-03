@@ -55,6 +55,7 @@ public class PromoteOnParentDeathAbility : AbilityBase
     [CustomRPC]
     public static void RpcPromote(ExPlayerControl player, RoleId roleId, RoleTypes roleType)
     {
+        if (player.IsDead()) return;
         player.SetRole(roleId);
         RoleManager.Instance.SetRole(player, roleType);
         NameText.UpdateAllNameInfo();

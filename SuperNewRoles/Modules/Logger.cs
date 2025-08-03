@@ -14,4 +14,10 @@ public static class Logger
     {
         SuperNewRolesPlugin.Instance.Log.LogWarning($"[{source}] {message}");
     }
+    public static void Debug(string message, string source = "SuperNewRoles")
+    {
+#if DEBUG
+        SuperNewRolesPlugin.Instance.Log.LogDebug($"[{source}] {message}");
+#endif
+    }
 }

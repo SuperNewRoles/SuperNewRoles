@@ -125,7 +125,16 @@ public static class NameText
             if (player.IsTaskTriggerRole())
             {
                 var (complete, all) = player.GetAllTaskForShowProgress();
-                TaskText += ModHelpers.Cs(Color.yellow, "(" + (ModHelpers.IsComms() ? "?" : complete.ToString()) + "/" + all.ToString() + ")");
+                // MadJesterの場合は3つの数値を表示 (現在のタスク数/狂信発動タスク数/勝利タスク数)
+                if (player.Role == RoleId.MadJester)
+                {
+                    var madJesterWinRequiredTaskCount = SuperNewRoles.Roles.Madmates.MadJester.MadJesterWinRequiredTaskCount;
+                    TaskText += ModHelpers.Cs(Color.yellow, "(" + (ModHelpers.IsComms() ? "?" : complete.ToString()) + "/" + all.ToString() + "/" + madJesterWinRequiredTaskCount.ToString() + ")");
+                }
+                else
+                {
+                    TaskText += ModHelpers.Cs(Color.yellow, "(" + (ModHelpers.IsComms() ? "?" : complete.ToString()) + "/" + all.ToString() + ")");
+                }
             }
         }
         catch { }

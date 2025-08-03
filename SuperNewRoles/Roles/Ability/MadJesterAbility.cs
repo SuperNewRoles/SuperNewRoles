@@ -25,7 +25,7 @@ public class MadJesterAbility : AbilityBase
             _data.HasImpostorVision,
             _data.CanUseVent,
             _data.CanKnowImpostors,
-            _data.RequiredTaskCount,
+            _data.KnowImpostorTaskCount,
             _data.IsSpecialTasks ? _data.CustomTasks : null
         );
         _madmateAbility = new MadmateAbility(madmateData);
@@ -44,7 +44,18 @@ public class MadJesterAbility : AbilityBase
         if (!AmongUsClient.Instance.AmHost) return;
         if (data.exiled == null || data.exiled.PlayerId != Player.PlayerId) return;
 
-        EndGamer.RpcEndGameImpostorWin();
+        if (_data.WinOnExiled)
+        {
+            var (tasksCompleted, _) = ModHelpers.TaskCompletedData(Player.Data);
+            if (tasksCompleted >= _data.WinRequiredTaskCount)
+            {
+                EndGamer.RpcEndGameImpostorWin();
+            }
+        }
+        else
+        {
+            EndGamer.RpcEndGameImpostorWin();
+        }
     }
 
     private void OnTaskComplete(TaskCompleteEventData data)
@@ -72,19 +83,23 @@ public class MadJesterData
     public bool CanUseVent { get; }
     public bool HasImpostorVision { get; }
     public bool CanKnowImpostors { get; }
-    public int RequiredTaskCount { get; }
+    public int KnowImpostorTaskCount { get; }
     public bool IsSpecialTasks { get; }
     public TaskOptionData CustomTasks { get; }
     public bool WinOnTaskComplete { get; }
+    public bool WinOnExiled { get; }
+    public int WinRequiredTaskCount { get; }
 
-    public MadJesterData(bool canUseVent, bool hasImpostorVision, bool canKnowImpostors, int requiredTaskCount, bool isSpecialTasks, TaskOptionData customTasks, bool winOnTaskComplete)
+    public MadJesterData(bool canUseVent, bool hasImpostorVision, bool canKnowImpostors, int knowImpostorTaskCount, bool isSpecialTasks, TaskOptionData customTasks, bool winOnTaskComplete, bool winOnExiled, int winRequiredTaskCount)
     {
         CanUseVent = canUseVent;
         HasImpostorVision = hasImpostorVision;
         CanKnowImpostors = canKnowImpostors;
-        RequiredTaskCount = requiredTaskCount;
+        KnowImpostorTaskCount = knowImpostorTaskCount;
         IsSpecialTasks = isSpecialTasks;
         CustomTasks = customTasks;
         WinOnTaskComplete = winOnTaskComplete;
+        WinOnExiled = winOnExiled;
+        WinRequiredTaskCount = winRequiredTaskCount;
     }
 }

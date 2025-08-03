@@ -1219,7 +1219,7 @@ CustomGameOverReason.HitmanWin,殺し屋の勝利,Victory of the Hitman,刺客�
 ButtonerButtonText,ポチッ,Push!
 
 # メイヤー
-MayorVoteAdditionalVote,追加投票数,Additional Vote
+MayorVoteAdditionalVote,所持票数,Number of votes held,持有票数,持有票數
 
 # Worshiper
 SuicideButtonText,自滅,Suicide,自杀,自殺
@@ -1740,14 +1740,9 @@ SilverBulletCanRepairUseCountOption,修理回数,Repair Count
 GhostMechanicCannotFixMushroomMixup,キノコカオスを修復できない,Cannot Fix Mushroom Mixup
 
 # MadJester
-MadJesterKnowImpostorHeader,インポスター認知設定,Know Impostor Setting,认识内鬼设置,認識內鬼設置
-MadJesterCanKnowImpostors,インポスターを知ることができる,Can Know Impostors,可以知道内鬼,可以知道內鬼
-MadJesterNeededTaskCount,知るために必要なタスク数,Needed Task Count,需要完成的任务数,需要完成的任務數
-MadJesterIsSpecialTasks,固有タスクを使用する,Use special tasks,使用特殊任务,使用特殊任務
-MadJesterSpecialTasks,固有タスク,Special Tasks,特殊任务,特殊任務
-MadJesterAbilityHeader,能力設定,Ability Setting,能力设置,能力設定
-MadJesterWinConditionHeader,勝利条件設定,Win Condition Setting,胜利条件设置,勝利條件設定
-MadJesterWinOnTaskComplete,タスク完了で勝利,Win on task completion,完成任务胜利,完成任務勝利
+MadJesterWinOnExiled,勝利にタスク完了が必要,Tasks must be completed to win when exiled,放逐获胜需完成任务,被逐出獲勝需完成任務
+MadJesterWinRequiredTaskCount,勝利に必要なタスク数,Number of tasks required for victory,获胜所需任务数量,獲勝所需任務數量
+MadJesterKnowImpostorTaskCount,狂信発動に必要なタスク数,Tasks required to activate Impostor insight,发动狂信需完成的任务数量,啟動狂信需完成的任務數量
 Win.MadJesterWin,マッドてるてる 勝利,Mad Jester Win,疯狂小丑 胜利,瘋狂小丑 勝利
 
 # Magaziner

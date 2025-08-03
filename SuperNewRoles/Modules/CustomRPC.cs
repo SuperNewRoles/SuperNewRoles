@@ -327,7 +327,7 @@ public static class CustomRPCManager
                     }
                     catch (Exception ex)
                     {
-                        Logger.Error($"Error processing CustomRPC: {ex.Message}\n{ex.StackTrace}");
+                        Logger.Error($"Error processing CustomRPC: {ex.Message}\n{ex.StackTrace}\n{ex.InnerException}");
                         // エラーが発生してもゲームを続行できるようにする
                     }
                     break;
