@@ -86,7 +86,7 @@ public class MagazinerAbility : CustomButtonBase, IAbilityCount
         // 弾数制限チェック
         if (Data.ammoLimitEnabled && Count >= Data.maxAmmo)
             return;
-
+            
         RpcAddCount();
         // キルクールダウンをリセット
         Player.ResetKillCooldown();

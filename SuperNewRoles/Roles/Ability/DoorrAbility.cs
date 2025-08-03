@@ -1,7 +1,7 @@
 using System.Linq;
-using SuperNewRoles.Modules;
-using SuperNewRoles.Roles.Ability.CustomButton;
 using UnityEngine;
+using SuperNewRoles.Roles.Ability.CustomButton;
+using SuperNewRoles.Modules;
 
 namespace SuperNewRoles.Roles.Ability;
 

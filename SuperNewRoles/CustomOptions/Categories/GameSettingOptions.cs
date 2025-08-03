@@ -1,5 +1,5 @@
-using SuperNewRoles.CustomOptions;
 using SuperNewRoles.Modules;
+using SuperNewRoles.CustomOptions;
 
 namespace SuperNewRoles.CustomOptions.Categories;
 

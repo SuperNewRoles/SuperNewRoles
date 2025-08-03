@@ -1,7 +1,7 @@
 using HarmonyLib;
 using InnerNet;
-using SuperNewRoles.CustomOptions.Categories;
 using SuperNewRoles.Modules;
+using SuperNewRoles.CustomOptions.Categories;
 
 namespace SuperNewRoles.Patches;
 

@@ -1,10 +1,10 @@
 using System;
 using System.Collections.Generic;
-using AmongUs.GameOptions;
-using SuperNewRoles.CustomOptions;
 using SuperNewRoles.Modules;
 using SuperNewRoles.Roles.Ability;
+using SuperNewRoles.CustomOptions;
 using UnityEngine;
+using AmongUs.GameOptions;
 
 namespace SuperNewRoles.Roles.Impostor;
 

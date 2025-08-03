@@ -1,14 +1,14 @@
 using System;
 using System.Collections.Generic;
-using System.Diagnostics.Tracing;
-using System.Linq;
+using UnityEngine;
 using AmongUs.GameOptions;
 using SuperNewRoles.CustomOptions;
-using SuperNewRoles.Events;
-using SuperNewRoles.Modules;
-using SuperNewRoles.Modules.Events.Bases;
 using SuperNewRoles.Roles.Ability;
-using UnityEngine;
+using SuperNewRoles.Modules;
+using System.Diagnostics.Tracing;
+using SuperNewRoles.Events;
+using SuperNewRoles.Modules.Events.Bases;
+using System.Linq;
 
 namespace SuperNewRoles.Roles.Madmates;
 
