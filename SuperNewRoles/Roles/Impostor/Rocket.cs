@@ -150,6 +150,12 @@ public class RocketGrabAbility : TargetCustomButtonBase
     private void OnFixedUpdate()
     {
         if (Player == null || GrabbedPlayers.Count == 0) return;
+        if (Player.IsDead())
+        {
+            if (Player.AmOwner)
+                RpcClearGrabbedPlayers();
+            return;
+        }
         foreach (var grabbedPlayer in GrabbedPlayers.ToList())
         {
             if (Player.AmOwner && (grabbedPlayer == null || grabbedPlayer.IsDead()))
