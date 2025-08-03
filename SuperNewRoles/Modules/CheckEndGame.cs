@@ -287,6 +287,7 @@ public class PlayerStatistics
     public int TeamJackalAlive { get; }
     public int PavlovsDogAlive { get; }
     public int PavlovsOwnerAlive { get; }
+    public bool PavlovsOwnerRemaining { get; }
     public int TeamPavlovsAlive { get; }
     public int TotalKiller { get; }
     public int ArsonistAlive { get; }
@@ -349,6 +350,7 @@ public class PlayerStatistics
         TeamJackalAlive = teamJackalAlive;
         PavlovsDogAlive = pavlovsDogAlive;
         PavlovsOwnerAlive = pavlovsOwnerAlive;
+        PavlovsOwnerRemaining = pavlovsOwnerRemaining > 0;
         TeamPavlovsAlive = pavlovsDogAlive > 0
             ? pavlovsDogAlive + pavlovsOwnerAlive
             : pavlovsOwnerRemaining;
@@ -395,6 +397,7 @@ public class PlayerStatistics
         return isHnS ? teamAlive >= TotalAlive : (teamAlive >= TotalAlive - teamAlive)
             && TotalKiller <= teamAlive
             && teamAlive != 0
-            && !(PavlovsDogAlive <= 0 && TeamPavlovsAlive > 0);
+            && !(PavlovsDogAlive <= 0 && TeamPavlovsAlive > 0)
+            && !PavlovsOwnerRemaining;
     }
 }
