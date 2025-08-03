@@ -34,3 +34,4 @@ public static class ConfigRoles
         IsCompressCosmetics = _isCompressCosmetics.Value;
     }
 }
+

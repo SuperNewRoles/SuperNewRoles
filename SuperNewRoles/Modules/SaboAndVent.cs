@@ -49,7 +49,7 @@ public class SaboAndVent
     {
         public static void Postfix(HudManager __instance)
         {
-            if (Vent.currentVent != null)
+            if (Vent.currentVent != null && __instance.ImpostorVentButton != null)
                 __instance.ImpostorVentButton.SetTarget(Vent.currentVent);
         }
     }
@@ -94,3 +94,4 @@ public class SaboAndVent
         }
     }
 }
+

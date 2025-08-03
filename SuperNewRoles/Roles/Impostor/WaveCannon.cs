@@ -37,3 +37,4 @@ class WaveCannon : RoleBase<WaveCannon>
     [CustomOptionSelect("WaveCannonAnimationType", typeof(WaveCannonTypeForOption), "WaveCannonAnimationType.")]
     public static WaveCannonTypeForOption AnimationTypeOption;
 }
+

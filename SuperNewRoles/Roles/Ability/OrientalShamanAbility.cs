@@ -1,15 +1,15 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using AmongUs.GameOptions;
-using Hazel;
-using SuperNewRoles.Events;
-using SuperNewRoles.Events.PCEvents;
 using SuperNewRoles.Modules;
-using SuperNewRoles.Modules.Events.Bases;
 using SuperNewRoles.Roles.Ability.CustomButton;
 using SuperNewRoles.Roles.Neutral;
+using SuperNewRoles.Events;
+using SuperNewRoles.Events.PCEvents;
+using SuperNewRoles.Modules.Events.Bases;
 using UnityEngine;
+using Hazel;
+using AmongUs.GameOptions;
 
 namespace SuperNewRoles.Roles.Ability;
 
@@ -44,7 +44,7 @@ public class OrientalShamanAbility : AbilityBase
         );
 
         _knowOtherAbility = new KnowOtherAbility(
-            canKnowOther: (player) => player.IsKiller(),
+            canKnowOther: (player) => player.IsKiller() || _servant?.Player == player,
             () => false
         );
 
@@ -57,7 +57,7 @@ public class OrientalShamanAbility : AbilityBase
             sidekickSprite: AssetManager.GetAsset<Sprite>("OrientalShamanButton.png"),
             sidekickText: ModTranslation.GetString("OrientalShamanServantButton"),
             sidekickCount: () => 1,
-            isTargetable: (player) => player.IsAlive() && !player.IsImpostor() && player.Role != RoleId.OrientalShaman,
+            isTargetable: (player) => player.IsAlive() && !player.IsKiller() && player.Role != RoleId.OrientalShaman,
             sidekickSuccess: (target) =>
             {
                 RpcServantCreate(target);

@@ -1,10 +1,10 @@
+using System.Reflection;
+using BepInEx.Logging;
+using UnityEngine;
 using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Reflection;
-using BepInEx.Logging;
-using UnityEngine;
 
 namespace SuperNewRoles;
 
@@ -22,7 +22,7 @@ public static class VersionInfo
     public static string VersionString => Current.ToString() + SnapShotVersion.ToString();
 
     public static bool IsSnapShot => SnapShotVersion != null;
-    public static char? SnapShotVersion = 'q';
+    public static char? SnapShotVersion = 't';
 
     public static string NewVersion = "";
     public static bool IsUpdate = false;

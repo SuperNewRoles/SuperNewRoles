@@ -1,8 +1,8 @@
-using System;
-using SuperNewRoles.Modules;
-using TMPro;
 using UnityEngine;
 using UnityEngine.Events;
+using TMPro;
+using SuperNewRoles.Modules;
+using System;
 
 namespace SuperNewRoles.CustomOptions
 {

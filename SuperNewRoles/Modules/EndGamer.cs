@@ -1,12 +1,12 @@
 using System.Collections.Generic;
 using System.Linq;
-using SuperNewRoles.CustomOptions.Categories;
 using SuperNewRoles.Patches;
 using SuperNewRoles.Roles;
-using SuperNewRoles.Roles.Ability;
 using SuperNewRoles.Roles.Modifiers;
 using SuperNewRoles.Roles.Neutral;
 using UnityEngine;
+using SuperNewRoles.CustomOptions.Categories;
+using SuperNewRoles.Roles.Ability;
 
 namespace SuperNewRoles.Modules;
 

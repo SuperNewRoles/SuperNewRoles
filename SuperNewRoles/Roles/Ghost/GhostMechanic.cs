@@ -1,9 +1,9 @@
 using System;
 using System.Collections.Generic;
-using SuperNewRoles.CustomOptions;
-using SuperNewRoles.Modules;
 using SuperNewRoles.Roles.Ability;
+using SuperNewRoles.Modules;
 using UnityEngine;
+using SuperNewRoles.CustomOptions;
 
 namespace SuperNewRoles.Roles.Ghost;
 

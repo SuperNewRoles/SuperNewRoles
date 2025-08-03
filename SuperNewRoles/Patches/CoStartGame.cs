@@ -5,6 +5,7 @@ using SuperNewRoles.CustomObject;
 using SuperNewRoles.Modules;
 using SuperNewRoles.Modules.Events.Bases;
 using SuperNewRoles.SuperTrophies;
+using SuperNewRoles.MapCustoms;
 
 namespace SuperNewRoles.Patches;
 
@@ -34,11 +35,17 @@ class AmongUsClientStartPatch
                 Logger.Info($"Found {disconnectedPlayers.Length} disconnected players during game start");
             }
 
+            // 初期化処理を一箇所に統合
             ExPlayerControl.SetUpExPlayers();
             EventListenerManager.ResetAllListener();
             SuperTrophyManager.CoStartGame();
             Garbage.ClearAndReload();
             CustomKillAnimationManager.ClearCurrentCustomKillAnimation();
+
+            // The Fungle マップ初期化フラグをリセット
+            FungleAdditionalAdmin.Reset();
+            FungleAdditionalElectrical.Reset();
+            ZiplineUpdown.Reset();
         }
         catch (Exception ex)
         {

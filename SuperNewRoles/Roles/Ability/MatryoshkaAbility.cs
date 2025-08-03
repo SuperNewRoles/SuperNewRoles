@@ -62,6 +62,7 @@ public class MatryoshkaAbility : CustomButtonBase, IButtonEffect, IAbilityCount
 
     public override void AttachToAlls()
     {
+        base.AttachToAlls();
         changeKillTimerAbility = new ChangeKillTimerAbility(() => GameOptionsManager.Instance.CurrentGameOptions.GetFloat(AmongUs.GameOptions.FloatOptionNames.KillCooldown) + Data.AdditionalKillCoolTime * Counter);
 
         Player.AttachAbility(changeKillTimerAbility, new AbilityParentAbility(this));

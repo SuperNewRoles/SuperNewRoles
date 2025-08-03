@@ -28,7 +28,7 @@ public abstract class VentTargetCustomButtonBase : CustomButtonBase
             _lastShowTarget = Target;
         }
     }
-
+    
     private static void SetOutline(Vent vent, bool show, Color32 color)
     {
         var rend = vent.myRend;
@@ -36,7 +36,7 @@ public abstract class VentTargetCustomButtonBase : CustomButtonBase
         rend.material.SetFloat("_Outline", show ? 1f : 0f);
         if (show) rend.material.SetColor("_OutlineColor", color);
     }
-
+    
     public static Vent SetTarget(IEnumerable<Vent> untargetableVents = null, PlayerControl targetingPlayer = null, Func<Vent, bool> isTargetable = null, bool ignoreWalls = false)
     {
         if (!ShipStatus.Instance) return null;

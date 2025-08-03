@@ -1,12 +1,12 @@
 using System;
 using System.Collections.Generic;
-using SuperNewRoles.CustomOptions;
-using SuperNewRoles.Events;
-using SuperNewRoles.Modules;
-using SuperNewRoles.Modules.Events.Bases;
 using SuperNewRoles.Roles.Ability;
-using SuperNewRoles.Roles.Ability.CustomButton;
 using UnityEngine;
+using SuperNewRoles.CustomOptions;
+using SuperNewRoles.Modules;
+using SuperNewRoles.Roles.Ability.CustomButton;
+using SuperNewRoles.Modules.Events.Bases;
+using SuperNewRoles.Events;
 
 namespace SuperNewRoles.Roles.Ghost;
 
@@ -56,7 +56,7 @@ class Cantera : GhostRoleBase<Cantera>
 public record CanteraAbilityOption(float Cooldown, float Duration, float ChangedVision, bool IsLimitUses, int MaxUses);
 public class CanteraAbility : TargetCustomButtonBase, IButtonEffect
 {
-    public override Color32 OutlineColor => Cantera.Instance.RoleColor;
+    public override Color32 OutlineColor => new(102, 153, 255, byte.MaxValue);
 
     public override bool OnlyCrewmates => false;
 
