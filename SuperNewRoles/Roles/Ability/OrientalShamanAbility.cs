@@ -44,7 +44,7 @@ public class OrientalShamanAbility : AbilityBase
         );
 
         _knowOtherAbility = new KnowOtherAbility(
-            canKnowOther: (player) => player.IsKiller(),
+            canKnowOther: (player) => player.IsKiller() || _servant?.Player == player,
             () => false
         );
 
