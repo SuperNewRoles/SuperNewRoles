@@ -1,10 +1,10 @@
 using System;
 using System.Collections.Generic;
+using UnityEngine;
 using AmongUs.GameOptions;
 using SuperNewRoles.CustomOptions;
-using SuperNewRoles.Modules;
 using SuperNewRoles.Roles.Ability;
-using UnityEngine;
+using SuperNewRoles.Modules;
 
 namespace SuperNewRoles.Roles.Madmates;
 class MadJester : RoleBase<MadJester>
@@ -18,10 +18,12 @@ class MadJester : RoleBase<MadJester>
                 MadJesterCouldUseVent,
                 MadJesterHasImpostorVision,
                 MadJesterCanKnowImpostors,
-                MadJesterNeededTaskCount,
+                MadJesterKnowImpostorTaskCount,
                 MadJesterIsSpecialTasks,
                 MadJesterSpecialTasks,
-                MadJesterWinOnTaskComplete
+                MadJesterWinOnTaskComplete,
+                MadJesterWinOnExiled,
+                MadJesterWinRequiredTaskCount
             ))
         };
 
@@ -35,16 +37,22 @@ class MadJester : RoleBase<MadJester>
     public override RoleTag[] RoleTags => [];
     public override RoleOptionMenuType OptionTeam => RoleOptionMenuType.Crewmate;
 
-    [CustomOptionBool("MadJesterCanKnowImpostors", false)]
+    [CustomOptionBool("MadJesterWinOnExiled", true)]
+    public static bool MadJesterWinOnExiled;
+
+    [CustomOptionInt("MadJesterWinRequiredTaskCount", 0, 30, 1, 5, parentFieldName: nameof(MadJesterWinOnExiled))]
+    public static int MadJesterWinRequiredTaskCount;
+
+    [CustomOptionBool("MadJesterCanKnowImpostors", false, translationName: "MadmateCanKnowImpostors")]
     public static bool MadJesterCanKnowImpostors;
 
-    [CustomOptionInt("MadJesterNeededTaskCount", 0, 30, 1, 6, parentFieldName: nameof(MadJesterWinOnTaskComplete))]
-    public static int MadJesterNeededTaskCount;
+    [CustomOptionInt("MadJesterKnowImpostorTaskCount", 0, 30, 1, 5, parentFieldName: nameof(MadJesterCanKnowImpostors))]
+    public static int MadJesterKnowImpostorTaskCount;
 
-    [CustomOptionBool("MadJesterIsSpecialTasks", false)]
+    [CustomOptionBool("MadJesterIsSpecialTasks", false, translationName: "MadmateIsSpecialTasks")]
     public static bool MadJesterIsSpecialTasks;
 
-    [CustomOptionTask("MadJesterSpecialTasks", 1, 1, 1, parentFieldName: nameof(MadJesterIsSpecialTasks))]
+    [CustomOptionTask("MadJesterSpecialTasks", 1, 1, 1, parentFieldName: nameof(MadJesterIsSpecialTasks), translationName: "MadmateSpecialTasks")]
     public static TaskOptionData MadJesterSpecialTasks;
 
     [CustomOptionBool("MadJesterCouldUseVent", false, translationName: "CanUseVent")]
@@ -53,6 +61,6 @@ class MadJester : RoleBase<MadJester>
     [CustomOptionBool("MadJesterHasImpostorVision", false, translationName: "HasImpostorVision")]
     public static bool MadJesterHasImpostorVision;
 
-    [CustomOptionBool("MadJesterWinOnTaskComplete", false)]
+    [CustomOptionBool("MadJesterWinOnTaskComplete", false, displayMode: DisplayModeId.None)]
     public static bool MadJesterWinOnTaskComplete;
 }

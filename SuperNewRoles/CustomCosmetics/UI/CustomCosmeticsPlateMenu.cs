@@ -169,3 +169,4 @@ public class CustomCosmeticsPlateMenu : CustomCosmeticsMenuBase<CustomCosmeticsP
         GameObject.Destroy(CurrentCostumeTab);
     }
 }
+

@@ -49,3 +49,4 @@ class Worshiper : RoleBase<Worshiper>
     [CustomOptionTask("WorshiperSpecialTasks", 1, 1, 1, translationName: "MadmateSpecialTasks", parentFieldName: nameof(WorshiperIsSpecialTasks))]
     public static TaskOptionData WorshiperSpecialTasks;
 }
+

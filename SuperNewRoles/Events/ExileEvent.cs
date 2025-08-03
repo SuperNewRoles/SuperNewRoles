@@ -19,3 +19,4 @@ public class ExileEvent : EventTargetBase<ExileEvent, ExileEventData>
         Instance.Awake(data);
     }
 }
+

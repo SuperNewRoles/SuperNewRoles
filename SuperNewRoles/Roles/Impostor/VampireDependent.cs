@@ -1,12 +1,12 @@
 using System;
 using System.Collections.Generic;
+using UnityEngine;
 using AmongUs.GameOptions;
 using SuperNewRoles.CustomOptions;
-using SuperNewRoles.Events.PCEvents;
 using SuperNewRoles.Modules;
-using SuperNewRoles.Modules.Events.Bases;
 using SuperNewRoles.Roles.Ability;
-using UnityEngine;
+using SuperNewRoles.Modules.Events.Bases;
+using SuperNewRoles.Events.PCEvents;
 
 namespace SuperNewRoles.Roles.Impostor;
 class VampireDependent : RoleBase<VampireDependent>

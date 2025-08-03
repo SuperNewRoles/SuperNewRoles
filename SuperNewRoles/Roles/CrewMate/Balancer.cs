@@ -4,7 +4,6 @@ using System.Collections.Generic;
 using System.Linq;
 using AmongUs.GameOptions;
 using BepInEx.Unity.IL2CPP.Utils.Collections;
-using HarmonyLib;
 using Hazel;
 using SuperNewRoles.CustomOptions;
 using SuperNewRoles.Events;
@@ -13,8 +12,9 @@ using SuperNewRoles.Modules.Events.Bases;
 using SuperNewRoles.Patches;
 using SuperNewRoles.Roles.Ability;
 using SuperNewRoles.Roles.Ability.CustomButton;
-using TMPro;
 using UnityEngine;
+using TMPro;
+using HarmonyLib;
 
 namespace SuperNewRoles.Roles.Crewmate;
 
@@ -1052,3 +1052,4 @@ class BalancerMeetingButton : CustomMeetingButtonBase
         }
     }
 }
+

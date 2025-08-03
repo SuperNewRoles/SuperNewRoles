@@ -1,10 +1,10 @@
-using System;
 using System.Collections.Generic;
-using System.Linq;
-using SuperNewRoles.Modules;
-using SuperNewRoles.Roles;
-using TMPro;
 using UnityEngine;
+using TMPro;
+using SuperNewRoles.Roles;
+using SuperNewRoles.Modules;
+using System;
+using System.Linq;
 
 namespace SuperNewRoles.CustomOptions.Data;
 public class ModifierOptionMenuObjectData : OptionMenuBase

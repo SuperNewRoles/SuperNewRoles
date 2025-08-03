@@ -1,14 +1,14 @@
 using System;
 using System.Collections.Generic;
+using UnityEngine;
 using AmongUs.GameOptions;
-using SuperNewRoles.Ability;
 using SuperNewRoles.CustomOptions;
-using SuperNewRoles.Events.PCEvents;
-using SuperNewRoles.Modules;
-using SuperNewRoles.Modules.Events.Bases;
 using SuperNewRoles.Roles.Ability;
 using SuperNewRoles.Roles.Ability.CustomButton;
-using UnityEngine;
+using SuperNewRoles.Modules;
+using SuperNewRoles.Events.PCEvents;
+using SuperNewRoles.Modules.Events.Bases;
+using SuperNewRoles.Ability;
 
 namespace SuperNewRoles.Roles.Impostor;
 
@@ -18,9 +18,9 @@ class DoubleKiller : RoleBase<DoubleKiller>
     public override Color32 RoleColor { get; } = Palette.ImpostorRed;
     public override List<Func<AbilityBase>> Abilities { get; } = [
         () => new DoubleKillerAbility(new(DoubleKillerKillCountRemaining ? DoubleKillerMaxKillCount : null)),
-        () => new CustomSaboAbility(
-    canSabotage: () => DoubleKillerCanSabotage
-),
+                () => new CustomSaboAbility(
+            canSabotage: () => DoubleKillerCanSabotage
+        ),
         () => new CustomVentAbility(
             canUseVent: () => DoubleKillerCanUseVent
         )
@@ -34,7 +34,7 @@ class DoubleKiller : RoleBase<DoubleKiller>
     public override WinnerTeamType WinnerTeam { get; } = WinnerTeamType.Impostor;
     public override TeamTag TeamTag { get; } = TeamTag.Impostor;
     public override RoleTag[] RoleTags { get; } = [];
-    public override RoleOptionMenuType OptionTeam { get; } = RoleOptionMenuType.Hidden;
+    public override RoleOptionMenuType OptionTeam => RoleOptionMenuType.Impostor;
 
     [CustomOptionFloat("DoubleKillerMainKillCooldown", 2.5f, 60f, 2.5f, 30f)]
     public static float DoubleKillerMainKillCooldown;
@@ -45,7 +45,7 @@ class DoubleKiller : RoleBase<DoubleKiller>
     [CustomOptionBool("DoubleKillerKillCountRemaining", true)]
     public static bool DoubleKillerKillCountRemaining;
 
-    [CustomOptionInt("DoubleKillerMaxKillCount", 1, 10, 1, 1, parentFieldName: nameof(DoubleKillerKillCountRemaining))]
+    [CustomOptionInt("DoubleKillerMaxKillCount", 1, 10, 1, 1,parentFieldName: nameof(DoubleKillerKillCountRemaining))]
     public static int DoubleKillerMaxKillCount;
     [CustomOptionBool("DoubleKillerCanUseVent", true, translationName: "CanUseVent")]
     public static bool DoubleKillerCanUseVent;
@@ -164,8 +164,7 @@ public class DoubleKillerAbility : AbilityBase, IAbilityCount
 
         // サブキルボタン（独立したクールダウン）
         Player.AttachAbility(new IndependentKillButtonAbility(
-            () =>
-            {
+            () => {
                 // 安全性を確保するためのnull参照チェック
                 if (DoubleKillerAbilityData?.DoubleKillerCount == null) return true;
                 // 実際のCountプロパティを使用してカウントを確認
@@ -173,8 +172,7 @@ public class DoubleKillerAbility : AbilityBase, IAbilityCount
             },
             () => DoubleKiller.DoubleKillerSubKillCooldown,
             onlyCrewmates: () => true,
-            killedCallback: x =>
-            {
+            killedCallback: x => {
                 // 安全性を確保するためのnull参照チェック
                 if (DoubleKillerAbilityData?.DoubleKillerCount != null && HasCount)
                 {
@@ -189,8 +187,7 @@ public class DoubleKillerAbility : AbilityBase, IAbilityCount
                 }
             },
             showTextType: () => DoubleKillerAbilityData?.DoubleKillerCount != null ? ShowTextType.Show : ShowTextType.Hidden,
-            showText: () =>
-            {
+            showText: () => {
                 // 安全性を確保するためのnull参照チェック
                 if (DoubleKillerAbilityData?.DoubleKillerCount == null) return "";
                 return string.Format(ModTranslation.GetString("RemainingText"), Count.ToString());
