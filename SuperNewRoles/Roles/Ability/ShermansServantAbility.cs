@@ -1,12 +1,12 @@
 using System;
-using Hazel;
-using SuperNewRoles.Events;
-using SuperNewRoles.Events.PCEvents;
 using SuperNewRoles.Modules;
-using SuperNewRoles.Modules.Events.Bases;
 using SuperNewRoles.Roles.Ability.CustomButton;
 using SuperNewRoles.Roles.Neutral;
+using SuperNewRoles.Events;
+using SuperNewRoles.Events.PCEvents;
+using SuperNewRoles.Modules.Events.Bases;
 using UnityEngine;
+using Hazel;
 
 namespace SuperNewRoles.Roles.Ability;
 
@@ -20,6 +20,7 @@ public class ShermansServantAbility : AbilityBase
     private PlayerArrowsAbility _playerArrowsAbility;
     private EventListener _fixedUpdateListener;
     private EventListener<WrapUpEventData> _wrapUpListener;
+    private KnowOtherAbility _knowOtherAbility;
 
     // ShermansServant specific variables
     private bool _isTransformed = false;
@@ -47,11 +48,14 @@ public class ShermansServantAbility : AbilityBase
         _deadBodyArrowsAbility = new DeadBodyArrowsAbility(() => true, new Color32(165, 42, 42, 255));
         // プレイヤーの矢印の初期化
         _playerArrowsAbility = new PlayerArrowsAbility(() => _orientalShamanAbility?.Player != null ? [_orientalShamanAbility.Player] : [], (player) => OrientalShaman.Instance.RoleColor);
+        // 陰陽師が見えるように
+        _knowOtherAbility = new KnowOtherAbility((player) => _orientalShamanAbility?.Player == player, () => false);
 
         Player.AttachAbility(_transformButton, new AbilityParentAbility(this));
         Player.AttachAbility(_suicideButton, new AbilityParentAbility(this));
         Player.AttachAbility(_deadBodyArrowsAbility, new AbilityParentAbility(this));
         Player.AttachAbility(_playerArrowsAbility, new AbilityParentAbility(this));
+        Player.AttachAbility(_knowOtherAbility, new AbilityParentAbility(this));
 
         _wrapUpListener = WrapUpEvent.Instance.AddListener(OnWrapUp);
     }

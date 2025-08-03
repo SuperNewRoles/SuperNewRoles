@@ -1,16 +1,16 @@
 using System;
 using System.Collections.Generic;
+using UnityEngine;
 using AmongUs.GameOptions;
-using Hazel;
-using SuperNewRoles.Ability;
-using SuperNewRoles.CustomObject;
-using SuperNewRoles.CustomOptions;
-using SuperNewRoles.Events;
-using SuperNewRoles.Modules;
-using SuperNewRoles.Modules.Events.Bases;
 using SuperNewRoles.Roles.Ability;
 using SuperNewRoles.Roles.Ability.CustomButton;
-using UnityEngine;
+using SuperNewRoles.CustomOptions;
+using SuperNewRoles.Modules;
+using SuperNewRoles.Events;
+using Hazel;
+using SuperNewRoles.Modules.Events.Bases;
+using SuperNewRoles.CustomObject;
+using SuperNewRoles.Ability;
 
 namespace SuperNewRoles.Roles.Impostor;
 

@@ -1,15 +1,15 @@
 using System;
 using System.Collections.Generic;
-using System.Linq;
+using UnityEngine;
 using AmongUs.GameOptions;
 using SuperNewRoles.CustomOptions;
-using SuperNewRoles.Events;
 using SuperNewRoles.Modules;
-using SuperNewRoles.Modules.Events;
-using SuperNewRoles.Modules.Events.Bases;
 using SuperNewRoles.Roles.Ability;
 using SuperNewRoles.Roles.Ability.CustomButton;
-using UnityEngine;
+using SuperNewRoles.Modules.Events.Bases;
+using System.Linq;
+using SuperNewRoles.Events;
+using SuperNewRoles.Modules.Events;
 
 namespace SuperNewRoles.Roles.CrewMate;
 
@@ -23,8 +23,7 @@ class VentTrapper : RoleBase<VentTrapper>
         setupTime: VentTrapperSetupTime,
         stunTime: VentTrapperStunTime,
         canUseVent: VentTrapperCanUseVent
-    )),
-        () => new CustomVentAbility(() => VentTrapperCanUseVent)];
+    )), () => new CustomVentAbility(() => VentTrapperCanUseVent)];
     public override QuoteMod QuoteMod { get; } = QuoteMod.SuperNewRoles;
     public override RoleTypes IntroSoundType { get; } = RoleTypes.Crewmate;
     public override short IntroNum { get; } = 1;

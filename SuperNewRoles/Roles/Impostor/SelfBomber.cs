@@ -1,15 +1,15 @@
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using AmongUs.GameOptions;
 using SuperNewRoles.CustomOptions;
-using SuperNewRoles.Events;
 using SuperNewRoles.Modules;
-using SuperNewRoles.Modules.Events.Bases;
-using SuperNewRoles.Patches; // CheckGameEndEventData のため
 using SuperNewRoles.Roles.Ability;
-using SuperNewRoles.SuperTrophies;
 using UnityEngine;
+using System.Linq;
+using SuperNewRoles.Events;
+using SuperNewRoles.Modules.Events.Bases;
+using SuperNewRoles.SuperTrophies;
+using SuperNewRoles.Patches; // CheckGameEndEventData のため
 
 namespace SuperNewRoles.Roles.Impostor;
 
@@ -25,7 +25,8 @@ class SelfBomber : RoleBase<SelfBomber>
             onlyCrewmates: () => SelfBomberOnlyKillCrewmates,
             targetPlayersInVents: () => true,
             isTargetable: null,
-            killedCallback: (killedPlayers) => { },
+            killedCallback: (killedPlayers) => {
+            },
             customSprite: AssetManager.GetAsset<Sprite>("SelfBomberBomButton.png"),
             customButtonText: ModTranslation.GetString("SelfBomberKillButtonText"),
             customDeathType: CustomDeathType.BombBySelfBomb,

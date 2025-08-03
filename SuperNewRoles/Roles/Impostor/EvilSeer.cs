@@ -1,13 +1,13 @@
 using System;
 using System.Collections.Generic;
+using UnityEngine;
 using AmongUs.GameOptions;
 using SuperNewRoles.CustomOptions;
+using SuperNewRoles.Roles.Ability;
+using SuperNewRoles.Modules;
 using SuperNewRoles.Events;
 using SuperNewRoles.Events.PCEvents;
-using SuperNewRoles.Modules;
 using SuperNewRoles.Modules.Events.Bases;
-using SuperNewRoles.Roles.Ability;
-using UnityEngine;
 
 namespace SuperNewRoles.Roles.Impostor;
 
@@ -16,15 +16,14 @@ class EvilSeer : RoleBase<EvilSeer>
     public override RoleId Role { get; } = RoleId.EvilSeer;
     public override Color32 RoleColor { get; } = Palette.ImpostorRed;
     public override List<Func<AbilityBase>> Abilities { get; } = [
-        () => new SeerAbility(new SeerData()
-        {
+        () => new SeerAbility(new SeerData() {
             Mode = EvilSeerSeerMode,
             LimitSoulDuration = EvilSeerLimitSoulDuration,
             SoulDuration = EvilSeerSoulDuration,
-            FlashColorMode = EvilSeerAbilityColorModeSelect is EvilSeerAbility.All or EvilSeerAbility.FlashOnly ? EvilSeerColorMode : DeadBodyColorMode.None,
+            FlashColorMode =  EvilSeerAbilityColorModeSelect is EvilSeerAbility.All or EvilSeerAbility.FlashOnly ? EvilSeerColorMode : DeadBodyColorMode.None,
             SoulColorMode = EvilSeerAbilityColorModeSelect is EvilSeerAbility.All or EvilSeerAbility.SoulOnly ? EvilSeerColorMode : DeadBodyColorMode.None
         }),
-        () => new DeadBodyArrowsAbility(() => EvilSeerShowArrows, colorMode: EvilSeerAbilityColorModeSelect is EvilSeerAbility.All or EvilSeerAbility.ArrowOnly ? EvilSeerColorMode : DeadBodyColorMode.None),
+        () => new DeadBodyArrowsAbility(() => EvilSeerShowArrows, colorMode : EvilSeerAbilityColorModeSelect is EvilSeerAbility.All or EvilSeerAbility.ArrowOnly ? EvilSeerColorMode : DeadBodyColorMode.None),
         () => new EvilSeerHauntAbility(EvilSeerHauntMode is EvilSeerHauntMode.Both or EvilSeerHauntMode.OnlyEvilSeerHaunt),
         () => new CustomModifierGrantedButtonAbility(new(
         canGrantModifier: (granted) => !granted && EvilSeerHauntMode is EvilSeerHauntMode.Both or EvilSeerHauntMode.OnlyOthersHaunt,

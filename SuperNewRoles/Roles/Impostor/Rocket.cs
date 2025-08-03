@@ -1,17 +1,17 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using UnityEngine;
 using AmongUs.GameOptions;
-using SuperNewRoles.Ability;
-using SuperNewRoles.CustomObject;
 using SuperNewRoles.CustomOptions;
+using SuperNewRoles.Roles.Ability;
+using SuperNewRoles.Modules;
+using SuperNewRoles.Roles.Ability.CustomButton;
 using SuperNewRoles.Events;
 using SuperNewRoles.Events.PCEvents;
-using SuperNewRoles.Modules;
 using SuperNewRoles.Modules.Events.Bases;
-using SuperNewRoles.Roles.Ability;
-using SuperNewRoles.Roles.Ability.CustomButton;
-using UnityEngine;
+using SuperNewRoles.Ability;
+using SuperNewRoles.CustomObject;
 
 namespace SuperNewRoles.Roles.Impostor;
 
@@ -150,6 +150,12 @@ public class RocketGrabAbility : TargetCustomButtonBase
     private void OnFixedUpdate()
     {
         if (Player == null || GrabbedPlayers.Count == 0) return;
+        if (Player.IsDead())
+        {
+            if (Player.AmOwner)
+                RpcClearGrabbedPlayers();
+            return;
+        }
         foreach (var grabbedPlayer in GrabbedPlayers.ToList())
         {
             if (Player.AmOwner && (grabbedPlayer == null || grabbedPlayer.IsDead()))

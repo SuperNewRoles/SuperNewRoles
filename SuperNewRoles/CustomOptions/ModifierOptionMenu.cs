@@ -1,12 +1,12 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using SuperNewRoles.CustomOptions.Data;
 using SuperNewRoles.Modules;
-using SuperNewRoles.Roles;
-using TMPro;
 using UnityEngine;
 using UnityEngine.Events;
+using SuperNewRoles.CustomOptions.Data;
+using TMPro;
+using SuperNewRoles.Roles;
 using UnityEngine.PlayerLoop;
 
 namespace SuperNewRoles.CustomOptions;
@@ -1137,6 +1137,13 @@ public static class ModifierOptionMenu
         }
     }
 
+    private static bool CanShowAssignFilterRole(IRoleBase roleInfo, AssignedTeamType roleType)
+    {
+        var menuData = ModifierOptionMenuObjectData.Instance;
+        if (menuData.CurrentEditingModifierForAssignFilter.ModifierAssignFilterTeam.Length > 0 && !menuData.CurrentEditingModifierForAssignFilter.ModifierAssignFilterTeam.Contains(roleInfo.AssignedTeam)) return false;
+        if (menuData.CurrentEditingModifierForAssignFilter.ModifierDoNotAssignRoles.Length > 0 && menuData.CurrentEditingModifierForAssignFilter.ModifierDoNotAssignRoles.Contains(roleInfo.Role)) return false;
+        return roleInfo.AssignedTeam == roleType;
+    }
     private static void GenerateAssignFilterRoleDetailButtons(string roleType)
     {
         var menuData = ModifierOptionMenuObjectData.Instance;
@@ -1151,37 +1158,53 @@ public static class ModifierOptionMenu
         container.transform.localScale = Vector3.one;
         menuData.AssignFilterRoleDetailButtonContainer = container;
 
-        // ExclusivityOptionMenuのGenerateRoleDetailButtonsを参考にする
-        // var roles = RoleOptionManager.RoleOptions.Where(...) // フィルタリングロジック
-        // 仮のロールリスト
-        var roles = RoleOptionManager.RoleOptions.Where(x =>
+        AssignedTeamType teamType = roleType switch
         {
-            var roleInfo = CustomRoleManager.AllRoles.FirstOrDefault(r => r.Role == x.RoleId);
-            // ダミー実装: IsHiddenは常にfalseとして扱う
-            if (roleInfo == null /* || roleInfo.IsHidden */) return false;
-            if (menuData.CurrentEditingModifierForAssignFilter.ModifierAssignFilterTeam.Length > 0 && !menuData.CurrentEditingModifierForAssignFilter.ModifierAssignFilterTeam.Contains(roleInfo.AssignedTeam)) return false;
-            if (menuData.CurrentEditingModifierForAssignFilter.ModifierDoNotAssignRoles.Length > 0 && menuData.CurrentEditingModifierForAssignFilter.ModifierDoNotAssignRoles.Contains(roleInfo.Role)) return false;
-            return roleType switch
-            {
-                "Impostor" => roleInfo.AssignedTeam == AssignedTeamType.Impostor,
-                "Neutral" => roleInfo.AssignedTeam == AssignedTeamType.Neutral,
-                "Crewmate" => roleInfo.AssignedTeam == AssignedTeamType.Crewmate,
-                _ => false,
-            };
-        }).ToList();
+            "Impostor" => AssignedTeamType.Impostor,
+            "Neutral" => AssignedTeamType.Neutral,
+            "Crewmate" => AssignedTeamType.Crewmate,
+            _ => AssignedTeamType.Impostor,
+        };
 
+        // HashSetを使用して重複を除去
+        var validRolesSet = new HashSet<RoleId>();
+        var validRolesList = new List<IRoleBase>();
+
+        // vanilla Roles
+        var vanillaRoles = CustomRoleManager.AllRoles.Where(x => x.IsVanillaRole);
+        foreach (var role in vanillaRoles)
+        {
+            if (!CanShowAssignFilterRole(role, teamType)) continue;
+            if (validRolesSet.Add(role.Role)) // 重複チェックして追加
+            {
+                validRolesList.Add(role);
+            }
+        }
+
+        // custom roles
+        var roles = CustomRoleManager.AllRoles.Where(x =>
+        {
+            // ダミー実装: IsHiddenは常にfalseとして扱う
+            if (x == null || x.HiddenOption) return false;
+            if (!CanShowAssignFilterRole(x, teamType)) return false;
+            return true;
+        });
+
+        foreach (var role in roles)
+        {
+            if (validRolesSet.Add(role.Role)) // 重複チェックして追加
+            {
+                validRolesList.Add(role);
+            }
+        }
 
         int index = 0;
-        foreach (var roleOption in roles)
+        foreach (var roleOption in validRolesList)
         {
-            var roleInfo = CustomRoleManager.AllRoles.FirstOrDefault(r => r.Role == roleOption.RoleId);
-            // ダミー実装: IsHiddenは常にfalseとして扱う (roleInfoがnullでないことは上で確認済み)
-            if (roleInfo == null /*|| roleInfo.IsHidden*/) continue;
-
-            string roleName = ModTranslation.GetString($"{roleInfo.Role}");
+            string roleName = ModTranslation.GetString($"{roleOption.Role}");
             // ExclusivityOptionMenuのGenerateRoleDetailButtonを参考にする
             var button = GenerateAssignFilterSingleRoleDetailButton(roleName, container.transform, index, roleOption);
-            ConfigureAssignFilterRoleDetailButton(button, roleOption, menuData.CurrentEditingModifierForAssignFilter);
+            ConfigureAssignFilterRoleDetailButton(button, roleOption.Role, menuData.CurrentEditingModifierForAssignFilter);
             index++;
         }
 
@@ -1191,7 +1214,7 @@ public static class ModifierOptionMenu
         }
     }
 
-    private static GameObject GenerateAssignFilterSingleRoleDetailButton(string roleName, Transform parent, int index, RoleOptionManager.RoleOption roleOption)
+    private static GameObject GenerateAssignFilterSingleRoleDetailButton(string roleName, Transform parent, int index, IRoleBase roleBase)
     {
         // ExclusivityOptionMenuのGenerateRoleDetailButtonをほぼ流用
         var obj = GameObject.Instantiate(AssetManager.GetAsset<GameObject>(RoleOptionMenu.ROLE_DETAIL_BUTTON_ASSET_NAME));
@@ -1204,12 +1227,12 @@ public static class ModifierOptionMenu
         float posY = 5.85f - row * 1.85f;  // ExclusivityOptionMenuの値を流用、要調整
         obj.transform.localPosition = new Vector3(posX, posY, -0.21f);
 
-        obj.transform.Find("Text").GetComponent<TextMeshPro>().text = $"<b><color=#{ColorUtility.ToHtmlStringRGB(roleOption.RoleColor)}>{roleName}</color></b>";
+        obj.transform.Find("Text").GetComponent<TextMeshPro>().text = $"<b><color=#{ColorUtility.ToHtmlStringRGB(roleBase.RoleColor)}>{roleName}</color></b>";
         return obj;
     }
 
 
-    private static void ConfigureAssignFilterRoleDetailButton(GameObject button, RoleOptionManager.RoleOption roleOption, ModifierOptionMenuObjectData.ModifierCategoryDataBase currentModifier)
+    private static void ConfigureAssignFilterRoleDetailButton(GameObject button, RoleId roleId, ModifierOptionMenuObjectData.ModifierCategoryDataBase currentModifier)
     {
         // ExclusivityOptionMenuのConfigureRoleDetailButtonを参考にする
         var passiveButton = button.AddComponent<PassiveButton>();
@@ -1226,8 +1249,6 @@ public static class ModifierOptionMenu
             if (currentModifier == null) return;
 
             assignFilterRoles = currentModifier.AssignFilterList();
-
-            var roleId = roleOption.RoleId; // RoleIdentifier型であると仮定し、stringに変換
 
             // 入っている時は削除して、明るくする
             if (assignFilterRoles.Contains(roleId)) // ダミーリストで確認
@@ -1261,7 +1282,7 @@ public static class ModifierOptionMenu
 
         // 初期の選択状態を設定
         // bool isSelected = currentModifier != null && currentModifier.AssignFilterRoles != null && currentModifier.AssignFilterRoles.Contains(roleOption.RoleId);
-        bool isSelected = currentModifier != null && !assignFilterRoles.Contains(roleOption.RoleId); // ダミーリストで確認
+        bool isSelected = currentModifier != null && !assignFilterRoles.Contains(roleId); // ダミーリストで確認
         spriteRenderer.color = isSelected ? Color.white : new Color(1f, 1f, 1f, 0.6f);
         if (selectedObject != null) selectedObject.SetActive(false); // 初期は非表示が良いかも
     }

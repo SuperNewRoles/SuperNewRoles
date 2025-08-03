@@ -189,7 +189,7 @@ public static class SyncSpawn
                 Logger.Warning("[SyncSpawn] LocalPlayer is null in RpcAllSelectedFromHost");
                 return;
             }
-
+            
             Logger.Info($"[SyncSpawn] RpcAllSelectedFromHost executed on client {PlayerControl.LocalPlayer.name}({PlayerControl.LocalPlayer.PlayerId}). SpawnLocation: {SpawnLocation?.Name.ToString() ?? "null"}. Current SpawnedPlayers.Count on this client: {SpawnedPlayers.Count}. Players: {string.Join(", ", SpawnedPlayers.Select(p => p.Player.name))}");
             spawnSuccess = true;
             if (!GameSettingOptions.SyncSpawn)
@@ -204,7 +204,7 @@ public static class SyncSpawn
                 Logger.Error("[SyncSpawn] SpawnInMinigame instance not found in RpcAllSelectedFromHost. Aborting.");
                 return;
             }
-
+            
             // SpawnLocationの有効性を確認
             if (SpawnLocation == null)
             {
