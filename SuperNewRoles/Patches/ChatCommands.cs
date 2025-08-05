@@ -58,7 +58,10 @@ public static class SendChatPatch
             else if (text.ToLower().StartsWith("/w") || text.ToLower().StartsWith("/winners"))
             {
                 handled = true;
-                __instance.AddChat(PlayerControl.LocalPlayer, GetWinnerMessage());
+                string name = PlayerControl.LocalPlayer.name;
+                PlayerControl.LocalPlayer.SetName(GetWinnerMessage());
+                __instance.AddChat(PlayerControl.LocalPlayer, " ");
+                PlayerControl.LocalPlayer.SetName(name);
             }
             if (AmongUsClient.Instance.NetworkMode == NetworkModes.FreePlay)
             {
