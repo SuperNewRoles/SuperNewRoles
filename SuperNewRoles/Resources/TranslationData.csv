@@ -291,7 +291,7 @@ FinalResults,最終結果,Final Results,最终结果,最終結果
 # FinalStatus
 FinalStatus.Alive,生存,Alive,生存,生存
 FinalStatus.Kill,キル,Kill,击杀,擊殺
-FinalStatus.Disconnect,切断,Disonnected,切断,切斷
+FinalStatus.Disconnect,切断,Disconnected,切断,切斷
 FinalStatus.Exiled,追放,Exiled,追放,追放
 FinalStatus.Sabotage,サボタージュ,Sabotage,破坏,破壞
 FinalStatus.WaveCannon,蒸発,Vaporize,蒸发,蒸發
@@ -335,7 +335,7 @@ HelpMenu.NoneOptions2,役職の設定が見つかりませんでした。おに�
 HelpMenu.AllTeams,全陣営,All Teams,所有阵营,所有陣營
 
 # MadFriendsIntro
-MadRolesSubIntro,この命は我が主たるインポスターのために,This life is for my mastert，the Impostor.,为内鬼献出生命,背叛船員，為吾主內鬼而戰。
+MadRolesSubIntro,この命は我が主たるインポスターのために,This life is for my master，the Impostor.,为内鬼献出生命,背叛船員，為吾主內鬼而戰。
 FriendRolesSubIntro,ジャッカルに寄り添いし者,One who stands by the jackal.,帮助豺狼获得胜利,豺狼之友，同生共死。
 
 # AssignRoles
