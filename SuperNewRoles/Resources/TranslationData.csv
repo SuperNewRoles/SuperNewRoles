@@ -125,13 +125,13 @@ NetworkTransformTypeLowLatencyLevel.SuperLow,超低,Super Low,超低,超低
 NetworkTransformTypeLowLatencyLevel.Bad,絶対ダメ(超高遅延),Bad (Very Very High Latency),差(超高延迟),差(超高延遲)
 SumouMode,相撲モード(ベータ),Sumo Mode (Beta),相扑模式(测试版),相撲模式(測試版)
 SumouHighPerformance,高いパフォーマンス(遅延増),High Performance (Increased Latency),高性能(延迟增加),高性能(延遲增加)
-FixSpawnPacketSize,ホストが切断されにくくする(推奨:オン),Fix Spawn Packet Size(Recommended active) ,修复出生点数据包大小,修復出生點數據包大小
+FixSpawnPacketSize,ホストが切断されにくくする(推奨:オン),Stabilize Host Connection (Recommended: On) ,修复出生点数据包大小,修復出生點數據包大小
 
 # SyncSpawn
 WaitingSpawnText,ロドー中... 残り:{0}/{1}クルー,Waiting... {0}/{1} Crewmates,等待中... {0}/{1} 船员,等待中... {0}/{1} 船員
 
 # GameSettings
-CannotTaskTrigger,タスクに関係ない役職の場合、タスクをできなくする,If the role is not related to the task，the task cannot be done,如果角色与任务无关，则无法完成任务,如果角色與任務無關，則無法完成任務
+CannotTaskTrigger,タスクに関係ない役職の場合、タスクをできなくする,Disable tasks for non-task-related roles,如果角色与任务无关，则无法完成任务,如果角色與任務無關，則無法完成任務
 SyncSpawn,スポーンを同期する(選択スポーンのみ),Sync Spawn (Selected Spawn Only),同步出生点(仅选择出生点),同步出生點(僅選擇出生點)
 AdvancedRandom,よりランダムな乱数を使用する,Use a more random random number,使用更随机的随机数,使用更隨機的隨機數
 DisableTaskWin,タスク勝利を無効にする,Disable task victory
@@ -302,7 +302,7 @@ FinalStatus.Samurai,切り捨て御免,Permission to cut down granted,斩无赦,
 FinalStatus.BombBySelfBomb,爆破,Bomb by Self Bomber,自爆被卷入,自爆被卷入
 FinalStatus.SelfBomb,自爆,Self Bomb,自爆,自爆
 FinalStatus.Tuna,水揚げ,Tuna,水揚げ,水揚げ
-FinalStatus.Ignite,炎上,Ignite,着火,著火
+FinalStatus.Ignite,炎上,Ignited,着火,著火
 FinalStatus.SheriffKill,正義執行,Sheriff Kill,警長擊殺,警長擊殺
 FinalStatus.SheriffWrongfulMurder,過失殺人,Wrongful murder,误杀,誤殺
 FinalStatus.SheriffMisFire,失意の自殺,Sheriff Self Death,失意,失意
@@ -517,7 +517,7 @@ VampireDependent.Description,インポスター陣営に属する役職です。
 EvilMechanic.Description,タスクターンに使用出来る能力を有するインポスターです。\nベントに向かって「移設」ボタンを押すとベントの姿になり、そのベントを移動することが出来ます。\nベントの接続先は変更されません。,An Impostor with an ability usable during task turns.\nBy pressing the “Relocate” button near a vent，they transform into that vent and can move the vent’s position.\nThe vent’s connections remain unchanged.,这是一个在任务回合中可使用能力的内鬼。\n对准通风口按下“移位”按钮后，会变成通风口并可以移动该通风口。\n通风口的连接不发生变化。,這是一個在任務回合中可使用能力的內鬼。\n對準通風口按下「移位」按鈕後，會變成通風口並可以移動該通風口。\n通風口的連接不發生變化。,
 EvilHawk.Description,タスクターンに使用出来る能力を有するインポスターです。\n「ホークアイ」ボタンを押すと自分の視野が広がり、周囲の様子を見ることが出来ます。,An Impostor with an ability usable during task turns.\nBy pressing the “Hawkeye” button，they expand their vision to survey the surroundings.,这是一个在任务回合中可使用能力的内鬼。\n按下“鹰眼”按钮后，会扩大视野以观察周围情况。,這是一個在任務回合中可使用能力的內鬼。\n按下「鷹眼」按鈕後，會擴大視野以觀察周圍情況。,
 EvilScientist.Description,タスクターンに使用出来る能力を有するインポスターです。\n「透明化」ボタンを押すと、一定時間自身の姿が透明になります。\n透明化中であっても、能力の対象になります。\nまた、設定次第では能力使用中のライターには見えてしまいます。,An imposter with an ability that can be used during the Task Turn.\nWhen you press the 'Invisibility' button， your appearance becomes invisible for a certain period of time.\nEven while invisible， you can still be targeted by abilities.\nAlso， depending on the settings， lighters may see you while you're using the ability。,是具有能够在任务轮回合使用能力的冒名顶替者。当你按下“隐身”按钮时，你的身影会在一定时间内变为隐形。即使在隐身状态下，你仍会成为能力的目标。另外，根据设置，在使用能力时，写手也可能会看到你。,是具有能夠在任務回合使用能力的冒名頂替者。當你按下「隱身」按鈕時，你的身影會在一定時間內變為隱形。即使在隱身狀態下，你仍會成為能力的目標。另外，根據設定，在使用能力時，寫手也可能會看到你。,
-DoubleKiller.Description,特殊なキル能力を有するインポスターです。\nキルボタンを２つ所持しています。\nクールタイムは独立しており、別々に使用することが出来ます。,An impostor with special kill abilities。\nHas two kill buttons。\nCooldowns are independent、so they can be used separately。,拥有特殊击杀能力的冒充者。\n拥有两个击杀按钮。\n冷却时间独立、可以分别使用。,具有特殊擊殺能力的冒名顶替者。\n持有兩個擊殺按鈕。\n冷卻時間獨立、可以分別使用。
+DoubleKiller.Description,特殊なキル能力を有するインポスターです。\nキルボタンを２つ所持しています。\nクールタイムは独立しており、別々に使用することが出来ます。,An Impostor with a special kill ability.\nThey have two independent kill buttons，each with its own cooldown.,拥有特殊击杀能力的冒充者。\n拥有两个击杀按钮。\n冷却时间独立、可以分别使用。,具有特殊擊殺能力的冒名顶替者。\n持有兩個擊殺按鈕。\n冷卻時間獨立、可以分別使用。
 Finder.Description,タスクターンに発動する能力を有するインポスターです。\n指定のキル数を達成するとマッドメイトが誰かわかります。,An impostor with an ability activated on the task turn。\nAfter reaching a specified number of kills、you can identify who the madmate is。,具有在任务回合发动能力的冒充者。\n达到指定击杀次数后、可以知道疯狂队友是谁。,具有在任務回合發動能力的冒充者。\n達到指定擊殺次數後、可以知道瘋狂隊友是誰。
 Nun.Description,タスクターンに使用出来る能力を有するインポスターです。\n「ぬーん」ボタンを押すと、エアシップの昇降機を遠隔で動かすことが出来ます。,An impostor with an ability usable on the task turn。\nPressing the “Nuun” button lets you remotely operate the airship’s elevator。,具有在任务回合使用能力的冒充者。\n按下“ぬーん”按钮可以远程操作飞船的升降机。,具有在任務回合使用能力的冒充者。\n按下「ぬーん」按鈕可以遠程操作飛船的升降機。
 ShiftActor.Description,タスクターンに使用出来る能力を有するインポスターです。\n変身すると、変身した相手の役職を知ることが出来ます。,An impostor with an ability usable on the task turn。\nWhen you shapeshift、you can learn the role of the target you transformed into。,具有在任务回合使用能力的冒充者。\n变身时、可以知道变身对象的身份。,具有在任務回合使用能力的冒充者。\n變身時、可以知道變身對象的身份。
@@ -1173,7 +1173,7 @@ NekoKabocha.CanRevengeExiled,追放時に復讐できる,Can Revenge When Exiled
 
 # Matryoshka
 MatryoshkaWearLimit,纏える回数,Number of times you can wear it,恐怖套娃最大套娃次数,恐怖套娃最大套娃次數
-MatryoshkaAddKillCoolTime,死体まといの増加キルクールタイムタイム,Increased kill-cool time time for corpse coats,恐怖套娃每次套娃追加的击杀冷却,恐怖套娃每次套娃增加的擊殺冷却
+MatryoshkaAddKillCoolTime,死体まといの増加キルクールタイム,Increased kill-cool time for corpse coats,恐怖套娃每次套娃追加的击杀冷却,恐怖套娃每次套娃增加的擊殺冷却
 MatryoshkaWearReport,まとい中でも通報可能,can be called in while the body is still circled,恐怖套娃可以在套娃状态下报告,恐怖套娃可以在套娃狀態下報告
 MatryoshkaWearTime,まとえる時間,Coiling time,恐怖套娃套娃持续时间,恐怖套娃套娃持續時間
 MatryoshkaPutOnButtonName,着る,Put On,套娃,套娃
