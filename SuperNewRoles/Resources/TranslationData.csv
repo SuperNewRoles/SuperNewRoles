@@ -296,7 +296,7 @@ FinalStatus.Exiled,追放,Exiled,追放,追放
 FinalStatus.Sabotage,サボタージュ,Sabotage,破坏,破壞
 FinalStatus.WaveCannon,蒸発,Vaporize,蒸发,蒸發
 FinalStatus.FalseCharge,冤罪,False Charge,冤罪,冤罪
-FinalStatus.Revange,道連れ,Revange,道連れ,道連れ
+FinalStatus.Revange,道連れ,Revenge,道連れ,道連れ
 FinalStatus.Suicide,自殺,Suicide,自殺,自殺
 FinalStatus.Samurai,切り捨て御免,Permission to cut down granted,斩无赦,斬無赦
 FinalStatus.BombBySelfBomb,爆破,Bomb by Self Bomber,自爆被卷入,自爆被卷入
@@ -1127,7 +1127,7 @@ PenguinHundredKillDescription,ペンギンの能力で累計100人キルした,K
 
 # Pusher
 PusherButtonName,ドン！,Push!
-PusherRevengeRole,突き落とした相手が猫又系の役職だった場合、ランダムに道連れする,If the player you pushed is a nekomata role，randomly pull along,如果被推的玩家是疯友角色，随机道连,如果被推的玩家是瘋友角色，隨機道連
+PusherRevengeRole,突き落とした相手が猫又系の役職だった場合、ランダムに道連れする,If the player you pushed is a nekomata role，randomly take another player down with you.,如果被推的玩家是疯友角色，随机道连,如果被推的玩家是瘋友角色，隨機道連
 
 # EvilHacker Settings
 EvilHackerCanMoveWhileUsingAdmin,アドミン使用中に移動出来る,Can Move While Using Admin,使用管理地图时可以移动,使用管理地圖時可以移動
@@ -1174,7 +1174,7 @@ NekoKabocha.CanRevengeExiled,追放時に復讐できる,Can Revenge When Exiled
 # Matryoshka
 MatryoshkaWearLimit,纏える回数,Number of times you can wear it,恐怖套娃最大套娃次数,恐怖套娃最大套娃次數
 MatryoshkaAddKillCoolTime,死体まといの増加キルクールタイム,Increased kill-cool time for corpse coats,恐怖套娃每次套娃追加的击杀冷却,恐怖套娃每次套娃增加的擊殺冷却
-MatryoshkaWearReport,まとい中でも通報可能,can be called in while the body is still circled,恐怖套娃可以在套娃状态下报告,恐怖套娃可以在套娃狀態下報告
+MatryoshkaWearReport,まとい中でも通報可能,Can report while wearing a body,恐怖套娃可以在套娃状态下报告,恐怖套娃可以在套娃狀態下報告
 MatryoshkaWearTime,まとえる時間,Coiling time,恐怖套娃套娃持续时间,恐怖套娃套娃持續時間
 MatryoshkaPutOnButtonName,着る,Put On,套娃,套娃
 MatryoshkaTakeOffButtonName,脱ぐ,Take Off,解除,解除
