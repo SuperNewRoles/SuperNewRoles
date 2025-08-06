@@ -21,7 +21,7 @@ CanSabotage,サボタージュを使用できる,Can Sabotage,可以使用破坏
 HasImpostorVision,インポスターの視界を持つ,Has Impostor Vision,拥有内鬼视野,擁有內鬼視野
 TaskOption,タスクを個別で設定するか,Set tasks individually,独立设置任务,獨立設置任務
 UseLimit,使用可能回数,Usage Limit,可使用次数,可使用次數
-RemainingText,残り{0}回,Remaining {0} times,剩余 {0} 次,剩餘 {0} 次
+RemainingText,残り{0}回,Uses Left: {0},剩余 {0} 次,剩餘 {0} 次
 DurationTimerText,残り{0}秒,Remaining {0} seconds,剩余 {0} 秒,剩餘 {0} 秒
 AdditionalWin,追加勝利,Additional Win,额外胜利,額外勝利
 Seconds,秒,Seconds,秒,秒
@@ -152,7 +152,7 @@ AprilFoolsOutfitType.AlongUs,ロングモード,aLONG us
 AprilFoolsEnableDleks,ドルクス,Dleks ehT
 DisableHauntNonCompleted,タスクを完了していないと憑依できない,Disable haunt if the task is not completed
 EnabledZoomOnDead,霊界千里眼を有効にする,Enable spectator clairvoyance after death
-ImmediateKillCooldown,初手キルクールタイムを設定値から始める,Start kill cooldown from settings,初始击杀冷却遵循设置,初始擊殺冷卻遵循設定
+ImmediateKillCooldown,初手キルクールタイムを設定値から始める,Override initial kill cooldown,初始击杀冷却遵循设置,初始擊殺冷卻遵循設定
 
 # Analytics
 AnalyticsPopupTitle,解析データの送信,Send analytics data,发送分析数据,發送分析數據
@@ -179,7 +179,7 @@ VersionUpdateReleaseNoteNotFound,リリースノートが見つかりません�
 
 # RequestInGame
 RequestInGameButtonText,バグ報告、要望、質問、感謝メールなどはこちらから,Bug reports，requests，questions，and thank you messages can be sent here
-RequestInGameDiscordText,Discordはこちら,Discord is this,Discord 是這裡,Discord 是這裡
+RequestInGameDiscordText,Discordはこちら,Join our Discord,Discord 是這裡,Discord 是這裡
 RequestInGameMailBox,受信箱,Mailbox,收件箱,收件箱
 RequestInGameUpperText,お問い合わせフォーム,Contact Form,联系表单,聯絡表單
 RequestInGameMessageTooShort,メッセージが短すぎます。3文字以上にしてください。,The message is too short. Please enter at least 3 characters.,消息太短了。请输入至少3个字符。,消息太短了。請輸入至少3個字符。
@@ -192,7 +192,7 @@ RequestInGameSendTitleGray,タイトル,Title,标题,標題
 RequestInGameSendTitleBack,タイトルを入力してください(3文字以上),Please enter a title (at least 3 characters),请输入标题（至少3个字符）,請輸入標題（至少3個字元）
 RequestInGameSendDescriptionGray,メッセージ,Message,消息,訊息
 RequestInGameSendDescriptionBack,メッセージを入力してください(10文字以上),Please enter a message (at least 10 characters),请输入消息（至少10个字符）,請輸入訊息（至少10個字元）
-RequestInGameAgreement,利用規約はこちら,Agreement is here,利用規約在這裡,利用規約在這裡
+RequestInGameAgreement,利用規約はこちら,Terms of Service,利用規約在這裡,利用規約在這裡
 RequestInGameSendButton,同意して送信,Send with agreement,同意后发送,同意後發送
 RequestInGameLoadingData,データを取得中,Loading data
 RequestInGameSendingReport,レポートを送信中,Sending report
@@ -863,7 +863,7 @@ BalancerTitleTextAverage,はかりにかけられる運命,Fate on the scales,�
 BalancerTitleTextYouVoteEither,どちらかに入れる?,Vote for one of them...,投票给其中一个...,投票給其中一個...
 BalancerTitleTextEitherExile,追放者の運命が決まる...,The fate of the exiled is decided...,被驱逐者的命运已定...,被驅逐者的命運已定...
 BalancerTitleTextWhoIsImpostor,どっちがインポスター？,Which one is the Impostor?,哪一个是内鬼？,哪一個是內鬼？
-BalancerTitleTextPleaseVote,どちらかに入れろ,Put it one way or the other.,到底要选哪个呢,誰的罪孽更深呢
+BalancerTitleTextPleaseVote,どちらかに入れろ,You must vote for one.,到底要选哪个呢,誰的罪孽更深呢
 BalancerTitleTextGetBalance,バランスを求めよ。,Seek balance.,寻求平衡,尋求平衡
 BalancerAbilityUseText,能力発動,Ability activated,能力發動,能力發動
 BalancerVoteText,どちらかに投票せよ！,Vote for one or the other!,请选择一名玩家投票！,將票投給其中一邊！
@@ -1306,9 +1306,9 @@ LoversKnowPartnerRole,相方の役職がわかる,Know Partner Role
 LoversKnowPartnerPosition,相方の位置がわかる,Know Partner Position
 
 # Owl
-OwlCanSpecialBlackoutDeadBodyCount,特殊停電を使えるようになる死体数,Number of bodies that will be able to use special blackout,获得紧急停电所需藏匿的尸体数,啟用黑幕降臨所需的屍體數
-OwlSpecialBlackoutCool,特殊停電のクールタイム,Cooldown for special power outages,紧急停电冷却时间,黑幕降臨的冷卻時間
-OwlSpecialBlackoutTime,特殊停電の効果時間,Effect duration of special power outages,紧急停电持续时间,黑幕降臨的持續時間
+OwlCanSpecialBlackoutDeadBodyCount,特殊停電を使えるようになる死体数,Corpses count required to use Special Blackout,获得紧急停电所需藏匿的尸体数,啟用黑幕降臨所需的屍體數
+OwlSpecialBlackoutCool,特殊停電のクールタイム,Cooldown for special blackout,紧急停电冷却时间,黑幕降臨的冷卻時間
+OwlSpecialBlackoutTime,特殊停電の効果時間,Effect duration of special blackout,紧急停电持续时间,黑幕降臨的持續時間
 OwlCanKillOutsideOfBlackout,停電以外でもキルできる,Can kill outside of blackout
 OwlCanTransportOutsideOfBlackout,停電以外でも運搬できる,Can transported outside of blackout
 OwlNestButtonText,巣作り,Nest building,筑巢,築巢
