@@ -1173,9 +1173,9 @@ NekoKabocha.CanRevengeExiled,追放時に復讐できる,Can Revenge When Exiled
 
 # Matryoshka
 MatryoshkaWearLimit,纏える回数,Number of times you can wear it,恐怖套娃最大套娃次数,恐怖套娃最大套娃次數
-MatryoshkaAddKillCoolTime,死体まといの増加キルクールタイム,Increased kill cooldown for corpse coats,恐怖套娃每次套娃追加的击杀冷却,恐怖套娃每次套娃增加的擊殺冷却
+MatryoshkaAddKillCoolTime,死体まといの増加キルクールタイム,Increased kill cooldown while wearing a body,恐怖套娃每次套娃追加的击杀冷却,恐怖套娃每次套娃增加的擊殺冷却
 MatryoshkaWearReport,まとい中でも通報可能,Can report while wearing a body,恐怖套娃可以在套娃状态下报告,恐怖套娃可以在套娃狀態下報告
-MatryoshkaWearTime,まとえる時間,Coiling time,恐怖套娃套娃持续时间,恐怖套娃套娃持續時間
+MatryoshkaWearTime,まとえる時間,Wear Duration,恐怖套娃套娃持续时间,恐怖套娃套娃持續時間
 MatryoshkaPutOnButtonName,着る,Put On,套娃,套娃
 MatryoshkaTakeOffButtonName,脱ぐ,Take Off,解除,解除
 
