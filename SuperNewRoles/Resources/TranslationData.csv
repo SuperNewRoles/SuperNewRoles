@@ -11,11 +11,11 @@ Modifier,モディファイア,Modifier,修饰符,修飾符
 People,{0}人,{0} people,{0}人,{0}人
 
 # 共通設定テキスト
-CoolTime,クールタイム,Cool Time,冷却时间,冷卻時間
-KillCoolTime,キルクールタイム,Kill Cool Time,击杀冷却时间,擊殺冷卻時間
+CoolTime,クールタイム,Cooldown,冷却时间,冷卻時間
+KillCoolTime,キルクールタイム,Kill Cooldown,击杀冷却时间,擊殺冷卻時間
 DurationTime,効果時間,Duration Time,持续时间,持續時間
 CanUseVent,ベントを使用できる,Can Use Vent,可以使用通风口,可以使用通風口
-VentCooldown,ベントクールタイム,Vent Cool Time,通风口冷却时间,通風口冷卻時間
+VentCooldown,ベントクールタイム,Vent Cooldown,通风口冷却时间,通風口冷卻時間
 VentDuration,ベント持続時間,Vent Duration Time,通风口持续时间,通風口持續時間
 CanSabotage,サボタージュを使用できる,Can Sabotage,可以使用破坏,可以使用破壞
 HasImpostorVision,インポスターの視界を持つ,Has Impostor Vision,拥有内鬼视野,擁有內鬼視野
@@ -213,12 +213,12 @@ RoleOptionMenuType.Neutral,第三陣営,Neutral,第三阵营,第三陣營
 ScientistButtonName,透明化,Invisible,隐身,隱身
 
 # NiceScientist
-NiceScientistCoolTime,クールタイム,Cool Time,冷却时间,冷卻時間
+NiceScientistCoolTime,クールタイム,Cooldown,冷却时间,冷卻時間
 NiceScientistDurationTime,効果時間,Duration Time,持续时间,持續時間
 NiceScientistCanTheLighterSeeTheScientist,ライターが透明化を見破れる,Lighter can see invisible,灯光师可以看见隐身,燈光師可以看見隱身
 
 # EvilScientist
-EvilScientistCoolTime,クールタイム,Cool Time,冷却时间,冷卻時間
+EvilScientistCoolTime,クールタイム,Cooldown,冷却时间,冷卻時間
 EvilScientistDurationTime,効果時間,Duration Time,持续时间,持續時間
 EvilScientistCanTheLighterSeeTheScientist,ライターが透明化を見破れる,Lighter can see invisible,灯光师可以看见隐身,燈光師可以看見隱身
 RoleOptionMenuType.Ghost,幽霊役職,Ghost Role,幽灵角色,幽靈角色
@@ -1173,7 +1173,7 @@ NekoKabocha.CanRevengeExiled,追放時に復讐できる,Can Revenge When Exiled
 
 # Matryoshka
 MatryoshkaWearLimit,纏える回数,Number of times you can wear it,恐怖套娃最大套娃次数,恐怖套娃最大套娃次數
-MatryoshkaAddKillCoolTime,死体まといの増加キルクールタイム,Increased kill-cool time for corpse coats,恐怖套娃每次套娃追加的击杀冷却,恐怖套娃每次套娃增加的擊殺冷却
+MatryoshkaAddKillCoolTime,死体まといの増加キルクールタイム,Increased kill cooldown for corpse coats,恐怖套娃每次套娃追加的击杀冷却,恐怖套娃每次套娃增加的擊殺冷却
 MatryoshkaWearReport,まとい中でも通報可能,Can report while wearing a body,恐怖套娃可以在套娃状态下报告,恐怖套娃可以在套娃狀態下報告
 MatryoshkaWearTime,まとえる時間,Coiling time,恐怖套娃套娃持续时间,恐怖套娃套娃持續時間
 MatryoshkaPutOnButtonName,着る,Put On,套娃,套娃
@@ -1190,7 +1190,7 @@ ConjurerCanKillImpostorOption,インポスターもキルできる,Can Kill Impo
 ConjurerShowFlashOption,フラッシュ効果を表示する,Show Flash Effect,显示闪光效果,顯示閃光效果
 
 # Doppelganger
-DoppelgangerCoolTime,クールタイム,Cool Time,冷却时间,冷卻時間
+DoppelgangerCoolTime,クールタイム,Cooldown,冷却时间,冷卻時間
 DoppelgangerDurationTime,変身持続時間,Shapeshift Duration,变身持续时间,變身持續時間
 DoppelgangerSucCool,成功時のキルクールタイム,Kill Cooldown on Success,成功击杀冷却,成功擊殺冷卻
 DoppelgangerNotSucCool,失敗時のキルクールタイム,Kill Cooldown on Failure,失败击杀冷却,失敗擊殺冷卻
@@ -1307,7 +1307,7 @@ LoversKnowPartnerPosition,相方の位置がわかる,Know Partner Position
 
 # Owl
 OwlCanSpecialBlackoutDeadBodyCount,特殊停電を使えるようになる死体数,Number of bodies that will be able to use special blackout,获得紧急停电所需藏匿的尸体数,啟用黑幕降臨所需的屍體數
-OwlSpecialBlackoutCool,特殊停電のクールタイム,Cool time for special power outages,紧急停电冷却时间,黑幕降臨的冷卻時間
+OwlSpecialBlackoutCool,特殊停電のクールタイム,Cooldown for special power outages,紧急停电冷却时间,黑幕降臨的冷卻時間
 OwlSpecialBlackoutTime,特殊停電の効果時間,Effect duration of special power outages,紧急停电持续时间,黑幕降臨的持續時間
 OwlCanKillOutsideOfBlackout,停電以外でもキルできる,Can kill outside of blackout
 OwlCanTransportOutsideOfBlackout,停電以外でも運搬できる,Can transported outside of blackout
@@ -1319,7 +1319,7 @@ OwlSpecialBlackoutButton,特殊停電,Special Blackout,紧急停电,黑幕降臨
 # SchrodingersCat Role and Options
 SchrodingersCat,シュレディンガーの猫,Schrödinger's Cat,薛定谔的猫,薛丁格的貓
 SchrodingersCatHasKillAbility,キル能力を有する,Has kill ability,具有擊殺能力,具有擊殺能力
-SchrodingersCatKillCooldown,キルクールタイム,Kill Cool Time,擊殺冷卻時間,擊殺冷卻時間
+SchrodingersCatKillCooldown,キルクールタイム,Kill Cooldown,擊殺冷卻時間,擊殺冷卻時間
 SchrodingersCatKillVictimSuicide,キル者が自殺する,Killer suicides,擊殺者自殺,擊殺者自殺
 SchrodingersCatSuicideTime,自殺までの時間,Time until suicide,自殺剩餘時間,自殺剩餘時間
 SchrodingersCatBeCrewOnExile,追放でクルー陣営になる,Become crew on exile,被逐出時變為船員陣營,被逐出時變為船員陣營
@@ -1452,7 +1452,7 @@ SpelunkerDoorOpenChance,ドア開放死の確率,Door Opening Death Chance,开�
 # BlackHatHacker
 BlackHatHacker,ブラックハットハッカー,Black Hat Hacker,黑帽客,黑帽駭客
 BlackHatHackerDescription,ウイルスを使って全員を感染させろ！,Use viruses to infect everyone!,使用病毒感染所有人,使用病毒感染所有人
-BlackHatHackerHackCoolTime,ハックのクールタイム,Hack Cool Time,植入病毒冷却,駭入的冷卻時間
+BlackHatHackerHackCoolTime,ハックのクールタイム,Hack Cooldown,植入病毒冷却,駭入的冷卻時間
 BlackHatHackerHackCountable,ハック可能回数,Number of hacks possible,最大植入病毒次数,駭入的使用次數
 BlackHatHackerIsNotInfectionIncrease,感染者が居なくなったらハック回数を増やす,Increase the number of hacks once the infected are gone,不存在感染者时增加一次感染次数,當感染者消失後，增加駭入的使用次數
 BlackHatHackerHackInfectiousTime,感染時間,Infectious time,感染所需时间,感染所需時間
@@ -1652,13 +1652,13 @@ PhosphorusPutButtonName,設置,Put,放置,放置燈籠
 PhosphorusLightingButtonName,点灯,Lighting,点燃,點燈
 
 # Ubiquitous
-Ubiquitous.CallCoolTime,コールクールタイム,Call Cool Time
-Ubiquitous.OperationCoolTime,操作クールタイム,Operation Cool Time
+Ubiquitous.CallCoolTime,コールクールタイム,Call Cooldown
+Ubiquitous.OperationCoolTime,操作クールタイム,Operation Cooldown
 Ubiquitous.IsLimitOperableTime,操作時間制限,Limit Operable Time
 Ubiquitous.OperableTime,操作可能時間,Operable Time
 Ubiquitous.DroneStayTurn,ドローン滞在ターン,Drone Stay Turn
 Ubiquitous.FlyingSpeed,飛行速度,Flying Speed
-Ubiquitous.DoorHackCoolTime,ドアハッククールタイム,Door Hack Cool Time
+Ubiquitous.DoorHackCoolTime,ドアハッククールタイム,Door Hack Cooldown
 Ubiquitous.DoorHackScope,ドアハック範囲,Door Hack Scope
 Ubiquitous.DroneVisibilityRange,ドローン視認範囲,Drone Visibility Range
 Ubiquitous.MapShowPlayerColor,マップにプレイヤー色表示,Show Player Color on Map
@@ -1675,7 +1675,7 @@ BuskerReallyDeadTimeText,本当に死ぬまで: {0}秒,Really dead in: {0}s,真�
 
 # Camouflager
 CamouflagerButtonText,カモフラージュ,Camouflage,伪装,偽裝
-CamouflagerCoolTime,カモフラージュクールタイム,Camouflage Cool Time,伪装冷却时间,偽裝冷卻時間
+CamouflagerCoolTime,カモフラージュクールタイム,Camouflage Cooldown,伪装冷却时间,偽裝冷卻時間
 CamouflagerDurationTime,カモフラージュ持続時間,Camouflage Duration,伪装持续时间,偽裝持續時間
 CamouflagerCamouflageChangeColor,カモフラージュ色設定,Camouflage Color Setting,伪装颜色设置,偽裝顏色設置
 CamouflagerCamouflageColor,カモフラージュ色,Camouflage Color,伪装颜色,偽裝顏色
@@ -1712,8 +1712,8 @@ MushroomerHasGasMask,ガスマスクを持つ,Has Gas Mask,拥有防毒面具,�
 MushroomerMushroomPlantCount,キノコ設置可能数,Mushroom Plant Count,蘑菇设置数量,蘑菇設置數量
 MushroomerMushroomExplosionCount,爆発可能回数,Explosion Count,爆炸次数,爆炸次數
 MushroomerMushroomExplosionRange,爆発範囲,Explosion Range,爆炸范围,爆炸範圍
-MushroomerMushroomPlantCoolTime,キノコ設置クールタイム,Mushroom Plant Cool Time,蘑菇设置冷却时间,蘑菇設置冷卻時間
-MushroomerMushroomExplosionCoolTime,爆発クールタイム,Explosion Cool Time,爆炸冷却时间,爆炸冷卻時間
+MushroomerMushroomPlantCoolTime,キノコ設置クールタイム,Mushroom Plant Cooldown,蘑菇设置冷却时间,蘑菇設置冷卻時間
+MushroomerMushroomExplosionCoolTime,爆発クールタイム,Explosion Cooldown,爆炸冷却时间,爆炸冷卻時間
 MushroomerPlantButtonName,キノコ設置,Plant Mushroom,设置蘑菇,設置蘑菇
 MushroomerExplosionButtonName,爆発,Explode,爆炸,爆炸
 MushroomerActiveUsedMushroom,キノコ有効化後、発動するまで見えない,Mushroom active after use,蘑菇使用后，激活前不可见,蘑菇使用後，激活前不可見
