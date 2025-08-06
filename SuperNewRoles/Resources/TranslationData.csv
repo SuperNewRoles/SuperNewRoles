@@ -30,7 +30,7 @@ Seconds,秒,Seconds,秒,秒
 colorSalmon,サーモン,Salmon,鲑鱼红,鮭魚紅
 colorBordeaux,ボルドー,Bordeaux,枣红,波爾多紅
 colorOlive,オリーブ,Olive,橄榄绿,橄欖綠
-colorTurqoise,ターコイズ,Turqoise,绿松石,綠松石藍
+colorTurqoise,ターコイズ,Turquoise,绿松石,綠松石藍
 colorMint,ミント,Mint,薄荷绿,薄荷綠
 colorLavender,ラベンダー,Lavender,薰衣紫,薰衣紫
 colorNougat,ヌガー,Nougat,棕褐,棕褐
@@ -133,10 +133,10 @@ WaitingSpawnText,ロドー中... 残り:{0}/{1}クルー,Waiting... {0}/{1} Crew
 # GameSettings
 CannotTaskTrigger,タスクに関係ない役職の場合、タスクをできなくする,Disable tasks for non-task-related roles,如果角色与任务无关，则无法完成任务,如果角色與任務無關，則無法完成任務
 SyncSpawn,スポーンを同期する(選択スポーンのみ),Sync Spawn (Selected Spawn Only),同步出生点(仅选择出生点),同步出生點(僅選擇出生點)
-AdvancedRandom,よりランダムな乱数を使用する,Use a more random random number,使用更随机的随机数,使用更隨機的隨機數
+AdvancedRandom,よりランダムな乱数を使用する,Use Enhanced Randomness,使用更随机的随机数,使用更隨機的隨機數
 DisableTaskWin,タスク勝利を無効にする,Disable task victory
 DisableHijackTaskWin,第三陣営のタスク勝利横取りを無効にする,Disable hijack task victory by third party
-HideGhostRoles,死亡時に他クルーの役職を表示しない,Do not display other crew roles upon death
+HideGhostRoles,死亡時に他クルーの役職を表示しない,Hide Crew Roles on Death
 ShowGhostRolesToImpostor,インポスターにのみ表示する,Only visible to impostors
 GhostVoteDisplay,死亡時の投票表示,Ghost vote display
 GhostVoteDisplayType.Vanilla,バニラ,Vanilla
@@ -157,7 +157,7 @@ ImmediateKillCooldown,初手キルクールタイムを設定値から始める,
 # Analytics
 AnalyticsPopupTitle,解析データの送信,Send analytics data,发送分析数据,發送分析數據
 AnalyticsPopupText,SuperNewRolesの開発の為に、解析データを送信します。\n送信されるデータは以下をご覧ください。\n特定の個人を特定できる情報は送信しません。\nhttps://wiki.supernewroles.com/analytics,For the development of SuperNewRoles,\nwe will send analysis data.\nPlease see below for the details of the data being sent.\nNo personally identifiable information will be transmitted.\nhttps://wiki.supernewroles.com/analytics
-AnalyticsOK,わかった,understand,我明白了,我明白了
+AnalyticsOK,わかった,Understood,我明白了,我明白了
 
 # ClientOptions
 ClientOptionsVanilla,バニラ設定,Vanilla Settings,原版设置,原版設置
@@ -174,7 +174,7 @@ VersionCurrent,選択中,Current,選擇中,選擇中
 VersionWillUpdate,再起動後適用,Apply after restart
 VersionLoaded,適用済み,Applied,已適用,已適用
 VersionUpdateReleaseNoteLoading,リリースノートを読み込み中...,Loading release note...
-VersionUpdateReleaseNoteLoadingError,リリースノートの読み込みに失敗しました。,Failed to load release note..
+VersionUpdateReleaseNoteLoadingError,リリースノートの読み込みに失敗しました。,Failed to load release notes.
 VersionUpdateReleaseNoteNotFound,リリースノートが見つかりませんでした。,Release note not found.
 
 # RequestInGame
@@ -290,7 +290,7 @@ FinalResults,最終結果,Final Results,最终结果,最終結果
 
 # FinalStatus
 FinalStatus.Alive,生存,Alive,生存,生存
-FinalStatus.Kill,キル,Kill,击杀,擊殺
+FinalStatus.Kill,キル,Killed,击杀,擊殺
 FinalStatus.Disconnect,切断,Disconnected,切断,切斷
 FinalStatus.Exiled,追放,Exiled,追放,追放
 FinalStatus.Sabotage,サボタージュ,Sabotage,破坏,破壞
@@ -298,14 +298,14 @@ FinalStatus.WaveCannon,蒸発,Vaporize,蒸发,蒸發
 FinalStatus.FalseCharge,冤罪,False Charge,冤罪,冤罪
 FinalStatus.Revange,道連れ,Revenge,道連れ,道連れ
 FinalStatus.Suicide,自殺,Suicide,自殺,自殺
-FinalStatus.Samurai,切り捨て御免,Permission to cut down granted,斩无赦,斬無赦
+FinalStatus.Samurai,切り捨て御免,Cut Down,斩无赦,斬無赦
 FinalStatus.BombBySelfBomb,爆破,Bomb by Self Bomber,自爆被卷入,自爆被卷入
 FinalStatus.SelfBomb,自爆,Self Bomb,自爆,自爆
 FinalStatus.Tuna,水揚げ,Tuna,水揚げ,水揚げ
 FinalStatus.Ignite,炎上,Ignited,着火,著火
-FinalStatus.SheriffKill,正義執行,Sheriff Kill,警長擊殺,警長擊殺
+FinalStatus.SheriffKill,正義執行,Killed by Sheriff,警長擊殺,警長擊殺
 FinalStatus.SheriffWrongfulMurder,過失殺人,Wrongful murder,误杀,誤殺
-FinalStatus.SheriffMisFire,失意の自殺,Sheriff Self Death,失意,失意
+FinalStatus.SheriffMisFire,失意の自殺,Died from Misfire,失意,失意
 FinalStatus.SheriffSuicide,自決,Die in the line of duty
 FinalStatus.FalseCharges,冤罪死,Death by false accusation,冤枉致死,冤枉致死
 FinalStatus.GuesserKill,推殺,Guess kill,推测击杀,推測擊殺
@@ -526,7 +526,7 @@ EvilDoorr.Description,タスクターンに使用出来る能力を有するイ�
 Mushroomer.Description,タスクターンに使用出来る能力を有するインポスターです。\nThe Fungleのジャングルにあるキノコを設置することが出来ます。\nキノコは設置した次のターンに有効化します。\nまた、全てのキノコを設置するとキノコ爆発が使えるようになります。\n「爆発」ボタンを押すと、最初から設置されているキノコを含め、全てのキノコを一斉に爆発させます。,An impostor with an ability usable on the task turn。\nYou can place mushrooms in The Fungle jungle。\nMushrooms activate on the turn after placement。\nAlso、once all mushrooms are placed、you gain the mushroom explosion ability。\nPressing the “Explode” button triggers all mushrooms、including the originals、to explode simultaneously。,具有在任务回合使用能力的冒充者。\n可以在The Fungle丛林中放置蘑菇。\n蘑菇在放置后的下一回合生效。\n此外、放置所有蘑菇后、可使用蘑菇爆炸。\n按下“爆炸”按钮、会同时引爆所有蘑菇（包括最初放置的）。,具有在任務回合使用能力的冒充者。\n可以在The Fungle叢林中放置蘑菇。\n蘑菇在放置後的下一回合生效。\n此外、放置所有蘑菇後、可使用蘑菇爆炸。\n按下「爆炸」按鈕、會同時引爆所有蘑菇（包括最初放置的）。
 DimensionWalker.Description,タスクターンに使用出来る能力を有するインポスターです。\n「設置」ボタンを押すとワームホールを設置出来ます。\nワームホールは一定時間経過後有効化し、ワームホール間を行き来出来るベントとして機能します。\nワームホールはディメンションウォーカー以外のインポスターも使用可能です。\n「回収」ボタンでワームホールを回収し、使用回数を回復させることが出来ます。,An impostor with an ability usable on the task turn。\nPressing the “Place” button lets you deploy a wormhole。\nAfter a set time、the wormhole activates and functions as a vent、allowing travel between wormholes。\nOther impostors besides the Dimension Walker can also use the wormholes。\nPressing the “Retract” button retrieves a wormhole and restores its uses。,具有在任务回合使用能力的冒充者。\n按下“Place”按钮可以部署虫洞。\n一定时间后、虫洞激活并作为通风口运行、可以在虫洞间来回移动。\n除了Dimension Walker之外的冒充者也能使用虫洞。\n按下“Retract”按钮可以收回虫洞并恢复使用次数。,具有在任務回合使用能力的冒充者。\n按下「Place」按鈕可以部署蟲洞。\n一定時間後、蟲洞激活並作為通風口運行、可以在蟲洞間來回移動。\n除了Dimension Walker之外的冒充者也能使用蟲洞。\n按下「Retract」按鈕可以收回蟲洞並恢復使用次數。
 DarkKiller.Description,キルに関係する能力を有するインポスターです。\nキルクールが短い代わりに、停電中しかキルが出来ません。,An impostor with kill-related abilities。\nWhile the kill cooldown is short、you can only kill during a blackout。,具有击杀相关能力的冒充者。\n虽然击杀冷却较短、但只能在停电时击杀。,具有擊殺相關能力的冒充者。\n雖然擊殺冷卻較短、但只能在停電時擊殺。
-Robber.Description,キルに関係する能力を有するインポスターです。\nキルをした対象のタスク進捗を巻き戻します。,An Impostor with abilities related to kills．\nRewinds the task progress of the target they killed．,与击杀有关能力的内鬼．\n会回溯被击杀目标的任务进度．,擁有與擊殺相關能力的內鬼．\n會回溯被擊殺對象的任務進度．
+Robber.Description,キルに関係する能力を有するインポスターです。\nキルをした対象のタスク進捗を巻き戻します。,An Impostor with abilities related to kills．.\nRewinds the task progress of the target they killed．,与击杀有关能力的内鬼．\n会回溯被击杀目标的任务进度．,擁有與擊殺相關能力的內鬼．\n會回溯被擊殺對象的任務進度．
 OverKiller.Description,キルに関係する能力を有するインポスターです。\nキルをした対象の死体を増やします。,An Impostor with abilities related to kills．\nIncreases the number of corpses from the target killed．,与击杀有关能力的内鬼．\n会增加被击杀目标的尸体数量．,擁有與擊殺相關能力的內鬼．\n會增加被擊殺對象的屍體數量．
 EvilSeer.Description,タスクターンに発動する能力を有するインポスターです。\n誰かが死亡すると画面が発光します。\n誰かが死亡した箇所に霊魂を確認することも出来ます。\n死体が発生した場合、その死体の方向に矢印を表示する事もできます。\nこれらの能力は設定によって、死者の色を反映させる事もできます。\nまた、設定次第では「取り憑かせる」ボタンを押すことで、対象のプレイヤーにモディファイア狼憑きを付与することが出来ます。,An Impostor with abilities that activate during task turns．\nWhen someone dies，the screen flashes．\nYou can also confirm the spirit at the location where someone died．\nWhen a corpse appears，an arrow can be displayed pointing toward its direction．\nThese abilities can reflect the color of the deceased depending on settings．\nAlso，depending on the settings，pressing the “Haunt！” button can apply the Modifier Haunted Wolf to the target player．,拥有在任务回合中发动能力的内鬼．\n有人死亡时画面会发光．\n也可以在有人死亡的位置确认灵魂．\n若出现尸体，会显示指向尸体方向的箭头．\n这些能力可根据设定反映死者的颜色．\n此外，根据设定按下“附身”按钮可赋予目标玩家“狼附身”修饰器．,擁有在任務回合中發動能力的內鬼．\n有人死亡時畫面會發光．\n也可以在有人死亡的位置確認靈魂．\n若出現屍體，會顯示指向屍體方向的箭頭．\n這些能力可依設定反映死者的顏色．\n此外，依設定按下「附身」按鈕可賦予目標玩家「狼附身」修飾器．
 Jammer.Description,タスクターンに使用出来る能力を有するインポスターです。\n「透明化」ボタンを押すと対象のプレイヤーを他人から見えなくすることが出来ます。\n透明化された当事者は自覚することが出来ません。\nインポスター視点は透明にされている人が半透明で見えます。,An Impostor with abilities usable during task turns．\nPressing the “Invisibility” button makes the target player invisible to others．\nThe affected player is unaware of being invisible．\nFrom the Impostor's view，the invisible player appears semi-transparent．,拥有在任务回合中可用能力的内鬼．\n按下“隐身”按钮会使目标玩家对他人不可见．\n被隐身的玩家自己不会察觉．\n从内鬼视角看，被隐身的玩家呈半透明状态．,擁有在任務回合中可用能力的內鬼．\n按下「隱形」按鈕會使目標玩家對他人不可見．\n被隱形的玩家自己不會察覺．\n從內鬼視角來看，被隱形的玩家呈半透明狀態．
@@ -876,14 +876,14 @@ BalancerLimitText,天秤残り{0}回,Balancer Limit {0} times,天秤剩余{0}次
 SelfBomberKillButtonText,爆発,Explosion,爆炸,爆炸
 SelfBomberCooldown,爆発クールダウン,Explosion Cooldown,爆炸冷却时间,爆炸冷卻時間
 SelfBomberExplosionRadius,爆発範囲,Explosion Radius,爆炸范围,爆炸範圍
-SelfBomberOnlyKillCrewmates,インポスターはキルしない,Only Kill Crewmates,只能杀船员,只能殺船員
+SelfBomberOnlyKillCrewmates,インポスターはキルしない,Don't Kill Impostors,只能杀船员,只能殺船員
 SelfBomberIgnoreWalls,壁を無視する,Ignore Walls,忽略墙壁,忽略牆壁
 
 # Samurai
 SamuraiKillButtonText,必殺技,Slash,斬擊,斬擊
 SamuraiKillCooldown,必殺技クールダウン,Slash Cooldown,斬擊冷卻時間,斬擊冷卻時間
 SamuraiKillRadius,必殺技の範囲,Slash Radius,斬擊範圍,斬擊範圍
-SamuraiOnlyKillCrewmates,インポスターはキルしない,Only Kill Crewmates,只能杀船员,只能殺船員
+SamuraiOnlyKillCrewmates,インポスターはキルしない,Don't Kill Impostors,只能杀船员,只能殺船員
 SamuraiIgnoreWalls,壁を無視する,Ignore Walls,忽略墙壁,忽略牆壁
 SamuraiCanUseVent,ベントを使用できる,Can Use Vents,可以使用通风口,可以使用通風口
 SamuraiCanSabotage,サボタージュを使用できる,Can Sabotage,可以使用破坏,可以使用破壞
@@ -1580,7 +1580,7 @@ Unknown,不明,Unknown,未知,未知
 # NiceRedRidingHood
 NiceRedRidingHood,ナイス赤ずきん,NiceRedRidingHood,小红帽,小紅帽
 NiceRedRidingHoodIntro1,生き返ろう,Come back to life,杀死你的凶手死亡后你将会复活,殺死你的凶手死亡後你將會復活
-NiceRedRidingHoodDescription,自身をキルしたクルーが死亡した場合、次のターンに復活するクルーメイト役職です。\n\nナイス赤ずきんは、復活可能回数が残っていて、且つ死体が発生するキルによって死亡した場合に復活する事ができます。\n(猫又役職による道ずれや、スラッガーによるキル等は復活の対象外です。)\n\nキル者がタスクフェイズ中に死亡した場合に復活するかは、設定によります。\nその設定が有効で、キル者がタスクフェイズ中に死亡した場合も、次の会議フェイズ終了時に復活します。\n\nナイス赤ずきんが復活可能な条件を満たしている場合は、霊界で他のクルーの役職を確認することができず、更に憑依能力を有しません。\n満たしていない場合は、霊界で他のクルーの役職が表示され、憑依能力も使用可能です。\n\n私を狼のお腹から引きずり出したのはどなた?,The Crew Mate role revives the crewmember who killed him or her on the next turn if he or she dies.\n\nNice Red Riding Hood can be revived if the number of times it can revive remains，and if it is killed by a kill that results in a corpse.\n(Excluded from resurrection are a wayward death by a nekomata role，a kill by a slugger，etc.)\n\nWhether or not a kill is resurrected if the kill is made during the Task Phase depends on the setting.\nIf the setting is enabled and the kill person dies during the Task Phase，he/she will be revived at the end of the next Meeting Phase.\n\nIf the Nice Red Riding Hood meets the requirements to be revivable，it will not be able to see the other crew members' roles in the spirit world，and furthermore，it will not have the ability to possess them.\nIf not met，the other crew members' roles will be visible in the spirit world and the possession ability will be available.\n\nWho pulled me out of the wolf's belly?,击杀小红帽的玩家死亡后，小红帽在下一轮开始时复活。\n\n小红帽的复活有一定的次数限制，且只有在留下尸体的场合才能复活。\n(如被猎人系职业连带而死，或被击球手击飞而死，小红帽均不能复活。)\n\n可以设置击杀小红帽的凶手若在行动阶段死亡，小红帽是否也能复活。\n若可以，当凶手在行动阶段死亡时，小红帽会在下个会议阶段结束时复活。\n\n如果小红帽有复活的可能，死亡的小红帽将不能确认所有玩家的职业，也不能使用幽幽鬼影。\n若小红帽没有复活的可能，则小红帽可以正常确认玩家职业与使用幽幽鬼影。\n\n真把我吓坏了！狼肚子里黑漆漆的……,小紅帽是一個可以在被殺死後，在下一輪復活的船員角色。\n(在被獵人帶走或者被擊球手擊飛等情況下不能復活)\n\n根據設定，小紅帽可在兇手於任務階段死亡後的下一輪會議結束時復活。\n\n如果小紅帽符合復活條件，則他將無法在靈界看到其他船員的角色，並且無法使用憑依能力。\n條件不符則如常。\n\n是誰把我從狼的肚子裡拉出來的?
+NiceRedRidingHoodDescription,自身をキルしたクルーが死亡した場合、次のターンに復活するクルーメイト役職です。\n\nナイス赤ずきんは、復活可能回数が残っていて、且つ死体が発生するキルによって死亡した場合に復活する事ができます。\n(猫又役職による道ずれや、スラッガーによるキル等は復活の対象外です。)\n\nキル者がタスクフェイズ中に死亡した場合に復活するかは、設定によります。\nその設定が有効で、キル者がタスクフェイズ中に死亡した場合も、次の会議フェイズ終了時に復活します。\n\nナイス赤ずきんが復活可能な条件を満たしている場合は、霊界で他のクルーの役職を確認することができず、更に憑依能力を有しません。\n満たしていない場合は、霊界で他のクルーの役職が表示され、憑依能力も使用可能です。\n\n私を狼のお腹から引きずり出したのはどなた?,The Crewmate role revives the crewmember who killed him or her on the next turn if he or she dies.\n\nNice Red Riding Hood can be revived if the number of times it can revive remains，and if it is killed by a kill that results in a corpse.\n(Excluded from resurrection are a wayward death by a nekomata role，a kill by a slugger，etc.)\n\nWhether or not a kill is resurrected if the kill is made during the Task Phase depends on the setting.\nIf the setting is enabled and the kill person dies during the Task Phase，he/she will be revived at the end of the next Meeting Phase.\n\nIf the Nice Red Riding Hood meets the requirements to be revivable，it will not be able to see the other crew members' roles in the spirit world，and furthermore，it will not have the ability to possess them.\nIf not met，the other crew members' roles will be visible in the spirit world and the possession ability will be available.\n\nWho pulled me out of the wolf's belly?,击杀小红帽的玩家死亡后，小红帽在下一轮开始时复活。\n\n小红帽的复活有一定的次数限制，且只有在留下尸体的场合才能复活。\n(如被猎人系职业连带而死，或被击球手击飞而死，小红帽均不能复活。)\n\n可以设置击杀小红帽的凶手若在行动阶段死亡，小红帽是否也能复活。\n若可以，当凶手在行动阶段死亡时，小红帽会在下个会议阶段结束时复活。\n\n如果小红帽有复活的可能，死亡的小红帽将不能确认所有玩家的职业，也不能使用幽幽鬼影。\n若小红帽没有复活的可能，则小红帽可以正常确认玩家职业与使用幽幽鬼影。\n\n真把我吓坏了！狼肚子里黑漆漆的……,小紅帽是一個可以在被殺死後，在下一輪復活的船員角色。\n(在被獵人帶走或者被擊球手擊飛等情況下不能復活)\n\n根據設定，小紅帽可在兇手於任務階段死亡後的下一輪會議結束時復活。\n\n如果小紅帽符合復活條件，則他將無法在靈界看到其他船員的角色，並且無法使用憑依能力。\n條件不符則如常。\n\n是誰把我從狼的肚子裡拉出來的?
 NiceRedRidingHoodCount,最大生き返り回数,Maximum number of revives,小红帽最大可复活次数,小紅帽最大可復活次數
 NiceRedRidingIsKillerDeathRevive,キル者がタスクターンに死亡した場合でも復活する,Resurrects even if the killers die in the task turn,若凶手在行动阶段死亡小红帽依然可以复活,若凶手在行動階段死亡小紅帽依然可以復活
 
@@ -1607,7 +1607,7 @@ ShiftActorIsLimitUses,使用回数制限を有効にする,Enable use count limi
 ShiftActorMaxUseCount,変身可能回数,Max Shapeshift Uses,最大变身次数,最大變身次數
 ShiftActorCanShapeshiftAfterUsesExhausted,使用回数を使い切ってもシェイプシフト可能,Can shapeshift after uses exhausted,用完次数后仍可变身,用完次數後仍可變身
 ShiftActorCanSeeSharedRoles,モディファイアも確認できる,Can see modifier roles
-ShiftActorRoleMessage,{0}の役職は{1}だった,{0}'s role is {1}.
+ShiftActorRoleMessage,{0}の役職は{1}だった,{0}'s role was {1}.
 
 
 # OrientalShaman
