@@ -20,7 +20,7 @@ VentDuration,ベント持続時間,Vent Duration,通风口持续时间,通風口
 CanSabotage,サボタージュを使用できる,Can Sabotage,可以使用破坏,可以使用破壞
 HasImpostorVision,インポスターの視界を持つ,Has Impostor Vision,拥有内鬼视野,擁有內鬼視野
 TaskOption,タスクを個別で設定するか,Set tasks individually,独立设置任务,獨立設置任務
-UseLimit,使用可能回数,Usage Limit,可使用次数,可使用次數
+UseLimit,使用可能回数,Max Uses,可使用次数,可使用次數
 RemainingText,残り{0}回,Uses Left: {0},剩余 {0} 次,剩餘 {0} 次
 DurationTimerText,残り{0}秒,Remaining {0} seconds,剩余 {0} 秒,剩餘 {0} 秒
 AdditionalWin,追加勝利,Additional Win,额外胜利,額外勝利
@@ -855,7 +855,7 @@ BaitDelayVariation,遅延の幅,Delay Variation,遅延的變化,遅延的變化
 
 # Balancer Options
 BalancerVoteTime,天秤会議時間,Balancer Vote Time,天秤会议时间,天秤會議時間
-BalancerUseCount,使用可能回数,Useable Count,可使用次数,可使用次數
+BalancerUseCount,使用可能回数,Max Uses,可使用次数,可使用次數
 
 # Balancer UI Texts
 BalancerTitleTextEither,どちらかが追放される...,One of them will be exiled...,其中一个将被驱逐...,其中一個將被驅逐...
