@@ -17,7 +17,7 @@ class AmongUsClientStartPatch
         try
         {
             Logger.Info("CoStartGame");
-
+            
             // プレイヤー接続状態を確認
             if (PlayerControl.LocalPlayer == null || PlayerControl.AllPlayerControls == null)
             {
