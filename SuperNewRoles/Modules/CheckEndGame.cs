@@ -193,7 +193,8 @@ public static class CheckGameEndPatch
             case VictoryType.CrewmateVote:
                 return (ExPlayerControl.ExPlayerControls.Where(player => player.IsCrewmateWin()).ToHashSet(), Palette.CrewmateBlue, "CrewmateWin");
             case VictoryType.JackalDomination:
-                return (ExPlayerControl.ExPlayerControls.Where(player => player.IsJackalTeam()).ToHashSet(), Jackal.Instance.RoleColor, "Jackal");
+                // Include Jackal, Sidekick, and Jackal-aligned friends in winners
+                return (ExPlayerControl.ExPlayerControls.Where(player => player.IsJackalTeamWins()).ToHashSet(), Jackal.Instance.RoleColor, "Jackal");
             case VictoryType.PavlovsWin:
                 return (ExPlayerControl.ExPlayerControls.Where(player => player.IsPavlovsTeam()).ToHashSet(), PavlovsDog.Instance.RoleColor, "Pavlovs");
             case VictoryType.OwlWin:

@@ -16,8 +16,23 @@ jobs:
       (github.event_name == 'issue_comment' && startsWith(github.event.comment.body, '@snragent'))
 
     steps:
-      - uses: actions/checkout@v4
+      - name: Checkout (pull_request)
+        if: github.event_name == 'pull_request'
+        uses: actions/checkout@v3
 
+      # コメントトリガー時は PR の最新コミット（HEAD SHA）を checkout
+      - name: Checkout PR HEAD (issue_comment)
+        if: github.event_name == 'issue_comment' && github.event.issue.pull_request
+        uses: actions/checkout@v3
+        with:
+          # PR 番号は issue.number で取れる
+          ref: refs/pull/${{ github.event.issue.number }}/head
+      
+      # PR がない場合は fallback として github.ref を checkout
+      - name: Checkout by ref (fallback)
+        if: github.event_name == 'issue_comment' && !github.event.issue.pull_request
+        uses: actions/checkout@v3
+    
       - name: Configure Download Settings
         id: settings
         env:
