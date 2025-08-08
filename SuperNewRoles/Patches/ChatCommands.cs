@@ -55,13 +55,21 @@ public static class SendChatPatch
                     SuperNewRolesPlugin.Logger.LogWarning($"ホストでない時に{text}を使用しました。ホストでない時は/renameは使用できません。");
                 }
             }
-            else if (text.ToLower().StartsWith("/w") || text.ToLower().StartsWith("/winners"))
+            else if (text.StartsWith("/winners", StringComparison.OrdinalIgnoreCase)
+                  || string.Equals(text, "/w", StringComparison.OrdinalIgnoreCase)
+                  || text.StartsWith("/w ", StringComparison.OrdinalIgnoreCase))
             {
                 handled = true;
-                string name = PlayerControl.LocalPlayer.name;
-                PlayerControl.LocalPlayer.SetName(GetWinnerMessage());
-                __instance.AddChat(PlayerControl.LocalPlayer, " ");
-                PlayerControl.LocalPlayer.SetName(name);
+                string originalName = PlayerControl.LocalPlayer.name;
+                try
+                {
+                    PlayerControl.LocalPlayer.SetName(GetWinnerMessage());
+                    __instance.AddChat(PlayerControl.LocalPlayer, "\u200B");
+                }
+                finally
+                {
+                    PlayerControl.LocalPlayer.SetName(originalName);
+                }
             }
             if (AmongUsClient.Instance.NetworkMode == NetworkModes.FreePlay)
             {
@@ -117,12 +125,12 @@ public static class SendChatPatch
         foreach (var data in AdditionalTempData.playerRoles)
         {
             builder.Append("<size=80%>");
-            if (cond.winners.Contains((byte)data.PlayerId))
+            if (cond.winners != null && cond.winners.Contains((byte)data.PlayerId))
                 builder.Append("★");
             else
                 builder.Append("　");
             var taskInfo = data.TasksTotal > 0 ? $"<color=#FAD934FF>({data.TasksCompleted}/{data.TasksTotal})</color>" : "";
-            string roleText = ModHelpers.CsWithTranslation(data.roleBase.RoleColor, data.roleBase.Role.ToString());
+            string roleText = ModHelpers.Cs(data.roleBase.RoleColor, CustomRoleManager.GetRoleName(data.roleBase.Role));
             if (data.modifierMarks.Count > 0)
                 roleText += " ";
             foreach (var modifier in data.modifierMarks)
