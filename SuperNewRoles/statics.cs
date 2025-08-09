@@ -34,7 +34,7 @@ public static class SNRURLs
     public const string ReportInGameAgreement = "https://wiki.supernewroles.com/reporting-in-game-terms";
     public const string AnalyticsURL = "https://analytics.supernewroles.com/";
     public const string SNRCS = "https://cs.supernewroles.com";
-    public const string ReportInGameAPI = "https://reports-api.supernewroles.com";
+    public const string ReportInGameAPI = "https://reports-api.supernewroles.com/api/v2";
     public const string UpdateURL = "https://update.supernewroles.com/";
     public const string GithubAPITags = "https://api.github.com/repos/supernewroles/SuperNewRoles/releases/tags";
     public const string JoinRoomHost = "joinroom.supernewroles.com";

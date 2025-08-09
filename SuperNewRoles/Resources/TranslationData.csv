@@ -206,6 +206,8 @@ RequestInGame_MessageTooShort,メッセージが短すぎます。,The message i
 RequestInGame_SuccessReport,成功,Success,成功,成功
 RequestInGame_SuccessReportText,送信しました。返信には時間がかかりますのでご了承ください。\n質問の場合は自動で返信されますので、数分後にご確認ください。,Sent. Please note that it may take some time to respond.\nIf it is a question，it will be automatically replied to，so please check it after a few minutes.
 RequestInGame_SuccessReportReturnButton,戻る,Return,返回,返回
+RequestInGame.UpdateStatusTo,{0} に変更されました,Changed to {0},已更改为{0},已更換為{0}
+RequestInGame.UpdateStatus,ステータス,Status,状态,狀態
 
 # RoleOptionMenu
 RoleOptionMenuType.Impostor,インポスター,Impostor,内鬼,內鬼

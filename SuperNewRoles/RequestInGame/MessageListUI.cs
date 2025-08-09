@@ -58,7 +58,7 @@ public class MessageListUI
                         {
                             messageTitleButton.transform.Find("Selected").gameObject.SetActive(true);
                         }));
-                        messageTitleButton.transform.Find("Text").GetComponent<TextMeshPro>().text = thread.title;
+                        messageTitleButton.transform.Find("Text").GetComponent<TextMeshPro>().text = $"<color={thread.currentStatus.color}>{thread.currentStatus.mark}</color> {thread.title}";
                         badge.gameObject.SetActive(thread.unread);
                         index++;
                     }
