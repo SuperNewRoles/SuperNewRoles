@@ -11,17 +11,17 @@ Modifier,モディファイア,Modifier,修饰符,修飾符
 People,{0}人,{0} people,{0}人,{0}人
 
 # 共通設定テキスト
-CoolTime,クールタイム,Cool Time,冷却时间,冷卻時間
-KillCoolTime,キルクールタイム,Kill Cool Time,击杀冷却时间,擊殺冷卻時間
-DurationTime,効果時間,Duration Time,持续时间,持續時間
+CoolTime,クールタイム,Cooldown,冷却时间,冷卻時間
+KillCoolTime,キルクールタイム,Kill Cooldown,击杀冷却时间,擊殺冷卻時間
+DurationTime,効果時間,Duration,持续时间,持續時間
 CanUseVent,ベントを使用できる,Can Use Vent,可以使用通风口,可以使用通風口
-VentCooldown,ベントクールタイム,Vent Cool Time,通风口冷却时间,通風口冷卻時間
-VentDuration,ベント持続時間,Vent Duration Time,通风口持续时间,通風口持續時間
+VentCooldown,ベントクールタイム,Vent Cooldown,通风口冷却时间,通風口冷卻時間
+VentDuration,ベント持続時間,Vent Duration,通风口持续时间,通風口持續時間
 CanSabotage,サボタージュを使用できる,Can Sabotage,可以使用破坏,可以使用破壞
 HasImpostorVision,インポスターの視界を持つ,Has Impostor Vision,拥有内鬼视野,擁有內鬼視野
 TaskOption,タスクを個別で設定するか,Set tasks individually,独立设置任务,獨立設置任務
-UseLimit,使用可能回数,Usage Limit,可使用次数,可使用次數
-RemainingText,残り{0}回,Remaining {0} times,剩余 {0} 次,剩餘 {0} 次
+UseLimit,使用可能回数,Max Uses,可使用次数,可使用次數
+RemainingText,残り{0}回,Uses Left: {0},剩余 {0} 次,剩餘 {0} 次
 DurationTimerText,残り{0}秒,Remaining {0} seconds,剩余 {0} 秒,剩餘 {0} 秒
 AdditionalWin,追加勝利,Additional Win,额外胜利,額外勝利
 Seconds,秒,Seconds,秒,秒
@@ -30,7 +30,7 @@ Seconds,秒,Seconds,秒,秒
 colorSalmon,サーモン,Salmon,鲑鱼红,鮭魚紅
 colorBordeaux,ボルドー,Bordeaux,枣红,波爾多紅
 colorOlive,オリーブ,Olive,橄榄绿,橄欖綠
-colorTurqoise,ターコイズ,Turqoise,绿松石,綠松石藍
+colorTurqoise,ターコイズ,Turquoise,绿松石,綠松石藍
 colorMint,ミント,Mint,薄荷绿,薄荷綠
 colorLavender,ラベンダー,Lavender,薰衣紫,薰衣紫
 colorNougat,ヌガー,Nougat,棕褐,棕褐
@@ -97,8 +97,8 @@ DeviceOptions,情報機器制限,Device Options,设备限制,設備限制
 DeviceAdminOption,アドミン設定,Admin Settings,管理地图设置,管理地圖設置
 DeviceVitalOrDoorLogOption,バイタル・ドアログ設定,Vital/Doorlog Settings,生命体征/门禁记录设置,生命體徵/門禁記錄設置
 DeviceCameraOption,カメラ設定,Camera Settings,摄像头设置,攝像頭設置
-DeviceOptionType.None,使用可能,Disabled,禁用,禁用
-DeviceOptionType.CantUse,使用不可,Enabled,启用,啟用
+DeviceOptionType.None,使用可能,Enabled,启用,啟用
+DeviceOptionType.CantUse,使用不可,Disabled,禁用,禁用
 DeviceOptionType.Restrict,時間制限,Time Limit,时间限制,時間限制
 DeviceTimeSettingAdmin,アドミンの制限時間,Admin Limit Time,管理地图限制时间,管理地圖限制時間
 DeviceTimeSettingVitalOrDoorLog,バイタル・ドアログの制限時間,Vital/Doorlog Limit Time,生命体征/门禁记录限制时间,生命體徵/門禁記錄限制時間
@@ -125,18 +125,18 @@ NetworkTransformTypeLowLatencyLevel.SuperLow,超低,Super Low,超低,超低
 NetworkTransformTypeLowLatencyLevel.Bad,絶対ダメ(超高遅延),Bad (Very Very High Latency),差(超高延迟),差(超高延遲)
 SumouMode,相撲モード(ベータ),Sumo Mode (Beta),相扑模式(测试版),相撲模式(測試版)
 SumouHighPerformance,高いパフォーマンス(遅延増),High Performance (Increased Latency),高性能(延迟增加),高性能(延遲增加)
-FixSpawnPacketSize,ホストが切断されにくくする(推奨:オン),Fix Spawn Packet Size(Recommended active) ,修复出生点数据包大小,修復出生點數據包大小
+FixSpawnPacketSize,ホストが切断されにくくする(推奨:オン),Stabilize Host Connection (Recommended: On) ,修复出生点数据包大小,修復出生點數據包大小
 
 # SyncSpawn
 WaitingSpawnText,ロドー中... 残り:{0}/{1}クルー,Waiting... {0}/{1} Crewmates,等待中... {0}/{1} 船员,等待中... {0}/{1} 船員
 
 # GameSettings
-CannotTaskTrigger,タスクに関係ない役職の場合、タスクをできなくする,If the role is not related to the task，the task cannot be done,如果角色与任务无关，则无法完成任务,如果角色與任務無關，則無法完成任務
+CannotTaskTrigger,タスクに関係ない役職の場合、タスクをできなくする,Disable tasks for non-task-related roles,如果角色与任务无关，则无法完成任务,如果角色與任務無關，則無法完成任務
 SyncSpawn,スポーンを同期する(選択スポーンのみ),Sync Spawn (Selected Spawn Only),同步出生点(仅选择出生点),同步出生點(僅選擇出生點)
-AdvancedRandom,よりランダムな乱数を使用する,Use a more random random number,使用更随机的随机数,使用更隨機的隨機數
-DisableTaskWin,タスク勝利を無効にする,Can't task win
-DisableHijackTaskWin,第三陣営のタスク勝利横取りを無効にする,Disable hijack task win by third party
-HideGhostRoles,死亡時に他クルーの役職を表示しない,Do not display other crew roles upon death
+AdvancedRandom,よりランダムな乱数を使用する,Use Enhanced Randomness,使用更随机的随机数,使用更隨機的隨機數
+DisableTaskWin,タスク勝利を無効にする,Disable task victory
+DisableHijackTaskWin,第三陣営のタスク勝利横取りを無効にする,Disable hijack task victory by third party
+HideGhostRoles,死亡時に他クルーの役職を表示しない,Hide Crew Roles on Death
 ShowGhostRolesToImpostor,インポスターにのみ表示する,Only visible to impostors
 GhostVoteDisplay,死亡時の投票表示,Ghost vote display
 GhostVoteDisplayType.Vanilla,バニラ,Vanilla
@@ -152,12 +152,12 @@ AprilFoolsOutfitType.AlongUs,ロングモード,aLONG us
 AprilFoolsEnableDleks,ドルクス,Dleks ehT
 DisableHauntNonCompleted,タスクを完了していないと憑依できない,Disable haunt if the task is not completed
 EnabledZoomOnDead,霊界千里眼を有効にする,Enable spectator clairvoyance after death
-ImmediateKillCooldown,初手キルクールタイムを設定値から始める,Start kill cooldown from settings,初始击杀冷却遵循设置,初始擊殺冷卻遵循設定
+ImmediateKillCooldown,初手キルクールタイムを設定値から始める,Override initial kill cooldown,初始击杀冷却遵循设置,初始擊殺冷卻遵循設定
 
 # Analytics
 AnalyticsPopupTitle,解析データの送信,Send analytics data,发送分析数据,發送分析數據
 AnalyticsPopupText,SuperNewRolesの開発の為に、解析データを送信します。\n送信されるデータは以下をご覧ください。\n特定の個人を特定できる情報は送信しません。\nhttps://wiki.supernewroles.com/analytics,For the development of SuperNewRoles,\nwe will send analysis data.\nPlease see below for the details of the data being sent.\nNo personally identifiable information will be transmitted.\nhttps://wiki.supernewroles.com/analytics
-AnalyticsOK,わかった,understand,我明白了,我明白了
+AnalyticsOK,わかった,Understood,我明白了,我明白了
 
 # ClientOptions
 ClientOptionsVanilla,バニラ設定,Vanilla Settings,原版设置,原版設置
@@ -177,12 +177,12 @@ VersionCurrent,選択中,Current,選擇中,選擇中
 VersionWillUpdate,再起動後適用,Apply after restart
 VersionLoaded,適用済み,Applied,已適用,已適用
 VersionUpdateReleaseNoteLoading,リリースノートを読み込み中...,Loading release note...
-VersionUpdateReleaseNoteLoadingError,リリースノートの読み込みに失敗しました。,Failed to load release note..
+VersionUpdateReleaseNoteLoadingError,リリースノートの読み込みに失敗しました。,Failed to load release notes.
 VersionUpdateReleaseNoteNotFound,リリースノートが見つかりませんでした。,Release note not found.
 
 # RequestInGame
 RequestInGameButtonText,バグ報告、要望、質問、感謝メールなどはこちらから,Bug reports，requests，questions，and thank you messages can be sent here
-RequestInGameDiscordText,Discordはこちら,Discord is this,Discord 是這裡,Discord 是這裡
+RequestInGameDiscordText,Discordはこちら,Join our Discord,Discord 是這裡,Discord 是這裡
 RequestInGameMailBox,受信箱,Mailbox,收件箱,收件箱
 RequestInGameUpperText,お問い合わせフォーム,Contact Form,联系表单,聯絡表單
 RequestInGameMessageTooShort,メッセージが短すぎます。3文字以上にしてください。,The message is too short. Please enter at least 3 characters.,消息太短了。请输入至少3个字符。,消息太短了。請輸入至少3個字符。
@@ -195,7 +195,7 @@ RequestInGameSendTitleGray,タイトル,Title,标题,標題
 RequestInGameSendTitleBack,タイトルを入力してください(3文字以上),Please enter a title (at least 3 characters),请输入标题（至少3个字符）,請輸入標題（至少3個字元）
 RequestInGameSendDescriptionGray,メッセージ,Message,消息,訊息
 RequestInGameSendDescriptionBack,メッセージを入力してください(10文字以上),Please enter a message (at least 10 characters),请输入消息（至少10个字符）,請輸入訊息（至少10個字元）
-RequestInGameAgreement,利用規約はこちら,Agreement is here,利用規約在這裡,利用規約在這裡
+RequestInGameAgreement,利用規約はこちら,Terms of Service,利用規約在這裡,利用規約在這裡
 RequestInGameSendButton,同意して送信,Send with agreement,同意后发送,同意後發送
 RequestInGameLoadingData,データを取得中,Loading data
 RequestInGameSendingReport,レポートを送信中,Sending report
@@ -218,13 +218,13 @@ RoleOptionMenuType.Neutral,第三陣営,Neutral,第三阵营,第三陣營
 ScientistButtonName,透明化,Invisible,隐身,隱身
 
 # NiceScientist
-NiceScientistCoolTime,クールタイム,Cool Time,冷却时间,冷卻時間
-NiceScientistDurationTime,効果時間,Duration Time,持续时间,持續時間
+NiceScientistCoolTime,クールタイム,Cooldown,冷却时间,冷卻時間
+NiceScientistDurationTime,効果時間,Duration,持续时间,持續時間
 NiceScientistCanTheLighterSeeTheScientist,ライターが透明化を見破れる,Lighter can see invisible,灯光师可以看见隐身,燈光師可以看見隱身
 
 # EvilScientist
-EvilScientistCoolTime,クールタイム,Cool Time,冷却时间,冷卻時間
-EvilScientistDurationTime,効果時間,Duration Time,持续时间,持續時間
+EvilScientistCoolTime,クールタイム,Cooldown,冷却时间,冷卻時間
+EvilScientistDurationTime,効果時間,Duration,持续时间,持續時間
 EvilScientistCanTheLighterSeeTheScientist,ライターが透明化を見破れる,Lighter can see invisible,灯光师可以看见隐身,燈光師可以看見隱身
 RoleOptionMenuType.Ghost,幽霊役職,Ghost Role,幽灵角色,幽靈角色
 RoleOptionMenuType.Modifier,モディファイア,Modifier,修饰符,修飾符
@@ -295,22 +295,22 @@ FinalResults,最終結果,Final Results,最终结果,最終結果
 
 # FinalStatus
 FinalStatus.Alive,生存,Alive,生存,生存
-FinalStatus.Kill,キル,Kill,击杀,擊殺
-FinalStatus.Disconnect,切断,Disonnected,切断,切斷
+FinalStatus.Kill,キル,Killed,击杀,擊殺
+FinalStatus.Disconnect,切断,Disconnected,切断,切斷
 FinalStatus.Exiled,追放,Exiled,追放,追放
 FinalStatus.Sabotage,サボタージュ,Sabotage,破坏,破壞
 FinalStatus.WaveCannon,蒸発,Vaporize,蒸发,蒸發
 FinalStatus.FalseCharge,冤罪,False Charge,冤罪,冤罪
-FinalStatus.Revange,道連れ,Revange,道連れ,道連れ
+FinalStatus.Revange,道連れ,Revenge,道連れ,道連れ
 FinalStatus.Suicide,自殺,Suicide,自殺,自殺
-FinalStatus.Samurai,切り捨て御免,Permission to cut down granted,斩无赦,斬無赦
+FinalStatus.Samurai,切り捨て御免,Cut Down,斩无赦,斬無赦
 FinalStatus.BombBySelfBomb,爆破,Bomb by Self Bomber,自爆被卷入,自爆被卷入
 FinalStatus.SelfBomb,自爆,Self Bomb,自爆,自爆
 FinalStatus.Tuna,水揚げ,Tuna,水揚げ,水揚げ
-FinalStatus.Ignite,炎上,Ignite,着火,著火
-FinalStatus.SheriffKill,正義執行,Sheriff Kill,警長擊殺,警長擊殺
+FinalStatus.Ignite,炎上,Ignited,着火,著火
+FinalStatus.SheriffKill,正義執行,Killed by Sheriff,警長擊殺,警長擊殺
 FinalStatus.SheriffWrongfulMurder,過失殺人,Wrongful murder,误杀,誤殺
-FinalStatus.SheriffMisFire,失意の自殺,Sheriff Self Death,失意,失意
+FinalStatus.SheriffMisFire,失意の自殺,Died from Misfire,失意,失意
 FinalStatus.SheriffSuicide,自決,Die in the line of duty
 FinalStatus.FalseCharges,冤罪死,Death by false accusation,冤枉致死,冤枉致死
 FinalStatus.GuesserKill,推殺,Guess kill,推测击杀,推測擊殺
@@ -340,7 +340,7 @@ HelpMenu.NoneOptions2,役職の設定が見つかりませんでした。おに�
 HelpMenu.AllTeams,全陣営,All Teams,所有阵营,所有陣營
 
 # MadFriendsIntro
-MadRolesSubIntro,この命は我が主たるインポスターのために,This life is for my mastert，the Impostor.,为内鬼献出生命,背叛船員，為吾主內鬼而戰。
+MadRolesSubIntro,この命は我が主たるインポスターのために,This life is for my master，the Impostor.,为内鬼献出生命,背叛船員，為吾主內鬼而戰。
 FriendRolesSubIntro,ジャッカルに寄り添いし者,One who stands by the jackal.,帮助豺狼获得胜利,豺狼之友，同生共死。
 
 # AssignRoles
@@ -517,21 +517,21 @@ Pursuer.Description,タスクターンに発動する能力を有するインポ
 Crab.Description,タスクターンに使用出来る能力を有するインポスターです。\n「カニ」ボタンを押すことで全てのプレイヤーを少しの間横方向にしか移動出来なくします。,An Impostor with an ability usable during task turns.\nBy pressing the “Crab” button，they restrict all players to move only horizontally for a short period.,一个在任务回合中可使用能力的内鬼。\n按下“螃蟹”按钮后，可使所有玩家在短时间内仅能横向移动。,一個在任務回合中可使用能力的內鬼。\n按下「螃蟹」按鈕後，可使所有玩家在短時間內僅能橫向移動。,
 EvilSpeedBooster.Description,タスクターンに使用出来る能力を有するインポスターです。\n「ブースト！」ボタンを押すことでしばらくの間素早く動けるようになります。,An Impostor with an ability usable during task turns.\nBy pressing the “Boost!” button，they can move quickly for a short period.,一个在任务回合中可使用能力的内鬼。\n按下“加速！”按钮后，可在短时间内快速移动。,一個在任務回合中可使用能力的內鬼。\n按下「加速！」按鈕後，可在短時間內快速移動。,
 Rocket.Description,特殊なキル能力を有するインポスターです。\n「掴む」ボタンを押すと、対象のプレイヤーを掴んで運べるようになります。\n「打ち上げる」ボタンを押すと、掴んでいたプレイヤーを空に打ち上げて花火にします。\n死体は残りません。\n「打ち上げる」ボタンを押すまで何人でも掴むことが出来ますが、その状態で会議が召集され、その会議で追放されるとキルに失敗してしまいます。\n追放されなければ掴んでいたプレイヤーを打ち上げて次のタスクターンへ移行します。,An Impostor with a special kill ability.\nBy pressing the “Grab” button，they can grab and carry a target player.\nBy pressing the “Launch” button，they send the grabbed player into the sky to create a fireworks-like explosion.\nNo body remains.\nThey can grab multiple players until pressing “Launch，” but if a meeting is called and they are ejected while holding players，the kill fails.\nIf not ejected，they launch all held players and proceed to the next task turn.,这是一个拥有特殊击杀能力的内鬼。\n按下“抓取”按钮后，可抓住并携带目标玩家。\n按下“发射”按钮后，会将抓住的玩家发射到空中，形成烟花效果。\n不会留下尸体。\n在按下“发射”按钮之前，可抓住任意数量的玩家，但如果在此状态下召集会议并在会议中被投票出局，击杀会失败。\n如果没有被投票出局，会发射所有抓住的玩家并进入下一个任务回合。,這是一個具有特殊擊殺能力的內鬼。\n按下「抓取」按鈕後，可抓住並攜帶目標玩家。\n按下「發射」按鈕後，會將抓住的玩家發射到空中，形成煙火效果。\n不會留下屍體。\n在按下「發射」按鈕之前，可抓住任意數量的玩家，但如果在此狀態下召集會議並在會議中被投票出局，擊殺會失敗。\n如果沒有被投票出局，會發射所有抓住的玩家並進入下一個任務回合。,
-Vampire.Description,特殊なキル能力を有するインポスターです。\nキルボタンを押すと、設定秒数経過後に対象のプレイヤーが死亡します。\n次のターン、キルボタンを押した場所から、対象のプレイヤーが死亡した場所まで血痕が残ります。\nこの役職は、アドミンに映らず、死亡してもバイタル上では死亡表記になりません。\nまた、停電を直す気がありません。\n設定次第では「夜に堕とす」ボタンを押すことで、対象のプレイヤーの役職を眷属に変更することが出来ます。,An Impostor with a special kill ability.\nPressing the kill button causes the target player to die after a set delay.\nOn the next turn，bloodstains remain from the kill location to the victim’s death location.\nThis role does not appear on Admin and is not marked as dead on Vitals even when killed.\nAlso，they do not repair lights.\nDepending on settings，by pressing the “Doom in the Night” button，they can change the target player’s role to Thrall.,这是一个拥有特殊击杀能力的内鬼。\n按下击杀按钮后，目标玩家在设定秒数后死亡。\n在下一回合，从击杀地点到目标死亡地点会留下血迹。\n此角色不会在管理员界面出现，也不会在生命迹象面板上显示死亡。\n此外，他们不会修复停电。\n根据设置，按下“堕入夜幕”按钮可以将目标玩家的角色更改为眷属。,這是一個具有特殊擊殺能力的內鬼。\n按下擊殺按鈕後，目標玩家在設定秒數後死亡。\n在下一回合，從擊殺地點到目標死亡地點會留下血跡。\n此角色不會在管理員介面出現，也不會在生命跡象面板上顯示死亡。\n此外，他們不會修復停電。\n根據設定，按下「墮入夜幕」按鈕可以將目標玩家的角色更改為眷屬。,
-VampireDependent.Description,インポスター陣営に属する役職です。\nキル能力を有します。\n通常時は視野が狭く、停電時は視野が広くなります。\nこの役職は、アドミンに映らず、死亡してもバイタル上では死亡表記になりません。\nまた、停電を直す気がありません。\nマッドメイト同様クルーメイト判定の役職です。\n自身を眷属に変化させたヴァンパイアが死亡すると、共に死亡します。,A role belonging to the Impostor faction.\nThey have a kill ability.\nTheir vision is narrow normally but becomes wide during a blackout.\nThis role does not appear on Admin and is not marked as dead on Vitals when killed.\nThey also do not repair lights.\nThey are considered a Crewmate similar to Madmate.\nIf the Vampire they turned into a Thrall dies，they die as well.,一个隶属于内鬼阵营的角色。\n他们具有击杀能力。\n在正常情况下视野狭窄，但在停电时视野变宽。\n此角色不会在管理员界面出现，也不会在生命迹象面板上显示死亡。\n此外，他们不会修复停电。\n他们被视为与疯友相同的船员角色。\n当将其变为眷属的吸血鬼死亡时，他们也会死亡。,一個隸屬於內鬼陣營的角色。\n他們具有擊殺能力。\n在正常情況下視野狹窄，但在停電時視野變寬。\n此角色不會在管理員介面出現，也不會在生命跡象面板上顯示死亡。\n此外，他們不會修復停電。\n他們被視為與瘋友相同的船員角色。\n當將其變為眷屬的吸血鬼死亡時，他們也會死亡。,
+Vampire.Description,特殊なキル能力を有するインポスターです。\nキルボタンを押すと、設定秒数経過後に対象のプレイヤーが死亡します。\n次のターン、キルボタンを押した場所から、対象のプレイヤーが死亡した場所まで血痕が残ります。\nこの役職は、アドミンに映らず、死亡してもバイタル上では死亡表記になりません。\nまた、停電を直す気がありません。\n設定次第では「夜に堕とす」ボタンを押すことで、対象のプレイヤーの役職を眷属に変更することが出来ます。,An Impostor with a special kill ability.\nPressing the kill button causes the target player to die after a set delay.\nOn the next turn，bloodstains remain from the kill location to the victim’s death location.\nThis role does not appear on Admin and is not marked as dead on Vitals even when killed.\nAlso，they do not repair lights.\nDepending on settings，by pressing the “Doom in the Night” button，they can change the target player’s role to Dependent.,这是一个拥有特殊击杀能力的内鬼。\n按下击杀按钮后，目标玩家在设定秒数后死亡。\n在下一回合，从击杀地点到目标死亡地点会留下血迹。\n此角色不会在管理员界面出现，也不会在生命迹象面板上显示死亡。\n此外，他们不会修复停电。\n根据设置，按下“堕入夜幕”按钮可以将目标玩家的角色更改为眷属。,這是一個具有特殊擊殺能力的內鬼。\n按下擊殺按鈕後，目標玩家在設定秒數後死亡。\n在下一回合，從擊殺地點到目標死亡地點會留下血跡。\n此角色不會在管理員介面出現，也不會在生命跡象面板上顯示死亡。\n此外，他們不會修復停電。\n根據設定，按下「墮入夜幕」按鈕可以將目標玩家的角色更改為眷屬。,
+VampireDependent.Description,インポスター陣営に属する役職です。\nキル能力を有します。\n通常時は視野が狭く、停電時は視野が広くなります。\nこの役職は、アドミンに映らず、死亡してもバイタル上では死亡表記になりません。\nまた、停電を直す気がありません。\nマッドメイト同様クルーメイト判定の役職です。\n自身を眷属に変化させたヴァンパイアが死亡すると、共に死亡します。,A role belonging to the Impostor faction.\nThey have a kill ability.\nTheir vision is narrow normally but becomes wide during a blackout.\nThis role does not appear on Admin and is not marked as dead on Vitals when killed.\nThey also do not repair lights.\nThey are considered a Crewmate similar to Madmate.\nIf the Vampire they turned into a Dependent dies，they die as well.,一个隶属于内鬼阵营的角色。\n他们具有击杀能力。\n在正常情况下视野狭窄，但在停电时视野变宽。\n此角色不会在管理员界面出现，也不会在生命迹象面板上显示死亡。\n此外，他们不会修复停电。\n他们被视为与疯友相同的船员角色。\n当将其变为眷属的吸血鬼死亡时，他们也会死亡。,一個隸屬於內鬼陣營的角色。\n他們具有擊殺能力。\n在正常情況下視野狹窄，但在停電時視野變寬。\n此角色不會在管理員介面出現，也不會在生命跡象面板上顯示死亡。\n此外，他們不會修復停電。\n他們被視為與瘋友相同的船員角色。\n當將其變為眷屬的吸血鬼死亡時，他們也會死亡。,
 EvilMechanic.Description,タスクターンに使用出来る能力を有するインポスターです。\nベントに向かって「移設」ボタンを押すとベントの姿になり、そのベントを移動することが出来ます。\nベントの接続先は変更されません。,An Impostor with an ability usable during task turns.\nBy pressing the “Relocate” button near a vent，they transform into that vent and can move the vent’s position.\nThe vent’s connections remain unchanged.,这是一个在任务回合中可使用能力的内鬼。\n对准通风口按下“移位”按钮后，会变成通风口并可以移动该通风口。\n通风口的连接不发生变化。,這是一個在任務回合中可使用能力的內鬼。\n對準通風口按下「移位」按鈕後，會變成通風口並可以移動該通風口。\n通風口的連接不發生變化。,
 EvilHawk.Description,タスクターンに使用出来る能力を有するインポスターです。\n「ホークアイ」ボタンを押すと自分の視野が広がり、周囲の様子を見ることが出来ます。,An Impostor with an ability usable during task turns.\nBy pressing the “Hawkeye” button，they expand their vision to survey the surroundings.,这是一个在任务回合中可使用能力的内鬼。\n按下“鹰眼”按钮后，会扩大视野以观察周围情况。,這是一個在任務回合中可使用能力的內鬼。\n按下「鷹眼」按鈕後，會擴大視野以觀察周圍情況。,
-EvilScientist.Description,タスクターンに使用出来る能力を有するインポスターです。\n「透明化」ボタンを押すと、一定時間自身の姿が透明になります。\n透明化中であっても、能力の対象になります。\nまた、設定次第では能力使用中のライターには見えてしまいます。,An imposter with an ability that can be used during the Task Turn.\nWhen you press the 'Invisibility' button， your appearance becomes invisible for a certain period of time.\nEven while invisible， you can still be targeted by abilities.\nAlso， depending on the settings， writers may see you while you're using the ability。,是具有能够在任务轮回合使用能力的冒名顶替者。当你按下“隐身”按钮时，你的身影会在一定时间内变为隐形。即使在隐身状态下，你仍会成为能力的目标。另外，根据设置，在使用能力时，写手也可能会看到你。,是具有能夠在任務回合使用能力的冒名頂替者。當你按下「隱身」按鈕時，你的身影會在一定時間內變為隱形。即使在隱身狀態下，你仍會成為能力的目標。另外，根據設定，在使用能力時，寫手也可能會看到你。,
-DoubleKiller.Description,特殊なキル能力を有するインポスターです。\nキルボタンを２つ所持しています。\nクールタイムは独立しており、別々に使用することが出来ます。,An impostor with special kill abilities。\nHas two kill buttons。\nCooldowns are independent、so they can be used separately。,拥有特殊击杀能力的冒充者。\n拥有两个击杀按钮。\n冷却时间独立、可以分别使用。,具有特殊擊殺能力的冒名顶替者。\n持有兩個擊殺按鈕。\n冷卻時間獨立、可以分別使用。
-Finder.Description,タスクターンに発動する能力を有するインポスターです。\n指定のキル数を達成するとマッドメイトが誰かわかります。,An impostor with an ability activated on the task turn。\nAfter reaching a specified number of kills、you can identify who the madmate is。,具有在任务回合发动能力的冒充者。\n达到指定击杀次数后、可以知道疯狂队友是谁。,具有在任務回合發動能力的冒充者。\n達到指定擊殺次數後、可以知道瘋狂隊友是誰。
-Nun.Description,タスクターンに使用出来る能力を有するインポスターです。\n「ぬーん」ボタンを押すと、エアシップの昇降機を遠隔で動かすことが出来ます。,An impostor with an ability usable on the task turn。\nPressing the “Nuun” button lets you remotely operate the airship’s elevator。,具有在任务回合使用能力的冒充者。\n按下“ぬーん”按钮可以远程操作飞船的升降机。,具有在任務回合使用能力的冒充者。\n按下「ぬーん」按鈕可以遠程操作飛船的升降機。
-ShiftActor.Description,タスクターンに使用出来る能力を有するインポスターです。\n変身すると、変身した相手の役職を知ることが出来ます。,An impostor with an ability usable on the task turn。\nWhen you shapeshift、you can learn the role of the target you transformed into。,具有在任务回合使用能力的冒充者。\n变身时、可以知道变身对象的身份。,具有在任務回合使用能力的冒充者。\n變身時、可以知道變身對象的身份。
-Camouflager.Description,タスクターンに使用出来る能力を有するインポスターです。\n「カモフラージュ」ボタンを押すと、一定時間全員の見た目を変更します。,An impostor with an ability usable on the task turn。\nPressing the “Camouflage” button、changes everyone’s appearance for a set duration。,具有在任务回合使用能力的冒充者。\n按下“Camouflage”按钮、可以在一定时间内改变所有人的外观。,具有在任務回合使用能力的冒充者。\n按下「Camouflage」按鈕、可以在一定時間內改變所有人的外觀。
-EvilDoorr.Description,タスクターンに使用出来る能力を有するインポスターです。\n「ドアーー!!」ボタンを押すと、目の前のドアを開閉出来ます。,An impostor with an ability usable on the task turn。\nPressing the “Doorーー!!” button、lets you open and close the door in front of you。,具有在任务回合使用能力的冒充者。\n按下“ドアーー!!”按钮、可以开关眼前的门。,具有在任務回合使用能力的冒充者。\n按下「ドアーー!!」按鈕、可以開關眼前的門。
-Mushroomer.Description,タスクターンに使用出来る能力を有するインポスターです。\nThe Fungleのジャングルにあるキノコを設置することが出来ます。\nキノコは設置した次のターンに有効化します。\nまた、全てのキノコを設置するとキノコ爆発が使えるようになります。\n「爆発」ボタンを押すと、最初から設置されているキノコを含め、全てのキノコを一斉に爆発させます。,An impostor with an ability usable on the task turn。\nYou can place mushrooms in The Fungle jungle。\nMushrooms activate on the turn after placement。\nAlso、once all mushrooms are placed、you gain the mushroom explosion ability。\nPressing the “Explode” button triggers all mushrooms、including the originals、to explode simultaneously。,具有在任务回合使用能力的冒充者。\n可以在The Fungle丛林中放置蘑菇。\n蘑菇在放置后的下一回合生效。\n此外、放置所有蘑菇后、可使用蘑菇爆炸。\n按下“爆炸”按钮、会同时引爆所有蘑菇（包括最初放置的）。,具有在任務回合使用能力的冒充者。\n可以在The Fungle叢林中放置蘑菇。\n蘑菇在放置後的下一回合生效。\n此外、放置所有蘑菇後、可使用蘑菇爆炸。\n按下「爆炸」按鈕、會同時引爆所有蘑菇（包括最初放置的）。
-DimensionWalker.Description,タスクターンに使用出来る能力を有するインポスターです。\n「設置」ボタンを押すとワームホールを設置出来ます。\nワームホールは一定時間経過後有効化し、ワームホール間を行き来出来るベントとして機能します。\nワームホールはディメンションウォーカー以外のインポスターも使用可能です。\n「回収」ボタンでワームホールを回収し、使用回数を回復させることが出来ます。,An impostor with an ability usable on the task turn。\nPressing the “Place” button lets you deploy a wormhole。\nAfter a set time、the wormhole activates and functions as a vent、allowing travel between wormholes。\nOther impostors besides the Dimension Walker can also use the wormholes。\nPressing the “Retract” button retrieves a wormhole and restores its uses。,具有在任务回合使用能力的冒充者。\n按下“Place”按钮可以部署虫洞。\n一定时间后、虫洞激活并作为通风口运行、可以在虫洞间来回移动。\n除了Dimension Walker之外的冒充者也能使用虫洞。\n按下“Retract”按钮可以收回虫洞并恢复使用次数。,具有在任務回合使用能力的冒充者。\n按下「Place」按鈕可以部署蟲洞。\n一定時間後、蟲洞激活並作為通風口運行、可以在蟲洞間來回移動。\n除了Dimension Walker之外的冒充者也能使用蟲洞。\n按下「Retract」按鈕可以收回蟲洞並恢復使用次數。
-DarkKiller.Description,キルに関係する能力を有するインポスターです。\nキルクールが短い代わりに、停電中しかキルが出来ません。,An impostor with kill-related abilities。\nWhile the kill cooldown is short、you can only kill during a blackout。,具有击杀相关能力的冒充者。\n虽然击杀冷却较短、但只能在停电时击杀。,具有擊殺相關能力的冒充者。\n雖然擊殺冷卻較短、但只能在停電時擊殺。
-Robber.Description,キルに関係する能力を有するインポスターです。\nキルをした対象のタスク進捗を巻き戻します。,An Impostor with abilities related to kills．\nRewinds the task progress of the target they killed．,与击杀有关能力的内鬼．\n会回溯被击杀目标的任务进度．,擁有與擊殺相關能力的內鬼．\n會回溯被擊殺對象的任務進度．
+EvilScientist.Description,タスクターンに使用出来る能力を有するインポスターです。\n「透明化」ボタンを押すと、一定時間自身の姿が透明になります。\n透明化中であっても、能力の対象になります。\nまた、設定次第では能力使用中のライターには見えてしまいます。,An imposter with an ability that can be used during the Task Turn.\nWhen you press the 'Invisibility' button， your appearance becomes invisible for a certain period of time.\nEven while invisible， you can still be targeted by abilities.\nAlso， depending on the settings， lighters may see you while you're using the ability.,是具有能够在任务轮回合使用能力的冒名顶替者。当你按下“隐身”按钮时，你的身影会在一定时间内变为隐形。即使在隐身状态下，你仍会成为能力的目标。另外，根据设置，在使用能力时，写手也可能会看到你.,是具有能夠在任務回合使用能力的冒名頂替者。當你按下「隱身」按鈕時，你的身影會在一定時間內變為隱形。即使在隱身狀態下，你仍會成為能力的目標。另外，根據設定，在使用能力時，寫手也可能會看到你。,
+DoubleKiller.Description,特殊なキル能力を有するインポスターです。\nキルボタンを２つ所持しています。\nクールタイムは独立しており、別々に使用することが出来ます。,An Impostor with a special kill ability.\nThey have two independent kill buttons，each with its own cooldown.,拥有特殊击杀能力的冒充者。\n拥有两个击杀按钮。\n冷却时间独立、可以分别使用。,具有特殊擊殺能力的冒名顶替者。\n持有兩個擊殺按鈕。\n冷卻時間獨立、可以分別使用。
+Finder.Description,タスクターンに発動する能力を有するインポスターです。\n指定のキル数を達成するとマッドメイトが誰かわかります。,An impostor with an ability activated on the task turn.\nAfter reaching a specified number of kills，you can identify who the madmate is.,具有在任务回合发动能力的冒充者。\n达到指定击杀次数后、可以知道疯狂队友是谁。,具有在任務回合發動能力的冒充者。\n達到指定擊殺次數後、可以知道瘋狂隊友是誰。
+Nun.Description,タスクターンに使用出来る能力を有するインポスターです。\n「ぬーん」ボタンを押すと、エアシップの昇降機を遠隔で動かすことが出来ます。,An impostor with an ability usable on the task turn.\nPressing the “Nuun” button lets you remotely operate the airship’s elevator.,具有在任务回合使用能力的冒充者。\n按下“ぬーん”按钮可以远程操作飞船的升降机。,具有在任務回合使用能力的冒充者。\n按下「ぬーん」按鈕可以遠程操作飛船的升降機。
+ShiftActor.Description,タスクターンに使用出来る能力を有するインポスターです。\n変身すると、変身した相手の役職を知ることが出来ます。,An impostor with an ability usable on the task turn.\nWhen you shapeshift，you can learn the role of the target you transformed into.,具有在任务回合使用能力的冒充者。\n变身时、可以知道变身对象的身份。,具有在任務回合使用能力的冒充者。\n變身時、可以知道變身對象的身份。
+Camouflager.Description,タスクターンに使用出来る能力を有するインポスターです。\n「カモフラージュ」ボタンを押すと、一定時間全員の見た目を変更します。,An impostor with an ability usable on the task turn.\nPressing the “Camouflage” button，changes everyone’s appearance for a set duration.,具有在任务回合使用能力的冒充者。\n按下“Camouflage”按钮、可以在一定时间内改变所有人的外观。,具有在任務回合使用能力的冒充者。\n按下「Camouflage」按鈕、可以在一定時間內改變所有人的外觀。
+EvilDoorr.Description,タスクターンに使用出来る能力を有するインポスターです。\n「ドアーー!!」ボタンを押すと、目の前のドアを開閉出来ます。,An impostor with an ability usable on the task turn.\nPressing the “Doorーー!!” button，lets you open and close the door in front of you.,具有在任务回合使用能力的冒充者。\n按下“ドアーー!!”按钮、可以开关眼前的门。,具有在任務回合使用能力的冒充者。\n按下「ドアーー!!」按鈕、可以開關眼前的門。
+Mushroomer.Description,タスクターンに使用出来る能力を有するインポスターです。\nThe Fungleのジャングルにあるキノコを設置することが出来ます。\nキノコは設置した次のターンに有効化します。\nまた、全てのキノコを設置するとキノコ爆発が使えるようになります。\n「爆発」ボタンを押すと、最初から設置されているキノコを含め、全てのキノコを一斉に爆発させます。,An impostor with an ability usable on the task turn.\nYou can place mushrooms in The Fungle jungle.\nMushrooms activate on the turn after placement.\nAlso，once all mushrooms are placed，you gain the mushroom explosion ability.\nPressing the “Explode” button triggers all mushrooms，including the originals，to explode simultaneously.,具有在任务回合使用能力的冒充者。\n可以在The Fungle丛林中放置蘑菇。\n蘑菇在放置后的下一回合生效。\n此外、放置所有蘑菇后、可使用蘑菇爆炸。\n按下“爆炸”按钮、会同时引爆所有蘑菇（包括最初放置的）。,具有在任務回合使用能力的冒充者。\n可以在The Fungle叢林中放置蘑菇。\n蘑菇在放置後的下一回合生效。\n此外、放置所有蘑菇後、可使用蘑菇爆炸。\n按下「爆炸」按鈕、會同時引爆所有蘑菇（包括最初放置的）。
+DimensionWalker.Description,タスクターンに使用出来る能力を有するインポスターです。\n「設置」ボタンを押すとワームホールを設置出来ます。\nワームホールは一定時間経過後有効化し、ワームホール間を行き来出来るベントとして機能します。\nワームホールはディメンションウォーカー以外のインポスターも使用可能です。\n「回収」ボタンでワームホールを回収し、使用回数を回復させることが出来ます。,An impostor with an ability usable on the task turn.\nPressing the “Place” button lets you deploy a wormhole.\nAfter a set time，the wormhole activates and functions as a vent，allowing travel between wormholes.\nOther impostors besides the Dimension Walker can also use the wormholes.\nPressing the “Retract” button retrieves a wormhole and restores its uses.,具有在任务回合使用能力的冒充者。\n按下“Place”按钮可以部署虫洞。\n一定时间后、虫洞激活并作为通风口运行、可以在虫洞间来回移动。\n除了Dimension Walker之外的冒充者也能使用虫洞。\n按下“Retract”按钮可以收回虫洞并恢复使用次数。,具有在任務回合使用能力的冒充者。\n按下「Place」按鈕可以部署蟲洞。\n一定時間後、蟲洞激活並作為通風口運行、可以在蟲洞間來回移動。\n除了Dimension Walker之外的冒充者也能使用蟲洞。\n按下「Retract」按鈕可以收回蟲洞並恢復使用次數。
+DarkKiller.Description,キルに関係する能力を有するインポスターです。\nキルクールが短い代わりに、停電中しかキルが出来ません。,An impostor with kill-related abilities.\nWhile the kill cooldown is short，you can only kill during a blackout.,具有击杀相关能力的冒充者。\n虽然击杀冷却较短、但只能在停电时击杀。,具有擊殺相關能力的冒充者。\n雖然擊殺冷卻較短、但只能在停電時擊殺。
+Robber.Description,キルに関係する能力を有するインポスターです。\nキルをした対象のタスク進捗を巻き戻します。,An Impostor with abilities related to kills.\nRewinds the task progress of the target they killed．,与击杀有关能力的内鬼．\n会回溯被击杀目标的任务进度．,擁有與擊殺相關能力的內鬼．\n會回溯被擊殺對象的任務進度．
 OverKiller.Description,キルに関係する能力を有するインポスターです。\nキルをした対象の死体を増やします。,An Impostor with abilities related to kills．\nIncreases the number of corpses from the target killed．,与击杀有关能力的内鬼．\n会增加被击杀目标的尸体数量．,擁有與擊殺相關能力的內鬼．\n會增加被擊殺對象的屍體數量．
 EvilSeer.Description,タスクターンに発動する能力を有するインポスターです。\n誰かが死亡すると画面が発光します。\n誰かが死亡した箇所に霊魂を確認することも出来ます。\n死体が発生した場合、その死体の方向に矢印を表示する事もできます。\nこれらの能力は設定によって、死者の色を反映させる事もできます。\nまた、設定次第では「取り憑かせる」ボタンを押すことで、対象のプレイヤーにモディファイア狼憑きを付与することが出来ます。,An Impostor with abilities that activate during task turns．\nWhen someone dies，the screen flashes．\nYou can also confirm the spirit at the location where someone died．\nWhen a corpse appears，an arrow can be displayed pointing toward its direction．\nThese abilities can reflect the color of the deceased depending on settings．\nAlso，depending on the settings，pressing the “Haunt！” button can apply the Modifier Haunted Wolf to the target player．,拥有在任务回合中发动能力的内鬼．\n有人死亡时画面会发光．\n也可以在有人死亡的位置确认灵魂．\n若出现尸体，会显示指向尸体方向的箭头．\n这些能力可根据设定反映死者的颜色．\n此外，根据设定按下“附身”按钮可赋予目标玩家“狼附身”修饰器．,擁有在任務回合中發動能力的內鬼．\n有人死亡時畫面會發光．\n也可以在有人死亡的位置確認靈魂．\n若出現屍體，會顯示指向屍體方向的箭頭．\n這些能力可依設定反映死者的顏色．\n此外，依設定按下「附身」按鈕可賦予目標玩家「狼附身」修飾器．
 Jammer.Description,タスクターンに使用出来る能力を有するインポスターです。\n「透明化」ボタンを押すと対象のプレイヤーを他人から見えなくすることが出来ます。\n透明化された当事者は自覚することが出来ません。\nインポスター視点は透明にされている人が半透明で見えます。,An Impostor with abilities usable during task turns．\nPressing the “Invisibility” button makes the target player invisible to others．\nThe affected player is unaware of being invisible．\nFrom the Impostor's view，the invisible player appears semi-transparent．,拥有在任务回合中可用能力的内鬼．\n按下“隐身”按钮会使目标玩家对他人不可见．\n被隐身的玩家自己不会察觉．\n从内鬼视角看，被隐身的玩家呈半透明状态．,擁有在任務回合中可用能力的內鬼．\n按下「隱形」按鈕會使目標玩家對他人不可見．\n被隱形的玩家自己不會察覺．\n從內鬼視角來看，被隱形的玩家呈半透明狀態．
@@ -561,10 +561,10 @@ Owl.Description,キル能力を有する第三陣営です。\n自陣営以外�
 SchrodingersCat.Description,キル能力を有さない第三陣営です。\nこの役職は勝利条件を持ちません。\n特定の陣営の役職にキルされると、その場で生き返ってそのキラーの陣営の仲間になり、勝利条件を獲得します。\n特定の陣営：インポスター、ジャッカル、パブロフの犬、クルーメイト,This is a third-faction role with no killing ability.\nThis role does not have a win condition.\nIf killed by a member of certain factions，it revives on the spot，joins the killer’s faction，and gains that faction’s win condition.\nThose factions are: Impostor，Jackal，Pavlov’s Dog，and Crewmate.,这是一个没有击杀能力的第三阵营角色。\n此角色没有胜利条件。\n如果被以下阵营的成员击杀，它会在原地复活，加入击杀者的阵营，并获得该阵营的胜利条件。\n这些阵营包括：内鬼，杰克，帕夫洛夫之犬，和船员。,這是一個沒有擊殺能力的第三陣營角色。\n此角色沒有勝利條件。\n如果被以下陣營的成員擊殺，它會在原地復活，加入擊殺者的陣營，並獲得該陣營的勝利條件。\n這些陣營包括：內鬼，傑克，帕夫洛夫之犬，和船員。,
 Truelover.Description,キル能力を有さない独自の勝利条件を持つ第三陣営です。\n「一目惚れ」ボタンを押すと、対象のプレイヤーとラバーズになります。\n勝利条件や能力はラバーズと同じになります。,A third-faction role without a kill ability that has its own win condition.\nBy pressing the “Love at First Sight” button，you become Lovers with a target player.\nYour win conditions and abilities match those of Lovers.,这是一个没有击杀能力、拥有独特胜利条件的第三阵营角色。\n按下“一见钟情”按钮后，会与你选择的玩家成为恋人。\n你的胜利条件和能力与恋人相同。,這是一個沒有擊殺能力且具備獨特勝利條件的第三陣營角色。\n按下「一見鍾情」按鈕後，會與你選擇的玩家成為戀人。\n你的勝利條件和能力與戀人相同。,
 Cupid.Description,キル能力を有さない独自の勝利条件を持つ第三陣営です。\n「恋の矢」ボタンを二人のプレイヤーに向かって押すと、その二人をラバーズにします。\n作成したラバーズが勝利すると共に勝利します。\nなお、勝利に自身の生存は必要ありません。,A third-faction role without a kill ability that has a unique win condition.\nBy pressing the “Arrow of Love” button toward two players，you make them Lovers.\nWhen those Lovers win，you also win alongside them.\nNote that your survival is not required for victory.,这是一个没有击杀能力、拥有独特胜利条件的第三阵营角色。\n按下“爱之箭”按钮指向两名玩家，即会使他们成为恋人。\n当那对恋人获胜时，你也会随之获胜。\n注意，你的存活并非胜利的必要条件。,這是一個沒有擊殺能力且具備獨特勝利條件的第三陣營角色。\n按下「愛之箭」按鈕指向兩名玩家，即會使他們成為戀人。\n當那對戀人獲勝時，你也會隨之獲勝。\n注意，你的存活並非勝利的必要條件。,
-Safecracker.Description,キル能力を有さない第三陣営です。\nタスクが全てAirShipの金庫解錠タスクになります。\nタスクを全て完了すると、その時点で単独勝利します。,A third faction without any kill ability.\nAll tasks are AirShip vault unlocking tasks.\nIf you complete all tasks, you win solo at that point.,一个没有任何击杀能力的第三阵营。\n所有任务都是AirShip的金库解锁任务。\n完成所有任务后，你将在那时获得单独胜利。,一個沒有任何擊殺能力的第三陣營。\n所有任務都是AirShip的金庫解鎖任務。\n完成所有任務後，你將在那時獲得單獨勝利。
+Safecracker.Description,キル能力を有さない第三陣営です。\nタスクが全てAirShipの金庫解錠タスクになります。\nタスクを全て完了すると、その時点で単独勝利します。,A third faction without any kill ability.\nAll tasks are AirShip vault unlocking tasks.\nIf you complete all tasks， you win solo at that point.,一个没有任何击杀能力的第三阵营。\n所有任务都是AirShip的金库解锁任务。\n完成所有任务后，你将在那时获得单独胜利。,一個沒有任何擊殺能力的第三陣營。\n所有任務都是AirShip的金庫解鎖任務。\n完成所有任務後，你將在那時獲得單獨勝利。
 OrientalShaman.Description,キル能力を有さない独自の勝利条件を持つ第三陣営です。\nキル能力を持つプレイヤーが誰かわかります。\nゲーム終了まで生存していると、一部役職の特殊勝利を除き、その勝利を横取りして勝利することが出来ます。\nベントを使用する際、使用モーション及び開閉モーションがありません。\nその代わり、滞在時間に制限があります。\nまた、設定次第では「式神」という仲間を作ることが出来ます。\n式神と相互に位置がわかります。\nまた、この役職は生存者の人数にカウントされません。,
 ShermansServant.Description,陰陽師陣営に属する第三陣営です。\n陰陽師が勝利すると共に勝利します。\n「変身」ボタンを押すと陰陽師の姿に変身します。\n「自決」ボタンを押すと自決します。\n死体の位置がわかります。\nこの役職は陰陽師に課せられた制限を受けません。\nこの役職はクルーメイトとして判定されます。\n陰陽師が死亡、または役職が代わるとその時点で死亡します。\n陰陽師と相互に位置がわかります。,A third faction aligned with the Onmyoji faction.\nYou win together when the Onmyoji wins.\nPress the "Transform" button to transform into the Onmyoji's form.\nPress the "Self-Destruct" button to commit self-destruction.\nYou can see the location of corpses.\nThis role is not subject to the restrictions imposed on the Onmyoji.\nThis role is considered a Crewmate.\nIf the Onmyoji dies or the role changes，you die at that moment.\nYou and the Onmyoji can see each other's locations.,一个属于阴阳师阵营的第三阵营。\n当阴阳师获胜时，你也一起获胜。\n按下「变身」按钮会变身为阴阳师的外形。\n按下「自决」按钮会自杀。\n你可以看到尸体的位置。\n该角色不受阴阳师所受限制的影响。\n该角色被判定为船员。\n当阴阳师死亡，或角色发生更换时，你会在那一刻死亡。\n你与你的阴阳师可以互相看到位置。,一個屬於陰陽師陣營的第三陣營。\n當陰陽師獲勝時，你也一起獲勝。\n按下「變身」按鈕會變身為陰陽師的外形。\n按下「自決」按鈕會自殺。\n你可以看到屍體的位置。\n該角色不受陰陽師所受限制的影響。\n該角色被判定為船員。\n當陰陽師死亡，或角色發生更換時，你會在那一刻死亡。\n你與你的陰陽師可以互相看到位置。
-BlackHatHacker.Description,キル能力を有さない独自の勝利条件を持つ第三陣営です。\n「ハック」ボタンを押すと対象のプレイヤーをウィルスに感染させます。\nそのプレイヤーに接近した他のプレイヤーもウィルスに感染し、感染度が100%になるとそのプレイヤーも感染源となります。\n生存者の全てが感染済になるとその時点で単独勝利します。,
+BlackHatHacker.Description,キル能力を有さない独自の勝利条件を持つ第三陣営です。\n「ハック」ボタンを押すと対象のプレイヤーをウィルスに感染させます。\nそのプレイヤーに接近した他のプレイヤーもウィルスに感染し、感染度が100%になるとそのプレイヤーも感染源となります。\n生存者の全てが感染済になるとその時点で単独勝利します。,A third-party role with a unique win condition and no kill ability.\nPressing the "Hack" button infects a target player with a virus.\nThe infection then spreads to other players who get close to an infected person，and once a player's infection level reaches 100%，they also become a source.\nYou achieve a solo victory when all surviving players are infected.
 PartTimer.Description,キル能力を有さない独自の勝利条件を持つ第三陣営です。\n「バイト」ボタンを押すと、対象のプレイヤーの味方になります。\nそのプレイヤーが生存した状態で勝利すると、共に勝利します。\nバイト先が死亡した場合、フリーターは未バイト状態となり、再度バイト先を選ぶことが出来るようになります(スポーンタイミングで更新)。,A third-party role with a unique win condition and no kill ability．\nPressing the “Part-Time” button makes you an ally of the target player．\nIf that player wins while alive，you win together．\nIf your ally dies，you become unemployed and can choose a new ally again（updated at spawn timing）．,拥有独特胜利条件且无击杀能力的第三阵营角色．\n按下“打工”按钮后会成为目标玩家的同伴．\n如果该玩家在存活状态下获胜，你也会一同获胜．\n若打工对象死亡，临时工将变为未打工状态，可在下次出生时重新选择打工对象．,擁有獨特勝利條件且無擊殺能力的第三陣營角色．\n按下「打工」按鈕後會成為目標玩家的同伴．\n若該玩家在存活狀態下獲勝，你也會一同獲勝．\n若打工對象死亡，打工族將變為未打工狀態，可於下次出生時重新選擇對象．
 Spelunker.Description,キル能力を有さない独自の勝利条件を持つ第三陣営です。\nベントを踏んだり、ドアを開けたり、昇降機に乗ったり、はしごを降りたりすると一定確率で死亡してしまいます。\nまた、サボタージュが長引くと不安で死んでしまいます。\nそれらを乗り越えゲーム終了まで生存していると、一部役職の特殊勝利を除き、その勝利を横取りして勝利することが出来ます。,A third-party role with a unique win condition and no kill ability．\nStepping on vents，opening doors，using elevators，or climbing down ladders all carry a chance of instant death．\nIf sabotages last too long，you may also die from anxiety．\nIf you survive these dangers until the end of the game，you can hijack the win from others unless special victory conditions apply．,拥有独特胜利条件且无击杀能力的第三阵营角色．\n踩到通风口、开门、乘坐电梯或下梯子时都有一定几率死亡．\n若破坏持续太久，也会因不安而死亡．\n若克服这些危险并存活到游戏结束，就可以夺取他人胜利（特殊胜利条件除外）．,擁有獨特勝利條件且無擊殺能力的第三陣營角色．\n踩到通風口、開門、乘坐電梯或下梯子時都有一定機率死亡．\n若破壞行動持續過久，也會因焦慮而死亡．\n若克服這些危險並存活到遊戲結束，就可以奪取他人勝利（特殊勝利條件除外）．
 
@@ -598,16 +598,16 @@ HamburgerShop.Description,特に能力を有さないクルーメイトです。
 NiceHawk.Description,タスクターンに使用出来る能力を有するクルーメイトです。\n「ホークアイ」ボタンを押すと自分の視野が広がり、周囲の様子を見ることが出来ます。,A Crewmate with an ability usable during task turns.\nBy pressing the “Hawkeye” button，they expand their vision to survey the surroundings.,这是一个在任务回合中可使用能力的船员。\n按下“鹰眼”按钮后，会扩大视野以观察周围情况。,這是一個在任務回合中可使用能力的船員。\n按下「鷹眼」按鈕後，會擴大視野以觀察周圍情況。,
 WiseMan.Description,タスクターンに使用出来る能力を有するクルーメイトです。\n「聖なるバリア」ボタンを押すと、一定時間動けなくなる代わりに、キルを跳ね返すバリアを貼ります。\n通常キルをされた場合、キルをしてきたプレイヤーが死亡します。\n波動砲が当たった場合、波動砲は真上、真下、斜め上、斜め下の4つのいずれかの角度に向かって跳ね返ります。,A Crewmate with an ability usable during task turns.\nBy pressing the “Holy Barrier” button，they become immobile for a set duration but place a barrier that reflects kills.\nIf a normal kill hits them，the killer dies instead.\nIf hit by a Wave Cannon，the beam is reflected in one of four directions—up，down，upward diagonal，or downward diagonal.,这是一个在任务回合中可使用能力的船员。\n按下“圣光屏障”按钮后，他们会在一段时间内无法移动，但会生成一个反射击杀的屏障。\n如果被普通击杀击中，击杀者会死亡。\n如果被波动炮击中，光束会向上，下，斜上或斜下四个方向中的一个反射。,這是一個在任務回合中可使用能力的船員。\n按下「聖光屏障」按鈕後，他們會在一段時間內無法移動，但會生成一個反射擊殺的屏障。\n如果被普通擊殺擊中，擊殺者會死亡。\n如果被波動砲擊中，光束會向上，下，斜上或斜下四個方向中的一個反射。,
 Clergy.Description,タスクターンに使用出来る能力を有するクルーメイトです。\n「聖なる光」ボタンを押すと、一定時間インポスターの視界を狭くすることが出来ます。\n設定次第ではキル能力を持つ第三陣営の視界を妨害することも出来ます。,I'm a crewmate with abilities usable during task turns.\nBy pressing the 'Holy Light' button，you can reduce the impostor's vision for a certain period of time.\nDepending on the settings，it can also obstruct the vision of third-party roles with kill abilities.
-Lighter.Description,タスクターンに使用出来る能力を有するクルーメイトです。\n「点灯」ボタンを押すと一定時間自身の視野が広くなります。\nこの能力は停電を無視します。,A crewmate with an ability usable during the Task Turn。\nWhen you press the 'Ignite' button、 your field of view expands for a certain duration。\nThis ability ignores power outages。,是具有能够在任务回合使用能力的队员。\n按下「点亮」按钮后，会在一定时间内扩大自己的视野。\n此能力会忽视停电效果。,是具有能夠在任務回合使用能力的隊員。\n按下「點亮」按鈕後，會在一定時間內擴大自己的視野。\n此能力會忽視停電效果。
-Technician.Description,タスクターンに使用出来る能力を有するクルーメイトです。\nサボタージュ中のみベントを使用することが出来ます。\nベントの中にいるときにサボタージュが修理されると、ベントから脱出します。,A crewmate with an ability usable during the Task Turn。\nYou can use vents only while sabotaging。\nIf a sabotage is repaired while you’re inside a vent、 you will be ejected from it。,是具有能够在任务回合使用能力的队员。\n仅能在破坏期间使用通风口。\n如果在你位于通风口内时破坏被修复，你会被弹出通风口。,是具有能夠在任務回合使用能力的隊員。\n僅能在破壞期間使用通風口。\n如果在你位於通風口內時破壞被修復，你會被彈出通風口。
-NiceScientist.Description,タスクターンに使用出来る能力を有するクルーメイトです。\n「透明化」ボタンを押すと、一定時間自身の姿が透明になります。\n透明化中であっても、能力の対象になります。\nまた、設定次第では能力使用中のライターには見えてしまいます。,A crewmate with an ability usable during the Task Turn。\nWhen you press the 'Invisibility' button、 your appearance becomes invisible for a certain period of time。\nEven while invisible、 you can still be targeted by abilities。\nAlso、 depending on the settings、 writers may see you while you’re using the ability。,是具有能够在任务回合使用能力的队员。\n按下「隐身」按钮时，你的身影会在一定时间内变为隐形。\n即使在隐身状态下，你仍会成为能力的目标。\n另外，根据设置，在使用能力时，写手也可能会看到你。,是具有能夠在任務回合使用能力的隊員。\n按下「隱身」按鈕時，你的身影會在一定時間內變為隱形。\n即使在隱身狀態下，你仍會成為能力的目標。\n另外，根據設定，在使用能力時，寫手也可能會看到你。
-MeetingSheriff.Description,会議中に使用出来る能力を有するクルーメイトです。\n会議中に出現するボタンを押すと、対象のプレイヤーが人外だった場合キルをすることが出来ます。\nただし、対象がクルーメイトもしくはキル出来ない陣営だった場合、自らが死亡してしまいます。,A crewmate with an ability usable during meetings。\nWhen you press the meeting button、 if the target player is an impostor、 you can kill them。\nHowever、 if the target is a crewmate or a non-killable faction、 you will die。,是具有能够在会议中使用能力的队员。\n在会议中出现的按钮按下后，如果目标玩家是内鬼，你可以将其击杀。\n但是，如果目标是队员或不能被击杀的阵营，你会死去。,是具有能夠在會議中使用能力的隊員。\n在會議中出現的按鈕按下後，如果目標玩家是內鬼，你可以將其擊殺。\n但是，如果目標是隊員或不能被擊殺的陣營，你會死亡。
-Medium.Description,タスクターンに使用出来る能力を有するクルーメイトです。\n「霊視」ボタンを押すと、少しの間幽霊が視えるようになります。\nまた、霊視中に幽霊に対して「霊話」ボタンを押すと、その幽霊に関する情報を得られます。\n情報はチャットに送られます。,A crewmate with an ability usable during the Task Turn。\nWhen you press the 'Seance' button、 you can see ghosts for a short time。\nAlso、 during seance、 if you press the 'Spirit Talk' button on a ghost、 you will obtain information about that ghost。\nThe information will be sent to chat。,是具有能够在任务回合使用能力的队员。\n按下「灵视」按钮，可以在短时间内看到幽灵。\n另外，在灵视过程中，对幽灵按下「灵话」按钮，可以获得有关该幽灵的信息。\n信息会发送到聊天。,是具有能夠在任務回合使用能力的隊員。\n按下「靈視」按鈕，可以在短時間內看到幽靈。\n另外，在靈視過程中，對幽靈按下「靈話」按鈕，可以獲得有關該幽靈的資訊。\n資訊會發送到聊天。
-Phosphorus.Description,タスクターンに使用出来る能力を有するクルーメイトです。\nマップに設定個数のランタンを設置することが出来ます。\nランタンは次のターン以降に実体化し、全プレイヤーに見えるようになります。\n能力を使用すると、一定時間の間ランタンが光り、周囲を照らします。,A crewmate with an ability usable during the Task Turn。\nYou can place a set number of lanterns on the map。\nLanterns will materialize from the next turn onward and be visible to all players。\nWhen the ability is used、 the lanterns will glow for a certain time and illuminate the surroundings。,是具有能够在任务回合使用能力的队员。\n可以在地图上放置指定数量的灯笼。\n灯笼将在下一回合实体化并对所有玩家可见。\n使用能力后，灯笼会在一定时间内发光，照亮周围。,是具有能夠在任務回合使用能力的隊員。\n可以在地圖上放置指定數量的燈籠。\n燈籠將在下一回合實體化並對所有玩家可見。\n使用能力後，燈籠會在一定時間內發光，照亮周圍。
-Stuntman.Description,タスクターンに発動する能力を有するクルーメイトです。\n一定回数キルを自動で防ぎます。\nただし、キルされたことを自覚することは出来ません。,A crewmate with an ability that activates during the Task Turn。\nIt automatically blocks a certain number of kills。\nHowever、 you will not be aware that you’ve been attacked。,是具有在任务回合激活能力的队员。\n它会自动阻挡一定次数的击杀。\n但是，你不会察觉自己曾被击杀。,是具有在任務回合激活能力的隊員。\n它會自動阻擋一定次數的擊殺。\n但是，你不會察覺自己曾被擊殺。
-Ubiquitous.Description,タスクターンに使用出来る能力を有するクルーメイトです。\n「呼び出し」ボタンを押すと、マップ上に自視点でのみ視認出来るドローンを呼び出します。\n「操作」ボタンを押すと、呼び出したドローンに視点が切り替わり、操作出来るようになります。\n「帰還」ボタンを押すと、ドローンをマップ上から削除します。\n「ドアハック」ボタンを押すと近くのドアを開けます。\nドローンがマップ上に存在する状態で会議が招集されると、実体化しマップ上に固定されます。\n実体化したドローンは他プレイヤーも視認出来ます。\nまた、マップ上に固定されたドローンの近くを他プレイヤーが通過すると、ユビキタスのタスクマップ上に表示されます。,A crewmate with an ability usable during the Task Turn。\nWhen you press the 'Call' button、 you summon a drone visible only to you on the map。\nWhen you press the 'Operate' button、 your view switches to the summoned drone and you can operate it。\nWhen you press the 'Return' button、 the drone is removed from the map。\nWhen you press the 'Door Hack' button、 you open nearby doors。\nIf a meeting is called while the drone exists on the map、 it materializes and becomes fixed on the map。\nA materialized drone can be seen by other players。\nAlso、 when another player passes near a fixed drone on the map、 it will appear on Ubiquitous’s task map。,是具有能够在任务回合使用能力的队员。\n按下「呼叫」按钮，可以在地图上召唤一个只有自己可见的无人机。\n按下「操作」按钮，视角会切换到召唤的无人机并可以操作它。\n按下「返回」按钮，可以将无人机从地图上移除。\n按下「门锁破解」按钮，可以打开附近的门。\n如果在无人机存在于地图上时召开会议，它会实体化并固定在地图上。\n实体化的无人机可以被其他玩家看到。\n此外，当其他玩家经过固定的无人机附近时，会在偏在者的任务地图上显示。,是具有能夠在任務回合使用能力的隊員。\n按下「呼叫」按鈕，可以在地圖上召喚一個只有自己可見的無人機。\n按下「操作」按鈕，視角會切換到召喚的無人機並可以操作它。\n按下「返回」按鈕，可以將無人機從地圖上移除。\n按下「門鎖破解」按鈕，可以打開附近的門。\n如果在無人機存在於地圖上時召開會議，它會實體化並固定在地圖上。\n實體化的無人機可以被其他玩家看到。\n此外，當其他玩家經過固定的無人機附近時，會在偏在者的任務地圖上顯示。
-Busker.Description,タスクターンに使用出来る能力を有するクルーメイトです。\n「偽装死」ボタンを押すと、幽霊状態になります。\n偽装死状態のときに会議が招集されたり、一定時間が経過すると本当に死亡してしまいます。\nまた、戻るべき死体が消えてしまっても本当に死亡してしまいます。,A crewmate with an ability usable during the Task Turn。\nWhen you press the 'Feign Death' button、 you become a ghost。\nWhile feigning death、 if a meeting is called or a certain time passes、 you will actually die。\nAlso、 if your corpse to return to disappears、 you will actually die。,是具有能够在任务回合使用能力的队员。\n按下「假死」按钮，会变为幽灵状态。\n在假死状态下，如果召开会议或经过一定时间，你会真正死亡。\n另外，即使复活的尸体消失，你也会真正死亡。,是具有能夠在任務回合使用能力的隊員。\n按下「假死」按鈕，會變為幽靈狀態。\n在假死狀態下，如果召開會議或經過一定時間，你會真正死亡。\n另外，即使復活的屍體消失，你也會真正死亡。
-Doorr.Description,タスクターンに使用出来る能力を有するクルーメイトです。\n「ドアーー!!」ボタンを押すと、目の前のドアを開閉出来ます。,A crewmate with an ability usable during the Task Turn。\nWhen you press the 'Doorーー!!' button、 you can open and close the door in front of you。,是具有能够在任务回合使用能力的队员。\n按下「门ーー!!」按钮，可以开关面前的门。,是具有能夠在任務回合使用能力的隊員。\n按下「門ーー!!」按鈕，可以開關面前的門。
+Lighter.Description,タスクターンに使用出来る能力を有するクルーメイトです。\n「点灯」ボタンを押すと一定時間自身の視野が広くなります。\nこの能力は停電を無視します。,A crewmate with an ability usable during the Task Turn.\nWhen you press the 'Ignite' button， your field of view expands for a certain duration.\nThis ability ignores power outages.,是具有能够在任务回合使用能力的队员。\n按下「点亮」按钮后，会在一定时间内扩大自己的视野。\n此能力会忽视停电效果.,是具有能夠在任務回合使用能力的隊員。\n按下「點亮」按鈕後，會在一定時間內擴大自己的視野。\n此能力會忽視停電效果。
+Technician.Description,タスクターンに使用出来る能力を有するクルーメイトです。\nサボタージュ中のみベントを使用することが出来ます。\nベントの中にいるときにサボタージュが修理されると、ベントから脱出します。,A crewmate with an ability usable during the Task Turn.\nYou can use vents only while sabotaging.\nIf a sabotage is repaired while you’re inside a vent， you will be ejected from it.,是具有能够在任务回合使用能力的队员。\n仅能在破坏期间使用通风口。\n如果在你位于通风口内时破坏被修复，你会被弹出通风口.,是具有能夠在任務回合使用能力的隊員。\n僅能在破壞期間使用通風口。\n如果在你位於通風口內時破壞被修復，你會被彈出通風口。
+NiceScientist.Description,タスクターンに使用出来る能力を有するクルーメイトです。\n「透明化」ボタンを押すと、一定時間自身の姿が透明になります。\n透明化中であっても、能力の対象になります。\nまた、設定次第では能力使用中のライターには見えてしまいます。,A crewmate with an ability usable during the Task Turn.\nWhen you press the 'Invisibility' button， your appearance becomes invisible for a certain period of time.\nEven while invisible， you can still be targeted by abilities.\nAlso， depending on the settings， lighters may see you while you’re using the ability.,是具有能够在任务回合使用能力的队员。\n按下「隐身」按钮时，你的身影会在一定时间内变为隐形。\n即使在隐身状态下，你仍会成为能力的目标。\n另外，根据设置，在使用能力时，写手也可能会看到你.,是具有能夠在任務回合使用能力的隊員。\n按下「隱身」按鈕時，你的身影會在一定時間內變為隱形。\n即使在隱身狀態下，你仍會成為能力的目標。\n另外，根據設定，在使用能力時，寫手也可能會看到你。
+MeetingSheriff.Description,会議中に使用出来る能力を有するクルーメイトです。\n会議中に出現するボタンを押すと、対象のプレイヤーが人外だった場合キルをすることが出来ます。\nただし、対象がクルーメイトもしくはキル出来ない陣営だった場合、自らが死亡してしまいます。,A crewmate with an ability usable during meetings.\nWhen you press the meeting button， if the target player is an impostor， you can kill them.\nHowever， if the target is a crewmate or a non-killable faction， you will die.,是具有能够在会议中使用能力的队员。\n在会议中出现的按钮按下后，如果目标玩家是内鬼，你可以将其击杀。\n但是，如果目标是队员或不能被击杀的阵营，你会死去.,是具有能夠在會議中使用能力的隊員。\n在會議中出現的按鈕按下後，如果目標玩家是內鬼，你可以將其擊殺。\n但是，如果目標是隊員或不能被擊殺的陣營，你會死亡。
+Medium.Description,タスクターンに使用出来る能力を有するクルーメイトです。\n「霊視」ボタンを押すと、少しの間幽霊が視えるようになります。\nまた、霊視中に幽霊に対して「霊話」ボタンを押すと、その幽霊に関する情報を得られます。\n情報はチャットに送られます。,A crewmate with an ability usable during the Task Turn.\nWhen you press the 'Seance' button， you can see ghosts for a short time.\nAlso， during seance， if you press the 'Spirit Talk' button on a ghost， you will obtain information about that ghost.\nThe information will be sent to chat.,是具有能够在任务回合使用能力的队员。\n按下「灵视」按钮，可以在短时间内看到幽灵。\n另外，在灵视过程中，对幽灵按下「灵话」按钮，可以获得有关该幽灵的信息。\n信息会发送到聊天.,是具有能夠在任務回合使用能力的隊員。\n按下「靈視」按鈕，可以在短時間內看到幽靈。\n另外，在靈視過程中，對幽靈按下「靈話」按鈕，可以獲得有關該幽靈的資訊。\n資訊會發送到聊天。
+Phosphorus.Description,タスクターンに使用出来る能力を有するクルーメイトです。\nマップに設定個数のランタンを設置することが出来ます。\nランタンは次のターン以降に実体化し、全プレイヤーに見えるようになります。\n能力を使用すると、一定時間の間ランタンが光り、周囲を照らします。,A crewmate with an ability usable during the Task Turn.\nYou can place a set number of lanterns on the map.\nLanterns will materialize from the next turn onward and be visible to all players.\nWhen the ability is used， the lanterns will glow for a certain time and illuminate the surroundings.,是具有能够在任务回合使用能力的队员。\n可以在地图上放置指定数量的灯笼。\n灯笼将在下一回合实体化并对所有玩家可见。\n使用能力后，灯笼会在一定时间内发光，照亮周围.,是具有能夠在任務回合使用能力的隊員。\n可以在地圖上放置指定數量的燈籠。\n燈籠將在下一回合實體化並對所有玩家可見。\n使用能力後，燈籠會在一定時間內發光，照亮周圍。
+Stuntman.Description,タスクターンに発動する能力を有するクルーメイトです。\n一定回数キルを自動で防ぎます。\nただし、キルされたことを自覚することは出来ません。,A crewmate with an ability that activates during the Task Turn.\nIt automatically blocks a certain number of kills.\nHowever， you will not be aware that you’ve been attacked.,是具有在任务回合激活能力的队员。\n它会自动阻挡一定次数的击杀。\n但是，你不会察觉自己曾被击杀.,是具有在任務回合激活能力的隊員。\n它會自動阻擋一定次數的擊殺。\n但是，你不會察覺自己曾被擊殺。
+Ubiquitous.Description,タスクターンに使用出来る能力を有するクルーメイトです。\n「呼び出し」ボタンを押すと、マップ上に自視点でのみ視認出来るドローンを呼び出します。\n「操作」ボタンを押すと、呼び出したドローンに視点が切り替わり、操作出来るようになります。\n「帰還」ボタンを押すと、ドローンをマップ上から削除します。\n「ドアハック」ボタンを押すと近くのドアを開けます。\nドローンがマップ上に存在する状態で会議が招集されると、実体化しマップ上に固定されます。\n実体化したドローンは他プレイヤーも視認出来ます。\nまた、マップ上に固定されたドローンの近くを他プレイヤーが通過すると、ユビキタスのタスクマップ上に表示されます。,A crewmate with an ability usable during the Task Turn.\nWhen you press the 'Call' button， you summon a drone visible only to you on the map.\nWhen you press the 'Operate' button， your view switches to the summoned drone and you can operate it.\nWhen you press the 'Return' button， the drone is removed from the map.\nWhen you press the 'Door Hack' button， you open nearby doors.\nIf a meeting is called while the drone exists on the map， it materializes and becomes fixed on the map.\nA materialized drone can be seen by other players.\nAlso， when another player passes near a fixed drone on the map， it will appear on Ubiquitous’s task map.,是具有能够在任务回合使用能力的队员。\n按下「呼叫」按钮，可以在地图上召唤一个只有自己可见的无人机。\n按下「操作」按钮，视角会切换到召唤的无人机并可以操作它。\n按下「返回」按钮，可以将无人机从地图上移除。\n按下「门锁破解」按钮，可以打开附近的门。\n如果在无人机存在于地图上时召开会议，它会实体化并固定在地图上。\n实体化的无人机可以被其他玩家看到。\n此外，当其他玩家经过固定的无人机附近时，会在偏在者的任务地图上显示.,是具有能夠在任務回合使用能力的隊員。\n按下「呼叫」按鈕，可以在地圖上召喚一個只有自己可見的無人機。\n按下「操作」按鈕，視角會切換到召喚的無人機並可以操作它。\n按下「返回」按鈕，可以將無人機從地圖上移除。\n按下「門鎖破解」按鈕，可以打開附近的門。\n如果在無人機存在於地圖上時召開會議，它會實體化並固定在地圖上。\n實體化的無人機可以被其他玩家看到。\n此外，當其他玩家經過固定的無人機附近時，會在偏在者的任務地圖上顯示。
+Busker.Description,タスクターンに使用出来る能力を有するクルーメイトです。\n「偽装死」ボタンを押すと、幽霊状態になります。\n偽装死状態のときに会議が招集されたり、一定時間が経過すると本当に死亡してしまいます。\nまた、戻るべき死体が消えてしまっても本当に死亡してしまいます。,A crewmate with an ability usable during the Task Turn.\nWhen you press the 'Feign Death' button， you become a ghost.\nWhile feigning death， if a meeting is called or a certain time passes， you will actually die.\nAlso， if your corpse to return to disappears， you will actually die.,是具有能够在任务回合使用能力的队员。\n按下「假死」按钮，会变为幽灵状态。\n在假死状态下，如果召开会议或经过一定时间，你会真正死亡。\n另外，即使复活的尸体消失，你也会真正死亡.,是具有能夠在任務回合使用能力的隊員。\n按下「假死」按鈕，會變為幽靈狀態。\n在假死狀態下，如果召開會議或經過一定時間，你會真正死亡。\n另外，即使復活的屍體消失，你也會真正死亡。
+Doorr.Description,タスクターンに使用出来る能力を有するクルーメイトです。\n「ドアーー!!」ボタンを押すと、目の前のドアを開閉出来ます。,A crewmate with an ability usable during the Task Turn.\nWhen you press the 'Doorーー!!' button， you can open and close the door in front of you.,是具有能够在任务回合使用能力的队员。\n按下「门ーー!!」按钮，可以开关面前的门.,是具有能夠在任務回合使用能力的隊員。\n按下「門ーー!!」按鈕，可以開關面前的門。
 SilverBullet.Description,タスクターンに使用出来る能力を有するクルーメイトです。\nベントに向かって「分析」ボタンを押すと、そのベントの前のターンの使用情報を得られます。\n情報はチャットに送られます。,A Crewmate with abilities usable during task turns．\nPressing the “Analyze” button toward a vent reveals usage information from the previous turn．\nThe information is sent to the chat．,拥有在任务回合中可用能力的船员角色．\n朝通风口按下“分析”按钮可获得上回合的使用信息．\n信息将发送至聊天．,擁有在任務回合中可用能力的船員角色．\n朝通風口按下「分析」按鈕可獲得上一回合的使用資訊．\n資訊會傳送到聊天中．
 Shielder.Description,タスクターンに使用出来る能力を有するクルーメイトです。\n「シールド」ボタンを押すと、一定時間の間キルを防ぐシールドを貼ります。\nキルを防いだときのガードエフェクトは、自身及びキラー視点で見えます。,A Crewmate with abilities usable during task turns．\nPressing the “Shield” button creates a barrier that prevents kills for a certain period．\nThe guard effect is visible to both the user and the killer when it blocks a kill．,拥有在任务回合中可用能力的船员角色．\n按下“护盾”按钮可在一段时间内生成阻止击杀的护盾．\n当护盾成功防止击杀时，效果会对自己与杀手可见．,擁有在任務回合中可用能力的船員角色．\n按下「護盾」按鈕可在一段時間內產生阻止擊殺的護盾．\n當護盾成功防止擊殺時，效果會對自己與殺手可見．
 Moving.Description,タスクターンに使用出来る能力を有するクルーメイトです。\n「位置記録」ボタンを押すと、その場所をテレポート先として登録します。\n「テレポート」ボタンを押すと記録した場所にテレポート出来ます。,A Crewmate with abilities usable during task turns．\nPressing the “Record Position” button registers the current location as a teleport destination．\nPressing the “Teleport” button teleports you to the recorded location．,拥有在任务回合中可用能力的船员角色．\n按下“记录位置”按钮可将当前位置注册为传送目标地．\n按下“传送”按钮可传送到记录的位置．,擁有在任務回合中可用能力的船員角色．\n按下「記錄位置」按鈕可將當前位置登錄為傳送目的地．\n按下「傳送」按鈕可傳送到記錄的位置．
@@ -807,7 +807,7 @@ SheriffCanKillLovers,ラバーズをキルできる,Can Kill Lovers
 Sheriff.SuicideMode,自決とキルのモード,Suicide & Kill Mode
 Sheriff.SuicideMode.Default,通常,Default
 Sheriff.SuicideMode.AlwaysSuicide,常に自決する,Always commit Suicide
-Sheriff.SuicideMode.AlwaysKill,誤射時も対象をキルする,When misfired，\nKills.
+Sheriff.SuicideMode.AlwaysKill,誤射時も対象をキルする,Kills the target even when misfiring
 
 # Guesser Options
 NiceGuesserMaxShots,打てる最大数,Maximum Number of Shots,最大射击次数,最大射擊次數
@@ -860,7 +860,7 @@ BaitDelayVariation,遅延の幅,Delay Variation,遅延的變化,遅延的變化
 
 # Balancer Options
 BalancerVoteTime,天秤会議時間,Balancer Vote Time,天秤会议时间,天秤會議時間
-BalancerUseCount,使用可能回数,Useable Count,可使用次数,可使用次數
+BalancerUseCount,使用可能回数,Max Uses,可使用次数,可使用次數
 
 # Balancer UI Texts
 BalancerTitleTextEither,どちらかが追放される...,One of them will be exiled...,其中一个将被驱逐...,其中一個將被驅逐...
@@ -868,7 +868,7 @@ BalancerTitleTextAverage,はかりにかけられる運命,Fate on the scales,�
 BalancerTitleTextYouVoteEither,どちらかに入れる?,Vote for one of them...,投票给其中一个...,投票給其中一個...
 BalancerTitleTextEitherExile,追放者の運命が決まる...,The fate of the exiled is decided...,被驱逐者的命运已定...,被驅逐者的命運已定...
 BalancerTitleTextWhoIsImpostor,どっちがインポスター？,Which one is the Impostor?,哪一个是内鬼？,哪一個是內鬼？
-BalancerTitleTextPleaseVote,どちらかに入れろ,Put it one way or the other.,到底要选哪个呢,誰的罪孽更深呢
+BalancerTitleTextPleaseVote,どちらかに入れろ,You must vote for one.,到底要选哪个呢,誰的罪孽更深呢
 BalancerTitleTextGetBalance,バランスを求めよ。,Seek balance.,寻求平衡,尋求平衡
 BalancerAbilityUseText,能力発動,Ability activated,能力發動,能力發動
 BalancerVoteText,どちらかに投票せよ！,Vote for one or the other!,请选择一名玩家投票！,將票投給其中一邊！
@@ -881,14 +881,14 @@ BalancerLimitText,天秤残り{0}回,Balancer Limit {0} times,天秤剩余{0}次
 SelfBomberKillButtonText,爆発,Explosion,爆炸,爆炸
 SelfBomberCooldown,爆発クールダウン,Explosion Cooldown,爆炸冷却时间,爆炸冷卻時間
 SelfBomberExplosionRadius,爆発範囲,Explosion Radius,爆炸范围,爆炸範圍
-SelfBomberOnlyKillCrewmates,インポスターはキルしない,Only Kill Crewmates,只能杀船员,只能殺船員
+SelfBomberOnlyKillCrewmates,インポスターはキルしない,Don't Kill Impostors,只能杀船员,只能殺船員
 SelfBomberIgnoreWalls,壁を無視する,Ignore Walls,忽略墙壁,忽略牆壁
 
 # Samurai
 SamuraiKillButtonText,必殺技,Slash,斬擊,斬擊
 SamuraiKillCooldown,必殺技クールダウン,Slash Cooldown,斬擊冷卻時間,斬擊冷卻時間
 SamuraiKillRadius,必殺技の範囲,Slash Radius,斬擊範圍,斬擊範圍
-SamuraiOnlyKillCrewmates,インポスターはキルしない,Only Kill Crewmates,只能杀船员,只能殺船員
+SamuraiOnlyKillCrewmates,インポスターはキルしない,Don't Kill Impostors,只能杀船员,只能殺船員
 SamuraiIgnoreWalls,壁を無視する,Ignore Walls,忽略墙壁,忽略牆壁
 SamuraiCanUseVent,ベントを使用できる,Can Use Vents,可以使用通风口,可以使用通風口
 SamuraiCanSabotage,サボタージュを使用できる,Can Sabotage,可以使用破坏,可以使用破壞
@@ -1132,7 +1132,7 @@ PenguinHundredKillDescription,ペンギンの能力で累計100人キルした,K
 
 # Pusher
 PusherButtonName,ドン！,Push!
-PusherRevengeRole,突き落とした相手が猫又系の役職だった場合、ランダムに道連れする,If the player you pushed is a nekomata role，randomly pull along,如果被推的玩家是疯友角色，随机道连,如果被推的玩家是瘋友角色，隨機道連
+PusherRevengeRole,突き落とした相手が猫又系の役職だった場合、ランダムに道連れする,If the player you pushed is a nekomata role，randomly take another player down with you.,如果被推的玩家是疯友角色，随机道连,如果被推的玩家是瘋友角色，隨機道連
 
 # EvilHacker Settings
 EvilHackerCanMoveWhileUsingAdmin,アドミン使用中に移動出来る,Can Move While Using Admin,使用管理地图时可以移动,使用管理地圖時可以移動
@@ -1178,9 +1178,9 @@ NekoKabocha.CanRevengeExiled,追放時に復讐できる,Can Revenge When Exiled
 
 # Matryoshka
 MatryoshkaWearLimit,纏える回数,Number of times you can wear it,恐怖套娃最大套娃次数,恐怖套娃最大套娃次數
-MatryoshkaAddKillCoolTime,死体まといの増加キルクールタイムタイム,Increased kill-cool time time for corpse coats,恐怖套娃每次套娃追加的击杀冷却,恐怖套娃每次套娃增加的擊殺冷却
-MatryoshkaWearReport,まとい中でも通報可能,can be called in while the body is still circled,恐怖套娃可以在套娃状态下报告,恐怖套娃可以在套娃狀態下報告
-MatryoshkaWearTime,まとえる時間,Coiling time,恐怖套娃套娃持续时间,恐怖套娃套娃持續時間
+MatryoshkaAddKillCoolTime,死体まといの増加キルクールタイム,Increased kill cooldown while wearing a body,恐怖套娃每次套娃追加的击杀冷却,恐怖套娃每次套娃增加的擊殺冷却
+MatryoshkaWearReport,まとい中でも通報可能,Can report while wearing a body,恐怖套娃可以在套娃状态下报告,恐怖套娃可以在套娃狀態下報告
+MatryoshkaWearTime,まとえる時間,Wear Duration,恐怖套娃套娃持续时间,恐怖套娃套娃持續時間
 MatryoshkaPutOnButtonName,着る,Put On,套娃,套娃
 MatryoshkaTakeOffButtonName,脱ぐ,Take Off,解除,解除
 
@@ -1195,7 +1195,7 @@ ConjurerCanKillImpostorOption,インポスターもキルできる,Can Kill Impo
 ConjurerShowFlashOption,フラッシュ効果を表示する,Show Flash Effect,显示闪光效果,顯示閃光效果
 
 # Doppelganger
-DoppelgangerCoolTime,クールタイム,Cool Time,冷却时间,冷卻時間
+DoppelgangerCoolTime,クールタイム,Cooldown,冷却时间,冷卻時間
 DoppelgangerDurationTime,変身持続時間,Shapeshift Duration,变身持续时间,變身持續時間
 DoppelgangerSucCool,成功時のキルクールタイム,Kill Cooldown on Success,成功击杀冷却,成功擊殺冷卻
 DoppelgangerNotSucCool,失敗時のキルクールタイム,Kill Cooldown on Failure,失败击杀冷却,失敗擊殺冷卻
@@ -1311,9 +1311,9 @@ LoversKnowPartnerRole,相方の役職がわかる,Know Partner Role
 LoversKnowPartnerPosition,相方の位置がわかる,Know Partner Position
 
 # Owl
-OwlCanSpecialBlackoutDeadBodyCount,特殊停電を使えるようになる死体数,Number of bodies that will be able to use special blackout,获得紧急停电所需藏匿的尸体数,啟用黑幕降臨所需的屍體數
-OwlSpecialBlackoutCool,特殊停電のクールタイム,Cool time for special power outages,紧急停电冷却时间,黑幕降臨的冷卻時間
-OwlSpecialBlackoutTime,特殊停電の効果時間,Effect duration of special power outages,紧急停电持续时间,黑幕降臨的持續時間
+OwlCanSpecialBlackoutDeadBodyCount,特殊停電を使えるようになる死体数,Corpses count required to use Special Blackout,获得紧急停电所需藏匿的尸体数,啟用黑幕降臨所需的屍體數
+OwlSpecialBlackoutCool,特殊停電のクールタイム,Cooldown for special blackout,紧急停电冷却时间,黑幕降臨的冷卻時間
+OwlSpecialBlackoutTime,特殊停電の効果時間,Effect duration of special blackout,紧急停电持续时间,黑幕降臨的持續時間
 OwlCanKillOutsideOfBlackout,停電以外でもキルできる,Can kill outside of blackout
 OwlCanTransportOutsideOfBlackout,停電以外でも運搬できる,Can transported outside of blackout
 OwlNestButtonText,巣作り,Nest building,筑巢,築巢
@@ -1324,7 +1324,7 @@ OwlSpecialBlackoutButton,特殊停電,Special Blackout,紧急停电,黑幕降臨
 # SchrodingersCat Role and Options
 SchrodingersCat,シュレディンガーの猫,Schrödinger's Cat,薛定谔的猫,薛丁格的貓
 SchrodingersCatHasKillAbility,キル能力を有する,Has kill ability,具有擊殺能力,具有擊殺能力
-SchrodingersCatKillCooldown,キルクールタイム,Kill Cool Time,擊殺冷卻時間,擊殺冷卻時間
+SchrodingersCatKillCooldown,キルクールタイム,Kill Cooldown,擊殺冷卻時間,擊殺冷卻時間
 SchrodingersCatKillVictimSuicide,キル者が自殺する,Killer suicides,擊殺者自殺,擊殺者自殺
 SchrodingersCatSuicideTime,自殺までの時間,Time until suicide,自殺剩餘時間,自殺剩餘時間
 SchrodingersCatBeCrewOnExile,追放でクルー陣営になる,Become crew on exile,被逐出時變為船員陣營,被逐出時變為船員陣營
@@ -1457,7 +1457,7 @@ SpelunkerDoorOpenChance,ドア開放死の確率,Door Opening Death Chance,开�
 # BlackHatHacker
 BlackHatHacker,ブラックハットハッカー,Black Hat Hacker,黑帽客,黑帽駭客
 BlackHatHackerDescription,ウイルスを使って全員を感染させろ！,Use viruses to infect everyone!,使用病毒感染所有人,使用病毒感染所有人
-BlackHatHackerHackCoolTime,ハックのクールタイム,Hack Cool Time,植入病毒冷却,駭入的冷卻時間
+BlackHatHackerHackCoolTime,ハックのクールタイム,Hack Cooldown,植入病毒冷却,駭入的冷卻時間
 BlackHatHackerHackCountable,ハック可能回数,Number of hacks possible,最大植入病毒次数,駭入的使用次數
 BlackHatHackerIsNotInfectionIncrease,感染者が居なくなったらハック回数を増やす,Increase the number of hacks once the infected are gone,不存在感染者时增加一次感染次数,當感染者消失後，增加駭入的使用次數
 BlackHatHackerHackInfectiousTime,感染時間,Infectious time,感染所需时间,感染所需時間
@@ -1585,7 +1585,7 @@ Unknown,不明,Unknown,未知,未知
 # NiceRedRidingHood
 NiceRedRidingHood,ナイス赤ずきん,NiceRedRidingHood,小红帽,小紅帽
 NiceRedRidingHoodIntro1,生き返ろう,Come back to life,杀死你的凶手死亡后你将会复活,殺死你的凶手死亡後你將會復活
-NiceRedRidingHoodDescription,自身をキルしたクルーが死亡した場合、次のターンに復活するクルーメイト役職です。\n\nナイス赤ずきんは、復活可能回数が残っていて、且つ死体が発生するキルによって死亡した場合に復活する事ができます。\n(猫又役職による道ずれや、スラッガーによるキル等は復活の対象外です。)\n\nキル者がタスクフェイズ中に死亡した場合に復活するかは、設定によります。\nその設定が有効で、キル者がタスクフェイズ中に死亡した場合も、次の会議フェイズ終了時に復活します。\n\nナイス赤ずきんが復活可能な条件を満たしている場合は、霊界で他のクルーの役職を確認することができず、更に憑依能力を有しません。\n満たしていない場合は、霊界で他のクルーの役職が表示され、憑依能力も使用可能です。\n\n私を狼のお腹から引きずり出したのはどなた?,The Crew Mate role revives the crewmember who killed him or her on the next turn if he or she dies.\n\nNice Red Riding Hood can be revived if the number of times it can revive remains，and if it is killed by a kill that results in a corpse.\n(Excluded from resurrection are a wayward death by a nekomata role，a kill by a slugger，etc.)\n\nWhether or not a kill is resurrected if the kill is made during the Task Phase depends on the setting.\nIf the setting is enabled and the kill person dies during the Task Phase，he/she will be revived at the end of the next Meeting Phase.\n\nIf the Nice Red Riding Hood meets the requirements to be revivable，it will not be able to see the other crew members' roles in the spirit world，and furthermore，it will not have the ability to possess them.\nIf not met，the other crew members' roles will be visible in the spirit world and the possession ability will be available.\n\nWho pulled me out of the wolf's belly?,击杀小红帽的玩家死亡后，小红帽在下一轮开始时复活。\n\n小红帽的复活有一定的次数限制，且只有在留下尸体的场合才能复活。\n(如被猎人系职业连带而死，或被击球手击飞而死，小红帽均不能复活。)\n\n可以设置击杀小红帽的凶手若在行动阶段死亡，小红帽是否也能复活。\n若可以，当凶手在行动阶段死亡时，小红帽会在下个会议阶段结束时复活。\n\n如果小红帽有复活的可能，死亡的小红帽将不能确认所有玩家的职业，也不能使用幽幽鬼影。\n若小红帽没有复活的可能，则小红帽可以正常确认玩家职业与使用幽幽鬼影。\n\n真把我吓坏了！狼肚子里黑漆漆的……,小紅帽是一個可以在被殺死後，在下一輪復活的船員角色。\n(在被獵人帶走或者被擊球手擊飛等情況下不能復活)\n\n根據設定，小紅帽可在兇手於任務階段死亡後的下一輪會議結束時復活。\n\n如果小紅帽符合復活條件，則他將無法在靈界看到其他船員的角色，並且無法使用憑依能力。\n條件不符則如常。\n\n是誰把我從狼的肚子裡拉出來的?
+NiceRedRidingHoodDescription,自身をキルしたクルーが死亡した場合、次のターンに復活するクルーメイト役職です。\n\nナイス赤ずきんは、復活可能回数が残っていて、且つ死体が発生するキルによって死亡した場合に復活する事ができます。\n(猫又役職による道ずれや、スラッガーによるキル等は復活の対象外です。)\n\nキル者がタスクフェイズ中に死亡した場合に復活するかは、設定によります。\nその設定が有効で、キル者がタスクフェイズ中に死亡した場合も、次の会議フェイズ終了時に復活します。\n\nナイス赤ずきんが復活可能な条件を満たしている場合は、霊界で他のクルーの役職を確認することができず、更に憑依能力を有しません。\n満たしていない場合は、霊界で他のクルーの役職が表示され、憑依能力も使用可能です。\n\n私を狼のお腹から引きずり出したのはどなた?,The Crewmate role revives the crewmember who killed him or her on the next turn if he or she dies.\n\nNice Red Riding Hood can be revived if the number of times it can revive remains，and if it is killed by a kill that results in a corpse.\n(Excluded from resurrection are a wayward death by a nekomata role，a kill by a slugger，etc.)\n\nWhether or not a kill is resurrected if the kill is made during the Task Phase depends on the setting.\nIf the setting is enabled and the kill person dies during the Task Phase，he/she will be revived at the end of the next Meeting Phase.\n\nIf the Nice Red Riding Hood meets the requirements to be revivable，it will not be able to see the other crew members' roles in the spirit world，and furthermore，it will not have the ability to possess them.\nIf not met，the other crew members' roles will be visible in the spirit world and the possession ability will be available.\n\nWho pulled me out of the wolf's belly?,击杀小红帽的玩家死亡后，小红帽在下一轮开始时复活。\n\n小红帽的复活有一定的次数限制，且只有在留下尸体的场合才能复活。\n(如被猎人系职业连带而死，或被击球手击飞而死，小红帽均不能复活。)\n\n可以设置击杀小红帽的凶手若在行动阶段死亡，小红帽是否也能复活。\n若可以，当凶手在行动阶段死亡时，小红帽会在下个会议阶段结束时复活。\n\n如果小红帽有复活的可能，死亡的小红帽将不能确认所有玩家的职业，也不能使用幽幽鬼影。\n若小红帽没有复活的可能，则小红帽可以正常确认玩家职业与使用幽幽鬼影。\n\n真把我吓坏了！狼肚子里黑漆漆的……,小紅帽是一個可以在被殺死後，在下一輪復活的船員角色。\n(在被獵人帶走或者被擊球手擊飛等情況下不能復活)\n\n根據設定，小紅帽可在兇手於任務階段死亡後的下一輪會議結束時復活。\n\n如果小紅帽符合復活條件，則他將無法在靈界看到其他船員的角色，並且無法使用憑依能力。\n條件不符則如常。\n\n是誰把我從狼的肚子裡拉出來的?
 NiceRedRidingHoodCount,最大生き返り回数,Maximum number of revives,小红帽最大可复活次数,小紅帽最大可復活次數
 NiceRedRidingIsKillerDeathRevive,キル者がタスクターンに死亡した場合でも復活する,Resurrects even if the killers die in the task turn,若凶手在行动阶段死亡小红帽依然可以复活,若凶手在行動階段死亡小紅帽依然可以復活
 
@@ -1612,7 +1612,7 @@ ShiftActorIsLimitUses,使用回数制限を有効にする,Enable use count limi
 ShiftActorMaxUseCount,変身可能回数,Max Shapeshift Uses,最大变身次数,最大變身次數
 ShiftActorCanShapeshiftAfterUsesExhausted,使用回数を使い切ってもシェイプシフト可能,Can shapeshift after uses exhausted,用完次数后仍可变身,用完次數後仍可變身
 ShiftActorCanSeeSharedRoles,モディファイアも確認できる,Can see modifier roles
-ShiftActorRoleMessage,{0}の役職は{1}だった,{0}'s role is {1}.
+ShiftActorRoleMessage,{0}の役職は{1}だった,{0}'s role was {1}.
 
 
 # OrientalShaman
@@ -1657,13 +1657,13 @@ PhosphorusPutButtonName,設置,Put,放置,放置燈籠
 PhosphorusLightingButtonName,点灯,Lighting,点燃,點燈
 
 # Ubiquitous
-Ubiquitous.CallCoolTime,コールクールタイム,Call Cool Time
-Ubiquitous.OperationCoolTime,操作クールタイム,Operation Cool Time
+Ubiquitous.CallCoolTime,コールクールタイム,Call Cooldown
+Ubiquitous.OperationCoolTime,操作クールタイム,Operation Cooldown
 Ubiquitous.IsLimitOperableTime,操作時間制限,Limit Operable Time
 Ubiquitous.OperableTime,操作可能時間,Operable Time
 Ubiquitous.DroneStayTurn,ドローン滞在ターン,Drone Stay Turn
 Ubiquitous.FlyingSpeed,飛行速度,Flying Speed
-Ubiquitous.DoorHackCoolTime,ドアハッククールタイム,Door Hack Cool Time
+Ubiquitous.DoorHackCoolTime,ドアハッククールタイム,Door Hack Cooldown
 Ubiquitous.DoorHackScope,ドアハック範囲,Door Hack Scope
 Ubiquitous.DroneVisibilityRange,ドローン視認範囲,Drone Visibility Range
 Ubiquitous.MapShowPlayerColor,マップにプレイヤー色表示,Show Player Color on Map
@@ -1680,7 +1680,7 @@ BuskerReallyDeadTimeText,本当に死ぬまで: {0}秒,Really dead in: {0}s,真�
 
 # Camouflager
 CamouflagerButtonText,カモフラージュ,Camouflage,伪装,偽裝
-CamouflagerCoolTime,カモフラージュクールタイム,Camouflage Cool Time,伪装冷却时间,偽裝冷卻時間
+CamouflagerCoolTime,カモフラージュクールタイム,Camouflage Cooldown,伪装冷却时间,偽裝冷卻時間
 CamouflagerDurationTime,カモフラージュ持続時間,Camouflage Duration,伪装持续时间,偽裝持續時間
 CamouflagerCamouflageChangeColor,カモフラージュ色設定,Camouflage Color Setting,伪装颜色设置,偽裝顏色設置
 CamouflagerCamouflageColor,カモフラージュ色,Camouflage Color,伪装颜色,偽裝顏色
@@ -1717,8 +1717,8 @@ MushroomerHasGasMask,ガスマスクを持つ,Has Gas Mask,拥有防毒面具,�
 MushroomerMushroomPlantCount,キノコ設置可能数,Mushroom Plant Count,蘑菇设置数量,蘑菇設置數量
 MushroomerMushroomExplosionCount,爆発可能回数,Explosion Count,爆炸次数,爆炸次數
 MushroomerMushroomExplosionRange,爆発範囲,Explosion Range,爆炸范围,爆炸範圍
-MushroomerMushroomPlantCoolTime,キノコ設置クールタイム,Mushroom Plant Cool Time,蘑菇设置冷却时间,蘑菇設置冷卻時間
-MushroomerMushroomExplosionCoolTime,爆発クールタイム,Explosion Cool Time,爆炸冷却时间,爆炸冷卻時間
+MushroomerMushroomPlantCoolTime,キノコ設置クールタイム,Mushroom Plant Cooldown,蘑菇设置冷却时间,蘑菇設置冷卻時間
+MushroomerMushroomExplosionCoolTime,爆発クールタイム,Explosion Cooldown,爆炸冷却时间,爆炸冷卻時間
 MushroomerPlantButtonName,キノコ設置,Plant Mushroom,设置蘑菇,設置蘑菇
 MushroomerExplosionButtonName,爆発,Explode,爆炸,爆炸
 MushroomerActiveUsedMushroom,キノコ有効化後、発動するまで見えない,Mushroom active after use,蘑菇使用后，激活前不可见,蘑菇使用後，激活前不可見
@@ -1776,5 +1776,5 @@ MovingPositionSetText,位置を記録しました,Position recorded,位置已记
 MovingTeleportText,テレポートしました,Teleported,已传送,已傳送
 
 # ModifierHauntedWolf
-ModifierHauntedWolfIsAssignMadAndFriendRoles,マッドやフレンズロールと重複しない(一括設定),No overlap with Mud or Friends rolls.,不会被分配给叛徒阵营或狈系职业,不重複分配给叛徒或狽系角色
+ModifierHauntedWolfIsAssignMadAndFriendRoles,マッドやフレンズロールと重複しない(一括設定),No overlap with Mad or Friends roles.,不会被分配给叛徒阵营或狈系职业,不重複分配给叛徒或狽系角色
 ModifierHauntedWolfIsReverseSheriffDecision,シェリフや占い師等に重複した時，判定を反転する。,Reverses the kill decision when duplicated on a sheriff.,被分配给警长、占卜师等职业时技能判定反转,當狼憑於警長或占卜師等職業時，判定會反轉
