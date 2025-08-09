@@ -17,7 +17,7 @@ public static class Logger
     public static void Debug(string message, string source = "SuperNewRoles")
     {
 #if DEBUG
-        SuperNewRolesPlugin.Instance.Log.LogDebug($"[{source}] {message}");
+        SuperNewRolesPlugin.Instance.Log.LogInfo($"[{source}] {message}");
 #endif
     }
 }

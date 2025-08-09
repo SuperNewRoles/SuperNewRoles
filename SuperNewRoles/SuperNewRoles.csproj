@@ -41,6 +41,10 @@
         <Exec Command="start &quot;&quot; &quot;$(AmongUs)/Among Us.exe&quot;" />
     </Target>
 
+    <PropertyGroup Condition="'$(Configuration)' == 'Debug'">
+        <DefineConstants>DEBUG;TRACE</DefineConstants>
+    </PropertyGroup>
+
     <ItemGroup>
     <PackageReference Include="GitInfo" Version="2.0.20">
             <PrivateAssets>all</PrivateAssets>

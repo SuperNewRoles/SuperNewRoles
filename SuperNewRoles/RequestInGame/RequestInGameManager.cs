@@ -13,6 +13,7 @@ using UnityEngine.Networking;
 using System.Text;
 using System.Collections;
 using System.IO.Compression;
+using UnityEngine;
 
 namespace SuperNewRoles.RequestInGame;
 
@@ -33,32 +34,71 @@ public class RequestInGameManager
         public string first_message { get; }
         public DateTime created_at { get; }
         public bool unread { get; }
-        public Thread(string thread_id, string title, string first_message, string created_at, bool unread)
+        public StatusData currentStatus { get; }
+        public Thread(string thread_id, string title, string first_message, string created_at, bool unread, string status, string color, string mark)
         {
             this.thread_id = thread_id;
             this.title = title;
             this.first_message = first_message;
             this.created_at = DateTime.Parse(created_at);
             this.unread = unread;
+            // 何もなかったら黄緑色●のオープン表記
+            this.currentStatus = new StatusData(status, string.IsNullOrEmpty(color) ? "#32CD32" : color, string.IsNullOrEmpty(mark) ? "●" : mark);
         }
     }
-    public class Message
+    public abstract class MessageBase
     {
-        public string message_id { get; }
-        public string content { get; }
-        public string sender { get; }
-        public DateTime created_at { get; }
-        public Message(string message_id, string content, string sender, string created_at)
+        public abstract MessageType MsgType { get; }
+        public virtual string message_id { get; }
+        public virtual DateTime created_at { get; }
+        public MessageBase(string message_id, string created_at)
         {
             this.message_id = message_id;
+            this.created_at = DateTime.Parse(created_at);
+        }
+    }
+    public enum MessageType
+    {
+        normal,
+        status,
+    }
+    public struct StatusData
+    {
+        public string status { get; }
+        public string color { get; }
+        public string mark { get; }
+        public StatusData(string status, string color, string mark)
+        {
+            this.status = status;
+            this.color = color;
+            this.mark = mark;
+        }
+    }
+    public class StatusUpdate : MessageBase
+    {
+        public override MessageType MsgType => MessageType.status;
+        public StatusData status { get; }
+        public StatusUpdate(string message_id, string created_at, string status, string color, string mark) : base(message_id, created_at)
+        {
+            this.status = new StatusData(status, color, mark);
+        }
+    }
+    public class Message : MessageBase
+    {
+        public override MessageType MsgType => MessageType.normal;
+        public string content { get; }
+        public string sender { get; }
+        public Message(string message_id, string created_at, string content, string sender) : base(message_id, created_at)
+        {
             this.content = content;
             this.sender = sender;
-            this.created_at = DateTime.Parse(created_at);
         }
     }
     private static string Token = string.Empty;
     private static bool ValidatedToken = false;
     private static string FilePath = Path.Combine(SuperNewRolesPlugin.SecretDirectory, "RequestInGame.token");
+    public const string StatusUpdater = "StatusUpdater";
+
     public static void Load()
     {
         if (File.Exists(FilePath))
@@ -140,7 +180,12 @@ public class RequestInGameManager
                         string firstMessage = threadDict.TryGetValue("message", out var msgVal) && msgVal is string msgStr ? msgStr : string.Empty;
                         string createdAt = threadDict.TryGetValue("created_at", out var caVal) && caVal is string caStr ? caStr : string.Empty;
                         bool unread = threadDict.TryGetValue("has_unread_messages", out var unreadVal) && unreadVal is bool unreadBool ? unreadBool : false;
-                        threads.Add(new Thread(threadId, title, firstMessage, createdAt, unread));
+                        Dictionary<string, object> statusDict = threadDict.TryGetValue("status", out var statusVal) && statusVal is Dictionary<string, object> statusDict2 ? statusDict2 : null;
+                        string status = statusDict != null && statusDict.TryGetValue("status", out var statusStr) && statusStr is string statusStr2 ? statusStr2 : string.Empty;
+                        // 16進数をColor32に変換
+                        string color = statusDict != null && statusDict.TryGetValue("color", out var colorVal) && colorVal is string colorStr ? colorStr : string.Empty;
+                        string mark = statusDict != null && statusDict.TryGetValue("mark", out var markVal) && markVal is string markStr ? markStr : string.Empty;
+                        threads.Add(new Thread(threadId, title, firstMessage, createdAt, unread, status, color, mark));
                     }
                 }
             }
@@ -148,7 +193,7 @@ public class RequestInGameManager
         }
         request.Dispose();
     }
-    public static IEnumerator GetMessages(string thread_id, Action<List<Message>> callback)
+    public static IEnumerator GetMessages(string thread_id, Action<List<MessageBase>> callback)
     {
         string url = $"{SNRURLs.ReportInGameAPI}/getMessages/{thread_id}";
         var request = UnityWebRequest.Get(url);
@@ -156,7 +201,7 @@ public class RequestInGameManager
         yield return GetOrCreateToken(t => token = t);
         request.SetRequestHeader("Authorization", $"Bearer {token}");
         yield return request.SendWebRequest();
-        List<Message> messages = new List<Message>();
+        List<MessageBase> messages = new();
         if (request.result != UnityWebRequest.Result.Success)
         {
             Logger.Error($"Failed to get messages: {request.responseCode}");
@@ -173,10 +218,22 @@ public class RequestInGameManager
                     if (msgObj is Dictionary<string, object> msgDict)
                     {
                         string messageId = msgDict.TryGetValue("message_id", out var midVal) && midVal is string midStr ? midStr : string.Empty;
-                        string msgContent2 = msgDict.TryGetValue("content", out var contVal) && contVal is string contStr ? contStr : string.Empty;
-                        string sender = msgDict.TryGetValue("sender", out var senVal) && senVal is string senStr ? senStr : string.Empty;
-                        string createdAt2 = msgDict.TryGetValue("created_at", out var ca2Val) && ca2Val is string ca2Str ? ca2Str : string.Empty;
-                        messages.Add(new Message(messageId, msgContent2, sender, createdAt2));
+                        string createdAt = msgDict.TryGetValue("created_at", out var caVal) && caVal is string caStr ? caStr : string.Empty;
+                        switch (msgDict.TryGetValue("type", out var typeVal) && typeVal is string typeStr ? typeStr : string.Empty)
+                        {
+                            case nameof(MessageType.normal):
+                                string msgContent2 = msgDict.TryGetValue("content", out var contVal) && contVal is string contStr ? contStr : string.Empty;
+                                string sender = msgDict.TryGetValue("sender", out var senVal) && senVal is string senStr ? senStr : string.Empty;
+                                messages.Add(new Message(messageId, createdAt, msgContent2, sender));
+                                break;
+                            case nameof(MessageType.status):
+                                Logger.Debug(string.Join(", ", msgDict.Select(kv => $"{kv.Key}: {kv.Value}")));
+                                string status = msgDict.TryGetValue("content", out var statusVal) && statusVal is string statusStr ? statusStr : string.Empty;
+                                string color = msgDict.TryGetValue("color", out var colorVal) && colorVal is string colorStr ? colorStr : string.Empty;
+                                string mark = msgDict.TryGetValue("mark", out var markVal) && markVal is string markStr ? markStr : string.Empty;
+                                messages.Add(new StatusUpdate(messageId, createdAt, status, color, mark));
+                                break;
+                        }
                     }
                 }
             }

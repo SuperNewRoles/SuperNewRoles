@@ -49,7 +49,7 @@ public class MessagesUI
                         AmongUsClient.Instance.StartCoroutine(RequestInGameManager.GetOrCreateToken(currentToken =>
                         {
                             bool isContinuity = lastMessageSender == currentToken;
-                            GenerateMessage(textBox.text, scroller, true, "", isContinuity, false, ref lastY);
+                            GenerateMessage(textBox.text, scroller, true, "", isContinuity, false, true, ref lastY);
                             lastMessageSender = currentToken; // 送信者を更新
                             textBox.SetText("");
                             UpdateScrollerMax(scroller);
@@ -92,19 +92,34 @@ public class MessagesUI
                             string lastSender = "";
                             bool lastTarget = false;
                             lastY -= 1.5f;
-                            GenerateMessage(thread.first_message, scroller, true, "", false, false, ref lastY);
+                            GenerateMessage(thread.first_message, scroller, true, "", false, false, true, ref lastY);
                             lastMessageSender = token; // 最初のメッセージの送信者を設定
                             int index = 1;
-                            foreach (var message in messages)
+                            foreach (var messageBase in messages)
                             {
-                                bool isMe = message.sender == token;
-                                bool showAuthorForce = !isMe && lastTarget && lastSender != message.sender;
-                                GenerateMessage(message.content, scroller, isMe, message.sender.Replace("github:", ""), lastSender == message.sender, showAuthorForce, ref lastY);
-                                lastSender = message.sender;
-                                lastMessageSender = message.sender; // 最後のメッセージの送信者を更新
-                                lastTarget = !isMe;
-                                Logger.Info($"Message: {message.content}");
-                                index++;
+                                switch (messageBase)
+                                {
+                                    case RequestInGameManager.Message message:
+                                        bool isMe = message.sender == token;
+                                        bool showAuthorForce = !isMe && lastTarget && lastSender != message.sender;
+                                        GenerateMessage(message.content, scroller, isMe, message.sender.Replace("github:", ""), lastSender == message.sender, showAuthorForce, true, ref lastY);
+                                        lastSender = message.sender;
+                                        lastMessageSender = message.sender; // 最後のメッセージの送信者を更新
+                                        lastTarget = !isMe;
+                                        Logger.Debug($"Message: {message.content}");
+                                        index++;
+                                        break;
+                                    case RequestInGameManager.StatusUpdate statusUpdate:
+                                        GenerateMessage($"<color={statusUpdate.status.color}> {statusUpdate.status.mark} </color>: " + ModTranslation.GetString("RequestInGame.UpdateStatusTo", $"\"{statusUpdate.status.status}\""), scroller, false, ModTranslation.GetString("RequestInGame.UpdateStatus"), lastSender == RequestInGameManager.StatusUpdater, lastSender != RequestInGameManager.StatusUpdater, false, ref lastY, false);
+                                        lastSender = RequestInGameManager.StatusUpdater;
+                                        lastMessageSender = RequestInGameManager.StatusUpdater; // 最後のメッセージの送信者を更新
+                                        lastTarget = true;
+                                        Logger.Debug($"Status: {statusUpdate.status.status}");
+                                        Logger.Debug($"Color: {statusUpdate.status.color}");
+                                        Logger.Debug($"Mark: {statusUpdate.status.mark}");
+                                        index++;
+                                        break;
+                                }
                             }
                             UpdateScrollerMax(scroller);
                         }, 0f, "MessagesUI");
@@ -155,10 +170,13 @@ public class MessagesUI
         }
         scroller.Inner.transform.localPosition = new(0, scroller.ContentYBounds.max, 0);
     }
-    private static void GenerateMessage(string message, Scroller scroller, bool isMe, string author, bool isContinuity, bool showAuthorForce, ref float lastY)
+    private static void GenerateMessage(string message, Scroller scroller, bool isMe, string author, bool isContinuity, bool showAuthorForce, bool showChatTail, ref float lastY, bool wrapping = true)
     {
         // 20文字で強制改行する
-        message = ModHelpers.WrapText(message, 20);
+        if (wrapping)
+        {
+            message = ModHelpers.WrapText(message, 20);
+        }
         GameObject messageObject = AssetManager.Instantiate("ChatMessage", scroller.Inner);
 
         int lineCount = message.Split('\n').Length;
@@ -199,6 +217,11 @@ public class MessagesUI
         var textBG = messageObject.transform.Find("ChatWindow/chatTextBG");
         textBG.localScale = new Vector3(1, 1 + 0.7f * (lineCount - 1), 1);
         textBG.localPosition = new Vector3(0, -0.74f * (lineCount - 1), 0);
+
+        if (!showChatTail)
+        {
+            messageObject.transform.Find("ChatWindow/chatTail").gameObject.SetActive(false);
+        }
 
         TextMeshPro textMeshPro = messageObject.transform.Find("Text").GetComponent<TextMeshPro>();
         TextMeshPro authorText = messageObject.transform.Find("Author").GetComponent<TextMeshPro>();

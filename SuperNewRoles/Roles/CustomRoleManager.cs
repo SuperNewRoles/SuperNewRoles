@@ -83,6 +83,10 @@ public static class CustomRoleManager
         AllGhostRolesByRoleId = AllGhostRoles.ToDictionary(ghostRole => (int)ghostRole.Role);
         SuperNewRolesPlugin.Logger.LogInfo($"[Splash] Role loading complete ({loadedRoles} roles, {loadedModifiers} modifiers, {loadedGhostRoles} ghost roles)");
     }
+    public static string GetRoleName(RoleId roleId)
+    {
+        return ModTranslation.GetString(roleId.ToString());
+    }
     public static IRoleBase GetRoleById(RoleId roleId)
     {
         return AllRolesByRoleId.TryGetValue((int)roleId, out var role) ? role : null;
