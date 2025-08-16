@@ -42,7 +42,7 @@ class WaveCannonJackal : RoleBase<WaveCannonJackal>
     public override TeamTag TeamTag { get; } = TeamTag.Jackal;
     public override RoleTag[] RoleTags { get; } = [RoleTag.SpecialKiller];
     public override RoleOptionMenuType OptionTeam { get; } = RoleOptionMenuType.Neutral;
-    public override RoleId[] RelatedRoleIds { get; } = [RoleId.Sidekick, RoleId.JackalFriends, RoleId.SidekickWaveCannon];
+    public override RoleId[] RelatedRoleIds { get; } = [RoleId.Sidekick, RoleId.JackalFriends, RoleId.SidekickWaveCannon, RoleId.Bullet];
 
     [CustomOptionFloat("WaveCannonJackalKillCooldown", 2.5f, 60f, 2.5f, 30f)]
     public static float WaveCannonJackalKillCooldown;
