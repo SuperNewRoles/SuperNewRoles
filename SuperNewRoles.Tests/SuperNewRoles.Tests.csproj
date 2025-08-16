@@ -18,4 +18,16 @@
   <ItemGroup>
     <ProjectReference Include="..\SuperNewRoles\SuperNewRoles.csproj" />
   </ItemGroup>
+
+  <!-- Add interop references so test project can compile against exposed types in ExPlayerControl -->
+  <ItemGroup Condition="'$(Configuration)' == 'Release'">
+    <Reference Include="$(Build)/interop/Assembly-CSharp.dll" />
+    <Reference Include="$(Build)/interop/Assembly-CSharp-firstpass.dll" />
+    <Reference Include="$(Build)/interop/Il2Cppmscorlib.dll" />
+    <Reference Include="$(Build)/interop/Il2CppSystem.dll" />
+    <Reference Include="$(Build)/core/Il2CppInterop.Runtime.dll" />
+    <Reference Include="$(Build)/interop/UnityEngine.CoreModule.dll" />
+    <Reference Include="$(Build)/interop/UnityEngine.dll" />
+    <Reference Include="$(Build)/interop/Unity.TextMeshPro.dll" />
+  </ItemGroup>
 </Project>
