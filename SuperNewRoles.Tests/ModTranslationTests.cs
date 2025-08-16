@@ -58,7 +58,7 @@ public class ModTranslationTests
         var s = ModTranslation.GetString("Test.Newlines");
 
         // Assert
-        s.Should().Contain('\n');
+        s.Should().Contain("\n");
         s.Should().NotContain("\\n");
         s.Should().Be("first\nsecond");
     }

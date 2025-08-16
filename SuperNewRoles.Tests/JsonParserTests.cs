@@ -174,8 +174,8 @@ public class JsonParserTests
         var obj = reparsed as Dictionary<string, object>;
         obj!.Should().ContainKey("a");
         obj!.Should().ContainKey("b");
-        (obj!["a"] as IList)!.Should().HaveCount(3);
+        var arr2 = obj!["a"].Should().BeOfType<List<object>>().Subject;
+        arr2.Should().HaveCount(3);
         ((obj!["b"] as Dictionary<string, object>)!["x"]).Should().Be("y");
     }
 }
-
