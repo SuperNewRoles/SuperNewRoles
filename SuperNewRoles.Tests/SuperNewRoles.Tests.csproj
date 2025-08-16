@@ -24,6 +24,7 @@
   <ItemGroup Condition="'$(Configuration)' == 'Release'">
     <Reference Include="$(Build)/interop/Assembly-CSharp.dll" />
     <Reference Include="$(Build)/interop/Assembly-CSharp-firstpass.dll" />
+    <Reference Include="$(Build)/interop/Hazel.dll" />
     <Reference Include="$(Build)/interop/Il2Cppmscorlib.dll" />
     <Reference Include="$(Build)/interop/Il2CppSystem.dll" />
     <Reference Include="$(Build)/core/Il2CppInterop.Runtime.dll" />
