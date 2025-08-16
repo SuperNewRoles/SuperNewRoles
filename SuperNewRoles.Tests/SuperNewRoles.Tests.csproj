@@ -20,8 +20,14 @@
     <ProjectReference Include="..\SuperNewRoles\SuperNewRoles.csproj" />
   </ItemGroup>
 
+  <!-- Resolve managed stubs from either -p:Build or %AmongUs%/BepInEx automatically -->
+  <PropertyGroup>
+    <!-- If Build is not provided, but AmongUs env var is set, infer BepInEx root under AmongUs -->
+    <Build Condition=" '$(Build)' == '' and '$(AmongUs)' != '' ">$(AmongUs)/BepInEx</Build>
+  </PropertyGroup>
+
   <!-- Add interop references so test project can compile against exposed types in ExPlayerControl -->
-  <ItemGroup Condition="'$(Configuration)' == 'Release'">
+  <ItemGroup Condition="Exists('$(Build)/core/BepInEx.Core.dll')">
     <Reference Include="$(Build)/interop/Assembly-CSharp.dll" />
     <Reference Include="$(Build)/interop/Assembly-CSharp-firstpass.dll" />
     <Reference Include="$(Build)/interop/Hazel.dll" />

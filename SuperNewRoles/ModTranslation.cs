@@ -332,6 +332,8 @@ public static unsafe partial class ModTranslation
     private static FastHashTable*[] AllTranslations = new FastHashTable*[4];
     // Test override provider for translation CSV (used by unit tests only)
     private static Func<Stream> TestTranslationStreamProvider = null;
+    // Test override for current language (used by unit tests only)
+    private static SupportedLangs? TestLanguageOverride = null;
 
     // 事前計算されたハッシュ値のキャッシュ
     private static readonly Dictionary<string, ulong> HashCache = new();
@@ -468,14 +470,24 @@ public static unsafe partial class ModTranslation
 
     private static SupportedLangs GetCurrentSupportedLang()
     {
-        switch (DataManager.Settings.Language.CurrentLanguage)
+        // Prefer explicit test override (unit tests should not touch IL2CPP DataManager)
+        if (TestLanguageOverride.HasValue)
+            return TestLanguageOverride.Value;
+        try
         {
-            case SupportedLangs.Japanese:
-            case SupportedLangs.SChinese:
-            case SupportedLangs.TChinese:
-                return DataManager.Settings.Language.CurrentLanguage;
-            default:
-                return SupportedLangs.English;
+            switch (DataManager.Settings.Language.CurrentLanguage)
+            {
+                case SupportedLangs.Japanese:
+                case SupportedLangs.SChinese:
+                case SupportedLangs.TChinese:
+                    return DataManager.Settings.Language.CurrentLanguage;
+                default:
+                    return SupportedLangs.English;
+            }
+        }
+        catch
+        {
+            return SupportedLangs.English;
         }
     }
 
@@ -593,6 +605,8 @@ public static unsafe partial class ModTranslation
                     AllTranslations[i] = null;
                 }
             }
+            // Also clear current pointer to avoid dangling references
+            CurrentTranslations = null;
         }
         CurrentLang = null;
     }
@@ -605,6 +619,12 @@ public static unsafe partial class ModTranslation
         if (csv == null) throw new ArgumentNullException(nameof(csv));
         var bytes = Encoding.UTF8.GetBytes(csv);
         TestTranslationStreamProvider = () => new MemoryStream(bytes, 0, bytes.Length, writable: false, publiclyVisible: true);
+    }
+
+    // Allow unit tests to set language without touching Among Us DataManager
+    public static void SetTestLanguage(SupportedLangs lang)
+    {
+        TestLanguageOverride = lang;
     }
 
     // Clear the test CSV provider and return to embedded resource loading.

@@ -66,15 +66,15 @@ public class ModTranslationTests
     [Fact]
     public void LanguageSwitch_SelectsCorrectColumn_WithTestCsv()
     {
-        // Arrange: Japanese
+        // Arrange: Japanese (avoid touching IL2CPP DataManager in tests)
         ModTranslation.SetTestTranslationCsv(TestCsv);
-        DataManager.Settings.Language.CurrentLanguage = SupportedLangs.Japanese;
+        ModTranslation.SetTestLanguage(SupportedLangs.Japanese);
         ModTranslation.Cleanup();
         ModTranslation.Load();
         ModTranslation.GetString("Test.Close").Should().Be("閉じる");
 
         // SChinese: prefers 4th column if exists, else falls back to English
-        DataManager.Settings.Language.CurrentLanguage = SupportedLangs.SChinese;
+        ModTranslation.SetTestLanguage(SupportedLangs.SChinese);
         ModTranslation.Cleanup();
         ModTranslation.SetTestTranslationCsv(TestCsv);
         ModTranslation.Load();

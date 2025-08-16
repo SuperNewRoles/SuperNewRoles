@@ -67,7 +67,8 @@ public class ModHelpersTests
     [Fact]
     public void Cs_Wraps_With_Argb_Hex()
     {
-        var colored = ModHelpers.Cs(UnityEngine.Color.red, "X");
+        // Use test-friendly overload to avoid UnityEngine.Color static initialization
+        var colored = ModHelpers.Cs(1f, 0f, 0f, 1f, "X");
         colored.Should().Be("<color=#FF0000FF>X</color>");
     }
 
@@ -100,10 +101,9 @@ public class ModHelpersTests
     [Fact]
     public void IsPositionDistance_Checks_Euclidean()
     {
-        var p1 = new UnityEngine.Vector2(0, 0);
-        var p2 = new UnityEngine.Vector2(3, 4); // distance 5
-        ModHelpers.IsPositionDistance(p1, p2, 5f).Should().BeTrue();
-        ModHelpers.IsPositionDistance(p1, p2, 4.9f).Should().BeFalse();
+        // Use overload that avoids UnityEngine.Vector2 construction
+        ModHelpers.IsPositionDistance(0f, 0f, 3f, 4f, 5f).Should().BeTrue(); // distance 5
+        ModHelpers.IsPositionDistance(0f, 0f, 3f, 4f, 4.9f).Should().BeFalse();
     }
 
     [Fact]
@@ -118,4 +118,3 @@ public class ModHelpersTests
         idx.Should().BeInRange(0, 2);
     }
 }
-
