@@ -23,6 +23,69 @@ public class CustomOptionTests
     }
 
     [Fact]
+    public void CustomOptionInt_DefaultAndBounds_Behavior()
+    {
+        var attr = new CustomOptionIntAttribute("Level", 0, 10, 2, 4, translationName: "Level");
+        var option = new CustomOption(attr, GetField(typeof(DummyOptions), nameof(DummyOptions.Level)));
+
+        // Default maps to index (4-0)/2 = 2
+        option.DefaultSelection.Should().Be(2);
+        option.Selection.Should().Be(2);
+        DummyOptions.Level.Should().Be(4);
+
+        // Subscribe to change notification and move to next value (index 3 -> value 6)
+        int? observed = null;
+        attr.ValueChanged += v => observed = v;
+        option.UpdateSelection(3);
+        observed.Should().Be(6);
+        DummyOptions.Level.Should().Be(6);
+
+        // Out of range falls back to index 0
+        option.UpdateSelection(200);
+        option.Selection.Should().Be(0);
+        DummyOptions.Level.Should().Be(0);
+    }
+
+    [Fact]
+    public void CustomOption_ParentActiveValue_ShouldMatchOnlySpecificValue()
+    {
+        // Parent defaults to false; child visible only when parent == false
+        var parentAttr = new CustomOptionBoolAttribute("ParentEnabled", false, translationName: "ParentEnabled");
+        var parent = new CustomOption(parentAttr, GetField(typeof(DummyOptions), nameof(DummyOptions.ParentEnabled)));
+
+        var childAttr = new CustomOptionIntAttribute("ChildValue", 0, 10, 1, 5, translationName: "ChildValue", parentFieldName: nameof(DummyOptions.ParentEnabled), parentActiveValue: false);
+        var child = new CustomOption(childAttr, GetField(typeof(DummyOptions), nameof(DummyOptions.ChildValue)));
+        child.SetParentOption(parent);
+
+        // Visible when parent == false
+        child.ShouldDisplay().Should().BeTrue();
+
+        // Flip parent to true -> now hidden
+        parent.UpdateSelection(1);
+        child.ShouldDisplay().Should().BeFalse();
+    }
+
+    [Fact]
+    public void CustomOption_DisplayMode_All_And_None()
+    {
+        var attr = new CustomOptionBoolAttribute("AnyMode", true, translationName: "AnyMode");
+        var option = new CustomOption(attr, GetField(typeof(DummyOptions), nameof(DummyOptions.FeatureToggle)));
+
+        // None: never displays regardless of current mode
+        option.SetDisplayMode(DisplayModeId.None);
+        Categories.ModeOption = ModeId.Default;
+        option.ShouldDisplay().Should().BeFalse();
+        Categories.ModeOption = ModeId.SuperHostRoles;
+        option.ShouldDisplay().Should().BeFalse();
+
+        // All: always displays
+        option.SetDisplayMode(DisplayModeId.All);
+        Categories.ModeOption = ModeId.Default;
+        option.ShouldDisplay().Should().BeTrue();
+        Categories.ModeOption = ModeId.SuperHostRoles;
+        option.ShouldDisplay().Should().BeTrue();
+    }
+    [Fact]
     public void CustomOptionBool_DefaultSelection_AppliesToField()
     {
         var attr = new CustomOptionBoolAttribute("FeatureToggle", true, translationName: "FeatureToggle");
