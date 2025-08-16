@@ -27,12 +27,14 @@
     </PropertyGroup>
 
     <ItemGroup Condition="'$(Configuration)' != 'Release'">
-        <Reference Include="$(AmongUs)/BepInEx/core/*.dll" />
-        <Reference Include="$(AmongUs)/BepInEx/interop/*.dll" />
+        <LibReference Include="$(AmongUs)/BepInEx/core/*.dll" />
+        <LibReference Include="$(AmongUs)/BepInEx/interop/*.dll" />
+        <Reference Include="@(LibReference)" />
     </ItemGroup>
     <ItemGroup Condition="'$(Configuration)' == 'Release'">
-        <Reference Include="$(Build)/core/*.dll" />
-        <Reference Include="$(Build)/interop/*.dll" />
+        <LibReference Include="$(Build)/core/*.dll" />
+        <LibReference Include="$(Build)/interop/*.dll" />
+        <Reference Include="@(LibReference)" />
     </ItemGroup>
 
     <Target Name="CopyCustomContent" AfterTargets="AfterBuild" Condition="'$(Configuration)' == 'Debug'">
