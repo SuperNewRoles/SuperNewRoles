@@ -279,8 +279,20 @@ public class CustomOption
     private readonly object _defaultValue;
     private readonly byte _defaultSelection;
 
-    public object Value => (AmongUsClient.Instance != null && AmongUsClient.Instance.AmConnected && !AmongUsClient.Instance.AmHost) ? _value_Host : _value_My;
-    public byte Selection => (AmongUsClient.Instance != null && AmongUsClient.Instance.AmConnected && !AmongUsClient.Instance.AmHost) ? _selection_Host : _selection_My;
+    private static bool IsRemoteClient()
+    {
+        try
+        {
+            return AmongUsClient.Instance != null && AmongUsClient.Instance.AmConnected && !AmongUsClient.Instance.AmHost;
+        }
+        catch
+        {
+            // In unit tests or non-AU environments, AmongUsClient may not initialize
+            return false;
+        }
+    }
+    public object Value => IsRemoteClient() ? _value_Host : _value_My;
+    public byte Selection => IsRemoteClient() ? _selection_Host : _selection_My;
     public byte MySelection => _selection_My;
     public string Id => Attribute.Id;
     public ushort IndexId { get; internal set; }
@@ -357,7 +369,7 @@ public class CustomOption
         try
         {
             // isHostであれば保存されなくなる
-            bool isHost = AmongUsClient.Instance != null && AmongUsClient.Instance.AmConnected && !AmongUsClient.Instance.AmHost;
+            bool isHost = IsRemoteClient();
             if (isHost)
             {
                 _selection_Host = value;

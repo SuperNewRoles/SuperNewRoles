@@ -59,7 +59,10 @@ public partial class SuperNewRolesPlugin : BasePlugin
     private static string _currentSceneName;
 
     public static bool IsEpic => Constants.GetPurchasingPlatformType() == PlatformConfig.EpicGamesStoreName;
-    public static string BaseDirectory => Path.GetFullPath(Path.Combine(BepInEx.Paths.BepInExRootPath, "../SuperNewRolesNext"));
+    public static string BaseDirectory
+        => Path.GetFullPath(Path.Combine(
+            string.IsNullOrEmpty(BepInEx.Paths.BepInExRootPath) ? AppContext.BaseDirectory : BepInEx.Paths.BepInExRootPath,
+            "../SuperNewRolesNext"));
     public static string SecretDirectory => Path.GetFullPath(Path.Combine(UnityEngine.Application.persistentDataPath, "SuperNewRolesNextSecrets"));
     private static Task TaskRunIfWindows(Action action)
     {
