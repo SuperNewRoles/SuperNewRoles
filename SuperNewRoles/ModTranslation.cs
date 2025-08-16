@@ -330,6 +330,8 @@ public static unsafe partial class ModTranslation
     private static FastHashTable* CurrentTranslations = null;
     private static SupportedLangs? CurrentLang = null;
     private static FastHashTable*[] AllTranslations = new FastHashTable*[4];
+    // Test override provider for translation CSV (used by unit tests only)
+    private static Func<Stream> TestTranslationStreamProvider = null;
 
     // 事前計算されたハッシュ値のキャッシュ
     private static readonly Dictionary<string, ulong> HashCache = new();
@@ -354,7 +356,9 @@ public static unsafe partial class ModTranslation
 
     private static void LoadTranslationData()
     {
-        using var stream = SuperNewRolesPlugin.Assembly.GetManifestResourceStream("SuperNewRoles.Resources.TranslationData.csv");
+        using var stream = (TestTranslationStreamProvider != null)
+            ? TestTranslationStreamProvider()
+            : SuperNewRolesPlugin.Assembly.GetManifestResourceStream("SuperNewRoles.Resources.TranslationData.csv");
 
         // 全データを一度にメモリに読み込む
         var buffer = new byte[stream.Length];
@@ -514,7 +518,9 @@ public static unsafe partial class ModTranslation
 
     private static void LoadCurrentLanguageOnly()
     {
-        using var stream = SuperNewRolesPlugin.Assembly.GetManifestResourceStream("SuperNewRoles.Resources.TranslationData.csv");
+        using var stream = (TestTranslationStreamProvider != null)
+            ? TestTranslationStreamProvider()
+            : SuperNewRolesPlugin.Assembly.GetManifestResourceStream("SuperNewRoles.Resources.TranslationData.csv");
         using var reader = new StreamReader(stream);
 
         int langIndex = CurrentLang switch
@@ -589,6 +595,22 @@ public static unsafe partial class ModTranslation
             }
         }
         CurrentLang = null;
+    }
+
+    // --- Test helpers ---
+    // Provide test CSV text to be used by Load() instead of the embedded resource.
+    // Intended for unit tests to supply stable translation data.
+    public static void SetTestTranslationCsv(string csv)
+    {
+        if (csv == null) throw new ArgumentNullException(nameof(csv));
+        var bytes = Encoding.UTF8.GetBytes(csv);
+        TestTranslationStreamProvider = () => new MemoryStream(bytes, 0, bytes.Length, writable: false, publiclyVisible: true);
+    }
+
+    // Clear the test CSV provider and return to embedded resource loading.
+    public static void ClearTestTranslationCsv()
+    {
+        TestTranslationStreamProvider = null;
     }
 
     [HarmonyPatch(typeof(TranslationController), nameof(TranslationController.SetLanguage))]
