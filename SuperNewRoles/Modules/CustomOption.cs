@@ -1678,6 +1678,12 @@ public class FileOptionStorage : IOptionStorage
     private void WriteRoleOptionsData(BinaryWriter writer)
     {
         var roleOptions = RoleOptionManager.RoleOptions;
+        // テスト環境などで未初期化の場合に備えてnullセーフに処理
+        if (roleOptions == null)
+        {
+            writer.Write(0);
+            return;
+        }
         writer.Write(roleOptions.Length);
 
         foreach (var roleOption in roleOptions)
@@ -1706,6 +1712,11 @@ public class FileOptionStorage : IOptionStorage
     private void WriteModifierRoleOptionsData(BinaryWriter writer)
     {
         var modifierRoleOptions = RoleOptionManager.ModifierRoleOptions;
+        if (modifierRoleOptions == null)
+        {
+            writer.Write(0);
+            return;
+        }
         writer.Write(modifierRoleOptions.Length);
         foreach (var roleOption in modifierRoleOptions)
         {
@@ -1737,6 +1748,11 @@ public class FileOptionStorage : IOptionStorage
     private void WriteGhostRoleOptionsData(BinaryWriter writer)
     {
         var ghostRoleOptions = RoleOptionManager.GhostRoleOptions;
+        if (ghostRoleOptions == null)
+        {
+            writer.Write(0);
+            return;
+        }
         writer.Write(ghostRoleOptions.Length);
         foreach (var roleOption in ghostRoleOptions)
         {
