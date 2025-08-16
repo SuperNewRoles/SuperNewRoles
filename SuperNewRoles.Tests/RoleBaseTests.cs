@@ -12,6 +12,7 @@ public class RoleBaseTests
     [InlineData((byte)0, RoleId.SilverBullet, 999, 0_000_000 + ((int)RoleId.SilverBullet * 1000) + 999)]
     public void GenerateAbilityId_ComposesDeterministically(byte playerId, RoleId role, int index, long expected)
     {
+        // 検証: GenerateAbilityId が (playerId * 1_000_000) + (role * 1000) + index の決定論的合成になること
         var id = (long)IRoleBase.GenerateAbilityId(playerId, role, index);
         id.Should().Be(expected);
     }

@@ -15,16 +15,16 @@ public class ExPlayerControlTests
 {
     private static ExPlayerControl CreateTestExPlayer(byte playerId = 7, RoleId role = RoleId.Crewmate)
     {
-        // Bypass ctor to avoid Among Us/Unity dependencies and initialize required internals
+        // コンストラクタを通さず、Among Us/Unity への依存を回避して必要な内部状態だけ初期化する
         var ex = (ExPlayerControl)FormatterServices.GetUninitializedObject(typeof(ExPlayerControl));
 
-        // Initialize auto-properties via backing fields (private setters not directly invokable here)
+        // 自動実装プロパティのバックフィールドを直接初期化（private setterは呼べないため）
         typeof(ExPlayerControl).GetField("<PlayerAbilities>k__BackingField", BindingFlags.Instance | BindingFlags.NonPublic)!
             .SetValue(ex, new List<AbilityBase>());
         typeof(ExPlayerControl).GetField("<PlayerAbilitiesDictionary>k__BackingField", BindingFlags.Instance | BindingFlags.NonPublic)!
             .SetValue(ex, new Dictionary<ulong, AbilityBase>());
 
-        // Initialize private fields used by caching logic
+        // キャッシュ用のプライベートフィールドを初期化
         typeof(ExPlayerControl).GetField("_abilityCache", BindingFlags.Instance | BindingFlags.NonPublic)!
             .SetValue(ex, new Dictionary<string, AbilityBase>());
         typeof(ExPlayerControl).GetField("_hasAbilityCache", BindingFlags.Instance | BindingFlags.NonPublic)!
@@ -42,13 +42,13 @@ public class ExPlayerControlTests
         typeof(ExPlayerControl).GetField("_impostorVisionAbilities", BindingFlags.Instance | BindingFlags.NonPublic)!
             .SetValue(ex, new List<ImpostorVisionAbility>());
 
-        // Set PlayerId backing field and Role
+        // PlayerId と Role のバックフィールドを設定
         typeof(ExPlayerControl).GetField("<PlayerId>k__BackingField", BindingFlags.Instance | BindingFlags.NonPublic)!
             .SetValue(ex, playerId);
         typeof(ExPlayerControl).GetField("<Role>k__BackingField", BindingFlags.Instance | BindingFlags.NonPublic)!
             .SetValue(ex, role);
 
-        // Ensure ability index starts from 0
+        // 付与IDのインデックスを0から開始させる
         ex.lastAbilityId = 0;
         return ex;
     }
@@ -61,11 +61,11 @@ public class ExPlayerControlTests
     {
         var ex = CreateTestExPlayer(playerId: 12, role: RoleId.Impostor);
 
-        // Before attach
+        // 付与前: 該当アビリティが存在しないこと
         ex.HasCustomKillButton().Should().BeFalse();
         ex.HasAbility<CustomKillButtonAbility>().Should().BeFalse();
 
-        // Attach a custom kill button ability
+        // 付与: CustomKillButtonAbility を追加する
         var ability = new CustomKillButtonAbility(
             canKill: () => true,
             killCooldown: () => 7.5f,
@@ -75,23 +75,23 @@ public class ExPlayerControlTests
             .SetValue(ability, expectedId);
         ex.PlayerAbilities.Add(ability);
         ex.PlayerAbilitiesDictionary[expectedId] = ability;
-        // Mark as having a custom kill button (AttachAbility would normally set this)
+        // AttachAbility 相当: カスタムキルボタンを持っているフラグを手動でセット
         typeof(ExPlayerControl).GetField("_customKillButtonAbility", BindingFlags.Instance | BindingFlags.NonPublic)!
             .SetValue(ex, ability);
 
-        // Sanity checks on injection
+        // 付与直後の sanity チェック
         ex.PlayerAbilities.Count.Should().Be(1, "we manually added one ability");
         ex.PlayerAbilities[0].Should().BeOfType<CustomKillButtonAbility>();
 
-        // After attach
+        // 付与後: 取得系が正しく反映されていること
         ex.HasCustomKillButton().Should().BeTrue();
         ex.HasAbility(nameof(CustomKillButtonAbility)).Should().BeTrue();
         ex.GetAbility<CustomKillButtonAbility>().Should().BeSameAs(ability);
 
-        // ID should follow the deterministic scheme with index 0
+        // 付与IDは index=0 の決定論的スキームに従うこと
         ability.AbilityId.Should().Be(expectedId);
 
-        // Detach manually and verify cleared state and caches
+        // 解除: 手動で削除し、関連キャッシュもクリアされることを検証
         ex.PlayerAbilities.Remove(ability);
         ex.PlayerAbilitiesDictionary.Remove(ability.AbilityId);
         typeof(ExPlayerControl).GetField("_customKillButtonAbility", BindingFlags.Instance | BindingFlags.NonPublic)!.SetValue(ex, null);
@@ -112,7 +112,7 @@ public class ExPlayerControlTests
     {
         var ex = CreateTestExPlayer(playerId: 5, role: RoleId.Crewmate);
 
-        // Attach one DummyAbility and verify
+        // 1つ目の DummyAbility を付与し、読み取り専用リストの構築とキャッシュを確認
         var a1 = new DummyAbility();
         var id1 = IRoleBase.GenerateAbilityId(5, RoleId.Crewmate, 0);
         typeof(AbilityBase).GetProperty("AbilityId", BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic)!.SetValue(a1, id1);
@@ -124,7 +124,7 @@ public class ExPlayerControlTests
         list1.Count.Should().Be(1);
         list1[0].Should().BeSameAs(a1);
 
-        // Attach another DummyAbility; AttachAbility clears caches internally
+        // 2つ目の DummyAbility を付与。AttachAbility 相当のキャッシュクリアを行い、再構築されることを確認
         var a2 = new DummyAbility();
         var id2 = IRoleBase.GenerateAbilityId(5, RoleId.Crewmate, 1);
         typeof(AbilityBase).GetProperty("AbilityId", BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic)!.SetValue(a2, id2);
@@ -137,7 +137,7 @@ public class ExPlayerControlTests
         list2.Count.Should().Be(2);
         list2.Should().Contain(new[] { a1, a2 });
 
-        // Other type should be empty
+        // 異なる型の取得は空であること
         ex.GetAbilities<AnotherDummyAbility>().Count.Should().Be(0);
     }
 
@@ -145,7 +145,7 @@ public class ExPlayerControlTests
     public void TryGetAbility_CachesResult_UntilCacheCleared()
     {
         var ex = CreateTestExPlayer();
-        ex.GetAbility<ImpostorVisionAbility>().Should().BeNull();
+        ex.GetAbility<ImpostorVisionAbility>().Should().BeNull(); // 事前に存在しないこと
 
         var a1 = new ImpostorVisionAbility(() => false);
         var id1 = IRoleBase.GenerateAbilityId(7, RoleId.Crewmate, 0);
@@ -154,9 +154,9 @@ public class ExPlayerControlTests
         ex.PlayerAbilitiesDictionary[id1] = a1;
         ex.PlayerAbilities.Count.Should().Be(1);
         ex.PlayerAbilities[0].Should().BeOfType<ImpostorVisionAbility>();
-        ex.GetAbilities<ImpostorVisionAbility>().Count.Should().Be(1);
+        ex.GetAbilities<ImpostorVisionAbility>().Count.Should().Be(1); // キャッシュに載る
 
-        // Detach manually and clear caches like DetachAbility
+        // 解除: 手動で削除し、DetachAbility 相当のキャッシュクリア後は取得できないこと
         ex.PlayerAbilities.Remove(a1);
         ex.PlayerAbilitiesDictionary.Remove(a1.AbilityId);
         typeof(ExPlayerControl).GetField("_typeIdAbilityCache", BindingFlags.Instance | BindingFlags.NonPublic)!.SetValue(ex, new Dictionary<int, AbilityBase>());
@@ -173,6 +173,7 @@ public class ExPlayerControlTests
         var ex2 = CreateTestExPlayer(playerId: 10);
         var ex3 = CreateTestExPlayer(playerId: 11);
 
+        // 同一PlayerIdなら等値、ハッシュコードはPlayerId、そのほかは不一致
         ex1.Equals(ex2).Should().BeTrue();
         ex1.GetHashCode().Should().Be(10);
         ex1.Equals(ex3).Should().BeFalse();
@@ -183,7 +184,7 @@ public class ExPlayerControlTests
     {
         var ex = CreateTestExPlayer(playerId: 42);
 
-        // Replace static array with a fresh one and register our player
+        // 静的配列を差し替えてプレイヤーを登録し、ByIdで取得できることを確認
         var arrField = typeof(ExPlayerControl).GetField("_exPlayerControlsArray", BindingFlags.Static | BindingFlags.NonPublic)!;
         var array = new ExPlayerControl[256];
         array[42] = ex;
@@ -198,13 +199,13 @@ public class ExPlayerControlTests
     {
         var ex = CreateTestExPlayer();
 
-        // Attach one that returns false, then one that returns true
+        // 最初はfalseを返すアビリティを追加し、その後trueを返すアビリティを追加して OR 判定を確認
         var ivFalse = new ImpostorVisionAbility(() => false);
         var idFalse = IRoleBase.GenerateAbilityId(7, RoleId.Crewmate, 0);
         typeof(AbilityBase).GetProperty("AbilityId", BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic)!.SetValue(ivFalse, idFalse);
         ex.PlayerAbilities.Add(ivFalse);
         ex.PlayerAbilitiesDictionary[idFalse] = ivFalse;
-        // Also ensure the impostor vision abilities list reflects the current ability
+        // ImpostorVisionAbilities リストにも反映して、評価対象に含める
         var list = (List<ImpostorVisionAbility>)typeof(ExPlayerControl).GetField("_impostorVisionAbilities", BindingFlags.Instance | BindingFlags.NonPublic)!.GetValue(ex)!;
         list.Add(ivFalse);
         ex.HasImpostorVision().Should().BeFalse();
