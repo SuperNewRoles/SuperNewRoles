@@ -363,7 +363,8 @@ public class PlayerStatistics
 
         bool impostorWin = IsKillerWin(teamImpostorsAlive);
         bool jackalWin = IsKillerWin(teamJackalAlive);
-        bool pavlovWin = IsKillerWin(TeamPavlovsAlive);
+        // オーナーはキラーではないため、キラーの数判定に含めない
+        bool pavlovWin = IsKillerWin(TeamPavlovsAlive, PavlovsOwnerAlive);
         bool hitmanWin = IsKillerWin(hitmanAlive);
 
         if (isLoversBlock && impostorWin && teamImpostorsAlive > 1 && hasLoversImpostorTeam)
@@ -393,10 +394,10 @@ public class PlayerStatistics
         IsHitmanDominating = hitmanWin;
     }
 
-    private bool IsKillerWin(int teamAlive)
+    private bool IsKillerWin(int teamAlive, int nonKillerAlive = 0)
     {
         return isHnS ? teamAlive >= TotalAlive : (teamAlive >= TotalAlive - teamAlive)
-            && TotalKiller <= teamAlive
+            && TotalKiller <= (teamAlive - nonKillerAlive)
             && teamAlive != 0
             && !(PavlovsDogAlive <= 0 && TeamPavlovsAlive > 0)
             && !PavlovsOwnerRemaining;
