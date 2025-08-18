@@ -741,4 +741,8 @@ public static class ModHelpers
         return collider2D.OverlapPoint(position);
     }
 
+    public static Vent VentById(int id)
+    {
+        return ShipStatus.Instance.AllVents.FirstOrDefault(vent => vent.Id == id);
+    }
 }
