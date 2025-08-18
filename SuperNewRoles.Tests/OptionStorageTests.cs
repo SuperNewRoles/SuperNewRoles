@@ -7,8 +7,11 @@ using Xunit;
 
 namespace SuperNewRoles.Tests;
 
+// オプション保存/読込・プリセット名の永続化・チェックサム検証など、
+// ファイルベースのストレージ挙動を確認するテスト。
 public class OptionStorageTests
 {
+    // 目的: SaveOptionData/LoadOptionData とプリセット名の保存/復元を一括で検証
     [Fact]
     public void FileOptionStorage_SaveAndLoad_OptionDataAndPresetNames()
     {
@@ -28,14 +31,21 @@ public class OptionStorageTests
         var (namesOk, names) = storage.LoadPresetNames();
 
         // 検証: バージョン/現在プリセット/プリセット名が正しく復元されること
+        // 目的: オプションデータの読み込みが成功すること
         success.Should().BeTrue();
+        // 目的: プリセット名の読み込みが成功すること
         namesOk.Should().BeTrue();
+        // 目的: バージョンが保存値と一致すること
         version.Should().Be(1);
+        // 目的: 現在プリセットが保存値と一致すること
         preset.Should().Be(3);
+        // 目的: プリセット名(0)が復元されること
         names.Should().ContainKey(0).WhoseValue.Should().Be("Default");
+        // 目的: プリセット名(3)が復元されること
         names.Should().ContainKey(3).WhoseValue.Should().Be("Tournament");
     }
 
+    // 目的: オプションファイルが存在しない場合に false を返し、プリセット名がクリアされることを検証
     [Fact]
     public void FileOptionStorage_LoadOptionData_MissingFile_ClearsPresetNames()
     {
@@ -50,10 +60,13 @@ public class OptionStorageTests
 
         // 実行: 存在しないファイルを読み込む
         var (ok, _, _) = storage.LoadOptionData();
+        // 目的: ファイル不在時は読み込みが失敗すること
         ok.Should().BeFalse(); // 失敗であること
+        // 目的: 読込失敗時にプリセット名がクリアされること
         CustomOptionSaver.presetNames.Should().BeEmpty(); // 内部のプリセット名もクリアされること
     }
 
+    // 目的: プリセット保存時、既定値の項目は省かれ変更された値のみが保存されることを検証
     [Fact]
     public void FileOptionStorage_SaveAndLoadPresetData_PersistsOnlyNonDefault()
     {
@@ -71,13 +84,17 @@ public class OptionStorageTests
 
         storage.SavePresetData(7, new[] { optA, optB });
         var (ok, dict) = storage.LoadPresetData(7);
+        // 目的: プリセットデータ読み込みが成功すること
         ok.Should().BeTrue();
 
         // 検証: 既定値のAは保存されず、変更したBのみ保存されていること
+        // 目的: 既定値のオプションは保存されないこと
         dict.Should().NotContainKey(optA.Id);
+        // 目的: 変更されたオプションのみ保存されること
         dict.Should().ContainKey(optB.Id).WhoseValue.Should().Be((byte)optB.Selection);
     }
 
+    // 目的: チェックサム不一致時に読み込みが失敗し、プリセット名がクリアされることを検証
     [Fact]
     public void FileOptionStorage_InvalidChecksum_ShouldFail()
     {
@@ -95,7 +112,9 @@ public class OptionStorageTests
         }
 
         var (ok, _, _) = storage.LoadOptionData();
+        // 目的: チェックサム不一致で読み込みが失敗すること
         ok.Should().BeFalse(); // チェックサム不一致で失敗
+        // 目的: 読込失敗時にプリセット名がクリアされること
         CustomOptionSaver.presetNames.Should().BeEmpty(); // 読込失敗時はプリセット名がクリアされる
     }
 

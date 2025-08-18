@@ -1,0 +1,283 @@
+name: Dotnet Tests
+
+on:
+  pull_request:
+    types: [opened, synchronize, reopened, ready_for_review]
+  push:
+    branches:
+      - '**'
+
+permissions:
+  contents: read
+  issues: write
+  pull-requests: read
+
+jobs:
+  test_pr:
+    if: github.event_name == 'pull_request'
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Configure Download Settings
+        id: settings
+        env:
+          ZIP_URL: ${{ secrets.ZIP_URL }}
+        run: |
+          FOLDER_INSIDE_ZIP="Build"
+          ENV_VAR_NAME="Build"
+
+          echo "ZIP_URL=${ZIP_URL}" >> $GITHUB_ENV
+          echo "FOLDER_INSIDE_ZIP=${FOLDER_INSIDE_ZIP}" >> $GITHUB_ENV
+          echo "ENV_VAR_NAME=${ENV_VAR_NAME}" >> $GITHUB_ENV
+          echo "EXTRACT_PATH=${{ github.workspace }}/extracted_lib" >> $GITHUB_ENV
+          echo "zip_hash=$(echo -n "$ZIP_URL" | sha256sum | awk '{print $1}')" >> $GITHUB_OUTPUT
+
+      - name: Restore cached library from URL hash
+        id: cache-lib
+        uses: actions/cache@v3
+        with:
+          path: ${{ github.workspace }}/extracted_lib
+          key: ${{ runner.os }}-lib-${{ steps.settings.outputs.zip_hash }}
+
+      - name: Download and Unzip if not cached
+        if: steps.cache-lib.outputs.cache-hit != 'true'
+        run: |
+          echo "Cache not found. Downloading and extracting new library..."
+          curl -L -o lib.zip "$ZIP_URL"
+          unzip -q lib.zip -d "$EXTRACT_PATH"
+          rm lib.zip
+
+      - name: Set library path to Environment Variable
+        run: |
+          LIB_PATH="$EXTRACT_PATH/$FOLDER_INSIDE_ZIP"
+          echo "Setting environment variable '$ENV_VAR_NAME' to '$LIB_PATH'"
+          echo "$ENV_VAR_NAME=$LIB_PATH" >> $GITHUB_ENV
+
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: '8.0.x'
+
+      - name: Restore
+        run: dotnet restore SuperNewRoles.sln
+
+      - name: Run tests
+        id: run-tests
+        run: |
+          set +e
+          mkdir -p TestResults
+          dotnet test SuperNewRoles.Tests/SuperNewRoles.Tests.csproj --configuration Release --logger "trx;LogFileName=test_results.trx" --results-directory ./TestResults | tee test_output.txt
+          exit_code=$?
+          short_sha=$(git rev-parse --short HEAD)
+          summary=$(grep -E "Passed!|Failed!|Total:|Test Run Successful|Test Run Failed" -n test_output.txt || true)
+          summary=${summary//$'\n'/%0A}
+          echo "exit_code=$exit_code" >> $GITHUB_OUTPUT
+          echo "short_sha=$short_sha" >> $GITHUB_OUTPUT
+          echo "summary=$summary" >> $GITHUB_OUTPUT
+          exit 0
+
+      - name: Upload test artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: test-results-pr-${{ github.event.pull_request.number }}-${{ steps.run-tests.outputs.short_sha }}
+          path: |
+            TestResults/**
+            test_output.txt
+
+      - name: Create or update Issue with test results
+        uses: actions/github-script@v7
+        env:
+          PR_NUMBER: ${{ github.event.pull_request.number }}
+          OUTCOME: ${{ steps.run-tests.outputs.exit_code }}
+          SUMMARY: ${{ steps.run-tests.outputs.summary }}
+          SHORT_SHA: ${{ steps.run-tests.outputs.short_sha }}
+        with:
+          script: |
+            const prNumber = Number(process.env.PR_NUMBER);
+            const outcome = process.env.OUTCOME === "0" ? "Success" : "Failure";
+            const summary = (process.env.SUMMARY || "(no summary)").replace(/%0A/g, '\n');
+            const shortSha = process.env.SHORT_SHA;
+            const runUrl = `${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}`;
+            const {owner, repo} = context.repo;
+            const pr = await github.pulls.get({owner, repo, pull_number: prNumber});
+            const title = `CI Test Results for PR #${prNumber}`;
+            const body = [
+              `PR: #${prNumber} - ${pr.data.title}`,
+              `URL: ${pr.data.html_url}`,
+              `Base: ${pr.data.base.ref}`,
+              `Head: ${pr.data.head.ref} (${shortSha})`,
+              ``,
+              `Outcome: ${outcome}`,
+              ``,
+              `Artifacts: ${runUrl}`,
+              ``,
+              `Summary:`,
+              '```',
+              summary,
+              '```'
+            ].join('\n');
+            const q = `repo:${owner}/${repo} is:issue in:title \"CI Test Results for PR #${prNumber}\"`;
+            const search = await github.search.issuesAndPullRequests({ q });
+            if (search.data.total_count > 0) {
+              const issueNumber = search.data.items[0].number;
+              await github.issues.createComment({owner, repo, issue_number: issueNumber, body});
+            } else {
+              await github.issues.create({ owner, repo, title, body, labels: ['ci-tests'] });
+            }
+
+      - name: Fail job if tests failed
+        if: steps.run-tests.outputs.exit_code != '0'
+        run: exit 1
+
+  list_prs:
+    if: github.event_name == 'push'
+    runs-on: ubuntu-latest
+    outputs:
+      pr_numbers: ${{ steps.collect.outputs.pr_numbers }}
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Collect open PRs for updated base branch
+        id: collect
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const ref = context.ref || '';
+            const base = ref.startsWith('refs/heads/') ? ref.replace('refs/heads/','') : (process.env.GITHUB_REF_NAME || ref);
+            const {owner, repo} = context.repo;
+            const prs = await github.paginate(github.pulls.list, { owner, repo, state: 'open', base });
+            const numbers = prs.map(pr => pr.number);
+            core.setOutput('pr_numbers', JSON.stringify(numbers));
+
+  test_push_prs:
+    needs: list_prs
+    if: needs.list_prs.outputs.pr_numbers != '[]'
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        pr: ${{ fromJSON(needs.list_prs.outputs.pr_numbers) }}
+    steps:
+      - name: Checkout PR head
+        uses: actions/checkout@v4
+        with:
+          ref: refs/pull/${{ matrix.pr }}/head
+          fetch-depth: 0
+
+      - name: Configure Download Settings
+        id: settings
+        env:
+          ZIP_URL: ${{ secrets.ZIP_URL }}
+        run: |
+          FOLDER_INSIDE_ZIP="Build"
+          ENV_VAR_NAME="Build"
+
+          echo "ZIP_URL=${ZIP_URL}" >> $GITHUB_ENV
+          echo "FOLDER_INSIDE_ZIP=${FOLDER_INSIDE_ZIP}" >> $GITHUB_ENV
+          echo "ENV_VAR_NAME=${ENV_VAR_NAME}" >> $GITHUB_ENV
+          echo "EXTRACT_PATH=${{ github.workspace }}/extracted_lib" >> $GITHUB_ENV
+          echo "zip_hash=$(echo -n "$ZIP_URL" | sha256sum | awk '{print $1}')" >> $GITHUB_OUTPUT
+
+      - name: Restore cached library from URL hash
+        id: cache-lib
+        uses: actions/cache@v3
+        with:
+          path: ${{ github.workspace }}/extracted_lib
+          key: ${{ runner.os }}-lib-${{ steps.settings.outputs.zip_hash }}
+
+      - name: Download and Unzip if not cached
+        if: steps.cache-lib.outputs.cache-hit != 'true'
+        run: |
+          echo "Cache not found. Downloading and extracting new library..."
+          curl -L -o lib.zip "$ZIP_URL"
+          unzip -q lib.zip -d "$EXTRACT_PATH"
+          rm lib.zip
+
+      - name: Set library path to Environment Variable
+        run: |
+          LIB_PATH="$EXTRACT_PATH/$FOLDER_INSIDE_ZIP"
+          echo "Setting environment variable '$ENV_VAR_NAME' to '$LIB_PATH'"
+          echo "$ENV_VAR_NAME=$LIB_PATH" >> $GITHUB_ENV
+
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: '8.0.x'
+
+      - name: Restore
+        run: dotnet restore SuperNewRoles.sln
+
+      - name: Run tests
+        id: run-tests
+        run: |
+          set +e
+          mkdir -p TestResults
+          dotnet test SuperNewRoles.Tests/SuperNewRoles.Tests.csproj --configuration Release --logger "trx;LogFileName=test_results.trx" --results-directory ./TestResults | tee test_output.txt
+          exit_code=$?
+          short_sha=$(git rev-parse --short HEAD)
+          summary=$(grep -E "Passed!|Failed!|Total:|Test Run Successful|Test Run Failed" -n test_output.txt || true)
+          summary=${summary//$'\n'/%0A}
+          echo "exit_code=$exit_code" >> $GITHUB_OUTPUT
+          echo "short_sha=$short_sha" >> $GITHUB_OUTPUT
+          echo "summary=$summary" >> $GITHUB_OUTPUT
+          exit 0
+
+      - name: Upload test artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: test-results-pr-${{ matrix.pr }}-${{ steps.run-tests.outputs.short_sha }}
+          path: |
+            TestResults/**
+            test_output.txt
+
+      - name: Create or update Issue with test results
+        uses: actions/github-script@v7
+        env:
+          PR_NUMBER: ${{ matrix.pr }}
+          OUTCOME: ${{ steps.run-tests.outputs.exit_code }}
+          SUMMARY: ${{ steps.run-tests.outputs.summary }}
+          SHORT_SHA: ${{ steps.run-tests.outputs.short_sha }}
+        with:
+          script: |
+            const prNumber = Number(process.env.PR_NUMBER);
+            const outcome = process.env.OUTCOME === "0" ? "Success" : "Failure";
+            const summary = (process.env.SUMMARY || "(no summary)").replace(/%0A/g, '\n');
+            const shortSha = process.env.SHORT_SHA;
+            const runUrl = `${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}`;
+            const {owner, repo} = context.repo;
+            const pr = await github.pulls.get({owner, repo, pull_number: prNumber});
+            const title = `CI Test Results for PR #${prNumber}`;
+            const body = [
+              `PR: #${prNumber} - ${pr.data.title}`,
+              `URL: ${pr.data.html_url}`,
+              `Base: ${pr.data.base.ref}`,
+              `Head: ${pr.data.head.ref} (${shortSha})`,
+              ``,
+              `Outcome: ${outcome}`,
+              ``,
+              `Artifacts: ${runUrl}`,
+              ``,
+              `Summary:`,
+              '```',
+              summary,
+              '```'
+            ].join('\n');
+            const q = `repo:${owner}/${repo} is:issue in:title \"CI Test Results for PR #${prNumber}\"`;
+            const search = await github.search.issuesAndPullRequests({ q });
+            if (search.data.total_count > 0) {
+              const issueNumber = search.data.items[0].number;
+              await github.issues.createComment({owner, repo, issue_number: issueNumber, body});
+            } else {
+              await github.issues.create({ owner, repo, title, body, labels: ['ci-tests'] });
+            }
+
+      - name: Fail job if tests failed
+        if: steps.run-tests.outputs.exit_code != '0'
+        run: exit 1
+
+

@@ -17,7 +17,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\SuperNewRoles\SuperNewRoles.csproj" />
+    <ProjectReference Include="..\SuperNewRoles\SuperNewRoles.csproj" AdditionalProperties="SkipGameLaunch=true" />
   </ItemGroup>
 
   <!-- Resolve managed stubs from either -p:Build or %AmongUs%/BepInEx automatically -->
@@ -28,15 +28,6 @@
 
   <!-- Add interop references so test project can compile against exposed types in ExPlayerControl -->
   <ItemGroup Condition="Exists('$(Build)/core/BepInEx.Core.dll')">
-    <Reference Include="$(Build)/interop/Assembly-CSharp.dll" />
-    <Reference Include="$(Build)/interop/Assembly-CSharp-firstpass.dll" />
-    <Reference Include="$(Build)/interop/Hazel.dll" />
-    <Reference Include="$(Build)/interop/Il2Cppmscorlib.dll" />
-    <Reference Include="$(Build)/interop/Il2CppSystem.dll" />
-    <Reference Include="$(Build)/core/Il2CppInterop.Runtime.dll" />
-    <Reference Include="$(Build)/core/BepInEx.Core.dll" />
-    <Reference Include="$(Build)/interop/UnityEngine.CoreModule.dll" />
-    <Reference Include="$(Build)/interop/UnityEngine.dll" />
-    <Reference Include="$(Build)/interop/Unity.TextMeshPro.dll" />
+    <Reference Include="$(Build)/**" />
   </ItemGroup>
 </Project>
