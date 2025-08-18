@@ -43,11 +43,12 @@ public class NonAnimationVentButtonAbility : CustomVentAbility
         Vent inVent = ModHelpers.VentById(id);
         if (inVent == null) return;
 
-        Vent.currentVent = inVent;
-        PlayerControl.LocalPlayer.moveable = false;
-        PlayerControl.LocalPlayer.Visible = false;
-        PlayerControl.LocalPlayer.inVent = true;
-        PlayerControl.LocalPlayer.NetTransform.SnapTo(inVent.transform.position);
+        if (Player.AmOwner)
+            Vent.currentVent = inVent;
+        Player.Player.moveable = false;
+        Player.Player.Visible = false;
+        Player.Player.inVent = true;
+        Player.NetTransform.SnapTo(inVent.transform.position);
     }
     [CustomRPC]
     public void RpcNonAnimationExitVent(int id)
@@ -55,9 +56,10 @@ public class NonAnimationVentButtonAbility : CustomVentAbility
         Vent inVent = ModHelpers.VentById(id);
         if (inVent == null) return;
 
-        Vent.currentVent = null;
-        PlayerControl.LocalPlayer.moveable = true;
-        PlayerControl.LocalPlayer.Visible = true;
-        PlayerControl.LocalPlayer.inVent = false;
+        if (Player.AmOwner)
+            Vent.currentVent = null;
+        Player.Player.moveable = true;
+        Player.Player.Visible = true;
+        Player.Player.inVent = false;
     }
 }

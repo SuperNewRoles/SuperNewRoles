@@ -68,7 +68,7 @@ public static class IntroCutscenePatch
                     return;
                 }
 
-                ExPlayerControl player = PlayerControl.LocalPlayer;
+                ExPlayerControl player = ExPlayerControl.LocalPlayer;
                 if (player == null)
                 {
                     Logger.Warning("ExPlayerControl is null in IntroCutscene");
