@@ -1024,7 +1024,7 @@ EvilSeerHauntButtonText,取り憑かせる,Haunt!
 # Celebrity
 CelebrityIntro,みんなのスター！！,The Celebrity!!,大家的明星！！,大家的明星！！
 CelebrityKeepNameColorAfterRoleChange,役職が変わっても名前の色がスターのままになる,Keep name color as Celebrity even if role changes,即使角色改变也保持明星姓名颜色,即使角色改變也保持明星姓名顏色
-CelebrityEnableGlowEffect,タスクフェイズ中、設定したキルクール秒数毎に画面を光らせるか,Enable screen glow effect every kill cooldown during task phase,是否在任务阶段每次击杀冷却结束时闪亮屏幕,是否在任務階段每次擊殺冷卻結束時閃亮屏幕
+CelebrityEnableGlowEffect,タスクフェイズ中、設定したキルクール秒数ごとに画面を光らせるか,Enable screen glow effect every kill cooldown during task phase,是否在任务阶段每次击杀冷却结束时闪亮屏幕,是否在任務階段每次擊殺冷卻結束時閃亮屏幕
 CelebrityGlowOnlyWhileAlive,画面が光るのは生きている間のみか(会議更新),Screen glows only while alive (updates on meeting),屏幕仅在活着时闪烁（会议更新）,螢幕僅在活著時閃爍（會議更新）
 CelebrityYellowChangedRole,役職が変わっても名前の色がスターのままになる,Even if the role changes，the name color remains as a star.
 
