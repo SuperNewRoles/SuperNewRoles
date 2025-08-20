@@ -13,7 +13,7 @@ SuperNewRolesに関する情報は[公式Wiki](https://wiki.supernewroles.com)�
 ## 導入方法
 [公式Wikiの導入方法ページ](https://wiki.supernewroles.com/%E5%B0%8E%E5%85%A5%E6%96%B9%E6%B3%95)をご覧ください。
 
-
+<!-- hrの代わり -->
 ## 
 > [!WARNING]
 > **SuperNewRoles を使用する際は [初めに読む場所](#初めに読む場所) に記載のページをご一読ください。**
@@ -24,8 +24,7 @@ SuperNewRolesに関する情報は[公式Wiki](https://wiki.supernewroles.com)�
 
 
 ## README
-- 現在 GitHub Wiki に移行中のため、古い情報が含まれます。Wiki と内容が矛盾している場合は、Wiki を最新情報として参照してください。
-- Some information is outdated because we are migrating to the GitHub Wiki. If there is any conflict with the Wiki, please consider the Wiki the most up-to-date source.
+- 現在 SuperNewRoles Wiki に移行中のため、古い情報が含まれます。Wiki と内容が矛盾している場合は、Wiki を最新情報として参照してください。
 
 - 古いREADMEは以下のリンクからご覧いただけます。
   - [日本語](https://github.com/ykundesu/SuperNewRoles/blob/master/READMEs/README_jp_old.md)

@@ -13,6 +13,7 @@ For information about SuperNewRoles, please visit the [Official Wiki](https://wi
 Please visit the [Installation Guide page on the Official Wiki](https://wiki.supernewroles.com/en/%E5%B0%8E%E5%85%A5%E6%96%B9%E6%B3%95).
 
 
+<!-- hrの代わり -->
 ## 
 > [!WARNING]
 > **When using SuperNewRoles, please read the pages listed in the [Getting Started](#getting-started) section.**
@@ -23,8 +24,7 @@ Please visit the [Installation Guide page on the Official Wiki](https://wiki.sup
 
 
 ## README
-- As we are currently migrating to GitHub Wiki, some information may be outdated. If there is any discrepancy with the Wiki, please refer to the Wiki as the most up-to-date source.
-- Some information is outdated because we are migrating to the GitHub Wiki. If there is any conflict with the Wiki, please consider the Wiki the most up-to-date source.
+- As we are currently migrating to SuperNewRoles Wiki, some information may be outdated. If there is any discrepancy with the Wiki, please refer to the Wiki as the most up-to-date source.
 
 - Old READMEs are available at the following links:
   - [Japanese](https://github.com/ykundesu/SuperNewRoles/blob/master/READMEs/README_jp_old.md)
