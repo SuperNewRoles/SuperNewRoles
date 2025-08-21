@@ -743,6 +743,7 @@ public static class ModHelpers
 
     public static Vent VentById(int id)
     {
+        if (ShipStatus.Instance == null || ShipStatus.Instance.AllVents == null) return null;
         return ShipStatus.Instance.AllVents.FirstOrDefault(vent => vent.Id == id);
     }
 }

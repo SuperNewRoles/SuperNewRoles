@@ -59,7 +59,9 @@ public static class CustomCosmeticsLayers
         catch (Exception e)
         {
             Logger.Error("Initialize failed: " + e.Message);
-            return layers[cosmeticsLayer.GetInstanceID()] = null;
+            // キャッシュを残さないように削除する
+            layers.Remove(cosmeticsLayer.GetInstanceID());
+            return null;
         }
     }
     public static (CustomVisorLayer layer1, CustomVisorLayer layer2) GetVisorLayers(VisorLayer visorLayer)
@@ -176,7 +178,7 @@ public class CustomCosmeticsLayer
             hatLayer.spriteSyncNode = nodeSync;
         }
         else
-            Logger.Info("NULLLLLLLLLLLLLLLLLLLLLL");
+            Logger.Debug("NULLLLLLLLLLLLLLLLLLLLLL");
         hatLayer.vanillaNodeSyncs = cosmeticsLayer.hat.GetComponents<SpriteAnimNodeSync>().ToList();
 
         // バックレイヤーの作成と設定

@@ -14,6 +14,12 @@ class WaveCannonJackal : RoleBase<WaveCannonJackal>
     public override RoleId Role { get; } = RoleId.WaveCannonJackal;
     public override Color32 RoleColor { get; } = new(0, 180, 235, byte.MaxValue);
     public override List<Func<AbilityBase>> Abilities { get; } = [
+        () => new WaveCannonAbility(
+            coolDown: WaveCannonJackalCooldown,
+            effectDuration: WaveCannonJackalEffectDuration,
+            type: WaveCannonJackalType,
+            isResetKillCooldown: WaveCannonJackalIsSyncKillCoolTime
+        ),
         () => new JackalAbility(new JackalData(
             canKill: true,
             killCooldown: WaveCannonJackalKillCooldown,
@@ -24,13 +30,7 @@ class WaveCannonJackal : RoleBase<WaveCannonJackal>
             isInfiniteJackal: WaveCannonJackalInfiniteJackal,
             sidekickType: (RoleId)WaveCannonJackalSidekickType,
             hasOtherButton: true
-        )),
-        () => new WaveCannonAbility(
-            coolDown: WaveCannonJackalCooldown,
-            effectDuration: WaveCannonJackalEffectDuration,
-            type: WaveCannonJackalType,
-            isResetKillCooldown: WaveCannonJackalIsSyncKillCoolTime
-        )
+        ))
     ];
 
     public override QuoteMod QuoteMod { get; } = QuoteMod.SuperNewRoles;
