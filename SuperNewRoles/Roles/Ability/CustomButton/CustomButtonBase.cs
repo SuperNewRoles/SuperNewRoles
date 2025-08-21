@@ -300,6 +300,10 @@ public abstract class CustomButtonBase : AbilityBase
             buttonEffect.EffectTimer = buttonEffect.EffectDuration;
             buttonEffect.isEffectActive = false;
         }
+        if (actionButton != null)
+        { // タイマーテキストの色をデフォルトに戻し、会議後などに色が緑のまま残ることを防ぐ。
+            actionButton.cooldownTimerText.color = Palette.EnabledColor;
+        }
     }
     public override void DetachToLocalPlayer()
     {
