@@ -193,23 +193,68 @@ public abstract class CustomButtonBase : AbilityBase
 
     public virtual void OnUpdate()
     {
+        // --- 事前チェック: ボタンを表示すべきでない状況なら即座に処理を中断 ---
         if (PlayerControl.LocalPlayer?.Data == null || MeetingHud.Instance || ExileController.Instance || !CheckHasButton())
         {
             SetActive(false);
             return;
         }
+        // 他のUIが表示されているかどうかに基づいてボタンの表示/非表示を切り替え
         bool active = HudManager.Instance.UseButton.isActiveAndEnabled || HudManager.Instance.PetButton.isActiveAndEnabled;
         SetActive(active);
-        if (Timer > 0 && (Timer == MaybeZero || CheckDecreaseCoolCount()) && buttonEffect?.isEffectActive != true) DecreaseTimer();
-        actionButton.graphic.sprite = Sprite;
-        //エフェクト中は直後のbuttonEffect.Updateで表記が上書きされる……はず
-        actionButton.SetCoolDown(Timer, DefaultTimerAdjusted);
-        actionButton.OverrideText(buttonText);
-        if (CheckIsAvailable() && (buttonEffect == null || !buttonEffect.isEffectActive))
-        {
-            actionButton.graphic.color = actionButton.buttonLabelText.color = Palette.EnabledColor;
-            actionButton.graphic.material.SetFloat("_Desat", 0f);
 
+        // --- タイマー更新 ---
+        // クールダウン中で、かつ特殊なエフェクトが作動していない場合にのみタイマーを進める
+        if (Timer > 0f && (Timer == MaybeZero || CheckDecreaseCoolCount()) && buttonEffect?.isEffectActive != true)
+        {
+            DecreaseTimer();
+        }
+
+        // --- UIの基本設定 ---
+        actionButton.graphic.sprite = Sprite; // スプライトを設定
+        actionButton.OverrideText(buttonText); // ボタン下部のテキストを設定
+        // クールダウンシェーダーがパイチャートを正しく描画するために不可欠なヘルパー
+        CooldownHelpers.SetCooldownNormalizedUvs(actionButton.graphic);
+
+        // --- ボタンの状態を判定 ---
+        bool isCoolingDown = Timer > 0f;
+        bool canUseByCondition = CheckIsAvailable(); // クールダウン以外の使用条件をチェック
+        bool canUseNow = !isCoolingDown && canUseByCondition;
+        bool isEffectActive = buttonEffect?.isEffectActive ?? false;
+
+        // --- パイチャートと数字の表示更新 ---
+        // この処理は常に呼び出す。不要な場合はSetCoolDownメソッド内部で非表示になる。
+        actionButton.SetCoolDown(Timer, DefaultTimerAdjusted);
+
+        // --- 状態に基づいたボタンの見た目と入力処理 ---
+        if (isEffectActive)
+        {
+            // ケース1: IButtonEffectが作動中の場合 (例: 透明化の効果時間中など)
+            if (buttonEffect.effectCancellable && buttonEffect.IsEffectAvailable())
+            {
+                // キャンセル可能な状態 (カラー表示)
+                actionButton.graphic.color = Palette.EnabledColor;
+                actionButton.graphic.material.SetFloat("_Desat", 0f); // 彩度を最大 (カラー)
+
+                // キー入力によるキャンセル処理
+                int joyKey = GetJoystickKey(keytype);
+                KeyCode kCode = GetKeyCode(keytype);
+                if ((kCode != KeyCode.None && Input.GetKeyDown(kCode)) || (joyKey >= 0 && ConsoleJoystick.player.GetButtonDown(joyKey)))
+                {
+                    buttonEffect.OnCancel(actionButton);
+                    ResetTimer();
+                }
+            }
+        }
+        else if (canUseNow)
+        {
+            // ケース2: 使用可能な状態 (クールダウン完了 & 条件OK)
+            // ボタンを鮮やかなカラーで表示
+            actionButton.graphic.color = Palette.EnabledColor;
+            actionButton.buttonLabelText.color = Palette.EnabledColor;
+            actionButton.graphic.material.SetFloat("_Desat", 0f); // 彩度を最大 (カラー)
+
+            // キー入力による使用処理
             int joyKey = GetJoystickKey(keytype);
             KeyCode kCode = GetKeyCode(keytype);
             if ((kCode != KeyCode.None && Input.GetKeyDown(kCode)) || (joyKey >= 0 && ConsoleJoystick.player.GetButtonDown(joyKey)))
@@ -217,29 +262,49 @@ public abstract class CustomButtonBase : AbilityBase
                 OnClickEvent();
             }
         }
-        else if (buttonEffect != null && buttonEffect.isEffectActive && buttonEffect.effectCancellable && buttonEffect.IsEffectAvailable())
-        {
-            actionButton.graphic.color = actionButton.buttonLabelText.color = Palette.EnabledColor;
-            actionButton.graphic.material.SetFloat("_Desat", 0f);
-
-            int joyKey = GetJoystickKey(keytype);
-            KeyCode kCode = GetKeyCode(keytype);
-            if ((kCode != KeyCode.None && Input.GetKeyDown(kCode)) || (joyKey >= 0 && ConsoleJoystick.player.GetButtonDown(joyKey)))
-            {
-                buttonEffect.OnCancel(actionButton);
-                ResetTimer();
-            }
-        }
         else
         {
-            actionButton.graphic.color = GrayOut;
+            // ケース3: 使用不可能な状態 (クールダウン中、または条件NG)
+            // テキストの色を無効状態の色に設定
             actionButton.buttonLabelText.color = Palette.DisabledClear;
-            actionButton.graphic.material.SetFloat("_Desat", 1f);
+
+            if (isCoolingDown)
+            {
+                // サブケース3-1: クールダウン中の場合
+                if (canUseByCondition)
+                {
+                    // 条件を満たしている場合 (例: ターゲットが範囲内)
+                    // ボタンを【不透明なカラー】にして、パイチャートを表示する。
+                    actionButton.graphic.color = Palette.EnabledColor;
+                    actionButton.graphic.material.SetFloat("_Desat", 0f); // カラー
+                }
+                else
+                {
+                    // 条件を満たしていない場合 (例: ターゲットが範囲外)
+                    // ボタン全体を【半透明のモノクロ】にする。
+                    actionButton.graphic.color = GrayOut; // 半透明
+                    actionButton.graphic.material.SetFloat("_Desat", 1f); // モノクロ
+                }
+            }
+            else // クールダウンは完了したが、canUseByConditionがfalseの場合
+            {
+                // サブケース3-2: クールダウンは完了したが、使用条件を満たさない場合
+                // ボタン全体を【半透明のモノクロ】にする。
+                actionButton.graphic.color = GrayOut;
+                actionButton.graphic.material.SetFloat("_Desat", 1f);
+            }
         }
-        UpdateText();
-        //以下はエフェクトがある(≒押したらカウントダウンが始まる)ときだけ呼ばれる
-        if (buttonEffect != null) buttonEffect.OnFixedUpdate(actionButton);
+
+        // --- その他のUI更新 ---
+        UpdateText(); // 残り回数などのテキストを更新
+
+        // IButtonEffectが作動中なら、その更新処理を呼び出す
+        if (isEffectActive)
+        {
+            buttonEffect.OnFixedUpdate(actionButton);
+        }
     }
+
     private void UpdateText()
     {
         switch (showTextType)
