@@ -36,17 +36,20 @@ public static class CustomCosmeticsLayers
     {
         if (cosmeticsLayer == null)
         {
-            Logger.Error("Initialize failed cosmeticsLayer is null: " + cosmeticsLayer?.name ?? "NONAME");
+            Logger.Error("Initialize failed cosmeticsLayer is null");
+            Logger.Error(new System.Diagnostics.StackTrace().ToString());
             return null;
         }
         if (layers == null)
         {
-            Logger.Error("Initialize failed layers is null: " + cosmeticsLayer?.name ?? "NONAME");
+            Logger.Error("Initialize failed layers is null");
+            Logger.Error(new System.Diagnostics.StackTrace().ToString());
             return null;
         }
         if (cosmeticsLayer.hat == null || cosmeticsLayer.visor == null)
         {
-            Logger.Error("Initialize failed hat or visor is null: " + cosmeticsLayer?.name ?? "NONAME");
+            Logger.Error("Initialize failed hat or visor is null");
+            Logger.Error(new System.Diagnostics.StackTrace().ToString());
             return null;
         }
         try
