@@ -116,8 +116,12 @@ public class JsonParser
         {
             switch (c)
             {
-                case '"': sb.Append("\""); break;
-                case '\\': sb.Append("\\"); break;
+                case '"':
+                    sb.Append('\\'); sb.Append('"');
+                    break;
+                case '\\':
+                    sb.Append('\\'); sb.Append('\\');
+                    break;
                 case '\b': sb.Append("\\b"); break;
                 case '\f': sb.Append("\\f"); break;
                 case '\n': sb.Append("\\n"); break;
