@@ -11,17 +11,17 @@ Modifier,モディファイア,Modifier,修饰符,修飾符
 People,{0}人,{0} people,{0}人,{0}人
 
 # 共通設定テキスト
-CoolTime,クールタイム,Cool Time,冷却时间,冷卻時間
-KillCoolTime,キルクールタイム,Kill Cool Time,击杀冷却时间,擊殺冷卻時間
-DurationTime,効果時間,Duration Time,持续时间,持續時間
+CoolTime,クールタイム,Cooldown,冷却时间,冷卻時間
+KillCoolTime,キルクールタイム,Kill Cooldown,击杀冷却时间,擊殺冷卻時間
+DurationTime,効果時間,Duration,持续时间,持續時間
 CanUseVent,ベントを使用できる,Can Use Vent,可以使用通风口,可以使用通風口
-VentCooldown,ベントクールタイム,Vent Cool Time,通风口冷却时间,通風口冷卻時間
-VentDuration,ベント持続時間,Vent Duration Time,通风口持续时间,通風口持續時間
+VentCooldown,ベントクールタイム,Vent Cooldown,通风口冷却时间,通風口冷卻時間
+VentDuration,ベント持続時間,Vent Duration,通风口持续时间,通風口持續時間
 CanSabotage,サボタージュを使用できる,Can Sabotage,可以使用破坏,可以使用破壞
 HasImpostorVision,インポスターの視界を持つ,Has Impostor Vision,拥有内鬼视野,擁有內鬼視野
 TaskOption,タスクを個別で設定するか,Set tasks individually,独立设置任务,獨立設置任務
-UseLimit,使用可能回数,Usage Limit,可使用次数,可使用次數
-RemainingText,残り{0}回,Remaining {0} times,剩余 {0} 次,剩餘 {0} 次
+UseLimit,使用可能回数,Max Uses,可使用次数,可使用次數
+RemainingText,残り{0}回,Uses Left: {0},剩余 {0} 次,剩餘 {0} 次
 DurationTimerText,残り{0}秒,Remaining {0} seconds,剩余 {0} 秒,剩餘 {0} 秒
 AdditionalWin,追加勝利,Additional Win,额外胜利,額外勝利
 Seconds,秒,Seconds,秒,秒
@@ -30,7 +30,7 @@ Seconds,秒,Seconds,秒,秒
 colorSalmon,サーモン,Salmon,鲑鱼红,鮭魚紅
 colorBordeaux,ボルドー,Bordeaux,枣红,波爾多紅
 colorOlive,オリーブ,Olive,橄榄绿,橄欖綠
-colorTurqoise,ターコイズ,Turqoise,绿松石,綠松石藍
+colorTurqoise,ターコイズ,Turquoise,绿松石,綠松石藍
 colorMint,ミント,Mint,薄荷绿,薄荷綠
 colorLavender,ラベンダー,Lavender,薰衣紫,薰衣紫
 colorNougat,ヌガー,Nougat,棕褐,棕褐
@@ -97,8 +97,8 @@ DeviceOptions,情報機器制限,Device Options,设备限制,設備限制
 DeviceAdminOption,アドミン設定,Admin Settings,管理地图设置,管理地圖設置
 DeviceVitalOrDoorLogOption,バイタル・ドアログ設定,Vital/Doorlog Settings,生命体征/门禁记录设置,生命體徵/門禁記錄設置
 DeviceCameraOption,カメラ設定,Camera Settings,摄像头设置,攝像頭設置
-DeviceOptionType.None,使用可能,Disabled,禁用,禁用
-DeviceOptionType.CantUse,使用不可,Enabled,启用,啟用
+DeviceOptionType.None,使用可能,Enabled,启用,啟用
+DeviceOptionType.CantUse,使用不可,Disabled,禁用,禁用
 DeviceOptionType.Restrict,時間制限,Time Limit,时间限制,時間限制
 DeviceTimeSettingAdmin,アドミンの制限時間,Admin Limit Time,管理地图限制时间,管理地圖限制時間
 DeviceTimeSettingVitalOrDoorLog,バイタル・ドアログの制限時間,Vital/Doorlog Limit Time,生命体征/门禁记录限制时间,生命體徵/門禁記錄限制時間
@@ -125,18 +125,18 @@ NetworkTransformTypeLowLatencyLevel.SuperLow,超低,Super Low,超低,超低
 NetworkTransformTypeLowLatencyLevel.Bad,絶対ダメ(超高遅延),Bad (Very Very High Latency),差(超高延迟),差(超高延遲)
 SumouMode,相撲モード(ベータ),Sumo Mode (Beta),相扑模式(测试版),相撲模式(測試版)
 SumouHighPerformance,高いパフォーマンス(遅延増),High Performance (Increased Latency),高性能(延迟增加),高性能(延遲增加)
-FixSpawnPacketSize,ホストが切断されにくくする(推奨:オン),Fix Spawn Packet Size(Recommended active) ,修复出生点数据包大小,修復出生點數據包大小
+FixSpawnPacketSize,ホストが切断されにくくする(推奨:オン),Stabilize Host Connection (Recommended: On) ,修复出生点数据包大小,修復出生點數據包大小
 
 # SyncSpawn
 WaitingSpawnText,ロドー中... 残り:{0}/{1}クルー,Waiting... {0}/{1} Crewmates,等待中... {0}/{1} 船员,等待中... {0}/{1} 船員
 
 # GameSettings
-CannotTaskTrigger,タスクに関係ない役職の場合、タスクをできなくする,If the role is not related to the task，the task cannot be done,如果角色与任务无关，则无法完成任务,如果角色與任務無關，則無法完成任務
+CannotTaskTrigger,タスクに関係ない役職の場合、タスクをできなくする,Disable tasks for non-task-related roles,如果角色与任务无关，则无法完成任务,如果角色與任務無關，則無法完成任務
 SyncSpawn,スポーンを同期する(選択スポーンのみ),Sync Spawn (Selected Spawn Only),同步出生点(仅选择出生点),同步出生點(僅選擇出生點)
-AdvancedRandom,よりランダムな乱数を使用する,Use a more random random number,使用更随机的随机数,使用更隨機的隨機數
-DisableTaskWin,タスク勝利を無効にする,Can't task win
-DisableHijackTaskWin,第三陣営のタスク勝利横取りを無効にする,Disable hijack task win by third party
-HideGhostRoles,死亡時に他クルーの役職を表示しない,Do not display other crew roles upon death
+AdvancedRandom,よりランダムな乱数を使用する,Use Enhanced Randomness,使用更随机的随机数,使用更隨機的隨機數
+DisableTaskWin,タスク勝利を無効にする,Disable task victory
+DisableHijackTaskWin,第三陣営のタスク勝利横取りを無効にする,Disable hijack task victory by third party
+HideGhostRoles,死亡時に他クルーの役職を表示しない,Hide Crew Roles on Death
 ShowGhostRolesToImpostor,インポスターにのみ表示する,Only visible to impostors
 GhostVoteDisplay,死亡時の投票表示,Ghost vote display
 GhostVoteDisplayType.Vanilla,バニラ,Vanilla
@@ -152,7 +152,7 @@ AprilFoolsOutfitType.AlongUs,ロングモード,aLONG us
 AprilFoolsEnableDleks,ドルクス,Dleks ehT
 DisableHauntNonCompleted,タスクを完了していないと憑依できない,Disable haunt if the task is not completed
 EnabledZoomOnDead,霊界千里眼を有効にする,Enable spectator clairvoyance after death
-ImmediateKillCooldown,初手キルクールタイムを設定値から始める,Start kill cooldown from settings,初始击杀冷却遵循设置,初始擊殺冷卻遵循設定
+ImmediateKillCooldown,初手キルクールタイムを設定値から始める,Override initial kill cooldown,初始击杀冷却遵循设置,初始擊殺冷卻遵循設定
 
 # Analytics
 AnalyticsPopupTitle,解析データの送信,Send analytics data,发送分析数据,發送分析數據
@@ -177,12 +177,12 @@ VersionCurrent,選択中,Current,選擇中,選擇中
 VersionWillUpdate,再起動後適用,Apply after restart
 VersionLoaded,適用済み,Applied,已適用,已適用
 VersionUpdateReleaseNoteLoading,リリースノートを読み込み中...,Loading release note...
-VersionUpdateReleaseNoteLoadingError,リリースノートの読み込みに失敗しました。,Failed to load release note..
+VersionUpdateReleaseNoteLoadingError,リリースノートの読み込みに失敗しました。,Failed to load release notes.
 VersionUpdateReleaseNoteNotFound,リリースノートが見つかりませんでした。,Release note not found.
 
 # RequestInGame
 RequestInGameButtonText,バグ報告、要望、質問、感謝メールなどはこちらから,Bug reports，requests，questions，and thank you messages can be sent here
-RequestInGameDiscordText,Discordはこちら,Discord is this,Discord 是這裡,Discord 是這裡
+RequestInGameDiscordText,Discordはこちら,Join our Discord,Discord 是這裡,Discord 是這裡
 RequestInGameMailBox,受信箱,Mailbox,收件箱,收件箱
 RequestInGameUpperText,お問い合わせフォーム,Contact Form,联系表单,聯絡表單
 RequestInGameMessageTooShort,メッセージが短すぎます。3文字以上にしてください。,The message is too short. Please enter at least 3 characters.,消息太短了。请输入至少3个字符。,消息太短了。請輸入至少3個字符。
@@ -195,7 +195,7 @@ RequestInGameSendTitleGray,タイトル,Title,标题,標題
 RequestInGameSendTitleBack,タイトルを入力してください(3文字以上),Please enter a title (at least 3 characters),请输入标题（至少3个字符）,請輸入標題（至少3個字元）
 RequestInGameSendDescriptionGray,メッセージ,Message,消息,訊息
 RequestInGameSendDescriptionBack,メッセージを入力してください(10文字以上),Please enter a message (at least 10 characters),请输入消息（至少10个字符）,請輸入訊息（至少10個字元）
-RequestInGameAgreement,利用規約はこちら,Agreement is here,利用規約在這裡,利用規約在這裡
+RequestInGameAgreement,利用規約はこちら,Terms of Service,利用規約在這裡,利用規約在這裡
 RequestInGameSendButton,同意して送信,Send with agreement,同意后发送,同意後發送
 RequestInGameLoadingData,データを取得中,Loading data
 RequestInGameSendingReport,レポートを送信中,Sending report
@@ -218,13 +218,13 @@ RoleOptionMenuType.Neutral,第三陣営,Neutral,第三阵营,第三陣營
 ScientistButtonName,透明化,Invisible,隐身,隱身
 
 # NiceScientist
-NiceScientistCoolTime,クールタイム,Cool Time,冷却时间,冷卻時間
-NiceScientistDurationTime,効果時間,Duration Time,持续时间,持續時間
+NiceScientistCoolTime,クールタイム,Cooldown,冷却时间,冷卻時間
+NiceScientistDurationTime,効果時間,Duration,持续时间,持續時間
 NiceScientistCanTheLighterSeeTheScientist,ライターが透明化を見破れる,Lighter can see invisible,灯光师可以看见隐身,燈光師可以看見隱身
 
 # EvilScientist
-EvilScientistCoolTime,クールタイム,Cool Time,冷却时间,冷卻時間
-EvilScientistDurationTime,効果時間,Duration Time,持续时间,持續時間
+EvilScientistCoolTime,クールタイム,Cooldown,冷却时间,冷卻時間
+EvilScientistDurationTime,効果時間,Duration,持续时间,持續時間
 EvilScientistCanTheLighterSeeTheScientist,ライターが透明化を見破れる,Lighter can see invisible,灯光师可以看见隐身,燈光師可以看見隱身
 RoleOptionMenuType.Ghost,幽霊役職,Ghost Role,幽灵角色,幽靈角色
 RoleOptionMenuType.Modifier,モディファイア,Modifier,修饰符,修飾符
@@ -295,22 +295,22 @@ FinalResults,最終結果,Final Results,最终结果,最終結果
 
 # FinalStatus
 FinalStatus.Alive,生存,Alive,生存,生存
-FinalStatus.Kill,キル,Kill,击杀,擊殺
-FinalStatus.Disconnect,切断,Disonnected,切断,切斷
+FinalStatus.Kill,キル,Killed,击杀,擊殺
+FinalStatus.Disconnect,切断,Disconnected,切断,切斷
 FinalStatus.Exiled,追放,Exiled,追放,追放
 FinalStatus.Sabotage,サボタージュ,Sabotage,破坏,破壞
 FinalStatus.WaveCannon,蒸発,Vaporize,蒸发,蒸發
 FinalStatus.FalseCharge,冤罪,False Charge,冤罪,冤罪
-FinalStatus.Revange,道連れ,Revange,道連れ,道連れ
+FinalStatus.Revange,道連れ,Revenge,道連れ,道連れ
 FinalStatus.Suicide,自殺,Suicide,自殺,自殺
-FinalStatus.Samurai,切り捨て御免,Permission to cut down granted,斩无赦,斬無赦
+FinalStatus.Samurai,切り捨て御免,Cut Down,斩无赦,斬無赦
 FinalStatus.BombBySelfBomb,爆破,Bomb by Self Bomber,自爆被卷入,自爆被卷入
 FinalStatus.SelfBomb,自爆,Self Bomb,自爆,自爆
 FinalStatus.Tuna,水揚げ,Tuna,水揚げ,水揚げ
-FinalStatus.Ignite,炎上,Ignite,着火,著火
-FinalStatus.SheriffKill,正義執行,Sheriff Kill,警長擊殺,警長擊殺
+FinalStatus.Ignite,炎上,Ignited,着火,著火
+FinalStatus.SheriffKill,正義執行,Killed by Sheriff,警長擊殺,警長擊殺
 FinalStatus.SheriffWrongfulMurder,過失殺人,Wrongful murder,误杀,誤殺
-FinalStatus.SheriffMisFire,失意の自殺,Sheriff Self Death,失意,失意
+FinalStatus.SheriffMisFire,失意の自殺,Died from Misfire,失意,失意
 FinalStatus.SheriffSuicide,自決,Die in the line of duty
 FinalStatus.FalseCharges,冤罪死,Death by false accusation,冤枉致死,冤枉致死
 FinalStatus.GuesserKill,推殺,Guess kill,推测击杀,推測擊殺
@@ -340,7 +340,7 @@ HelpMenu.NoneOptions2,役職の設定が見つかりませんでした。おに�
 HelpMenu.AllTeams,全陣営,All Teams,所有阵营,所有陣營
 
 # MadFriendsIntro
-MadRolesSubIntro,この命は我が主たるインポスターのために,This life is for my mastert，the Impostor.,为内鬼献出生命,背叛船員，為吾主內鬼而戰。
+MadRolesSubIntro,この命は我が主たるインポスターのために,This life is for my master，the Impostor.,为内鬼献出生命,背叛船員，為吾主內鬼而戰。
 FriendRolesSubIntro,ジャッカルに寄り添いし者,One who stands by the jackal.,帮助豺狼获得胜利,豺狼之友，同生共死。
 
 # AssignRoles
@@ -807,7 +807,7 @@ SheriffCanKillLovers,ラバーズをキルできる,Can Kill Lovers
 Sheriff.SuicideMode,自決とキルのモード,Suicide & Kill Mode
 Sheriff.SuicideMode.Default,通常,Default
 Sheriff.SuicideMode.AlwaysSuicide,常に自決する,Always commit Suicide
-Sheriff.SuicideMode.AlwaysKill,誤射時も対象をキルする,When misfired，\nKills.
+Sheriff.SuicideMode.AlwaysKill,誤射時も対象をキルする,Kills the target even when misfiring
 
 # Guesser Options
 NiceGuesserMaxShots,打てる最大数,Maximum Number of Shots,最大射击次数,最大射擊次數
@@ -860,7 +860,7 @@ BaitDelayVariation,遅延の幅,Delay Variation,遅延的變化,遅延的變化
 
 # Balancer Options
 BalancerVoteTime,天秤会議時間,Balancer Vote Time,天秤会议时间,天秤會議時間
-BalancerUseCount,使用可能回数,Useable Count,可使用次数,可使用次數
+BalancerUseCount,使用可能回数,Max Uses,可使用次数,可使用次數
 
 # Balancer UI Texts
 BalancerTitleTextEither,どちらかが追放される...,One of them will be exiled...,其中一个将被驱逐...,其中一個將被驅逐...
@@ -868,7 +868,7 @@ BalancerTitleTextAverage,はかりにかけられる運命,Fate on the scales,�
 BalancerTitleTextYouVoteEither,どちらかに入れる?,Vote for one of them...,投票给其中一个...,投票給其中一個...
 BalancerTitleTextEitherExile,追放者の運命が決まる...,The fate of the exiled is decided...,被驱逐者的命运已定...,被驅逐者的命運已定...
 BalancerTitleTextWhoIsImpostor,どっちがインポスター？,Which one is the Impostor?,哪一个是内鬼？,哪一個是內鬼？
-BalancerTitleTextPleaseVote,どちらかに入れろ,Put it one way or the other.,到底要选哪个呢,誰的罪孽更深呢
+BalancerTitleTextPleaseVote,どちらかに入れろ,You must vote for one.,到底要选哪个呢,誰的罪孽更深呢
 BalancerTitleTextGetBalance,バランスを求めよ。,Seek balance.,寻求平衡,尋求平衡
 BalancerAbilityUseText,能力発動,Ability activated,能力發動,能力發動
 BalancerVoteText,どちらかに投票せよ！,Vote for one or the other!,请选择一名玩家投票！,將票投給其中一邊！
@@ -881,14 +881,14 @@ BalancerLimitText,天秤残り{0}回,Balancer Limit {0} times,天秤剩余{0}次
 SelfBomberKillButtonText,爆発,Explosion,爆炸,爆炸
 SelfBomberCooldown,爆発クールダウン,Explosion Cooldown,爆炸冷却时间,爆炸冷卻時間
 SelfBomberExplosionRadius,爆発範囲,Explosion Radius,爆炸范围,爆炸範圍
-SelfBomberOnlyKillCrewmates,インポスターはキルしない,Only Kill Crewmates,只能杀船员,只能殺船員
+SelfBomberOnlyKillCrewmates,インポスターはキルしない,Don't Kill Impostors,只能杀船员,只能殺船員
 SelfBomberIgnoreWalls,壁を無視する,Ignore Walls,忽略墙壁,忽略牆壁
 
 # Samurai
 SamuraiKillButtonText,必殺技,Slash,斬擊,斬擊
 SamuraiKillCooldown,必殺技クールダウン,Slash Cooldown,斬擊冷卻時間,斬擊冷卻時間
 SamuraiKillRadius,必殺技の範囲,Slash Radius,斬擊範圍,斬擊範圍
-SamuraiOnlyKillCrewmates,インポスターはキルしない,Only Kill Crewmates,只能杀船员,只能殺船員
+SamuraiOnlyKillCrewmates,インポスターはキルしない,Don't Kill Impostors,只能杀船员,只能殺船員
 SamuraiIgnoreWalls,壁を無視する,Ignore Walls,忽略墙壁,忽略牆壁
 SamuraiCanUseVent,ベントを使用できる,Can Use Vents,可以使用通风口,可以使用通風口
 SamuraiCanSabotage,サボタージュを使用できる,Can Sabotage,可以使用破坏,可以使用破壞
@@ -1132,7 +1132,7 @@ PenguinHundredKillDescription,ペンギンの能力で累計100人キルした,K
 
 # Pusher
 PusherButtonName,ドン！,Push!
-PusherRevengeRole,突き落とした相手が猫又系の役職だった場合、ランダムに道連れする,If the player you pushed is a nekomata role，randomly pull along,如果被推的玩家是疯友角色，随机道连,如果被推的玩家是瘋友角色，隨機道連
+PusherRevengeRole,突き落とした相手が猫又系の役職だった場合、ランダムに道連れする,If the player you pushed is a nekomata role，randomly take another player down with you.,如果被推的玩家是疯友角色，随机道连,如果被推的玩家是瘋友角色，隨機道連
 
 # EvilHacker Settings
 EvilHackerCanMoveWhileUsingAdmin,アドミン使用中に移動できる,Can Move While Using Admin,使用管理地图时可以移动,使用管理地圖時可以移動
@@ -1178,9 +1178,9 @@ NekoKabocha.CanRevengeExiled,追放時に復讐できる,Can Revenge When Exiled
 
 # Matryoshka
 MatryoshkaWearLimit,纏える回数,Number of times you can wear it,恐怖套娃最大套娃次数,恐怖套娃最大套娃次數
-MatryoshkaAddKillCoolTime,死体まといの増加キルクールタイムタイム,Increased kill-cool time time for corpse coats,恐怖套娃每次套娃追加的击杀冷却,恐怖套娃每次套娃增加的擊殺冷却
-MatryoshkaWearReport,まとい中でも通報可能,can be called in while the body is still circled,恐怖套娃可以在套娃状态下报告,恐怖套娃可以在套娃狀態下報告
-MatryoshkaWearTime,まとえる時間,Coiling time,恐怖套娃套娃持续时间,恐怖套娃套娃持續時間
+MatryoshkaAddKillCoolTime,死体まといの増加キルクールタイム,Increased kill cooldown while wearing a body,恐怖套娃每次套娃追加的击杀冷却,恐怖套娃每次套娃增加的擊殺冷却
+MatryoshkaWearReport,まとい中でも通報可能,Can report while wearing a body,恐怖套娃可以在套娃状态下报告,恐怖套娃可以在套娃狀態下報告
+MatryoshkaWearTime,まとえる時間,Wear Duration,恐怖套娃套娃持续时间,恐怖套娃套娃持續時間
 MatryoshkaPutOnButtonName,着る,Put On,套娃,套娃
 MatryoshkaTakeOffButtonName,脱ぐ,Take Off,解除,解除
 
@@ -1195,7 +1195,7 @@ ConjurerCanKillImpostorOption,インポスターもキルできる,Can Kill Impo
 ConjurerShowFlashOption,フラッシュ効果を表示する,Show Flash Effect,显示闪光效果,顯示閃光效果
 
 # Doppelganger
-DoppelgangerCoolTime,クールタイム,Cool Time,冷却时间,冷卻時間
+DoppelgangerCoolTime,クールタイム,Cooldown,冷却时间,冷卻時間
 DoppelgangerDurationTime,変身持続時間,Shapeshift Duration,变身持续时间,變身持續時間
 DoppelgangerSucCool,成功時のキルクールタイム,Kill Cooldown on Success,成功击杀冷却,成功擊殺冷卻
 DoppelgangerNotSucCool,失敗時のキルクールタイム,Kill Cooldown on Failure,失败击杀冷却,失敗擊殺冷卻
@@ -1311,9 +1311,9 @@ LoversKnowPartnerRole,相方の役職がわかる,Know Partner Role
 LoversKnowPartnerPosition,相方の位置がわかる,Know Partner Position
 
 # Owl
-OwlCanSpecialBlackoutDeadBodyCount,特殊停電を使えるようになる死体数,Number of bodies that will be able to use special blackout,获得紧急停电所需藏匿的尸体数,啟用黑幕降臨所需的屍體數
-OwlSpecialBlackoutCool,特殊停電のクールタイム,Cool time for special power outages,紧急停电冷却时间,黑幕降臨的冷卻時間
-OwlSpecialBlackoutTime,特殊停電の効果時間,Effect duration of special power outages,紧急停电持续时间,黑幕降臨的持續時間
+OwlCanSpecialBlackoutDeadBodyCount,特殊停電を使えるようになる死体数,Corpses count required to use Special Blackout,获得紧急停电所需藏匿的尸体数,啟用黑幕降臨所需的屍體數
+OwlSpecialBlackoutCool,特殊停電のクールタイム,Cooldown for special blackout,紧急停电冷却时间,黑幕降臨的冷卻時間
+OwlSpecialBlackoutTime,特殊停電の効果時間,Effect duration of special blackout,紧急停电持续时间,黑幕降臨的持續時間
 OwlCanKillOutsideOfBlackout,停電以外でもキルできる,Can kill outside of blackout
 OwlCanTransportOutsideOfBlackout,停電以外でも運搬できる,Can transported outside of blackout
 OwlNestButtonText,巣作り,Nest building,筑巢,築巢
@@ -1324,7 +1324,7 @@ OwlSpecialBlackoutButton,特殊停電,Special Blackout,紧急停电,黑幕降臨
 # SchrodingersCat Role and Options
 SchrodingersCat,シュレディンガーの猫,Schrödinger's Cat,薛定谔的猫,薛丁格的貓
 SchrodingersCatHasKillAbility,キル能力を有する,Has kill ability,具有擊殺能力,具有擊殺能力
-SchrodingersCatKillCooldown,キルクールタイム,Kill Cool Time,擊殺冷卻時間,擊殺冷卻時間
+SchrodingersCatKillCooldown,キルクールタイム,Kill Cooldown,擊殺冷卻時間,擊殺冷卻時間
 SchrodingersCatKillVictimSuicide,キル者が自殺する,Killer suicides,擊殺者自殺,擊殺者自殺
 SchrodingersCatSuicideTime,自殺までの時間,Time until suicide,自殺剩餘時間,自殺剩餘時間
 SchrodingersCatBeCrewOnExile,追放でクルー陣営になる,Become crew on exile,被逐出時變為船員陣營,被逐出時變為船員陣營
@@ -1457,7 +1457,7 @@ SpelunkerDoorOpenChance,ドア開放死の確率,Door Opening Death Chance,开�
 # BlackHatHacker
 BlackHatHacker,ブラックハットハッカー,Black Hat Hacker,黑帽客,黑帽駭客
 BlackHatHackerDescription,ウイルスを使って全員を感染させろ！,Use viruses to infect everyone!,使用病毒感染所有人,使用病毒感染所有人
-BlackHatHackerHackCoolTime,ハックのクールタイム,Hack Cool Time,植入病毒冷却,駭入的冷卻時間
+BlackHatHackerHackCoolTime,ハックのクールタイム,Hack Cooldown,植入病毒冷却,駭入的冷卻時間
 BlackHatHackerHackCountable,ハック可能回数,Number of hacks possible,最大植入病毒次数,駭入的使用次數
 BlackHatHackerIsNotInfectionIncrease,感染者が居なくなったらハック回数を増やす,Increase the number of hacks once the infected are gone,不存在感染者时增加一次感染次数,當感染者消失後，增加駭入的使用次數
 BlackHatHackerHackInfectiousTime,感染時間,Infectious time,感染所需时间,感染所需時間
@@ -1612,7 +1612,7 @@ ShiftActorIsLimitUses,使用回数制限を有効にする,Enable use count limi
 ShiftActorMaxUseCount,変身可能回数,Max Shapeshift Uses,最大变身次数,最大變身次數
 ShiftActorCanShapeshiftAfterUsesExhausted,使用回数を使い切ってもシェイプシフト可能,Can shapeshift after uses exhausted,用完次数后仍可变身,用完次數後仍可變身
 ShiftActorCanSeeSharedRoles,モディファイアも確認できる,Can see modifier roles
-ShiftActorRoleMessage,{0}の役職は{1}だった,{0}'s role is {1}.
+ShiftActorRoleMessage,{0}の役職は{1}だった,{0}'s role was {1}.
 
 
 # OrientalShaman
@@ -1657,13 +1657,13 @@ PhosphorusPutButtonName,設置,Put,放置,放置燈籠
 PhosphorusLightingButtonName,点灯,Lighting,点燃,點燈
 
 # Ubiquitous
-Ubiquitous.CallCoolTime,コールクールタイム,Call Cool Time
-Ubiquitous.OperationCoolTime,操作クールタイム,Operation Cool Time
+Ubiquitous.CallCoolTime,コールクールタイム,Call Cooldown
+Ubiquitous.OperationCoolTime,操作クールタイム,Operation Cooldown
 Ubiquitous.IsLimitOperableTime,操作時間制限,Limit Operable Time
 Ubiquitous.OperableTime,操作可能時間,Operable Time
 Ubiquitous.DroneStayTurn,ドローン滞在ターン,Drone Stay Turn
 Ubiquitous.FlyingSpeed,飛行速度,Flying Speed
-Ubiquitous.DoorHackCoolTime,ドアハッククールタイム,Door Hack Cool Time
+Ubiquitous.DoorHackCoolTime,ドアハッククールタイム,Door Hack Cooldown
 Ubiquitous.DoorHackScope,ドアハック範囲,Door Hack Scope
 Ubiquitous.DroneVisibilityRange,ドローン視認範囲,Drone Visibility Range
 Ubiquitous.MapShowPlayerColor,マップにプレイヤー色表示,Show Player Color on Map
@@ -1680,7 +1680,7 @@ BuskerReallyDeadTimeText,本当に死ぬまで: {0}秒,Really dead in: {0}s,真�
 
 # Camouflager
 CamouflagerButtonText,カモフラージュ,Camouflage,伪装,偽裝
-CamouflagerCoolTime,カモフラージュクールタイム,Camouflage Cool Time,伪装冷却时间,偽裝冷卻時間
+CamouflagerCoolTime,カモフラージュクールタイム,Camouflage Cooldown,伪装冷却时间,偽裝冷卻時間
 CamouflagerDurationTime,カモフラージュ持続時間,Camouflage Duration,伪装持续时间,偽裝持續時間
 CamouflagerCamouflageChangeColor,カモフラージュ色設定,Camouflage Color Setting,伪装颜色设置,偽裝顏色設置
 CamouflagerCamouflageColor,カモフラージュ色,Camouflage Color,伪装颜色,偽裝顏色
@@ -1717,8 +1717,8 @@ MushroomerHasGasMask,ガスマスクを持つ,Has Gas Mask,拥有防毒面具,�
 MushroomerMushroomPlantCount,キノコ設置可能数,Mushroom Plant Count,蘑菇设置数量,蘑菇設置數量
 MushroomerMushroomExplosionCount,爆発可能回数,Explosion Count,爆炸次数,爆炸次數
 MushroomerMushroomExplosionRange,爆発範囲,Explosion Range,爆炸范围,爆炸範圍
-MushroomerMushroomPlantCoolTime,キノコ設置クールタイム,Mushroom Plant Cool Time,蘑菇设置冷却时间,蘑菇設置冷卻時間
-MushroomerMushroomExplosionCoolTime,爆発クールタイム,Explosion Cool Time,爆炸冷却时间,爆炸冷卻時間
+MushroomerMushroomPlantCoolTime,キノコ設置クールタイム,Mushroom Plant Cooldown,蘑菇设置冷却时间,蘑菇設置冷卻時間
+MushroomerMushroomExplosionCoolTime,爆発クールタイム,Explosion Cooldown,爆炸冷却时间,爆炸冷卻時間
 MushroomerPlantButtonName,キノコ設置,Plant Mushroom,设置蘑菇,設置蘑菇
 MushroomerExplosionButtonName,爆発,Explode,爆炸,爆炸
 MushroomerActiveUsedMushroom,キノコ有効化後、発動するまで見えない,Mushroom active after use,蘑菇使用后，激活前不可见,蘑菇使用後，激活前不可見
