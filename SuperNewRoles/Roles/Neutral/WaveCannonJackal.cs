@@ -17,7 +17,7 @@ class WaveCannonJackal : RoleBase<WaveCannonJackal>
         () => new WaveCannonAbility(
             coolDown: WaveCannonJackalCooldown,
             effectDuration: WaveCannonJackalEffectDuration,
-            type: WaveCannonJackalType,
+            type: (WaveCannonType)WaveCannonJackalType,
             isResetKillCooldown: WaveCannonJackalIsSyncKillCoolTime
         ),
         () => new JackalAbility(new JackalData(
@@ -91,7 +91,7 @@ class WaveCannonJackal : RoleBase<WaveCannonJackal>
     public static bool WaveCannonJackalIsSyncKillCoolTime;
 
     [CustomOptionSelect("WaveCannonJackalWaveCannonType", typeof(WaveCannonTypeForOption), "WaveCannonAnimationType.")]
-    public static WaveCannonType WaveCannonJackalType = WaveCannonType.Tank;
+    public static WaveCannonTypeForOption WaveCannonJackalType = WaveCannonTypeForOption.Tank;
 }
 public enum WaveCannonJackalSidekickType
 {
