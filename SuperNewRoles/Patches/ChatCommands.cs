@@ -60,16 +60,11 @@ public static class SendChatPatch
                   || text.StartsWith("/w ", StringComparison.OrdinalIgnoreCase))
             {
                 handled = true;
-                string originalName = PlayerControl.LocalPlayer.name;
-                try
-                {
-                    PlayerControl.LocalPlayer.SetName(GetWinnerMessage());
-                    __instance.AddChat(PlayerControl.LocalPlayer, "\u200B");
-                }
-                finally
-                {
-                    PlayerControl.LocalPlayer.SetName(originalName);
-                }
+                // ホストの/winnersは全員に表示する
+                if (AmongUsClient.Instance.AmHost)
+                    RpcShowWinnerMessage();
+                else
+                    ShowWinnerMessage();
             }
             if (AmongUsClient.Instance.NetworkMode == NetworkModes.FreePlay)
             {
@@ -106,6 +101,25 @@ public static class SendChatPatch
             FastDestroyableSingleton<HudManager>.Instance.Chat.timeSinceLastMessage = 0f;
         }
         return !handled;
+    }
+    [CustomRPC]
+    public static void RpcShowWinnerMessage()
+    {
+        ShowWinnerMessage();
+    }
+    private static void ShowWinnerMessage()
+    {
+
+        string originalName = PlayerControl.LocalPlayer.name;
+        try
+        {
+            PlayerControl.LocalPlayer.SetName(GetWinnerMessage());
+            HudManager.Instance.Chat.AddChat(PlayerControl.LocalPlayer, "\u200B");
+        }
+        finally
+        {
+            PlayerControl.LocalPlayer.SetName(originalName);
+        }
     }
     private static string GetWinnerMessage()
     {

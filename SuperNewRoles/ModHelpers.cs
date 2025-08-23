@@ -764,4 +764,14 @@ public static class ModHelpers
         return collider2D.OverlapPoint(position);
     }
 
+    /// <summary>
+    /// 指定されたIDのVentを取得します
+    /// </summary>
+    /// <param name="id">VentのID</param>
+    /// <returns>Vent, 見つからない場合はnull</returns>
+    public static Vent? VentById(int id)
+    {
+        if (ShipStatus.Instance == null || ShipStatus.Instance.AllVents == null) return null;
+        return ShipStatus.Instance.AllVents.FirstOrDefault(vent => vent.Id == id);
+    }
 }
