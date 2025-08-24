@@ -1052,11 +1052,11 @@ ZiplineCoolChangeSetting,ジップラインクールダウンの設定,Zipline C
 ZiplineCoolTimeSetting,ジップラインクールダウン時間,Zipline Cooldown Time,滑索冷却时间,滑索冷卻時間
 ZiplineImpostorCoolChangeSetting,インポスター用ジップラインクールダウンの設定,Impostor Zipline Cooldown Settings,内鬼滑索冷却时间设置,內鬼滑索冷卻時間設置
 ZiplineImpostorCoolTimeSetting,インポスター用ジップラインクールダウン時間,Impostor Zipline Cooldown Time,内鬼滑索冷却时间,內鬼滑索冷卻時間
+SpawnType,スポーンタイプ,Spawn Type,出生点类型,出生點類型
 SpawnType.Normal,通常,Default,默认,預設
 SpawnType.Random,ランダム,Random,随机,隨機
 SpawnType.Select,選択,Select,选择,選擇
 TheFungleSetting,The Fungle設定,The Fungle Settings,The Fungle设置,The Fungle設置
-TheFungleSpawnType,スポーンタイプ,Spawn Type,出生点类型,出生點類型
 TheFungleAdditionalAdmin,追加アドミン,Additional Admin,额外管理地图,額外管理地圖
 TheFunglePowerOutageSabotage,停電サボタージュ,Power Outage Sabotage,停电破坏,停電破壞
 TheFungleHideSporeMask,キノコの胞子効果無効,Disable Mushroom Spore Effect,禁用蘑菇孢子效果,禁用蘑菇孢子效果
@@ -1778,3 +1778,6 @@ MovingTeleportText,テレポートしました,Teleported,已传送,已傳送
 # ModifierHauntedWolf
 ModifierHauntedWolfIsAssignMadAndFriendRoles,マッドやフレンズロールと重複しない(一括設定),No overlap with Mud or Friends rolls.,不会被分配给叛徒阵营或狈系职业,不重複分配给叛徒或狽系角色
 ModifierHauntedWolfIsReverseSheriffDecision,シェリフや占い師などに重複した時，判定を反転する。,Reverses the kill decision when duplicated on a sheriff.,被分配给警长、占卜师等职业时技能判定反转,當狼憑於警長或占卜師等職業時，判定會反轉
+
+# Nun
+NunButtonName,ぬーん,Nun,捣蛋,搗蛋
