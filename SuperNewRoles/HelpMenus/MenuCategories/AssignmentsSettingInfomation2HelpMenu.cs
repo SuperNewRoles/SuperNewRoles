@@ -26,6 +26,82 @@ public class AssignmentsSettingInfomation2HelpMenu : HelpMenuCategoryBase
     // 現在表示中の役職ID（幽霊役職またはモディファイア）
     private object currentDisplayedRoleId = null;
 
+    // 共通ヘルパー: コンテンツの縦スクロール上限を計算
+    private static float CalculateContentYBoundsMax(int numLines)
+    {
+        return numLines <= 22 ? 0f : (numLines - 22) * 0.167f + 0.05f;
+    }
+
+    // 共通ヘルパー: 既存のクローン行を削除
+    private static void ClearExistingRoleLines(Transform infoTransform)
+    {
+        foreach (GameObject child in infoTransform.gameObject.GetChildren())
+        {
+            if (child.name.StartsWith("Roles(Clone)"))
+            {
+                GameObject.Destroy(child);
+            }
+        }
+    }
+
+    // 共通ヘルパー: チーム名テキスト設定
+    private static void SetTeamNameText(Transform infoTransform, Color color, string localizationKey)
+    {
+        var teamNameTMP = infoTransform.Find("TeamName")?.GetComponent<TextMeshPro>();
+        if (teamNameTMP != null)
+        {
+            teamNameTMP.text = ModHelpers.CsWithTranslation(color, localizationKey);
+        }
+        else
+        {
+            Logger.Error("TeamName TextMeshProコンポーネントが見つかりませんでした。");
+        }
+    }
+
+    // 共通ヘルパー: Rolesテンプレート取得
+    private static bool TryGetRolesTemplate(Transform infoTransform, out TextMeshPro rolesTemplate)
+    {
+        rolesTemplate = infoTransform.Find("Roles")?.GetComponent<TextMeshPro>();
+        if (rolesTemplate == null)
+        {
+            Logger.Error("Rolesテンプレートが見つかりませんでした。");
+            return false;
+        }
+        rolesTemplate.gameObject.SetActive(false);
+        return true;
+    }
+
+    // 共通ヘルパー: クリック可能な行を生成
+    private static void CreateClickableLine(TextMeshPro template, Transform parent, ref float yPos, ref int index, string baseText, string hoverText, UnityAction onClick)
+    {
+        var line = GameObject.Instantiate(template, parent);
+        line.gameObject.SetActive(true);
+        line.transform.localPosition = new Vector3(0, yPos, 0);
+        line.text = baseText;
+
+        var box = line.GetComponent<BoxCollider2D>();
+        PassiveButton btn = line.gameObject.AddComponent<PassiveButton>();
+        btn.Colliders = new Collider2D[] { box };
+
+        btn.OnClick = new();
+        btn.OnClick.AddListener(onClick);
+
+        btn.OnMouseOver = new();
+        btn.OnMouseOver.AddListener((UnityAction)(() =>
+        {
+            line.text = hoverText;
+        }));
+
+        btn.OnMouseOut = new();
+        btn.OnMouseOut.AddListener((UnityAction)(() =>
+        {
+            line.text = baseText;
+        }));
+
+        yPos -= 0.2f;
+        index++;
+    }
+
     public override void Show(GameObject Container)
     {
         this.Container = Container;
@@ -96,35 +172,18 @@ public class AssignmentsSettingInfomation2HelpMenu : HelpMenuCategoryBase
             return;
         }
 
-        // 「TeamName」テキストコンポーネントの設定
-        var teamNameTMP = info.Find("TeamName").GetComponent<TextMeshPro>();
-        if (teamNameTMP != null)
-        {
-            teamNameTMP.text = ModHelpers.CsWithTranslation(Color.cyan, "GhostRoles");
-        }
-        else
-        {
-            Logger.Error("TeamName TextMeshProコンポーネントが見つかりませんでした。");
-        }
+        // チーム名設定
+        SetTeamNameText(info, Color.cyan, "GhostRoles");
 
-        // Rolesのテンプレートを取得し非表示に設定
-        var rolesTemplate = info.Find("Roles").GetComponent<TextMeshPro>();
-        if (rolesTemplate == null)
+        // Rolesテンプレート
+        if (!TryGetRolesTemplate(info, out var rolesTemplate))
         {
-            Logger.Error("Rolesテンプレートが見つかりませんでした。");
             ContentYBoundsMax = 0;
             return;
         }
-        rolesTemplate.gameObject.SetActive(false);
 
         // 既存のロールテキストを削除（テンプレート以外）
-        foreach (GameObject child in info.gameObject.GetChildren())
-        {
-            if (child.name.StartsWith("Roles(Clone)"))
-            {
-                GameObject.Destroy(child);
-            }
-        }
+        ClearExistingRoleLines(info);
 
         // ロール情報の表示開始位置
         float yPos = 1.42f;
@@ -136,42 +195,17 @@ public class AssignmentsSettingInfomation2HelpMenu : HelpMenuCategoryBase
             if (ghostRole.Percentage == 0 || ghostRole.NumberOfCrews == 0)
                 continue;
 
-            // テンプレートからロール情報オブジェクトを複製
-            var newRole = GameObject.Instantiate(rolesTemplate, info);
-            newRole.gameObject.SetActive(true);
-            newRole.transform.localPosition = new Vector3(0, yPos, 0);
-
-            string baseRoleText = $"<b>{ModHelpers.CsWithTranslation(ghostRole.RoleColor, ghostRole.RoleId.ToString())}</b> x{ghostRole.NumberOfCrews} ({ghostRole.Percentage}%)\n";
-            newRole.text = baseRoleText;
-
-            // PassiveButtonの設定
-            var boxCollider = newRole.GetComponent<BoxCollider2D>();
-            PassiveButton passiveButton = newRole.gameObject.AddComponent<PassiveButton>();
-            passiveButton.Colliders = new Collider2D[] { boxCollider };
-
-            passiveButton.OnClick = new();
-            passiveButton.OnClick.AddListener((UnityAction)(() =>
+            string baseText = $"<b>{ModHelpers.CsWithTranslation(ghostRole.RoleColor, ghostRole.RoleId.ToString())}</b> x{ghostRole.NumberOfCrews} ({ghostRole.Percentage}%)\n";
+            string hoverText = ModHelpers.Cs(Color.green, $"<b>{ModHelpers.CsWithTranslation(Color.green, ghostRole.RoleId.ToString())}</b> x{ghostRole.NumberOfCrews} ({ghostRole.Percentage}%)\n");
+            UnityAction onClick = (UnityAction)(() =>
             {
                 Logger.Info($"{ghostRole.RoleId} Selected");
                 ShowGhostRoleDetail(ghostRole.RoleId);
-            }));
+            });
 
-            passiveButton.OnMouseOver = new();
-            passiveButton.OnMouseOver.AddListener((UnityAction)(() =>
-            {
-                newRole.text = ModHelpers.Cs(Color.green, $"<b>{ModHelpers.CsWithTranslation(Color.green, ghostRole.RoleId.ToString())}</b> x{ghostRole.NumberOfCrews} ({ghostRole.Percentage}%)\n");
-            }));
-
-            passiveButton.OnMouseOut = new();
-            passiveButton.OnMouseOut.AddListener((UnityAction)(() =>
-            {
-                newRole.text = baseRoleText;
-            }));
-
-            yPos -= 0.2f; // Y座標を調整
-            index++;
+            CreateClickableLine(rolesTemplate, info, ref yPos, ref index, baseText, hoverText, onClick);
         }
-        ContentYBoundsMax = index <= 22 ? 0f : (index - 22) * 0.167f + 0.05f;
+        ContentYBoundsMax = CalculateContentYBoundsMax(index);
     }
 
     private void SetupModifierInformation(Transform infoObject, out float ContentYBoundsMax)
@@ -185,35 +219,18 @@ public class AssignmentsSettingInfomation2HelpMenu : HelpMenuCategoryBase
             return;
         }
 
-        // 「TeamName」テキストコンポーネントの設定
-        var teamNameTMP = info.Find("TeamName").GetComponent<TextMeshPro>();
-        if (teamNameTMP != null)
-        {
-            teamNameTMP.text = ModHelpers.CsWithTranslation(new Color32(255, 112, 183, 255), "Modifier");
-        }
-        else
-        {
-            Logger.Error("TeamName TextMeshProコンポーネントが見つかりませんでした。");
-        }
+        // チーム名設定
+        SetTeamNameText(info, new Color32(255, 112, 183, 255), "Modifier");
 
-        // Rolesのテンプレートを取得し非表示に設定
-        var rolesTemplate = info.Find("Roles").GetComponent<TextMeshPro>();
-        if (rolesTemplate == null)
+        // Rolesテンプレート
+        if (!TryGetRolesTemplate(info, out var rolesTemplate))
         {
-            Logger.Error("Rolesテンプレートが見つかりませんでした。");
             ContentYBoundsMax = 0;
             return;
         }
-        rolesTemplate.gameObject.SetActive(false);
 
         // 既存のロールテキストを削除（テンプレート以外）
-        foreach (GameObject child in info.gameObject.GetChildren())
-        {
-            if (child.name.StartsWith("Roles(Clone)"))
-            {
-                GameObject.Destroy(child);
-            }
-        }
+        ClearExistingRoleLines(info);
 
         // ロール情報の表示開始位置
         float yPos = 1.42f;
@@ -222,45 +239,71 @@ public class AssignmentsSettingInfomation2HelpMenu : HelpMenuCategoryBase
         // 各モディファイア役職について処理
         foreach (var modifierRole in CustomRoleManager.AllModifiers)
         {
-            if (modifierRole.PercentageOption == 0 || modifierRole.NumberOfCrews == 0)
-                continue;
-
-            // テンプレートからロール情報オブジェクトを複製
-            var newRole = GameObject.Instantiate(rolesTemplate, info);
-            newRole.gameObject.SetActive(true);
-            newRole.transform.localPosition = new Vector3(0, yPos, 0);
-
-            string baseRoleText = $"<b>{ModHelpers.CsWithTranslation(modifierRole.RoleColor, modifierRole.ModifierRole.ToString())}</b> x{modifierRole.NumberOfCrews} ({modifierRole.PercentageOption}%)\n";
-            newRole.text = baseRoleText;
-
-            // PassiveButtonの設定
-            var boxCollider = newRole.GetComponent<BoxCollider2D>();
-            PassiveButton passiveButton = newRole.gameObject.AddComponent<PassiveButton>();
-            passiveButton.Colliders = new Collider2D[] { boxCollider };
-
-            passiveButton.OnClick = new();
-            passiveButton.OnClick.AddListener((UnityAction)(() =>
+            // 表示可否の判定
+            if (!modifierRole.UseTeamSpecificAssignment)
             {
-                Logger.Info($"{modifierRole.ModifierRole} Selected");
-                ShowModifierDetail(modifierRole.ModifierRole);
-            }));
-
-            passiveButton.OnMouseOver = new();
-            passiveButton.OnMouseOver.AddListener((UnityAction)(() =>
+                if (modifierRole.PercentageOption == 0 || modifierRole.NumberOfCrews == 0)
+                    continue;
+            }
+            else
             {
-                newRole.text = ModHelpers.Cs(Color.green, $"<b>{ModHelpers.CsWithTranslation(Color.green, modifierRole.ModifierRole.ToString())}</b> x{modifierRole.NumberOfCrews} ({modifierRole.PercentageOption}%)\n");
-            }));
+                bool impostorEnabled = modifierRole.MaxImpostors > 0 && modifierRole.ImpostorChance > 0;
+                bool neutralEnabled = modifierRole.MaxNeutrals > 0 && modifierRole.NeutralChance > 0;
+                bool crewmateEnabled = modifierRole.MaxCrewmates > 0 && modifierRole.CrewmateChance > 0;
+                if (!impostorEnabled && !neutralEnabled && !crewmateEnabled)
+                    continue;
+            }
 
-            passiveButton.OnMouseOut = new();
-            passiveButton.OnMouseOut.AddListener((UnityAction)(() =>
+            if (!modifierRole.UseTeamSpecificAssignment)
             {
-                newRole.text = baseRoleText;
-            }));
+                string baseText = $"<b>{ModHelpers.CsWithTranslation(modifierRole.RoleColor, modifierRole.ModifierRole.ToString())}</b> x{modifierRole.NumberOfCrews} ({modifierRole.PercentageOption}%)\n";
+                string hoverText = ModHelpers.Cs(Color.green, $"<b>{ModHelpers.CsWithTranslation(Color.green, modifierRole.ModifierRole.ToString())}</b> x{modifierRole.NumberOfCrews} ({modifierRole.PercentageOption}%)\n");
+                UnityAction onClick = (UnityAction)(() =>
+                {
+                    Logger.Info($"{modifierRole.ModifierRole} Selected");
+                    ShowModifierDetail(modifierRole.ModifierRole);
+                });
 
-            yPos -= 0.2f; // Y座標を調整
-            index++;
+                CreateClickableLine(rolesTemplate, info, ref yPos, ref index, baseText, hoverText, onClick);
+            }
+            else
+            {
+                UnityAction onClick = (UnityAction)(() =>
+                {
+                    Logger.Info($"{modifierRole.ModifierRole} Selected");
+                    ShowModifierDetail(modifierRole.ModifierRole);
+                });
+
+                if (modifierRole.MaxImpostors > 0 && modifierRole.ImpostorChance > 0)
+                {
+                    string suffix = ModHelpers.Cs(Palette.ImpostorRed, "(I)");
+                    string nameWithSuffix = $"{ModHelpers.CsWithTranslation(modifierRole.RoleColor, modifierRole.ModifierRole.ToString())} {suffix}";
+                    string baseText = $"<b>{nameWithSuffix}</b> x{modifierRole.MaxImpostors} ({modifierRole.ImpostorChance}%)\n";
+                    string hoverName = $"{ModHelpers.CsWithTranslation(Color.green, modifierRole.ModifierRole.ToString())} {suffix}";
+                    string hoverText = ModHelpers.Cs(Color.green, $"<b>{hoverName}</b> x{modifierRole.MaxImpostors} ({modifierRole.ImpostorChance}%)\n");
+                    CreateClickableLine(rolesTemplate, info, ref yPos, ref index, baseText, hoverText, onClick);
+                }
+                if (modifierRole.MaxNeutrals > 0 && modifierRole.NeutralChance > 0)
+                {
+                    string suffix = ModHelpers.Cs(new Color32(127, 127, 127, 255), "(N)");
+                    string nameWithSuffix = $"{ModHelpers.CsWithTranslation(modifierRole.RoleColor, modifierRole.ModifierRole.ToString())} {suffix}";
+                    string baseText = $"<b>{nameWithSuffix}</b> x{modifierRole.MaxNeutrals} ({modifierRole.NeutralChance}%)\n";
+                    string hoverName = $"{ModHelpers.CsWithTranslation(Color.green, modifierRole.ModifierRole.ToString())} {suffix}";
+                    string hoverText = ModHelpers.Cs(Color.green, $"<b>{hoverName}</b> x{modifierRole.MaxNeutrals} ({modifierRole.NeutralChance}%)\n");
+                    CreateClickableLine(rolesTemplate, info, ref yPos, ref index, baseText, hoverText, onClick);
+                }
+                if (modifierRole.MaxCrewmates > 0 && modifierRole.CrewmateChance > 0)
+                {
+                    string suffix = ModHelpers.Cs(Palette.CrewmateBlue, "(C)");
+                    string nameWithSuffix = $"{ModHelpers.CsWithTranslation(modifierRole.RoleColor, modifierRole.ModifierRole.ToString())} {suffix}";
+                    string baseText = $"<b>{nameWithSuffix}</b> x{modifierRole.MaxCrewmates} ({modifierRole.CrewmateChance}%)\n";
+                    string hoverName = $"{ModHelpers.CsWithTranslation(Color.green, modifierRole.ModifierRole.ToString())} {suffix}";
+                    string hoverText = ModHelpers.Cs(Color.green, $"<b>{hoverName}</b> x{modifierRole.MaxCrewmates} ({modifierRole.CrewmateChance}%)\n");
+                    CreateClickableLine(rolesTemplate, info, ref yPos, ref index, baseText, hoverText, onClick);
+                }
+            }
         }
-        ContentYBoundsMax = index <= 22 ? 0f : (index - 22) * 0.167f + 0.05f;
+        ContentYBoundsMax = CalculateContentYBoundsMax(index);
     }
 
     // 幽霊役職詳細を表示する

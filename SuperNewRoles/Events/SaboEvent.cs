@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using HarmonyLib;
 using Hazel;
+using SuperNewRoles.Modules;
 using SuperNewRoles.Modules.Events.Bases;
 
 namespace SuperNewRoles.Events;
@@ -63,16 +64,21 @@ public static class ShipStatusUpdateSystemMessageReaderPatch
         if (!__instance.Systems.TryGetValue(systemType, out var value)) return;
         value.TryCastOut(out IActivatable activatable);
         if (activatable == null) return;
-        if (activatable.IsActive && !activeSaboTypes.Contains(systemType))
+        // この時点ではIsActiveが変更されていない場合がある
+        // 遅延がない前提で
+        new LateTask(() =>
         {
-            SaboStartEvent.Invoke(systemType);
-            activeSaboTypes.Add(systemType);
-        }
-        else if (!activatable.IsActive && activeSaboTypes.Contains(systemType))
-        {
-            SaboEndEvent.Invoke(systemType);
-            activeSaboTypes.Remove(systemType);
-        }
+            if (activatable.IsActive && !activeSaboTypes.Contains(systemType))
+            {
+                SaboStartEvent.Invoke(systemType);
+                activeSaboTypes.Add(systemType);
+            }
+            else if (!activatable.IsActive && activeSaboTypes.Contains(systemType))
+            {
+                SaboEndEvent.Invoke(systemType);
+                activeSaboTypes.Remove(systemType);
+            }
+        }, 0.02f);
     }
 }
 

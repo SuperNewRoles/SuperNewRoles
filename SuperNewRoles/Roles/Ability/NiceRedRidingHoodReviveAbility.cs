@@ -126,8 +126,8 @@ public class NiceRedRidingHoodGhostAbility : AbilityBase
         if (_reviveAbility != null)
         {
             // 復活可能な場合は役職表示とHaunt能力を無効化
-            _disableHauntAbility = new DisibleHauntAbility(() => _reviveAbility.RemainingReviveCount > 0 && _reviveAbility.Killer != null);
-            _hideRoleOnGhostAbility = new HideRoleOnGhostAbility((player) => _reviveAbility.RemainingReviveCount > 0 && _reviveAbility.Killer != null);
+            _disableHauntAbility = new DisibleHauntAbility(() => _reviveAbility.RemainingReviveCount > 0 && _reviveAbility.Killer != Player);
+            _hideRoleOnGhostAbility = new HideRoleOnGhostAbility((player) => _reviveAbility.RemainingReviveCount > 0 && _reviveAbility.Killer != Player);
 
             Player.AttachAbility(_disableHauntAbility, new AbilityParentAbility(this));
             Player.AttachAbility(_hideRoleOnGhostAbility, new AbilityParentAbility(this));

@@ -222,7 +222,15 @@ internal unsafe struct FastHashTable
         var keyBytes = Encoding.UTF8.GetBytes(key);
         fixed (byte* keyPtr = keyBytes)
         {
-            return GetRaw(keyPtr, keyBytes.Length) ?? key;
+            string value = GetRaw(keyPtr, keyBytes.Length);
+            if (value == null) // keyがCSVにない場合にログを出力
+            {
+                if (!key.Contains("<color=") && !key.Contains("</color>") && value != "CrewmateIntro1")
+                {  // colorタグが含まれている場合・CrewmateIntro1(本体純正)は出力しない
+                    Logger.Warning($"Missing translation for key: {key}");
+                }
+            }
+            return value ?? key;
         }
     }
 
@@ -330,6 +338,10 @@ public static unsafe partial class ModTranslation
     private static FastHashTable* CurrentTranslations = null;
     private static SupportedLangs? CurrentLang = null;
     private static FastHashTable*[] AllTranslations = new FastHashTable*[4];
+    // Test override provider for translation CSV (used by unit tests only)
+    private static Func<Stream> TestTranslationStreamProvider = null;
+    // Test override for current language (used by unit tests only)
+    private static SupportedLangs? TestLanguageOverride = null;
 
     // 事前計算されたハッシュ値のキャッシュ
     private static readonly Dictionary<string, ulong> HashCache = new();
@@ -354,7 +366,9 @@ public static unsafe partial class ModTranslation
 
     private static void LoadTranslationData()
     {
-        using var stream = SuperNewRolesPlugin.Assembly.GetManifestResourceStream("SuperNewRoles.Resources.TranslationData.csv");
+        using var stream = (TestTranslationStreamProvider != null)
+            ? TestTranslationStreamProvider()
+            : SuperNewRolesPlugin.Assembly.GetManifestResourceStream("SuperNewRoles.Resources.TranslationData.csv");
 
         // 全データを一度にメモリに読み込む
         var buffer = new byte[stream.Length];
@@ -464,14 +478,24 @@ public static unsafe partial class ModTranslation
 
     private static SupportedLangs GetCurrentSupportedLang()
     {
-        switch (DataManager.Settings.Language.CurrentLanguage)
+        // Prefer explicit test override (unit tests should not touch IL2CPP DataManager)
+        if (TestLanguageOverride.HasValue)
+            return TestLanguageOverride.Value;
+        try
         {
-            case SupportedLangs.Japanese:
-            case SupportedLangs.SChinese:
-            case SupportedLangs.TChinese:
-                return DataManager.Settings.Language.CurrentLanguage;
-            default:
-                return SupportedLangs.English;
+            switch (DataManager.Settings.Language.CurrentLanguage)
+            {
+                case SupportedLangs.Japanese:
+                case SupportedLangs.SChinese:
+                case SupportedLangs.TChinese:
+                    return DataManager.Settings.Language.CurrentLanguage;
+                default:
+                    return SupportedLangs.English;
+            }
+        }
+        catch
+        {
+            return SupportedLangs.English;
         }
     }
 
@@ -514,7 +538,9 @@ public static unsafe partial class ModTranslation
 
     private static void LoadCurrentLanguageOnly()
     {
-        using var stream = SuperNewRolesPlugin.Assembly.GetManifestResourceStream("SuperNewRoles.Resources.TranslationData.csv");
+        using var stream = (TestTranslationStreamProvider != null)
+            ? TestTranslationStreamProvider()
+            : SuperNewRolesPlugin.Assembly.GetManifestResourceStream("SuperNewRoles.Resources.TranslationData.csv");
         using var reader = new StreamReader(stream);
 
         int langIndex = CurrentLang switch
@@ -587,8 +613,32 @@ public static unsafe partial class ModTranslation
                     AllTranslations[i] = null;
                 }
             }
+            // Also clear current pointer to avoid dangling references
+            CurrentTranslations = null;
         }
         CurrentLang = null;
+    }
+
+    // --- Test helpers ---
+    // Provide test CSV text to be used by Load() instead of the embedded resource.
+    // Intended for unit tests to supply stable translation data.
+    public static void SetTestTranslationCsv(string csv)
+    {
+        if (csv == null) throw new ArgumentNullException(nameof(csv));
+        var bytes = Encoding.UTF8.GetBytes(csv);
+        TestTranslationStreamProvider = () => new MemoryStream(bytes, 0, bytes.Length, writable: false, publiclyVisible: true);
+    }
+
+    // Allow unit tests to set language without touching Among Us DataManager
+    public static void SetTestLanguage(SupportedLangs lang)
+    {
+        TestLanguageOverride = lang;
+    }
+
+    // Clear the test CSV provider and return to embedded resource loading.
+    public static void ClearTestTranslationCsv()
+    {
+        TestTranslationStreamProvider = null;
     }
 
     [HarmonyPatch(typeof(TranslationController), nameof(TranslationController.SetLanguage))]

@@ -27,18 +27,21 @@
     </PropertyGroup>
 
     <ItemGroup Condition="'$(Configuration)' != 'Release'">
-        <Reference Include="$(AmongUs)/BepInEx/core/*.dll" />
-        <Reference Include="$(AmongUs)/BepInEx/interop/*.dll" />
+        <LibReference Include="$(AmongUs)/BepInEx/core/*.dll" />
+        <LibReference Include="$(AmongUs)/BepInEx/interop/*.dll" />
+        <Reference Include="@(LibReference)" />
     </ItemGroup>
     <ItemGroup Condition="'$(Configuration)' == 'Release'">
-        <Reference Include="$(Build)/core/*.dll" />
-        <Reference Include="$(Build)/interop/*.dll" />
+        <LibReference Include="$(Build)/core/*.dll" />
+        <LibReference Include="$(Build)/interop/*.dll" />
+        <Reference Include="@(LibReference)" />
     </ItemGroup>
 
-    <Target Name="CopyCustomContent" AfterTargets="AfterBuild" Condition="'$(Configuration)' == 'Debug'">
+    <Target Name="CopyCustomContent" AfterTargets="AfterBuild" Condition="'$(Configuration)' == 'Debug' and '$(SkipGameLaunch)' != 'true'">
         <Message Text="Second occurrence" />
         <Copy SourceFiles="$(ProjectDir)bin\$(Configuration)\net6.0\SuperNewRoles.dll" DestinationFolder="$(AmongUs)/BepInEx/plugins/" />
         <Exec Command="start &quot;&quot; &quot;$(AmongUs)/Among Us.exe&quot;" />
+        <Exec Command="dotnet test &quot;$(MSBuildProjectDirectory)\..\SuperNewRoles.Tests\SuperNewRoles.Tests.csproj&quot; -c $(Configuration) -p:SkipGameLaunch=true --nologo --verbosity minimal" />
     </Target>
 
     <PropertyGroup Condition="'$(Configuration)' == 'Debug'">
