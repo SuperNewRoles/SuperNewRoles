@@ -54,6 +54,7 @@ internal abstract class RoleBase<T> : BaseSingleton<T>, IRoleBase where T : Role
 
     public abstract RoleOptionMenuType OptionTeam { get; }
     public virtual MapNames[] AvailableMaps { get; } = [];
+    public virtual bool HideInRoleDictionary => false;
 
     // public abstract void CreateCustomOption();
 }
@@ -85,6 +86,8 @@ public interface IRoleBase : IRoleInformation
 
     public RoleId[] RelatedRoleIds { get; }
     public MapNames[] AvailableMaps { get; }
+    public bool HideInRoleDictionary { get; }
+
     /// <summary>
     /// AbilityはAbilitiesから自動でセットされるが、追加で他の処理を行いたい場合はOverrideすること
     /// </summary>

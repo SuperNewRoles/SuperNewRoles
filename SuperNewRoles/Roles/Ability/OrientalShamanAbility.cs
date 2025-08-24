@@ -17,7 +17,7 @@ public class OrientalShamanAbility : AbilityBase
 {
     public OrientalShamanData Data { get; set; }
 
-    private CustomVentAbility _ventAbility;
+    private NonAnimationVentButtonAbility _ventAbility;
     private CustomSidekickButtonAbility _servantAbility;
     private EventListener<ExileEventData> _exileListener;
     private KnowOtherAbility _knowOtherAbility;
@@ -37,7 +37,7 @@ public class OrientalShamanAbility : AbilityBase
         base.AttachToAlls();
 
         // ベント能力の初期化
-        _ventAbility = new CustomVentAbility(
+        _ventAbility = new NonAnimationVentButtonAbility(
             canUseVent: () => Data.canUseVent,
             ventCooldown: () => Data.ventCooldown,
             ventDuration: () => Data.ventDuration
@@ -83,7 +83,6 @@ public class OrientalShamanAbility : AbilityBase
         Player.AttachAbility(new ImpostorVisionAbility(() => Data.isImpostorVision), new AbilityParentAbility(this));
         Player.AttachAbility(_servantAbility, new AbilityParentAbility(this));
         Player.AttachAbility(_ventAbility, new AbilityParentAbility(this));
-        Player.AttachAbility(new HideVentAnimationAbility(() => true), new AbilityParentAbility(this));
         Player.AttachAbility(_taskAbility, new AbilityParentAbility(this));
         Player.AttachAbility(_sabotageCanUseAbility, new AbilityParentAbility(this));
         Player.AttachAbility(_playerArrowsAbility, new AbilityParentAbility(this));

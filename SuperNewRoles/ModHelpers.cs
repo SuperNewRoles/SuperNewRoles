@@ -59,12 +59,10 @@ public static class ModHelpers
         {
             (min, max) = (max, min);
         }
-        byte[] bytes = new byte[4];
-        Rng.GetBytes(bytes);
-        float randomValue = BitConverter.ToSingle(bytes, 0);
-        // 0.0～1.0の範囲に正規化してからmin～maxの範囲に変換
-        float normalized = (randomValue - float.MinValue) / (float.MaxValue - float.MinValue);
-        return min + (normalized * (max - min));
+        // Use integer sampling to avoid NaN/Infinity from arbitrary float bit patterns
+        int r = RandomNumberGenerator.GetInt32(0, int.MaxValue);
+        float normalized = (float)r / int.MaxValue; // [0,1]
+        return min + normalized * (max - min);
     }
 
     /// <summary>
@@ -196,14 +194,23 @@ public static class ModHelpers
     {
         return $"<color=#{ToByte(c.r):X2}{ToByte(c.g):X2}{ToByte(c.b):X2}{ToByte(c.a):X2}>{s}</color>";
     }
+    // Test-friendly overload that avoids constructing UnityEngine.Color in unit tests
+    public static string Cs(float r, float g, float b, float a, string s)
+    {
+        return $"<color=#{ToByte(r):X2}{ToByte(g):X2}{ToByte(b):X2}{ToByte(a):X2}>{s}</color>";
+    }
     public static string CsWithTranslation(Color c, string s)
     {
         return Cs(c, ModTranslation.GetString(s));
     }
     public static byte ToByte(float f)
     {
-        f = Mathf.Clamp01(f);
-        return (byte)(f * 255);
+        // Avoid UnityEngine.Mathf to keep tests independent from IL2CPP runtime
+        if (float.IsNaN(f)) return 0;
+        if (f <= 0f) return 0;
+        if (f >= 1f) return 255;
+        // Match expected rounding behavior (e.g., 0.5 -> 128)
+        return (byte)MathF.Round(f * 255f);
     }
     public static string WrapText(string text, int width, bool halfIshalf = true)
     {
@@ -408,6 +415,13 @@ public static class ModHelpers
     {
         float dis = Vector2.Distance(pos, pos2);
         return dis <= distance;
+    }
+    // Overload for unit tests to avoid UnityEngine.Vector2 construction
+    public static bool IsPositionDistance(float x1, float y1, float x2, float y2, float distance)
+    {
+        var dx = x1 - x2;
+        var dy = y1 - y2;
+        return (dx * dx + dy * dy) <= (distance * distance);
     }
 
     /// <summary>
@@ -709,7 +723,16 @@ public static class ModHelpers
     // shhhhhh.....
     public static bool IsAndroid()
     {
-        return Constants.GetPlatformType() == Platforms.Android;
+        // In unit test environments, IL2CPP runtime is not available.
+        // Safely detect platform and fall back to false if not resolvable.
+        try
+        {
+            return Constants.GetPlatformType() == Platforms.Android;
+        }
+        catch
+        {
+            return false;
+        }
     }
 
     public static KeyValuePair<byte, int> MaxPair(this Dictionary<byte, int> self, out bool tie)
@@ -741,4 +764,14 @@ public static class ModHelpers
         return collider2D.OverlapPoint(position);
     }
 
+    /// <summary>
+    /// 指定されたIDのVentを取得します
+    /// </summary>
+    /// <param name="id">VentのID</param>
+    /// <returns>Vent, 見つからない場合はnull</returns>
+    public static Vent? VentById(int id)
+    {
+        if (ShipStatus.Instance == null || ShipStatus.Instance.AllVents == null) return null;
+        return ShipStatus.Instance.AllVents.FirstOrDefault(vent => vent.Id == id);
+    }
 }

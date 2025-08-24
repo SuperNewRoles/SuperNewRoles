@@ -59,9 +59,9 @@ public static class DevicesPatch
         {
             if (MapSettingOptions.RestrictionMode == DeviceRestrictionModeType.TimeLimit)
             {
-                isAdminRestrictOption = MapSettingOptions.DeviceAdminTimeLimit > 0;
-                IsCameraRestrict = MapSettingOptions.DeviceCameraTimeLimit > 0;
-                IsVitalRestrict = MapSettingOptions.DeviceVitalTimeLimit > 0;
+                isAdminRestrictOption = MapSettingOptions.DeviceAdminTimeLimit >= 0;
+                IsCameraRestrict = MapSettingOptions.DeviceCameraTimeLimit >= 0;
+                IsVitalRestrict = MapSettingOptions.DeviceVitalTimeLimit >= 0;
 
                 if (isAdminRestrictOption)
                 {

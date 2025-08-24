@@ -86,7 +86,8 @@ public class PenguinAbility : TargetCustomButtonBase, IButtonEffect
 
     private void OnCalledMeeting(CalledMeetingEventData data)
     {
-        if (targetPlayer != null && targetPlayer.IsAlive() && meetingKill)
+        // 各クライアントで処理しないと死体の集計に間に合わないので別処理
+        if (targetPlayer != null && Player.IsAlive() && targetPlayer.IsAlive() && meetingKill)
         {
             targetPlayer.CustomDeath(CustomDeathType.Kill, source: Player);
             targetPlayer = null;

@@ -14,6 +14,12 @@ class WaveCannonJackal : RoleBase<WaveCannonJackal>
     public override RoleId Role { get; } = RoleId.WaveCannonJackal;
     public override Color32 RoleColor { get; } = new(0, 180, 235, byte.MaxValue);
     public override List<Func<AbilityBase>> Abilities { get; } = [
+        () => new WaveCannonAbility(
+            coolDown: WaveCannonJackalCooldown,
+            effectDuration: WaveCannonJackalEffectDuration,
+            type: (WaveCannonType)WaveCannonJackalType,
+            isResetKillCooldown: WaveCannonJackalIsSyncKillCoolTime
+        ),
         () => new JackalAbility(new JackalData(
             canKill: true,
             killCooldown: WaveCannonJackalKillCooldown,
@@ -24,13 +30,7 @@ class WaveCannonJackal : RoleBase<WaveCannonJackal>
             isInfiniteJackal: WaveCannonJackalInfiniteJackal,
             sidekickType: (RoleId)WaveCannonJackalSidekickType,
             hasOtherButton: true
-        )),
-        () => new WaveCannonAbility(
-            coolDown: WaveCannonJackalCooldown,
-            effectDuration: WaveCannonJackalEffectDuration,
-            type: WaveCannonJackalType,
-            isResetKillCooldown: WaveCannonJackalIsSyncKillCoolTime
-        )
+        ))
     ];
 
     public override QuoteMod QuoteMod { get; } = QuoteMod.SuperNewRoles;
@@ -42,7 +42,7 @@ class WaveCannonJackal : RoleBase<WaveCannonJackal>
     public override TeamTag TeamTag { get; } = TeamTag.Jackal;
     public override RoleTag[] RoleTags { get; } = [RoleTag.SpecialKiller];
     public override RoleOptionMenuType OptionTeam { get; } = RoleOptionMenuType.Neutral;
-    public override RoleId[] RelatedRoleIds { get; } = [RoleId.Sidekick, RoleId.JackalFriends, RoleId.SidekickWaveCannon];
+    public override RoleId[] RelatedRoleIds { get; } = [RoleId.Sidekick, RoleId.JackalFriends, RoleId.SidekickWaveCannon, RoleId.Bullet];
 
     [CustomOptionFloat("WaveCannonJackalKillCooldown", 2.5f, 60f, 2.5f, 30f)]
     public static float WaveCannonJackalKillCooldown;
@@ -91,7 +91,7 @@ class WaveCannonJackal : RoleBase<WaveCannonJackal>
     public static bool WaveCannonJackalIsSyncKillCoolTime;
 
     [CustomOptionSelect("WaveCannonJackalWaveCannonType", typeof(WaveCannonTypeForOption), "WaveCannonAnimationType.")]
-    public static WaveCannonType WaveCannonJackalType = WaveCannonType.Tank;
+    public static WaveCannonTypeForOption WaveCannonJackalType = WaveCannonTypeForOption.Tank;
 }
 public enum WaveCannonJackalSidekickType
 {

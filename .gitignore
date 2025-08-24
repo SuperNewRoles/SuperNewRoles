@@ -1,6 +1,8 @@
 SuperNewRoles/SuperNewRoles.csproj.user
 SuperNewRoles/obj/
 SuperNewRoles/bin/
+SuperNewRoles.Tests/bin/
+SuperNewRoles.Tests/obj/
 Build/
 Claude.md
 *.v2

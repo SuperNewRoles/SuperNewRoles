@@ -46,6 +46,7 @@ class Vampire : RoleBase<Vampire>
     public override TeamTag TeamTag => TeamTag.Impostor;
     public override RoleTag[] RoleTags => new RoleTag[] { RoleTag.SpecialKiller };
     public override RoleOptionMenuType OptionTeam => RoleOptionMenuType.Hidden;
+    public override bool HideInRoleDictionary => true; // 役職辞典で非表示にする
 
     [CustomOptionFloat("VampireAbsorptionCooldown", 2.5f, 60f, 2.5f, 30f)]
     public static float VampireAbsorptionCooldown;
