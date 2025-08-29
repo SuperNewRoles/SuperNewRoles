@@ -79,6 +79,13 @@ public static class VersionUpdatesUI
         versionContainer.transform.localScale = Vector3.one;
         versionContainer.transform.localRotation = Quaternion.identity;
 
+        var titleText = versionContainer.transform.Find("AutoUpDateModeSelecter/UITextGrayBack/Text")?.GetComponent<TextMeshPro>();
+        if (titleText != null)
+        {
+            // 翻訳キーを使ってテキストを設定
+            titleText.text = ModTranslation.GetString("VersionUpdateAutoText");
+        }
+
         GameObject updateTypeButton = versionContainer.transform.Find("AutoUpDateModeSelecter/UpdateTypeBox").gameObject;
         ConfigureUpdateTypeButton(updateTypeButton);
 
@@ -113,6 +120,7 @@ public static class VersionUpdatesUI
         closeButtonPassiveButton.OnClick.AddListener((UnityAction)(() => fadeCoroutine.StartFadeOut(versionSelect, FadeDuration, true)));
         closeButtonPassiveButton.OnMouseOver = new();
         closeButtonPassiveButton.OnMouseOut = new();
+        ModHelpers.LogHierarchy(versionContainer.transform);
     }
     public static void ConfigureVersionListScroller(GameObject versionListScroller)
     {
