@@ -169,6 +169,12 @@ Winners.NoData,データがありません,No data,没有数据,沒有數據
 # VersionUpdates
 VersionSelectButtonText,バージョン変更,Change Version
 VersionUpdateAutoText,自動アップデート,Automatic Updates
+VersionUpdateType.stability,安定版,Stability,稳定版,穩定版
+VersionUpdateType.all,全て,All,全部,全部
+VersionUpdateType.static,固定,Static,固定版,固定版
+VersionUpdateType.disable,無効,Disable,禁用,禁用
+VersionUpdateLoading,バージョンリストを取得中...,Loading version list...
+VersionUpdateGet,変更,Change,變更,變更
 VersionCurrent,選択中,Current,選擇中,選擇中
 VersionWillUpdate,再起動後適用,Apply after restart
 VersionLoaded,適用済み,Applied,已適用,已適用

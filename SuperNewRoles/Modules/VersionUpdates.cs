@@ -82,7 +82,6 @@ public static class VersionUpdatesUI
         var titleText = versionContainer.transform.Find("AutoUpDateModeSelecter/UITextGrayBack/Text")?.GetComponent<TextMeshPro>();
         if (titleText != null)
         {
-            // 翻訳キーを使ってテキストを設定
             titleText.text = ModTranslation.GetString("VersionUpdateAutoText");
         }
 
