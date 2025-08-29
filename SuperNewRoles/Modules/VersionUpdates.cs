@@ -45,6 +45,13 @@ public static class VersionUpdatesUI
     public static void InitializeMainMenuButton(MainMenuManager __instance)
     {
         GameObject versionSelectButton = AssetManager.Instantiate(VersionSelectButtonPrefab, null);
+
+        var buttonText = versionSelectButton.transform.Find("Text")?.GetComponent<TextMeshPro>();
+        if (buttonText != null)
+        {
+            buttonText.text = ModTranslation.GetString("VersionSelectButtonText");
+        }
+
         versionSelectButton.transform.localPosition = Vector3.zero;
         versionSelectButton.transform.localScale = Vector3.one * VersionSelectButtonScale;
         PassiveButton passiveButton = versionSelectButton.AddComponent<PassiveButton>();

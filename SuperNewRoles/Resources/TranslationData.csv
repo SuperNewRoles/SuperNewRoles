@@ -167,6 +167,7 @@ ClientOptionsMod,Mod設定,Mod Settings,模组设置,模組設置
 Winners.NoData,データがありません,No data,没有数据,沒有數據
 
 # VersionUpdates
+VersionSelectButtonText,バージョン変更,Change Version
 VersionUpdateType.stability,安定版,Stability,稳定版,穩定版
 VersionUpdateType.all,全て,All,全部,全部
 VersionUpdateType.static,固定,Static,固定版,固定版
