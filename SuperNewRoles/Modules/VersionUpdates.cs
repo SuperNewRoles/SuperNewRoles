@@ -120,7 +120,6 @@ public static class VersionUpdatesUI
         closeButtonPassiveButton.OnClick.AddListener((UnityAction)(() => fadeCoroutine.StartFadeOut(versionSelect, FadeDuration, true)));
         closeButtonPassiveButton.OnMouseOver = new();
         closeButtonPassiveButton.OnMouseOut = new();
-        ModHelpers.LogHierarchy(versionContainer.transform);
     }
     public static void ConfigureVersionListScroller(GameObject versionListScroller)
     {
