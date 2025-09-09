@@ -19,8 +19,10 @@ class SerialKiller : RoleBase<SerialKiller>
     public override RoleId Role { get; } = RoleId.SerialKiller;
     public override Color32 RoleColor { get; } = Palette.ImpostorRed;
     public override List<Func<AbilityBase>> Abilities { get; } = [
-        () => new ChangeKillTimerAbility(
-            killTimerGetter: () => SerialKillerKillCooldown
+        () => new CustomKillButtonAbility(
+            canKill: () => true,
+            killCooldown: () => SerialKillerKillCooldown,
+            onlyCrewmates: () => true
         ),
         () => new SuicideTimerAbility(
             suicideTimeGetter: () => SerialKillerSuicideTime,

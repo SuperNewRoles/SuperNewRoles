@@ -51,9 +51,12 @@ public class OverKillerAbility : AbilityBase
     public override void AttachToAlls()
     {
         base.AttachToAlls();
-        Player.AttachAbility(new ChangeKillTimerAbility(
-            killTimerGetter: () => OverKiller.OverKillerKillCooldown
-        ), new AbilityParentAbility(this));
+        Player.AttachAbility(new CustomKillButtonAbility(
+            canKill: () => true,
+            killCooldown: () => OverKiller.OverKillerKillCooldown,
+            onlyCrewmates: () => true
+        ),
+        new AbilityParentAbility(this));
     }
 
     public override void AttachToLocalPlayer()
