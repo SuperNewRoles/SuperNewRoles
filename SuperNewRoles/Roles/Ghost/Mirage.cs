@@ -104,9 +104,9 @@ public class MirageAbility : CustomButtonBase, IAbilityCount
     }
 
     [CustomRPC]
-    public static void RpcSpawnDeadbody(PlayerControl player, Vector3 position)
+    public void RpcSpawnDeadbody(PlayerControl player, Vector3 position)
     {
-        DeadBody deadBody = GameObject.Instantiate<DeadBody>(GameManager.Instance.DeadBodyPrefab);
+        DeadBody deadBody = GameObject.Instantiate<DeadBody>(GameManager.Instance.GetDeadBody(Player.Data.Role));
         deadBody.ParentId = player.PlayerId;
         foreach (var bodyRenderer in deadBody.bodyRenderers)
         {
