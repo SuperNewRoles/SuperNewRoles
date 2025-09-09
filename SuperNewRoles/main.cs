@@ -65,6 +65,8 @@ public partial class SuperNewRolesPlugin : BasePlugin
     public static string SecretDirectory => Path.GetFullPath(Path.Combine(UnityEngine.Application.persistentDataPath, "SuperNewRolesNextSecrets"));
     private static Task TaskRunIfWindows(Action action)
     {
+        action();
+        return Task.Run(() => { });
         bool needed = false;
         if (needed && ModHelpers.IsAndroid())
             action();
@@ -143,6 +145,9 @@ public partial class SuperNewRolesPlugin : BasePlugin
     public void PatchAll(Harmony harmony)
     {
         var assembly = Assembly;
+        harmony.PatchAll(assembly);
+        HarmonyCoroutinePatchProcessor.ProcessCoroutinePatches(harmony, assembly);
+        return;
         if (ModHelpers.IsAndroid())
         {
             harmony.PatchAll(assembly);
