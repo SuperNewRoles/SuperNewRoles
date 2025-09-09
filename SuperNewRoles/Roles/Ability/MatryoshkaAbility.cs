@@ -36,7 +36,7 @@ public class MatryoshkaAbility : CustomButtonBase, IButtonEffect, IAbilityCount
 
     private int Counter = 0;
 
-    private ChangeKillTimerAbility changeKillTimerAbility;
+    private CustomKillButtonAbility customKillButtonAbility;
 
     private EventListener _fixedUpdateListener;
     private EventListener<DieEventData> _dieEventListener;
@@ -63,9 +63,13 @@ public class MatryoshkaAbility : CustomButtonBase, IButtonEffect, IAbilityCount
     public override void AttachToAlls()
     {
         base.AttachToAlls();
-        changeKillTimerAbility = new ChangeKillTimerAbility(() => GameOptionsManager.Instance.CurrentGameOptions.GetFloat(AmongUs.GameOptions.FloatOptionNames.KillCooldown) + Data.AdditionalKillCoolTime * Counter);
+        customKillButtonAbility = new CustomKillButtonAbility(
+            canKill: () => true,
+            killCooldown: () => GameOptionsManager.Instance.CurrentGameOptions.GetFloat(AmongUs.GameOptions.FloatOptionNames.KillCooldown) + Data.AdditionalKillCoolTime * Counter,
+            onlyCrewmates: () => true
+        );
 
-        Player.AttachAbility(changeKillTimerAbility, new AbilityParentAbility(this));
+        Player.AttachAbility(customKillButtonAbility, new AbilityParentAbility(this));
 
         _fixedUpdateListener = FixedUpdateEvent.Instance.AddListener(OnFixedUpdate);
         _dieEventListener = DieEvent.Instance.AddListener(OnDie);
