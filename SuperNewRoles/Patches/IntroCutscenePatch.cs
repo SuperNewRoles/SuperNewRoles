@@ -8,6 +8,7 @@ using SuperNewRoles.CustomCosmetics.CosmeticsPlayer;
 using SuperNewRoles.CustomCosmetics.UI;
 using SuperNewRoles.CustomOptions.Categories;
 using SuperNewRoles.Events;
+using SuperNewRoles.Extensions;
 using SuperNewRoles.MapCustoms;
 using SuperNewRoles.Modules;
 using SuperNewRoles.Modules.Events.Bases;
