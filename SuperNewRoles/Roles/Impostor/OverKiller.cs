@@ -110,12 +110,12 @@ public class OverKillerAbility : AbilityBase
     }
 
     [CustomRPC]
-    public static void RpcCreateMultipleBodies(byte targetPlayerId, Vector3[] scatteredPositions)
+    public void RpcCreateMultipleBodies(byte targetPlayerId, Vector3[] scatteredPositions)
     {
         ExPlayerControl target = ExPlayerControl.ById(targetPlayerId);
         if (target == null) return;
 
-        var deadBodyPrefab = UnityEngine.Object.FindObjectOfType<GameManager>()?.DeadBodyPrefab;
+        var deadBodyPrefab = GameManager.Instance.GetDeadBody(Player.Data.Role);
         if (deadBodyPrefab == null) return;
 
         foreach (var position in scatteredPositions)
