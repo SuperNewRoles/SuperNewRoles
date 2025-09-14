@@ -569,6 +569,7 @@ public static class OnGameEndPatch
         AdditionalTempData.gameOverReason = gameOverReason;
 
         EndGameEvent.Invoke(AdditionalTempData.gameOverReason, EndGameManagerSetUpPatch.endGameCondition.winners.Select(x => ExPlayerControl.ById(x)).ToList());
+        Analytics.SendAnalytics();
     }
 
     private static void CollectPlayerRoleData(GameOverReason gameOverReason)
