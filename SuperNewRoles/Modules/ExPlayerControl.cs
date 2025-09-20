@@ -869,15 +869,18 @@ public static class ExPlayerControlExtensions
         // 同一親コンテキスト内の同一型アビリティ数(既存数)を数えて序数に反映
         int ordinal = 0;
         var exPlayer = parent.Player;
-        var abilities = exPlayer.PlayerAbilities;
-        for (int i = 0; i < abilities.Count; i++)
+        if (exPlayer != null)
         {
-            var a = abilities[i];
-            if (a != null && a.GetType() == abilityType)
+            var abilities = exPlayer.PlayerAbilities;
+            for (int i = 0; i < abilities.Count; i++)
             {
-                if (GetParentSignature(a.Parent) == parentSig)
+                var a = abilities[i];
+                if (a != null && a.GetType() == abilityType)
                 {
-                    ordinal++;
+                    if (GetParentSignature(a.Parent) == parentSig)
+                    {
+                        ordinal++;
+                    }
                 }
             }
         }
@@ -899,12 +902,13 @@ public static class ExPlayerControlExtensions
     /// <returns>64bitハッシュ値</returns>
     private static ulong Fnv1a64(string text)
     {
-        const ulong offset = 1469598103934665603UL;
+        const ulong offset = 14695981039346656037UL;
         const ulong prime = 1099511628211UL;
         ulong hash = offset;
-        for (int i = 0; i < text.Length; i++)
+        byte[] bytes = System.Text.Encoding.UTF8.GetBytes(text);
+        for (int i = 0; i < bytes.Length; i++)
         {
-            hash ^= (byte)text[i];
+            hash ^= bytes[i];
             hash *= prime;
         }
         return hash;
