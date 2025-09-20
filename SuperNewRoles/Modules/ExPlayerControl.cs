@@ -713,9 +713,17 @@ public class ExPlayerControl
         _typeIdReadOnlyCache.Clear();
         System.Array.Clear(_hasAbilityByTypeIdCached, 0, _hasAbilityByTypeIdCached.Length);
     }
+    /// <summary>
+    /// アビリティをプレイヤーにアタッチします。
+    /// AbilityId は「プレイヤーID/親コンテキスト/アビリティ型/序数」に基づく決定的IDで生成されます。
+    /// これにより、環境差や付与順の差異があっても送受信で同一の AbilityId が保証されます。
+    /// </summary>
+    /// <param name="ability">アタッチするアビリティ</param>
+    /// <param name="parent">親コンテキスト(Role/Modifier/Ghost/Ability/Player)</param>
     public void AttachAbility(AbilityBase ability, AbilityParentBase parent)
     {
-        AttachAbility(ability, IRoleBase.GenerateAbilityId(PlayerId, Role, lastAbilityId++), parent);
+        // 決定的な AbilityId を生成してからアタッチ
+        AttachAbility(ability, ExPlayerControlExtensions.GenerateDeterministicAbilityId(PlayerId, parent, ability.GetType()), parent);
     }
     public bool HasImpostorVision()
     {
@@ -831,8 +839,100 @@ public static class ExPlayerControlExtensions
     {
         player.AttachAbility(ability, parent);
     }
-    public static ulong GenerateAbilityId(byte playerId, RoleId role, int abilityIndex)
+    /// <summary>
+    /// 決定的な AbilityId を生成します。
+    /// 上位8bit: プレイヤーID, 次の16bit: 親コンテキストID(Role/Modifier/Ghost。該当なしは0)
+    /// 下位40bit: (親シグネチャ + アビリティ型名)のFNV-1a(64)下位28bit + 同一親・同一型内での序数(12bit)
+    /// </summary>
+    /// <param name="playerId">プレイヤーID</param>
+    /// <param name="parent">親コンテキスト(ロール/モディファイア/ゴースト/親アビリティ/プレイヤー)</param>
+    /// <param name="abilityType">アビリティの型</param>
+    /// <returns>決定的な AbilityId</returns>
+    public static ulong GenerateDeterministicAbilityId(byte playerId, AbilityParentBase parent, Type abilityType)
     {
-        return (ulong)(playerId * 1000000) + (ulong)((int)role * 1000) + (ulong)abilityIndex;
+        ulong pid = playerId;
+        ulong roleCode = 0;
+        string parentSig = GetParentSignature(parent);
+        if (parent is AbilityParentRole apr && apr.ParentRole != null)
+        {
+            roleCode = (ulong)(int)apr.ParentRole.Role & 0xFFFFUL;
+        }
+        else if (parent is AbilityParentModifier apm && apm.ParentModifier != null)
+        {
+            roleCode = (ulong)(int)apm.ParentModifier.ModifierRole & 0xFFFFUL;
+        }
+        else if (parent is AbilityParentGhostRole apg && apg.ParentGhostRole != null)
+        {
+            roleCode = (ulong)(int)apg.ParentGhostRole.Role & 0xFFFFUL;
+        }
+
+        // 同一親コンテキスト内の同一型アビリティ数(既存数)を数えて序数に反映
+        int ordinal = 0;
+        var exPlayer = parent.Player;
+        var abilities = exPlayer.PlayerAbilities;
+        for (int i = 0; i < abilities.Count; i++)
+        {
+            var a = abilities[i];
+            if (a != null && a.GetType() == abilityType)
+            {
+                if (GetParentSignature(a.Parent) == parentSig)
+                {
+                    ordinal++;
+                }
+            }
+        }
+
+        // 親シグネチャと型名からシグネチャ文字列を生成
+        string signature = parentSig + "|" + (abilityType.FullName ?? abilityType.Name);
+        ulong sigHash = Fnv1a64(signature) & 0x0FFFFFFFUL; // 28-bit
+        ulong ord = (ulong)(ordinal & 0xFFF); // 12-bit
+        ulong lower40 = (sigHash << 12) | ord;
+        ulong id = (pid << 56) | (roleCode << 40) | lower40;
+        return id;
+    }
+
+    /// <summary>
+    /// FNV-1a(64bit) ハッシュ関数（簡易・高速）。
+    /// AbilityId 生成のためのシグネチャハッシュに利用します。
+    /// </summary>
+    /// <param name="text">ハッシュ対象文字列</param>
+    /// <returns>64bitハッシュ値</returns>
+    private static ulong Fnv1a64(string text)
+    {
+        const ulong offset = 1469598103934665603UL;
+        const ulong prime = 1099511628211UL;
+        ulong hash = offset;
+        for (int i = 0; i < text.Length; i++)
+        {
+            hash ^= (byte)text[i];
+            hash *= prime;
+        }
+        return hash;
+    }
+
+    /// <summary>
+    /// 親コンテキストを文字列シグネチャ化します。
+    /// Role/Modifier/Ghost はそれぞれ "R:"/"M:"/"G:" にIDを付与。
+    /// Ability 親は "A:" + 親アビリティID、プレイヤー直下は "P"、不明は "U"。
+    /// </summary>
+    /// <param name="parent">親コンテキスト</param>
+    /// <returns>親シグネチャ</returns>
+    private static string GetParentSignature(AbilityParentBase parent)
+    {
+        switch (parent)
+        {
+            case AbilityParentRole apr when apr.ParentRole != null:
+                return "R:" + (int)apr.ParentRole.Role;
+            case AbilityParentModifier apm when apm.ParentModifier != null:
+                return "M:" + (int)apm.ParentModifier.ModifierRole;
+            case AbilityParentGhostRole apg when apg.ParentGhostRole != null:
+                return "G:" + (int)apg.ParentGhostRole.Role;
+            case AbilityParentAbility apa when apa.ParentAbility != null:
+                return "A:" + apa.ParentAbility.AbilityId;
+            case AbilityParentPlayer:
+                return "P";
+            default:
+                return "U";
+        }
     }
 }
