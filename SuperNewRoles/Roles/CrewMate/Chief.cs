@@ -75,6 +75,8 @@ public class ChiefAbility : AbilityBase
 {
     private CustomSidekickButtonAbility _sidekickButton;
     private bool _canAppointSheriff = true;
+    /// <summary>シェリフ任命可否判定が 失敗しているか</summary>
+    private bool _isAppointFailure = true; // 未判定時も 失敗判定 として扱う
     private SheriffAbilityData _sheriffAbilityData;
     private SheriffAbility _createdSheriff = null;
     private EventListener<NameTextUpdateEventData> _nameTextUpdateEventListener;
@@ -100,7 +102,10 @@ public class ChiefAbility : AbilityBase
             sidekickSuccess: target =>
             {
                 _hasOldTask = target.IsTaskTriggerRole();
-                return !target.IsImpostor();
+
+                var isAppointSuccess = IsRoleTargetAble(target); // 任命 成功判定
+                _isAppointFailure = !isAppointSuccess; // 任命 失敗判定を記録
+                return isAppointSuccess;
             },
             onSidekickCreated: OnSheriffAppointed
         ));
@@ -133,7 +138,9 @@ public class ChiefAbility : AbilityBase
         return true;
     }
 
-    // 対象が任命可能な役職かどうかの判定
+    /// <summary>対象が任命可能な役職か 判定する</summary>
+    /// <param name="target">判定対象</param>
+    /// <returns>true: 任命可能 / false: 任命不可能</returns>
     private static bool IsRoleTargetAble(ExPlayerControl target)
     {
         // インポスター判定
@@ -143,7 +150,6 @@ public class ChiefAbility : AbilityBase
         Logger.Info($"target.IsNeutral() = {target.IsNeutral()}");
         if (target.IsNeutral())
         {
-            Logger.Info($"(!Chief.ChiefAppointNeutral) = {(!Chief.ChiefAppointNeutral)}, (!Chief.ChiefAppointNeutralKiller && target.IsKiller()) = {(!Chief.ChiefAppointNeutralKiller && target.IsKiller())}");
             if (!Chief.ChiefAppointNeutral) return false; // 全体判定
             if (!Chief.ChiefAppointNeutralKiller && target.IsKiller()) return false; // キラー判定
         }
@@ -151,26 +157,26 @@ public class ChiefAbility : AbilityBase
         return true;
     }
 
-    // シェリフ任命後の処理
+    // シェリフ任命後の 自爆処理
     private void OnSheriffAppointed(ExPlayerControl target)
     {
         _canAppointSheriff = false;
 
         // 対象の役職判定
-        if (IsRoleTargetAble(target)) // 対象が 任命可能の役職ならば 任命
+        if (_isAppointFailure) // 対象が 任命不可の役職ならば 自身が死亡 (メイン処理)
+        {
+            new LateTask(() =>
+            {
+                ExPlayerControl.LocalPlayer.RpcCustomDeath(CustomDeathType.Suicide);
+            }, 0f);
+        }
+        else // 任命判定が成功しているなら 任命 (補助処理 (基本的にSKButton側で 既に任命処理が終わっている))
         {
             SheriffAbility sheriffAbility = target.PlayerAbilities.FirstOrDefault(ability => ability is SheriffAbility) as SheriffAbility;
             if (sheriffAbility == null)
                 throw new Exception("SheriffAbilityが見つかりません");
             _createdSheriff = sheriffAbility;
             RpcChiefAppointSheriff(target, sheriffAbility, _sheriffAbilityData.KillCooldown, _sheriffAbilityData.KillCount, _sheriffAbilityData.Mode, _sheriffAbilityData.CanKillNeutral, _sheriffAbilityData.CanKillImpostor, _sheriffAbilityData.CanKillMadRoles, _sheriffAbilityData.CanKillFriendRoles, _sheriffAbilityData.CanKillLovers, _hasOldTask);
-        }
-        else // 対象が 任命不可の役職ならば 自身が死亡
-        {
-            new LateTask(() =>
-            {
-                ExPlayerControl.LocalPlayer.RpcCustomDeath(CustomDeathType.Suicide);
-            }, 0f);
         }
     }
     [CustomRPC]
