@@ -121,7 +121,6 @@ public class ReportUIMenu
                     {
                         text = ModTranslation.GetString("RequestInGameSendingReportProgress", 0);
                         Dictionary<string, string> additionalInfo = new();
-                        additionalInfo["version"] = "SNR:" + Statics.VersionString + "&AmongUs:" + Constants.GetBroadcastVersion();
                         additionalInfo["mode"] = Categories.ModeOption.ToString();
                         additionalInfo["log_compressed"] = LogCompression.CompressAndEncryptLog(SNRLogListener.Instance.logBuilder.ToString());
 
