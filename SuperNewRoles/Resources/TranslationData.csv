@@ -948,6 +948,8 @@ ChiefSheriffCanKillNeutral,第三陣営をキルできる,Can Kill Neutral,能�
 ChiefSheriffCanKillFriendRoles,フレンド系の役職をキルできる,Can Kill Friend Roles,能击杀友方角色,能擊殺友方角色
 ChiefSheriffCanKillLovers,ラバーズをキルできる,Can Kill Lovers,能击杀恋人,能擊殺戀人
 ChiefAppointCooldown,任命のクールタイム,Appointment Cooldown,任命冷却时间,任命冷卻時間
+ChiefAppointNeutral,第三陣営を任命できる,Can appoint the neutral team.,能够任命第三阵营,可任命第三陣營
+ChiefAppointNeutralKiller,第三陣営(キラー)を任命できる,Can appoint the neutral Killer's.,可以任命第三杀手,可任命第三殺手
 ChiefCanSeeCreatedSheriff,作成したシェリフがわかる,Can See Created Sheriff,能看到已任命的警长,能看到已任命的警長
 
 # Workperson

@@ -10,6 +10,7 @@ using System.Linq;
 using SuperNewRoles.Events;
 using SuperNewRoles.Modules.Events.Bases;
 using UnityEngine.AddressableAssets;
+using System.Runtime.CompilerServices;
 
 namespace SuperNewRoles.Roles.Crewmate;
 
@@ -38,6 +39,12 @@ class Chief : RoleBase<Chief>
 
     [CustomOptionBool("ChiefCanSeeCreatedSheriff", false)]
     public static bool ChiefCanSeeCreatedSheriff;
+
+    [CustomOptionBool("ChiefAppointNeutral", true)]
+    public static bool ChiefAppointNeutral;
+
+    [CustomOptionBool("ChiefAppointNeutralKiller", true, parentFieldName: nameof(ChiefAppointNeutral))]
+    public static bool ChiefAppointNeutralKiller;
 
     [CustomOptionFloat("ChiefSheriffKillCooldown", 0f, 60f, 2.5f, 25f)]
     public static float ChiefSheriffKillCooldown;
@@ -126,27 +133,44 @@ public class ChiefAbility : AbilityBase
         return true;
     }
 
+    // 対象が任命可能な役職かどうかの判定
+    private static bool IsRoleTargetAble(ExPlayerControl target)
+    {
+        // インポスター判定
+        if (target.IsImpostor()) return false;
+
+        // 第三陣営判定
+        Logger.Info($"target.IsNeutral() = {target.IsNeutral()}");
+        if (target.IsNeutral())
+        {
+            Logger.Info($"(!Chief.ChiefAppointNeutral) = {(!Chief.ChiefAppointNeutral)}, (!Chief.ChiefAppointNeutralKiller && target.IsKiller()) = {(!Chief.ChiefAppointNeutralKiller && target.IsKiller())}");
+            if (!Chief.ChiefAppointNeutral) return false; // 全体判定
+            if (!Chief.ChiefAppointNeutralKiller && target.IsKiller()) return false; // キラー判定
+        }
+
+        return true;
+    }
+
     // シェリフ任命後の処理
     private void OnSheriffAppointed(ExPlayerControl target)
     {
         _canAppointSheriff = false;
 
-        // インポスター判定
-        if (target.IsImpostor())
-        {
-            // インポスターを任命した場合は自身が死亡
-            new LateTask(() =>
-            {
-                ExPlayerControl.LocalPlayer.RpcCustomDeath(CustomDeathType.Suicide);
-            }, 0f);
-        }
-        else
+        // 対象の役職判定
+        if (IsRoleTargetAble(target)) // 対象が 任命可能の役職ならば 任命
         {
             SheriffAbility sheriffAbility = target.PlayerAbilities.FirstOrDefault(ability => ability is SheriffAbility) as SheriffAbility;
             if (sheriffAbility == null)
                 throw new Exception("SheriffAbilityが見つかりません");
             _createdSheriff = sheriffAbility;
             RpcChiefAppointSheriff(target, sheriffAbility, _sheriffAbilityData.KillCooldown, _sheriffAbilityData.KillCount, _sheriffAbilityData.Mode, _sheriffAbilityData.CanKillNeutral, _sheriffAbilityData.CanKillImpostor, _sheriffAbilityData.CanKillMadRoles, _sheriffAbilityData.CanKillFriendRoles, _sheriffAbilityData.CanKillLovers, _hasOldTask);
+        }
+        else // 対象が 任命不可の役職ならば 自身が死亡
+        {
+            new LateTask(() =>
+            {
+                ExPlayerControl.LocalPlayer.RpcCustomDeath(CustomDeathType.Suicide);
+            }, 0f);
         }
     }
     [CustomRPC]
