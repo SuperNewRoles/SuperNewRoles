@@ -113,9 +113,9 @@ public abstract class WaveCannonObjectBase
 
                     if (!ability.friendlyFire)
                     {
-                        if (ModeManager.IsMode(ModeId.BattleRoyal))
+                        if (ModeManager.IsMode(ModeId.WCBattleRoyal))
                         {
-                            if (BattleRoyalMode.Instance.IsOnSameTeam(ability.Player.Player, player.Player))
+                            if (WCBattleRoyalMode.Instance.IsOnSameTeam(ability.Player.Player, player.Player))
                             {
                                 continue;
                             }

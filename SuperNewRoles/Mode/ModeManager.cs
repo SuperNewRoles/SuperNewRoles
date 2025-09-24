@@ -14,6 +14,7 @@ public static class ModeManager
     private static IModeBase currentMode = null;
     private static readonly Dictionary<ModeId, Func<IModeBase>> modeFactories = new()
     {
+        { ModeId.WCBattleRoyal, () => WCBattleRoyalMode.Instance },
         { ModeId.BattleRoyal, () => BattleRoyalMode.Instance }
     };
 
@@ -75,8 +76,9 @@ public static class ModeManager
         currentMode?.OnPlayerDeath(player, killer);
     }
 
+
     /// <summary>
-    /// 勝利条件のチェック
+    /// 勝利条件チェック
     /// </summary>
     public static bool CheckWinCondition()
     {

@@ -16,11 +16,11 @@ class BattleRoyalWaveCannon : RoleBase<BattleRoyalWaveCannon>, IRoleBase
     public override string RoleName => "BattleRoyalWaveCannon";
     public override List<Func<AbilityBase>> Abilities => [
         () => new WaveCannonAbility(
-            BattleRoyalMode.WaveCannonBattleRoyalCooldown,
-            BattleRoyalMode.WaveCannonBattleRoyalDuration,
+            WCBattleRoyalMode.WaveCannonBattleRoyalCooldown,
+            WCBattleRoyalMode.WaveCannonBattleRoyalDuration,
             WaveCannonType.Tank,
             false,
-            BattleRoyalMode.WaveCannonBattleRoyalFriendlyFire
+            WCBattleRoyalMode.WaveCannonBattleRoyalFriendlyFire
         )
     ];
     public override QuoteMod QuoteMod => QuoteMod.SuperNewRoles;

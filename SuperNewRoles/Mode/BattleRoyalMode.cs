@@ -3,413 +3,422 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 using SuperNewRoles.Modules;
-using SuperNewRoles.Roles;
-using SuperNewRoles.Roles.Neutral;
 using SuperNewRoles.CustomOptions.Categories;
 using SuperNewRoles.CustomOptions;
-using HarmonyLib;
-using AmongUs.GameOptions;
-using SuperNewRoles.Events;
 using SuperNewRoles.Modules.Events.Bases;
-using SuperNewRoles.Patches;
+using SuperNewRoles.Events;
+using AmongUs.GameOptions;
+using HarmonyLib;
 using SuperNewRoles.Extensions;
 
 namespace SuperNewRoles.Mode;
 
+/// <summary>
+/// バトルロイヤルモード - 全員がキル能力を持ち、最後の1人/チームまで戦うモード
+/// </summary>
 public class BattleRoyalMode : ModeBase<BattleRoyalMode>, IModeBase
 {
     public override ModeId Mode => ModeId.BattleRoyal;
-    public override string ModeName => "BattleRoyalMode";
-    public override Color32 ModeColor => new Color32(255, 128, 0, 255);
+    public override string ModeName => ModTranslation.GetString("BattleRoyalMode");
+    public override Color32 ModeColor => new Color32(255, 64, 64, 255);
+
+    // ゲーム状態管理
+    private static bool isGameStarted = false;
+    private static bool isPreparationPhase = true;
+    private static float preparationTime = 0f;
+    private static float updateTimer = 0f;
 
     // チーム管理
-    private Dictionary<byte, int> playerTeams = new Dictionary<byte, int>();
-    private List<List<byte>> teams = new List<List<byte>>();
-    private int totalTeams = 1;
-    private bool isTeamMode = false;
+    private static Dictionary<byte, int> playerTeams = new Dictionary<byte, int>();
+    private static List<List<byte>> teams = new List<List<byte>>();
+    private static bool isTeamMode = false;
 
-    // 公開プロパティ
-    public bool IsTeamMode => isTeamMode;
-    public int TotalTeams => totalTeams;
-    private EventListener<NameTextUpdateEventData> nameTextListener;
+    // 統計管理
+    private static Dictionary<byte, int> killCounts = new Dictionary<byte, int>();
+    private static int lastAliveCount = 0;
+    private static int lastAllPlayerCount = 0;
 
-    // チーム名（A, B, C...）
-    private static readonly string[] TeamNames = "ABCDEFGHIJKLMNOPQRSTUVWXYZ".Select(c => c.ToString()).ToArray();
+    // イベントリスナー
+    private EventListener fixedUpdateListener;
 
-    // バトルロワイヤルモード設定
-    [CustomOptionBool("WaveCannonBattleRoyalTeamMode", false, displayMode: DisplayModeId.BattleRoyal, parentFieldName: nameof(Categories.ModeOption), parentActiveValue: ModeId.BattleRoyal)]
-    public static bool WaveCannonBattleRoyalTeamMode;
+    // 設定オプション
+    [CustomOptionBool("BattleRoyalTeamMode", false, displayMode: DisplayModeId.BattleRoyal, parentFieldName: nameof(Categories.ModeOption), parentActiveValue: ModeId.BattleRoyal)]
+    public static bool BattleRoyalTeamMode;
 
-    [CustomOptionInt("WaveCannonBattleRoyalTeamCount", 2, 10, 1, 2, displayMode: DisplayModeId.BattleRoyal, parentFieldName: nameof(WaveCannonBattleRoyalTeamMode), parentActiveValue: true)]
-    public static int WaveCannonBattleRoyalTeamCount;
+    [CustomOptionInt("BattleRoyalTeamCount", 2, 10, 1, 2, displayMode: DisplayModeId.BattleRoyal, parentFieldName: nameof(BattleRoyalTeamMode), parentActiveValue: true)]
+    public static int BattleRoyalTeamCount;
 
-    [CustomOptionBool("WaveCannonBattleRoyalFriendlyFire", true, displayMode: DisplayModeId.BattleRoyal, parentFieldName: nameof(WaveCannonBattleRoyalTeamMode), parentActiveValue: true)]
-    public static bool WaveCannonBattleRoyalFriendlyFire;
+    [CustomOptionBool("BattleRoyalShowAliveCount", true, displayMode: DisplayModeId.BattleRoyal, parentFieldName: nameof(Categories.ModeOption), parentActiveValue: ModeId.BattleRoyal)]
+    public static bool BattleRoyalShowAliveCount;
 
-    [CustomOptionFloat("WaveCannonBattleRoyalCooldown", 2.5f, 60f, 2.5f, 15f, displayMode: DisplayModeId.BattleRoyal, parentFieldName: nameof(Categories.ModeOption), parentActiveValue: ModeId.BattleRoyal)]
-    public static float WaveCannonBattleRoyalCooldown;
+    [CustomOptionBool("BattleRoyalShowKillCount", true, displayMode: DisplayModeId.BattleRoyal, parentFieldName: nameof(Categories.ModeOption), parentActiveValue: ModeId.BattleRoyal)]
+    public static bool BattleRoyalShowKillCount;
 
-    [CustomOptionFloat("WaveCannonBattleRoyalDuration", 0f, 10f, 0.5f, 3f, displayMode: DisplayModeId.BattleRoyal, parentFieldName: nameof(Categories.ModeOption), parentActiveValue: ModeId.BattleRoyal)]
-    public static float WaveCannonBattleRoyalDuration;
+    [CustomOptionFloat("BattleRoyalPreparationTime", 0f, 60f, 2.5f, 10f, displayMode: DisplayModeId.BattleRoyal, parentFieldName: nameof(Categories.ModeOption), parentActiveValue: ModeId.BattleRoyal)]
+    public static float BattleRoyalPreparationTime;
 
     public override void OnGameStart()
     {
-        Logger.Info("BattleRoyalMode.OnGameStart");
+        Logger.Info("BattleRoyalMode: Game Started");
 
-        // 全プレイヤーを取得してチーム分け
-        var allPlayers = PlayerControl.AllPlayerControls.ToArray().Where(p => p != null).ToList();
+        // 初期化
+        isGameStarted = false;
+        isPreparationPhase = true;
+        preparationTime = BattleRoyalPreparationTime;
+        updateTimer = 0f;
+        isTeamMode = BattleRoyalTeamMode;
 
-        // モード設定を取得
-        isTeamMode = WaveCannonBattleRoyalTeamMode;
-        // チーム数をプレイヤー数に制限（空のチームを防ぐ）
-        totalTeams = isTeamMode ? Math.Min(WaveCannonBattleRoyalTeamCount, allPlayers.Count) : 1;
-
-        if (isTeamMode)
-        {
-            AssignTeams(allPlayers);
-        }
-        else
-        {
-            // 個人戦の場合
-            teams.Clear();
-            foreach (var player in allPlayers)
-            {
-                teams.Add(new List<byte> { player.PlayerId });
-                playerTeams[player.PlayerId] = teams.Count - 1;
-            }
-        }
-
-        nameTextListener = NameTextUpdateEvent.Instance.AddListener(OnNameTextUpdate);
-
-        // 全員をBattleRoyalWaveCannon役職に設定
-        foreach (var player in allPlayers)
-        {
-            // 既存の役職をクリア
-            var exPlayer = (ExPlayerControl)player;
-
-            // BattleRoyalWaveCannonを設定
-            var battleRoyalRole = BattleRoyalWaveCannon.Instance;
-            exPlayer.SetRole(battleRoyalRole.Role);
-            RoleManager.Instance.SetRole(player, RoleTypes.Crewmate);
-
-            // チームカラーを設定
-            if (isTeamMode)
-            {
-                var teamIndex = playerTeams[player.PlayerId];
-                var teamColorId = GetTeamColorId(teamIndex);
-                player.cosmetics.SetBodyColor(teamColorId);
-            }
-        }
-    }
-
-    private void AssignTeams(List<PlayerControl> players)
-    {
-        teams.Clear();
+        killCounts.Clear();
         playerTeams.Clear();
+        teams.Clear();
 
-        // チームを初期化
-        for (int i = 0; i < totalTeams; i++)
-        {
-            teams.Add(new List<byte>());
-        }
+        lastAliveCount = 0;
+        lastAllPlayerCount = 0;
 
-        // プレイヤーをランダムにチームに割り当て
-        var shuffledPlayers = players.OrderBy(x => Guid.NewGuid()).ToList();
-        for (int i = 0; i < shuffledPlayers.Count; i++)
-        {
-            var teamIndex = i % totalTeams;
-            var playerId = shuffledPlayers[i].PlayerId;
-            teams[teamIndex].Add(playerId);
-            playerTeams[playerId] = teamIndex;
-        }
-    }
+        // チーム設定
+        SetupTeams();
 
-    private Color GetTeamColor(int teamIndex)
-    {
-        // HSVで色を計算
-        float hue = (360f / totalTeams) * teamIndex;
-        return Color.HSVToRGB(hue / 360f, 1f, 1f);
-    }
+        // 全プレイヤーにキル権限を付与
+        SetupPlayerRoles();
 
-    private byte GetTeamColorId(int teamIndex)
-    {
-        // 既存の色のIDを使用（0-17の範囲）
-        // チームの数に応じて色を分配
-        var availableColors = new byte[] { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17 };
-        return availableColors[teamIndex % availableColors.Length];
+        // イベントリスナー登録
+        fixedUpdateListener = FixedUpdateEvent.Instance.AddListener(FixedUpdate);
+
+        Logger.Info($"BattleRoyalMode: Setup complete. Team mode: {isTeamMode}");
     }
 
     public override void OnGameEnd()
     {
-        Logger.Info("BattleRoyalMode.OnGameEnd");
+        Logger.Info("BattleRoyalMode: Game Ended");
+
+        // クリーンアップ
+        isGameStarted = false;
+        isPreparationPhase = true;
+
+        killCounts.Clear();
         playerTeams.Clear();
         teams.Clear();
-        nameTextListener?.RemoveListener();
-    }
 
-    private void OnNameTextUpdate(NameTextUpdateEventData data)
-    {
-        if (!isTeamMode) return;
-        if (ExPlayerControl.LocalPlayer.IsDead() || IsOnSameTeam(ExPlayerControl.LocalPlayer.Player, data.Player))
-            NameText.SetNameTextColor(data.Player, GetTeamColor(GetPlayerTeam(data.Player)));
+        // イベントリスナー解除
+        if (fixedUpdateListener != null)
+        {
+            FixedUpdateEvent.Instance.RemoveListener(fixedUpdateListener);
+            fixedUpdateListener = null;
+        }
     }
 
     public override void OnPlayerDeath(PlayerControl player, PlayerControl killer)
     {
-        Logger.Info($"BattleRoyalMode.OnPlayerDeath: {player?.name} killed by {killer?.name}");
+        if (!isGameStarted) return;
 
-        // 勝利条件をチェック
-        if (CanWin())
+        Logger.Info($"BattleRoyalMode: Player {player.name} killed by {killer?.name ?? "unknown"}");
+
+        // キル数カウント
+        if (killer != null && killer != player)
         {
-            // ゲーム終了処理を呼び出す
-            EndGame();
+            if (!killCounts.ContainsKey(killer.PlayerId))
+                killCounts[killer.PlayerId] = 0;
+            killCounts[killer.PlayerId]++;
         }
+
+        // 勝利条件チェック
+        CheckWinCondition();
     }
 
     public override bool CheckWinCondition()
     {
-        if (ExPlayerControl.ExPlayerControls.Where(x => x.IsAlive()).Count() <= 1)
-        {
-            EndGame();
-        }
-        return true;
-    }
+        if (!isGameStarted) return false;
 
-    private bool CanWin()
-    {
-        if (isTeamMode)
-        {
-            // チーム戦：生き残っているチームが1つだけ
-            var aliveTeams = new HashSet<int>();
-            foreach (var player in PlayerControl.AllPlayerControls)
-            {
-                if (player != null && !player.Data.IsDead && !player.Data.Disconnected)
-                {
-                    if (playerTeams.TryGetValue(player.PlayerId, out var teamIndex))
-                    {
-                        aliveTeams.Add(teamIndex);
-                    }
-                }
-            }
-            return aliveTeams.Count <= 1;
-        }
-        else
-        {
-            // 個人戦：生き残っているプレイヤーが1人だけ
-            var alivePlayers = PlayerControl.AllPlayerControls.ToArray()
-                .Where(p => p != null && !p.Data.IsDead && !p.Data.Disconnected)
-                .Count();
-            return alivePlayers <= 1;
-        }
-    }
-
-    private void EndGame()
-    {
-        Logger.Info("BattleRoyalMode.EndGame");
-
-        // 勝者チーム/プレイヤーを決定
-        int winnerTeam = -1;
+        var alivePlayers = PlayerControl.AllPlayerControls
+            .Where(p => !p.Data.IsDead && !p.Data.Disconnected).ToArray();
 
         if (isTeamMode)
         {
-            // チーム戦モードの場合
-            var aliveTeams = PlayerControl.AllPlayerControls
-                .Where(p => p != null && !p.Data.IsDead && !p.Data.Disconnected)
-                .Select(p => playerTeams.TryGetValue(p.PlayerId, out var team) ? team : -1)
-                .Where(team => team != -1)
-                .Distinct()
-                .ToHashSet();
-
-            if (aliveTeams.Count == 1)
-            {
-                winnerTeam = aliveTeams.First();
-                Logger.Info($"Team {GetTeamName(winnerTeam)} wins!");
-            }
+            return CheckTeamWinCondition(alivePlayers);
         }
         else
         {
-            var winner = ExPlayerControl.ExPlayerControls.FirstOrDefault(p =>
-                p != null && !p.IsDead() && !p.Data.Disconnected);
-            if (winner != null)
-            {
-                winnerTeam = GetPlayerTeam(winner.Player);
-                Logger.Info($"Player {winner.Player.name} wins!");
-            }
+            return CheckSoloWinCondition(alivePlayers);
         }
-
-        // ゲーム終了RPCを呼び出し
-        RpcWCBattleRoyalEndGame(winnerTeam);
-    }
-    [CustomRPC]
-    public static void RpcWCBattleRoyalEndGame(int winnerTeam)
-    {
-        var winners = new List<byte>();
-        if (winnerTeam == -1)
-        {
-            winners = PlayerControl.AllPlayerControls.ToArray().Where(p => p != null && !p.Data.IsDead && !p.Data.Disconnected).Select(p => p.PlayerId).ToList();
-        }
-        else
-        {
-            // チームインデックスの境界チェックを追加
-            if (winnerTeam >= 0 && winnerTeam < BattleRoyalMode.Instance.teams.Count)
-            {
-                winners = BattleRoyalMode.Instance.teams[winnerTeam];
-            }
-            else
-            {
-                Logger.Error($"Invalid winnerTeam index: {winnerTeam}");
-                return;
-            }
-        }
-        string winnerName = string.Empty;
-        if (BattleRoyalMode.Instance.isTeamMode)
-        {
-            winnerName = BattleRoyalMode.Instance.GetTeamName(winnerTeam);
-        }
-        else
-        {
-            // チームメンバーが存在するかチェック
-            if (BattleRoyalMode.Instance.teams[winnerTeam].Count > 0)
-            {
-                winnerName = ExPlayerControl.ById(BattleRoyalMode.Instance.teams[winnerTeam].First()).Player.name;
-            }
-            else
-            {
-                Logger.Error($"No players in winner team: {winnerTeam}");
-                return;
-            }
-        }
-        EndGameManagerSetUpPatch.EndGameWithCondition(
-            GameOverReason.ImpostorsByKill,
-            winners,
-            "",
-            new List<string>(),
-            new Color32(255, 128, 0, 255),
-            false,
-            string.Format(ModTranslation.GetString("BattleRoyalWinText"), winnerName),
-            validTranslation: false
-        );
     }
 
-    public string GetTeamName(int teamIndex)
+    private bool CheckTeamWinCondition(PlayerControl[] alivePlayers)
     {
-        if (teamIndex >= 0 && teamIndex < TeamNames.Length)
+        if (alivePlayers.Length == 0)
         {
-            return TeamNames[teamIndex];
+            // 全員死亡 - 引き分け
+            EndGame(GameOverReason.CrewmatesByVote, null);
+            return true;
         }
-        return $"Team{teamIndex + 1}";
-    }
 
-    public bool IsOnSameTeam(PlayerControl player1, PlayerControl player2)
-    {
-        if (!isTeamMode) return false;
-
-        if (playerTeams.TryGetValue(player1.PlayerId, out var team1) &&
-            playerTeams.TryGetValue(player2.PlayerId, out var team2))
+        // 生存チーム数をカウント
+        var aliveTeams = new HashSet<int>();
+        foreach (var player in alivePlayers)
         {
-            return team1 == team2;
+            if (playerTeams.TryGetValue(player.PlayerId, out int teamId))
+            {
+                aliveTeams.Add(teamId);
+            }
         }
+
+        if (aliveTeams.Count <= 1)
+        {
+            // 1チーム以下 - 勝利
+            var winnerTeamId = aliveTeams.FirstOrDefault();
+            var winners = alivePlayers.Where(p => playerTeams.GetValueOrDefault(p.PlayerId) == winnerTeamId).ToList();
+            EndGame(GameOverReason.CrewmatesByVote, winners);
+            return true;
+        }
+
         return false;
     }
 
-    public int GetPlayerTeam(PlayerControl player)
+    private bool CheckSoloWinCondition(PlayerControl[] alivePlayers)
     {
-        if (playerTeams.TryGetValue(player.PlayerId, out var team))
+        if (alivePlayers.Length <= 1)
         {
-            return team;
+            if (alivePlayers.Length == 1)
+            {
+                // 1人生存 - 勝利
+                EndGame(GameOverReason.ImpostorsByVote, new List<PlayerControl> { alivePlayers[0] });
+            }
+            else
+            {
+                // 全員死亡 - 引き分け
+                EndGame(GameOverReason.CrewmatesByVote, null);
+            }
+            return true;
         }
-        return -1;
+
+        return false;
     }
 
-    /// <summary>
-    /// モードがイントロをカスタマイズするかどうか
-    /// </summary>
-    public override bool HasCustomIntro => true;
-
-    /// <summary>
-    /// イントロ情報を取得する
-    /// </summary>
-    /// <param name="player">プレイヤー</param>
-    /// <returns>イントロ情報</returns>
-    public override ModeIntroInfo GetIntroInfo(PlayerControl player)
+    private void EndGame(GameOverReason reason, List<PlayerControl> winners)
     {
-        var info = new ModeIntroInfo();
+        Logger.Info($"BattleRoyalMode: Game ending with reason {reason}");
 
-        // 基本色設定
-        info.RoleColor = ModeColor;
-
-        // チーム戦かどうかで表示を変更
-        if (isTeamMode)
+        if (winners != null && winners.Count > 0)
         {
-            var teamIndex = GetPlayerTeam(player);
-            var teamName = GetTeamName(teamIndex);
-
-            info.RoleTitle = ModTranslation.GetString("BattleRoyalIntroTeamTitle", teamName);
-            info.RoleSubTitle = ModTranslation.GetString("BattleRoyalIntroTeamSubTitle");
-            info.RoleColor = GetTeamColor(teamIndex);
-
-            // チームメイトリストを取得
-            info.TeamMembers = GetTeamMembers(player);
+            // 勝者がいる場合
+            var winnerExPlayers = winners.Select(p => (ExPlayerControl)p).Where(p => p != null).ToArray();
+            if (winnerExPlayers.Length > 0)
+            {
+                EndGamer.RpcEndGameWithWinner(
+                    reason: (SuperNewRoles.Patches.CustomGameOverReason)reason,
+                    winType: WinType.Default,
+                    winners: winnerExPlayers,
+                    color: ModeColor,
+                    upperText: "BattleRoyalWin",
+                    winText: "WinText"
+                );
+            }
         }
         else
         {
-            info.RoleTitle = ModTranslation.GetString("BattleRoyalIntroTitle");
-            info.RoleSubTitle = ModTranslation.GetString("BattleRoyalIntroSubTitle");
-            info.TeamMembers = new List<PlayerControl> { player };
+            // 勝者がいない場合（引き分け）
+            EndGamer.RpcEndGameWithWinner(
+                reason: (SuperNewRoles.Patches.CustomGameOverReason)reason,
+                winType: WinType.NoWinner,
+                winners: new ExPlayerControl[0],
+                color: Color.gray,
+                upperText: "Draw",
+                winText: "WinText"
+            );
         }
+    }
 
-        // ランダムなイントロメッセージを選択
-        info.IntroMessage = GetRandomIntroMessage();
+    private void SetupTeams()
+    {
+        var allPlayers = PlayerControl.AllPlayerControls
+            .Where(p => !p.Data.Disconnected).ToList();
 
-        // バトルロワイヤルらしい緊張感のあるサウンドを設定
-        info.IntroSoundType = AmongUs.GameOptions.RoleTypes.Impostor;
+        if (isTeamMode)
+        {
+            // チーム戦の場合
+            int teamCount = BattleRoyalTeamCount;
+            int playersPerTeam = Mathf.CeilToInt((float)allPlayers.Count / teamCount);
 
-        return info;
+            var shuffledPlayers = allPlayers.OrderBy(_ => UnityEngine.Random.value).ToList();
+
+            for (int teamId = 0; teamId < teamCount; teamId++)
+            {
+                var teamPlayers = new List<byte>();
+
+                for (int i = 0; i < playersPerTeam && teamId * playersPerTeam + i < shuffledPlayers.Count; i++)
+                {
+                    var player = shuffledPlayers[teamId * playersPerTeam + i];
+                    playerTeams[player.PlayerId] = teamId;
+                    teamPlayers.Add(player.PlayerId);
+                }
+
+                if (teamPlayers.Count > 0)
+                {
+                    teams.Add(teamPlayers);
+                }
+            }
+
+            Logger.Info($"BattleRoyalMode: Created {teams.Count} teams");
+        }
+        else
+        {
+            // 個人戦の場合
+            for (int i = 0; i < allPlayers.Count; i++)
+            {
+                playerTeams[allPlayers[i].PlayerId] = i;
+                teams.Add(new List<byte> { allPlayers[i].PlayerId });
+            }
+
+            Logger.Info($"BattleRoyalMode: Created {teams.Count} solo teams");
+        }
+    }
+
+    private void SetupPlayerRoles()
+    {
+        // 全プレイヤーにキル能力を付与
+        foreach (var player in PlayerControl.AllPlayerControls)
+        {
+            if (player.Data.Disconnected) continue;
+
+            // Shapeshifterとして設定してキル能力を付与
+            player.RpcSetRole(RoleTypes.Shapeshifter);
+        }
     }
 
     /// <summary>
-    /// チームメンバーのリストを取得する
+    /// FixedUpdateで呼ばれる処理
     /// </summary>
-    /// <param name="player">プレイヤー</param>
-    /// <returns>チームメンバーのリスト</returns>
+    public void FixedUpdate()
+    {
+        if (!AmongUsClient.Instance.AmHost) return;
+        if (HudManager.Instance.IsIntroDisplayed) return;
+
+        if (isPreparationPhase)
+        {
+            HandlePreparationPhase();
+        }
+        else if (isGameStarted)
+        {
+            HandleGamePhase();
+        }
+    }
+
+    private void HandlePreparationPhase()
+    {
+        preparationTime -= Time.fixedDeltaTime;
+        updateTimer -= Time.fixedDeltaTime;
+
+        // 1秒ごとに名前を更新
+        if (updateTimer <= 0f)
+        {
+            var remainingSeconds = Mathf.CeilToInt(preparationTime);
+            var message = ModTranslation.GetString("BattleRoyalPreparationRemaining") + remainingSeconds + ModTranslation.GetString("seconds");
+
+            foreach (var player in PlayerControl.AllPlayerControls)
+            {
+                if (!player.Data.Disconnected)
+                {
+                    player.RpcSetName(message);
+                }
+            }
+
+            updateTimer = 1f;
+        }
+
+        // 準備時間終了
+        if (preparationTime <= 0f)
+        {
+            isPreparationPhase = false;
+            isGameStarted = true;
+
+            Logger.Info("BattleRoyalMode: Preparation phase ended, battle started!");
+
+            // プレイヤー名をリセット
+            foreach (var player in PlayerControl.AllPlayerControls)
+            {
+                if (!player.Data.Disconnected)
+                {
+                    player.RpcSetName(player.Data.PlayerName);
+                }
+            }
+        }
+    }
+
+    private void HandleGamePhase()
+    {
+        // 生存人数とキル数の表示更新
+        if (BattleRoyalShowAliveCount || BattleRoyalShowKillCount)
+        {
+            UpdatePlayerDisplayNames();
+        }
+    }
+
+    private void UpdatePlayerDisplayNames()
+    {
+        var alivePlayers = PlayerControl.AllPlayerControls
+            .Where(p => !p.Data.IsDead && !p.Data.Disconnected).ToList();
+        var allPlayers = PlayerControl.AllPlayerControls
+            .Where(p => !p.Data.Disconnected).ToList();
+
+        // 変更があった場合のみ更新
+        if (lastAliveCount != alivePlayers.Count || lastAllPlayerCount != allPlayers.Count)
+        {
+            foreach (var player in allPlayers)
+            {
+                string displaySuffix = "";
+
+                if (BattleRoyalShowAliveCount)
+                {
+                    displaySuffix += $" ({alivePlayers.Count}/{allPlayers.Count})";
+                }
+
+                if (BattleRoyalShowKillCount)
+                {
+                    int kills = killCounts.GetValueOrDefault(player.PlayerId, 0);
+                    displaySuffix += $" [K:{kills}]";
+                }
+
+                if (!string.IsNullOrEmpty(displaySuffix))
+                {
+                    string newName = player.Data.PlayerName + displaySuffix;
+                    player.RpcSetName(newName);
+                }
+            }
+
+            lastAliveCount = alivePlayers.Count;
+            lastAllPlayerCount = allPlayers.Count;
+        }
+    }
+
+
+    public override ModeIntroInfo GetIntroInfo(PlayerControl player)
+    {
+        string teamInfo = "";
+        if (isTeamMode && playerTeams.TryGetValue(player.PlayerId, out int teamId))
+        {
+            teamInfo = ModTranslation.GetString("Team") + " " + (char)('A' + teamId);
+        }
+
+        return new ModeIntroInfo
+        {
+            RoleTitle = ModeName,
+            RoleSubTitle = teamInfo,
+            IntroMessage = ModTranslation.GetString("BattleRoyalModeDescription"),
+            RoleColor = ModeColor,
+            TeamMembers = GetTeamMembers(player)
+        };
+    }
+
     public override List<PlayerControl> GetTeamMembers(PlayerControl player)
     {
-        if (!isTeamMode)
+        if (!isTeamMode || !playerTeams.TryGetValue(player.PlayerId, out int teamId))
         {
             return new List<PlayerControl> { player };
         }
 
-        var teamIndex = GetPlayerTeam(player);
-        var teamMembers = new List<PlayerControl>();
-
-        foreach (var p in PlayerControl.AllPlayerControls)
-        {
-            if (p != null && GetPlayerTeam(p) == teamIndex)
-            {
-                teamMembers.Add(p);
-            }
-        }
-
-        return teamMembers;
+        return PlayerControl.AllPlayerControls
+            .Where(p => playerTeams.GetValueOrDefault(p.PlayerId) == teamId)
+            .ToList();
     }
 
-    /// <summary>
-    /// ランダムなイントロメッセージを取得する
-    /// </summary>
-    /// <returns>イントロメッセージ</returns>
-    private string GetRandomIntroMessage()
-    {
-        var messages = new List<string>
-        {
-            "BattleRoyalIntroMessage1",
-            "BattleRoyalIntroMessage2"
-        };
-
-        if (isTeamMode)
-        {
-            messages.Add("BattleRoyalIntroMessage3");
-        }
-
-        return ModTranslation.GetString(ModHelpers.GetRandom(messages));
-    }
+    public override bool HasCustomIntro => true;
 }

@@ -22,6 +22,10 @@ class ControllerManagerUpdatePatch
 
     public static void Postfix()
     {
+        if (ModHelpers.IsAndroid() && Screen.width != 1920)
+        {
+            ResolutionManager.SetResolution(1920, 1080, true);
+        }
         //解像度変更
         if (Input.GetKeyDown(KeyCode.F9))
         {

@@ -270,7 +270,7 @@ ModeId.Default,通常,Normal,通常,通常
 ModeId.SuperHostRoles,SuperHostRoles(未実装),SuperHostRoles(not implemented),SuperHostRoles
 NoSuperHostRoles,SuperHostRolesは未実装です。使用できません。,SuperHostRoles is not implemented and cannot be used.
 DisplayText.CanNotUseSHR,未実装,Not implemented.,未实施,未實施
-ModeId.BattleRoyal,バトルロイヤル,Battle Royale,戰鬥皇家,戰鬥皇家
+ModeId.WCBattleRoyal,波動砲バトルロイヤル,Battle Royale,戰鬥皇家,戰鬥皇家
 ModeOption,モード,Mode,模式,模式
 ExclusivityOptionMenuTitle,排他設定,Exclusivity Settings,排他設定,排他設定
 ExclusivityOptionMenuMaxText,最大排出数,Max Exclusivity,最大排出數,最大排出數
@@ -1781,7 +1781,7 @@ ModifierHauntedWolfIsReverseSheriffDecision,シェリフや占い師等に重複
 ModifierHauntedWolfIsReverseSheriffDecision,シェリフや占い師などに重複した時，判定を反転する。,Reverses the kill decision when duplicated on a sheriff.,被分配给警长、占卜师等职业时技能判定反转,當狼憑於警長或占卜師等職業時，判定會反轉
 
 # BattleRoyalMode
-BattleRoyalMode,バトルロイヤル,Battle Royale,大逃杀,大逃殺
+WCBattleRoyalMode,バトルロイヤル,Battle Royale,大逃杀,大逃殺
 BattleRoyalWinText,{0}の勝利,{0} Win
 BattleRoyalWaveCannon,,
 BattleRoyalIntroTitle,バトルロイヤル,Battle Royale,大逃杀,大逃殺
@@ -1796,3 +1796,18 @@ WaveCannonBattleRoyalTeamCount,チーム数,Team Count,队伍数量,隊伍數量
 WaveCannonBattleRoyalFriendlyFire,フレンドリーファイア,Friendly Fire,友军伤害,友軍傷害
 WaveCannonBattleRoyalCooldown,波動砲のクールタイム,Wave Cannon Cooldown,波动炮冷却,波動砲冷卻
 WaveCannonBattleRoyalChargeTime,波動砲のチャージ時間,Wave Cannon Charge Time,波动炮充能时间,波動砲充能時間
+
+# BattleRoyalMode (Standard)
+ModeId.BattleRoyal,バトルロイヤル,Battle Royale,大逃杀,大逃殺
+BattleRoyalMode,バトルロイヤルモード,Battle Royale Mode,大逃杀模式,大逃殺模式
+BattleRoyalModeDescription,最後の1人（チーム）になるまで戦え！,Fight until you're the last one (team) standing!,战斗到只剩下最后一人（队伍）！,戰鬥到只剩下最後一人（隊伍）！
+BattleRoyalTeamMode,チーム戦,Team Mode,团队模式,團隊模式
+BattleRoyalTeamCount,チーム数,Team Count,队伍数量,隊伍數量
+BattleRoyalShowAliveCount,生存人数を表示,Show Alive Count,显示存活人数,顯示存活人數
+BattleRoyalShowKillCount,キル数を表示,Show Kill Count,显示击杀数,顯示擊殺數
+BattleRoyalPreparationTime,準備時間,Preparation Time,准备时间,準備時間
+BattleRoyalPreparationRemaining,開始まで,Starting in ,开始倒计时 ,開始倒計時 
+Team,チーム,Team,队伍,隊伍
+seconds,秒,seconds,秒,秒
+BattleRoyalWin,バトルロイヤル勝利,Battle Royale Victory,大逃杀胜利,大逃殺勝利
+Draw,引き分け,Draw,平局,平局
