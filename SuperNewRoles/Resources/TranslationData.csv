@@ -1805,9 +1805,10 @@ BattleRoyalTeamMode,チーム戦,Team Mode,团队模式,團隊模式
 BattleRoyalTeamCount,チーム数,Team Count,队伍数量,隊伍數量
 BattleRoyalShowAliveCount,生存人数を表示,Show Alive Count,显示存活人数,顯示存活人數
 BattleRoyalShowKillCount,キル数を表示,Show Kill Count,显示击杀数,顯示擊殺數
+BattleRoyalShowKillCountSelfOnly,キル数を自分のみ表示,Show Kill Count (Self Only),仅对自己显示击杀数,僅對自己顯示擊殺數
 BattleRoyalPreparationTime,準備時間,Preparation Time,准备时间,準備時間
 BattleRoyalPreparationRemaining,開始まで,Starting in ,开始倒计时 ,開始倒計時 
 Team,チーム,Team,队伍,隊伍
 seconds,秒,seconds,秒,秒
-BattleRoyalWin,バトルロイヤル勝利,Battle Royale Victory,大逃杀胜利,大逃殺勝利
+BattleRoyalWin,バトルロイヤル,Battle Royale,大逃杀,大逃殺
 Draw,引き分け,Draw,平局,平局

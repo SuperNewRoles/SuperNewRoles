@@ -49,8 +49,8 @@ public class WCBattleRoyalMode : ModeBase<WCBattleRoyalMode>, IModeBase
     [CustomOptionFloat("WaveCannonBattleRoyalCooldown", 2.5f, 60f, 2.5f, 15f, displayMode: DisplayModeId.WCBattleRoyal, parentFieldName: nameof(Categories.ModeOption), parentActiveValue: ModeId.WCBattleRoyal)]
     public static float WaveCannonBattleRoyalCooldown;
 
-    [CustomOptionFloat("WaveCannonBattleRoyalDuration", 0f, 10f, 0.5f, 3f, displayMode: DisplayModeId.WCBattleRoyal, parentFieldName: nameof(Categories.ModeOption), parentActiveValue: ModeId.WCBattleRoyal)]
-    public static float WaveCannonBattleRoyalDuration;
+    [CustomOptionFloat("WaveCannonBattleRoyalChargeTime", 0f, 10f, 0.5f, 3f, displayMode: DisplayModeId.WCBattleRoyal, parentFieldName: nameof(Categories.ModeOption), parentActiveValue: ModeId.WCBattleRoyal)]
+    public static float WaveCannonBattleRoyalChargeTime;
 
     public override void OnGameStart()
     {

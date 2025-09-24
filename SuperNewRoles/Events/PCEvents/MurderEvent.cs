@@ -59,6 +59,11 @@ public static class TryKillPatch
 {
     public static bool Prefix(PlayerControl __instance, PlayerControl target, bool didSucceed)
     {
+        // todo battleroyal
+        if (ModeManager.IsMode(ModeId.BattleRoyal))
+        {
+            return true;
+        }
         if (!didSucceed)
             return true;
         CustomDeathExtensions.RpcCustomDeath(source: __instance, target: target, deathType: CustomDeathType.Kill);

@@ -17,7 +17,7 @@ class BattleRoyalWaveCannon : RoleBase<BattleRoyalWaveCannon>, IRoleBase
     public override List<Func<AbilityBase>> Abilities => [
         () => new WaveCannonAbility(
             WCBattleRoyalMode.WaveCannonBattleRoyalCooldown,
-            WCBattleRoyalMode.WaveCannonBattleRoyalDuration,
+            WCBattleRoyalMode.WaveCannonBattleRoyalChargeTime,
             WaveCannonType.Tank,
             false,
             WCBattleRoyalMode.WaveCannonBattleRoyalFriendlyFire
