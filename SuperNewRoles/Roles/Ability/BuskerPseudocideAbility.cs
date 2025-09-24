@@ -26,10 +26,10 @@ public class BuskerPseudocideAbility : CustomButtonBase, IButtonEffect
     protected override KeyType keytype => KeyType.Ability1;
 
     // IButtonEffect implementation
-    public bool isEffectActive { get; set; }
+    public bool isEffectActive { get; set; } = false;
     public Action OnEffectEnds => () => { if (EffectTimer > 0) OnReborn(); else OnPseudocideEnd(); };
     public float EffectDuration { get; set; }
-    public float EffectTimer { get; set; }
+    public float EffectTimer { get; set; } = 0f;
 
     public bool effectCancellable => true;
 
@@ -77,7 +77,7 @@ public class BuskerPseudocideAbility : CustomButtonBase, IButtonEffect
 
     private void GenerateDeadbody()
     {
-        DeadBody deadBody = GameObject.Instantiate(GameManager.Instance.DeadBodyPrefab);
+        DeadBody deadBody = GameObject.Instantiate(GameManager.Instance.deadBodyPrefab.First());
         deadBody.enabled = true;
         deadBody.gameObject.SetActive(true);
         deadBody.ParentId = Player.PlayerId;
@@ -101,20 +101,39 @@ public class BuskerPseudocideAbility : CustomButtonBase, IButtonEffect
     [CustomRPC]
     private void StartPseudocide()
     {
+        // 偽装死エフェクトを開始
+        isEffectActive = true;
+        EffectTimer = EffectDuration;
+
+        // デバッグログを出力
+        Logger.Debug($"{Player.Data?.PlayerName ?? "Unknown"} が偽装死を開始: isEffectActive={isEffectActive}, EffectTimer={EffectTimer}", "BuskerPseudocide");
+
         // プレイヤーを死亡状態にする（偽装）
         Player.CustomDeath(CustomDeathType.BuskerFakeDeath);
         GenerateDeadbody();
         RoleManager.Instance.SetRole(Player, RoleTypes.CrewmateGhost);
+
     }
 
     [CustomRPC]
     private void OnReborn()
     {
+        // 偽装死エフェクトを終了
+        isEffectActive = false;
+        EffectTimer = 0f;
+
+        // デバッグログを出力
+        Logger.Debug($"{Player.Data?.PlayerName ?? "Unknown"} が偽装死から復活: isEffectActive={isEffectActive}", "BuskerPseudocide");
+
         // プレイヤーを復活させる
         Player.Player.Revive();
         RoleManager.Instance.SetRole(Player, RoleTypes.Crewmate);
         CleanDeadbody();
         Player.MyPhysics.StartCoroutine(PlayExitVent(Player).WrapToIl2Cpp());
+
+        // 名前色と役職表示をリセット
+        NameText.UpdateAllNameInfo();
+
     }
     private static IEnumerator PlayExitVent(PlayerControl player)
     {
@@ -126,8 +145,17 @@ public class BuskerPseudocideAbility : CustomButtonBase, IButtonEffect
     }
     private void OnPseudocideEnd()
     {
+        // 偽装死エフェクトを終了
+        isEffectActive = false;
+        EffectTimer = 0f;
+
+        // デバッグログを出力
+        Logger.Debug($"{Player.Data?.PlayerName ?? "Unknown"} の偽装死が時間切れで終了: isEffectActive={isEffectActive}", "BuskerPseudocide");
+
         // 時間切れで本当に死ぬ
         Player.CustomDeath(CustomDeathType.SuicideSecrets);
+        CleanDeadbody();
+
     }
 
     public override void OnMeetingEnds()
@@ -170,7 +198,7 @@ public class BuskerPseudocideAbility : CustomButtonBase, IButtonEffect
         {
             // 会議が始まったら本当に死ぬ
             OnPseudocideEnd();
-            isEffectActive = false;
+            // OnPseudocideEndで既にisEffectActiveは false に設定されるので、ここでは不要
         }
     }
 

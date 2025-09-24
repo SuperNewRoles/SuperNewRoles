@@ -383,8 +383,6 @@ public class EndGameManagerSetUpPatch
             __instance.BackgroundBar.material.SetColor("_Color", endGameCondition.UpperTextColor);
         }
 
-        AdditionalTempData.Clear();
-
         // トロフィー処理を実行
         SuperTrophyManager.OnEndGame();
     }
@@ -579,6 +577,7 @@ public static class OnGameEndPatch
 
         // ModeManagerのゲーム終了処理を呼び出す
         SuperNewRoles.Mode.ModeManager.OnGameEnd();
+        Analytics.SendAnalytics();
     }
 
     private static void CollectPlayerRoleData(GameOverReason gameOverReason)

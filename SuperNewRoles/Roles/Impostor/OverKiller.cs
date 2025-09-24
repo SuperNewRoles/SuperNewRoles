@@ -51,9 +51,12 @@ public class OverKillerAbility : AbilityBase
     public override void AttachToAlls()
     {
         base.AttachToAlls();
-        Player.AttachAbility(new ChangeKillTimerAbility(
-            killTimerGetter: () => OverKiller.OverKillerKillCooldown
-        ), new AbilityParentAbility(this));
+        Player.AttachAbility(new CustomKillButtonAbility(
+            canKill: () => true,
+            killCooldown: () => OverKiller.OverKillerKillCooldown,
+            onlyCrewmates: () => true
+        ),
+        new AbilityParentAbility(this));
     }
 
     public override void AttachToLocalPlayer()
@@ -110,12 +113,12 @@ public class OverKillerAbility : AbilityBase
     }
 
     [CustomRPC]
-    public static void RpcCreateMultipleBodies(byte targetPlayerId, Vector3[] scatteredPositions)
+    public void RpcCreateMultipleBodies(byte targetPlayerId, Vector3[] scatteredPositions)
     {
         ExPlayerControl target = ExPlayerControl.ById(targetPlayerId);
         if (target == null) return;
 
-        var deadBodyPrefab = UnityEngine.Object.FindObjectOfType<GameManager>()?.DeadBodyPrefab;
+        var deadBodyPrefab = GameManager.Instance.GetDeadBody(Player.Data.Role);
         if (deadBodyPrefab == null) return;
 
         foreach (var position in scatteredPositions)

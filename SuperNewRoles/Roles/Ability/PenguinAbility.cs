@@ -75,6 +75,7 @@ public class PenguinAbility : TargetCustomButtonBase, IButtonEffect
     }
     public override void AttachToAlls()
     {
+        base.AttachToAlls();
         SyncKillCoolTimeAbility.CreateAndAttach(this);
         _calledMeeting = CalledMeetingEvent.Instance.AddListener(OnCalledMeeting);
         customKillButtonAbility = new KillableAbility(() => CanDefaultKill || (targetPlayer != null && targetPlayer.IsAlive()));
@@ -85,7 +86,8 @@ public class PenguinAbility : TargetCustomButtonBase, IButtonEffect
 
     private void OnCalledMeeting(CalledMeetingEventData data)
     {
-        if (targetPlayer != null && targetPlayer.IsAlive() && meetingKill)
+        // 各クライアントで処理しないと死体の集計に間に合わないので別処理
+        if (targetPlayer != null && Player.IsAlive() && targetPlayer.IsAlive() && meetingKill)
         {
             targetPlayer.CustomDeath(CustomDeathType.Kill, source: Player);
             targetPlayer = null;
@@ -116,7 +118,7 @@ public class PenguinAbility : TargetCustomButtonBase, IButtonEffect
     [CustomRPC]
     public static void RpcKillPenguinTarget(ExPlayerControl source, PenguinAbility ability, ExPlayerControl target, bool afterMeeting)
     {
-        if (target != null && target.IsAlive())
+        if (source != null && source.IsAlive() && target != null && target.IsAlive())
         {
             if (afterMeeting)
                 target.CustomDeath(CustomDeathType.PenguinAfterMeeting, source: source);

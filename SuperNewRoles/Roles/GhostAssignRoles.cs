@@ -3,6 +3,7 @@ using System.Linq;
 using AmongUs.GameOptions;
 using HarmonyLib;
 using SuperNewRoles.Modules;
+using SuperNewRoles.Roles.Ability;
 
 namespace SuperNewRoles.Roles;
 
@@ -24,6 +25,14 @@ public class GhostAssignRole
     public static bool Prefix([HarmonyArgument(0)] PlayerControl player, bool specialRolesAllowed)
     {
         ExPlayerControl exPlayer = player;
+        
+        // バスカーが偽装死を使っている場合は処理をスキップ
+        if (IsBuskerInFakeDeath(exPlayer)) 
+        {
+            Logger.Debug($"Prefix: バスカー {player.Data.PlayerName} の偽装死により幽霊役職配布をスキップ", "GhostAssignRoles");
+            return false;
+        }
+        
         if (exPlayer.IsAlive()) return false; //生存者は弾く
 
         if (GetReleaseHauntAbility(player))
@@ -58,6 +67,14 @@ public class GhostAssignRole
     public static void Postfix([HarmonyArgument(0)] PlayerControl player)
     {
         ExPlayerControl exPlayer = player;
+        
+        // バスカーが偽装死を使っている場合は幽霊役職を配布しない
+        if (IsBuskerInFakeDeath(exPlayer)) 
+        {
+            Logger.Debug($"Postfix: バスカー {player.Data.PlayerName} の偽装死により幽霊役職配布をスキップ", "GhostAssignRoles");
+            return;
+        }
+        
         if (exPlayer.IsAlive() || exPlayer.GhostRole != GhostRoleId.None) return; // 生存者と割り当て済みの人は弾く
         if (player.Data.Role.Role == RoleTypes.GuardianAngel) return; // 守護天使がアサインされていたら, Mod幽霊役職をアサインしない
 
@@ -71,7 +88,11 @@ public class GhostAssignRole
     /// <returns>true : 開放する / false : 開放しない</returns>
     public static bool GetReleaseHauntAbility(ExPlayerControl player)
     {
+        // バスカーが偽装死を使っている場合は憑依能力を開放しない
+        if (IsBuskerInFakeDeath(player)) return false;
+        
         if (player.IsAlive()) return false; // 生存している場合は開放しない物として早期return
+        
         return true;
         /*
                 // 無効化しない設定なら早期リターン
@@ -95,6 +116,12 @@ public class GhostAssignRole
 
     public static bool HandleAssign(ExPlayerControl player)
     {
+        // バスカーの偽装死時は幽霊役職を配布しない
+        if (IsBuskerInFakeDeath(player))
+        {
+            return false;
+        }
+
         var assignTeam = player.IsCrewmate() ? AssignedTeamType.Crewmate : player.IsNeutral() ? AssignedTeamType.Neutral : AssignedTeamType.Impostor;
         List<RoleOptionManager.GhostRoleOption> ghostRoles = new();
         foreach (var opt in RoleOptionManager.GhostRoleOptions)
@@ -175,5 +202,30 @@ public class GhostAssignRole
         }
         //どっちも中身が0だったら通常の役職(DefaultRole)を返す
         return GhostRoleId.None;
+    }
+
+    /// <summary>
+    /// バスカーが偽装死を使っているかどうかを判定する
+    /// </summary>
+    /// <param name="player">判定するプレイヤー</param>
+    /// <returns>true : 偽装死中 / false : 偽装死中ではない</returns>
+    private static bool IsBuskerInFakeDeath(ExPlayerControl player)
+    {
+        if (player == null) return false;
+        
+        // バスカーの役職チェック
+        if (player.Role != RoleId.Busker) return false;
+        
+        // バスカーの偽装死アビリティを取得
+        var buskerAbility = player.GetAbility<BuskerPseudocideAbility>();
+        if (buskerAbility == null) return false;
+        
+        // 偽装死エフェクトがアクティブかどうかを確認
+        bool isActive = buskerAbility.isEffectActive;
+        
+        // デバッグログを出力
+        Logger.Debug($"バスカー偽装死判定: {player.Data?.PlayerName ?? "Unknown"} - Role={player.Role}, isEffectActive={isActive}, EffectTimer={buskerAbility.EffectTimer}", "GhostAssignRoles");
+        
+        return isActive;
     }
 }

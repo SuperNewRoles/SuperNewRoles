@@ -5,6 +5,7 @@ namespace SuperNewRoles.Modules;
 [Flags]
 public enum DisplayModeId
 {
+    None = 0,
     Default = 1 << 0,
     SuperHostRolesOnly = 1 << 1, // 元々の SHR true とは異なる挙動(通常モード 非表示)を目的に使用している。 ( SHRモードに設定された時のみ、「SHR 未実装」と 表記するのに使用中。)
     BattleRoyal = 1 << 2,

@@ -1,10 +1,14 @@
+using System;
 using System.Collections;
 using System.Linq;
 using BepInEx.Unity.IL2CPP.Utils.Collections;
 using HarmonyLib;
+using SuperNewRoles.CustomCosmetics;
 using SuperNewRoles.CustomCosmetics.CosmeticsPlayer;
+using SuperNewRoles.CustomCosmetics.UI;
 using SuperNewRoles.CustomOptions.Categories;
 using SuperNewRoles.Events;
+using SuperNewRoles.Extensions;
 using SuperNewRoles.MapCustoms;
 using SuperNewRoles.Modules;
 using SuperNewRoles.Modules.Events.Bases;
@@ -51,74 +55,96 @@ public static class IntroCutscenePatch
         }
         public static void Postfix(object __instance) // IEnumerator<object>などの具体的な型ではなくobject型で受け取る
         {
-            IntroCutscene introCutscene = HarmonyCoroutinePatchProcessor.GetParentFromCoroutine<IntroCutscene>(__instance);
-            if (introCutscene == null) return;
-
-            if (introCutscene.GetInstanceID() == last)
-                return;
-            last = introCutscene.GetInstanceID();
-            ExPlayerControl player = PlayerControl.LocalPlayer;
-            RoleId myrole = player.Role;
-
-            // モードのカスタムイントロをチェック
-            if (ModeManager.IsModeActive && ModeManager.CurrentMode.HasCustomIntro)
+            try
             {
-                SetupModeIntro(introCutscene, ModeManager.CurrentMode, player);
-                return;
+                IntroCutscene introCutscene = HarmonyCoroutinePatchProcessor.GetParentFromCoroutine<IntroCutscene>(__instance);
+                if (introCutscene == null) return;
+
+                if (introCutscene.GetInstanceID() == last)
+                    return;
+                last = introCutscene.GetInstanceID();
+
+                // プレイヤーの存在確認
+                if (PlayerControl.LocalPlayer == null)
+                {
+                    Logger.Warning("LocalPlayer is null in IntroCutscene");
+                    return;
+                }
+
+                ExPlayerControl player = ExPlayerControl.LocalPlayer;
+                if (player == null)
+                {
+                    Logger.Warning("ExPlayerControl is null in IntroCutscene");
+                    return;
+                }
+
+                RoleId myrole = player.Role;
+
+                // モードのカスタムイントロをチェック
+                if (ModeManager.IsModeActive && ModeManager.CurrentMode.HasCustomIntro)
+                {
+                    SetupModeIntro(introCutscene, ModeManager.CurrentMode, player);
+                    return;
+                }
+
+                var hideMyRoleAbility = player.GetAbility<HideMyRoleWhenAliveAbility>();
+                if (hideMyRoleAbility != null) myrole = hideMyRoleAbility.FalseRoleId(player);
+
+                var rolebase = CustomRoleManager.GetRoleById(myrole);
+                if (rolebase != null)
+                {
+                    Color roleColor = rolebase.RoleColor;
+                    introCutscene.YouAreText.color = roleColor;           //あなたのロールは...を役職の色に変更
+                    introCutscene.RoleText.color = roleColor;             //役職名の色を変更
+                    introCutscene.RoleBlurbText.color = roleColor;        //イントロの簡易説明の色を変更
+
+                    introCutscene.RoleText.text = ModTranslation.GetString(rolebase.Role.ToString());               //役職名を変更
+
+                    var randomIntroNum = UnityEngine.Random.Range(1, rolebase.IntroNum + 1); // 1からrolebase.IntroNumまでのランダムな数を取得
+                    introCutscene.RoleBlurbText.text = ModTranslation.GetString($"{rolebase.Role}Intro{randomIntroNum}");     //イントロの簡易説明をランダムに変更
+                }
+
+                if (myrole is RoleId.Crewmate or RoleId.Impostor)
+                {
+                    introCutscene.RoleText.text = player.Data.Role.NiceName;
+                    introCutscene.RoleBlurbText.text = player.Data.Role.Blurb;
+                    introCutscene.YouAreText.color = player.Data.Role.TeamColor;   //あなたのロールは...を役職の色に変更
+                    introCutscene.RoleText.color = player.Data.Role.TeamColor;     //役職名の色を変更
+                    introCutscene.RoleBlurbText.color = player.Data.Role.TeamColor;//イントロの簡易説明の色を変更
+                }
+
+                foreach (var modifier in player.ModifierRoleBases)
+                {
+                    // 生きている時は役職を自覚できないモディファイアは処理をスキップ
+                    if (hideMyRoleAbility != null && hideMyRoleAbility.IsCheckTargetModifierRoleHidden(player, modifier.ModifierRole)) continue;
+
+                    var randomIntroNum = UnityEngine.Random.Range(1, modifier.IntroNum + 1);
+                    introCutscene.RoleBlurbText.text += "\n" + ModHelpers.CsWithTranslation(modifier.RoleColor, $"{modifier.ModifierRole}Intro{randomIntroNum}");
+                }
+
+                //プレイヤーを作成&位置変更
+                introCutscene.ourCrewmate = introCutscene.CreatePlayer(0, 1, PlayerControl.LocalPlayer.Data, false);
+                introCutscene.ourCrewmate.gameObject.SetActive(false);
+                introCutscene.ourCrewmate.transform.localPosition = new Vector3(0f, -1.05f, -18f);
+                introCutscene.ourCrewmate.transform.localScale = new Vector3(1f, 1f, 1f);
+
+                //サウンド再生
+                var sound = PlayerControl.LocalPlayer.Data.Role.IntroSound;
+                if (rolebase != null)
+                    sound = RoleManager.Instance.AllRoles.FirstOrDefault(x => x.Role == rolebase.IntroSoundType)?.IntroSound;
+                SoundManager.Instance.PlaySound(sound, false, 1);
+
+                //字幕やプレイヤーを再表示する(Prefixで消している)
+                introCutscene.ourCrewmate.gameObject.SetActive(true);
+                introCutscene.YouAreText.gameObject.SetActive(true);
+                introCutscene.RoleText.gameObject.SetActive(true);
+                introCutscene.RoleBlurbText.gameObject.SetActive(true);
             }
-
-            var hideMyRoleAbility = player.GetAbility<HideMyRoleWhenAliveAbility>();
-            if (hideMyRoleAbility != null) myrole = hideMyRoleAbility.FalseRoleId(player);
-
-            var rolebase = CustomRoleManager.GetRoleById(myrole);
-            if (rolebase != null)
+            catch (Exception ex)
             {
-                Color roleColor = rolebase.RoleColor;
-                introCutscene.YouAreText.color = roleColor;           //あなたのロールは...を役職の色に変更
-                introCutscene.RoleText.color = roleColor;             //役職名の色を変更
-                introCutscene.RoleBlurbText.color = roleColor;        //イントロの簡易説明の色を変更
-
-                introCutscene.RoleText.text = ModTranslation.GetString(rolebase.Role.ToString());               //役職名を変更
-
-                var randomIntroNum = Random.Range(1, rolebase.IntroNum + 1); // 1からrolebase.IntroNumまでのランダムな数を取得
-                introCutscene.RoleBlurbText.text = ModTranslation.GetString($"{rolebase.Role}Intro{randomIntroNum}");     //イントロの簡易説明をランダムに変更
+                Logger.Error($"Error in IntroCutscene.SetUpRoleTextPatch: {ex.Message}\n{ex.StackTrace}");
+                // エラーが発生してもイントロを続行できるようにする
             }
-
-            if (myrole is RoleId.Crewmate or RoleId.Impostor)
-            {
-                introCutscene.RoleText.text = player.Data.Role.NiceName;
-                introCutscene.RoleBlurbText.text = player.Data.Role.Blurb;
-                introCutscene.YouAreText.color = player.Data.Role.TeamColor;   //あなたのロールは...を役職の色に変更
-                introCutscene.RoleText.color = player.Data.Role.TeamColor;     //役職名の色を変更
-                introCutscene.RoleBlurbText.color = player.Data.Role.TeamColor;//イントロの簡易説明の色を変更
-            }
-
-            foreach (var modifier in player.ModifierRoleBases)
-            {
-                // 生きている時は役職を自覚できないモディファイアは処理をスキップ
-                if (hideMyRoleAbility != null && hideMyRoleAbility.IsCheckTargetModifierRoleHidden(player, modifier.ModifierRole)) continue;
-
-                var randomIntroNum = Random.Range(1, modifier.IntroNum + 1);
-                introCutscene.RoleBlurbText.text += "\n" + ModHelpers.CsWithTranslation(modifier.RoleColor, $"{modifier.ModifierRole}Intro{randomIntroNum}");
-            }
-
-            //プレイヤーを作成&位置変更
-            introCutscene.ourCrewmate = introCutscene.CreatePlayer(0, 1, PlayerControl.LocalPlayer.Data, false);
-            introCutscene.ourCrewmate.gameObject.SetActive(false);
-            introCutscene.ourCrewmate.transform.localPosition = new Vector3(0f, -1.05f, -18f);
-            introCutscene.ourCrewmate.transform.localScale = new Vector3(1f, 1f, 1f);
-
-            //サウンド再生
-            var sound = PlayerControl.LocalPlayer.Data.Role.IntroSound;
-            if (rolebase != null)
-                sound = RoleManager.Instance.AllRoles.FirstOrDefault(x => x.Role == rolebase.IntroSoundType)?.IntroSound;
-            SoundManager.Instance.PlaySound(sound, false, 1);
-
-            //字幕やプレイヤーを再表示する(Prefixで消している)
-            introCutscene.ourCrewmate.gameObject.SetActive(true);
-            introCutscene.YouAreText.gameObject.SetActive(true);
-            introCutscene.RoleText.gameObject.SetActive(true);
-            introCutscene.RoleBlurbText.gameObject.SetActive(true);
         }
 
         /// <summary>
@@ -276,7 +302,7 @@ public static class IntroCutscenePatch
         {
             color = Jackal.Instance.RoleColor;
             TeamTitle = ModTranslation.GetString("JackalFriends");
-            ImpostorText = ModTranslation.GetString("FriendSubIntro");
+            ImpostorText = ModTranslation.GetString("FriendRolesSubIntro");
         }
         __instance.TeamTitle.text = TeamTitle;
         __instance.ImpostorText.text = ImpostorText;
@@ -296,7 +322,14 @@ public static class IntroCutscenePatch
             if (moddedCosmetics != null)
             {
                 moddedCosmetics.SetActive(false);
-                new LateTask(() => moddedCosmetics.SetActive(true), 0.1f);
+                moddedCosmetics.SetActive(true);
+            }
+
+            // ローカルプレイヤーのHat2/Visor2を確実に設定
+            if (player == PlayerControl.LocalPlayer)
+            {
+                PlayerControlRpcExtensions.RpcCustomSetCosmetics(player.PlayerId, CostumeTabType.Hat2, CustomCosmeticsSaver.CurrentHat2Id, player.Data.DefaultOutfit.ColorId);
+                PlayerControlRpcExtensions.RpcCustomSetCosmetics(player.PlayerId, CostumeTabType.Visor2, CustomCosmeticsSaver.CurrentVisor2Id, player.Data.DefaultOutfit.ColorId);
             }
         }
         NameText.RegisterNameTextUpdateEvent();
@@ -305,10 +338,21 @@ public static class IntroCutscenePatch
         CustomDeathExtensions.Register();
         SetTargetPatch.Register();
 
-        FungleAdditionalAdmin.AddAdmin();
-        FungleAdditionalElectrical.CreateElectrical();
-        MushroomMixup.Initialize();
-        ZiplineUpdown.Initialize();
+        // The Fungle マップ初期化処理を段階的に実行（競合状態を回避）
+        new LateTask(() =>
+        {
+            try
+            {
+                FungleAdditionalAdmin.AddAdmin();
+                FungleAdditionalElectrical.CreateElectrical();
+                MushroomMixup.Initialize();
+                ZiplineUpdown.Initialize();
+            }
+            catch (Exception ex)
+            {
+                Logger.Error($"Error during Fungle map initialization: {ex}");
+            }
+        }, 0.5f, "FungleMapInit");
         ReportDistancePatch.Init();
 
         ReAssignTasks();

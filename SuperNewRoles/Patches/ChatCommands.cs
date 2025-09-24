@@ -1,7 +1,11 @@
 using System;
+using System.Linq;
+using System.Text;
 using AmongUs.GameOptions;
 using HarmonyLib;
 using InnerNet;
+using SuperNewRoles.Modules;
+using SuperNewRoles.Roles;
 
 namespace SuperNewRoles.Patches;
 
@@ -51,6 +55,17 @@ public static class SendChatPatch
                     SuperNewRolesPlugin.Logger.LogWarning($"ホストでない時に{text}を使用しました。ホストでない時は/renameは使用できません。");
                 }
             }
+            else if (text.StartsWith("/winners", StringComparison.OrdinalIgnoreCase)
+                  || string.Equals(text, "/w", StringComparison.OrdinalIgnoreCase)
+                  || text.StartsWith("/w ", StringComparison.OrdinalIgnoreCase))
+            {
+                handled = true;
+                // ホストの/winnersは全員に表示する
+                if (AmongUsClient.Instance.AmHost)
+                    RpcShowWinnerMessage();
+                else
+                    ShowWinnerMessage();
+            }
             if (AmongUsClient.Instance.NetworkMode == NetworkModes.FreePlay)
             {
                 if (text.ToLower().Equals("/murder"))
@@ -86,5 +101,61 @@ public static class SendChatPatch
             FastDestroyableSingleton<HudManager>.Instance.Chat.timeSinceLastMessage = 0f;
         }
         return !handled;
+    }
+    [CustomRPC]
+    public static void RpcShowWinnerMessage()
+    {
+        ShowWinnerMessage();
+    }
+    private static void ShowWinnerMessage()
+    {
+
+        string originalName = PlayerControl.LocalPlayer.name;
+        try
+        {
+            PlayerControl.LocalPlayer.SetName(GetWinnerMessage());
+            HudManager.Instance.Chat.AddChat(PlayerControl.LocalPlayer, "\u200B");
+        }
+        finally
+        {
+            PlayerControl.LocalPlayer.SetName(originalName);
+        }
+    }
+    private static string GetWinnerMessage()
+    {
+        StringBuilder builder = new();
+        var cond = EndGameManagerSetUpPatch.endGameCondition;
+        if (cond == null)
+            return ModTranslation.GetString("Winners.NoData");
+        var upperText = cond.UpperText;
+        if (cond.additionalWinTexts != null && cond.additionalWinTexts.Any())
+        {
+            upperText += " & " + string.Join(" & ", cond.additionalWinTexts);
+        }
+        upperText += " " + cond.winText;
+        if (cond.IsHaison)
+            upperText = ModTranslation.GetString("Haison");
+        builder.AppendLine($"<size=150%>{ModHelpers.Cs(cond.UpperTextColor, upperText)}</size>");
+        foreach (var data in AdditionalTempData.playerRoles)
+        {
+            builder.Append("<size=80%>");
+            if (cond.winners != null && cond.winners.Contains((byte)data.PlayerId))
+                builder.Append("★");
+            else
+                builder.Append("　");
+            var taskInfo = data.TasksTotal > 0 ? $"<color=#FAD934FF>({data.TasksCompleted}/{data.TasksTotal})</color>" : "";
+            string roleText = ModHelpers.Cs(data.roleBase.RoleColor, CustomRoleManager.GetRoleName(data.roleBase.Role));
+            if (data.modifierMarks.Count > 0)
+                roleText += " ";
+            foreach (var modifier in data.modifierMarks)
+                roleText = modifier.Replace("{0}", roleText);
+            string playerName = ModHelpers.Cs(Palette.PlayerColors[data.ColorId], data.PlayerName);
+            if (data.LoversHeartColor != null)
+                playerName += ModHelpers.Cs(data.LoversHeartColor.Value, " ♥");
+            string result = $"{playerName}{data.NameSuffix} {taskInfo} - {ModTranslation.GetString("FinalStatus." + data.Status)} - {roleText}";
+            builder.AppendLine(result);
+            builder.Append("</size>");
+        }
+        return builder.ToString();
     }
 }
