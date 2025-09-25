@@ -903,7 +903,7 @@ WaveCannonAnimationType.Cannon,大砲,Cannon,大炮,大砲
 WaveCannonAnimationType.Santa,サンタ,Santa,圣诞老人,聖誕老人
 WaveCannonAnimationType.Bullet,弾丸,Bullet,子弹,子彈
 WaveCannonButtonText,波動砲,Wave Cannon,波动炮,波動砲
-WaveCannonKillSound,波動砲キル音を鳴らす,Play WaveCannon Kill Sound,播放波动炮击杀音效,播放波動砲擊殺音效
+WaveCannonKillSound,キル音を鳴らす,Play WaveCannon Kill Sound,播放波动炮击杀音效,播放波動砲擊殺音效
 WaveCannonKillSoundDistributed,キル音を分散させる,Distribute Kill Sounds,分散播放击杀音效,分散播放擊殺音效
 
 # WaveCannonJackal
