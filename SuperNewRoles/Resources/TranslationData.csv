@@ -167,6 +167,8 @@ ClientOptionsMod,Mod設定,Mod Settings,模组设置,模組設置
 Winners.NoData,データがありません,No data,没有数据,沒有數據
 
 # VersionUpdates
+VersionSelectButtonText,バージョン変更,Change Version
+VersionUpdateAutoText,自動アップデート,Automatic Updates
 VersionUpdateType.stability,安定版,Stability,稳定版,穩定版
 VersionUpdateType.all,全て,All,全部,全部
 VersionUpdateType.static,固定,Static,固定版,固定版
@@ -273,6 +275,7 @@ DisplayText.CanNotUseSHR,未実装,Not implemented.,未实施,未實施
 ModeId.BattleRoyal,バトルロイヤル,Battle Royale,戰鬥皇家,戰鬥皇家
 ModeOption,モード,Mode,模式,模式
 ExclusivityOptionMenuTitle,排他設定,Exclusivity Settings,排他設定,排他設定
+ExclusivityEditText,編集,Edit
 ExclusivityOptionMenuMaxText,最大排出数,Max Exclusivity,最大排出數,最大排出數
 ExclusivityOptionMenuAssignedRoleText,割当役職,Assigned Role,指派職位,指派職位
 ExclusivityOptionMenuGroupText,グループ {0},Group {0},群組 {0},群組 {0}
