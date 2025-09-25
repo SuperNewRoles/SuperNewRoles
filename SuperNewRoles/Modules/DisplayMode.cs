@@ -15,9 +15,9 @@ public enum DisplayModeId
 public enum ModeId
 {
     Default,
-    SuperHostRoles,
     WCBattleRoyal,
     BattleRoyal,
+    SuperHostRoles,
 }
 
 public static class DisplayMode
