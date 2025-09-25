@@ -344,7 +344,7 @@ public class WCBattleRoyalMode : ModeBase<WCBattleRoyalMode>, IModeBase
             var teamIndex = GetPlayerTeam(player);
             var teamName = GetTeamName(teamIndex);
 
-            info.RoleTitle = ModTranslation.GetString("BattleRoyalIntroTeamTitle", teamName);
+            info.RoleTitle = ModTranslation.GetString("WCBattleRoyalIntroTeamTitle", teamName);
             info.RoleSubTitle = ModTranslation.GetString("BattleRoyalIntroTeamSubTitle");
             info.RoleColor = GetTeamColor(teamIndex);
 
@@ -353,7 +353,7 @@ public class WCBattleRoyalMode : ModeBase<WCBattleRoyalMode>, IModeBase
         }
         else
         {
-            info.RoleTitle = ModTranslation.GetString("BattleRoyalIntroTitle");
+            info.RoleTitle = ModTranslation.GetString("WCBattleRoyalIntroTitle");
             info.RoleSubTitle = ModTranslation.GetString("BattleRoyalIntroSubTitle");
             info.TeamMembers = new List<PlayerControl> { player };
         }

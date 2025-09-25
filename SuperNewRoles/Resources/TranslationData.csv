@@ -1780,13 +1780,13 @@ ModifierHauntedWolfIsAssignMadAndFriendRoles,マッドやフレンズロール�
 ModifierHauntedWolfIsReverseSheriffDecision,シェリフや占い師等に重複した時，判定を反転する。,Reverses the kill decision when duplicated on a sheriff.,被分配给警长、占卜师等职业时技能判定反转,當狼憑於警長或占卜師等職業時，判定會反轉
 ModifierHauntedWolfIsReverseSheriffDecision,シェリフや占い師などに重複した時，判定を反転する。,Reverses the kill decision when duplicated on a sheriff.,被分配给警长、占卜师等职业时技能判定反转,當狼憑於警長或占卜師等職業時，判定會反轉
 
-# BattleRoyalMode
-WCBattleRoyalMode,バトルロイヤル,Battle Royale,大逃杀,大逃殺
+# WaveCannon BattleRoyalMode
+WCBattleRoyalMode,波動砲バトルロイヤル,Wave Cannon Battle Royale,波動砲大逃杀,波動砲大逃殺
 BattleRoyalWinText,{0}の勝利,{0} Win
 BattleRoyalWaveCannon,,
-BattleRoyalIntroTitle,バトルロイヤル,Battle Royale,大逃杀,大逃殺
+WCBattleRoyalIntroTitle,波動砲バトルロイヤル,Battle Royale,大逃杀,大逃殺
 BattleRoyalIntroSubTitle,最後の一人になれ,Be the last one standing,成为最后一个,成為最後一人
-BattleRoyalIntroTeamTitle,チーム {0},Team {0},队伍 {0},隊伍 {0}
+WCBattleRoyalIntroTeamTitle,波動砲バトルロイヤル チーム {0},Team {0},队伍 {0},隊伍 {0}
 BattleRoyalIntroTeamSubTitle,チームで勝利せよ,Win as a team,团队获胜,以團隊獲勝
 BattleRoyalIntroMessage1,最後の一人になれ,Be the last one standing,成为最后一个,成為最後一人
 BattleRoyalIntroMessage2,最後まで生き残れ,Survive until the end!,存活到最后！,生存到最後！
@@ -1801,6 +1801,7 @@ WaveCannonBattleRoyalChargeTime,波動砲のチャージ時間,Wave Cannon Charg
 ModeId.BattleRoyal,バトルロイヤル,Battle Royale,大逃杀,大逃殺
 BattleRoyalMode,バトルロイヤルモード,Battle Royale Mode,大逃杀模式,大逃殺模式
 BattleRoyalModeDescription,最後の1人（チーム）になるまで戦え！,Fight until you're the last one (team) standing!,战斗到只剩下最后一人（队伍）！,戰鬥到只剩下最後一人（隊伍）！
+BattleRoyalIntroTitle,バトルロイヤル,Battle Royale,大逃杀,大逃殺
 BattleRoyalTeamMode,チーム戦,Team Mode,团队模式,團隊模式
 BattleRoyalTeamCount,チーム数,Team Count,队伍数量,隊伍數量
 BattleRoyalShowAliveCount,生存人数を表示,Show Alive Count,显示存活人数,顯示存活人數

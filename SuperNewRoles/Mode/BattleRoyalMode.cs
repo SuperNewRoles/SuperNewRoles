@@ -165,6 +165,7 @@ public class BattleRoyalMode : ModeBase<BattleRoyalMode>, IModeBase
     public override bool CheckWinCondition()
     {
         if (!isGameStarted) return true;
+        if (!AmongUsClient.Instance.AmHost) return true;
 
         var alivePlayers = GetAlivePlayers();
 
