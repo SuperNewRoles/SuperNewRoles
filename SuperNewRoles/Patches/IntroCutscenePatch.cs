@@ -16,7 +16,9 @@ using SuperNewRoles.Roles;
 using SuperNewRoles.Roles.Ability;
 using SuperNewRoles.Roles.Ability.CustomButton;
 using SuperNewRoles.Roles.Neutral;
+using SuperNewRoles.Mode;
 using UnityEngine;
+using AmongUs.GameOptions;
 
 namespace SuperNewRoles.Patches;
 
@@ -78,6 +80,13 @@ public static class IntroCutscenePatch
 
                 RoleId myrole = player.Role;
 
+                // モードのカスタムイントロをチェック
+                if (ModeManager.IsModeActive && ModeManager.CurrentMode.HasCustomIntro)
+                {
+                    SetupModeIntro(introCutscene, ModeManager.CurrentMode, player);
+                    return;
+                }
+
                 var hideMyRoleAbility = player.GetAbility<HideMyRoleWhenAliveAbility>();
                 if (hideMyRoleAbility != null) myrole = hideMyRoleAbility.FalseRoleId(player);
 
@@ -136,6 +145,55 @@ public static class IntroCutscenePatch
                 Logger.Error($"Error in IntroCutscene.SetUpRoleTextPatch: {ex.Message}\n{ex.StackTrace}");
                 // エラーが発生してもイントロを続行できるようにする
             }
+        }
+
+        /// <summary>
+        /// モードのカスタムイントロを設定する
+        /// </summary>
+        /// <param name="introCutscene">イントロ画面</param>
+        /// <param name="mode">モードのインスタンス</param>
+        /// <param name="player">プレイヤー</param>
+        private static void SetupModeIntro(IntroCutscene introCutscene, IModeBase mode, PlayerControl player)
+        {
+            var introInfo = mode.GetIntroInfo(player);
+
+            // 色とテキストを設定
+            introCutscene.YouAreText.color = introInfo.RoleColor;
+            introCutscene.RoleText.color = introInfo.RoleColor;
+            introCutscene.RoleBlurbText.color = introInfo.RoleColor;
+
+            introCutscene.RoleText.text = introInfo.RoleTitle;
+            introCutscene.RoleBlurbText.text = introInfo.IntroMessage;
+
+            //プレイヤーを作成&位置変更
+            introCutscene.ourCrewmate = introCutscene.CreatePlayer(0, 1, player.Data, false);
+            introCutscene.ourCrewmate.gameObject.SetActive(false);
+            introCutscene.ourCrewmate.transform.localPosition = new Vector3(0f, -1.05f, -18f);
+            introCutscene.ourCrewmate.transform.localScale = new Vector3(1f, 1f, 1f);
+
+            // サウンドを設定
+            var sound = player.Data.Role.IntroSound;
+            if (introInfo.CustomIntroSound != null)
+            {
+                // カスタムサウンドがある場合はそれを使用
+                sound = introInfo.CustomIntroSound;
+            }
+            else if (introInfo.IntroSoundType.HasValue)
+            {
+                // 指定された役職タイプのサウンドを使用
+                var roleInfo = RoleManager.Instance.AllRoles.FirstOrDefault(x => x.Role == introInfo.IntroSoundType.Value);
+                if (roleInfo != null && roleInfo.IntroSound != null)
+                {
+                    sound = roleInfo.IntroSound;
+                }
+            }
+            SoundManager.Instance.PlaySound(sound, false, 1);
+
+            //字幕やプレイヤーを再表示する
+            introCutscene.ourCrewmate.gameObject.SetActive(true);
+            introCutscene.YouAreText.gameObject.SetActive(true);
+            introCutscene.RoleText.gameObject.SetActive(true);
+            introCutscene.RoleBlurbText.gameObject.SetActive(true);
         }
     }
 
@@ -212,7 +270,23 @@ public static class IntroCutscenePatch
         Color32 backcolor = __instance.BackgroundBar.material.color;
         string TeamTitle = __instance.TeamTitle.text;
         string ImpostorText = __instance.ImpostorText.text;
-        if (ExPlayerControl.LocalPlayer.IsNeutral())
+
+        // モードのカスタムイントロの場合
+        if (ModeManager.IsModeActive && ModeManager.CurrentMode.HasCustomIntro)
+        {
+            var introInfo = ModeManager.CurrentMode.GetIntroInfo(PlayerControl.LocalPlayer);
+            TeamTitle = introInfo.RoleTitle;
+            ImpostorText = introInfo.RoleSubTitle;
+            color = introInfo.RoleColor;
+
+            // チームメイトリストを更新
+            yourTeam.Clear();
+            foreach (var member in introInfo.TeamMembers)
+            {
+                yourTeam.Add(member);
+            }
+        }
+        else if (ExPlayerControl.LocalPlayer.IsNeutral())
         {
             TeamTitle = ModTranslation.GetString("Neutral");
             ImpostorText = ModTranslation.GetString("NeutralSubIntro");
