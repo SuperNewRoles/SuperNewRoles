@@ -167,6 +167,8 @@ ClientOptionsMod,Mod設定,Mod Settings,模组设置,模組設置
 Winners.NoData,データがありません,No data,没有数据,沒有數據
 
 # VersionUpdates
+VersionSelectButtonText,バージョン変更,Change Version
+VersionUpdateAutoText,自動アップデート,Automatic Updates
 VersionUpdateType.stability,安定版,Stability,稳定版,穩定版
 VersionUpdateType.all,全て,All,全部,全部
 VersionUpdateType.static,固定,Static,固定版,固定版
@@ -273,6 +275,7 @@ DisplayText.CanNotUseSHR,未実装,Not implemented.,未实施,未實施
 ModeId.WCBattleRoyal,波動砲バトルロイヤル,Battle Royale,戰鬥皇家,戰鬥皇家
 ModeOption,モード,Mode,模式,模式
 ExclusivityOptionMenuTitle,排他設定,Exclusivity Settings,排他設定,排他設定
+ExclusivityEditText,編集,Edit
 ExclusivityOptionMenuMaxText,最大排出数,Max Exclusivity,最大排出數,最大排出數
 ExclusivityOptionMenuAssignedRoleText,割当役職,Assigned Role,指派職位,指派職位
 ExclusivityOptionMenuGroupText,グループ {0},Group {0},群組 {0},群組 {0}
@@ -1056,11 +1059,11 @@ ZiplineCoolChangeSetting,ジップラインクールダウンの設定,Zipline C
 ZiplineCoolTimeSetting,ジップラインクールダウン時間,Zipline Cooldown Time,滑索冷却时间,滑索冷卻時間
 ZiplineImpostorCoolChangeSetting,インポスター用ジップラインクールダウンの設定,Impostor Zipline Cooldown Settings,内鬼滑索冷却时间设置,內鬼滑索冷卻時間設置
 ZiplineImpostorCoolTimeSetting,インポスター用ジップラインクールダウン時間,Impostor Zipline Cooldown Time,内鬼滑索冷却时间,內鬼滑索冷卻時間
+SpawnType,スポーンタイプ,Spawn Type,出生点类型,出生點類型
 SpawnType.Normal,通常,Default,默认,預設
 SpawnType.Random,ランダム,Random,随机,隨機
 SpawnType.Select,選択,Select,选择,選擇
 TheFungleSetting,The Fungle設定,The Fungle Settings,The Fungle设置,The Fungle設置
-TheFungleSpawnType,スポーンタイプ,Spawn Type,出生点类型,出生點類型
 TheFungleAdditionalAdmin,追加アドミン,Additional Admin,额外管理地图,額外管理地圖
 TheFunglePowerOutageSabotage,停電サボタージュ,Power Outage Sabotage,停电破坏,停電破壞
 TheFungleHideSporeMask,キノコの胞子効果無効,Disable Mushroom Spore Effect,禁用蘑菇孢子效果,禁用蘑菇孢子效果
@@ -1783,6 +1786,9 @@ MovingTeleportText,テレポートしました,Teleported,已传送,已傳送
 ModifierHauntedWolfIsAssignMadAndFriendRoles,マッドやフレンズロールと重複しない(一括設定),No overlap with Mud or Friends rolls.,不会被分配给叛徒阵营或狈系职业,不重複分配给叛徒或狽系角色
 ModifierHauntedWolfIsReverseSheriffDecision,シェリフや占い師等に重複した時，判定を反転する。,Reverses the kill decision when duplicated on a sheriff.,被分配给警长、占卜师等职业时技能判定反转,當狼憑於警長或占卜師等職業時，判定會反轉
 ModifierHauntedWolfIsReverseSheriffDecision,シェリフや占い師などに重複した時，判定を反転する。,Reverses the kill decision when duplicated on a sheriff.,被分配给警长、占卜师等职业时技能判定反转,當狼憑於警長或占卜師等職業時，判定會反轉
+
+# Nun
+NunButtonName,ぬーん,Nun,捣蛋,搗蛋
 
 # WaveCannon BattleRoyalMode
 WCBattleRoyalMode,波動砲バトルロイヤル,Wave Cannon Battle Royale,波動砲大逃杀,波動砲大逃殺

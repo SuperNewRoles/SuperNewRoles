@@ -11,7 +11,7 @@ public class SuicideWisherAbility : CustomButtonBase
     {
         CoolTime = coolTime;
     }
-    public override Sprite Sprite => AssetManager.GetAsset<Sprite>("SuicideWisherButton.png");
+    public override Sprite Sprite => AssetManager.GetAsset<Sprite>("ShermansServantSuicideButton.png");
     public override string buttonText => ModTranslation.GetString("SuicideWisherButtonText");
     protected override KeyType keytype => KeyType.Ability1;
     public override float DefaultTimer => CoolTime;
