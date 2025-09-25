@@ -65,6 +65,7 @@ public static class AssetManager
     {
         SuperNewRolesPlugin.Logger.LogInfo("[Splash] Loading AssetBundles...");
         Logger.Info("-------Start AssetBundle-------");
+        Logger.Info("IsAndroid:" + ModHelpers.IsAndroid());
         var ExcAssembly = SuperNewRolesPlugin.Assembly;
         foreach (var data in AssetPathes)
         {

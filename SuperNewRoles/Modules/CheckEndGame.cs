@@ -10,6 +10,7 @@ using UnityEngine;
 using SuperNewRoles.Roles.Modifiers;
 using Hazel;
 using SuperNewRoles.CustomOptions.Categories;
+using SuperNewRoles.Mode;
 
 namespace SuperNewRoles.Modules;
 
@@ -92,6 +93,12 @@ public static class CheckGameEndPatch
 
         using var gameState = new GameState();
         if (!gameState.IsValid) return false;
+
+        // ModeManagerの勝利判定を最優先でチェック
+        if (ModeManager.IsModeActive && ModeManager.CheckWinCondition())
+        {
+            return false; // ModeManagerが勝利処理を行うため、ここで終了
+        }
 
         var victoryType = DetermineVictoryType(gameState, isHnS);
         if (victoryType != VictoryType.None)

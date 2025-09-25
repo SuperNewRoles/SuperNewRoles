@@ -18,7 +18,9 @@ class WaveCannonJackal : RoleBase<WaveCannonJackal>
             coolDown: WaveCannonJackalCooldown,
             effectDuration: WaveCannonJackalEffectDuration,
             type: (WaveCannonType)WaveCannonJackalType,
-            isResetKillCooldown: WaveCannonJackalIsSyncKillCoolTime
+            isResetKillCooldown: WaveCannonJackalIsSyncKillCoolTime,
+            KillSound: WaveCannonJackalKillSound,
+            distributedKillSound: WaveCannonJackalKillSoundDistributed
         ),
         () => new JackalAbility(new JackalData(
             canKill: true,
@@ -92,6 +94,12 @@ class WaveCannonJackal : RoleBase<WaveCannonJackal>
 
     [CustomOptionSelect("WaveCannonJackalWaveCannonType", typeof(WaveCannonTypeForOption), "WaveCannonAnimationType.")]
     public static WaveCannonTypeForOption WaveCannonJackalType = WaveCannonTypeForOption.Tank;
+
+    [CustomOptionBool("WaveCannonJackalKillSound", true, translationName: "WaveCannonKillSound")]
+    public static bool WaveCannonJackalKillSound;
+
+    [CustomOptionBool("WaveCannonJackalKillSoundDistributed", false, translationName: "WaveCannonKillSoundDistributed", parentFieldName: nameof(WaveCannonJackalKillSound))]
+    public static bool WaveCannonJackalKillSoundDistributed;
 }
 public enum WaveCannonJackalSidekickType
 {
