@@ -1,4 +1,5 @@
 using SuperNewRoles.Modules;
+using SuperNewRoles.WaveCannonObj;
 
 namespace SuperNewRoles.CustomOptions.Categories;
 

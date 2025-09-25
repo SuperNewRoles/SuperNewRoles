@@ -167,6 +167,8 @@ ClientOptionsMod,Mod設定,Mod Settings,模组设置,模組設置
 Winners.NoData,データがありません,No data,没有数据,沒有數據
 
 # VersionUpdates
+VersionSelectButtonText,バージョン変更,Change Version
+VersionUpdateAutoText,自動アップデート,Automatic Updates
 VersionUpdateType.stability,安定版,Stability,稳定版,穩定版
 VersionUpdateType.all,全て,All,全部,全部
 VersionUpdateType.static,固定,Static,固定版,固定版
@@ -270,9 +272,10 @@ ModeId.Default,通常,Normal,通常,通常
 ModeId.SuperHostRoles,SuperHostRoles(未実装),SuperHostRoles(not implemented),SuperHostRoles
 NoSuperHostRoles,SuperHostRolesは未実装です。使用できません。,SuperHostRoles is not implemented and cannot be used.
 DisplayText.CanNotUseSHR,未実装,Not implemented.,未实施,未實施
-ModeId.BattleRoyal,バトルロイヤル,Battle Royale,戰鬥皇家,戰鬥皇家
+ModeId.WCBattleRoyal,波動砲バトルロイヤル,Battle Royale,戰鬥皇家,戰鬥皇家
 ModeOption,モード,Mode,模式,模式
 ExclusivityOptionMenuTitle,排他設定,Exclusivity Settings,排他設定,排他設定
+ExclusivityEditText,編集,Edit
 ExclusivityOptionMenuMaxText,最大排出数,Max Exclusivity,最大排出數,最大排出數
 ExclusivityOptionMenuAssignedRoleText,割当役職,Assigned Role,指派職位,指派職位
 ExclusivityOptionMenuGroupText,グループ {0},Group {0},群組 {0},群組 {0}
@@ -903,6 +906,8 @@ WaveCannonAnimationType.Cannon,大砲,Cannon,大炮,大砲
 WaveCannonAnimationType.Santa,サンタ,Santa,圣诞老人,聖誕老人
 WaveCannonAnimationType.Bullet,弾丸,Bullet,子弹,子彈
 WaveCannonButtonText,波動砲,Wave Cannon,波动炮,波動砲
+WaveCannonKillSound,キル音を鳴らす,Play WaveCannon Kill Sound,播放波动炮击杀音效,播放波動砲擊殺音效
+WaveCannonKillSoundDistributed,キル音を分散させる,Distribute Kill Sounds,分散播放击杀音效,分散播放擊殺音效
 
 # WaveCannonJackal
 WaveCannonJackalKillCooldown,キルクールダウン,Kill Cooldown,杰克击杀冷却时间,傑克殺人冷卻時間
@@ -948,6 +953,8 @@ ChiefSheriffCanKillNeutral,第三陣営をキルできる,Can Kill Neutral,能�
 ChiefSheriffCanKillFriendRoles,フレンド系の役職をキルできる,Can Kill Friend Roles,能击杀友方角色,能擊殺友方角色
 ChiefSheriffCanKillLovers,ラバーズをキルできる,Can Kill Lovers,能击杀恋人,能擊殺戀人
 ChiefAppointCooldown,任命のクールタイム,Appointment Cooldown,任命冷却时间,任命冷卻時間
+ChiefAppointNeutral,第三陣営を任命できる,Can appoint the neutral team.,能够任命第三阵营,可任命第三陣營
+ChiefAppointNeutralKiller,第三陣営(キラー)を任命できる,Can appoint the neutral Killer's.,可以任命第三杀手,可任命第三殺手
 ChiefCanSeeCreatedSheriff,作成したシェリフがわかる,Can See Created Sheriff,能看到已任命的警长,能看到已任命的警長
 
 # Workperson
@@ -1052,11 +1059,11 @@ ZiplineCoolChangeSetting,ジップラインクールダウンの設定,Zipline C
 ZiplineCoolTimeSetting,ジップラインクールダウン時間,Zipline Cooldown Time,滑索冷却时间,滑索冷卻時間
 ZiplineImpostorCoolChangeSetting,インポスター用ジップラインクールダウンの設定,Impostor Zipline Cooldown Settings,内鬼滑索冷却时间设置,內鬼滑索冷卻時間設置
 ZiplineImpostorCoolTimeSetting,インポスター用ジップラインクールダウン時間,Impostor Zipline Cooldown Time,内鬼滑索冷却时间,內鬼滑索冷卻時間
+SpawnType,スポーンタイプ,Spawn Type,出生点类型,出生點類型
 SpawnType.Normal,通常,Default,默认,預設
 SpawnType.Random,ランダム,Random,随机,隨機
 SpawnType.Select,選択,Select,选择,選擇
 TheFungleSetting,The Fungle設定,The Fungle Settings,The Fungle设置,The Fungle設置
-TheFungleSpawnType,スポーンタイプ,Spawn Type,出生点类型,出生點類型
 TheFungleAdditionalAdmin,追加アドミン,Additional Admin,额外管理地图,額外管理地圖
 TheFunglePowerOutageSabotage,停電サボタージュ,Power Outage Sabotage,停电破坏,停電破壞
 TheFungleHideSporeMask,キノコの胞子効果無効,Disable Mushroom Spore Effect,禁用蘑菇孢子效果,禁用蘑菇孢子效果
@@ -1777,4 +1784,42 @@ MovingTeleportText,テレポートしました,Teleported,已传送,已傳送
 
 # ModifierHauntedWolf
 ModifierHauntedWolfIsAssignMadAndFriendRoles,マッドやフレンズロールと重複しない(一括設定),No overlap with Mud or Friends rolls.,不会被分配给叛徒阵营或狈系职业,不重複分配给叛徒或狽系角色
+ModifierHauntedWolfIsReverseSheriffDecision,シェリフや占い師等に重複した時，判定を反転する。,Reverses the kill decision when duplicated on a sheriff.,被分配给警长、占卜师等职业时技能判定反转,當狼憑於警長或占卜師等職業時，判定會反轉
 ModifierHauntedWolfIsReverseSheriffDecision,シェリフや占い師などに重複した時，判定を反転する。,Reverses the kill decision when duplicated on a sheriff.,被分配给警长、占卜师等职业时技能判定反转,當狼憑於警長或占卜師等職業時，判定會反轉
+
+# Nun
+NunButtonName,ぬーん,Nun,捣蛋,搗蛋
+
+# WaveCannon BattleRoyalMode
+WCBattleRoyalMode,波動砲バトルロイヤル,Wave Cannon Battle Royale,波動砲大逃杀,波動砲大逃殺
+BattleRoyalWinText,{0}の勝利,{0} Win
+BattleRoyalWaveCannon,,
+WCBattleRoyalIntroTitle,波動砲バトルロイヤル,Battle Royale,大逃杀,大逃殺
+BattleRoyalIntroSubTitle,最後の一人になれ,Be the last one standing,成为最后一个,成為最後一人
+WCBattleRoyalIntroTeamTitle,波動砲バトルロイヤル チーム {0},Team {0},队伍 {0},隊伍 {0}
+BattleRoyalIntroTeamSubTitle,チームで勝利せよ,Win as a team,团队获胜,以團隊獲勝
+BattleRoyalIntroMessage1,最後の一人になれ,Be the last one standing,成为最后一个,成為最後一人
+BattleRoyalIntroMessage2,最後まで生き残れ,Survive until the end!,存活到最后！,生存到最後！
+BattleRoyalIntroMessage3,チームメイトと共に,Protect your teammates,保护你的队友！,保護你的隊友！
+WaveCannonBattleRoyalTeamMode,チーム戦,Team Mode,团队模式,團隊模式
+WaveCannonBattleRoyalTeamCount,チーム数,Team Count,队伍数量,隊伍數量
+WaveCannonBattleRoyalFriendlyFire,フレンドリーファイア,Friendly Fire,友军伤害,友軍傷害
+WaveCannonBattleRoyalCooldown,波動砲のクールタイム,Wave Cannon Cooldown,波动炮冷却,波動砲冷卻
+WaveCannonBattleRoyalChargeTime,波動砲のチャージ時間,Wave Cannon Charge Time,波动炮充能时间,波動砲充能時間
+
+# BattleRoyalMode (Standard)
+ModeId.BattleRoyal,バトルロイヤル,Battle Royale,大逃杀,大逃殺
+BattleRoyalMode,バトルロイヤルモード,Battle Royale Mode,大逃杀模式,大逃殺模式
+BattleRoyalModeDescription,最後の1人（チーム）になるまで戦え！,Fight until you're the last one (team) standing!,战斗到只剩下最后一人（队伍）！,戰鬥到只剩下最後一人（隊伍）！
+BattleRoyalIntroTitle,バトルロイヤル,Battle Royale,大逃杀,大逃殺
+BattleRoyalTeamMode,チーム戦,Team Mode,团队模式,團隊模式
+BattleRoyalTeamCount,チーム数,Team Count,队伍数量,隊伍數量
+BattleRoyalShowAliveCount,生存人数を表示,Show Alive Count,显示存活人数,顯示存活人數
+BattleRoyalShowKillCount,キル数を表示,Show Kill Count,显示击杀数,顯示擊殺數
+BattleRoyalShowKillCountSelfOnly,キル数を自分のみ表示,Show Kill Count (Self Only),仅对自己显示击杀数,僅對自己顯示擊殺數
+BattleRoyalPreparationTime,準備時間,Preparation Time,准备时间,準備時間
+BattleRoyalPreparationRemaining,開始まで,Starting in ,开始倒计时 ,開始倒計時 
+Team,チーム,Team,队伍,隊伍
+seconds,秒,seconds,秒,秒
+BattleRoyalWin,バトルロイヤル,Battle Royale,大逃杀,大逃殺
+Draw,引き分け,Draw,平局,平局
