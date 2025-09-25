@@ -39,6 +39,7 @@ public abstract class WaveCannonObjectBase
     private const float SHOOT_DELAY_TIME = 0.5f;
     public bool checkedWiseman = false;
     public bool willCheckWiseman = false;
+    private readonly List<ExPlayerControl> killedPlayers = new();
 
     public WaveCannonObjectBase(WaveCannonAbility ability, bool isFlipX, Vector3 startPosition, bool isResetKillCooldown)
     {
@@ -141,6 +142,7 @@ public abstract class WaveCannonObjectBase
                     if (this is WaveCannonObjectBullet)
                     {
                         ExPlayerControl.LocalPlayer.RpcCustomDeath(player, CustomDeathType.SuperWaveCannon);
+                        killedPlayers.Add(player);
                         continue;
                     }
 
@@ -161,12 +163,14 @@ public abstract class WaveCannonObjectBase
                         if (tryKillData.RefSuccess)
                         {
                             ExPlayerControl.LocalPlayer.RpcCustomDeath(playerRef, CustomDeathType.WaveCannon);
+                            killedPlayers.Add(playerRef);
                         }
                         continue;
                     }
 
                     // 通常の波動砲で賢者以外の場合
                     ExPlayerControl.LocalPlayer.RpcCustomDeath(player, CustomDeathType.WaveCannon);
+                    killedPlayers.Add(player);
                 }
             }
             if (!willCheckWiseman)
@@ -182,6 +186,7 @@ public abstract class WaveCannonObjectBase
             {
                 Detach();
             }
+            PlayKillSounds();
         }
         else
         {
@@ -257,6 +262,43 @@ public abstract class WaveCannonObjectBase
         if (ability.Player.AmOwner && isResetKillCooldown)
             ExPlayerControl.LocalPlayer.ResetKillCooldown();
     }
+
+    private void PlayKillSounds()
+    {
+        if (killedPlayers.Count == 0) return;
+        if (!ability.Player.AmOwner) return; // 打っている人視点限定
+
+        // 役職に応じた設定を取得
+        bool shouldPlayKillSound = ability.KillSound;
+        bool shouldDistributeSound = ability.distributedKillSound;
+
+        if (!shouldPlayKillSound) return;
+
+        if (shouldDistributeSound && killedPlayers.Count > 1)
+        {
+            // 分散再生：0.1秒間隔で音を鳴らす
+            PlayKillSoundsDistributed();
+        }
+        else
+        {
+            // 通常再生：一度だけ音を鳴らす
+            SoundManager.Instance.PlaySound(PlayerControl.LocalPlayer.KillSfx, loop: false, 0.8f);
+        }
+        killedPlayers.Clear();
+    }
+
+    private void PlayKillSoundsDistributed()
+    {
+        for (int i = 0; i < killedPlayers.Count; i++)
+        {
+            int soundIndex = i; // クロージャ問題を回避するためのローカル変数
+            new LateTask(() =>
+            {
+                SoundManager.Instance.PlaySound(PlayerControl.LocalPlayer.KillSfx, loop: false, 0.8f);
+            }, soundIndex * 0.1f, $"WaveCannonKillSound_{soundIndex}");
+        }
+    }
+
     [CustomRPC]
     public static void RpcSpawnFromType(ExPlayerControl source, WaveCannonType type, bool isFlipX, Vector3 startPosition)
     {

@@ -33,14 +33,26 @@ public class WaveCannonAbility : CustomButtonBase, IButtonEffect
     private WaveCannonType _type;
     public bool isResetKillCooldown { get; }
     public bool friendlyFire { get; }
+    public bool KillSound { get; }
+    public bool distributedKillSound { get; }
     private EventListener<MurderEventData> _onMurderEvent;
-    public WaveCannonAbility(float coolDown, float effectDuration, WaveCannonType type, bool isResetKillCooldown = false, bool friendlyFire = true)
+    public WaveCannonAbility(
+        float coolDown,
+        float effectDuration,
+        WaveCannonType type,
+        bool isResetKillCooldown = false,
+        bool friendlyFire = true,
+        bool KillSound = false,
+        bool distributedKillSound = false
+    )
     {
         this.coolDown = coolDown;
         this.effectDuration = effectDuration;
         this._type = type;
         this.isResetKillCooldown = isResetKillCooldown;
         this.friendlyFire = friendlyFire;
+        this.KillSound = KillSound;
+        this.distributedKillSound = distributedKillSound;
     }
     public override void OnClick()
     {

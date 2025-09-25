@@ -20,7 +20,10 @@ class BattleRoyalWaveCannon : RoleBase<BattleRoyalWaveCannon>, IRoleBase
             WCBattleRoyalMode.WaveCannonBattleRoyalChargeTime,
             WaveCannonType.Tank,
             false,
-            WCBattleRoyalMode.WaveCannonBattleRoyalFriendlyFire
+            friendlyFire: WCBattleRoyalMode.WaveCannonBattleRoyalFriendlyFire,
+            KillSound: WCBattleRoyalMode.WaveCannonBattleRoyalKillSound,
+            distributedKillSound: WCBattleRoyalMode.WaveCannonBattleRoyalKillSoundDistributed
+
         )
     ];
     public override QuoteMod QuoteMod => QuoteMod.SuperNewRoles;

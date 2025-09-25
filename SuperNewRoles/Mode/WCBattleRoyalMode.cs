@@ -53,6 +53,12 @@ public class WCBattleRoyalMode : ModeBase<WCBattleRoyalMode>, IModeBase
     [CustomOptionFloat("WaveCannonBattleRoyalChargeTime", 0f, 10f, 0.5f, 3f, displayMode: DisplayModeId.WCBattleRoyal, parentFieldName: nameof(Categories.ModeOption), parentActiveValue: ModeId.WCBattleRoyal)]
     public static float WaveCannonBattleRoyalChargeTime;
 
+    [CustomOptionBool("WaveCannonBattleRoyalKillSound", true, displayMode: DisplayModeId.WCBattleRoyal, parentFieldName: nameof(Categories.ModeOption), parentActiveValue: ModeId.WCBattleRoyal, translationName: "WaveCannonKillSound")]
+    public static bool WaveCannonBattleRoyalKillSound;
+
+    [CustomOptionBool("WaveCannonBattleRoyalKillSoundDistributed", false, displayMode: DisplayModeId.WCBattleRoyal, parentFieldName: nameof(WaveCannonBattleRoyalKillSound), parentActiveValue: true, translationName: "WaveCannonKillSoundDistributed")]
+    public static bool WaveCannonBattleRoyalKillSoundDistributed;
+
     public override void OnGameStart()
     {
         Logger.Info("WCBattleRoyalMode.OnGameStart");
@@ -117,28 +123,6 @@ public class WCBattleRoyalMode : ModeBase<WCBattleRoyalMode>, IModeBase
                 var teamColorId = WCBattleRoyalMode.Instance.GetTeamColorId(teamIndex);
                 player.cosmetics.SetBodyColor(teamColorId);
             }
-        }
-    }
-
-    private void AssignTeams(List<PlayerControl> players)
-    {
-        teams.Clear();
-        playerTeams.Clear();
-
-        // チームを初期化
-        for (int i = 0; i < totalTeams; i++)
-        {
-            teams.Add(new List<byte>());
-        }
-
-        // プレイヤーをランダムにチームに割り当て
-        var shuffledPlayers = players.OrderBy(x => Guid.NewGuid()).ToList();
-        for (int i = 0; i < shuffledPlayers.Count; i++)
-        {
-            var teamIndex = i % totalTeams;
-            var playerId = shuffledPlayers[i].PlayerId;
-            teams[teamIndex].Add(playerId);
-            playerTeams[playerId] = teamIndex;
         }
     }
 
