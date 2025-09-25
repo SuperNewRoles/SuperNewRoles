@@ -104,11 +104,6 @@ public interface IRoleBase : IRoleInformation
         }
         Logger.Info($"[OnSetRole] Completed setting abilities for player {player?.name}, Total abilities: {exPlayer.PlayerAbilities.Count}");
     }
-
-    public static ulong GenerateAbilityId(byte playerId, RoleId role, int abilityIndex)
-    {
-        return (ulong)(playerId * 1000000) + (ulong)((int)role * 1000) + (ulong)abilityIndex;
-    }
 }
 
 public interface IRoleInformation

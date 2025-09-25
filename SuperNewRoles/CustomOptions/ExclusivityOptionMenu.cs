@@ -113,6 +113,7 @@ public static class ExclusivityOptionMenu
     private static void ConfigureEditButton(GameObject button, int index)
     {
         var editButton = button.transform.Find("EditButton").gameObject;
+        UIHelper.SetText(editButton, ModTranslation.GetString("ExclusivityEditText"));
         var passiveButton = editButton.AddComponent<PassiveButton>();
         passiveButton.Colliders = new Collider2D[] { editButton.GetComponent<BoxCollider2D>() };
         var spriteRenderer = editButton.transform.Find("Background").GetComponent<SpriteRenderer>();

@@ -15,7 +15,7 @@ public static class MapEditSettingsOptions
     [CustomOptionBool("PolusSetting", false, parentFieldName: nameof(Categories.MapEditSettings))]
     public static bool PolusSetting;
 
-    [CustomOptionSelect("PolusSpawnType", typeof(SpawnTypeOptions), "SpawnType.", parentFieldName: nameof(PolusSetting))]
+    [CustomOptionSelect("PolusSpawnType", typeof(SpawnTypeOptions), "SpawnType.", "SpawnType", parentFieldName: nameof(PolusSetting))]
     public static SpawnTypeOptions PolusSpawnType;
 
     // |:========== Airship設定 ==========:|
@@ -47,7 +47,7 @@ public static class MapEditSettingsOptions
     [CustomOptionBool("TheFungleSetting", false, parentFieldName: nameof(Categories.MapEditSettings))]
     public static bool TheFungleSetting;
 
-    [CustomOptionSelect("TheFungleSpawnType", typeof(SpawnTypeOptions), "SpawnType.", parentFieldName: nameof(TheFungleSetting))]
+    [CustomOptionSelect("TheFungleSpawnType", typeof(SpawnTypeOptions), "SpawnType.", "SpawnType", parentFieldName: nameof(TheFungleSetting))]
     public static SpawnTypeOptions TheFungleSpawnType;
 
     // |:========== (TheFungle)追加アドミンの設定 ==========:|

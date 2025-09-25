@@ -723,14 +723,13 @@ public static class ModHelpers
     // shhhhhh.....
     public static bool IsAndroid()
     {
-        // In unit test environments, IL2CPP runtime is not available.
-        // Safely detect platform and fall back to false if not resolvable.
         try
         {
             return Constants.GetPlatformType() == Platforms.Android;
         }
-        catch
+        catch (Exception e)
         {
+            Logger.Error("IsAndroid:" + e.Message);
             return false;
         }
     }

@@ -5,6 +5,7 @@ using SuperNewRoles.CustomObject;
 using SuperNewRoles.Modules;
 using SuperNewRoles.Modules.Events.Bases;
 using SuperNewRoles.SuperTrophies;
+using SuperNewRoles.Mode;
 using SuperNewRoles.MapCustoms;
 
 namespace SuperNewRoles.Patches;
@@ -17,7 +18,7 @@ class AmongUsClientStartPatch
         try
         {
             Logger.Info("CoStartGame");
-            
+
             // プレイヤー接続状態を確認
             if (PlayerControl.LocalPlayer == null || PlayerControl.AllPlayerControls == null)
             {
@@ -41,6 +42,7 @@ class AmongUsClientStartPatch
             SuperTrophyManager.CoStartGame();
             Garbage.ClearAndReload();
             CustomKillAnimationManager.ClearCurrentCustomKillAnimation();
+            ModeManager.OnGameStart();
 
             // The Fungle マップ初期化フラグをリセット
             FungleAdditionalAdmin.Reset();

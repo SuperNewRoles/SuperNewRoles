@@ -6,6 +6,8 @@ using SuperNewRoles.Events.PCEvents;
 using SuperNewRoles.Modules;
 using SuperNewRoles.Modules.Events.Bases;
 using SuperNewRoles.Roles.Ability;
+using SuperNewRoles.Mode;
+using SuperNewRoles.CustomOptions.Categories;
 using UnityEngine;
 using UnityEngine.PlayerLoop;
 
@@ -37,6 +39,7 @@ public abstract class WaveCannonObjectBase
     private const float SHOOT_DELAY_TIME = 0.5f;
     public bool checkedWiseman = false;
     public bool willCheckWiseman = false;
+    private readonly List<ExPlayerControl> killedPlayers = new();
 
     public WaveCannonObjectBase(WaveCannonAbility ability, bool isFlipX, Vector3 startPosition, bool isResetKillCooldown)
     {
@@ -109,15 +112,42 @@ public abstract class WaveCannonObjectBase
                     if (!collider.IsTouching(player.Player.Collider)) continue;
                     if (player == _touchedWiseman) continue;
 
+                    if (!ability.friendlyFire)
+                    {
+                        if (ModeManager.IsMode(ModeId.WCBattleRoyal))
+                        {
+                            if (WCBattleRoyalMode.Instance.IsOnSameTeam(ability.Player.Player, player.Player))
+                            {
+                                continue;
+                            }
+                        }
+                        else
+                        {
+                            if (ability.Player.IsImpostor() && player.IsImpostor())
+                            {
+                                continue;
+                            }
+                            else if (ability.Player.IsCrewmate() && player.IsCrewmate())
+                            {
+                                continue;
+                            }
+                            else if (ability.Player.IsJackal() && player.IsJackal())
+                            {
+                                continue;
+                            }
+                        }
+                    }
+
                     // Bulletタイプの波動砲の場合、賢者の能力を貫通する
                     if (this is WaveCannonObjectBullet)
                     {
                         ExPlayerControl.LocalPlayer.RpcCustomDeath(player, CustomDeathType.SuperWaveCannon);
+                        killedPlayers.Add(player);
                         continue;
                     }
 
                     // 通常の波動砲の場合、賢者に対してはTryKillEventを通して処理する
-                    if (EnabledWiseMan && !checkedWiseman && _touchedWiseman == null && player.TryGetAbility<WiseManAbility>(out var wiseManAbility))
+                    if (EnabledWiseMan && !checkedWiseman && _touchedWiseman == null && player.TryGetAbility<WiseManAbility>(out var wiseManAbility) && wiseManAbility.Active && !wiseManAbility.Guarded)
                     {
                         // 賢者の能力がアクティブかつガードされていない場合、エフェクトを表示して攻撃を防ぐ
                         if (wiseManAbility.Active && !wiseManAbility.Guarded)
@@ -133,12 +163,14 @@ public abstract class WaveCannonObjectBase
                         if (tryKillData.RefSuccess)
                         {
                             ExPlayerControl.LocalPlayer.RpcCustomDeath(playerRef, CustomDeathType.WaveCannon);
+                            killedPlayers.Add(playerRef);
                         }
                         continue;
                     }
 
                     // 通常の波動砲で賢者以外の場合
                     ExPlayerControl.LocalPlayer.RpcCustomDeath(player, CustomDeathType.WaveCannon);
+                    killedPlayers.Add(player);
                 }
             }
             if (!willCheckWiseman)
@@ -154,6 +186,7 @@ public abstract class WaveCannonObjectBase
             {
                 Detach();
             }
+            PlayKillSounds();
         }
         else
         {
@@ -229,6 +262,50 @@ public abstract class WaveCannonObjectBase
         if (ability.Player.AmOwner && isResetKillCooldown)
             ExPlayerControl.LocalPlayer.ResetKillCooldown();
     }
+
+    private void PlayKillSounds()
+    {
+        if (killedPlayers.Count == 0) return;
+        if (!ability.Player.AmOwner) return; // 打っている人視点限定
+
+        // 役職に応じた設定を取得
+        bool shouldPlayKillSound = ability.KillSound;
+        bool shouldDistributeSound = ability.distributedKillSound;
+
+        if (!shouldPlayKillSound) return;
+
+        if (shouldDistributeSound && killedPlayers.Count > 1)
+        {
+            // 分散再生：0.1秒間隔で音を鳴らす
+            PlayKillSoundsDistributed();
+        }
+        else
+        {
+            // 通常再生：一度だけ音を鳴らす
+            SoundManager.Instance.PlaySound(PlayerControl.LocalPlayer.KillSfx, loop: false, 0.8f);
+        }
+        killedPlayers.Clear();
+    }
+
+    private void PlayKillSoundsDistributed()
+    {
+        for (int i = 0; i < killedPlayers.Count; i++)
+        {
+            int soundIndex = i; // クロージャ問題を回避するためのローカル変数
+            if (i == 0)
+            {
+                SoundManager.Instance.PlaySound(PlayerControl.LocalPlayer.KillSfx, loop: false, 0.8f);
+            }
+            else
+            {
+                new LateTask(() =>
+                {
+                    SoundManager.Instance.PlaySound(PlayerControl.LocalPlayer.KillSfx, loop: false, 0.8f);
+                }, soundIndex * 0.1f, $"WaveCannonKillSound_{soundIndex}");
+            }
+        }
+    }
+
     [CustomRPC]
     public static void RpcSpawnFromType(ExPlayerControl source, WaveCannonType type, bool isFlipX, Vector3 startPosition)
     {

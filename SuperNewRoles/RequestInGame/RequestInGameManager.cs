@@ -278,6 +278,8 @@ public class RequestInGameManager
     {
         additionalInfo["message"] = description;
         additionalInfo["title"] = title;
+        additionalInfo["version"] = "SNR:" + Statics.VersionString + "&AmongUs:" + Constants.GetBroadcastVersion();
+        additionalInfo["platform"] = Constants.GetPurchasingPlatformType();
         string data = JsonConvert.SerializeObject(additionalInfo.Wrap());
 
         string url = $"{SNRURLs.ReportInGameAPI}/sendRequest/{type}";
