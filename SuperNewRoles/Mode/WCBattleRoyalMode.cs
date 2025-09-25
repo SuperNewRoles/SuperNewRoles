@@ -13,6 +13,7 @@ using SuperNewRoles.Events;
 using SuperNewRoles.Modules.Events.Bases;
 using SuperNewRoles.Patches;
 using SuperNewRoles.Extensions;
+using InnerNet;
 
 namespace SuperNewRoles.Mode;
 
@@ -66,7 +67,11 @@ public class WCBattleRoyalMode : ModeBase<WCBattleRoyalMode>, IModeBase
 
         if (isTeamMode)
         {
-            AssignTeams(allPlayers);
+            if (AmongUsClient.Instance.AmHost)
+            {
+                int seed = (int)(DateTime.UtcNow.Ticks & 0x7FFFFFFF) ^ Environment.TickCount;
+                RpcWCBattleRoyalStart(seed);
+            }
         }
         else
         {
@@ -77,10 +82,23 @@ public class WCBattleRoyalMode : ModeBase<WCBattleRoyalMode>, IModeBase
                 teams.Add(new List<byte> { player.PlayerId });
                 playerTeams[player.PlayerId] = teams.Count - 1;
             }
+            AssignRole();
         }
 
         nameTextListener = NameTextUpdateEvent.Instance.AddListener(OnNameTextUpdate);
 
+    }
+
+    [CustomRPC]
+    public static void RpcWCBattleRoyalStart(int seed)
+    {
+        WCBattleRoyalMode.Instance.AssignTeamsWithSeed(seed);
+        AssignRole();
+    }
+
+    public static void AssignRole()
+    {
+        var allPlayers = PlayerControl.AllPlayerControls.ToArray().Where(p => p != null).ToList();
         // 全員をBattleRoyalWaveCannon役職に設定
         foreach (var player in allPlayers)
         {
@@ -93,10 +111,10 @@ public class WCBattleRoyalMode : ModeBase<WCBattleRoyalMode>, IModeBase
             RoleManager.Instance.SetRole(player, RoleTypes.Crewmate);
 
             // チームカラーを設定
-            if (isTeamMode)
+            if (WaveCannonBattleRoyalTeamMode)
             {
-                var teamIndex = playerTeams[player.PlayerId];
-                var teamColorId = GetTeamColorId(teamIndex);
+                var teamIndex = WCBattleRoyalMode.Instance.playerTeams[player.PlayerId];
+                var teamColorId = WCBattleRoyalMode.Instance.GetTeamColorId(teamIndex);
                 player.cosmetics.SetBodyColor(teamColorId);
             }
         }
@@ -119,6 +137,39 @@ public class WCBattleRoyalMode : ModeBase<WCBattleRoyalMode>, IModeBase
         {
             var teamIndex = i % totalTeams;
             var playerId = shuffledPlayers[i].PlayerId;
+            teams[teamIndex].Add(playerId);
+            playerTeams[playerId] = teamIndex;
+        }
+    }
+
+    private void AssignTeamsWithSeed(int seed)
+    {
+        teams.Clear();
+        playerTeams.Clear();
+
+        for (int i = 0; i < totalTeams; i++)
+        {
+            teams.Add(new List<byte>());
+        }
+
+        var players = PlayerControl.AllPlayerControls.ToArray()
+            .Where(p => p != null)
+            .OrderBy(p => p.PlayerId)
+            .ToList();
+
+        var rng = new System.Random(seed);
+        for (int i = players.Count - 1; i > 0; i--)
+        {
+            int j = rng.Next(i + 1);
+            var tmp = players[i];
+            players[i] = players[j];
+            players[j] = tmp;
+        }
+
+        for (int i = 0; i < players.Count; i++)
+        {
+            var teamIndex = i % totalTeams;
+            var playerId = players[i].PlayerId;
             teams[teamIndex].Add(playerId);
             playerTeams[playerId] = teamIndex;
         }
