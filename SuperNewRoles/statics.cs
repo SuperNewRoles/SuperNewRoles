@@ -22,7 +22,7 @@ public static class VersionInfo
     public static string VersionString => Current.ToString() + (SnapShotVersion?.ToString() ?? string.Empty);
 
     public static bool IsSnapShot => SnapShotVersion != null;
-    public static char? SnapShotVersion = 'a';
+    public static char? SnapShotVersion = null;
 
     public static string NewVersion = "";
     public static bool IsUpdate = false;
