@@ -292,10 +292,17 @@ public abstract class WaveCannonObjectBase
         for (int i = 0; i < killedPlayers.Count; i++)
         {
             int soundIndex = i; // クロージャ問題を回避するためのローカル変数
-            new LateTask(() =>
+            if (i == 0)
             {
                 SoundManager.Instance.PlaySound(PlayerControl.LocalPlayer.KillSfx, loop: false, 0.8f);
-            }, soundIndex * 0.1f, $"WaveCannonKillSound_{soundIndex}");
+            }
+            else
+            {
+                new LateTask(() =>
+                {
+                    SoundManager.Instance.PlaySound(PlayerControl.LocalPlayer.KillSfx, loop: false, 0.8f);
+                }, soundIndex * 0.1f, $"WaveCannonKillSound_{soundIndex}");
+            }
         }
     }
 
