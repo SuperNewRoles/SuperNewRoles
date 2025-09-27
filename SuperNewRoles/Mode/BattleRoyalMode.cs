@@ -27,7 +27,7 @@ public class BattleRoyalMode : ModeBase<BattleRoyalMode>, IModeBase
     // ゲーム状態管理
     private static bool isGameStarted = false;
     private static bool isPreparationPhase = true;
-    private static float preparationTime = 0f;
+    public static float preparationTime { get; private set; } = 0f;
     private static float updateTimer = 0f;
     private static float startWinCheckEnableTime = 0f;
 
@@ -556,6 +556,10 @@ public class BattleRoyalMode : ModeBase<BattleRoyalMode>, IModeBase
         {
             if (AmongUsClient.Instance.AmHost && ModeManager.IsMode(ModeId.BattleRoyal))
             {
+                if (preparationTime > 0f)
+                    return false;
+                if (__instance.Data.IsDead || target.Data.IsDead)
+                    return false;
                 __instance.isKilling = true;
                 __instance.RpcMurderPlayer(target, didSucceed: true);
                 return false;
