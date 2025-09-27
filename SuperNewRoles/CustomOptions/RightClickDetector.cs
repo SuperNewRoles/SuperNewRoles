@@ -20,6 +20,8 @@ public class RightClickDetector : MonoBehaviour
     private float _lastTapTime = -1f;
     private bool _firstTapInside = false;
 
+    private static Camera mainCamera;
+
     private void Start()
     {
         _collider = GetComponent<BoxCollider2D>();
@@ -27,11 +29,16 @@ public class RightClickDetector : MonoBehaviour
 
     private void Update()
     {
+        if (mainCamera == null)
+        {
+            mainCamera = Camera.main;
+        }
+
         // 右クリックが押された瞬間のみ処理
         if (Input.GetMouseButtonDown(1))
         {
             // マウス位置をワールド座標に変換
-            Vector2 mousePos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+            Vector2 mousePos = mainCamera.ScreenToWorldPoint(Input.mousePosition);
             // コライダーとの当たり判定
             if (_collider != null && _collider.OverlapPoint(mousePos))
             {
@@ -54,7 +61,7 @@ public class RightClickDetector : MonoBehaviour
                     if (touch.phase == TouchPhase.Began)
                     {
                         tapBegan = true;
-                        tapPos = Camera.main.ScreenToWorldPoint(touch.position);
+                        tapPos = mainCamera.ScreenToWorldPoint(touch.position);
                         break;
                     }
                 }
@@ -63,7 +70,7 @@ public class RightClickDetector : MonoBehaviour
             if (!tapBegan && Input.GetMouseButtonDown(0))
             {
                 tapBegan = true;
-                tapPos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+                tapPos = mainCamera.ScreenToWorldPoint(Input.mousePosition);
             }
 
             if (tapBegan)
