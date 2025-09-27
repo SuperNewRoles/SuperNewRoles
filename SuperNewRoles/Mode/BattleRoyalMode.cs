@@ -243,6 +243,7 @@ public class BattleRoyalMode : ModeBase<BattleRoyalMode>, IModeBase
             var winnerExPlayers = winners.Select(p => (ExPlayerControl)p).Where(p => p != null).ToArray();
             if (winnerExPlayers.Length > 0)
             {
+                EndGameSetRoles(winnerExPlayers);
                 EndGamer.RpcEndGameWithWinner(
                     reason: (SuperNewRoles.Patches.CustomGameOverReason)reason,
                     winType: WinType.Default,
@@ -255,6 +256,7 @@ public class BattleRoyalMode : ModeBase<BattleRoyalMode>, IModeBase
         }
         else
         {
+            EndGameSetRoles(new ExPlayerControl[0]);
             // 勝者がいない場合（引き分け）
             EndGamer.RpcEndGameWithWinner(
                 reason: (SuperNewRoles.Patches.CustomGameOverReason)reason,
@@ -265,6 +267,25 @@ public class BattleRoyalMode : ModeBase<BattleRoyalMode>, IModeBase
                 winText: "WinText"
             );
         }
+    }
+
+    private void EndGameSetRoles(ExPlayerControl[] winners)
+    {
+        List<byte> winnerIds = winners.Select(p => p.PlayerId).ToList();
+        foreach (PlayerControl player in PlayerControl.AllPlayerControls)
+        {
+            bool isDead = player.Data.IsDead;
+            if (winnerIds.Contains(player.PlayerId))
+            {
+                player.RpcSetRole(RoleTypes.ImpostorGhost);
+            }
+            else
+            {
+                player.RpcSetRole(RoleTypes.CrewmateGhost);
+            }
+            player.Data.IsDead = isDead;
+        }
+        GameData.Instance.DirtyAllData();
     }
 
     private void SetupTeams()
