@@ -24,7 +24,8 @@ class BattleRoyalWaveCannon : RoleBase<BattleRoyalWaveCannon>, IRoleBase
             KillSound: WCBattleRoyalMode.WaveCannonBattleRoyalKillSound,
             distributedKillSound: WCBattleRoyalMode.WaveCannonBattleRoyalKillSoundDistributed
         ),
-        () => new CustomVentAbility(() => WCBattleRoyalMode.WaveCannonBattleRoyalCanUseVent)
+        () => new CustomVentAbility(() => WCBattleRoyalMode.WaveCannonBattleRoyalCanUseVent),
+        () => new CanUseReportButtonAbility(() => false)
     ];
     public override QuoteMod QuoteMod => QuoteMod.SuperNewRoles;
     public override AssignedTeamType AssignedTeam => AssignedTeamType.Neutral;
