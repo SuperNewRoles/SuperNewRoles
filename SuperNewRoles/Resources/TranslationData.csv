@@ -200,11 +200,11 @@ RequestInGameSendDescriptionBack,メッセージを入力してください(10�
 RequestInGameAgreement,利用規約はこちら,Terms of Service,利用規約在這裡,利用規約在這裡
 RequestInGameSendButton,同意して送信,Send with agreement,同意后发送,同意後發送
 RequestInGameSendMapGray,マップ,Map,地图,地圖
-RequestInGameSendMapBack,バグが発生したマップ(ゲーム内でなければその他でも可),The map where the bug occurred (if not in the game, it can also be other),The map where the bug occurred (如果不在游戏中，也可以是其他),The map where the bug occurred (如果不在遊戲中，也可以是其他)
+RequestInGameSendMapBack,バグが発生したマップ(ゲーム内でなければその他でも可),The map where the bug occurred (if not in the game，it can also be other),The map where the bug occurred (如果不在游戏中，也可以是其他),The map where the bug occurred (如果不在遊戲中，也可以是其他)
 RequestInGameSendRoleGray,役職・機能,Role/Feature,角色/功能,角色/功能
 RequestInGameSendRoleBack,バグが発生した役職/機能,The role/feature where the bug occurred,角色/功能（可选）,角色/功能（可選）
 RequestInGameSendTimingGray,タイミング,Timing,时机,時機
-RequestInGameSendTimingBack,バグが発生したタイミング(ロビー、初手会議直後、など。),The timing of the bug (e.g. lobby, after the first meeting, etc.)
+RequestInGameSendTimingBack,バグが発生したタイミング(ロビー、初手会議直後、など。),The timing of the bug (e.g. lobby，after the first meeting，etc.)
 RequestInGameLoadingData,データを取得中,Loading data
 RequestInGameSendingReport,レポートを送信中,Sending report
 RequestInGameSending,メッセージを送信中,Sending message
