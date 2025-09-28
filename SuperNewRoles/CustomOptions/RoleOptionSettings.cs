@@ -221,14 +221,13 @@ public class RoleOptionSettings
             if (roleOption.NumberOfCrews > playerCount)
                 roleOption.NumberOfCrews = 0;
             selectedText.text = ModTranslation.GetString("NumberOfCrewsSelected", roleOption.NumberOfCrews);
-            if (isExist)
-                RoleOptionMenu.UpdateRoleDetailButtonColor(roleDetailButton.GetComponent<SpriteRenderer>(), roleOption);
-
             if (oldValue == 0 && roleOption.NumberOfCrews > 0 && roleOption.Percentage == 0)
             {
                 roleOption.Percentage = 100;
                 percentageText.text = "100%";
             }
+            if (isExist)
+                RoleOptionMenu.UpdateRoleDetailButtonColor(roleDetailButton.GetComponent<SpriteRenderer>(), roleOption);
             RoleOptionManager.RpcSyncRoleOptionDelay(roleOption.RoleId, roleOption.NumberOfCrews, roleOption.Percentage);
         }, plusSpriteRenderer);
 
