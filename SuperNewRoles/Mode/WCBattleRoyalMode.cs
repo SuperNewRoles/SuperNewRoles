@@ -53,7 +53,7 @@ public class WCBattleRoyalMode : ModeBase<WCBattleRoyalMode>, IModeBase
     [CustomOptionFloat("WaveCannonBattleRoyalChargeTime", 0f, 10f, 0.5f, 3f, displayMode: DisplayModeId.WCBattleRoyal, parentFieldName: nameof(Categories.ModeOption), parentActiveValue: ModeId.WCBattleRoyal)]
     public static float WaveCannonBattleRoyalChargeTime;
 
-    [CustomOptionBool("WaveCannonBattleRoyalCanUseVent", false, displayMode: DisplayModeId.WCBattleRoyal,　parentFieldName: nameof(Categories.ModeOption), translationName: "CanUseVent")]
+    [CustomOptionBool("WaveCannonBattleRoyalCanUseVent", false, displayMode: DisplayModeId.WCBattleRoyal, parentFieldName: nameof(Categories.ModeOption), translationName: "CanUseVent")]
     public static bool WaveCannonBattleRoyalCanUseVent;
 
     [CustomOptionBool("WaveCannonBattleRoyalKillSound", true, displayMode: DisplayModeId.WCBattleRoyal, parentFieldName: nameof(Categories.ModeOption), parentActiveValue: ModeId.WCBattleRoyal, translationName: "WaveCannonKillSound")]
