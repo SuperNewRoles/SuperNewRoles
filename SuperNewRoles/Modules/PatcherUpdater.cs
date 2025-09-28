@@ -20,9 +20,6 @@ public static class PatcherUpdater
     ];
     private static readonly List<string> patchers_android =
     [
-        "SuperNewRolesUpdatePatcher.dll",
-        "BepInEx.SplashScreen.Patcher.BepInEx6.dll",
-        "BepInEx.SplashScreen.GUI.exe"
     ];
     private static readonly List<string> currentPatchers = ModHelpers.IsAndroid() ? patchers_android : patchers;
     public static void Initialize()

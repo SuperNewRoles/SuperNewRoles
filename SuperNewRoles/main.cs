@@ -34,6 +34,7 @@ using SuperNewRoles.RequestInGame;
 using System.Diagnostics;
 using UnityEngine.SceneManagement;
 using AmongUs.GameOptions;
+using Il2CppInterop.Runtime;
 
 namespace SuperNewRoles;
 
@@ -69,7 +70,11 @@ public partial class SuperNewRolesPlugin : BasePlugin
         if (needed && ModHelpers.IsAndroid())
             action();
         else
-            return Task.Run(action);
+            return Task.Run(() =>
+            {
+                IL2CPP.il2cpp_thread_attach(IL2CPP.il2cpp_domain_get());
+                action();
+            });
         return Task.Run(() => { });
 
     }
@@ -130,11 +135,10 @@ public partial class SuperNewRolesPlugin : BasePlugin
         });
 
         Logger.LogInfo("Waiting for Harmony patch");
-        if (ModHelpers.IsAndroid())
-        {
-            HarmonyPatchAllTask?.Wait();
-            CustomRPCManagerLoadTask?.Wait();
-        }
+
+        HarmonyPatchAllTask?.Wait();
+        CustomRPCManagerLoadTask?.Wait();
+
         Logger.LogInfo("SuperNewRoles loaded");
         Logger.LogInfo("--------------------------------");
         Logger.LogInfo(ModTranslation.GetString("WelcomeNextSuperNewRoles"));
