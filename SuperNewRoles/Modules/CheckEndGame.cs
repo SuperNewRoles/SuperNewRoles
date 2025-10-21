@@ -342,7 +342,7 @@ public class PlayerStatistics
             if (player.Role == RoleId.Arsonist) arsonistAlive++;
             if (player.Role == RoleId.Owl) owlAlive++;
             if (player.Role == RoleId.Hitman) hitmanAlive++;
-            if (player.IsNonCrewKiller() || player.IsJackalTeam()) totalKiller++;
+            if (player.Role != RoleId.VampireDependent && (player.IsNonCrewKiller() || player.IsJackalTeam())) totalKiller++;
 
             if (isLoversBlock && player.IsLovers())
             {

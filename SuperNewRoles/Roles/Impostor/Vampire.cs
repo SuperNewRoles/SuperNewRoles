@@ -76,7 +76,7 @@ class Vampire : RoleBase<Vampire>
     [CustomOptionBool("VampireDependentHasReverseVision", true, parentFieldName: nameof(VampireCreateDependents))]
     public static bool VampireDependentHasReverseVision;
 
-    [CustomOptionBool("VampireDependentHasImpostorVisionInLightsoff", true, parentFieldName: nameof(VampireCreateDependents))]
+    [CustomOptionBool("VampireDependentHasImpostorVisionInLightsoff", true, parentFieldName: nameof(VampireDependentHasReverseVision))]
     public static bool VampireDependentHasImpostorVisionInLightsoff;
 
     [CustomOptionBool("VampireCannotFixSabotage", true)]
@@ -134,7 +134,7 @@ public class VampireAbility : AbilityBase
             sidekickCooldown: () => nightFall.cooldown,
             sidekickRole: () => RoleId.VampireDependent,
             sidekickRoleVanilla: () => RoleTypes.Crewmate,
-            sidekickSprite: AssetManager.GetAsset<Sprite>("VampireNightFallButton.png"),
+            sidekickSprite: AssetManager.GetAsset<Sprite>("VampireCreateDependentsButton.png"),
             sidekickText: ModTranslation.GetString("VampireDependentsButtonText"),
             sidekickCount: () => 1,
             isTargetable: (player) => !player.IsImpostor(),
@@ -170,6 +170,7 @@ public class VampireAbility : AbilityBase
         Player.AttachAbility(sabotageCanUseAbility, new AbilityParentAbility(this));
         Player.AttachAbility(deviceCanUseAbility, new AbilityParentAbility(this));
         Player.AttachAbility(hideInAdminAbility, new AbilityParentAbility(this));
+        Player.AttachAbility(new KnowOtherAbility((player) => player.Player == dependent?.Player, () => true), new AbilityParentAbility(this));
         _fixedUpdateListener = FixedUpdateEvent.Instance.AddListener(OnFixedUpdate);
         _murderListener = MurderEvent.Instance.AddListener(OnMurder);
         _wrapUpListener = WrapUpEvent.Instance.AddListener(OnWrapUp);
@@ -300,6 +301,10 @@ public class VampireAbility : AbilityBase
     private void OnFixedUpdate()
     {
         if (TargetingPlayer == null || TargetingPlayer.IsDead()) return;
+
+        // キル遅延中はタイマーを進めない
+        if (Player.AmOwner)
+            killButtonAbility.ResetTimer();
 
         delayTimer -= Time.fixedDeltaTime;
         if (delayTimer <= 0)

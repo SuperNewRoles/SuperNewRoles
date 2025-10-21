@@ -152,6 +152,10 @@ public static class CustomDeathExtensions
                 player.Player.MurderPlayer(player.Player, MurderResultFlags.Succeeded);
                 FinalStatusManager.SetFinalStatus(player, FinalStatus.VampireWithDead);
                 break;
+            case CustomDeathType.VampireWithDeadNonDeadbody:
+                player.Player.Exiled();
+                FinalStatusManager.SetFinalStatus(player, FinalStatus.VampireWithDead);
+                break;
             case CustomDeathType.PenguinAfterMeeting:
                 if (!TryKillEvent.Invoke(source, ref player).RefSuccess)
                     break;
@@ -203,6 +207,7 @@ public enum CustomDeathType
     LaunchByRocket,
     VampireKill,
     VampireWithDead,
+    VampireWithDeadNonDeadbody,
     KilLWithoutDeadbodyAndTeleport,
     PenguinAfterMeeting,
     SuicideSecrets,

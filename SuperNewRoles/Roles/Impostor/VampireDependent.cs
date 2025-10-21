@@ -94,6 +94,7 @@ public class VampireDependentAbility : AbilityBase
         Player.AttachAbility(deviceCanUseAbility, new AbilityParentAbility(this));
         Player.AttachAbility(hideInAdminAbility, new AbilityParentAbility(this));
         Player.AttachAbility(reverseVisionAbility, new AbilityParentAbility(this));
+        Player.AttachAbility(new KnowOtherAbility((player) => player.Player == vampire?.Player, () => true), new AbilityParentAbility(this));
     }
 
     public override void DetachToAlls()
@@ -135,7 +136,7 @@ public class VampireDependentAbility : AbilityBase
     private void OnExile(ExileEventData data)
     {
         if (data.exiled == vampire?.Player && Player.IsAlive())
-            ExPlayerControl.LocalPlayer.RpcCustomDeath(CustomDeathType.VampireWithDead);
+            ExPlayerControl.LocalPlayer.RpcCustomDeath(CustomDeathType.VampireWithDeadNonDeadbody);
     }
 
     public void SetVampire(VampireAbility vampire)
