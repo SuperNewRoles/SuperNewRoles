@@ -18,7 +18,7 @@ public static class TrickOrTreat
         private static readonly DateTime startDate = new(DateTime.UtcNow.Year, 10, 24, 9, 0, 0);
         private static readonly DateTime endDate = new(DateTime.UtcNow.Year, 11, 4, 9, 0, 0);
 
-        private static bool forceEnabled = true;
+        private static bool forceEnabled = false;
 
         public static bool Prefix(PlayerParticles __instance)
         {
@@ -32,6 +32,7 @@ public static class TrickOrTreat
             // 馬ングアスの場合は馬を見せる
             if (AprilFoolsMode.ShouldHorseAround())
                 return true;
+
             int index = 1;
             foreach (PlayerParticleInfo info in __instance.Sprites)
             {
@@ -41,17 +42,12 @@ public static class TrickOrTreat
             //以下バニラコード
 
             __instance.fill = new RandomFill<PlayerParticleInfo>();
-            if (AprilFoolsMode.ShouldHorseAround())
-            {
-                __instance.fill.Set(__instance.HorseSprites.IEnumerableToIl2Cpp());
-                __instance.pool.Prefab = __instance.HorsePrefab;
-            }
-            else
-            {
-                __instance.fill.Set(__instance.Sprites.IEnumerableToIl2Cpp());
-            }
+
+            // 元のコードには馬ングアスのコードがあったけどここでは不要なので削除済み
+            __instance.fill.Set(__instance.Sprites.IEnumerableToIl2Cpp());
+
             // バニラよりもいっぱい出す
-            int AdditionalCount = ModHelpers.GetRandomInt(100, min: 20);
+            int AdditionalCount = ModHelpers.GetRandomInt(100, min: 40);
             Logger.Info($"{AdditionalCount}お菓子増量キャンペーン中！");
             for (int i = 0; i < AdditionalCount; i++)
             {
