@@ -14,16 +14,46 @@ public class ReportUIMenu
 {
     public static void ShowReportUIMenu(GameObject parent, RequestInGameType requestInGameType)
     {
-        GameObject reportUIMenu = GameObject.Instantiate(AssetManager.GetAsset<GameObject>("ReportUI"), parent.transform.parent);
+        string prefabName = requestInGameType == RequestInGameType.Bug ? "ReportBugUI" : "ReportUI";
+        GameObject reportUIMenu = GameObject.Instantiate(AssetManager.GetAsset<GameObject>(prefabName), parent.transform.parent);
         reportUIMenu.transform.localPosition = new(0f, 0f, -10f);
         GameObject Inner = reportUIMenu.transform.Find("Inner").gameObject;
         TextBoxTMP descriptionTextBox = Inner.transform.Find("InputBoxDescription").GetComponent<TextBoxTMP>();
         TextBoxTMP titleTextBox = Inner.transform.Find("InputBoxTitle").GetComponent<TextBoxTMP>();
+        // Bug用 追加フィールド
+        TextBoxTMP mapTextBox = null;
+        TextBoxTMP roleTextBox = null;
+        TextBoxTMP timingTextBox = null;
         // Translation
         Inner.transform.Find("InputBoxDescription/Text").GetComponent<TextMeshPro>().text = ModTranslation.GetString("RequestInGameSendDescriptionBack");
         Inner.transform.Find("InputBoxTitle/Text").GetComponent<TextMeshPro>().text = ModTranslation.GetString("RequestInGameSendTitleBack");
         Inner.transform.Find("TextGrayTitle/Text").GetComponent<TextMeshPro>().text = ModTranslation.GetString("RequestInGameSendTitleGray");
         Inner.transform.Find("TextGrayDescription/Text").GetComponent<TextMeshPro>().text = ModTranslation.GetString("RequestInGameSendDescriptionGray");
+        if (requestInGameType == RequestInGameType.Bug)
+        {
+            // Map/Role/Timing のラベルとプレースホルダ
+            var textGrayMap = Inner.transform.Find("TextGrayMap/Text");
+            var inputBoxMap = Inner.transform.Find("InputBoxMap/Text");
+            var textGrayRole = Inner.transform.Find("TextGrayRole/Text");
+            var inputBoxRole = Inner.transform.Find("InputBoxRole/Text");
+            var textGrayTiming = Inner.transform.Find("TextGrayTiming/Text");
+            var inputBoxTiming = Inner.transform.Find("InputBoxTiming/Text");
+
+            if (textGrayMap != null) textGrayMap.GetComponent<TextMeshPro>().text = ModTranslation.GetString("RequestInGameSendMapGray");
+            if (inputBoxMap != null) inputBoxMap.GetComponent<TextMeshPro>().text = ModTranslation.GetString("RequestInGameSendMapBack");
+            if (textGrayRole != null) textGrayRole.GetComponent<TextMeshPro>().text = ModTranslation.GetString("RequestInGameSendRoleGray");
+            if (inputBoxRole != null) inputBoxRole.GetComponent<TextMeshPro>().text = ModTranslation.GetString("RequestInGameSendRoleBack");
+            if (textGrayTiming != null) textGrayTiming.GetComponent<TextMeshPro>().text = ModTranslation.GetString("RequestInGameSendTimingGray");
+            if (inputBoxTiming != null) inputBoxTiming.GetComponent<TextMeshPro>().text = ModTranslation.GetString("RequestInGameSendTimingBack");
+
+            // TextBoxTMP 参照の取得と設定
+            var mapBox = Inner.transform.Find("InputBoxMap");
+            var roleBox = Inner.transform.Find("InputBoxRole");
+            var timingBox = Inner.transform.Find("InputBoxTiming");
+            if (mapBox != null) mapTextBox = mapBox.GetComponent<TextBoxTMP>();
+            if (roleBox != null) roleTextBox = roleBox.GetComponent<TextBoxTMP>();
+            if (timingBox != null) timingTextBox = timingBox.GetComponent<TextBoxTMP>();
+        }
         Inner.transform.Find("Button_Send/Text").GetComponent<TextMeshPro>().text = ModTranslation.GetString("RequestInGameSendButton");
         GameObject agreement = Inner.transform.Find("AgreementText").gameObject;
         TextMeshPro agreementTMP = agreement.GetComponent<TextMeshPro>();
@@ -49,6 +79,12 @@ public class ReportUIMenu
 
         ConfigureTextBox(descriptionTextBox);
         ConfigureTextBox(titleTextBox);
+        if (requestInGameType == RequestInGameType.Bug)
+        {
+            if (mapTextBox != null) ConfigureTextBox(mapTextBox);
+            if (roleTextBox != null) ConfigureTextBox(roleTextBox);
+            if (timingTextBox != null) ConfigureTextBox(timingTextBox);
+        }
 
         GameObject Button_Send = Inner.transform.Find("Button_Send").gameObject;
         PassiveButton passiveButton = Button_Send.AddComponent<PassiveButton>();
@@ -63,7 +99,14 @@ public class ReportUIMenu
             else
             {
                 Logger.Info($"Report sent: {titleTextBox.text} - {descriptionTextBox.text}");
-                SendReport(reportUIMenu.transform, requestInGameType, descriptionTextBox.text, titleTextBox.text);
+                // 追加情報の取得（Bug時のみ）
+                Dictionary<string, string> extra = null;
+                string description = descriptionTextBox.text;
+                if (requestInGameType == RequestInGameType.Bug)
+                {
+                    description = $"マップ: {mapTextBox?.text}\n役職/機能: {roleTextBox?.text}\nタイミング: {timingTextBox?.text}\n{description}";
+                }
+                SendReport(reportUIMenu.transform, requestInGameType, description, titleTextBox.text, extra);
             }
         }));
         passiveButton.OnMouseOver = new();
@@ -102,7 +145,7 @@ public class ReportUIMenu
         errorMessage = null;
         return true;
     }
-    private static void SendReport(Transform parent, RequestInGameType requestInGameType, string description, string title)
+    private static void SendReport(Transform parent, RequestInGameType requestInGameType, string description, string title, Dictionary<string, string> extra = null)
     {
         bool isActive = true;
         string text = ModTranslation.GetString("RequestInGameLoadingData");
@@ -121,9 +164,15 @@ public class ReportUIMenu
                     {
                         text = ModTranslation.GetString("RequestInGameSendingReportProgress", 0);
                         Dictionary<string, string> additionalInfo = new();
-                        additionalInfo["version"] = "SNR:" + Statics.VersionString + "&AmongUs:" + Constants.GetBroadcastVersion();
                         additionalInfo["mode"] = Categories.ModeOption.ToString();
                         additionalInfo["log_compressed"] = LogCompression.CompressAndEncryptLog(SNRLogListener.Instance.logBuilder.ToString());
+                        if (extra != null)
+                        {
+                            foreach (var kv in extra)
+                            {
+                                if (!string.IsNullOrEmpty(kv.Key)) additionalInfo[kv.Key] = kv.Value ?? string.Empty;
+                            }
+                        }
 
                         AmongUsClient.Instance.StartCoroutine(RequestInGameManager.SendReport(description, title, RequestInGameType.Bug.ToString(), additionalInfo, success =>
                         {

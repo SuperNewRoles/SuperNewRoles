@@ -37,10 +37,10 @@ class OverKiller : RoleBase<OverKiller>
     [CustomOptionInt("OverKillerKillCount", 1, 60, 1, 30)]
     public static int OverKillerKillCount;
 
-    [CustomOptionBool("OverKillerScatterBodies", true, translationName: "ScatterBodies")]
+    [CustomOptionBool("OverKillerScatterBodies", true)]
     public static bool OverKillerScatterBodies;
 
-    [CustomOptionFloat("OverKillerScatterRange", 0f, 5f, 0.1f, 1.5f, translationName: "ScatterRange")]
+    [CustomOptionFloat("OverKillerScatterRange", 0f, 5f, 0.1f, 1.5f)]
     public static float OverKillerScatterRange;
 }
 
@@ -51,9 +51,12 @@ public class OverKillerAbility : AbilityBase
     public override void AttachToAlls()
     {
         base.AttachToAlls();
-        Player.AttachAbility(new ChangeKillTimerAbility(
-            killTimerGetter: () => OverKiller.OverKillerKillCooldown
-        ), new AbilityParentAbility(this));
+        Player.AttachAbility(new CustomKillButtonAbility(
+            canKill: () => true,
+            killCooldown: () => OverKiller.OverKillerKillCooldown,
+            onlyCrewmates: () => true
+        ),
+        new AbilityParentAbility(this));
     }
 
     public override void AttachToLocalPlayer()
@@ -110,12 +113,12 @@ public class OverKillerAbility : AbilityBase
     }
 
     [CustomRPC]
-    public static void RpcCreateMultipleBodies(byte targetPlayerId, Vector3[] scatteredPositions)
+    public void RpcCreateMultipleBodies(byte targetPlayerId, Vector3[] scatteredPositions)
     {
         ExPlayerControl target = ExPlayerControl.ById(targetPlayerId);
         if (target == null) return;
 
-        var deadBodyPrefab = UnityEngine.Object.FindObjectOfType<GameManager>()?.DeadBodyPrefab;
+        var deadBodyPrefab = GameManager.Instance.GetDeadBody(Player.Data.Role);
         if (deadBodyPrefab == null) return;
 
         foreach (var position in scatteredPositions)

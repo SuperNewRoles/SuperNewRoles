@@ -176,14 +176,19 @@ public class EndGameManagerSetUpPatch
     public static void RpcEndGameWithCondition(GameOverReason reason, List<byte> winners, string UpperText, List<string> additionalWinTexts, Color UpperTextColor, bool IsHaison, string winText = "WinText")
     {
         if (fadeObject != null) return;
+        EndGameWithCondition(reason, winners, UpperText, additionalWinTexts, UpperTextColor, IsHaison, winText);
+    }
+    public static void EndGameWithCondition(GameOverReason reason, List<byte> winners, string UpperText, List<string> additionalWinTexts, Color UpperTextColor, bool IsHaison, string winText = "WinText", bool validTranslation = true)
+    {
+        if (fadeObject != null) return;
         EndGameCondition newCond = new(
             reason: reason,
             winners: winners,
-            UpperText: ModTranslation.TryGetString(UpperText, out var value) ? value : "<INVALID_TEXT>",
-            additionalWinTexts: additionalWinTexts.Select(x => ModTranslation.TryGetString(x, out var val) ? val : "<INVALID_TEXT>").ToList(),
+            UpperText: !validTranslation ? UpperText : ModTranslation.TryGetString(UpperText, out var value) ? value : "<INVALID_TEXT>",
+            additionalWinTexts: additionalWinTexts.Select(x => !validTranslation ? x : ModTranslation.TryGetString(x, out var val) ? val : "<INVALID_TEXT>").ToList(),
             UpperTextColor: UpperTextColor,
             IsHaison: IsHaison,
-            winText: ModTranslation.TryGetString(winText, out var winVal) ? winVal : "<INVALID_TEXT>"
+            winText: !validTranslation ? winText : ModTranslation.TryGetString(winText, out var winVal) ? winVal : "<INVALID_TEXT>"
         );
         EndGameManagerSetUpPatch.endGameCondition = newCond;
 
@@ -378,8 +383,6 @@ public class EndGameManagerSetUpPatch
             __instance.BackgroundBar.material.SetColor("_Color", endGameCondition.UpperTextColor);
         }
 
-        AdditionalTempData.Clear();
-
         // トロフィー処理を実行
         SuperTrophyManager.OnEndGame();
     }
@@ -571,6 +574,10 @@ public static class OnGameEndPatch
         AdditionalTempData.gameOverReason = gameOverReason;
 
         EndGameEvent.Invoke(AdditionalTempData.gameOverReason, EndGameManagerSetUpPatch.endGameCondition.winners.Select(x => ExPlayerControl.ById(x)).ToList());
+
+        // ModeManagerのゲーム終了処理を呼び出す
+        SuperNewRoles.Mode.ModeManager.OnGameEnd();
+        Analytics.SendAnalytics();
     }
 
     private static void CollectPlayerRoleData(GameOverReason gameOverReason)

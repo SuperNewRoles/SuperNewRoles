@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using HarmonyLib;
 using SuperNewRoles.Modules;
 using SuperNewRoles.Modules.Events.Bases;
+using SuperNewRoles.Mode;
 using UnityEngine;
 
 namespace SuperNewRoles.Events.PCEvents;
@@ -58,6 +59,11 @@ public static class TryKillPatch
 {
     public static bool Prefix(PlayerControl __instance, PlayerControl target, bool didSucceed)
     {
+        // todo battleroyal
+        if (ModeManager.IsMode(ModeId.BattleRoyal))
+        {
+            return true;
+        }
         if (!didSucceed)
             return true;
         CustomDeathExtensions.RpcCustomDeath(source: __instance, target: target, deathType: CustomDeathType.Kill);
@@ -70,5 +76,11 @@ public static class MurderPatch
     public static void Postfix(PlayerControl __instance, PlayerControl target, MurderResultFlags resultFlags)
     {
         MurderEvent.Invoke(__instance, target, resultFlags);
+
+        // ModeManagerに通知
+        if (resultFlags.HasFlag(MurderResultFlags.Succeeded))
+        {
+            ModeManager.OnPlayerDeath(target, __instance);
+        }
     }
 }

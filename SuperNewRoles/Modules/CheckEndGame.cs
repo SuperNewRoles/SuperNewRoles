@@ -10,6 +10,7 @@ using UnityEngine;
 using SuperNewRoles.Roles.Modifiers;
 using Hazel;
 using SuperNewRoles.CustomOptions.Categories;
+using SuperNewRoles.Mode;
 
 namespace SuperNewRoles.Modules;
 
@@ -92,6 +93,12 @@ public static class CheckGameEndPatch
 
         using var gameState = new GameState();
         if (!gameState.IsValid) return false;
+
+        // ModeManagerの勝利判定を最優先でチェック
+        if (ModeManager.IsModeActive && ModeManager.CheckWinCondition())
+        {
+            return false; // ModeManagerが勝利処理を行うため、ここで終了
+        }
 
         var victoryType = DetermineVictoryType(gameState, isHnS);
         if (victoryType != VictoryType.None)
@@ -193,7 +200,8 @@ public static class CheckGameEndPatch
             case VictoryType.CrewmateVote:
                 return (ExPlayerControl.ExPlayerControls.Where(player => player.IsCrewmateWin()).ToHashSet(), Palette.CrewmateBlue, "CrewmateWin");
             case VictoryType.JackalDomination:
-                return (ExPlayerControl.ExPlayerControls.Where(player => player.IsJackalTeam()).ToHashSet(), Jackal.Instance.RoleColor, "Jackal");
+                // Include Jackal, Sidekick, and Jackal-aligned friends in winners
+                return (ExPlayerControl.ExPlayerControls.Where(player => player.IsJackalTeamWins()).ToHashSet(), Jackal.Instance.RoleColor, "Jackal");
             case VictoryType.PavlovsWin:
                 return (ExPlayerControl.ExPlayerControls.Where(player => player.IsPavlovsTeam()).ToHashSet(), PavlovsDog.Instance.RoleColor, "Pavlovs");
             case VictoryType.OwlWin:
@@ -287,6 +295,7 @@ public class PlayerStatistics
     public int TeamJackalAlive { get; }
     public int PavlovsDogAlive { get; }
     public int PavlovsOwnerAlive { get; }
+    public bool PavlovsOwnerRemaining { get; }
     public int TeamPavlovsAlive { get; }
     public int TotalKiller { get; }
     public int ArsonistAlive { get; }
@@ -349,6 +358,7 @@ public class PlayerStatistics
         TeamJackalAlive = teamJackalAlive;
         PavlovsDogAlive = pavlovsDogAlive;
         PavlovsOwnerAlive = pavlovsOwnerAlive;
+        PavlovsOwnerRemaining = pavlovsOwnerRemaining > 0;
         TeamPavlovsAlive = pavlovsDogAlive > 0
             ? pavlovsDogAlive + pavlovsOwnerAlive
             : pavlovsOwnerRemaining;
@@ -360,7 +370,8 @@ public class PlayerStatistics
 
         bool impostorWin = IsKillerWin(teamImpostorsAlive);
         bool jackalWin = IsKillerWin(teamJackalAlive);
-        bool pavlovWin = IsKillerWin(TeamPavlovsAlive);
+        // オーナーはキラーではないため、キラーの数判定に含めない
+        bool pavlovWin = IsKillerWin(TeamPavlovsAlive, PavlovsOwnerAlive);
         bool hitmanWin = IsKillerWin(hitmanAlive);
 
         if (isLoversBlock && impostorWin && teamImpostorsAlive > 1 && hasLoversImpostorTeam)
@@ -390,11 +401,12 @@ public class PlayerStatistics
         IsHitmanDominating = hitmanWin;
     }
 
-    private bool IsKillerWin(int teamAlive)
+    private bool IsKillerWin(int teamAlive, int nonKillerAlive = 0)
     {
         return isHnS ? teamAlive >= TotalAlive : (teamAlive >= TotalAlive - teamAlive)
-            && TotalKiller <= teamAlive
+            && TotalKiller <= (teamAlive - nonKillerAlive)
             && teamAlive != 0
-            && !(PavlovsDogAlive <= 0 && TeamPavlovsAlive > 0);
+            && !(PavlovsDogAlive <= 0 && TeamPavlovsAlive > 0)
+            && !PavlovsOwnerRemaining;
     }
 }

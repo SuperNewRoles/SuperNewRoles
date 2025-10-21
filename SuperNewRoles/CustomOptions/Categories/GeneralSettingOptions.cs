@@ -7,14 +7,10 @@ public static class GeneralSettingOptions
 {
     [CustomOptionBool("KickPlatformPlayers", false, parentFieldName: nameof(Categories.GeneralSettings))]
     public static bool KickPlatformPlayers;
-    /*[CustomOptionBool("KickPCPlayers", false, parentFieldName: nameof(KickPlatformPlayers))]
+    [CustomOptionBool("KickPCPlayers", false, parentFieldName: nameof(KickPlatformPlayers))]
     public static bool KickPCPlayers;
     [CustomOptionBool("KickAndroidPlayers", false, parentFieldName: nameof(KickPlatformPlayers))]
     public static bool KickAndroidPlayers;
-    */
-    // todo:リリース時
-    public static bool KickPCPlayers = false;
-    public static bool KickAndroidPlayers = true;
 
     [CustomOptionBool("KickOtherPlayers", false, parentFieldName: nameof(KickPlatformPlayers))]
     public static bool KickOtherPlayers;
@@ -43,4 +39,7 @@ public static class GeneralSettingOptions
 
     [CustomOptionBool("SumouHighPerformance", true, parentFieldName: nameof(SumouMode))]
     public static bool SumouHighPerformance;
+
+    [CustomOptionBool("FixSpawnPacketSize", true, parentFieldName: nameof(Categories.GeneralSettings))]
+    public static bool FixSpawnPacketSize;
 }

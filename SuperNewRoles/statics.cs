@@ -19,10 +19,10 @@ public static class VersionInfo
 {
     private static Version _version;
     public static Version Current => _version ??= SuperNewRolesPlugin.Assembly.GetName().Version;
-    public static string VersionString => Current.ToString() + SnapShotVersion.ToString();
+    public static string VersionString => Current.ToString() + (SnapShotVersion?.ToString() ?? string.Empty);
 
     public static bool IsSnapShot => SnapShotVersion != null;
-    public static char? SnapShotVersion = 'm';
+    public static char? SnapShotVersion = null;
 
     public static string NewVersion = "";
     public static bool IsUpdate = false;
@@ -32,9 +32,9 @@ public static class VersionInfo
 public static class SNRURLs
 {
     public const string ReportInGameAgreement = "https://wiki.supernewroles.com/reporting-in-game-terms";
-    public const string AnalyticsURL = "https://analytics.supernewroles.com/";
+    public const string AnalyticsURL = "https://analytics.supernewroles.com/api/v2/";
     public const string SNRCS = "https://cs.supernewroles.com";
-    public const string ReportInGameAPI = "https://reports-api.supernewroles.com";
+    public const string ReportInGameAPI = "https://reports-api.supernewroles.com/api/v3";
     public const string UpdateURL = "https://update.supernewroles.com/";
     public const string GithubAPITags = "https://api.github.com/repos/supernewroles/SuperNewRoles/releases/tags";
     public const string JoinRoomHost = "joinroom.supernewroles.com";

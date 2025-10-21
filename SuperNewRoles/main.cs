@@ -34,6 +34,7 @@ using SuperNewRoles.RequestInGame;
 using System.Diagnostics;
 using UnityEngine.SceneManagement;
 using AmongUs.GameOptions;
+using Il2CppInterop.Runtime;
 
 namespace SuperNewRoles;
 
@@ -43,7 +44,6 @@ namespace SuperNewRoles;
 [BepInIncompatibility("me.eisbison.theotherroles")]
 [BepInIncompatibility("me.yukieiji.extremeroles")]
 [BepInIncompatibility("com.tugaru.TownOfPlus")]
-[BepInIncompatibility("com.emptybottle.townofhost")]
 public partial class SuperNewRolesPlugin : BasePlugin
 {
     public Harmony Harmony { get; } = new Harmony(PluginConfig.Id);
@@ -59,7 +59,10 @@ public partial class SuperNewRolesPlugin : BasePlugin
     private static string _currentSceneName;
 
     public static bool IsEpic => Constants.GetPurchasingPlatformType() == PlatformConfig.EpicGamesStoreName;
-    public static string BaseDirectory => Path.GetFullPath(Path.Combine(BepInEx.Paths.BepInExRootPath, "../SuperNewRolesNext"));
+    public static string BaseDirectory
+        => Path.GetFullPath(Path.Combine(
+            string.IsNullOrEmpty(BepInEx.Paths.BepInExRootPath) ? AppContext.BaseDirectory : BepInEx.Paths.BepInExRootPath,
+            "../SuperNewRolesNext"));
     public static string SecretDirectory => Path.GetFullPath(Path.Combine(UnityEngine.Application.persistentDataPath, "SuperNewRolesNextSecrets"));
     private static Task TaskRunIfWindows(Action action)
     {
@@ -67,7 +70,11 @@ public partial class SuperNewRolesPlugin : BasePlugin
         if (needed && ModHelpers.IsAndroid())
             action();
         else
-            return Task.Run(action);
+            return Task.Run(() =>
+            {
+                IL2CPP.il2cpp_thread_attach(IL2CPP.il2cpp_domain_get());
+                action();
+            });
         return Task.Run(() => { });
 
     }
@@ -128,11 +135,10 @@ public partial class SuperNewRolesPlugin : BasePlugin
         });
 
         Logger.LogInfo("Waiting for Harmony patch");
-        if (ModHelpers.IsAndroid())
-        {
-            HarmonyPatchAllTask?.Wait();
-            CustomRPCManagerLoadTask?.Wait();
-        }
+
+        HarmonyPatchAllTask?.Wait();
+        CustomRPCManagerLoadTask?.Wait();
+
         Logger.LogInfo("SuperNewRoles loaded");
         Logger.LogInfo("--------------------------------");
         Logger.LogInfo(ModTranslation.GetString("WelcomeNextSuperNewRoles"));
@@ -171,6 +177,7 @@ public partial class SuperNewRolesPlugin : BasePlugin
         NormalGameOptionsV07.MaxImpostors = ints;
         NormalGameOptionsV08.MaxImpostors = ints;
         NormalGameOptionsV09.MaxImpostors = ints;
+        NormalGameOptionsV10.MaxImpostors = ints;
     }
 
     // CPUのコア割当を変更してパフォーマンスを改善する

@@ -36,17 +36,20 @@ public static class CustomCosmeticsLayers
     {
         if (cosmeticsLayer == null)
         {
-            Logger.Error("Initialize failed cosmeticsLayer is null: " + cosmeticsLayer?.name ?? "NONAME");
+            Logger.Error("Initialize failed cosmeticsLayer is null");
+            Logger.Error(new System.Diagnostics.StackTrace().ToString());
             return null;
         }
         if (layers == null)
         {
-            Logger.Error("Initialize failed layers is null: " + cosmeticsLayer?.name ?? "NONAME");
+            Logger.Error("Initialize failed layers is null");
+            Logger.Error(new System.Diagnostics.StackTrace().ToString());
             return null;
         }
         if (cosmeticsLayer.hat == null || cosmeticsLayer.visor == null)
         {
-            Logger.Error("Initialize failed hat or visor is null: " + cosmeticsLayer?.name ?? "NONAME");
+            Logger.Error("Initialize failed hat or visor is null");
+            Logger.Error(new System.Diagnostics.StackTrace().ToString());
             return null;
         }
         try
@@ -56,7 +59,9 @@ public static class CustomCosmeticsLayers
         catch (Exception e)
         {
             Logger.Error("Initialize failed: " + e.Message);
-            return layers[cosmeticsLayer.GetInstanceID()] = null;
+            // キャッシュを残さないように削除する
+            layers.Remove(cosmeticsLayer.GetInstanceID());
+            return null;
         }
     }
     public static (CustomVisorLayer layer1, CustomVisorLayer layer2) GetVisorLayers(VisorLayer visorLayer)
@@ -173,7 +178,7 @@ public class CustomCosmeticsLayer
             hatLayer.spriteSyncNode = nodeSync;
         }
         else
-            Logger.Info("NULLLLLLLLLLLLLLLLLLLLLL");
+            Logger.Debug("NULLLLLLLLLLLLLLLLLLLLLL");
         hatLayer.vanillaNodeSyncs = cosmeticsLayer.hat.GetComponents<SpriteAnimNodeSync>().ToList();
 
         // バックレイヤーの作成と設定

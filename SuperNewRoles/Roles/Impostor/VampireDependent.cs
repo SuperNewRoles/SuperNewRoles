@@ -11,6 +11,7 @@ using SuperNewRoles.Events;
 using SuperNewRoles.CustomOptions.Categories;
 
 namespace SuperNewRoles.Roles.Impostor;
+
 class VampireDependent : RoleBase<VampireDependent>
 {
     public override RoleId Role => RoleId.VampireDependent;
@@ -39,6 +40,7 @@ class VampireDependent : RoleBase<VampireDependent>
     public override TeamTag TeamTag => TeamTag.Impostor;
     public override RoleTag[] RoleTags => [RoleTag.ImpostorTeam];
     public override RoleOptionMenuType OptionTeam => RoleOptionMenuType.Hidden;
+    public override bool HideInRoleDictionary => true; // 役職辞典で非表示にする
 }
 public record VampireDependentData(float killCooldown, bool canUseVent);
 public class VampireDependentAbility : AbilityBase

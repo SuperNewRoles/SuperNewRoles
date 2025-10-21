@@ -10,6 +10,7 @@ using System.Linq;
 using SuperNewRoles.Events;
 using SuperNewRoles.Modules.Events.Bases;
 using UnityEngine.AddressableAssets;
+using System.Runtime.CompilerServices;
 
 namespace SuperNewRoles.Roles.Crewmate;
 
@@ -18,7 +19,7 @@ class Chief : RoleBase<Chief>
     public override RoleId Role { get; } = RoleId.Chief;
     public override Color32 RoleColor { get; } = Sheriff.Instance.RoleColor;
     public override List<Func<AbilityBase>> Abilities { get; } = [() => new ChiefAbility(
-        new(ChiefSheriffKillCooldown, ChiefSheriffMaxKillCount, ChiefSheriffCanKillNeutral, ChiefSheriffCanKillImpostor, ChiefSheriffCanKillMadRoles, ChiefSheriffCanKillFriendRoles, ChiefSheriffCanKillLovers),
+        new(ChiefSheriffKillCooldown, ChiefSheriffMaxKillCount, ChiefSheriffSuicideMode, ChiefSheriffCanKillNeutral, ChiefSheriffCanKillImpostor, ChiefSheriffCanKillMadRoles, ChiefSheriffCanKillFriendRoles, ChiefSheriffCanKillLovers),
         ChiefCanSeeCreatedSheriff
     )];
 
@@ -39,11 +40,20 @@ class Chief : RoleBase<Chief>
     [CustomOptionBool("ChiefCanSeeCreatedSheriff", false)]
     public static bool ChiefCanSeeCreatedSheriff;
 
+    [CustomOptionBool("ChiefAppointNeutral", true)]
+    public static bool ChiefAppointNeutral;
+
+    [CustomOptionBool("ChiefAppointNeutralKiller", true, parentFieldName: nameof(ChiefAppointNeutral))]
+    public static bool ChiefAppointNeutralKiller;
+
     [CustomOptionFloat("ChiefSheriffKillCooldown", 0f, 60f, 2.5f, 25f)]
     public static float ChiefSheriffKillCooldown;
 
     [CustomOptionInt("ChiefSheriffMaxKillCount", 1, 10, 1, 1)]
     public static int ChiefSheriffMaxKillCount;
+
+    [CustomOptionSelect("Sheriff.SuicideMode", typeof(SheriffSuicideMode), "Sheriff.SuicideMode.")]
+    public static SheriffSuicideMode ChiefSheriffSuicideMode = SheriffSuicideMode.Default;
 
     [CustomOptionBool("ChiefSheriffCanKillImpostor", true)]
     public static bool ChiefSheriffCanKillImpostor;
@@ -65,6 +75,8 @@ public class ChiefAbility : AbilityBase
 {
     private CustomSidekickButtonAbility _sidekickButton;
     private bool _canAppointSheriff = true;
+    /// <summary>シェリフ任命可否判定が 失敗しているか</summary>
+    private bool _isAppointFailure = true; // 未判定時も 失敗判定 として扱う
     private SheriffAbilityData _sheriffAbilityData;
     private SheriffAbility _createdSheriff = null;
     private EventListener<NameTextUpdateEventData> _nameTextUpdateEventListener;
@@ -90,7 +102,10 @@ public class ChiefAbility : AbilityBase
             sidekickSuccess: target =>
             {
                 _hasOldTask = target.IsTaskTriggerRole();
-                return !target.IsImpostor();
+
+                var isAppointSuccess = IsRoleTargetAble(target); // 任命 成功判定
+                _isAppointFailure = !isAppointSuccess; // 任命 失敗判定を記録
+                return isAppointSuccess;
             },
             onSidekickCreated: OnSheriffAppointed
         ));
@@ -123,33 +138,51 @@ public class ChiefAbility : AbilityBase
         return true;
     }
 
-    // シェリフ任命後の処理
+    /// <summary>対象が任命可能な役職か 判定する</summary>
+    /// <param name="target">判定対象</param>
+    /// <returns>true: 任命可能 / false: 任命不可能</returns>
+    private static bool IsRoleTargetAble(ExPlayerControl target)
+    {
+        // インポスター判定
+        if (target.IsImpostor()) return false;
+
+        // 第三陣営判定
+        Logger.Info($"target.IsNeutral() = {target.IsNeutral()}");
+        if (target.IsNeutral())
+        {
+            if (!Chief.ChiefAppointNeutral) return false; // 全体判定
+            if (!Chief.ChiefAppointNeutralKiller && target.IsKiller()) return false; // キラー判定
+        }
+
+        return true;
+    }
+
+    // シェリフ任命後の 自爆処理
     private void OnSheriffAppointed(ExPlayerControl target)
     {
         _canAppointSheriff = false;
 
-        // インポスター判定
-        if (target.IsImpostor())
+        // 対象の役職判定
+        if (_isAppointFailure) // 対象が 任命不可の役職ならば 自身が死亡 (メイン処理)
         {
-            // インポスターを任命した場合は自身が死亡
             new LateTask(() =>
             {
                 ExPlayerControl.LocalPlayer.RpcCustomDeath(CustomDeathType.Suicide);
             }, 0f);
         }
-        else
+        else // 任命判定が成功しているなら 任命 (補助処理 (基本的にSKButton側で 既に任命処理が終わっている))
         {
             SheriffAbility sheriffAbility = target.PlayerAbilities.FirstOrDefault(ability => ability is SheriffAbility) as SheriffAbility;
             if (sheriffAbility == null)
                 throw new Exception("SheriffAbilityが見つかりません");
             _createdSheriff = sheriffAbility;
-            RpcChiefAppointSheriff(target, sheriffAbility, _sheriffAbilityData.KillCooldown, _sheriffAbilityData.KillCount, _sheriffAbilityData.CanKillNeutral, _sheriffAbilityData.CanKillImpostor, _sheriffAbilityData.CanKillMadRoles, _sheriffAbilityData.CanKillFriendRoles, _sheriffAbilityData.CanKillLovers, _hasOldTask);
+            RpcChiefAppointSheriff(target, sheriffAbility, _sheriffAbilityData.KillCooldown, _sheriffAbilityData.KillCount, _sheriffAbilityData.Mode, _sheriffAbilityData.CanKillNeutral, _sheriffAbilityData.CanKillImpostor, _sheriffAbilityData.CanKillMadRoles, _sheriffAbilityData.CanKillFriendRoles, _sheriffAbilityData.CanKillLovers, _hasOldTask);
         }
     }
     [CustomRPC]
-    public static void RpcChiefAppointSheriff(ExPlayerControl target, SheriffAbility sheriffAbility, float killCooldown, int maxKillCount, bool canKillNeutral, bool canKillImpostor, bool canKillMadRoles, bool canKillFriendRoles, bool canKillLovers, bool isOldHasTak)
+    public static void RpcChiefAppointSheriff(ExPlayerControl target, SheriffAbility sheriffAbility, float killCooldown, int maxKillCount, SheriffSuicideMode mode, bool canKillNeutral, bool canKillImpostor, bool canKillMadRoles, bool canKillFriendRoles, bool canKillLovers, bool isOldHasTak)
     {
-        sheriffAbility.SheriffAbilityData = new(killCooldown, maxKillCount, canKillNeutral, canKillImpostor, canKillMadRoles, canKillFriendRoles, canKillLovers);
+        sheriffAbility.SheriffAbilityData = new(killCooldown, maxKillCount, mode, canKillNeutral, canKillImpostor, canKillMadRoles, canKillFriendRoles, canKillLovers);
         if (sheriffAbility.Player.AmOwner)
             sheriffAbility.ResetTimer();
         sheriffAbility.Count = maxKillCount;

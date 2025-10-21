@@ -45,6 +45,13 @@ public static class VersionUpdatesUI
     public static void InitializeMainMenuButton(MainMenuManager __instance)
     {
         GameObject versionSelectButton = AssetManager.Instantiate(VersionSelectButtonPrefab, null);
+
+        var buttonText = versionSelectButton.transform.Find("Text")?.GetComponent<TextMeshPro>();
+        if (buttonText != null)
+        {
+            buttonText.text = ModTranslation.GetString("VersionSelectButtonText");
+        }
+
         versionSelectButton.transform.localPosition = Vector3.zero;
         versionSelectButton.transform.localScale = Vector3.one * VersionSelectButtonScale;
         PassiveButton passiveButton = versionSelectButton.AddComponent<PassiveButton>();
@@ -71,6 +78,12 @@ public static class VersionUpdatesUI
         versionContainer.transform.localPosition = new(0, 0, VersionContainerZ);
         versionContainer.transform.localScale = Vector3.one;
         versionContainer.transform.localRotation = Quaternion.identity;
+
+        var titleText = versionContainer.transform.Find("AutoUpDateModeSelecter/UITextGrayBack/Text")?.GetComponent<TextMeshPro>();
+        if (titleText != null)
+        {
+            titleText.text = ModTranslation.GetString("VersionUpdateAutoText");
+        }
 
         GameObject updateTypeButton = versionContainer.transform.Find("AutoUpDateModeSelecter/UpdateTypeBox").gameObject;
         ConfigureUpdateTypeButton(updateTypeButton);
@@ -460,6 +473,8 @@ public static class MainMenuManager_Start
 {
     public static void Postfix(MainMenuManager __instance)
     {
+        // AndroidではSuperNewRolesの自動アップデートが無効化されているので、ボタンを表示しない
+        if (ModHelpers.IsAndroid()) return;
         VersionUpdatesUI.InitializeMainMenuButton(__instance);
     }
 }
