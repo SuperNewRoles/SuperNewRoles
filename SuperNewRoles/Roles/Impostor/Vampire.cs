@@ -107,7 +107,7 @@ public class VampireAbility : AbilityBase
     private EventListener _fixedUpdateListener;
     private EventListener<MurderEventData> _murderListener;
     private EventListener<WrapUpEventData> _wrapUpListener;
-    private EventListener<MeetingCalledAnimationInitializeEventData> _meetingCalledListener;
+    private EventListener<CalledMeetingEventData> _meetingCalledListener;
     private EventListener<NameTextUpdateEventData> _nameTextUpdateListener;
 
     private float delayTimer;
@@ -174,7 +174,7 @@ public class VampireAbility : AbilityBase
         _fixedUpdateListener = FixedUpdateEvent.Instance.AddListener(OnFixedUpdate);
         _murderListener = MurderEvent.Instance.AddListener(OnMurder);
         _wrapUpListener = WrapUpEvent.Instance.AddListener(OnWrapUp);
-        _meetingCalledListener = MeetingCalledAnimationInitializeEvent.Instance.AddListener(OnMeetingCalled);
+        _meetingCalledListener = CalledMeetingEvent.Instance.AddListener(OnMeetingCalled);
     }
     public override void AttachToLocalPlayer()
     {
@@ -204,7 +204,7 @@ public class VampireAbility : AbilityBase
         }
     }
 
-    private void OnMeetingCalled(MeetingCalledAnimationInitializeEventData data)
+    private void OnMeetingCalled(CalledMeetingEventData data)
     {
         // 会議が呼ばれた時、遅延キル中なら即座にキルを実行
         if (TargetingPlayer != null && TargetingPlayer.IsAlive())
