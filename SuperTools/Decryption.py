@@ -57,7 +57,7 @@ def Decoding():
                         cipher = AES.new(bytes(key), AES.MODE_CBC, iv)
                         plainText = unpad(cipher.decrypt(text), AES.block_size)
                         newline   =  re.sub(re.escape("$SNRST$")+ r'(.*?)' +re.escape("$SNRET$"),
-                                            plainText.decode("utf-8"),
+                                            lambda m: plainText.decode("utf-8"),
                                             line)
                         file2.writelines(newline)
                     elif keyline != []:
