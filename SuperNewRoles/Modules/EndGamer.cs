@@ -67,7 +67,7 @@ public static class EndGamer
             if (winType != WinType.SingleNeutral && reason != (GameOverReason)CustomGameOverReason.LoversWin)
                 UpdateHijackers(ref reason, ref winners, ref color, ref upperText, ref winText, ref winType);
             // 独自単独勝利とは同時勝利できない
-            UpdateAdditionalWinners(reason, ref winners, out addWinners, winType == WinType.SingleNeutral);
+            UpdateAdditionalWinners(reason, ref winners, out addWinners, ref winText, winType == WinType.SingleNeutral);
         }
         Logger.Info("----------- Finished EndGame Start -----------");
         Logger.Info("reason: " + reason);
@@ -171,7 +171,7 @@ public static class EndGamer
             }
         }
     }
-    private static void UpdateAdditionalWinners(GameOverReason reason, ref HashSet<ExPlayerControl> winners, out HashSet<string> addWinners, bool cantWinSixAdditionalWinners)
+    private static void UpdateAdditionalWinners(GameOverReason reason, ref HashSet<ExPlayerControl> winners, out HashSet<string> addWinners, ref string winText, bool cantWinSixAdditionalWinners)
     {
         addWinners = new();
         // ラバーズじゃない人がいる場合
@@ -247,6 +247,10 @@ public static class EndGamer
                     addWinners.Add(player.Role.ToString());
                 }
             }
+        }
+        if (addWinners.Count != 0)
+        {
+            winText = null;
         }
     }
 
