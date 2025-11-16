@@ -24,7 +24,7 @@ public class CustomVentAbility : CustomButtonBase, IButtonEffect
 
     public bool isEffectActive { get; set; }
 
-    public Action OnEffectEnds => () => { if (VentDuration?.Invoke() != null && Vent.currentVent != null) exitVent(); };
+    public Action OnEffectEnds => () => { if (Vent.currentVent != null) ExitVent(); };
 
     public float EffectDuration => VentDuration?.Invoke() ?? 0f;
 
@@ -41,7 +41,7 @@ public class CustomVentAbility : CustomButtonBase, IButtonEffect
         VentDuration = ventDuration;
     }
 
-    private void exitVent()
+    protected virtual void ExitVent()
     {
         if (Vent.currentVent != null)
             Vent.currentVent.SetButtons(false);
@@ -58,7 +58,7 @@ public class CustomVentAbility : CustomButtonBase, IButtonEffect
             // ベントに入っている途中に出れないように
             if (num < 10000)
             {
-                exitVent();
+                ExitVent();
             }
             return;
         }
@@ -80,8 +80,8 @@ public class CustomVentAbility : CustomButtonBase, IButtonEffect
     }
     private int _lastCheckedCount;
     private bool? _lastCheckedResult;
-    private Vent CurrentVent;
-    private Vent SetVentTarget(float? distance = null)
+    protected Vent CurrentVent;
+    protected Vent SetVentTarget(float? distance = null)
     {
         Vector3 center = PlayerControl.LocalPlayer.Collider.bounds.center;
         foreach (Vent vent in ShipStatus.Instance.AllVents)

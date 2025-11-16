@@ -16,7 +16,7 @@ internal class Finder : RoleBase<Finder>
     public override Color32 RoleColor => Palette.ImpostorRed;
     public override List<Func<AbilityBase>> Abilities => new()
     {
-        () => new ChangeKillTimerAbility(() => FinderKillCooldown),
+        () => new CustomKillButtonAbility(() => true, () => FinderKillCooldown, onlyCrewmates: () => true),
         () => new FinderAbility(FinderRevealKillCount)
     };
 

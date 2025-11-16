@@ -26,6 +26,7 @@ class PavlovsOwner : RoleBase<PavlovsOwner>
     public override TeamTag TeamTag => TeamTag.Neutral;
     public override RoleTag[] RoleTags => new[] { RoleTag.SpecialKiller };
     public override short IntroNum => 1;
+    public override RoleId[] RelatedRoleIds => [RoleId.PavlovsDog];
     public override RoleOptionMenuType OptionTeam => RoleOptionMenuType.Neutral;
 
     [CustomOptionFloat("PavlovsOwnerSidekickCooldown", 2.5f, 60f, 2.5f, 30f)]

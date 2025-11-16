@@ -62,6 +62,12 @@ public static class MapLoader
             }
             yield break;
         }
+        
+        // Initialize loading list for this map
+        if (!loadingMaps.ContainsKey(map))
+            loadingMaps[map] = new List<Action<ShipStatus>>();
+        
+        loadingMaps[map].Add(onLoaded);
         var prefabs = AmongUsClient.Instance.ShipPrefabs;
         if (prefabs.Count <= (int)map)
         {
@@ -70,26 +76,76 @@ public static class MapLoader
         }
         AssetReference ship = prefabs[(int)map];
         int retryCount = 0;
-        while (retryCount < 10)
+        AsyncOperationHandle<GameObject>? op = null;
+        bool loadSucceeded = false;
+        
+        while (retryCount < 10 && !loadSucceeded)
         {
-            if (ship.Asset != null) break;
-            AsyncOperationHandle op = ship.LoadAssetAsync<GameObject>();
-            if (!op.IsValid())
+            if (ship.Asset != null) 
             {
-                Logger.Warning($"Could not import [{ship.AssetGUID}] due to invalid Async Operation. Trying again in 5 seconds... (Retry {retryCount + 1}/10)");
-                yield return new WaitForSeconds(5);
+                loadSucceeded = true;
+                break;
+            }
+            
+            bool shouldRetry = false;
+            Exception loadException = null;
+            AsyncOperationHandle<GameObject>? currentOp = null;
+            
+            try
+            {
+                currentOp = ship.LoadAssetAsync<GameObject>();
+                if (!currentOp.IsValid())
+                {
+                    Logger.Warning($"Could not import [{ship.AssetGUID}] due to invalid Async Operation. Trying again in 5 seconds... (Retry {retryCount + 1}/10)");
+                    shouldRetry = true;
+                }
+                else
+                {
+                    op = currentOp;
+                }
+            }
+            catch (Exception ex)
+            {
+                loadException = ex;
+                shouldRetry = true;
+            }
+            
+            if (shouldRetry)
+            {
+                if (loadException != null)
+                {
+                    SuperNewRoles.Logger.Error($"Exception during asset loading: {loadException}");
+                }
                 retryCount++;
+                if (retryCount < 10)
+                {
+                    yield return new WaitForSeconds(loadException != null ? 1 : 5);
+                }
                 continue;
             }
-            yield return op;
-            if (op.Status != AsyncOperationStatus.Succeeded)
+            
+            if (op != null)
             {
-                SuperNewRoles.Logger.Warning($"Could not import [{ship.AssetGUID}] due to failed Async Operation. (Retry {retryCount + 1}/10)");
-                retryCount++;
-            }
-            else
-            {
-                break;
+                yield return op;
+                
+                if (op.Status == AsyncOperationStatus.Succeeded)
+                {
+                    loadSucceeded = true;
+                    break;
+                }
+                else
+                {
+                    SuperNewRoles.Logger.Warning($"Could not import [{ship.AssetGUID}] due to failed Async Operation. Status: {op.Status} (Retry {retryCount + 1}/10)");
+                    if (op.Status == AsyncOperationStatus.Failed)
+                    {
+                        SuperNewRoles.Logger.Error($"Operation failed with error: {op.OperationException}");
+                    }
+                    retryCount++;
+                    if (retryCount < 10)
+                    {
+                        yield return new WaitForSeconds(1);
+                    }
+                }
             }
         }
         if (ship.Asset == null)

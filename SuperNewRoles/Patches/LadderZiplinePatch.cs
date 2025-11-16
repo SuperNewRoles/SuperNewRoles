@@ -57,6 +57,7 @@ public static class ZiplineConsolePatch
     {
         canUse = true;
         couldUse = true;
+
         if (ModHelpers.Not(IsFungleMap() && TheFungleSetting && TheFungleZiplineOption)) return true;
         if (!TheFungleCanUseZiplineOption)
         {
@@ -101,31 +102,62 @@ public static class ZiplineConsolePatch
             __result = ZiplineCoolTimeOption;
             if (ZiplineImpostorCoolChangeOption && ExPlayerControl.LocalPlayer.IsImpostor())
                 __result = ZiplineImpostorCoolTimeOption;
+
+            // 0秒以下の場合は0にする
+            if (__result <= 0f)
+                __result = 0f;
+
             return false;
         }
         return true;
     }
+
 
     [HarmonyPatch(nameof(ZiplineConsole.Use)), HarmonyPostfix]
     public static void ZiplineConsoleUsePostfix(ZiplineConsole __instance)
     {
         if (ZiplineCoolChangeOption)
         {
-            __instance.CoolDown = ZiplineCoolTimeOption; // MaxCoolDownの値が使われるはずなので、これは不要になる可能性
+            float cooldownTime = ZiplineCoolTimeOption;
             if (ZiplineImpostorCoolChangeOption && ExPlayerControl.LocalPlayer.IsImpostor())
-                __instance.CoolDown = ZiplineImpostorCoolTimeOption; // 同上
+                cooldownTime = ZiplineImpostorCoolTimeOption;
+
+            if (cooldownTime <= 0f)
+            {
+                cooldownTime = 0f;
+            }
+
+            // 即座にクールダウンを設定
+            __instance.CoolDown = cooldownTime;
+
+            // destinationのクールダウンも同時に設定
+            if (__instance.destination != null)
+            {
+                __instance.destination.CoolDown = cooldownTime;
+            }
+
         }
     }
 
     [HarmonyPatch(nameof(ZiplineConsole.SetDestinationCooldown)), HarmonyPostfix]
     public static void ZiplineConsoleSetDestinationCooldownPostfix(ZiplineConsole __instance)
     {
-        if (ZiplineCoolChangeOption)
+        if (!ZiplineCoolChangeOption) return;
+        
+        // destinationのnullチェックを最初に行う
+        if (__instance.destination == null) return;
+
+        float cooldownTime = ZiplineCoolTimeOption;
+        if (ZiplineImpostorCoolChangeOption && ExPlayerControl.LocalPlayer.IsImpostor())
+            cooldownTime = ZiplineImpostorCoolTimeOption;
+
+        if (cooldownTime <= 0f)
         {
-            // Useと同様の理由で、MaxCoolDown側で設定されていれば不要な可能性あり
-            __instance.destination.CoolDown = ZiplineCoolTimeOption;
-            if (ZiplineImpostorCoolChangeOption && ExPlayerControl.LocalPlayer.IsImpostor())
-                __instance.destination.CoolDown = ZiplineImpostorCoolTimeOption;
+            cooldownTime = 0f;
         }
+
+        // 即座に目的地のクールダウンを設定
+        __instance.destination.CoolDown = cooldownTime;
+
     }
 }

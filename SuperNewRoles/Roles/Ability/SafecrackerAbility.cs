@@ -143,8 +143,8 @@ public class SafecrackerAbility : AbilityBase
         // すべてのタスクが完了したかチェック
         if (GetCompletedTaskCount() >= _allTaskCount)
         {
-            // Safecrackerの勝利
-            if (AmongUsClient.Instance.AmHost)
+            // Safecrackerの勝利（ただし生存している場合のみ）
+            if (AmongUsClient.Instance.AmHost && !Player.Data.IsDead)
             {
                 EndGamer.RpcEndGameWithWinner(Patches.CustomGameOverReason.SafecrackerWin, WinType.SingleNeutral, [Player], Safecracker.Instance.RoleColor, "Safecracker", "WinText");
             }

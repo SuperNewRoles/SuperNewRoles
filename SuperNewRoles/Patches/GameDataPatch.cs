@@ -15,13 +15,15 @@ public static class GameDataRecomputeTaskCountsPatch
         foreach (var player in ExPlayerControl.ExPlayerControls)
         {
             NetworkedPlayerInfo playerInfo = player.Data;
-            if (player.roleBase?.WinnerTeam == WinnerTeamType.Crewmate && player.IsCountTask())
+            // 切断していないクルーメイトのタスクのみカウント
+            if (!playerInfo.Disconnected && player.roleBase?.WinnerTeam == WinnerTeamType.Crewmate && player.IsCountTask())
             {
                 var (playerCompleted, playerTotal) = player.GetAllTaskForShowProgress();
                 __instance.TotalTasks += playerTotal;
                 __instance.CompletedTasks += playerCompleted;
             }
         }
+        // タスクが存在しない場合のフォールバック
         if (__instance.TotalTasks <= 0)
             __instance.TotalTasks = 1;
         else if (__instance.TotalTasks != __instance.CompletedTasks)

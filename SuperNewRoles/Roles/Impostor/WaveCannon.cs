@@ -13,7 +13,10 @@ class WaveCannon : RoleBase<WaveCannon>
     public override RoleId Role { get; } = RoleId.WaveCannon;
     public override Color32 RoleColor { get; } = Palette.ImpostorRed;
     public override List<Func<AbilityBase>> Abilities { get; } = [
-        () => new WaveCannonAbility(WaveCannonCooldown, WaveCannonDuration, (WaveCannonType)AnimationTypeOption, IsSyncKillCoolTime)
+        () => new WaveCannonAbility(
+            WaveCannonCooldown, WaveCannonDuration, (WaveCannonType)AnimationTypeOption, IsSyncKillCoolTime,
+            KillSound: WaveCannonKillSound, distributedKillSound: WaveCannonKillSoundDistributed
+        )
     ];
 
     public override QuoteMod QuoteMod { get; } = QuoteMod.SuperNewRoles;
@@ -36,5 +39,11 @@ class WaveCannon : RoleBase<WaveCannon>
     public static bool IsSyncKillCoolTime;
     [CustomOptionSelect("WaveCannonAnimationType", typeof(WaveCannonTypeForOption), "WaveCannonAnimationType.")]
     public static WaveCannonTypeForOption AnimationTypeOption;
+
+    [CustomOptionBool("WaveCannonKillSound", true, translationName: "WaveCannonKillSound")]
+    public static bool WaveCannonKillSound;
+
+    [CustomOptionBool("WaveCannonKillSoundDistributed", false, translationName: "WaveCannonKillSoundDistributed", parentFieldName: nameof(WaveCannonKillSound))]
+    public static bool WaveCannonKillSoundDistributed;
 }
 

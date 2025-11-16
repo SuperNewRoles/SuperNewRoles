@@ -156,7 +156,7 @@ public class DouseButtonAbility : TargetCustomButtonBase, IButtonEffect
     public bool isEffectActive { get; set; }
     public Action OnEffectEnds => () => OnDouseEnd();
     public float EffectDuration => _douseDuration;
-    public bool effectCancellable => true;
+    public bool effectCancellable => false;
     public float EffectTimer { get; set; }
 
     public override Color32 OutlineColor => new Color32(255, 102, 0, 255); // オレンジ

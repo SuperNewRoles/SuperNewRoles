@@ -25,6 +25,7 @@ class Slugger : RoleBase<Slugger>
     public override RoleTag[] RoleTags => [RoleTag.SpecialKiller, RoleTag.Killer];
     public override short IntroNum => 1;
     public override RoleOptionMenuType OptionTeam => RoleOptionMenuType.Hidden;
+    public override bool HideInRoleDictionary => true; // 役職辞典で非表示にする
 
     [CustomOptionFloat("SluggerChargeTime", 0.5f, 10f, 0.5f, 3f, translationName: "DurationTime")]
     public static float SluggerChargeTime;

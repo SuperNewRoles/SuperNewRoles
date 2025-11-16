@@ -101,7 +101,10 @@ internal class TeleporterAbility : CustomButtonBase, IButtonEffect
     public void RpcAllTeleportTo(Vector2 position, ExPlayerControl target)
     {
         foreach (var player in ExPlayerControl.ExPlayerControls)
+        {
+            player.transform.position = position;
             player.NetTransform.SnapTo(position);
+        }
         ExPlayerControl.LocalPlayer.RpcCustomSnapTo(position);
         if (CurrentMessage != null)
         {

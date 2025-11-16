@@ -45,7 +45,6 @@ internal class MovingAbility : CustomButtonBase
             if (setPosition.HasValue)
             {
                 RpcTeleportToPosition(setPosition.Value);
-
                 // 状態をリセット
                 isPositionSet = false;
                 setPosition = null;
@@ -58,6 +57,5 @@ internal class MovingAbility : CustomButtonBase
     {
         Player.NetTransform.SnapTo(position);
         Player.RpcCustomSnapTo(position);
-        new CustomMessage(ModTranslation.GetString("MovingTeleportText"), 1f, true);
     }
 }

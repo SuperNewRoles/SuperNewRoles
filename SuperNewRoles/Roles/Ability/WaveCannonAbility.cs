@@ -17,7 +17,10 @@ public class WaveCannonAbility : CustomButtonBase, IButtonEffect
     private float effectDuration;
     public float bulletDuration;
     public float EffectDuration => bullet != null ? bulletDuration : effectDuration;
-    public Action OnEffectEnds => () => { RpcShootCannon(); };
+    public Action OnEffectEnds => () =>
+    {
+        RpcShootCannon();
+    };
     public bool isEffectActive { get; set; }
     public float EffectTimer { get; set; }
     public override Sprite Sprite => bullet != null ? AssetManager.GetAsset<Sprite>("WaveCannonLoadedBulletButton.png") : AssetManager.GetAsset<Sprite>("WaveCannonButton.png");
@@ -29,13 +32,27 @@ public class WaveCannonAbility : CustomButtonBase, IButtonEffect
     public ExPlayerControl bullet;
     private WaveCannonType _type;
     public bool isResetKillCooldown { get; }
+    public bool friendlyFire { get; }
+    public bool KillSound { get; }
+    public bool distributedKillSound { get; }
     private EventListener<MurderEventData> _onMurderEvent;
-    public WaveCannonAbility(float coolDown, float effectDuration, WaveCannonType type, bool isResetKillCooldown = false)
+    public WaveCannonAbility(
+        float coolDown,
+        float effectDuration,
+        WaveCannonType type,
+        bool isResetKillCooldown = false,
+        bool friendlyFire = true,
+        bool KillSound = false,
+        bool distributedKillSound = false
+    )
     {
         this.coolDown = coolDown;
         this.effectDuration = effectDuration;
         this._type = type;
         this.isResetKillCooldown = isResetKillCooldown;
+        this.friendlyFire = friendlyFire;
+        this.KillSound = KillSound;
+        this.distributedKillSound = distributedKillSound;
     }
     public override void OnClick()
     {
@@ -75,6 +92,10 @@ public class WaveCannonAbility : CustomButtonBase, IButtonEffect
     public void SpawnedWaveCannonObject(WaveCannonObjectBase waveCannonObject)
     {
         WaveCannonObject = waveCannonObject;
+    }
+    public void DetachWaveCannonObject()
+    {
+        WaveCannonObject = null;
     }
     [CustomRPC]
     public void RpcShootCannon()

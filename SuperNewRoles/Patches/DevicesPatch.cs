@@ -59,9 +59,9 @@ public static class DevicesPatch
         {
             if (MapSettingOptions.RestrictionMode == DeviceRestrictionModeType.TimeLimit)
             {
-                isAdminRestrictOption = MapSettingOptions.DeviceAdminTimeLimit > 0;
-                IsCameraRestrict = MapSettingOptions.DeviceCameraTimeLimit > 0;
-                IsVitalRestrict = MapSettingOptions.DeviceVitalTimeLimit > 0;
+                isAdminRestrictOption = MapSettingOptions.DeviceAdminTimeLimit >= 0;
+                IsCameraRestrict = MapSettingOptions.DeviceCameraTimeLimit >= 0;
+                IsVitalRestrict = MapSettingOptions.DeviceVitalTimeLimit >= 0;
 
                 if (isAdminRestrictOption)
                 {
@@ -233,13 +233,21 @@ public static class DevicesPatch
                             Collider2D collider2D = __instance.buffer[j];
                             if (collider2D.CompareTag("DeadBody") && __instance.includeDeadBodies)
                             {
+                                var deadBodyComponent = collider2D.GetComponent<DeadBody>();
+                                var deadPlayerData = ExPlayerControl.ById(deadBodyComponent.ParentId);
+
+                                // BlackHatHackerのフィルター：感染していない死体は表示しない
+                                var blackHatHacker = ExPlayerControl.LocalPlayer.GetAbility<BlackHatHackerAbility>();
+                                if (DevicesPatch.DontCountBecausePortableAdmin && blackHatHacker != null && blackHatHacker.AdminAbility != null &&
+                                    !blackHatHacker.InfectedPlayerId.Contains(deadBodyComponent.ParentId)) continue;
+
                                 if (canSeeDeadIcon)
                                 {
                                     numDeadIcons++;
                                 }
 
                                 count++;
-                                colors.Add(ExPlayerControl.ById(collider2D.GetComponent<DeadBody>().ParentId).Player.CurrentOutfit.ColorId);
+                                colors.Add(deadPlayerData.Player.CurrentOutfit.ColorId);
                             }
                             else
                             {

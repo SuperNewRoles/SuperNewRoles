@@ -24,7 +24,7 @@ public static class ConfigRoles
     public static void Init()
     {
         CanUseDataConnection = SuperNewRolesPlugin.Instance.Config.Bind("Default", "CanUseDataConnection", false, "サイズが大きいファイルをデータ通信でダウンロードするかどうか(Download large files over mobile data?)");
-        IsSendAnalytics = SuperNewRolesPlugin.Instance.Config.Bind("Default", "IsSendAnalytics", false, "アナリティクスを送信するかどうか(Send analytics?)");
+        IsSendAnalytics = SuperNewRolesPlugin.Instance.Config.Bind("Default", "IsSendAnalyticsSNR2", true, "アナリティクスを送信するかどうか(Send analytics?)");
         IsSendAnalyticsPopupViewd = SuperNewRolesPlugin.Instance.Config.Bind("Default", "IsSendAnalyticsPopupViewd", false, "アナリティクスのポップアップが表示されたかどうか(Has the analytics popup been viewed?)");
 
         _isCPUProcessorAffinity = SuperNewRolesPlugin.Instance.Config.Bind("Default", "CPUProcessorAffinity", false, "CPUの割当を変更するかどうか(Change CPU affinity?)");

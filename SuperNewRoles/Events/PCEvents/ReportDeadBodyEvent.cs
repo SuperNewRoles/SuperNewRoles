@@ -1,6 +1,8 @@
 using System;
 using System.Collections.Generic;
 using HarmonyLib;
+using SuperNewRoles.Mode;
+using SuperNewRoles.Modules;
 using SuperNewRoles.Modules.Events.Bases;
 using UnityEngine;
 
@@ -32,6 +34,8 @@ public static class ReportDeadBodyHostPatch
 {
     public static bool Prefix(PlayerControl __instance, NetworkedPlayerInfo target)
     {
+        if (ModeManager.IsMode(ModeId.BattleRoyal))
+            return false;
         if (AmongUsClient.Instance.AmHost)
             return ReportDeadBodyHostEvent.Invoke(__instance, target);
         return true;

@@ -191,7 +191,7 @@ public class PusherAbility : TargetCustomButtonBase
         Vector3 deadBodyPosition = new();
         if (isLadder)
         {
-            deadBody = UnityEngine.Object.Instantiate(GameManager.Instance.DeadBodyPrefab);
+            deadBody = UnityEngine.Object.Instantiate(GameManager.Instance.GetDeadBody(source.Data.Role));
             deadBody.enabled = true;
             deadBody.ParentId = target.PlayerId;
             // SetPlayerMaterialColorsのループ処理

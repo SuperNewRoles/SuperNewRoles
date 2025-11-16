@@ -16,7 +16,8 @@ public static class HudManagerUpdatePatch
         if (!ExPlayerControl.LocalPlayer.IsTaskTriggerRole()) return;
         if (ExPlayerControl.LocalPlayer.IsTaskComplete()) return;
         if (ExPlayerControl.LocalPlayer.Data.Role.Role == RoleTypes.GuardianAngel) return;
-        __instance.AbilityButton.gameObject.SetActive(false);
+        if (__instance.AbilityButton != null)
+            __instance.AbilityButton.gameObject.SetActive(false);
     }
 }
 
@@ -31,6 +32,7 @@ public static class PlayerControlCompleteTask
         if (ExPlayerControl.LocalPlayer.IsAlive()) return;
         if (!ExPlayerControl.LocalPlayer.IsTaskTriggerRole()) return;
         if (!ExPlayerControl.LocalPlayer.IsTaskComplete()) return;
-        HudManager.Instance.AbilityButton.gameObject.SetActive(true);
+        if (HudManager.Instance.AbilityButton != null)
+            HudManager.Instance.AbilityButton.gameObject.SetActive(true);
     }
 }

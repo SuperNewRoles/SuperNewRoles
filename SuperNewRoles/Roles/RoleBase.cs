@@ -54,6 +54,7 @@ internal abstract class RoleBase<T> : BaseSingleton<T>, IRoleBase where T : Role
 
     public abstract RoleOptionMenuType OptionTeam { get; }
     public virtual MapNames[] AvailableMaps { get; } = [];
+    public virtual bool HideInRoleDictionary => false;
 
     // public abstract void CreateCustomOption();
 }
@@ -85,6 +86,8 @@ public interface IRoleBase : IRoleInformation
 
     public RoleId[] RelatedRoleIds { get; }
     public MapNames[] AvailableMaps { get; }
+    public bool HideInRoleDictionary { get; }
+
     /// <summary>
     /// AbilityはAbilitiesから自動でセットされるが、追加で他の処理を行いたい場合はOverrideすること
     /// </summary>
@@ -100,11 +103,6 @@ public interface IRoleBase : IRoleInformation
             exPlayer.AddAbility(ability, parent);
         }
         Logger.Info($"[OnSetRole] Completed setting abilities for player {player?.name}, Total abilities: {exPlayer.PlayerAbilities.Count}");
-    }
-
-    public static ulong GenerateAbilityId(byte playerId, RoleId role, int abilityIndex)
-    {
-        return (ulong)(playerId * 1000000) + (ulong)((int)role * 1000) + (ulong)abilityIndex;
     }
 }
 

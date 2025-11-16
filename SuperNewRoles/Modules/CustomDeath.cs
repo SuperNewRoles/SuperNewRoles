@@ -86,6 +86,11 @@ public static class CustomDeathExtensions
                 FinalStatusManager.SetFinalStatus(player, FinalStatus.WaveCannon);
                 MurderDataManager.AddMurderData(source, player);
                 break;
+            case CustomDeathType.SuperWaveCannon:
+                player.Player.MurderPlayer(player.Player, MurderResultFlags.Succeeded);
+                FinalStatusManager.SetFinalStatus(player, FinalStatus.WaveCannon);
+                MurderDataManager.AddMurderData(source, player);
+                break;
             case CustomDeathType.Samurai:
                 if (!TryKillEvent.Invoke(source, ref player).RefSuccess)
                     break;
@@ -139,14 +144,16 @@ public static class CustomDeathExtensions
             case CustomDeathType.VampireKill:
                 if (!TryKillEvent.Invoke(source, ref player).RefSuccess)
                     break;
-                var pos3 = source.Player.GetTruePosition();
-                source.Player.MurderPlayer(player.Player, MurderResultFlags.Succeeded);
+                player.Player.MurderPlayer(player.Player, MurderResultFlags.Succeeded);
                 FinalStatusManager.SetFinalStatus(player, FinalStatus.VampireKill);
-                source.Player.NetTransform.SnapTo(pos3);
                 MurderDataManager.AddMurderData(source, player);
                 break;
             case CustomDeathType.VampireWithDead:
                 player.Player.MurderPlayer(player.Player, MurderResultFlags.Succeeded);
+                FinalStatusManager.SetFinalStatus(player, FinalStatus.VampireWithDead);
+                break;
+            case CustomDeathType.VampireWithDeadNonDeadbody:
+                player.Player.Exiled();
                 FinalStatusManager.SetFinalStatus(player, FinalStatus.VampireWithDead);
                 break;
             case CustomDeathType.PenguinAfterMeeting:
@@ -200,8 +207,10 @@ public enum CustomDeathType
     LaunchByRocket,
     VampireKill,
     VampireWithDead,
+    VampireWithDeadNonDeadbody,
     KilLWithoutDeadbodyAndTeleport,
     PenguinAfterMeeting,
     SuicideSecrets,
     BuskerFakeDeath,
+    SuperWaveCannon,
 }

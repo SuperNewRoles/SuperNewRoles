@@ -58,7 +58,8 @@ public class HawkAbility : CustomButtonBase, IButtonEffect
         });
         dieEventListener = DieEvent.Instance.AddListener((data) =>
         {
-            OnDie();
+            if (data.player == Player && Player.AmOwner)
+                OnDie();
         });
     }
 

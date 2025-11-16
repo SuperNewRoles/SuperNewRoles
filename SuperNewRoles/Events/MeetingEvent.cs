@@ -236,7 +236,8 @@ public static class MeetingHudCheckForEndVotingPatch
                     {
                         MeetingHud.VoterState voterState = default;
                         voterState.VoterId = addOnly.Key;
-                        voterState.VotedForId = __instance.playerStates[addOnly.Key].VotedFor;
+                        var playerVoteArea = __instance.playerStates.FirstOrDefault(x => x.TargetPlayerId == addOnly.Key);
+                        voterState.VotedForId = playerVoteArea?.VotedFor ?? byte.MaxValue;
                         array.Add(voterState);
                         count--;
                     }

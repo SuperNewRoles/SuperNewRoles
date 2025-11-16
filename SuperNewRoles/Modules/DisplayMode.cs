@@ -5,16 +5,19 @@ namespace SuperNewRoles.Modules;
 [Flags]
 public enum DisplayModeId
 {
+    None = 0,
     Default = 1 << 0,
     SuperHostRolesOnly = 1 << 1, // 元々の SHR true とは異なる挙動(通常モード 非表示)を目的に使用している。 ( SHRモードに設定された時のみ、「SHR 未実装」と 表記するのに使用中。)
-    BattleRoyal = 1 << 2,
-    All = Default | SuperHostRolesOnly | BattleRoyal
+    WCBattleRoyal = 1 << 2,
+    BattleRoyal = 1 << 3,
+    All = Default | SuperHostRolesOnly | WCBattleRoyal | BattleRoyal
 }
 public enum ModeId
 {
     Default,
-    SuperHostRoles
-    //BattleRoyal,
+    WCBattleRoyal,
+    BattleRoyal,
+    SuperHostRoles,
 }
 
 public static class DisplayMode
@@ -32,8 +35,10 @@ public static class DisplayMode
                 return DisplayModeId.Default;
             case ModeId.SuperHostRoles: // FIXME SHR実装時 想定通りの挙動をしない記述になっている
                 return DisplayModeId.SuperHostRolesOnly;
-            //case ModeId.BattleRoyal:
-            //    return DisplayModeId.BattleRoyal;
+            case ModeId.WCBattleRoyal:
+                return DisplayModeId.WCBattleRoyal;
+            case ModeId.BattleRoyal:
+                return DisplayModeId.BattleRoyal;
             default:
                 return DisplayModeId.Default;
         }

@@ -117,6 +117,10 @@ public static class ModdedNetworkTransform
         if (player.NetTransform.isPaused || player.onLadder || (ShipStatus.Instance != null && ShipStatus.Instance.Type == ShipStatus.MapType.Fungle && ShipStatus.Instance is FungleShipStatus fungleShipStatus && fungleShipStatus.Zipline.playerIdHands.ContainsKey(player.PlayerId)))
         {
             // Clear state for paused players
+            if (movementQueues.TryGetValue(player.PlayerId, out var queue))
+            {
+                queue.Clear();
+            }
             return;
         }
 
