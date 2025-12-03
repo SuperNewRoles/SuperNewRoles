@@ -109,6 +109,10 @@ class UbiquitousAbility : AbilityBase
         _dieListener?.RemoveListener();
         _mapBehaviourAwakeListener?.RemoveListener();
         _mapBehaviourFixedUpdateListener?.RemoveListener();
+
+        if (!MyDrone) return;
+        // 視界を戻す
+        Camera.main.GetComponent<FollowerCamera>().SetTarget(ExPlayerControl.LocalPlayer.Player);
     }
 
     private void OnMeetingStart(MeetingStartEventData data)
