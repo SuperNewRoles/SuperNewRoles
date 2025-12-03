@@ -21,18 +21,18 @@ class Datahacker : RoleBase<Datahacker>
     public override RoleId Role { get; } = RoleId.Datahacker;
     public override Color32 RoleColor { get; } = new(157, 236, 255, byte.MaxValue); // 水色
     public override List<Func<AbilityBase>> Abilities { get; } = [() => new DatahackerAbility(new(
-        UseIndividualTaskSetting: UseIndividualTaskSetting,
+        UseIndividualTaskSetting: DatahackerUseIndividualTaskSetting,
         IndividualTasks: DatahackerIndividualTasks,
-        TaskRequirePercent: TaskRequirePercent,
-        ExposeTasksLeft: ExposeTasksLeft,
-        ShowArrowWhenExposed: ShowArrowWhenExposed,
-        CanSeeDuringMeeting: CanSeeDuringMeeting,
-        CanSeeImpostor: CanSeeImpostor,
-        CanSeeNeutral: CanSeeNeutral,
-        CanSeeKillingNeutral: CanSeeKillingNeutral,
-        CanSeeCrew: CanSeeCrew,
-        CanSeeMadmates: CanSeeMadmates,
-        CanSeeRoleNames: CanSeeRoleNames
+        TaskRequirePercent: DatahackerTaskRequirePercent,
+        ExposeTasksLeft: DatahackerExposeTasksLeft,
+        ShowArrowWhenExposed: DatahackerShowArrowWhenExposed,
+        CanSeeDuringMeeting: DatahackerCanSeeDuringMeeting,
+        CanSeeImpostor: DatahackerCanSeeImpostor,
+        CanSeeNeutral: DatahackerCanSeeNeutral,
+        CanSeeKillingNeutral: DatahackerCanSeeKillingNeutral,
+        CanSeeCrew: DatahackerCanSeeCrew,
+        CanSeeMadmates: DatahackerCanSeeMadmates,
+        CanSeeRoleNames: DatahackerCanSeeRoleNames
     ))];
     public override QuoteMod QuoteMod { get; } = QuoteMod.SuperNewRoles;
     public override RoleTypes IntroSoundType { get; } = RoleTypes.Crewmate;
@@ -46,50 +46,50 @@ class Datahacker : RoleBase<Datahacker>
 
     // タスクを個別で設定するか
     [CustomOptionBool("Datahacker.TaskOption", true)]
-    public static bool UseIndividualTaskSetting = true;
+    public static bool DatahackerUseIndividualTaskSetting = true;
 
-    [CustomOptionTask("Datahacker.TaskRequirePercent", 4, 4, 4, parentFieldName: nameof(UseIndividualTaskSetting))]
+    [CustomOptionTask("Datahacker.TaskRequirePercent", 4, 4, 4, parentFieldName: nameof(DatahackerUseIndividualTaskSetting))]
     public static TaskOptionData DatahackerIndividualTasks;
 
     // 能力が発動するタスク進捗
     [CustomOptionFloat("Datahacker.TaskRequirePercent", 0f, 100f, 5f, 100f)]
-    public static float TaskRequirePercent = 100f;
+    public static float DatahackerTaskRequirePercent = 100f;
 
     // 人外にバレる残りタスク数
     [CustomOptionInt("Datahacker.ExposeTasksLeft", 0, 20, 1, 2)]
-    public static int ExposeTasksLeft = 2;
+    public static int DatahackerExposeTasksLeft = 2;
 
     // バレた際、矢印が表示されるか
     [CustomOptionBool("Datahacker.ShowArrowWhenExposed", true)]
-    public static bool ShowArrowWhenExposed = true;
+    public static bool DatahackerShowArrowWhenExposed = true;
 
     // 会議時に役職を見れるか
     [CustomOptionBool("Datahacker.CanSeeDuringMeeting", false)]
-    public static bool CanSeeDuringMeeting = false;
+    public static bool DatahackerCanSeeDuringMeeting = false;
 
     // インポスターがわかる
     [CustomOptionBool("Datahacker.CanSeeImpostor", true)]
-    public static bool CanSeeImpostor = true;
+    public static bool DatahackerCanSeeImpostor = true;
 
     // 第三陣営がわかる
     [CustomOptionBool("Datahacker.CanSeeNeutral", false)]
-    public static bool CanSeeNeutral = false;
+    public static bool DatahackerCanSeeNeutral = false;
 
     // キル第三だけがわかる
-    [CustomOptionBool("Datahacker.CanSeeKillingNeutral", true, parentFieldName: nameof(CanSeeNeutral))]
-    public static bool CanSeeKillingNeutral = true;
+    [CustomOptionBool("Datahacker.CanSeeKillingNeutral", true, parentFieldName: nameof(DatahackerCanSeeNeutral))]
+    public static bool DatahackerCanSeeKillingNeutral = true;
 
     // クルーメイトがわかる
     [CustomOptionBool("Datahacker.CanSeeCrew", false)]
-    public static bool CanSeeCrew = false;
+    public static bool DatahackerCanSeeCrew = false;
 
     // マッド系役職がわかる
-    [CustomOptionBool("Datahacker.CanSeeMadmates", false, parentFieldName: nameof(CanSeeCrew))]
-    public static bool CanSeeMadmates = false;
+    [CustomOptionBool("Datahacker.CanSeeMadmates", false, parentFieldName: nameof(DatahackerCanSeeCrew))]
+    public static bool DatahackerCanSeeMadmates = false;
 
     // 役職名もわかる
     [CustomOptionBool("Datahacker.CanSeeRoleNames", false)]
-    public static bool CanSeeRoleNames = false;
+    public static bool DatahackerCanSeeRoleNames = false;
 }
 
 public record DatahackerData(
