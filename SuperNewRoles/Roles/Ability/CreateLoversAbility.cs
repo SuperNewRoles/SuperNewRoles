@@ -117,5 +117,6 @@ public class CreateLoversAbility : TargetCustomButtonBase
         _created = true;
         NameText.UpdateNameInfo(playerA);
         NameText.UpdateNameInfo(playerB);
+        NameText.UpdateNameInfo(Player);
     }
 }
