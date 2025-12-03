@@ -264,7 +264,8 @@ class DoorHackButton : CustomButtonBase
 
     public override bool CheckIsAvailable()
     {
-        if (!_ability.MyDrone) return false;
+        // ドローンが存在しており、かつ操作中でないとドアハックは使用不可
+        if (!_ability.MyDrone || !_ability.UnderOperation) return false;
         return ShipStatus.Instance.AllDoors.Any(x => Vector2.Distance(_ability.MyDrone.transform.position, x.transform.position) <= Ubiquitous.DoorHackScope * 3 && !x.IsOpen && !x.TryCast<AutoCloseDoor>());
     }
 
