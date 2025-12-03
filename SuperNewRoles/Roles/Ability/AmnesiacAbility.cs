@@ -68,6 +68,9 @@ public class AmnesiacAbility : AbilityBase
         amnesiac.ReverseRole(deadPlayer);
         amnesiac.ReverseTask(deadPlayer);
 
+        if (deadPlayer.Data.RoleWhenAlive.HasValue)
+            amnesiac.Player.StartCoroutine(amnesiac.Player.CoSetRole(deadPlayer.Data.RoleWhenAlive.Value, false));
+
         deadPlayer.SetRole(targetRoleId);
 
         // 役職変更後にゲーム状態を再チェック
