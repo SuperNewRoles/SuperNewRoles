@@ -22,7 +22,7 @@ class Datahacker : RoleBase<Datahacker>
     public override Color32 RoleColor { get; } = new(157, 236, 255, byte.MaxValue); // 水色
     public override List<Func<AbilityBase>> Abilities { get; } = [() => new DatahackerAbility(new(
         UseIndividualTaskSetting: UseIndividualTaskSetting,
-        IndividualTasks: IndividualTasks,
+        IndividualTasks: DatahackerIndividualTasks,
         TaskRequirePercent: TaskRequirePercent,
         ExposeTasksLeft: ExposeTasksLeft,
         ShowArrowWhenExposed: ShowArrowWhenExposed,
@@ -49,7 +49,7 @@ class Datahacker : RoleBase<Datahacker>
     public static bool UseIndividualTaskSetting = true;
 
     [CustomOptionTask("Datahacker.TaskRequirePercent", 4, 4, 4, parentFieldName: nameof(UseIndividualTaskSetting))]
-    public static TaskOptionData IndividualTasks;
+    public static TaskOptionData DatahackerIndividualTasks;
 
     // 能力が発動するタスク進捗
     [CustomOptionFloat("Datahacker.TaskRequirePercent", 0f, 100f, 5f, 100f)]
