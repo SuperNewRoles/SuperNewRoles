@@ -466,6 +466,8 @@ public class ExPlayerControl
         // 両方のプレイヤーのRoleを保存
         RoleId myRole = Role;
         RoleId targetRole = target.Role;
+        IRoleBase myRoleBase = roleBase;
+        IRoleBase targetRoleBase = target.roleBase;
 
         // 両方のプレイヤーからAbilitiesをすべてDetach
         foreach (var abilityData in myAbilities)
@@ -484,9 +486,9 @@ public class ExPlayerControl
             SuperTrophyManager.DetachTrophy(Role);
 
         Role = targetRole;
-        roleBase = target.roleBase;
+        roleBase = targetRoleBase;
         target.Role = myRole;
-        target.roleBase = roleBase;
+        target.roleBase = myRoleBase;
 
         // アタッチする
         foreach (var ability in myAbilities)
@@ -494,7 +496,7 @@ public class ExPlayerControl
             var currentParent = ability.ability.Parent;
             if (currentParent is not AbilityParentRole)
                 continue;
-            currentParent.Player = Player;
+            currentParent.Player = target; // targetにAttachするのでParent.Playerはtarget
             target.AttachAbility(ability.ability, currentParent);
         }
         foreach (var ability in targetAbilities)
@@ -502,7 +504,7 @@ public class ExPlayerControl
             var currentParent = ability.ability.Parent;
             if (currentParent is not AbilityParentRole)
                 continue;
-            currentParent.Player = Player;
+            currentParent.Player = this; // thisにAttachするのでParent.Playerはthis
             AttachAbility(ability.ability, currentParent);
         }
         // 名前情報を更新

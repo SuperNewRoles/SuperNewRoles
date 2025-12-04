@@ -138,7 +138,7 @@ public class DeadBodyArrowsAbility : AbilityBase
         var exp = ExPlayerControl.ById(db.ParentId);
         int deadBodyColorId;
 
-        if (exp == null) return _defaultArrowColor;
+        if (exp == null || exp.Data == null) return _defaultArrowColor;
 
         // 明暗表示関連
         const int lightColorId = (int)SuperNewRoles.CustomCosmetics.CustomColors.ColorType.Pitchwhite;

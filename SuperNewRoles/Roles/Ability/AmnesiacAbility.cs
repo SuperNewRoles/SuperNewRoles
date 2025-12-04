@@ -1,4 +1,5 @@
 using System;
+using AmongUs.GameOptions;
 using SuperNewRoles.Events;
 using SuperNewRoles.Events.PCEvents;
 using SuperNewRoles.Modules;
@@ -68,11 +69,15 @@ public class AmnesiacAbility : AbilityBase
         amnesiac.ReverseRole(deadPlayer);
         amnesiac.ReverseTask(deadPlayer);
 
-        if (deadPlayer.Data.RoleWhenAlive.HasValue)
-            amnesiac.Player.StartCoroutine(amnesiac.Player.CoSetRole(deadPlayer.Data.RoleWhenAlive.Value, false));
+        RoleTypes newRole = deadPlayer.Data.Role.Role switch
+        {
+            RoleTypes.CrewmateGhost => RoleTypes.Crewmate,
+            RoleTypes.ImpostorGhost => RoleTypes.Impostor,
+            _ => deadPlayer.Data.Role.Role,
+        };
+        FastDestroyableSingleton<RoleManager>.Instance.SetRole(amnesiac.Player, newRole);
 
         deadPlayer.SetRole(targetRoleId);
-
         // 役職変更後にゲーム状態を再チェック
         new LateTask(() =>
         {
