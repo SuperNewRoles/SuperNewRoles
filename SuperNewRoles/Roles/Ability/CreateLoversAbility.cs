@@ -114,8 +114,14 @@ public class CreateLoversAbility : TargetCustomButtonBase
     public void RpcCustomCreateLovers(ExPlayerControl playerA, ExPlayerControl playerB)
     {
         CreatedCouple = AssignRoles.CustomSetLovers(playerA, playerB, AssignRoles.LoversIndex, true);
+        // キューピッド能力にも作成したラバーズの情報を同期しておく
+        if (Player.TryGetAbility<CupidAbility>(out var cupidAbility))
+        {
+            cupidAbility.SetLovers(playerA.PlayerId, playerB.PlayerId);
+        }
         _created = true;
         NameText.UpdateNameInfo(playerA);
         NameText.UpdateNameInfo(playerB);
+        NameText.UpdateNameInfo(Player);
     }
 }

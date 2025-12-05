@@ -155,11 +155,17 @@ public class ModifierOptionMenuObjectData : OptionMenuBase
                 var option = optionUIData.Option;
                 if (option.IsBooleanOption && optionUIData is CheckOptionUIData checkData)
                 {
-                    checkData.CheckMark.SetActive((bool)option.Value);
+                    if (checkData.CheckMark != null)
+                    {
+                        checkData.CheckMark.SetActive((bool)option.Value);
+                    }
                 }
                 else if (!option.IsBooleanOption && optionUIData is SelectOptionUIData selectData)
                 {
-                    selectData.SelectedText.text = option.GetCurrentSelectionString();
+                    if (selectData.SelectedText != null)
+                    {
+                        selectData.SelectedText.text = option.GetCurrentSelectionString();
+                    }
                 }
             }
         }
