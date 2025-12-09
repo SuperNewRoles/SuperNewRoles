@@ -181,6 +181,15 @@ public static class CustomDeathExtensions
                 FinalStatusManager.SetFinalStatus(player, FinalStatus.SluggerSlug);
                 MurderDataManager.AddMurderData(source, player);
                 break;
+            case CustomDeathType.KnifeKill:
+                if (source == null)
+                    throw new Exception("Source is null");
+                if (!TryKillEvent.Invoke(source, ref player).RefSuccess)
+                    break;
+                player.Player.MurderPlayer(player.Player, MurderResultFlags.Succeeded);
+                FinalStatusManager.SetFinalStatus(player, FinalStatus.Kill);
+                MurderDataManager.AddMurderData(source, player);
+                break;
             default:
                 throw new Exception($"Invalid death type: {deathType}");
         }
@@ -200,6 +209,7 @@ public enum CustomDeathType
 {
     Exile,
     Kill,
+    KnifeKill,
     Revange,
     FalseCharge,
     Suicide,

@@ -126,6 +126,7 @@ public enum RoleId : short
     EvilSeer,
     MadJester,
     Slugger,
+    Kunoichi,
     Magaziner,
     Robber,
     OverKiller,
