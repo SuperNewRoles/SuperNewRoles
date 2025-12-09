@@ -1,4 +1,6 @@
 using HarmonyLib;
+using SuperNewRoles.Modules;
+using SuperNewRoles.Roles.Neutral;
 using UnityEngine;
 
 namespace SuperNewRoles.Patches;
@@ -10,7 +12,20 @@ public static class MapTaskOverlaySetIconLocationPatch
         MapTaskOverlay __instance,
         [HarmonyArgument(0)] PlayerTask task)
     {
-        Il2CppSystem.Collections.Generic.List<Vector2> locations = task.Locations;
+        Il2CppSystem.Collections.Generic.List<Vector2> locations = null;
+
+        // サウナーだったら特殊な位置表示をする
+        if (ExPlayerControl.LocalPlayer.TryGetAbility<SaunerAbility>(out var saunerAbility))
+        {
+            if (task.TryCast<ImportantTextTask>()?.Text.StartsWith("<size=0%>Sauner</size>") ?? false)
+            {
+                locations = saunerAbility.GetSaunaPos().ToIl2CppList();
+            }
+        }
+        else
+        {
+            locations = task.Locations;
+        }
 
         for (int i = 0; i < locations.Count; i++)
         {

@@ -172,6 +172,11 @@ public static class CustomDeathExtensions
                 player.Player.Exiled();
                 FinalStatusManager.SetFinalStatus(player, FinalStatus.Suicide);
                 break;
+            case CustomDeathType.SluggerSlug:
+                player.Player.Exiled();
+                FinalStatusManager.SetFinalStatus(player, FinalStatus.SluggerSlug);
+                MurderDataManager.AddMurderData(source, player);
+                break;
             default:
                 throw new Exception($"Invalid death type: {deathType}");
         }
@@ -213,4 +218,5 @@ public enum CustomDeathType
     SuicideSecrets,
     BuskerFakeDeath,
     SuperWaveCannon,
+    SluggerSlug,
 }

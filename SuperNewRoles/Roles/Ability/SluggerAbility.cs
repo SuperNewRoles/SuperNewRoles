@@ -10,21 +10,23 @@ namespace SuperNewRoles.Roles.Ability;
 
 public class SluggerAbility : CustomButtonBase, IButtonEffect
 {
-    private readonly float chargeTime;
     private readonly bool isMultiKill;
     private readonly bool isSyncKillCoolTime;
     public bool isEffectActive { get; set; }
     public float EffectTimer { get; set; }
-    public float EffectDuration => chargeTime;
+    public float EffectDuration { get; }
     public Action OnEffectEnds => OnChargeComplete;
     public override Sprite Sprite => AssetManager.GetAsset<Sprite>("SluggerButton.png");
     public override string buttonText => ModTranslation.GetString("SluggerButtonName");
     protected override KeyType keytype => KeyType.Ability1;
-    public override float DefaultTimer => 20f; // クールタイムはオプションで調整可
+    public override float DefaultTimer { get; } // クールタイムはオプションで調整可
+    private CustomPlayerAnimationSimple _chargeAnimation;
+    public AudioSource _chargeAudio;
 
-    public SluggerAbility(float chargeTime, bool isMultiKill, bool isSyncKillCoolTime)
+    public SluggerAbility(float coolTime, float chargeTime, bool isMultiKill, bool isSyncKillCoolTime)
     {
-        this.chargeTime = chargeTime;
+        DefaultTimer = coolTime;
+        EffectDuration = chargeTime;
         this.isMultiKill = isMultiKill;
         this.isSyncKillCoolTime = isSyncKillCoolTime;
     }
@@ -34,8 +36,6 @@ public class SluggerAbility : CustomButtonBase, IButtonEffect
         // チャージ開始アニメーション
         var localPlayer = ExPlayerControl.LocalPlayer;
         PlayChargeAnimation(localPlayer.Player);
-        isEffectActive = true;
-        EffectTimer = chargeTime;
     }
 
     private void PlayChargeAnimation(PlayerControl player)
@@ -47,10 +47,14 @@ public class SluggerAbility : CustomButtonBase, IButtonEffect
             PlayerFlipX: true,
             IsLoop: true,
             frameRate: 12,
-            Adaptive: true,
-            DestroyOnMeeting: true
+            Adaptive: false,
+            DestroyOnMeeting: true,
+            localPosition: new(-0.5f, -0.2f, -1),
+            localScale: Vector3.one * 0.8f
         );
-        CustomPlayerAnimationSimple.Spawn(player, option);
+        _chargeAnimation = CustomPlayerAnimationSimple.Spawn(player, option);
+        if (Vector2.Distance(player.transform.position, ExPlayerControl.LocalPlayer.Player.transform.position) <= 5)
+            _chargeAudio = SoundManager.Instance.PlaySound(AssetManager.GetAsset<AudioClip>("Slugger_Charge.mp3"), true);
     }
 
     private void PlayAttackAnimation(PlayerControl player)
@@ -61,18 +65,26 @@ public class SluggerAbility : CustomButtonBase, IButtonEffect
             Sprites: sprites,
             PlayerFlipX: true,
             IsLoop: false,
-            frameRate: 40,
-            Adaptive: true,
-            DestroyOnMeeting: true
+            frameRate: 25,
+            Adaptive: false,
+            DestroyOnMeeting: true,
+            localScale: Vector3.one * 0.6f
         );
         CustomPlayerAnimationSimple.Spawn(player, option);
+        if (Vector2.Distance(player.transform.position, ExPlayerControl.LocalPlayer.Player.transform.position) <= 5)
+            SoundManager.Instance.PlaySound(AssetManager.GetAsset<AudioClip>("Slugger_Hit.mp3"), false);
     }
 
     private void OnChargeComplete()
     {
-        if (!isEffectActive) return;
-        isEffectActive = false;
         var localPlayer = ExPlayerControl.LocalPlayer;
+        // チャージアニメーションを破棄
+        GameObject.Destroy(_chargeAnimation.gameObject);
+        _chargeAnimation = null;
+        // チャージ音は距離5以内でないと代入されないのでnullチェックしておく
+        if (_chargeAudio != null)
+            _chargeAudio.Stop();
+        _chargeAudio = null;
         // 攻撃アニメーション
         PlayAttackAnimation(localPlayer.Player);
         // 範囲内のターゲットを取得
@@ -113,11 +125,9 @@ public class SluggerAbility : CustomButtonBase, IButtonEffect
         var localPlayer = ExPlayerControl.LocalPlayer;
         foreach (var target in targets)
         {
-            target.CustomDeath(CustomDeathType.Kill, source: localPlayer);
-            // Slugger専用死体を生成
-            SuperNewRoles.CustomObject.SluggerDeadbody.Spawn(localPlayer.Player, target.Player);
+            target.CustomDeath(CustomDeathType.SluggerSlug, source: localPlayer);
+            SluggerDeadbody.Spawn(localPlayer.Player, target.Player);
         }
-        // TODO: 標準死体を消す処理が必要なら追加
     }
 
     public override bool CheckIsAvailable()
