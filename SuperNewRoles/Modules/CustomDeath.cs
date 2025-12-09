@@ -173,6 +173,10 @@ public static class CustomDeathExtensions
                 FinalStatusManager.SetFinalStatus(player, FinalStatus.Suicide);
                 break;
             case CustomDeathType.SluggerSlug:
+                if (source == null)
+                    throw new Exception("Source is null");
+                if (!TryKillEvent.Invoke(source, ref player).RefSuccess)
+                    break;
                 player.Player.Exiled();
                 FinalStatusManager.SetFinalStatus(player, FinalStatus.SluggerSlug);
                 MurderDataManager.AddMurderData(source, player);

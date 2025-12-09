@@ -122,11 +122,12 @@ public class SluggerAbility : CustomButtonBase, IButtonEffect
     [CustomRPC]
     public void RpcSluggerKill(List<ExPlayerControl> targets)
     {
-        var localPlayer = ExPlayerControl.LocalPlayer;
         foreach (var target in targets)
         {
-            target.CustomDeath(CustomDeathType.SluggerSlug, source: localPlayer);
-            SluggerDeadbody.Spawn(localPlayer.Player, target.Player);
+            target.CustomDeath(CustomDeathType.SluggerSlug, source: Player);
+            // CustomDeathで死亡していない場合があるので、実際に死亡していない場合は除外
+            if (target.IsDead())
+                SluggerDeadbody.Spawn(Player, target.Player);
         }
     }
 

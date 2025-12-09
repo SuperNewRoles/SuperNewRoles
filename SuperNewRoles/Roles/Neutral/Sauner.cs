@@ -108,7 +108,6 @@ public class SaunerAbility : AbilityBase
             UpdateTaskText(inMeeting);
         }
 
-        // タイマー進行と勝利判定はホストのみ
         TickTimer(inside, inMeeting);
     }
 

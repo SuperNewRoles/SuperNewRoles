@@ -87,6 +87,13 @@ public static class FlashHandler
 
         var FullScreenRenderer = GameObject.Instantiate(FastDestroyableSingleton<HudManager>.Instance.FullScreen, FastDestroyableSingleton<HudManager>.Instance.transform);
         var Renderer = FastDestroyableSingleton<HudManager>.Instance;
+
+        if (Renderer == null || FullScreenRenderer == null)
+        {
+            Logger.Error("FlashHandler: Renderer or FullScreenRenderer is null");
+            return null;
+        }
+
         FlashHandle handle = new()
         {
             Renderer = FullScreenRenderer,
@@ -96,12 +103,6 @@ public static class FlashHandler
         Coroutine FlashCoroutine = null;
         FullScreenRenderer.gameObject.SetActive(true);
         FullScreenRenderer.enabled = true;
-
-        if (Renderer == null || FullScreenRenderer == null)
-        {
-            Logger.Error("FlashHandler: Renderer or FullScreenRenderer is null");
-            return null;
-        }
 
         FlashCoroutine = Renderer.StartCoroutine(Effects.Lerp(duration, new Action<float>((p) =>
         {
