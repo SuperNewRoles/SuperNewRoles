@@ -65,6 +65,7 @@ public class SaunerAbility : AbilityBase
     private readonly HashSet<Sauner.SaunerState> _missingAudioStates = new();
     private EventListener _fixedUpdateListener;
     private ImportantTextTask _task;
+    private Arrow _arrow;
 
     public SaunerAbility(SaunerConfig config)
     {
@@ -76,6 +77,7 @@ public class SaunerAbility : AbilityBase
     public override void AttachToLocalPlayer()
     {
         _fixedUpdateListener = FixedUpdateEvent.Instance.AddListener(OnFixedUpdate);
+        EnsureArrow();
     }
 
     public override void DetachToLocalPlayer()
@@ -84,6 +86,7 @@ public class SaunerAbility : AbilityBase
         _fixedUpdateListener?.RemoveListener();
         StopEffects(false, true);
         DestroyTask();
+        DestroyArrow();
     }
 
     private void OnFixedUpdate()
@@ -96,6 +99,7 @@ public class SaunerAbility : AbilityBase
             // 死亡中は演出を止めてテキストだけ更新
             StopEffects(true, true);
             UpdateTaskText(true);
+            UpdateArrow(false, inMeeting, alive);
             return;
         }
 
@@ -106,6 +110,7 @@ public class SaunerAbility : AbilityBase
             // ローカル側で視覚・音を制御
             UpdateVisuals(inside, inMeeting);
             UpdateTaskText(inMeeting);
+            UpdateArrow(inside, inMeeting, alive);
         }
 
         TickTimer(inside, inMeeting);
@@ -282,6 +287,93 @@ public class SaunerAbility : AbilityBase
                 _audioFadeCoroutine = null;
             }
         })));
+    }
+
+    private void EnsureArrow()
+    {
+        if (_arrow != null) return;
+        _arrow = new Arrow(Sauner.Instance.RoleColor);
+        if (_arrow.arrow != null) _arrow.arrow.SetActive(false);
+    }
+
+    private void DestroyArrow()
+    {
+        if (_arrow?.arrow != null)
+        {
+            UnityEngine.Object.Destroy(_arrow.arrow);
+        }
+        _arrow = null;
+    }
+
+    private void SetArrowActive(bool active)
+    {
+        if (_arrow?.arrow == null) return;
+        if (_arrow.arrow.activeSelf == active) return;
+        _arrow.arrow.SetActive(active);
+    }
+
+    private bool TryGetArrowTarget(out Vector3 target)
+    {
+        target = default;
+        var positions = GetSaunaPos();
+        if (positions == null || positions.Count == 0 || Player?.transform == null) return false;
+
+        Vector2 playerPos = Player.transform.position;
+        Vector2 closest = positions[0];
+        float closestSqr = (closest - playerPos).sqrMagnitude;
+
+        for (int i = 1; i < positions.Count; i++)
+        {
+            Vector2 pos = positions[i];
+            float sqr = (pos - playerPos).sqrMagnitude;
+            if (sqr < closestSqr)
+            {
+                closestSqr = sqr;
+                closest = pos;
+            }
+        }
+
+        target = new Vector3(closest.x, closest.y, Player.transform.position.z);
+        return true;
+    }
+
+    private Color GetArrowColor()
+    {
+        Color color = GetFlashColor(_state);
+        color.a = 1f;
+        return color;
+    }
+
+    private void UpdateArrow(bool insideRoom, bool inMeeting, bool alive)
+    {
+        if (!Player.AmOwner) return;
+
+        if (!alive || inMeeting || _winHandled)
+        {
+            SetArrowActive(false);
+            return;
+        }
+
+        if (insideRoom)
+        {
+            SetArrowActive(false);
+            return;
+        }
+
+        EnsureArrow();
+        if (_arrow?.arrow == null)
+        {
+            return;
+        }
+
+        if (!TryGetArrowTarget(out var target))
+        {
+            SetArrowActive(false);
+            return;
+        }
+
+        SetArrowActive(true);
+        _arrow.Update(target, GetArrowColor());
     }
 
     private void EnsureTask()

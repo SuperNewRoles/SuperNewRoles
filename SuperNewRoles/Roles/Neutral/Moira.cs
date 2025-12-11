@@ -57,6 +57,7 @@ public class MoiraMeetingAbility : CustomMeetingButtonBase, IAbilityCount
     private EventListener<WrapUpEventData> wrapUpEvent;
     private EventListener<MeetingHudCalculateVotesOnPlayerOnlyHostEventData> calculateVotesEvent;
     private EventListener<VotingCompleteEventData> votingCompleteEvent;
+    private EventListener<NameTextUpdateEventData> nameTextUpdateEvent;
 
     public override bool CheckHasButton(ExPlayerControl player)
     {
@@ -73,7 +74,13 @@ public class MoiraMeetingAbility : CustomMeetingButtonBase, IAbilityCount
         lastMeetingDead = ExPlayerControl.LocalPlayer.IsDead();
         wrapUpEvent = WrapUpEvent.Instance.AddListener(OnWrapUp);
         calculateVotesEvent = MeetingHudCalculateVotesOnPlayerOnlyHostEvent.Instance.AddListener(OnCalculateVotes);
+    }
+
+    public override void AttachToAlls()
+    {
+        base.AttachToAlls();
         votingCompleteEvent = VotingCompleteEvent.Instance.AddListener(OnVotingComplete);
+        nameTextUpdateEvent = NameTextUpdateEvent.Instance.AddListener(OnNameTextUpdate);
     }
 
     public override void DetachToLocalPlayer()
@@ -81,7 +88,24 @@ public class MoiraMeetingAbility : CustomMeetingButtonBase, IAbilityCount
         base.DetachToLocalPlayer();
         wrapUpEvent?.RemoveListener();
         calculateVotesEvent?.RemoveListener();
+    }
+
+    public override void DetachToAlls()
+    {
+        base.DetachToAlls();
         votingCompleteEvent?.RemoveListener();
+        nameTextUpdateEvent?.RemoveListener();
+    }
+
+    private void OnNameTextUpdate(NameTextUpdateEventData data)
+    {
+        if (data.Player != Player) return;
+        if (data.Player.IsDead()) return;
+        // 使い切ってないとダメ
+        if (HasCount) return;
+        data.Player.cosmetics.nameText.text = ModHelpers.Cs(Moira.Instance.RoleColor, data.Player.cosmetics.nameText.text);
+        if (data.Player.VoteArea != null)
+            data.Player.VoteArea.NameText.text = ModHelpers.Cs(Moira.Instance.RoleColor, data.Player.VoteArea.NameText.text);
     }
 
     private void OnWrapUp(WrapUpEventData data)
