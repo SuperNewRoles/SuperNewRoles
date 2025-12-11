@@ -17,7 +17,6 @@ public class NiceRedRidingHoodReviveAbility : AbilityBase, IAbilityCount
     // イベントリスナー
     private EventListener<MurderEventData> _murderEventListener;
     private EventListener<WrapUpEventData> _wrapUpEventListener;
-    private EventListener<DieEventData> _dieEventListener;
 
     // 内部状態
     public ExPlayerControl Killer { get; set; }
@@ -43,14 +42,12 @@ public class NiceRedRidingHoodReviveAbility : AbilityBase, IAbilityCount
         // イベントリスナーの登録
         _murderEventListener = MurderEvent.Instance.AddListener(OnMurderEvent);
         _wrapUpEventListener = WrapUpEvent.Instance.AddListener(OnWrapUpEvent);
-        _dieEventListener = DieEvent.Instance.AddListener(OnDieEvent);
     }
 
     public override void DetachToAlls()
     {
         _murderEventListener?.RemoveListener();
         _wrapUpEventListener?.RemoveListener();
-        _dieEventListener?.RemoveListener();
         base.DetachToAlls();
     }
 
@@ -67,22 +64,14 @@ public class NiceRedRidingHoodReviveAbility : AbilityBase, IAbilityCount
 
     private void OnWrapUpEvent(WrapUpEventData data)
     {
+        if (!IsRevivable || !Player.IsAlive()) return;
         // 追放者がキラーの場合、復活判定
-        if (!Player.IsAlive() && IsRevivable && data.exiled != null)
+        if (data.exiled != null && data.exiled == Killer)
         {
-            var exiledPlayer = ExPlayerControl.ExPlayerControls.FirstOrDefault(x => x.Data == data.exiled);
-            if (exiledPlayer != null && exiledPlayer == Killer)
-            {
-                Logger.Info($"復活判定(キル者追放) : 可", "NiceRedRidingHood");
-                Revive();
-            }
+            Logger.Info($"復活判定(キル者追放) : 可", "NiceRedRidingHood");
+            Revive();
         }
-    }
-
-    private void OnDieEvent(DieEventData data)
-    {
-        // タスクフェイズ中にキラーが死亡した場合の復活判定
-        if (!Player.IsAlive() && IsRevivable && NiceRedRidingHoodIsKillerDeathRevive && data.player == Killer)
+        else if (NiceRedRidingHoodIsKillerDeathRevive && Killer.IsDead())
         {
             Logger.Info($"復活判定(キル者死亡) : 可", "NiceRedRidingHood");
             Revive();
