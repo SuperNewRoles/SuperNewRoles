@@ -66,6 +66,7 @@ public enum CustomGameOverReason
     MadJesterWin,
     SafecrackerWin,
     SaunerWin,
+    MoiraWin,
 }
 
 static class AdditionalTempData

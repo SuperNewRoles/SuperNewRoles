@@ -31,6 +31,13 @@ public class SluggerAbility : CustomButtonBase, IButtonEffect
         this.isSyncKillCoolTime = isSyncKillCoolTime;
     }
 
+    public override void AttachToAlls()
+    {
+        base.AttachToAlls();
+        if (isSyncKillCoolTime)
+            SyncKillCoolTimeAbility.CreateAndAttach(this);
+    }
+
     public override void OnClick()
     {
         // チャージ開始アニメーション
@@ -68,7 +75,8 @@ public class SluggerAbility : CustomButtonBase, IButtonEffect
             frameRate: 25,
             Adaptive: false,
             DestroyOnMeeting: true,
-            localScale: Vector3.one * 0.6f
+            localScale: Vector3.one * 0.6f,
+            UpdatePlayerFlipX: false
         );
         CustomPlayerAnimationSimple.Spawn(player, option);
         if (Vector2.Distance(player.transform.position, ExPlayerControl.LocalPlayer.Player.transform.position) <= 5)
@@ -113,10 +121,6 @@ public class SluggerAbility : CustomButtonBase, IButtonEffect
         // キル処理
         RpcSluggerKill(targets);
         ResetTimer();
-        if (isSyncKillCoolTime)
-        {
-            localPlayer.ResetKillCooldown();
-        }
     }
 
     [CustomRPC]

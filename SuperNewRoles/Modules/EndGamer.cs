@@ -170,6 +170,20 @@ public static class EndGamer
                 }
             }
         }
+        foreach (ExPlayerControl player in ExPlayerControl.ExPlayerControls)
+        {
+            if (player.Role != RoleId.Moira || player.IsDead()) continue;
+            if (!player.TryGetAbility<MoiraMeetingAbility>(out var moiraAbility)) continue;
+            if (moiraAbility.HasCount) continue;
+
+            reason = (GameOverReason)CustomGameOverReason.MoiraWin;
+            winners = [player];
+            color = Moira.Instance.RoleColor;
+            upperText = "Moira";
+            winText = "MoiraWinText";
+            winType = WinType.SingleNeutral;
+            return;
+        }
     }
     private static void UpdateAdditionalWinners(GameOverReason reason, ref HashSet<ExPlayerControl> winners, out HashSet<string> addWinners, ref string winText, bool cantWinSixAdditionalWinners)
     {

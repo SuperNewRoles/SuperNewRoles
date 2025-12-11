@@ -137,6 +137,7 @@ public enum RoleId : short
     HauntedWolf,
     BattleRoyalWaveCannon,
     Sauner,
+    Moira,
 }
 
 public enum GhostRoleId : short

@@ -51,7 +51,7 @@ public class KunoichiAbility : AbilityBase
             _killKunai,
             () => HideAbility?.IsInvisible == true,
             _canThrowWhileInvisible);
-        DisplayAbility = new KunoichiKunaiDisplayAbility(() => HideAbility?.IsInvisible == true);
+        DisplayAbility = new KunoichiKunaiDisplayAbility(_canThrowWhileInvisible, () => HideAbility?.IsInvisible == true);
 
         Player.AttachAbility(KunaiAbility, new AbilityParentAbility(this));
         Player.AttachAbility(DisplayAbility, new AbilityParentAbility(this));
@@ -245,7 +245,7 @@ public class KunoichiKunaiAbility : CustomButtonBase
 
         if (current >= _killThreshold)
         {
-            targetEx.CustomDeath(CustomDeathType.KnifeKill, Player);
+            Player.RpcCustomDeath(targetEx, CustomDeathType.KnifeKill);
             map[targetId] = 0;
         }
     }
@@ -323,7 +323,7 @@ public class KunoichiHideAbility : CustomButtonBase, IButtonEffect
     public override void OnClick()
     {
         if (!CheckIsAvailable()) return;
-        EnterInvisibility();
+        RpcEnterInvisibility();
     }
 
     private void OnFixedUpdate()
@@ -356,6 +356,12 @@ public class KunoichiHideAbility : CustomButtonBase, IButtonEffect
         }
     }
 
+    [CustomRPC]
+    public void RpcEnterInvisibility()
+    {
+        EnterInvisibility();
+    }
+
     private void EnterInvisibility()
     {
         if (IsInvisible) return;
@@ -364,7 +370,8 @@ public class KunoichiHideAbility : CustomButtonBase, IButtonEffect
         EffectTimer = 0f;
         if (Player?.Player != null)
         {
-            ModHelpers.SetOpacity(Player.Player, 0.1f);
+            bool sameTeam = Player.roleBase.AssignedTeam == ExPlayerControl.LocalPlayer.roleBase.AssignedTeam;
+            ModHelpers.SetOpacity(Player.Player, sameTeam ? 0.1f : 0f);
         }
     }
 
@@ -385,13 +392,15 @@ public class KunoichiHideAbility : CustomButtonBase, IButtonEffect
 /// </summary>
 public class KunoichiKunaiDisplayAbility : CustomButtonBase
 {
+    private readonly bool _canThrowWhileInvisible;
     private readonly Func<bool> _isInvisible;
     private GameObject _displayKunai;
     private EventListener _fixedUpdateEvent;
     private bool _isShown;
 
-    public KunoichiKunaiDisplayAbility(Func<bool> isInvisible)
+    public KunoichiKunaiDisplayAbility(bool canThrowWhileInvisible, Func<bool> isInvisible)
     {
+        _canThrowWhileInvisible = canThrowWhileInvisible;
         _isInvisible = isInvisible;
     }
 
@@ -418,7 +427,7 @@ public class KunoichiKunaiDisplayAbility : CustomButtonBase
     {
         if (Player == null || !Player.IsAlive()) return false;
         if (Player.Player == null || !Player.Player.CanMove) return false;
-        if (_isInvisible != null && _isInvisible()) return false;
+        if (!_canThrowWhileInvisible && _isInvisible != null && _isInvisible()) return false;
         return true;
     }
 

@@ -1236,6 +1236,7 @@ HitmanFaildTimer,失敗まで残り{0}秒,Failure remaining {0}s,失败前剩余
 # CustomGameOverReason
 CustomGameOverReason.HitmanWin,殺し屋の勝利,Victory of the Hitman,刺客的胜利,刺客的勝利
 CustomGameOverReason.SaunerWin,サウナーの勝利,Victory of the Sauner,桑拿者胜利,桑拿者勝利
+CustomGameOverReason.MoiraWin,モイラの勝利,Victory of Moira,莫伊拉的胜利,莫伊拉的勝利
 
 # ボタナー
 ButtonerButtonText,ポチッ,Push!
@@ -1843,6 +1844,13 @@ SaunerDarkroom,暗室,Darkroom,暗室,暗室
 SaunerShower,シャワー,Shower,淋浴,淋浴
 SaunerObservationDeck,展望デッキ,Observation Deck,展望台,展望台
 SaunerWinText,が ととのった！,is Feeling refreshed!,桑拿者胜利！,桑拿者勝利！
+
+# Moira
+Moira,モイラ,Moira,莫伊拉,莫伊拉
+Moira.Description,会議中に他者の役職と票を入れ替える女神。能力を使い切った状態で生き残れば勝利を横取りする。,A goddess who swaps others' roles and votes during meetings. Survive after using all swaps to hijack the win.,在会议中可以交换他人的角色与票数。用完次数后仍存活即可抢夺胜利。,在會議中可以交換他人的角色與票數。用完次數後仍存活即可搶奪勝利。
+MoiraIntro1,運命は私の手の内に！,Fate is in my hands!,命运在我手中！,命運在我手中！
+MoiraAbilityLimit,運命改変できる回数,Number of destiny swaps,可改寫命運的次數,可改寫命運的次數
+MoiraWinText,勝利を横取りした！,Hijacked the victory!,抢夺了胜利！,搶奪了勝利！
 
 # BattleRoyalMode (Standard)
 ModeId.BattleRoyal,バトルロイヤル,Battle Royale,大逃杀,大逃殺
