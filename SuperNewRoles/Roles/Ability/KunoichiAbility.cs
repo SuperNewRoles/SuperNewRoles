@@ -8,7 +8,9 @@ using SuperNewRoles.Modules.Events;
 using SuperNewRoles.Modules.Events.Bases;
 using SuperNewRoles.Events.PCEvents;
 using SuperNewRoles.Roles.Ability.CustomButton;
+using TMPro;
 using UnityEngine;
+using UnityEngine.EventSystems;
 
 namespace SuperNewRoles.Roles.Ability;
 
@@ -27,6 +29,7 @@ public class KunoichiAbility : AbilityBase
     public KunoichiHideAbility HideAbility { get; private set; }
     public KunoichiKunaiAbility KunaiAbility { get; private set; }
     public KunoichiKunaiDisplayAbility DisplayAbility { get; private set; }
+    public KunoichiKunaiHitUIAbility HitUIAbility { get; private set; }
 
     public KunoichiAbility(float coolTime, int killKunai, bool canThrowWhileInvisible, bool hideEnabled, float hideTime, bool requirePressToHide)
     {
@@ -51,10 +54,14 @@ public class KunoichiAbility : AbilityBase
             _killKunai,
             () => HideAbility?.IsInvisible == true,
             _canThrowWhileInvisible);
+        HitUIAbility = new KunoichiKunaiHitUIAbility(
+            () => KunaiAbility?.GetCurrentHits() ?? Enumerable.Empty<(ExPlayerControl target, int count)>(),
+            () => KunaiAbility?.KillThreshold ?? 0);
         DisplayAbility = new KunoichiKunaiDisplayAbility(_canThrowWhileInvisible, () => HideAbility?.IsInvisible == true);
 
         Player.AttachAbility(KunaiAbility, new AbilityParentAbility(this));
         Player.AttachAbility(DisplayAbility, new AbilityParentAbility(this));
+        Player.AttachAbility(HitUIAbility, new AbilityParentAbility(this));
 
         if (HideAbility != null)
         {
@@ -81,6 +88,8 @@ public class KunoichiKunaiAbility : CustomButtonBase
     private EventListener _fixedUpdateEvent;
 
     private static readonly Dictionary<byte, Dictionary<byte, int>> HitCounts = new();
+    public int KillThreshold => _killThreshold;
+
     private readonly List<KunaiProjectile> _projectiles = new();
 
     private class KunaiProjectile
@@ -107,10 +116,11 @@ public class KunoichiKunaiAbility : CustomButtonBase
     public override void AttachToAlls()
     {
         base.AttachToAlls();
-        _wrapUpEvent = WrapUpEvent.Instance.AddListener(_ => ClearLocalHits());
-        _meetingStartEvent = MeetingStartEvent.Instance.AddListener(_ => ClearLocalHits());
+        _wrapUpEvent = WrapUpEvent.Instance.AddListener(_ => ClearDeadHits());
+        _meetingStartEvent = MeetingStartEvent.Instance.AddListener(_ => { ClearDeadHits(); DestroyProjectiles(); });
         _fixedUpdateEvent = FixedUpdateEvent.Instance.AddListener(OnFixedUpdate);
     }
+
 
     public override void DetachToAlls()
     {
@@ -137,9 +147,58 @@ public class KunoichiKunaiAbility : CustomButtonBase
         SpawnProjectile();
     }
 
+    public IEnumerable<(ExPlayerControl target, int count)> GetCurrentHits()
+    {
+        if (Player == null) yield break;
+        if (!HitCounts.TryGetValue(Player.PlayerId, out var map)) yield break;
+        foreach (var kv in map)
+        {
+            if (kv.Value <= 0) continue;
+            var target = ExPlayerControl.ById(kv.Key);
+            if (target == null || target.Data == null) continue;
+            yield return (target, kv.Value);
+        }
+    }
+
     private void ClearLocalHits()
     {
         HitCounts.Remove(Player?.PlayerId ?? byte.MaxValue);
+    }
+
+    private void ClearDeadHits()
+    {
+        if (Player == null) return;
+        if (!HitCounts.TryGetValue(Player.PlayerId, out var map)) return;
+
+        List<byte> removeKeys = null;
+        foreach (var kv in map)
+        {
+            if (kv.Value <= 0)
+            {
+                removeKeys ??= new List<byte>();
+                removeKeys.Add(kv.Key);
+                continue;
+            }
+
+            var target = ExPlayerControl.ById(kv.Key);
+            if (target == null || target.Data == null || target.Data.IsDead)
+            {
+                removeKeys ??= new List<byte>();
+                removeKeys.Add(kv.Key);
+            }
+        }
+
+        if (removeKeys == null) return;
+
+        foreach (var key in removeKeys)
+        {
+            map.Remove(key);
+        }
+
+        if (map.Count == 0)
+        {
+            HitCounts.Remove(Player.PlayerId);
+        }
     }
 
     private void SpawnProjectile()
@@ -257,6 +316,142 @@ public class KunoichiKunaiAbility : CustomButtonBase
             if (p.Obj != null) UnityEngine.Object.Destroy(p.Obj);
         }
         _projectiles.Clear();
+    }
+}
+
+/// <summary>
+/// 命中したプレイヤー一覧を表示するUI。ShowPlayerUIAbility風でカウントを重ねて表示。
+/// </summary>
+public class KunoichiKunaiHitUIAbility : AbilityBase
+{
+    private readonly Func<IEnumerable<(ExPlayerControl target, int count)>> _getHits;
+    private readonly Func<int> _getThreshold;
+    private GameObject _container;
+    private readonly List<(byte playerId, int count)> _lastHits = new();
+    private readonly List<PoolablePlayer> _uiObjects = new();
+    private EventListener _fixedUpdateListener;
+
+    public KunoichiKunaiHitUIAbility(
+        Func<IEnumerable<(ExPlayerControl target, int count)>> getHits,
+        Func<int> getThreshold)
+    {
+        _getHits = getHits;
+        _getThreshold = getThreshold;
+    }
+
+    public override void AttachToLocalPlayer()
+    {
+        _fixedUpdateListener = FixedUpdateEvent.Instance.AddListener(OnFixedUpdate);
+        _container = new GameObject("KunoichiHitUIContainer");
+        _container.transform.SetParent(FastDestroyableSingleton<HudManager>.Instance.transform);
+        _container.transform.localPosition = new(-4.19f, -2.4f, 0f);
+        _container.transform.localScale = Vector3.one * 0.3f;
+        var aspectPosition = _container.gameObject.AddComponent<AspectPosition>();
+        aspectPosition.Alignment = AspectPosition.EdgeAlignments.LeftBottom;
+        aspectPosition.DistanceFromEdge = new(0.35f, 0.35f);
+        aspectPosition.OnEnable();
+    }
+
+    public override void DetachToLocalPlayer()
+    {
+        _fixedUpdateListener?.RemoveListener();
+        if (_container != null)
+        {
+            GameObject.Destroy(_container);
+            _container = null;
+        }
+        _uiObjects.Clear();
+    }
+
+    private void OnFixedUpdate()
+    {
+        if (_container == null) return;
+
+        bool shouldHide = FastDestroyableSingleton<HudManager>.Instance.IsIntroDisplayed || MeetingHud.Instance != null;
+        if (shouldHide)
+        {
+            if (_container.activeSelf) _container.SetActive(false);
+            return;
+        }
+
+        int threshold = Mathf.Max(0, _getThreshold?.Invoke() ?? 0);
+        if (threshold <= 0)
+        {
+            if (_container.activeSelf) _container.SetActive(false);
+            return;
+        }
+
+        var hits = (_getHits?.Invoke() ?? Enumerable.Empty<(ExPlayerControl target, int count)>())
+            .Where(h => h.target != null && h.target.Data != null && h.count > 0)
+            .Select(h => (h.target, h.count))
+            .OrderByDescending(h => h.count)
+            .ThenBy(h => h.target.PlayerId)
+            .ToList();
+
+        if (hits.Count == 0)
+        {
+            if (_container.activeSelf) _container.SetActive(false);
+            _lastHits.Clear();
+            return;
+        }
+
+        if (!_container.activeSelf) _container.SetActive(true);
+
+        bool updated = hits.Count != _lastHits.Count;
+        if (!updated)
+        {
+            for (int i = 0; i < hits.Count; i++)
+            {
+                if (_lastHits[i].playerId != hits[i].target.PlayerId || _lastHits[i].count != hits[i].count)
+                {
+                    updated = true;
+                    break;
+                }
+            }
+        }
+
+        if (!updated) return;
+
+        var prefab = FastDestroyableSingleton<HudManager>.Instance.IntroPrefab.PlayerPrefab;
+        for (int i = 0; i < hits.Count; i++)
+        {
+            var hit = hits[i];
+            PoolablePlayer uiObj;
+            if (i < _uiObjects.Count)
+            {
+                uiObj = _uiObjects[i];
+                uiObj.gameObject.SetActive(true);
+            }
+            else
+            {
+                uiObj = GameObject.Instantiate(prefab, _container.transform);
+                _uiObjects.Add(uiObj);
+                uiObj.gameObject.SetActive(true);
+            }
+
+            uiObj.UpdateFromEitherPlayerDataOrCache(hit.target.Data, PlayerOutfitType.Default, PlayerMaterial.MaskType.None, false);
+            uiObj.transform.localPosition = new(i * 1.5f, 0f, -0.3f);
+
+            if (uiObj.cosmetics.nameText != null)
+            {
+                uiObj.cosmetics.nameText.text = $"{hit.count}";
+                uiObj.cosmetics.nameText.enableWordWrapping = false;
+                uiObj.cosmetics.nameText.color = hit.count >= threshold ? Palette.EnabledColor : Color.white;
+                uiObj.cosmetics.nameText.transform.localScale = Vector3.one * 6f;
+                uiObj.cosmetics.nameText.gameObject.SetActive(true);
+            }
+        }
+
+        for (int i = hits.Count; i < _uiObjects.Count; i++)
+        {
+            _uiObjects[i].gameObject.SetActive(false);
+        }
+
+        _lastHits.Clear();
+        foreach (var hit in hits)
+        {
+            _lastHits.Add((hit.target.PlayerId, hit.count));
+        }
     }
 }
 
