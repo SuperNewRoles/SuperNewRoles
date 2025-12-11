@@ -592,6 +592,8 @@ public class KunoichiKunaiDisplayAbility : CustomButtonBase
     private GameObject _displayKunai;
     private EventListener _fixedUpdateEvent;
     private bool _isShown;
+    private bool _hasInitialPosition;
+    private Vector3 _followVelocity;
 
     public KunoichiKunaiDisplayAbility(bool canThrowWhileInvisible, Func<bool> isInvisible)
     {
@@ -631,7 +633,46 @@ public class KunoichiKunaiDisplayAbility : CustomButtonBase
         if (!CheckIsAvailable()) return;
         _isShown = !_isShown;
         EnsureKunai();
-        _displayKunai.SetActive(_isShown);
+
+        if (_displayKunai != null) _displayKunai.SetActive(false);
+
+        if (!_isShown)
+        {
+            _hasInitialPosition = false;
+            _followVelocity = Vector3.zero;
+            return;
+        }
+
+        // 再表示時に「前回位置で一瞬表示」されないよう、表示前に位置を確定させる
+        if (TryGetDesired(out var mouseAngle, out var desired))
+        {
+            _displayKunai.transform.position = desired;
+            _displayKunai.transform.eulerAngles = new Vector3(0f, 0f, mouseAngle * Mathf.Rad2Deg);
+            var sr = _displayKunai.GetComponent<SpriteRenderer>();
+            sr.flipY = Mathf.Cos(mouseAngle) < 0f;
+            _hasInitialPosition = true;
+            _followVelocity = Vector3.zero;
+        }
+
+        if (_displayKunai != null) _displayKunai.SetActive(true);
+    }
+
+    private bool TryGetDesired(out float mouseAngle, out Vector3 desired)
+    {
+        mouseAngle = 0f;
+        desired = Vector3.zero;
+
+        if (Player == null || Player.Player == null) return false;
+
+        Vector3 mouseDirection = Input.mousePosition - new Vector3(Screen.width / 2, Screen.height / 2);
+        if (mouseDirection == Vector3.zero) mouseDirection = Vector3.right;
+        mouseAngle = Mathf.Atan2(mouseDirection.y, mouseDirection.x);
+
+        const float handOffset = 0.8f;
+        const float heightOffset = 0.35f;
+        var targetPosition = Player.GetTruePosition() + new Vector2(handOffset * Mathf.Cos(mouseAngle), handOffset * Mathf.Sin(mouseAngle));
+        desired = new Vector3(targetPosition.x, targetPosition.y + heightOffset, Player.transform.position.z);
+        return true;
     }
 
     private void EnsureKunai()
@@ -649,20 +690,42 @@ public class KunoichiKunaiDisplayAbility : CustomButtonBase
         if (_displayKunai == null || !_isShown)
         {
             if (_displayKunai != null) _displayKunai.SetActive(false);
+            _hasInitialPosition = false;
+            _followVelocity = Vector3.zero;
             return;
         }
 
         if (Player == null || Player.Player == null || !Player.IsAlive() || MeetingHud.Instance != null || Player.Player.inVent)
         {
             _displayKunai.SetActive(false);
+            _hasInitialPosition = false;
+            _followVelocity = Vector3.zero;
             return;
         }
 
-        _displayKunai.SetActive(true);
         Vector3 mouseDirection = Input.mousePosition - new Vector3(Screen.width / 2, Screen.height / 2);
         var mouseAngle = Mathf.Atan2(mouseDirection.y, mouseDirection.x);
-        var targetPosition = Player.GetTruePosition() + new Vector2(0.8f * Mathf.Cos(mouseAngle), 0.8f * Mathf.Sin(mouseAngle));
-        _displayKunai.transform.position = new Vector3(targetPosition.x, targetPosition.y + 0.35f, Player.transform.position.z);
+        const float handOffset = 0.8f;
+        const float heightOffset = 0.35f;
+        const float followSmoothTime = 0.05f;
+        var targetPosition = Player.GetTruePosition() + new Vector2(handOffset * Mathf.Cos(mouseAngle), handOffset * Mathf.Sin(mouseAngle));
+        var desired = new Vector3(targetPosition.x, targetPosition.y + heightOffset, Player.transform.position.z);
+        if (!_hasInitialPosition)
+        {
+            _displayKunai.transform.position = desired;
+            _hasInitialPosition = true;
+            _followVelocity = Vector3.zero;
+        }
+        else
+        {
+            _displayKunai.transform.position = Vector3.SmoothDamp(
+                _displayKunai.transform.position,
+                desired,
+                ref _followVelocity,
+                followSmoothTime,
+                Mathf.Infinity,
+                Time.fixedDeltaTime);
+        }
         _displayKunai.transform.eulerAngles = new Vector3(0f, 0f, mouseAngle * Mathf.Rad2Deg);
 
         var sr = _displayKunai.GetComponent<SpriteRenderer>();
@@ -674,6 +737,9 @@ public class KunoichiKunaiDisplayAbility : CustomButtonBase
         {
             sr.flipY = false;
         }
+
+        // 位置/角度を確定してから表示する（前回位置の一瞬表示を防ぐ）
+        if (!_displayKunai.activeSelf) _displayKunai.SetActive(true);
     }
 }
 
