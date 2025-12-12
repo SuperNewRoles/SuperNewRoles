@@ -1183,6 +1183,10 @@ public static class CustomOptionSaver
 {
     private static readonly IOptionStorage Storage;
     private const byte CurrentVersion = 1;
+    /// <summary>
+    /// 保存できるプリセットスロット数（0〜MaxPresetCount-1 が有効）
+    /// </summary>
+    public const int MaxPresetCount = int.MaxValue;
     private static int currentPreset = 0;
     public static bool IsLoaded { get; private set; } = false;
     public static Dictionary<int, string> presetNames = new();
@@ -1205,13 +1209,13 @@ public static class CustomOptionSaver
 
     public static void SetPresetName(int preset, string name)
     {
-        if (preset < 0 || preset > 9) return;
+        if (preset < 0 || preset >= MaxPresetCount) return;
         presetNames[preset] = name;
     }
 
     public static void RemovePreset(int preset)
     {
-        if (preset < 0 || preset > 9) return;
+        if (preset < 0 || preset >= MaxPresetCount) return;
         if (!presetNames.ContainsKey(preset)) return;
 
         string _;
@@ -1317,7 +1321,7 @@ public static class CustomOptionSaver
 
     public static void LoadPreset(int preset)
     {
-        if (preset < 0 || preset > 9) return;
+        if (preset < 0 || preset >= MaxPresetCount) return;
         CurrentPreset = preset;
         try
         {

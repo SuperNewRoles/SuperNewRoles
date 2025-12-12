@@ -16,6 +16,8 @@ public class JackalAbility : AbilityBase
     public CustomSidekickButtonAbility SidekickAbility { get; private set; }
     public KnowOtherAbility KnowJackalAbility { get; private set; }
     public ImpostorVisionAbility ImpostorVisionAbility { get; private set; }
+    // 忘却者などで通報した時に状況がリセットされることへの対策
+    public bool CreatedSidekick { get; private set; }
 
     public JackalAbility(JackalData jackData)
     {
@@ -36,7 +38,7 @@ public class JackalAbility : AbilityBase
         );
 
         SidekickAbility = new CustomSidekickButtonAbility(new(
-            (bool sidekickCreated) => JackData.CanCreateSidekick && !sidekickCreated,
+            (bool sidekickCreated) => JackData.CanCreateSidekick && !sidekickCreated && !CreatedSidekick,
             () => JackData.SidekickCooldown,
             () => JackData.SidekickType,
             () => RoleTypes.Crewmate,
@@ -47,6 +49,8 @@ public class JackalAbility : AbilityBase
             sidekickedPromoteData: getPromoteData(JackData.SidekickType),
             onSidekickCreated: (player) =>
             {
+                // 全ての視点で共有していないと意味がないのでRPCで通知する
+                RpcJackalCreatedSidekick();
                 Logger.Info($"OnSidekickCreated: {player.PlayerId}");
                 new LateTask(() =>
                 {
@@ -81,6 +85,12 @@ public class JackalAbility : AbilityBase
         Player.AttachAbility(SidekickAbility, parentAbility);
         Player.AttachAbility(KnowJackalAbility, parentAbility);
         Player.AttachAbility(ImpostorVisionAbility, parentAbility);
+    }
+
+    [CustomRPC]
+    public void RpcJackalCreatedSidekick()
+    {
+        CreatedSidekick = true;
     }
 
     private SidekickedPromoteData getPromoteData(RoleId sidekickType)

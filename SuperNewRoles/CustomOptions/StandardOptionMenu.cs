@@ -246,8 +246,16 @@ public static class StandardOptionMenu
         Logger.Info(text);
         if (string.IsNullOrEmpty(text))
             return;
+
+        // 既存IDの最大値+1 を新しいプリセットIDとする（常に「一番下」に追加）
         int maxPreset = CustomOptionSaver.PresetNames.Any() ? CustomOptionSaver.PresetNames.Keys.Max() : -1;
-        int newPreset = maxPreset + 1;
+        long candidate = (long)maxPreset + 1;
+        if (candidate >= CustomOptionSaver.MaxPresetCount)
+        {
+            Logger.Warning($"No free preset slot available (0-{CustomOptionSaver.MaxPresetCount - 1}).");
+            return;
+        }
+        int newPreset = (int)candidate;
 
         CustomOptionSaver.SetPresetName(newPreset, text);
         CustomOptionSaver.CurrentPreset = newPreset;

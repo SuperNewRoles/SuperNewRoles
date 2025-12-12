@@ -140,10 +140,19 @@ public class RoleOptionMenuObjectData : OptionMenuBase
         }
         foreach (var roleButton in RoleDetailButtonDictionary)
         {
+            // GameObjectが破棄されている可能性があるため、nullチェックを追加
+            if (roleButton.Value == null)
+            {
+                continue;
+            }
             var roleOption = RoleOptionManager.RoleOptions.FirstOrDefault(x => x.RoleId == roleButton.Key);
             if (roleOption != null)
             {
-                RoleOptionMenu.UpdateRoleDetailButtonColor(roleButton.Value.GetComponent<SpriteRenderer>(), roleOption);
+                var spriteRenderer = roleButton.Value.GetComponent<SpriteRenderer>();
+                if (spriteRenderer != null)
+                {
+                    RoleOptionMenu.UpdateRoleDetailButtonColor(spriteRenderer, roleOption);
+                }
             }
         }
 
