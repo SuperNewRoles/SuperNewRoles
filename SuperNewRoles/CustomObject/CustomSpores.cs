@@ -15,7 +15,7 @@ public static class CustomSpores
         mushRooms = new();
     }
 
-    public static void AddMushroom(Vector3 position, Action<Mushroom> callback, int id = -1)
+    public static void AddMushroom(Vector2 position, Action<Mushroom> callback, int id = -1)
     {
         FungleShipStatus fungleShipStatus = ShipStatus.Instance.TryCast<FungleShipStatus>();
         Mushroom mushroom = null;
@@ -76,7 +76,7 @@ public static class CustomSpores
         Mushroom newmushRoom = UnityEngine.Object.Instantiate(templateMushroom, ShipStatus.Instance.transform);
         newmushRoom.transform.position = position3;
         newmushRoom.id = id;
-        newmushRoom.origPosition = position;
+        newmushRoom.origPosition = position3;
 
         if (mushrooms != null)
             mushrooms.Add(id, newmushRoom);

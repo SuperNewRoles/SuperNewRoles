@@ -9,17 +9,17 @@ namespace SuperNewRoles.Patches.CursedTasks;
 
 public static class CursedMushroom
 {
-    private static readonly List<Vector3> FungleMushroomPositions = new()
+    private static readonly List<Vector2> FungleMushroomPositions = new()
     {
-        new(6.654f, 4.6485f, 0.1046f),
-        new(13.9424f, 9.2511f, 0.1093f),
-        new(15.2154f, 3.6173f, 0.1036f),
-        new(20.3487f, 7.472f, 0.1075f),
-        new(26.0282f, 12.9952f, 0.113f),
-        new(-15.7754f, 6.0697f, 0.1061f),
-        new(-8.3219f, -14.3521f, 0.1144f),
-        new(16.9672f, 13.9916f, 0.113f),
-        new(8.4608f, 9.9998f, 0.11f),
+        new(6.654f, 4.6485f),
+        new(13.9424f, 9.2511f),
+        new(15.2154f, 3.6173f),
+        new(20.3487f, 7.472f),
+        new(26.0282f, 12.9952f),
+        new(-15.7754f, 6.0697f),
+        new(-8.3219f, -14.3521f),
+        new(16.9672f, 13.9916f),
+        new(8.4608f, 9.9998f),
 
         /*
         10.3346 16.61 0.0166
@@ -28,21 +28,19 @@ public static class CursedMushroom
         9.7766 18.052 0.0181
         8.5846 18.4939 0.0185
         */
-        new(10.3346f, 16.61f, 0.0166f),
-        new(13.9837f, 18.8841f, 0.1189f),
-        new(11.1516f, 18.177f, 0.1182f),
-        new(9.7766f, 18.052f, 0.1181f),
-        new(8.5846f, 18.4939f, 0.1185f),
-        new(6.1528f, 18.4484f, 0.1184f)
+        new(10.3346f, 16.61f),
+        new(13.9837f, 18.8841f),
+        new(11.1516f, 18.177f),
+        new(9.7766f, 18.052f),
+        new(8.5846f, 18.4939f),
+        new(6.1528f, 18.4484f)
     };
     public static void SpawnCustomMushroomFungle()
     {
         if (!MapNames.Fungle.IsMap()) return;
-        foreach (Vector3 position in FungleMushroomPositions)
+        foreach (Vector2 position in FungleMushroomPositions)
         {
-            CustomSpores.AddMushroom(position, (mushroom) =>
-            {
-            });
+            CustomSpores.AddMushroom(position, (mushroom) => { });
         }
     }
     // Cursed モード時に、マッシュルームが元の位置から一定範囲内で
