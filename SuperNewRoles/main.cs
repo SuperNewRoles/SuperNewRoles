@@ -97,6 +97,8 @@ public partial class SuperNewRolesPlugin : BasePlugin
 
         Instance = this;
 
+        SuperNewRoles.Patches.CursedTasks.Main.ClearAndReload();
+
         RegisterCustomObjects();
         CustomLoadingScreen.Patch(Harmony);
         HarmonyPatchAllTask = TaskRunIfWindows(() => PatchAll(Harmony));
