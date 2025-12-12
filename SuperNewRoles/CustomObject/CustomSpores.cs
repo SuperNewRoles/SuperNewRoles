@@ -15,7 +15,7 @@ public static class CustomSpores
         mushRooms = new();
     }
 
-    public static void AddMushroom(Vector2 position, Action<Mushroom> callback, int id = -1)
+    public static void AddMushroom(Vector3 position, Action<Mushroom> callback, int id = -1)
     {
         FungleShipStatus fungleShipStatus = ShipStatus.Instance.TryCast<FungleShipStatus>();
         Mushroom mushroom = null;

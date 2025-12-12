@@ -12,16 +12,22 @@ public static class Main
 
     public static void ClearAndReload()
     {
-        CursedDivertPowerTask.Data = new Dictionary<uint, CursedDivertPowerTask.CursedDivertPower>();
+        CursedDivertPowerTask.Data = new();
         CursedDivertPowerTask.SliderOrder = null;
 
         CursedDressUpTask.IsDisabledPlatform = false;
 
-        CursedFixShowerTask.Data = new Dictionary<uint, CursedFixShowerTask.CursedFixShower>();
-        CursedStartFansTask.Data = new Dictionary<uint, byte[]>();
-        CursedSampleTask.Data = new Dictionary<uint, CursedSampleTask.CursedSample>();
-        CursedShowerTask.Timer = new Dictionary<uint, float>();
-        CursedToiletTask.Count = new Dictionary<uint, int>();
+        CursedFixShowerTask.Data = new();
+        CursedStartFansTask.Data = new();
+        CursedSampleTask.Data = new();
+        CursedShowerTask.Timer = new();
+        CursedToiletTask.Count = new();
+    }
+
+    public static void IntroFinished()
+    {
+        if (!IsCursed) return;
+        CursedMushroom.SpawnCustomMushroomFungle();
     }
 
     public static int Num => ModHelpers.GetRandomInt(1) == 1 ? 1024 : 1183;

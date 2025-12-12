@@ -337,6 +337,7 @@ public static class IntroCutscenePatch
         FinalStatusListener.LoadListener();
         CustomDeathExtensions.Register();
         SetTargetPatch.Register();
+        CursedTasks.Main.IntroFinished();
 
         // The Fungle マップ初期化処理を段階的に実行（競合状態を回避）
         new LateTask(() =>
