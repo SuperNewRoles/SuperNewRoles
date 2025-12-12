@@ -4,6 +4,7 @@ using HarmonyLib;
 using SuperNewRoles.CustomObject;
 using SuperNewRoles.Modules;
 using SuperNewRoles.Modules.Events.Bases;
+using SuperNewRoles.Roles;
 using SuperNewRoles.SuperTrophies;
 using SuperNewRoles.Mode;
 using SuperNewRoles.MapCustoms;
@@ -40,6 +41,16 @@ class AmongUsClientStartPatch
             ExPlayerControl.SetUpExPlayers();
             EventListenerManager.ResetAllListener();
             SuperTrophyManager.CoStartGame();
+
+            // RoleBaseのClearAndReloadを一括実行
+            foreach (var role in CustomRoleManager.AllRoles)
+            {
+                if (role is ITeamRoleBase teamRole)
+                {
+                    teamRole.ClearAndReload();
+                }
+            }
+
             Garbage.ClearAndReload();
             CustomKillAnimationManager.ClearCurrentCustomKillAnimation();
             ModeManager.OnGameStart();

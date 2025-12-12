@@ -138,6 +138,11 @@ public enum RoleId : short
     BattleRoyalWaveCannon,
     Sauner,
     Moira,
+    // TheThreeLittlePigs (三匹の仔豚)
+    TheThreeLittlePigs,
+    TheFirstLittlePig,
+    TheSecondLittlePig,
+    TheThirdLittlePig,
 }
 
 public enum GhostRoleId : short

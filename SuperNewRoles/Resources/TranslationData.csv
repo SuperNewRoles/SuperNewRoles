@@ -26,6 +26,22 @@ DurationTimerText,残り{0}秒,Remaining {0} seconds,剩余 {0} 秒,剩餘 {0} �
 AdditionalWin,追加勝利,Additional Win,额外胜利,額外勝利
 Seconds,秒,Seconds,秒,秒
 
+# TheThreeLittlePigs
+TheThreeLittlePigs,三匹の仔豚,The Three Little Pigs,三只小猪,三隻小豬
+TheThreeLittlePigsUseCustomTaskSetting,三匹の仔豚のタスクを個別設定,Set tasks for The Three Little Pigs,为三只小猪单独设置任务,為三隻小豬單獨設置任務
+TheThreeLittlePigsTask,三匹の仔豚のタスク,The Three Little Pigs Tasks,三只小猪任务,三隻小豬任務
+TheFirstLittlePig,一番目の仔豚,First Little Pig,第一只小猪,第一隻小豬
+TheSecondLittlePig,二番目の仔豚,Second Little Pig,第二只小猪,第二隻小豬
+TheThirdLittlePig,三番目の仔豚,Third Little Pig,第三只小猪,第三隻小豬
+TheFirstLittlePigClearTaskPercent,一番目の仔豚 タスク達成率,First Little Pig Task %,第一只小猪任务百分比,第一隻小豬任務百分比
+TheFirstLittlePigUseCustomTimer,一番目の仔豚 タイマーをカスタム,First Little Pig Custom Timer,第一只小猪自定义计时器,第一隻小豬自訂計時器
+TheFirstLittlePigFlashTimer,一番目の仔豚 フラッシュ間隔,First Little Pig Flash Interval,第一只小猪闪光间隔,第一隻小豬閃光間隔
+TheSecondLittlePigClearTaskPercent,二番目の仔豚 タスク達成率,Second Little Pig Task %,第二只小猪任务百分比,第二隻小豬任務百分比
+TheSecondLittlePigMaxGuardCount,二番目の仔豚 ガード回数,Second Little Pig Guards,第二只小猪守护次数,第二隻小豬守護次數
+TheThirdLittlePigClearTaskPercent,三番目の仔豚 タスク達成率,Third Little Pig Task %,第三只小猪任务百分比,第三隻小豬任務百分比
+TheThirdLittlePigMaxCounterCount,三番目の仔豚 カウンター回数,Third Little Pig Counters,第三只小猪反击次数,第三隻小豬反擊次數
+FinalStatus.TheThirdLittlePigCounterKill,仔豚のカウンターで死亡,Killed by Little Pig Counter,被小猪反击杀死,被小豬反擊殺死
+
 # CustomColors
 colorSalmon,サーモン,Salmon,鲑鱼红,鮭魚紅
 colorBordeaux,ボルドー,Bordeaux,枣红,波爾多紅

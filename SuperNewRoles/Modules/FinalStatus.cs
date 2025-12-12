@@ -39,6 +39,7 @@ public enum FinalStatus
     NunDeath,
     LadderDeath,
     SluggerSlug,
+    TheThirdLittlePigCounterKill,
 }
 
 public static class FinalStatusListener
