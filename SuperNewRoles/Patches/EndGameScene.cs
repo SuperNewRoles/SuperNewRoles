@@ -41,8 +41,9 @@ public enum WinCondition
     LoversWin,
     LoversBreakerWin,
     MadJesterWin,
-    SaunerWin
+    SaunerWin,
     TheThreeLittlePigsWin,
+}
 public enum CustomGameOverReason
 {
     None = 30,
