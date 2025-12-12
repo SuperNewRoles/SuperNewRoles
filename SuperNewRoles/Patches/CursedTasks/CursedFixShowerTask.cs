@@ -21,7 +21,6 @@ public class CursedFixShowerTask
         public static void StartPostfix(FixShowerMinigame __instance)
         {
             if (!Data.ContainsKey(__instance.MyNormTask.Id)) Data.Add(__instance.MyNormTask.Id, new());
-            if (Data[__instance.MyNormTask.Id].Disabled) __instance.Close();
             if (Data[__instance.MyNormTask.Id].Count <= 0)
             {
                 float offset = ModHelpers.GetRandomFloat(0.1f);
@@ -29,7 +28,9 @@ public class CursedFixShowerTask
                 __instance.showerPos = BitConverter.ToSingle(__instance.MyNormTask.Data, 0);
                 __instance.showerHead.transform.localEulerAngles = new Vector3(0f, 0f, __instance.showerAngles.Lerp(__instance.showerPos));
                 Data[__instance.MyNormTask.Id].Count = 2;
+                Data[__instance.MyNormTask.Id].Disabled = false;
             }
+            if (Data[__instance.MyNormTask.Id].Disabled) __instance.Close();
         }
 
         [HarmonyPatch(nameof(FixShowerMinigame.Bash)), HarmonyPrefix]
