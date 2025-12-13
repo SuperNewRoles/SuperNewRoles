@@ -1884,3 +1884,11 @@ Team,チーム,Team,队伍,隊伍
 seconds,秒,seconds,秒,秒
 BattleRoyalWin,バトルロイヤル,Battle Royale,大逃杀,大逃殺
 Draw,引き分け,Draw,平局,平局
+
+# Frankenstein
+Frankenstein,フランケンシュタイン,Frankenstein,弗兰肯斯坦,科學怪人
+FrankensteinIntro1,私は怪物を造ってしまったようだ,I seem to have created a monster.,他既赋予了我生命，又带来了难言的痛苦……,我好像造了個怪物
+Frankenstein.Description,死体に能力を使用すると、その死体を蘇生し操作することが出来るようになります。\nその状態で一度だけキルをすることが出来ます。\nキルをしたら死体に戻ります。\n一定数キルをした上で生き残ると乗っ取り勝利します。,If you use the ability on a corpse， you will be able to revive and manipulate it.\nIn this state， you can only make one kill.\nAfter the kill， the corpse reverts back to its original state.\nIf you survive after a certain number of kills， you win the game.,弗兰肯斯坦属于独立阵营，可以把死亡玩家的尸体复活为科学怪人并操纵其进行击杀。\n弗兰肯斯坦操控的每具尸体最多击杀一名玩家。\n在击杀完成后，那具尸体回到原本的位置。\n弗兰肯斯坦通过这种方式击杀一定数量的玩家后即可单独获胜。,科學怪人可以使用能力操控屍體並可以進行一次擊殺。\n完成擊殺後，屍體將恢復原狀。\n在達到一定的擊殺數量後將獨自獲勝。
+FrankensteinCreateMonsterButtonName,怪物作成,Create Monster,人体实验,創造怪物
+FrankensteinCreateCoolTimeSetting,怪物作成クールタイム,Create Monster Cooldown,创造怪物冷却时间,創造怪物冷卻時間
+FrankensteinWinKillCountSetting,勝利に必要なキル数,Kills required to win,胜利所需击杀数,勝利所需擊殺數

@@ -213,6 +213,20 @@ public static class EndGamer
             winType = WinType.SingleNeutral;
             return;
         }
+
+        foreach (ExPlayerControl player in ExPlayerControl.ExPlayerControls)
+        {
+            if (player.Role != RoleId.Frankenstein || player.IsDead()) continue;
+            if (!player.TryGetAbility<FrankensteinAbility>(out var frankensteinAbility)) continue;
+            if (frankensteinAbility.RemainingKillsToWin > 0) continue;
+
+            reason = (GameOverReason)CustomGameOverReason.FrankensteinWin;
+            winners = [player];
+            color = Frankenstein.Instance.RoleColor;
+            upperText = "Frankenstein";
+            winType = WinType.SingleNeutral;
+            return;
+        }
     }
     private static void UpdateAdditionalWinners(GameOverReason reason, ref HashSet<ExPlayerControl> winners, out HashSet<string> addWinners, ref string winText, bool cantWinSixAdditionalWinners)
     {

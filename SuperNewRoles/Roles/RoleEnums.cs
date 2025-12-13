@@ -143,6 +143,7 @@ public enum RoleId : short
     TheFirstLittlePig,
     TheSecondLittlePig,
     TheThirdLittlePig,
+    Frankenstein,
 }
 
 public enum GhostRoleId : short
