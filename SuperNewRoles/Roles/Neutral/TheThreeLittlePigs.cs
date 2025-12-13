@@ -145,7 +145,11 @@ internal sealed class TheFirstLittlePig : RoleBase<TheFirstLittlePig>
 {
     public override RoleId Role { get; } = RoleId.TheFirstLittlePig;
     public override Color32 RoleColor { get; } = TheThreeLittlePigs.Instance.RoleColor;
-    public override List<Func<AbilityBase>> Abilities { get; } = [() => new FirstLittlePigFlashAbility()];
+    public override List<Func<AbilityBase>> Abilities { get; } = [
+        () => new KnowOtherAbility((player) => TheThreeLittlePigs.IsInSameTeam(player, ExPlayerControl.LocalPlayer), () => true),
+        () => new CustomTaskAbility(() => (true, false, Mathf.CeilToInt(TheThreeLittlePigs.GetAllTaskCount() * (TheThreeLittlePigs.TheFirstLittlePigClearTaskPercent / 100f))), TheThreeLittlePigs.TheThreeLittlePigsUseCustomTaskSetting ? TheThreeLittlePigs.TheThreeLittlePigsTaskData : null),
+        () => new FirstLittlePigFlashAbility()
+    ];
     public override QuoteMod QuoteMod { get; } = QuoteMod.SuperNewRoles;
     public override short IntroNum { get; } = 1;
 
@@ -160,7 +164,11 @@ internal sealed class TheSecondLittlePig : RoleBase<TheSecondLittlePig>
 {
     public override RoleId Role { get; } = RoleId.TheSecondLittlePig;
     public override Color32 RoleColor { get; } = TheThreeLittlePigs.Instance.RoleColor;
-    public override List<Func<AbilityBase>> Abilities { get; } = [() => new SecondLittlePigGuardAbility()];
+    public override List<Func<AbilityBase>> Abilities { get; } = [
+        () => new KnowOtherAbility((player) => TheThreeLittlePigs.IsInSameTeam(player, ExPlayerControl.LocalPlayer), () => true),
+        () => new CustomTaskAbility(() => (true, false, Mathf.CeilToInt(TheThreeLittlePigs.GetAllTaskCount() * (TheThreeLittlePigs.TheSecondLittlePigClearTaskPercent / 100f))), TheThreeLittlePigs.TheThreeLittlePigsUseCustomTaskSetting ? TheThreeLittlePigs.TheThreeLittlePigsTaskData : null),
+        () => new SecondLittlePigGuardAbility(TheThreeLittlePigs.TheSecondLittlePigMaxGuardCount)
+    ];
     public override QuoteMod QuoteMod { get; } = QuoteMod.SuperNewRoles;
     public override short IntroNum { get; } = 1;
 
@@ -175,7 +183,11 @@ internal sealed class TheThirdLittlePig : RoleBase<TheThirdLittlePig>
 {
     public override RoleId Role { get; } = RoleId.TheThirdLittlePig;
     public override Color32 RoleColor { get; } = TheThreeLittlePigs.Instance.RoleColor;
-    public override List<Func<AbilityBase>> Abilities { get; } = [() => new ThirdLittlePigCounterAbility()];
+    public override List<Func<AbilityBase>> Abilities { get; } = [
+        () => new KnowOtherAbility((player) => TheThreeLittlePigs.IsInSameTeam(player, ExPlayerControl.LocalPlayer), () => true),
+        () => new CustomTaskAbility(() => (true, false, Mathf.CeilToInt(TheThreeLittlePigs.GetAllTaskCount() * (TheThreeLittlePigs.TheThirdLittlePigClearTaskPercent / 100f))), TheThreeLittlePigs.TheThreeLittlePigsUseCustomTaskSetting ? TheThreeLittlePigs.TheThreeLittlePigsTaskData : null),
+        () => new ThirdLittlePigCounterAbility()
+    ];
     public override QuoteMod QuoteMod { get; } = QuoteMod.SuperNewRoles;
     public override short IntroNum { get; } = 1;
 
@@ -210,7 +222,7 @@ internal sealed class FirstLittlePigFlashAbility : AbilityBase
         if (ExPlayerControl.LocalPlayer.IsDead()) return;
         if (FastDestroyableSingleton<HudManager>.Instance.IsIntroDisplayed || MeetingHud.Instance != null || ExileController.Instance != null) return;
 
-        _timer -= Time.fixedDeltaTime;
+        _timer -= Time.deltaTime;
         if (_timer > 0f) return;
 
         var interval = TheThreeLittlePigs.TheFirstLittlePigUseCustomTimer
@@ -242,9 +254,9 @@ internal sealed class SecondLittlePigGuardAbility : AbilityBase, IAbilityCount
     private int _needTasks;
     private int _allTasks;
 
-    public SecondLittlePigGuardAbility()
+    public SecondLittlePigGuardAbility(int maxGuardCount)
     {
-        Count = TheThreeLittlePigs.TheSecondLittlePigMaxGuardCount;
+        Count = maxGuardCount;
     }
 
     public override void AttachToAlls()
@@ -323,7 +335,7 @@ internal sealed class ThirdLittlePigCounterAbility : AbilityBase, IAbilityCount
         // Counter-kill the attacker (host only to avoid duplicate RPC spam)
         if (AmongUsClient.Instance.AmHost && data.Killer != null && data.Killer.IsAlive())
         {
-            data.Killer.CustomDeath(CustomDeathType.Kill, Player);
+            data.Killer.RpcCustomDeath(CustomDeathType.Suicide);
             FinalStatusManager.RpcSetFinalStatus(data.Killer, FinalStatus.TheThirdLittlePigCounterKill);
         }
 

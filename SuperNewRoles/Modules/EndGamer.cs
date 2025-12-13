@@ -116,31 +116,27 @@ public static class EndGamer
         // - チーム全員が生存していれば勝利
         // - そうでなくても、生存キラー(インポスター/ジャッカル/その他キラー)が全滅していれば勝利
         // - 同時勝利は禁止
-        if (!Spelunker.SpelunkerIsAdditionalWin) // 既存の優先関係に倣う
+        foreach (var team in Roles.Neutral.TheThreeLittlePigs.Teams)
         {
-            foreach (var team in Roles.Neutral.TheThreeLittlePigs.Teams)
+            if (team == null || team.Count != 3) continue;
+            var members = team.Select(id => ExPlayerControl.ById(id)).Where(p => p != null && Roles.Neutral.TheThreeLittlePigs.IsLittlePig(p)).ToList();
+            if (members.Count != 3) continue;
+
+            bool allAlive = members.All(p => p.IsAlive());
+            bool anyAlive = members.Any(p => p.IsAlive());
+            if (!anyAlive) continue;
+
+            bool allKillerDead = ExPlayerControl.ExPlayerControls
+                .Where(p => p != null && p.IsAlive())
+                .All(p => !p.IsNonCrewKiller() && !p.IsJackalTeam());
+
+            if (allAlive || allKillerDead)
             {
-                if (team == null || team.Count != 3) continue;
-                var members = team.Select(id => ExPlayerControl.ById(id)).Where(p => p != null && Roles.Neutral.TheThreeLittlePigs.IsLittlePig(p)).ToList();
-                if (members.Count != 3) continue;
-
-                bool allAlive = members.All(p => p.IsAlive());
-                bool anyAlive = members.Any(p => p.IsAlive());
-                if (!anyAlive) continue;
-
-                bool allKillerDead = ExPlayerControl.ExPlayerControls
-                    .Where(p => p != null && p.IsAlive())
-                    .All(p => !p.IsNonCrewKiller() && !p.IsJackalTeam());
-
-                if (allAlive || allKillerDead)
-                {
-                    reason = (GameOverReason)CustomGameOverReason.TheThreeLittlePigsWin;
-                    winners = members.ToHashSet();
-                    color = Roles.Neutral.TheThreeLittlePigs.Instance.RoleColor;
-                    upperText = "TheThreeLittlePigs";
-                    winType = WinType.Hijackers;
-                    return;
-                }
+                reason = (GameOverReason)CustomGameOverReason.TheThreeLittlePigsWin;
+                winners = members.ToHashSet();
+                color = TheThreeLittlePigs.Instance.RoleColor;
+                upperText = "TheThreeLittlePigs";
+                winType = WinType.Hijackers;
             }
         }
 
