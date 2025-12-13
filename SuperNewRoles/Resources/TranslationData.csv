@@ -1282,6 +1282,17 @@ TeleporterAbilityButtonText,テレポート,Teleport
 TeleporterWaitingTime,テレポート待機時間,Waiting Time,等待時間,等待時間
 TeleporterTeleportText,{0}へテレポートされた,Teleported to {0},被傳送到{0},被傳送到{0}
 
+# RemoteController
+RemoteController,リモコン,Remote Controller,傀儡师,思考者
+RemoteController.Description,任意のプレイヤーに受信機を取り付け、遠隔操作できます。\n操作中は自身も対象も移動できません。\n操作中は対象のキル・使用・ベントを行えます。,Can attach a receiver to any player and remotely control them.\nWhile operating, both you and the target cannot move.\nDuring operation, you can kill/use/vent as the target.,可以给任意玩家安装收信器并远程操纵。\n操纵期间你和目标都无法移动。\n操纵期间可用目标进行击杀/使用/通风口。,可以給任意玩家安裝收訊器並遠端控制。\n控制期間你和目標都無法移動。\n控制期間可用目標進行擊殺/使用/通風口。,
+RemoteControllerIntro1,ピコピコピコッ！,Beep-beep-beep!,哔哔哔！,哔哔哔！,
+RemoteControllerMarkButton,マーキング,Marking,收信器,收訊器
+RemoteControllerOperateButton,操作！,Operation!,操纵！,控制！
+RemoteControllerMarkCooldown,マーキングのクールタイム,Mark Cooldown,安装收信器冷却,安裝收訊器冷卻時間
+RemoteControllerOperationInfinite,操作時間無制限,Infinite Operation Time,操纵时间无限,控制時間無限制
+RemoteControllerOperationDuration,操作の持続時間,Operation Duration,操纵持续时间,控制持續時間
+RemoteControllerTargetLabel,干渉対象,Target,操纵对象：,控制對象：
+
 # Pursuer
 PursuerUpdateInterval,追跡更新間隔,Update Interval,更新间隔,更新間隔
 
