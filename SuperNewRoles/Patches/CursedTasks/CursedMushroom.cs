@@ -67,55 +67,127 @@ public static class CursedMushroom
         private const float TriggerRange = 3.0f; // プレイヤーを追いかけるトリガー距離
         private const float MaxDisplacement = 2.0f; // 元位置からこれ以上離れない
         private const float MoveSpeed = 1.2f; // 移動速度 (units/sec)
+        private const float RecheckIntervalSeconds = 0.15f; // 近傍プレイヤー探索を間引く
+        private const float EpsilonSqr = 0.000001f;
 
-        private static PlayerControl GetMostNearPlayer(Mushroom mushroom, out float nearestDist)
+        private static readonly List<PlayerControl> AlivePlayersCache = new(16);
+        private static float _alivePlayersCacheFixedTime = -1f;
+
+        private struct TargetCacheEntry
         {
-            PlayerControl targetPlayer = null;
-            nearestDist = float.MaxValue;
+            public PlayerControl Target;
+            public float NearestSqrDist;
+            public float LastRecheckTime;
+        }
+
+        private static readonly Dictionary<int, TargetCacheEntry> TargetCache = new();
+
+        private static void EnsureAlivePlayersCache()
+        {
+            if (Time.fixedTime - _alivePlayersCacheFixedTime <= 0.1f) return;
+            _alivePlayersCacheFixedTime = Time.fixedTime;
+
+            AlivePlayersCache.Clear();
             foreach (PlayerControl player in PlayerControl.AllPlayerControls)
             {
                 if (player == null) continue;
                 if (player.Data == null) continue;
                 if (player.Data.IsDead) continue;
-                float d = Vector2.Distance(mushroom.origPosition, player.transform.position);
-                if (d < nearestDist)
+                AlivePlayersCache.Add(player);
+            }
+        }
+
+        private static PlayerControl GetMostNearPlayer(Vector2 origin, out float nearestSqrDist)
+        {
+            PlayerControl targetPlayer = null;
+            nearestSqrDist = float.MaxValue;
+
+            EnsureAlivePlayersCache();
+            for (int i = 0; i < AlivePlayersCache.Count; i++)
+            {
+                PlayerControl player = AlivePlayersCache[i];
+                Vector3 p = player.transform.position;
+                float dx = origin.x - p.x;
+                float dy = origin.y - p.y;
+                float d2 = (dx * dx) + (dy * dy);
+                if (d2 < nearestSqrDist)
                 {
-                    nearestDist = d;
+                    nearestSqrDist = d2;
                     targetPlayer = player;
+                    if (nearestSqrDist <= EpsilonSqr) break;
                 }
             }
             return targetPlayer;
         }
+
+        private static bool TryGetTarget(Mushroom mushroom, Vector2 origin, float triggerRangeSqr, out PlayerControl target, out float nearestSqrDist)
+        {
+            int key = mushroom.GetInstanceID();
+            bool hasCache = TargetCache.TryGetValue(key, out TargetCacheEntry entry);
+
+            bool cacheValid =
+                hasCache &&
+                entry.Target != null &&
+                entry.Target.Data != null &&
+                !entry.Target.Data.IsDead;
+
+            bool shouldRecheck = !cacheValid || (Time.time - entry.LastRecheckTime) >= RecheckIntervalSeconds;
+            if (shouldRecheck)
+            {
+                entry.Target = GetMostNearPlayer(origin, out entry.NearestSqrDist);
+                entry.LastRecheckTime = Time.time;
+                TargetCache[key] = entry;
+            }
+
+            target = entry.Target;
+            nearestSqrDist = entry.NearestSqrDist;
+            return target != null && nearestSqrDist <= triggerRangeSqr;
+        }
+
         public static void UpdatePosition(Mushroom __instance)
         {
             if (__instance == null) return;
             if (__instance.gameObject == null) return;
-            if (!__instance.gameObject.activeInHierarchy) return;
+            if (!__instance.gameObject.activeInHierarchy)
+            {
+                TargetCache.Remove(__instance.GetInstanceID());
+                return;
+            }
 
             // origPosition は Vector2 で保存されているマップ上の元位置
             Vector2 origin = __instance.origPosition;
-            Vector3 origin3 = new(origin.x, origin.y, __instance.transform.position.z);
-
-            // 生存プレイヤーから最も近いものを探す
-            PlayerControl targetPlayer = GetMostNearPlayer(__instance, out float nearestDist);
-
             Vector3 currentPos = __instance.transform.position;
+            Vector3 origin3 = new(origin.x, origin.y, currentPos.z);
 
-            if (targetPlayer != null && nearestDist <= TriggerRange)
+            float triggerRangeSqr = TriggerRange * TriggerRange;
+            float maxDisplacementSqr = MaxDisplacement * MaxDisplacement;
+
+            // 生存プレイヤーから最も近いものを探す（探索は間引く）
+            bool shouldChase = TryGetTarget(__instance, origin, triggerRangeSqr, out PlayerControl targetPlayer, out float nearestSqrDist);
+
+            float step = MoveSpeed * Time.deltaTime;
+            float stepSqr = step * step;
+
+            if (shouldChase)
             {
                 // プレイヤーが範囲内にいる -> 追いかける
                 Vector3 targetPos = targetPlayer.transform.position;
                 targetPos.z = currentPos.z;
                 Vector3 dir = targetPos - currentPos;
-                if (dir.sqrMagnitude > 0.0001f)
+                float dirSqr = dir.sqrMagnitude;
+                if (dirSqr > EpsilonSqr)
                 {
-                    float step = MoveSpeed * Time.deltaTime;
-                    Vector3 next = currentPos + Vector3.ClampMagnitude(dir, step);
+                    if (dirSqr > stepSqr)
+                        dir *= step / Mathf.Sqrt(dirSqr);
+
+                    Vector3 next = currentPos + dir;
                     // 元位置からの最大距離でクランプ
                     Vector3 fromOrigin = next - origin3;
-                    if (fromOrigin.magnitude > MaxDisplacement)
+                    float fromOriginSqr = fromOrigin.sqrMagnitude;
+                    if (fromOriginSqr > maxDisplacementSqr)
                     {
-                        next = origin3 + fromOrigin.normalized * MaxDisplacement;
+                        fromOrigin *= MaxDisplacement / Mathf.Sqrt(fromOriginSqr);
+                        next = origin3 + fromOrigin;
                     }
                     __instance.transform.position = next;
                 }
@@ -124,14 +196,18 @@ public static class CursedMushroom
             {
                 // いない場合は元に戻る
                 Vector3 dir = origin3 - currentPos;
-                if (dir.sqrMagnitude > 0.0001f)
+                float dirSqr = dir.sqrMagnitude;
+                if (dirSqr > EpsilonSqr)
                 {
-                    float step = MoveSpeed * Time.deltaTime;
-                    Vector3 next = currentPos + Vector3.ClampMagnitude(dir, step);
+                    if (dirSqr > stepSqr)
+                        dir *= step / Mathf.Sqrt(dirSqr);
+
+                    Vector3 next = currentPos + dir;
                     __instance.transform.position = next;
                 }
             }
         }
+        private static int counter = 0;
         public static void Postfix(Mushroom __instance)
         {
             try
