@@ -35,7 +35,6 @@ public class CursedLiftWeightsTask
                 if (__instance.validFillPercentRange.max > maxRange)
                 {
                     __instance.validFillPercentRange.max = maxRange;
-                    __instance.validFillPercentRange.min = maxRange - range;
                     isUp = false;
                 }
             }
@@ -46,7 +45,6 @@ public class CursedLiftWeightsTask
                 if (__instance.validFillPercentRange.min < minRange)
                 {
                     __instance.validFillPercentRange.min = minRange;
-                    __instance.validFillPercentRange.max = minRange + range;
                     isUp = true;
                 }
             }

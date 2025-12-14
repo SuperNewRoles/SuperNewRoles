@@ -13,17 +13,7 @@ public class CursedDressUpTask
 {
     public static Transform PanelDummy;
     public static float PlayerSpeed => GameOptionsManager.Instance.CurrentGameOptions.GetFloat(FloatOptionNames.PlayerSpeedMod);
-    public static float MoveSpeed
-    {
-        get
-        {
-            if (PlayerControl.LocalPlayer?.MyPhysics == null)
-                return Mathf.Max(PlayerSpeed, 0.1f);
-
-            float calculated = PlayerSpeed * PlayerControl.LocalPlayer.MyPhysics.Speed - 0.25f * PlayerSpeed * 1.5f;
-            return Mathf.Max(calculated, 0.1f);
-        }
-    }
+    public static float MoveSpeed => PlayerSpeed * PlayerControl.LocalPlayer.MyPhysics.Speed - 0.25f * PlayerSpeed * 1.5f;
     public static bool IsDisabledPlatform;
 
     [HarmonyPatch(typeof(DressUpMinigame))]
@@ -47,7 +37,6 @@ public class CursedDressUpTask
         public static void UpdatePostfix(DressUpMinigame __instance)
         {
             if (!Main.IsCursed) return;
-            if (PanelDummy == null || PlayerControl.LocalPlayer == null) return;
             float num = 0.75f + 0.25f * (PlayerSpeed / 0.25f - 1);
             if (IsDisabledPlatform) num = num >= 1f ? 1f : 0.75f;
             if (Vector2.Distance(PlayerControl.LocalPlayer.transform.position, PanelDummy.position) > num)
@@ -203,115 +192,79 @@ public class CursedDressUpTask
 
         public static IEnumerator MovePanelDummy(ShipStatus __instance, bool start = false)
         {
-            bool first = start;
-            while (true)
+            for (int i = start ? 0 : 2; i < MovePositions.Count; i++)
             {
-                for (int i = first ? 0 : 2; i < MovePositions.Count; i++)
+                if (!PanelDummy) yield break;
+                Vector2 pos = PanelDummy.position;
+                if (i == 16)
                 {
-                    if (!PanelDummy) yield break;
-                    Vector2 pos = PanelDummy.position;
-                    if (i == 16)
-                    {
-                        ElectricalDoors electrical = __instance.transform.Find("Electrical")?.GetComponent<ElectricalDoors>();
-                        if (!electrical || !electrical.Doors) continue;
+                    ElectricalDoors electrical = __instance.transform.Find("Electrical").GetComponent<ElectricalDoors>();
 
-                        if (electrical.Doors.Count > 11)
-                        {
-                            StaticDoor door = electrical.Doors[11];
-                            if (door)
-                            {
-                                bool open = door.IsOpen;
-                                pos = new(11.2175f, -8.5628f);
-                                yield return Slide2DWorld(PanelDummy, PanelDummy.position, pos, Vector2.Distance(PanelDummy.position, pos) / MoveSpeed);
-
-                                door.SetOpen(true);
-                                pos = new(12.2502f, -8.5628f);
-                                yield return Slide2DWorld(PanelDummy, PanelDummy.position, pos, Vector2.Distance(PanelDummy.position, pos) / MoveSpeed);
-                                door.SetOpen(open);
-                            }
-                        }
-
-                        if (electrical.Doors.Count > 5)
-                        {
-                            StaticDoor door = electrical.Doors[5];
-                            if (door)
-                            {
-                                bool open = door.IsOpen;
-                                pos = new(14.1956f, -8.5628f);
-                                yield return Slide2DWorld(PanelDummy, PanelDummy.position, pos, Vector2.Distance(PanelDummy.position, pos) / MoveSpeed);
-
-                                door.SetOpen(true);
-                                pos = new(15.2713f, -8.5628f);
-                                yield return Slide2DWorld(PanelDummy, PanelDummy.position, pos, Vector2.Distance(PanelDummy.position, pos) / MoveSpeed);
-                                door.SetOpen(open);
-                            }
-                        }
-
-                        if (electrical.Doors.Count > 6)
-                        {
-                            StaticDoor door = electrical.Doors[6];
-                            if (door)
-                            {
-                                bool open = door.IsOpen;
-                                pos = new(17.2893f, -8.5628f);
-                                yield return Slide2DWorld(PanelDummy, PanelDummy.position, pos, Vector2.Distance(PanelDummy.position, pos) / MoveSpeed);
-
-                                door.SetOpen(true);
-                                pos = new(18.3382f, -8.5628f);
-                                yield return Slide2DWorld(PanelDummy, PanelDummy.position, pos, Vector2.Distance(PanelDummy.position, pos) / MoveSpeed);
-                                door.SetOpen(open);
-                            }
-                        }
-                    }
-                    else if (i == 32)
-                    {
-                        Transform room = __instance.transform.Find("GapRoom");
-                        if (!room) continue;
-
-                        IsDisabledPlatform = true;
-                        List<string> finds = new() { "PlatformLeftClick", "PlatformLeft", "PlatformRight", "PlatformRightClick" };
-                        foreach (string find in finds)
-                        {
-                            Transform findTransform = room.Find(find);
-                            if (findTransform?.gameObject) findTransform.gameObject.SetActive(false);
-                        }
-                        Vector3 correction = new(0f, -0.3636f);
-                        Transform platformTransform = room.Find("Platform");
-                        if (!platformTransform) continue;
-
-                        MovingPlatformBehaviour platform = platformTransform.GetComponent<MovingPlatformBehaviour>();
-                        if (!platform) continue;
-
-                        bool left = platform.IsLeft;
-                        if (platform.IsLeft) yield return NotMoveUsePlatform(platform);
-
-                        pos = platform.transform.parent.TransformPoint(platform.RightPosition) - correction;
-                        yield return Effects.Slide2DWorld(PanelDummy, PanelDummy.position, pos, Vector2.Distance(PanelDummy.position, pos) / MoveSpeed);
-                        yield return Effects.All(NotMoveUsePlatform(platform).WrapToIl2Cpp(),
-                                                 Effects.Slide2DWorld(PanelDummy, platform.transform.position - correction, platform.transform.parent.TransformPoint(platform.LeftPosition) - correction, PlayerControl.LocalPlayer.MyPhysics.Speed));
-                        yield return Effects.Slide2DWorld(PanelDummy, PanelDummy.position, platform.transform.parent.TransformPoint(platform.LeftUsePosition), PlayerControl.LocalPlayer.MyPhysics.Speed);
-                        if (!left) __instance.StartCoroutine(NotMoveUsePlatform(platform).WrapToIl2Cpp());
-
-                        foreach (string find in finds)
-                        {
-                            Transform findTransform = room.Find(find);
-                            if (findTransform?.gameObject) findTransform.gameObject.SetActive(true);
-                        }
-                        IsDisabledPlatform = false;
-                    }
-
-                    if ((i is 1 or 3 && first) || i is 5 or 22)
-                    {
-                        Vector3 scale = PanelDummy.localScale;
-                        scale.x *= -1;
-                        PanelDummy.localScale = scale;
-                    }
-                    pos = MovePositions[i];
+                    StaticDoor door = electrical.Doors[11];
+                    bool open = door.IsOpen;
+                    pos = new(11.2175f, -8.5628f);
                     yield return Slide2DWorld(PanelDummy, PanelDummy.position, pos, Vector2.Distance(PanelDummy.position, pos) / MoveSpeed);
+
+                    door.SetOpen(true);
+                    pos = new(12.2502f, -8.5628f);
+                    yield return Slide2DWorld(PanelDummy, PanelDummy.position, pos, Vector2.Distance(PanelDummy.position, pos) / MoveSpeed);
+                    door.SetOpen(open);
+
+
+                    door = electrical.Doors[5];
+                    open = door.IsOpen;
+                    pos = new(14.1956f, -8.5628f);
+                    yield return Slide2DWorld(PanelDummy, PanelDummy.position, pos, Vector2.Distance(PanelDummy.position, pos) / MoveSpeed);
+
+                    door.SetOpen(true);
+                    pos = new(15.2713f, -8.5628f);
+                    yield return Slide2DWorld(PanelDummy, PanelDummy.position, pos, Vector2.Distance(PanelDummy.position, pos) / MoveSpeed);
+                    door.SetOpen(open);
+
+
+                    door = electrical.Doors[6];
+                    open = door.IsOpen;
+                    pos = new(17.2893f, -8.5628f);
+                    yield return Slide2DWorld(PanelDummy, PanelDummy.position, pos, Vector2.Distance(PanelDummy.position, pos) / MoveSpeed);
+
+                    door.SetOpen(true);
+                    pos = new(18.3382f, -8.5628f);
+                    yield return Slide2DWorld(PanelDummy, PanelDummy.position, pos, Vector2.Distance(PanelDummy.position, pos) / MoveSpeed);
+                    door.SetOpen(open);
                 }
-                first = false;
-                yield return null; // 1フレーム譲ってから周回
+                else if (i == 32)
+                {
+                    Transform room = __instance.transform.Find("GapRoom");
+                    IsDisabledPlatform = true;
+                    List<string> finds = new() { "PlatformLeftClick", "PlatformLeft", "PlatformRight", "PlatformRightClick" };
+                    foreach (string find in finds) room.Find(find).gameObject.SetActive(false);
+                    Vector3 correction = new(0f, -0.3636f);
+                    MovingPlatformBehaviour platform = room.Find("Platform").GetComponent<MovingPlatformBehaviour>();
+                    bool left = platform.IsLeft;
+                    if (platform.IsLeft) yield return NotMoveUsePlatform(platform);
+
+                    pos = platform.transform.parent.TransformPoint(platform.RightPosition) - correction;
+                    yield return Effects.Slide2DWorld(PanelDummy, PanelDummy.position, pos, Vector2.Distance(PanelDummy.position, pos) / MoveSpeed);
+                    yield return Effects.All(NotMoveUsePlatform(platform).WrapToIl2Cpp(),
+                                             Effects.Slide2DWorld(PanelDummy, platform.transform.position - correction, platform.transform.parent.TransformPoint(platform.LeftPosition) - correction, PlayerControl.LocalPlayer.MyPhysics.Speed));
+                    yield return Effects.Slide2DWorld(PanelDummy, PanelDummy.position, platform.transform.parent.TransformPoint(platform.LeftUsePosition), PlayerControl.LocalPlayer.MyPhysics.Speed);
+                    if (!left) __instance.StartCoroutine(NotMoveUsePlatform(platform).WrapToIl2Cpp());
+
+                    foreach (string find in finds) room.Find(find).gameObject.SetActive(true);
+                    IsDisabledPlatform = false;
+                }
+
+                if ((i is 1 or 3 && start) || i is 5 or 22)
+                {
+                    Vector3 scale = PanelDummy.localScale;
+                    scale.x *= -1;
+                    PanelDummy.localScale = scale;
+                }
+                pos = MovePositions[i];
+                yield return Slide2DWorld(PanelDummy, PanelDummy.position, pos, Vector2.Distance(PanelDummy.position, pos) / MoveSpeed);
             }
+            yield return MovePanelDummy(__instance);
+            yield break;
         }
 
         public static IEnumerator Slide2DWorld(Transform target, Vector2 source, Vector2 dest, float duration = 0.75f)

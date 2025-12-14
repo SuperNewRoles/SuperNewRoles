@@ -22,9 +22,8 @@ public class CursedPolishRubyTask
         {
             if (!Main.IsCursed) return;
             Transform button = __instance.transform.Find("CloseButton");
-            if (button == null) return;
             Vector3 pos = button.position;
-            __instance.transform.Rotate(Vector3.forward * (Time.deltaTime * 20f));
+            __instance.transform.Rotate(Vector3.forward * (Time.fixedDeltaTime * 20f));
             button.rotation = Quaternion.Euler(0f, 0f, 0f);
             button.position = pos;
         }
