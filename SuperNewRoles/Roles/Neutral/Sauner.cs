@@ -21,6 +21,7 @@ class Sauner : RoleBase<Sauner>
     }
 
     public override RoleId Role { get; } = RoleId.Sauner;
+    public override Sprite RoleIcon => AssetManager.GetAsset<Sprite>("SaunerRoleIcon.png");
     public override Color32 RoleColor { get; } = new(219, 152, 101, byte.MaxValue);
     public override List<Func<AbilityBase>> Abilities { get; } =
     [

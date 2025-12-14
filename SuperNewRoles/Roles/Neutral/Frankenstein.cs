@@ -16,6 +16,7 @@ namespace SuperNewRoles.Roles.Neutral;
 internal sealed class Frankenstein : RoleBase<Frankenstein>
 {
     public override RoleId Role { get; } = RoleId.Frankenstein;
+    public override Sprite RoleIcon => AssetManager.GetAsset<Sprite>("FrankensteinRoleIcon.png");
     public override Color32 RoleColor { get; } = new(122, 169, 146, byte.MaxValue);
     public override List<Func<AbilityBase>> Abilities { get; } = [
         () => new FrankensteinAbility(new FrankensteinData(

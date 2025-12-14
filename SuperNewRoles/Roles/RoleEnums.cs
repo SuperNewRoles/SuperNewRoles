@@ -145,6 +145,7 @@ public enum RoleId : short
     TheThirdLittlePig,
     Frankenstein,
     RemoteController,
+    Mafia,
 }
 
 public enum GhostRoleId : short

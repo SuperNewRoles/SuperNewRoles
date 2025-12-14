@@ -10,6 +10,7 @@ namespace SuperNewRoles.Roles.Impostor;
 class Kunoichi : RoleBase<Kunoichi>
 {
     public override RoleId Role => RoleId.Kunoichi;
+    public override Sprite RoleIcon => AssetManager.GetAsset<Sprite>("KunoichiRoleIcon.png");
     public override Color32 RoleColor => Palette.ImpostorRed;
     public override List<Func<AbilityBase>> Abilities => [
         () => new KunoichiAbility(
