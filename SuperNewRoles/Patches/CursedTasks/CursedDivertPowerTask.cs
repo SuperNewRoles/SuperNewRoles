@@ -14,8 +14,8 @@ namespace SuperNewRoles.Patches.CursedTasks;
 
 public class CursedDivertPowerTask
 {
-    public static Dictionary<uint, CursedDivertPower> Data;
-    public static List<SystemTypes> SliderOrder;
+    public static Dictionary<uint, CursedDivertPower> Data = new();
+    public static List<SystemTypes> SliderOrder = new();
 
     [HarmonyPatch(typeof(DivertPowerMinigame))]
     public static class DivertPowerMinigamePatch
@@ -65,7 +65,7 @@ public class CursedDivertPowerTask
             for (int j = 0; j < __instance.Sliders.Length; j++)
             {
                 float num2 = __instance.SliderY.ReverseLerp(__instance.Sliders[j].transform.localPosition.y);
-                float num3 = num2 / num / 1.6f;
+                float num3 = num <= 0f ? 0f : num2 / num / 1.6f;
                 __instance.Gauges[j].value = num3 + (Mathf.PerlinNoise(j, Time.time * 51f) - 0.5f) * 0.04f;
                 Color color = Color.Lerp(Color.gray, Color.yellow, num2 * num2);
                 color.a = num3 < 0.1f ? 0 : 1;
@@ -103,7 +103,7 @@ public class CursedDivertPowerTask
                 if (!Data.ContainsKey(task.Id)) Data.Add(task.Id, new(task.TargetSystem));
                 List<SystemTypes> types = new(__instance.SliderOrder);
                 types.RemoveAll(x => x == task.TargetSystem || x == Data[task.Id].Target);
-                task.TargetSystem = types.GetRandom();
+                task.TargetSystem = types.Count == 0 ? task.TargetSystem : types.GetRandom();
             }
         }
     }
