@@ -56,6 +56,8 @@ internal abstract class RoleBase<T> : BaseSingleton<T>, IRoleBase where T : Role
     public virtual MapNames[] AvailableMaps { get; } = [];
     public virtual bool HideInRoleDictionary => false;
 
+    public virtual Sprite RoleIcon => null;
+
     // public abstract void CreateCustomOption();
 }
 
@@ -88,6 +90,8 @@ public interface IRoleBase : IRoleInformation
     public MapNames[] AvailableMaps { get; }
     public bool HideInRoleDictionary { get; }
 
+    public Sprite RoleIcon { get; }
+
     /// <summary>
     /// AbilityはAbilitiesから自動でセットされるが、追加で他の処理を行いたい場合はOverrideすること
     /// </summary>
@@ -115,4 +119,5 @@ public interface IRoleInformation
     public CustomOption[] Options { get; }
     public int? PercentageOption { get; }
     public int? NumberOfCrews { get; }
+    public Sprite RoleIcon { get; }
 }

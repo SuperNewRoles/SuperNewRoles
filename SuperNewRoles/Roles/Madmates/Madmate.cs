@@ -12,6 +12,7 @@ class Madmate : RoleBase<Madmate>
 {
     public override RoleId Role { get; } = RoleId.Madmate;
     public override Color32 RoleColor { get; } = Palette.ImpostorRed;
+    public override Sprite RoleIcon => AssetManager.GetAsset<Sprite>("MadmateRoleIcon.png");
     public override List<Func<AbilityBase>> Abilities { get; } = [() => new MadmateAbility(
         new(MadmateHasImpostorVision, MadmateCouldUseVent, MadmateCanKnowImpostors, MadmateNeededTaskCount, MadmateIsSpecialTasks ? MadmateSpecialTasks : null))];
 

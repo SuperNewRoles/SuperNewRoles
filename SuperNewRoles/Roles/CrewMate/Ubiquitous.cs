@@ -22,6 +22,7 @@ class Ubiquitous : RoleBase<Ubiquitous>
 {
     public override RoleId Role => RoleId.Ubiquitous;
     public override Color32 RoleColor => new(56, 155, 223, byte.MaxValue);
+    public override Sprite RoleIcon => AssetManager.GetAsset<Sprite>("UbiquitousRoleIcon.png");
     public override List<System.Func<AbilityBase>> Abilities => new() { () => new UbiquitousAbility() };
     public override QuoteMod QuoteMod => QuoteMod.NebulaOnTheShip;
 
