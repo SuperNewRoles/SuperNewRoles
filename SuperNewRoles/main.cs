@@ -111,8 +111,8 @@ public partial class SuperNewRolesPlugin : BasePlugin
 
         ConfigRoles.Init();
         UpdateCPUProcessorAffinity();
-        CustomRoleManager.Load();
         AssetManager.Load();
+        CustomRoleManager.Load();
         ModTranslation.Load();
         var tasks = CustomRPCManager.Load();
         CustomOptionManager.Load();

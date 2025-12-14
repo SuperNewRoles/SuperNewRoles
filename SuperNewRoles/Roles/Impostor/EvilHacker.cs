@@ -12,6 +12,7 @@ class EvilHacker : RoleBase<EvilHacker>
 {
     public override RoleId Role { get; } = RoleId.EvilHacker;
     public override Color32 RoleColor { get; } = Palette.ImpostorRed;
+    public override Sprite RoleIcon => AssetManager.GetAsset<Sprite>("EvilHackerRoleIcon.png");
     public override List<Func<AbilityBase>> Abilities { get; } = [() => new EvilHackerAbility(new EvilHackerData(
         canMoveWhileUsingAdmin: EvilHackerCanMoveWhileUsingAdmin,
         canUseAdminDuringComms: EvilHackerCanUseAdminDuringComms,
