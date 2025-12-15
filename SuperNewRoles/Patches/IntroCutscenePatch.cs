@@ -339,6 +339,9 @@ public static class IntroCutscenePatch
         SetTargetPatch.Register();
         CursedTasks.Main.IntroFinished();
 
+        // イントロ完了時に呪いモードであればロゴ横に呪いロゴを表示
+        CursedTasks.Main.ShowCursedLogoIfNeeded();
+
         // The Fungle マップ初期化処理を段階的に実行（競合状態を回避）
         new LateTask(() =>
         {
