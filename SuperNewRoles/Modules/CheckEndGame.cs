@@ -302,7 +302,7 @@ public class PlayerStatistics
     public int OwlAlive { get; }
     public int HitmanAlive { get; }
 
-    public bool IsKillerExist => TotalKiller > 0 && !PavlovsOwnerRemaining;
+    public bool IsKillerExist => TotalKiller > 0 && PavlovsOwnerRemaining;
     public bool IsImpostorDominating { get; }
     public bool IsJackalDominating { get; }
     public bool IsPavlovsWin { get; }
