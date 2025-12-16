@@ -62,6 +62,7 @@ class AmongUsClientStartPatch
             ZiplineUpdown.Reset();
 
             PsychometristSharedState.CoStartGame();
+            SquidSharedState.CoStartGame();
         }
         catch (Exception ex)
         {

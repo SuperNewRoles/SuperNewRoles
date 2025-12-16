@@ -98,7 +98,6 @@ public sealed class SquidVigilanceAbility : CustomButtonBase, IButtonEffect
     public override void AttachToAlls()
     {
         base.AttachToAlls();
-        SquidSharedState.EnsureInitialized();
         _tryKillListener = TryKillEvent.Instance.AddListener(OnTryKill);
     }
 
@@ -221,28 +220,16 @@ internal static class SquidSharedState
     private static readonly Dictionary<byte, float> NoKillRemaining = new();
     private static readonly Dictionary<byte, float> ObstructionRemaining = new();
 
-    private static bool _initialized;
     private static EventListener _fixedUpdate;
     private static EventListener<MeetingStartEventData> _meetingStart;
     private static EventListener<ShipStatusLightEventData> _shipStatusLight;
 
-    public static void EnsureInitialized()
+    public static void CoStartGame()
     {
-        if (_initialized) return;
-        _initialized = true;
-
+        ClearAll();
         _fixedUpdate = FixedUpdateEvent.Instance.AddListener(OnFixedUpdate);
         _meetingStart = MeetingStartEvent.Instance.AddListener(_ => ClearRoundEffects());
         _shipStatusLight = ShipStatusLightEvent.Instance.AddListener(OnShipStatusLight);
-    }
-
-    [HarmonyLib.HarmonyPatch(typeof(AmongUsClient), nameof(AmongUsClient.CoStartGame))]
-    private static class CoStartGamePatch
-    {
-        public static void Postfix()
-        {
-            ClearAll();
-        }
     }
 
     private static void ClearAll()
