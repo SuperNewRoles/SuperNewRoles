@@ -146,6 +146,9 @@ public enum RoleId : short
     Frankenstein,
     RemoteController,
     Mafia,
+    Squid,
+    DyingMessenger,
+    PoliceSurgeon,
 }
 
 public enum GhostRoleId : short

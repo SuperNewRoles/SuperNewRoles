@@ -8,6 +8,7 @@ using SuperNewRoles.Roles;
 using SuperNewRoles.SuperTrophies;
 using SuperNewRoles.Mode;
 using SuperNewRoles.MapCustoms;
+using SuperNewRoles.Roles.Crewmate;
 
 namespace SuperNewRoles.Patches;
 
@@ -59,6 +60,8 @@ class AmongUsClientStartPatch
             FungleAdditionalAdmin.Reset();
             FungleAdditionalElectrical.Reset();
             ZiplineUpdown.Reset();
+
+            PsychometristSharedState.CoStartGame();
         }
         catch (Exception ex)
         {
