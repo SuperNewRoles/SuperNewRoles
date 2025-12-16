@@ -91,18 +91,8 @@ internal sealed class PoliceSurgeonPersonalInformation
 internal static class PoliceSurgeonSharedState
 {
     private static readonly Dictionary<byte, PoliceSurgeonPersonalInformation> PersonalInfoByVictim = new();
-    private static bool _initialized;
     private static EventListener<MeetingStartEventData> _meetingStartListener;
     private static EventListener<MeetingCloseEventData> _meetingCloseListener;
-
-    public static void EnsureInitialized()
-    {
-        if (_initialized) return;
-        _initialized = true;
-
-        _meetingStartListener = MeetingStartEvent.Instance.AddListener(OnMeetingStart);
-        _meetingCloseListener = MeetingCloseEvent.Instance.AddListener(OnMeetingClose);
-    }
 
     [HarmonyPatch(typeof(AmongUsClient), nameof(AmongUsClient.CoStartGame))]
     private static class CoStartGamePatch
@@ -111,6 +101,9 @@ internal static class PoliceSurgeonSharedState
         {
             ClearAll();
             PoliceSurgeonOverlay.Destroy();
+
+            _meetingStartListener = MeetingStartEvent.Instance.AddListener(OnMeetingStart);
+            _meetingCloseListener = MeetingCloseEvent.Instance.AddListener(OnMeetingClose);
         }
     }
 
@@ -281,79 +274,79 @@ internal static class PoliceSurgeonCertificateBuilder
         switch (victimInfo.DeadReason)
         {
             case PoliceSurgeonDeadTiming.TaskPhaseKilled:
-            {
-                string stateLabel = inError
-                    ? ModTranslation.GetString("PostMortemCertificate_CauseOfDeath1")
-                    : ModTranslation.GetString("PostMortemCertificate_CauseOfDeath2");
+                {
+                    string stateLabel = inError
+                        ? ModTranslation.GetString("PostMortemCertificate_CauseOfDeath1")
+                        : ModTranslation.GetString("PostMortemCertificate_CauseOfDeath2");
 
-                if (isWritingTurn)
-                    builder.AppendLine(string.Format(
-                        ModTranslation.GetString("PostMortemCertificate_AlreadyKnown_WriteTurn"),
-                        officialDate,
-                        currentMeetingCount - victimInfo.DeadTurn,
-                        victimInfo.DeathSecondsAgo,
-                        stateLabel
-                    ));
-                else
-                    builder.AppendLine(string.Format(
-                        ModTranslation.GetString("PostMortemCertificate_AlreadyKnown"),
-                        officialDate,
-                        victimInfo.DeathSecondsAgo,
-                        stateLabel
-                    ));
+                    if (isWritingTurn)
+                        builder.AppendLine(string.Format(
+                            ModTranslation.GetString("PostMortemCertificate_AlreadyKnown_WriteTurn"),
+                            officialDate,
+                            currentMeetingCount - victimInfo.DeadTurn,
+                            victimInfo.DeathSecondsAgo,
+                            stateLabel
+                        ));
+                    else
+                        builder.AppendLine(string.Format(
+                            ModTranslation.GetString("PostMortemCertificate_AlreadyKnown"),
+                            officialDate,
+                            victimInfo.DeathSecondsAgo,
+                            stateLabel
+                        ));
 
-                builder.AppendLine("");
-                builder.AppendLine(ModTranslation.GetString("PostMortemCertificate_DeadReason1"));
-                builder.AppendLine("");
-                break;
-            }
+                    builder.AppendLine("");
+                    builder.AppendLine(ModTranslation.GetString("PostMortemCertificate_DeadReason1"));
+                    builder.AppendLine("");
+                    break;
+                }
 
             case PoliceSurgeonDeadTiming.TaskPhaseExited:
             case PoliceSurgeonDeadTiming.MeetingPhase:
-            {
-                string approx = ModTranslation.GetString("PostMortemCertificate_CauseOfDeath3");
-                if (isWritingTurn)
-                    builder.AppendLine(string.Format(
-                        ModTranslation.GetString("PostMortemCertificate_Unknown_WriteTurn"),
-                        officialDate,
-                        currentMeetingCount - victimInfo.DeadTurn,
-                        approx
-                    ));
-                else
-                    builder.AppendLine(string.Format(
-                        ModTranslation.GetString("PostMortemCertificate_Unknown"),
-                        officialDate,
-                        approx
-                    ));
+                {
+                    string approx = ModTranslation.GetString("PostMortemCertificate_CauseOfDeath3");
+                    if (isWritingTurn)
+                        builder.AppendLine(string.Format(
+                            ModTranslation.GetString("PostMortemCertificate_Unknown_WriteTurn"),
+                            officialDate,
+                            currentMeetingCount - victimInfo.DeadTurn,
+                            approx
+                        ));
+                    else
+                        builder.AppendLine(string.Format(
+                            ModTranslation.GetString("PostMortemCertificate_Unknown"),
+                            officialDate,
+                            approx
+                        ));
 
-                builder.AppendLine("");
-                builder.AppendLine(ModTranslation.GetString("PostMortemCertificate_DeadReason1"));
-                builder.AppendLine("");
-                break;
-            }
+                    builder.AppendLine("");
+                    builder.AppendLine(ModTranslation.GetString("PostMortemCertificate_DeadReason1"));
+                    builder.AppendLine("");
+                    break;
+                }
 
             case PoliceSurgeonDeadTiming.Exited:
-            {
-                string approx = ModTranslation.GetString("PostMortemCertificate_CauseOfDeath3");
-                if (isWritingTurn)
-                    builder.AppendLine(string.Format(
-                        ModTranslation.GetString("PostMortemCertificate_Unknown_WriteTurn"),
-                        officialDate,
-                        currentMeetingCount - victimInfo.DeadTurn,
-                        approx
-                    ));
-                else
-                    builder.AppendLine(string.Format(
-                        ModTranslation.GetString("PostMortemCertificate_Unknown"),
-                        officialDate,
-                        approx
-                    ));
+                {
+                    string approx = ModTranslation.GetString("PostMortemCertificate_CauseOfDeath3");
+                    if (isWritingTurn)
+                        builder.AppendLine(string.Format(
+                            ModTranslation.GetString("PostMortemCertificate_Unknown_WriteTurn"),
+                            officialDate,
+                            currentMeetingCount - victimInfo.DeadTurn,
+                            approx
+                        ));
+                    else
+                        builder.AppendLine(string.Format(
+                            ModTranslation.GetString("PostMortemCertificate_Unknown"),
+                            officialDate,
+                            approx
+                        ));
 
-                builder.AppendLine("");
-                builder.AppendLine(ModTranslation.GetString("PostMortemCertificate_DeadReason2"));
-                builder.AppendLine("");
-                break;
-            }
+                    builder.AppendLine("");
+                    builder.AppendLine(ModTranslation.GetString("PostMortemCertificate_DeadReason2"));
+                    builder.AppendLine("");
+                    break;
+                }
         }
 
         return builder.ToString();
@@ -380,25 +373,25 @@ internal static class PoliceSurgeonCertificateBuilder
             switch (langId)
             {
                 case SupportedLangs.Japanese:
-                {
-                    var jc = new JapaneseCalendar();
-                    ci = new CultureInfo("Ja-JP", true);
-                    ci.DateTimeFormat.Calendar = jc;
-                    return DateTime.Now.ToString("ggy年 M月 d日", ci);
-                }
+                    {
+                        var jc = new JapaneseCalendar();
+                        ci = new CultureInfo("Ja-JP", true);
+                        ci.DateTimeFormat.Calendar = jc;
+                        return DateTime.Now.ToString("ggy年 M月 d日", ci);
+                    }
                 case SupportedLangs.SChinese:
                     return GetKanjiCalendar();
                 case SupportedLangs.TChinese:
-                {
-                    if (PoliceSurgeon.PoliceSurgeonIsUseTaiwanCalendar)
                     {
-                        var tc = new TaiwanCalendar();
-                        ci = new CultureInfo("zh-TW", true);
-                        ci.DateTimeFormat.Calendar = tc;
-                        return DateTime.Now.ToString("ggy年 M月 d日", ci);
+                        if (PoliceSurgeon.PoliceSurgeonIsUseTaiwanCalendar)
+                        {
+                            var tc = new TaiwanCalendar();
+                            ci = new CultureInfo("zh-TW", true);
+                            ci.DateTimeFormat.Calendar = tc;
+                            return DateTime.Now.ToString("ggy年 M月 d日", ci);
+                        }
+                        return GetKanjiCalendar();
                     }
-                    return GetKanjiCalendar();
-                }
                 default:
                     return DateTime.Now.ToString("MMMM d, yyyy", ci);
             }
@@ -567,7 +560,6 @@ public sealed class PoliceSurgeonMeetingAbility : AbilityBase
     public override void AttachToAlls()
     {
         base.AttachToAlls();
-        PoliceSurgeonSharedState.EnsureInitialized();
     }
 
     public override void AttachToLocalPlayer()

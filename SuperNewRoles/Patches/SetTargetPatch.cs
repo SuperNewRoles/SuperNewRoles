@@ -38,7 +38,7 @@ public static class SetTargetPatch
             remote.UnderOperation &&
             remote.TargetPlayer != null)
         {
-            return TargetCustomButtonBase.SetTarget(onlyCrewmates: true, targetingPlayer: remote.TargetPlayer.Player);
+            return TargetCustomButtonBase.SetTarget(onlyCrewmates: true, targetingPlayer: remote.TargetPlayer.Player, isTargetable: ValidMadkiller);
         }
         return TargetCustomButtonBase.SetTarget(onlyCrewmates: true, isTargetable: ValidMadkiller);
     }

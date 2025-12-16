@@ -137,6 +137,7 @@ public static class EndGamer
                 color = TheThreeLittlePigs.Instance.RoleColor;
                 upperText = "TheThreeLittlePigs";
                 winType = WinType.Hijackers;
+                return;
             }
         }
 

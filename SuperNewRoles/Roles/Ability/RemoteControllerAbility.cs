@@ -350,7 +350,7 @@ public sealed class RemoteControllerAbility : AbilityBase
         }
 
         _operationButton?.ForceStopEffectLocal();
-        RpcSetUnderOperation(false);
+        RpcSetUnderOperation(false, TargetPlayerId);
         RpcSetTarget(byte.MaxValue);
         StopOperationLocalOnly();
         Player.ResetKillCooldown();
@@ -381,15 +381,15 @@ public sealed class RemoteControllerAbility : AbilityBase
     }
 
     [CustomRPC]
-    public void RpcSetUnderOperation(bool underOperation)
+    public void RpcSetUnderOperation(bool underOperation, byte targetPlayerId)
     {
         if (underOperation)
         {
-            RegisterControlledPlayer(TargetPlayerId);
+            RegisterControlledPlayer(targetPlayerId);
         }
         else
         {
-            UnregisterControlledPlayer(TargetPlayerId);
+            UnregisterControlledPlayer(targetPlayerId);
         }
 
         UnderOperation = underOperation;
@@ -497,6 +497,24 @@ internal sealed class RemoteControllerKillButton : CustomKillButtonAbility
         _ability = ability;
     }
 
+    public override PlayerControl TargetingPlayer
+        => (_ability.UnderOperation && _ability.TargetPlayer?.Player != null)
+            ? _ability.TargetPlayer.Player
+            : PlayerControl.LocalPlayer;
+
+    public override bool CheckDecreaseCoolCount()
+    {
+        if (DestroyableSingleton<HudManager>.Instance.IsIntroDisplayed)
+            return false;
+
+        var targetingPlayer = TargetingPlayer;
+        if (targetingPlayer == null)
+            return false;
+
+        var moveable = !targetingPlayer.inVent && targetingPlayer.moveable;
+        return !targetingPlayer.inVent && moveable;
+    }
+
     public override bool CheckIsAvailable()
     {
         if (!TargetIsExist) return false;
@@ -539,7 +557,7 @@ internal sealed class RemoteControllerOperationButton : CustomButtonBase, IButto
                 if (cam != null) cam.SetTarget(target.Player);
             }
             ExPlayerControl.LocalPlayer.MyPhysics.body.velocity = Vector2.zero;
-            _ability.RpcSetUnderOperation(true);
+            _ability.RpcSetUnderOperation(true, _ability.TargetPlayerId);
         }
     }
 

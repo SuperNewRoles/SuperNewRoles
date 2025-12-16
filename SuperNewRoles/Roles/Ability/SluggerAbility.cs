@@ -87,12 +87,17 @@ public class SluggerAbility : CustomButtonBase, IButtonEffect
     {
         var localPlayer = ExPlayerControl.LocalPlayer;
         // チャージアニメーションを破棄
-        GameObject.Destroy(_chargeAnimation.gameObject);
-        _chargeAnimation = null;
+        if (_chargeAnimation != null)
+        {
+            GameObject.Destroy(_chargeAnimation.gameObject);
+            _chargeAnimation = null;
+        }
         // チャージ音は距離5以内でないと代入されないのでnullチェックしておく
         if (_chargeAudio != null)
+        {
             _chargeAudio.Stop();
-        _chargeAudio = null;
+            _chargeAudio = null;
+        }
         // 攻撃アニメーション
         PlayAttackAnimation(localPlayer.Player);
         // 範囲内のターゲットを取得

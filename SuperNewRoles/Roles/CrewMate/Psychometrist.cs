@@ -295,7 +295,7 @@ public sealed class PsychometristReadAbility : CustomButtonBase, IButtonEffect
         int devRange = Data.TimeDeviation;
         if (devRange > 0)
         {
-            deviation = UnityEngine.Random.Range(-devRange, devRange);
+            deviation = ModHelpers.GetRandomInt(-devRange, devRange);
         }
 
         // 死亡情報テキストの作成または更新

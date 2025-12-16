@@ -14,7 +14,8 @@ class Mafia : RoleBase<Mafia>
     public override RoleId Role { get; } = RoleId.Mafia;
     public override Color32 RoleColor { get; } = Palette.ImpostorRed;
     public override List<Func<AbilityBase>> Abilities { get; } = [
-        () => new MafiaAbility()
+        () => new MafiaAbility(
+            MafiaUseCustomKillCooldown ? MafiaKillCooldown : (GameOptionsManager.Instance?.CurrentGameOptions?.GetFloat(FloatOptionNames.KillCooldown) ?? 0f))
     ];
 
     public override QuoteMod QuoteMod { get; } = QuoteMod.SuperNewRoles;
@@ -26,6 +27,12 @@ class Mafia : RoleBase<Mafia>
     public override TeamTag TeamTag { get; } = TeamTag.Impostor;
     public override RoleTag[] RoleTags { get; } = [];
     public override RoleOptionMenuType OptionTeam => RoleOptionMenuType.Impostor;
+
+    [CustomOptionBool("MafiaUseCustomKillCooldown", false)]
+    public static bool MafiaUseCustomKillCooldown;
+
+    [CustomOptionFloat("MafiaKillCooldown", 2.5f, 60f, 2.5f, 30f, translationName: "KillCoolTime", parentFieldName: nameof(MafiaUseCustomKillCooldown))]
+    public static float MafiaKillCooldown;
 
     /// <summary>
     /// キルが可能かどうかを判定する
@@ -39,6 +46,11 @@ class Mafia : RoleBase<Mafia>
 
 public class MafiaAbility : AbilityBase
 {
+    private float _killCooldown;
+    public MafiaAbility(float killCooldown)
+    {
+        _killCooldown = killCooldown;
+    }
     public override void AttachToAlls()
     {
         base.AttachToAlls();
@@ -46,7 +58,7 @@ public class MafiaAbility : AbilityBase
         // バニラキルボタンを制御するためのCustomKillButtonAbilityを追加
         Player.AttachAbility(new CustomKillButtonAbility(
             canKill: () => Mafia.IsKillFlag(),
-            killCooldown: () => PlayerControl.LocalPlayer.killTimer,
+            killCooldown: () => _killCooldown,
             onlyCrewmates: () => true
         ), new AbilityParentAbility(this));
     }
