@@ -172,6 +172,10 @@ public static class CustomDeathExtensions
                 player.Player.Exiled();
                 FinalStatusManager.SetFinalStatus(player, FinalStatus.Suicide);
                 break;
+            case CustomDeathType.BansheeWhisper:
+                player.Player.MurderPlayer(player.Player, MurderResultFlags.Succeeded);
+                FinalStatusManager.SetFinalStatus(player, FinalStatus.BansheeWhisper);
+                break;
             default:
                 throw new Exception($"Invalid death type: {deathType}");
         }
@@ -213,4 +217,5 @@ public enum CustomDeathType
     SuicideSecrets,
     BuskerFakeDeath,
     SuperWaveCannon,
+    BansheeWhisper,
 }

@@ -333,8 +333,9 @@ FinalStatus.SpelunkerSetRoleDeath,,
 FinalStatus.SpelunkerVentDeath,転倒,Slipped and fell,滑倒致死,滑倒致死
 FinalStatus.SpelunkerCommsElecDeath,不安死,Died of anxiety,因不安而死,因不安而死
 FinalStatus.SpelunkerOpenDoor,指挟み,Fingers caught in door,手指被门夹伤,手指被門夾傷
-FinalStatus.NunDeath,ぬーんから転落,Fell off the Nun platform,从“ぬーん”跌落,從「ぬーん」跌落
-FinalStatus.LadderDeath,はしごから転落,Fell off a ladder,从梯子上摔落,從梯子上摔落
+FinalStatus.NunDeath,ぬーん転落,Fell off the Nun platform,从“ぬーん”跌落,從「ぬーん」跌落
+FinalStatus.LadderDeath,はしご転落,Fell off a ladder,从梯子上摔落,從梯子上摔落
+FinalStatus.BansheeWhisper,妖精の声,Banshee's whisper,妖精的低语,妖精的低語
 
 # HelpMenu
 HelpMenu.MyRoleInformation,自分の役職,My Role Information,我的角色信息,我的角色資訊
@@ -495,6 +496,7 @@ EvilMoving,イビルムービング,Evil Moving,邪恶移动者,邪惡移動者
 HauntedWolf,狼憑き,HauntedWolf,灵咒,狼憑者
 ModifierHauntedWolf,モディファイア狼憑き,Modifier Haunted Wolf
 Magaziner,マガジナー,Magaziner,弹匣师,彈匣師
+Banshee,バンシー,Banshee,班西,班西
 
 # Descriptions_VanillaRoles
 Crewmate.Description,特に何も能力を持たない基本的なクルーメイト役職です。\n人狼ゲームにおける村人の役割を持ちます。\nキル能力を持つ人外を全て追放するか、タスクを全て完了すると勝利します。,A basic Crewmate role with no special abilities.\nThey serve the role of Villager from the Werewolf game.\nVictory is achieved by ejecting all non-Crewmate players with kill abilities or by completing all tasks.,一个没有特殊能力的基础船员角色。\n他们承担了狼人游戏中村民的角色。\n通过将所有拥有击杀能力的非船员玩家投出局或完成所有任务来获胜。,一個沒有特殊能力的基礎船員角色。\n他們承擔了狼人遊戲中村民的角色。\n通過將所有擁有擊殺能力的非船員玩家投出局或完成所有任務來獲勝。,
@@ -546,6 +548,7 @@ EvilSeer.Description,タスクターンに発動する能力を有するイン�
 Jammer.Description,タスクターンに使用できる能力を有するインポスターです。\n「透明化」ボタンを押すと対象のプレイヤーを他人から見えなくすることができます。\n透明化された当事者は自覚することができません。\nインポスター視点は透明にされている人が半透明で見えます。,An Impostor with abilities usable during task turns．\nPressing the “Invisibility” button makes the target player invisible to others．\nThe affected player is unaware of being invisible．\nFrom the Impostor's view，the invisible player appears semi-transparent．,拥有在任务回合中可用能力的内鬼．\n按下“隐身”按钮会使目标玩家对他人不可见．\n被隐身的玩家自己不会察觉．\n从内鬼视角看，被隐身的玩家呈半透明状态．,擁有在任務回合中可用能力的內鬼．\n按下「隱形」按鈕會使目標玩家對他人不可見．\n被隱形的玩家自己不會察覺．\n從內鬼視角來看，被隱形的玩家呈半透明狀態．
 EvilMoving.Description,タスクターンに使用できる能力を有するインポスターです。\n「位置記録」ボタンを押すと、その場所をテレポート先として登録します。\n「テレポート」ボタンを押すと記録した場所にテレポートできます。,An Impostor with abilities usable during task turns．\nPressing the “Record Position” button registers the current location as a teleport destination．\nPressing the “Teleport” button teleports you to the recorded location．,拥有在任务回合中可用能力的内鬼．\n按下“记录位置”按钮可将当前位置注册为传送目标地．\n按下“传送”按钮可传送到记录的位置．,擁有在任務回合中可用能力的內鬼．\n按下「記錄位置」按鈕可將當前位置登錄為傳送目的地．\n按下「傳送」按鈕可傳送到記錄的位置．
 Magaziner.Description,タスクターンに使用できる能力を有するインポスターです。\n「補充」ボタンを押すと、キルクールがリセットされる代わりに、弾を補充できます。\n「消費」ボタンを押すとキルクールを設定値にリセットします。,An Impostor with abilities usable during task turns．\nPressing the “Reload” button refills ammo at the cost of resetting the kill cooldown．\nPressing the “Consume” button resets the kill cooldown to the configured value．,拥有在任务回合中可用能力的内鬼．\n按下“补充”按钮可补充子弹但会重置击杀冷却时间．\n按下“消耗”按钮会将击杀冷却重置为设定值．,擁有在任務回合中可用能力的內鬼．\n按下「補充」按鈕可補充子彈但會重置擊殺冷卻時間．\n按下「消耗」按鈕會將擊殺冷卻重置為設定值．
+Banshee.Description,特殊なキル能力を有するインポスターです。\n「放つ」ボタンを押すことで、対象のプレイヤーに妖精を付けます。\n妖精はすれ違うたびにすれ違った相手についていきます。\n「囁く」ボタンを押すと、その時点で妖精がついている人とすれ違った人が死亡します。,This is an Impostor with a special kill ability.\nPressing the "Release" button attaches a fairy to a target player.\nThe fairy will follow the person it bumps into each time it bumps into someone.\nPressing the "Whisper" button kills the person who is currently bumping into the person with the fairy attached.,这是一名拥有特殊击杀能力的内鬼。\n按下“释放”按钮，可以给目标玩家附上妖精。\n妖精会在每次擦肩而过时，附着到与之擦肩而过的玩家身上。\n按下“低语”按钮，此时附有妖精的玩家以及与该玩家擦肩而过的人将会死亡。
 
 # Descriptions_Neutral
 Jackal.Description,キル能力を有する第三陣営です。\n自陣営以外のキルができる陣営が全滅した上で、自陣営とクルーが同数以下になれば勝利します。\n設定次第で他のプレイヤーの役職を、自身の後継となるサイドキックや、手助けをしてくれるジャッカルフレンズに変更する能力を有することもできます。,A third-faction role with a kill ability.\nIt wins if all factions capable of killing outside its own are eliminated and its faction and the Crewmates are equal in number or fewer.\nDepending on the settings，it can change other players’ roles into a Sidekick (its successor) or Jackal Friends who assist it.,这是一个拥有击杀能力的第三阵营角色。\n当所有能够进行击杀的其他阵营被消灭，并且其阵营与船员人数相等或更少时，即可获胜。\n根据设定，它还可以将其他玩家的角色变更为边缘队员（其继任者）或协助的杰克朋友。,這是一個具備擊殺能力的第三陣營角色。\n當其他能進行擊殺的陣營全部被消滅，且其陣營與船員數量相等或更少時，即獲勝。\n根據設定，還可將其他玩家的角色變更為接班的邊翼或提供協助的傑克朋友。,
@@ -697,6 +700,7 @@ EvilSeerIntro1,彼岸の呼び声,A call from the other side．,来自彼岸的�
 JammerIntro1,隠蔽工作,Cover-up operation．,隐蔽行动．,隱蔽行動．
 EvilMovingIntro1,不意の急襲,A sudden ambush．,突如其来的奇袭．,突如其來的奇襲．
 MagazinerIntro1,殺意の弾倉,Magazine filled with murderous intent．,充满杀意的弹匣．,充滿殺意的彈匣．
+BansheeIntro1,死を招く妖精の歌声,Death-bringing fairy song,带来死亡的妖精歌声,帶來死亡的妖精歌聲
 
 # Intros_Neutral
 JackalIntro1,暗躍するもう一人の殺人鬼,Another puppeteer of death in the shadows,另一个暗中操纵死亡者,另一個暗中操縱死亡者,
@@ -1831,3 +1835,15 @@ Team,チーム,Team,队伍,隊伍
 seconds,秒,seconds,秒,秒
 BattleRoyalWin,バトルロイヤル,Battle Royale,大逃杀,大逃殺
 Draw,引き分け,Draw,平局,平局
+
+# Banshee
+BansheeReleaseCooldown,「放つ」クールタイム,"Release" Cooldown,释放冷却时间,釋放冷卻時間
+BansheeWhisperCooldown,「囁く」クールタイム,"Whisper" Cooldown,低语冷却时间,低語冷卻時間
+BansheeFairyRange,乗り移る射程,Fairy Transfer Range,妖精转移射程,妖精轉移射程
+BansheeCanKillImpostor,インポスターもキルする,Can Kill Impostor,也能击杀内鬼,也能擊殺內鬼
+BansheeCanNormalKill,通常キルが出来る,Can Normal Kill,可以普通击杀,可以普通擊殺
+BansheeReleaseButtonText,放つ,Release,释放,釋放
+BansheeWhisperButtonText,囁く,Whisper,低语,低語
+BansheeFairyRange.Short,ショート,Short,短的,短的
+BansheeFairyRange.Medium,ミディアム,Medium,中等的,中等的
+BansheeFairyRange.Long,ロング,Long,长的,長的
