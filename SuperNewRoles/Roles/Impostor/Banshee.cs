@@ -37,7 +37,8 @@ class Banshee : RoleBase<Banshee>
             releaseCooldown: BansheeReleaseCooldown,
             whisperCooldown: BansheeWhisperCooldown,
             fairyRange: BansheeFairyRangeValues.GetOrDefault(BansheeFairyRangeOption),
-            canKillImpostor: BansheeCanKillImpostor
+            canKillImpostor: BansheeCanKillImpostor,
+            canDefaultKill: BansheeCanNormalKill
         ),
     };
 
@@ -74,12 +75,14 @@ public class BansheeAbility : AbilityBase
     private BansheeReleaseAbility bansheeReleaseAbility;
     private BansheeWhisperAbility bansheeWhisperAbility;
     private ShowPlayerUIAbility showPlayerUIAbility;
+    private CustomKillButtonAbility customKillButtonAbility;
 
     /* クールタイム */
     private float releaseCooldown;
     private float whisperCooldown;
     private float fairyRange;
     private bool canKillImpostor;
+    private bool canDefaultKill;
 
     /* イベント */
     private EventListener _fixedUpdateListener;
@@ -90,8 +93,9 @@ public class BansheeAbility : AbilityBase
     private bool whisperTriggered = false;
     private HashSet<byte> playersInRangeAlreadyChecked;
 
-    public BansheeAbility(float releaseCooldown, float whisperCooldown, float fairyRange, bool canKillImpostor)
+    public BansheeAbility(float releaseCooldown, float whisperCooldown, float fairyRange, bool canKillImpostor, bool canDefaultKill)
     {
+        this.canDefaultKill = canDefaultKill;
         this.releaseCooldown = releaseCooldown;
         this.whisperCooldown = whisperCooldown;
         this.fairyRange = fairyRange;
@@ -111,6 +115,17 @@ public class BansheeAbility : AbilityBase
             () => whisperTriggered = true
         );
         showPlayerUIAbility = new ShowPlayerUIAbility(() => currentFairyPlayer != null ? [currentFairyPlayer] : []);
+        customKillButtonAbility = new CustomKillButtonAbility(
+            // 囁いた後は押せない
+            () => canDefaultKill && !whisperTriggered,
+            () => GameOptionsManager.Instance.CurrentGameOptions.GetFloat(FloatOptionNames.KillCooldown),
+            () => true,
+            killedCallback: (player) =>
+            {
+                ResetStatus();
+                bansheeReleaseAbility.ResetTimer();
+                bansheeWhisperAbility.ResetTimer();
+            });
         Player.AttachAbility(bansheeReleaseAbility, new AbilityParentAbility(this));
         Player.AttachAbility(bansheeWhisperAbility, new AbilityParentAbility(this));
         Player.AttachAbility(showPlayerUIAbility, new AbilityParentAbility(this));
@@ -133,7 +148,12 @@ public class BansheeAbility : AbilityBase
         _fixedUpdateListener?.RemoveListener();
         _startMeetingListener?.RemoveListener();
     }
+
     private void OnStartMeeting(MeetingStartEventData data)
+    {
+        ResetStatus();
+    }
+    private void ResetStatus()
     {
         currentFairyPlayer = null;
         whisperTriggered = false;
@@ -155,8 +175,8 @@ public class BansheeAbility : AbilityBase
                 if (whisperTriggered)
                 {
                     player.RpcCustomDeath(CustomDeathType.BansheeWhisper);
-                    currentFairyPlayer = null;
-                    whisperTriggered = false;
+                    Player.ResetKillCooldown();
+                    ResetStatus();
                     break;
                 }
                 currentFairyPlayer = player;
