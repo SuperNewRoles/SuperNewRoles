@@ -59,7 +59,7 @@ class TriggerHappy : RoleBase<TriggerHappy>
     [CustomOptionFloat("TriggerHappyDuration", 1f, 15f, 1f, 5f)]
     public static float TriggerHappyDuration;
 
-    [CustomOptionInt("TriggerHappyRequiredHits", 1, 20, 1, 2)]
+    [CustomOptionInt("TriggerHappyRequiredHits", 5, 100, 5, 50)]
     public static int TriggerHappyRequiredHits;
 
     [CustomOptionFloat("TriggerHappyRange", 1f, 30f, 1f, 5f)]
