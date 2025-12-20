@@ -135,6 +135,7 @@ public enum RoleId : short
     NiceRedRidingHood,
     HauntedWolf,
     BattleRoyalWaveCannon,
+    TriggerHappy,
 }
 
 public enum GhostRoleId : short
