@@ -163,6 +163,14 @@ public class BansheeAbility : AbilityBase
     private void OnFixedUpdate()
     {
         if (currentFairyPlayer == null) return;
+
+        // 妖精がついたプレイヤーが死んだらリセット
+        if (currentFairyPlayer.IsDead())
+        {
+            ResetStatus();
+            return;
+        }
+
         foreach (var player in ExPlayerControl.ExPlayerControls)
         {
             if (player.IsDead()) continue;
@@ -174,7 +182,7 @@ public class BansheeAbility : AbilityBase
                 if (playersInRangeAlreadyChecked.Contains(player.PlayerId)) continue;
                 if (whisperTriggered)
                 {
-                    player.RpcCustomDeath(CustomDeathType.BansheeWhisper);
+                    Player.RpcCustomDeath(player, CustomDeathType.BansheeWhisper);
                     Player.ResetKillCooldown();
                     ResetStatus();
                     break;

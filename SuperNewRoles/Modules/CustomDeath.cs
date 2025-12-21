@@ -173,6 +173,8 @@ public static class CustomDeathExtensions
                 FinalStatusManager.SetFinalStatus(player, FinalStatus.Suicide);
                 break;
             case CustomDeathType.BansheeWhisper:
+                if (!TryKillEvent.Invoke(source, ref player).RefSuccess)
+                    break;
                 player.Player.MurderPlayer(player.Player, MurderResultFlags.Succeeded);
                 FinalStatusManager.SetFinalStatus(player, FinalStatus.BansheeWhisper);
                 break;
