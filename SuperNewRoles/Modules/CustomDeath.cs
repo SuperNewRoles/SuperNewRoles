@@ -2,6 +2,7 @@ using System;
 using System.Linq;
 using SuperNewRoles.Events;
 using SuperNewRoles.Events.PCEvents;
+using SuperNewRoles.WaveCannonObj;
 using UnityEngine;
 using UnityEngine.Rendering;
 
@@ -80,6 +81,18 @@ public static class CustomDeathExtensions
                 FinalStatusManager.SetFinalStatus(player, FinalStatus.LoversSuicide);
                 break;
             case CustomDeathType.WaveCannon:
+                if (!TryKillEvent.Invoke(source, ref player).RefSuccess)
+                    break;
+                player.Player.MurderPlayer(player.Player, MurderResultFlags.Succeeded);
+                FinalStatusManager.SetFinalStatus(player, FinalStatus.WaveCannon);
+                MurderDataManager.AddMurderData(source, player);
+                break;
+            case CustomDeathType.WaveCannonSanta:
+                // 被害者視点でのみカスタムキルアニメーションを設定する
+                if (player != null && player.AmOwner)
+                {
+                    CustomKillAnimationManager.SetCurrentCustomKillAnimation(new SantaKillAnimation());
+                }
                 if (!TryKillEvent.Invoke(source, ref player).RefSuccess)
                     break;
                 player.Player.MurderPlayer(player.Player, MurderResultFlags.Succeeded);
@@ -213,4 +226,5 @@ public enum CustomDeathType
     SuicideSecrets,
     BuskerFakeDeath,
     SuperWaveCannon,
+    WaveCannonSanta,
 }

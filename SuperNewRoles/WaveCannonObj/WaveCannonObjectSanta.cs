@@ -94,6 +94,8 @@ public class WaveCannonObjectSanta : WaveCannonObjectBase
     public override Vector3 startPositionOffset => new(0, 0f, 0);
 
     public override SpriteRenderer ShootRenderer => _shootRenderer;
+    public override ICustomKillAnimation GetCustomKillAnimation() => new SantaKillAnimation();
+    public override CustomDeathType GetWaveCannonDeathType(ExPlayerControl victim) => CustomDeathType.WaveCannonSanta;
     private SpriteRenderer _shootRenderer;
 
     private SpriteRenderer _tankspriteRenderer;

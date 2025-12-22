@@ -92,7 +92,7 @@ public class WCSantaHandler : MonoBehaviour
             if (!IsValidTargetByFriendlyFire(target)) continue;
 
             // WaveCannon系のTryKillEvent(賢者等)はRpcCustomDeath内部で処理される
-            _source.RpcCustomDeath(target, CustomDeathType.WaveCannon);
+            _source.RpcCustomDeath(target, CustomDeathType.WaveCannonSanta);
             _alreadyKilled.Add(target.PlayerId);
         }
     }
@@ -115,6 +115,154 @@ public class WCSantaHandler : MonoBehaviour
             if (_source.IsJackal() && target.IsJackal())
                 return false;
         }
+        return true;
+    }
+}
+
+public class SantaKillAnimation : ICustomKillAnimation
+{
+    private GameObject _santaObject;
+    private SpriteRenderer _santaRenderer;
+    private PoolablePlayer _victimPlayer;
+    private SpriteRenderer[] _victimRenderers;
+    private float _timer = 0f;
+    private bool _animationFinished = false;
+    private Vector3 _initialVictimPosition;
+    private Vector3 _initialSantaPosition;
+
+    public void Initialize(OverlayKillAnimation __instance, KillOverlayInitData initData)
+    {
+        // Santaオブジェクトを作成（左から登場）
+        _santaObject = new GameObject("SantaKillSanta");
+        _santaObject.transform.parent = __instance.transform;
+        _santaRenderer = _santaObject.AddComponent<SpriteRenderer>();
+        _santaRenderer.sprite = AssetManager.GetAsset<Sprite>("WaveCannonSanta.png");
+        _santaRenderer.gameObject.layer = 5;
+        _santaRenderer.flipX = true;
+        _santaRenderer.transform.localScale = Vector3.one * 0.6f;
+        _santaRenderer.color = Color.white;
+
+        // 初期位置：画面の左側外
+        _initialSantaPosition = new Vector3(-8f, 0f, 0f);
+        _santaObject.transform.localPosition = _initialSantaPosition;
+
+        // 被害者オブジェクトはIntroPrefab.PlayerPrefabを使う（他のUI表現と同じ）
+        var playerUIObjectPrefab = FastDestroyableSingleton<HudManager>.Instance.IntroPrefab.PlayerPrefab;
+        _victimPlayer = GameObject.Instantiate(playerUIObjectPrefab, __instance.transform);
+        _victimPlayer.gameObject.name = "SantaKillVictim";
+        _victimPlayer.gameObject.SetActive(true);
+
+        // このアニメは「被害者視点でのみ」出す設計なので、victim=LocalPlayerとして初期化
+        // （initDataの構造に依存しないようにする）
+        _victimPlayer.UpdateFromEitherPlayerDataOrCache(PlayerControl.LocalPlayer.Data, PlayerOutfitType.Default, PlayerMaterial.MaskType.None, false);
+        if (_victimPlayer.cosmetics?.colorBlindText != null)
+            _victimPlayer.cosmetics.colorBlindText.text = "";
+        if (_victimPlayer.cosmetics != null)
+        {
+            _victimPlayer.cosmetics.showColorBlindText = false;
+            _victimPlayer.cosmetics.isNameVisible = false;
+            _victimPlayer.cosmetics.UpdateNameVisibility();
+        }
+
+        // フェード用にスプライトレンダラー群をキャッシュ
+        _victimRenderers = _victimPlayer.GetComponentsInChildren<SpriteRenderer>(true);
+        for (int i = 0; i < _victimRenderers.Length; i++)
+        {
+            // サンタより奥に
+            _victimRenderers[i].sortingOrder = 5;
+        }
+
+        _victimPlayer.transform.localScale = Vector3.one * 0.8f; // Santaより小さめに
+
+        // 初期位置：中央
+        _initialVictimPosition = new Vector3(-0.3f, 0.13f, 0);
+        _victimPlayer.transform.localPosition = _initialVictimPosition;
+    }
+
+    public bool FixedUpdate()
+    {
+        if (Time.deltaTime == 0) return true;
+        if (_animationFinished) return false;
+
+        _timer += Time.fixedDeltaTime;
+
+        // Phase 1-2: Santaが左から登場して右へ移動、victimが飛んでいく (0-3.5秒)
+        if (_timer <= 3.5f)
+        {
+            // Santaの移動（左から右へスムーズに）
+            float totalProgress = _timer / 3.5f;
+            float santaProgress = Mathf.Pow(totalProgress, 0.7f); // ease-inで加速
+            float santaX = Mathf.Lerp(_initialSantaPosition.x, 8f, santaProgress);
+
+            _santaObject.transform.localPosition = new Vector3(santaX, 0, 0f);
+
+            // victimのアニメーション（Santaが中央に到達してからスタート）
+            float santaReachCenterProgress = 0.3f; // Santaが中央(x=0)に到達するタイミング
+            if (totalProgress >= santaReachCenterProgress)
+            {
+                float contactProgress = (totalProgress - santaReachCenterProgress) / (1f - santaReachCenterProgress); // 残り時間で飛翔
+                float victimProgress = Mathf.Min(contactProgress, 1f);
+                float easedVictimProgress = Mathf.Pow(victimProgress, 0.8f); // ease-in
+
+                // 回転しながら上昇し続ける軌道（放物線ではなく直線的に上昇）
+                float rotationAngle = easedVictimProgress * 1080f; // 3回転
+                float height = easedVictimProgress * 6f; // 直線的に上昇し続ける
+                float horizontalMove = easedVictimProgress * 12f; // 右方向に遠くまで飛ぶ
+
+                _victimPlayer.transform.localPosition = new Vector3(
+                    _initialVictimPosition.x + horizontalMove,
+                    _initialVictimPosition.y + height,
+                    0f
+                );
+                _victimPlayer.transform.localEulerAngles = new Vector3(0f, 0f, rotationAngle);
+
+                // スケールも少し変化させてダイナミックに + 遠ざかる効果
+                float scaleMultiplier = 1f + Mathf.Sin(victimProgress * Mathf.PI * 3f) * 0.3f;
+                float distanceScale = Mathf.Max(0.3f, 1f - (victimProgress * 0.7f)); // 遠ざかるにつれて小さくなる
+                _victimPlayer.transform.localScale = Vector3.one * (0.8f * scaleMultiplier * distanceScale);
+
+                // 途中からフェードアウト開始（着地せずに消える）
+                if (victimProgress > 0.7f)
+                {
+                    float fadeProgress = (victimProgress - 0.7f) / 0.3f;
+                    float alpha = 1f - fadeProgress;
+                    for (int i = 0; i < _victimRenderers.Length; i++)
+                    {
+                        if (_victimRenderers[i] == null) continue;
+                        var color = _victimRenderers[i].color;
+                        color.a = alpha;
+                        _victimRenderers[i].color = color;
+                    }
+                }
+            }
+        }
+        // Phase 3: Santaのみフェードアウト (3.5秒以降)
+        else if (_timer <= 4.0f)
+        {
+            float fadeProgress = (_timer - 3.5f) / 0.5f;
+
+            // Santaのみフェードアウト（victimは既にフェードアウト済み）
+            if (_santaRenderer != null)
+            {
+                Color santaColor = _santaRenderer.color;
+                santaColor.a = 1f - fadeProgress;
+                _santaRenderer.color = santaColor;
+            }
+        }
+        else
+        {
+            // アニメーション終了
+            _animationFinished = true;
+
+            // オブジェクトを破棄
+            if (_santaObject != null)
+                GameObject.Destroy(_santaObject);
+            if (_victimPlayer != null)
+                GameObject.Destroy(_victimPlayer.gameObject);
+
+            return false;
+        }
+
         return true;
     }
 }
