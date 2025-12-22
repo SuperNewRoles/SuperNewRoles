@@ -336,6 +336,8 @@ public abstract class WaveCannonObjectBase
         {
             case WaveCannonType.Tank:
                 return new WaveCannonObjectTank(ability, isFlipX, startPosition, isResetKillCooldown);
+            case WaveCannonType.Santa:
+                return new WaveCannonObjectSanta(ability, isFlipX, startPosition, isResetKillCooldown);
             case WaveCannonType.Bullet:
                 return new WaveCannonObjectBullet(ability, isFlipX, startPosition, isResetKillCooldown);
             default:
