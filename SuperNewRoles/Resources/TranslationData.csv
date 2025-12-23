@@ -152,7 +152,10 @@ AprilFoolsOutfitType.AlongUs,ロングモード,aLONG us
 AprilFoolsEnableDleks,ドルクス,Dleks ehT
 DisableHauntNonCompleted,タスクを完了していないと憑依できない,Disable haunt if the task is not completed
 EnabledZoomOnDead,霊界千里眼を有効にする,Enable spectator clairvoyance after death
-ImmediateKillCooldown,初手キルクールタイムを設定値から始める,Override initial kill cooldown,初始击杀冷却遵循设置,初始擊殺冷卻遵循設定
+InitialCooldown,初手クールタイム設定,Initial Cooldown Setting,初始冷却设置,初始冷卻設定
+InitialCooldownType.TenSeconds,10秒,10 Seconds,10秒,10秒
+InitialCooldownType.Immediate,設定値通り,Immediate,遵循设置,遵循設定
+InitialCooldownType.OneThird,設定値の1/3,1/3 of set value,设置值的1/3,設置值的1/3
 
 # Analytics
 AnalyticsPopupTitle,解析データの送信,Send analytics data,发送分析数据,發送分析數據
