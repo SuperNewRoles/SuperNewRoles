@@ -88,13 +88,13 @@ public static class CustomDeathExtensions
                 MurderDataManager.AddMurderData(source, player);
                 break;
             case CustomDeathType.WaveCannonSanta:
+                if (!TryKillEvent.Invoke(source, ref player).RefSuccess)
+                    break;
                 // 被害者視点でのみカスタムキルアニメーションを設定する
                 if (player != null && player.AmOwner)
                 {
                     CustomKillAnimationManager.SetCurrentCustomKillAnimation(new SantaKillAnimation());
                 }
-                if (!TryKillEvent.Invoke(source, ref player).RefSuccess)
-                    break;
                 player.Player.MurderPlayer(player.Player, MurderResultFlags.Succeeded);
                 FinalStatusManager.SetFinalStatus(player, FinalStatus.WaveCannon);
                 MurderDataManager.AddMurderData(source, player);
