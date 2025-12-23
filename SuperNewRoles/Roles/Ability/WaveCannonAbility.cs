@@ -110,6 +110,7 @@ public class WaveCannonAbility : CustomButtonBase, IButtonEffect
 public enum WaveCannonTypeForOption
 {
     Tank = WaveCannonType.Tank,
+    Santa = WaveCannonType.Santa,
 }
 public enum WaveCannonType
 {
