@@ -13,7 +13,7 @@ namespace SuperNewRoles.WaveCannonObj;
 public class WCSantaHandler : MonoBehaviour
 {
     public SpriteRenderer Renderer;
-    public BoxCollider2D KillCollider { get; private set; }
+    public PolygonCollider2D KillCollider { get; private set; }
     public static readonly float SantaSpeed = 6.5f;
     public static bool IsFlipX;
     public float moveX;
@@ -42,19 +42,8 @@ public class WCSantaHandler : MonoBehaviour
         Renderer = gameObject.AddComponent<SpriteRenderer>();
         Renderer.sprite = AssetManager.GetAsset<Sprite>("WaveCannonSanta.png");
         // サンタ本体に死亡判定用のコライダーを付与
-        KillCollider = gameObject.AddComponent<BoxCollider2D>();
+        KillCollider = gameObject.AddComponent<PolygonCollider2D>();
         KillCollider.isTrigger = true;
-        if (Renderer.sprite != null)
-        {
-            KillCollider.size = Renderer.sprite.bounds.size;
-            KillCollider.offset = Renderer.sprite.bounds.center;
-        }
-        else
-        {
-            // 万が一スプライトが無い場合でも判定が消えないように最低限のサイズを設定
-            KillCollider.size = new Vector2(0.6f, 0.6f);
-            KillCollider.offset = Vector2.zero;
-        }
     }
 
     public void Update()
