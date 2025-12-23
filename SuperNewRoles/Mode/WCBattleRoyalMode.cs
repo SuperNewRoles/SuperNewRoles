@@ -7,6 +7,7 @@ using SuperNewRoles.Roles;
 using SuperNewRoles.Roles.Neutral;
 using SuperNewRoles.CustomOptions.Categories;
 using SuperNewRoles.CustomOptions;
+using SuperNewRoles.Roles.Ability;
 using HarmonyLib;
 using AmongUs.GameOptions;
 using SuperNewRoles.Events;
@@ -61,6 +62,9 @@ public class WCBattleRoyalMode : ModeBase<WCBattleRoyalMode>, IModeBase
 
     [CustomOptionBool("WaveCannonBattleRoyalKillSoundDistributed", false, displayMode: DisplayModeId.WCBattleRoyal, parentFieldName: nameof(WaveCannonBattleRoyalKillSound), parentActiveValue: true, translationName: "WaveCannonKillSoundDistributed")]
     public static bool WaveCannonBattleRoyalKillSoundDistributed;
+
+    [CustomOptionSelect("WaveCannonBattleRoyalWaveCannonType", typeof(WaveCannonTypeForOption), "WaveCannonAnimationType.", displayMode: DisplayModeId.WCBattleRoyal, parentFieldName: nameof(Categories.ModeOption), parentActiveValue: ModeId.WCBattleRoyal)]
+    public static WaveCannonTypeForOption WaveCannonBattleRoyalWaveCannonType;
 
 
     public override void OnGameStart()

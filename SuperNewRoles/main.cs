@@ -35,6 +35,7 @@ using System.Diagnostics;
 using UnityEngine.SceneManagement;
 using AmongUs.GameOptions;
 using Il2CppInterop.Runtime;
+using SuperNewRoles.WaveCannonObj;
 
 namespace SuperNewRoles;
 
@@ -281,6 +282,7 @@ public partial class SuperNewRolesPlugin : BasePlugin
         ClassInjector.RegisterTypeInIl2Cpp<Drone>();
         ClassInjector.RegisterTypeInIl2Cpp<WormHole>();
         ClassInjector.RegisterTypeInIl2Cpp<SluggerDeadbody>();
+        ClassInjector.RegisterTypeInIl2Cpp<WCSantaHandler>();
         // lassInjector.RegisterTypeInIl2Cpp<AddressableReleaseOnDestroy>();
     }
 
