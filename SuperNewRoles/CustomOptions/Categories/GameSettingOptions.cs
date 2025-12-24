@@ -38,11 +38,17 @@ public static class GameSettingOptions
     [CustomOptionBool("EnabledZoomOnDead", true, parentFieldName: nameof(Categories.GameSettings))]
     public static bool EnabledZoomOnDead;
 
-    [CustomOptionBool("ImmediateKillCooldown", false, parentFieldName: nameof(Categories.GameSettings))]
-    public static bool ImmediateKillCooldown;
+    [CustomOptionSelect("InitialCooldown", typeof(InitialCooldownType), "InitialCooldownType.", parentFieldName: nameof(Categories.GameSettings), defaultValue: InitialCooldownType.TenSeconds)]
+    public static InitialCooldownType InitialCooldown;
 
     [CustomOptionBool("DisableHauntNonCompleted", false, parentFieldName: nameof(Categories.GameSettings))]
     public static bool DisableHauntNonCompleted;
+}
+public enum InitialCooldownType
+{
+    TenSeconds,
+    Immediate,
+    OneThird,
 }
 public enum AprilFoolsOutfitType
 {

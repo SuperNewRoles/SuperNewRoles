@@ -18,7 +18,7 @@ class BattleRoyalWaveCannon : RoleBase<BattleRoyalWaveCannon>, IRoleBase
         () => new WaveCannonAbility(
             WCBattleRoyalMode.WaveCannonBattleRoyalCooldown,
             WCBattleRoyalMode.WaveCannonBattleRoyalChargeTime,
-            WaveCannonType.Tank,
+            (WaveCannonType)WCBattleRoyalMode.WaveCannonBattleRoyalWaveCannonType,
             false,
             friendlyFire: WCBattleRoyalMode.WaveCannonBattleRoyalFriendlyFire,
             KillSound: WCBattleRoyalMode.WaveCannonBattleRoyalKillSound,

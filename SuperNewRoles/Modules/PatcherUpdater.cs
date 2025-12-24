@@ -20,6 +20,9 @@ public static class PatcherUpdater
     ];
     private static readonly List<string> patchers_android =
     [
+        "SuperNewRolesUpdatePatcher.dll",
+        "BepInEx.SplashScreen.Patcher.BepInEx6.dll",
+        "BepInEx.SplashScreen.GUI.exe"
     ];
     private static readonly List<string> currentPatchers = ModHelpers.IsAndroid() ? patchers_android : patchers;
     public static void Initialize()
@@ -47,7 +50,10 @@ public static class PatcherUpdater
 
         Logger.Info("Old patcher removed");
         Logger.Info("Checking and downloading patcher");
-        UnityWebRequest request = UnityWebRequest.Get($"{VersionUpdatesUI.ApiUrl}patchers/data.json");
+        string baseUrl = GetChannelBaseUrl();
+        Logger.Info("Base URL: " + baseUrl);
+        UnityWebRequest request = UnityWebRequest.Get($"{baseUrl}patchers/data.json");
+        Logger.Info("Request: " + request.url);
         yield return request.SendWebRequest();
         if (request.result != UnityWebRequest.Result.Success)
         {
@@ -84,7 +90,9 @@ public static class PatcherUpdater
     }
     private static IEnumerator DownloadPatcher(string fileName)
     {
-        string url = $"{VersionUpdatesUI.ApiUrl}patchers/{fileName}";
+        string baseUrl = GetChannelBaseUrl();
+        string url = $"{baseUrl}patchers/{fileName}";
+        Logger.Info("Downloading patcher: " + url);
         SNRHttpClient request = SNRHttpClient.Get(url);
         request.ignoreSslErrors = true;
         yield return request.SendWebRequest();
@@ -99,6 +107,16 @@ public static class PatcherUpdater
         if (File.Exists(nowFileName))
             File.Move(nowFileName, nowFileName + ".old");
         File.WriteAllBytes(nowFileName, request.downloadHandler.data);
+    }
+
+    private static string GetChannelBaseUrl()
+    {
+        string api = VersionUpdatesUI.ApiUrl;
+        string channel = VersionConfigManager.GetChannel();
+        if (string.IsNullOrEmpty(channel)) channel = "all";
+        // ApiUrl は末尾/あり想定。念のため整形
+        api = api.TrimEnd('/') + "/";
+        return $"{api}channels/{channel}/";
     }
 }
 

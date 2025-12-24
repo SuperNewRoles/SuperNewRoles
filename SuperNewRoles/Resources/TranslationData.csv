@@ -168,7 +168,10 @@ AprilFoolsOutfitType.AlongUs,ロングモード,aLONG us
 AprilFoolsEnableDleks,ドルクス,Dleks ehT
 DisableHauntNonCompleted,タスクを完了していないと憑依できない,Disable haunt if the task is not completed
 EnabledZoomOnDead,霊界千里眼を有効にする,Enable spectator clairvoyance after death
-ImmediateKillCooldown,初手キルクールタイムを設定値から始める,Override initial kill cooldown,初始击杀冷却遵循设置,初始擊殺冷卻遵循設定
+InitialCooldown,初手クールタイム設定,Initial Cooldown Setting,初始冷却设置,初始冷卻設定
+InitialCooldownType.TenSeconds,10秒,10 Seconds,10秒,10秒
+InitialCooldownType.Immediate,設定値通り,Immediate,遵循设置,遵循設定
+InitialCooldownType.OneThird,設定値の1/3,1/3 of set value,设置值的1/3,設置值的1/3
 
 # Analytics
 AnalyticsPopupTitle,解析データの送信,Send analytics data,发送分析数据,發送分析數據
@@ -1142,6 +1145,10 @@ SantaBalancerPercentage,天秤の確率(%),Balancer Percentage (%),平衡者百�
 SantaCelebrityPercentage,スターの確率(%),Celebrity Percentage (%),明星百分比,明星百分比
 SantaHomeSecurityGuardPercentage,自宅警備員の確率(%),Home Security Guard Percentage (%),家庭安保员百分比,家庭安保員百分比
 SantaSuicidalIdeationPercentage,自殺志願者の確率(%),Suicidal Ideation Percentage (%),自杀倾向者百分比,自殺傾向者百分比
+SantaDoorrPercentage,ドアーの確率(%),Doorr Percentage (%),门卫百分比,門衛百分比
+SantaMediumPercentage,ミーディアムの確率(%),Medium Percentage (%),灵媒师百分比,靈媒師百分比
+SantaNiceNekomataPercentage,ナイス猫又の確率(%),Nice Nekomata Percentage (%),好人猫又百分比,好人貓又百分比
+SantaWellBehaverPercentage,品行方正の確率(%),WellBehaver Percentage (%),品行方正百分比,品行方正百分比
 
 # BlackSanta Options
 BlackSantaEvilGuesserPercentage,イビルゲッサーの確率(%),Evil Guesser Percentage (%),邪恶猜疑者百分比,邪惡猜疑者百分比
@@ -1150,6 +1157,11 @@ BlackSantaSelfBomberPercentage,自爆魔の確率(%),Self Bomber Percentage (%),
 BlackSantaSluggerPercentage,スラッガーの確率(%),Slugger Percentage (%),猛击者百分比,猛擊者百分比
 BlackSantaPenguinPercentage,ペンギンの確率(%),Penguin Percentage (%),企鹅百分比,企鵝百分比
 BlackSantaWaveCannonPercentage,波動砲の確率(%),Wave Cannon Percentage (%),波浪炮百分比,波浪砲百分比
+BlackSantaCrabPercentage,カニの確率(%),Crab Percentage (%),螃蟹百分比,螃蟹百分比
+BlackSantaMushroomerPercentage,マッシュルーマーの確率(%),Mushroomer Percentage (%),蘑菇师百分比,蘑菇師百分比
+BlackSantaMagazinerPercentage,マガジナーの確率(%),Magaziner Percentage (%),弹匣师百分比,彈匣師百分比
+BlackSantaNecromancerPercentage,ネクロマンサーの確率(%),Necromancer Percentage (%),死灵法师百分比,死靈法師百分比
+BlackSantaOverKillerPercentage,オーバーキラーの確率(%),OverKiller Percentage (%),过度杀手百分比,過度殺手百分比
 
 # Penguin Options
 PenguinButtonText,ぺチペチ,Penguin!,企鵝!,企鵝!

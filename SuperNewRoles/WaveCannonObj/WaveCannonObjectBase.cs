@@ -28,6 +28,8 @@ public abstract class WaveCannonObjectBase
     public abstract bool HidePlayer { get; }
     public virtual Vector3 startPositionOffset => Vector3.zero;
     public virtual bool EnabledWiseMan => true;
+    public virtual ICustomKillAnimation GetCustomKillAnimation() => null;
+    public virtual CustomDeathType GetWaveCannonDeathType(ExPlayerControl victim) => CustomDeathType.WaveCannon;
     private bool isShooting = false;
     private Vector3 startPosition { get; }
     private float timer;
@@ -162,14 +164,14 @@ public abstract class WaveCannonObjectBase
                         var tryKillData = TryKillEvent.Invoke(ability.Player, ref playerRef);
                         if (tryKillData.RefSuccess)
                         {
-                            ExPlayerControl.LocalPlayer.RpcCustomDeath(playerRef, CustomDeathType.WaveCannon);
+                            ExPlayerControl.LocalPlayer.RpcCustomDeath(playerRef, GetWaveCannonDeathType(playerRef));
                             killedPlayers.Add(playerRef);
                         }
                         continue;
                     }
 
                     // 通常の波動砲で賢者以外の場合
-                    ExPlayerControl.LocalPlayer.RpcCustomDeath(player, CustomDeathType.WaveCannon);
+                    ExPlayerControl.LocalPlayer.RpcCustomDeath(player, GetWaveCannonDeathType(player));
                     if (player.IsAlive())
                     {
                         killedPlayers.Add(player);
@@ -339,6 +341,8 @@ public abstract class WaveCannonObjectBase
         {
             case WaveCannonType.Tank:
                 return new WaveCannonObjectTank(ability, isFlipX, startPosition, isResetKillCooldown);
+            case WaveCannonType.Santa:
+                return new WaveCannonObjectSanta(ability, isFlipX, startPosition, isResetKillCooldown);
             case WaveCannonType.Bullet:
                 return new WaveCannonObjectBullet(ability, isFlipX, startPosition, isResetKillCooldown);
             default:

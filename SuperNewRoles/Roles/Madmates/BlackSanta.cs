@@ -31,6 +31,11 @@ class BlackSanta : RoleBase<BlackSanta>
                     // (RoleId.Slugger, BlackSantaSluggerPercentage),
                     (RoleId.Penguin, BlackSantaPenguinPercentage),
                     (RoleId.WaveCannon, BlackSantaWaveCannonPercentage),
+                    (RoleId.Crab, BlackSantaCrabPercentage),
+                    (RoleId.Mushroomer, BlackSantaMushroomerPercentage),
+                    (RoleId.Magaziner, BlackSantaMagazinerPercentage),
+                    (RoleId.Necromancer, BlackSantaNecromancerPercentage),
+                    (RoleId.OverKiller, BlackSantaOverKillerPercentage),
                 }
             ), "BlackSantaButton.png"
         )
@@ -43,7 +48,7 @@ class BlackSanta : RoleBase<BlackSanta>
     public override short IntroNum => 1;
     public override RoleTypes IntroSoundType => RoleTypes.Shapeshifter;
     public override RoleOptionMenuType OptionTeam => RoleOptionMenuType.Crewmate;
-    public override RoleId[] RelatedRoleIds => [RoleId.EvilGuesser, RoleId.SelfBomber, RoleId.Penguin, RoleId.WaveCannon];
+    public override RoleId[] RelatedRoleIds => [RoleId.EvilGuesser, RoleId.SelfBomber, RoleId.Penguin, RoleId.WaveCannon, RoleId.Crab, RoleId.Mushroomer, RoleId.Magaziner, RoleId.Necromancer, RoleId.OverKiller];
     // サンタ機能
     [CustomOptionFloat("BlackSantaAbilityCooldown", 0f, 180f, 2.5f, 25f, translationName: "SantaAbilityCooldown")]
     public static float BlackSantaAbilityCooldown;
@@ -65,6 +70,16 @@ class BlackSanta : RoleBase<BlackSanta>
     public static int BlackSantaPenguinPercentage;
     [CustomOptionInt("BlackSantaWaveCannonPercentage", 0, 100, 5, 0)]
     public static int BlackSantaWaveCannonPercentage;
+    [CustomOptionInt("BlackSantaCrabPercentage", 0, 100, 5, 0)]
+    public static int BlackSantaCrabPercentage;
+    [CustomOptionInt("BlackSantaMushroomerPercentage", 0, 100, 5, 0)]
+    public static int BlackSantaMushroomerPercentage;
+    [CustomOptionInt("BlackSantaMagazinerPercentage", 0, 100, 5, 0)]
+    public static int BlackSantaMagazinerPercentage;
+    [CustomOptionInt("BlackSantaNecromancerPercentage", 0, 100, 5, 0)]
+    public static int BlackSantaNecromancerPercentage;
+    [CustomOptionInt("BlackSantaOverKillerPercentage", 0, 100, 5, 0)]
+    public static int BlackSantaOverKillerPercentage;
 
     // マッドメイト機能
     [CustomOptionBool("BlackSantaCouldUseVent", true, translationName: "CanUseVent")]
