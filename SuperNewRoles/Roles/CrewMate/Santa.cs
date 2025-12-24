@@ -31,6 +31,10 @@ internal class Santa : RoleBase<Santa>
                 (RoleId.Balancer, SantaBalancerPercentage),
                 (RoleId.Celebrity, SantaCelebrityPercentage),
                 (RoleId.HomeSecurityGuard, SantaHomeSecurityGuardPercentage),
+                (RoleId.Doorr, SantaDoorrPercentage),
+                (RoleId.Medium, SantaMediumPercentage),
+                (RoleId.NiceNekomata, SantaNiceNekomataPercentage),
+                (RoleId.WellBehaver, SantaWellBehaverPercentage),
             }
         ), "SantaButton.png"
     )];
@@ -42,7 +46,7 @@ internal class Santa : RoleBase<Santa>
     public override short IntroNum => 1;
     public override RoleTypes IntroSoundType => RoleTypes.Crewmate;
     public override RoleOptionMenuType OptionTeam => RoleOptionMenuType.Crewmate;
-    public override RoleId[] RelatedRoleIds => [RoleId.NiceGuesser, RoleId.Sheriff, RoleId.Balancer, RoleId.Celebrity, RoleId.HomeSecurityGuard];
+    public override RoleId[] RelatedRoleIds => [RoleId.NiceGuesser, RoleId.Sheriff, RoleId.Balancer, RoleId.Celebrity, RoleId.HomeSecurityGuard, RoleId.Doorr, RoleId.Medium, RoleId.NiceNekomata, RoleId.WellBehaver];
 
     [CustomOptionFloat("SantaAbilityCooldown", 0f, 180f, 2.5f, 25f)]
     public static float SantaAbilityCooldown;
@@ -75,4 +79,12 @@ internal class Santa : RoleBase<Santa>
     public static int SantaCelebrityPercentage;
     [CustomOptionInt("SantaHomeSecurityGuardPercentage", 0, 100, 5, 0)]
     public static int SantaHomeSecurityGuardPercentage;
+    [CustomOptionInt("SantaDoorrPercentage", 0, 100, 5, 0)]
+    public static int SantaDoorrPercentage;
+    [CustomOptionInt("SantaMediumPercentage", 0, 100, 5, 0)]
+    public static int SantaMediumPercentage;
+    [CustomOptionInt("SantaNiceNekomataPercentage", 0, 100, 5, 0)]
+    public static int SantaNiceNekomataPercentage;
+    [CustomOptionInt("SantaWellBehaverPercentage", 0, 100, 5, 0)]
+    public static int SantaWellBehaverPercentage;
 }
