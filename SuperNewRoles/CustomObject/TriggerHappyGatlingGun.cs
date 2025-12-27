@@ -29,11 +29,20 @@ public class TriggerHappyGatlingGun : MonoBehaviour
     private Vector3 _followVelocity = Vector3.zero;
 
     private AudioSource audioSource;
+    private AttenuatedAudioSource attenuatedAudioSource;
 
     // 振動用
     private float shakeTime = 0f;
     private float shakeIntensity = 0.015f;
     private float shakeSpeed = 12f;
+
+    // フェード用
+    private bool isFiring = false;
+    private float targetVolume = 0f;
+    private float currentVolume = 0f;
+    private const float FadeInSpeed = 0.6f;  // フェードイン速度（秒）
+    private const float FadeOutSpeed = 0.4f; // フェードアウト速度（秒）
+    private const float MaxVolume = 1f;   // 最大音量
 
     // 角度を設定するメソッド（RPC同期用）
     public void SetAngle(float angle)
@@ -66,14 +75,22 @@ public class TriggerHappyGatlingGun : MonoBehaviour
         // 初期位置設定
         transform.localPosition = new Vector3(1.3f, 0.35f, -5f);
         transform.localScale = Vector3.one * 0.56f;
-        audioSource = gameObject.AddComponent<AudioSource>();
-        audioSource.clip = AssetManager.GetAsset<AudioClip>("TriggerHappy_Bullet_Shot.wav");
-        audioSource.loop = true;
-        audioSource.spatialBlend = 1f; // 3D音源にする
-        audioSource.minDistance = 1f;  // 最小距離
-        audioSource.maxDistance = 5f; // 最大距離
-        audioSource.rolloffMode = AudioRolloffMode.Linear; // 減衰モード
+
+        // 減衰対応オーディオソースの設定（staticユーティリティを使用）
+        AudioClip clip = AssetManager.GetAsset<AudioClip>("TriggerHappyShotSound.wav");
+        attenuatedAudioSource = AttenuatedAudioSourceUtility.SetupSimple(gameObject, clip, loop: true, maxDistance: 5f, minDistance: 1f);
+        audioSource = attenuatedAudioSource.GetComponent<AudioSource>();
+
+        // AttenuatedAudioSourceの自動更新を無効化（手動で音量制御するため）
+        attenuatedAudioSource.enabled = false;
+
         audioSource.Play();
+
+        // 初期音量を0に設定（フェードイン開始）
+        currentVolume = 0f;
+        targetVolume = 0f;
+        attenuatedAudioSource.maxVolume = 0f;
+        audioSource.volume = 0f; // 最初のフレームで確実に0に設定
     }
 
     private void FixedUpdate()
@@ -155,6 +172,10 @@ public class TriggerHappyGatlingGun : MonoBehaviour
 
     private void Update()
     {
+        // 発射状態の更新とフェード処理
+        UpdateFiringState();
+        UpdateFade();
+
         TryFire();
         if (Player != null && Player.TryGetAbility<TriggerHappyAbility>(out var ability))
         {
@@ -171,6 +192,73 @@ public class TriggerHappyGatlingGun : MonoBehaviour
             index = (index + 1) % sprites.Length;
             spriteRenderer.sprite = sprites[index];
         }
+    }
+
+    private void UpdateFiringState()
+    {
+        if (Player == null || !Player.TryGetAbility<TriggerHappyAbility>(out var ability))
+        {
+            isFiring = false;
+            return;
+        }
+
+        // 発射可能な状態かチェック
+        bool canFire = Player.AmOwner
+            && MeetingHud.Instance == null
+            && !Player.Player.inVent
+            && Player.IsAlive()
+            && ability.isEffectActive;
+
+        // 発射状態の変化を検出
+        if (canFire && !isFiring)
+        {
+            // フェードイン開始
+            isFiring = true;
+            targetVolume = MaxVolume;
+        }
+        else if (!canFire && isFiring)
+        {
+            // フェードアウト開始
+            isFiring = false;
+            targetVolume = 0f;
+        }
+    }
+
+    private void UpdateFade()
+    {
+        if (attenuatedAudioSource == null || audioSource == null) return;
+
+        // 現在の音量を目標音量に向かってスムーズに変化させる
+        float fadeSpeed = targetVolume > currentVolume ? FadeInSpeed : FadeOutSpeed;
+        currentVolume = Mathf.MoveTowards(currentVolume, targetVolume, fadeSpeed * Time.deltaTime);
+
+        // 距離ベースの減衰を計算（AttenuatedAudioSourceのロジックを使用）
+        float distanceVolume = 1f;
+        if (PlayerControl.LocalPlayer != null)
+        {
+            Vector2 soundPosition = transform.position;
+            Vector2 listenerPosition = PlayerControl.LocalPlayer.GetTruePosition();
+            float distance = Vector2.Distance(soundPosition, listenerPosition);
+
+            if (distance > attenuatedAudioSource.maxDistance)
+            {
+                distanceVolume = 0f;
+            }
+            else if (distance <= attenuatedAudioSource.minDistance)
+            {
+                distanceVolume = 1f;
+            }
+            else
+            {
+                // 線形減衰
+                float normalizedDistance = (distance - attenuatedAudioSource.minDistance) / (attenuatedAudioSource.maxDistance - attenuatedAudioSource.minDistance);
+                distanceVolume = 1f - normalizedDistance;
+            }
+        }
+
+        // フェード制御と距離減衰の両方を適用
+        attenuatedAudioSource.maxVolume = currentVolume;
+        audioSource.volume = distanceVolume * currentVolume;
     }
 
     private void TryFire()
@@ -210,9 +298,15 @@ public class TriggerHappyGatlingGun : MonoBehaviour
             spriteRenderer.sprite = null;
         }
 
+        if (audioSource != null)
+        {
+            audioSource.Stop();
+        }
+
         Player = null;
         spriteRenderer = null;
         sprites = null;
-        audioSource.Stop();
+        audioSource = null;
+        attenuatedAudioSource = null;
     }
 }

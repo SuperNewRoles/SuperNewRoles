@@ -283,6 +283,7 @@ public partial class SuperNewRolesPlugin : BasePlugin
         ClassInjector.RegisterTypeInIl2Cpp<SluggerDeadbody>();
         ClassInjector.RegisterTypeInIl2Cpp<TriggerHappyGatlingGun>();
         ClassInjector.RegisterTypeInIl2Cpp<TriggerHappyBullet>();
+        ClassInjector.RegisterTypeInIl2Cpp<AttenuatedAudioSource>();
         // lassInjector.RegisterTypeInIl2Cpp<AddressableReleaseOnDestroy>();
     }
 
