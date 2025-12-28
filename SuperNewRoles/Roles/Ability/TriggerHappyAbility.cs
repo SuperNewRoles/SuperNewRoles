@@ -103,7 +103,7 @@ public class TriggerHappyAbility : CustomButtonBase, IAbilityCount, IButtonEffec
         _lastFirePosition = Vector2.zero;
         if (GatlingGunAnimation != null)
         {
-            GameObject.Destroy(GatlingGunAnimation.gameObject);
+            GatlingGunAnimation.RequestFadeOutAndDestroy();
             GatlingGunAnimation = null;
         }
     }

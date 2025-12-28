@@ -40,6 +40,7 @@ public class TriggerHappyGatlingGun : MonoBehaviour
     private bool isFiring = false;
     private float targetVolume = 0f;
     private float currentVolume = 0f;
+    private bool pendingDestroy = false;
     private const float FadeInSpeed = 0.6f;  // フェードイン速度（秒）
     private const float FadeOutSpeed = 0.4f; // フェードアウト速度（秒）
     private const float MaxVolume = 1f;   // 最大音量
@@ -97,10 +98,15 @@ public class TriggerHappyGatlingGun : MonoBehaviour
     {
         if (Player == null || !Player.IsAlive() || MeetingHud.Instance != null || Player.Player.inVent)
         {
-            if (gameObject.activeSelf) gameObject.SetActive(false);
+            if (spriteRenderer != null) spriteRenderer.enabled = false;
             _hasInitialPosition = false;
             _followVelocity = Vector3.zero;
             return;
+        }
+
+        if (spriteRenderer != null && !spriteRenderer.enabled)
+        {
+            spriteRenderer.enabled = true;
         }
 
         // 角度の計算（オーナーのみマウス方向を使用、それ以外は同期された角度を使用）
@@ -166,8 +172,6 @@ public class TriggerHappyGatlingGun : MonoBehaviour
         Vector3 shakeOffset = new(shakeX, shakeY, 0f);
         transform.position += shakeOffset;
 
-        // 位置/角度を確定してから表示する
-        if (!gameObject.activeSelf) gameObject.SetActive(true);
     }
 
     private void Update()
@@ -175,6 +179,12 @@ public class TriggerHappyGatlingGun : MonoBehaviour
         // 発射状態の更新とフェード処理
         UpdateFiringState();
         UpdateFade();
+
+        if (pendingDestroy && currentVolume <= 0.001f)
+        {
+            Destroy(gameObject);
+            return;
+        }
 
         TryFire();
         if (Player != null && Player.TryGetAbility<TriggerHappyAbility>(out var ability))
@@ -259,6 +269,21 @@ public class TriggerHappyGatlingGun : MonoBehaviour
         // フェード制御と距離減衰の両方を適用
         attenuatedAudioSource.maxVolume = currentVolume;
         audioSource.volume = distanceVolume * currentVolume;
+    }
+
+    public void RequestFadeOutAndDestroy()
+    {
+        if (pendingDestroy)
+            return;
+
+        isFiring = false;
+        targetVolume = 0f;
+        pendingDestroy = true;
+        spriteRenderer.enabled = false;
+        if (spriteRenderer != null)
+        {
+            spriteRenderer.enabled = false;
+        }
     }
 
     private void TryFire()
