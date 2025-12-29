@@ -219,6 +219,8 @@ RequestInGame_SuccessReportText,送信しました。返信には時間がかか
 RequestInGame_SuccessReportReturnButton,戻る,Return,返回,返回
 RequestInGame.UpdateStatusTo,{0} に変更されました,Changed to {0},已更改为{0},已更換為{0}
 RequestInGame.UpdateStatus,ステータス,Status,状态,狀態
+RequestInGameDeveloperNotice,このメッセージは見えてはいけないよ。,The developer lives in Japan and speaks only Japanese，so responses may take time or may be translated unnaturally.,开发者居住在日本，只会说日语，因此回复可能需要时间，或者翻译可能不自然。,開發者居住在日本，只會說日語，因此回覆可能需要時間，或者翻譯可能不自然。
+RequestInGameCurrentJapanTime,現在の日本時間: {0},Current Japan Time: {0},当前日本时间：{0},當前日本時間：{0}
 
 # RoleOptionMenu
 RoleOptionMenuType.Impostor,インポスター,Impostor,内鬼,內鬼

@@ -65,7 +65,7 @@ public class CreateButtons
         {
             GenerateButtons(__instance.transform, new(-0.9f, 1.3f, 0f), AspectPosition.EdgeAlignments.Top);
             TextMeshPro text = GameObject.Instantiate(AssetManager.GetAsset<GameObject>("bugReportText"), __instance.transform).GetComponent<TextMeshPro>();
-            text.transform.localPosition = new(0.88f, 1.715f, 0f);
+            text.transform.localPosition = new(1.23f, 1.715f, 0f);
             text.transform.localScale = Vector3.one * 0.15f;
             text.alignment = TextAlignmentOptions.Left;
             text.text = ModTranslation.GetString("RequestInGameButtonText");
