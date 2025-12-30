@@ -41,7 +41,7 @@ public class TriggerHappyGatlingGun : MonoBehaviour
     private float targetVolume = 0f;
     private float currentVolume = 0f;
     private bool pendingDestroy = false;
-    private const float FadeInSpeed = 0.6f;  // フェードイン速度（秒）
+    private const float FadeInSpeed = 0.9f;  // フェードイン速度（秒）
     private const float FadeOutSpeed = 0.4f; // フェードアウト速度（秒）
     private const float MaxVolume = 1f;   // 最大音量
 
@@ -104,9 +104,9 @@ public class TriggerHappyGatlingGun : MonoBehaviour
             return;
         }
 
-        if (spriteRenderer != null && !spriteRenderer.enabled)
+        if (spriteRenderer != null)
         {
-            spriteRenderer.enabled = true;
+            spriteRenderer.enabled = !pendingDestroy;
         }
 
         // 角度の計算（オーナーのみマウス方向を使用、それ以外は同期された角度を使用）
