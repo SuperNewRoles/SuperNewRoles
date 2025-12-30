@@ -468,6 +468,7 @@ public class KunoichiHideAbility : CustomButtonBase, IButtonEffect
 
     private EventListener _fixedUpdateEvent;
     private EventListener<MeetingStartEventData> _meetingStartEvent;
+    private readonly OpacityFadeController _opacityFader = new();
 
     public bool IsInvisible { get; private set; }
 
@@ -502,6 +503,7 @@ public class KunoichiHideAbility : CustomButtonBase, IButtonEffect
         base.DetachToAlls();
         _fixedUpdateEvent?.RemoveListener();
         _meetingStartEvent?.RemoveListener();
+        _opacityFader.StopAll();
         ExitInvisibility();
     }
 
@@ -566,7 +568,7 @@ public class KunoichiHideAbility : CustomButtonBase, IButtonEffect
         if (Player?.Player != null)
         {
             bool sameTeam = Player.roleBase.AssignedTeam == ExPlayerControl.LocalPlayer.roleBase.AssignedTeam;
-            ModHelpers.SetOpacity(Player.Player, sameTeam ? 0.1f : 0f);
+            _opacityFader.Apply(Player, sameTeam ? 0.1f : 0f);
         }
     }
 
@@ -577,7 +579,7 @@ public class KunoichiHideAbility : CustomButtonBase, IButtonEffect
         isEffectActive = false;
         if (Player?.Player != null)
         {
-            ModHelpers.SetOpacity(Player.Player, 1f);
+            _opacityFader.Apply(Player, 1f);
         }
     }
 }

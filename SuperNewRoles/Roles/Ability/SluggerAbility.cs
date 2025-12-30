@@ -1,7 +1,9 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using SuperNewRoles.Events;
 using SuperNewRoles.Modules;
+using SuperNewRoles.Modules.Events.Bases;
 using SuperNewRoles.Roles.Ability.CustomButton;
 using UnityEngine;
 using SuperNewRoles.CustomObject;
@@ -22,6 +24,7 @@ public class SluggerAbility : CustomButtonBase, IButtonEffect
     public override float DefaultTimer { get; } // クールタイムはオプションで調整可
     private CustomPlayerAnimationSimple _chargeAnimation;
     public AudioSource _chargeAudio;
+    private EventListener<MeetingStartEventData> _onMeetingStartEvent;
 
     public SluggerAbility(float coolTime, float chargeTime, bool isMultiKill, bool isSyncKillCoolTime)
     {
@@ -34,15 +37,47 @@ public class SluggerAbility : CustomButtonBase, IButtonEffect
     public override void AttachToAlls()
     {
         base.AttachToAlls();
-        if (isSyncKillCoolTime)
-            SyncKillCoolTimeAbility.CreateAndAttach(this);
+        _onMeetingStartEvent = MeetingStartEvent.Instance.AddListener(OnMeetingStart);
     }
 
+    public override void DetachToAlls()
+    {
+        base.DetachToAlls();
+        _onMeetingStartEvent?.RemoveListener();
+        CleanupChargeEffects(cancelEffect: true);
+    }
     public override void OnClick()
     {
         // チャージ開始アニメーション
         var localPlayer = ExPlayerControl.LocalPlayer;
         PlayChargeAnimation(localPlayer.Player);
+        RpcSluggerChargeStart();
+    }
+
+    private void OnMeetingStart(MeetingStartEventData _)
+    {
+        CleanupChargeEffects(cancelEffect: true);
+    }
+
+    private void CleanupChargeEffects(bool cancelEffect)
+    {
+        if (cancelEffect)
+        {
+            isEffectActive = false;
+            EffectTimer = 0f;
+        }
+
+        if (_chargeAnimation != null)
+        {
+            GameObject.Destroy(_chargeAnimation.gameObject);
+            _chargeAnimation = null;
+        }
+
+        if (_chargeAudio != null)
+        {
+            _chargeAudio.Stop();
+            _chargeAudio = null;
+        }
     }
 
     private void PlayChargeAnimation(PlayerControl player)
@@ -61,10 +96,10 @@ public class SluggerAbility : CustomButtonBase, IButtonEffect
         );
         _chargeAnimation = CustomPlayerAnimationSimple.Spawn(player, option);
         if (Vector2.Distance(player.transform.position, ExPlayerControl.LocalPlayer.Player.transform.position) <= 5)
-            _chargeAudio = SoundManager.Instance.PlaySound(AssetManager.GetAsset<AudioClip>("Slugger_Charge.mp3"), true);
+            _chargeAudio = SoundManager.Instance.PlaySound(AssetManager.GetAsset<AudioClip>("Slugger_Charge.mp3"), true, audioMixer: SoundManager.Instance.SfxChannel);
     }
 
-    private void PlayAttackAnimation(PlayerControl player)
+    private float PlayAttackAnimation(PlayerControl player)
     {
         // 攻撃アニメーション（8フレーム、1回再生）
         var sprites = CustomPlayerAnimationSimple.GetSprites("harisen_{0}.png", 1, 10, zeroPadding: 3);
@@ -80,26 +115,20 @@ public class SluggerAbility : CustomButtonBase, IButtonEffect
         );
         CustomPlayerAnimationSimple.Spawn(player, option);
         if (Vector2.Distance(player.transform.position, ExPlayerControl.LocalPlayer.Player.transform.position) <= 5)
-            SoundManager.Instance.PlaySound(AssetManager.GetAsset<AudioClip>("Slugger_Hit.mp3"), false);
+            SoundManager.Instance.PlaySound(AssetManager.GetAsset<AudioClip>("Slugger_Hit.mp3"), false, audioMixer: SoundManager.Instance.SfxChannel);
+
+        return option.frameRate > 0 ? (sprites.Length / (float)option.frameRate) : 0f;
     }
 
     private void OnChargeComplete()
     {
         var localPlayer = ExPlayerControl.LocalPlayer;
-        // チャージアニメーションを破棄
-        if (_chargeAnimation != null)
-        {
-            GameObject.Destroy(_chargeAnimation.gameObject);
-            _chargeAnimation = null;
-        }
-        // チャージ音は距離5以内でないと代入されないのでnullチェックしておく
-        if (_chargeAudio != null)
-        {
-            _chargeAudio.Stop();
-            _chargeAudio = null;
-        }
-        // 攻撃アニメーション
-        PlayAttackAnimation(localPlayer.Player);
+        RpcSluggerChargeStop();
+        CleanupChargeEffects(cancelEffect: false);
+
+        // 攻撃アニメーション（ローカル即時 + 他クライアントへ同期）
+        var attackDuration = PlayAttackAnimation(localPlayer.Player);
+        RpcSluggerAttackAnimation();
         // 範囲内のターゲットを取得
         List<ExPlayerControl> targets = new();
         float killRadius = 1.5f;
@@ -125,7 +154,39 @@ public class SluggerAbility : CustomButtonBase, IButtonEffect
         }
         // キル処理
         RpcSluggerKill(targets);
+
+        // キルクール同期は「ハリセンを振り終わった瞬間」に合わせる
+        if (isSyncKillCoolTime && localPlayer != null && localPlayer.AmOwner)
+        {
+            new LateTask(
+                () => ExPlayerControl.LocalPlayer?.ResetKillCooldown(),
+                attackDuration,
+                "SluggerSyncKillCooldownAfterSwing");
+        }
+
         ResetTimer();
+    }
+
+    [CustomRPC]
+    public void RpcSluggerAttackAnimation()
+    {
+        // オーナー(本人)は既にローカルで再生しているため二重再生を避ける
+        if (Player.AmOwner) return;
+        PlayAttackAnimation(Player.Player);
+    }
+
+    [CustomRPC]
+    public void RpcSluggerChargeStart()
+    {
+        // オーナー(本人)は既にローカルで再生しているため二重再生を避ける
+        if (Player.AmOwner) return;
+        PlayChargeAnimation(Player.Player);
+    }
+
+    [CustomRPC]
+    public void RpcSluggerChargeStop()
+    {
+        CleanupChargeEffects(cancelEffect: false);
     }
 
     [CustomRPC]
