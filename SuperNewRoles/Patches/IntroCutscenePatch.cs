@@ -378,13 +378,13 @@ public static class IntroCutscenePatch
         {
             DevicesPatch.ClearAndReload();
         }
-        if (!GameSettingOptions.ImmediateKillCooldown)
+        if (GameSettingOptions.InitialCooldown != InitialCooldownType.Immediate)
         {
             foreach (var ability in ExPlayerControl.LocalPlayer.PlayerAbilities)
             {
                 if (ability is CustomButtonBase customButtonBase && customButtonBase.IsFirstCooldownTenSeconds)
                 {
-                    customButtonBase.SetCoolTenSeconds();
+                    customButtonBase.SetInitialCooldown();
                 }
             }
         }

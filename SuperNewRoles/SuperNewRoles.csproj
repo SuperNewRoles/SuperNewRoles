@@ -1,7 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
     <PropertyGroup>
         <TargetFramework>net6.0</TargetFramework>
-        <Version>3.1.2.1</Version>
+        <Version>3.1.2.4</Version>
         <Description>SuperNewRoles</Description>
         <Authors>ykundesu</Authors>
         <langVersion>preview</langVersion>
