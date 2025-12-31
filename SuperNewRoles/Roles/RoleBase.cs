@@ -19,7 +19,7 @@ internal abstract class RoleBase<T> : BaseSingleton<T>, IRoleBase where T : Role
     public abstract RoleId Role { get; }
     public abstract Color32 RoleColor { get; }
     public virtual string RoleName => Role.ToString();
-    public virtual bool HiddenOption => OptionTeam == RoleOptionMenuType.Hidden;
+    public virtual bool HiddenOption => OptionTeam == RoleOptionMenuType.Hidden || RoleReleaseLock.IsLocked(Role);
     public virtual List<AssignedTeamType> AssignedTeams => [AssignedTeam];
     public virtual CustomOption[] Options => RoleOptionManager.TryGetRoleOption(Role, out var role) ? role.Options : [];
     public virtual int? PercentageOption => RoleOptionManager.TryGetRoleOption(Role, out var role) ? role.Percentage : null;
@@ -54,7 +54,7 @@ internal abstract class RoleBase<T> : BaseSingleton<T>, IRoleBase where T : Role
 
     public abstract RoleOptionMenuType OptionTeam { get; }
     public virtual MapNames[] AvailableMaps { get; } = [];
-    public virtual bool HideInRoleDictionary => false;
+    public virtual bool HideInRoleDictionary => RoleReleaseLock.IsLocked(Role);
 
     public virtual Sprite RoleIcon => null;
 

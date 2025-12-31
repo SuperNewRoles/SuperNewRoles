@@ -271,7 +271,7 @@ public static class BulkRoleSettings
             foreach (var roleOption in RoleOptionManager.RoleOptions)
             {
                 var roleBase = CustomRoleManager.AllRoles.FirstOrDefault(r => r.Role == roleOption.RoleId);
-                if (roleBase != null && roleBase.OptionTeam == RoleOptionMenu.RoleOptionMenuObjectData.CurrentRoleType && roleOption.NumberOfCrews > 0)
+                if (roleBase != null && !roleBase.HiddenOption && roleBase.OptionTeam == RoleOptionMenu.RoleOptionMenuObjectData.CurrentRoleType && roleOption.NumberOfCrews > 0)
                 {
                     GenerateBulkRoleSetting(RoleOptionMenu.RoleOptionMenuObjectData.CurrentBulkSettingsParent.transform, index++, roleOption);
                 }
