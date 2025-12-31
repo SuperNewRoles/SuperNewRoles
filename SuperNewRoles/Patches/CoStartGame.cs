@@ -53,6 +53,7 @@ class AmongUsClientStartPatch
             }
 
             Garbage.ClearAndReload();
+            CursedTasks.Main.ClearAndReload();
             CustomKillAnimationManager.ClearCurrentCustomKillAnimation();
             ModeManager.OnGameStart();
 
