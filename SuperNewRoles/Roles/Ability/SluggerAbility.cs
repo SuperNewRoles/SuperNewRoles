@@ -27,9 +27,10 @@ public class SluggerAbility : CustomButtonBase, IButtonEffect
     protected override KeyType keytype => KeyType.Ability1;
     public override float DefaultTimer { get; } // クールタイムはオプションで調整可
     private CustomPlayerAnimationSimple _chargeAnimation;
-    public AudioSource _chargeAudio;
+    private AudioSource _chargeAudio;
     private EventListener<MeetingStartEventData> _onMeetingStartEvent;
     private EventListener<MurderEventData> _murderEvent;
+    private EventListener<DieEventData> _dieEvent;
 
     public SluggerAbility(float coolTime, float chargeTime, bool isMultiKill, bool isSyncKillCoolTime, bool canKillWhileCharging)
     {
@@ -57,6 +58,7 @@ public class SluggerAbility : CustomButtonBase, IButtonEffect
     {
         base.AttachToAlls();
         _onMeetingStartEvent = MeetingStartEvent.Instance.AddListener(OnMeetingStart);
+        _dieEvent = DieEvent.Instance.AddListener(OnDie);
         if (!canKillWhileCharging)
         {
             _killableAbility = new KillableAbility(() => !isEffectActive);
@@ -68,6 +70,7 @@ public class SluggerAbility : CustomButtonBase, IButtonEffect
     {
         base.DetachToAlls();
         _onMeetingStartEvent?.RemoveListener();
+        _dieEvent?.RemoveListener();
         CleanupChargeEffects(cancelEffect: true);
     }
     public override void OnClick()
@@ -80,6 +83,12 @@ public class SluggerAbility : CustomButtonBase, IButtonEffect
 
     private void OnMeetingStart(MeetingStartEventData _)
     {
+        CleanupChargeEffects(cancelEffect: true);
+    }
+
+    private void OnDie(DieEventData data)
+    {
+        if (data.player?.PlayerId != Player?.PlayerId) return;
         CleanupChargeEffects(cancelEffect: true);
     }
 

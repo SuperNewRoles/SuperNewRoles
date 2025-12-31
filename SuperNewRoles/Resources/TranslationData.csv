@@ -1880,7 +1880,7 @@ SaunerDeckTime,展望デッキ滞在必要時間,Observation deck required time,
 SaunerTextInSauna,サウナに入る,Enter the sauna,进入桑拿,進入桑拿
 SaunerTextShower,シャワーを浴びる,Take a shower,淋浴,淋浴
 SaunerTextAirBath,外気浴をする,Take an air bath,戶外通風,戶外通風
-SaunerTextRemaing,残り{0}秒,Remaining {0} seconds,剩余{0}秒,剩餘{0}秒
+SaunerTextRemaining,残り{0}秒,Remaining {0} seconds,剩余{0}秒,剩餘{0}秒
 SaunerDarkroom,暗室,Darkroom,暗室,暗室
 SaunerShower,シャワー,Shower,淋浴,淋浴
 SaunerObservationDeck,展望デッキ,Observation Deck,展望台,展望台

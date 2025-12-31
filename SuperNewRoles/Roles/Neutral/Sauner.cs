@@ -426,7 +426,7 @@ public class SaunerAbility : AbilityBase
             _ => 0f
         };
         string remaining = _timer < stageLimit
-            ? ModTranslation.GetString("SaunerTextRemaing", Math.Max(0, (int)(_timer + 1)))
+            ? ModTranslation.GetString("SaunerTextRemaining", Math.Max(0, (int)(_timer + 1)))
             : string.Empty;
         string meetingText = inMeeting ? $" ({ModTranslation.GetString("Meeting")})" : string.Empty;
         Color color = GetFlashColor(_state);

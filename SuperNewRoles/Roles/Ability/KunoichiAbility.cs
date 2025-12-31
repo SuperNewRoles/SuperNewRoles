@@ -162,7 +162,8 @@ public class KunoichiKunaiAbility : CustomButtonBase
 
     private void ClearLocalHits()
     {
-        HitCounts.Remove(Player?.PlayerId ?? byte.MaxValue);
+        if (Player == null) return;
+        HitCounts.Remove(Player.PlayerId);
     }
 
     private void ClearDeadHits()
@@ -286,6 +287,7 @@ public class KunoichiKunaiAbility : CustomButtonBase
     private void HandleHit(PlayerControl target)
     {
         if (target == null) return;
+        if (Player == null) return;
         var shooterId = Player.PlayerId;
         var targetId = target.PlayerId;
 
@@ -744,4 +746,3 @@ public class KunoichiKunaiDisplayAbility : CustomButtonBase
         if (!_displayKunai.activeSelf) _displayKunai.SetActive(true);
     }
 }
-

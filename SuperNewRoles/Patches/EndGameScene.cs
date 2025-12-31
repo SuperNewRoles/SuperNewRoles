@@ -325,9 +325,17 @@ public class EndGameManagerSetUpPatch
                 baseText = "MadJester";
                 roleColor = MadJester.Instance.RoleColor;
                 break;
+            case WinCondition.SaunerWin:
+                baseText = "Sauner";
+                roleColor = Sauner.Instance.RoleColor;
+                break;
             case WinCondition.TheThreeLittlePigsWin:
                 baseText = "TheThreeLittlePigs";
                 roleColor = Roles.Neutral.TheThreeLittlePigs.Instance.RoleColor;
+                break;
+            case WinCondition.FrankensteinWin:
+                baseText = "Frankenstein";
+                roleColor = Frankenstein.Instance.RoleColor;
                 break;
             default:
                 baseText = "Unknown";

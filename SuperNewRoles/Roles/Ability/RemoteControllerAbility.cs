@@ -278,7 +278,11 @@ public sealed class RemoteControllerAbility : AbilityBase
             foreach (IUsable usable in cached)
             {
                 if (usable == null) continue;
-                if (usable.TryCast<Console>()) continue;
+                if (usable.TryCast<Console>() &&
+                    !usable.Il2CppIs(out DoorConsole _) &&
+                    !usable.Il2CppIs(out PlatformConsole _) &&
+                    !usable.Il2CppIs(out ZiplineConsole _))
+                    continue;
 
                 if (usable.Il2CppIs(out Vent vent))
                 {
