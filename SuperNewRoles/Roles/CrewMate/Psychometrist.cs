@@ -6,6 +6,7 @@ using SuperNewRoles.CustomOptions;
 using SuperNewRoles.Events;
 using SuperNewRoles.Events.PCEvents;
 using SuperNewRoles.Modules;
+using SuperNewRoles.Modules.Events;
 using SuperNewRoles.Modules.Events.Bases;
 using SuperNewRoles.Roles.Ability;
 using SuperNewRoles.Roles.Ability.CustomButton;
@@ -36,7 +37,8 @@ class Psychometrist : RoleBase<Psychometrist>
                 IsCheckFootprints: PsychometristIsCheckFootprints,
                 CanCheckFootprintsTime: PsychometristCanCheckFootprintsTime,
                 IsReportCheckedDeadBody: PsychometristIsReportCheckedDeadBody,
-                TimeDeviation: PsychometristDeathTimeDeviation
+                TimeDeviation: PsychometristDeathTimeDeviation,
+                CannotMoveDuringReading: PsychometristCannotMoveDuringReading
             )
         )
     ];
@@ -81,6 +83,10 @@ class Psychometrist : RoleBase<Psychometrist>
     /// <summary>調べた死体を報告可能にするかどうか</summary>
     [CustomOptionBool(nameof(PsychometristIsReportCheckedDeadBody), false, translationName: "PsychometristIsReportCheckedDeadBody")]
     public static bool PsychometristIsReportCheckedDeadBody;
+
+    /// <summary>読み取り中は動けないかどうか</summary>
+    [CustomOptionBool(nameof(PsychometristCannotMoveDuringReading), false, translationName: "PsychometristCannotMoveDuringReading")]
+    public static bool PsychometristCannotMoveDuringReading;
 }
 
 /// <summary>
@@ -102,7 +108,9 @@ public record PsychometristReadData(
     /// <summary>調べた死体を報告可能にするかどうか</summary>
     bool IsReportCheckedDeadBody,
     /// <summary>死亡時刻の誤差範囲 (±秒)</summary>
-    int TimeDeviation
+    int TimeDeviation,
+    /// <summary>読み取り中は動けないかどうか</summary>
+    bool CannotMoveDuringReading
 );
 
 /// <summary>
@@ -149,6 +157,8 @@ public sealed class PsychometristReadAbility : CustomButtonBase, IButtonEffect
     private EventListener _fixedUpdateListener;
     /// <summary>会議開始イベントリスナー</summary>
     private EventListener<MeetingStartEventData> _meetingStartListener;
+    /// <summary>PhysicsFixedUpdateイベントリスナー</summary>
+    private EventListener<PlayerPhysicsFixedUpdateEventData> _physicsUpdateListener;
 
     public PsychometristReadAbility(PsychometristReadData data)
     {
@@ -164,6 +174,7 @@ public sealed class PsychometristReadAbility : CustomButtonBase, IButtonEffect
         base.AttachToLocalPlayer();
         _fixedUpdateListener = FixedUpdateEvent.Instance.AddListener(OnFixedUpdate);
         _meetingStartListener = MeetingStartEvent.Instance.AddListener(_ => ClearLocalVisuals());
+        _physicsUpdateListener = PlayerPhysicsFixedUpdateEvent.Instance.AddListener(OnPhysicsFixedUpdate);
     }
 
     /// <summary>
@@ -175,12 +186,23 @@ public sealed class PsychometristReadAbility : CustomButtonBase, IButtonEffect
         base.DetachToLocalPlayer();
         _fixedUpdateListener?.RemoveListener();
         _meetingStartListener?.RemoveListener();
+        _physicsUpdateListener?.RemoveListener();
         ClearLocalVisuals();
     }
 
     public override bool CheckIsAvailable()
     {
         return Player.Player.CanMove && _candidateTarget != null;
+    }
+
+    private void OnPhysicsFixedUpdate(PlayerPhysicsFixedUpdateEventData data)
+    {
+        if (!Data.CannotMoveDuringReading) return;
+        if (!Player.AmOwner && !data.Instance.AmOwner) return;
+        if (isEffectActive)
+        {
+            data.Instance.body.velocity = Vector2.zero;
+        }
     }
 
     /// <summary>
@@ -310,6 +332,8 @@ public sealed class PsychometristReadAbility : CustomButtonBase, IButtonEffect
             text.transform.localScale = new Vector3(0.8f, 0.8f, 0.8f);
             text.color = Color.white;
             text.enableWordWrapping = false;
+            // layaerを9にして影を適用させる
+            text.gameObject.layer = 9;
 
             _deathInfoTexts[target.ParentId] = (target, text, deviation);
         }

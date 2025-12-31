@@ -53,7 +53,7 @@ class Squid : RoleBase<Squid>
     [CustomOptionFloat(nameof(SquidNotKillTime), 0f, 10f, 0.5f, 2.5f, translationName: "SquidNotKillTimeSetting", suffix: "Seconds")]
     public static float SquidNotKillTime;
 
-    [CustomOptionFloat(nameof(SquidDownVision), 0f, 5f, 0.25f, 0.5f, translationName: "SquidDownVisionSetting")]
+    [CustomOptionFloat(nameof(SquidDownVision), 0f, 5f, 0.1f, 0.5f, translationName: "SquidDownVisionSetting")]
     public static float SquidDownVision;
 
     [CustomOptionFloat(nameof(SquidObstructionTime), 0f, 30f, 2.5f, 5f, translationName: "SquidObstructionTimeSetting", suffix: "Seconds")]
@@ -198,6 +198,13 @@ public sealed class SquidVigilanceAbility : CustomButtonBase, IButtonEffect
         {
             data.Killer.SetKillTimerUnchecked(Data.NoKillDuration, Data.NoKillDuration);
             SquidInkOverlay.Show(Data.DownVisionMultiplier, Data.ObstructionDuration);
+
+            var customKillButtons = data.Killer.GetAbilities<CustomKillButtonAbility>();
+            for (int i = 0; i < customKillButtons.Count; i++)
+            {
+                var customKillButton = customKillButtons[i];
+                customKillButton.Timer = Mathf.Max(customKillButton.Timer, Data.NoKillDuration);
+            }
         }
     }
 

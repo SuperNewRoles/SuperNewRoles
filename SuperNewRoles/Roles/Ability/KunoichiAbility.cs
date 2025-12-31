@@ -87,7 +87,7 @@ public class KunoichiKunaiAbility : CustomButtonBase
     private EventListener<MeetingStartEventData> _meetingStartEvent;
     private EventListener _fixedUpdateEvent;
 
-    private static readonly Dictionary<byte, Dictionary<byte, int>> HitCounts = new();
+    private Dictionary<byte, Dictionary<byte, int>> HitCounts = new();
     public int KillThreshold => _killThreshold;
 
     private readonly List<KunaiProjectile> _projectiles = new();

@@ -1940,7 +1940,7 @@ DyingMessengerGetLightAndDarkerTimeSetting,死体からキル者の色の明暗�
 DyingMessengerFirstPerson1,私,me,我,我
 DyingMessengerFirstPerson2,僕,me,我,我
 DyingMessengerGetRoleText,{0}をキルした人の役職は{1}でした。,The role of the person who killed {0} was {1}.,杀害{0}的人是一名{1}。,將{0}殺害的人是一名{1}。
-DyingMessengerGetLightAndDarkerText,{0}をキルした人の色は{1}色でした。,The person who killed {0} had {1} color.,杀害{0}的人是{1}色的。,將{0}殺害的人是{1}色的。
+DyingMessengerGetLightAndDarkerText,{0}をキルした人の色は{1}でした。,The person who killed {0} had {1}.,杀害{0}的人是{1}。,將{0}殺害的人是{1}。
 
 # Psychometrist
 Psychometrist.Description,タスクターンに使用できる能力を有するクルーメイトです。\n死体に近づき「よみとり」ボタンを押すことで、死因や死亡推定時間など死体の状況を読み取れます。\n設定によっては犯人の足跡も確認できます。,A crewmate with an ability usable during the Task Turn.\nApproach a corpse and use the \"Read\" button to learn information such as cause of death and estimated time since death.\nDepending on settings, you can also see the killer's footprints.,是具有能够在任务回合使用能力的队员。\n接近尸体并按下「验尸」按钮，可以读取死因和死亡推定时间等信息。\n根据设置，还可以确认凶手的足迹。,是具有能夠在任務回合使用能力的隊員。\n接近屍體並按下「驗屍」按鈕，可以讀取死因和死亡推定時間等資訊。\n依據設定，還可以確認兇手的足跡。
@@ -1951,6 +1951,7 @@ PsychometristIsCheckDeathReason,死因がわかる,I know the cause of death.,�
 PsychometristIsCheckFootprints,犯人の足跡が見える,I can see the killer's footprints.,可以验得凶手的足迹,可以驗得兇手的足跡
 PsychometristCanCheckFootprintsTime,足跡が追跡可能な時間範囲,Time range within which footprints can be traced,足迹可追踪时间范围,足跡可追蹤時間範圍
 PsychometristIsReportCheckedDeadBody,よみとった後でも通報できる,You can report it even after reading it.,验尸后的尸体仍然可以被报告,驗屍後的屍體仍然可以被報告
+PsychometristCannotMoveDuringReading,よみとり中は動けない,Can't move during reading.,验尸时不能移动,驗屍時不能移動
 PsychometristButtonName,よみとり,Read,验尸,驗屍
 PsychometristDeathReasonText,死因:{0},Cause of death: {0},死因:{0},死因:{0}
 PsychometristSecondsAgoText,{0}秒前,{0}s ago,{0}秒前,{0}秒前

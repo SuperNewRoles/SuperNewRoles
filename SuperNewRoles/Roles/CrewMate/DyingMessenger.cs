@@ -92,24 +92,28 @@ public sealed class DyingMessengerReportAbility : AbilityBase
         {
             string roleName = ModTranslation.GetString(murderData.Killer.Role.ToString());
             string text = ModTranslation.GetString("DyingMessengerGetRoleText", firstPerson, roleName);
-            new LateTask(() => RpcAddChatWarning(receiverId, text), 0.5f, "DyingMessengerGetRole");
+            new LateTask(() => RpcAddChatDyning(data.target.Object, text), 0.5f, "DyingMessengerGetRole");
         }
 
         if (canGetLightDark)
         {
             string colorType = CustomColors.IsLighter(murderData.Killer) ? ModTranslation.GetString("LightColor") : ModTranslation.GetString("DarkColor");
             string text = ModTranslation.GetString("DyingMessengerGetLightAndDarkerText", firstPerson, colorType);
-            new LateTask(() => RpcAddChatWarning(receiverId, text), 0.5f, "DyingMessengerGetLightDark");
+            new LateTask(() => RpcAddChatDyning(data.target.Object, text), 0.5f, "DyingMessengerGetLightDark");
         }
     }
 
     [CustomRPC]
-    private static void RpcAddChatWarning(byte receiverId, string text)
+    private void RpcAddChatDyning(ExPlayerControl deadPlayer, string text)
     {
         if (PlayerControl.LocalPlayer == null) return;
-        if (PlayerControl.LocalPlayer.PlayerId != receiverId) return;
+        if (!Player.AmOwner) return;
         if (HudManager.Instance?.Chat == null) return;
-        HudManager.Instance.Chat.AddChatWarning(text);
+        bool isDead = deadPlayer.IsDead();
+        // AddChatを見えるようにするため
+        deadPlayer.Data.IsDead = false;
+        HudManager.Instance.Chat.AddChat(deadPlayer.Player, text, false);
+        deadPlayer.Data.IsDead = isDead;
     }
 }
 
