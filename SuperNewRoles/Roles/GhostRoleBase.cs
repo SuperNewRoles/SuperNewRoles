@@ -32,6 +32,7 @@ internal abstract class GhostRoleBase<T> : BaseSingleton<T>, IGhostRoleBase wher
     public virtual bool HiddenOption => false;
 
     public List<AssignedTeamType> AssignedTeams => [AssignedTeam];
+    public virtual Sprite RoleIcon => null;
 
     // public abstract void CreateCustomOption();
 }
@@ -52,7 +53,7 @@ public interface IGhostRoleBase : IRoleInformation
     public short IntroNum { get; }
     public bool IsVanillaRole => QuoteMod == QuoteMod.Vanilla;
     public RoleId[] RelatedRoleIds { get; }
-
+    public Sprite RoleIcon { get; }
     /// <summary>
     /// AbilityはAbilitiesから自動でセットされるが、追加で他の処理を行いたい場合はOverrideすること
     /// </summary>
