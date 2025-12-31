@@ -132,6 +132,7 @@ WaitingSpawnText,ロドー中... 残り:{0}/{1}クルー,Waiting... {0}/{1} Crew
 
 # GameSettings
 CannotTaskTrigger,タスクに関係ない役職の場合、タスクをできなくする,Disable tasks for non-task-related roles,如果角色与任务无关，则无法完成任务,如果角色與任務無關，則無法完成任務
+CursedTaskOption,呪いタスク,Cursed Tasks,诅咒任务,詛咒任務
 SyncSpawn,スポーンを同期する(選択スポーンのみ),Sync Spawn (Selected Spawn Only),同步出生点(仅选择出生点),同步出生點(僅選擇出生點)
 AdvancedRandom,よりランダムな乱数を使用する,Use Enhanced Randomness,使用更随机的随机数,使用更隨機的隨機數
 DisableTaskWin,タスク勝利を無効にする,Disable task victory
@@ -156,6 +157,12 @@ InitialCooldown,初手クールタイム設定,Initial Cooldown Setting,初始�
 InitialCooldownType.TenSeconds,10秒,10 Seconds,10秒,10秒
 InitialCooldownType.Immediate,設定値通り,Immediate,遵循设置,遵循設定
 InitialCooldownType.OneThird,設定値の1/3,1/3 of set value,设置值的1/3,設置值的1/3
+
+# CursedTasks
+CursedMedScanTaskText,色:{0}\nID:{1}\n名前:{2}\n陣営:{3}\n役職:{4}\nカラー:{5}\n血液型:{6},Color:{0}\nID:{1}\nName:{2}\nTeam:{3}\nRole:{4}\nColor:{5}\nBlood Type:{6},颜色:{0}\nID:{1}\n名字:{2}\n阵营:{3}\n职业:{4}\n颜色:{5}\n血型:{6},顏色:{0}\nID:{1}\n名字:{2}\n陣營:{3}\n職業:{4}\n顏色:{5}\n血型:{6}
+CursedSampleTaskUpperText1,サンプルが劣化しています！急いで！,Sample is deteriorating! Hurry!,样本正在变质！快点！,樣本正在變質！快點！
+CursedSampleTaskUpperText2,サンプルが劣化しました…,Sample deteriorated...,样本已经变质...,樣本已經變質...
+CursedWeaponsTaskScoreText,破壊数: {0}/{1},Destroyed: {0}/{1},已摧毁: {0}/{1},已摧毀: {0}/{1}
 
 # Analytics
 AnalyticsPopupTitle,解析データの送信,Send analytics data,发送分析数据,發送分析數據

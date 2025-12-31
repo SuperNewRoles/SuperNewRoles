@@ -41,6 +41,7 @@ class AmongUsClientStartPatch
             EventListenerManager.ResetAllListener();
             SuperTrophyManager.CoStartGame();
             Garbage.ClearAndReload();
+            CursedTasks.Main.ClearAndReload();
             CustomKillAnimationManager.ClearCurrentCustomKillAnimation();
             ModeManager.OnGameStart();
 
