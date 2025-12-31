@@ -155,10 +155,10 @@ public sealed class RemoteControllerAbility : AbilityBase
             target.MyPhysics.SetNormalizedVelocity(delta);
         }
 
-        // 0.1秒ごとにRPCでネットワーク同期
+        // 0.05秒ごとにRPCでネットワーク同期
         if (_velocitySyncTimer <= 0f)
         {
-            _velocitySyncTimer = 0.05f; // 0.1秒ごとに制限
+            _velocitySyncTimer = 0.05f; // 0.05秒ごとに制限
             RemoteControllerRpc.RpcSetNormalizedVelocity(target.PlayerId, delta.x, delta.y);
         }
 

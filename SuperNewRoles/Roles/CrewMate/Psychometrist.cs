@@ -198,7 +198,7 @@ public sealed class PsychometristReadAbility : CustomButtonBase, IButtonEffect
     private void OnPhysicsFixedUpdate(PlayerPhysicsFixedUpdateEventData data)
     {
         if (!Data.CannotMoveDuringReading) return;
-        if (!Player.AmOwner && !data.Instance.AmOwner) return;
+        if (!Player.AmOwner || !data.Instance.AmOwner) return;
         if (isEffectActive)
         {
             data.Instance.body.velocity = Vector2.zero;

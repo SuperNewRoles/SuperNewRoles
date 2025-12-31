@@ -110,6 +110,10 @@ internal static class PoliceSurgeonSharedState
     public static void ClearAll()
     {
         PersonalInfoByVictim.Clear();
+        _meetingStartListener?.RemoveListener();
+        _meetingStartListener = null;
+        _meetingCloseListener?.RemoveListener();
+        _meetingCloseListener = null;
     }
 
     public static bool TryGetInfo(byte victimId, out PoliceSurgeonPersonalInformation info)
@@ -215,7 +219,9 @@ internal static class PoliceSurgeonCertificateBuilder
         {
             builder.AppendLine(ModTranslation.GetString("PostMortemCertificate_main3"));
             builder.AppendLine($"{ModTranslation.GetString("PostMortemCertificate_main4")}{officialDate}");
-            builder.AppendLine(((MapNames)GameOptionsManager.Instance.CurrentGameOptions.MapId).ToString());
+            int mapId = GameOptionsManager.Instance.CurrentGameOptions.MapId;
+            string mapName = Enum.IsDefined(typeof(MapNames), mapId) ? ((MapNames)mapId).ToString() : $"Map{mapId}";
+            builder.AppendLine(mapName);
             builder.AppendLine("");
             builder.AppendLine($"{ModTranslation.GetString("PostMortemCertificate_main5")} {doctorName}");
             builder.AppendLine(fullDelimiterLine);
@@ -748,9 +754,15 @@ public sealed class PoliceSurgeonPortableVitalsAbility : CustomButtonBase
         _skipCooldownOnUse = true;
 
         var originalRole = PlayerControl.LocalPlayer.Data.Role.Role;
-        FastDestroyableSingleton<RoleManager>.Instance.SetRole(PlayerControl.LocalPlayer, RoleTypes.Scientist);
-        PlayerControl.LocalPlayer.Data.Role.TryCast<ScientistRole>()?.UseAbility();
-        FastDestroyableSingleton<RoleManager>.Instance.SetRole(PlayerControl.LocalPlayer, originalRole);
+        try
+        {
+            FastDestroyableSingleton<RoleManager>.Instance.SetRole(PlayerControl.LocalPlayer, RoleTypes.Scientist);
+            PlayerControl.LocalPlayer.Data.Role.TryCast<ScientistRole>()?.UseAbility();
+        }
+        finally
+        {
+            FastDestroyableSingleton<RoleManager>.Instance.SetRole(PlayerControl.LocalPlayer, originalRole);
+        }
     }
 
     public override void OnUpdate()

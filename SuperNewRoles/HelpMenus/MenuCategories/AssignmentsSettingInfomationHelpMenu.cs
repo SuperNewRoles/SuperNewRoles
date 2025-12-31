@@ -247,7 +247,7 @@ public class AssignmentsSettingInfomationHelpMenu : HelpMenuCategoryBase
         StringBuilder sb = new();
         foreach (var role in RoleOptionManager.RoleOptions)
         {
-            if (CustomRoleManager.TryGetRoleById(role.RoleId, out var roleBase) && roleBase.HiddenOption)
+            if (!CustomRoleManager.TryGetRoleById(role.RoleId, out var roleBase) || roleBase.HiddenOption)
                 continue;
             sb.Append($"{role.RoleId} x{role.NumberOfCrews} ({role.Percentage}%)\n");
         }

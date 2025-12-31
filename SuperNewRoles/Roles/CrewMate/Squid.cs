@@ -318,11 +318,12 @@ internal static class SquidInkOverlay
         Clear();
 
         var random = new System.Random();
-        int amount = downVisionSetting switch
+        int tier = GetDownVisionTier(downVisionSetting);
+        int amount = tier switch
         {
-            0.25f => random.Next(1, 5),
-            0.5f => random.Next(6, 10),
-            0.75f => random.Next(11, 15),
+            0 => random.Next(1, 5),
+            1 => random.Next(6, 10),
+            2 => random.Next(11, 15),
             _ => random.Next(16, 20)
         };
 
@@ -417,19 +418,20 @@ internal static class SquidInkOverlay
     {
         int repetition = 0;
     retry:
-        Vector3 pos = downVision switch
+        int tier = GetDownVisionTier(downVision);
+        Vector3 pos = tier switch
         {
-            0.25f => new Vector3(random.Next(-125, 125) / 100f, random.Next(-14, 10) / 10f, 0f),
-            0.5f => new Vector3(random.Next(-225, 225) / 100f, random.Next(-25, 20) / 10f, 0f),
-            0.75f => new Vector3(random.Next(-325, 325) / 100f, random.Next(-225, 265) / 100f, 0f),
+            0 => new Vector3(random.Next(-125, 125) / 100f, random.Next(-14, 10) / 10f, 0f),
+            1 => new Vector3(random.Next(-225, 225) / 100f, random.Next(-25, 20) / 10f, 0f),
+            2 => new Vector3(random.Next(-325, 325) / 100f, random.Next(-225, 265) / 100f, 0f),
             _ => new Vector3(random.Next(-425, 425) / 100f, random.Next(-265, 245) / 100f, 0f)
         };
 
-        float minDist = downVision switch
+        float minDist = tier switch
         {
-            0.25f => 0.5f,
-            0.5f => 1f,
-            0.75f => 1.5f,
+            0 => 0.5f,
+            1 => 1f,
+            2 => 1.5f,
             _ => 2f
         };
 
@@ -445,5 +447,13 @@ internal static class SquidInkOverlay
         }
         used.Add(pos);
         return pos;
+    }
+
+    private static int GetDownVisionTier(float downVision)
+    {
+        if (downVision <= 0.25f) return 0;
+        if (downVision <= 0.5f) return 1;
+        if (downVision <= 0.75f) return 2;
+        return 3;
     }
 }

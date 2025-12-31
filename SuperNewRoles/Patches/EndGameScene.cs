@@ -42,6 +42,7 @@ public enum WinCondition
     LoversBreakerWin,
     MadJesterWin,
     SaunerWin,
+    MoiraWin,
     TheThreeLittlePigsWin,
     FrankensteinWin,
 }
@@ -328,6 +329,10 @@ public class EndGameManagerSetUpPatch
             case WinCondition.SaunerWin:
                 baseText = "Sauner";
                 roleColor = Sauner.Instance.RoleColor;
+                break;
+            case WinCondition.MoiraWin:
+                baseText = "Moira";
+                roleColor = Moira.Instance.RoleColor;
                 break;
             case WinCondition.TheThreeLittlePigsWin:
                 baseText = "TheThreeLittlePigs";

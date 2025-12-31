@@ -107,7 +107,7 @@ public sealed class DyingMessengerReportAbility : AbilityBase
     private void RpcAddChatDyning(ExPlayerControl deadPlayer, string text)
     {
         if (PlayerControl.LocalPlayer == null) return;
-        if (!Player.AmOwner) return;
+        if (Player == null || !Player.AmOwner) return;
         if (HudManager.Instance?.Chat == null) return;
         bool isDead = deadPlayer.IsDead();
         // AddChatを見えるようにするため
@@ -116,4 +116,3 @@ public sealed class DyingMessengerReportAbility : AbilityBase
         deadPlayer.Data.IsDead = isDead;
     }
 }
-
