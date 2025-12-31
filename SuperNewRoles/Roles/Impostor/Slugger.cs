@@ -17,7 +17,8 @@ class Slugger : RoleBase<Slugger>
             SluggerCoolTime,
             SluggerChargeTime,
             SluggerIsMultiKill,
-            SluggerIsSyncKillCoolTime)
+            SluggerIsSyncKillCoolTime,
+            SluggerCanKillWhileCharging)
     ];
     public override QuoteMod QuoteMod => QuoteMod.SuperNewRoles;
     public override AssignedTeamType AssignedTeam => AssignedTeamType.Impostor;
@@ -38,4 +39,7 @@ class Slugger : RoleBase<Slugger>
 
     [CustomOptionBool("SluggerIsSyncKillCoolTime", false, translationName: "SluggerIsSyncKillCoolTime")]
     public static bool SluggerIsSyncKillCoolTime;
+
+    [CustomOptionBool("SluggerCanKillWhileCharging", false, translationName: "SluggerCanKillWhileCharging")]
+    public static bool SluggerCanKillWhileCharging;
 }

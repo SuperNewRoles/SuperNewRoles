@@ -1607,6 +1607,7 @@ ModifierCrewmateChance,クルーメイト確率,Crewmate Chance,船员概率,船
 SluggerChargeTime,チャージ時間,Charge Time,蓄力时间,蓄力時間
 SluggerIsMultiKill,複数キルを許可,Allow Multi-Kill,允许多重击杀,允许多重擊殺
 SluggerIsSyncKillCoolTime,キルクールタイム同期,Sync Kill Cooldown,同步击杀冷却,同步擊殺冷卻
+SluggerCanKillWhileCharging,チャージ中にキル可能,Killable while charging,蓄力中可击杀,蓄力中可擊殺
 SluggerButtonName,スラッガー！,Slugger!,击杀,擊杀
 
 # Kunoichi Options

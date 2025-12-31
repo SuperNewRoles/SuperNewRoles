@@ -1,7 +1,9 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using SuperNewRoles.Ability;
 using SuperNewRoles.Events;
+using SuperNewRoles.Events.PCEvents;
 using SuperNewRoles.Modules;
 using SuperNewRoles.Modules.Events.Bases;
 using SuperNewRoles.Roles.Ability.CustomButton;
@@ -14,6 +16,8 @@ public class SluggerAbility : CustomButtonBase, IButtonEffect
 {
     private readonly bool isMultiKill;
     private readonly bool isSyncKillCoolTime;
+    private readonly bool canKillWhileCharging;
+    private KillableAbility _killableAbility;
     public bool isEffectActive { get; set; }
     public float EffectTimer { get; set; }
     public float EffectDuration { get; }
@@ -25,19 +29,39 @@ public class SluggerAbility : CustomButtonBase, IButtonEffect
     private CustomPlayerAnimationSimple _chargeAnimation;
     public AudioSource _chargeAudio;
     private EventListener<MeetingStartEventData> _onMeetingStartEvent;
+    private EventListener<MurderEventData> _murderEvent;
 
-    public SluggerAbility(float coolTime, float chargeTime, bool isMultiKill, bool isSyncKillCoolTime)
+    public SluggerAbility(float coolTime, float chargeTime, bool isMultiKill, bool isSyncKillCoolTime, bool canKillWhileCharging)
     {
         DefaultTimer = coolTime;
         EffectDuration = chargeTime;
         this.isMultiKill = isMultiKill;
         this.isSyncKillCoolTime = isSyncKillCoolTime;
+        this.canKillWhileCharging = canKillWhileCharging;
+    }
+
+    public override void AttachToLocalPlayer()
+    {
+        base.AttachToLocalPlayer();
+        if (canKillWhileCharging && isSyncKillCoolTime)
+            _murderEvent = MurderEvent.Instance.AddListener(OnMurder);
+    }
+
+    public override void DetachToLocalPlayer()
+    {
+        base.DetachToLocalPlayer();
+        _murderEvent?.RemoveListener();
     }
 
     public override void AttachToAlls()
     {
         base.AttachToAlls();
         _onMeetingStartEvent = MeetingStartEvent.Instance.AddListener(OnMeetingStart);
+        if (!canKillWhileCharging)
+        {
+            _killableAbility = new KillableAbility(() => !isEffectActive);
+            Player.AttachAbility(_killableAbility, new AbilityParentAbility(this));
+        }
     }
 
     public override void DetachToAlls()
@@ -57,6 +81,21 @@ public class SluggerAbility : CustomButtonBase, IButtonEffect
     private void OnMeetingStart(MeetingStartEventData _)
     {
         CleanupChargeEffects(cancelEffect: true);
+    }
+
+    private void OnMurder(MurderEventData data)
+    {
+        if (!isEffectActive) return;
+        if (data.killer != Player || !Player.AmOwner) return;
+        CancelCharge();
+    }
+
+    private void CancelCharge()
+    {
+        RpcSluggerChargeStop();
+        CleanupChargeEffects(cancelEffect: true);
+        if (actionButton != null)
+            actionButton.cooldownTimerText.color = Palette.EnabledColor;
     }
 
     private void CleanupChargeEffects(bool cancelEffect)

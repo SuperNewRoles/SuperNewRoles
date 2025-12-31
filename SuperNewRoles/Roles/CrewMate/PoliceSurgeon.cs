@@ -701,11 +701,30 @@ public sealed class PoliceSurgeonMeetingAbility : AbilityBase
 
 public sealed class PoliceSurgeonPortableVitalsAbility : CustomButtonBase
 {
+    private TextMeshPro _batteryText;
+    private float _batteryRemaining;
+    private bool _batteryDepleted;
+    private bool _isPortableVitalsOpen;
+    private bool _skipCooldownOnUse;
+
     public override Sprite Sprite => FastDestroyableSingleton<HudManager>.Instance.UseButton.fastUseSettings[ImageNames.VitalsButton].Image;
     public override string buttonText => FastDestroyableSingleton<TranslationController>.Instance.GetString(StringNames.VitalsLabel);
     protected override KeyType keytype => KeyType.Ability2;
     public override float DefaultTimer => Mathf.Max(0.01f, PoliceSurgeon.PoliceSurgeonVitalsDisplayCooldown);
     public override bool IsFirstCooldownTenSeconds => false;
+    private float BatteryDuration => Mathf.Max(0f, PoliceSurgeon.PoliceSurgeonBatteryDuration);
+
+    public override void AttachToLocalPlayer()
+    {
+        base.AttachToLocalPlayer();
+        ResetBattery();
+    }
+
+    public override void DetachToLocalPlayer()
+    {
+        base.DetachToLocalPlayer();
+        ClearBatteryText();
+    }
 
     public override bool CheckHasButton()
     {
@@ -717,6 +736,7 @@ public sealed class PoliceSurgeonPortableVitalsAbility : CustomButtonBase
         if (!PoliceSurgeon.PoliceSurgeonHaveVitalsInTaskPhase) return false;
         if (!PlayerControl.LocalPlayer.CanMove) return false;
         if (MeetingHud.Instance != null) return false;
+        if (_batteryDepleted) return false;
         return true;
     }
 
@@ -724,29 +744,134 @@ public sealed class PoliceSurgeonPortableVitalsAbility : CustomButtonBase
     {
         // デバイス制限のカウント対象外にする（DevicesPatch側でClose時にfalseへ戻る）
         DevicesPatch.DontCountBecausePortableVitals = true;
+        _isPortableVitalsOpen = true;
+        _skipCooldownOnUse = true;
 
         var originalRole = PlayerControl.LocalPlayer.Data.Role.Role;
         FastDestroyableSingleton<RoleManager>.Instance.SetRole(PlayerControl.LocalPlayer, RoleTypes.Scientist);
         PlayerControl.LocalPlayer.Data.Role.TryCast<ScientistRole>()?.UseAbility();
         FastDestroyableSingleton<RoleManager>.Instance.SetRole(PlayerControl.LocalPlayer, originalRole);
+    }
 
-        float duration = Mathf.Max(0f, PoliceSurgeon.PoliceSurgeonBatteryDuration);
-        if (duration > 0f)
+    public override void OnUpdate()
+    {
+        UpdatePortableVitalsState();
+        base.OnUpdate();
+    }
+
+    public override void ResetTimer()
+    {
+        if (_skipCooldownOnUse)
         {
-            new LateTask(() =>
-            {
-                if (Minigame.Instance is VitalsMinigame)
-                {
-                    Minigame.Instance.Close();
-                }
-            }, duration, "PoliceSurgeonVitalsAutoClose");
+            _skipCooldownOnUse = false;
+            Timer = 0f;
+            if (actionButton != null)
+                actionButton.cooldownTimerText.color = Palette.EnabledColor;
+            return;
         }
+
+        if (!_batteryDepleted)
+        {
+            Timer = 0f;
+            if (actionButton != null)
+                actionButton.cooldownTimerText.color = Palette.EnabledColor;
+            return;
+        }
+
+        base.ResetTimer();
     }
 
     public override void OnMeetingEnds()
     {
-        base.OnMeetingEnds();
         if (Minigame.Instance is VitalsMinigame)
             Minigame.Instance.Close();
+        base.OnMeetingEnds();
+    }
+
+    private void UpdatePortableVitalsState()
+    {
+        if (_batteryDepleted && Timer <= 0f)
+        {
+            ResetBattery();
+        }
+
+        bool vitalsOpen = Minigame.Instance is VitalsMinigame;
+        bool usingPortableVitals = _isPortableVitalsOpen && DevicesPatch.DontCountBecausePortableVitals;
+        if (_isPortableVitalsOpen && !DevicesPatch.DontCountBecausePortableVitals)
+        {
+            _isPortableVitalsOpen = false;
+        }
+
+        if (usingPortableVitals && !vitalsOpen)
+        {
+            _isPortableVitalsOpen = false;
+            ClearBatteryText();
+            return;
+        }
+
+        if (!usingPortableVitals || !vitalsOpen)
+        {
+            ClearBatteryText();
+            return;
+        }
+
+        EnsureBatteryText((VitalsMinigame)Minigame.Instance);
+        if (_batteryDepleted || BatteryDuration <= 0f)
+        {
+            UpdateBatteryText();
+            return;
+        }
+
+        _batteryRemaining -= Time.deltaTime;
+        if (_batteryRemaining <= 0f)
+        {
+            _batteryRemaining = 0f;
+            _batteryDepleted = true;
+            _isPortableVitalsOpen = false;
+            ClearBatteryText();
+            if (Minigame.Instance is VitalsMinigame)
+                Minigame.Instance.Close();
+            StartCooldown();
+            return;
+        }
+
+        UpdateBatteryText();
+    }
+
+    private void ResetBattery()
+    {
+        _batteryRemaining = BatteryDuration;
+        _batteryDepleted = false;
+    }
+
+    private void StartCooldown()
+    {
+        Timer = DefaultTimer;
+    }
+
+    private void EnsureBatteryText(VitalsMinigame vitals)
+    {
+        if (_batteryText != null) return;
+        _batteryText = UnityEngine.Object.Instantiate(FastDestroyableSingleton<HudManager>.Instance.TaskPanel.taskText, vitals.transform);
+        _batteryText.alignment = TextAlignmentOptions.BottomRight;
+        _batteryText.transform.position = Vector3.zero;
+        _batteryText.transform.localPosition = new Vector3(1.7f, 3.95f);
+        _batteryText.transform.localScale *= 1.8f;
+        _batteryText.color = Palette.White;
+        _batteryText.text = "";
+    }
+
+    private void UpdateBatteryText()
+    {
+        if (_batteryText == null) return;
+        float seconds = Mathf.Max(0f, _batteryRemaining);
+        _batteryText.text = TimeSpan.FromSeconds(seconds).ToString(@"mm\:ss\.ff");
+    }
+
+    private void ClearBatteryText()
+    {
+        if (_batteryText == null) return;
+        UnityEngine.Object.Destroy(_batteryText.gameObject);
+        _batteryText = null;
     }
 }
