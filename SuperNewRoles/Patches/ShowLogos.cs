@@ -1,3 +1,4 @@
+using System;
 using HarmonyLib;
 using SuperNewRoles.Modules;
 using UnityEngine;
@@ -8,6 +9,10 @@ namespace SuperNewRoles.Patches;
 [HarmonyPatch(typeof(MainMenuManager), nameof(MainMenuManager.Start))]
 public static class MainMenuLogos
 {
+    private const string DefaultBannerAssetName = "banner";
+    private const string NewYearBannerAssetName = "banner_NewYear";
+    private static readonly TimeSpan JstOffset = TimeSpan.FromHours(9);
+
     // Transform拡張メソッド：位置とスケールを同時に設定する
     /// <summary>
     /// Transformの位置とスケールを一度に設定する拡張メソッド
@@ -31,7 +36,13 @@ public static class MainMenuLogos
     private static void CreateMainMenuLogo()
     {
         // アセットバンドルからロゴ画像を読み込み
-        var logo = AssetManager.GetAsset<Sprite>("banner", AssetManager.AssetBundleType.Sprite);
+        var bannerAssetName = GetBannerAssetName();
+        var logo = AssetManager.GetAsset<Sprite>(bannerAssetName, AssetManager.AssetBundleType.Sprite);
+        // フォールバック
+        if (logo == null && bannerAssetName != DefaultBannerAssetName)
+        {
+            logo = AssetManager.GetAsset<Sprite>(DefaultBannerAssetName, AssetManager.AssetBundleType.Sprite);
+        }
         if (logo == null)
         {
             Logger.Error("ロゴ画像の読み込みに失敗しました");
@@ -46,6 +57,16 @@ public static class MainMenuLogos
         );
 
         logoObject.AddComponent<SpriteRenderer>().sprite = logo;
+    }
+
+    internal static string GetBannerAssetName() =>
+        IsNewYearBannerActive() ? NewYearBannerAssetName : DefaultBannerAssetName;
+
+    private static bool IsNewYearBannerActive()
+    {
+        var nowJst = DateTimeOffset.UtcNow.ToOffset(JstOffset);
+        var endJst = new DateTimeOffset(nowJst.Year, 1, 7, 17, 0, 0, JstOffset);
+        return nowJst <= endJst;
     }
 }
 
@@ -72,7 +93,7 @@ public static class VersionTextHandler
         /// </summary>
         private static void CreateCredentialsText(VersionShower instance)
         {
-            var credentials = Object.Instantiate(instance.text);
+            var credentials = GameObject.Instantiate(instance.text);
             credentials.transform.SetPositionAndScale(
                 new Vector3(2, -0.3f, 0),
                 Vector3.one * CredentialsTextScale
@@ -89,7 +110,7 @@ public static class VersionTextHandler
         /// </summary>
         private static void CreateVersionText(VersionShower instance)
         {
-            var version = Object.Instantiate(instance.text);
+            var version = GameObject.Instantiate(instance.text);
             version.transform.SetPositionAndScale(
                 new Vector3(2, -0.65f, 0),  // クレジットテキストの直下
                 Vector3.one * VersionTextScale
@@ -123,7 +144,11 @@ public static class VersionTextHandler
             _logoObject.transform.localScale = Vector3.one * 0.2f;
             _logoObject.transform.localPosition = new(-3.8f, 2.5f, -1f);
             var _logoRenderer = _logoObject.AddComponent<SpriteRenderer>();
-            _logoRenderer.sprite = AssetManager.GetAsset<Sprite>("banner", AssetManager.AssetBundleType.Sprite);
+            // Hudの方はサイズ調整めんどくさかったのでパス
+            _logoRenderer.sprite = AssetManager.GetAsset<Sprite>(
+                "banner",
+                AssetManager.AssetBundleType.Sprite
+            );
             // バージョンテキスト
             var versionText = GameObject.Instantiate(__instance.roomTracker.text);
             versionText.name = "VersionText";
