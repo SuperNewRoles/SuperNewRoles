@@ -517,6 +517,12 @@ Magaziner,マガジナー,Magaziner,弹匣师,彈匣師
 Slugger,スラッガー,Slugger
 Kunoichi,クノイチ,Kunoichi,女忍,女忍
 Mafia,マフィア,Mafia,黑手党,黑手黨
+DyingMessenger,遺言伝達者,Dying Messenger,入殓师,遺言傳遞者
+PoliceSurgeon,警察医,Police Surgeon,法医,法醫
+Squid,イカ,Squid,乌贼,烏賊
+Frankenstein,フランケンシュタイン,Frankenstein,弗兰肯斯坦,科學怪人
+Moira,モイラ,Moira,莫伊拉,莫伊拉
+Sauner,サウナー,Sauner,桑拿者,桑拿者
 
 # Descriptions_VanillaRoles
 Crewmate.Description,特に何も能力を持たない基本的なクルーメイト役職です。\n人狼ゲームにおける村人の役割を持ちます。\nキル能力を持つ人外を全て追放するか、タスクを全て完了すると勝利します。,A basic Crewmate role with no special abilities.\nThey serve the role of Villager from the Werewolf game.\nVictory is achieved by ejecting all non-Crewmate players with kill abilities or by completing all tasks.,一个没有特殊能力的基础船员角色。\n他们承担了狼人游戏中村民的角色。\n通过将所有拥有击杀能力的非船员玩家投出局或完成所有任务来获胜。,一個沒有特殊能力的基礎船員角色。\n他們承擔了狼人遊戲中村民的角色。\n通過將所有擁有擊殺能力的非船員玩家投出局或完成所有任務來獲勝。,
@@ -548,7 +554,7 @@ Pursuer.Description,タスクターンに発動する能力を有するインポ
 Crab.Description,タスクターンに使用できる能力を有するインポスターです。\n「カニ」ボタンを押すことで全てのプレイヤーを少しの間横方向にしか移動できなくします。,An Impostor with an ability usable during task turns.\nBy pressing the “Crab” button，they restrict all players to move only horizontally for a short period.,一个在任务回合中可使用能力的内鬼。\n按下“螃蟹”按钮后，可使所有玩家在短时间内仅能横向移动。,一個在任務回合中可使用能力的內鬼。\n按下「螃蟹」按鈕後，可使所有玩家在短時間內僅能橫向移動。,
 EvilSpeedBooster.Description,タスクターンに使用できる能力を有するインポスターです。\n「ブースト！」ボタンを押すことでしばらくの間素早く動けるようになります。,An Impostor with an ability usable during task turns.\nBy pressing the “Boost!” button，they can move quickly for a short period.,一个在任务回合中可使用能力的内鬼。\n按下“加速！”按钮后，可在短时间内快速移动。,一個在任務回合中可使用能力的內鬼。\n按下「加速！」按鈕後，可在短時間內快速移動。,
 Rocket.Description,特殊なキル能力を有するインポスターです。\n「掴む」ボタンを押すと、対象のプレイヤーを掴んで運べるようになります。\n「打ち上げる」ボタンを押すと、掴んでいたプレイヤーを空に打ち上げて花火にします。\n死体は残りません。\n「打ち上げる」ボタンを押すまで何人でも掴むことができますが、その状態で会議が召集され、その会議で追放されるとキルに失敗してしまいます。\n追放されなければ掴んでいたプレイヤーを打ち上げて次のタスクターンへ移行します。,An Impostor with a special kill ability.\nBy pressing the “Grab” button，they can grab and carry a target player.\nBy pressing the “Launch” button，they send the grabbed player into the sky to create a fireworks-like explosion.\nNo body remains.\nThey can grab multiple players until pressing “Launch，” but if a meeting is called and they are ejected while holding players，the kill fails.\nIf not ejected，they launch all held players and proceed to the next task turn.,这是一个拥有特殊击杀能力的内鬼。\n按下“抓取”按钮后，可抓住并携带目标玩家。\n按下“发射”按钮后，会将抓住的玩家发射到空中，形成烟花效果。\n不会留下尸体。\n在按下“发射”按钮之前，可抓住任意数量的玩家，但如果在此状态下召集会议并在会议中被投票出局，击杀会失败。\n如果没有被投票出局，会发射所有抓住的玩家并进入下一个任务回合。,這是一個具有特殊擊殺能力的內鬼。\n按下「抓取」按鈕後，可抓住並攜帶目標玩家。\n按下「發射」按鈕後，會將抓住的玩家發射到空中，形成煙火效果。\n不會留下屍體。\n在按下「發射」按鈕之前，可抓住任意數量的玩家，但如果在此狀態下召集會議並在會議中被投票出局，擊殺會失敗。\n如果沒有被投票出局，會發射所有抓住的玩家並進入下一個任務回合。,
-Kunoichi.Description,通常キルが出来ない代わりに自分以外には見えないクナイを投げることが出来ます。\nクナイを設定数当てるとキル出来ます。\n不可視のキルで村を混乱に陥れましょう。,Instead of being unable to get a kill normally，you can throw a kunai that is invisible to everyone but you.\nIf you hit a set number of kunai，you will get a kill.,作为通常击杀的替代，女忍可以投掷只有自己可见的苦无。\n被苦无击中一定次数的玩家被女忍击杀。\n女忍通过不可视的苦无击杀给船员造成混乱。,女忍無法使用普通的擊殺，但可以投擲只有自己看得見的苦無。\n擊中指定數量的苦無，就可以造成擊殺。\n用不可視的苦無來擊殺船員並導致混亂吧。,
+Kunoichi.Description,特殊なキル能力を有するインポスターです。\n「クナイ表示」ボタンを押すと、自分にのみ見えるクナイを構えます。\nその状態で「クナイ」ボタンを押すか、キルボタンのショートカットキーを押すと、向けている方向に向かってクナイを飛ばします。\n一定回数クナイを当てると、そのプレイヤーをキルします。\nクナイを当てた回数は会議を挟んでも持ち越します。\n一定時間立ち止まると透明化することも出来ます。,
 Vampire.Description,特殊なキル能力を有するインポスターです。\nキルボタンを押すと、設定秒数経過後に対象のプレイヤーが死亡します。\n次のターン、キルボタンを押した場所から、対象のプレイヤーが死亡した場所まで血痕が残ります。\nこの役職は、アドミンに映らず、死亡してもバイタル上では死亡表記になりません。\nまた、停電を直す気がありません。\n設定次第では「夜に堕とす」ボタンを押すことで、対象のプレイヤーの役職を眷属に変更することができます。,An Impostor with a special kill ability.\nPressing the kill button causes the target player to die after a set delay.\nOn the next turn，bloodstains remain from the kill location to the victim’s death location.\nThis role does not appear on Admin and is not marked as dead on Vitals even when killed.\nAlso，they do not repair lights.\nDepending on settings，by pressing the “Doom in the Night” button，they can change the target player’s role to Thrall.,这是一个拥有特殊击杀能力的内鬼。\n按下击杀按钮后，目标玩家在设定秒数后死亡。\n在下一回合，从击杀地点到目标死亡地点会留下血迹。\n此角色不会在管理员界面出现，也不会在生命迹象面板上显示死亡。\n此外，他们不会修复停电。\n根据设置，按下“堕入夜幕”按钮可以将目标玩家的角色更改为眷属。,這是一個具有特殊擊殺能力的內鬼。\n按下擊殺按鈕後，目標玩家在設定秒數後死亡。\n在下一回合，從擊殺地點到目標死亡地點會留下血跡。\n此角色不會在管理員介面出現，也不會在生命跡象面板上顯示死亡。\n此外，他們不會修復停電。\n根據設定，按下「墮入夜幕」按鈕可以將目標玩家的角色更改為眷屬。,
 VampireDependent.Description,インポスター陣営に属する役職です。\nキル能力を有します。\n通常時は視野が狭く、停電時は視野が広くなります。\nこの役職は、アドミンに映らず、死亡してもバイタル上では死亡表記になりません。\nまた、停電を直す気がありません。\nマッドメイト同様クルーメイト判定の役職です。\n自身を眷属に変化させたヴァンパイアが死亡すると、共に死亡します。,A role belonging to the Impostor faction.\nThey have a kill ability.\nTheir vision is narrow normally but becomes wide during a blackout.\nThis role does not appear on Admin and is not marked as dead on Vitals when killed.\nThey also do not repair lights.\nThey are considered a Crewmate similar to Madmate.\nIf the Vampire they turned into a Thrall dies，they die as well.,一个隶属于内鬼阵营的角色。\n他们具有击杀能力。\n在正常情况下视野狭窄，但在停电时视野变宽。\n此角色不会在管理员界面出现，也不会在生命迹象面板上显示死亡。\n此外，他们不会修复停电。\n他们被视为与疯友相同的船员角色。\n当将其变为眷属的吸血鬼死亡时，他们也会死亡。,一個隸屬於內鬼陣營的角色。\n他們具有擊殺能力。\n在正常情況下視野狹窄，但在停電時視野變寬。\n此角色不會在管理員介面出現，也不會在生命跡象面板上顯示死亡。\n此外，他們不會修復停電。\n他們被視為與瘋友相同的船員角色。\n當將其變為眷屬的吸血鬼死亡時，他們也會死亡。,
 EvilMechanic.Description,タスクターンに使用できる能力を有するインポスターです。\nベントに向かって「移設」ボタンを押すとベントの姿になり、そのベントを移動することができます。\nベントの接続先は変更されません。,An Impostor with an ability usable during task turns.\nBy pressing the “Relocate” button near a vent，they transform into that vent and can move the vent’s position.\nThe vent’s connections remain unchanged.,这是一个在任务回合中可使用能力的内鬼。\n对准通风口按下“移位”按钮后，会变成通风口并可以移动该通风口。\n通风口的连接不发生变化。,這是一個在任務回合中可使用能力的內鬼。\n對準通風口按下「移位」按鈕後，會變成通風口並可以移動該通風口。\n通風口的連接不發生變化。,
@@ -569,6 +575,8 @@ EvilSeer.Description,タスクターンに発動する能力を有するイン�
 Jammer.Description,タスクターンに使用できる能力を有するインポスターです。\n「透明化」ボタンを押すと対象のプレイヤーを他人から見えなくすることができます。\n透明化された当事者は自覚することができません。\nインポスター視点は透明にされている人が半透明で見えます。,An Impostor with abilities usable during task turns．\nPressing the “Invisibility” button makes the target player invisible to others．\nThe affected player is unaware of being invisible．\nFrom the Impostor's view，the invisible player appears semi-transparent．,拥有在任务回合中可用能力的内鬼．\n按下“隐身”按钮会使目标玩家对他人不可见．\n被隐身的玩家自己不会察觉．\n从内鬼视角看，被隐身的玩家呈半透明状态．,擁有在任務回合中可用能力的內鬼．\n按下「隱形」按鈕會使目標玩家對他人不可見．\n被隱形的玩家自己不會察覺．\n從內鬼視角來看，被隱形的玩家呈半透明狀態．
 EvilMoving.Description,タスクターンに使用できる能力を有するインポスターです。\n「位置記録」ボタンを押すと、その場所をテレポート先として登録します。\n「テレポート」ボタンを押すと記録した場所にテレポートできます。,An Impostor with abilities usable during task turns．\nPressing the “Record Position” button registers the current location as a teleport destination．\nPressing the “Teleport” button teleports you to the recorded location．,拥有在任务回合中可用能力的内鬼．\n按下“记录位置”按钮可将当前位置注册为传送目标地．\n按下“传送”按钮可传送到记录的位置．,擁有在任務回合中可用能力的內鬼．\n按下「記錄位置」按鈕可將當前位置登錄為傳送目的地．\n按下「傳送」按鈕可傳送到記錄的位置．
 Magaziner.Description,タスクターンに使用できる能力を有するインポスターです。\n「補充」ボタンを押すと、キルクールがリセットされる代わりに、弾を補充できます。\n「消費」ボタンを押すとキルクールを設定値にリセットします。,An Impostor with abilities usable during task turns．\nPressing the “Reload” button refills ammo at the cost of resetting the kill cooldown．\nPressing the “Consume” button resets the kill cooldown to the configured value．,拥有在任务回合中可用能力的内鬼．\n按下“补充”按钮可补充子弹但会重置击杀冷却时间．\n按下“消耗”按钮会将击杀冷却重置为设定值．,擁有在任務回合中可用能力的內鬼．\n按下「補充」按鈕可補充子彈但會重置擊殺冷卻時間．\n按下「消耗」按鈕會將擊殺冷卻重置為設定值．
+Slugger.Description,特殊なキル能力を有するインポスターです。\n「ハリセン」ボタンを構えるとハリセンを構え、周囲にいるプレイヤーを吹き飛ばします。\n吹き飛ばされたプレイヤーは死体を残さずに死亡します。,
+Mafia.Description,特殊なインポスターです。\nインポスターが複数生存している間はキル能力を持ちません。\nインポスターが自身だけになると、キル能力を獲得します。,
 
 # Descriptions_Neutral
 Jackal.Description,キル能力を有する第三陣営です。\n自陣営以外のキルができる陣営が全滅した上で、自陣営とクルーが同数以下になれば勝利します。\n設定次第で他のプレイヤーの役職を、自身の後継となるサイドキックや、手助けをしてくれるジャッカルフレンズに変更する能力を有することもできます。,A third-faction role with a kill ability.\nIt wins if all factions capable of killing outside its own are eliminated and its faction and the Crewmates are equal in number or fewer.\nDepending on the settings，it can change other players’ roles into a Sidekick (its successor) or Jackal Friends who assist it.,这是一个拥有击杀能力的第三阵营角色。\n当所有能够进行击杀的其他阵营被消灭，并且其阵营与船员人数相等或更少时，即可获胜。\n根据设定，它还可以将其他玩家的角色变更为边缘队员（其继任者）或协助的杰克朋友。,這是一個具備擊殺能力的第三陣營角色。\n當其他能進行擊殺的陣營全部被消滅，且其陣營與船員數量相等或更少時，即獲勝。\n根據設定，還可將其他玩家的角色變更為接班的邊翼或提供協助的傑克朋友。,
@@ -599,6 +607,9 @@ ShermansServant.Description,陰陽師陣営に属する第三陣営です。\n�
 BlackHatHacker.Description,キル能力を有さない独自の勝利条件を持つ第三陣営です。\n「ハック」ボタンを押すと対象のプレイヤーをウィルスに感染させます。\nそのプレイヤーに接近した他のプレイヤーもウィルスに感染し、感染度が100%になるとそのプレイヤーも感染源となります。\n生存者の全てが感染済になるとその時点で単独勝利します。,
 PartTimer.Description,キル能力を有さない独自の勝利条件を持つ第三陣営です。\n「バイト」ボタンを押すと、対象のプレイヤーの味方になります。\nそのプレイヤーが生存した状態で勝利すると、共に勝利します。\nバイト先が死亡した場合、フリーターは未バイト状態となり、再度バイト先を選ぶことができるようになります(スポーンタイミングで更新)。,A third-party role with a unique win condition and no kill ability．\nPressing the “Part-Time” button makes you an ally of the target player．\nIf that player wins while alive，you win together．\nIf your ally dies，you become unemployed and can choose a new ally again（updated at spawn timing）．,拥有独特胜利条件且无击杀能力的第三阵营角色．\n按下“打工”按钮后会成为目标玩家的同伴．\n如果该玩家在存活状态下获胜，你也会一同获胜．\n若打工对象死亡，临时工将变为未打工状态，可在下次出生时重新选择打工对象．,擁有獨特勝利條件且無擊殺能力的第三陣營角色．\n按下「打工」按鈕後會成為目標玩家的同伴．\n若該玩家在存活狀態下獲勝，你也會一同獲勝．\n若打工對象死亡，打工族將變為未打工狀態，可於下次出生時重新選擇對象．
 Spelunker.Description,キル能力を有さない独自の勝利条件を持つ第三陣営です。\nベントを踏んだり、ドアを開けたり、昇降機に乗ったり、はしごを降りたりすると一定確率で死亡してしまいます。\nまた、サボタージュが長引くと不安で死んでしまいます。\nそれらを乗り越えゲーム終了まで生存していると、一部役職の特殊勝利を除き、その勝利を横取りして勝利することができます。,A third-party role with a unique win condition and no kill ability．\nStepping on vents，opening doors，using elevators，or climbing down ladders all carry a chance of instant death．\nIf sabotages last too long，you may also die from anxiety．\nIf you survive these dangers until the end of the game，you can hijack the win from others unless special victory conditions apply．,拥有独特胜利条件且无击杀能力的第三阵营角色．\n踩到通风口、开门、乘坐电梯或下梯子时都有一定几率死亡．\n若破坏持续太久，也会因不安而死亡．\n若克服这些危险并存活到游戏结束，就可以夺取他人胜利（特殊胜利条件除外）．,擁有獨特勝利條件且無擊殺能力的第三陣營角色．\n踩到通風口、開門、乘坐電梯或下梯子時都有一定機率死亡．\n若破壞行動持續過久，也會因焦慮而死亡．\n若克服這些危險並存活到遊戲結束，就可以奪取他人勝利（特殊勝利條件除外）．
+Sauner.Description,キル能力を有さない独自の勝利条件を持つ第三陣営です。\nメインホールの暗室のサウナ、シャワー室のシャワー、展望デッキでの外気浴の順番で、それぞれ一定時間滞在すると整ってその時点で単独勝利します。\nこの役職はエアシップのみアサインされます。,
+Frankenstein.Description,特殊なキル能力を有し、独自の勝利条件を持つ第三陣営です。\n死体に対して「怪物作成」をすると、その死体を怪物として一時的に蘇生し、操れるようになります。\n怪物はキルをすることが出来ます。\nキルをすると怪物は死体に戻り、能力を使用した地点に戻ります。\n一定回数キルをした状態でゲーム終了まで生存していると、一部役職の特殊勝利を除き、その勝利を横取りして勝利することができます。,
+Moira.Description,キル能力を有さない独自の勝利条件を持つ第三陣営です。\n会議中に二人のプレイヤーに対してボタンを押すと、その会議終了時にその二人の役職を入れ替えます。\n能力を使い切った状態でゲーム終了まで生存していると、一部役職の特殊勝利を除き、その勝利を横取りして勝利することができます。,
 
 # Descriptions_Crewmate
 Bait.Description,タスクターンに発動する能力を有するクルーメイトです。\nキルされると、そのキル者に自身の死体を通報させます。,A Crewmate with an ability that activates during task turns.\nWhen killed，they force their killer to report their body.,一个在任务回合中可激活能力的船员。\n当被击杀时，会迫使击杀者报告他们的尸体。,一個在任務回合中可激活能力的船員。\n當被擊殺時，會迫使擊殺者報告他們的屍體。,
@@ -645,6 +656,10 @@ SilverBullet.Description,タスクターンに使用できる能力を有する�
 Shielder.Description,タスクターンに使用できる能力を有するクルーメイトです。\n「シールド」ボタンを押すと、一定時間の間キルを防ぐシールドを貼ります。\nキルを防いだときのガードエフェクトは、自身及びキラー視点で見えます。,A Crewmate with abilities usable during task turns．\nPressing the “Shield” button creates a barrier that prevents kills for a certain period．\nThe guard effect is visible to both the user and the killer when it blocks a kill．,拥有在任务回合中可用能力的船员角色．\n按下“护盾”按钮可在一段时间内生成阻止击杀的护盾．\n当护盾成功防止击杀时，效果会对自己与杀手可见．,擁有在任務回合中可用能力的船員角色．\n按下「護盾」按鈕可在一段時間內產生阻止擊殺的護盾．\n當護盾成功防止擊殺時，效果會對自己與殺手可見．
 Moving.Description,タスクターンに使用できる能力を有するクルーメイトです。\n「位置記録」ボタンを押すと、その場所をテレポート先として登録します。\n「テレポート」ボタンを押すと記録した場所にテレポートできます。,A Crewmate with abilities usable during task turns．\nPressing the “Record Position” button registers the current location as a teleport destination．\nPressing the “Teleport” button teleports you to the recorded location．,拥有在任务回合中可用能力的船员角色．\n按下“记录位置”按钮可将当前位置注册为传送目标地．\n按下“传送”按钮可传送到记录的位置．,擁有在任務回合中可用能力的船員角色．\n按下「記錄位置」按鈕可將當前位置登錄為傳送目的地．\n按下「傳送」按鈕可傳送到記錄的位置．
 HauntedWolf.Description,特に能力を有さないクルーメイトです。\n死亡するまでこの役職だと自覚できません。\nシェリフなど陣営の判定が可能な役職から、インポスターとして判定されます。,A Crewmate with no special abilities．\nYou won’t realize this is your role until you die．\nRoles that can detect alignments like the Sheriff will identify you as an Impostor．,没有特殊能力的船员角色．\n在死亡前不会意识到自己是此角色．\n在可识别阵营的角色（如治安官）眼中会被判定为内鬼．,沒有特殊能力的船員角色．\n在死亡前不會察覺自己是此角色．\n在能判別陣營的角色（如警長）眼中會被判定為內鬼．
+Psychometrist.Description,タスクターンに使用できる能力を有するクルーメイトです。\n死体に向かって「よみとり」ボタンを押すと、その死体に関する情報を得ることが出来ます。\n獲得出来る情報は以下の3つです。\n　・死因\n　・何秒前に死亡したか\n　・キル者の足跡,
+DyingMessenger.Description,通報時に発動する能力を有するクルーメイトです。\n死体を通報すると、その死体が発生してから一定時間の間であれば、その死体に関する情報を得ることが出来ます。\n得られる情報は下記の二種類です。\n　・そのプレイヤーをキルした人の役職\n　・そのプレイヤーをキルした人の色の明暗,
+PoliceSurgeon.Description,会議時に発動する能力を有するクルーメイトです。\nそのターンに死亡したプレイヤーの死亡推定時刻を知ることが出来ます。\nまた、会議中に過去に死亡したプレイヤーの死亡推定時刻を確認することも出来ます。\n設定でタスクターン中にどこでもバイタルを見ることも出来ます。,
+Squid.Description,タスクターンに使用できる能力を有するクルーメイトです。\n「警戒」ボタンを押すと、一定時間の間警戒モードになります。\n警戒中にキルされると、そのキルを防ぎ、キル者の視界を妨害します。\nまた、一定の間足が早くなり、キル者から逃げることが出来ます。,
 
 # Descriptions_MadRoles
 Madmate.Description,インポスターの味方のクルーメイトです。\nいわゆる狂人と呼ばれる役職です。\n勝利条件はクルーメイトの勝利ではなく、インポスターの勝利です。\nその勝利に自身の生死は問われないので、あの手この手でインポスターを勝利に導きましょう。,A Crewmate allied with the Impostors.\nOften known as the Madmate.\nTheir win condition is not for the Crewmates to win，but for the Impostors to win.\nTheir own survival is irrelevant，so use any means necessary to secure an Impostor victory.,这是一个支持内鬼的船员，也称为疯友角色。\n他们的胜利条件不是船员获胜，而是内鬼获胜，并且他们的生死并不影响胜利。\n所以，尽可能地采用各种手段促成内鬼获胜。,這是一個支持內鬼的船員，俗稱瘋友角色。\n其勝利條件並非船員勝利，而是內鬼勝利，且自身生死不影響結果。\n因此，請用一切手段助內鬼取勝。,
@@ -720,6 +735,9 @@ EvilSeerIntro1,彼岸の呼び声,A call from the other side．,来自彼岸的�
 JammerIntro1,隠蔽工作,Cover-up operation．,隐蔽行动．,隱蔽行動．
 EvilMovingIntro1,不意の急襲,A sudden ambush．,突如其来的奇袭．,突如其來的奇襲．
 MagazinerIntro1,殺意の弾倉,Magazine filled with murderous intent．,充满杀意的弹匣．,充滿殺意的彈匣．
+SluggerIntro1,なんでやねん！,
+KunoichiIntro1,影に潜む女忍,
+MafiaIntro1,最後の弾丸,
 
 # Intros_Neutral
 JackalIntro1,暗躍するもう一人の殺人鬼,Another puppeteer of death in the shadows,另一个暗中操纵死亡者,另一個暗中操縱死亡者,
@@ -750,6 +768,9 @@ PartTimerIntro1,精一杯働きます！,I’ll work my hardest!,我会全力工
 SafecrackerIntro1,世紀の大泥棒,Thief of the century,世纪大盗,世紀大盜
 OrientalShamanIntro1,星の導く命運と共に,With the fate guided by the stars,与星辰指引的命运同在,與星辰指引的命運同在
 ShermansServantIntro1,星標の従者,Servant of the star mark,星标的仆从,星標的僕從
+SaunerIntro1,至高の「整い」を求めて,
+FrankensteinIntro1,怪物博士の苦悩,
+MoiraIntro1,運命の女神様の気まぐれ,
 
 # Intros_Crewmate
 BaitIntro1,この身を餌に真実を,Use my body as bait for the truth,以我肉身诱引真相,以我肉身誘引真相,
@@ -791,11 +812,14 @@ StuntmanIntro1,無意識の攻防、,Unconscious offense and defense,无意识�
 UbiquitousIntro1,偏在する監視眼,Ubiquitous watchful eye,无处不在的监视之眼,無處不在的監視之眼
 BuskerIntro1,危険な大道芸人,Dangerous street performer,危险的街头艺人,危險的街頭藝人
 DoorrIntro1,ノンストレス移動,stress-free movement,门，零压力移动,門，零壓力移動
-PsychometristIntro1,この手は真実を読み取る,These hands read the truth,此手读取真相,此手讀取真相
 SilverBulletIntro1,暗雲払う銀弾,The silver bullet that dispels dark clouds．,驱散乌云的银弹．,驅散烏雲的銀彈．
 ShielderIntro1,全てを受け止める盾,A shield that withstands everything．,接下一切的盾牌．,接下一切的盾牌．
 MovingIntro1,どんな距離も飛び越える,Leaping across any distance．,跨越任何距离．,跨越任何距離．
 HauntedWolfIntro1,過る獣の幻影,A fleeting phantom of the beast．,掠过的野兽幻影．,掠過的野獸幻影．
+PsychometristIntro1,残されし遺志を救う,
+DyingMessengerIntro1,最期の言葉を届ける,
+PoliceSurgeonIntro1,その死を突き止める,
+SquidIntro1,臆病者の生存戦略,
 
 # Intros_MadRoles
 MadmateIntro1,道を違えし者,One who has strayed from the path,误入歧途者,誤入歧途者,
@@ -1873,7 +1897,6 @@ WaveCannonBattleRoyalCooldown,波動砲のクールタイム,Wave Cannon Cooldow
 WaveCannonBattleRoyalChargeTime,波動砲のチャージ時間,Wave Cannon Charge Time,波动炮充能时间,波動砲充能時間
 
 # Sauner
-Sauner,サウナー,Sauner,桑拿者,桑拿者
 SaunerDarkroomTime,暗室滞在必要時間,Darkroom required time,暗室所需停留時間,暗室所需停留時間
 SaunerShowerTime,シャワー滞在必要時間,Shower required time,淋浴停留時間,淋浴停留時間
 SaunerDeckTime,展望デッキ滞在必要時間,Observation deck required time,展望台停留時間,展望台停留時間
@@ -1887,9 +1910,6 @@ SaunerObservationDeck,展望デッキ,Observation Deck,展望台,展望台
 SaunerWinText,が ととのった！,is Feeling refreshed!,桑拿者胜利！,桑拿者勝利！
 
 # Moira
-Moira,モイラ,Moira,莫伊拉,莫伊拉
-Moira.Description,会議中に他者の役職と票を入れ替える女神。能力を使い切った状態で生き残れば勝利を横取りする。,A goddess who swaps others' roles and votes during meetings. Survive after using all swaps to hijack the win.,在会议中可以交换他人的角色与票数。用完次数后仍存活即可抢夺胜利。,在會議中可以交換他人的角色與票數。用完次數後仍存活即可搶奪勝利。
-MoiraIntro1,運命は私の手の内に！,Fate is in my hands!,命运在我手中！,命運在我手中！
 MoiraAbilityLimit,運命改変できる回数,Number of destiny swaps,可改寫命運的次數,可改寫命運的次數
 MoiraWinText,勝利を横取りした！,Hijacked the victory!,抢夺了胜利！,搶奪了勝利！
 
@@ -1911,18 +1931,11 @@ BattleRoyalWin,バトルロイヤル,Battle Royale,大逃杀,大逃殺
 Draw,引き分け,Draw,平局,平局
 
 # Frankenstein
-Frankenstein,フランケンシュタイン,Frankenstein,弗兰肯斯坦,科學怪人
-FrankensteinIntro1,私は怪物を造ってしまったようだ,I seem to have created a monster.,他既赋予了我生命，又带来了难言的痛苦……,我好像造了個怪物
-Frankenstein.Description,死体に能力を使用すると、その死体を蘇生し操作することが出来るようになります。\nその状態で一度だけキルをすることが出来ます。\nキルをしたら死体に戻ります。\n一定数キルをした上で生き残ると乗っ取り勝利します。,If you use the ability on a corpse， you will be able to revive and manipulate it.\nIn this state， you can only make one kill.\nAfter the kill， the corpse reverts back to its original state.\nIf you survive after a certain number of kills， you win the game.,弗兰肯斯坦属于独立阵营，可以把死亡玩家的尸体复活为科学怪人并操纵其进行击杀。\n弗兰肯斯坦操控的每具尸体最多击杀一名玩家。\n在击杀完成后，那具尸体回到原本的位置。\n弗兰肯斯坦通过这种方式击杀一定数量的玩家后即可单独获胜。,科學怪人可以使用能力操控屍體並可以進行一次擊殺。\n完成擊殺後，屍體將恢復原狀。\n在達到一定的擊殺數量後將獨自獲勝。
 FrankensteinCreateMonsterButtonName,怪物作成,Create Monster,人体实验,創造怪物
 FrankensteinCreateCoolTimeSetting,怪物作成クールタイム,Create Monster Cooldown,创造怪物冷却时间,創造怪物冷卻時間
 FrankensteinWinKillCountSetting,勝利に必要なキル数,Kills required to win,胜利所需击杀数,勝利所需擊殺數
 
 # Squid
-Squid,イカ,Squid,乌贼,烏賊
-SquidIntro1,墨を使って生き延びろ,Use ink to survive.,喷出乌贼墨来躲避击杀,噴出墨汁來躲避擊殺
-SquidIntro2,墨を使って逃げ切ろう,Let's use ink to get away with it.,不是要杀我吗？,不是要殺我嗎？
-Squid.Description,一定時間警戒することが出来ます。\n警戒中にキルされそうになると、そのキルを防ぎ相手の視界を奪い、一定時間自身の移動速度が上昇します。,You can be on alert for a certain period of time.\nIf you are about to be killed while on alert, you can prevent the kill, take away your opponent's vision, and increase your own movement speed for a certain period of time.,乌贼使用技能后会进入警戒状态。\n若有玩家尝试击杀警戒状态下的乌贼，那次击杀无效，那名玩家的视野暂时缩小，乌贼自身的速度在一定时间内上升。,烏賊使用技能後會進入警戒狀態。\n若有玩家嘗試擊殺警戒狀態下的烏賊，那次擊殺無效，那名玩家的視野暫時縮小，烏賊自身的速度在一定時間內上升。
 SquidButtonName,警戒,Vigilance,警戒,警戒
 SquidCoolTimeSetting,警戒モードのクールタイム,Cool time for vigilance mode,警戒冷却时间,警戒冷卻時間
 SquidDurationTimeSetting,警戒モードの持続時間,Duration of vigilance mode,警戒持续时间,警戒持續時間
@@ -1933,9 +1946,6 @@ SquidDownVisionSetting,視界が奪われた時の視野,Field of vision when vi
 SquidObstructionTimeSetting,視界を奪う時間,Time to take away the view,视野妨害时间,視野妨害時間
 
 # DyingMessenger
-DyingMessenger,遺言伝達者,Dying Messenger,入殓师,遺言傳遞者
-DyingMessengerIntro1,遺言、お伝え致します,Will and testament， we will tell you.,为生者传达死者的遗言,為生者傳達死者的遺言
-DyingMessenger.Description,キルされてから一定時間内で通報できた時に、\n通報した死体のキル者の情報を取得することが出来ます。\n情報を取得し、クルー陣営の勝利に貢献しましょう。,When you are able to report a kill within a certain amount of time after the kill.\nYou can get the information of the killers of the dead body you reported.\nGet the information and contribute to the victory of the crew's camp.,如果在击杀后一定时间内报告尸体，\n你将得到凶手的信息。\n利用这些信息帮助船员阵营获胜。,如果在擊殺後一定時間內報告屍體，\n你將得到兇手的資訊。\n利用這些資訊幫助船員陣營獲勝。
 DyingMessengerGetRoleTimeSetting,死体からキル者の役職を読み取れる時間,Time to read the role of the killers from the corpse,报告获得凶手职业所需死亡间隔时间,報告獲得凶手職業所需死亡間隔時間
 DyingMessengerGetLightAndDarkerTimeSetting,死体からキル者の色の明暗を読み取れる時間,Time to read the light and darker colors of the kill from the corpse,报告获得凶手颜色深浅所需死亡间隔时间,報告獲得凶手顏色深淺所需死亡間隔時間
 DyingMessengerFirstPerson1,私,me,我,我
@@ -1944,7 +1954,6 @@ DyingMessengerGetRoleText,{0}をキルした人の役職は{1}でした。,The r
 DyingMessengerGetLightAndDarkerText,{0}をキルした人の色は{1}でした。,The person who killed {0} had {1}.,杀害{0}的人是{1}。,將{0}殺害的人是{1}。
 
 # Psychometrist
-Psychometrist.Description,タスクターンに使用できる能力を有するクルーメイトです。\n死体に近づき「よみとり」ボタンを押すことで、死因や死亡推定時間など死体の状況を読み取れます。\n設定によっては犯人の足跡も確認できます。,A crewmate with an ability usable during the Task Turn.\nApproach a corpse and use the \"Read\" button to learn information such as cause of death and estimated time since death.\nDepending on settings, you can also see the killer's footprints.,是具有能够在任务回合使用能力的队员。\n接近尸体并按下「验尸」按钮，可以读取死因和死亡推定时间等信息。\n根据设置，还可以确认凶手的足迹。,是具有能夠在任務回合使用能力的隊員。\n接近屍體並按下「驗屍」按鈕，可以讀取死因和死亡推定時間等資訊。\n依據設定，還可以確認兇手的足跡。
 PsychometristReadTime,よみとり時間,Read time,验尸所需时间,驗屍所需時間
 PsychometristIsCheckDeathTime,死亡推定時間がわかる,Estimated time since death is available.,可以验得死亡时间,可以驗得死亡時間
 PsychometristDeathTimeDeviation,死亡推定時刻の最大ズレ,Maximum discrepancy in estimated time of death,死亡时间最大误差,死亡時間最大誤差
@@ -1958,10 +1967,6 @@ PsychometristDeathReasonText,死因:{0},Cause of death: {0},死因:{0},死因:{0
 PsychometristSecondsAgoText,{0}秒前,{0}s ago,{0}秒前,{0}秒前
 
 # PoliceSurgeon
-PoliceSurgeon,警察医,Police Surgeon,法医,法醫
-PoliceSurgeonIntro1,私は幸せな最期を看取る手伝いをしたかっただけなのに...,I just wanted to assist in helping to ensure a peaceful and happy passing，yet...,确认死者的死因与死亡时间,我只是想幫助人們平安的離開人世，卻...
-PoliceSurgeon.Description,会議中、死亡時刻を確認する事ができる役職です (設定により死亡推定時刻に変更可能です)。\n設定によりタスクフェイズ中に携帯バイタルを使用する事もできます。\n私が医師になったのは、命を救い、時には最期をよりよくする手助けをし、看取る為であって... この様な... 志半ばで亡くなる死を視る為ではなかったのに!!,The role that allows you to check the time of death during meetings，and can be changed to estimate the time of death depending on the settings.\nYou can also use the portable vital monitor during task phases，depending on the settings.\nI became a doctor to save lives，to help people die peacefully，\nand to provide comfort in their final moments...\nnot to witness premature deaths like this!,法医属于船员阵营，可以在会议阶段确认死亡玩家的死亡时间（根据房间设置，可以改为确认推测死亡时间）。\n根据房间设置，法医也可以在行动阶段远程观看生命监测装置。\n\n我是救死扶伤的医生。我是为别人送终的医生。\n我只想让人们安详地度过人生的最后时光……而不是像现在这样！,法醫可以在會議中確認死亡時間，並且可以根據設定更改為死亡推定時間。\n根據設定，也可以在任務階段使用便攜式生命探測器。\n我成為醫生是為了拯救生命，幫助人們平安離開人世，\n並在他們最後的時刻給予安慰...\n而不是如此英年早逝...
-PoliceSurgeonName,警察医,Police Surgeon,法医,法醫
 PoliceSurgeonHaveVitalsInTaskPhase,タスクフェイズ中に携帯バイタルを所持しているか。,Do you have portable vitals in your possession during the task phase?,法医可以远程观看生命监测装置,法醫是否持有攜帶式生命探測器？
 VitalsDisplayCooldown,バイタル画面クールダウン,Vitals Display Cooldown,观看生命监测装置冷却,生命探測器的顯示冷卻
 BatteryDuration,充電持続時間,Battery Duration,装置充能所需时间,裝置充電所需時間
