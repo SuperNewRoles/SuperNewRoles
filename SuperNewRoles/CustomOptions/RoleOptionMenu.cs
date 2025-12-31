@@ -204,7 +204,7 @@ public static class RoleOptionMenu
     /// GameSettingMenuのキャッシュ
     /// </summary>
     private static GameSettingMenu cachedGameSettingMenu;
-    private static bool? cachedReleaseLocked;
+    private static int? cachedReleaseStateToken;
 
     /// <summary>
     /// GameSettingMenuを取得またはキャッシュから返す
@@ -267,15 +267,15 @@ public static class RoleOptionMenu
 
     private static void RefreshRoleScrollIfReleaseStateChanged()
     {
-        bool releaseLocked = RoleReleaseLock.IsReleaseLocked;
-        if (cachedReleaseLocked == null)
+        int releaseStateToken = RoleReleaseLock.GetReleaseStateToken();
+        if (cachedReleaseStateToken == null)
         {
-            cachedReleaseLocked = releaseLocked;
+            cachedReleaseStateToken = releaseStateToken;
             return;
         }
-        if (cachedReleaseLocked == releaseLocked) return;
+        if (cachedReleaseStateToken == releaseStateToken) return;
 
-        cachedReleaseLocked = releaseLocked;
+        cachedReleaseStateToken = releaseStateToken;
         if (RoleOptionMenuObjectData == null) return;
 
         foreach (var entry in RoleOptionMenuObjectData.RoleScrollDictionary.Values)
