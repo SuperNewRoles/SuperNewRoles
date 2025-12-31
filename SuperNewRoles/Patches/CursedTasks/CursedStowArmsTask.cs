@@ -11,6 +11,7 @@ public class CursedStowArmsTask
         [HarmonyPatch(nameof(StowArms.Begin)), HarmonyPostfix]
         public static void BeginPostfix(StowArms __instance)
         {
+            if (!Main.IsCursed) return;
             GameObject pointer = new("Pointer");
             pointer.transform.SetParent(__instance.transform);
             pointer.layer = 4;

@@ -20,6 +20,7 @@ public class CursedFixShowerTask
         [HarmonyPatch(nameof(FixShowerMinigame.Start)), HarmonyPostfix]
         public static void StartPostfix(FixShowerMinigame __instance)
         {
+            if (!Main.IsCursed) return;
             if (!Data.ContainsKey(__instance.MyNormTask.Id)) Data.Add(__instance.MyNormTask.Id, new());
             if (Data[__instance.MyNormTask.Id].Count <= 0)
             {
