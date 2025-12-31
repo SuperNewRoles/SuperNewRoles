@@ -35,6 +35,8 @@ public static class RoleReleaseLock
     private static Il2CppSystem.DateTime ReleaseAtJan1Utc = new(2026, 1, 1, 8, 0, 0, Il2CppSystem.DateTimeKind.Utc);
     // 1月5日17時(JST)
     private static Il2CppSystem.DateTime ReleaseAtJan5Utc = new(2026, 1, 5, 8, 0, 0, Il2CppSystem.DateTimeKind.Utc);
+    // 1月2日17時(JST)
+    private static Il2CppSystem.DateTime ReleaseAtJan2CursedUtc = new(2026, 1, 2, 8, 0, 0, Il2CppSystem.DateTimeKind.Utc);
 
     private static bool IsReleaseLockEnabled = ThisAssembly.Git.Branch == SuperNewRoles.BranchConfig.MasterBranch;
 
@@ -59,6 +61,13 @@ public static class RoleReleaseLock
         if (ReleaseAtJan5Roles.Contains(roleId))
             return AmongUsDateTime.UtcNow < ReleaseAtJan5Utc;
         return false;
+    }
+
+    public static bool IsCursedModeLocked()
+    {
+        if (!IsReleaseLockEnabled)
+            return false;
+        return AmongUsDateTime.UtcNow < ReleaseAtJan2CursedUtc;
     }
     /*
         private static void Debug_UpdateTime(int hour, int minute)
