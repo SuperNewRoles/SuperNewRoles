@@ -36,8 +36,12 @@ public static class RoleReleaseLock
     // 1月5日17時(JST)
     private static Il2CppSystem.DateTime ReleaseAtJan5Utc = new(2026, 1, 5, 8, 0, 0, Il2CppSystem.DateTimeKind.Utc);
 
+    private static bool IsReleaseLockEnabled = ThisAssembly.Git.Branch == SuperNewRoles.BranchConfig.MasterBranch;
+
     public static int GetReleaseStateToken()
     {
+        if (!IsReleaseLockEnabled)
+            return 3;
         int token = 0;
         if (AmongUsDateTime.UtcNow >= ReleaseAtJan1Utc)
             token |= 1;
@@ -48,6 +52,8 @@ public static class RoleReleaseLock
 
     public static bool IsLocked(RoleId roleId)
     {
+        if (!IsReleaseLockEnabled)
+            return false;
         if (ReleaseAtJan1Roles.Contains(roleId))
             return AmongUsDateTime.UtcNow < ReleaseAtJan1Utc;
         if (ReleaseAtJan5Roles.Contains(roleId))
