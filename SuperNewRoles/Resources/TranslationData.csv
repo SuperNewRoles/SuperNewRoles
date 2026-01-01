@@ -363,6 +363,8 @@ FinalStatus.SpelunkerCommsElecDeath,不安死,Died of anxiety,因不安而死,�
 FinalStatus.SpelunkerOpenDoor,指挟み,Fingers caught in door,手指被门夹伤,手指被門夾傷
 FinalStatus.NunDeath,ぬーんから転落,Fell off the Nun platform,从“ぬーん”跌落,從「ぬーん」跌落
 FinalStatus.LadderDeath,はしごから転落,Fell off a ladder,从梯子上摔落,從梯子上摔落
+FinalStatus.HappyGatling,ガトリング,Gatling,加特林,加特林
+FinalStatus.SluggerSlug,ツッコミ,Harisen
 
 # HelpMenu
 HelpMenu.MyRoleInformation,自分の役職,My Role Information,我的角色信息,我的角色資訊
@@ -523,6 +525,7 @@ EvilMoving,イビルムービング,Evil Moving,邪恶移动者,邪惡移動者
 HauntedWolf,狼憑き,HauntedWolf,灵咒,狼憑者
 ModifierHauntedWolf,モディファイア狼憑き,Modifier Haunted Wolf
 Magaziner,マガジナー,Magaziner,弹匣师,彈匣師
+TriggerHappy,トリガーハッピー,Trigger Happy,触发快乐,觸發快樂
 Slugger,スラッガー,Slugger
 Kunoichi,クノイチ,Kunoichi,女忍,女忍
 Mafia,マフィア,Mafia,黑手党,黑手黨
@@ -584,8 +587,9 @@ EvilSeer.Description,タスクターンに発動する能力を有するイン�
 Jammer.Description,タスクターンに使用できる能力を有するインポスターです。\n「透明化」ボタンを押すと対象のプレイヤーを他人から見えなくすることができます。\n透明化された当事者は自覚することができません。\nインポスター視点は透明にされている人が半透明で見えます。,An Impostor with abilities usable during task turns．\nPressing the “Invisibility” button makes the target player invisible to others．\nThe affected player is unaware of being invisible．\nFrom the Impostor's view，the invisible player appears semi-transparent．,拥有在任务回合中可用能力的内鬼．\n按下“隐身”按钮会使目标玩家对他人不可见．\n被隐身的玩家自己不会察觉．\n从内鬼视角看，被隐身的玩家呈半透明状态．,擁有在任務回合中可用能力的內鬼．\n按下「隱形」按鈕會使目標玩家對他人不可見．\n被隱形的玩家自己不會察覺．\n從內鬼視角來看，被隱形的玩家呈半透明狀態．
 EvilMoving.Description,タスクターンに使用できる能力を有するインポスターです。\n「位置記録」ボタンを押すと、その場所をテレポート先として登録します。\n「テレポート」ボタンを押すと記録した場所にテレポートできます。,An Impostor with abilities usable during task turns．\nPressing the “Record Position” button registers the current location as a teleport destination．\nPressing the “Teleport” button teleports you to the recorded location．,拥有在任务回合中可用能力的内鬼．\n按下“记录位置”按钮可将当前位置注册为传送目标地．\n按下“传送”按钮可传送到记录的位置．,擁有在任務回合中可用能力的內鬼．\n按下「記錄位置」按鈕可將當前位置登錄為傳送目的地．\n按下「傳送」按鈕可傳送到記錄的位置．
 Magaziner.Description,タスクターンに使用できる能力を有するインポスターです。\n「補充」ボタンを押すと、キルクールがリセットされる代わりに、弾を補充できます。\n「消費」ボタンを押すとキルクールを設定値にリセットします。,An Impostor with abilities usable during task turns．\nPressing the “Reload” button refills ammo at the cost of resetting the kill cooldown．\nPressing the “Consume” button resets the kill cooldown to the configured value．,拥有在任务回合中可用能力的内鬼．\n按下“补充”按钮可补充子弹但会重置击杀冷却时间．\n按下“消耗”按钮会将击杀冷却重置为设定值．,擁有在任務回合中可用能力的內鬼．\n按下「補充」按鈕可補充子彈但會重置擊殺冷卻時間．\n按下「消耗」按鈕會將擊殺冷卻重置為設定值．
-Slugger.Description,特殊なキル能力を有するインポスターです。\n「ハリセン」ボタンを構えるとハリセンを構え、周囲にいるプレイヤーを吹き飛ばします。\n吹き飛ばされたプレイヤーは死体を残さずに死亡します。,This is an Impostor with a special kill ability.\nWhen you ready the "Slugger!" button， you will hold a paper fan and blow away nearby players.\nPlayers who are blown away will die without leaving a body.,这是具有特殊击杀能力的伪装者。\n摆出“纸扇”按钮的姿势时会举起纸扇，并将周围的玩家击飞。\n被击飞的玩家将直接死亡，且不留下尸体。
-Mafia.Description,特殊なインポスターです。\nインポスターが複数生存している間はキル能力を持ちません。\nインポスターが自身だけになると、キル能力を獲得します。,This is a special Impostor.\nThey do not have the ability to kill while other Impostors are still alive.\nOnce they become the last Impostor remaining， they gain the ability to kill.,这是特殊的伪装者。\n当有多个伪装者存活时，不具备击杀能力。\n当伪装者只剩自己一人时，将获得击杀能力。
+TriggerHappy.Description,特殊なキル能力を有するインポスターです。\n「乱射」ボタンを押すことで、その時点で向いている方向に向かって、扇状に弾幕を発射することが出来ます。\n設定発数弾が当たったプレイヤーは陣営関係なく死亡します。,This is an Impostor with a unique kill ability.\nBy pressing the "Barrage" button，you can fire a fan-shaped spray of bullets in the direction you are currently facing.\nAny player hit by the set number of bullets will die，regardless of their faction.,这是拥有特殊击杀能力的伪装者。\n点击“乱射”按钮，可以向当前面对的方向发射扇形弹幕。\n被击中设定次数的玩家将会死亡，且无视阵营。,這是擁有特殊擊殺能力的內鬼。\n按下「亂射」按鈕，可向當前面向方向發射扇形彈幕。\n被命中達到設定次數的玩家將會死亡，且無視陣營。
+Slugger.Description,特殊なキル能力を有するインポスターです。\n「ハリセン」ボタンを構えるとハリセンを構え、周囲にいるプレイヤーを吹き飛ばします。\n吹き飛ばされたプレイヤーは死体を残さずに死亡します。,This is an Impostor with a special kill ability.\nWhen you ready the "Slugger!" button， you will hold a paper fan and blow away nearby players.\nPlayers who are blown away will die without leaving a body.,这是具有特殊击杀能力的伪装者。\n摆出“纸扇”按钮的姿势时会举起纸扇，并将周围的玩家击飞。\n被击飞的玩家将直接死亡，且不留下尸体。,這是擁有特殊擊殺能力的內鬼。\n準備「哈利扇」後會舉起紙扇，並將周圍玩家擊飛。\n被擊飛的玩家會直接死亡且不留下屍體。
+Mafia.Description,特殊なインポスターです。\nインポスターが複数生存している間はキル能力を持ちません。\nインポスターが自身だけになると、キル能力を獲得します。,This is a special Impostor.\nThey do not have the ability to kill while other Impostors are still alive.\nOnce they become the last Impostor remaining， they gain the ability to kill.,这是特殊的伪装者。\n当有多个伪装者存活时，不具备击杀能力。\n当伪装者只剩自己一人时，将获得击杀能力。,這是特殊的內鬼。\n當有多名內鬼存活時不具備擊殺能力。\n當內鬼只剩自己一人時，將獲得擊殺能力。
 
 # Descriptions_Neutral
 Jackal.Description,キル能力を有する第三陣営です。\n自陣営以外のキルができる陣営が全滅した上で、自陣営とクルーが同数以下になれば勝利します。\n設定次第で他のプレイヤーの役職を、自身の後継となるサイドキックや、手助けをしてくれるジャッカルフレンズに変更する能力を有することもできます。,A third-faction role with a kill ability.\nIt wins if all factions capable of killing outside its own are eliminated and its faction and the Crewmates are equal in number or fewer.\nDepending on the settings，it can change other players’ roles into a Sidekick (its successor) or Jackal Friends who assist it.,这是一个拥有击杀能力的第三阵营角色。\n当所有能够进行击杀的其他阵营被消灭，并且其阵营与船员人数相等或更少时，即可获胜。\n根据设定，它还可以将其他玩家的角色变更为边缘队员（其继任者）或协助的杰克朋友。,這是一個具備擊殺能力的第三陣營角色。\n當其他能進行擊殺的陣營全部被消滅，且其陣營與船員數量相等或更少時，即獲勝。\n根據設定，還可將其他玩家的角色變更為接班的邊翼或提供協助的傑克朋友。,
@@ -744,9 +748,10 @@ EvilSeerIntro1,彼岸の呼び声,A call from the other side．,来自彼岸的�
 JammerIntro1,隠蔽工作,Cover-up operation．,隐蔽行动．,隱蔽行動．
 EvilMovingIntro1,不意の急襲,A sudden ambush．,突如其来的奇袭．,突如其來的奇襲．
 MagazinerIntro1,殺意の弾倉,Magazine filled with murderous intent．,充满杀意的弹匣．,充滿殺意的彈匣．
-SluggerIntro1,なんでやねん！,Shooooot!,为什么啊！
-KunoichiIntro1,影に潜む女忍,A kunoichi hiding in the darkness,潜伏在影子里的女忍者
-MafiaIntro1,最後の弾丸,The final round,最后的子弹
+TriggerHappyIntro1,派手にぶちかますぜ！,I'm gonna go out with a bang!,我要大干一场！,我要大幹一場！
+SluggerIntro1,なんでやねん！,Shooooot!,为什么啊！,為什麼啊！
+KunoichiIntro1,影に潜む女忍,A kunoichi hiding in the darkness,潜伏在影子里的女忍者,潛伏在影子裡的女忍者
+MafiaIntro1,最後の弾丸,The final round,最后的子弹,最後的子彈
 
 # Intros_Neutral
 JackalIntro1,暗躍するもう一人の殺人鬼,Another puppeteer of death in the shadows,另一个暗中操纵死亡者,另一個暗中操縱死亡者,
@@ -1938,6 +1943,22 @@ Team,チーム,Team,队伍,隊伍
 seconds,秒,seconds,秒,秒
 BattleRoyalWin,バトルロイヤル,Battle Royale,大逃杀,大逃殺
 Draw,引き分け,Draw,平局,平局
+
+# TriggerHappy
+TriggerHappyButtonText,乱射,Barrage,乱射,亂射
+TriggerHappyUseLimit,使用可能回数,Use Limit,使用次数,使用次數
+TriggerHappyCooldown,クールタイム,Cooldown,冷却时间,冷卻時間
+TriggerHappySyncKillCoolTime,キルクールタイムと同期する,Sync with Kill Cooldown,与击杀冷却同步,與擊殺冷卻同步
+TriggerHappyDuration,効果時間,Duration,持续时间,持續時間
+TriggerHappyRequiredHits,必要ヒット数,Required Hits,所需命中数,所需命中數
+TriggerHappyRange,射程,Range,射程,射程
+TriggerHappyBulletSize,弾の大きさ,Bullet Size,子弹大小,子彈大小
+TriggerHappyPierceWalls,弾が壁を貫通する,Pierce Walls,子弹穿墙,子彈穿牆
+TriggerHappyBulletSpreadAngle,弾の発射角,Bullet Spread Angle,子弹发射角度,子彈發射角度
+TriggerHappyBulletSpread.Angle15,15度,15 Degrees,15度,15度
+TriggerHappyBulletSpread.Angle30,30度,30 Degrees,30度,30度
+TriggerHappyBulletSpread.Angle45,45度,45 Degrees,45度,45度
+TriggerHappyBulletSpread.Angle60,60度,60 Degrees,60度,60度
 
 # Frankenstein
 FrankensteinCreateMonsterButtonName,怪物作成,Create Monster,人体实验,創造怪物

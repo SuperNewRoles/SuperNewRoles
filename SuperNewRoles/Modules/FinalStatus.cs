@@ -38,6 +38,7 @@ public enum FinalStatus
     SpelunkerOpenDoor,
     NunDeath,
     LadderDeath,
+    HappyGatling,
     SluggerSlug,
     TheThirdLittlePigCounterKill,
 }
