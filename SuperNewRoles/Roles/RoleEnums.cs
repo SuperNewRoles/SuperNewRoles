@@ -136,6 +136,7 @@ public enum RoleId : short
     NiceRedRidingHood,
     HauntedWolf,
     BattleRoyalWaveCannon,
+    TriggerHappy,
     Sauner,
     Moira,
     // TheThreeLittlePigs (三匹の仔豚)

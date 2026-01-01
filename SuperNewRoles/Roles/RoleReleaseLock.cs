@@ -8,12 +8,10 @@ public static class RoleReleaseLock
     // リークしないでくれたら嬉しい
     // Please don't leak it.
 
-    private static readonly HashSet<RoleId> ReleaseAtJan1Roles = new()
+
+    private static readonly HashSet<RoleId> ReleaseAtJan2Roles = new()
     {
-        RoleId.Slugger,
-        RoleId.Kunoichi,
-        RoleId.Squid,
-        RoleId.Sauner,
+        RoleId.TriggerHappy,
     };
 
     private static readonly HashSet<RoleId> ReleaseAtJan5Roles = new()
@@ -31,21 +29,18 @@ public static class RoleReleaseLock
         RoleId.DyingMessenger,
     };
 
-    // 1月1日17時(JST)
-    private static Il2CppSystem.DateTime ReleaseAtJan1Utc = new(2026, 1, 1, 8, 0, 0, Il2CppSystem.DateTimeKind.Utc);
-    // 1月5日17時(JST)
+    private static Il2CppSystem.DateTime ReleaseAtJan2Utc = new(2026, 1, 2, 8, 0, 0, Il2CppSystem.DateTimeKind.Utc);
     private static Il2CppSystem.DateTime ReleaseAtJan5Utc = new(2026, 1, 5, 8, 0, 0, Il2CppSystem.DateTimeKind.Utc);
-    // 1月2日17時(JST)
-    private static Il2CppSystem.DateTime ReleaseAtJan2CursedUtc = new(2026, 1, 2, 8, 0, 0, Il2CppSystem.DateTimeKind.Utc);
+    private static Il2CppSystem.DateTime ReleaseAtJan3CursedUtc = new(2026, 1, 3, 8, 0, 0, Il2CppSystem.DateTimeKind.Utc);
 
-    private static bool IsReleaseLockEnabled = ThisAssembly.Git.Branch == SuperNewRoles.BranchConfig.MasterBranch;
+    private static bool IsReleaseLockEnabled = ThisAssembly.Git.Branch == BranchConfig.MasterBranch;
 
     public static int GetReleaseStateToken()
     {
         if (!IsReleaseLockEnabled)
             return 3;
         int token = 0;
-        if (AmongUsDateTime.UtcNow >= ReleaseAtJan1Utc)
+        if (AmongUsDateTime.UtcNow >= ReleaseAtJan2Utc)
             token |= 1;
         if (AmongUsDateTime.UtcNow >= ReleaseAtJan5Utc)
             token |= 2;
@@ -56,8 +51,8 @@ public static class RoleReleaseLock
     {
         if (!IsReleaseLockEnabled)
             return false;
-        if (ReleaseAtJan1Roles.Contains(roleId))
-            return AmongUsDateTime.UtcNow < ReleaseAtJan1Utc;
+        if (ReleaseAtJan2Roles.Contains(roleId))
+            return AmongUsDateTime.UtcNow < ReleaseAtJan2Utc;
         if (ReleaseAtJan5Roles.Contains(roleId))
             return AmongUsDateTime.UtcNow < ReleaseAtJan5Utc;
         return false;
@@ -67,7 +62,7 @@ public static class RoleReleaseLock
     {
         if (!IsReleaseLockEnabled)
             return false;
-        return AmongUsDateTime.UtcNow < ReleaseAtJan2CursedUtc;
+        return AmongUsDateTime.UtcNow < ReleaseAtJan3CursedUtc;
     }
     /*
         private static void Debug_UpdateTime(int hour, int minute)

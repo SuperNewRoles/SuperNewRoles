@@ -285,6 +285,9 @@ public partial class SuperNewRolesPlugin : BasePlugin
         ClassInjector.RegisterTypeInIl2Cpp<Drone>();
         ClassInjector.RegisterTypeInIl2Cpp<WormHole>();
         ClassInjector.RegisterTypeInIl2Cpp<SluggerDeadbody>();
+        ClassInjector.RegisterTypeInIl2Cpp<TriggerHappyGatlingGun>();
+        ClassInjector.RegisterTypeInIl2Cpp<TriggerHappyBullet>();
+        ClassInjector.RegisterTypeInIl2Cpp<AttenuatedAudioSource>();
         ClassInjector.RegisterTypeInIl2Cpp<BuildSandcastleMinigamePatch.CursedSandcastleBucketRootMarker>();
         ClassInjector.RegisterTypeInIl2Cpp<BuildSandcastleMinigamePatch.CursedSandcastleBucketCloneMarker>();
         ClassInjector.RegisterTypeInIl2Cpp<WCSantaHandler>();

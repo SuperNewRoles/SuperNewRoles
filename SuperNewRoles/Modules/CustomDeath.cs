@@ -185,6 +185,13 @@ public static class CustomDeathExtensions
                 player.Player.Exiled();
                 FinalStatusManager.SetFinalStatus(player, FinalStatus.Suicide);
                 break;
+            case CustomDeathType.HappyGatling:
+                if (!TryKillEvent.Invoke(source, ref player).RefSuccess)
+                    break;
+                player.Player.MurderPlayer(player.Player, MurderResultFlags.Succeeded);
+                FinalStatusManager.SetFinalStatus(player, FinalStatus.HappyGatling);
+                MurderDataManager.AddMurderData(source, player);
+                break;
             case CustomDeathType.SluggerSlug:
                 if (source == null)
                     throw new Exception("Source is null");
@@ -245,6 +252,7 @@ public enum CustomDeathType
     SuicideSecrets,
     BuskerFakeDeath,
     SuperWaveCannon,
+    HappyGatling,
     SluggerSlug,
     WaveCannonSanta,
 }
