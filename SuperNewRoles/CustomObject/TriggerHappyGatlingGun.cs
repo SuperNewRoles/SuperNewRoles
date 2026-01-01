@@ -41,8 +41,8 @@ public class TriggerHappyGatlingGun : MonoBehaviour
     private float targetVolume = 0f;
     private float currentVolume = 0f;
     private bool pendingDestroy = false;
-    private const float FadeInSpeed = 0.9f;  // フェードイン速度（秒）
-    private const float FadeOutSpeed = 0.4f; // フェードアウト速度（秒）
+    private const float FadeInSpeed = 1.1f;  // フェードイン速度（秒）
+    private const float FadeOutSpeed = 0.9f; // フェードアウト速度（秒）
     private const float MaxVolume = 1f;   // 最大音量
 
     // 角度を設定するメソッド（RPC同期用）
@@ -57,9 +57,10 @@ public class TriggerHappyGatlingGun : MonoBehaviour
             throw new ArgumentException("Sprites must not be empty");
 
         GameObject gameObject = new("TriggerHappyGatlingGun");
+        // 生成フレームで(0,0)に表示されないよう、先に親子付けしてローカル初期値を反映させる
+        gameObject.transform.SetParent(player.transform, worldPositionStays: false);
         TriggerHappyGatlingGun gatlingGun = gameObject.AddComponent<TriggerHappyGatlingGun>();
         gatlingGun.Init(player, gatlingSprites, data);
-        gameObject.transform.SetParent(player.transform);
         return gatlingGun;
     }
 
@@ -79,7 +80,7 @@ public class TriggerHappyGatlingGun : MonoBehaviour
 
         // 減衰対応オーディオソースの設定（staticユーティリティを使用）
         AudioClip clip = AssetManager.GetAsset<AudioClip>("TriggerHappyShotSound.wav");
-        attenuatedAudioSource = AttenuatedAudioSourceUtility.SetupSimple(gameObject, clip, loop: true, maxDistance: 5f, minDistance: 1f);
+        attenuatedAudioSource = AttenuatedAudioSourceUtility.SetupSimple(gameObject, clip, loop: true, maxDistance: Mathf.Min(data.Range, 15f), minDistance: 1f);
         audioSource = attenuatedAudioSource.GetComponent<AudioSource>();
 
         // AttenuatedAudioSourceの自動更新を無効化（手動で音量制御するため）
@@ -92,6 +93,76 @@ public class TriggerHappyGatlingGun : MonoBehaviour
         targetVolume = 0f;
         attenuatedAudioSource.maxVolume = 0f;
         audioSource.volume = 0f; // 最初のフレームで確実に0に設定
+
+        // 生成フレームでFixedUpdateがまだ走っていない間に(0,0)へ描画されることがあるため、
+        // 初回だけスナップして「位置・向き」を確定させ、ちらつきを防ぐ。
+        UpdatePose(snap: true, fixedDeltaTime: 0f);
+    }
+
+    // 銃の「位置・向き」を更新する共通処理。
+    // - snap=true : 生成直後など、スムージング無しで即座に追従（ちらつき防止）
+    // - snap=false: FixedUpdateでスムーズ追従（非オーナーは同期角度をLerpAngleで追従）
+    private void UpdatePose(bool snap, float fixedDeltaTime)
+    {
+        if (Player == null || !Player.IsAlive() || MeetingHud.Instance != null || Player.Player.inVent)
+            return;
+
+        // 角度の計算：
+        // オーナーはローカルのマウス方向、非オーナーはRPCで同期されたtargetAngleを使用する。
+        if (Player.AmOwner)
+        {
+            // 画面中心基準の方向ベクトルから角度を出す（Among Usの視点/画面座標系に合わせる）
+            Vector3 mouseDirection = Input.mousePosition - new Vector3(Screen.width / 2, Screen.height / 2);
+            currentAngle = Mathf.Atan2(mouseDirection.y, mouseDirection.x);
+            targetAngle = currentAngle;
+        }
+        else
+        {
+            if (snap)
+            {
+                // 生成直後は補間せず、同期角度をそのまま採用する
+                currentAngle = targetAngle;
+            }
+            else
+            {
+                // 通常フレームは同期角度へ滑らかに追従する
+                float currentAngleDeg = currentAngle * Mathf.Rad2Deg;
+                float targetAngleDeg = targetAngle * Mathf.Rad2Deg;
+                float t = AngleSmoothTime <= 0f ? 1f : (fixedDeltaTime / AngleSmoothTime);
+                float smoothedAngleDeg = Mathf.LerpAngle(currentAngleDeg, targetAngleDeg, t);
+                currentAngle = smoothedAngleDeg * Mathf.Deg2Rad;
+            }
+        }
+
+        lastAimDirection = new Vector2(Mathf.Cos(currentAngle), Mathf.Sin(currentAngle)).normalized;
+
+        const float handOffset = 0.8f;
+        const float heightOffset = 0.35f;
+        var targetPosition = Player.Player.GetTruePosition() + new Vector2(handOffset * Mathf.Cos(currentAngle), handOffset * Mathf.Sin(currentAngle));
+        var desired = new Vector3(targetPosition.x, targetPosition.y + heightOffset, -5f);
+
+        if (snap || !_hasInitialPosition)
+        {
+            transform.position = desired;
+            _hasInitialPosition = true;
+            _followVelocity = Vector3.zero;
+        }
+        else
+        {
+            const float followSmoothTime = 0.05f;
+            transform.position = Vector3.SmoothDamp(
+                transform.position,
+                desired,
+                ref _followVelocity,
+                followSmoothTime,
+                Mathf.Infinity,
+                fixedDeltaTime);
+        }
+
+        transform.eulerAngles = new Vector3(0f, 0f, currentAngle * Mathf.Rad2Deg);
+
+        if (spriteRenderer != null)
+            spriteRenderer.flipY = Mathf.Cos(currentAngle) < 0f;
     }
 
     private void FixedUpdate()
@@ -109,61 +180,7 @@ public class TriggerHappyGatlingGun : MonoBehaviour
             spriteRenderer.enabled = !pendingDestroy;
         }
 
-        // 角度の計算（オーナーのみマウス方向を使用、それ以外は同期された角度を使用）
-        if (Player.AmOwner)
-        {
-            // マウス方向の計算
-            Vector3 mouseDirection = Input.mousePosition - new Vector3(Screen.width / 2, Screen.height / 2);
-            currentAngle = Mathf.Atan2(mouseDirection.y, mouseDirection.x);
-            targetAngle = currentAngle; // オーナーの場合はtargetAngleも更新
-        }
-        else
-        {
-            // 非オーナーの場合は同期された角度にスムージングを適用
-            float currentAngleDeg = currentAngle * Mathf.Rad2Deg;
-            float targetAngleDeg = targetAngle * Mathf.Rad2Deg;
-            float smoothedAngleDeg = Mathf.LerpAngle(currentAngleDeg, targetAngleDeg, Time.fixedDeltaTime / AngleSmoothTime);
-            currentAngle = smoothedAngleDeg * Mathf.Deg2Rad;
-        }
-
-        lastAimDirection = new Vector2(Mathf.Cos(currentAngle), Mathf.Sin(currentAngle)).normalized;
-
-        const float handOffset = 0.8f;
-        const float heightOffset = 0.35f;
-        const float followSmoothTime = 0.05f;
-
-        var targetPosition = Player.Player.GetTruePosition() + new Vector2(handOffset * Mathf.Cos(currentAngle), handOffset * Mathf.Sin(currentAngle));
-        var desired = new Vector3(targetPosition.x, targetPosition.y + heightOffset, -5f);
-
-        if (!_hasInitialPosition)
-        {
-            transform.position = desired;
-            _hasInitialPosition = true;
-            _followVelocity = Vector3.zero;
-        }
-        else
-        {
-            transform.position = Vector3.SmoothDamp(
-                transform.position,
-                desired,
-                ref _followVelocity,
-                followSmoothTime,
-                Mathf.Infinity,
-                Time.fixedDeltaTime);
-        }
-
-        // 回転設定
-        transform.eulerAngles = new Vector3(0f, 0f, currentAngle * Mathf.Rad2Deg);
-
-        // スプライトの反転設定
-        if (Mathf.Cos(currentAngle) < 0f)
-        {
-            spriteRenderer.flipY = true;
-        }
-        else
-        {
-            spriteRenderer.flipY = false;
-        }
+        UpdatePose(snap: false, fixedDeltaTime: Time.fixedDeltaTime);
 
         // 小刻みな振動を追加（銃の反動のような感じ）
         shakeTime += Time.fixedDeltaTime * shakeSpeed;
@@ -213,11 +230,10 @@ public class TriggerHappyGatlingGun : MonoBehaviour
         }
 
         // 発射可能な状態かチェック
-        bool canFire = Player.AmOwner
-            && MeetingHud.Instance == null
+        bool canFire = MeetingHud.Instance == null
             && !Player.Player.inVent
             && Player.IsAlive()
-            && ability.isEffectActive;
+            && ability.IsGatlingGunActive;
 
         // 発射状態の変化を検出
         if (canFire && !isFiring)

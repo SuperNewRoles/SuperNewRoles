@@ -39,6 +39,7 @@ public class TriggerHappyAbility : CustomButtonBase, IAbilityCount, IButtonEffec
     protected override KeyType keytype => KeyType.Ability1;
 
     public bool isEffectActive { get; set; }
+    public bool IsGatlingGunActive => ActiveGatlingGun;
 
     public Action OnEffectEnds => onFinishHappy;
 
@@ -138,6 +139,8 @@ public class TriggerHappyAbility : CustomButtonBase, IAbilityCount, IButtonEffec
 
         FlushBulletBatch();
         _batchTimer = 0f;
+        // ついでにこのタイミングでキルクールタイム同期もしておく
+        Player.ResetKillCooldown();
     }
 
     public void QueueBullet(Vector2 position, Vector2 direction)
@@ -173,7 +176,7 @@ public class TriggerHappyAbility : CustomButtonBase, IAbilityCount, IButtonEffec
         if (_pendingBulletPositionsWithTime.Count == 0)
             return;
 
-        // ガトリングガンの現在の角度を取得
+        // バッチ送信時点のガトリングガン角度も一緒に送る（非オーナー側の表示角度同期用）
         float currentAngle = 0f;
         if (GatlingGunAnimation != null)
         {
@@ -193,7 +196,7 @@ public class TriggerHappyAbility : CustomButtonBase, IAbilityCount, IButtonEffec
         if (positionsWithTime.Length != directions.Length)
             return;
 
-        // ガトリングガンの角度を同期
+        // 角度同期：オーナーが送ったangleを、非オーナー側のGatlingGunがtargetAngleとして受け取り追従する
         if (GatlingGunAnimation != null)
         {
             GatlingGunAnimation.SetAngle(angle);

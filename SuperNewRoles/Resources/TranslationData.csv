@@ -363,6 +363,8 @@ FinalStatus.SpelunkerCommsElecDeath,不安死,Died of anxiety,因不安而死,�
 FinalStatus.SpelunkerOpenDoor,指挟み,Fingers caught in door,手指被门夹伤,手指被門夾傷
 FinalStatus.NunDeath,ぬーんから転落,Fell off the Nun platform,从“ぬーん”跌落,從「ぬーん」跌落
 FinalStatus.LadderDeath,はしごから転落,Fell off a ladder,从梯子上摔落,從梯子上摔落
+FinalStatus.HappyGatling,ガトリング,Gatling,加特林,加特林
+FinalStatus.SluggerSlug,ツッコミ,Harisen
 
 # HelpMenu
 HelpMenu.MyRoleInformation,自分の役職,My Role Information,我的角色信息,我的角色資訊

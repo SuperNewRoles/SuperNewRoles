@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using SuperNewRoles.Modules;
 using SuperNewRoles.Roles.Ability;
 using UnityEngine;
@@ -7,6 +8,13 @@ namespace SuperNewRoles.CustomObject;
 public class TriggerHappyBullet : MonoBehaviour
 {
     private const float BulletSpeed = 10f;
+    private const float BounceExcludeAngle = 15f;
+    private const float BounceOppositeAngle = 180f;
+    private const float BounceAllowedRange = BounceOppositeAngle - (BounceExcludeAngle * 2f);
+    private const float BounceTotalRange = BounceAllowedRange * 2f;
+    private const float BounceIgnoreDuration = 0.1f;
+    private const float GuardEffectCooldown = 0.2f;
+    private static readonly Dictionary<byte, GuardEffectState> GuardEffectStates = new();
     private ExPlayerControl owner;
     private TriggerHappyAbility ability;
     private Vector2 direction;
@@ -14,6 +22,14 @@ public class TriggerHappyBullet : MonoBehaviour
     private bool pierceWalls;
     private float traveled;
     private CircleCollider2D collider2D;
+    private float ignoreWiseManTimer;
+    private byte ignoreWiseManId = byte.MaxValue;
+
+    private sealed class GuardEffectState
+    {
+        public RoleEffectAnimation Effect;
+        public float NextAllowedTime;
+    }
 
     public static TriggerHappyBullet Spawn(
         ExPlayerControl owner,
@@ -63,6 +79,15 @@ public class TriggerHappyBullet : MonoBehaviour
         {
             Destroy(gameObject);
             return;
+        }
+
+        if (ignoreWiseManTimer > 0f)
+        {
+            ignoreWiseManTimer -= Time.deltaTime;
+            if (ignoreWiseManTimer <= 0f)
+            {
+                ignoreWiseManId = byte.MaxValue;
+            }
         }
 
         var currentPosition = transform.position;
@@ -116,7 +141,141 @@ public class TriggerHappyBullet : MonoBehaviour
                     continue;
             }
 
+            if (TryHandleWiseManGuard(target, position))
+            {
+                return false;
+            }
+
             ability?.RegisterHit(target);
+            return true;
+        }
+
+        return false;
+    }
+
+    private bool TryHandleWiseManGuard(ExPlayerControl target, Vector2 position)
+    {
+        if (target == null)
+            return false;
+
+        if (ignoreWiseManTimer > 0f && ignoreWiseManId == target.PlayerId)
+            return true;
+
+        if (!target.TryGetAbility<WiseManAbility>(out var wiseManAbility))
+            return false;
+
+        if (!wiseManAbility.Active)
+            return false;
+
+        ApplyWiseManBounce(position);
+        PlayWiseManGuardEffect(target);
+
+        ignoreWiseManId = target.PlayerId;
+        ignoreWiseManTimer = BounceIgnoreDuration;
+        return true;
+    }
+
+    private void ApplyWiseManBounce(Vector2 position)
+    {
+        float offset = GetRandomBounceOffset();
+        direction = (Quaternion.Euler(0f, 0f, offset) * direction).normalized;
+        transform.rotation = Quaternion.Euler(0f, 0f, Mathf.Atan2(direction.y, direction.x) * Mathf.Rad2Deg);
+        traveled = 0f;
+
+        float push = 0.05f;
+        if (collider2D != null)
+        {
+            push += collider2D.radius * transform.lossyScale.x;
+        }
+        transform.position = new Vector3(position.x, position.y, transform.position.z) + (Vector3)(direction * push);
+    }
+
+    private static float GetRandomBounceOffset()
+    {
+        float t = UnityEngine.Random.Range(0f, BounceTotalRange);
+        if (t <= BounceAllowedRange)
+            return BounceExcludeAngle + t;
+        return (BounceOppositeAngle + BounceExcludeAngle) + (t - BounceAllowedRange);
+    }
+
+    private static void PlayWiseManGuardEffect(ExPlayerControl wiseMan)
+    {
+        if (wiseMan?.Player == null)
+            return;
+
+        GuardEffectState state = GetGuardEffectState(wiseMan.PlayerId);
+        if (IsEffectVisible(state.Effect))
+            return;
+
+        state.Effect = null;
+
+        float now = Time.time;
+        if (now < state.NextAllowedTime)
+            return;
+
+        if (TryFindVisibleProtectEffect(wiseMan, out var existingEffect))
+        {
+            state.Effect = existingEffect;
+            state.NextAllowedTime = now + GuardEffectCooldown;
+            return;
+        }
+
+        RoleEffectAnimation roleEffectAnimation = GameObject.Instantiate<RoleEffectAnimation>(
+            DestroyableSingleton<RoleManager>.Instance.protectAnim,
+            wiseMan.Player.gameObject.transform);
+        roleEffectAnimation.SetMaskLayerBasedOnWhoShouldSee(shouldBeVisible: true);
+        roleEffectAnimation.Play(wiseMan, null, wiseMan.cosmetics.FlipX, RoleEffectAnimation.SoundType.Global);
+        state.Effect = roleEffectAnimation;
+        state.NextAllowedTime = now + GuardEffectCooldown;
+    }
+
+    private static GuardEffectState GetGuardEffectState(byte playerId)
+    {
+        if (!GuardEffectStates.TryGetValue(playerId, out var state))
+        {
+            state = new GuardEffectState();
+            GuardEffectStates[playerId] = state;
+        }
+
+        return state;
+    }
+
+    private static bool IsEffectVisible(RoleEffectAnimation effect)
+    {
+        if (effect == null)
+            return false;
+        if (!effect.gameObject.activeInHierarchy || !effect.isActiveAndEnabled)
+            return false;
+        if (effect.Renderer != null && !effect.Renderer.enabled)
+            return false;
+        return true;
+    }
+
+    private static bool TryFindVisibleProtectEffect(ExPlayerControl wiseMan, out RoleEffectAnimation effect)
+    {
+        effect = null;
+        if (wiseMan?.Player == null)
+            return false;
+
+        var protectAnim = DestroyableSingleton<RoleManager>.Instance.protectAnim;
+        if (protectAnim == null || protectAnim.gameObject == null)
+            return false;
+
+        string protectName = protectAnim.gameObject.name;
+        if (protectName == null || protectName.Length == 0)
+            return false;
+
+        var effects = wiseMan.Player.GetComponentsInChildren<RoleEffectAnimation>(true);
+        for (int i = 0; i < effects.Length; i++)
+        {
+            var candidate = effects[i];
+            if (candidate == null)
+                continue;
+            if (!candidate.gameObject.name.StartsWith(protectName))
+                continue;
+            if (!IsEffectVisible(candidate))
+                continue;
+            effect = candidate;
             return true;
         }
 
