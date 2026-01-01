@@ -35,7 +35,7 @@ class ModifierGuesser : ModifierBase<ModifierGuesser>
     public override Func<ExPlayerControl, string> ModifierMark => (player) => "{0}" + ModHelpers.Cs(RoleColor, "⊕");
     public override bool AssignFilter => true;
 
-    public override RoleId[] DoNotAssignRoles => [RoleId.God, RoleId.NiceGuesser, RoleId.EvilGuesser, RoleId.Balancer, RoleId.ShiftActor, RoleId.PartTimer, RoleId.OrientalShaman, RoleId.Safecracker, RoleId.Medium, RoleId.MeetingSheriff, RoleId.Datahacker];
+    public override RoleId[] DoNotAssignRoles => [RoleId.God, RoleId.NiceGuesser, RoleId.EvilGuesser, RoleId.Balancer, RoleId.ShiftActor, RoleId.PartTimer, RoleId.OrientalShaman, RoleId.Safecracker, RoleId.Medium, RoleId.MeetingSheriff, RoleId.Datahacker, RoleId.Moira];
 
     public override bool UseTeamSpecificAssignment => true;
 

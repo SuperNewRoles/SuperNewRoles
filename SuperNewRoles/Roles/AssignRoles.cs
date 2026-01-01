@@ -246,14 +246,21 @@ public static class AssignRoles
             if (selectedTicket.RemainingAssignBeans <= 0)
                 tickets_hundred.RemoveAt(ticketIndex);
 
-            int playerIndex = UnityEngine.Random.Range(0, targetPlayers.Count);
-            PlayerControl targetPlayer = targetPlayers[playerIndex];
-            targetPlayers.RemoveAt(playerIndex);
-
             RoleId roleId = selectedTicket.RoleOption.RoleId;
-            AssignRole(targetPlayer, roleId);
-            AssignedRoleIds.Add(roleId); // アサインした役職を追跡
-            maxBeans--;
+            if (TryAssignTeamRole(roleId, targetPlayers, ref maxBeans))
+            {
+                AssignedRoleIds.Add(roleId);
+            }
+            else
+            {
+                int playerIndex = UnityEngine.Random.Range(0, targetPlayers.Count);
+                PlayerControl targetPlayer = targetPlayers[playerIndex];
+                targetPlayers.RemoveAt(playerIndex);
+
+                AssignRole(targetPlayer, roleId);
+                AssignedRoleIds.Add(roleId); // アサインした役職を追跡
+                maxBeans--;
+            }
 
             // 排他設定を再度適用（次のループのために）
             RoleOptionManager.ApplyExclusivitySettings(AssignedRoleIds, AssignTickets_NotHundredPercent.Values.ToArray(), AssignTickets_HundredPercent.Values.ToArray());
@@ -273,14 +280,21 @@ public static class AssignRoles
             if (selectedTicket.RemainingAssignBeans <= 0)
                 tickets_not_hundred.RemoveAll(x => x.RoleOption.RoleId == selectedTicket.RoleOption.RoleId);
 
-            int playerIndex = targetPlayers.GetRandomIndex();
-            PlayerControl targetPlayer = targetPlayers[playerIndex];
-            targetPlayers.RemoveAt(playerIndex);
-
             RoleId roleId = selectedTicket.RoleOption.RoleId;
-            AssignRole(targetPlayer, roleId);
-            AssignedRoleIds.Add(roleId); // アサインした役職を追跡
-            maxBeans--;
+            if (TryAssignTeamRole(roleId, targetPlayers, ref maxBeans))
+            {
+                AssignedRoleIds.Add(roleId);
+            }
+            else
+            {
+                int playerIndex = targetPlayers.GetRandomIndex();
+                PlayerControl targetPlayer = targetPlayers[playerIndex];
+                targetPlayers.RemoveAt(playerIndex);
+
+                AssignRole(targetPlayer, roleId);
+                AssignedRoleIds.Add(roleId); // アサインした役職を追跡
+                maxBeans--;
+            }
 
             // 排他設定を再度適用（次のループのために）
             RoleOptionManager.ApplyExclusivitySettings(AssignedRoleIds, AssignTickets_NotHundredPercent.Values.ToArray(), AssignTickets_HundredPercent.Values.ToArray());
@@ -289,6 +303,58 @@ public static class AssignRoles
         {
             AssignRole(player, isImpostor ? RoleId.Impostor : RoleId.Crewmate);
         }
+    }
+
+    /// <summary>
+    /// TeamRoleBase(=n人1組選出) の割り当てを試みます。
+    /// 成功した場合、targetPlayers から TeamSize 人を削除し、maxBeans を TeamSize 分減らして true を返します。
+    /// </summary>
+    private static bool TryAssignTeamRole(RoleId roleId, List<PlayerControl> targetPlayers, ref int maxBeans)
+    {
+        if (!CustomRoleManager.TryGetRoleById(roleId, out var roleBase))
+            return false;
+
+        if (roleBase is not ITeamRoleBase teamRole)
+            return false;
+
+        int teamSize = teamRole.TeamSize;
+        if (teamSize <= 0)
+        {
+            Logger.Error($"Invalid TeamSize for team role {roleId}: {teamSize}");
+            return false;
+        }
+
+        // 役職枠上限/対象人数が足りない場合は割り当て不可
+        if (maxBeans < teamSize || targetPlayers.Count < teamSize)
+        {
+            Logger.Info($"Skip team role {roleId}: insufficient slots or players (TeamSize={teamSize}, maxBeans={maxBeans}, targets={targetPlayers.Count})");
+            return false;
+        }
+
+        // TeamSize 人をランダムに抽出
+        var picked = new List<PlayerControl>(teamSize);
+        for (int i = 0; i < teamSize; i++)
+        {
+            int idx = UnityEngine.Random.Range(0, targetPlayers.Count);
+            picked.Add(targetPlayers[idx]);
+            targetPlayers.RemoveAt(idx);
+        }
+
+        // 実際の割り当ては役職側に委譲
+        try
+        {
+            teamRole.AssignTeam(picked);
+        }
+        catch (Exception ex)
+        {
+            Logger.Error($"Failed to assign team role {roleId}: {ex}");
+            // 失敗時は元に戻す（可能な範囲で）
+            targetPlayers.AddRange(picked);
+            return false;
+        }
+
+        maxBeans -= teamSize;
+        return true;
     }
     private static void AssignRole(PlayerControl player, RoleId roleId)
     {

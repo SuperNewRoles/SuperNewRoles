@@ -172,7 +172,10 @@ public abstract class WaveCannonObjectBase
 
                     // 通常の波動砲で賢者以外の場合
                     ExPlayerControl.LocalPlayer.RpcCustomDeath(player, GetWaveCannonDeathType(player));
-                    killedPlayers.Add(player);
+                    if (player.IsAlive())
+                    {
+                        killedPlayers.Add(player);
+                    }
                 }
             }
             if (!willCheckWiseman)

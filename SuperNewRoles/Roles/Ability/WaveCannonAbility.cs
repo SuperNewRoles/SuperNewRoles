@@ -54,6 +54,12 @@ public class WaveCannonAbility : CustomButtonBase, IButtonEffect
         this.KillSound = KillSound;
         this.distributedKillSound = distributedKillSound;
     }
+    public override void AttachToAlls()
+    {
+        base.AttachToAlls();
+        if (isResetKillCooldown)
+            SyncKillCoolTimeAbility.CreateAndAttach(this);
+    }
     public override void OnClick()
     {
         WaveCannonObjectBase.RpcSpawnFromType(PlayerControl.LocalPlayer, Type, PlayerControl.LocalPlayer.MyPhysics.FlipX, PlayerControl.LocalPlayer.transform.position);

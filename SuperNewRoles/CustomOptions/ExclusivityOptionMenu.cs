@@ -60,7 +60,8 @@ public static class ExclusivityOptionMenu
             : 0;
         selectedText.text = maxAssign.ToString();
 
-        button.transform.Find("AssignedText").GetComponent<TextMeshPro>().text = string.Join(", ", exclusivitySetting.Select(x => ModTranslation.GetString(x.ToString())));
+        var visibleRoles = exclusivitySetting.Where(roleId => !RoleReleaseLock.IsLocked(roleId));
+        button.transform.Find("AssignedText").GetComponent<TextMeshPro>().text = string.Join(", ", visibleRoles.Select(roleId => ModTranslation.GetString(roleId.ToString())));
 
         ConfigureMaxAssignSelectButtons(maxAssignSelect, selectedText, index);
 
@@ -210,7 +211,7 @@ public static class ExclusivityOptionMenu
         var roles = RoleOptionManager.RoleOptions.Where(x =>
         {
             var roleInfo = CustomRoleManager.AllRoles.FirstOrDefault(r => r.Role == x.RoleId);
-            if (roleInfo == null) return false;
+            if (roleInfo == null || roleInfo.HiddenOption) return false;
             return roleType switch
             {
                 "Impostor" => roleInfo.AssignedTeam == AssignedTeamType.Impostor,
