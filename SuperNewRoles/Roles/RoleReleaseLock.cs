@@ -11,8 +11,6 @@ public static class RoleReleaseLock
     private static readonly HashSet<RoleId> ReleaseAtJan1Roles = new()
     {
         RoleId.Slugger,
-        RoleId.Psychometrist,
-        RoleId.DyingMessenger,
         RoleId.Kunoichi,
         RoleId.Squid,
         RoleId.Sauner,
@@ -29,6 +27,8 @@ public static class RoleReleaseLock
         RoleId.RemoteController,
         RoleId.Mafia,
         RoleId.PoliceSurgeon,
+        RoleId.Psychometrist,
+        RoleId.DyingMessenger,
     };
 
     // 1月1日17時(JST)
