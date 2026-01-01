@@ -17,7 +17,7 @@ public class TriggerHappyGatlingGun : MonoBehaviour
     private float fireTimer;
     private Vector2 lastAimDirection = Vector2.right;
     private const float FireInterval = 0.001f;
-    private const float MuzzleOffset = 0.9f;
+    private const float MuzzleOffset = 0.6f;
 
     // 角度同期用
     private float targetAngle = 0f;
