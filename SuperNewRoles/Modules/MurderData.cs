@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using HarmonyLib;
 using UnityEngine;
@@ -9,11 +10,13 @@ public class MurderData
     public ExPlayerControl Killer { get; }
     public ExPlayerControl Target { get; }
     public Vector3 DeathPosition { get; }
+    public DateTime DeathTimeUtc { get; }
     public MurderData(ExPlayerControl killer, ExPlayerControl target)
     {
         Killer = killer;
         Target = target;
         DeathPosition = target.transform.position;
+        DeathTimeUtc = DateTime.UtcNow;
     }
 }
 

@@ -111,6 +111,36 @@ public static class EndGamer
     {
         if (GameSettingOptions.DisableHijackTaskWin && reason == GameOverReason.CrewmatesByTask) return;
 
+        // 三匹の仔豚勝利（優先度: Hijackers）
+        // 旧仕様:
+        // - チーム全員が生存していれば勝利
+        // - そうでなくても、生存キラー(インポスター/ジャッカル/その他キラー)が全滅していれば勝利
+        // - 同時勝利は禁止
+        foreach (var team in Roles.Neutral.TheThreeLittlePigs.Teams)
+        {
+            if (team == null || team.Count != 3) continue;
+            var members = team.Select(id => ExPlayerControl.ById(id)).Where(p => p != null && Roles.Neutral.TheThreeLittlePigs.IsLittlePig(p)).ToList();
+            if (members.Count != 3) continue;
+
+            bool allAlive = members.All(p => p.IsAlive());
+            bool anyAlive = members.Any(p => p.IsAlive());
+            if (!anyAlive) continue;
+
+            bool allKillerDead = ExPlayerControl.ExPlayerControls
+                .Where(p => p != null && p.IsAlive())
+                .All(p => !p.IsNonCrewKiller() && !p.IsJackalTeam());
+
+            if (allAlive || allKillerDead)
+            {
+                reason = (GameOverReason)CustomGameOverReason.TheThreeLittlePigsWin;
+                winners = members.ToHashSet();
+                color = TheThreeLittlePigs.Instance.RoleColor;
+                upperText = "TheThreeLittlePigs";
+                winType = WinType.Hijackers;
+                return;
+            }
+        }
+
         foreach (ExPlayerControl player in ExPlayerControl.ExPlayerControls)
         {
             if (player.Role == RoleId.God && player.IsAlive())
@@ -170,10 +200,43 @@ public static class EndGamer
                 }
             }
         }
+        foreach (ExPlayerControl player in ExPlayerControl.ExPlayerControls)
+        {
+            if (player.Role != RoleId.Moira || player.IsDead()) continue;
+            if (!player.TryGetAbility<MoiraMeetingAbility>(out var moiraAbility)) continue;
+            if (moiraAbility.HasCount) continue;
+
+            reason = (GameOverReason)CustomGameOverReason.MoiraWin;
+            winners = [player];
+            color = Moira.Instance.RoleColor;
+            upperText = "Moira";
+            winText = "MoiraWinText";
+            winType = WinType.SingleNeutral;
+            return;
+        }
+
+        foreach (ExPlayerControl player in ExPlayerControl.ExPlayerControls)
+        {
+            if (player.Role != RoleId.Frankenstein || player.IsDead()) continue;
+            if (!player.TryGetAbility<FrankensteinAbility>(out var frankensteinAbility)) continue;
+            if (frankensteinAbility.RemainingKillsToWin > 0) continue;
+
+            reason = (GameOverReason)CustomGameOverReason.FrankensteinWin;
+            winners = [player];
+            color = Frankenstein.Instance.RoleColor;
+            upperText = "Frankenstein";
+            winType = WinType.SingleNeutral;
+            return;
+        }
     }
     private static void UpdateAdditionalWinners(GameOverReason reason, ref HashSet<ExPlayerControl> winners, out HashSet<string> addWinners, ref string winText, bool cantWinSixAdditionalWinners)
     {
         addWinners = new();
+        // 三匹の仔豚勝利は同時勝利しない（旧仕様に合わせる）
+        if (reason == (GameOverReason)CustomGameOverReason.TheThreeLittlePigsWin)
+        {
+            return;
+        }
         // ラバーズじゃない人がいる場合
         if (Lovers.LoversWinType == LoversWinType.Single && winners.Any(x => !x.IsLovers()))
         {
