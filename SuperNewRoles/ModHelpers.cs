@@ -437,6 +437,15 @@ public static class ModHelpers
         return list[GetRandomIndex(list)];
     }
 
+    public static T GetRandom<T>(this IEnumerable<T> list)
+    {
+        if (list == null) return default;
+        var array = list as T[] ?? list.ToArray();
+        if (array.Length == 0) return default;
+        int index = GetRandomInt(array.Length - 1);
+        return array[index];
+    }
+
     /// <summary>
     /// リストからランダムなインデックスを取得します
     /// </summary>

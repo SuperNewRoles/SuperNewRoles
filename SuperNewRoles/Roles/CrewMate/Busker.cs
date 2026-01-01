@@ -12,6 +12,7 @@ class Busker : RoleBase<Busker>
 {
     public override RoleId Role { get; } = RoleId.Busker;
     public override Color32 RoleColor { get; } = new(255, 172, 117, byte.MaxValue); // オレンジ色
+    public override Sprite RoleIcon => AssetManager.GetAsset<Sprite>("BuskerRoleIcon.png");
     public override List<Func<AbilityBase>> Abilities { get; } = [() => new BuskerPseudocideAbility(BuskerCoolTime, BuskerPseudocideDuration)];
 
     public override QuoteMod QuoteMod { get; } = QuoteMod.SuperNewRoles;

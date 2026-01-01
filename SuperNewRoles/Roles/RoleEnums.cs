@@ -126,6 +126,7 @@ public enum RoleId : short
     EvilSeer,
     MadJester,
     Slugger,
+    Kunoichi,
     Magaziner,
     Robber,
     OverKiller,
@@ -136,6 +137,19 @@ public enum RoleId : short
     HauntedWolf,
     BattleRoyalWaveCannon,
     TriggerHappy,
+    Sauner,
+    Moira,
+    // TheThreeLittlePigs (三匹の仔豚)
+    TheThreeLittlePigs,
+    TheFirstLittlePig,
+    TheSecondLittlePig,
+    TheThirdLittlePig,
+    Frankenstein,
+    RemoteController,
+    Mafia,
+    Squid,
+    DyingMessenger,
+    PoliceSurgeon,
 }
 
 public enum GhostRoleId : short

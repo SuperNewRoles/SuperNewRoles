@@ -337,6 +337,10 @@ public static class IntroCutscenePatch
         FinalStatusListener.LoadListener();
         CustomDeathExtensions.Register();
         SetTargetPatch.Register();
+        CursedTasks.Main.IntroFinished();
+
+        // イントロ完了時に呪いモードであればロゴ横に呪いロゴを表示
+        CursedTasks.Main.ShowCursedLogoIfNeeded();
 
         // The Fungle マップ初期化処理を段階的に実行（競合状態を回避）
         new LateTask(() =>
@@ -374,13 +378,13 @@ public static class IntroCutscenePatch
         {
             DevicesPatch.ClearAndReload();
         }
-        if (!GameSettingOptions.ImmediateKillCooldown)
+        if (GameSettingOptions.InitialCooldown != InitialCooldownType.Immediate)
         {
             foreach (var ability in ExPlayerControl.LocalPlayer.PlayerAbilities)
             {
                 if (ability is CustomButtonBase customButtonBase && customButtonBase.IsFirstCooldownTenSeconds)
                 {
-                    customButtonBase.SetCoolTenSeconds();
+                    customButtonBase.SetInitialCooldown();
                 }
             }
         }
