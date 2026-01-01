@@ -80,7 +80,7 @@ public class TriggerHappyGatlingGun : MonoBehaviour
 
         // 減衰対応オーディオソースの設定（staticユーティリティを使用）
         AudioClip clip = AssetManager.GetAsset<AudioClip>("TriggerHappyShotSound.wav");
-        attenuatedAudioSource = AttenuatedAudioSourceUtility.SetupSimple(gameObject, clip, loop: true, maxDistance: Mathf.Min(data.Range, 15f), minDistance: 1f);
+        attenuatedAudioSource = AttenuatedAudioSourceUtility.SetupSimple(gameObject, clip, loop: true, maxDistance: Mathf.Max(Mathf.Min(data.Range, 15f), 1f), minDistance: 1f);
         audioSource = attenuatedAudioSource.GetComponent<AudioSource>();
 
         // AttenuatedAudioSourceの自動更新を無効化（手動で音量制御するため）
