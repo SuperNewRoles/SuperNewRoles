@@ -1,6 +1,9 @@
+using System;
+using System.Collections;
 using System.Collections.Generic;
 using BepInEx;
 using BepInEx.Unity.IL2CPP.Utils.Collections;
+using AmongUs.Data;
 using SuperNewRoles.CustomOptions;
 using SuperNewRoles.CustomOptions.Categories;
 using SuperNewRoles.Modules;
@@ -55,6 +58,28 @@ public class ReportUIMenu
             if (timingBox != null) timingTextBox = timingBox.GetComponent<TextBoxTMP>();
         }
         Inner.transform.Find("Button_Send/Text").GetComponent<TextMeshPro>().text = ModTranslation.GetString("RequestInGameSendButton");
+
+        // TextForEnglishの設定（日本語以外の場合）
+        var textForEnglishObj = Inner.transform.Find("TextForEnglish");
+        if (textForEnglishObj != null)
+        {
+            TextMeshPro textForEnglish = textForEnglishObj.GetComponent<TextMeshPro>();
+            if (textForEnglish != null)
+            {
+                SupportedLangs currentLang = DataManager.Settings.Language.CurrentLanguage;
+                if (currentLang != SupportedLangs.Japanese)
+                {
+                    // 時間更新コルーチンを開始
+                    UpdateJapanTimeText(textForEnglish);
+                    textForEnglish.gameObject.SetActive(true);
+                }
+                else
+                {
+                    textForEnglish.gameObject.SetActive(false);
+                }
+            }
+        }
+
         GameObject agreement = Inner.transform.Find("AgreementText").gameObject;
         TextMeshPro agreementTMP = agreement.GetComponent<TextMeshPro>();
         agreementTMP.text = ModTranslation.GetString("RequestInGameAgreement");
@@ -260,6 +285,39 @@ public class ReportUIMenu
         {
             returnButton.transform.Find("Selected").gameObject.SetActive(false);
         }));
+    }
+    private static void UpdateJapanTimeText(TextMeshPro textMesh)
+    {
+        // 初期表示
+        UpdateJapanTimeTextInternal(textMesh);
+
+        // 1秒ごとに更新するコルーチンを開始
+        if (AmongUsClient.Instance != null)
+        {
+            AmongUsClient.Instance.StartCoroutine(UpdateJapanTimeCoroutine(textMesh).WrapToIl2Cpp());
+        }
+    }
+    private static void UpdateJapanTimeTextInternal(TextMeshPro textMesh)
+    {
+        // 日本時間を取得（UTC+9）
+        DateTime jstTime = DateTime.UtcNow.AddHours(9);
+        string jstTimeString = jstTime.ToString("yyyy-MM-dd HH:mm:ss JST");
+
+        // ローカライズされたメッセージを設定
+        string noticeText = ModTranslation.GetString("RequestInGameDeveloperNotice");
+        string timeText = ModTranslation.GetString("RequestInGameCurrentJapanTime", jstTimeString);
+        textMesh.text = $"{noticeText}\n{timeText}";
+    }
+    private static IEnumerator UpdateJapanTimeCoroutine(TextMeshPro textMesh)
+    {
+        while (textMesh != null && textMesh.gameObject != null && textMesh.gameObject.activeSelf)
+        {
+            yield return new WaitForSeconds(1f);
+            if (textMesh != null && textMesh.gameObject != null && textMesh.gameObject.activeSelf)
+            {
+                UpdateJapanTimeTextInternal(textMesh);
+            }
+        }
     }
     public static void ConfigureTextBox(TextBoxTMP textBox)
     {

@@ -156,7 +156,7 @@ public class RoleDictionaryHelpMenu : HelpMenuCategoryBase
 
         // 役職一覧を取得
         var roles = CustomRoleManager.AllRoles
-            .Where(r => r.QuoteMod != QuoteMod.Vanilla && !r.HideInRoleDictionary && (r.OptionTeam == teamType || (r.OptionTeam == RoleOptionMenuType.Hidden && r.AssignedTeam == (AssignedTeamType)teamType)))
+            .Where(r => r.QuoteMod != QuoteMod.Vanilla && !r.HideInRoleDictionary && !r.HiddenOption && (r.OptionTeam == teamType || (r.OptionTeam == RoleOptionMenuType.Hidden && r.AssignedTeam == (AssignedTeamType)teamType)))
             .OrderBy(r => r.Role.ToString())
             .ToList();
 
@@ -553,7 +553,7 @@ public class RoleDictionaryHelpMenu : HelpMenuCategoryBase
 
             default:
                 return CustomRoleManager.AllRoles
-                    .Where(r => r.QuoteMod != QuoteMod.Vanilla && (r.OptionTeam == teamType || (r.OptionTeam == RoleOptionMenuType.Hidden && r.AssignedTeam == (AssignedTeamType)teamType)))
+                    .Where(r => r.QuoteMod != QuoteMod.Vanilla && !r.HideInRoleDictionary && !r.HiddenOption && (r.OptionTeam == teamType || (r.OptionTeam == RoleOptionMenuType.Hidden && r.AssignedTeam == (AssignedTeamType)teamType)))
                     .Count();
         }
     }

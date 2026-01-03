@@ -22,6 +22,7 @@ class Balancer : RoleBase<Balancer>
 {
     public override RoleId Role { get; } = RoleId.Balancer;
     public override Color32 RoleColor { get; } = new(255, 128, 0, byte.MaxValue);
+    public override Sprite RoleIcon => AssetManager.GetAsset<Sprite>("BalancerRoleIcon.png");
     public override List<Func<AbilityBase>> Abilities { get; } = [() => new BalancerAbility(BalancerUseCount)];
 
     public override QuoteMod QuoteMod { get; } = QuoteMod.SuperNewRoles;

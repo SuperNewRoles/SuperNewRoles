@@ -14,7 +14,7 @@ public record CustomPlayerAnimationSimpleOption(
     bool DestroyOnMeeting = true,
     Vector3? localPosition = null,
     Vector3? localScale = null,
-    AudioClip Sound = null
+    bool UpdatePlayerFlipX = true
 )
 {
     public Vector3 LocalPosition => localPosition ?? Vector3.zero;
@@ -41,6 +41,11 @@ public class CustomPlayerAnimationSimple : MonoBehaviour
         }
         spriteRenderer.transform.localPosition = option.LocalPosition;
         spriteRenderer.transform.localScale = option.LocalScale;
+        if (option.PlayerFlipX)
+        {
+            spriteRenderer.transform.localScale = new Vector3(player.cosmetics.FlipX ? option.LocalScale.x : -option.LocalScale.x, option.LocalScale.y, option.LocalScale.z);
+            spriteRenderer.transform.localPosition = new Vector3(player.cosmetics.FlipX ? option.LocalPosition.x : -option.LocalPosition.x, option.LocalPosition.y, option.LocalPosition.z);
+        }
     }
     private void Update()
     {
@@ -53,7 +58,7 @@ public class CustomPlayerAnimationSimple : MonoBehaviour
             Destroy(gameObject);
             return;
         }
-        if (option.PlayerFlipX)
+        if (option.PlayerFlipX && option.UpdatePlayerFlipX)
         {
             spriteRenderer.transform.localScale = new Vector3(player.cosmetics.FlipX ? option.LocalScale.x : -option.LocalScale.x, option.LocalScale.y, option.LocalScale.z);
             spriteRenderer.transform.localPosition = new Vector3(player.cosmetics.FlipX ? option.LocalPosition.x : -option.LocalPosition.x, option.LocalPosition.y, option.LocalPosition.z);

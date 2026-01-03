@@ -49,6 +49,12 @@ public static class RoleDetailMenu
             return;
         }
 
+        SpriteRenderer roleIcon = menuObject.transform.Find("RoleIcon")?.GetComponent<SpriteRenderer>();
+        if (roleIcon != null)
+        {
+            roleIcon.sprite = role.RoleIcon;
+        }
+
         Transform roleInformation = menuObject.transform.Find("Scroller/RoleInformation");
         if (roleInformation == null)
         {

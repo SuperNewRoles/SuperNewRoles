@@ -2,6 +2,7 @@ using System;
 using System.Linq;
 using SuperNewRoles.Events;
 using SuperNewRoles.Events.PCEvents;
+using SuperNewRoles.WaveCannonObj;
 using UnityEngine;
 using UnityEngine.Rendering;
 
@@ -82,6 +83,18 @@ public static class CustomDeathExtensions
             case CustomDeathType.WaveCannon:
                 if (!TryKillEvent.Invoke(source, ref player).RefSuccess)
                     break;
+                player.Player.MurderPlayer(player.Player, MurderResultFlags.Succeeded);
+                FinalStatusManager.SetFinalStatus(player, FinalStatus.WaveCannon);
+                MurderDataManager.AddMurderData(source, player);
+                break;
+            case CustomDeathType.WaveCannonSanta:
+                if (!TryKillEvent.Invoke(source, ref player).RefSuccess)
+                    break;
+                // 被害者視点でのみカスタムキルアニメーションを設定する
+                if (player != null && player.AmOwner)
+                {
+                    CustomKillAnimationManager.SetCurrentCustomKillAnimation(new SantaKillAnimation());
+                }
                 player.Player.MurderPlayer(player.Player, MurderResultFlags.Succeeded);
                 FinalStatusManager.SetFinalStatus(player, FinalStatus.WaveCannon);
                 MurderDataManager.AddMurderData(source, player);
@@ -177,6 +190,32 @@ public static class CustomDeathExtensions
                     break;
                 player.Player.MurderPlayer(player.Player, MurderResultFlags.Succeeded);
                 FinalStatusManager.SetFinalStatus(player, FinalStatus.BansheeWhisper);
+                MurderDataManager.AddMurderData(source, player);
+                break;
+            case CustomDeathType.HappyGatling:
+                if (!TryKillEvent.Invoke(source, ref player).RefSuccess)
+                    break;
+                player.Player.MurderPlayer(player.Player, MurderResultFlags.Succeeded);
+                FinalStatusManager.SetFinalStatus(player, FinalStatus.HappyGatling);
+                MurderDataManager.AddMurderData(source, player);
+                break;
+            case CustomDeathType.SluggerSlug:
+                if (source == null)
+                    throw new Exception("Source is null");
+                if (!TryKillEvent.Invoke(source, ref player).RefSuccess)
+                    break;
+                player.Player.Exiled();
+                FinalStatusManager.SetFinalStatus(player, FinalStatus.SluggerSlug);
+                MurderDataManager.AddMurderData(source, player);
+                break;
+            case CustomDeathType.KnifeKill:
+                if (source == null)
+                    throw new Exception("Source is null");
+                if (!TryKillEvent.Invoke(source, ref player).RefSuccess)
+                    break;
+                player.Player.MurderPlayer(player.Player, MurderResultFlags.Succeeded);
+                FinalStatusManager.SetFinalStatus(player, FinalStatus.Kill);
+                MurderDataManager.AddMurderData(source, player);
                 break;
             default:
                 throw new Exception($"Invalid death type: {deathType}");
@@ -197,6 +236,7 @@ public enum CustomDeathType
 {
     Exile,
     Kill,
+    KnifeKill,
     Revange,
     FalseCharge,
     Suicide,
@@ -220,4 +260,7 @@ public enum CustomDeathType
     BuskerFakeDeath,
     SuperWaveCannon,
     BansheeWhisper,
+    HappyGatling,
+    SluggerSlug,
+    WaveCannonSanta,
 }

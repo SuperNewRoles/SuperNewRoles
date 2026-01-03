@@ -195,18 +195,18 @@ public class ExPlayerControl
     public void ResetKillCooldown()
     {
         if (!AmOwner) return;
-        if (FastDestroyableSingleton<HudManager>.Instance.KillButton.isActiveAndEnabled)
+        var killButton = FastDestroyableSingleton<HudManager>.Instance.KillButton;
+        if (killButton.isActiveAndEnabled)
         {
-            float coolTime = GameOptionsManager.Instance.CurrentGameOptions.GetFloat(FloatOptionNames.KillCooldown);
+            var options = GameOptionsManager.Instance.CurrentGameOptions;
+            float coolTime = options.GetFloat(FloatOptionNames.KillCooldown);
             SetKillTimerUnchecked(coolTime, coolTime);
         }
-        PlayerAbilities.ForEach(x =>
+        var customKillButtons = GetAbilities<CustomKillButtonAbility>();
+        for (var i = 0; i < customKillButtons.Count; i++)
         {
-            if (x is CustomKillButtonAbility customKillButtonAbility)
-            {
-                customKillButtonAbility.ResetTimer();
-            }
-        });
+            customKillButtons[i].ResetTimer();
+        }
     }
     public void SetKillTimerUnchecked(float time, float maxTime)
     {

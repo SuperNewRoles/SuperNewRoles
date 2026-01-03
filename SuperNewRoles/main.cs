@@ -35,6 +35,8 @@ using System.Diagnostics;
 using UnityEngine.SceneManagement;
 using AmongUs.GameOptions;
 using Il2CppInterop.Runtime;
+using SuperNewRoles.WaveCannonObj;
+using static SuperNewRoles.Patches.CursedTasks.CursedBuildSandcastleTask;
 
 namespace SuperNewRoles;
 
@@ -97,6 +99,8 @@ public partial class SuperNewRolesPlugin : BasePlugin
 
         Instance = this;
 
+        SuperNewRoles.Patches.CursedTasks.Main.ClearAndReload();
+
         RegisterCustomObjects();
         CustomLoadingScreen.Patch(Harmony);
         HarmonyPatchAllTask = TaskRunIfWindows(() => PatchAll(Harmony));
@@ -108,8 +112,8 @@ public partial class SuperNewRolesPlugin : BasePlugin
 
         ConfigRoles.Init();
         UpdateCPUProcessorAffinity();
-        CustomRoleManager.Load();
         AssetManager.Load();
+        CustomRoleManager.Load();
         ModTranslation.Load();
         var tasks = CustomRPCManager.Load();
         CustomOptionManager.Load();
@@ -281,6 +285,12 @@ public partial class SuperNewRolesPlugin : BasePlugin
         ClassInjector.RegisterTypeInIl2Cpp<Drone>();
         ClassInjector.RegisterTypeInIl2Cpp<WormHole>();
         ClassInjector.RegisterTypeInIl2Cpp<SluggerDeadbody>();
+        ClassInjector.RegisterTypeInIl2Cpp<TriggerHappyGatlingGun>();
+        ClassInjector.RegisterTypeInIl2Cpp<TriggerHappyBullet>();
+        ClassInjector.RegisterTypeInIl2Cpp<AttenuatedAudioSource>();
+        ClassInjector.RegisterTypeInIl2Cpp<BuildSandcastleMinigamePatch.CursedSandcastleBucketRootMarker>();
+        ClassInjector.RegisterTypeInIl2Cpp<BuildSandcastleMinigamePatch.CursedSandcastleBucketCloneMarker>();
+        ClassInjector.RegisterTypeInIl2Cpp<WCSantaHandler>();
         // lassInjector.RegisterTypeInIl2Cpp<AddressableReleaseOnDestroy>();
     }
 

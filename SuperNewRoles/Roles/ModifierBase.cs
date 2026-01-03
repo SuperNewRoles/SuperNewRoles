@@ -39,6 +39,7 @@ internal abstract class ModifierBase<T> : BaseSingleton<T>, IModifierBase where 
     public virtual int NeutralChance => RoleOptionManager.TryGetModifierRoleOption(ModifierRole, out var role) ? role.NeutralChance : 100;
     public virtual int MaxCrewmates => RoleOptionManager.TryGetModifierRoleOption(ModifierRole, out var role) ? role.MaxCrewmates : 0;
     public virtual int CrewmateChance => RoleOptionManager.TryGetModifierRoleOption(ModifierRole, out var role) ? role.CrewmateChance : 100;
+    public virtual Sprite RoleIcon => null;
 }
 
 public interface IModifierBase : IRoleInformation
@@ -67,7 +68,7 @@ public interface IModifierBase : IRoleInformation
     public int NeutralChance { get; }
     public int MaxCrewmates { get; }
     public int CrewmateChance { get; }
-
+    public Sprite RoleIcon { get; }
     /// <summary>
     /// AbilityはAbilitiesから自動でセットされるが、追加で他の処理を行いたい場合はOverrideすること
     /// </summary>
