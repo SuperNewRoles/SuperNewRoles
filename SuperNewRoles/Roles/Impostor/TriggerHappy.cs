@@ -31,7 +31,9 @@ class TriggerHappy : RoleBase<TriggerHappy>
                 range: TriggerHappyRange,
                 bulletSize: TriggerHappyBulletSize,
                 pierceWalls: TriggerHappyPierceWalls,
-                bulletSpreadAngleOption: TriggerHappyBulletSpreadAngleOption
+                bulletSpreadAngleOption: TriggerHappyBulletSpreadAngleOption,
+                friendlyFire: TriggerHappyFriendlyFire,
+                killSound: TriggerHappyKillSound
             )
         )
     ];
@@ -73,4 +75,10 @@ class TriggerHappy : RoleBase<TriggerHappy>
 
     [CustomOptionSelect("TriggerHappyBulletSpreadAngle", typeof(TriggerHappyBulletSpreadAngleOption), "TriggerHappyBulletSpread.", defaultValue: TriggerHappyBulletSpreadAngleOption.Angle45)]
     public static TriggerHappyBulletSpreadAngleOption TriggerHappyBulletSpreadAngleOption;
+
+    [CustomOptionBool("TriggerHappyFriendlyFire", true)]
+    public static bool TriggerHappyFriendlyFire;
+
+    [CustomOptionBool("TriggerHappyKillSound", true)]
+    public static bool TriggerHappyKillSound;
 }
