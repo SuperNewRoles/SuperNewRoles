@@ -24,7 +24,7 @@ class Banshee : RoleBase<Banshee>
     public override RoleId Role { get; } = RoleId.Banshee;
     public override Color32 RoleColor { get; } = Palette.ImpostorRed;
 
-    private static Dictionary<BansheeFairyRange, float> BansheeFairyRangeValues = new()
+    private static readonly Dictionary<BansheeFairyRange, float> BansheeFairyRangeValues = new()
     {
         { BansheeFairyRange.Short, 1f },
         { BansheeFairyRange.Medium, 1.8f },
