@@ -176,12 +176,13 @@ public class BansheeAbility : AbilityBase
             if (player.IsDead()) continue;
             if (player.AmOwner) continue;
             if (player == currentFairyPlayer) continue;
-            if (player.IsImpostor() && !canKillImpostor) continue;
             if (Vector3.Distance(currentFairyPlayer.transform.position, player.transform.position) <= fairyRange)
             {
                 if (playersInRangeAlreadyChecked.Contains(player.PlayerId)) continue;
                 if (whisperTriggered)
                 {
+                    playersInRangeAlreadyChecked.Add(player.PlayerId);
+                    if (player.IsImpostor() && !canKillImpostor) continue;
                     Player.RpcCustomDeath(player, CustomDeathType.BansheeWhisper);
                     Player.ResetKillCooldown();
                     ResetStatus();
