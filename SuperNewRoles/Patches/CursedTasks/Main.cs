@@ -13,8 +13,7 @@ namespace SuperNewRoles.Patches.CursedTasks;
 public static class Main
 {
     public static bool IsCursed => GameSettingOptions.CursedTaskOption
-        && ModeManager.IsMode(ModeId.Default)
-        && !RoleReleaseLock.IsCursedModeLocked();
+        && ModeManager.IsMode(ModeId.Default);
 
     private static GameObject _cursedLogoObject;
 
