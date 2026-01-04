@@ -185,6 +185,13 @@ public static class CustomDeathExtensions
                 player.Player.Exiled();
                 FinalStatusManager.SetFinalStatus(player, FinalStatus.Suicide);
                 break;
+            case CustomDeathType.BansheeWhisper:
+                if (!TryKillEvent.Invoke(source, ref player).RefSuccess)
+                    break;
+                player.Player.MurderPlayer(player.Player, MurderResultFlags.Succeeded);
+                FinalStatusManager.SetFinalStatus(player, FinalStatus.BansheeWhisper);
+                MurderDataManager.AddMurderData(source, player);
+                break;
             case CustomDeathType.HappyGatling:
                 if (!TryKillEvent.Invoke(source, ref player).RefSuccess)
                     break;
@@ -257,6 +264,7 @@ public enum CustomDeathType
     SuicideSecrets,
     BuskerFakeDeath,
     SuperWaveCannon,
+    BansheeWhisper,
     HappyGatling,
     SluggerSlug,
     WaveCannonSanta,
