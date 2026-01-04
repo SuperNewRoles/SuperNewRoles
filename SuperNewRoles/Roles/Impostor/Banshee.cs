@@ -129,6 +129,7 @@ public class BansheeAbility : AbilityBase
         Player.AttachAbility(bansheeReleaseAbility, new AbilityParentAbility(this));
         Player.AttachAbility(bansheeWhisperAbility, new AbilityParentAbility(this));
         Player.AttachAbility(showPlayerUIAbility, new AbilityParentAbility(this));
+        Player.AttachAbility(customKillButtonAbility, new AbilityParentAbility(this));
     }
 
     public override void AttachToLocalPlayer()
