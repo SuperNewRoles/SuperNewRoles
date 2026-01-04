@@ -27,12 +27,8 @@ AdditionalWin,追加勝利,Additional Win,额外胜利,額外勝利
 Seconds,秒,Seconds,秒,秒
 
 # TheThreeLittlePigs
-TheThreeLittlePigs,三匹の仔豚,The Three Little Pigs,三只小猪,三隻小豬
 TheThreeLittlePigsUseCustomTaskSetting,三匹の仔豚のタスクを個別設定,Set tasks for The Three Little Pigs,为三只小猪单独设置任务,為三隻小豬單獨設置任務
 TheThreeLittlePigsTask,三匹の仔豚のタスク,The Three Little Pigs Tasks,三只小猪任务,三隻小豬任務
-TheFirstLittlePig,一番目の仔豚,First Little Pig,第一只小猪,第一隻小豬
-TheSecondLittlePig,二番目の仔豚,Second Little Pig,第二只小猪,第二隻小豬
-TheThirdLittlePig,三番目の仔豚,Third Little Pig,第三只小猪,第三隻小豬
 TheFirstLittlePigClearTaskPercent,一番目の仔豚 タスク達成率,First Little Pig Task %,第一只小猪任务百分比,第一隻小豬任務百分比
 TheFirstLittlePigUseCustomTimer,一番目の仔豚 タイマーをカスタム,First Little Pig Custom Timer,第一只小猪自定义计时器,第一隻小豬自訂計時器
 TheFirstLittlePigFlashTimer,一番目の仔豚 フラッシュ間隔,First Little Pig Flash Interval,第一只小猪闪光间隔,第一隻小豬閃光間隔
@@ -537,6 +533,11 @@ Squid,イカ,Squid,乌贼,烏賊
 Frankenstein,フランケンシュタイン,Frankenstein,弗兰肯斯坦,科學怪人
 Moira,モイラ,Moira,莫伊拉,莫伊拉
 Sauner,サウナー,Sauner,桑拿者,桑拿者
+TheThreeLittlePigs,三匹の仔豚,The Three Little Pigs,三只小猪,三隻小豬
+TheFirstLittlePig,一番目の仔豚,First Little Pig,第一只小猪,第一隻小豬
+TheSecondLittlePig,二番目の仔豚,Second Little Pig,第二只小猪,第二隻小豬
+TheThirdLittlePig,三番目の仔豚,Third Little Pig,第三只小猪,第三隻小豬
+RemoteController,リモコン,Remote Controller,傀儡师,思考者
 
 # Descriptions_VanillaRoles
 Crewmate.Description,特に何も能力を持たない基本的なクルーメイト役職です。\n人狼ゲームにおける村人の役割を持ちます。\nキル能力を持つ人外を全て追放するか、タスクを全て完了すると勝利します。,A basic Crewmate role with no special abilities.\nThey serve the role of Villager from the Werewolf game.\nVictory is achieved by ejecting all non-Crewmate players with kill abilities or by completing all tasks.,一个没有特殊能力的基础船员角色。\n他们承担了狼人游戏中村民的角色。\n通过将所有拥有击杀能力的非船员玩家投出局或完成所有任务来获胜。,一個沒有特殊能力的基礎船員角色。\n他們承擔了狼人遊戲中村民的角色。\n通過將所有擁有擊殺能力的非船員玩家投出局或完成所有任務來獲勝。,
@@ -593,6 +594,7 @@ Banshee.Description,特殊なキル能力を有するインポスターです。
 TriggerHappy.Description,特殊なキル能力を有するインポスターです。\n「乱射」ボタンを押すことで、その時点で向いている方向に向かって、扇状に弾幕を発射することが出来ます。\n設定発数弾が当たったプレイヤーは陣営関係なく死亡します。,This is an Impostor with a unique kill ability.\nBy pressing the "Barrage" button，you can fire a fan-shaped spray of bullets in the direction you are currently facing.\nAny player hit by the set number of bullets will die，regardless of their faction.,这是拥有特殊击杀能力的伪装者。\n点击“乱射”按钮，可以向当前面对的方向发射扇形弹幕。\n被击中设定次数的玩家将会死亡，且无视阵营。,這是擁有特殊擊殺能力的內鬼。\n按下「亂射」按鈕，可向當前面向方向發射扇形彈幕。\n被命中達到設定次數的玩家將會死亡，且無視陣營。
 Slugger.Description,特殊なキル能力を有するインポスターです。\n「ハリセン」ボタンを構えるとハリセンを構え、周囲にいるプレイヤーを吹き飛ばします。\n吹き飛ばされたプレイヤーは死体を残さずに死亡します。,This is an Impostor with a special kill ability.\nWhen you ready the "Slugger!" button， you will hold a paper fan and blow away nearby players.\nPlayers who are blown away will die without leaving a body.,这是具有特殊击杀能力的伪装者。\n摆出“纸扇”按钮的姿势时会举起纸扇，并将周围的玩家击飞。\n被击飞的玩家将直接死亡，且不留下尸体。,這是擁有特殊擊殺能力的內鬼。\n準備「哈利扇」後會舉起紙扇，並將周圍玩家擊飛。\n被擊飛的玩家會直接死亡且不留下屍體。
 Mafia.Description,特殊なインポスターです。\nインポスターが複数生存している間はキル能力を持ちません。\nインポスターが自身だけになると、キル能力を獲得します。,This is a special Impostor.\nThey do not have the ability to kill while other Impostors are still alive.\nOnce they become the last Impostor remaining， they gain the ability to kill.,这是特殊的伪装者。\n当有多个伪装者存活时，不具备击杀能力。\n当伪装者只剩自己一人时，将获得击杀能力。,這是特殊的內鬼。\n當有多名內鬼存活時不具備擊殺能力。\n當內鬼只剩自己一人時，將獲得擊殺能力。
+RemoteController.Descriptio,特殊なキル能力を有するインポスターです。\n「マーキング」ボタンを押したプレイヤーを操作対象として登録します。\n「操作！」を押すと、マーキングしたプレイヤーを操ることが出来ます。\nキルをすると自分の視点に戻ります。\nただし、操作中の自分自身は無防備なので注意しましょう。,
 
 # Descriptions_Neutral
 Jackal.Description,キル能力を有する第三陣営です。\n自陣営以外のキルができる陣営が全滅した上で、自陣営とクルーが同数以下になれば勝利します。\n設定次第で他のプレイヤーの役職を、自身の後継となるサイドキックや、手助けをしてくれるジャッカルフレンズに変更する能力を有することもできます。,A third-faction role with a kill ability.\nIt wins if all factions capable of killing outside its own are eliminated and its faction and the Crewmates are equal in number or fewer.\nDepending on the settings，it can change other players’ roles into a Sidekick (its successor) or Jackal Friends who assist it.,这是一个拥有击杀能力的第三阵营角色。\n当所有能够进行击杀的其他阵营被消灭，并且其阵营与船员人数相等或更少时，即可获胜。\n根据设定，它还可以将其他玩家的角色变更为边缘队员（其继任者）或协助的杰克朋友。,這是一個具備擊殺能力的第三陣營角色。\n當其他能進行擊殺的陣營全部被消滅，且其陣營與船員數量相等或更少時，即獲勝。\n根據設定，還可將其他玩家的角色變更為接班的邊翼或提供協助的傑克朋友。,
@@ -626,6 +628,9 @@ Spelunker.Description,キル能力を有さない独自の勝利条件を持つ�
 Sauner.Description,キル能力を有さない独自の勝利条件を持つ第三陣営です。\nメインホールの暗室のサウナ、シャワー室のシャワー、展望デッキでの外気浴の順番で、それぞれ一定時間滞在すると整ってその時点で単独勝利します。\nこの役職はエアシップのみアサインされます。,This is a neutral role with its own unique victory conditions that does not possess any killing abilities．\nTo win independently，you must "get centered" by staying in the following locations for a certain amount of time in order: the sauna in the Main Hall's dark room，the shower in the Showers，and the outside air bath on the Viewing Deck．\nThis role is assigned only on the Airship map．,这是不具备击杀能力、拥有独特获胜条件的第三阵营。\n按照主大厅暗室的桑拿房、淋浴间的淋浴、展望台的露天浴池的顺序，分别停留一定时间后即可进入“整透了（To-totta）”状态，并立即获得单独胜利。\n该职业仅在飞艇（Airship）地图中分配。
 Frankenstein.Description,特殊なキル能力を有し、独自の勝利条件を持つ第三陣営です。\n死体に対して「怪物作成」をすると、その死体を怪物として一時的に蘇生し、操れるようになります。\n怪物はキルをすることが出来ます。\nキルをすると怪物は死体に戻り、能力を使用した地点に戻ります。\n一定回数キルをした状態でゲーム終了まで生存していると、一部役職の特殊勝利を除き、その勝利を横取りして勝利することができます。,This is a neutral role that possesses a special kill ability and has its own unique victory condition. \nBy using "Monster Creation" on a corpse， you can temporarily revive that corpse as a monster and control it. \nThe monster is capable of performing kills. \nWhen a kill is made， the monster reverts to a corpse and returns to the location where the ability was activated. \nIf you have achieved a certain number of kills and remain alive until the end of the game， you can snatch the victory away from others and win for yourself， except in cases of certain roles' special victories.,这是拥有特殊击杀能力，并具备独特获胜条件的第三阵营。\n对尸体使用“制作怪物”后，该尸体会作为怪物暂时苏生，并受到操控。\n怪物可以进行击杀。\n进行击杀后，怪物会变回尸体，并回到使用能力时的地点。\n在完成一定次数的击杀并生存至游戏结束的情况下，除了部分职业的特殊胜利外，可以夺取其胜利并获得最终胜利。
 Moira.Description,キル能力を有さない独自の勝利条件を持つ第三陣営です。\n会議中に二人のプレイヤーに対してボタンを押すと、その会議終了時にその二人の役職を入れ替えます。\n能力を使い切った状態でゲーム終了まで生存していると、一部役職の特殊勝利を除き、その勝利を横取りして勝利することができます。,This is a neutral role with a unique victory condition that does not possess any killing abilities.\nIf you press the button on two players during a meeting， their roles will be swapped at the end of that meeting.\nIf you survive until the end of the game after using all of your abilities， you can intercept the victory and win for yourself， except in cases of certain roles' special victories.,这是拥有独特获胜条件的第三阵营，不具备击杀能力。\n在会议期间对两名玩家按下按钮，就会在该会议结束时交换那两名玩家的身份。\n在用尽能力的情况下生存至游戏结束，则可以夺取该胜利并获胜（部分身份的特殊胜利除外）。
+TheFirstLittlePig.Description,キル能力を有さない独自の勝利条件を持つ三人一組の第三陣営です。\nタスクを一定数こなすと、バニラ設定のキルクールごとに自身の視界が発光し、キルクールの経過がわかるようになります。\n勝利条件は以下の2種類が存在します。\n・(三人生存)ゲーム終了まで生存していると、一部役職の特殊勝利を除き、その勝利を横取りして勝利することができます。\n・(二人or一人生存)キル能力を持つ人外役職が全て死亡すると、その時点で単独勝利します。,
+TheSecondLittlePig.Description,キル能力を有さない独自の勝利条件を持つ三人一組の第三陣営です。\nタスクを一定数こなすと、設定回数だけキルを防ぐことが出来ます。\n勝利条件は以下の2種類が存在します。\n・(三人生存)ゲーム終了まで生存していると、一部役職の特殊勝利を除き、その勝利を横取りして勝利することができます。\n・(二人or一人生存)キル能力を持つ人外役職が全て死亡すると、その時点で単独勝利します。,
+TheThirdLittlePig.Description,キル能力を有さない独自の勝利条件を持つ三人一組の第三陣営です。\nタスクを一定数こなすと、設定回数だけキルを防ぎ、そのキル者をキルします。\n勝利条件は以下の2種類が存在します。\n・(三人生存)ゲーム終了まで生存していると、一部役職の特殊勝利を除き、その勝利を横取りして勝利することができます。\n・(二人or一人生存)キル能力を持つ人外役職が全て死亡すると、その時点で単独勝利します。,
 
 # Descriptions_Crewmate
 Bait.Description,タスクターンに発動する能力を有するクルーメイトです。\nキルされると、そのキル者に自身の死体を通報させます。,A Crewmate with an ability that activates during task turns.\nWhen killed，they force their killer to report their body.,一个在任务回合中可激活能力的船员。\n当被击杀时，会迫使击杀者报告他们的尸体。,一個在任務回合中可激活能力的船員。\n當被擊殺時，會迫使擊殺者報告他們的屍體。,
@@ -756,6 +761,7 @@ TriggerHappyIntro1,派手にぶちかますぜ！,I'm gonna go out with a bang!,
 SluggerIntro1,なんでやねん！,Shooooot!,为什么啊！,為什麼啊！
 KunoichiIntro1,影に潜む女忍,A kunoichi hiding in the darkness,潜伏在影子里的女忍者,潛伏在影子裡的女忍者
 MafiaIntro1,最後の弾丸,The final round,最后的子弹,最後的子彈
+RemoteControllerIntro1,ピコピコッと操作！,
 
 # Intros_Neutral
 JackalIntro1,暗躍するもう一人の殺人鬼,Another puppeteer of death in the shadows,另一个暗中操纵死亡者,另一個暗中操縱死亡者,
@@ -789,6 +795,9 @@ ShermansServantIntro1,星標の従者,Servant of the star mark,星标的仆从,�
 SaunerIntro1,至高の「整い」を求めて,In pursuit of the ultimate "totonoi" state,追求至高的“身心合一”境界
 FrankensteinIntro1,怪物博士の苦悩,The Anguish of the Monster Doctor,怪物博士的苦恼
 MoiraIntro1,運命の女神様の気まぐれ,Just the luck of the draw,命运女神的心血来潮
+TheFirstLittlePigIntro1,藁の家でもないよりマシ,
+TheSecondLittlePigIntro1,木の家はそこそこ頼りになる,
+TheThirdLittlePigIntro1,レンガの家は盤石さ,
 
 # Intros_Crewmate
 BaitIntro1,この身を餌に真実を,Use my body as bait for the truth,以我肉身诱引真相,以我肉身誘引真相,
@@ -1339,9 +1348,6 @@ TeleporterWaitingTime,テレポート待機時間,Waiting Time,等待時間,等�
 TeleporterTeleportText,{0}へテレポートされた,Teleported to {0},被傳送到{0},被傳送到{0}
 
 # RemoteController
-RemoteController,リモコン,Remote Controller,傀儡师,思考者
-RemoteController.Description,任意のプレイヤーに受信機を取り付け、遠隔操作できます。\n操作中は自身も対象も移動できません。\n操作中は対象のキル・使用・ベントを行えます。,Can attach a receiver to any player and remotely control them.\nWhile operating, both you and the target cannot move.\nDuring operation, you can kill/use/vent as the target.,可以给任意玩家安装收信器并远程操纵。\n操纵期间你和目标都无法移动。\n操纵期间可用目标进行击杀/使用/通风口。,可以給任意玩家安裝收訊器並遠端控制。\n控制期間你和目標都無法移動。\n控制期間可用目標進行擊殺/使用/通風口。,
-RemoteControllerIntro1,ピコピコピコッ！,Beep-beep-beep!,哔哔哔！,哔哔哔！,
 RemoteControllerMarkButton,マーキング,Marking,收信器,收訊器
 RemoteControllerOperateButton,操作！,Operation!,操纵！,控制！
 RemoteControllerMarkCooldown,マーキングのクールタイム,Mark Cooldown,安装收信器冷却,安裝收訊器冷卻時間
