@@ -361,7 +361,7 @@ FinalStatus.SpelunkerSetRoleDeath,,
 FinalStatus.SpelunkerVentDeath,転倒,Slipped and fell,滑倒致死,滑倒致死
 FinalStatus.SpelunkerCommsElecDeath,不安死,Died of anxiety,因不安而死,因不安而死
 FinalStatus.SpelunkerOpenDoor,指挟み,Fingers caught in door,手指被门夹伤,手指被門夾傷
-inalStatus.BansheeWhisper,妖精の声,Banshee's whisper,妖精的低语,妖精的低語
+FinalStatus.BansheeWhisper,妖精の声,Banshee's whisper,妖精的低语,妖精的低語
 FinalStatus.NunDeath,ぬーんから転落,Fell off the Nun platform,从“ぬーん”跌落,從「ぬーん」跌落
 FinalStatus.LadderDeath,はしごから転落,Fell off a ladder,从梯子上摔落,從梯子上摔落
 FinalStatus.HappyGatling,ガトリング,Gatling,加特林,加特林
