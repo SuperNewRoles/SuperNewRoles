@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using SuperNewRoles.Modules;
+using SuperNewRoles.Mode;
 using SuperNewRoles.Roles.Ability;
 using UnityEngine;
 
@@ -132,6 +133,10 @@ public class TriggerHappyBullet : MonoBehaviour
             if (target == null || target.IsDead() || playerControl.inVent)
                 continue;
 
+            var data = ability?.Data;
+            if (data != null && !data.FriendlyFire && !IsValidTargetByFriendlyFire(owner, target))
+                continue;
+
             if (!pierceWalls)
             {
                 Vector2 targetPosition = target.GetTruePosition();
@@ -151,6 +156,28 @@ public class TriggerHappyBullet : MonoBehaviour
         }
 
         return false;
+    }
+
+    private static bool IsValidTargetByFriendlyFire(ExPlayerControl source, ExPlayerControl target)
+    {
+        if (source == null || target == null) return false;
+
+        // WaveCannonと同様の同陣営/同チーム無効化ルール
+        if (ModeManager.IsMode(ModeId.WCBattleRoyal))
+        {
+            if (WCBattleRoyalMode.Instance.IsOnSameTeam(source.Player, target.Player))
+                return false;
+        }
+        else
+        {
+            if (source.IsImpostor() && target.IsImpostor())
+                return false;
+            if (source.IsCrewmate() && target.IsCrewmate())
+                return false;
+            if (source.IsJackal() && target.IsJackal())
+                return false;
+        }
+        return true;
     }
 
     private bool TryHandleWiseManGuard(ExPlayerControl target, Vector2 position)

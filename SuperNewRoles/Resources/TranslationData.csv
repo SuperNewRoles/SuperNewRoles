@@ -1955,6 +1955,8 @@ TriggerHappyRange,射程,Range,射程,射程
 TriggerHappyBulletSize,弾の大きさ,Bullet Size,子弹大小,子彈大小
 TriggerHappyPierceWalls,弾が壁を貫通する,Pierce Walls,子弹穿墙,子彈穿牆
 TriggerHappyBulletSpreadAngle,弾の発射角,Bullet Spread Angle,子弹发射角度,子彈發射角度
+TriggerHappyFriendlyFire,フレンドリーファイア,Friendly Fire,友军伤害,友軍傷害
+TriggerHappyKillSound,キル音を鳴らす,Play Kill Sound,播放击杀音效,播放擊殺音效
 TriggerHappyBulletSpread.Angle15,15度,15 Degrees,15度,15度
 TriggerHappyBulletSpread.Angle30,30度,30 Degrees,30度,30度
 TriggerHappyBulletSpread.Angle45,45度,45 Degrees,45度,45度
