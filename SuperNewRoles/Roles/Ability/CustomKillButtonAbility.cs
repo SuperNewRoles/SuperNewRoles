@@ -10,6 +10,7 @@ namespace SuperNewRoles.Roles.Ability;
 
 public class CustomKillButtonAbility : TargetCustomButtonBase
 {
+    public override bool IsFirstCooldownTenSeconds => DefaultTimer <= 0.1f;
     public Func<bool> CanKill { get; }
     public Func<float?> KillCooldown { get; }
     public Func<bool> OnlyCrewmatesValue { get; }
@@ -28,6 +29,7 @@ public class CustomKillButtonAbility : TargetCustomButtonBase
     public override Func<ExPlayerControl, bool>? IsTargetable => IsTargetableValue;
     public override ShowTextType showTextType => _showTextType?.Invoke() ?? ShowTextType.Hidden;
     public override string showText => _showText?.Invoke() ?? "";
+    protected override bool CanTargetFrankensteinBody => true;
     private Func<ShowTextType> _showTextType { get; } = () => ShowTextType.Hidden;
     private Func<string> _showText { get; } = () => "";
     // キルボタンの処理をカスタムできる。

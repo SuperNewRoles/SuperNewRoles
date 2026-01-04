@@ -106,11 +106,10 @@ public sealed class FrankensteinAbility : AbilityBase
         _ventAbility = new CustomVentAbility(() => IsMonster && _data.MonsterCanUseVent);
         _impostorVisionAbility = new ImpostorVisionAbility(() => IsMonster && _data.MonsterHasImpostorVision);
 
-        var parent = new AbilityParentAbility(this);
-        Player.AddAbility(_createButton, parent);
-        Player.AddAbility(_killButton, parent);
-        Player.AddAbility(_ventAbility, parent);
-        Player.AddAbility(_impostorVisionAbility, parent);
+        Player.AddAbility(_createButton, new AbilityParentAbility(this));
+        Player.AddAbility(_killButton, new AbilityParentAbility(this));
+        Player.AddAbility(_ventAbility, new AbilityParentAbility(this));
+        Player.AddAbility(_impostorVisionAbility, new AbilityParentAbility(this));
 
         _tryKillListener = TryKillEvent.Instance.AddListener(OnTryKill);
         _meetingStartListener = MeetingStartEvent.Instance.AddListener(OnMeetingStart);
@@ -139,10 +138,11 @@ public sealed class FrankensteinAbility : AbilityBase
         data.RefSuccess = false;
 
         if (data.Killer.AmOwner)
-            data.Killer.ResetKillCooldown();
-
-        if (data.Killer.AmOwner || ExPlayerControl.LocalPlayer.IsDead())
-            data.RefTarget.Player.ShowFailedMurder();
+        {
+            if (Constants.ShouldPlaySfx())
+                SoundManager.Instance.PlaySound(data.Killer.Player.KillSfx, false, 0.8f);
+            data.Killer.Player.NetTransform.RpcSnapTo(data.RefTarget.Player.transform.position);
+        }
 
         if (Player.AmOwner)
         {
@@ -340,4 +340,3 @@ public sealed class FrankensteinCreateMonsterButtonAbility : CustomButtonBase
         FrankensteinAbility.RpcStartMonster(_ability, _targetBody.ParentId, playerPos, bodyPos);
     }
 }
-

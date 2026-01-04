@@ -328,6 +328,8 @@ public abstract class CustomButtonBase : AbilityBase
     }
     public void OnClickEvent()
     {
+        if (this is TargetCustomButtonBase targetButton && targetButton.ShouldCancelClickForTarget())
+            return;
         if (this.Timer <= 0f && CheckIsAvailable() && (buttonEffect == null || !buttonEffect.isEffectActive))
         {
             actionButton.graphic.color = GrayOut;
