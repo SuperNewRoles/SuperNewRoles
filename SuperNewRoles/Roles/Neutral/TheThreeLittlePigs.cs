@@ -102,8 +102,6 @@ internal sealed class TheThreeLittlePigs : TeamRoleBase<TheThreeLittlePigs>
     public static bool IsLittlePig(ExPlayerControl p)
         => p != null && (p.Role is RoleId.TheFirstLittlePig or RoleId.TheSecondLittlePig or RoleId.TheThirdLittlePig);
 
-    public static bool IsLittlePig(PlayerControl p) => IsLittlePig((ExPlayerControl)p);
-
     public static bool IsInSameTeam(ExPlayerControl a, ExPlayerControl b)
     {
         if (a == null || b == null) return false;
@@ -111,21 +109,6 @@ internal sealed class TheThreeLittlePigs : TeamRoleBase<TheThreeLittlePigs>
         {
             if (team.Contains(a.PlayerId) && team.Contains(b.PlayerId))
                 return true;
-        }
-        return false;
-    }
-
-    public static bool TryGetTeamOf(ExPlayerControl p, out List<byte> team)
-    {
-        team = null;
-        if (p == null) return false;
-        foreach (var t in Teams)
-        {
-            if (t.Contains(p.PlayerId))
-            {
-                team = t;
-                return true;
-            }
         }
         return false;
     }
