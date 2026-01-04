@@ -385,47 +385,6 @@ public static class StandardOptionMenu
         UpdateNowPresetText(StandardOptionMenuObjectData.Instance.CurrentOptionMenu);
     }
 
-    private static void ConfigurePresetButton(
-        GameObject selectPresets,
-        string buttonName,
-        TMPro.TextMeshPro selectedText,
-        bool isIncrement)
-    {
-        var button = selectPresets.transform.Find(buttonName).gameObject;
-        var passiveButton = button.AddComponent<PassiveButton>();
-        passiveButton.Colliders = new Collider2D[] { button.GetComponent<BoxCollider2D>() };
-        var spriteRenderer = passiveButton.GetComponent<SpriteRenderer>();
-
-        UIHelper.ConfigurePassiveButton(passiveButton, (UnityAction)(() =>
-        {
-            HandlePresetNavigation(selectedText, isIncrement);
-        }), spriteRenderer);
-    }
-
-    private static void HandlePresetNavigation(TMPro.TextMeshPro selectedText, bool isIncrement)
-    {
-        CustomOptionSaver.Save(); // 現在のプリセットを保存
-
-        int newPreset;
-        if (isIncrement)
-        {
-            newPreset = CustomOptionSaver.CurrentPreset < CustomOptionSaver.PresetNames.Keys.Max() ?
-                CustomOptionSaver.CurrentPreset + 1 :
-                0;
-        }
-        else
-        {
-            newPreset = CustomOptionSaver.CurrentPreset > 0 ?
-                CustomOptionSaver.CurrentPreset - 1 :
-                CustomOptionSaver.PresetNames.Keys.Max();
-        }
-
-        CustomOptionSaver.LoadPreset(newPreset);
-        UpdateNowPresetText(StandardOptionMenuObjectData.Instance.CurrentOptionMenu);
-        OptionMenuBase.UpdateOptionDisplayAll();
-        selectedText.text = CustomOptionSaver.GetPresetName(newPreset);
-    }
-
     private static void ConfigurePresetWriteBox(GameObject presetMenu)
     {
         var writeBox = presetMenu.transform.Find("SubmitPreset/WriteBox").gameObject;
