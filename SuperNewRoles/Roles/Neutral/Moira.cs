@@ -31,6 +31,9 @@ class Moira : RoleBase<Moira>
 
     [CustomOptionInt("MoiraAbilityLimit", 1, 10, 1, 5)]
     public static int MoiraAbilityLimit;
+
+    [CustomOptionBool("MoiraSwapVoteCount", true)]
+    public static bool MoiraSwapVoteCount;
 }
 
 public class MoiraMeetingAbility : CustomMeetingButtonBase, IAbilityCount
@@ -203,6 +206,7 @@ public class MoiraMeetingAbility : CustomMeetingButtonBase, IAbilityCount
 
     private void OnCalculateVotes(MeetingHudCalculateVotesOnPlayerOnlyHostEventData data)
     {
+        if (!Moira.MoiraSwapVoteCount) return;
         if (!AmongUsClient.Instance.AmHost) return;
         if (!usedThisMeeting) return;
         if (swapData.Count == 0) return;

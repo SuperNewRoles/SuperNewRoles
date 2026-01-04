@@ -159,8 +159,8 @@ public sealed class RemoteControllerAbility : AbilityBase
         // 0.05秒ごとにRPCでネットワーク同期
         if (_velocitySyncTimer <= 0f)
         {
-            _velocitySyncTimer = 0f; // 0秒ごとに制限
-            RemoteControllerRpc.RpcSetNormalizedVelocity(target.PlayerId, delta.x, delta.y, target.transform.position);
+            _velocitySyncTimer = 0.02f; // 0秒ごとに制限
+            RemoteControllerRpc.RpcSetNormalizedVelocity(target, delta.x, delta.y);
         }
     }
 
@@ -580,12 +580,11 @@ internal sealed class RemoteControllerOperationButton : CustomButtonBase, IButto
 public static class RemoteControllerRpc
 {
     [CustomRPC(onlyOtherPlayer: true)]
-    public static void RpcSetNormalizedVelocity(byte targetPlayerId, float x, float y, Vector3 position)
+    public static void RpcSetNormalizedVelocity(ExPlayerControl target, float x, float y)
     {
-        var target = ExPlayerControl.ExPlayerControls.FirstOrDefault(p => p != null && p.PlayerId == targetPlayerId);
-        if (target == null || !target.AmOwner) return;
         if (MeetingHud.Instance != null || ExileController.Instance != null) return;
-        if (target.Player == null || target.MyPhysics == null) return;
+        if (target == null || !target.AmOwner) return;
+        if (target?.Player == null || target?.MyPhysics == null) return;
         target.MyPhysics.SetNormalizedVelocity(new Vector2(x, y));
     }
 
