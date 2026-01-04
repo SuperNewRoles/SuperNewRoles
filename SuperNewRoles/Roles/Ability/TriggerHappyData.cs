@@ -13,6 +13,8 @@ public class TriggerHappyData
     public float BulletSize { get; }
     public bool PierceWalls { get; }
     public int BulletSpreadAngle { get; }
+    public bool FriendlyFire { get; }
+    public bool KillSound { get; }
 
     public TriggerHappyData(
         int useLimit,
@@ -23,7 +25,9 @@ public class TriggerHappyData
         float range,
         float bulletSize,
         bool pierceWalls,
-        TriggerHappyBulletSpreadAngleOption bulletSpreadAngleOption)
+        TriggerHappyBulletSpreadAngleOption bulletSpreadAngleOption,
+        bool friendlyFire,
+        bool killSound)
     {
         UseLimit = useLimit;
         Cooldown = cooldown;
@@ -34,5 +38,7 @@ public class TriggerHappyData
         BulletSize = bulletSize;
         PierceWalls = pierceWalls;
         BulletSpreadAngle = (int)bulletSpreadAngleOption;
+        FriendlyFire = friendlyFire;
+        KillSound = killSound;
     }
 }

@@ -35,6 +35,7 @@ public class TriggerHappyAbility : CustomButtonBase, IAbilityCount, IButtonEffec
     public override float DefaultTimer => _data.Cooldown;
     public override string buttonText => ModTranslation.GetString("TriggerHappyButtonText");
     public override Sprite Sprite => AssetManager.GetAsset<Sprite>("TriggerHappy_Button.png");
+    public override ShowTextType showTextType => ShowTextType.ShowWithCount;
 
     protected override KeyType keytype => KeyType.Ability1;
 
@@ -230,6 +231,17 @@ public class TriggerHappyAbility : CustomButtonBase, IAbilityCount, IButtonEffec
         {
             _hitCounts.Remove(target.PlayerId);
             ExPlayerControl.LocalPlayer.RpcCustomDeath(target, CustomDeathType.HappyGatling);
+            if (_data.KillSound)
+            {
+                byte victimId = target.PlayerId;
+                new LateTask(() =>
+                {
+                    // RpcCustomDeath直後はData.IsDeadがまだ反映されない場合があるため、少し遅延してから確認する
+                    var victim = ExPlayerControl.ExPlayerControls.Find(p => p != null && p.PlayerId == victimId);
+                    if (victim != null && victim.IsDead())
+                        SoundManager.Instance.PlaySound(PlayerControl.LocalPlayer.KillSfx, loop: false, 0.8f);
+                }, 0.1f, "TriggerHappyKillSound");
+            }
             return;
         }
 

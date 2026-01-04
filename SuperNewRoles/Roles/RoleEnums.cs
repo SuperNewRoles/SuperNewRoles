@@ -136,7 +136,6 @@ public enum RoleId : short
     NiceRedRidingHood,
     HauntedWolf,
     BattleRoyalWaveCannon,
-    TriggerHappy,
     Sauner,
     Moira,
     // TheThreeLittlePigs (三匹の仔豚)
@@ -150,6 +149,8 @@ public enum RoleId : short
     Squid,
     DyingMessenger,
     PoliceSurgeon,
+    Banshee,
+    TriggerHappy,
 }
 
 public enum GhostRoleId : short

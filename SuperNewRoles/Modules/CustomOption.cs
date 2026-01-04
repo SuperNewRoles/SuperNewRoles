@@ -411,14 +411,7 @@ public class CustomOption
     }
 
     public bool ShouldDisplay()
-    {
-        if (FieldInfo.Name == nameof(GameSettingOptions.CursedTaskOption)
-            && RoleReleaseLock.IsCursedModeLocked())
-        {
-            return false;
-        }
-
-        // 親オプションがある場合、親オプションの値をチェック
+    {        // 親オプションがある場合、親オプションの値をチェック
         if (ParentOption != null)
         {
             // ParentActiveValueが設定されている場合、親の値がそれと一致するかチェック
