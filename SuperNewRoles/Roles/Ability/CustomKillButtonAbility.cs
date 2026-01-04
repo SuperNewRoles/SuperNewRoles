@@ -10,7 +10,7 @@ namespace SuperNewRoles.Roles.Ability;
 
 public class CustomKillButtonAbility : TargetCustomButtonBase
 {
-    public override bool IsFirstCooldownTenSeconds => DefaultTimer <= 0.1f;
+    public override bool IsFirstCooldownTenSeconds => DefaultTimer >= 0.1f;
     public Func<bool> CanKill { get; }
     public Func<float?> KillCooldown { get; }
     public Func<bool> OnlyCrewmatesValue { get; }
