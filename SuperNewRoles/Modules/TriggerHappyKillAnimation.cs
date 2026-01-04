@@ -103,7 +103,6 @@ public sealed class TriggerHappyKillAnimation : ICustomKillAnimation
             _victimPlayer.cosmetics.isNameVisible = false;
             _victimPlayer.cosmetics.UpdateNameVisibility();
         }
-        _victimPlayer.transform.localPosition = new Vector3(0.7f, 0.0f, 0f);
         _victimPlayer.transform.localScale = Vector3.one * 0.85f;
         // 近すぎないように右側へ
         _victimPlayer.transform.localPosition = new Vector3(1.35f, 0.0f, 0f);
