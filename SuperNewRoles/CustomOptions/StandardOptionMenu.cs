@@ -5,6 +5,8 @@ using UnityEngine;
 using UnityEngine.Events;
 using SuperNewRoles.CustomOptions.Data;
 using TMPro;
+using InnerNet;
+using SuperNewRoles.Roles;
 
 namespace SuperNewRoles.CustomOptions;
 
@@ -336,6 +338,12 @@ public static class StandardOptionMenu
             CustomOptionSaver.LoadPreset(presetId);
             UpdateNowPresetText(StandardOptionMenuObjectData.Instance.CurrentOptionMenu);
             OptionMenuBase.UpdateOptionDisplayAll();
+            // プリセット変更時に設定を同期する
+            if (AmongUsClient.Instance.AmHost)
+            {
+                CustomOptionManager.RpcSyncOptionsAll();
+                RoleOptionManager.RpcSyncRoleOptionsAll();
+            }
         }), spriteRenderer, selectedObject: buttonObj.transform.Find("Selected")?.gameObject);
     }
 

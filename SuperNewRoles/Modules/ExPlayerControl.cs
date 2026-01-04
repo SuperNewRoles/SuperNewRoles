@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using AmongUs.GameOptions;
 using SuperNewRoles.Ability;
+using SuperNewRoles.CustomOptions.Categories;
 using SuperNewRoles.Events;
 using SuperNewRoles.Extensions;
 using SuperNewRoles.Roles;
@@ -628,6 +629,53 @@ public class ExPlayerControl
     }
     public bool IsCountTask()
         => _customTaskAbility != null ? _customTaskAbility.CheckIsTaskTrigger()?.countTask ?? IsCrewmate() : IsCrewmate();
+
+    /// <summary>
+    /// このプレイヤーの役職をローカルプレイヤーが見えるかどうかを判定します
+    /// </summary>
+    public bool CanSeeRoleOf(ExPlayerControl otherPlayer)
+    {
+        if (otherPlayer == null || otherPlayer.Player == null || !otherPlayer.Player.Visible)
+        {
+            return false;
+        }
+
+        // 自分自身の場合は常にtrue
+        if (PlayerId == otherPlayer.PlayerId)
+        {
+            return true;
+        }
+
+        // ローカルプレイヤーが生きている場合はfalse
+        if (!IsDead())
+        {
+            return false;
+        }
+
+        // バスカーの偽装死時は他のプレイヤーの役職を見えないようにする
+        bool isBuskerFakeDeath = GetAbility<BuskerPseudocideAbility>()?.isEffectActive == true;
+        if (isBuskerFakeDeath && PlayerId != otherPlayer.PlayerId)
+        {
+            return false;
+        }
+
+        // Local player is ghost
+        bool canSeeGhostRoles = !GameSettingOptions.HideGhostRoles ||
+                                (IsImpostor() && GameSettingOptions.ShowGhostRolesToImpostor);
+
+        if (!canSeeGhostRoles)
+        {
+            return false;
+        }
+
+        var hideRoleOnGhostAbility = GetAbility<HideRoleOnGhostAbility>();
+        if (hideRoleOnGhostAbility != null && hideRoleOnGhostAbility.IsHideRole(otherPlayer))
+        {
+            return false;
+        }
+
+        return true;
+    }
     public (int complete, int all) GetAllTaskForShowProgress()
     {
         (int complete, int all) result = ModHelpers.TaskCompletedData(Data);

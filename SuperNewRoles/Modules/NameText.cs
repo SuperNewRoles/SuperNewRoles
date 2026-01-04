@@ -53,43 +53,7 @@ public static class NameText
     }
     private static bool GetRoleInfoVisibility(ExPlayerControl player, HideRoleOnGhostAbility localPlayerHrg)
     {
-        if (player == null || player.Player == null || !player.Player.Visible)
-        {
-            return false;
-        }
-
-        if (ExPlayerControl.LocalPlayer.PlayerId == player.PlayerId)
-        {
-            return true;
-        }
-
-        if (!ExPlayerControl.LocalPlayer.IsDead())
-        {
-            return false;
-        }
-
-        // バスカーの偽装死時は他のプレイヤーの役職を見えないようにする
-        bool isBuskerFakeDeath = ExPlayerControl.LocalPlayer.GetAbility<BuskerPseudocideAbility>()?.isEffectActive == true;
-        if (isBuskerFakeDeath && ExPlayerControl.LocalPlayer.PlayerId != player.PlayerId)
-        {
-            return false;
-        }
-
-        // Local player is ghost
-        bool canSeeGhostRoles = !GameSettingOptions.HideGhostRoles ||
-                                (ExPlayerControl.LocalPlayer.IsImpostor() && GameSettingOptions.ShowGhostRolesToImpostor);
-
-        if (!canSeeGhostRoles)
-        {
-            return false;
-        }
-
-        if (localPlayerHrg != null && localPlayerHrg.IsHideRole(player))
-        {
-            return false;
-        }
-
-        return true;
+        return ExPlayerControl.LocalPlayer.CanSeeRoleOf(player);
     }
     private static void SetPlayerNameColor(ExPlayerControl player, bool isRoleInfoVisible)
     {
@@ -251,7 +215,7 @@ public static class NameText
         if (player == null || player.Player == null)
             return;
 
-        bool visiable = GetRoleInfoVisibility(player, localHideRoleOnGhostAbility);
+        bool visiable = ExPlayerControl.LocalPlayer.CanSeeRoleOf(player);
         UpdateVisible(player, visiable);
         if (!visiable && localHideRoleOnGhostAbility != null && localHideRoleOnGhostAbility.IsHideRole(player))
         {

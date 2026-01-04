@@ -1908,6 +1908,7 @@ BattleRoyalIntroTeamSubTitle,チームで勝利せよ,Win as a team,团队获胜
 BattleRoyalIntroMessage1,最後の一人になれ,Be the last one standing,成为最后一个,成為最後一人
 BattleRoyalIntroMessage2,最後まで生き残れ,Survive until the end!,存活到最后！,生存到最後！
 BattleRoyalIntroMessage3,チームメイトと共に,Protect your teammates,保护你的队友！,保護你的隊友！
+WCBattleRoyalEmergencyDisabledText,バトルロイヤルでは緊急会議は使用できません,Emergency meetings are disabled in Battle Royale mode,战斗皇家模式下禁用紧急会议,戰鬥皇家模式下禁用緊急會議
 WaveCannonBattleRoyalTeamMode,チーム戦,Team Mode,团队模式,團隊模式
 WaveCannonBattleRoyalTeamCount,チーム数,Team Count,队伍数量,隊伍數量
 WaveCannonBattleRoyalFriendlyFire,フレンドリーファイア,Friendly Fire,友军伤害,友軍傷害
