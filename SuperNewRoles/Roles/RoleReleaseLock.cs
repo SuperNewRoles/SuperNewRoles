@@ -9,9 +9,9 @@ public static class RoleReleaseLock
     // Please don't leak it.
 
 
-    private static readonly HashSet<RoleId> ReleaseAtJan2Roles = new()
+    private static readonly HashSet<RoleId> ReleaseAtJan4Roles = new()
     {
-        RoleId.TriggerHappy,
+        RoleId.Banshee,
     };
 
     private static readonly HashSet<RoleId> ReleaseAtJan5Roles = new()
@@ -29,9 +29,8 @@ public static class RoleReleaseLock
         RoleId.DyingMessenger,
     };
 
-    private static Il2CppSystem.DateTime ReleaseAtJan2Utc = new(2026, 1, 2, 8, 0, 0, Il2CppSystem.DateTimeKind.Utc);
+    private static Il2CppSystem.DateTime ReleaseAtJan4Utc = new(2026, 1, 4, 8, 0, 0, Il2CppSystem.DateTimeKind.Utc);
     private static Il2CppSystem.DateTime ReleaseAtJan5Utc = new(2026, 1, 5, 8, 0, 0, Il2CppSystem.DateTimeKind.Utc);
-    private static Il2CppSystem.DateTime ReleaseAtJan3CursedUtc = new(2026, 1, 3, 8, 0, 0, Il2CppSystem.DateTimeKind.Utc);
 
     private static bool IsReleaseLockEnabled = ThisAssembly.Git.Branch == BranchConfig.MasterBranch;
 
@@ -40,8 +39,8 @@ public static class RoleReleaseLock
         if (!IsReleaseLockEnabled)
             return 3;
         int token = 0;
-        if (AmongUsDateTime.UtcNow >= ReleaseAtJan2Utc)
-            token |= 1;
+        if (AmongUsDateTime.UtcNow >= ReleaseAtJan4Utc)
+            token |= 4;
         if (AmongUsDateTime.UtcNow >= ReleaseAtJan5Utc)
             token |= 2;
         return token;
@@ -51,19 +50,13 @@ public static class RoleReleaseLock
     {
         if (!IsReleaseLockEnabled)
             return false;
-        if (ReleaseAtJan2Roles.Contains(roleId))
-            return AmongUsDateTime.UtcNow < ReleaseAtJan2Utc;
+        if (ReleaseAtJan4Roles.Contains(roleId))
+            return AmongUsDateTime.UtcNow < ReleaseAtJan4Utc;
         if (ReleaseAtJan5Roles.Contains(roleId))
             return AmongUsDateTime.UtcNow < ReleaseAtJan5Utc;
         return false;
     }
 
-    public static bool IsCursedModeLocked()
-    {
-        if (!IsReleaseLockEnabled)
-            return false;
-        return AmongUsDateTime.UtcNow < ReleaseAtJan3CursedUtc;
-    }
     /*
         private static void Debug_UpdateTime(int hour, int minute)
         {
