@@ -291,12 +291,11 @@ public sealed class FrankensteinAbility : AbilityBase
         {
             ability.Player.Player.NetTransform.RpcSnapTo(ability._playerOriginalPosition);
             ability.Player.Player.MyPhysics.body.velocity = Vector2.zero;
-            ability.Player.Player.transform.position = ability._playerOriginalPosition;
             new LateTask(() =>
             {
+                ability.Player.Player.transform.position = ability._playerOriginalPosition;
                 ability.Player.Player.NetTransform.RpcSnapTo(ability._playerOriginalPosition);
                 ability.Player.Player.MyPhysics.body.velocity = Vector2.zero;
-                ability.Player.Player.transform.position = ability._playerOriginalPosition;
             }, 0.1f);
         }
 
