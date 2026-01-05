@@ -126,6 +126,10 @@ public static class ModdedNetworkTransform
     }
     public static void FixedUpdate(PlayerControl player)
     {
+        if (!player.AmOwner && ShouldIgnoreRemoteControlSync(player.PlayerId))
+        {
+            return;
+        }
         if (player.NetTransform.isPaused || player.onLadder || (ShipStatus.Instance != null && ShipStatus.Instance.Type == ShipStatus.MapType.Fungle && ShipStatus.Instance is FungleShipStatus fungleShipStatus && fungleShipStatus.Zipline.playerIdHands.ContainsKey(player.PlayerId)))
         {
             // Clear state for paused players
@@ -165,7 +169,7 @@ public static class ModdedNetworkTransform
             player.transform.position += positionAdjustment;
         }
 
-        return true;
+        return false;
     }
 
     private static void FixedUpdateOwner(PlayerControl player)
@@ -322,6 +326,11 @@ public static class ModdedNetworkTransform
             case (byte)MovementRpcType.BatchMovement:
                 playerId = reader.ReadByte();
                 int count = Mathf.Min(reader.ReadInt32(), 20); // Read count, capped at 20
+                if (ShouldIgnoreRemoteControlSync(playerId))
+                {
+                    reader.Position += count * 4 * 5;
+                    break;
+                }
                 if (skipNextBatchPlayers.Remove(playerId))
                 {
                     reader.Position += count * 4 * 5;
@@ -343,21 +352,39 @@ public static class ModdedNetworkTransform
                 playerId = reader.ReadByte();
                 Vector3 position = new(reader.ReadSingle(), reader.ReadSingle(), reader.ReadSingle());
                 Vector2 velocity = new(reader.ReadSingle(), reader.ReadSingle());
+                if (ShouldIgnoreRemoteControlSync(playerId))
+                {
+                    break;
+                }
                 RpcStartMovement(playerId, position, velocity);
                 break;
             case (byte)MovementRpcType.StopMovement:
                 playerId = reader.ReadByte();
                 position = new(reader.ReadSingle(), reader.ReadSingle(), reader.ReadSingle());
+                if (ShouldIgnoreRemoteControlSync(playerId))
+                {
+                    break;
+                }
                 RpcStopMovement(playerId, position);
                 break;
             case (byte)MovementRpcType.ApplyExternalImpulse:
                 playerId = reader.ReadByte();
                 Vector2 impulse = new(reader.ReadSingle(), reader.ReadSingle());
+                if (ShouldIgnoreRemoteControlSync(playerId))
+                {
+                    break;
+                }
                 externalImpulses[playerId] = externalImpulses.GetValueOrDefault(playerId, Vector2.zero) + impulse;
                 // 次のバッチ移動をスキップ
                 skipNextBatchPlayers.Add(playerId);
                 break;
         }
+    }
+
+    private static bool ShouldIgnoreRemoteControlSync(byte playerId)
+    {
+        if (!RemoteControllerAbility.TryGetLocalOperationTarget(out _, out var target)) return false;
+        return target != null && target.PlayerId == playerId;
     }
 
     private static void FixedUpdateRemote(PlayerControl player)

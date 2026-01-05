@@ -58,8 +58,9 @@ public sealed class RemoteControllerAbility : AbilityBase
         _markButton = new RemoteControllerMarkButton(this);
         _operationButton = new RemoteControllerOperationButton(this);
         _killButton = new RemoteControllerKillButton(this);
-        Player.AttachAbility(_markButton, new AbilityParentAbility(this));
+        // Operationを先にしないと、Markを押した時に一気にオペレーション状態まで進んでしまう
         Player.AttachAbility(_operationButton, new AbilityParentAbility(this));
+        Player.AttachAbility(_markButton, new AbilityParentAbility(this));
         Player.AttachAbility(_killButton, new AbilityParentAbility(this));
     }
 
@@ -158,14 +159,8 @@ public sealed class RemoteControllerAbility : AbilityBase
         // 0.05秒ごとにRPCでネットワーク同期
         if (_velocitySyncTimer <= 0f)
         {
-            _velocitySyncTimer = 0.05f; // 0.05秒ごとに制限
-            RemoteControllerRpc.RpcSetNormalizedVelocity(target.PlayerId, delta.x, delta.y);
-        }
-
-        if (_syncTimer <= 0f)
-        {
-            _syncTimer = 1f;
-            target.RpcCustomSnapTo(target.transform.position);
+            _velocitySyncTimer = 0.02f; // 0秒ごとに制限
+            RemoteControllerRpc.RpcSetNormalizedVelocity(target, delta.x, delta.y);
         }
     }
 
@@ -484,7 +479,7 @@ internal sealed class RemoteControllerKillButton : CustomKillButtonAbility
     private readonly RemoteControllerAbility _ability;
 
     public RemoteControllerKillButton(RemoteControllerAbility ability) : base(
-        canKill: () => ability.UnderOperation && ability.TargetPlayerId != byte.MaxValue,
+        canKill: () => true,
         killCooldown: () => GameOptionsManager.Instance?.CurrentGameOptions?.GetFloat(FloatOptionNames.KillCooldown) ?? 0f,
         onlyCrewmates: () => true,
         customKillHandler: (target) =>
@@ -538,7 +533,7 @@ internal sealed class RemoteControllerOperationButton : CustomButtonBase, IButto
     public override bool IsFirstCooldownTenSeconds => false;
     public override Sprite Sprite => AssetManager.GetAsset<Sprite>("RemoteControllerOperationButton.png");
     public override string buttonText => ModTranslation.GetString("RemoteControllerOperateButton");
-    protected override KeyType keytype => KeyType.Ability2;
+    protected override KeyType keytype => KeyType.Ability1;
 
     public override bool CheckHasButton() => base.CheckHasButton() && _ability.TargetPlayerId != byte.MaxValue;
 
@@ -584,13 +579,12 @@ internal sealed class RemoteControllerOperationButton : CustomButtonBase, IButto
 
 public static class RemoteControllerRpc
 {
-    [CustomRPC(onlyOtherPlayer: false)]
-    public static void RpcSetNormalizedVelocity(byte targetPlayerId, float x, float y)
+    [CustomRPC(onlyOtherPlayer: true)]
+    public static void RpcSetNormalizedVelocity(ExPlayerControl target, float x, float y)
     {
-        var target = ExPlayerControl.ExPlayerControls.FirstOrDefault(p => p != null && p.PlayerId == targetPlayerId);
-        if (target == null || !target.AmOwner) return;
         if (MeetingHud.Instance != null || ExileController.Instance != null) return;
-        if (target.Player == null || target.MyPhysics == null) return;
+        if (target == null || !target.AmOwner) return;
+        if (target?.Player == null || target?.MyPhysics == null) return;
         target.MyPhysics.SetNormalizedVelocity(new Vector2(x, y));
     }
 

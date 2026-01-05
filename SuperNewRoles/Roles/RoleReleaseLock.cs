@@ -24,7 +24,6 @@ public static class RoleReleaseLock
         RoleId.Frankenstein,
         RoleId.RemoteController,
         RoleId.Mafia,
-        RoleId.PoliceSurgeon,
         RoleId.Psychometrist,
         RoleId.DyingMessenger,
     };

@@ -210,7 +210,6 @@ public static class EndGamer
             winners = [player];
             color = Moira.Instance.RoleColor;
             upperText = "Moira";
-            winText = "MoiraWinText";
             winType = WinType.SingleNeutral;
             return;
         }

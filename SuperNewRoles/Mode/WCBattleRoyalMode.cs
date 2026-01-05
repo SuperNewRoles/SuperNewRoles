@@ -34,6 +34,7 @@ public class WCBattleRoyalMode : ModeBase<WCBattleRoyalMode>, IModeBase
     public bool IsTeamMode => isTeamMode;
     public int TotalTeams => totalTeams;
     private EventListener<NameTextUpdateEventData> nameTextListener;
+    private EventListener<EmergencyCheckEventData> emergencyCheckListener;
 
     // チーム名（A, B, C...）
     private static readonly string[] TeamNames = "ABCDEFGHIJKLMNOPQRSTUVWXYZ".Select(c => c.ToString()).ToArray();
@@ -100,6 +101,7 @@ public class WCBattleRoyalMode : ModeBase<WCBattleRoyalMode>, IModeBase
         }
 
         nameTextListener = NameTextUpdateEvent.Instance.AddListener(OnNameTextUpdate);
+        emergencyCheckListener = EmergencyCheckEvent.Instance.AddListener(OnEmergencyCheck);
 
     }
 
@@ -188,6 +190,7 @@ public class WCBattleRoyalMode : ModeBase<WCBattleRoyalMode>, IModeBase
         playerTeams.Clear();
         teams.Clear();
         nameTextListener?.RemoveListener();
+        emergencyCheckListener?.RemoveListener();
     }
 
     private void OnNameTextUpdate(NameTextUpdateEventData data)
@@ -454,5 +457,12 @@ public class WCBattleRoyalMode : ModeBase<WCBattleRoyalMode>, IModeBase
         }
 
         return ModTranslation.GetString(ModHelpers.GetRandom(messages));
+    }
+
+    private void OnEmergencyCheck(EmergencyCheckEventData data)
+    {
+        // 波動砲バトルロイヤルでは緊急会議ボタンを無効化
+        data.RefEnabledEmergency = false;
+        data.RefEmergencyTexts.Add(ModTranslation.GetString("WCBattleRoyalEmergencyDisabledText"));
     }
 }
