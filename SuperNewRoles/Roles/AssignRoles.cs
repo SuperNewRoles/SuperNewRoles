@@ -253,13 +253,21 @@ public static class AssignRoles
             }
             else
             {
-                int playerIndex = UnityEngine.Random.Range(0, targetPlayers.Count);
-                PlayerControl targetPlayer = targetPlayers[playerIndex];
-                targetPlayers.RemoveAt(playerIndex);
+                bool isTeamRole = CustomRoleManager.TryGetRoleById(roleId, out var teamRoleBase) && teamRoleBase is ITeamRoleBase;
+                if (isTeamRole)
+                {
+                    Logger.Info($"Skip team role {roleId}: failed to assign a full team");
+                }
+                else
+                {
+                    int playerIndex = UnityEngine.Random.Range(0, targetPlayers.Count);
+                    PlayerControl targetPlayer = targetPlayers[playerIndex];
+                    targetPlayers.RemoveAt(playerIndex);
 
-                AssignRole(targetPlayer, roleId);
-                AssignedRoleIds.Add(roleId); // アサインした役職を追跡
-                maxBeans--;
+                    AssignRole(targetPlayer, roleId);
+                    AssignedRoleIds.Add(roleId); // アサインした役職を追跡
+                    maxBeans--;
+                }
             }
 
             // 排他設定を再度適用（次のループのために）
@@ -287,13 +295,21 @@ public static class AssignRoles
             }
             else
             {
-                int playerIndex = targetPlayers.GetRandomIndex();
-                PlayerControl targetPlayer = targetPlayers[playerIndex];
-                targetPlayers.RemoveAt(playerIndex);
+                bool isTeamRole = CustomRoleManager.TryGetRoleById(roleId, out var teamRoleBase) && teamRoleBase is ITeamRoleBase;
+                if (isTeamRole)
+                {
+                    Logger.Info($"Skip team role {roleId}: failed to assign a full team");
+                }
+                else
+                {
+                    int playerIndex = targetPlayers.GetRandomIndex();
+                    PlayerControl targetPlayer = targetPlayers[playerIndex];
+                    targetPlayers.RemoveAt(playerIndex);
 
-                AssignRole(targetPlayer, roleId);
-                AssignedRoleIds.Add(roleId); // アサインした役職を追跡
-                maxBeans--;
+                    AssignRole(targetPlayer, roleId);
+                    AssignedRoleIds.Add(roleId); // アサインした役職を追跡
+                    maxBeans--;
+                }
             }
 
             // 排他設定を再度適用（次のループのために）
