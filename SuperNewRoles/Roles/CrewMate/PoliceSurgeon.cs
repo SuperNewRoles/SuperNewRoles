@@ -34,7 +34,8 @@ class PoliceSurgeon : RoleBase<PoliceSurgeon>
     public override WinnerTeamType WinnerTeam { get; } = WinnerTeamType.Crewmate;
     public override TeamTag TeamTag { get; } = TeamTag.Crewmate;
     public override RoleTag[] RoleTags { get; } = [RoleTag.Information];
-    public override RoleOptionMenuType OptionTeam { get; } = RoleOptionMenuType.Crewmate;
+    public override RoleOptionMenuType OptionTeam { get; } = RoleOptionMenuType.Hidden;
+    public override bool HideInRoleDictionary { get; } = true;
 
     [CustomOptionBool(nameof(PoliceSurgeonHaveVitalsInTaskPhase), false, translationName: "PoliceSurgeonHaveVitalsInTaskPhase")]
     public static bool PoliceSurgeonHaveVitalsInTaskPhase;
