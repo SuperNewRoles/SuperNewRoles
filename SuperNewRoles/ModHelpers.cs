@@ -80,6 +80,7 @@ public static class ModHelpers
     private static SHA256 sha256 = SHA256.Create();
     public static string HashMD5(string str)
     {
+        if (string.IsNullOrEmpty(str)) str = string.Empty;
         byte[] bytes = Encoding.UTF8.GetBytes(str);
         return HashMD5(bytes);
     }
