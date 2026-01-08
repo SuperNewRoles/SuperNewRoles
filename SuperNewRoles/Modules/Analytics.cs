@@ -291,7 +291,11 @@ public static class Analytics
         yield return request.Send();
 
         Logger.Info($"Status Code: {request.responseCode}", "Analytics");
-        //Logger.Info($"Result:{request.downloadHandler.text}");
+        if (request.responseCode >= 400)
+        {
+            var errorDetail = request.error ?? request.downloadHandler?.text;
+            Logger.Error($"Analytics error: {request.responseCode} - {errorDetail}", "Analytics");
+        }
     }
 
     // Patches to collect metrics
