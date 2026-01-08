@@ -1,4 +1,6 @@
+using System;
 using System.Linq;
+using System.Reflection;
 using HarmonyLib;
 using Rewired;
 using SuperNewRoles.Modules;
@@ -12,6 +14,13 @@ public class CursedEmptyGarbageTask
     public static class EmptyGarbageMinigamePatch
     {
         public static int Count;
+
+        private static readonly FieldInfo TouchpadField = AccessTools.Field(typeof(EmptyGarbageMinigame), "touchpad");
+        private static readonly PropertyInfo TouchpadProperty = AccessTools.Property(typeof(EmptyGarbageMinigame), "touchpad");
+        private static Type cachedTouchpadType;
+        private static bool cachedTouchpadMethodsResolved;
+        private static MethodInfo cachedIsTouchingMethod;
+        private static MethodInfo cachedGetTouchVectorMethod;
 
         [HarmonyPatch(nameof(EmptyGarbageMinigame.Begin)), HarmonyPrefix]
         public static void BeginPrefix(EmptyGarbageMinigame __instance)
@@ -34,8 +43,14 @@ public class CursedEmptyGarbageTask
                 if (!__instance.finished)
                 {
                     Player player = ReInput.players.GetPlayer(0);
-                    if (__instance.touchpad.IsTouching()) __instance.leverInput = -__instance.touchpad.GetTouchVector().y;
-                    else __instance.leverInput = Mathf.Clamp01(-player.GetAxis(17));
+                    if (TryGetTouchpadLeverInput(__instance, out float leverInput))
+                    {
+                        __instance.leverInput = leverInput;
+                    }
+                    else
+                    {
+                        __instance.leverInput = Mathf.Clamp01(-player.GetAxis(17));
+                    }
                     localPosition.y = __instance.HandleRange.Lerp(1f - __instance.leverInput);
                     num = __instance.HandleRange.ReverseLerp(localPosition.y);
                     if (__instance.leverInput >= 0.01f)
@@ -181,7 +196,7 @@ public class CursedEmptyGarbageTask
                         random.Set(__instance.GarbagePrefabs.Union(__instance.LeafPrefabs).IEnumerableToIl2Cpp());
                         while (i < __instance.SpecialObjectPrefabs.Length)
                         {
-                            SpriteRenderer sprite = __instance.Objects[i] = Object.Instantiate(__instance.SpecialObjectPrefabs[i]);
+                            SpriteRenderer sprite = __instance.Objects[i] = GameObject.Instantiate(__instance.SpecialObjectPrefabs[i]);
                             sprite.transform.SetParent(__instance.transform);
                             sprite.transform.localPosition = __instance.SpawnRange.Next();
                             i++;
@@ -190,7 +205,7 @@ public class CursedEmptyGarbageTask
                 }
                 while (i < __instance.Objects.Length)
                 {
-                    SpriteRenderer sprite = __instance.Objects[i] = Object.Instantiate(random.Get());
+                    SpriteRenderer sprite = __instance.Objects[i] = GameObject.Instantiate(random.Get());
                     sprite.transform.SetParent(__instance.transform);
                     Vector3 vector = __instance.SpawnRange.Next();
                     vector.z = UnityEngine.Random.Range(-0.5f, 0.5f);
@@ -199,6 +214,40 @@ public class CursedEmptyGarbageTask
                     i++;
                 }
             }
+        }
+
+        private static bool TryGetTouchpadLeverInput(EmptyGarbageMinigame instance, out float leverInput)
+        {
+            leverInput = 0f;
+            object touchpad = GetTouchpad(instance);
+            if (touchpad == null) return false;
+            if (!EnsureTouchpadMethods(touchpad)) return false;
+
+            bool isTouching = (bool)cachedIsTouchingMethod.Invoke(touchpad, null);
+            if (!isTouching) return false;
+
+            Vector2 touchVector = (Vector2)cachedGetTouchVectorMethod.Invoke(touchpad, null);
+            leverInput = -touchVector.y;
+            return true;
+        }
+
+        private static object GetTouchpad(EmptyGarbageMinigame instance)
+        {
+            if (TouchpadField != null) return TouchpadField.GetValue(instance);
+            return TouchpadProperty?.GetValue(instance, null);
+        }
+
+        private static bool EnsureTouchpadMethods(object touchpad)
+        {
+            Type type = touchpad.GetType();
+            if (type == cachedTouchpadType && cachedTouchpadMethodsResolved)
+                return cachedIsTouchingMethod != null && cachedGetTouchVectorMethod != null;
+
+            cachedTouchpadType = type;
+            cachedIsTouchingMethod = type.GetMethod("IsTouching", BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic);
+            cachedGetTouchVectorMethod = type.GetMethod("GetTouchVector", BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic);
+            cachedTouchpadMethodsResolved = true;
+            return cachedIsTouchingMethod != null && cachedGetTouchVectorMethod != null;
         }
     }
 
@@ -287,8 +336,8 @@ public class CursedEmptyGarbageTask
             {
                 // handles
                 // garbage_bin1front
-                Object.Destroy(__instance.can.gameObject);
-                __instance.can = Object.Instantiate(__instance.GarbagePrefabs[__instance.ConsoleId], __instance.transform);
+                GameObject.Destroy(__instance.can.gameObject);
+                __instance.can = GameObject.Instantiate(__instance.GarbagePrefabs[__instance.ConsoleId], __instance.transform);
                 IsReset = true;
                 /*
                 Transform can = __instance.can.transform;
