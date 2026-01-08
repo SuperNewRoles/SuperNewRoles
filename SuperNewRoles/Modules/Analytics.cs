@@ -90,7 +90,7 @@ public static class Analytics
     public static void PostSendClientData()
     {
         Dictionary<string, string> data = new();
-        data.Add("FriendCode", ModHelpers.HashMD5(PlayerControl.LocalPlayer.Data.FriendCode));
+        data.Add("FriendCode", ModHelpers.HashMD5(EOSManager.Instance.FriendCode));
         data.Add("Mode", Categories.ModeOption.ToString());
         data.Add("GameId", AmongUsClient.Instance.GameId.ToString());
         data.Add("Version", Statics.VersionString.ToString());
@@ -158,7 +158,7 @@ public static class Analytics
         }
 
         Dictionary<string, string> data = new();
-        data.Add("FriendCode", ModHelpers.HashMD5(PlayerControl.LocalPlayer.Data.FriendCode));
+        data.Add("FriendCode", ModHelpers.HashMD5(EOSManager.Instance.FriendCode));
         data.Add("Mode", Categories.ModeOption.ToString());
         data.Add("GameId", AmongUsClient.Instance.GameId.ToString());
         data.Add("Version", Statics.VersionString.ToString());
