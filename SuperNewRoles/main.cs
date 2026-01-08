@@ -291,6 +291,8 @@ public partial class SuperNewRolesPlugin : BasePlugin
         ClassInjector.RegisterTypeInIl2Cpp<BuildSandcastleMinigamePatch.CursedSandcastleBucketRootMarker>();
         ClassInjector.RegisterTypeInIl2Cpp<BuildSandcastleMinigamePatch.CursedSandcastleBucketCloneMarker>();
         ClassInjector.RegisterTypeInIl2Cpp<WCSantaHandler>();
+        ClassInjector.RegisterTypeInIl2Cpp<AnnouncementSelectMenuMarker>();
+        ClassInjector.RegisterTypeInIl2Cpp<AnnouncementSelectMenuState>();
         // lassInjector.RegisterTypeInIl2Cpp<AddressableReleaseOnDestroy>();
     }
 
