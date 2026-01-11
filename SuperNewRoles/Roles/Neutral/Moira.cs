@@ -61,6 +61,7 @@ public class MoiraMeetingAbility : CustomMeetingButtonBase, IAbilityCount
     private EventListener<MeetingHudCalculateVotesOnPlayerOnlyHostEventData> calculateVotesEvent;
     private EventListener<VotingCompleteEventData> votingCompleteEvent;
     private EventListener<NameTextUpdateEventData> nameTextUpdateEvent;
+    private EventListener<MeetingStartEventData> meetingStartEvent;
 
     public override bool CheckHasButton(ExPlayerControl player)
     {
@@ -84,6 +85,7 @@ public class MoiraMeetingAbility : CustomMeetingButtonBase, IAbilityCount
         base.AttachToAlls();
         votingCompleteEvent = VotingCompleteEvent.Instance.AddListener(OnVotingComplete);
         nameTextUpdateEvent = NameTextUpdateEvent.Instance.AddListener(OnNameTextUpdate);
+        meetingStartEvent = MeetingStartEvent.Instance.AddListener(OnMeetingStartAll);
     }
 
     public override void DetachToLocalPlayer()
@@ -98,6 +100,7 @@ public class MoiraMeetingAbility : CustomMeetingButtonBase, IAbilityCount
         base.DetachToAlls();
         votingCompleteEvent?.RemoveListener();
         nameTextUpdateEvent?.RemoveListener();
+        meetingStartEvent?.RemoveListener();
     }
 
     private void OnNameTextUpdate(NameTextUpdateEventData data)
@@ -133,6 +136,12 @@ public class MoiraMeetingAbility : CustomMeetingButtonBase, IAbilityCount
         usedThisMeeting = false;
         ClearSelection();
         RefreshLimitText();
+    }
+
+    private void OnMeetingStartAll(MeetingStartEventData data)
+    {
+        usedThisMeeting = false;
+        ClearSelection();
     }
 
     public override void OnMeetingUpdate()
