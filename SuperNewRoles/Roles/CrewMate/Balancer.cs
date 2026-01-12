@@ -876,7 +876,6 @@ class BalancerAbility : AbilityBase, IAbilityCount
                 if (area.VotedFor == noVoteId || area.VotedFor == byte.MaxValue || !targetIds.Contains(area.VotedFor))
                 {
                     area.VotedFor = targetIds[UnityEngine.Random.Range(0, targetIds.Count)];
-                    area.DidVote = true;
                 }
             }
         }
@@ -889,7 +888,6 @@ class BalancerAbility : AbilityBase, IAbilityCount
                 if (!targetIds.Contains(area.VotedFor))
                 {
                     area.VotedFor = noVoteId;
-                    area.DidVote = true;
                 }
             }
         }
