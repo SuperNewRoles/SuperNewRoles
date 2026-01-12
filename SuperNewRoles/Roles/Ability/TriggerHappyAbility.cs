@@ -17,7 +17,7 @@ public class TriggerHappyAbility : CustomButtonBase, IAbilityCount, IButtonEffec
     private readonly Dictionary<byte, int> _hitCounts = new();
     private readonly List<Vector3> _pendingBulletPositionsWithTime = new();
     private readonly List<Vector2> _pendingBulletDirections = new();
-    private const float BatchInterval = 0.125f;
+    internal const float BatchInterval = 0.2f;
     private const bool EnableMidpointShooting = true; // 中間位置からの追加発射を有効にするかどうか
     private float _batchTimer;
     private SyncKillCoolTimeAbility _syncKillCoolTimeAbility;
@@ -156,7 +156,7 @@ public class TriggerHappyAbility : CustomButtonBase, IAbilityCount, IButtonEffec
         _pendingBulletDirections.Add(direction);
 
         // 中間位置からの追加発射が有効な場合、前回の弾が存在する場合、中間位置から追加の弾を発射
-        if (EnableMidpointShooting && _lastBullet != null && _lastBullet.gameObject != null)
+        if (EnableMidpointShooting && _lastBullet != null && _lastBullet.IsActive)
         {
             Vector2 lastBulletPos = _lastBullet.transform.position;
             Vector2 midpoint = (lastBulletPos + _lastFirePosition) / 2f;
@@ -184,35 +184,33 @@ public class TriggerHappyAbility : CustomButtonBase, IAbilityCount, IButtonEffec
             currentAngle = GatlingGunAnimation.transform.eulerAngles.z * Mathf.Deg2Rad;
         }
 
-        RpcFireBulletBatch(_pendingBulletPositionsWithTime.ToArray(), _pendingBulletDirections.ToArray(), currentAngle);
+        var batchData = new TriggerHappyBulletBatchData(_pendingBulletPositionsWithTime, _pendingBulletDirections, currentAngle);
+        RpcFireBulletBatch(batchData);
         _pendingBulletPositionsWithTime.Clear();
         _pendingBulletDirections.Clear();
     }
 
     [CustomRPC(true)]
-    public void RpcFireBulletBatch(Vector3[] positionsWithTime, Vector2[] directions, float angle)
+    public void RpcFireBulletBatch(TriggerHappyBulletBatchData batchData)
     {
-        if (positionsWithTime == null || directions == null)
-            return;
-        if (positionsWithTime.Length != directions.Length)
+        if (batchData == null || batchData.Count == 0)
             return;
 
         // 角度同期：オーナーが送ったangleを、非オーナー側のGatlingGunがtargetAngleとして受け取り追従する
         if (GatlingGunAnimation != null)
         {
-            GatlingGunAnimation.SetAngle(angle);
+            GatlingGunAnimation.SetAngle(batchData.AngleRadians);
         }
 
-        for (int i = 0; i < positionsWithTime.Length; i++)
+        for (int i = 0; i < batchData.Count; i++)
         {
-            Vector3 entry = positionsWithTime[i];
-            Vector2 direction = directions[i];
-            Vector2 position = new(entry.x, entry.y);
-            float delay = Mathf.Clamp(entry.z, 0f, BatchInterval);
+            Vector2 position = batchData.GetPosition(i);
+            Vector2 direction = batchData.GetDirection(i);
+            float delay = batchData.GetDelay(i);
             new LateTask(() =>
             {
                 TriggerHappyBullet.Spawn(Player, this, position, direction, _data.Range, _data.BulletSize, _data.PierceWalls);
-            }, delay);
+            }, delay, "TriggerHappyBullet", log: false);
         }
     }
 
