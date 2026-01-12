@@ -319,7 +319,7 @@ class BalancerAbility : AbilityBase, IAbilityCount
 
         if (CheckPlayerStatus()) return;
 
-        if (AmongUsClient.Instance.AmHost && CheckAllPlayersVoted())
+        if (AmongUsClient.Instance.AmHost && (CheckAllPlayersVoted() || IsVoteTimerExpired()))
         {
             EndBalancing();
             return;
@@ -356,6 +356,13 @@ class BalancerAbility : AbilityBase, IAbilityCount
     private bool CheckAllPlayersVoted()
     {
         return MeetingHud.Instance.playerStates.All(area => area.AmDead || area.DidVote);
+    }
+
+    private bool IsVoteTimerExpired()
+    {
+        return CurrentState == BalancerState.WaitVote &&
+            MeetingHud.Instance != null &&
+            MeetingHud.Instance.discussionTimer <= 0f;
     }
 
     private void UpdateAnimationByState()
@@ -854,25 +861,36 @@ class BalancerAbility : AbilityBase, IAbilityCount
     public void EndBalancing()
     {
         if (BalancingAbility != this) return;
-        if (!MeetingHud.Instance.playerStates.All((PlayerVoteArea ps) => ps.AmDead || ps.DidVote)) return;
+        bool allVoted = MeetingHud.Instance.playerStates.All((PlayerVoteArea ps) => ps.AmDead || ps.DidVote);
+        if (!allVoted && !IsVoteTimerExpired()) return;
+
+        List<byte> targetIds = [targetPlayerLeft.PlayerId, targetPlayerRight.PlayerId];
+        const byte noVoteId = 254;
+
         // 未投票時ランダムに投票する設定がONの場合のみ、投票先を変更する
         if (Balancer.BalancerRandomVoteWhenNoVote)
         {
-            List<byte> targetIds = [targetPlayerLeft.PlayerId, targetPlayerRight.PlayerId];
             foreach (PlayerVoteArea area in MeetingHud.Instance.playerStates)
             {
-                if (!area.AmDead && !targetIds.Contains(area.VotedFor))
+                if (area.AmDead) continue;
+                if (area.VotedFor == noVoteId || area.VotedFor == byte.MaxValue || !targetIds.Contains(area.VotedFor))
                 {
                     area.VotedFor = targetIds[UnityEngine.Random.Range(0, targetIds.Count)];
+                    area.DidVote = true;
                 }
             }
         }
         else
         {
+            // 未投票は未投票として扱う
             foreach (PlayerVoteArea area in MeetingHud.Instance.playerStates)
             {
-                if (!area.AmDead && area.VotedFor < 250)
-                    area.VotedFor = 255;
+                if (area.AmDead) continue;
+                if (!targetIds.Contains(area.VotedFor))
+                {
+                    area.VotedFor = noVoteId;
+                    area.DidVote = true;
+                }
             }
         }
         bool tie;
