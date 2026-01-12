@@ -22,6 +22,8 @@ public class TriggerHappyBullet : MonoBehaviour
     private static readonly Stack<TriggerHappyBullet> BulletPool = new();
     private static Sprite BulletSprite;
     private ExPlayerControl owner;
+    private byte ownerPlayerId = byte.MaxValue;
+    private ulong abilityId;
     private TriggerHappyAbility ability;
     private Vector2 direction;
     private float range;
@@ -36,6 +38,12 @@ public class TriggerHappyBullet : MonoBehaviour
     private bool isActive;
 
     public bool IsActive => isActive;
+    public bool BelongsTo(ExPlayerControl owner, TriggerHappyAbility ability)
+    {
+        if (!isActive || owner == null || ability == null)
+            return false;
+        return ownerPlayerId == owner.PlayerId && abilityId == ability.AbilityId;
+    }
 
     private sealed class GuardEffectState
     {
@@ -101,6 +109,8 @@ public class TriggerHappyBullet : MonoBehaviour
     {
         this.owner = owner;
         this.ability = ability;
+        ownerPlayerId = owner?.PlayerId ?? byte.MaxValue;
+        abilityId = ability?.AbilityId ?? 0;
         this.direction = direction.normalized;
         this.range = Mathf.Max(0.1f, range);
         this.pierceWalls = pierceWalls;
@@ -371,6 +381,8 @@ public class TriggerHappyBullet : MonoBehaviour
         isActive = false;
         owner = null;
         ability = null;
+        ownerPlayerId = byte.MaxValue;
+        abilityId = 0;
         ignoreWiseManTimer = 0f;
         ignoreWiseManId = byte.MaxValue;
         traveled = 0f;

@@ -156,7 +156,7 @@ public class TriggerHappyAbility : CustomButtonBase, IAbilityCount, IButtonEffec
         _pendingBulletDirections.Add(direction);
 
         // 中間位置からの追加発射が有効な場合、前回の弾が存在する場合、中間位置から追加の弾を発射
-        if (EnableMidpointShooting && _lastBullet != null && _lastBullet.IsActive)
+        if (EnableMidpointShooting && _lastBullet != null && _lastBullet.BelongsTo(Player, this))
         {
             Vector2 lastBulletPos = _lastBullet.transform.position;
             Vector2 midpoint = (lastBulletPos + _lastFirePosition) / 2f;
