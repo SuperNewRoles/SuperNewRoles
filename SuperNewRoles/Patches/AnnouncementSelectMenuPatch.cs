@@ -29,14 +29,8 @@ internal static class AnnouncementSelectMenuHelper
 {
     private const string MenuAssetName = "AnnounceMenuSelector";
     private const string DefaultCategory = "Announce_SNR";
-    private const string AnnounceBgAssetName = "AnnounceBG";
-    private const string AnnounceBgObjectName = "SNR_AnnounceBG";
-    private const float MenuScale = 0.2f;
-    private const float AnnounceBgScale = 0.55f;
-    private const float AnnounceBgZ = -14f;
-    private const float AnnounceBgFadeDuration = 0.06f;
-    private static GameObject currentAnnounceBg;
-    private static readonly Vector3 MenuFallbackPosition = new(-2.96f, 2.65f, 1.4382f);
+    private const float MenuScale = 0.23f;
+    private static readonly Vector3 MenuFallbackPosition = new(-2.82f, 1.97f, -1.15f);
 
     private static readonly string[] CategoryNames =
     {
@@ -78,8 +72,6 @@ internal static class AnnouncementSelectMenuHelper
         var menuObject = FindMenu(popup);
         if (menuObject != null)
             menuObject.SetActive(active);
-        if (!active)
-            SetAnnounceBgActive(false);
     }
 
     private static GameObject FindMenu(AnnouncementPopUp popup)
@@ -98,7 +90,7 @@ internal static class AnnouncementSelectMenuHelper
         Transform parent = popup.transform;
         Vector3 position = MenuFallbackPosition;
 
-        menuObject.transform.SetParent(parent, false);
+        menuObject.transform.SetParent(parent.transform.Find("Sizer/Header"), false);
         menuObject.transform.localPosition = position;
         menuObject.transform.localScale = Vector3.one * MenuScale;
     }
@@ -137,27 +129,11 @@ internal static class AnnouncementSelectMenuHelper
         if (menuObject == null || string.IsNullOrWhiteSpace(categoryName))
             return;
 
-        var selectedObject = menuObject.transform.Find("Selected")?.gameObject;
-        var categoryObject = menuObject.transform.Find(categoryName)?.gameObject;
-        if (selectedObject != null && categoryObject != null)
-        {
-            selectedObject.SetActive(true);
-            var position = selectedObject.transform.localPosition;
-            position.x = categoryObject.transform.localPosition.x + 4.02f;
-            selectedObject.transform.localPosition = position;
-        }
-
-        var sizer = GameObject.FindObjectOfType<AnnouncementPopUp>()?.transform.Find("Sizer")?.gameObject;
         switch (categoryName)
         {
             case "Announce_Vanilla":
-                sizer?.SetActive(true);
-                SetAnnounceBgActive(false);
                 break;
             case "Announce_SNR":
-                sizer?.SetActive(false);
-                EnsureAnnounceBg(menuObject);
-                SetAnnounceBgActive(true);
                 break;
         }
     }
@@ -170,53 +146,6 @@ internal static class AnnouncementSelectMenuHelper
             highlight.SetActive(active);
     }
 
-    private static void SetAnnounceBgActive(bool active)
-    {
-        var bg = currentAnnounceBg;
-        if (bg != null)
-        {
-            bool wasActive = bg.activeSelf;
-            bg.SetActive(active);
-            if (active && !wasActive)
-            {
-                var fade = bg.GetComponent<FadeCoroutine>();
-                if (fade != null)
-                    fade.StartFadeIn(bg, AnnounceBgFadeDuration);
-            }
-        }
-    }
-
-    private static GameObject EnsureAnnounceBg(GameObject menuObject)
-    {
-        if (currentAnnounceBg != null)
-            return currentAnnounceBg;
-        var asset = AssetManager.GetAsset<GameObject>(AnnounceBgAssetName);
-        if (asset == null)
-            return null;
-
-        currentAnnounceBg = UnityEngine.Object.Instantiate(asset);
-        currentAnnounceBg.name = AnnounceBgObjectName;
-        currentAnnounceBg.transform.localPosition = new Vector3(0f, 0f, AnnounceBgZ);
-        currentAnnounceBg.transform.localScale = Vector3.one * AnnounceBgScale;
-        ConfigureBackgroundBlocker(currentAnnounceBg);
-        SetupCloseButtons(currentAnnounceBg, menuObject);
-        var fade = currentAnnounceBg.AddComponent<FadeCoroutine>();
-        fade.StartFadeIn(currentAnnounceBg, AnnounceBgFadeDuration);
-        return currentAnnounceBg;
-    }
-
-    private static void SetupCloseButtons(GameObject bg, GameObject menuObject)
-    {
-        ConfigureCloseButton(bg.transform.Find("CloseBox")?.gameObject, menuObject);
-        ConfigureCloseButton(bg.transform.Find("CloseButton")?.gameObject, menuObject);
-    }
-
-    private static void ConfigureBackgroundBlocker(GameObject bg)
-    {
-        ConfigureEmptyButton(bg);
-        ConfigureEmptyButton(bg.transform.Find("BG")?.gameObject);
-    }
-
     private static void ConfigureEmptyButton(GameObject target)
     {
         if (target == null) return;
@@ -226,35 +155,6 @@ internal static class AnnouncementSelectMenuHelper
         button.OnClick = new();
         button.OnMouseOver = new();
         button.OnMouseOut = new();
-    }
-
-    private static void ConfigureCloseButton(GameObject target, GameObject menuObject)
-    {
-        if (target == null) return;
-        var button = target.GetComponent<PassiveButton>() ?? target.AddComponent<PassiveButton>();
-        button.Colliders = new Collider2D[] { target.GetComponent<Collider2D>() };
-        button.OnClick = new();
-        button.OnMouseOver = new();
-        button.OnMouseOut = new();
-        button.OnClick.AddListener((UnityAction)(() => CloseAnnounceBg(menuObject)));
-    }
-
-    private static void CloseAnnounceBg(GameObject menuObject)
-    {
-        var bg = currentAnnounceBg;
-        if (bg == null) return;
-
-        var fade = bg.GetComponent<FadeCoroutine>() ?? bg.AddComponent<FadeCoroutine>();
-        fade.StartFadeOut(bg, AnnounceBgFadeDuration, true);
-        currentAnnounceBg = null;
-
-        if (menuObject != null)
-        {
-            var state = menuObject.GetComponent<AnnouncementSelectMenuState>();
-            if (state != null)
-                state.CurrentCategory = DefaultCategory;
-            GameObject.FindObjectOfType<AnnouncementPopUp>()?.Close();
-        }
     }
 }
 
