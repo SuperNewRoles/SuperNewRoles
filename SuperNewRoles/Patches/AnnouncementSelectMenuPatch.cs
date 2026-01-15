@@ -217,11 +217,22 @@ internal static class AnnouncementSelectMenuHelper
             CaptureVanillaCache(state);
 
         string lang = GetApiLanguage();
+
+        // メモリキャッシュをチェック
         if (state.SnrCache != null &&
             state.SnrCache.Count > 0 &&
             string.Equals(state.SnrLang, lang, StringComparison.Ordinal))
         {
             ApplyAnnouncements(popup, state.SnrCache);
+            
+            // メモリキャッシュがある場合でも、バックグラウンドで更新をチェック
+            if (!state.SnrLoading)
+            {
+                var cachedListForUpdate = AnnounceCache.GetArticlesList(lang);
+                state.SnrRequestToken++;
+                int token = state.SnrRequestToken;
+                popup.StartCoroutine(UpdateSnrAnnouncementsInBackground(popup, state, lang, token, cachedListForUpdate?.ETag).WrapToIl2Cpp());
+            }
             return;
         }
 
@@ -231,13 +242,36 @@ internal static class AnnouncementSelectMenuHelper
             return;
         }
 
+        // ディスクキャッシュをチェック
+        var cachedList = AnnounceCache.GetArticlesList(lang);
+        if (cachedList != null && cachedList.Response != null && cachedList.Response.Items.Count > 0)
+        {
+            // キャッシュから個別記事も含めてアナウンスを作成
+            var cachedAnnouncements = ConvertCachedArticlesListToAnnouncements(cachedList.Response, lang);
+
+            // アナウンスがある場合はキャッシュを表示（本文なしでも表示）
+            if (cachedAnnouncements.Count > 0)
+            {
+                state.SnrCache = cachedAnnouncements;
+                state.SnrLang = lang;
+                ApplyAnnouncements(popup, cachedAnnouncements);
+
+                // バックグラウンドで更新をチェック（常に実行して最新内容を取得）
+                state.SnrRequestToken++;
+                int token = state.SnrRequestToken;
+                popup.StartCoroutine(UpdateSnrAnnouncementsInBackground(popup, state, lang, token, cachedList.ETag).WrapToIl2Cpp());
+                return;
+            }
+        }
+
+        // キャッシュがない場合、ローディング表示して取得
         state.SnrLoading = true;
         state.SnrLang = lang;
         state.SnrRequestToken++;
-        int token = state.SnrRequestToken;
+        int loadToken = state.SnrRequestToken;
 
         ApplyAnnouncements(popup, CreateLoadingAnnouncements());
-        popup.StartCoroutine(LoadSnrAnnouncements(popup, state, lang, token).WrapToIl2Cpp());
+        popup.StartCoroutine(LoadSnrAnnouncements(popup, state, lang, loadToken).WrapToIl2Cpp());
     }
 
     private static IEnumerator LoadSnrAnnouncements(AnnouncementPopUp popup, AnnouncementSelectMenuState state, string lang, int requestToken)
@@ -259,18 +293,37 @@ internal static class AnnouncementSelectMenuHelper
             yield break;
         }
 
+        // キャッシュに保存
+        AnnounceCache.SaveArticlesList(lang, listResult.Data, listResult.ETag);
+
+        // 個別記事を取得してアナウンスに変換
         int fallbackIndex = 0;
         foreach (var item in listResult.Data.Items)
         {
-            ApiResult<Article> articleResult = null;
-            yield return SuperNewAnnounceApi.GetArticle(item.Id, lang, result => articleResult = result, fallback: true);
-
             if (state == null || state.SnrRequestToken != requestToken)
                 yield break;
 
-            if (articleResult != null && articleResult.IsSuccess && articleResult.Data != null)
+            // キャッシュから取得
+            var cachedArticle = AnnounceCache.GetArticle(item.Id, lang);
+            Article article = cachedArticle?.Article;
+
+            // キャッシュにない場合はAPIから取得
+            if (article == null)
             {
-                announcements.Add(ConvertToAnnouncement(articleResult.Data, fallbackIndex));
+                ApiResult<Article> articleResult = null;
+                yield return SuperNewAnnounceApi.GetArticle(item.Id, lang, result => articleResult = result, fallback: true);
+
+                if (articleResult != null && articleResult.IsSuccess && articleResult.Data != null)
+                {
+                    article = articleResult.Data;
+                    // キャッシュに保存
+                    AnnounceCache.SaveArticle(item.Id, lang, article, articleResult.ETag);
+                }
+            }
+
+            if (article != null)
+            {
+                announcements.Add(ConvertToAnnouncement(article, fallbackIndex));
             }
             fallbackIndex++;
         }
@@ -281,6 +334,105 @@ internal static class AnnouncementSelectMenuHelper
 
         if (state.CurrentCategory == SnrCategory)
             ApplyAnnouncements(popup, announcements);
+    }
+
+    private static IEnumerator UpdateSnrAnnouncementsInBackground(AnnouncementPopUp popup, AnnouncementSelectMenuState state, string lang, int requestToken, string etag)
+    {
+        ApiResult<ArticlesResponse> listResult = null;
+        // リスト取得時はETagを使って更新チェック
+        yield return SuperNewAnnounceApi.ListArticles(lang, result => listResult = result, page: 1, pageSize: SnrPageSize, fallback: true, etag: etag);
+
+        if (state == null || state.SnrRequestToken != requestToken)
+            yield break;
+
+        // 304 Not Modified の場合でも、個別記事の更新をチェック
+        bool listUpdated = listResult != null && listResult.IsSuccess && listResult.Data != null;
+        bool shouldCheckArticles = listResult != null && (listResult.IsNotModified || listUpdated);
+
+        if (!shouldCheckArticles)
+            yield break;
+
+        // リストが更新された場合はキャッシュを保存
+        if (listUpdated)
+            AnnounceCache.SaveArticlesList(lang, listResult.Data, listResult.ETag);
+
+        // 現在表示中のリストから記事IDを取得
+        var cachedList = AnnounceCache.GetArticlesList(lang);
+        if (cachedList == null || cachedList.Response == null || cachedList.Response.Items.Count == 0)
+            yield break;
+
+        // 個別記事を取得してアナウンスに変換
+        List<Announcement> announcements = new();
+        bool hasUpdates = false;
+        int fallbackIndex = 0;
+
+        foreach (var item in cachedList.Response.Items)
+        {
+            if (state == null || state.SnrRequestToken != requestToken)
+                yield break;
+
+            // キャッシュから取得
+            var cachedArticle = AnnounceCache.GetArticle(item.Id, lang);
+            Article article = cachedArticle?.Article;
+
+            // 常に最新の記事を取得（ETagなし）して更新をチェック
+            ApiResult<Article> articleResult = null;
+            yield return SuperNewAnnounceApi.GetArticle(item.Id, lang, result => articleResult = result, fallback: true);
+
+            if (articleResult != null && articleResult.IsSuccess && articleResult.Data != null)
+            {
+                article = articleResult.Data;
+                AnnounceCache.SaveArticle(item.Id, lang, article, articleResult.ETag);
+                hasUpdates = true;
+            }
+            else if (article != null)
+            {
+                // API取得失敗時はキャッシュを使用
+            }
+
+            if (article != null)
+            {
+                announcements.Add(ConvertToAnnouncement(article, fallbackIndex));
+            }
+            fallbackIndex++;
+        }
+
+        // 更新があった場合、または記事数が変わった場合は画面を更新
+        if (hasUpdates || state.SnrCache == null || state.SnrCache.Count != announcements.Count)
+        {
+            // メモリキャッシュと画面を更新
+            state.SnrCache = announcements;
+            state.SnrLang = lang;
+
+            if (state.CurrentCategory == SnrCategory && popup != null)
+                ApplyAnnouncements(popup, announcements);
+        }
+    }
+
+    private static List<Announcement> ConvertCachedArticlesListToAnnouncements(ArticlesResponse response, string lang)
+    {
+        List<Announcement> announcements = new();
+        if (response == null || response.Items == null)
+            return announcements;
+
+        int fallbackIndex = 0;
+        foreach (var item in response.Items)
+        {
+            // キャッシュから個別記事を取得
+            var cachedArticle = AnnounceCache.GetArticle(item.Id, lang);
+            Article article = cachedArticle?.Article;
+
+            // キャッシュがない場合は、リストの情報から仮の記事を作成
+            if (article == null)
+            {
+                article = new Article(item, string.Empty);
+            }
+
+            announcements.Add(ConvertToAnnouncement(article, fallbackIndex));
+            fallbackIndex++;
+        }
+
+        return announcements;
     }
 
     private static void ApplyAnnouncements(AnnouncementPopUp popup, List<Announcement> announcements)
@@ -340,21 +492,25 @@ internal static class AnnouncementSelectMenuHelper
     private static Announcement ConvertToAnnouncement(Article article, int fallbackIndex)
     {
         string title = string.IsNullOrWhiteSpace(article?.Title) ? "Announcement" : article.Title;
-        string shortTitle = MakeShortTitle(title);
         string body = string.IsNullOrWhiteSpace(article?.Body) ? string.Empty : article.Body;
         if (string.IsNullOrWhiteSpace(body))
             body = string.IsNullOrWhiteSpace(article?.Url) ? title : article.Url;
+
+        // マークダウンをUnityタグに変換
+        string convertedTitle = MarkdownToUnityTag.Convert(title);
+        string convertedBody = MarkdownToUnityTag.Convert(body);
+        string shortTitle = MakeShortTitle(convertedTitle);
 
         return new Announcement
         {
             Id = article?.Id ?? string.Empty,
             Language = GetCurrentLanguageId(),
             Number = BuildSnrNumber(article?.Id, fallbackIndex),
-            Title = title,
+            Title = convertedTitle,
             SubTitle = string.Empty,
             ShortTitle = shortTitle,
             PinState = false,
-            Text = body,
+            Text = convertedBody,
             Date = NormalizeDate(article)
         };
     }
