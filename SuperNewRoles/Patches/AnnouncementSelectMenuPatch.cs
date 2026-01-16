@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Globalization;
+using System.Linq;
 using AmongUs.Data;
 using Assets.InnerNet;
 using BepInEx.Unity.IL2CPP.Utils.Collections;
@@ -10,6 +11,7 @@ using SuperNewRoles;
 using SuperNewRoles.Modules;
 using UnityEngine;
 using UnityEngine.Events;
+using TMPro;
 
 namespace SuperNewRoles.Patches;
 
@@ -19,6 +21,8 @@ public static class AnnouncementPopUpOnEnablePatch
     public static void Postfix(AnnouncementPopUp __instance)
     {
         AnnouncementSelectMenuHelper.EnsureMenu(__instance);
+        // 未読バッジを更新
+        __instance.StartCoroutine(AnnouncementSelectMenuHelper.UpdateUnreadBadgesDelayed(__instance).WrapToIl2Cpp());
     }
 }
 
@@ -37,6 +41,7 @@ public static class AnnouncementPopUpSetMenuPatch
     public static void Postfix(AnnouncementPopUp __instance)
     {
         AnnouncementSelectMenuHelper.OnMenuSet(__instance);
+        AnnouncementSelectMenuHelper.UpdateUnreadBadges(__instance);
     }
 }
 
@@ -63,6 +68,8 @@ internal static class AnnouncementSelectMenuHelper
         AccessTools.Method(typeof(AnnouncementPopUp), "CreateAnnouncementList");
     private static readonly System.Reflection.MethodInfo UpdateAnnouncementTextMethod =
         AccessTools.Method(typeof(AnnouncementPopUp), "UpdateAnnouncementText");
+    private static readonly System.Reflection.FieldInfo selectedAnnouncementField =
+        AccessTools.Field(typeof(AnnouncementPopUp), "selectedAnnouncement");
 
     public static void EnsureMenu(AnnouncementPopUp popup)
     {
@@ -116,6 +123,123 @@ internal static class AnnouncementSelectMenuHelper
         var menuObject = FindMenu(popup);
         if (menuObject != null)
             menuObject.SetActive(active);
+    }
+
+    public static void UpdateUnreadBadges(AnnouncementPopUp popup)
+    {
+        if (popup == null) return;
+
+        // 現在のタブを確認
+        var menuObject = FindMenu(popup);
+        if (menuObject == null) return;
+
+        var state = menuObject.GetComponent<AnnouncementSelectMenuState>();
+        if (state == null) return;
+
+        // SNRタブの場合
+        if (state.CurrentCategory == SnrCategory)
+        {
+            UpdateSnrUnreadBadges(popup);
+        }
+        else
+        {
+            // Vanillaタブの場合は何もしない(デフォルトの動作に任せる)
+        }
+
+        // 選択されたアナウンスを既読にする
+        MarkCurrentAnnouncementAsRead(popup);
+    }
+
+    private static void UpdateSnrUnreadBadges(AnnouncementPopUp popup)
+    {
+        if (popup == null) return;
+
+        // 現在表示中のアナウンスリストから未読バッジを更新
+        var announcementList = popup.transform.Find("AnnouncementList");
+        if (announcementList == null) return;
+
+        var announcements = DataManager.Player?.Announcements?.AllAnnouncements;
+        if (announcements == null) return;
+
+        for (int i = 0; i < announcements.Count && i < announcementList.childCount; i++)
+        {
+            var item = announcementList.GetChild(i);
+            if (item == null) continue;
+
+            var announcement = announcements[i];
+            bool isUnread = !AnnounceNotificationManager.IsRead(announcement.Id);
+
+            // 未読バッジを探して表示/非表示
+            var badge = item.Find("UnreadBadge");
+            if (badge == null)
+            {
+                // バッジがない場合は作成
+                badge = CreateUnreadBadge(item);
+            }
+
+            if (badge != null)
+                badge.gameObject.SetActive(isUnread);
+        }
+    }
+
+    public static IEnumerator UpdateUnreadBadgesDelayed(AnnouncementPopUp popup)
+    {
+        // AnnouncementListが作成されるまで待つ
+        yield return new WaitForSeconds(0.1f);
+        UpdateUnreadBadges(popup);
+    }
+
+    private static void MarkCurrentAnnouncementAsRead(AnnouncementPopUp popup)
+    {
+        if (popup == null || selectedAnnouncementField == null) return;
+
+        try
+        {
+            var selectedAnnouncement = selectedAnnouncementField.GetValue(popup) as Announcement;
+            if (selectedAnnouncement != null && !string.IsNullOrWhiteSpace(selectedAnnouncement.Id))
+            {
+                AnnounceNotificationManager.MarkAsRead(selectedAnnouncement.Id);
+            }
+        }
+        catch (Exception ex)
+        {
+            SuperNewRolesPlugin.Logger.LogWarning($"Failed to mark announcement as read: {ex.Message}");
+        }
+    }
+
+    private static Transform CreateUnreadBadge(Transform parent)
+    {
+        try
+        {
+            var badgeObj = new GameObject("UnreadBadge");
+            badgeObj.transform.SetParent(parent, false);
+            badgeObj.transform.localPosition = new Vector3(1.5f, 0f, -1f);
+            badgeObj.transform.localScale = Vector3.one * 0.5f;
+
+            var renderer = badgeObj.AddComponent<SpriteRenderer>();
+            renderer.sprite = AssetManager.GetAsset<Sprite>("badge");
+            if (renderer.sprite == null)
+            {
+                // スプライトがない場合は円を描画
+                var circle = GameObject.CreatePrimitive(PrimitiveType.Sphere);
+                GameObject.Destroy(circle.GetComponent<Collider>());
+                renderer = circle.GetComponent<SpriteRenderer>();
+                if (renderer != null)
+                    renderer.color = new Color(1f, 0.2f, 0.2f); // 赤色
+                badgeObj = circle;
+                badgeObj.name = "UnreadBadge";
+                badgeObj.transform.SetParent(parent, false);
+                badgeObj.transform.localPosition = new Vector3(1.5f, 0f, -1f);
+                badgeObj.transform.localScale = Vector3.one * 0.3f;
+            }
+
+            return badgeObj.transform;
+        }
+        catch (Exception ex)
+        {
+            SuperNewRolesPlugin.Logger.LogWarning($"Failed to create unread badge: {ex.Message}");
+            return null;
+        }
     }
 
     private static GameObject FindMenu(AnnouncementPopUp popup)
@@ -224,7 +348,7 @@ internal static class AnnouncementSelectMenuHelper
             string.Equals(state.SnrLang, lang, StringComparison.Ordinal))
         {
             ApplyAnnouncements(popup, state.SnrCache);
-            
+
             // メモリキャッシュがある場合でも、バックグラウンドで更新をチェック
             if (!state.SnrLoading)
             {
@@ -454,7 +578,12 @@ internal static class AnnouncementSelectMenuHelper
         if (popup == null)
             return;
 
+        popup.CreateAnnouncementList();
+
         CreateAnnouncementListMethod?.Invoke(popup, null);
+
+        // スクロール位置をリセット
+        ResetScrollPosition(popup);
 
         var announcements = DataManager.Player?.Announcements?.AllAnnouncements;
         if (announcements == null || announcements.Count == 0)
@@ -462,6 +591,29 @@ internal static class AnnouncementSelectMenuHelper
 
         bool previewOnly = ActiveInputManager.currentControlType == ActiveInputManager.InputType.Joystick;
         UpdateAnnouncementTextMethod?.Invoke(popup, new object[] { announcements[0].Number, previewOnly });
+
+        // 未読バッジを更新（少し遅延させてUIが完全に構築されてから）
+        popup.StartCoroutine(UpdateUnreadBadgesDelayed(popup).WrapToIl2Cpp());
+    }
+
+    private static void ResetScrollPosition(AnnouncementPopUp popup)
+    {
+        if (popup == null)
+            return;
+
+        try
+        {
+            // AnnouncementListのScrollerを探してリセット
+            var scroller = popup.GetComponentInChildren<Scroller>();
+            if (scroller != null)
+            {
+                scroller.ScrollToTop();
+            }
+        }
+        catch (Exception ex)
+        {
+            SuperNewRolesPlugin.Logger.LogWarning($"Failed to reset scroll position: {ex.Message}");
+        }
     }
 
     private static void CaptureVanillaCache(AnnouncementSelectMenuState state)

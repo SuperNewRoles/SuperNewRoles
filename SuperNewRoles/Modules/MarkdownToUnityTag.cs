@@ -21,9 +21,14 @@ namespace SuperNewRoles.Modules
             // H3: ### text
             result = Regex.Replace(result, @"^### (.*?)$", "<size=110%>$1</size>", RegexOptions.Multiline);
 
+            // Horizontal Rule: --- (3 or more dashes)
+            result = Regex.Replace(result, @"^---+$", "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━", RegexOptions.Multiline);
+
             // Blockquotes: > text
             // result = Regex.Replace(result, @"^> (.*?)$", "<indent>$1</indent>", RegexOptions.Multiline);
 
+            // Nested List Items (2-level indent)
+            result = Regex.Replace(result, @"^  - (.*?)$", "    ◦ $1", RegexOptions.Multiline);
             // List Items: - text
             result = Regex.Replace(result, @"^- (.*?)$", "• $1", RegexOptions.Multiline);
 
@@ -43,8 +48,8 @@ namespace SuperNewRoles.Modules
             // Bold and Italic (___text___)
             result = Regex.Replace(result, @"___([^_]+?)___", "<b><i>$1</i></b>");
 
-            // Bold (__)
-            result = Regex.Replace(result, @"__([^_]+?)__", "<b>$1</b>");
+            // Underline (__text__) - Changed from Bold to Underline
+            result = Regex.Replace(result, @"__([^_]+?)__", "<u>$1</u>");
 
             // Italic (_)
             // This version matches underscores not adjacent to other underscores.
@@ -60,9 +65,6 @@ namespace SuperNewRoles.Modules
             // result = Regex.Replace(result, @"\`([^\`]+?)\`", "<mspace=0.6em>$1</mspace>");
 
             // --- Unity Specific Tags or Custom Markdown (Examples, can be extended) ---
-
-            // Underline: Unity supports <u>text</u>. If a markdown like ++text++ is desired:
-            // result = Regex.Replace(result, @"\+\+([^\+]+?)\+\+", "<u>$1</u>");
 
             // Subscript: Unity supports <sub>text</sub>. If a markdown like ~text~ is desired:
             // (Be careful with ~ for strikethrough (~~) if using single ~ for subscript)

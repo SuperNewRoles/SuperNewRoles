@@ -42,6 +42,14 @@ public static class Analytics
         {
             if (!FastDestroyableSingleton<EOSManager>.Instance.HasFinishedLoginFlow())
                 return;
+
+            // Announce初期化と新着チェック
+            AnnounceNotificationManager.Initialize();
+            if (!AnnounceNotificationManager.HasCheckedOnStartup())
+            {
+                __instance.StartCoroutine(AnnounceNotificationManager.CheckForNewAnnouncementsOnStartup().WrapToIl2Cpp());
+            }
+
             if (currentPopup == null)
                 currentPopup = null;
             if (!isAnalyticsPopupViewd && ConfigRoles.IsSendAnalyticsPopupViewd.Value)
