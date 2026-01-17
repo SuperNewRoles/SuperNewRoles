@@ -1,4 +1,5 @@
 using System.Reflection;
+using AmongUs.Data;
 using HarmonyLib;
 using TMPro;
 using UnityEngine;
@@ -17,6 +18,21 @@ namespace SuperNewRoles.Patches
             var bodyText = __instance.AnnouncementBodyText;
             if (bodyText == null)
                 return;
+
+            var announcements = DataManager.Player?.Announcements?.AllAnnouncements;
+            if (announcements != null)
+            {
+                for (int i = 0; i < announcements.Count; i++)
+                {
+                    var announcement = announcements[i];
+                    if (announcement.Number == id)
+                    {
+                        AnnouncementImageCache.SetAnnouncementId(id, announcement.Id);
+                        AnnouncementImageCache.EnsureImages(id, announcement.Id);
+                        break;
+                    }
+                }
+            }
 
             var renderer = __instance.GetComponent<AnnouncementImageRenderer>();
             if (renderer == null)

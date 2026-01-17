@@ -640,6 +640,7 @@ internal static class AnnouncementSelectMenuHelper
             body = string.IsNullOrWhiteSpace(article?.Url) ? title : article.Url;
 
         int number = BuildSnrNumber(article?.Id, fallbackIndex);
+        AnnouncementImageCache.SetAnnouncementId(number, article?.Id);
         var images = new List<AnnouncementImageInfo>();
         string bodyWithoutImages = AnnouncementImageCache.StripMarkdownImages(body, images);
         AnnouncementImageCache.SetImages(number, images);
