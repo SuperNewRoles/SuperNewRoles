@@ -557,7 +557,20 @@ public class ExPlayerControl
         }
     }
     public bool IsKiller()
-        => IsImpostor() || IsPavlovsDog() || Role == RoleId.MadKiller || IsJackal() || HasCustomKillButton() || Role == RoleId.Hitman;
+    {
+        if (IsImpostor() || IsPavlovsDog() || Role == RoleId.MadKiller || IsJackal() || Role == RoleId.Hitman)
+            return true;
+
+        var customKillButtons = GetAbilities<CustomKillButtonAbility>();
+        for (var i = 0; i < customKillButtons.Count; i++)
+        {
+            var ability = customKillButtons[i];
+            if (ability?.CanKill?.Invoke() == true)
+                return true;
+        }
+
+        return false;
+    }
 
     public bool IsNonCrewKiller()
         => IsKiller() && !IsCrewmate();

@@ -88,6 +88,7 @@ public class SafecrackerAbility : AbilityBase
         _taskCompleteListener = TaskCompleteEvent.Instance.AddListener(OnTaskComplete);
         Player.AttachAbility(new CustomTaskAbility(() => (true, false, null), _task), new AbilityParentAbility(this));
         Player.AttachAbility(new CustomTaskTypeAbility(TaskTypes.UnlockSafe, ChangeTaskPrefab, MapNames.Airship), new AbilityParentAbility(this));
+        CheckAllAbilities();
     }
 
     public override void DetachToAlls()
@@ -178,6 +179,9 @@ public class SafecrackerAbility : AbilityBase
         if (CanExiledGuard())
         {
             Player.Player.Revive();
+            RoleManager.Instance.SetRole(Player, RoleTypes.Crewmate);
+            FinalStatusManager.SetFinalStatus(Player, FinalStatus.Alive);
+            Player.Data.IsDead = false;
             _exiledGuardCount++;
 
             if (Player.AmOwner)
@@ -200,7 +204,13 @@ public class SafecrackerAbility : AbilityBase
             Player.AttachAbility(new CustomSaboAbility(() => true), new AbilityParentAbility(this));
         }
 
-        HasImpostorLight();
-        CanCheckImpostor();
+        if (HasImpostorLight() && !Player.HasAbility<ImpostorVisionAbility>())
+        {
+            Player.AttachAbility(new ImpostorVisionAbility(() => HasImpostorLight()), new AbilityParentAbility(this));
+        }
+        if (CanCheckImpostor() && !Player.HasAbility<KnowImpostorAbility>())
+        {
+            Player.AttachAbility(new KnowImpostorAbility(() => CanCheckImpostor()), new AbilityParentAbility(this));
+        }
     }
 }
