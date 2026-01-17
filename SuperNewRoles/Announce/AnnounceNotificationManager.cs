@@ -189,7 +189,6 @@ public static class AnnounceNotificationManager
         // 未読があればポップアップを表示
         if (hasUnread && newUnreadIds.Count > 0)
         {
-            yield return new WaitForSeconds(1f); // MainMenuが完全にロードされるまで待つ
             ShowNewAnnouncementsPopup(listResult.Data.Items.Where(x => newUnreadIds.Contains(x.Id)).ToList());
         }
     }

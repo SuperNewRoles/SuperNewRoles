@@ -293,6 +293,8 @@ public partial class SuperNewRolesPlugin : BasePlugin
         ClassInjector.RegisterTypeInIl2Cpp<WCSantaHandler>();
         ClassInjector.RegisterTypeInIl2Cpp<AnnouncementSelectMenuMarker>();
         ClassInjector.RegisterTypeInIl2Cpp<AnnouncementSelectMenuState>();
+        ClassInjector.RegisterTypeInIl2Cpp<AnnouncementImageRenderer>();
+        ClassInjector.RegisterTypeInIl2Cpp<AnnouncementImageSpinner>();
         // lassInjector.RegisterTypeInIl2Cpp<AddressableReleaseOnDestroy>();
     }
 

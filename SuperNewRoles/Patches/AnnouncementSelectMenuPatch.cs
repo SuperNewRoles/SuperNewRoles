@@ -15,7 +15,7 @@ using TMPro;
 
 namespace SuperNewRoles.Patches;
 
-[HarmonyPatch(typeof(AnnouncementPopUp), "OnEnable")]
+[HarmonyPatch(typeof(AnnouncementPopUp), nameof(AnnouncementPopUp.OnEnable))]
 public static class AnnouncementPopUpOnEnablePatch
 {
     public static void Postfix(AnnouncementPopUp __instance)
@@ -26,7 +26,7 @@ public static class AnnouncementPopUpOnEnablePatch
     }
 }
 
-[HarmonyPatch(typeof(AnnouncementPopUp), "OnDisable")]
+[HarmonyPatch(typeof(AnnouncementPopUp), nameof(AnnouncementPopUp.OnDisable))]
 public static class AnnouncementPopUpOnDisablePatch
 {
     public static void Postfix(AnnouncementPopUp __instance)
@@ -35,7 +35,7 @@ public static class AnnouncementPopUpOnDisablePatch
     }
 }
 
-[HarmonyPatch(typeof(AnnouncementPopUp), "SetMenu")]
+[HarmonyPatch(typeof(AnnouncementPopUp), nameof(AnnouncementPopUp.SetMenu))]
 public static class AnnouncementPopUpSetMenuPatch
 {
     public static void Postfix(AnnouncementPopUp __instance)
@@ -63,13 +63,6 @@ internal static class AnnouncementSelectMenuHelper
         VanillaCategory,
         SnrCategory
     };
-
-    private static readonly System.Reflection.MethodInfo CreateAnnouncementListMethod =
-        AccessTools.Method(typeof(AnnouncementPopUp), "CreateAnnouncementList");
-    private static readonly System.Reflection.MethodInfo UpdateAnnouncementTextMethod =
-        AccessTools.Method(typeof(AnnouncementPopUp), "UpdateAnnouncementText");
-    private static readonly System.Reflection.FieldInfo selectedAnnouncementField =
-        AccessTools.Field(typeof(AnnouncementPopUp), "selectedAnnouncement");
 
     public static void EnsureMenu(AnnouncementPopUp popup)
     {
@@ -191,11 +184,11 @@ internal static class AnnouncementSelectMenuHelper
 
     private static void MarkCurrentAnnouncementAsRead(AnnouncementPopUp popup)
     {
-        if (popup == null || selectedAnnouncementField == null) return;
+        if (popup == null) return;
 
         try
         {
-            var selectedAnnouncement = selectedAnnouncementField.GetValue(popup) as Announcement;
+            var selectedAnnouncement = popup.selectedPanel.announcement;
             if (selectedAnnouncement != null && !string.IsNullOrWhiteSpace(selectedAnnouncement.Id))
             {
                 AnnounceNotificationManager.MarkAsRead(selectedAnnouncement.Id);
@@ -580,8 +573,6 @@ internal static class AnnouncementSelectMenuHelper
 
         popup.CreateAnnouncementList();
 
-        CreateAnnouncementListMethod?.Invoke(popup, null);
-
         // スクロール位置をリセット
         ResetScrollPosition(popup);
 
@@ -590,7 +581,7 @@ internal static class AnnouncementSelectMenuHelper
             return;
 
         bool previewOnly = ActiveInputManager.currentControlType == ActiveInputManager.InputType.Joystick;
-        UpdateAnnouncementTextMethod?.Invoke(popup, new object[] { announcements[0].Number, previewOnly });
+        popup.UpdateAnnouncementText(announcements[0].Number, previewOnly);
 
         // 未読バッジを更新（少し遅延させてUIが完全に構築されてから）
         popup.StartCoroutine(UpdateUnreadBadgesDelayed(popup).WrapToIl2Cpp());
@@ -648,16 +639,21 @@ internal static class AnnouncementSelectMenuHelper
         if (string.IsNullOrWhiteSpace(body))
             body = string.IsNullOrWhiteSpace(article?.Url) ? title : article.Url;
 
+        int number = BuildSnrNumber(article?.Id, fallbackIndex);
+        var images = new List<AnnouncementImageInfo>();
+        string bodyWithoutImages = AnnouncementImageCache.StripMarkdownImages(body, images);
+        AnnouncementImageCache.SetImages(number, images);
+
         // マークダウンをUnityタグに変換
         string convertedTitle = MarkdownToUnityTag.Convert(title);
-        string convertedBody = MarkdownToUnityTag.Convert(body);
+        string convertedBody = MarkdownToUnityTag.Convert(bodyWithoutImages);
         string shortTitle = MakeShortTitle(convertedTitle);
 
         return new Announcement
         {
             Id = article?.Id ?? string.Empty,
             Language = GetCurrentLanguageId(),
-            Number = BuildSnrNumber(article?.Id, fallbackIndex),
+            Number = number,
             Title = convertedTitle,
             SubTitle = string.Empty,
             ShortTitle = shortTitle,
@@ -741,6 +737,7 @@ internal static class AnnouncementSelectMenuHelper
     private static List<Announcement> CreateLoadingAnnouncements()
     {
         string loadingText = GetLoadingText();
+        AnnouncementImageCache.SetImages(SnrNumberOffset, null);
         return new List<Announcement>
         {
             new Announcement
