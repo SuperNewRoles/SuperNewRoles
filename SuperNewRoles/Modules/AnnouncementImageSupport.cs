@@ -39,7 +39,7 @@ namespace SuperNewRoles.Modules
     internal static class AnnouncementImageCache
     {
         private const float SpritePixelsPerUnit = 100f;
-        private const int PlaceholderLineCount = 6;
+        private const int PlaceholderLineCount = 10;
         private const string PlaceholderPrefix = "[[img:";
         private const string PlaceholderSuffix = "]]";
         private const string PlaceholderAlphaStart = "<alpha=#00>";
@@ -152,11 +152,14 @@ namespace SuperNewRoles.Modules
                 yield break;
             }
 
-            if (SpriteCache.TryGetValue(url, out var cached))
+            if (SpriteCache.TryGetValue(url, out var cached) && cached != null)
             {
                 callback?.Invoke(cached);
                 yield break;
             }
+
+            if (cached != null)
+                SpriteCache.Remove(url);
 
             if (TryLoadAssetSprite(url, out var assetSprite))
             {
@@ -407,19 +410,30 @@ namespace SuperNewRoles.Modules
 
     internal sealed class AnnouncementImageRenderer : MonoBehaviour
     {
-        private const float MaxImageWidth = 6.76f;
-        private const float MaxImageHeight = 4.94f;
-        private const float MaxImageScale = 2.5f;
+        private const float MaxImageWidth = 9.88f;
+        private const float MaxImageHeight = 7.54f;
+        private const float MaxImageScale = 4.68f;
         private const float ImageLeftPadding = 0f;
         private const float VideoPixelsPerUnit = 100f;
         private const float SpinnerSize = 0.7f;
+        private const float VideoControlHeightRatio = 0.12f;
+        private const float VideoControlMinHeight = 0.12f;
+        private const float VideoControlMaxHeight = 0.32f;
+        private const float VideoControlWidthRatio = 0.94f;
+        private const float VideoControlPaddingRatio = 0.4f;
+        private const float VideoControlButtonRatio = 1.6f;
+        private const float VideoControlYOffsetRatio = 0.65f;
         private const string PlaceholderPrefix = "[[img:";
         private const string PlaceholderSuffix = "]]";
+        private static readonly Color32 VideoControlBackgroundColor = new(0, 0, 0, 160);
+        private static readonly Color32 VideoControlFillColor = new(90, 210, 220, 220);
+        private static readonly Color32 VideoControlHoverColor = new(70, 240, 220, 255);
 
         private readonly Dictionary<int, SpriteRenderer> imageRenderers = new();
         private readonly Dictionary<int, VideoEntry> videoEntries = new();
         private readonly Dictionary<int, SpinnerEntry> loadingSpinners = new();
         private TextMeshPro bodyText;
+        private Vector3? defaultBodyTextPos;
         private int requestToken;
         private float extraHeight;
         private static Sprite WhiteSprite;
@@ -429,10 +443,26 @@ namespace SuperNewRoles.Modules
         public void Initialize(TextMeshPro text)
         {
             bodyText = text;
+            if (bodyText != null && !defaultBodyTextPos.HasValue)
+            {
+                defaultBodyTextPos = bodyText.transform.localPosition;
+            }
         }
 
         public void ShowImages(int announcementNumber, bool previewOnly)
         {
+            if (bodyText != null && defaultBodyTextPos.HasValue)
+            {
+                if (announcementNumber >= 1000000000)
+                {
+                    bodyText.transform.localPosition = defaultBodyTextPos.Value + new Vector3(0f, 0.4f, 0f);
+                }
+                else
+                {
+                    bodyText.transform.localPosition = defaultBodyTextPos.Value;
+                }
+            }
+
             if (previewOnly || bodyText == null)
             {
                 ClearImages();
@@ -532,6 +562,7 @@ namespace SuperNewRoles.Modules
                     continue;
 
                 UpdateVideoTexture(data);
+                UpdateVideoControls(data);
             }
         }
 
@@ -576,8 +607,11 @@ namespace SuperNewRoles.Modules
                     continue;
 
                 var renderer = CreateRenderer(sprite);
-                imageRenderers[image.Index] = renderer;
-                LayoutImages();
+                if (renderer != null)
+                {
+                    imageRenderers[image.Index] = renderer;
+                    LayoutImages();
+                }
             }
 
             LayoutImages();
@@ -619,6 +653,9 @@ namespace SuperNewRoles.Modules
 
         private SpriteRenderer CreateRenderer(Sprite sprite)
         {
+            if (bodyText == null)
+                return null;
+
             var go = new GameObject("AnnouncementImage");
             go.transform.SetParent(bodyText.transform, false);
             var renderer = go.AddComponent<SpriteRenderer>();
@@ -630,72 +667,25 @@ namespace SuperNewRoles.Modules
 
         private void SyncSorting(SpriteRenderer renderer)
         {
+            SyncSorting(renderer, 0);
+        }
+
+        private void SyncSorting(SpriteRenderer renderer, int orderOffset)
+        {
             var meshRenderer = bodyText != null ? bodyText.GetComponent<MeshRenderer>() : null;
             if (meshRenderer == null)
                 return;
 
             renderer.sortingLayerID = meshRenderer.sortingLayerID;
-            renderer.sortingOrder = meshRenderer.sortingOrder;
+            renderer.sortingOrder = meshRenderer.sortingOrder + orderOffset;
         }
 
         private void ApplyMask(SpriteRenderer renderer)
         {
-            if (renderer == null || bodyText == null)
+            if (renderer == null)
                 return;
 
-            var spriteMasks = bodyText.GetComponentsInParent<SpriteMask>(true);
-            if (spriteMasks != null && spriteMasks.Length > 0)
-                renderer.maskInteraction = SpriteMaskInteraction.VisibleInsideMask;
-
-            var maskRenderer = GetMaskRenderer();
-            if (maskRenderer != null && maskRenderer.sharedMaterial != null)
-                renderer.sharedMaterial = new Material(maskRenderer.sharedMaterial);
-
-            if (TryGetMaskLayer(out var maskLayer) && renderer.material != null &&
-                renderer.material.HasProperty(PlayerMaterial.MaskLayer))
-            {
-                renderer.material.SetInt(PlayerMaterial.MaskLayer, maskLayer);
-            }
-        }
-
-        private bool TryGetMaskLayer(out int maskLayer)
-        {
-            maskLayer = 0;
-            if (bodyText == null)
-                return false;
-
-            var renderers = bodyText.GetComponentsInParent<SpriteRenderer>(true);
-            foreach (var renderer in renderers)
-            {
-                if (renderer == null || renderer.sharedMaterial == null)
-                    continue;
-
-                if (renderer.sharedMaterial.HasProperty(PlayerMaterial.MaskLayer))
-                {
-                    maskLayer = renderer.sharedMaterial.GetInt(PlayerMaterial.MaskLayer);
-                    return true;
-                }
-            }
-
-            return false;
-        }
-
-        private SpriteRenderer GetMaskRenderer()
-        {
-            if (bodyText == null)
-                return null;
-
-            var renderers = bodyText.GetComponentsInParent<SpriteRenderer>(true);
-            foreach (var renderer in renderers)
-            {
-                if (renderer == null || renderer.sharedMaterial == null)
-                    continue;
-
-                if (renderer.sharedMaterial.HasProperty(PlayerMaterial.MaskLayer))
-                    return renderer;
-            }
-
-            return null;
+            renderer.maskInteraction = SpriteMaskInteraction.VisibleInsideMask;
         }
 
         private void LayoutImages()
@@ -917,6 +907,88 @@ namespace SuperNewRoles.Modules
             return new SpinnerEntry(go, renderer);
         }
 
+        private VideoControls CreateVideoControls(Transform parent, int index)
+        {
+            var root = new GameObject($"AnnouncementVideoControls_{index}");
+            root.transform.SetParent(parent, false);
+            root.transform.localScale = Vector3.one;
+            root.transform.localRotation = Quaternion.identity;
+            root.SetActive(false);
+
+            var playButton = new GameObject("PlayPauseButton");
+            playButton.transform.SetParent(root.transform, false);
+            var playRenderer = playButton.AddComponent<SpriteRenderer>();
+            playRenderer.sprite = GetWhiteSprite();
+            playRenderer.color = VideoControlBackgroundColor;
+            SyncSorting(playRenderer, 1);
+            ApplyMask(playRenderer);
+
+            var playText = CreateControlText(playButton.transform);
+            var playPauseButton = ConfigureControlButton(playButton, playRenderer, () => ToggleVideoPlayback(index));
+
+            var progressBar = new GameObject("ProgressBar");
+            progressBar.transform.SetParent(root.transform, false);
+            var progressRenderer = progressBar.AddComponent<SpriteRenderer>();
+            progressRenderer.sprite = GetWhiteSprite();
+            progressRenderer.color = VideoControlBackgroundColor;
+            SyncSorting(progressRenderer, 1);
+            ApplyMask(progressRenderer);
+            var progressButton = ConfigureControlButton(progressBar, progressRenderer, () => SeekVideoToPointer(index, progressRenderer));
+
+            var progressFill = new GameObject("ProgressFill");
+            progressFill.transform.SetParent(progressBar.transform, false);
+            var fillRenderer = progressFill.AddComponent<SpriteRenderer>();
+            fillRenderer.sprite = GetWhiteSprite();
+            fillRenderer.color = VideoControlFillColor;
+            SyncSorting(fillRenderer, 2);
+            ApplyMask(fillRenderer);
+
+            return new VideoControls(root, playRenderer, playText, playPauseButton, progressRenderer, fillRenderer, progressButton);
+        }
+
+        private TextMeshPro CreateControlText(Transform parent)
+        {
+            var textObject = new GameObject("Label");
+            textObject.transform.SetParent(parent, false);
+            var text = textObject.AddComponent<TextMeshPro>();
+            text.alignment = TextAlignmentOptions.Center;
+            text.text = ">";
+            text.color = Color.white;
+            text.enableWordWrapping = false;
+            text.richText = false;
+            if (bodyText != null)
+            {
+                text.fontSize = bodyText.fontSize * 0.9f;
+                var bodyRenderer = bodyText.GetComponent<MeshRenderer>();
+                var renderer = text.GetComponent<MeshRenderer>();
+                if (bodyRenderer != null && renderer != null)
+                {
+                    renderer.sortingLayerID = bodyRenderer.sortingLayerID;
+                    renderer.sortingOrder = bodyRenderer.sortingOrder + 2;
+                }
+            }
+            return text;
+        }
+
+        private PassiveButton ConfigureControlButton(GameObject target, SpriteRenderer renderer, Action onClick)
+        {
+            var button = target.AddComponent<PassiveButton>();
+            var collider = target.AddComponent<BoxCollider2D>();
+            collider.size = Vector2.one;
+            button.Colliders = new Collider2D[] { collider };
+            button.OnClick = new();
+            button.OnMouseOver = new();
+            button.OnMouseOut = new();
+            if (onClick != null)
+                button.OnClick.AddListener(onClick);
+            if (renderer != null)
+            {
+                button.OnMouseOver.AddListener((Action)(() => renderer.color = VideoControlHoverColor));
+                button.OnMouseOut.AddListener((Action)(() => renderer.color = VideoControlBackgroundColor));
+            }
+            return button;
+        }
+
         private VideoEntry CreateVideoRenderer(int index, string path)
         {
             if (bodyText == null)
@@ -924,6 +996,7 @@ namespace SuperNewRoles.Modules
 
             var go = new GameObject("AnnouncementVideo");
             go.transform.SetParent(bodyText.transform, false);
+            go.SetActive(false);
 
             var renderer = go.AddComponent<SpriteRenderer>();
             renderer.sprite = GetWhiteSprite();
@@ -950,7 +1023,19 @@ namespace SuperNewRoles.Modules
             player.url = ToFileUrl(path);
             player.Prepare();
 
-            return new VideoEntry(go, renderer, player, false, 1f, 1f, renderTexture, null, null);
+            var clickCollider = go.AddComponent<BoxCollider2D>();
+            clickCollider.size = Vector2.one;
+            clickCollider.offset = Vector2.zero;
+
+            var clickButton = go.AddComponent<PassiveButton>();
+            clickButton.Colliders = new Collider2D[] { clickCollider };
+            clickButton.OnClick = new();
+            clickButton.OnMouseOver = new();
+            clickButton.OnMouseOut = new();
+            clickButton.OnClick.AddListener((Action)(() => ToggleVideoPlayback(index)));
+
+            var controls = CreateVideoControls(go.transform, index);
+            return new VideoEntry(go, renderer, player, false, 1f, 1f, renderTexture, null, null, controls, clickCollider, clickButton);
         }
 
         private void OnVideoPrepared(int index, VideoPlayer player)
@@ -1004,8 +1089,12 @@ namespace SuperNewRoles.Modules
             entry.Width = width;
             entry.Height = height;
             entry.Prepared = true;
+            LayoutVideoControls(entry);
+            SetVideoControlsActive(entry.Controls, true);
             videoEntries[index] = entry;
             RemoveSpinner(index);
+            if (entry.GameObject != null)
+                entry.GameObject.SetActive(true);
             if (entry.Renderer != null)
                 entry.Renderer.enabled = true;
             player.Play();
@@ -1028,6 +1117,67 @@ namespace SuperNewRoles.Modules
             float expectedWidth = pixelWidth / VideoPixelsPerUnit;
             float expectedHeight = pixelHeight / VideoPixelsPerUnit;
             return !Mathf.Approximately(entry.Width, expectedWidth) || !Mathf.Approximately(entry.Height, expectedHeight);
+        }
+
+        private void SetVideoControlsActive(VideoControls controls, bool active)
+        {
+            if (controls.Root != null && controls.Root.activeSelf != active)
+                controls.Root.SetActive(active);
+        }
+
+        private void LayoutVideoControls(VideoEntry entry)
+        {
+            var controls = entry.Controls;
+            if (controls.Root == null || entry.Width <= 0f || entry.Height <= 0f)
+                return;
+
+            float width = entry.Width;
+            float height = entry.Height;
+            float barHeight = Mathf.Clamp(height * VideoControlHeightRatio, VideoControlMinHeight, VideoControlMaxHeight);
+            float totalWidth = Mathf.Max(0.1f, width * VideoControlWidthRatio);
+            float padding = barHeight * VideoControlPaddingRatio;
+            float buttonSize = barHeight * VideoControlButtonRatio;
+            float barWidth = Mathf.Max(0.1f, totalWidth - buttonSize - padding);
+            float leftEdge = -width * 0.5f + (width - totalWidth) * 0.5f;
+            float y = -height * 0.5f + barHeight * VideoControlYOffsetRatio;
+
+            controls.Root.transform.localPosition = new Vector3(0f, y, -0.01f);
+
+            if (controls.PlayPauseRenderer != null)
+            {
+                controls.PlayPauseRenderer.transform.localPosition = new Vector3(leftEdge + buttonSize * 0.5f, 0f, 0f);
+                controls.PlayPauseRenderer.transform.localScale = new Vector3(buttonSize, buttonSize, 1f);
+            }
+
+            if (controls.PlayPauseText != null)
+            {
+                controls.PlayPauseText.transform.localPosition = Vector3.zero;
+                controls.PlayPauseText.transform.localScale = Vector3.one * 0.6f;
+            }
+
+            if (controls.ProgressBackground != null)
+            {
+                controls.ProgressBackground.transform.localPosition = new Vector3(leftEdge + buttonSize + padding + barWidth * 0.5f, 0f, 0f);
+                controls.ProgressBackground.transform.localScale = new Vector3(barWidth, barHeight, 1f);
+            }
+
+            if (controls.ProgressFill != null)
+            {
+                controls.ProgressFill.transform.localPosition = new Vector3(-0.5f, 0f, -0.01f);
+                controls.ProgressFill.transform.localScale = new Vector3(0f, 1f, 1f);
+            }
+
+            UpdateVideoCollider(entry, barHeight);
+        }
+
+        private void UpdateVideoCollider(VideoEntry entry, float barHeight)
+        {
+            if (entry.VideoCollider == null || entry.Width <= 0f || entry.Height <= 0f)
+                return;
+
+            float usableHeight = Mathf.Max(0.01f, entry.Height - barHeight);
+            entry.VideoCollider.size = new Vector2(entry.Width, usableHeight);
+            entry.VideoCollider.offset = new Vector2(0f, barHeight * 0.5f);
         }
 
         private void UpdateVideoTexture(VideoEntry entry)
@@ -1058,6 +1208,143 @@ namespace SuperNewRoles.Modules
             {
                 RenderTexture.active = previous;
             }
+        }
+
+        private void UpdateVideoControls(VideoEntry entry)
+        {
+            var controls = entry.Controls;
+            if (controls.Root == null || !controls.Root.activeSelf)
+                return;
+
+            var player = entry.Player;
+            if (player == null)
+                return;
+
+            if (controls.PlayPauseText != null)
+                controls.PlayPauseText.text = entry.IsPaused ? ">" : "||";
+
+            float progress = 0f;
+            if (entry.IsPaused)
+            {
+                double length = player.length;
+                if (length > 0d && !double.IsInfinity(length) && !double.IsNaN(length))
+                    progress = Mathf.Clamp01((float)(entry.SavedTime / length));
+            }
+            else
+            {
+                progress = GetVideoProgress(player);
+            }
+            UpdateProgressFill(controls, progress);
+        }
+
+        private float GetVideoProgress(VideoPlayer player)
+        {
+            if (player == null)
+                return 0f;
+
+            double length = player.length;
+            if (length <= 0d || double.IsInfinity(length) || double.IsNaN(length))
+                return 0f;
+
+            return Mathf.Clamp01((float)(player.time / length));
+        }
+
+        private void UpdateProgressFill(VideoControls controls, float progress)
+        {
+            if (controls.ProgressFill == null)
+                return;
+
+            progress = Mathf.Clamp01(progress);
+            bool show = progress > 0.001f;
+            controls.ProgressFill.enabled = show;
+            float width = Mathf.Max(0.001f, progress);
+            controls.ProgressFill.transform.localScale = new Vector3(width, 1f, 1f);
+            controls.ProgressFill.transform.localPosition = new Vector3(-0.5f + width * 0.5f, 0f, -0.01f);
+        }
+
+        private void ToggleVideoPlayback(int index)
+        {
+            if (!videoEntries.TryGetValue(index, out var entry))
+                return;
+
+            var player = entry.Player;
+            if (player == null || !entry.Prepared)
+                return;
+
+            if (entry.IsPaused)
+            {
+                entry.IsPaused = false;
+                player.time = entry.SavedTime;
+                player.Play();
+                videoEntries[index] = entry;
+            }
+            else if (player.isPlaying)
+            {
+                entry.SavedTime = player.time;
+                entry.IsPaused = true;
+                player.Stop();
+                videoEntries[index] = entry;
+            }
+            else
+            {
+                TryResetVideoPosition(player);
+                player.Play();
+            }
+
+            UpdateVideoControls(entry);
+        }
+
+        private void TryResetVideoPosition(VideoPlayer player)
+        {
+            if (player == null)
+                return;
+
+            double length = player.length;
+            if (length > 0d && !double.IsInfinity(length) && !double.IsNaN(length))
+            {
+                if (player.time >= length - 0.05d)
+                    player.time = 0d;
+                return;
+            }
+
+            if (player.frameCount > 0 && player.frame >= (long)player.frameCount - 1)
+                player.frame = 0;
+        }
+
+        private void SeekVideoToPointer(int index, SpriteRenderer barRenderer)
+        {
+            if (!videoEntries.TryGetValue(index, out var entry))
+                return;
+
+            var player = entry.Player;
+            if (player == null || !entry.Prepared || !player.canSetTime)
+                return;
+
+            double length = player.length;
+            if (length <= 0d || double.IsInfinity(length) || double.IsNaN(length))
+                return;
+
+            var camera = Camera.main;
+            if (camera == null || barRenderer == null)
+                return;
+
+            var world = camera.ScreenToWorldPoint(Input.mousePosition);
+            var bounds = barRenderer.bounds;
+            float t = Mathf.InverseLerp(bounds.min.x, bounds.max.x, world.x);
+            t = Mathf.Clamp01(t);
+            double seekTime = length * t;
+
+            if (entry.IsPaused)
+            {
+                entry.SavedTime = seekTime;
+                videoEntries[index] = entry;
+            }
+            else
+            {
+                player.time = seekTime;
+            }
+
+            UpdateProgressFill(entry.Controls, t);
         }
 
         private void OnVideoError(int index)
@@ -1312,6 +1599,29 @@ namespace SuperNewRoles.Modules
             }
         }
 
+        private struct VideoControls
+        {
+            public GameObject Root;
+            public SpriteRenderer PlayPauseRenderer;
+            public TextMeshPro PlayPauseText;
+            public PassiveButton PlayPauseButton;
+            public SpriteRenderer ProgressBackground;
+            public SpriteRenderer ProgressFill;
+            public PassiveButton ProgressButton;
+
+            public VideoControls(GameObject root, SpriteRenderer playPauseRenderer, TextMeshPro playPauseText, PassiveButton playPauseButton,
+                SpriteRenderer progressBackground, SpriteRenderer progressFill, PassiveButton progressButton)
+            {
+                Root = root;
+                PlayPauseRenderer = playPauseRenderer;
+                PlayPauseText = playPauseText;
+                PlayPauseButton = playPauseButton;
+                ProgressBackground = progressBackground;
+                ProgressFill = progressFill;
+                ProgressButton = progressButton;
+            }
+        }
+
         private struct VideoEntry
         {
             public GameObject GameObject;
@@ -1323,8 +1633,14 @@ namespace SuperNewRoles.Modules
             public RenderTexture RenderTexture;
             public Texture2D VideoTexture;
             public Sprite VideoSprite;
+            public VideoControls Controls;
+            public BoxCollider2D VideoCollider;
+            public PassiveButton VideoButton;
+            public bool IsPaused;
+            public double SavedTime;
 
-            public VideoEntry(GameObject gameObject, SpriteRenderer renderer, VideoPlayer player, bool prepared, float width, float height, RenderTexture renderTexture, Texture2D videoTexture, Sprite videoSprite)
+            public VideoEntry(GameObject gameObject, SpriteRenderer renderer, VideoPlayer player, bool prepared, float width, float height,
+                RenderTexture renderTexture, Texture2D videoTexture, Sprite videoSprite, VideoControls controls, BoxCollider2D videoCollider, PassiveButton videoButton)
             {
                 GameObject = gameObject;
                 Renderer = renderer;
@@ -1335,6 +1651,11 @@ namespace SuperNewRoles.Modules
                 RenderTexture = renderTexture;
                 VideoTexture = videoTexture;
                 VideoSprite = videoSprite;
+                Controls = controls;
+                VideoCollider = videoCollider;
+                IsPaused = false;
+                SavedTime = 0d;
+                VideoButton = videoButton;
             }
         }
 

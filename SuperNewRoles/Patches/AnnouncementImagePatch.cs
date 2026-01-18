@@ -1,4 +1,5 @@
 using System.Reflection;
+using System.Text.RegularExpressions;
 using AmongUs.Data;
 using HarmonyLib;
 using TMPro;
@@ -57,10 +58,20 @@ namespace SuperNewRoles.Patches
     [HarmonyPatch(typeof(AnnouncementPopUp), nameof(AnnouncementPopUp.Update))]
     public static class AnnouncementPopUpUpdateImagePatch
     {
+        private static float _timestampUpdateTimer;
+
         public static void Postfix(AnnouncementPopUp __instance)
         {
             if (__instance == null)
                 return;
+
+            // 1. タイムスタンプの更新 (1秒おきに実行)
+            _timestampUpdateTimer -= Time.deltaTime;
+            if (_timestampUpdateTimer <= 0f)
+            {
+                _timestampUpdateTimer = 1f;
+                UpdateDynamicTimestamps(__instance);
+            }
 
             var renderer = __instance.GetComponent<AnnouncementImageRenderer>();
             if (renderer == null || !renderer.HasImages)
@@ -76,6 +87,35 @@ namespace SuperNewRoles.Patches
 
             float textHeight = renderer.GetTextHeight();
             scroller.SetBoundsMax(textHeight + extra, 0f);
+        }
+
+        private static void UpdateDynamicTimestamps(AnnouncementPopUp popup)
+        {
+            if (popup.AnnouncementBodyText == null) return;
+            string text = popup.AnnouncementBodyText.text;
+            if (string.IsNullOrEmpty(text) || !text.Contains("<t-dynamic:")) return;
+
+            bool changed = false;
+            // <alpha=#00><t-dynamic:UNIX:R></alpha><alpha=#FF>{text}<alpha=#00><t-end:R></alpha><alpha=#FF>
+            string newText = Regex.Replace(text, @"<size=0><alpha=#00><t-dynamic:(\d+):R></alpha></size><size=100%><alpha=#FF>(.*?)<size=0><alpha=#00><t-end:R></alpha></size><size=100%><alpha=#FF>", match =>
+            {
+                if (long.TryParse(match.Groups[1].Value, out long unixSeconds))
+                {
+                    string oldRelative = match.Groups[2].Value;
+                    string newRelative = MarkdownToUnityTag.FormatUnixTimestamp(unixSeconds, "R");
+                    if (oldRelative != newRelative)
+                    {
+                        changed = true;
+                        return $"<size=0><alpha=#00><t-dynamic:{unixSeconds}:R></alpha></size><size=100%><alpha=#FF>{newRelative}<size=0><alpha=#00><t-end:R></alpha></size><size=100%><alpha=#FF>";
+                    }
+                }
+                return match.Value;
+            }, RegexOptions.Singleline);
+
+            if (changed)
+            {
+                popup.AnnouncementBodyText.text = newText;
+            }
         }
     }
 }

@@ -45,6 +45,15 @@ public static class AnnouncementPopUpSetMenuPatch
     }
 }
 
+[HarmonyPatch(typeof(AnnouncementPopUp), nameof(AnnouncementPopUp.UpdateAnnouncementText))]
+public static class AnnouncementPopUpUpdateAnnouncementTextTitlePatch
+{
+    public static void Postfix(AnnouncementPopUp __instance)
+    {
+        AnnouncementSelectMenuHelper.UpdateAnnouncementPopupTitle(__instance);
+    }
+}
+
 internal static class AnnouncementSelectMenuHelper
 {
     private const string MenuAssetName = "AnnounceMenuSelector";
@@ -85,12 +94,9 @@ internal static class AnnouncementSelectMenuHelper
             menuObject.SetActive(true);
         }
 
-        var state = menuObject.GetComponent<AnnouncementSelectMenuState>();
-        if (state == null)
-            state = menuObject.AddComponent<AnnouncementSelectMenuState>();
-        if (string.IsNullOrWhiteSpace(state.CurrentCategory))
-            state.CurrentCategory = DefaultCategory;
-        SetCurrentTab(menuObject, state.CurrentCategory);
+        if (string.IsNullOrWhiteSpace(AnnouncementSelectMenuState.CurrentCategory))
+            AnnouncementSelectMenuState.CurrentCategory = DefaultCategory;
+        SetCurrentTab(menuObject, AnnouncementSelectMenuState.CurrentCategory);
     }
 
     public static void OnMenuSet(AnnouncementPopUp popup)
@@ -99,16 +105,13 @@ internal static class AnnouncementSelectMenuHelper
         var menuObject = FindMenu(popup);
         if (menuObject == null) return;
 
-        var state = menuObject.GetComponent<AnnouncementSelectMenuState>();
-        if (state == null) return;
+        CaptureVanillaCache();
 
-        CaptureVanillaCache(state);
+        if (string.IsNullOrWhiteSpace(AnnouncementSelectMenuState.CurrentCategory))
+            AnnouncementSelectMenuState.CurrentCategory = DefaultCategory;
 
-        if (string.IsNullOrWhiteSpace(state.CurrentCategory))
-            state.CurrentCategory = DefaultCategory;
-
-        if (state.CurrentCategory == SnrCategory)
-            SetCurrentTab(menuObject, state.CurrentCategory);
+        if (AnnouncementSelectMenuState.CurrentCategory == SnrCategory)
+            SetCurrentTab(menuObject, AnnouncementSelectMenuState.CurrentCategory);
     }
 
     public static void SetMenuActive(AnnouncementPopUp popup, bool active)
@@ -126,11 +129,8 @@ internal static class AnnouncementSelectMenuHelper
         var menuObject = FindMenu(popup);
         if (menuObject == null) return;
 
-        var state = menuObject.GetComponent<AnnouncementSelectMenuState>();
-        if (state == null) return;
-
         // SNRタブの場合
-        if (state.CurrentCategory == SnrCategory)
+        if (AnnouncementSelectMenuState.CurrentCategory == SnrCategory)
         {
             UpdateSnrUnreadBadges(popup);
         }
@@ -276,9 +276,7 @@ internal static class AnnouncementSelectMenuHelper
         string categoryName = category.name;
         button.OnClick.AddListener((UnityAction)(() =>
         {
-            var state = menuObject.GetComponent<AnnouncementSelectMenuState>();
-            if (state != null)
-                state.CurrentCategory = categoryName;
+            AnnouncementSelectMenuState.CurrentCategory = categoryName;
             SetCurrentTab(menuObject, categoryName);
         }));
         button.OnMouseOver.AddListener((UnityAction)(() => SetCategoryHighlight(category, true)));
@@ -294,66 +292,74 @@ internal static class AnnouncementSelectMenuHelper
         if (popup == null)
             return;
 
-        var state = menuObject.GetComponent<AnnouncementSelectMenuState>();
-        if (state == null)
-            return;
-
-        state.CurrentCategory = categoryName;
+        AnnouncementSelectMenuState.CurrentCategory = categoryName;
 
         switch (categoryName)
         {
             case VanillaCategory:
-                ApplyVanillaAnnouncements(popup, state);
+                ApplyVanillaAnnouncements(popup);
                 break;
             case SnrCategory:
-                ApplySnrAnnouncements(popup, state);
+                ApplySnrAnnouncements(popup);
                 break;
         }
     }
 
-    private static void ApplyVanillaAnnouncements(AnnouncementPopUp popup, AnnouncementSelectMenuState state)
+    private static void ApplyVanillaAnnouncements(AnnouncementPopUp popup)
     {
-        if (popup == null || state == null)
+        if (popup == null)
             return;
 
-        if (state.VanillaCache == null)
-            CaptureVanillaCache(state);
+        // Vanillaタブではロゴを非表示
+        HideAnnouncementLogo(popup);
 
-        if (state.VanillaCache == null)
-            return;
+        if (AnnouncementSelectMenuState.VanillaCache == null)
+            CaptureVanillaCache();
 
-        ApplyAnnouncements(popup, state.VanillaCache);
-    }
-
-    private static void ApplySnrAnnouncements(AnnouncementPopUp popup, AnnouncementSelectMenuState state)
-    {
-        if (popup == null || state == null)
-            return;
-
-        if (state.VanillaCache == null)
-            CaptureVanillaCache(state);
-
-        string lang = GetApiLanguage();
-
-        // メモリキャッシュをチェック
-        if (state.SnrCache != null &&
-            state.SnrCache.Count > 0 &&
-            string.Equals(state.SnrLang, lang, StringComparison.Ordinal))
+        if (AnnouncementSelectMenuState.VanillaCache == null || AnnouncementSelectMenuState.VanillaCache.Count == 0)
         {
-            ApplyAnnouncements(popup, state.SnrCache);
-
-            // メモリキャッシュがある場合でも、バックグラウンドで更新をチェック
-            if (!state.SnrLoading)
+            // バニラキャッシュがない場合は、バニラの実際のアナウンスを使用
+            var announcements = DataManager.Player?.Announcements?.AllAnnouncements.ToSystemList();
+            if (announcements != null && announcements.Count > 0 && !IsSnrAnnouncementList(announcements))
             {
-                var cachedListForUpdate = AnnounceCache.GetArticlesList(lang);
-                state.SnrRequestToken++;
-                int token = state.SnrRequestToken;
-                popup.StartCoroutine(UpdateSnrAnnouncementsInBackground(popup, state, lang, token, cachedListForUpdate?.ETag).WrapToIl2Cpp());
+                ApplyAnnouncements(popup, announcements);
+                return;
             }
             return;
         }
 
-        if (state.SnrLoading)
+        ApplyAnnouncements(popup, AnnouncementSelectMenuState.VanillaCache);
+    }
+
+    private static void ApplySnrAnnouncements(AnnouncementPopUp popup)
+    {
+        if (popup == null)
+            return;
+
+        if (AnnouncementSelectMenuState.VanillaCache == null)
+            CaptureVanillaCache();
+
+        string lang = GetApiLanguage();
+
+        // メモリキャッシュをチェック
+        if (AnnouncementSelectMenuState.SnrCache != null &&
+            AnnouncementSelectMenuState.SnrCache.Count > 0 &&
+            string.Equals(AnnouncementSelectMenuState.SnrLang, lang, StringComparison.Ordinal))
+        {
+            ApplyAnnouncements(popup, AnnouncementSelectMenuState.SnrCache);
+
+            // メモリキャッシュがある場合でも、バックグラウンドで更新をチェック
+            if (!AnnouncementSelectMenuState.SnrLoading)
+            {
+                var cachedListForUpdate = AnnounceCache.GetArticlesList(lang);
+                AnnouncementSelectMenuState.SnrRequestToken++;
+                int token = AnnouncementSelectMenuState.SnrRequestToken;
+                popup.StartCoroutine(UpdateSnrAnnouncementsInBackground(popup, lang, token, cachedListForUpdate?.ETag).WrapToIl2Cpp());
+            }
+            return;
+        }
+
+        if (AnnouncementSelectMenuState.SnrLoading)
         {
             ApplyAnnouncements(popup, CreateLoadingAnnouncements());
             return;
@@ -369,43 +375,43 @@ internal static class AnnouncementSelectMenuHelper
             // アナウンスがある場合はキャッシュを表示（本文なしでも表示）
             if (cachedAnnouncements.Count > 0)
             {
-                state.SnrCache = cachedAnnouncements;
-                state.SnrLang = lang;
+                AnnouncementSelectMenuState.SnrCache = cachedAnnouncements;
+                AnnouncementSelectMenuState.SnrLang = lang;
                 ApplyAnnouncements(popup, cachedAnnouncements);
 
                 // バックグラウンドで更新をチェック（常に実行して最新内容を取得）
-                state.SnrRequestToken++;
-                int token = state.SnrRequestToken;
-                popup.StartCoroutine(UpdateSnrAnnouncementsInBackground(popup, state, lang, token, cachedList.ETag).WrapToIl2Cpp());
+                AnnouncementSelectMenuState.SnrRequestToken++;
+                int token = AnnouncementSelectMenuState.SnrRequestToken;
+                popup.StartCoroutine(UpdateSnrAnnouncementsInBackground(popup, lang, token, cachedList.ETag).WrapToIl2Cpp());
                 return;
             }
         }
 
         // キャッシュがない場合、ローディング表示して取得
-        state.SnrLoading = true;
-        state.SnrLang = lang;
-        state.SnrRequestToken++;
-        int loadToken = state.SnrRequestToken;
+        AnnouncementSelectMenuState.SnrLoading = true;
+        AnnouncementSelectMenuState.SnrLang = lang;
+        AnnouncementSelectMenuState.SnrRequestToken++;
+        int loadToken = AnnouncementSelectMenuState.SnrRequestToken;
 
         ApplyAnnouncements(popup, CreateLoadingAnnouncements());
-        popup.StartCoroutine(LoadSnrAnnouncements(popup, state, lang, loadToken).WrapToIl2Cpp());
+        popup.StartCoroutine(LoadSnrAnnouncements(popup, lang, loadToken).WrapToIl2Cpp());
     }
 
-    private static IEnumerator LoadSnrAnnouncements(AnnouncementPopUp popup, AnnouncementSelectMenuState state, string lang, int requestToken)
+    private static IEnumerator LoadSnrAnnouncements(AnnouncementPopUp popup, string lang, int requestToken)
     {
         ApiResult<ArticlesResponse> listResult = null;
         yield return SuperNewAnnounceApi.ListArticles(lang, result => listResult = result, page: 1, pageSize: SnrPageSize, fallback: true);
 
-        if (state == null || state.SnrRequestToken != requestToken)
+        if (AnnouncementSelectMenuState.SnrRequestToken != requestToken)
             yield break;
 
         List<Announcement> announcements = new();
         if (listResult == null || !listResult.IsSuccess || listResult.Data == null)
         {
-            state.SnrLoading = false;
-            state.SnrCache = announcements;
-            state.SnrLang = lang;
-            if (state.CurrentCategory == SnrCategory)
+            AnnouncementSelectMenuState.SnrLoading = false;
+            AnnouncementSelectMenuState.SnrCache = announcements;
+            AnnouncementSelectMenuState.SnrLang = lang;
+            if (AnnouncementSelectMenuState.CurrentCategory == SnrCategory)
                 ApplyAnnouncements(popup, announcements);
             yield break;
         }
@@ -417,7 +423,7 @@ internal static class AnnouncementSelectMenuHelper
         int fallbackIndex = 0;
         foreach (var item in listResult.Data.Items)
         {
-            if (state == null || state.SnrRequestToken != requestToken)
+            if (AnnouncementSelectMenuState.SnrRequestToken != requestToken)
                 yield break;
 
             // キャッシュから取得
@@ -445,21 +451,21 @@ internal static class AnnouncementSelectMenuHelper
             fallbackIndex++;
         }
 
-        state.SnrLoading = false;
-        state.SnrCache = announcements;
-        state.SnrLang = lang;
+        AnnouncementSelectMenuState.SnrLoading = false;
+        AnnouncementSelectMenuState.SnrCache = announcements;
+        AnnouncementSelectMenuState.SnrLang = lang;
 
-        if (state.CurrentCategory == SnrCategory)
+        if (AnnouncementSelectMenuState.CurrentCategory == SnrCategory)
             ApplyAnnouncements(popup, announcements);
     }
 
-    private static IEnumerator UpdateSnrAnnouncementsInBackground(AnnouncementPopUp popup, AnnouncementSelectMenuState state, string lang, int requestToken, string etag)
+    private static IEnumerator UpdateSnrAnnouncementsInBackground(AnnouncementPopUp popup, string lang, int requestToken, string etag)
     {
         ApiResult<ArticlesResponse> listResult = null;
         // リスト取得時はETagを使って更新チェック
         yield return SuperNewAnnounceApi.ListArticles(lang, result => listResult = result, page: 1, pageSize: SnrPageSize, fallback: true, etag: etag);
 
-        if (state == null || state.SnrRequestToken != requestToken)
+        if (AnnouncementSelectMenuState.SnrRequestToken != requestToken)
             yield break;
 
         // 304 Not Modified の場合でも、個別記事の更新をチェック
@@ -485,7 +491,7 @@ internal static class AnnouncementSelectMenuHelper
 
         foreach (var item in cachedList.Response.Items)
         {
-            if (state == null || state.SnrRequestToken != requestToken)
+            if (AnnouncementSelectMenuState.SnrRequestToken != requestToken)
                 yield break;
 
             // キャッシュから取得
@@ -515,13 +521,13 @@ internal static class AnnouncementSelectMenuHelper
         }
 
         // 更新があった場合、または記事数が変わった場合は画面を更新
-        if (hasUpdates || state.SnrCache == null || state.SnrCache.Count != announcements.Count)
+        if (hasUpdates || AnnouncementSelectMenuState.SnrCache == null || AnnouncementSelectMenuState.SnrCache.Count != announcements.Count)
         {
             // メモリキャッシュと画面を更新
-            state.SnrCache = announcements;
-            state.SnrLang = lang;
+            AnnouncementSelectMenuState.SnrCache = announcements;
+            AnnouncementSelectMenuState.SnrLang = lang;
 
-            if (state.CurrentCategory == SnrCategory && popup != null)
+            if (AnnouncementSelectMenuState.CurrentCategory == SnrCategory && popup != null)
                 ApplyAnnouncements(popup, announcements);
         }
     }
@@ -607,16 +613,13 @@ internal static class AnnouncementSelectMenuHelper
         }
     }
 
-    private static void CaptureVanillaCache(AnnouncementSelectMenuState state)
+    private static void CaptureVanillaCache()
     {
-        if (state == null)
-            return;
-
         var announcements = DataManager.Player?.Announcements?.AllAnnouncements.ToSystemList();
         if (announcements == null || IsSnrAnnouncementList(announcements))
             return;
 
-        state.VanillaCache = new List<Announcement>(announcements);
+        AnnouncementSelectMenuState.VanillaCache = new List<Announcement>(announcements);
     }
 
     private static bool IsSnrAnnouncementList(List<Announcement> announcements)
@@ -788,18 +791,82 @@ internal static class AnnouncementSelectMenuHelper
         button.OnMouseOver = new();
         button.OnMouseOut = new();
     }
+
+    public static void UpdateAnnouncementPopupTitle(AnnouncementPopUp popup)
+    {
+        if (popup == null) return;
+
+        // SNRタブの時のみタイトルとロゴを変更
+        if (AnnouncementSelectMenuState.CurrentCategory != SnrCategory)
+            return;
+
+        // タイトルテキストを変更
+        if (popup.Title != null)
+        {
+            popup.Title.text = "SuperNewRolesのお知らせ";
+        }
+
+        // ロゴを追加または更新
+        UpdateAnnouncementLogo(popup);
+    }
+
+    private static GameObject _snrLogoObject;
+
+    private static void UpdateAnnouncementLogo(AnnouncementPopUp popup)
+    {
+        if (popup == null) return;
+
+        // 既存のロゴを探す
+        Transform logoTransform = popup.transform.Find("SNRLogo");
+
+        if (logoTransform == null)
+        {
+            // ロゴがまだ作成されていない場合は作成
+            var logoSprite = AssetManager.GetAsset<Sprite>("banner", AssetManager.AssetBundleType.Sprite);
+            if (logoSprite == null) return;
+
+            GameObject logoObject = new GameObject("SNRLogo");
+            logoObject.transform.SetParent(popup.transform);
+
+            var spriteRenderer = logoObject.AddComponent<SpriteRenderer>();
+            spriteRenderer.sprite = logoSprite;
+            spriteRenderer.sortingOrder = 10;
+
+            // タイトルの近くに配置
+            logoObject.transform.localPosition = new Vector3(0f, 2.3f, -2f);
+            logoObject.transform.localScale = Vector3.one * 0.3f;
+
+            _snrLogoObject = logoObject;
+        }
+        else
+        {
+            // すでに存在する場合は表示
+            logoTransform.gameObject.SetActive(true);
+        }
+    }
+
+    private static void HideAnnouncementLogo(AnnouncementPopUp popup)
+    {
+        if (popup == null) return;
+
+        Transform logoTransform = popup.transform.Find("SNRLogo");
+        if (logoTransform != null)
+        {
+            logoTransform.gameObject.SetActive(false);
+        }
+    }
 }
 
 internal sealed class AnnouncementSelectMenuMarker : MonoBehaviour
 {
 }
 
-internal sealed class AnnouncementSelectMenuState : MonoBehaviour
+internal static class AnnouncementSelectMenuState
 {
-    public string CurrentCategory = string.Empty;
-    public List<Announcement> VanillaCache;
-    public List<Announcement> SnrCache;
-    public string SnrLang = string.Empty;
-    public bool SnrLoading;
-    public int SnrRequestToken;
+    public static string CurrentCategory = string.Empty;
+    public static List<Announcement> VanillaCache;
+    public static List<Announcement> SnrCache;
+    public static string SnrLang = string.Empty;
+    public static bool SnrLoading;
+    public static int SnrRequestToken;
 }
