@@ -800,12 +800,6 @@ internal static class AnnouncementSelectMenuHelper
         if (AnnouncementSelectMenuState.CurrentCategory != SnrCategory)
             return;
 
-        // タイトルテキストを変更
-        if (popup.Title != null)
-        {
-            popup.Title.text = "SuperNewRolesのお知らせ";
-        }
-
         // ロゴを追加または更新
         UpdateAnnouncementLogo(popup);
     }
