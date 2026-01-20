@@ -28,6 +28,8 @@ public class SluggerAbility : CustomButtonBase, IButtonEffect
     public override float DefaultTimer { get; } // クールタイムはオプションで調整可
     private CustomPlayerAnimationSimple _chargeAnimation;
     private AudioSource _chargeAudio;
+    private const float AudioMaxDistance = 5f;
+    private const float AudioMinDistance = 1f;
     private EventListener<MeetingStartEventData> _onMeetingStartEvent;
     private EventListener<MurderEventData> _murderEvent;
     private EventListener<DieEventData> _dieEvent;
@@ -143,8 +145,13 @@ public class SluggerAbility : CustomButtonBase, IButtonEffect
             localScale: Vector3.one * 0.8f
         );
         _chargeAnimation = CustomPlayerAnimationSimple.Spawn(player, option);
-        if (Vector2.Distance(player.transform.position, ExPlayerControl.LocalPlayer.Player.transform.position) <= 5)
-            _chargeAudio = SoundManager.Instance.PlaySound(AssetManager.GetAsset<AudioClip>("Slugger_Charge.mp3"), true, audioMixer: SoundManager.Instance.SfxChannel);
+        var chargeClip = AssetManager.GetAsset<AudioClip>("Slugger_Charge.mp3");
+        if (chargeClip != null && _chargeAnimation != null)
+        {
+            var attenuatedAudio = AttenuatedAudioSourceUtility.SetupSimple(_chargeAnimation.gameObject, chargeClip, loop: true, maxDistance: AudioMaxDistance, minDistance: AudioMinDistance);
+            _chargeAudio = attenuatedAudio.GetComponent<AudioSource>();
+            _chargeAudio.Play();
+        }
     }
 
     private float PlayAttackAnimation(PlayerControl player)
@@ -162,8 +169,7 @@ public class SluggerAbility : CustomButtonBase, IButtonEffect
             UpdatePlayerFlipX: false
         );
         CustomPlayerAnimationSimple.Spawn(player, option);
-        if (Vector2.Distance(player.transform.position, ExPlayerControl.LocalPlayer.Player.transform.position) <= 5)
-            SoundManager.Instance.PlaySound(AssetManager.GetAsset<AudioClip>("Slugger_Hit.mp3"), false, audioMixer: SoundManager.Instance.SfxChannel);
+        PlaySpatialOneShot(player, AssetManager.GetAsset<AudioClip>("Slugger_Hit.mp3"));
 
         return option.frameRate > 0 ? (sprites.Length / (float)option.frameRate) : 0f;
     }
@@ -252,5 +258,17 @@ public class SluggerAbility : CustomButtonBase, IButtonEffect
     public override bool CheckIsAvailable()
     {
         return PlayerControl.LocalPlayer.CanMove && !isEffectActive;
+    }
+
+    private void PlaySpatialOneShot(PlayerControl player, AudioClip clip)
+    {
+        if (player == null || clip == null) return;
+
+        var audioObject = new GameObject("SluggerHitAudio");
+        audioObject.transform.SetParent(player.transform, worldPositionStays: false);
+        var attenuatedAudio = AttenuatedAudioSourceUtility.SetupSimple(audioObject, clip, loop: false, maxDistance: AudioMaxDistance, minDistance: AudioMinDistance);
+        var audioSource = attenuatedAudio.GetComponent<AudioSource>();
+        audioSource.Play();
+        UnityEngine.Object.Destroy(audioObject, clip.length + 0.1f);
     }
 }
