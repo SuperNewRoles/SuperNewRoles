@@ -11,6 +11,9 @@ public class CursedStartFansTask
 {
     public static Dictionary<uint, byte[]> Data;
     public static int[] CodeData;
+    private const int IconSpriteLength = 5;
+    private const int MushroomIndex = IconSpriteLength - 1;
+    private const float MushroomBonusChance = 0.20f;
 
     [HarmonyPatch(typeof(StartFansMinigame))]
     public static class StartFansMinigamePatch
@@ -75,9 +78,15 @@ public class CursedStartFansTask
             if (!Main.IsCursed) return;
             if (__instance.TaskType != TaskTypes.StartFans) return;
             __instance.MaxStep = 2;
+            Data ??= new Dictionary<uint, byte[]>();
             Data[__instance.Id] = new byte[__instance.Data.Length];
-            for (int i = 0; i < __instance.Data.Length; i++) Data[__instance.Id][i] = (byte)UnityEngine.Random.Range(0, 6);
-            if (Data[__instance.Id].All(x => x == 0)) Data[__instance.Id][UnityEngine.Random.Range(0, Data[__instance.Id].Length)] = (byte)UnityEngine.Random.Range(1, 6);
+            for (int i = 0; i < __instance.Data.Length; i++)
+            {
+                int index = UnityEngine.Random.Range(0, IconSpriteLength);
+                if (UnityEngine.Random.value < MushroomBonusChance) index = MushroomIndex;
+                Data[__instance.Id][i] = (byte)index;
+            }
+            if (Data[__instance.Id].All(x => x == 0)) Data[__instance.Id][UnityEngine.Random.Range(0, Data[__instance.Id].Length)] = (byte)UnityEngine.Random.Range(1, IconSpriteLength);
         }
     }
 }

@@ -179,16 +179,9 @@ public class TriggerHappyBullet : MonoBehaviour
 
     private bool TryHitPlayer(Vector2 position)
     {
-        float radius = scaledColliderRadius;
-        int hitCount = Physics2D.OverlapCircleNonAlloc(position, radius, hitBuffer, Constants.PlayersOnlyMask);
-        if (hitCount == 0)
-            return false;
-
-        for (int i = 0; i < hitCount; i++)
+        float radius = collider2D.radius * transform.lossyScale.x;
+        foreach (var hit in Physics2D.OverlapCircleAll(position, radius, Constants.PlayersOnlyMask))
         {
-            var hit = hitBuffer[i];
-            if (hit == null)
-                continue;
             var playerControl = hit.GetComponentInParent<PlayerControl>();
             if (playerControl == null || playerControl.PlayerId == owner?.PlayerId)
                 continue;
