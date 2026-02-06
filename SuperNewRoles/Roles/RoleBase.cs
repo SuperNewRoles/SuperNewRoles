@@ -88,7 +88,6 @@ public interface IRoleBase : IRoleInformation
 
     public RoleId[] RelatedRoleIds { get; }
     public MapNames[] AvailableMaps { get; }
-    public bool HideInRoleDictionary { get; }
 
     public Sprite RoleIcon { get; }
 
@@ -115,6 +114,7 @@ public interface IRoleInformation
     public string RoleName { get; }
     public Color32 RoleColor { get; }
     public bool HiddenOption { get; }
+    public bool HideInRoleDictionary { get; }
     public List<AssignedTeamType> AssignedTeams { get; }
     public CustomOption[] Options { get; }
     public int? PercentageOption { get; }

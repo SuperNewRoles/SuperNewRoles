@@ -377,6 +377,25 @@ public static class AssignRoles
         Logger.Info($"Assigning role {roleId} to player {player.PlayerId}");
         ((ExPlayerControl)player).RpcCustomSetRole(roleId);
     }
+    private static bool IsRoleFilteredByAssignFilter(RoleId roleId, List<RoleId> assignFilterList)
+    {
+        if (assignFilterList == null || assignFilterList.Count == 0)
+            return false;
+
+        if (assignFilterList.Contains(roleId))
+            return true;
+
+        foreach (var filterRoleId in assignFilterList)
+        {
+            if (CustomRoleManager.TryGetRoleById(filterRoleId, out var roleBase) && roleBase is ITeamRoleBase teamRole)
+            {
+                if (teamRole.MemberRoleIds.Contains(roleId))
+                    return true;
+            }
+        }
+
+        return false;
+    }
     private static void AssignModifiers()
     {
         Logger.Info("AssignModifiers() 開始: Modifierのアサイン処理を開始します。");
@@ -415,7 +434,7 @@ public static class AssignRoles
                 }
                 List<ExPlayerControl> targetPlayers = ExPlayerControl.ExPlayerControls
                     .Where(x => modifierBase.AssignedTeams.Count <= 0 || modifierBase.AssignedTeams.Contains(x.roleBase.AssignedTeam))
-                    .Where(x => modifierRoleOption.AssignFilterList.Count == 0 || !modifierRoleOption.AssignFilterList.Contains(x.Role))
+                    .Where(x => !IsRoleFilteredByAssignFilter(x.Role, modifierRoleOption.AssignFilterList))
                     .Where(x => modifierBase.DoNotAssignRoles.Length == 0 || !modifierBase.DoNotAssignRoles.Contains(x.Role))
                     // .Where(x => modifierBase.ModifierAssignFilterTeam.Length == 0 || modifierBase.ModifierAssignFilterTeam.Contains(x.roleBase.AssignedTeam))
                     .ToList();
@@ -460,7 +479,7 @@ public static class AssignRoles
         // インポスターへの割当
         var impostors = allPlayers.Where(x => x.IsImpostor() &&
                                         !x.ModifierRole.HasFlag(modifierRoleId) &&
-                                        (modifierRoleOption.AssignFilterList.Count == 0 || !modifierRoleOption.AssignFilterList.Contains(x.Role)) &&
+                                        !IsRoleFilteredByAssignFilter(x.Role, modifierRoleOption.AssignFilterList) &&
                                         (modifierBase.DoNotAssignRoles.Length == 0 || !modifierBase.DoNotAssignRoles.Contains(x.Role)))
                                 .ToList();
         for (int i = 0; i < modifierRoleOption.MaxImpostors; i++)
@@ -476,7 +495,7 @@ public static class AssignRoles
         // 第三陣営への割当
         var neutrals = allPlayers.Where(x => x.IsNeutral() &&
                                        !x.ModifierRole.HasFlag(modifierRoleId) &&
-                                       (modifierRoleOption.AssignFilterList.Count == 0 || !modifierRoleOption.AssignFilterList.Contains(x.Role)) &&
+                                       !IsRoleFilteredByAssignFilter(x.Role, modifierRoleOption.AssignFilterList) &&
                                        (modifierBase.DoNotAssignRoles.Length == 0 || !modifierBase.DoNotAssignRoles.Contains(x.Role)))
                                .ToList();
         for (int i = 0; i < modifierRoleOption.MaxNeutrals; i++)
@@ -492,7 +511,7 @@ public static class AssignRoles
         // クルーメイトへの割当
         var crewmates = allPlayers.Where(x => x.IsCrewmateOrMadRoles() &&
                                         !x.ModifierRole.HasFlag(modifierRoleId) &&
-                                        (modifierRoleOption.AssignFilterList.Count == 0 || !modifierRoleOption.AssignFilterList.Contains(x.Role)) &&
+                                        !IsRoleFilteredByAssignFilter(x.Role, modifierRoleOption.AssignFilterList) &&
                                         (modifierBase.DoNotAssignRoles.Length == 0 || !modifierBase.DoNotAssignRoles.Contains(x.Role)))
                                 .ToList();
         for (int i = 0; i < modifierRoleOption.MaxCrewmates; i++)
@@ -541,7 +560,7 @@ public static class AssignRoles
             if (modifierLovers.AssignFilterList.Count > 0)
             {
                 candidates = candidates
-                    .Where(p => !modifierLovers.AssignFilterList.Contains(p.Role));
+                    .Where(p => !IsRoleFilteredByAssignFilter(p.Role, modifierLovers.AssignFilterList));
             }
             if (Lovers.Instance.DoNotAssignRoles.Length > 0)
             {
