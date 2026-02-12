@@ -783,4 +783,23 @@ public static class ModHelpers
         if (ShipStatus.Instance == null || ShipStatus.Instance.AllVents == null) return null;
         return ShipStatus.Instance.AllVents.FirstOrDefault(vent => vent.Id == id);
     }
+
+    /// <summary>
+    /// AmongUsの現在の言語名を取得します。
+    /// </summary>
+    /// <returns>言語名</returns>
+    public static string GetCurrentLanguageName()
+    {
+        var currentLang = "Unknown Language";
+        var currentKeyword = (uint)GameOptionsManager.Instance.GameHostOptions.Keywords;
+        foreach (var lang in ChatLanguageSet.Instance.Languages)
+        {
+            if (lang.Value == currentKeyword)
+            {
+                currentLang = lang.Key;
+                break;
+            }
+        }
+        return currentLang;
+    }
 }
