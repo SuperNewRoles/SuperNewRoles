@@ -790,16 +790,25 @@ public static class ModHelpers
     /// <returns>言語名</returns>
     public static string GetCurrentLanguageName()
     {
-        var currentLang = "Unknown Language";
         var currentKeyword = (uint)GameOptionsManager.Instance.GameHostOptions.Keywords;
+        return GetLanguageNameByKeyword(currentKeyword);
+    }
+    /// <summary>
+    /// 指定されたキーワードに対応する言語名を取得します。
+    /// </summary>
+    /// <param name="keyword">言語のキーワード</param>
+    /// <returns>言語名</returns>
+    public static string GetLanguageNameByKeyword(uint keyword)
+    {
+        var langName = "Unknown Language";
         foreach (var lang in ChatLanguageSet.Instance.Languages)
         {
-            if (lang.Value == currentKeyword)
+            if (lang.Value == keyword)
             {
-                currentLang = lang.Key;
+                langName = lang.Key;
                 break;
             }
         }
-        return currentLang;
+        return langName;
     }
 }

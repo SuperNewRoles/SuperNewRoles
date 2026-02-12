@@ -104,7 +104,7 @@ public class CreateGameOptionsStartPatch
             TextMeshPros[i] = SetupClassicText(classicOption, buttons[i], hideCheckmark: true, languageOption.gameObject);
             classicOption.transform.Find(buttons[i])?.gameObject.SetActive(false);
         }
-        classicOption.transform.Find("InActive")?.gameObject.SetActive(true);
+        classicOption.transform.Find("Inactive")?.gameObject.SetActive(true);
 
         // ボタンの動作を上書き
         var classicButton = classicOption.GetComponent<PassiveButton>();

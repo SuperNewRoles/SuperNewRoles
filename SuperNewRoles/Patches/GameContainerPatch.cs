@@ -35,7 +35,7 @@ public static class GameContainerAwakePatch
         {
             RoomLanguage = GameObject.Instantiate(__instance.capacity, __instance.transform.Find("Container"));
         }
-        RoomLanguage.text = ModHelpers.GetCurrentLanguageName();
+        RoomLanguage.text = ModHelpers.GetLanguageNameByKeyword(__instance.gameListing.Language);
         RoomLanguage.name = "RoomLanguageText";
         RoomLanguage.transform.localPosition = new Vector3(2.86f, -0.14f, 0f);
 
