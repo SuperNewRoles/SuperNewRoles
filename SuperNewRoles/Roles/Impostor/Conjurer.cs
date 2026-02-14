@@ -96,19 +96,22 @@ public class ConjurerAbility : AbilityBase
 
     public void StartTriangle()
     {
-        foreach (PlayerControl pc in PlayerControl.AllPlayerControls)
+        var targets = new List<ExPlayerControl>();
+        foreach (var pc in ExPlayerControl.ExPlayerControls)
         {
+            if (pc == null || pc.Player == null)
+                continue;
             // プレイヤーがPositionsで形成された三角形の中にいる
-            if (!PointInPolygon(pc.transform.position, Positions))
+            if (!PointInPolygon(pc.Player.GetTruePosition(), Positions))
                 continue;
             if (pc.Data.IsDead)
                 continue;
-            if (!Data.CanKillImpostor && pc.Data.Role.IsImpostor)
+            if (!Data.CanKillImpostor && pc.IsImpostor())
                 continue;
 
             // シールダーの場合は特殊対応（保護される）が必要だが、シールダーは現在のコードベースでは存在しないためコメントアウト
             /*
-            if (((ExPlayerControl)pc).Role == RoleId.Shielder && RoleClass.Shielder.IsShield.ContainsKey(pc.PlayerId) && RoleClass.Shielder.IsShield[pc.PlayerId])
+            if (pc.Role == RoleId.Shielder && RoleClass.Shielder.IsShield.ContainsKey(pc.PlayerId) && RoleClass.Shielder.IsShield[pc.PlayerId])
             {
                 MessageWriter msgwriter = RPCHelper.StartRPC(CustomRPC.ShielderProtect);
                 msgwriter.Write(Player.PlayerId);
@@ -120,8 +123,11 @@ public class ConjurerAbility : AbilityBase
             }
             */
 
-            ((ExPlayerControl)pc).RpcCustomDeath(CustomDeathType.Suicide);
+            targets.Add(pc);
         }
+
+        if (targets.Count > 0)
+            RpcStartTriangle(targets);
         if (Data.ShowFlash)
         {
             FlashHandler.RpcShowFlashAll(Palette.Blue, 1f);
@@ -129,6 +135,23 @@ public class ConjurerAbility : AbilityBase
         ConjurerBeacon.ClearBeacons();
         startButton.ResetTimer();
         Count = 0;
+    }
+
+    [CustomRPC]
+    private void RpcStartTriangle(List<ExPlayerControl> targets)
+    {
+        if (targets == null || targets.Count == 0)
+            return;
+
+        foreach (var target in targets)
+        {
+            if (target == null || target.IsDead())
+                continue;
+            if (!Data.CanKillImpostor && target.IsImpostor())
+                continue;
+
+            target.CustomDeath(CustomDeathType.Suicide);
+        }
     }
 
     /// <summary>

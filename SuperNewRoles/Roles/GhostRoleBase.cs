@@ -30,6 +30,7 @@ internal abstract class GhostRoleBase<T> : BaseSingleton<T>, IGhostRoleBase wher
     public abstract short IntroNum { get; }
     public virtual RoleId[] RelatedRoleIds { get; } = [];
     public virtual bool HiddenOption => false;
+    public virtual bool HideInRoleDictionary => false;
 
     public List<AssignedTeamType> AssignedTeams => [AssignedTeam];
     public virtual Sprite RoleIcon => null;
