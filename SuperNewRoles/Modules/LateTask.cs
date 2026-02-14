@@ -17,23 +17,26 @@ public class LateTask
     public string Name { get; }
     public float Timer { get; private set; }
     public Action Action { get; }
+    private readonly bool logEnabled;
 
     /// <summary>遅延タスクコンストラクタ</summary>
     /// <param name="action">実行アクション</param>
     /// <param name="delayTime">遅延時間（秒）</param>
     /// <param name="taskName">タスク名（デバッグ用）</param>
-    public LateTask(Action action, float delayTime, string taskName = "No Name Task")
+    public LateTask(Action action, float delayTime, string taskName = "No Name Task", bool log = true)
     {
         Action = action ?? throw new ArgumentNullException(nameof(action));
         Timer = delayTime >= 0 ? delayTime : 0;
         Name = taskName;
+        logEnabled = log;
 
         lock (_lock)
         {
             AddTasks.Add(this);
         }
 
-        Logger.Info($"New LateTask \"{Name}\" created (Delay: {delayTime}s)", "LateTask");
+        if (logEnabled)
+            Logger.Info($"New LateTask \"{Name}\" created (Delay: {delayTime}s)", "LateTask");
     }
     public void Cancel()
     {
@@ -58,7 +61,8 @@ public class LateTask
             if (Timer > 0) return false;
 
             Action.Invoke();
-            Logger.Info($"LateTask \"{Name}\" completed", "LateTask");
+            if (logEnabled)
+                Logger.Info($"LateTask \"{Name}\" completed", "LateTask");
             return true;
         }
         catch (Exception ex)

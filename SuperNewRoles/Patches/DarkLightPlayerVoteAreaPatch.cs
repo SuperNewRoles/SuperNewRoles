@@ -20,7 +20,7 @@ public static class DarkLightPlayerVoteAreaPatch
         }
         darkLight = new GameObject("DarkLight").AddComponent<SpriteRenderer>();
         darkLight.transform.SetParent(__instance.gameObject.transform);
-        darkLight.transform.localPosition = new Vector3(1.26f, -0.2f, -100f);
+        darkLight.transform.localPosition = new Vector3(1.26f, -0.2f, -1f);
         darkLight.transform.localScale = Vector3.one * 0.35f;
         darkLight.gameObject.layer = 5;
         darkLight.color = CustomColors.IsLighter(playerInfo) ? LightColor : DarkColor;

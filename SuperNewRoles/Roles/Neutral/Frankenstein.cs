@@ -17,14 +17,16 @@ internal sealed class Frankenstein : RoleBase<Frankenstein>
 {
     public override RoleId Role { get; } = RoleId.Frankenstein;
     public override Sprite RoleIcon => AssetManager.GetAsset<Sprite>("FrankensteinRoleIcon.png");
-    public override Color32 RoleColor { get; } = new(122, 169, 146, byte.MaxValue);
+    private static readonly Color32 roleColor = new(122, 169, 146, byte.MaxValue);
+    public override Color32 RoleColor { get; } = roleColor;
     public override List<Func<AbilityBase>> Abilities { get; } = [
         () => new FrankensteinAbility(new FrankensteinData(
             CreateCooldown: FrankensteinCreateCoolTime,
             WinKillCount: FrankensteinWinKillCount,
             MonsterHasImpostorVision: FrankensteinMonsterImpostorLight,
             MonsterCanUseVent: FrankensteinMonsterCanVent
-        ))
+        )),
+        () => new DeadBodyArrowsAbility(() => true, arrowColor: roleColor),
     ];
 
     public override QuoteMod QuoteMod { get; } = QuoteMod.SuperNewRoles;

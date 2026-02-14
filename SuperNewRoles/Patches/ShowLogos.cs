@@ -52,8 +52,8 @@ public static class MainMenuLogos
         // メインメニュー用ロゴオブジェクトの作成
         var logoObject = new GameObject("MainMenuLogo");
         logoObject.transform.SetPositionAndScale(
-            new(2.05f, 0.5f, 0),  // 右側に配置
-            Vector3.one * 0.75f  // 適切なサイズに縮小
+            new(1.85f, 0.5f, 0),  // 右側に配置
+            Vector3.one * 0.55f  // 適切なサイズに縮小
         );
 
         logoObject.AddComponent<SpriteRenderer>().sprite = logo;

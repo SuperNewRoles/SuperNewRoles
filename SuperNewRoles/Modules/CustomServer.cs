@@ -20,7 +20,7 @@ public static class CustomServer
                 SNRRegion,
                 new StaticHttpRegionInfo("Custom", StringNames.NoTranslation,
                 "127.0.0.1", new([
-                        new("Custom", "127.0.0.1", 443, false)
+                        new("Custom", "http://127.0.0.1", 22023, false)
                     ])).TryCast<IRegionInfo>(),
             };
 

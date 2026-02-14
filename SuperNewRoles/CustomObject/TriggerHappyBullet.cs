@@ -15,16 +15,35 @@ public class TriggerHappyBullet : MonoBehaviour
     private const float BounceTotalRange = BounceAllowedRange * 2f;
     private const float BounceIgnoreDuration = 0.1f;
     private const float GuardEffectCooldown = 0.2f;
+    private const int HitBufferSize = 32;
+    private const int MaxPoolSize = 256;
+    private const float BaseColliderRadius = 0.15f;
     private static readonly Dictionary<byte, GuardEffectState> GuardEffectStates = new();
+    private static readonly Stack<TriggerHappyBullet> BulletPool = new();
+    private static Sprite BulletSprite;
     private ExPlayerControl owner;
+    private byte ownerPlayerId = byte.MaxValue;
+    private ulong abilityId;
     private TriggerHappyAbility ability;
     private Vector2 direction;
     private float range;
     private bool pierceWalls;
     private float traveled;
     private CircleCollider2D collider2D;
+    private SpriteRenderer spriteRenderer;
+    private float scaledColliderRadius;
+    private Collider2D[] hitBuffer;
     private float ignoreWiseManTimer;
     private byte ignoreWiseManId = byte.MaxValue;
+    private bool isActive;
+
+    public bool IsActive => isActive;
+    public bool BelongsTo(ExPlayerControl owner, TriggerHappyAbility ability)
+    {
+        if (!isActive || owner == null || ability == null)
+            return false;
+        return ownerPlayerId == owner.PlayerId && abilityId == ability.AbilityId;
+    }
 
     private sealed class GuardEffectState
     {
@@ -41,10 +60,42 @@ public class TriggerHappyBullet : MonoBehaviour
         float size,
         bool pierceWalls)
     {
-        GameObject gameObject = new("TriggerHappyBullet");
-        var bullet = gameObject.AddComponent<TriggerHappyBullet>();
+        var bullet = GetFromPool();
+        if (bullet == null)
+        {
+            GameObject gameObject = new("TriggerHappyBullet");
+            bullet = gameObject.AddComponent<TriggerHappyBullet>();
+            bullet.SetupComponents();
+        }
+        else
+        {
+            bullet.gameObject.SetActive(true);
+        }
         bullet.Init(owner, ability, position, direction, range, size, pierceWalls);
         return bullet;
+    }
+
+    private static TriggerHappyBullet GetFromPool()
+    {
+        while (BulletPool.Count > 0)
+        {
+            var bullet = BulletPool.Pop();
+            if (bullet != null && bullet.gameObject != null)
+                return bullet;
+        }
+        return null;
+    }
+
+    private void SetupComponents()
+    {
+        if (spriteRenderer == null)
+            spriteRenderer = gameObject.AddComponent<SpriteRenderer>();
+        if (collider2D == null)
+        {
+            collider2D = gameObject.AddComponent<CircleCollider2D>();
+            collider2D.isTrigger = true;
+            collider2D.radius = BaseColliderRadius;
+        }
     }
 
     private void Init(
@@ -58,27 +109,33 @@ public class TriggerHappyBullet : MonoBehaviour
     {
         this.owner = owner;
         this.ability = ability;
+        ownerPlayerId = owner?.PlayerId ?? byte.MaxValue;
+        abilityId = ability?.AbilityId ?? 0;
         this.direction = direction.normalized;
         this.range = Mathf.Max(0.1f, range);
         this.pierceWalls = pierceWalls;
+        traveled = 0f;
+        ignoreWiseManTimer = 0f;
+        ignoreWiseManId = byte.MaxValue;
+        isActive = true;
 
         transform.position = new Vector3(position.x, position.y, -4.5f);
         transform.localScale = Vector3.one * Mathf.Max(0.1f, size) * 0.2f;
         transform.rotation = Quaternion.Euler(0f, 0f, Mathf.Atan2(this.direction.y, this.direction.x) * Mathf.Rad2Deg);
 
-        var spriteRenderer = gameObject.AddComponent<SpriteRenderer>();
-        spriteRenderer.sprite = AssetManager.GetAsset<Sprite>("TriggerHappy_Bullet.png");
-
-        collider2D = gameObject.AddComponent<CircleCollider2D>();
-        collider2D.isTrigger = true;
-        collider2D.radius = 0.15f;
+        SetupComponents();
+        if (BulletSprite == null)
+            BulletSprite = AssetManager.GetAsset<Sprite>("TriggerHappy_Bullet.png");
+        spriteRenderer.sprite = BulletSprite;
+        scaledColliderRadius = collider2D.radius * transform.lossyScale.x;
+        hitBuffer ??= new Collider2D[HitBufferSize];
     }
 
     private void Update()
     {
         if (owner == null || !owner.IsAlive() || MeetingHud.Instance != null)
         {
-            Destroy(gameObject);
+            Despawn();
             return;
         }
 
@@ -101,7 +158,7 @@ public class TriggerHappyBullet : MonoBehaviour
             Vector2 stepDirection2D = step.normalized;
             if (PhysicsHelpers.AnyNonTriggersBetween(currentPosition2D, stepDirection2D, distance, Constants.ShipAndObjectsMask))
             {
-                Destroy(gameObject);
+                Despawn();
                 return;
             }
         }
@@ -110,13 +167,13 @@ public class TriggerHappyBullet : MonoBehaviour
         traveled += step.magnitude;
         if (traveled >= range)
         {
-            Destroy(gameObject);
+            Despawn();
             return;
         }
 
         if (TryHitPlayer(nextPosition))
         {
-            Destroy(gameObject);
+            Despawn();
         }
     }
 
@@ -307,5 +364,30 @@ public class TriggerHappyBullet : MonoBehaviour
         }
 
         return false;
+    }
+
+    private void Despawn()
+    {
+        if (!isActive)
+            return;
+
+        isActive = false;
+        owner = null;
+        ability = null;
+        ownerPlayerId = byte.MaxValue;
+        abilityId = 0;
+        ignoreWiseManTimer = 0f;
+        ignoreWiseManId = byte.MaxValue;
+        traveled = 0f;
+
+        if (BulletPool.Count < MaxPoolSize)
+        {
+            gameObject.SetActive(false);
+            BulletPool.Push(this);
+        }
+        else
+        {
+            Destroy(gameObject);
+        }
     }
 }

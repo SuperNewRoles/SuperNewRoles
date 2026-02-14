@@ -80,6 +80,7 @@ public static class ModHelpers
     private static SHA256 sha256 = SHA256.Create();
     public static string HashMD5(string str)
     {
+        if (string.IsNullOrEmpty(str)) str = string.Empty;
         byte[] bytes = Encoding.UTF8.GetBytes(str);
         return HashMD5(bytes);
     }
@@ -781,5 +782,33 @@ public static class ModHelpers
     {
         if (ShipStatus.Instance == null || ShipStatus.Instance.AllVents == null) return null;
         return ShipStatus.Instance.AllVents.FirstOrDefault(vent => vent.Id == id);
+    }
+
+    /// <summary>
+    /// AmongUsの現在の言語名を取得します。
+    /// </summary>
+    /// <returns>言語名</returns>
+    public static string GetCurrentLanguageName()
+    {
+        var currentKeyword = (uint)GameOptionsManager.Instance.GameHostOptions.Keywords;
+        return GetLanguageNameByKeyword(currentKeyword);
+    }
+    /// <summary>
+    /// 指定されたキーワードに対応する言語名を取得します。
+    /// </summary>
+    /// <param name="keyword">言語のキーワード</param>
+    /// <returns>言語名</returns>
+    public static string GetLanguageNameByKeyword(uint keyword)
+    {
+        var langName = "Unknown Language";
+        foreach (var lang in ChatLanguageSet.Instance.Languages)
+        {
+            if (lang.Value == keyword)
+            {
+                langName = lang.Key;
+                break;
+            }
+        }
+        return langName;
     }
 }
