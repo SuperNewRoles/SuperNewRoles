@@ -40,6 +40,7 @@ internal abstract class ModifierBase<T> : BaseSingleton<T>, IModifierBase where 
     public virtual int MaxCrewmates => RoleOptionManager.TryGetModifierRoleOption(ModifierRole, out var role) ? role.MaxCrewmates : 0;
     public virtual int CrewmateChance => RoleOptionManager.TryGetModifierRoleOption(ModifierRole, out var role) ? role.CrewmateChance : 100;
     public virtual Sprite RoleIcon => null;
+    public virtual bool HideInRoleDictionary => false;
 }
 
 public interface IModifierBase : IRoleInformation

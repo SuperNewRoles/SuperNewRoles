@@ -34,4 +34,5 @@ class BattleRoyalWaveCannon : RoleBase<BattleRoyalWaveCannon>, IRoleBase
     public override RoleTag[] RoleTags => [RoleTag.Information, RoleTag.SpecialWinner];
     public override short IntroNum => 1;
     public override RoleOptionMenuType OptionTeam => RoleOptionMenuType.Hidden; // バトルロワイヤルモードでのみ使用
+    public override bool HideInRoleDictionary => true;
 }
