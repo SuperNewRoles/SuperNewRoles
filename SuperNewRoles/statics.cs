@@ -67,6 +67,7 @@ public static class SocialLinks
     public const string DiscordServer = "https://supernewroles.com/discord";
     public const string TwitterSnrDevs = "https://twitter.com/SNRDevs";
     public const string TwitterSnrOfficials = "https://twitter.com/SNROfficials";
+    public const string XSnrOfficials = "https://x.com/SNROfficials";
 }
 
 public static class Statics
