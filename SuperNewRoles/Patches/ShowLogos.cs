@@ -83,6 +83,12 @@ public static class VersionTextHandler
     private const float SocialIconsXOffset = 0.35f;
     private const float SocialIconHoverScale = 1.08f;
     private const int MainMenuUiLayer = 5;
+    private const int SocialIconOuterBackdropSortingOrder = 0;
+    private const int SocialIconInnerBackdropSortingOrder = 0;
+    private const int SocialIconForegroundSortingOrder = 0;
+    private const float SocialIconOuterBackdropLocalZ = 0.02f;
+    private const float SocialIconInnerBackdropLocalZ = 0.01f;
+    private const float SocialIconForegroundLocalZ = 0f;
     private static readonly Color DiscordBlurple = new(88f / 255f, 101f / 255f, 242f / 255f, 0.95f);
     private static readonly Color SocialIconBackdropOuterColor = new(0f, 0f, 0f, 0.55f);
     private static readonly Color SocialIconBackdropInnerColor = new(1f, 1f, 1f, 0.92f);
@@ -171,23 +177,24 @@ public static class VersionTextHandler
             var iconObject = new GameObject(assetName);
             iconObject.layer = MainMenuUiLayer;
             iconObject.transform.SetParent(parent, false);
-            iconObject.transform.localPosition = localPosition;
+            iconObject.transform.localPosition = new Vector3(localPosition.x, localPosition.y, SocialIconForegroundLocalZ);
             iconObject.transform.localScale = SocialIconScale;
 
             var iconRenderer = iconObject.AddComponent<SpriteRenderer>();
             iconRenderer.sprite = iconSprite;
-            iconRenderer.sortingOrder = 2;
+            iconRenderer.sortingOrder = SocialIconForegroundSortingOrder;
             bool isDiscordIcon = assetName == DiscordIconAssetName;
             if (isDiscordIcon)
                 iconRenderer.color = Color.white;
 
-            CreateIconBackdrop(iconObject.transform, iconSprite, 1.25f, SocialIconBackdropOuterColor, 0);
+            CreateIconBackdrop(iconObject.transform, iconSprite, 1.25f, SocialIconBackdropOuterColor, SocialIconOuterBackdropSortingOrder, SocialIconOuterBackdropLocalZ);
             CreateIconBackdrop(
                 iconObject.transform,
                 iconSprite,
                 1.12f,
                 isDiscordIcon ? DiscordBlurple : SocialIconBackdropInnerColor,
-                1
+                SocialIconInnerBackdropSortingOrder,
+                SocialIconInnerBackdropLocalZ
             );
 
             var boxCollider = iconObject.AddComponent<BoxCollider2D>();
@@ -211,12 +218,12 @@ public static class VersionTextHandler
             }));
         }
 
-        private static void CreateIconBackdrop(Transform iconParent, Sprite iconSprite, float sizeMultiplier, Color color, int sortingOrder)
+        private static void CreateIconBackdrop(Transform iconParent, Sprite iconSprite, float sizeMultiplier, Color color, int sortingOrder, float localZ)
         {
             var backdrop = new GameObject("Backdrop");
             backdrop.layer = MainMenuUiLayer;
             backdrop.transform.SetParent(iconParent, false);
-            backdrop.transform.localPosition = Vector3.zero;
+            backdrop.transform.localPosition = new Vector3(0f, 0f, localZ);
 
             var renderer = backdrop.AddComponent<SpriteRenderer>();
             renderer.sprite = GetRoundedRectSprite();
