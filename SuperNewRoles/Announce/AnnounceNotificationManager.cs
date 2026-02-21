@@ -19,10 +19,15 @@ public static class AnnounceNotificationManager
     private static HashSet<string> _readIds = new();
     private static bool _hasCheckedOnStartup = false;
     private static bool _hasUnreadAnnouncements = false;
+    private static bool _isInitialized = false;
 
     public static void Initialize()
     {
+        if (_isInitialized)
+            return;
+
         LoadReadIds();
+        _isInitialized = true;
     }
 
     private static void LoadReadIds()
@@ -236,30 +241,7 @@ public static class AnnounceNotificationManager
         if (popup != null)
         {
             popup?.announcementPopUp?.Show();
-            Logger.Info("Non popup");
-        }
-    }
-
-    private static string GetGameObjectPath(GameObject obj)
-    {
-        string path = obj.name;
-        while (obj.transform.parent != null)
-        {
-            obj = obj.transform.parent.gameObject;
-            path = obj.name + "/" + path;
-        }
-        return path;
-    }
-
-    private static void LogChildrenRecursive(Transform parent, string indent, int maxDepth)
-    {
-        if (maxDepth <= 0) return;
-
-        for (int i = 0; i < parent.childCount; i++)
-        {
-            var child = parent.GetChild(i);
-            SuperNewRolesPlugin.Logger.LogInfo($"{indent}- {child.name}");
-            LogChildrenRecursive(child, indent + "  ", maxDepth - 1);
+            SuperNewRolesPlugin.Logger.LogInfo("ShowNewAnnouncementsPopup: Announcement popup opened.");
         }
     }
 

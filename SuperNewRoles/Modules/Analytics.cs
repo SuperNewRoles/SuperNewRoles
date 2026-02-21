@@ -38,13 +38,18 @@ public static class Analytics
     {
         private static GameObject currentPopup;
         private static bool isAnalyticsPopupViewd = false;
+        private static bool isAnnouncementInitialized = false;
         public static void Postfix(MainMenuManager __instance)
         {
             if (!FastDestroyableSingleton<EOSManager>.Instance.HasFinishedLoginFlow())
                 return;
 
             // Announce初期化と新着チェック
-            AnnounceNotificationManager.Initialize();
+            if (!isAnnouncementInitialized)
+            {
+                AnnounceNotificationManager.Initialize();
+                isAnnouncementInitialized = true;
+            }
             if (!AnnounceNotificationManager.HasCheckedOnStartup())
             {
                 __instance.StartCoroutine(AnnounceNotificationManager.CheckForNewAnnouncementsOnStartup().WrapToIl2Cpp());

@@ -66,6 +66,7 @@ internal static class AnnouncementSelectMenuHelper
     private const int SnrPageSize = 50;
     private const int ShortTitleMaxLength = 36;
     private static readonly Vector3 MenuFallbackPosition = new(-2.82f, 1.97f, -1.15f);
+    private static Sprite FallbackUnreadBadgeSprite;
 
     private static readonly string[] CategoryNames =
     {
@@ -213,16 +214,8 @@ internal static class AnnouncementSelectMenuHelper
             renderer.sprite = AssetManager.GetAsset<Sprite>("badge");
             if (renderer.sprite == null)
             {
-                // スプライトがない場合は円を描画
-                var circle = GameObject.CreatePrimitive(PrimitiveType.Sphere);
-                GameObject.Destroy(circle.GetComponent<Collider>());
-                renderer = circle.GetComponent<SpriteRenderer>();
-                if (renderer != null)
-                    renderer.color = new Color(1f, 0.2f, 0.2f); // 赤色
-                badgeObj = circle;
-                badgeObj.name = "UnreadBadge";
-                badgeObj.transform.SetParent(parent, false);
-                badgeObj.transform.localPosition = new Vector3(1.5f, 0f, -1f);
+                renderer.sprite = GetFallbackUnreadBadgeSprite();
+                renderer.color = new Color(1f, 0.2f, 0.2f, 1f);
                 badgeObj.transform.localScale = Vector3.one * 0.3f;
             }
 
@@ -233,6 +226,35 @@ internal static class AnnouncementSelectMenuHelper
             SuperNewRolesPlugin.Logger.LogWarning($"Failed to create unread badge: {ex.Message}");
             return null;
         }
+    }
+
+    private static Sprite GetFallbackUnreadBadgeSprite()
+    {
+        if (FallbackUnreadBadgeSprite != null)
+            return FallbackUnreadBadgeSprite;
+
+        const int texSize = 32;
+        var texture = new Texture2D(texSize, texSize, TextureFormat.ARGB32, false);
+        texture.filterMode = FilterMode.Bilinear;
+        texture.wrapMode = TextureWrapMode.Clamp;
+
+        float center = (texSize - 1) * 0.5f;
+        float radius = texSize * 0.5f;
+        float radiusSqr = radius * radius;
+        for (int y = 0; y < texSize; y++)
+        {
+            for (int x = 0; x < texSize; x++)
+            {
+                float dx = x - center;
+                float dy = y - center;
+                bool inside = (dx * dx + dy * dy) <= radiusSqr;
+                texture.SetPixel(x, y, inside ? Color.white : Color.clear);
+            }
+        }
+
+        texture.Apply(false, false);
+        FallbackUnreadBadgeSprite = Sprite.Create(texture, new Rect(0f, 0f, texSize, texSize), new Vector2(0.5f, 0.5f), texSize);
+        return FallbackUnreadBadgeSprite;
     }
 
     private static GameObject FindMenu(AnnouncementPopUp popup)
@@ -251,7 +273,8 @@ internal static class AnnouncementSelectMenuHelper
         Transform parent = popup.transform;
         Vector3 position = MenuFallbackPosition;
 
-        menuObject.transform.SetParent(parent.transform.Find("Sizer/Header"), false);
+        var header = parent.Find("Sizer/Header");
+        menuObject.transform.SetParent(header != null ? header : parent, false);
         menuObject.transform.localPosition = position;
         menuObject.transform.localScale = Vector3.one * MenuScale;
     }
@@ -497,16 +520,21 @@ internal static class AnnouncementSelectMenuHelper
             // キャッシュから取得
             var cachedArticle = AnnounceCache.GetArticle(item.Id, lang);
             Article article = cachedArticle?.Article;
+            string articleEtag = cachedArticle?.ETag;
 
-            // 常に最新の記事を取得（ETagなし）して更新をチェック
+            // 個別記事もETagで更新チェック
             ApiResult<Article> articleResult = null;
-            yield return SuperNewAnnounceApi.GetArticle(item.Id, lang, result => articleResult = result, fallback: true);
+            yield return SuperNewAnnounceApi.GetArticle(item.Id, lang, result => articleResult = result, fallback: true, etag: articleEtag);
 
             if (articleResult != null && articleResult.IsSuccess && articleResult.Data != null)
             {
+                bool articleChanged = !AreArticlesEquivalent(cachedArticle?.Article, articleResult.Data)
+                    || !string.Equals(articleEtag ?? string.Empty, articleResult.ETag ?? string.Empty, StringComparison.Ordinal);
+
                 article = articleResult.Data;
                 AnnounceCache.SaveArticle(item.Id, lang, article, articleResult.ETag);
-                hasUpdates = true;
+                if (articleChanged)
+                    hasUpdates = true;
             }
             else if (article != null)
             {
@@ -521,7 +549,8 @@ internal static class AnnouncementSelectMenuHelper
         }
 
         // 更新があった場合、または記事数が変わった場合は画面を更新
-        if (hasUpdates || AnnouncementSelectMenuState.SnrCache == null || AnnouncementSelectMenuState.SnrCache.Count != announcements.Count)
+        bool cacheChanged = !AreAnnouncementListsEquivalent(AnnouncementSelectMenuState.SnrCache, announcements);
+        if (hasUpdates || cacheChanged)
         {
             // メモリキャッシュと画面を更新
             AnnouncementSelectMenuState.SnrCache = announcements;
@@ -530,6 +559,85 @@ internal static class AnnouncementSelectMenuHelper
             if (AnnouncementSelectMenuState.CurrentCategory == SnrCategory && popup != null)
                 ApplyAnnouncements(popup, announcements);
         }
+    }
+
+    private static bool AreAnnouncementListsEquivalent(List<Announcement> left, List<Announcement> right)
+    {
+        if (ReferenceEquals(left, right))
+            return true;
+        if (left == null || right == null || left.Count != right.Count)
+            return false;
+
+        for (int i = 0; i < left.Count; i++)
+        {
+            if (!AreAnnouncementsEquivalent(left[i], right[i]))
+                return false;
+        }
+
+        return true;
+    }
+
+    private static bool AreAnnouncementsEquivalent(Announcement left, Announcement right)
+    {
+        if (left == null || right == null)
+            return left == right;
+
+        return left.Number == right.Number
+            && left.PinState == right.PinState
+            && left.Language == right.Language
+            && string.Equals(left.Id, right.Id, StringComparison.Ordinal)
+            && string.Equals(left.Title, right.Title, StringComparison.Ordinal)
+            && string.Equals(left.SubTitle, right.SubTitle, StringComparison.Ordinal)
+            && string.Equals(left.ShortTitle, right.ShortTitle, StringComparison.Ordinal)
+            && string.Equals(left.Text, right.Text, StringComparison.Ordinal)
+            && string.Equals(left.Date, right.Date, StringComparison.Ordinal);
+    }
+
+    private static bool AreArticlesEquivalent(Article left, Article right)
+    {
+        if (left == null || right == null)
+            return left == right;
+
+        return string.Equals(left.Id, right.Id, StringComparison.Ordinal)
+            && string.Equals(left.Title, right.Title, StringComparison.Ordinal)
+            && string.Equals(left.Url, right.Url, StringComparison.Ordinal)
+            && string.Equals(left.Lang, right.Lang, StringComparison.Ordinal)
+            && string.Equals(left.RequestedLang, right.RequestedLang, StringComparison.Ordinal)
+            && left.IsFallback == right.IsFallback
+            && string.Equals(left.CreatedAt, right.CreatedAt, StringComparison.Ordinal)
+            && string.Equals(left.UpdatedAt, right.UpdatedAt, StringComparison.Ordinal)
+            && string.Equals(left.Body, right.Body, StringComparison.Ordinal)
+            && AreTagListsEquivalent(left.Tags, right.Tags);
+    }
+
+    private static bool AreTagListsEquivalent(List<Tag> left, List<Tag> right)
+    {
+        if (ReferenceEquals(left, right))
+            return true;
+        if (left == null || right == null || left.Count != right.Count)
+            return false;
+
+        for (int i = 0; i < left.Count; i++)
+        {
+            var l = left[i];
+            var r = right[i];
+            if (l == null || r == null)
+            {
+                if (l != r)
+                    return false;
+                continue;
+            }
+
+            if (!string.Equals(l.Id, r.Id, StringComparison.Ordinal)
+                || !string.Equals(l.Name, r.Name, StringComparison.Ordinal)
+                || !string.Equals(l.Lang, r.Lang, StringComparison.Ordinal)
+                || !string.Equals(l.Color, r.Color, StringComparison.Ordinal))
+            {
+                return false;
+            }
+        }
+
+        return true;
     }
 
     private static List<Announcement> ConvertCachedArticlesListToAnnouncements(ArticlesResponse response, string lang)
@@ -649,9 +757,10 @@ internal static class AnnouncementSelectMenuHelper
         AnnouncementImageCache.SetImages(number, images);
 
         // マークダウンをUnityタグに変換
+        string shortTitleSource = MakeShortTitle(title);
         string convertedTitle = MarkdownToUnityTag.Convert(title);
         string convertedBody = MarkdownToUnityTag.Convert(bodyWithoutImages);
-        string shortTitle = MakeShortTitle(convertedTitle);
+        string shortTitle = MarkdownToUnityTag.Convert(shortTitleSource);
 
         return new Announcement
         {

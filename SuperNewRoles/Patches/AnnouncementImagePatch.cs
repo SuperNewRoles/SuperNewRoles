@@ -59,6 +59,9 @@ namespace SuperNewRoles.Patches
     public static class AnnouncementPopUpUpdateImagePatch
     {
         private static float _timestampUpdateTimer;
+        private static readonly Regex DynamicTimestampRegex = new(
+            @"<size=0><alpha=#00><t-dynamic:(\d+):R></alpha></size><size=100%><alpha=#FF>(.*?)<size=0><alpha=#00><t-end:R></alpha></size><size=100%><alpha=#FF>",
+            RegexOptions.Singleline | RegexOptions.Compiled);
 
         public static void Postfix(AnnouncementPopUp __instance)
         {
@@ -97,7 +100,7 @@ namespace SuperNewRoles.Patches
 
             bool changed = false;
             // <alpha=#00><t-dynamic:UNIX:R></alpha><alpha=#FF>{text}<alpha=#00><t-end:R></alpha><alpha=#FF>
-            string newText = Regex.Replace(text, @"<size=0><alpha=#00><t-dynamic:(\d+):R></alpha></size><size=100%><alpha=#FF>(.*?)<size=0><alpha=#00><t-end:R></alpha></size><size=100%><alpha=#FF>", match =>
+            string newText = DynamicTimestampRegex.Replace(text, match =>
             {
                 if (long.TryParse(match.Groups[1].Value, out long unixSeconds))
                 {
@@ -110,7 +113,7 @@ namespace SuperNewRoles.Patches
                     }
                 }
                 return match.Value;
-            }, RegexOptions.Singleline);
+            });
 
             if (changed)
             {

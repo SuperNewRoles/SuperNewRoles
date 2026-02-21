@@ -8,6 +8,7 @@ namespace SuperNewRoles.Modules;
 public static class SuperNewAnnounceApi
 {
     public static string BaseUrl { get; set; } = SNRURLs.SuperNewAnnounceApi;
+    private const int DefaultTimeoutSeconds = 15;
 
     public static IEnumerator GetHealthz(Action<ApiResult<HealthResponse>> callback, string etag = null)
     {
@@ -160,52 +161,55 @@ public static class SuperNewAnnounceApi
     private static IEnumerator SendGetRequest<T>(string url, string etag, Func<object, T> parseFunc, Action<ApiResult<T>> callback)
     {
         var request = UnityWebRequest.Get(url);
-        if (!string.IsNullOrEmpty(etag))
-            request.SetRequestHeader("If-None-Match", etag);
-
-        yield return request.SendWebRequest();
-
-        bool isNotModified = request.responseCode == 304;
-        string cacheControl = request.GetResponseHeader("Cache-Control");
-        string responseEtag = request.GetResponseHeader("ETag");
-        string rawText = request.downloadHandler != null ? request.downloadHandler.text : string.Empty;
-
-        if (isNotModified)
-        {
-            callback?.Invoke(new ApiResult<T>(false, true, request.responseCode, cacheControl, responseEtag, default, null, rawText, request.error));
-            request.Dispose();
-            yield break;
-        }
-
-        if (request.result != UnityWebRequest.Result.Success)
-        {
-            ApiError apiError = TryParseError(rawText);
-            callback?.Invoke(new ApiResult<T>(false, false, request.responseCode, cacheControl, responseEtag, default, apiError, rawText, request.error));
-            request.Dispose();
-            yield break;
-        }
-
-        if (!TryParseJson(rawText, out object root, out string parseError))
-        {
-            callback?.Invoke(new ApiResult<T>(false, false, request.responseCode, cacheControl, responseEtag, default, null, rawText, parseError));
-            request.Dispose();
-            yield break;
-        }
-
-        T data = default;
+        request.timeout = DefaultTimeoutSeconds;
         try
         {
-            data = parseFunc != null ? parseFunc(root) : default;
-        }
-        catch (Exception ex)
-        {
-            callback?.Invoke(new ApiResult<T>(false, false, request.responseCode, cacheControl, responseEtag, default, null, rawText, ex.Message));
-            request.Dispose();
-            yield break;
-        }
+            if (!string.IsNullOrEmpty(etag))
+                request.SetRequestHeader("If-None-Match", etag);
 
-        callback?.Invoke(new ApiResult<T>(true, false, request.responseCode, cacheControl, responseEtag, data, null, rawText, null));
-        request.Dispose();
+            yield return request.SendWebRequest();
+
+            bool isNotModified = request.responseCode == 304;
+            string cacheControl = request.GetResponseHeader("Cache-Control");
+            string responseEtag = request.GetResponseHeader("ETag");
+            string rawText = request.downloadHandler != null ? request.downloadHandler.text : string.Empty;
+
+            if (isNotModified)
+            {
+                callback?.Invoke(new ApiResult<T>(false, true, request.responseCode, cacheControl, responseEtag, default, null, rawText, request.error));
+                yield break;
+            }
+
+            if (request.result != UnityWebRequest.Result.Success)
+            {
+                ApiError apiError = TryParseError(rawText);
+                callback?.Invoke(new ApiResult<T>(false, false, request.responseCode, cacheControl, responseEtag, default, apiError, rawText, request.error));
+                yield break;
+            }
+
+            if (!TryParseJson(rawText, out object root, out string parseError))
+            {
+                callback?.Invoke(new ApiResult<T>(false, false, request.responseCode, cacheControl, responseEtag, default, null, rawText, parseError));
+                yield break;
+            }
+
+            T data = default;
+            try
+            {
+                data = parseFunc != null ? parseFunc(root) : default;
+            }
+            catch (Exception ex)
+            {
+                callback?.Invoke(new ApiResult<T>(false, false, request.responseCode, cacheControl, responseEtag, default, null, rawText, ex.Message));
+                yield break;
+            }
+
+            callback?.Invoke(new ApiResult<T>(true, false, request.responseCode, cacheControl, responseEtag, data, null, rawText, null));
+        }
+        finally
+        {
+            request.Dispose();
+        }
     }
 
     private static bool TryParseJson(string text, out object root, out string error)

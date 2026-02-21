@@ -16,8 +16,8 @@ namespace SuperNewRoles.Modules
             string result = markdownText;
 
             // Process Unix timestamp tags: <t:UNIX(:format)?>
-            // Use negative lookbehind to avoid matching already processed tags (e.g., <t-dynamic:)
-            result = Regex.Replace(result, @"(?<!-)<t:(\d+)(?::([fFdR]))?>", match =>
+            // <t-dynamic:...> はコロン直後が数字ではないためこの式では一致しない
+            result = Regex.Replace(result, @"<t:(\d+)(?::([fFdR]))?>", match =>
             {
                 if (long.TryParse(match.Groups[1].Value, out long unixSeconds))
                 {

@@ -587,6 +587,14 @@ namespace SuperNewRoles.Modules
                     if (entry.Player != null)
                     {
                         videoEntries[image.Index] = entry;
+                        try
+                        {
+                            entry.Player.Prepare();
+                        }
+                        catch (Exception ex)
+                        {
+                            OnVideoError(image.Index, ex.Message);
+                        }
                         LayoutImages();
                     }
                     else
@@ -629,7 +637,10 @@ namespace SuperNewRoles.Modules
             foreach (var entry in videoEntries.Values)
             {
                 if (entry.Player != null)
+                {
+                    entry.Player.errorReceived -= (VideoPlayer.ErrorEventHandler)OnVideoPlayerErrorReceived;
                     entry.Player.Stop();
+                }
                 if (entry.RenderTexture != null)
                 {
                     entry.RenderTexture.Release();
@@ -994,48 +1005,68 @@ namespace SuperNewRoles.Modules
             if (bodyText == null)
                 return default;
 
-            var go = new GameObject("AnnouncementVideo");
-            go.transform.SetParent(bodyText.transform, false);
-            go.SetActive(false);
+            string videoUrl = ToFileUrl(path);
+            if (string.IsNullOrWhiteSpace(videoUrl))
+                return default;
 
-            var renderer = go.AddComponent<SpriteRenderer>();
-            renderer.sprite = GetWhiteSprite();
-            renderer.enabled = false;
-            var shader = Shader.Find("Sprites/Default");
-            if (shader != null)
-                renderer.material = new Material(shader);
-            SyncSorting(renderer);
-            ApplyMask(renderer);
+            GameObject go = null;
+            RenderTexture renderTexture = null;
+            try
+            {
+                go = new GameObject("AnnouncementVideo");
+                go.transform.SetParent(bodyText.transform, false);
+                go.SetActive(false);
 
-            var renderTexture = new RenderTexture(2, 2, 0, RenderTextureFormat.ARGB32);
-            renderTexture.Create();
+                var renderer = go.AddComponent<SpriteRenderer>();
+                renderer.sprite = GetWhiteSprite();
+                renderer.enabled = false;
+                var shader = Shader.Find("Sprites/Default");
+                if (shader != null)
+                    renderer.material = new Material(shader);
+                SyncSorting(renderer);
+                ApplyMask(renderer);
 
-            var player = go.AddComponent<VideoPlayer>();
-            player.playOnAwake = false;
-            player.isLooping = true;
-            player.audioOutputMode = VideoAudioOutputMode.None;
-            player.source = VideoSource.Url;
-            player.renderMode = VideoRenderMode.RenderTexture;
-            player.waitForFirstFrame = true;
-            player.skipOnDrop = true;
-            player.targetTexture = renderTexture;
+                renderTexture = new RenderTexture(2, 2, 0, RenderTextureFormat.ARGB32);
+                renderTexture.Create();
 
-            player.url = ToFileUrl(path);
-            player.Prepare();
+                var player = go.AddComponent<VideoPlayer>();
+                player.playOnAwake = false;
+                player.isLooping = true;
+                player.audioOutputMode = VideoAudioOutputMode.None;
+                player.source = VideoSource.Url;
+                player.renderMode = VideoRenderMode.RenderTexture;
+                player.waitForFirstFrame = true;
+                player.skipOnDrop = true;
+                player.targetTexture = renderTexture;
+                player.url = videoUrl;
+                player.errorReceived += (VideoPlayer.ErrorEventHandler)OnVideoPlayerErrorReceived;
 
-            var clickCollider = go.AddComponent<BoxCollider2D>();
-            clickCollider.size = Vector2.one;
-            clickCollider.offset = Vector2.zero;
+                var clickCollider = go.AddComponent<BoxCollider2D>();
+                clickCollider.size = Vector2.one;
+                clickCollider.offset = Vector2.zero;
 
-            var clickButton = go.AddComponent<PassiveButton>();
-            clickButton.Colliders = new Collider2D[] { clickCollider };
-            clickButton.OnClick = new();
-            clickButton.OnMouseOver = new();
-            clickButton.OnMouseOut = new();
-            clickButton.OnClick.AddListener((Action)(() => ToggleVideoPlayback(index)));
+                var clickButton = go.AddComponent<PassiveButton>();
+                clickButton.Colliders = new Collider2D[] { clickCollider };
+                clickButton.OnClick = new();
+                clickButton.OnMouseOver = new();
+                clickButton.OnMouseOut = new();
+                clickButton.OnClick.AddListener((Action)(() => ToggleVideoPlayback(index)));
 
-            var controls = CreateVideoControls(go.transform, index);
-            return new VideoEntry(go, renderer, player, false, 1f, 1f, renderTexture, null, null, controls, clickCollider, clickButton);
+                var controls = CreateVideoControls(go.transform, index);
+                return new VideoEntry(go, renderer, player, false, 1f, 1f, renderTexture, null, null, controls, clickCollider, clickButton);
+            }
+            catch (Exception ex)
+            {
+                SuperNewRolesPlugin.Logger.LogWarning($"Failed to create announcement video renderer: {ex.Message}");
+                if (renderTexture != null)
+                {
+                    renderTexture.Release();
+                    Destroy(renderTexture);
+                }
+                if (go != null)
+                    Destroy(go);
+                return default;
+            }
         }
 
         private void OnVideoPrepared(int index, VideoPlayer player)
@@ -1347,11 +1378,38 @@ namespace SuperNewRoles.Modules
             UpdateProgressFill(entry.Controls, t);
         }
 
-        private void OnVideoError(int index)
+        private void OnVideoPlayerErrorReceived(VideoPlayer player, string message)
         {
+            if (player == null)
+                return;
+
+            int index = -1;
+            foreach (var pair in videoEntries)
+            {
+                if (pair.Value.Player == player)
+                {
+                    index = pair.Key;
+                    break;
+                }
+            }
+
+            if (index >= 0)
+                OnVideoError(index, message);
+        }
+
+        private void OnVideoError(int index, string message = null)
+        {
+            if (!string.IsNullOrWhiteSpace(message))
+                SuperNewRolesPlugin.Logger.LogWarning($"Video error ({index}): {message}");
+
             RemoveSpinner(index);
             if (videoEntries.TryGetValue(index, out var entry))
             {
+                if (entry.Player != null)
+                {
+                    entry.Player.errorReceived -= (VideoPlayer.ErrorEventHandler)OnVideoPlayerErrorReceived;
+                    entry.Player.Stop();
+                }
                 if (entry.RenderTexture != null)
                 {
                     entry.RenderTexture.Release();
@@ -1372,11 +1430,45 @@ namespace SuperNewRoles.Modules
             if (string.IsNullOrWhiteSpace(path))
                 return string.Empty;
 
-            if (path.StartsWith("http://", StringComparison.OrdinalIgnoreCase) ||
-                path.StartsWith("https://", StringComparison.OrdinalIgnoreCase))
-                return path;
+            if (Uri.TryCreate(path, UriKind.Absolute, out var uri))
+            {
+                if (uri.Scheme.Equals(Uri.UriSchemeHttp, StringComparison.OrdinalIgnoreCase) ||
+                    uri.Scheme.Equals(Uri.UriSchemeHttps, StringComparison.OrdinalIgnoreCase))
+                    return path;
 
-            return new Uri(path).AbsoluteUri;
+                if (!uri.IsFile || !IsAllowedLocalVideoPath(uri.LocalPath))
+                    return string.Empty;
+
+                return new Uri(Path.GetFullPath(uri.LocalPath)).AbsoluteUri;
+            }
+
+            if (!IsAllowedLocalVideoPath(path))
+                return string.Empty;
+
+            return new Uri(Path.GetFullPath(path)).AbsoluteUri;
+        }
+
+        private bool IsAllowedLocalVideoPath(string path)
+        {
+            if (string.IsNullOrWhiteSpace(path))
+                return false;
+
+            try
+            {
+                string fullPath = Path.GetFullPath(path);
+                if (!File.Exists(fullPath))
+                    return false;
+
+                string baseDirectory = Path.GetFullPath(SuperNewRolesPlugin.BaseDirectory);
+                if (!baseDirectory.EndsWith(Path.DirectorySeparatorChar.ToString(), StringComparison.Ordinal))
+                    baseDirectory += Path.DirectorySeparatorChar;
+
+                return fullPath.StartsWith(baseDirectory, StringComparison.OrdinalIgnoreCase);
+            }
+            catch
+            {
+                return false;
+            }
         }
 
         private static Sprite GetWhiteSprite()

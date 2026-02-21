@@ -199,8 +199,8 @@ public static class AnnounceCache
             Directory.CreateDirectory(CacheDirectory);
     }
 
-    private static string GetArticleKey(string id, string lang) => $"{id}_{lang}";
-    private static string GetListKey(string lang) => $"list_{lang}";
+    private static string GetArticleKey(string id, string lang) => $"article_{ModHelpers.HashMD5($"{id ?? string.Empty}\n{lang ?? string.Empty}")}";
+    private static string GetListKey(string lang) => $"list_{ModHelpers.HashMD5(lang ?? string.Empty)}";
     private static string GetArticleFilePath(string id, string lang) => Path.Combine(CacheDirectory, $"{GetArticleKey(id, lang)}.json");
     private static string GetListFilePath(string lang) => Path.Combine(CacheDirectory, $"{GetListKey(lang)}_{ListCacheFileName}");
 
