@@ -54,18 +54,33 @@ public static class AnnouncementPopUpUpdateAnnouncementTextTitlePatch
     }
 }
 
+[HarmonyPatch(typeof(AnnouncementPopUp), nameof(AnnouncementPopUp.Update))]
+public static class AnnouncementPopUpUpdateTitlePatch
+{
+    public static void Postfix(AnnouncementPopUp __instance)
+    {
+        AnnouncementSelectMenuHelper.UpdateAnnouncementPopupTitle(__instance);
+    }
+}
+
 internal static class AnnouncementSelectMenuHelper
 {
     private const string MenuAssetName = "AnnounceMenuSelector";
     private const string VanillaCategory = "Announce_Vanilla";
     private const string SnrCategory = "Announce_SNR";
     private const string DefaultCategory = SnrCategory;
+    private const string SnrNotificationHeaderTitleFallbackSuffix = "の通知";
+    private const string SnrBrandName = "SuperNewRoles";
+    private const string SnrBrandColorFallback = "<color=#ffa500>Super</color><color=#ff0000>New</color><color=#00ff00>Roles</color>";
     private const float MenuScale = 0.23f;
     private const int SnrNumberOffset = 1_000_000_000;
     private const int SnrNumberModulo = 1_000_000_000;
     private const int SnrPageSize = 50;
     private const int ShortTitleMaxLength = 36;
     private static readonly Vector3 MenuFallbackPosition = new(-2.82f, 1.97f, -1.15f);
+    private static readonly Vector3 SnrLogoLocalPosition = new(-1.08f, 1.93f, -2f);
+    private static readonly Vector3 SnrLogoLocalScale = Vector3.one * 0.16f;
+    private static readonly Dictionary<int, string> VanillaHeaderTitleByPopupId = new();
     private static Sprite FallbackUnreadBadgeSprite;
 
     private static readonly string[] CategoryNames =
@@ -97,6 +112,7 @@ internal static class AnnouncementSelectMenuHelper
 
         if (string.IsNullOrWhiteSpace(AnnouncementSelectMenuState.CurrentCategory))
             AnnouncementSelectMenuState.CurrentCategory = DefaultCategory;
+        CacheVanillaHeaderTitle(popup);
         SetCurrentTab(menuObject, AnnouncementSelectMenuState.CurrentCategory);
     }
 
@@ -333,8 +349,7 @@ internal static class AnnouncementSelectMenuHelper
         if (popup == null)
             return;
 
-        // Vanillaタブではロゴを非表示
-        HideAnnouncementLogo(popup);
+        ApplyAnnouncementHeaderState(popup, isSnrTab: false);
 
         if (AnnouncementSelectMenuState.VanillaCache == null)
             CaptureVanillaCache();
@@ -358,6 +373,8 @@ internal static class AnnouncementSelectMenuHelper
     {
         if (popup == null)
             return;
+
+        ApplyAnnouncementHeaderState(popup, isSnrTab: true);
 
         if (AnnouncementSelectMenuState.VanillaCache == null)
             CaptureVanillaCache();
@@ -904,48 +921,176 @@ internal static class AnnouncementSelectMenuHelper
     public static void UpdateAnnouncementPopupTitle(AnnouncementPopUp popup)
     {
         if (popup == null) return;
-
-        // SNRタブの時のみタイトルとロゴを変更
-        if (AnnouncementSelectMenuState.CurrentCategory != SnrCategory)
-            return;
-
-        // ロゴを追加または更新
-        UpdateAnnouncementLogo(popup);
+        ApplyAnnouncementHeaderState(popup, AnnouncementSelectMenuState.CurrentCategory == SnrCategory);
     }
 
-    private static GameObject _snrLogoObject;
+    private static void ApplyAnnouncementHeaderState(AnnouncementPopUp popup, bool isSnrTab)
+    {
+        if (popup == null)
+            return;
+
+        UpdateAnnouncementHeaderTitle(popup, isSnrTab);
+        HideAnnouncementLogo(popup);
+    }
+
+    private static void CacheVanillaHeaderTitle(AnnouncementPopUp popup)
+    {
+        if (popup == null)
+            return;
+
+        int popupId = popup.GetInstanceID();
+        if (VanillaHeaderTitleByPopupId.ContainsKey(popupId))
+            return;
+
+        var titleText = FindAnnouncementHeaderTitleText(popup);
+        if (titleText == null)
+            return;
+
+        string currentTitle = titleText.text;
+        if (string.IsNullOrWhiteSpace(currentTitle))
+            return;
+        string snrHeaderTitle = GetSnrNotificationHeaderTitle(popup, currentTitle);
+        if (string.Equals(currentTitle, snrHeaderTitle, StringComparison.Ordinal))
+            return;
+
+        VanillaHeaderTitleByPopupId[popupId] = currentTitle;
+    }
+
+    private static void UpdateAnnouncementHeaderTitle(AnnouncementPopUp popup, bool isSnrTab)
+    {
+        if (popup == null)
+            return;
+
+        CacheVanillaHeaderTitle(popup);
+        var titleText = FindAnnouncementHeaderTitleText(popup);
+        if (titleText == null)
+            return;
+
+        if (isSnrTab)
+        {
+            string snrHeaderTitle = GetSnrNotificationHeaderTitle(popup, titleText.text);
+            titleText.richText = true;
+            if (!string.Equals(titleText.text, snrHeaderTitle, StringComparison.Ordinal))
+                titleText.text = snrHeaderTitle;
+            return;
+        }
+
+        string vanillaTitle = GetVanillaAnnouncementHeaderTitle(popup, titleText.text);
+        if (!string.IsNullOrWhiteSpace(vanillaTitle) && !string.Equals(titleText.text, vanillaTitle, StringComparison.Ordinal))
+        {
+            titleText.text = vanillaTitle;
+        }
+    }
+
+    private static TMP_Text FindAnnouncementHeaderTitleText(AnnouncementPopUp popup)
+    {
+        if (popup == null)
+            return null;
+
+        var titleTransform = popup.transform.Find("Sizer/Header/Title_Text");
+        if (titleTransform == null)
+            return null;
+
+        return titleTransform.GetComponent<TMP_Text>() ?? titleTransform.GetComponentInChildren<TMP_Text>(true);
+    }
+
+    private static string GetSnrNotificationHeaderTitle(AnnouncementPopUp popup, string currentTitle)
+    {
+        string vanillaTitle = GetVanillaAnnouncementHeaderTitle(popup, currentTitle);
+        string coloredBrand = GetColoredSnrBrandText();
+        if (!string.IsNullOrWhiteSpace(vanillaTitle))
+        {
+            string replaced = ReplaceAmongUsBrand(vanillaTitle, coloredBrand);
+            replaced = ReplaceIgnoreCase(replaced, SnrBrandName, coloredBrand);
+            if (!string.Equals(replaced, vanillaTitle, StringComparison.Ordinal))
+                return replaced;
+        }
+
+        return $"{coloredBrand}{SnrNotificationHeaderTitleFallbackSuffix}";
+    }
+
+    private static string GetVanillaAnnouncementHeaderTitle(AnnouncementPopUp popup, string currentTitle)
+    {
+        string translated = null;
+        try
+        {
+            var controller = DestroyableSingleton<TranslationController>.Instance;
+            if (controller != null)
+                translated = controller.GetString(StringNames.AmongUsAnnouncements);
+        }
+        catch
+        {
+        }
+
+        if (!string.IsNullOrWhiteSpace(translated))
+            return translated;
+
+        if (popup != null && VanillaHeaderTitleByPopupId.TryGetValue(popup.GetInstanceID(), out var cached) && !string.IsNullOrWhiteSpace(cached))
+            return cached;
+
+        return currentTitle;
+    }
+
+    private static string ReplaceAmongUsBrand(string source, string replacement)
+    {
+        if (string.IsNullOrWhiteSpace(source))
+            return source;
+
+        string replaced = source;
+        replaced = ReplaceIgnoreCase(replaced, "AMONG US", replacement);
+        replaced = ReplaceIgnoreCase(replaced, "Among Us", replacement);
+        replaced = ReplaceIgnoreCase(replaced, "AmongUs", replacement);
+        replaced = ReplaceIgnoreCase(replaced, "AMONGUS", replacement);
+        replaced = ReplaceIgnoreCase(replaced, "among us", replacement);
+        return replaced;
+    }
+
+    private static string GetColoredSnrBrandText()
+    {
+        return string.IsNullOrWhiteSpace(UIConfig.ColorModName) ? SnrBrandColorFallback : UIConfig.ColorModName;
+    }
+
+    private static string ReplaceIgnoreCase(string source, string oldValue, string newValue)
+    {
+        if (string.IsNullOrEmpty(source) || string.IsNullOrEmpty(oldValue))
+            return source;
+
+        int startIndex = 0;
+        while (true)
+        {
+            int index = source.IndexOf(oldValue, startIndex, StringComparison.OrdinalIgnoreCase);
+            if (index < 0)
+                return source;
+
+            source = source.Substring(0, index) + newValue + source.Substring(index + oldValue.Length);
+            startIndex = index + newValue.Length;
+        }
+    }
 
     private static void UpdateAnnouncementLogo(AnnouncementPopUp popup)
     {
         if (popup == null) return;
 
-        // 既存のロゴを探す
         Transform logoTransform = popup.transform.Find("SNRLogo");
-
         if (logoTransform == null)
         {
-            // ロゴがまだ作成されていない場合は作成
             var logoSprite = AssetManager.GetAsset<Sprite>("banner", AssetManager.AssetBundleType.Sprite);
             if (logoSprite == null) return;
 
             GameObject logoObject = new GameObject("SNRLogo");
-            logoObject.transform.SetParent(popup.transform);
+            logoObject.transform.SetParent(popup.transform, false);
 
             var spriteRenderer = logoObject.AddComponent<SpriteRenderer>();
             spriteRenderer.sprite = logoSprite;
             spriteRenderer.sortingOrder = 10;
-
-            // タイトルの近くに配置
-            logoObject.transform.localPosition = new Vector3(0f, 2.3f, -2f);
-            logoObject.transform.localScale = Vector3.one * 0.3f;
-
-            _snrLogoObject = logoObject;
+            logoTransform = logoObject.transform;
         }
-        else
-        {
-            // すでに存在する場合は表示
+
+        logoTransform.localPosition = SnrLogoLocalPosition;
+        logoTransform.localScale = SnrLogoLocalScale;
+        logoTransform.localRotation = Quaternion.identity;
+        if (!logoTransform.gameObject.activeSelf)
             logoTransform.gameObject.SetActive(true);
-        }
     }
 
     private static void HideAnnouncementLogo(AnnouncementPopUp popup)
