@@ -13,3 +13,5 @@ OldSuperNewRoles_readonly/
 AmongUsCS/
 hatstest.bundle
 *.trx
+*.log
+*.log.txt
