@@ -17,7 +17,7 @@ namespace SuperNewRoles.Modules
 
             // Process Unix timestamp tags: <t:UNIX(:format)?>
             // <t-dynamic:...> はコロン直後が数字ではないためこの式では一致しない
-            result = Regex.Replace(result, @"<t:(\d+)(?::([fFdR]))?>", match =>
+            result = Regex.Replace(result, @"<t:(\d+)(?::([fFdDR]))?>", match =>
             {
                 if (long.TryParse(match.Groups[1].Value, out long unixSeconds))
                 {
