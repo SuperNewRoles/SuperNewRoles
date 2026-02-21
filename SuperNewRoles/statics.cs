@@ -39,6 +39,7 @@ public static class SNRURLs
     public const string UpdateURL = "https://update.supernewroles.com/";
     public const string GithubAPITags = "https://api.github.com/repos/supernewroles/SuperNewRoles/releases/tags";
     public const string JoinRoomHost = "joinroom.supernewroles.com";
+    public const string SuperNewAnnounceApi = "https://announce.supernewroles.com/api/v1";
 }
 public static class BranchConfig
 {
