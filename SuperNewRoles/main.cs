@@ -51,6 +51,7 @@ public partial class SuperNewRolesPlugin : BasePlugin
     public Harmony Harmony { get; } = new Harmony(PluginConfig.Id);
     public static SuperNewRolesPlugin Instance;
     public static ManualLogSource Logger { get; private set; }
+    public static bool IsAnnouncementImageSupported { get; private set; } = true;
 
     public static int MainThreadId { get; private set; }
     private readonly List<Action> _mainThreadActions = new();
@@ -262,6 +263,23 @@ public partial class SuperNewRolesPlugin : BasePlugin
     }
     private static void RegisterCustomObjects()
     {
+        if (ModHelpers.IsAndroid())
+        {
+            // Android builds are currently unstable with the injected AnnouncementImageRenderer/Spinner classes.
+            // Keep announcement features without custom image/video rendering for crash-free startup/opening behavior.
+            DisableAnnouncementImageSupport("Announcement image components are disabled on Android.");
+        }
+        else
+        {
+            Type videoPlayerType = Type.GetType("UnityEngine.Video.VideoPlayer, UnityEngine.VideoModule")
+                ?? Type.GetType("UnityEngine.Video.VideoPlayer, UnityEngine.CoreModule");
+
+            if (videoPlayerType == null)
+            {
+                DisableAnnouncementImageSupport("VideoPlayer type is not available in this build.");
+            }
+        }
+
         ClassInjector.RegisterTypeInIl2Cpp<RightClickDetector>();
         ClassInjector.RegisterTypeInIl2Cpp<FadeCoroutine>();
         ClassInjector.RegisterTypeInIl2Cpp<HelpMenuObjectComponent>();
@@ -292,9 +310,35 @@ public partial class SuperNewRolesPlugin : BasePlugin
         ClassInjector.RegisterTypeInIl2Cpp<BuildSandcastleMinigamePatch.CursedSandcastleBucketCloneMarker>();
         ClassInjector.RegisterTypeInIl2Cpp<WCSantaHandler>();
         ClassInjector.RegisterTypeInIl2Cpp<AnnouncementSelectMenuMarker>();
-        ClassInjector.RegisterTypeInIl2Cpp<AnnouncementImageRenderer>();
-        ClassInjector.RegisterTypeInIl2Cpp<AnnouncementImageSpinner>();
+
+        try
+        {
+            if (IsAnnouncementImageSupported)
+            {
+                ClassInjector.RegisterTypeInIl2Cpp<AnnouncementImageRenderer>();
+                ClassInjector.RegisterTypeInIl2Cpp<AnnouncementImageSpinner>();
+            }
+        }
+        catch (Exception ex)
+        {
+            DisableAnnouncementImageSupport($"failed to register announcement image renderer types: {ex}");
+        }
         // lassInjector.RegisterTypeInIl2Cpp<AddressableReleaseOnDestroy>();
+    }
+
+    public static void DisableAnnouncementImageSupport(string reason = null)
+    {
+        if (!IsAnnouncementImageSupported)
+            return;
+
+        IsAnnouncementImageSupported = false;
+        if (Logger != null)
+        {
+            if (string.IsNullOrWhiteSpace(reason))
+                Logger.LogWarning("Announcement image support disabled.");
+            else
+                Logger.LogWarning($"Announcement image support disabled: {reason}");
+        }
     }
 
     public void ExecuteInMainThread(Action action)
