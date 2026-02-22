@@ -20,9 +20,17 @@ public static class AnnouncementPopUpOnEnablePatch
 {
     public static void Postfix(AnnouncementPopUp __instance)
     {
-        AnnouncementSelectMenuHelper.EnsureMenu(__instance);
-        // 未読バッジを更新
-        __instance.StartCoroutine(AnnouncementSelectMenuHelper.UpdateUnreadBadgesDelayed(__instance).WrapToIl2Cpp());
+        try
+        {
+            AnnouncementSelectMenuHelper.EnsureMenu(__instance);
+            // 未読バッジを更新
+            if (__instance != null)
+                __instance.StartCoroutine(AnnouncementSelectMenuHelper.UpdateUnreadBadgesDelayed(__instance).WrapToIl2Cpp());
+        }
+        catch (Exception ex)
+        {
+            SuperNewRolesPlugin.Logger.LogWarning($"AnnouncementPopUpOnEnablePatch failed: {ex}");
+        }
     }
 }
 
@@ -31,7 +39,14 @@ public static class AnnouncementPopUpOnDisablePatch
 {
     public static void Postfix(AnnouncementPopUp __instance)
     {
-        AnnouncementSelectMenuHelper.SetMenuActive(__instance, false);
+        try
+        {
+            AnnouncementSelectMenuHelper.SetMenuActive(__instance, false);
+        }
+        catch (Exception ex)
+        {
+            SuperNewRolesPlugin.Logger.LogWarning($"AnnouncementPopUpOnDisablePatch failed: {ex}");
+        }
     }
 }
 
@@ -40,8 +55,15 @@ public static class AnnouncementPopUpSetMenuPatch
 {
     public static void Postfix(AnnouncementPopUp __instance)
     {
-        AnnouncementSelectMenuHelper.OnMenuSet(__instance);
-        AnnouncementSelectMenuHelper.UpdateUnreadBadges(__instance);
+        try
+        {
+            AnnouncementSelectMenuHelper.OnMenuSet(__instance);
+            AnnouncementSelectMenuHelper.UpdateUnreadBadges(__instance);
+        }
+        catch (Exception ex)
+        {
+            SuperNewRolesPlugin.Logger.LogWarning($"AnnouncementPopUpSetMenuPatch failed: {ex}");
+        }
     }
 }
 
@@ -50,7 +72,14 @@ public static class AnnouncementPopUpUpdateAnnouncementTextTitlePatch
 {
     public static void Postfix(AnnouncementPopUp __instance)
     {
-        AnnouncementSelectMenuHelper.UpdateAnnouncementPopupTitle(__instance);
+        try
+        {
+            AnnouncementSelectMenuHelper.UpdateAnnouncementPopupTitle(__instance);
+        }
+        catch (Exception ex)
+        {
+            SuperNewRolesPlugin.Logger.LogWarning($"AnnouncementPopUpUpdateAnnouncementTextTitlePatch failed: {ex}");
+        }
     }
 }
 
@@ -59,7 +88,14 @@ public static class AnnouncementPopUpUpdateTitlePatch
 {
     public static void Postfix(AnnouncementPopUp __instance)
     {
-        AnnouncementSelectMenuHelper.UpdateAnnouncementPopupTitle(__instance);
+        try
+        {
+            AnnouncementSelectMenuHelper.UpdateAnnouncementPopupTitle(__instance);
+        }
+        catch (Exception ex)
+        {
+            SuperNewRolesPlugin.Logger.LogWarning($"AnnouncementPopUpUpdateTitlePatch failed: {ex}");
+        }
     }
 }
 
@@ -177,6 +213,8 @@ internal static class AnnouncementSelectMenuHelper
             if (item == null) continue;
 
             var announcement = announcements[i];
+            if (announcement == null)
+                continue;
             bool isUnread = !AnnounceNotificationManager.IsRead(announcement.Id);
 
             // 未読バッジを探して表示/非表示
@@ -380,6 +418,8 @@ internal static class AnnouncementSelectMenuHelper
             CaptureVanillaCache();
 
         string lang = GetApiLanguage();
+        if (string.IsNullOrWhiteSpace(lang))
+            return;
 
         // メモリキャッシュをチェック
         if (AnnouncementSelectMenuState.SnrCache != null &&
@@ -693,8 +733,28 @@ internal static class AnnouncementSelectMenuHelper
             return;
 
         var list = announcements ?? new List<Announcement>();
-        playerAnnouncements.SetAnnouncements(list.ToArray());
-        RefreshPopup(popup);
+        try
+        {
+            if (list.Count > 0)
+            {
+                var filtered = new List<Announcement>(list.Count);
+                for (int i = 0; i < list.Count; i++)
+                {
+                    if (list[i] != null)
+                        filtered.Add(list[i]);
+                }
+                playerAnnouncements.SetAnnouncements(filtered.ToArray());
+            }
+            else
+            {
+                playerAnnouncements.SetAnnouncements(Array.Empty<Announcement>());
+            }
+            RefreshPopup(popup);
+        }
+        catch (Exception ex)
+        {
+            SuperNewRolesPlugin.Logger.LogWarning($"ApplyAnnouncements failed: {ex}");
+        }
     }
 
     private static void RefreshPopup(AnnouncementPopUp popup)
@@ -708,7 +768,7 @@ internal static class AnnouncementSelectMenuHelper
         ResetScrollPosition(popup);
 
         var announcements = DataManager.Player?.Announcements?.AllAnnouncements;
-        if (announcements == null || announcements.Count == 0)
+        if (announcements == null || announcements.Count == 0 || announcements[0] == null)
             return;
 
         bool previewOnly = ActiveInputManager.currentControlType == ActiveInputManager.InputType.Joystick;
@@ -741,10 +801,20 @@ internal static class AnnouncementSelectMenuHelper
     private static void CaptureVanillaCache()
     {
         var announcements = DataManager.Player?.Announcements?.AllAnnouncements.ToSystemList();
-        if (announcements == null || IsSnrAnnouncementList(announcements))
+        if (announcements == null || announcements.Count == 0 || IsSnrAnnouncementList(announcements))
             return;
 
-        AnnouncementSelectMenuState.VanillaCache = new List<Announcement>(announcements);
+        var filtered = new List<Announcement>();
+        for (int i = 0; i < announcements.Count; i++)
+        {
+            if (announcements[i] != null)
+                filtered.Add(announcements[i]);
+        }
+
+        if (filtered.Count == 0)
+            return;
+
+        AnnouncementSelectMenuState.VanillaCache = filtered;
     }
 
     private static bool IsSnrAnnouncementList(List<Announcement> announcements)
@@ -754,6 +824,8 @@ internal static class AnnouncementSelectMenuHelper
 
         foreach (var announcement in announcements)
         {
+            if (announcement == null)
+                continue;
             if (announcement.Number >= SnrNumberOffset)
                 return true;
         }
@@ -1105,7 +1177,7 @@ internal static class AnnouncementSelectMenuHelper
     }
 }
 
-internal sealed class AnnouncementSelectMenuMarker : MonoBehaviour
+public class AnnouncementSelectMenuMarker : MonoBehaviour
 {
 }
 
