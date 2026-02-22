@@ -8,19 +8,17 @@ using UnityEngine;
 
 namespace SuperNewRoles.Modules;
 
-// Android-specific image-only renderer to avoid VideoPlayer-related IL2CPP injection issues.
+// Android-side minimal renderer: image-only, no video and no loading spinner.
 public class AnnouncementImageRendererAndroid : MonoBehaviour
 {
     private const float MaxImageWidth = 9.88f;
     private const float MaxImageHeight = 7.54f;
     private const float MaxImageScale = 4.68f;
     private const float ImageLeftPadding = 0f;
-    private const float SpinnerSize = 0.7f;
     private const string PlaceholderPrefix = "[[img:";
     private const string PlaceholderSuffix = "]]";
 
     private readonly Dictionary<int, SpriteRenderer> _imageRenderers = new();
-    private readonly Dictionary<int, SpinnerEntry> _loadingSpinners = new();
     private TextMeshPro _bodyText;
     private Vector3? _defaultBodyTextPos;
     private int _requestToken;
@@ -33,51 +31,35 @@ public class AnnouncementImageRendererAndroid : MonoBehaviour
     {
         _bodyText = text;
         if (_bodyText != null && !_defaultBodyTextPos.HasValue)
-        {
             _defaultBodyTextPos = _bodyText.transform.localPosition;
-        }
     }
 
     [HideFromIl2Cpp]
     public void ShowImages(int announcementNumber, bool previewOnly)
     {
-        try
+        if (_bodyText != null && _defaultBodyTextPos.HasValue)
         {
-            if (_bodyText != null && _defaultBodyTextPos.HasValue)
-            {
-                if (announcementNumber >= 1000000000)
-                {
-                    _bodyText.transform.localPosition = _defaultBodyTextPos.Value + new Vector3(0f, 0.4f, 0f);
-                }
-                else
-                {
-                    _bodyText.transform.localPosition = _defaultBodyTextPos.Value;
-                }
-            }
-
-            if (previewOnly || _bodyText == null)
-            {
-                ClearImages();
-                return;
-            }
-
-            if (!AnnouncementImageCache.TryGetImages(announcementNumber, out var images) || images.Count == 0)
-            {
-                ClearImages();
-                return;
-            }
-
-            _requestToken++;
-            ClearImagesInternal();
-            CreateLoadingSpinners(images);
-            StartCoroutine(LoadImages(images, _requestToken).WrapToIl2Cpp());
+            if (announcementNumber >= 1000000000)
+                _bodyText.transform.localPosition = _defaultBodyTextPos.Value + new Vector3(0f, 0.4f, 0f);
+            else
+                _bodyText.transform.localPosition = _defaultBodyTextPos.Value;
         }
-        catch (Exception ex)
+
+        if (previewOnly || _bodyText == null)
         {
-            SuperNewRolesPlugin.Logger.LogWarning($"AnnouncementImageRendererAndroid.ShowImages failed: {ex}");
-            SuperNewRolesPlugin.DisableAnnouncementImageSupport(ex.Message);
-            ClearImagesInternal();
+            ClearImages();
+            return;
         }
+
+        if (!AnnouncementImageCache.TryGetImages(announcementNumber, out var images) || images.Count == 0)
+        {
+            ClearImages();
+            return;
+        }
+
+        _requestToken++;
+        ClearImagesInternal();
+        StartCoroutine(LoadImages(images, _requestToken).WrapToIl2Cpp());
     }
 
     public void ClearImages()
@@ -88,30 +70,14 @@ public class AnnouncementImageRendererAndroid : MonoBehaviour
 
     public float GetExtraScrollHeight()
     {
-        try
-        {
-            return _extraHeight;
-        }
-        catch
-        {
-            SuperNewRolesPlugin.DisableAnnouncementImageSupport("AnnouncementImageRendererAndroid.GetExtraScrollHeight failed");
-            return 0f;
-        }
+        return _extraHeight;
     }
 
     public float GetTextHeight()
     {
-        try
-        {
-            if (_bodyText == null)
-                return 0f;
-            return Mathf.Abs(_bodyText.GetNotDumbRenderedHeight());
-        }
-        catch
-        {
-            SuperNewRolesPlugin.DisableAnnouncementImageSupport("AnnouncementImageRendererAndroid.GetTextHeight failed");
+        if (_bodyText == null)
             return 0f;
-        }
+        return Mathf.Abs(_bodyText.GetNotDumbRenderedHeight());
     }
 
     [HideFromIl2Cpp]
@@ -120,27 +86,22 @@ public class AnnouncementImageRendererAndroid : MonoBehaviour
         foreach (var image in images)
         {
             if (image.MediaType != AnnouncementMediaType.Image)
-            {
-                RemoveSpinner(image.Index);
                 continue;
-            }
 
             Sprite sprite = null;
             yield return AnnouncementImageCache.LoadSprite(image.Url, result => sprite = result);
             if (token != _requestToken)
                 yield break;
 
-            RemoveSpinner(image.Index);
-
             if (sprite == null)
                 continue;
 
             var renderer = CreateRenderer(sprite);
-            if (renderer != null)
-            {
-                _imageRenderers[image.Index] = renderer;
-                LayoutImages();
-            }
+            if (renderer == null)
+                continue;
+
+            _imageRenderers[image.Index] = renderer;
+            LayoutImages();
         }
 
         LayoutImages();
@@ -149,20 +110,12 @@ public class AnnouncementImageRendererAndroid : MonoBehaviour
     private void ClearImagesInternal()
     {
         _extraHeight = 0f;
-
         foreach (var renderer in _imageRenderers.Values)
         {
             if (renderer != null)
                 Destroy(renderer.gameObject);
         }
         _imageRenderers.Clear();
-
-        foreach (var spinner in _loadingSpinners.Values)
-        {
-            if (spinner.GameObject != null)
-                Destroy(spinner.GameObject);
-        }
-        _loadingSpinners.Clear();
     }
 
     [HideFromIl2Cpp]
@@ -202,7 +155,7 @@ public class AnnouncementImageRendererAndroid : MonoBehaviour
 
     private void LayoutImages()
     {
-        if (_bodyText == null || (_imageRenderers.Count == 0 && _loadingSpinners.Count == 0))
+        if (_bodyText == null || _imageRenderers.Count == 0)
         {
             _extraHeight = 0f;
             return;
@@ -264,129 +217,13 @@ public class AnnouncementImageRendererAndroid : MonoBehaviour
             totalExtra += height + 0.2f;
         }
 
-        LayoutSpinners(blocks, leftEdge);
         _extraHeight = totalExtra;
-    }
-
-    [HideFromIl2Cpp]
-    private void LayoutSpinners(Dictionary<int, PlaceholderBlock> blocks, float leftEdge)
-    {
-        if (_loadingSpinners.Count == 0)
-            return;
-
-        foreach (var entry in _loadingSpinners)
-        {
-            var spinnerEntry = entry.Value;
-            var renderer = spinnerEntry.Renderer;
-            if (renderer == null || renderer.sprite == null)
-                continue;
-
-            float spriteWidth = renderer.sprite.bounds.size.x;
-            float spriteHeight = renderer.sprite.bounds.size.y;
-            if (spriteWidth <= 0f || spriteHeight <= 0f)
-                continue;
-
-            if (blocks.TryGetValue(entry.Key, out var block))
-            {
-                float maxHeight = Mathf.Max(block.Height, SpinnerSize);
-                float scale = Mathf.Min(SpinnerSize / spriteWidth, maxHeight / spriteHeight);
-                renderer.transform.localScale = new Vector3(scale, scale, 1f);
-                float scaledWidth = spriteWidth * scale;
-                float centerY = (block.Top + block.Bottom) * 0.5f;
-                float x = leftEdge + scaledWidth * 0.5f;
-                renderer.transform.localPosition = new Vector3(x, centerY, 0f);
-                if (spinnerEntry.GameObject != null && !spinnerEntry.GameObject.activeSelf)
-                    spinnerEntry.GameObject.SetActive(true);
-                continue;
-            }
-
-            if (spinnerEntry.GameObject != null && spinnerEntry.GameObject.activeSelf)
-                spinnerEntry.GameObject.SetActive(false);
-        }
     }
 
     private float GetLeftEdge()
     {
         float left = _bodyText.textBounds.size.x > 0f ? _bodyText.textBounds.min.x : _bodyText.rectTransform.rect.min.x;
         return left + ImageLeftPadding;
-    }
-
-    [HideFromIl2Cpp]
-    private void CreateLoadingSpinners(List<AnnouncementImageInfo> images)
-    {
-        if (images == null || _bodyText == null)
-            return;
-
-        foreach (var image in images)
-        {
-            if (image.MediaType != AnnouncementMediaType.Image || _loadingSpinners.ContainsKey(image.Index))
-                continue;
-
-            var spinner = CreateSpinner();
-            if (spinner.GameObject != null)
-                _loadingSpinners[image.Index] = spinner;
-        }
-
-        LayoutImages();
-    }
-
-    private SpinnerEntry CreateSpinner()
-    {
-        var prefab = AssetManager.GetAsset<GameObject>("LoadingUI");
-        if (prefab == null)
-            return default;
-
-        var temp = Instantiate(prefab);
-        var spriteRenderers = temp.GetComponentsInChildren<SpriteRenderer>(true);
-        Sprite selectedSprite = null;
-        Material selectedMaterial = null;
-        float bestArea = float.MaxValue;
-
-        foreach (var spriteRenderer in spriteRenderers)
-        {
-            if (spriteRenderer == null || spriteRenderer.sprite == null)
-                continue;
-
-            var rect = spriteRenderer.sprite.rect;
-            float area = rect.width * rect.height;
-            if (area < bestArea)
-            {
-                bestArea = area;
-                selectedSprite = spriteRenderer.sprite;
-                selectedMaterial = spriteRenderer.sharedMaterial;
-            }
-        }
-
-        Destroy(temp);
-
-        if (selectedSprite == null)
-            return default;
-
-        var go = new GameObject("AnnouncementImageSpinner");
-        go.transform.SetParent(_bodyText.transform, false);
-        go.transform.localScale = Vector3.one;
-        go.transform.localRotation = Quaternion.identity;
-        go.SetActive(false);
-
-        var renderer = go.AddComponent<SpriteRenderer>();
-        renderer.sprite = selectedSprite;
-        if (selectedMaterial != null)
-            renderer.sharedMaterial = selectedMaterial;
-
-        SyncSorting(renderer);
-        ApplyMask(renderer);
-        return new SpinnerEntry(go, renderer);
-    }
-
-    [HideFromIl2Cpp]
-    private void RemoveSpinner(int index)
-    {
-        if (!_loadingSpinners.TryGetValue(index, out var spinner))
-            return;
-
-        if (spinner.GameObject != null)
-            Destroy(spinner.GameObject);
-        _loadingSpinners.Remove(index);
     }
 
     [HideFromIl2Cpp]
@@ -466,10 +303,8 @@ public class AnnouncementImageRendererAndroid : MonoBehaviour
             var block = blocks[key];
             int minLine = Mathf.Clamp(block.MinLine, 0, info.lineCount - 1);
             int maxLine = Mathf.Clamp(block.MaxLine, 0, info.lineCount - 1);
-            var top = info.lineInfo[minLine].ascender;
-            var bottom = info.lineInfo[maxLine].descender;
-            block.Top = top;
-            block.Bottom = bottom;
+            block.Top = info.lineInfo[minLine].ascender;
+            block.Bottom = info.lineInfo[maxLine].descender;
             blocks[key] = block;
         }
 
@@ -559,20 +394,12 @@ public class AnnouncementImageRendererAndroid : MonoBehaviour
 
     private float GetAvailableWidth()
     {
-        float width = 0f;
-        try
-        {
-            width = _bodyText.rectTransform.rect.width;
-        }
-        catch
-        {
-        }
+        float width = _bodyText.rectTransform.rect.width;
 
         if (width <= 0f)
             width = _bodyText.textBounds.size.x;
         if (width <= 0f)
             width = MaxImageWidth;
-
         return width;
     }
 
@@ -591,18 +418,6 @@ public class AnnouncementImageRendererAndroid : MonoBehaviour
             MaxLine = maxLine;
             Top = 0f;
             Bottom = 0f;
-        }
-    }
-
-    private readonly struct SpinnerEntry
-    {
-        public GameObject GameObject { get; }
-        public SpriteRenderer Renderer { get; }
-
-        public SpinnerEntry(GameObject gameObject, SpriteRenderer renderer)
-        {
-            GameObject = gameObject;
-            Renderer = renderer;
         }
     }
 }
