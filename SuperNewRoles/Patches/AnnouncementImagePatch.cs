@@ -1,46 +1,75 @@
-using System.Reflection;
+using System;
 using System.Text.RegularExpressions;
 using AmongUs.Data;
 using HarmonyLib;
 using TMPro;
 using UnityEngine;
 using SuperNewRoles.Modules;
+using SuperNewRoles;
 
 namespace SuperNewRoles.Patches
 {
+    internal static class AnnouncementImagePatchHelper
+    {
+        public static bool IsAndroid => ModHelpers.IsAndroid();
+    }
+
     [HarmonyPatch(typeof(AnnouncementPopUp), nameof(AnnouncementPopUp.UpdateAnnouncementText))]
     public static class AnnouncementPopUpUpdateAnnouncementTextPatch
     {
         public static void Postfix(AnnouncementPopUp __instance, int id, bool previewOnly)
         {
-            if (__instance == null)
-                return;
-
-            var bodyText = __instance.AnnouncementBodyText;
-            if (bodyText == null)
-                return;
-
-            var announcements = DataManager.Player?.Announcements?.AllAnnouncements;
-            if (announcements != null)
+            try
             {
-                for (int i = 0; i < announcements.Count; i++)
+                if (!SuperNewRolesPlugin.IsAnnouncementImageSupported)
+                    return;
+
+                if (__instance == null)
+                    return;
+
+                var bodyText = __instance.AnnouncementBodyText;
+                if (bodyText == null)
+                    return;
+
+                var announcements = DataManager.Player?.Announcements?.AllAnnouncements;
+                if (announcements != null)
                 {
-                    var announcement = announcements[i];
-                    if (announcement.Number == id)
+                    for (int i = 0; i < announcements.Count; i++)
                     {
-                        AnnouncementImageCache.SetAnnouncementId(id, announcement.Id);
-                        AnnouncementImageCache.EnsureImages(id, announcement.Id);
-                        break;
+                        var announcement = announcements[i];
+                        if (announcement != null && announcement.Number == id)
+                        {
+                            AnnouncementImageCache.SetAnnouncementId(id, announcement.Id);
+                            AnnouncementImageCache.EnsureImages(id, announcement.Id);
+                            break;
+                        }
                     }
                 }
+
+                if (AnnouncementImagePatchHelper.IsAndroid)
+                {
+                    var renderer = __instance.GetComponent<AnnouncementImageRendererAndroid>();
+                    if (renderer == null)
+                        renderer = __instance.gameObject.AddComponent<AnnouncementImageRendererAndroid>();
+
+                    renderer.Initialize(bodyText);
+                    renderer.ShowImages(id, previewOnly);
+                }
+                else
+                {
+                    var renderer = __instance.GetComponent<AnnouncementImageRenderer>();
+                    if (renderer == null)
+                        renderer = __instance.gameObject.AddComponent<AnnouncementImageRenderer>();
+
+                    renderer.Initialize(bodyText);
+                    renderer.ShowImages(id, previewOnly);
+                }
             }
-
-            var renderer = __instance.GetComponent<AnnouncementImageRenderer>();
-            if (renderer == null)
-                renderer = __instance.gameObject.AddComponent<AnnouncementImageRenderer>();
-
-            renderer.Initialize(bodyText);
-            renderer.ShowImages(id, previewOnly);
+            catch (Exception ex)
+            {
+                SuperNewRolesPlugin.Logger.LogWarning($"AnnouncementPopUpUpdateAnnouncementTextPatch failed: {ex}");
+                SuperNewRolesPlugin.DisableAnnouncementImageSupport(ex.Message);
+            }
         }
     }
 
@@ -49,9 +78,29 @@ namespace SuperNewRoles.Patches
     {
         public static void Postfix(AnnouncementPopUp __instance)
         {
-            var renderer = __instance != null ? __instance.GetComponent<AnnouncementImageRenderer>() : null;
-            if (renderer != null)
-                renderer.ClearImages();
+            try
+            {
+                if (!SuperNewRolesPlugin.IsAnnouncementImageSupported)
+                    return;
+
+                if (AnnouncementImagePatchHelper.IsAndroid)
+                {
+                    var renderer = __instance != null ? __instance.GetComponent<AnnouncementImageRendererAndroid>() : null;
+                    if (renderer != null)
+                        renderer.ClearImages();
+                }
+                else
+                {
+                    var renderer = __instance != null ? __instance.GetComponent<AnnouncementImageRenderer>() : null;
+                    if (renderer != null)
+                        renderer.ClearImages();
+                }
+            }
+            catch (Exception ex)
+            {
+                SuperNewRolesPlugin.Logger.LogWarning($"AnnouncementPopUpOnDisableImagePatch failed: {ex}");
+                SuperNewRolesPlugin.DisableAnnouncementImageSupport(ex.Message);
+            }
         }
     }
 
@@ -65,31 +114,58 @@ namespace SuperNewRoles.Patches
 
         public static void Postfix(AnnouncementPopUp __instance)
         {
-            if (__instance == null)
-                return;
-
-            // 1. タイムスタンプの更新 (1秒おきに実行)
-            _timestampUpdateTimer -= Time.deltaTime;
-            if (_timestampUpdateTimer <= 0f)
+            try
             {
-                _timestampUpdateTimer = 1f;
-                UpdateDynamicTimestamps(__instance);
+                if (!SuperNewRolesPlugin.IsAnnouncementImageSupported)
+                    return;
+
+                if (__instance == null)
+                    return;
+
+                // 1. タイムスタンプの更新 (1秒おきに実行)
+                _timestampUpdateTimer -= Time.deltaTime;
+                if (_timestampUpdateTimer <= 0f)
+                {
+                    _timestampUpdateTimer = 1f;
+                    UpdateDynamicTimestamps(__instance);
+                }
+
+                var scroller = __instance.TextScroller;
+                if (scroller == null)
+                    return;
+
+                if (AnnouncementImagePatchHelper.IsAndroid)
+                {
+                    var renderer = __instance.GetComponent<AnnouncementImageRendererAndroid>();
+                    if (renderer == null || !renderer.HasImages)
+                        return;
+
+                    float extra = renderer.GetExtraScrollHeight();
+                    if (extra <= 0f)
+                        return;
+
+                    float textHeight = renderer.GetTextHeight();
+                    scroller.SetBoundsMax(textHeight + extra, 0f);
+                }
+                else
+                {
+                    var renderer = __instance.GetComponent<AnnouncementImageRenderer>();
+                    if (renderer == null || !renderer.HasImages)
+                        return;
+
+                    float extra = renderer.GetExtraScrollHeight();
+                    if (extra <= 0f)
+                        return;
+
+                    float textHeight = renderer.GetTextHeight();
+                    scroller.SetBoundsMax(textHeight + extra, 0f);
+                }
             }
-
-            var renderer = __instance.GetComponent<AnnouncementImageRenderer>();
-            if (renderer == null || !renderer.HasImages)
-                return;
-
-            var scroller = __instance.TextScroller;
-            if (scroller == null)
-                return;
-
-            float extra = renderer.GetExtraScrollHeight();
-            if (extra <= 0f)
-                return;
-
-            float textHeight = renderer.GetTextHeight();
-            scroller.SetBoundsMax(textHeight + extra, 0f);
+            catch (Exception ex)
+            {
+                SuperNewRolesPlugin.Logger.LogWarning($"AnnouncementPopUpUpdateImagePatch failed: {ex}");
+                SuperNewRolesPlugin.DisableAnnouncementImageSupport(ex.Message);
+            }
         }
 
         private static void UpdateDynamicTimestamps(AnnouncementPopUp popup)
