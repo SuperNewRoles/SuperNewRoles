@@ -3,13 +3,17 @@ using System.Text.RegularExpressions;
 using AmongUs.Data;
 using HarmonyLib;
 using TMPro;
-using Il2CppInterop.Runtime.Injection;
 using UnityEngine;
 using SuperNewRoles.Modules;
 using SuperNewRoles;
 
 namespace SuperNewRoles.Patches
 {
+    internal static class AnnouncementImagePatchHelper
+    {
+        public static bool IsAndroid => ModHelpers.IsAndroid();
+    }
+
     [HarmonyPatch(typeof(AnnouncementPopUp), nameof(AnnouncementPopUp.UpdateAnnouncementText))]
     public static class AnnouncementPopUpUpdateAnnouncementTextPatch
     {
@@ -27,12 +31,6 @@ namespace SuperNewRoles.Patches
                 if (bodyText == null)
                     return;
 
-                if (!ClassInjector.IsTypeRegisteredInIl2Cpp(typeof(AnnouncementImageRenderer)))
-                {
-                    SuperNewRolesPlugin.DisableAnnouncementImageSupport("Announcement image renderer type is not registered in Il2Cpp.");
-                    return;
-                }
-
                 var announcements = DataManager.Player?.Announcements?.AllAnnouncements;
                 if (announcements != null)
                 {
@@ -48,12 +46,24 @@ namespace SuperNewRoles.Patches
                     }
                 }
 
-                var renderer = __instance.GetComponent<AnnouncementImageRenderer>();
-                if (renderer == null)
-                    renderer = __instance.gameObject.AddComponent<AnnouncementImageRenderer>();
+                if (AnnouncementImagePatchHelper.IsAndroid)
+                {
+                    var renderer = __instance.GetComponent<AnnouncementImageRendererAndroid>();
+                    if (renderer == null)
+                        renderer = __instance.gameObject.AddComponent<AnnouncementImageRendererAndroid>();
 
-                renderer.Initialize(bodyText);
-                renderer.ShowImages(id, previewOnly);
+                    renderer.Initialize(bodyText);
+                    renderer.ShowImages(id, previewOnly);
+                }
+                else
+                {
+                    var renderer = __instance.GetComponent<AnnouncementImageRenderer>();
+                    if (renderer == null)
+                        renderer = __instance.gameObject.AddComponent<AnnouncementImageRenderer>();
+
+                    renderer.Initialize(bodyText);
+                    renderer.ShowImages(id, previewOnly);
+                }
             }
             catch (Exception ex)
             {
@@ -73,15 +83,18 @@ namespace SuperNewRoles.Patches
                 if (!SuperNewRolesPlugin.IsAnnouncementImageSupported)
                     return;
 
-                if (!ClassInjector.IsTypeRegisteredInIl2Cpp(typeof(AnnouncementImageRenderer)))
+                if (AnnouncementImagePatchHelper.IsAndroid)
                 {
-                    SuperNewRolesPlugin.DisableAnnouncementImageSupport("Announcement image renderer type is not registered in Il2Cpp.");
-                    return;
+                    var renderer = __instance != null ? __instance.GetComponent<AnnouncementImageRendererAndroid>() : null;
+                    if (renderer != null)
+                        renderer.ClearImages();
                 }
-
-                var renderer = __instance != null ? __instance.GetComponent<AnnouncementImageRenderer>() : null;
-                if (renderer != null)
-                    renderer.ClearImages();
+                else
+                {
+                    var renderer = __instance != null ? __instance.GetComponent<AnnouncementImageRenderer>() : null;
+                    if (renderer != null)
+                        renderer.ClearImages();
+                }
             }
             catch (Exception ex)
             {
@@ -106,12 +119,6 @@ namespace SuperNewRoles.Patches
                 if (!SuperNewRolesPlugin.IsAnnouncementImageSupported)
                     return;
 
-                if (!ClassInjector.IsTypeRegisteredInIl2Cpp(typeof(AnnouncementImageRenderer)))
-                {
-                    SuperNewRolesPlugin.DisableAnnouncementImageSupport("Announcement image renderer type is not registered in Il2Cpp.");
-                    return;
-                }
-
                 if (__instance == null)
                     return;
 
@@ -123,20 +130,36 @@ namespace SuperNewRoles.Patches
                     UpdateDynamicTimestamps(__instance);
                 }
 
-                var renderer = __instance.GetComponent<AnnouncementImageRenderer>();
-                if (renderer == null || !renderer.HasImages)
-                    return;
-
                 var scroller = __instance.TextScroller;
                 if (scroller == null)
                     return;
 
-                float extra = renderer.GetExtraScrollHeight();
-                if (extra <= 0f)
-                    return;
+                if (AnnouncementImagePatchHelper.IsAndroid)
+                {
+                    var renderer = __instance.GetComponent<AnnouncementImageRendererAndroid>();
+                    if (renderer == null || !renderer.HasImages)
+                        return;
 
-                float textHeight = renderer.GetTextHeight();
-                scroller.SetBoundsMax(textHeight + extra, 0f);
+                    float extra = renderer.GetExtraScrollHeight();
+                    if (extra <= 0f)
+                        return;
+
+                    float textHeight = renderer.GetTextHeight();
+                    scroller.SetBoundsMax(textHeight + extra, 0f);
+                }
+                else
+                {
+                    var renderer = __instance.GetComponent<AnnouncementImageRenderer>();
+                    if (renderer == null || !renderer.HasImages)
+                        return;
+
+                    float extra = renderer.GetExtraScrollHeight();
+                    if (extra <= 0f)
+                        return;
+
+                    float textHeight = renderer.GetTextHeight();
+                    scroller.SetBoundsMax(textHeight + extra, 0f);
+                }
             }
             catch (Exception ex)
             {

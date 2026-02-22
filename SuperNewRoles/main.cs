@@ -263,13 +263,8 @@ public partial class SuperNewRolesPlugin : BasePlugin
     }
     private static void RegisterCustomObjects()
     {
-        if (ModHelpers.IsAndroid())
-        {
-            // Android builds are currently unstable with the injected AnnouncementImageRenderer/Spinner classes.
-            // Keep announcement features without custom image/video rendering for crash-free startup/opening behavior.
-            DisableAnnouncementImageSupport("Announcement image components are disabled on Android.");
-        }
-        else
+        bool isAndroid = ModHelpers.IsAndroid();
+        if (!isAndroid)
         {
             Type videoPlayerType = Type.GetType("UnityEngine.Video.VideoPlayer, UnityEngine.VideoModule")
                 ?? Type.GetType("UnityEngine.Video.VideoPlayer, UnityEngine.CoreModule");
@@ -315,8 +310,15 @@ public partial class SuperNewRolesPlugin : BasePlugin
         {
             if (IsAnnouncementImageSupported)
             {
-                ClassInjector.RegisterTypeInIl2Cpp<AnnouncementImageRenderer>();
-                ClassInjector.RegisterTypeInIl2Cpp<AnnouncementImageSpinner>();
+                if (isAndroid)
+                {
+                    ClassInjector.RegisterTypeInIl2Cpp<AnnouncementImageRendererAndroid>();
+                }
+                else
+                {
+                    ClassInjector.RegisterTypeInIl2Cpp<AnnouncementImageRenderer>();
+                    ClassInjector.RegisterTypeInIl2Cpp<AnnouncementImageSpinner>();
+                }
             }
         }
         catch (Exception ex)
