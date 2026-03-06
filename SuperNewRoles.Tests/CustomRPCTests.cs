@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Reflection;
 using FluentAssertions;
@@ -9,6 +10,7 @@ using SuperNewRoles.Roles;
 using SuperNewRoles.Roles.Ability;
 using UnityEngine;
 using Xunit;
+using AmongUs.GameOptions;
 
 namespace SuperNewRoles.Tests;
 
@@ -155,5 +157,61 @@ public class CustomRPCTests
         var f = obj.GetType().GetField($"<{propName}>k__BackingField", BindingFlags.Instance | BindingFlags.NonPublic);
         if (f == null) throw new InvalidOperationException($"Backing field for '{propName}' not found");
         f.SetValue(obj, value);
+    }
+
+    private static byte[] SerializeSidekickDataForTest(SidekickData data)
+    {
+        using var stream = new MemoryStream();
+        using var writer = new BinaryWriter(stream);
+
+        writer.Write((ushort)data.RoleId);
+        writer.Write((ushort)data.RoleType);
+        writer.Write(data.IsVanilla);
+        writer.Write(data.IsPromote);
+        writer.Write((ushort)data.PromoteToRole);
+        writer.Write((ushort)data.PromoteToRoleVanilla);
+        writer.Write(data.CanPromotedRoleCreateSidekick);
+
+        return stream.ToArray();
+    }
+
+    private static SidekickData DeserializeSidekickDataForTest(byte[] payload)
+    {
+        using var stream = new MemoryStream(payload);
+        using var reader = new BinaryReader(stream);
+
+        var data = new SidekickData();
+        SetAutoProp(data, nameof(SidekickData.RoleId), (RoleId)reader.ReadUInt16());
+        SetAutoProp(data, nameof(SidekickData.RoleType), (RoleTypes)reader.ReadUInt16());
+        SetAutoProp(data, nameof(SidekickData.IsVanilla), reader.ReadBoolean());
+        SetAutoProp(data, nameof(SidekickData.IsPromote), reader.ReadBoolean());
+        SetAutoProp(data, nameof(SidekickData.PromoteToRole), (RoleId)reader.ReadUInt16());
+        SetAutoProp(data, nameof(SidekickData.PromoteToRoleVanilla), (RoleTypes)reader.ReadUInt16());
+        SetAutoProp(data, nameof(SidekickData.CanPromotedRoleCreateSidekick), reader.ReadBoolean());
+        return data;
+    }
+
+    [Fact]
+    public void SidekickData_Serialize_RoundTrips_PromotedSidekickCreationFlag()
+    {
+        var original = new SidekickData(
+            roleId: RoleId.Sidekick,
+            roleType: RoleTypes.Crewmate,
+            isVanilla: true,
+            promoteToRole: RoleId.WaveCannonJackal,
+            promoteToRoleVanilla: RoleTypes.Crewmate,
+            canPromotedRoleCreateSidekick: false
+        );
+
+        var payload = SerializeSidekickDataForTest(original);
+        var restored = DeserializeSidekickDataForTest(payload);
+
+        restored.RoleId.Should().Be(original.RoleId);
+        restored.RoleType.Should().Be(original.RoleType);
+        restored.IsVanilla.Should().BeTrue();
+        restored.IsPromote.Should().BeTrue();
+        restored.PromoteToRole.Should().Be(RoleId.WaveCannonJackal);
+        restored.PromoteToRoleVanilla.Should().Be(RoleTypes.Crewmate);
+        restored.CanPromotedRoleCreateSidekick.Should().BeFalse();
     }
 }
