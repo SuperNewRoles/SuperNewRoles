@@ -177,8 +177,6 @@ public class CustomCosmeticsLayer
             baseLayer.transform.parent.GetComponentInChildren<PlayerAnimations>()?.group?.NodeSyncs?.Add(nodeSync);
             hatLayer.spriteSyncNode = nodeSync;
         }
-        else
-            Logger.Debug("NULLLLLLLLLLLLLLLLLLLLLL");
         hatLayer.vanillaNodeSyncs = cosmeticsLayer.hat.GetComponents<SpriteAnimNodeSync>().ToList();
 
         // バックレイヤーの作成と設定
