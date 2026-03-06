@@ -124,7 +124,6 @@ public class CustomHatLayer : MonoBehaviour
             FrontLayer.sprite = null;
         }
         Hats[CurrentHatType] = hat;
-        Logger.Info($"SetHat: {hat.ProdId}");
         SetHat(color);
     }
 
