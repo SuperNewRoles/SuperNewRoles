@@ -120,8 +120,6 @@ public class CreateLoversAbility : TargetCustomButtonBase
             cupidAbility.SetLovers(playerA.PlayerId, playerB.PlayerId);
         }
         _created = true;
-        NameText.UpdateNameInfo(playerA);
-        NameText.UpdateNameInfo(playerB);
-        NameText.UpdateNameInfo(Player);
+        NameText.UpdateAllNameInfo();
     }
 }
