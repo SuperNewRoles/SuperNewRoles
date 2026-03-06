@@ -22,6 +22,7 @@ namespace SuperNewRoles.CustomOptions.Data
         public GameObject ExclusivityEditRightAreaInner { get; set; }
         public GameObject RoleDetailButtonContainer { get; set; }
         public int CurrentEditingIndex { get; set; } = -1;
+        public string CurrentRoleType { get; set; } = "Impostor";
 
         public ExclusivityOptionMenuObjectData(GameObject exclusivityOptionMenu) : base()
         {
@@ -41,7 +42,7 @@ namespace SuperNewRoles.CustomOptions.Data
 
         public override void UpdateOptionDisplay()
         {
-            // オプションの表示を更新
+            SuperNewRoles.CustomOptions.ExclusivityOptionMenu.RefreshDisplayedMenu();
         }
     }
 }
