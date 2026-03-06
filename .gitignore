@@ -15,3 +15,4 @@ hatstest.bundle
 *.trx
 *.log
 *.log.txt
+.agents/
