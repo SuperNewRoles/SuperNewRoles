@@ -95,7 +95,8 @@ public class CustomSidekickButtonAbility : TargetCustomButtonBase
                 vanillaRole ?? RoleTypes.Crewmate,
                 vanillaRole != null,
                 _options.SidekickedPromoteData?.PromoteToRole,
-                _options.SidekickedPromoteData?.PromoteToRoleVanilla
+                _options.SidekickedPromoteData?.PromoteToRoleVanilla,
+                _options.SidekickedPromoteData?.CanPromotedRoleCreateSidekick ?? true
             ));
         }
         _options.OnSidekickCreated?.Invoke(target);
@@ -131,6 +132,15 @@ public class CustomSidekickButtonAbility : TargetCustomButtonBase
                 data.PromoteToRole,
                 data.PromoteToRoleVanilla
             );
+            if (!data.CanPromotedRoleCreateSidekick)
+            {
+                promoteAbility.OnPromoted += static player =>
+                {
+                    var jackal = player.GetAbility<JackalAbility>();
+                    if (jackal != null)
+                        jackal.JackData.CanCreateSidekick = false;
+                };
+            }
             Logger.Info("SidekickData AttachAbility to player: " + player.PlayerId);
             player.AttachAbility(promoteAbility, new AbilityParentRole(player, player.roleBase));
         }
@@ -150,8 +160,15 @@ public class SidekickData : ICustomRpcObject
     public bool IsPromote { get; private set; }
     public RoleId PromoteToRole { get; private set; }
     public RoleTypes PromoteToRoleVanilla { get; private set; }
+    public bool CanPromotedRoleCreateSidekick { get; private set; } = true;
     public SidekickData() { }
-    public SidekickData(RoleId roleId, RoleTypes roleType, bool isVanilla, RoleId? promoteToRole = null, RoleTypes? promoteToRoleVanilla = null)
+    public SidekickData(
+        RoleId roleId,
+        RoleTypes roleType,
+        bool isVanilla,
+        RoleId? promoteToRole = null,
+        RoleTypes? promoteToRoleVanilla = null,
+        bool canPromotedRoleCreateSidekick = true)
     {
         RoleId = roleId;
         RoleType = roleType;
@@ -159,6 +176,7 @@ public class SidekickData : ICustomRpcObject
         IsPromote = promoteToRole != null;
         PromoteToRole = promoteToRole ?? RoleId.None;
         PromoteToRoleVanilla = promoteToRoleVanilla ?? RoleTypes.Crewmate;
+        CanPromotedRoleCreateSidekick = canPromotedRoleCreateSidekick;
     }
 
     public void Serialize(MessageWriter writer)
@@ -169,6 +187,7 @@ public class SidekickData : ICustomRpcObject
         writer.Write(IsPromote);
         writer.Write((ushort)PromoteToRole);
         writer.Write((ushort)PromoteToRoleVanilla);
+        writer.Write(CanPromotedRoleCreateSidekick);
     }
 
     public void Deserialize(MessageReader reader)
@@ -179,6 +198,7 @@ public class SidekickData : ICustomRpcObject
         IsPromote = reader.ReadBoolean();
         PromoteToRole = (RoleId)reader.ReadUInt16();
         PromoteToRoleVanilla = (RoleTypes)reader.ReadUInt16();
+        CanPromotedRoleCreateSidekick = reader.ReadBoolean();
     }
 }
 
@@ -186,9 +206,11 @@ public class SidekickedPromoteData
 {
     public RoleId PromoteToRole { get; }
     public RoleTypes PromoteToRoleVanilla { get; }
-    public SidekickedPromoteData(RoleId promoteToRole, RoleTypes promoteToRoleVanilla)
+    public bool CanPromotedRoleCreateSidekick { get; }
+    public SidekickedPromoteData(RoleId promoteToRole, RoleTypes promoteToRoleVanilla, bool canPromotedRoleCreateSidekick = true)
     {
         PromoteToRole = promoteToRole;
         PromoteToRoleVanilla = promoteToRoleVanilla;
+        CanPromotedRoleCreateSidekick = canPromotedRoleCreateSidekick;
     }
 }
