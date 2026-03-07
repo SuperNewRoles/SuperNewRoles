@@ -19,9 +19,14 @@ public sealed class AndroidRightStickAimCoreState
             return;
 
         if (visible)
+        {
             _requesters.Add(requesterId);
-        else
-            _requesters.Remove(requesterId);
+            return;
+        }
+
+        _requesters.Remove(requesterId);
+        if (_requesters.Count == 0)
+            ResetAim();
     }
 
     public void ClearRequesters()
@@ -155,6 +160,7 @@ public static class AndroidAimVisibilityPolicy
 public static class AndroidRightStickAim
 {
     private static readonly AndroidRightStickAimState State = new();
+    private static int? _trackedAimFingerId;
 
     public static bool IsActive => ModHelpers.IsAndroid() && State.HasActiveRequesters;
 
@@ -164,11 +170,14 @@ public static class AndroidRightStickAim
             return;
 
         State.SetRequesterVisible(requesterId, visible);
+        if (!State.HasActiveRequesters)
+            _trackedAimFingerId = null;
     }
 
     public static void ResetAll()
     {
         State.ResetAll();
+        _trackedAimFingerId = null;
     }
 
     public static Vector2 GetAimDirection(Vector2 fallbackDirection)
@@ -194,19 +203,43 @@ public static class AndroidRightStickAim
 
     private static Vector2 GetSecondTouchDirection()
     {
+        if (_trackedAimFingerId.HasValue)
+        {
+            for (int i = 0; i < Input.touchCount; i++)
+            {
+                Touch trackedTouch = Input.GetTouch(i);
+                if (trackedTouch.fingerId != _trackedAimFingerId.Value)
+                    continue;
+
+                if (trackedTouch.phase is TouchPhase.Canceled or TouchPhase.Ended)
+                {
+                    _trackedAimFingerId = null;
+                    return new Vector2(0f, 0f);
+                }
+
+                return GetTouchDirection(trackedTouch.position);
+            }
+
+            _trackedAimFingerId = null;
+        }
+
         if (Input.touchCount < 2)
             return new Vector2(0f, 0f);
 
-        Touch touch = Input.GetTouch(1);
-        if (touch.phase is TouchPhase.Canceled or TouchPhase.Ended)
+        Touch aimTouch = Input.GetTouch(1);
+        if (aimTouch.phase is TouchPhase.Canceled or TouchPhase.Ended)
             return new Vector2(0f, 0f);
 
+        _trackedAimFingerId = aimTouch.fingerId;
+        return GetTouchDirection(aimTouch.position);
+    }
+
+    private static Vector2 GetTouchDirection(Vector2 touchPosition)
+    {
         Vector2 screenCenter = new(Screen.width * 0.5f, Screen.height * 0.5f);
-        Vector2 touchDirection = touch.position - screenCenter;
+        Vector2 touchDirection = touchPosition - screenCenter;
         if (touchDirection.sqrMagnitude <= 0.0001f)
-        {
             return new Vector2(0f, 0f);
-        }
 
         return touchDirection.normalized;
     }

@@ -26,9 +26,13 @@ public class AndroidRightStickAimTests
     public void ResolveDirection_Keeps_Last_NonZero_Input_When_Released()
     {
         var state = new AndroidRightStickAimCoreState();
+        state.SetRequesterVisible(1, true);
 
         state.ResolveDirection(0f, 1f, -1f, 0f).Should().Be((0f, 1f));
         state.ResolveDirection(0f, 0f, -1f, 0f).Should().Be((0f, 1f));
+
+        state.SetRequesterVisible(1, false);
+        state.ResolveDirection(0f, 0f, -1f, 0f).Should().Be((-1f, 0f));
     }
 
     [Fact]
