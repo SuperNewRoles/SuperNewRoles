@@ -17,7 +17,7 @@ public static class HelpMenusHudManagerStartPatch
         // ヘルプメニュー自体と被らないように-499
         var aspectPosition = helpMenuButton.AddComponent<AspectPosition>();
         aspectPosition.Alignment = AspectPosition.EdgeAlignments.RightTop;
-        aspectPosition.DistanceFromEdge = new(2.72f, 0.48f, -300.01f);
+        aspectPosition.DistanceFromEdge = new(2.72f, 0.48f, -25f);
         aspectPosition.OnEnable();
         PassiveButton passiveButton = helpMenuButton.AddComponent<PassiveButton>();
         passiveButton.Colliders = new Collider2D[] { helpMenuButton.GetComponent<Collider2D>() };
@@ -26,6 +26,11 @@ public static class HelpMenusHudManagerStartPatch
         passiveButton.OnMouseOver = new();
         passiveButton.OnClick.AddListener((UnityAction)(() =>
         {
+            if (!HelpMenuObjectManager.CanToggleHelpMenu())
+            {
+                passiveButton.transform.Find("active").gameObject.SetActive(false);
+                return;
+            }
             passiveButton.transform.Find("active").gameObject.SetActive(true);
             HelpMenuObjectManager.ShowOrHideHelpMenu();
         }));
@@ -36,6 +41,11 @@ public static class HelpMenusHudManagerStartPatch
         }));
         passiveButton.OnMouseOver.AddListener((UnityAction)(() =>
         {
+            if (!HelpMenuObjectManager.CanToggleHelpMenu())
+            {
+                passiveButton.transform.Find("active").gameObject.SetActive(false);
+                return;
+            }
             passiveButton.transform.Find("active").gameObject.SetActive(true);
         }));
     }
