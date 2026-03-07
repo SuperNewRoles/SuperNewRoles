@@ -167,7 +167,16 @@ public class RequestInGameManager
         {
             var createContent = createRequest.downloadHandler.text;
             var jsonObj = JsonParser.Parse(createContent) as Dictionary<string, object>;
-            Token = (jsonObj != null && jsonObj.TryGetValue("token", out var tokenVal) && tokenVal is string tokenStr) ? tokenStr : string.Empty;
+            string createdToken = (jsonObj != null && jsonObj.TryGetValue("token", out var tokenVal) && tokenVal is string tokenStr) ? tokenStr : string.Empty;
+            if (string.IsNullOrEmpty(createdToken))
+            {
+                Logger.Error("Failed to create account: response did not include a token.");
+                callback(null);
+                createRequest.Dispose();
+                yield break;
+            }
+
+            Token = createdToken;
             File.WriteAllText(FilePath, Token);
             ValidatedToken = true;
             callback(Token);
@@ -338,6 +347,13 @@ public class RequestInGameManager
         request.chunkedTransfer = true;
         string token = string.Empty;
         yield return GetOrCreateToken(t => token = t, createIfMissing: true);
+        if (string.IsNullOrEmpty(token))
+        {
+            Logger.Error($"Failed to get token for report: {title}");
+            request.Dispose();
+            callback(false);
+            yield break;
+        }
         request.SetRequestHeader("Content-Type", "application/json");
         request.SetRequestHeader("Authorization", $"Bearer {token}");
 
