@@ -98,6 +98,10 @@ public class RequestInGameManager
     private static bool ValidatedToken = false;
     private static string FilePath = Path.Combine(SuperNewRolesPlugin.SecretDirectory, "RequestInGame.token");
     public const string StatusUpdater = "StatusUpdater";
+    internal static bool ShouldRecreateTokenAfterValidationFailure(UnityWebRequest.Result result, long responseCode, bool createIfMissing)
+    {
+        return createIfMissing && result == UnityWebRequest.Result.ProtocolError && responseCode is 401 or 403;
+    }
 
     public static void Load()
     {
@@ -107,7 +111,7 @@ public class RequestInGameManager
             ValidatedToken = false;
         }
     }
-    public static IEnumerator GetOrCreateToken(Action<string> callback)
+    public static IEnumerator GetOrCreateToken(Action<string> callback, bool createIfMissing = true)
     {
         if (!string.IsNullOrEmpty(Token))
         {
@@ -118,9 +122,28 @@ public class RequestInGameManager
                 validateRequest.SetRequestHeader("Authorization", $"Bearer {Token}");
                 yield return validateRequest.SendWebRequest();
                 if (validateRequest.result == UnityWebRequest.Result.Success && validateRequest.responseCode == 200)
+                {
                     ValidatedToken = true;
+                }
                 else
+                {
                     Logger.Error($"Failed to validate token: {validateRequest.responseCode} {validateRequest.error}");
+                    if (!ShouldRecreateTokenAfterValidationFailure(validateRequest.result, validateRequest.responseCode, createIfMissing))
+                    {
+                        if (validateRequest.result == UnityWebRequest.Result.ProtocolError && validateRequest.responseCode is 401 or 403)
+                        {
+                            Logger.Info("Stored RequestInGame token was rejected, and this path does not create new tokens.");
+                            validateRequest.Dispose();
+                            callback(null);
+                            yield break;
+                        }
+                        Logger.Info("Keeping stored RequestInGame token because validation failure was not an authentication rejection.");
+                        validateRequest.Dispose();
+                        callback(Token);
+                        yield break;
+                    }
+                    Logger.Info("Stored RequestInGame token was rejected by the server. Attempting to create a new account.");
+                }
                 validateRequest.Dispose();
             }
             if (ValidatedToken)
@@ -128,6 +151,12 @@ public class RequestInGameManager
                 callback(Token);
                 yield break;
             }
+        }
+
+        if (!createIfMissing)
+        {
+            callback(null);
+            yield break;
         }
 
         var createUrl = $"{SNRURLs.ReportInGameAPI}/createAccount/";
@@ -153,10 +182,16 @@ public class RequestInGameManager
     // unreadonly not working
     public static IEnumerator GetThreads(Action<List<Thread>> callback, bool unreadOnly = false)
     {
+        string token = string.Empty;
+        yield return GetOrCreateToken(t => token = t, createIfMissing: false);
+        if (string.IsNullOrEmpty(token))
+        {
+            callback(null);
+            yield break;
+        }
+
         string url = $"{SNRURLs.ReportInGameAPI}/getThreads/";
         var request = UnityWebRequest.Get(url);
-        string token = string.Empty;
-        yield return GetOrCreateToken(t => token = t);
         request.SetRequestHeader("Authorization", $"Bearer {token}");
         yield return request.SendWebRequest();
         List<Thread> threads = new List<Thread>();
@@ -195,10 +230,16 @@ public class RequestInGameManager
     }
     public static IEnumerator GetMessages(string thread_id, Action<List<MessageBase>> callback)
     {
+        string token = string.Empty;
+        yield return GetOrCreateToken(t => token = t, createIfMissing: false);
+        if (string.IsNullOrEmpty(token))
+        {
+            callback(null);
+            yield break;
+        }
+
         string url = $"{SNRURLs.ReportInGameAPI}/getMessages/{thread_id}";
         var request = UnityWebRequest.Get(url);
-        string token = string.Empty;
-        yield return GetOrCreateToken(t => token = t);
         request.SetRequestHeader("Authorization", $"Bearer {token}");
         yield return request.SendWebRequest();
         List<MessageBase> messages = new();
@@ -256,7 +297,13 @@ public class RequestInGameManager
             downloadHandler = new DownloadHandlerBuffer()
         };
         string token = string.Empty;
-        yield return GetOrCreateToken(t => token = t);
+        yield return GetOrCreateToken(t => token = t, createIfMissing: false);
+        if (string.IsNullOrEmpty(token))
+        {
+            request.Dispose();
+            callback(false);
+            yield break;
+        }
         request.SetRequestHeader("Content-Type", "application/json");
         request.SetRequestHeader("Authorization", $"Bearer {token}");
         yield return request.SendWebRequest();
@@ -290,7 +337,7 @@ public class RequestInGameManager
         };
         request.chunkedTransfer = true;
         string token = string.Empty;
-        yield return GetOrCreateToken(t => token = t);
+        yield return GetOrCreateToken(t => token = t, createIfMissing: true);
         request.SetRequestHeader("Content-Type", "application/json");
         request.SetRequestHeader("Authorization", $"Bearer {token}");
 
@@ -321,10 +368,16 @@ public class RequestInGameManager
 
     public static IEnumerator hasNotifications(Action<bool> callback)
     {
+        string token = string.Empty;
+        yield return GetOrCreateToken(t => token = t, createIfMissing: false);
+        if (string.IsNullOrEmpty(token))
+        {
+            callback(false);
+            yield break;
+        }
+
         string url = $"{SNRURLs.ReportInGameAPI}/getNotification/";
         var request = UnityWebRequest.Get(url);
-        string token = string.Empty;
-        yield return GetOrCreateToken(t => token = t);
         request.SetRequestHeader("Authorization", $"Bearer {token}");
         yield return request.SendWebRequest();
 

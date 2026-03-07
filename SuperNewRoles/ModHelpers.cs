@@ -275,6 +275,29 @@ public static class ModHelpers
         // 最後に、全体の末尾の余分な改行を削除
         return overallResult.ToString().TrimEnd('\r', '\n');
     }
+    public static string ConvertSimpleMarkdownToRichText(string text)
+    {
+        if (string.IsNullOrEmpty(text))
+        {
+            return text;
+        }
+
+        string result = text;
+
+        // Convert the more specific patterns first so nested markers stay stable.
+        result = Regex.Replace(result, @"(?<!\\)\*\*\*(.+?)(?<!\\)\*\*\*", "<b><i>$1</i></b>");
+        result = Regex.Replace(result, @"(?<![\\\w])___(.+?)(?<!\\)___(?![\w])", "<b><i>$1</i></b>");
+        result = Regex.Replace(result, @"(?<!\\)\*\*(.+?)(?<!\\)\*\*", "<b>$1</b>");
+        result = Regex.Replace(result, @"(?<![\\\w])__(.+?)(?<!\\)__(?![\w])", "<b>$1</b>");
+        result = Regex.Replace(result, @"(?<!\\)~~(.+?)(?<!\\)~~", "<s>$1</s>");
+        result = Regex.Replace(result, @"(?<!\\)\*(?![\s\*])(.+?)(?<![\s\\])\*(?!\*)", "<i>$1</i>");
+        result = Regex.Replace(result, @"(?<![\\\w])_(?![\s_])(.+?)(?<![\s\\])_(?![\w])", "<i>$1</i>");
+
+        return result
+            .Replace(@"\*", "*")
+            .Replace(@"\_", "_")
+            .Replace(@"\~", "~");
+    }
     public static bool Il2CppIs<T1, T2>(this T1 before, out T2 after) where T1 : Il2CppObjectBase where T2 : Il2CppObjectBase
     {
         after = before?.TryCast<T2>();
