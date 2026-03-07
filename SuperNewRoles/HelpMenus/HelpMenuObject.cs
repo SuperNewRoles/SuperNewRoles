@@ -252,7 +252,7 @@ public static class HelpMenuObjectManager
         fadeCoroutine.StartFadeOut(helpMenuObject, 0.115f);
 
         // ヘルプメニューを非表示にするときにホスト情報とMeetingHudのマスクエリアを表示する
-        RoleOptionMenu.UpdateHostInfoMaskArea(true);
+        RoleOptionMenu.UpdateHostInfoMaskArea(!IsLobbySettingsMenuOpen());
         ModHelpers.UpdateMeetingHudMaskAreas(true);
     }
     // overlayを閉じる時。
@@ -282,6 +282,11 @@ public static class HelpMenuObjectManager
     {
         public static void Postfix(GameStartManager __instance)
         {
+            if (fadeCoroutine != null && fadeCoroutine.isActive && IsLobbySettingsMenuOpen())
+            {
+                HideHelpMenu();
+            }
+
             bool enabled = helpMenuObject == null || fadeCoroutine == null || !fadeCoroutine.isActive;
             __instance.StartButton.enabled = enabled;
             __instance.LobbyInfoPane.EditButton.enabled = enabled;

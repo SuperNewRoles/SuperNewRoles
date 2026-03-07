@@ -14,7 +14,7 @@ public static class HelpMenusHudManagerStartPatch
     {
         helpMenuButton = AssetManager.Instantiate("HelpButton", __instance.transform);
         helpMenuButton.transform.localScale = Vector3.one * 0.55f;
-        // ヘルプメニュー自体と被らないように-499
+        // ヘルプメニュー自体と被らないように-25
         var aspectPosition = helpMenuButton.AddComponent<AspectPosition>();
         aspectPosition.Alignment = AspectPosition.EdgeAlignments.RightTop;
         aspectPosition.DistanceFromEdge = new(2.72f, 0.48f, -25f);
