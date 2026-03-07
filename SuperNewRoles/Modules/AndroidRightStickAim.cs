@@ -191,7 +191,7 @@ public static class AndroidRightStickAim
 
     public static bool ShouldSuppressAdjustLighting()
     {
-        return ModHelpers.IsAndroid() && State.HasActiveRequesters;
+        return ModHelpers.IsAndroid() && State.HasActiveRequesters && _trackedAimFingerId.HasValue;
     }
 
     private static Vector2 GetMouseDirection(Vector2 fallbackDirection)
