@@ -15,6 +15,7 @@ public class CustomSaboAbility : CustomButtonBase
     public override string buttonText => FastDestroyableSingleton<TranslationController>.Instance.GetString(StringNames.SabotageLabel);
     protected override KeyType keytype => KeyType.None;
     public override float DefaultTimer => 0f;
+    public override bool IsFirstCooldownTenSeconds => false;
 
     public CustomSaboAbility(Func<bool> canSabotage, Action sabotageCallback = null)
     {
