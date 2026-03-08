@@ -81,7 +81,7 @@ public class SaboAndVent
             if (ExPlayerControl.LocalPlayer == null)
                 return;
 
-            __result.Mode = ExPlayerControl.LocalPlayer.CanSabotage()
+            __result.Mode = ExPlayerControl.LocalPlayer.CanSabotage() && GameManager.Instance.SabotagesEnabled()
                 ? MapOptions.Modes.Sabotage
                 : MapOptions.Modes.Normal;
         }
@@ -144,7 +144,8 @@ public class SaboAndVent
             {
                 DestroyableSingleton<HudManager>.Instance.ToggleMapVisible(new MapOptions
                 {
-                    Mode = MapOptions.Modes.Sabotage
+                    Mode = MapOptions.Modes.Sabotage,
+                    AllowMovementWhileMapOpen = true
                 });
             }
             return false;
