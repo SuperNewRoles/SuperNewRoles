@@ -53,6 +53,17 @@ public class SaboAndVent
                 __instance.ImpostorVentButton.SetTarget(Vent.currentVent);
         }
     }
+    [HarmonyPatch(typeof(HudManager), nameof(HudManager.SetHudActive), new[] { typeof(PlayerControl), typeof(RoleBehaviour), typeof(bool) })]
+    class HudManagerSetHudActivePatch
+    {
+        public static void Postfix()
+        {
+            if (PlayerControl.LocalPlayer == null || ExPlayerControl.LocalPlayer == null)
+                return;
+
+            SaboAndVentUpdate();
+        }
+    }
     [HarmonyPatch(typeof(NormalGameManager), nameof(NormalGameManager.GetMapOptions))]
     class NormalGameManagerGetMapOptionsPatch
     {
