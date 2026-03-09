@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using System.Linq;
+using HarmonyLib;
 using SuperNewRoles.Modules;
 using UnityEngine;
 using UnityEngine.Events;
@@ -18,6 +19,11 @@ public static class StandardOptionMenu
         public const float ButtonScale = 0.48f;
         public const float InitialYPosition = 1.4f;
         public const float InitialXPosition = -3.614f;
+        public const float PresetButtonInitialY = 1f;
+        public const float PresetButtonYSpacing = -0.55f;
+        public const int PresetVisibleRows = 4;
+        public const float PresetDisplayUpperLimit = 1.8f;
+        public const float PresetDisplayLowerLimit = -2.3f;
     }
 
     public static void ShowStandardOptionMenu()
@@ -286,8 +292,8 @@ public static class StandardOptionMenu
         buttonsContainer.SetActive(true);
 
         float xPos = 1.25f;
-        float yPos = 1f;
-        const float ySpacing = -0.55f;
+        float yPos = Constants.PresetButtonInitialY;
+        float ySpacing = Constants.PresetButtonYSpacing;
 
         int index = 0;
         foreach (var preset in CustomOptionSaver.PresetNames)
@@ -320,8 +326,44 @@ public static class StandardOptionMenu
         // Scrollerの更新
         if (menuData.RightAreaScroller != null)
         {
-            float maxBound = index <= 4 ? 0f : ((index - 4) * 0.7f);
+            float maxBound = index <= Constants.PresetVisibleRows ? 0f : ((index - Constants.PresetVisibleRows) * 0.7f);
             menuData.RightAreaScroller.ContentYBounds.max = maxBound;
+            menuData.RightAreaScroller.UpdateScrollBars();
+        }
+
+        UpdatePresetButtonsVisibility(menuData);
+    }
+
+    private static void UpdatePresetButtonsVisibility(StandardOptionMenuObjectData menuData)
+    {
+        if (menuData?.PresetButtonsContainer == null || menuData.RightAreaScroller == null)
+            return;
+        if (!menuData.PresetButtonsContainer.activeInHierarchy)
+            return;
+
+        var scrollerTransform = menuData.RightAreaScroller.transform;
+        var buttonsTransform = menuData.PresetButtonsContainer.transform;
+
+        for (int i = 0; i < buttonsTransform.childCount; i++)
+        {
+            var child = buttonsTransform.GetChild(i);
+            Vector3 relativePos = scrollerTransform.InverseTransformPoint(child.position);
+            bool shouldDisplay = relativePos.y < Constants.PresetDisplayUpperLimit && relativePos.y > Constants.PresetDisplayLowerLimit;
+            if (child.gameObject.activeSelf != shouldDisplay)
+                child.gameObject.SetActive(shouldDisplay);
+        }
+    }
+
+    [HarmonyPatch(typeof(ModManager), nameof(ModManager.LateUpdate))]
+    private static class StandardOptionMenuLateUpdatePatch
+    {
+        private static void Postfix()
+        {
+            var menuData = StandardOptionMenuObjectData.Instance;
+            if (menuData == null || menuData.CurrentCategory != Categories.Categories.PresetSettings)
+                return;
+
+            UpdatePresetButtonsVisibility(menuData);
         }
     }
 
