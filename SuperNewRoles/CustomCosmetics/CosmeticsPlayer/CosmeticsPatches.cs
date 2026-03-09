@@ -438,7 +438,7 @@ public static class AmongUsClient_CoStartGame_Patch
 {
     public static void Postfix()
     {
-        foreach (ExPlayerControl player in ExPlayerControl.ExPlayerControls)
+        foreach (PlayerControl player in PlayerControl.AllPlayerControls)
         {
             CustomCosmeticsLayer customCosmeticsLayer = CustomCosmeticsLayers.ExistsOrInitialize(player.cosmetics);
 

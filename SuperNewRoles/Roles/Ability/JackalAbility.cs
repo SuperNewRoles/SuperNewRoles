@@ -4,8 +4,6 @@ using SuperNewRoles.Modules;
 using SuperNewRoles.Roles.Ability.CustomButton;
 using AmongUs.GameOptions;
 using SuperNewRoles.Roles.Neutral;
-using System.Linq;
-
 namespace SuperNewRoles.Roles.Ability;
 
 public class JackalAbility : AbilityBase
@@ -52,20 +50,6 @@ public class JackalAbility : AbilityBase
                 // 全ての視点で共有していないと意味がないのでRPCで通知する
                 RpcJackalCreatedSidekick();
                 Logger.Info($"OnSidekickCreated: {player.PlayerId}");
-                new LateTask(() =>
-                {
-                    Logger.Info($"OnSidekickCreated2: {player.PlayerId}");
-                    if (JackData.SidekickType is RoleId.Sidekick or RoleId.SidekickWaveCannon or RoleId.Bullet)
-                    {
-                        Logger.Info($"OnSidekickCreated3: {player.PlayerId}");
-                        var jsidekick = player.GetAbility<JSidekickAbility>();
-                        if (jsidekick != null)
-                        {
-                            Logger.Info($"OnSidekickCreated4: {player.PlayerId}");
-                            jsidekick.RpcSetCanInfinite(JackData.IsInfiniteJackal);
-                        }
-                    }
-                }, 0.5f, "JackalAbility.OnSidekickCreated");
             },
             isSubButton: JackData.HasOtherButton
         ));
@@ -98,13 +82,17 @@ public class JackalAbility : AbilityBase
         switch (sidekickType)
         {
             case RoleId.Sidekick:
-                return new(RoleId.Jackal, RoleTypes.Crewmate);
+                return new(RoleId.Jackal, RoleTypes.Crewmate, JackData.IsInfiniteJackal);
             case RoleId.JackalFriends:
                 return null;
             case RoleId.SidekickWaveCannon:
-                return new(RoleId.WaveCannonJackal, RoleTypes.Crewmate);
+                return new(RoleId.WaveCannonJackal, RoleTypes.Crewmate, JackData.IsInfiniteJackal);
             case RoleId.Bullet:
-                return new(WaveCannonJackal.WaveCannonJackalCreateBulletToJackal ? RoleId.WaveCannonJackal : RoleId.Bullet, RoleTypes.Crewmate);
+                return new(
+                    WaveCannonJackal.WaveCannonJackalCreateBulletToJackal ? RoleId.WaveCannonJackal : RoleId.Bullet,
+                    RoleTypes.Crewmate,
+                    JackData.IsInfiniteJackal
+                );
             default:
                 throw new Exception("Invalid sidekick type in getPromoteData: " + sidekickType);
         }

@@ -111,9 +111,10 @@ public static class NameText
         string meetingInfoText = "";
         string roleName = $"{ModHelpers.CsWithTranslation(player.roleBase.RoleColor, player.roleBase.Role.ToString())}";
 
-        // 生きている時は役職を自覚できない役の役職名を上書き
-        var hideMyRoleAbility = !player.AmOwner || player.IsDead() ? null : player.GetAbility<HideMyRoleWhenAliveAbility>();
-        hideMyRoleAbility?.DisplayRoleName(player, ref roleName);
+        // 生存中は秘匿される役職/モディファイアを、相方などの他人向け表示でも漏らさない
+        var hideMyRoleAbilities = player.GetAbilities<HideMyRoleWhenAliveAbility>();
+        foreach (var hideMyRoleAbility in hideMyRoleAbilities)
+            hideMyRoleAbility.DisplayFalseRoleNameWhileAlive(player, ref roleName);
 
         // 幽霊役職の表示は役職可視性チェックに従う
         var hrg = ExPlayerControl.LocalPlayer.GetAbility<HideRoleOnGhostAbility>();
@@ -125,8 +126,7 @@ public static class NameText
             roleName += " ";
         foreach (var modifier in player.ModifierRoleBases)
         {
-            // 生きている時は役職を自覚できないモディファイアは処理をスキップ
-            if (hideMyRoleAbility != null && hideMyRoleAbility.IsCheckTargetModifierRoleHidden(player, modifier.ModifierRole)) continue;
+            if (hideMyRoleAbilities.Any(hideMyRoleAbility => hideMyRoleAbility.IsModifierHiddenWhileAlive(player, modifier.ModifierRole))) continue;
             roleName = modifier.ModifierMark(player).Replace("{0}", roleName);
         }
         playerInfoText = roleName;
