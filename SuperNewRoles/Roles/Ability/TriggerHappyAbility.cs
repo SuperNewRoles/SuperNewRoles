@@ -23,6 +23,8 @@ public class TriggerHappyAbility : CustomButtonBase, IAbilityCount, IButtonEffec
     private SyncKillCoolTimeAbility _syncKillCoolTimeAbility;
     private TriggerHappyBullet _lastBullet;
     private Vector2 _lastFirePosition;
+    private EventListener _hudUpdateEventListener;
+    private bool _androidAimVisible;
 
     public TriggerHappyAbility(TriggerHappyData data)
     {
@@ -69,6 +71,20 @@ public class TriggerHappyAbility : CustomButtonBase, IAbilityCount, IButtonEffec
         return PlayerControl.LocalPlayer.CanMove;
     }
 
+    public override void AttachToLocalPlayer()
+    {
+        base.AttachToLocalPlayer();
+        _hudUpdateEventListener = HudUpdateEvent.Instance.AddListener(UpdateAndroidAimVisibility);
+        UpdateAndroidAimVisibility();
+    }
+
+    public override void DetachToLocalPlayer()
+    {
+        SetAndroidAimVisible(false);
+        _hudUpdateEventListener?.RemoveListener();
+        base.DetachToLocalPlayer();
+    }
+
     public override void OnClick()
     {
         this.UseAbilityCount();
@@ -97,6 +113,7 @@ public class TriggerHappyAbility : CustomButtonBase, IAbilityCount, IButtonEffec
     private void ResetState()
     {
         ActiveGatlingGun = false;
+        SetAndroidAimVisible(false);
         _hitCounts.Clear();
         _pendingBulletPositionsWithTime.Clear();
         _pendingBulletDirections.Clear();
@@ -122,6 +139,7 @@ public class TriggerHappyAbility : CustomButtonBase, IAbilityCount, IButtonEffec
         GatlingGunAnimation = TriggerHappyGatlingGun.Spawn(Player,
             GetSprites("TriggerHappy_Machinegun_{0}.png", 1, 2),
             _data);
+        UpdateAndroidAimVisibility();
     }
     [CustomRPC]
     public void RpcFinishHappy()
@@ -244,6 +262,37 @@ public class TriggerHappyAbility : CustomButtonBase, IAbilityCount, IButtonEffec
         }
 
         _hitCounts[target.PlayerId] = hits;
+    }
+
+    private void UpdateAndroidAimVisibility()
+    {
+        if (!Player.AmOwner)
+            return;
+
+        bool introDisplayed = DestroyableSingleton<HudManager>.InstanceExists
+            && DestroyableSingleton<HudManager>.Instance.IsIntroDisplayed;
+        bool canMove = Player?.Player != null && Player.Player.CanMove;
+        bool inVent = Player?.Player != null && Player.Player.inVent;
+        bool shouldShow = AndroidAimVisibilityPolicy.ShouldShowForTriggerHappy(
+            ModHelpers.IsAndroid(),
+            Player.AmOwner,
+            Player != null && Player.IsAlive(),
+            canMove,
+            inVent,
+            MeetingHud.Instance != null || ExileController.Instance != null,
+            introDisplayed,
+            ActiveGatlingGun);
+
+        SetAndroidAimVisible(shouldShow);
+    }
+
+    private void SetAndroidAimVisible(bool visible)
+    {
+        if (_androidAimVisible == visible)
+            return;
+
+        _androidAimVisible = visible;
+        AndroidRightStickAim.SetVisible(AbilityId, visible);
     }
 
 }

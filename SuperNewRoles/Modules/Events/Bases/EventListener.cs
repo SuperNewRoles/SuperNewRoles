@@ -24,8 +24,14 @@ public class EventListener<T> : IEventListener where T : IEventData
 
     public virtual void Do(T obj)
     {
-        action.Invoke(obj);
-        return;
+        try
+        {
+            action.Invoke(obj);
+        }
+        catch (Exception e)
+        {
+            SuperNewRolesPlugin.Logger.LogError($"Error in {action.Method.DeclaringType?.Name}.{action.Method.Name}: {e}");
+        }
     }
 }
 
@@ -46,8 +52,14 @@ public class EventListener : IEventListener
 
     public virtual void Do()
     {
-        action.Invoke();
-        return;
+        try
+        {
+            action.Invoke();
+        }
+        catch (Exception e)
+        {
+            SuperNewRolesPlugin.Logger.LogError($"Error in {action.Method.DeclaringType?.Name}.{action.Method.Name}: {e}");
+        }
     }
 }
 

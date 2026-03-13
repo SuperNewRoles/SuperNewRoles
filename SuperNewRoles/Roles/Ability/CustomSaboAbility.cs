@@ -15,6 +15,7 @@ public class CustomSaboAbility : CustomButtonBase
     public override string buttonText => FastDestroyableSingleton<TranslationController>.Instance.GetString(StringNames.SabotageLabel);
     protected override KeyType keytype => KeyType.None;
     public override float DefaultTimer => 0f;
+    public override bool IsFirstCooldownTenSeconds => false;
 
     public CustomSaboAbility(Func<bool> canSabotage, Action sabotageCallback = null)
     {
@@ -44,10 +45,6 @@ public class CustomSaboAbility : CustomButtonBase
 
     public override bool CheckIsAvailable()
     {
-        // プレイヤーが移動不可または死亡している場合は使用不可
-        if (!PlayerControl.LocalPlayer.CanMove || ExPlayerControl.LocalPlayer.IsDead())
-            return false;
-
         // サボタージュが使用可能かどうか
         if (!CanSabotage())
             return false;
