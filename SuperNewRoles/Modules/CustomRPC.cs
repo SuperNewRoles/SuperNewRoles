@@ -271,7 +271,7 @@ public static class CustomRPCManager
         /// </summary>
         public static void Postfix(byte callId, MessageReader reader)
         {
-            // SNRの移動ログは大量に出る可能性があるため、ログに出さない
+            // ネットワーク移動RPCはログを出さない（頻繁に呼ばれるため）
             if (callId != SNRNetworkTransformRpc)
                 Logger.Info($"Received RPC: {callId}");
             // SuperNewRoles専用のRPCの場合
