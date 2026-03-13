@@ -103,7 +103,9 @@ public static class VersionTextHandler
             if (GameObject.FindObjectOfType<MainMenuManager>() == null) return;
             CreateCredentialsText(__instance);
             var versionText = CreateVersionText(__instance);
-            CreateSocialIcons(versionText);
+            // Android版は外部ブラウザ起動の挙動が不安定なため、SNSアイコンはPC版のみ表示する
+            if (!ModHelpers.IsAndroid())
+                CreateSocialIcons(versionText);
         }
 
         // クレジットテキスト生成処理
