@@ -178,8 +178,10 @@ CursedWeaponsTaskScoreText,破壊数: {0}/{1},Destroyed: {0}/{1},已摧毁: {0}/
 
 # Analytics
 AnalyticsPopupTitle,解析データの送信,Send analytics data,发送分析数据,發送分析數據
-AnalyticsPopupText,SuperNewRolesの開発のために、解析データを送信します。\n送信されるデータは以下をご覧ください。\n特定の個人を特定できる情報は送信しません。\nhttps://wiki.supernewroles.com/analytics,For the development of SuperNewRoles,\nwe will send analysis data.\nPlease see below for the details of the data being sent.\nNo personally identifiable information will be transmitted.\nhttps://wiki.supernewroles.com/analytics
+AnalyticsPopupText,SuperNewRolesの開発のために、解析データを送信します。\n送信されるデータは以下をご覧ください。\n特定の個人を特定できる情報は送信しません。\nhttps://wiki.supernewroles.com/analytics,For the development of SuperNewRoles，\nwe will send analysis data.\nPlease see below for the details of the data being sent.\nNo personally identifiable information will be transmitted.\nhttps://wiki.supernewroles.com/analytics
 AnalyticsOK,わかった,understand,我明白了,我明白了
+AndroidStartupNoticeTitle,Android版の注意,Android Notice,Android版本注意事项,Android版本注意事項
+AndroidStartupNoticeText,現在、<b>AmongUs v17.2aにアップデートした</b>プレイヤーがAndroid版でルームを作成しようとするとクラッシュする問題を確認しています。\n問題が解消されるまでご注意ください。続報は公式Twitter(現X)、もしくは公式Discordサーバーをご覧ください。\n\nTwitter(現X): @SNROfficials (https://supernewroles.com/twitter)\nDiscord: Https://supernewroles.com/discord,We have currently confirmed an issue where players who have **updated to Among Us v17.2a** experience a crash when attempting to create a room on the Android version. \nPlease be cautious until the issue is resolved. For further updates，please check our official Twitter (now X) or our official Discord server. \n\nTwitter (now X): @SNROfficials (https://supernewroles.com/twitter)\nDiscord: Https://supernewroles.com/discord
 
 # ClientOptions
 ClientOptionsVanilla,バニラ設定,Vanilla Settings,原版设置,原版設置

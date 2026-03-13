@@ -6,12 +6,12 @@ using System.Text;
 using BepInEx.Unity.IL2CPP.Utils.Collections;
 using HarmonyLib;
 using SuperNewRoles.CustomOptions.Categories;
+using SuperNewRoles.Patches;
 using SuperNewRoles.Roles;
 using TMPro;
 using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.Networking;
-using SuperNewRoles.Patches;
 
 namespace SuperNewRoles.Modules;
 public static class Analytics
@@ -57,23 +57,29 @@ public static class Analytics
 
             if (currentPopup == null)
                 currentPopup = null;
+
+            if (AndroidStartupNoticePopup.TryHandle(__instance, ref currentPopup))
+                return;
+
             if (!isAnalyticsPopupViewd && ConfigRoles.IsSendAnalyticsPopupViewd.Value)
                 isAnalyticsPopupViewd = true;
+
             if (currentPopup == null && !isAnalyticsPopupViewd)
             {
-                GameObject Popup = AssetManager.Instantiate("AnalyticsBG", Camera.main.transform);
-                Popup.gameObject.SetActive(true);
-                Popup.transform.Find("Title").GetComponent<TextMeshPro>().text = ModTranslation.GetString("AnalyticsPopupTitle");
-                Popup.transform.Find("Text").GetComponent<TextMeshPro>().text = ModTranslation.GetString("AnalyticsPopupText");
-                Popup.transform.localScale = Vector3.one * 0.58f;
-                GameObject AnalyticsButton = Popup.transform.Find("AnalyticsButton").gameObject;
-                AnalyticsButton.transform.Find("Text").GetComponent<TextMeshPro>().text = ModTranslation.GetString("AnalyticsOK");
-                PassiveButton passiveButton = AnalyticsButton.AddComponent<PassiveButton>();
-                passiveButton.Colliders = new Collider2D[] { AnalyticsButton.GetComponent<Collider2D>() };
+                GameObject popup = AssetManager.Instantiate("AnalyticsBG", Camera.main.transform);
+                popup.gameObject.SetActive(true);
+                popup.transform.Find("Title").GetComponent<TextMeshPro>().text = ModTranslation.GetString("AnalyticsPopupTitle");
+                popup.transform.Find("Text").GetComponent<TextMeshPro>().text = ModTranslation.GetString("AnalyticsPopupText");
+                popup.transform.localScale = Vector3.one * 0.58f;
+
+                GameObject analyticsButton = popup.transform.Find("AnalyticsButton").gameObject;
+                analyticsButton.transform.Find("Text").GetComponent<TextMeshPro>().text = ModTranslation.GetString("AnalyticsOK");
+                PassiveButton passiveButton = analyticsButton.AddComponent<PassiveButton>();
+                passiveButton.Colliders = new Collider2D[] { analyticsButton.GetComponent<Collider2D>() };
                 passiveButton.OnClick = new();
                 passiveButton.OnClick.AddListener((UnityAction)(() =>
                 {
-                    GameObject.Destroy(Popup);
+                    GameObject.Destroy(popup);
                     ConfigRoles.IsSendAnalyticsPopupViewd.Value = true;
                     isAnalyticsPopupViewd = true;
                     ConfigRoles.IsSendAnalytics.Value = true;
@@ -81,18 +87,19 @@ public static class Analytics
                 passiveButton.OnMouseOver = new();
                 passiveButton.OnMouseOver.AddListener((UnityAction)(() =>
                 {
-                    AnalyticsButton.transform.Find("Selected").gameObject.SetActive(true);
+                    analyticsButton.transform.Find("Selected").gameObject.SetActive(true);
                 }));
                 passiveButton.OnMouseOut = new();
                 passiveButton.OnMouseOut.AddListener((UnityAction)(() =>
                 {
-                    AnalyticsButton.transform.Find("Selected").gameObject.SetActive(false);
+                    analyticsButton.transform.Find("Selected").gameObject.SetActive(false);
                 }));
-                currentPopup = Popup;
-                return;
+
+                currentPopup = popup;
             }
         }
     }
+
     public static void SendAnalytics()
     {
         if (!ConfigRoles.IsSendAnalytics.Value) return;
@@ -100,6 +107,7 @@ public static class Analytics
         if (AmongUsClient.Instance.AmHost)
             PostSendData();
     }
+
     public static void PostSendClientData()
     {
         Dictionary<string, string> data = new();
@@ -107,9 +115,11 @@ public static class Analytics
         data.Add("Mode", Categories.ModeOption.ToString());
         data.Add("GameId", AmongUsClient.Instance.GameId.ToString());
         data.Add("Version", Statics.VersionString.ToString());
-        NetworkedPlayerInfo Host = null;
-        foreach (NetworkedPlayerInfo p in GameData.Instance.AllPlayers) if (p.ClientId == AmongUsClient.Instance.HostId) Host = p;
-        data.Add("HostFriendCode", ModHelpers.HashMD5(Host.FriendCode));
+        NetworkedPlayerInfo host = null;
+        foreach (NetworkedPlayerInfo p in GameData.Instance.AllPlayers)
+            if (p.ClientId == AmongUsClient.Instance.HostId)
+                host = p;
+        data.Add("HostFriendCode", ModHelpers.HashMD5(host.FriendCode));
         data.Add("PlayerCount", GameData.Instance.AllPlayers.Count.ToString());
         data.Add("Platform", Application.platform.ToString());
         // Additional client metrics
@@ -119,55 +129,56 @@ public static class Analytics
         string json = data.GetString();
         AmongUsClient.Instance.StartCoroutine(Post(AnalyticsUrl + SendClientDataUrl, json).WrapToIl2Cpp());
     }
+
     public static void PostSendData()
     {
-        string PlayerDatas = "";
-        string Options = "";
-        string ActivateRole = "";
-        string RealActivateRole = "";
-        List<RoleId> RealActivateRoleList = new();
+        string playerDatas = "";
+        string options = "";
+        string activateRole = "";
+        string realActivateRole = "";
+        List<RoleId> realActivateRoleList = new();
         foreach (NetworkedPlayerInfo player in GameData.Instance is null ? new() : GameData.Instance.AllPlayers)
         {
             if (player.PlayerId == PlayerControl.LocalPlayer.Data.PlayerId) continue;
-            PlayerDatas += $"{ModHelpers.HashMD5(player.FriendCode)},";
+            playerDatas += $"{ModHelpers.HashMD5(player.FriendCode)},";
         }
-        if (PlayerDatas.Length > 1)
+        if (playerDatas.Length > 1)
         {
-            PlayerDatas = PlayerDatas.Substring(0, PlayerDatas.Length - 1);
+            playerDatas = playerDatas.Substring(0, playerDatas.Length - 1);
         }
 
         foreach (CustomOption opt in CustomOptionManager.CustomOptions)
         {
             if (opt.Selection == 0) continue;
-            Options += $"{opt.Id}:{opt.Selection},";
+            options += $"{opt.Id}:{opt.Selection},";
         }
 
-        if (Options.Length >= 1)
+        if (options.Length >= 1)
         {
-            Options = Options.Substring(0, Options.Length - 1);
+            options = options.Substring(0, options.Length - 1);
         }
 
         foreach (RoleOptionManager.RoleOption opt in RoleOptionManager.RoleOptions)
         {
             if (opt.NumberOfCrews == 0 || opt.Percentage == 0) continue;
-            ActivateRole += $"{opt.RoleId},";
+            activateRole += $"{opt.RoleId},";
         }
-        if (ActivateRole.Length >= 1)
+        if (activateRole.Length >= 1)
         {
-            ActivateRole = ActivateRole.Substring(0, ActivateRole.Length - 1);
+            activateRole = activateRole.Substring(0, activateRole.Length - 1);
         }
         foreach (ExPlayerControl p in ExPlayerControl.ExPlayerControls)
         {
-            if (RealActivateRoleList.Contains(p.Role)) continue;
-            RealActivateRoleList.Add(p.Role);
+            if (realActivateRoleList.Contains(p.Role)) continue;
+            realActivateRoleList.Add(p.Role);
         }
-        foreach (RoleId role in RealActivateRoleList)
+        foreach (RoleId role in realActivateRoleList)
         {
-            RealActivateRole += role + ",";
+            realActivateRole += role + ",";
         }
-        if (RealActivateRole.Length >= 1)
+        if (realActivateRole.Length >= 1)
         {
-            RealActivateRole = RealActivateRole.Substring(0, RealActivateRole.Length - 1);
+            realActivateRole = realActivateRole.Substring(0, realActivateRole.Length - 1);
         }
 
         Dictionary<string, string> data = new();
@@ -175,10 +186,10 @@ public static class Analytics
         data.Add("Mode", Categories.ModeOption.ToString());
         data.Add("GameId", AmongUsClient.Instance.GameId.ToString());
         data.Add("Version", Statics.VersionString.ToString());
-        data.Add("PlayerDatas", PlayerDatas);
-        data.Add("Options", Options);
-        data.Add("ActivateRoles", ActivateRole);
-        data.Add("RealActivateRoles", RealActivateRole);
+        data.Add("PlayerDatas", playerDatas);
+        data.Add("Options", options);
+        data.Add("ActivateRoles", activateRole);
+        data.Add("RealActivateRoles", realActivateRole);
         data.Add("MapId", GameOptionsManager.Instance.CurrentGameOptions.MapId.ToString());
         data.Add("GameMode", GameOptionsManager.Instance.currentGameMode.ToString());
         data.Add("Platform", Application.platform.ToString());
@@ -204,6 +215,7 @@ public static class Analytics
         float avg = sum / s_fpsBufferCount;
         return (Mathf.Round(avg * 10f) / 10f).ToString();
     }
+
     private static string GetFps1PercentLowString()
     {
         if (s_fpsBufferCount == 0) return "";
@@ -218,6 +230,7 @@ public static class Analytics
         float avg = (float)(sum / k);
         return (Mathf.Round(avg * 10f) / 10f).ToString();
     }
+
     private static int GetAveragePing()
     {
         if (s_pingBufferCount == 0) return AmongUsClient.Instance != null ? AmongUsClient.Instance.Ping : 0;
@@ -225,6 +238,7 @@ public static class Analytics
         for (int i = 0; i < s_pingBufferCount; i++) sum += s_pingBuffer[i];
         return Mathf.RoundToInt((float)sum / s_pingBufferCount);
     }
+
     private static string GetServerNumberString()
     {
         try
@@ -254,6 +268,7 @@ public static class Analytics
         catch { }
         return "";
     }
+
     private static string GetWinningTeamString()
     {
         try
@@ -266,6 +281,7 @@ public static class Analytics
         catch { }
         return "";
     }
+
     private static string GetMatchStartAtString()
     {
         try
@@ -274,6 +290,7 @@ public static class Analytics
         }
         catch { return ""; }
     }
+
     public static string GetString(this IList<string> list)
     {
         string txt = "[]";
@@ -283,6 +300,7 @@ public static class Analytics
         }
         return txt.Substring(0, txt.Length - 1) + "]";
     }
+
     public static string GetString(this IDictionary<string, string> dict)
     {
         var items = dict.Select(kvp => $"{kvp.Key}={Il2CppSystem.Web.HttpUtility.UrlEncode(kvp.Value)}");
@@ -293,6 +311,7 @@ public static class Analytics
         }
         return txt.Substring(0, txt.Length - 1);
     }
+
     public static IEnumerator Post(string url, string jsonstr)
     {
         var request = new UnityWebRequest(url, "POST");
