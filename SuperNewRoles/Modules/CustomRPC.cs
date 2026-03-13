@@ -78,18 +78,19 @@ public static class CustomRPCManager
     /// </summary>
     private static HashSet<MethodBase> InstanceMethodSet = new();
 
+    private const byte SNRBaseRpcId = byte.MaxValue - 1;
     /// <summary>
     /// SuperNewRoles専用のRPC識別子
     /// </summary>
-    private const byte SNRRpcId = byte.MaxValue;
+    private const byte SNRRpcId = SNRBaseRpcId;
     /// <summary>
     /// バージョン同期用のRPC識別子
     /// </summary>
-    public const byte SNRSyncVersionRpc = byte.MaxValue - 1;
+    public const byte SNRSyncVersionRpc = SNRBaseRpcId - 1;
     /// <summary>
     /// ネットワーク移動用のRPC識別子
     /// </summary>
-    public const byte SNRNetworkTransformRpc = byte.MaxValue - 2;
+    public const byte SNRNetworkTransformRpc = SNRBaseRpcId - 2;
     /// <summary>
     /// RPCの受信状態を追跡するフラグ
     /// </summary>
@@ -270,7 +271,8 @@ public static class CustomRPCManager
         /// </summary>
         public static void Postfix(byte callId, MessageReader reader)
         {
-            if (callId != 253)
+            // SNRの移動ログは大量に出る可能性があるため、ログに出さない
+            if (callId != SNRNetworkTransformRpc)
                 Logger.Info($"Received RPC: {callId}");
             // SuperNewRoles専用のRPCの場合
             switch (callId)
