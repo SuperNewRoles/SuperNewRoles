@@ -131,7 +131,6 @@ public class CustomVisorLayer : MonoBehaviour
 
     public void SetVisor(ICosmeticData data, int color)
     {
-        Logger.Info($"SetVisor: {data.ProdId}");
         if (data == null || data != Visor)
         {
             Image.sprite = null;
