@@ -25,6 +25,13 @@ public static class HawkZoom
     public static float manualTargetSize = DefaultManualTargetSize; // 手動ズームの目標サイズ
     private static bool manualTargetInitialized = false;
 
+    public static void ResetState()
+    {
+        manualTargetInitialized = false;
+        last = 0f;
+        zoomSpeed = 0f;
+    }
+
     public static void Postfix()
     {
         // 試合中だけズーム更新を行う。
@@ -251,8 +258,6 @@ public static class HudManagerStartPatch
     {
         // 試合開始時に前試合のズーム倍率が残らないよう初期化する。
         HawkZoom.size = HawkZoom.manualTargetSize = HawkZoom.DefaultManualTargetSize;
-        HawkZoom.manualTargetInitialized = false;
-        HawkZoom.last = 0f;
-        HawkZoom.zoomSpeed = 0f;
+        HawkZoom.ResetState();
     }
 }
