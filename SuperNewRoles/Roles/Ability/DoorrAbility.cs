@@ -1,4 +1,4 @@
-using System.Linq;
+using System.Collections.Generic;
 using UnityEngine;
 using SuperNewRoles.Roles.Ability.CustomButton;
 using SuperNewRoles.Modules;
@@ -7,6 +7,11 @@ namespace SuperNewRoles.Roles.Ability;
 
 public class DoorrAbility : CustomButtonBase
 {
+    private const float AutoDoorUsableDistance = 1.5f;
+    private static ShipStatus cachedShipStatus;
+    // CheckIsAvailable が毎フレーム呼ばれるので、使用距離だけはマップ単位でキャッシュする。
+    private static float[] cachedUsableDistanceSqr = [];
+
     public override float DefaultTimer => CoolTime;
     public override string buttonText => ModTranslation.GetString("DoorrButtonText");
     public override Sprite Sprite => AssetManager.GetAsset<Sprite>("DoorrDoorButton.png");
@@ -21,34 +26,117 @@ public class DoorrAbility : CustomButtonBase
 
     public override bool CheckIsAvailable()
     {
-        return GetDoor() != null && PlayerControl.LocalPlayer.CanMove;
+        // ボタン表示は「移動可能で、今の位置から触れるドアがあるか」だけを見る。
+        return PlayerControl.LocalPlayer && PlayerControl.LocalPlayer.CanMove && TryGetDoorIndex(out _);
     }
 
     public override void OnClick()
     {
-        var door = GetDoor();
-        if (door != null)
+        if (TryGetDoorIndex(out int doorIndex))
         {
-            RpcSetDoorway(door.Id, !door.IsOpen);
+            // ドア指定は Id ではなく AllDoors の index を使う。
+            RpcSetDoorway(doorIndex, !ShipStatus.Instance.AllDoors[doorIndex].IsOpen);
             ResetTimer();
         }
     }
 
     [CustomRPC]
-    public void RpcSetDoorway(int doorId, bool isOpen)
+    public void RpcSetDoorway(int doorIndex, bool isOpen)
     {
-        var door = ShipStatus.Instance.AllDoors.FirstOrDefault(x => x.Id == doorId);
+        var allDoors = ShipStatus.Instance?.AllDoors;
+        if (allDoors == null) return;
+        if (doorIndex < 0 || doorIndex >= allDoors.Length) return;
+
+        // 受信側でも同じ index から対象ドアを引く。
+        var door = allDoors[doorIndex];
         if (door == null) return;
+        SetDoorway(door, isOpen);
+    }
+
+    private static void SetDoorway(OpenableDoor door, bool isOpen)
+    {
+        if (door is AutoOpenDoor autoOpenDoor && ShipStatus.Instance.Systems.TryGetValue(SystemTypes.Doors, out var doorSystem))
+        {
+            // AutoOpenDoor は System 経由で更新しないと dirty bit が立たず同期されない。
+            var autoDoorsSystem = doorSystem.TryCast<AutoDoorsSystemType>();
+            if (autoDoorsSystem != null)
+            {
+                autoDoorsSystem.SetDoor(autoOpenDoor, isOpen);
+                return;
+            }
+        }
+
         door.SetDoorway(isOpen);
     }
 
-    private static OpenableDoor GetDoor()
+    private static bool TryGetDoorIndex(out int nearestDoorIndex)
     {
-        return GameObject.FindObjectsOfType<DoorConsole>().FirstOrDefault(x =>
+        var localPlayer = PlayerControl.LocalPlayer;
+        var shipStatus = ShipStatus.Instance;
+        var allDoors = shipStatus?.AllDoors;
+        if (!localPlayer || allDoors == null)
         {
-            if (x.MyDoor == null) return false;
-            float num = Vector2.Distance(PlayerControl.LocalPlayer.GetTruePosition(), x.transform.position);
-            return num <= x.UsableDistance;
-        })?.MyDoor;
+            nearestDoorIndex = -1;
+            return false;
+        }
+
+        EnsureDoorCache(shipStatus);
+
+        var playerPosition = localPlayer.GetTruePosition();
+        float nearestDistanceSqr = float.MaxValue;
+        nearestDoorIndex = -1;
+
+        // 候補は ShipStatus.AllDoors をそのまま回して、一番近い有効ドアだけ拾う。
+        for (int i = 0; i < allDoors.Length; i++)
+        {
+            var door = allDoors[i];
+            float usableDistanceSqr = cachedUsableDistanceSqr[i];
+            if (door == null || usableDistanceSqr <= 0f) continue;
+
+            var doorPosition = (Vector2)door.transform.position;
+            float distanceSqr = (playerPosition - doorPosition).sqrMagnitude;
+            if (distanceSqr > usableDistanceSqr || distanceSqr >= nearestDistanceSqr) continue;
+
+            nearestDoorIndex = i;
+            nearestDistanceSqr = distanceSqr;
+        }
+
+        return nearestDoorIndex != -1;
+    }
+
+    private static void EnsureDoorCache(ShipStatus shipStatus)
+    {
+        // シーン内の ShipStatus が変わらない限り再計算しない。
+        if (cachedShipStatus == shipStatus) return;
+
+        cachedShipStatus = shipStatus;
+        var allDoors = shipStatus.AllDoors;
+        if (allDoors == null || allDoors.Length == 0)
+        {
+            cachedUsableDistanceSqr = [];
+            return;
+        }
+
+        cachedUsableDistanceSqr = new float[allDoors.Length];
+        for (int i = 0; i < allDoors.Length; i++)
+        {
+            // 毎フレーム GetComponent しないように、使用可能距離だけ前計算しておく。
+            cachedUsableDistanceSqr[i] = GetUsableDistanceSqr(allDoors[i]);
+        }
+    }
+
+    private static float GetUsableDistanceSqr(OpenableDoor door)
+    {
+        // この役職で触らせたくない特殊ドアはここで除外する。
+        if (door is null or AutoCloseDoor or MushroomWallDoor) return -1f;
+        // Skeld 系はコンソールなしで直接ドアを使う。
+        if (door.TryCast<AutoOpenDoor>() != null) return AutoDoorUsableDistance * AutoDoorUsableDistance;
+
+        // 通常マップは既存のコンソール距離に合わせる。
+        var doorConsole = door.GetComponent<DoorConsole>();
+        if (doorConsole != null) return doorConsole.UsableDistance * doorConsole.UsableDistance;
+
+        var openDoorConsole = door.GetComponent<OpenDoorConsole>();
+        return openDoorConsole != null ? openDoorConsole.UsableDistance * openDoorConsole.UsableDistance : -1f;
     }
 }
