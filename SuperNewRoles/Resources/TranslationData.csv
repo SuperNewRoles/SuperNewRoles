@@ -1867,6 +1867,7 @@ SilverBulletCanRepairUseCountOption,修理回数,Repair Count
 
 # GhostMechanic
 GhostMechanicCannotFixMushroomMixup,キノコカオスを修復できない,Cannot Fix Mushroom Mixup
+RepairButtonText,修復,Repair
 
 # MadJester
 MadJesterWinOnExiled,勝利にタスク完了が必要,Tasks must be completed to win when exiled,放逐获胜需完成任务,被逐出獲勝需完成任務
