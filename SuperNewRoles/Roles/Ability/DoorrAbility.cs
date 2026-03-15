@@ -1,4 +1,3 @@
-using System.Collections.Generic;
 using UnityEngine;
 using SuperNewRoles.Roles.Ability.CustomButton;
 using SuperNewRoles.Modules;
@@ -55,18 +54,43 @@ public class DoorrAbility : CustomButtonBase
 
     private static void SetDoorway(OpenableDoor door, bool isOpen)
     {
-        if (door is AutoOpenDoor autoOpenDoor && ShipStatus.Instance.Systems.TryGetValue(SystemTypes.Doors, out var doorSystem))
+        var shipStatus = ShipStatus.Instance;
+        if (door is AutoOpenDoor autoOpenDoor && shipStatus && shipStatus.Systems.TryGetValue(SystemTypes.Doors, out var doorSystem))
         {
             // AutoOpenDoor は System 経由で更新しないと dirty bit が立たず同期されない。
             var autoDoorsSystem = doorSystem.TryCast<AutoDoorsSystemType>();
             if (autoDoorsSystem != null)
             {
-                autoDoorsSystem.SetDoor(autoOpenDoor, isOpen);
+                if (shipStatus.Type == ShipStatus.MapType.Ship)
+                {
+                    SetRoomAutoDoors(autoDoorsSystem, shipStatus.AllDoors, autoOpenDoor, isOpen);
+                }
+                else
+                {
+                    autoDoorsSystem.SetDoor(autoOpenDoor, isOpen);
+                }
                 return;
             }
         }
 
         door.SetDoorway(isOpen);
+    }
+
+    private static void SetRoomAutoDoors(AutoDoorsSystemType autoDoorsSystem, OpenableDoor[] allDoors, AutoOpenDoor targetDoor, bool isOpen)
+    {
+        bool updated = false;
+        for (int i = 0; i < allDoors.Length; i++)
+        {
+            if (allDoors[i] is not AutoOpenDoor roomDoor || roomDoor.Room != targetDoor.Room) continue;
+
+            autoDoorsSystem.SetDoor(roomDoor, isOpen);
+            updated = true;
+        }
+
+        if (!updated)
+        {
+            autoDoorsSystem.SetDoor(targetDoor, isOpen);
+        }
     }
 
     private static bool TryGetDoorIndex(out int nearestDoorIndex)
