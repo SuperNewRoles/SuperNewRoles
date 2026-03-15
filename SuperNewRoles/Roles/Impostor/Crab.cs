@@ -31,7 +31,7 @@ internal class Crab : RoleBase<Crab>
     public static float CrabCoolTime;
     [CustomOptionFloat("CrabEffectDuration", 0f, 30f, 0.5f, 5f, translationName: "DurationTime")]
     public static float CrabEffectDuration;
-    [CustomOptionBool("CrabAffectsGhosts", true, translationName: "CrabAffectsGhosts")]
+    [CustomOptionBool("CrabAffectsGhosts", true, translationName: "AbilityAffectsGhosts")]
     public static bool CrabAffectsGhosts;
 }
 

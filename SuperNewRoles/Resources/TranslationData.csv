@@ -1454,7 +1454,7 @@ CupidCanSeeCreatedLoversRole,キューピットがラバーズの役職が見え
 
 # Crab
 CrabButton,カニ!,Crab!,螃蟹!,螃蟹!
-CrabAffectsGhosts,死者にも影響する,Affects Ghosts,也影响幽灵,也影響幽靈
+AbilityAffectsGhosts,死者にも影響する,Affects Ghosts,也影响幽灵,也影響幽靈
 # SpeedBooster
 SpeedBoosterButton,ブースト!,Boost!,加速!,加速!
 SpeedBoosterMultiplier,スピード倍率,Speed Multiplier,速度倍率,速度倍率
