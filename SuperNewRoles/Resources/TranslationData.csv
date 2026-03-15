@@ -163,7 +163,7 @@ AprilFoolsOutfitType.None,なし,None,无变化,無變化
 AprilFoolsOutfitType.Horse,ウマングアス,Horse,牧马,牧馬
 AprilFoolsOutfitType.AlongUs,ロングモード,aLONG us,长颈豆,長頸豆
 AprilFoolsEnableDleks,ドルクス,Dleks ehT,舰髅骷,艦髅骷
-DisableHauntNonCompleted,タスクを完了していないと憑依できない,Disable haunt if the task is not completed,如果任务尚未做完则禁用幽幽鬼影,如果任務尚未做完則禁用y'y'g'y
+DisableHauntNonCompleted,タスクを完了していないと憑依できない,Disable haunt if the task is not completed,如果任务尚未做完则禁用幽幽鬼影,如果任務尚未做完則禁用幽幽鬼影
 EnabledZoomOnDead,霊界千里眼を有効にする,Enable spectator clairvoyance after death,启用千里眼,啟用千里眼
 InitialCooldown,初手クールタイム設定,Initial Cooldown Setting,初始冷却设置,初始冷卻設定
 InitialCooldownType.TenSeconds,10秒,10 Seconds,10秒,10秒
