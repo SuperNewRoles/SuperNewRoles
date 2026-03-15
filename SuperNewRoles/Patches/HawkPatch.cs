@@ -3,6 +3,7 @@ using HarmonyLib;
 using SuperNewRoles.CustomOptions.Categories;
 using SuperNewRoles.Events;
 using SuperNewRoles.Modules;
+using SuperNewRoles.Roles.Ability;
 using UnityEngine;
 
 namespace SuperNewRoles.Patches;
@@ -40,6 +41,7 @@ public static class HawkZoom
         }
 
         HawkEventData data = HawkEvent.Invoke(false, (int)manualTargetSize, false);
+        bool isBuskerFakeDeath = ExPlayerControl.LocalPlayer?.GetAbility<BuskerPseudocideAbility>()?.isEffectActive == true;
 
         if (data.RefAcceleration) // アビリティがSmoothDampを要求する場合
         {
@@ -52,7 +54,7 @@ public static class HawkZoom
             zoomSpeed = 0f;
         }
         // ユーザーが編集した手動ズーム条件
-        else if (GameSettingOptions.EnabledZoomOnDead && !data.RefCancelZoom && ExPlayerControl.LocalPlayer != null && ExPlayerControl.LocalPlayer.IsDead() && MeetingHud.Instance == null)
+        else if (GameSettingOptions.EnabledZoomOnDead && !data.RefCancelZoom && ExPlayerControl.LocalPlayer != null && ExPlayerControl.LocalPlayer.IsDead() && !isBuskerFakeDeath && MeetingHud.Instance == null)
         {
             if (!PlayerControl.LocalPlayer.CanMove)
             {
