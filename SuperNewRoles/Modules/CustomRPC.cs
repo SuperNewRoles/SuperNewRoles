@@ -250,7 +250,7 @@ public static class CustomRPCManager
             Logger.Info($"Sent RPC: {__originalMethod.Name} OnlyOther={onlyOther}");
             return !onlyOther;
         }
-        Logger.Info($"Registering RPC: {method.Name} {id}");
+        Logger.Info($"Registering RPC: {method.Name} {id} {hash}");
         var newHarmonyMethod = NewMethod;
         RpcMethods[id] = method;
         RpcMethodIds[hash] = id; // 事前計算したハッシュを使用
