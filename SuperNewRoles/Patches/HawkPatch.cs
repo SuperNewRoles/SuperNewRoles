@@ -5,6 +5,7 @@ using SuperNewRoles.CustomOptions.Categories;
 using SuperNewRoles.Events;
 using SuperNewRoles.Modules;
 using SuperNewRoles.Roles;
+using SuperNewRoles.Roles.Ability;
 using UnityEngine;
 
 namespace SuperNewRoles.Patches;
@@ -53,9 +54,12 @@ public static class HawkZoom
         bool isMeetingOpen = MeetingHud.Instance != null;
         bool requireCompletedTasks = GameSettingOptions.EnabledZoomOnDeadRequireCompletedTasks;
         bool disableForGhostOrGuardianAngel = GameSettingOptions.EnabledZoomOnDeadDisableForGhostOrGuardianAngel;
+        bool isBuskerFakeDeath = ExPlayerControl.LocalPlayer?.GetAbility<BuskerPseudocideAbility>()?.isEffectActive == true;
 
+        // バスカーの擬似死中は死亡後ズームの対象外として扱う。
+        bool isEligibleDeadState = isDead && !isBuskerFakeDeath;
         // 毎フレーム呼ばれるので、親条件を満たさない間は重めの補助判定を先に計算しない。
-        bool shouldEvaluateChildRestrictions = enabledZoomOnDead && isDead && !isMeetingOpen;
+        bool shouldEvaluateChildRestrictions = enabledZoomOnDead && isEligibleDeadState && !isMeetingOpen;
 
         bool isTaskTriggerRole = false;
         int completedTasks = 0;
@@ -84,7 +88,7 @@ public static class HawkZoom
         // 死亡後手動ズーム可否を pure helper に寄せ、テストからも同じ判定を叩けるようにする。
         DeadZoomState deadZoomState = DeadZoomHelper.EvaluateManualDeadZoom(
             enabledZoomOnDead,
-            isDead,
+            isEligibleDeadState,
             isMeetingOpen,
             requireCompletedTasks,
             isTaskTriggerRole,

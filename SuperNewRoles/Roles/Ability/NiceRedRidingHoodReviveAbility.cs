@@ -64,7 +64,7 @@ public class NiceRedRidingHoodReviveAbility : AbilityBase, IAbilityCount
 
     private void OnWrapUpEvent(WrapUpEventData data)
     {
-        if (!IsRevivable || !Player.IsAlive()) return;
+        if (!IsRevivable || Player.IsAlive() || Killer == null) return;
         // 追放者がキラーの場合、復活判定
         if (data.exiled != null && data.exiled == Killer)
         {

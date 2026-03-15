@@ -1456,7 +1456,7 @@ CupidCanSeeCreatedLoversRole,キューピットがラバーズの役職が見え
 
 # Crab
 CrabButton,カニ!,Crab!,螃蟹!,螃蟹!
-CrabAffectsGhosts,死者にも影響する,Affects Ghosts,也影响幽灵,也影響幽靈
+AbilityAffectsGhosts,死者にも影響する,Affects Ghosts,也影响幽灵,也影響幽靈
 # SpeedBooster
 SpeedBoosterButton,ブースト!,Boost!,加速!,加速!
 SpeedBoosterMultiplier,スピード倍率,Speed Multiplier,速度倍率,速度倍率
@@ -1869,6 +1869,7 @@ SilverBulletCanRepairUseCountOption,修理回数,Repair Count
 
 # GhostMechanic
 GhostMechanicCannotFixMushroomMixup,キノコカオスを修復できない,Cannot Fix Mushroom Mixup
+RepairButtonText,修復,Repair
 
 # MadJester
 MadJesterWinOnExiled,勝利にタスク完了が必要,Tasks must be completed to win when exiled,放逐获胜需完成任务,被逐出獲勝需完成任務

@@ -118,15 +118,16 @@ public class AreaKillButtonAbility : CustomButtonBase
     public void RpcAreaKill(List<ExPlayerControl> killedPlayers, CustomDeathType customDeathType)
     {
         if (killedPlayers.Count == 0) return;
-        var localPlayer = ExPlayerControl.LocalPlayer;
+        var killer = Player;
+        if (killer == null) return;
         BeforeKillCallback?.Invoke(killedPlayers);
         foreach (var player in killedPlayers)
         {
-            player.CustomDeath(customDeathType, source: localPlayer);
+            player.CustomDeath(customDeathType, source: killer);
         }
         KilledCallback?.Invoke(killedPlayers);
         if (killedPlayers.Count > 0)
-            AreaKillEvent.Invoke(localPlayer, killedPlayers, CustomDeathType);
+            AreaKillEvent.Invoke(killer, killedPlayers, CustomDeathType);
         if (ExPlayerControl.ExPlayerControls.Count(x => x.IsAlive()) == 0)
             EndGamer.RpcEndGameImpostorWin();
     }
