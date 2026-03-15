@@ -251,5 +251,8 @@ public static class HudManagerStartPatch
     {
         // 試合開始時に前試合のズーム倍率が残らないよう初期化する。
         HawkZoom.size = HawkZoom.manualTargetSize = HawkZoom.DefaultManualTargetSize;
+        HawkZoom.manualTargetInitialized = false;
+        HawkZoom.last = 0f;
+        HawkZoom.zoomSpeed = 0f;
     }
 }
