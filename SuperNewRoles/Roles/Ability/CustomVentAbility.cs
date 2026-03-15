@@ -81,11 +81,22 @@ public class CustomVentAbility : CustomButtonBase, IButtonEffect
     private int _lastCheckedCount;
     private bool? _lastCheckedResult;
     protected Vent CurrentVent;
+    protected virtual bool CanTargetVent(Vent vent)
+    {
+        if (vent == null)
+            return false;
+
+        return !WormHole.IsWormHole(vent) || ExPlayerControl.LocalPlayer.IsImpostor();
+    }
+
     protected Vent SetVentTarget(float? distance = null)
     {
         Vector3 center = PlayerControl.LocalPlayer.Collider.bounds.center;
         foreach (Vent vent in ShipStatus.Instance.AllVents)
         {
+            if (!CanTargetVent(vent))
+                continue;
+
             Vector3 position = vent.transform.position;
             float num = Vector2.Distance(center, position);
             if (distance.HasValue)
