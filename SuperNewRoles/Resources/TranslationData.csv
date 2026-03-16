@@ -165,6 +165,8 @@ AprilFoolsOutfitType.AlongUs,ロングモード,aLONG us,长颈豆,長頸豆
 AprilFoolsEnableDleks,ドルクス,Dleks ehT,舰髅骷,艦髅骷
 DisableHauntNonCompleted,タスクを完了していないと憑依できない,Disable haunt if the task is not completed,如果任务尚未做完则禁用幽幽鬼影,如果任務尚未做完則禁用幽幽鬼影
 EnabledZoomOnDead,霊界千里眼を有効にする,Enable spectator clairvoyance after death,启用千里眼,啟用千里眼
+EnabledZoomOnDeadRequireCompletedTasks,タスクを完了していないとズームできない,Cannot zoom until your tasks are completed,未完成任务前无法缩放视野,未完成任務前無法縮放視野
+EnabledZoomOnDeadDisableForGhostOrGuardianAngel,幽霊役職または守護天使ならズームできない,Cannot zoom if you are a ghost role or Guardian Angel,如果是幽灵职业或守护天使则无法缩放视野,如果是幽靈職業或守護天使則無法縮放視野
 InitialCooldown,初手クールタイム設定,Initial Cooldown Setting,初始冷却设置,初始冷卻設定
 InitialCooldownType.TenSeconds,10秒,10 Seconds,10秒,10秒
 InitialCooldownType.Immediate,設定値通り,Immediate,遵循设置,遵循設定
@@ -1454,7 +1456,8 @@ CupidCanSeeCreatedLoversRole,キューピットがラバーズの役職が見え
 
 # Crab
 CrabButton,カニ!,Crab!,螃蟹!,螃蟹!
-CrabAffectsGhosts,死者にも影響する,Affects Ghosts,也影响幽灵,也影響幽靈
+AbilityAffectsGhosts,死者にも影響する,Affects Ghosts,也影响幽灵,也影響幽靈
+
 # SpeedBooster
 SpeedBoosterButton,ブースト!,Boost!,加速!,加速!
 SpeedBoosterMultiplier,スピード倍率,Speed Multiplier,速度倍率,速度倍率
@@ -1867,6 +1870,7 @@ SilverBulletCanRepairUseCountOption,修理回数,Repair Count,修理次数,
 
 # GhostMechanic
 GhostMechanicCannotFixMushroomMixup,キノコカオスを修復できない,Cannot Fix Mushroom Mixup,无法修复蘑菇混沌,
+RepairButtonText,修復,Repair,修理,維修
 
 # MadJester
 MadJesterWinOnExiled,勝利にタスク完了が必要,Tasks must be completed to win when exiled,放逐获胜需完成任务,被逐出獲勝需完成任務
