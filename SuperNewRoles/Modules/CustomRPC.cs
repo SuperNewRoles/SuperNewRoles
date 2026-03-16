@@ -113,13 +113,56 @@ public static class CustomRPCManager
     /// <returns>メソッドのハッシュ文字列</returns>
     private static string RpcHashGenerate(MethodInfo method)
     {
-        // メソッドのハッシュ値を名前とメソッドの引数の型内容を元に生成
-        return GetMethodFullName(method) + "(" + string.Join(",", method.GetParameters().Select(p => p.ParameterType.FullName ?? p.ParameterType.Name)) + ")";
+        return GetStableMethodSignature(method);
     }
     private static string RpcHashGenerate(MethodBase method)
     {
-        // メソッドのハッシュ値を名前とメソッドの引数の型内容を元に生成
-        return GetMethodFullName(method) + "(" + string.Join(",", method.GetParameters().Select(p => p.ParameterType.FullName ?? p.ParameterType.Name)) + ")";
+        return GetStableMethodSignature(method);
+    }
+    internal static string GetStableMethodSignature(MethodBase method)
+    {
+        return GetMethodFullName(method) + "(" + string.Join(",", method.GetParameters().Select(p => GetStableTypeName(p.ParameterType))) + ")";
+    }
+    internal static string GetStableTypeName(Type type)
+    {
+        if (type.IsByRef)
+            return GetStableTypeName(type.GetElementType() ?? typeof(void)) + "&";
+        if (type.IsPointer)
+            return GetStableTypeName(type.GetElementType() ?? typeof(void)) + "*";
+        if (type.IsArray)
+        {
+            string commas = new string(',', Math.Max(0, type.GetArrayRank() - 1));
+            return GetStableTypeName(type.GetElementType() ?? typeof(void)) + "[" + commas + "]";
+        }
+        if (type.IsGenericParameter)
+            return type.Name;
+        if (type.IsGenericType)
+        {
+            string genericTypeName = GetStableNonGenericTypeName(type.GetGenericTypeDefinition());
+            string genericArguments = string.Join(",", type.GetGenericArguments().Select(GetStableTypeName));
+            return genericTypeName + "<" + genericArguments + ">";
+        }
+        return GetStableNonGenericTypeName(type);
+    }
+    private static string GetStableNonGenericTypeName(Type type)
+    {
+        if (type.IsNested && type.DeclaringType != null)
+        {
+            return GetStableNonGenericTypeName(type.DeclaringType) + "." + StripGenericArity(type.Name);
+        }
+
+        string fullName = type.FullName ?? type.Name;
+        int genericArgsIndex = fullName.IndexOf('[');
+        if (genericArgsIndex >= 0)
+        {
+            fullName = fullName.Substring(0, genericArgsIndex);
+        }
+        return StripGenericArity(fullName.Replace('+', '.'));
+    }
+    private static string StripGenericArity(string typeName)
+    {
+        int tickIndex = typeName.IndexOf('`');
+        return tickIndex >= 0 ? typeName.Substring(0, tickIndex) : typeName;
     }
     public static int GetDeterministicRpcId(string rpcSignature) => RpcIdGenerate(rpcSignature);
     public static int GetDeterministicRpcId(MethodBase method) => RpcIdGenerate(RpcHashGenerate(method));
@@ -260,12 +303,12 @@ public static class CustomRPCManager
     }
     private static string GetMethodFullName(MethodInfo method)
     {
-        string declaringTypeName = method.DeclaringType?.FullName ?? method.DeclaringType?.Name ?? "<UnknownType>";
+        string declaringTypeName = method.DeclaringType != null ? GetStableTypeName(method.DeclaringType) : "<UnknownType>";
         return declaringTypeName + "." + method.Name;
     }
     private static string GetMethodFullName(MethodBase method)
     {
-        string declaringTypeName = method.DeclaringType?.FullName ?? method.DeclaringType?.Name ?? "<UnknownType>";
+        string declaringTypeName = method.DeclaringType != null ? GetStableTypeName(method.DeclaringType) : "<UnknownType>";
         return declaringTypeName + "." + method.Name;
     }
     /// <summary>

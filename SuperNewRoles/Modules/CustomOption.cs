@@ -277,6 +277,8 @@ public class CustomOption
     protected byte _selection_My;
     protected object _value_Host;
     protected byte _selection_Host;
+    private bool _hasLocalSelection;
+    private bool _hasHostSelection;
     private readonly object _defaultValue;
     private readonly byte _defaultSelection;
 
@@ -292,8 +294,8 @@ public class CustomOption
             return false;
         }
     }
-    public object Value => IsRemoteClient() ? _value_Host : _value_My;
-    public byte Selection => IsRemoteClient() ? _selection_Host : _selection_My;
+    public object Value => GetCurrentValue(IsRemoteClient());
+    public byte Selection => GetCurrentSelection(IsRemoteClient());
     public byte MySelection => _selection_My;
     public string Id => Attribute.Id;
     public ushort IndexId { get; internal set; }
@@ -313,6 +315,44 @@ public class CustomOption
     /// CustomOptionBoolAttributeが設定されている場合にtrueを返します。
     /// </summary>
     public bool IsBooleanOption { get; }
+
+    internal object GetCurrentValue(bool isRemoteClient)
+    {
+        if (isRemoteClient)
+        {
+            if (_hasHostSelection)
+                return _value_Host;
+            if (_hasLocalSelection)
+                return _value_My;
+        }
+        else if (_hasLocalSelection)
+        {
+            return _value_My;
+        }
+
+        byte fallbackSelection = GetCurrentSelection(isRemoteClient);
+        if (Selections.Length > 0 && fallbackSelection < Selections.Length)
+            return Selections[fallbackSelection];
+
+        return _defaultValue;
+    }
+
+    internal byte GetCurrentSelection(bool isRemoteClient)
+    {
+        if (isRemoteClient)
+        {
+            if (_hasHostSelection)
+                return _selection_Host;
+            if (_hasLocalSelection)
+                return _selection_My;
+        }
+        else if (_hasLocalSelection)
+        {
+            return _selection_My;
+        }
+
+        return _defaultSelection;
+    }
 
     public string GetCurrentSelectionString()
     {
@@ -375,11 +415,13 @@ public class CustomOption
             {
                 _selection_Host = value;
                 _value_Host = Selections[value];
+                _hasHostSelection = true;
             }
             else
             {
                 _selection_My = value;
                 _value_My = Selections[value];
+                _hasLocalSelection = true;
             }
             if (!IsTaskOption)
                 FieldInfo.SetValue(null, Value);
