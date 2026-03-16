@@ -64,16 +64,10 @@ public static class SyncVersion
     }
     private static void AppendMethodInfo(System.Text.StringBuilder builder, KeyValuePair<int, MethodInfo> method)
     {
-        var parameters = method.Value.GetParameters();
-        string declaringTypeName = method.Value.DeclaringType?.FullName ?? method.Value.DeclaringType?.Name ?? "<UnknownType>";
         builder.Append(method.Key)
                .Append(':')
-               .Append(declaringTypeName)
-               .Append('.')
-               .Append(method.Value.Name)
-               .Append('(')
-               .Append(string.Join(",", parameters.Select(p => p.ParameterType.FullName ?? p.ParameterType.Name)))
-               .Append(");");
+               .Append(CustomRPCManager.GetStableMethodSignature(method.Value))
+               .Append(';');
     }
     public static void ReceivedSyncVersion(MessageReader reader)
     {

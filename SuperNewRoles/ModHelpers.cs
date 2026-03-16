@@ -76,8 +76,6 @@ public static class ModHelpers
         if (percentage >= 100) return true;
         return GetRandomInt(100) < percentage;
     }
-    private static MD5 md5 = MD5.Create();
-    private static SHA256 sha256 = SHA256.Create();
     public static string HashMD5(string str)
     {
         if (string.IsNullOrEmpty(str)) str = string.Empty;
@@ -86,7 +84,7 @@ public static class ModHelpers
     }
     public static string HashMD5(byte[] bytes)
     {
-        return BitConverter.ToString(md5.ComputeHash(bytes)).Replace("-", "").ToLowerInvariant();
+        return BitConverter.ToString(MD5.HashData(bytes)).Replace("-", "").ToLowerInvariant();
     }
     public static string HashSHA256(string str)
     {
@@ -95,7 +93,7 @@ public static class ModHelpers
     }
     public static string HashSHA256(byte[] bytes)
     {
-        return BitConverter.ToString(sha256.ComputeHash(bytes)).Replace("-", "").ToLowerInvariant();
+        return BitConverter.ToString(SHA256.HashData(bytes)).Replace("-", "").ToLowerInvariant();
     }
 
     // MeetingHudのMaskAreaを更新するヘルパーメソッド
