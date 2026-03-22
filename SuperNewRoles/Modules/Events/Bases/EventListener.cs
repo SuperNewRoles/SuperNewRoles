@@ -30,7 +30,7 @@ public class EventListener<T> : IEventListener where T : IEventData
         }
         catch (Exception e)
         {
-            SuperNewRolesPlugin.Logger.LogError($"Error in {action.Method.DeclaringType?.Name}.{action.Method.Name}: {e}");
+            SuperNewRoles.Logger.Error($"Error in {action.Method.DeclaringType?.Name}.{action.Method.Name}: {e}");
         }
     }
 }
@@ -58,7 +58,7 @@ public class EventListener : IEventListener
         }
         catch (Exception e)
         {
-            SuperNewRolesPlugin.Logger.LogError($"Error in {action.Method.DeclaringType?.Name}.{action.Method.Name}: {e}");
+            SuperNewRoles.Logger.Error($"Error in {action.Method.DeclaringType?.Name}.{action.Method.Name}: {e}");
         }
     }
 }

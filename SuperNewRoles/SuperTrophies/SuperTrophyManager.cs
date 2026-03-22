@@ -16,12 +16,12 @@ public static class SuperTrophyManager
         trophies = new();
         return;
         var allTypes = SuperNewRolesPlugin.Assembly.GetTypes().Where(x => IsSuperTrophyType(x)).ToList();
-        SuperNewRolesPlugin.Logger.LogInfo($"[Splash] Found {allTypes.Count} super trophy types");
+        SuperNewRoles.Logger.Info($"[Splash] Found {allTypes.Count} super trophy types");
         int index = 0;
         foreach (var type in allTypes)
         {
             index++;
-            SuperNewRolesPlugin.Logger.LogInfo($"[Splash] Loading super trophy ({index}/{allTypes.Count}): {type.Name}");
+            SuperNewRoles.Logger.Info($"[Splash] Loading super trophy ({index}/{allTypes.Count}): {type.Name}");
             Logger.Info($"SuperTrophyManager: Load {type.FullName}");
             var instance = (ISuperTrophy)type.GetProperty("Instance", BindingFlags.Public | BindingFlags.Static | BindingFlags.FlattenHierarchy)?.GetValue(null);
             if (instance != null)
@@ -34,7 +34,7 @@ public static class SuperTrophyManager
                 Logger.Error($"Failed to get instance for trophy: {type.FullName}");
             }
         }
-        SuperNewRolesPlugin.Logger.LogInfo($"[Splash] SuperTrophyManager: Loaded {trophies.Count} trophies");
+        SuperNewRoles.Logger.Info($"[Splash] SuperTrophyManager: Loaded {trophies.Count} trophies");
         // トロフィーデータを読み込む
         SuperTrophySaver.Initialize();
     }

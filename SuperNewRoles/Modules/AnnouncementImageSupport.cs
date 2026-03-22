@@ -14,6 +14,7 @@ using UnityEngine.Video;
 using UnityEngine.Rendering;
 
 namespace SuperNewRoles.Modules;
+
 internal enum AnnouncementMediaType
 {
     Image,
@@ -488,7 +489,7 @@ public class AnnouncementImageRenderer : MonoBehaviour
         }
         catch (Exception ex)
         {
-            SuperNewRolesPlugin.Logger.LogWarning($"AnnouncementImageRenderer.ShowImages failed: {ex}");
+            SuperNewRoles.Logger.Warning($"AnnouncementImageRenderer.ShowImages failed: {ex}");
             SuperNewRolesPlugin.DisableAnnouncementImageSupport(ex.Message);
             ClearImagesInternal();
         }
@@ -598,7 +599,7 @@ public class AnnouncementImageRenderer : MonoBehaviour
         }
         catch (Exception ex)
         {
-            SuperNewRolesPlugin.Logger.LogWarning($"AnnouncementImageRenderer.Update failed: {ex}");
+            SuperNewRoles.Logger.Warning($"AnnouncementImageRenderer.Update failed: {ex}");
             SuperNewRolesPlugin.DisableAnnouncementImageSupport(ex.Message);
         }
     }
@@ -1116,7 +1117,7 @@ public class AnnouncementImageRenderer : MonoBehaviour
         }
         catch (Exception ex)
         {
-            SuperNewRolesPlugin.Logger.LogWarning($"Failed to create announcement video renderer: {ex.Message}");
+            SuperNewRoles.Logger.Warning($"Failed to create announcement video renderer: {ex.Message}");
             if (renderTexture != null)
             {
                 renderTexture.Release();
@@ -1487,7 +1488,7 @@ public class AnnouncementImageRenderer : MonoBehaviour
     private void OnVideoError(int index, string message = null)
     {
         if (!string.IsNullOrWhiteSpace(message))
-            SuperNewRolesPlugin.Logger.LogWarning($"Video error ({index}): {message}");
+            SuperNewRoles.Logger.Warning($"Video error ({index}): {message}");
 
         RemoveSpinner(index);
         if (videoEntries.TryGetValue(index, out var entry))

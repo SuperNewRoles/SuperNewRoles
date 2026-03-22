@@ -56,7 +56,7 @@ public static class AnnounceNotificationManager
         }
         catch (Exception ex)
         {
-            SuperNewRolesPlugin.Logger.LogWarning($"Failed to load read announcement IDs: {ex.Message}");
+            SuperNewRoles.Logger.Warning($"Failed to load read announcement IDs: {ex.Message}");
         }
     }
 
@@ -78,7 +78,7 @@ public static class AnnounceNotificationManager
         }
         catch (Exception ex)
         {
-            SuperNewRolesPlugin.Logger.LogWarning($"Failed to save read announcement IDs: {ex.Message}");
+            SuperNewRoles.Logger.Warning($"Failed to save read announcement IDs: {ex.Message}");
         }
     }
 
@@ -156,7 +156,7 @@ public static class AnnounceNotificationManager
 
         _hasCheckedOnStartup = true;
 
-        SuperNewRolesPlugin.Logger.LogInfo("Starting new announcements check...");
+        SuperNewRoles.Logger.Info("Starting new announcements check...");
 
         string lang = GetApiLanguage();
         ApiResult<ArticlesResponse> listResult = null;
@@ -164,11 +164,11 @@ public static class AnnounceNotificationManager
 
         if (listResult == null || !listResult.IsSuccess || listResult.Data == null || listResult.Data.Items.Count == 0)
         {
-            SuperNewRolesPlugin.Logger.LogInfo("No announcements found or API error.");
+            SuperNewRoles.Logger.Info("No announcements found or API error.");
             yield break;
         }
 
-        SuperNewRolesPlugin.Logger.LogInfo($"Found {listResult.Data.Items.Count} announcements.");
+        SuperNewRoles.Logger.Info($"Found {listResult.Data.Items.Count} announcements.");
 
         // リストをキャッシュに保存
         AnnounceCache.SaveArticlesList(lang, listResult.Data, listResult.ETag);
@@ -183,13 +183,13 @@ public static class AnnounceNotificationManager
             {
                 hasUnread = true;
                 newUnreadIds.Add(item.Id);
-                SuperNewRolesPlugin.Logger.LogInfo($"Unread announcement: {item.Id} - {item.Title}");
+                SuperNewRoles.Logger.Info($"Unread announcement: {item.Id} - {item.Title}");
             }
         }
 
         _hasUnreadAnnouncements = hasUnread;
 
-        SuperNewRolesPlugin.Logger.LogInfo($"Unread count: {newUnreadIds.Count}");
+        SuperNewRoles.Logger.Info($"Unread count: {newUnreadIds.Count}");
 
         // 未読があればポップアップを表示
         if (hasUnread && newUnreadIds.Count > 0)
@@ -232,16 +232,16 @@ public static class AnnounceNotificationManager
     {
         if (newArticles == null || newArticles.Count == 0)
         {
-            SuperNewRolesPlugin.Logger.LogInfo("ShowNewAnnouncementsPopup: No new articles to show.");
+            SuperNewRoles.Logger.Info("ShowNewAnnouncementsPopup: No new articles to show.");
             return;
         }
 
-        SuperNewRolesPlugin.Logger.LogInfo($"ShowNewAnnouncementsPopup: Attempting to show popup for {newArticles.Count} new articles.");
+        SuperNewRoles.Logger.Info($"ShowNewAnnouncementsPopup: Attempting to show popup for {newArticles.Count} new articles.");
         var popup = GameObject.FindObjectOfType<MainMenuManager>();
         if (popup != null)
         {
             popup?.announcementPopUp?.Show();
-            SuperNewRolesPlugin.Logger.LogInfo("ShowNewAnnouncementsPopup: Announcement popup opened.");
+            SuperNewRoles.Logger.Info("ShowNewAnnouncementsPopup: Announcement popup opened.");
         }
     }
 

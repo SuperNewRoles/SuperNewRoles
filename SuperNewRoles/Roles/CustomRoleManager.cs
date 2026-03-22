@@ -27,7 +27,7 @@ public static class CustomRoleManager
 
     public static void Load()
     {
-        SuperNewRolesPlugin.Logger.LogInfo("[Splash] Loading Roles...");
+        SuperNewRoles.Logger.Info("[Splash] Loading Roles...");
         int loadedRoles = 0;
         int loadedModifiers = 0;
         int loadedGhostRoles = 0;
@@ -42,7 +42,7 @@ public static class CustomRoleManager
             .Select(type =>
             {
                 loadedRoles++;
-                SuperNewRolesPlugin.Logger.LogInfo($"[Splash] Loading role {loadedRoles}: {type.Name}");
+                SuperNewRoles.Logger.Info($"[Splash] Loading role {loadedRoles}: {type.Name}");
                 var baseSingletonType = typeof(BaseSingleton<>).MakeGenericType(type);
                 var instanceProperty = baseSingletonType.GetProperty("Instance", System.Reflection.BindingFlags.Public | System.Reflection.BindingFlags.Static);
                 if (instanceProperty == null)
@@ -60,7 +60,7 @@ public static class CustomRoleManager
             .Select(type =>
             {
                 loadedModifiers++;
-                SuperNewRolesPlugin.Logger.LogInfo($"[Splash] Loading modifier {loadedModifiers}: {type.Name}");
+                SuperNewRoles.Logger.Info($"[Splash] Loading modifier {loadedModifiers}: {type.Name}");
                 var baseSingletonType = typeof(BaseSingleton<>).MakeGenericType(type);
                 var instanceProperty = baseSingletonType.GetProperty("Instance", System.Reflection.BindingFlags.Public | System.Reflection.BindingFlags.Static);
                 if (instanceProperty == null)
@@ -78,7 +78,7 @@ public static class CustomRoleManager
             .Select(type =>
             {
                 loadedGhostRoles++;
-                SuperNewRolesPlugin.Logger.LogInfo($"[Splash] Loading ghost role {loadedGhostRoles}: {type.Name}");
+                SuperNewRoles.Logger.Info($"[Splash] Loading ghost role {loadedGhostRoles}: {type.Name}");
                 var baseSingletonType = typeof(BaseSingleton<>).MakeGenericType(type);
                 var instanceProperty = baseSingletonType.GetProperty("Instance", System.Reflection.BindingFlags.Public | System.Reflection.BindingFlags.Static);
                 if (instanceProperty == null)
@@ -92,7 +92,7 @@ public static class CustomRoleManager
         AllRolesByRoleId = AllRoles.ToDictionary(role => (int)role.Role);
         AllModifiersByModifierRoleId = AllModifiers.ToDictionary(modifier => (int)modifier.ModifierRole);
         AllGhostRolesByRoleId = AllGhostRoles.ToDictionary(ghostRole => (int)ghostRole.Role);
-        SuperNewRolesPlugin.Logger.LogInfo($"[Splash] Role loading complete ({loadedRoles} roles, {loadedModifiers} modifiers, {loadedGhostRoles} ghost roles)");
+        SuperNewRoles.Logger.Info($"[Splash] Role loading complete ({loadedRoles} roles, {loadedModifiers} modifiers, {loadedGhostRoles} ghost roles)");
     }
     public static string GetRoleName(RoleId roleId)
     {
