@@ -91,8 +91,10 @@ public class NecromancerCurseButtonAbility : TargetCustomButtonBase, IAbilityCou
             if (Minigame.Instance != null)
                 Minigame.Instance.Close();
         }
+        bool isImpostorTeam = player.IsImpostor();
+        player.SetRole(isImpostorTeam ? RoleId.Impostor : RoleId.Crewmate);
         player.SetGhostRole(GhostRoleId.Revenant);
-        RoleManager.Instance.SetRole(player, RoleTypes.CrewmateGhost);
+        RoleManager.Instance.SetRole(player, isImpostorTeam ? RoleTypes.ImpostorGhost : RoleTypes.CrewmateGhost);
         NameText.UpdateNameInfo(player);
     }
 }

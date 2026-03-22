@@ -54,6 +54,16 @@ namespace SuperNewRoles.CustomOptions
 
         public static string FormatOptionValue(object value, CustomOption option)
         {
+            if (option == null)
+                return value?.ToString() ?? string.Empty;
+
+            value ??= option.Value;
+            if (value == null)
+            {
+                Logger.Warning($"Failed to format option value because value is null: {option.Id}");
+                return string.Empty;
+            }
+
             string formattedValue = "";
             string suffix = "";
 
@@ -112,7 +122,7 @@ namespace SuperNewRoles.CustomOptions
             }
             else
             {
-                formattedValue = value.ToString();
+                formattedValue = value.ToString() ?? string.Empty;
             }
 
             return formattedValue + suffix;

@@ -3,6 +3,7 @@ using System.IO;
 using System.Linq;
 using System.Reflection;
 using FluentAssertions;
+using SuperNewRoles.CustomOptions;
 using SuperNewRoles.Modules;
 using SuperNewRoles.CustomOptions.Categories;
 using Xunit;
@@ -14,6 +15,8 @@ namespace SuperNewRoles.Tests;
 public class CustomOptionTests
 {
     private static FieldInfo GetField(Type t, string name) => t.GetField(name, BindingFlags.Public | BindingFlags.Static)!;
+    private static void SetPrivateField<T>(object target, string name, T value)
+        => target.GetType().GetField(name, BindingFlags.Instance | BindingFlags.NonPublic)!.SetValue(target, value);
 
     public static class DummyOptions
     {
@@ -165,6 +168,32 @@ public class CustomOptionTests
         Categories.ModeOption = ModeId.SuperHostRoles;
         // 目的: SuperHostRoles モードで表示
         option.ShouldDisplay().Should().BeTrue();
+    }
+
+    [Fact]
+    public void CustomOption_RemoteFallback_UsesLocalState_UntilHostStateArrives()
+    {
+        var attr = new CustomOptionIntAttribute("Level", 0, 10, 2, 4, translationName: "Level");
+        var option = new CustomOption(attr, GetField(typeof(DummyOptions), nameof(DummyOptions.Level)));
+
+        option.GetCurrentSelection(isRemoteClient: true).Should().Be(option.MySelection);
+        option.GetCurrentValue(isRemoteClient: true).Should().Be(4);
+
+        SetPrivateField(option, "_selection_Host", (byte)1);
+        SetPrivateField(option, "_value_Host", 2);
+        SetPrivateField(option, "_hasHostSelection", true);
+
+        option.GetCurrentSelection(isRemoteClient: true).Should().Be(1);
+        option.GetCurrentValue(isRemoteClient: true).Should().Be(2);
+    }
+
+    [Fact]
+    public void FormatOptionValue_NullValue_FallsBackWithoutThrowing()
+    {
+        var attr = new CustomOptionIntAttribute("Level", 0, 10, 2, 4, translationName: "Level");
+        var option = new CustomOption(attr, GetField(typeof(DummyOptions), nameof(DummyOptions.Level)));
+
+        UIHelper.FormatOptionValue(null!, option).Should().Be("4");
     }
 
     // 目的: MD5 ハッシュの決定論性と小文字化出力を検証
