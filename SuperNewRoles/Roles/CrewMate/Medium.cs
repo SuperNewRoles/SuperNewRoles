@@ -121,6 +121,8 @@ public class MediumSpiritVisionAbility : CustomButtonBase, IButtonEffect
 public class MediumSpiritTalkAbility : TargetCustomButtonBase, IAbilityCount
 {
     public MediumSpiritTalkData Data { get; }
+    private readonly List<string> _pendingMeetingMessages = new();
+    private EventListener<MeetingStartEventData> _meetingStartListener;
 
     public override Color32 OutlineColor => Medium.Instance.RoleColor;
     public override bool OnlyCrewmates => false;
@@ -140,6 +142,19 @@ public class MediumSpiritTalkAbility : TargetCustomButtonBase, IAbilityCount
     {
         Data = data;
         Count = Data.MaxUses;
+    }
+
+    public override void AttachToLocalPlayer()
+    {
+        base.AttachToLocalPlayer();
+        _meetingStartListener = MeetingStartEvent.Instance.AddListener(OnMeetingStart);
+    }
+
+    public override void DetachToLocalPlayer()
+    {
+        base.DetachToLocalPlayer();
+        _meetingStartListener?.RemoveListener();
+        _pendingMeetingMessages.Clear();
     }
 
     public override bool CheckHasButton()
@@ -193,12 +208,31 @@ public class MediumSpiritTalkAbility : TargetCustomButtonBase, IAbilityCount
         // チャットに送信
         if (!string.IsNullOrEmpty(message))
         {
-            HudManager.Instance.Chat.AddChat(Player, message);
+            _pendingMeetingMessages.Add(message);
         }
 
         // 霊視を終了
         var spiritVisionAbility = Player.GetAbility<MediumSpiritVisionAbility>();
         spiritVisionAbility?.FinishSpiritForce();
+    }
+
+    private void OnMeetingStart(MeetingStartEventData data)
+    {
+        if (_pendingMeetingMessages.Count <= 0) return;
+        new LateTask(SendPendingMessages, 0.5f, "MediumSpiritTalkMeetingMessage");
+    }
+
+    private void SendPendingMessages()
+    {
+        if (!Player.AmOwner) return;
+        if (HudManager.Instance?.Chat == null) return;
+
+        foreach (string pendingMessage in _pendingMeetingMessages)
+        {
+            HudManager.Instance.Chat.AddChat(Player.Player, pendingMessage);
+        }
+
+        _pendingMeetingMessages.Clear();
     }
 
     private static string GetDeathLocation(Vector3 position)

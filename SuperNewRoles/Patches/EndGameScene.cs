@@ -40,7 +40,11 @@ public enum WinCondition
     OwlWin,
     LoversWin,
     LoversBreakerWin,
-    MadJesterWin
+    MadJesterWin,
+    SaunerWin,
+    MoiraWin,
+    TheThreeLittlePigsWin,
+    FrankensteinWin,
 }
 public enum CustomGameOverReason
 {
@@ -64,6 +68,10 @@ public enum CustomGameOverReason
     SpelunkerWin,
     MadJesterWin,
     SafecrackerWin,
+    SaunerWin,
+    MoiraWin,
+    TheThreeLittlePigsWin,
+    FrankensteinWin,
 }
 
 static class AdditionalTempData
@@ -317,6 +325,22 @@ public class EndGameManagerSetUpPatch
             case WinCondition.MadJesterWin:
                 baseText = "MadJester";
                 roleColor = MadJester.Instance.RoleColor;
+                break;
+            case WinCondition.SaunerWin:
+                baseText = "Sauner";
+                roleColor = Sauner.Instance.RoleColor;
+                break;
+            case WinCondition.MoiraWin:
+                baseText = "Moira";
+                roleColor = Moira.Instance.RoleColor;
+                break;
+            case WinCondition.TheThreeLittlePigsWin:
+                baseText = "TheThreeLittlePigs";
+                roleColor = Roles.Neutral.TheThreeLittlePigs.Instance.RoleColor;
+                break;
+            case WinCondition.FrankensteinWin:
+                baseText = "Frankenstein";
+                roleColor = Frankenstein.Instance.RoleColor;
                 break;
             default:
                 baseText = "Unknown";

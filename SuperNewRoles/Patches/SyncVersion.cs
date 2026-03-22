@@ -56,21 +56,18 @@ public static class SyncVersion
     private static string GenerateRpcMap()
     {
         var rpcMapBuilder = new System.Text.StringBuilder();
-        foreach (var method in CustomRPCManager.RpcMethods)
+        foreach (var method in CustomRPCManager.RpcMethods.OrderBy(m => m.Key))
         {
             AppendMethodInfo(rpcMapBuilder, method);
         }
         return ModHelpers.HashMD5(rpcMapBuilder.ToString());
     }
-    private static void AppendMethodInfo(System.Text.StringBuilder builder, KeyValuePair<byte, MethodInfo> method)
+    private static void AppendMethodInfo(System.Text.StringBuilder builder, KeyValuePair<int, MethodInfo> method)
     {
-        var parameters = method.Value.GetParameters();
         builder.Append(method.Key)
                .Append(':')
-               .Append(method.Value.Name)
-               .Append('(')
-               .Append(string.Join(",", parameters.Select(p => p.ParameterType.Name)))
-               .Append(");");
+               .Append(CustomRPCManager.GetStableMethodSignature(method.Value))
+               .Append(';');
     }
     public static void ReceivedSyncVersion(MessageReader reader)
     {

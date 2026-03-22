@@ -12,6 +12,7 @@ using HarmonyLib;
 using SuperNewRoles.Extensions;
 using Hazel;
 using SuperNewRoles.Roles;
+using SuperNewRoles.Roles.Ability;
 
 namespace SuperNewRoles.Mode;
 
@@ -106,10 +107,21 @@ public class BattleRoyalMode : ModeBase<BattleRoyalMode>, IModeBase
             }
         }
 
+        SetupVentAbilities();
+
         // イベントリスナー登録
         fixedUpdateListener = FixedUpdateEvent.Instance.AddListener(FixedUpdate);
 
         Logger.Info($"BattleRoyalMode: Setup complete. Team mode: {isTeamMode}");
+    }
+
+    // 導入者視点でベントを無効化
+    private static void SetupVentAbilities()
+    {
+        foreach (var player in PlayerControl.AllPlayerControls)
+        {
+            ((ExPlayerControl)player).AttachAbility(new CustomVentAbility(() => false), new AbilityParentPlayer(player));
+        }
     }
 
     private static bool IsBot(PlayerControl player)
@@ -205,7 +217,11 @@ public class BattleRoyalMode : ModeBase<BattleRoyalMode>, IModeBase
         {
             // 1チーム以下 - 勝利
             var winnerTeamId = aliveTeams.FirstOrDefault();
-            var winners = alivePlayers.Where(p => playerTeams.GetValueOrDefault(p.PlayerId) == winnerTeamId).ToList();
+            // 勝者チームの全メンバー（死んだ人も含む）を勝者として扱う
+            var winners = PlayerControl.AllPlayerControls
+                .Where(p => p != null && !p.Data.Disconnected && !IsBot(p) &&
+                            playerTeams.GetValueOrDefault(p.PlayerId) == winnerTeamId)
+                .ToList();
             EndGame(GameOverReason.CrewmatesByVote, winners);
             return true;
         }

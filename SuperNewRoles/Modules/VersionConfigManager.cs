@@ -7,6 +7,7 @@ public class VersionConfigData
 {
     public string updateType { get; set; } = "all";
     public string version { get; set; } = null;
+    public string channel { get; set; } = "all";
 }
 
 public static class VersionConfigManager
@@ -33,7 +34,8 @@ public static class VersionConfigManager
         _configData = new VersionConfigData
         {
             updateType = parser.TryGetValue("updateType", out var type) ? type as string : "all",
-            version = parser.TryGetValue("version", out var ver) ? ver as string : ""
+            version = parser.TryGetValue("version", out var ver) ? ver as string : "",
+            channel = parser.TryGetValue("channel", out var ch) ? (ch as string) : "all"
         };
         return _configData;
     }
@@ -45,7 +47,8 @@ public static class VersionConfigManager
         var dictionary = new Dictionary<string, object>
             {
                 { "updateType", _configData.updateType },
-                { "version", _configData.version }
+                { "version", _configData.version },
+                { "channel", string.IsNullOrEmpty(_configData.channel) ? "all" : _configData.channel }
             };
         string json = JsonParser.Serialize(dictionary);
         File.WriteAllText(FilePath, json);
@@ -70,6 +73,17 @@ public static class VersionConfigManager
     public static void SaveVersion(string version)
     {
         LoadConfig().version = version;
+        SaveConfig();
+    }
+
+    public static string GetChannel()
+    {
+        return LoadConfig().channel ?? "all";
+    }
+
+    public static void SetChannel(string channel)
+    {
+        LoadConfig().channel = string.IsNullOrEmpty(channel) ? "all" : channel;
         SaveConfig();
     }
 }

@@ -22,6 +22,7 @@ class Ubiquitous : RoleBase<Ubiquitous>
 {
     public override RoleId Role => RoleId.Ubiquitous;
     public override Color32 RoleColor => new(56, 155, 223, byte.MaxValue);
+    public override Sprite RoleIcon => AssetManager.GetAsset<Sprite>("UbiquitousRoleIcon.png");
     public override List<System.Func<AbilityBase>> Abilities => new() { () => new UbiquitousAbility() };
     public override QuoteMod QuoteMod => QuoteMod.NebulaOnTheShip;
 
@@ -109,6 +110,10 @@ class UbiquitousAbility : AbilityBase
         _dieListener?.RemoveListener();
         _mapBehaviourAwakeListener?.RemoveListener();
         _mapBehaviourFixedUpdateListener?.RemoveListener();
+
+        if (!MyDrone) return;
+        // 視界を戻す
+        Camera.main.GetComponent<FollowerCamera>().SetTarget(ExPlayerControl.LocalPlayer.Player);
     }
 
     private void OnMeetingStart(MeetingStartEventData data)
@@ -264,7 +269,8 @@ class DoorHackButton : CustomButtonBase
 
     public override bool CheckIsAvailable()
     {
-        if (!_ability.MyDrone) return false;
+        // ドローンが存在しており、かつ操作中でないとドアハックは使用不可
+        if (!_ability.MyDrone || !_ability.UnderOperation) return false;
         return ShipStatus.Instance.AllDoors.Any(x => Vector2.Distance(_ability.MyDrone.transform.position, x.transform.position) <= Ubiquitous.DoorHackScope * 3 && !x.IsOpen && !x.TryCast<AutoCloseDoor>());
     }
 

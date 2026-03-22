@@ -80,7 +80,8 @@ public class ExPlayerControlMoreTests
     // 簡易 Attach: 内部キャッシュの無効化まで含め、Attach 相当の状態遷移を再現する
     private static ulong ShallowAttach(ExPlayerControl ex, AbilityBase ability)
     {
-        var id = IRoleBase.GenerateAbilityId(ex.PlayerId, GetAutoProp<RoleId>(ex, nameof(ExPlayerControl.Role)), ex.lastAbilityId);
+        // Generate deterministic ability id using current player as parent for stable tests
+        var id = ExPlayerControlExtensions.GenerateDeterministicAbilityId(ex.PlayerId, new AbilityParentPlayer(ex), ability.GetType());
         typeof(ExPlayerControl).GetProperty(nameof(ExPlayerControl.lastAbilityId))!.SetValue(ex, ex.lastAbilityId + 1);
         ex.PlayerAbilities.Add(ability);
         ex.PlayerAbilitiesDictionary[id] = ability;

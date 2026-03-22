@@ -2,6 +2,7 @@ using System.Collections.Generic;
 using HarmonyLib;
 using SuperNewRoles.CustomOptions.Categories;
 using SuperNewRoles.Modules;
+using SuperNewRoles.Roles.Ability;
 using UnityEngine;
 using System.Linq;
 using Hazel;
@@ -72,7 +73,7 @@ public static class ModdedNetworkTransform
     private static Dictionary<byte, Vector2> externalImpulses;
 
     // 次のBatchMovementをスキップするプレイヤーIDセット
-    public static HashSet<byte> skipNextBatchPlayers = new HashSet<byte>();
+    public static HashSet<byte> skipNextBatchPlayers = new();
 
     public static void Initialize()
     {
@@ -112,8 +113,23 @@ public static class ModdedNetworkTransform
             queue.Clear();
         }
     }
+
+    public static void SendExternalImpulse(PlayerControl player, Vector2 impulse)
+    {
+        if (player == null) return;
+        MessageWriter writer = AmongUsClient.Instance.StartRpcImmediately(player.NetId, CustomRPCManager.SNRNetworkTransformRpc, SendOption.Reliable);
+        writer.Write((byte)MovementRpcType.ApplyExternalImpulse);
+        writer.Write(player.PlayerId);
+        writer.Write(impulse.x);
+        writer.Write(impulse.y);
+        AmongUsClient.Instance.FinishRpcImmediately(writer);
+    }
     public static void FixedUpdate(PlayerControl player)
     {
+        if (!player.AmOwner && ShouldIgnoreRemoteControlSync(player.PlayerId))
+        {
+            return;
+        }
         if (player.NetTransform.isPaused || player.onLadder || (ShipStatus.Instance != null && ShipStatus.Instance.Type == ShipStatus.MapType.Fungle && ShipStatus.Instance is FungleShipStatus fungleShipStatus && fungleShipStatus.Zipline.playerIdHands.ContainsKey(player.PlayerId)))
         {
             // Clear state for paused players
@@ -126,12 +142,34 @@ public static class ModdedNetworkTransform
 
         if (player.AmOwner)
         {
+            if (TryHandleRemoteControlledOwner(player))
+            {
+                return;
+            }
             FixedUpdateOwner(player);
         }
         else
         {
             FixedUpdateRemote(player);
         }
+    }
+
+    private static bool TryHandleRemoteControlledOwner(PlayerControl player)
+    {
+        if (!RemoteControllerAbility.IsPlayerBeingControlled(player.PlayerId))
+        {
+            return false;
+        }
+
+        if (externalImpulses.Remove(player.PlayerId, out var impulse) && impulse.sqrMagnitude > 0.0001f)
+        {
+            player.MyPhysics.body.velocity += impulse;
+            float adjustmentMagnitude = Mathf.Min(impulse.magnitude * Time.fixedDeltaTime * 2.0f, 0.1f);
+            Vector3 positionAdjustment = (Vector3)impulse.normalized * adjustmentMagnitude;
+            player.transform.position += positionAdjustment;
+        }
+
+        return false;
     }
 
     private static void FixedUpdateOwner(PlayerControl player)
@@ -288,6 +326,11 @@ public static class ModdedNetworkTransform
             case (byte)MovementRpcType.BatchMovement:
                 playerId = reader.ReadByte();
                 int count = Mathf.Min(reader.ReadInt32(), 20); // Read count, capped at 20
+                if (ShouldIgnoreRemoteControlSync(playerId))
+                {
+                    reader.Position += count * 4 * 5;
+                    break;
+                }
                 if (skipNextBatchPlayers.Remove(playerId))
                 {
                     reader.Position += count * 4 * 5;
@@ -307,23 +350,41 @@ public static class ModdedNetworkTransform
                 break;
             case (byte)MovementRpcType.StartMovement:
                 playerId = reader.ReadByte();
-                Vector3 position = new Vector3(reader.ReadSingle(), reader.ReadSingle(), reader.ReadSingle());
-                Vector2 velocity = new Vector2(reader.ReadSingle(), reader.ReadSingle());
+                Vector3 position = new(reader.ReadSingle(), reader.ReadSingle(), reader.ReadSingle());
+                Vector2 velocity = new(reader.ReadSingle(), reader.ReadSingle());
+                if (ShouldIgnoreRemoteControlSync(playerId))
+                {
+                    break;
+                }
                 RpcStartMovement(playerId, position, velocity);
                 break;
             case (byte)MovementRpcType.StopMovement:
                 playerId = reader.ReadByte();
-                position = new Vector3(reader.ReadSingle(), reader.ReadSingle(), reader.ReadSingle());
+                position = new(reader.ReadSingle(), reader.ReadSingle(), reader.ReadSingle());
+                if (ShouldIgnoreRemoteControlSync(playerId))
+                {
+                    break;
+                }
                 RpcStopMovement(playerId, position);
                 break;
             case (byte)MovementRpcType.ApplyExternalImpulse:
                 playerId = reader.ReadByte();
-                Vector2 impulse = new Vector2(reader.ReadSingle(), reader.ReadSingle());
+                Vector2 impulse = new(reader.ReadSingle(), reader.ReadSingle());
+                if (ShouldIgnoreRemoteControlSync(playerId))
+                {
+                    break;
+                }
                 externalImpulses[playerId] = externalImpulses.GetValueOrDefault(playerId, Vector2.zero) + impulse;
                 // 次のバッチ移動をスキップ
                 skipNextBatchPlayers.Add(playerId);
                 break;
         }
+    }
+
+    private static bool ShouldIgnoreRemoteControlSync(byte playerId)
+    {
+        if (!RemoteControllerAbility.TryGetLocalOperationTarget(out _, out var target)) return false;
+        return target != null && target.PlayerId == playerId;
     }
 
     private static void FixedUpdateRemote(PlayerControl player)
@@ -417,7 +478,7 @@ public static class ModdedNetworkTransform
         if (movementQueues.TryGetValue(player.PlayerId, out var queue) && queue.Count > 0)
         {
             var record = queue.Dequeue();
-            Vector3 targetPosition3D = new Vector3(record.position.x, record.position.y, player.transform.position.z);
+            Vector3 targetPosition3D = new(record.position.x, record.position.y, player.transform.position.z);
             float distance = Vector2.Distance(player.transform.position, record.position);
 
             // Interpolate position smoothly

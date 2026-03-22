@@ -33,11 +33,14 @@ public static class SNRURLs
 {
     public const string ReportInGameAgreement = "https://wiki.supernewroles.com/reporting-in-game-terms";
     public const string AnalyticsURL = "https://analytics.supernewroles.com/api/v2/";
-    public const string SNRCS = "https://cs.supernewroles.com";
+    public const string AndroidNoticeCheckURL = "https://raw.githubusercontent.com/SuperNewRoles/Notice/refs/heads/main/notice.txt";
+    public const string SNRCS_JP = "https://cs.supernewroles.com";
+    public const string SNRCS_USEast = "https://cs-useast.supernewroles.com";
     public const string ReportInGameAPI = "https://reports-api.supernewroles.com/api/v3";
     public const string UpdateURL = "https://update.supernewroles.com/";
     public const string GithubAPITags = "https://api.github.com/repos/supernewroles/SuperNewRoles/releases/tags";
     public const string JoinRoomHost = "joinroom.supernewroles.com";
+    public const string SuperNewAnnounceApi = "https://announce.supernewroles.com/api/v1";
 }
 public static class BranchConfig
 {
@@ -66,6 +69,7 @@ public static class SocialLinks
     public const string DiscordServer = "https://supernewroles.com/discord";
     public const string TwitterSnrDevs = "https://twitter.com/SNRDevs";
     public const string TwitterSnrOfficials = "https://twitter.com/SNROfficials";
+    public const string XSnrOfficials = "https://x.com/SNROfficials";
 }
 
 public static class Statics

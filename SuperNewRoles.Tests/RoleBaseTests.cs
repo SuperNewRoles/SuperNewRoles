@@ -1,5 +1,7 @@
 using FluentAssertions;
 using SuperNewRoles.Roles;
+using SuperNewRoles.Modules;
+using SuperNewRoles.Roles.Ability;
 using Xunit;
 
 namespace SuperNewRoles.Tests;
@@ -8,15 +10,16 @@ namespace SuperNewRoles.Tests;
 public class RoleBaseTests
 {
     // 目的: 入力 (playerId, role, index) に対して決まった 64bit ID が生成されることを確認
-    [Theory]
-    [InlineData((byte)1, RoleId.Impostor, 0, 1_000_000 + ((int)RoleId.Impostor * 1000) + 0)]
-    [InlineData((byte)15, RoleId.Crewmate, 42, 15_000_000 + ((int)RoleId.Crewmate * 1000) + 42)]
-    [InlineData((byte)0, RoleId.SilverBullet, 999, 0_000_000 + ((int)RoleId.SilverBullet * 1000) + 999)]
-    public void GenerateAbilityId_ComposesDeterministically(byte playerId, RoleId role, int index, long expected)
+    [Fact]
+    public void GenerateDeterministicAbilityId_Is_Deterministic_And_Encodes_PlayerId()
     {
-        // 検証: GenerateAbilityId が (playerId * 1_000_000) + (role * 1000) + index の決定論的合成になること
-        var id = (long)IRoleBase.GenerateAbilityId(playerId, role, index);
-        // 目的: 期待される決定論的合成値と一致すること
-        id.Should().Be(expected);
+        byte playerId = 1;
+        // Using a player parent to ensure playerId is encoded in top 8 bits.
+        var id = ExPlayerControlExtensions.GenerateDeterministicAbilityId(playerId, new AbilityParentPlayer(null), typeof(object));
+        // top 8 bits should equal the playerId
+        ((id >> 56) & 0xFF).Should().Be(playerId);
+        // Deterministic across multiple calls
+        var id2 = ExPlayerControlExtensions.GenerateDeterministicAbilityId(playerId, new AbilityParentPlayer(null), typeof(object));
+        id2.Should().Be(id);
     }
 }

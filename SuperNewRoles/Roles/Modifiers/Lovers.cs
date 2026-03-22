@@ -122,17 +122,18 @@ public class LoversAbility : AbilityBase
         if (Player.IsDead()) return;
         if (ShipStatus.Instance?.enabled != true) return;
         if (!couple.CheckWin(Player)) return;
-        if (couple.lovers.Any(x => x.Player == null || x.Player.IsDead())) return;
-        if (ExPlayerControl.ExPlayerControls.Count(player => player.IsAlive()) == couple.lovers.Count + 1)
-        {
-            EndGamer.RpcEndGameWithWinner(Patches.CustomGameOverReason.LoversWin, WinType.SingleNeutral, couple.lovers.Select(ability => ability.Player).ToArray(), Lovers.Instance.RoleColor, "Lovers", "WinText");
-        }
+        if (!couple.CanSoloWin())
+            return;
+        EndGamer.RpcEndGameWithWinner(Patches.CustomGameOverReason.LoversWin, WinType.SingleNeutral, couple.lovers.Select(ability => ability.Player).ToArray(), Lovers.Instance.RoleColor, "Lovers", "WinText");
     }
     private void OnNameTextUpdate(NameTextUpdateEventData data)
     {
         if (data.Player != Player) return;
         if (!data.Player.IsLovers()) return;
-        if (ExPlayerControl.LocalPlayer.IsAlive() && ExPlayerControl.LocalPlayer.Role != RoleId.God && !IsCoupleWith(ExPlayerControl.LocalPlayer)) return;
+        bool canSeeHeart = IsCoupleWith(ExPlayerControl.LocalPlayer)
+            || ExPlayerControl.LocalPlayer.CanSeeRoleOf(data.Player)
+            || ExPlayerControl.LocalPlayer.Role == RoleId.God;
+        if (!canSeeHeart) return;
         if (data.Player.cosmetics.nameText.text.Contains("♥")) return;
         NameText.AddNameText(data.Player, ModHelpers.Cs(ExPlayerControl.LocalPlayer.IsDead() || ExPlayerControl.LocalPlayer.Role == RoleId.God ? HeartColor : Lovers.Instance.RoleColor, "♥"));
     }/*
@@ -184,6 +185,14 @@ public class LoversCouple
     public bool CheckWin(ExPlayerControl player)
     {
         return lovers.Min(l => l.Player.PlayerId) == player.PlayerId;
+    }
+    public bool CanSoloWin()
+    {
+        if (lovers == null || lovers.Count == 0)
+            return false;
+
+        return lovers.All(ability => ability?.Player != null && ability.Player.IsAlive())
+            && ExPlayerControl.ExPlayerControls.Count(player => player.IsAlive()) <= lovers.Count + 1;
     }
     public static readonly Color32[] LoversHearts = [
         new(255, 145, 200, byte.MaxValue),

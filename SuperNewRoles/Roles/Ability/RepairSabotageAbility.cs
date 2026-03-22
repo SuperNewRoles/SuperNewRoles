@@ -7,7 +7,7 @@ using SuperNewRoles.Modules.Events.Bases;
 
 namespace SuperNewRoles.Roles.Ability;
 
-public class RepairSabotageAbility : CustomButtonBase
+public class RepairSabotageAbility : CustomButtonBase, IAbilityCount
 {
     private readonly float _coolTime;
     private bool _ignoreDead;

@@ -140,10 +140,19 @@ public class RoleOptionMenuObjectData : OptionMenuBase
         }
         foreach (var roleButton in RoleDetailButtonDictionary)
         {
+            // GameObjectが破棄されている可能性があるため、nullチェックを追加
+            if (roleButton.Value == null)
+            {
+                continue;
+            }
             var roleOption = RoleOptionManager.RoleOptions.FirstOrDefault(x => x.RoleId == roleButton.Key);
             if (roleOption != null)
             {
-                RoleOptionMenu.UpdateRoleDetailButtonColor(roleButton.Value.GetComponent<SpriteRenderer>(), roleOption);
+                var spriteRenderer = roleButton.Value.GetComponent<SpriteRenderer>();
+                if (spriteRenderer != null)
+                {
+                    RoleOptionMenu.UpdateRoleDetailButtonColor(spriteRenderer, roleOption);
+                }
             }
         }
 
@@ -195,6 +204,7 @@ public static class RoleOptionMenu
     /// GameSettingMenuのキャッシュ
     /// </summary>
     private static GameSettingMenu cachedGameSettingMenu;
+    private static int? cachedReleaseStateToken;
 
     /// <summary>
     /// GameSettingMenuを取得またはキャッシュから返す
@@ -216,6 +226,7 @@ public static class RoleOptionMenu
     {
         // メニュー初期化チェック
         InitializeMenuIfNeeded(type);
+        RefreshRoleScrollIfReleaseStateChanged();
 
         // 対象スクロールコンテンツの取得・生成
         GameObject targetScroll = GetOrCreateRoleScrollContent(type);
@@ -252,6 +263,31 @@ public static class RoleOptionMenu
             // Scroll生成部分
             RoleOptionSettings.SetupScroll(RoleOptionMenu.RoleOptionMenuObjectData.MenuObject.transform);
         }
+    }
+
+    private static void RefreshRoleScrollIfReleaseStateChanged()
+    {
+        int releaseStateToken = RoleReleaseLock.GetReleaseStateToken();
+        if (cachedReleaseStateToken == null)
+        {
+            cachedReleaseStateToken = releaseStateToken;
+            return;
+        }
+        if (cachedReleaseStateToken == releaseStateToken) return;
+
+        cachedReleaseStateToken = releaseStateToken;
+        if (RoleOptionMenuObjectData == null) return;
+
+        foreach (var entry in RoleOptionMenuObjectData.RoleScrollDictionary.Values)
+        {
+            if (entry != null)
+            {
+                GameObject.Destroy(entry);
+            }
+        }
+        RoleOptionMenuObjectData.RoleScrollDictionary.Clear();
+        RoleOptionMenuObjectData.RoleDetailButtonDictionary.Clear();
+        RoleOptionMenuObjectData.ScrollPositionDictionary.Clear();
     }
 
     private static GameObject GetOrCreateRoleScrollContent(RoleOptionMenuType type)
@@ -388,7 +424,7 @@ public static class RoleOptionMenu
             .Where(ro =>
             {
                 var roleInfo = CustomRoleManager.AllRoles.FirstOrDefault(r => r.Role == ro.RoleId);
-                return roleInfo != null && roleInfo.OptionTeam == type;
+                return roleInfo != null && roleInfo.OptionTeam == type && !roleInfo.HiddenOption;
             })
             .ToArray();
 

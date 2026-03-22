@@ -71,6 +71,11 @@ public class CupidAbility : AbilityBase
         CanSeeCreatedLoversRole = canSeeCreatedLoversRole;
         LoversCanSeeCupidRole = loversCanSeeCupidRole;
     }
+    public void SetLovers(byte lovers1, byte lovers2)
+    {
+        Lovers1 = lovers1;
+        Lovers2 = lovers2;
+    }
     public override void AttachToAlls()
     {
         base.AttachToAlls();

@@ -19,7 +19,7 @@ internal abstract class RoleBase<T> : BaseSingleton<T>, IRoleBase where T : Role
     public abstract RoleId Role { get; }
     public abstract Color32 RoleColor { get; }
     public virtual string RoleName => Role.ToString();
-    public virtual bool HiddenOption => OptionTeam == RoleOptionMenuType.Hidden;
+    public virtual bool HiddenOption => OptionTeam == RoleOptionMenuType.Hidden || RoleReleaseLock.IsLocked(Role);
     public virtual List<AssignedTeamType> AssignedTeams => [AssignedTeam];
     public virtual CustomOption[] Options => RoleOptionManager.TryGetRoleOption(Role, out var role) ? role.Options : [];
     public virtual int? PercentageOption => RoleOptionManager.TryGetRoleOption(Role, out var role) ? role.Percentage : null;
@@ -54,7 +54,9 @@ internal abstract class RoleBase<T> : BaseSingleton<T>, IRoleBase where T : Role
 
     public abstract RoleOptionMenuType OptionTeam { get; }
     public virtual MapNames[] AvailableMaps { get; } = [];
-    public virtual bool HideInRoleDictionary => false;
+    public virtual bool HideInRoleDictionary => RoleReleaseLock.IsLocked(Role);
+
+    public virtual Sprite RoleIcon => null;
 
     // public abstract void CreateCustomOption();
 }
@@ -86,7 +88,8 @@ public interface IRoleBase : IRoleInformation
 
     public RoleId[] RelatedRoleIds { get; }
     public MapNames[] AvailableMaps { get; }
-    public bool HideInRoleDictionary { get; }
+
+    public Sprite RoleIcon { get; }
 
     /// <summary>
     /// AbilityはAbilitiesから自動でセットされるが、追加で他の処理を行いたい場合はOverrideすること
@@ -111,8 +114,10 @@ public interface IRoleInformation
     public string RoleName { get; }
     public Color32 RoleColor { get; }
     public bool HiddenOption { get; }
+    public bool HideInRoleDictionary { get; }
     public List<AssignedTeamType> AssignedTeams { get; }
     public CustomOption[] Options { get; }
     public int? PercentageOption { get; }
     public int? NumberOfCrews { get; }
+    public Sprite RoleIcon { get; }
 }

@@ -91,10 +91,6 @@ public class BlackHatHackerAbility : AbilityBase
         Player.AttachAbility(VitalsAbility, parentAbility);
         Player.AttachAbility(TaskPanel, parentAbility);
 
-        // イベントリスナーの登録
-        _fixedUpdateEvent = FixedUpdateEvent.Instance.AddListener(OnFixedUpdate);
-        _wrapUpEvent = WrapUpEvent.Instance.AddListener(OnWrapUp);
-
         // ローカルプレイヤーの場合、静的参照を設定
         if (Player.AmOwner)
         {
@@ -106,6 +102,14 @@ public class BlackHatHackerAbility : AbilityBase
                 InfectionTimer[player.PlayerId] = 0f;
             }
         }
+    }
+
+    public override void AttachToLocalPlayer()
+    {
+        base.AttachToLocalPlayer();
+        // イベントリスナーの登録
+        _fixedUpdateEvent = FixedUpdateEvent.Instance.AddListener(OnFixedUpdate);
+        _wrapUpEvent = WrapUpEvent.Instance.AddListener(OnWrapUp);
     }
 
     public override void DetachToLocalPlayer()
@@ -121,7 +125,6 @@ public class BlackHatHackerAbility : AbilityBase
 
     private void OnFixedUpdate()
     {
-        if (!Player.AmOwner) return;
         if (ExPlayerControl.LocalPlayer == null) return;
 
         // 共有タイマーの更新
@@ -192,13 +195,15 @@ public class BlackHatHackerAbility : AbilityBase
             .Select(x => x.PlayerId).ToList();
 
         // 感染者がいない場合、かつ設定が有効な場合にハック回数を補充
-        if (Data.IsNotInfectionIncrease &&
-            !InfectionTimer.Any(kvp => kvp.Value >= Data.HackInfectiousTime && !DeadPlayers.Contains(kvp.Key)))
+        if (HackButton != null &&
+            Data.IsNotInfectionIncrease &&
+            // 感染者がいるかを判定
+            InfectionTimer.Any(kvp => kvp.Value >= Data.HackInfectiousTime) &&
+            // 感染者全員が死亡しているかを判定
+            !InfectionTimer.Any(kvp => kvp.Value >= Data.HackInfectiousTime && !DeadPlayers.Contains(kvp.Key)) &&
+            HackButton.Count <= 0)
         {
-            if (HackButton != null) // HackButtonがnullでないことを確認
-            {
-                HackButton.Count += 1; // 設定されている最大回数に戻す（または1回増やすなど、仕様に応じて変更）
-            }
+            HackButton.Count = 1; // 設定されている最大回数に戻す
         }
     }
 

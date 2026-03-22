@@ -20,6 +20,7 @@ public enum ServerType
     Europe,
     SNRTokyo,
     Custom,
+    SNRUSEast,
 }
 
 public class JoinRoomByURL : ServerHandlerBase
@@ -114,6 +115,10 @@ public class JoinRoomByURL : ServerHandlerBase
             else if (serverType == (int)ServerType.SNRTokyo)
             {
                 FastDestroyableSingleton<ServerManager>.Instance.SetRegion(GetRegion("cs.supernewroles.com", "443"));
+            }
+            else if (serverType == (int)ServerType.SNRUSEast)
+            {
+                FastDestroyableSingleton<ServerManager>.Instance.SetRegion(GetRegion("cs-useast.supernewroles.com", "443"));
             }
             else if (serverType == (int)ServerType.Custom)
             {
@@ -223,18 +228,6 @@ public class JoinRoomByURL : ServerHandlerBase
             }
         }
     }
-    [HarmonyPatch(typeof(MainMenuManager), nameof(MainMenuManager.Start))]
-    public static class MainMenuManager_Start
-    {
-        public static void Postfix(MainMenuManager __instance)
-        {
-            var servermanager = FastDestroyableSingleton<ServerManager>.Instance;
-            if (!servermanager.AvailableRegions.Contains(servermanager.CurrentRegion))
-            {
-                servermanager.SetRegion(CustomServer.SNRRegion);
-            }
-        }
-    }
 }
 
 public class JoinRoomURLGenerator // または既存のクラスに追加
@@ -336,13 +329,40 @@ public class JoinRoomURLGenerator // または既存のクラスに追加
         Europe,
         SNRTokyo,
         Custom,
+        SNRUSEast,
     }
     [HarmonyPatch(typeof(GameStartManager), nameof(GameStartManager.Start))]
     public static class GameStartManager_Start
     {
+        private static bool IsServerHost(ServerInfo server, string host)
+        {
+            if (server == null || string.IsNullOrWhiteSpace(server.Ip) || string.IsNullOrWhiteSpace(host))
+                return false;
+
+            string raw = server.Ip.Trim();
+            string serverHost = raw;
+
+            if (Uri.TryCreate(raw, UriKind.Absolute, out Uri absoluteUri))
+                serverHost = absoluteUri.Host;
+            else if (Uri.TryCreate("https://" + raw, UriKind.Absolute, out Uri withSchemeUri))
+                serverHost = withSchemeUri.Host;
+            else
+            {
+                int slashIndex = serverHost.IndexOf('/');
+                if (slashIndex >= 0)
+                    serverHost = serverHost.Substring(0, slashIndex);
+
+                int colonIndex = serverHost.IndexOf(':');
+                if (colonIndex >= 0)
+                    serverHost = serverHost.Substring(0, colonIndex);
+            }
+
+            return string.Equals(serverHost, host, StringComparison.OrdinalIgnoreCase);
+        }
+
         private static ServerType GetRegionType(IRegionInfo region, ServerInfo server)
         {
-            Logger.Info($"Server: {server.Ip} {server.Port}");
+            Logger.Info($"Server: {server?.Ip ?? "-"} {(server != null ? server.Port.ToString() : "-")}");
             switch (region.TranslateName)
             {
                 case StringNames.ServerAS:
@@ -353,7 +373,8 @@ public class JoinRoomURLGenerator // または既存のクラスに追加
                     return ServerType.Europe;
 
             }
-            if (server.Ip == "cs.supernewroles.com") return ServerType.SNRTokyo;
+            if (IsServerHost(server, "cs.supernewroles.com")) return ServerType.SNRTokyo;
+            if (IsServerHost(server, "cs-useast.supernewroles.com")) return ServerType.SNRUSEast;
             return ServerType.Custom;
         }
         public static void Postfix(GameStartManager __instance)

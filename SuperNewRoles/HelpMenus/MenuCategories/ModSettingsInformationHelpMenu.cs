@@ -2,6 +2,7 @@ using System.Linq;
 using System.Text;
 using SuperNewRoles.Modules;
 using SuperNewRoles.CustomOptions;
+using SuperNewRoles.Roles;
 using TMPro;
 using UnityEngine;
 using UnityEngine.Events;
@@ -144,6 +145,7 @@ public class ModSettingsInformationHelpMenu : HelpMenuCategoryBase
             optionsTemplate.SetActive(false);
         }
 
+        CreateExclusivitySettingsUI(optionBaseTemplate.gameObject, settingsInformation, ref lastY, ref contentYBoundsMax);
         scroller.ContentYBounds.max = contentYBoundsMax / 0.9f + 0.2f;  // スクロール領域の調整値
     }
 
@@ -177,6 +179,126 @@ public class ModSettingsInformationHelpMenu : HelpMenuCategoryBase
         }
     }
 
+    private void CreateExclusivitySettingsUI(GameObject optionBaseTemplate, Transform settingsInformation, ref float lastY, ref float contentYBoundsMax)
+    {
+        var header = GameObject.Instantiate(optionBaseTemplate, settingsInformation);
+        header.name = "OptionBase(Clone)_Exclusivity";
+        header.transform.localPosition = new Vector3(0, lastY, 0);
+        header.SetActive(true);
+        lastY -= headerHeight;
+        contentYBoundsMax += headerHeight;
+
+        var categoryNameTMP = header.transform.Find("CategoryName")?.GetComponent<TextMeshPro>();
+        if (categoryNameTMP != null)
+        {
+            categoryNameTMP.text = ModTranslation.GetString("ExclusivityOptionMenuTitle");
+        }
+
+        var optionsTemplate = header.transform.Find("Options")?.gameObject;
+        if (optionsTemplate == null)
+        {
+            Logger.Error("Optionsテンプレートが見つかりませんでした。");
+            return;
+        }
+
+        var optionsContainer = optionsTemplate.transform.parent.gameObject;
+        float optionYPos = headerOptionStartY;
+        float currentX = 2.1f;
+        bool hasVisibleGroup = false;
+
+        foreach (var (setting, groupIndex) in RoleOptionManager.ExclusivitySettings.Select((setting, index) => (setting, index)))
+        {
+            if (setting.MaxAssign <= 0 && setting.Roles.Count == 0)
+                continue;
+
+            hasVisibleGroup = true;
+            CreateTextUI(
+                optionsTemplate,
+                optionsContainer.transform,
+                $"{ModTranslation.GetString("ExclusivityOptionMenuGroupText", groupIndex + 1)}: {ModTranslation.GetString("ExclusivityOptionMenuMaxText")} {setting.MaxAssign}",
+                currentX,
+                ref optionYPos,
+                ref lastY,
+                ref contentYBoundsMax);
+
+            var visibleRoles = setting.Roles
+                .Where(roleId => !RoleReleaseLock.IsLocked(roleId))
+                .ToArray();
+
+            if (visibleRoles.Length == 0)
+            {
+                CreateTextUI(
+                    optionsTemplate,
+                    optionsContainer.transform,
+                    $"{ModTranslation.GetString("ExclusivityOptionMenuAssignedRoleText")}: {ModTranslation.GetString("HelpMenu.Exclusivity.Empty")}",
+                    currentX + indentWidth,
+                    ref optionYPos,
+                    ref lastY,
+                    ref contentYBoundsMax);
+                continue;
+            }
+
+            foreach (var roleId in visibleRoles)
+            {
+                string roleText = $"- {ModHelpers.CsWithTranslation(GetExclusivityRoleColor(roleId), roleId.ToString())}";
+                CreateTextUI(
+                    optionsTemplate,
+                    optionsContainer.transform,
+                    roleText,
+                    currentX + indentWidth,
+                    ref optionYPos,
+                    ref lastY,
+                    ref contentYBoundsMax);
+            }
+        }
+
+        if (!hasVisibleGroup)
+        {
+            CreateTextUI(
+                optionsTemplate,
+                optionsContainer.transform,
+                ModTranslation.GetString("HelpMenu.Exclusivity.Empty"),
+                currentX,
+                ref optionYPos,
+                ref lastY,
+                ref contentYBoundsMax);
+        }
+
+        optionsTemplate.SetActive(false);
+    }
+
+    private void CreateTextUI(
+        GameObject template,
+        Transform container,
+        string text,
+        float currentX,
+        ref float optionYPos,
+        ref float lastYRef,
+        ref float bounds)
+    {
+        var item = GameObject.Instantiate(template, container);
+        item.name = "Options(Clone)_Exclusivity";
+        item.transform.localPosition = new Vector3(currentX, optionYPos, 0);
+        item.SetActive(true);
+
+        var optionText = item.GetComponent<TextMeshPro>();
+        if (optionText != null)
+        {
+            optionText.text = text;
+        }
+
+        optionYPos -= optionYOffset;
+        lastYRef -= textYOffset;
+        bounds += textYOffset * 0.45f;
+    }
+
+    private static Color GetExclusivityRoleColor(RoleId roleId)
+    {
+        return CustomRoleManager.TryGetRoleById(roleId, out var roleBase)
+            ? roleBase.RoleColor
+            : Color.white;
+    }
+
     public override void Hide(GameObject Container)
     {
         if (MenuObject != null)
@@ -197,6 +319,16 @@ public class ModSettingsInformationHelpMenu : HelpMenuCategoryBase
             {
                 sb.Append(option.Name).Append("=").Append(option.Selection).Append(";");
             }
+        }
+        sb.Append("Exclusivity:");
+        foreach (var setting in RoleOptionManager.ExclusivitySettings)
+        {
+            sb.Append(setting.MaxAssign).Append(":");
+            foreach (var roleId in setting.Roles)
+            {
+                sb.Append(roleId).Append(",");
+            }
+            sb.Append(";");
         }
         return sb.ToString();
     }

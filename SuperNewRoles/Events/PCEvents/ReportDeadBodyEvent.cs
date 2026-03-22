@@ -36,6 +36,8 @@ public static class ReportDeadBodyHostPatch
     {
         if (ModeManager.IsMode(ModeId.BattleRoyal))
             return false;
+        if (AmongUsClient.Instance.AmHost && target != null && Roles.Crewmate.PsychometristReportBlock.IsBlocked(target.PlayerId))
+            return false;
         if (AmongUsClient.Instance.AmHost)
             return ReportDeadBodyHostEvent.Invoke(__instance, target);
         return true;

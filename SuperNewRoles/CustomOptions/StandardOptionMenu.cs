@@ -1,10 +1,13 @@
 using System.Collections.Generic;
 using System.Linq;
+using HarmonyLib;
 using SuperNewRoles.Modules;
 using UnityEngine;
 using UnityEngine.Events;
 using SuperNewRoles.CustomOptions.Data;
 using TMPro;
+using InnerNet;
+using SuperNewRoles.Roles;
 
 namespace SuperNewRoles.CustomOptions;
 
@@ -16,6 +19,11 @@ public static class StandardOptionMenu
         public const float ButtonScale = 0.48f;
         public const float InitialYPosition = 1.4f;
         public const float InitialXPosition = -3.614f;
+        public const float PresetButtonInitialY = 1f;
+        public const float PresetButtonYSpacing = -0.55f;
+        public const int PresetVisibleRows = 4;
+        public const float PresetDisplayUpperLimit = 1.8f;
+        public const float PresetDisplayLowerLimit = -2.3f;
     }
 
     public static void ShowStandardOptionMenu()
@@ -246,8 +254,16 @@ public static class StandardOptionMenu
         Logger.Info(text);
         if (string.IsNullOrEmpty(text))
             return;
+
+        // 既存IDの最大値+1 を新しいプリセットIDとする（常に「一番下」に追加）
         int maxPreset = CustomOptionSaver.PresetNames.Any() ? CustomOptionSaver.PresetNames.Keys.Max() : -1;
-        int newPreset = maxPreset + 1;
+        long candidate = (long)maxPreset + 1;
+        if (candidate >= CustomOptionSaver.MaxPresetCount)
+        {
+            Logger.Warning($"No free preset slot available (0-{CustomOptionSaver.MaxPresetCount - 1}).");
+            return;
+        }
+        int newPreset = (int)candidate;
 
         CustomOptionSaver.SetPresetName(newPreset, text);
         CustomOptionSaver.CurrentPreset = newPreset;
@@ -276,8 +292,8 @@ public static class StandardOptionMenu
         buttonsContainer.SetActive(true);
 
         float xPos = 1.25f;
-        float yPos = 1f;
-        const float ySpacing = -0.55f;
+        float yPos = Constants.PresetButtonInitialY;
+        float ySpacing = Constants.PresetButtonYSpacing;
 
         int index = 0;
         foreach (var preset in CustomOptionSaver.PresetNames)
@@ -310,8 +326,44 @@ public static class StandardOptionMenu
         // Scrollerの更新
         if (menuData.RightAreaScroller != null)
         {
-            float maxBound = index <= 4 ? 0f : ((index - 4) * 0.7f);
+            float maxBound = index <= Constants.PresetVisibleRows ? 0f : ((index - Constants.PresetVisibleRows) * 0.7f);
             menuData.RightAreaScroller.ContentYBounds.max = maxBound;
+            menuData.RightAreaScroller.UpdateScrollBars();
+        }
+
+        UpdatePresetButtonsVisibility(menuData);
+    }
+
+    private static void UpdatePresetButtonsVisibility(StandardOptionMenuObjectData menuData)
+    {
+        if (menuData?.PresetButtonsContainer == null || menuData.RightAreaScroller == null)
+            return;
+        if (!menuData.PresetButtonsContainer.activeInHierarchy)
+            return;
+
+        var scrollerTransform = menuData.RightAreaScroller.transform;
+        var buttonsTransform = menuData.PresetButtonsContainer.transform;
+
+        for (int i = 0; i < buttonsTransform.childCount; i++)
+        {
+            var child = buttonsTransform.GetChild(i);
+            Vector3 relativePos = scrollerTransform.InverseTransformPoint(child.position);
+            bool shouldDisplay = relativePos.y < Constants.PresetDisplayUpperLimit && relativePos.y > Constants.PresetDisplayLowerLimit;
+            if (child.gameObject.activeSelf != shouldDisplay)
+                child.gameObject.SetActive(shouldDisplay);
+        }
+    }
+
+    [HarmonyPatch(typeof(ModManager), nameof(ModManager.LateUpdate))]
+    private static class StandardOptionMenuLateUpdatePatch
+    {
+        private static void Postfix()
+        {
+            var menuData = StandardOptionMenuObjectData.Instance;
+            if (menuData == null || menuData.CurrentCategory != Categories.Categories.PresetSettings)
+                return;
+
+            UpdatePresetButtonsVisibility(menuData);
         }
     }
 
@@ -328,6 +380,12 @@ public static class StandardOptionMenu
             CustomOptionSaver.LoadPreset(presetId);
             UpdateNowPresetText(StandardOptionMenuObjectData.Instance.CurrentOptionMenu);
             OptionMenuBase.UpdateOptionDisplayAll();
+            // プリセット変更時に設定を同期する
+            if (AmongUsClient.Instance.AmHost)
+            {
+                CustomOptionManager.RpcSyncOptionsAll();
+                RoleOptionManager.RpcSyncRoleOptionsAll();
+            }
         }), spriteRenderer, selectedObject: buttonObj.transform.Find("Selected")?.gameObject);
     }
 
@@ -367,47 +425,6 @@ public static class StandardOptionMenu
         var rightAreaInner = StandardOptionMenuObjectData.Instance.RightAreaInner;
         GeneratePresetButtons(rightAreaInner);
         UpdateNowPresetText(StandardOptionMenuObjectData.Instance.CurrentOptionMenu);
-    }
-
-    private static void ConfigurePresetButton(
-        GameObject selectPresets,
-        string buttonName,
-        TMPro.TextMeshPro selectedText,
-        bool isIncrement)
-    {
-        var button = selectPresets.transform.Find(buttonName).gameObject;
-        var passiveButton = button.AddComponent<PassiveButton>();
-        passiveButton.Colliders = new Collider2D[] { button.GetComponent<BoxCollider2D>() };
-        var spriteRenderer = passiveButton.GetComponent<SpriteRenderer>();
-
-        UIHelper.ConfigurePassiveButton(passiveButton, (UnityAction)(() =>
-        {
-            HandlePresetNavigation(selectedText, isIncrement);
-        }), spriteRenderer);
-    }
-
-    private static void HandlePresetNavigation(TMPro.TextMeshPro selectedText, bool isIncrement)
-    {
-        CustomOptionSaver.Save(); // 現在のプリセットを保存
-
-        int newPreset;
-        if (isIncrement)
-        {
-            newPreset = CustomOptionSaver.CurrentPreset < CustomOptionSaver.PresetNames.Keys.Max() ?
-                CustomOptionSaver.CurrentPreset + 1 :
-                0;
-        }
-        else
-        {
-            newPreset = CustomOptionSaver.CurrentPreset > 0 ?
-                CustomOptionSaver.CurrentPreset - 1 :
-                CustomOptionSaver.PresetNames.Keys.Max();
-        }
-
-        CustomOptionSaver.LoadPreset(newPreset);
-        UpdateNowPresetText(StandardOptionMenuObjectData.Instance.CurrentOptionMenu);
-        OptionMenuBase.UpdateOptionDisplayAll();
-        selectedText.text = CustomOptionSaver.GetPresetName(newPreset);
     }
 
     private static void ConfigurePresetWriteBox(GameObject presetMenu)

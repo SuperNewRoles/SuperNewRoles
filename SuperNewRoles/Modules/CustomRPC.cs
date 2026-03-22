@@ -56,15 +56,15 @@ public static class CustomRPCManager
     /// <summary>
     /// RPC メソッドを保存するディクショナリ
     /// </summary>
-    public static Dictionary<byte, MethodInfo> RpcMethods = new();
+    public static Dictionary<int, MethodInfo> RpcMethods = new();
     /// <summary>
     /// RPC メソッドを保存するディクショナリ
     /// </summary>
-    public static Dictionary<string, byte> RpcMethodIds = new();
+    public static Dictionary<string, int> RpcMethodIds = new();
     /// <summary>
     /// キャッシュ用：メソッドからRPC IDを高速取得
     /// </summary>
-    private static Dictionary<MethodBase, byte> RpcIdsByMethod = new();
+    private static Dictionary<MethodBase, int> RpcIdsByMethod = new();
     /// <summary>
     /// キャッシュ用：メソッドからOnlyOtherPlayerフラグを高速取得
     /// </summary>
@@ -78,18 +78,19 @@ public static class CustomRPCManager
     /// </summary>
     private static HashSet<MethodBase> InstanceMethodSet = new();
 
+    private const byte SNRBaseRpcId = byte.MaxValue - 1;
     /// <summary>
     /// SuperNewRoles専用のRPC識別子
     /// </summary>
-    private const byte SNRRpcId = byte.MaxValue;
+    private const byte SNRRpcId = SNRBaseRpcId;
     /// <summary>
     /// バージョン同期用のRPC識別子
     /// </summary>
-    public const byte SNRSyncVersionRpc = byte.MaxValue - 1;
+    public const byte SNRSyncVersionRpc = SNRBaseRpcId - 1;
     /// <summary>
     /// ネットワーク移動用のRPC識別子
     /// </summary>
-    public const byte SNRNetworkTransformRpc = byte.MaxValue - 2;
+    public const byte SNRNetworkTransformRpc = SNRBaseRpcId - 2;
     /// <summary>
     /// RPCの受信状態を追跡するフラグ
     /// </summary>
@@ -112,13 +113,73 @@ public static class CustomRPCManager
     /// <returns>メソッドのハッシュ文字列</returns>
     private static string RpcHashGenerate(MethodInfo method)
     {
-        // メソッドのハッシュ値を名前とメソッドの引数の型内容を元に生成
-        return GetMethodFullName(method) + string.Join(",", method.GetParameters().Select(p => p.ParameterType.Name));
+        return GetStableMethodSignature(method);
     }
     private static string RpcHashGenerate(MethodBase method)
     {
-        // メソッドのハッシュ値を名前とメソッドの引数の型内容を元に生成
-        return GetMethodFullName(method) + string.Join(",", method.GetParameters().Select(p => p.ParameterType.Name));
+        return GetStableMethodSignature(method);
+    }
+    internal static string GetStableMethodSignature(MethodBase method)
+    {
+        return GetMethodFullName(method) + "(" + string.Join(",", method.GetParameters().Select(p => GetStableTypeName(p.ParameterType))) + ")";
+    }
+    internal static string GetStableTypeName(Type type)
+    {
+        if (type.IsByRef)
+            return GetStableTypeName(type.GetElementType() ?? typeof(void)) + "&";
+        if (type.IsPointer)
+            return GetStableTypeName(type.GetElementType() ?? typeof(void)) + "*";
+        if (type.IsArray)
+        {
+            string commas = new string(',', Math.Max(0, type.GetArrayRank() - 1));
+            return GetStableTypeName(type.GetElementType() ?? typeof(void)) + "[" + commas + "]";
+        }
+        if (type.IsGenericParameter)
+            return type.Name;
+        if (type.IsGenericType)
+        {
+            string genericTypeName = GetStableNonGenericTypeName(type.GetGenericTypeDefinition());
+            string genericArguments = string.Join(",", type.GetGenericArguments().Select(GetStableTypeName));
+            return genericTypeName + "<" + genericArguments + ">";
+        }
+        return GetStableNonGenericTypeName(type);
+    }
+    private static string GetStableNonGenericTypeName(Type type)
+    {
+        if (type.IsNested && type.DeclaringType != null)
+        {
+            return GetStableNonGenericTypeName(type.DeclaringType) + "." + StripGenericArity(type.Name);
+        }
+
+        string fullName = type.FullName ?? type.Name;
+        int genericArgsIndex = fullName.IndexOf('[');
+        if (genericArgsIndex >= 0)
+        {
+            fullName = fullName.Substring(0, genericArgsIndex);
+        }
+        return StripGenericArity(fullName.Replace('+', '.'));
+    }
+    private static string StripGenericArity(string typeName)
+    {
+        int tickIndex = typeName.IndexOf('`');
+        return tickIndex >= 0 ? typeName.Substring(0, tickIndex) : typeName;
+    }
+    public static int GetDeterministicRpcId(string rpcSignature) => RpcIdGenerate(rpcSignature);
+    public static int GetDeterministicRpcId(MethodBase method) => RpcIdGenerate(RpcHashGenerate(method));
+    private static int RpcIdGenerate(string rpcSignature)
+    {
+        const uint offset = 2166136261;
+        const uint prime = 16777619;
+
+        uint hash = offset;
+        byte[] bytes = System.Text.Encoding.UTF8.GetBytes(rpcSignature);
+        for (int i = 0; i < bytes.Length; i++)
+        {
+            hash ^= bytes[i];
+            hash *= prime;
+        }
+
+        return unchecked((int)hash);
     }
 
     /// <summary>
@@ -145,14 +206,15 @@ public static class CustomRPCManager
 
         SuperNewRolesPlugin.Logger.LogInfo($"[Splash] Start loading {methodsWithDetails.Count} RPC methods");
 
-        // ソートされたハッシュ値に基づいてIDを割り当て
-        for (byte i = 0; i < methodsWithDetails.Count; i++)
+        // シグネチャから決定的なIDを割り当て
+        for (int i = 0; i < methodsWithDetails.Count; i++)
         {
             var methodDetail = methodsWithDetails[i];
             var method = methodDetail.Method;
             var attribute = methodDetail.Attribute;
             var hash = methodDetail.Hash; // 事前計算したハッシュ
             var paramTypes = methodDetail.ParamTypes; // 事前取得したパラメータ型
+            int rpcId = RpcIdGenerate(hash);
 
             // staticメソッドはもちろん、AbilityBaseのインスタンスメソッドも許可
             if (!method.IsStatic && !typeof(AbilityBase).IsAssignableFrom(method.DeclaringType))
@@ -160,8 +222,18 @@ public static class CustomRPCManager
                 Logger.Error($"CustomRPC: {method.Name} is not static and not an AbilityBase instance method");
                 continue;
             }
+
+            if (RpcMethods.TryGetValue(rpcId, out var existingMethod))
+            {
+                string existingHash = RpcHashGenerate(existingMethod);
+                if (existingHash != hash)
+                {
+                    throw new InvalidOperationException(
+                        $"CustomRPC ID collision detected: {rpcId} maps to both {existingHash} and {hash}");
+                }
+            }
             SuperNewRolesPlugin.Logger.LogInfo($"[Splash] Loading RPC method ({i + 1}/{methodsWithDetails.Count}): {method.Name}");
-            tasks.Add(RegisterRPC(method, attribute, i, hash, paramTypes)); // ハッシュとパラメータ型を渡す
+            tasks.Add(RegisterRPC(method, attribute, rpcId, hash, paramTypes)); // ハッシュとパラメータ型を渡す
         }
         SuperNewRolesPlugin.Logger.LogInfo($"[Splash] Registered {RpcMethods.Count} RPC methods");
         return tasks;
@@ -176,7 +248,7 @@ public static class CustomRPCManager
     /// <param name="id">RPC ID</param>
     /// <param name="hash">メソッドのハッシュ値</param>
     /// <param name="paramTypes">メソッドのパラメータ型配列</param>
-    private static Action RegisterRPC(MethodInfo method, CustomRPCAttribute attribute, byte id, string hash, Type[] paramTypes)
+    private static Action RegisterRPC(MethodInfo method, CustomRPCAttribute attribute, int id, string hash, Type[] paramTypes)
     {
         // キャッシュにメソッド情報を登録
         RpcIdsByMethod[method] = id;
@@ -221,7 +293,7 @@ public static class CustomRPCManager
             Logger.Info($"Sent RPC: {__originalMethod.Name} OnlyOther={onlyOther}");
             return !onlyOther;
         }
-        Logger.Info($"Registering RPC: {method.Name} {id}");
+        Logger.Info($"Registering RPC: {method.Name} {id} {hash}");
         var newHarmonyMethod = NewMethod;
         RpcMethods[id] = method;
         RpcMethodIds[hash] = id; // 事前計算したハッシュを使用
@@ -231,11 +303,13 @@ public static class CustomRPCManager
     }
     private static string GetMethodFullName(MethodInfo method)
     {
-        return method.DeclaringType?.Name + "." + method.Name;
+        string declaringTypeName = method.DeclaringType != null ? GetStableTypeName(method.DeclaringType) : "<UnknownType>";
+        return declaringTypeName + "." + method.Name;
     }
     private static string GetMethodFullName(MethodBase method)
     {
-        return method.DeclaringType?.Name + "." + method.Name;
+        string declaringTypeName = method.DeclaringType != null ? GetStableTypeName(method.DeclaringType) : "<UnknownType>";
+        return declaringTypeName + "." + method.Name;
     }
     /// <summary>
     /// RPC受信を処理するハーモニーパッチ
@@ -270,7 +344,8 @@ public static class CustomRPCManager
         /// </summary>
         public static void Postfix(byte callId, MessageReader reader)
         {
-            if (callId != 253)
+            // ネットワーク移動RPCはログを出さない（頻繁に呼ばれるため）
+            if (callId != SNRNetworkTransformRpc)
                 Logger.Info($"Received RPC: {callId}");
             // SuperNewRoles専用のRPCの場合
             switch (callId)
@@ -278,7 +353,7 @@ public static class CustomRPCManager
                 case SNRRpcId:
                     try
                     {
-                        byte id = reader.ReadByte();
+                        int id = reader.ReadInt32();
                         Logger.Info($"Received RPC: {id}");
                         if (!RpcMethods.TryGetValue(id, out var method))
                         {

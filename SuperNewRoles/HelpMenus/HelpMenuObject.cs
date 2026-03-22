@@ -15,12 +15,37 @@ namespace SuperNewRoles.HelpMenus;
 public static class HelpMenuObjectManager
 {
     private static GameObject helpMenuObject;
+    private static bool isWaitingForIntroDisplay;
     public static FadeCoroutine fadeCoroutine;
     public static HelpMenuCategoryBase[] categories;
     public static Dictionary<string, GameObject> selectedButtons;
     public static HelpMenuCategoryBase? CurrentCategory;
     public const HelpMenuCategory DEFAULT_MENU_GAME = HelpMenuCategory.MyRoleInfomation;
     public const HelpMenuCategory DEFAULT_MENU_LOBBY = HelpMenuCategory.AssignmentsSettingInfomation;
+
+    private static bool IsLobbySettingsMenuOpen()
+    {
+        if (AmongUsClient.Instance?.GameState != InnerNet.InnerNetClient.GameStates.Joined)
+            return false;
+
+        var gameSettingMenu = RoleOptionMenu.GetGameSettingMenu();
+        return gameSettingMenu != null && gameSettingMenu.isActiveAndEnabled;
+    }
+
+    public static bool CanToggleHelpMenu()
+    {
+        if (AmongUsClient.Instance == null || HudManager.Instance == null)
+            return false;
+
+        if (HudManager.Instance.IsIntroDisplayed)
+            return false;
+
+        if (IsLobbySettingsMenuOpen())
+            return false;
+
+        return !(AmongUsClient.Instance.GameState == InnerNet.InnerNetClient.GameStates.Started && isWaitingForIntroDisplay);
+    }
+
     private static void Initialize()
     {
         if (categories == null || categories.Length == 0)
@@ -157,6 +182,9 @@ public static class HelpMenuObjectManager
 
     public static void ShowOrHideHelpMenu()
     {
+        if (!CanToggleHelpMenu())
+            return;
+
         if (helpMenuObject == null)
         {
             Initialize();
@@ -224,7 +252,7 @@ public static class HelpMenuObjectManager
         fadeCoroutine.StartFadeOut(helpMenuObject, 0.115f);
 
         // ヘルプメニューを非表示にするときにホスト情報とMeetingHudのマスクエリアを表示する
-        RoleOptionMenu.UpdateHostInfoMaskArea(true);
+        RoleOptionMenu.UpdateHostInfoMaskArea(!IsLobbySettingsMenuOpen());
         ModHelpers.UpdateMeetingHudMaskAreas(true);
     }
     // overlayを閉じる時。
@@ -254,6 +282,11 @@ public static class HelpMenuObjectManager
     {
         public static void Postfix(GameStartManager __instance)
         {
+            if (fadeCoroutine != null && fadeCoroutine.isActive && IsLobbySettingsMenuOpen())
+            {
+                HideHelpMenu();
+            }
+
             bool enabled = helpMenuObject == null || fadeCoroutine == null || !fadeCoroutine.isActive;
             __instance.StartButton.enabled = enabled;
             __instance.LobbyInfoPane.EditButton.enabled = enabled;
@@ -270,6 +303,7 @@ public static class HelpMenuObjectManager
     {
         public static void Postfix()
         {
+            isWaitingForIntroDisplay = true;
             GhostAssignRole.ClearAndReloads();
             // ヘルプメニューが表示されている場合は破棄する
             if (helpMenuObject != null)
@@ -280,6 +314,15 @@ public static class HelpMenuObjectManager
                 CurrentCategory = null;
                 selectedButtons?.Clear();
             }
+        }
+    }
+
+    [HarmonyPatch(typeof(IntroCutscene), nameof(IntroCutscene.CoBegin))]
+    public static class IntroCutsceneCoBeginPatch
+    {
+        public static void Postfix()
+        {
+            isWaitingForIntroDisplay = false;
         }
     }
 }

@@ -13,9 +13,21 @@ public static partial class KillTimerPatch
     public static void Postfix(PlayerControl __instance, float time)
     {
         float timer = time;
-        if (GameSettingOptions.ImmediateKillCooldown && Mathf.Approximately(time, 10f))
+        if (Mathf.Approximately(time, 10f))
         {
-            timer = GameOptionsManager.Instance.CurrentGameOptions.GetFloat(FloatOptionNames.KillCooldown);
+            float defaultKillCooldown = GameOptionsManager.Instance.CurrentGameOptions.GetFloat(FloatOptionNames.KillCooldown);
+            switch (GameSettingOptions.InitialCooldown)
+            {
+                case InitialCooldownType.Immediate:
+                    timer = defaultKillCooldown;
+                    break;
+                case InitialCooldownType.OneThird:
+                    timer = defaultKillCooldown / 3f;
+                    break;
+                case InitialCooldownType.TenSeconds:
+                    timer = 10f;
+                    break;
+            }
         }
         __instance.killTimer = timer;
         DestroyableSingleton<HudManager>.Instance.KillButton.SetCoolDown(timer, GameOptionsManager.Instance.CurrentGameOptions.GetFloat(FloatOptionNames.KillCooldown));

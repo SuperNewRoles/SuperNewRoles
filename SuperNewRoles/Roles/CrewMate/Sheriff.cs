@@ -15,6 +15,7 @@ class Sheriff : RoleBase<Sheriff>
 {
     public override RoleId Role { get; } = RoleId.Sheriff;
     public override Color32 RoleColor { get; } = new(255, 255, 0, byte.MaxValue); // 黄色
+    public override Sprite RoleIcon => AssetManager.GetAsset<Sprite>("SheriffRoleIcon.png");
     public override List<Func<AbilityBase>> Abilities { get; } = [() => new SheriffAbility(new SheriffAbilityData(
         killCooldown: SheriffKillCooldown,
         killCount: SheriffMaxKillCount,

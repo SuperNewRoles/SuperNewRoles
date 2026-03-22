@@ -59,6 +59,8 @@ class Taskmaster : RoleBase<Taskmaster>
 [HarmonyPatch(typeof(Console), nameof(Console.Use))]
 public static class TaskmasterPatch
 {
+    private const float MinigameCloseDelaySeconds = 0.1f;
+
     public static void Postfix(Console __instance)
     {
         if (ExPlayerControl.LocalPlayer.Role != RoleId.Taskmaster) return;
@@ -66,7 +68,7 @@ public static class TaskmasterPatch
         {
             if (!Taskmaster.TaskmasterCanFixSabotageInstantly) return;
             ModHelpers.RpcFixingSabotage(__instance.TaskTypes.FirstOrDefault());
-            Minigame.Instance.Close();
+            CloseMinigameSafely();
         }
         else
         {
@@ -74,8 +76,25 @@ public static class TaskmasterPatch
             if (task != null)
             {
                 task.NextStep();
-                Minigame.Instance.Close();
+                CloseMinigameSafely();
             }
         }
+    }
+
+    // Let the base Console.Use flow finish first; closing immediately can leave moveable false on some clients.
+    private static void CloseMinigameSafely()
+    {
+        Minigame currentMinigame = Minigame.Instance;
+        new LateTask(() =>
+        {
+            currentMinigame?.Close();
+
+            PlayerControl localPlayer = PlayerControl.LocalPlayer;
+            if (localPlayer?.Data == null || localPlayer.Data.IsDead) return;
+            if (MeetingHud.Instance != null || ExileController.Instance != null) return;
+            if (Minigame.Instance != null) return;
+
+            localPlayer.moveable = true;
+        }, MinigameCloseDelaySeconds, "TaskmasterCloseMinigame", log: false);
     }
 }

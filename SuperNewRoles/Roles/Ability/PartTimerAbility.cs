@@ -16,7 +16,8 @@ public class PartTimerAbility : TargetCustomButtonBase
     public PartTimerData _data { get; private set; }
     private int _deathTurn;
     public ExPlayerControl _employer { get; private set; }
-    private bool _isEmployed => _employer != null;
+    public ExPlayerControl Employer { get { return _employer != null && _employer != Player ? _employer : null; } set { _employer = value; } }
+    private bool _isEmployed => Employer != null;
 
     private EventListener<WrapUpEventData> _wrapUpListener;
     private EventListener<NameTextUpdateEventData> _nameTextUpdateListener;
@@ -65,7 +66,7 @@ public class PartTimerAbility : TargetCustomButtonBase
     {
         if (!_isEmployed) return;
         if (!_data.canSeeTargetRole) return;
-        if (data.Player == _employer)
+        if (data.Player == Employer)
             NameText.UpdateVisible(data.Player, true);
     }
 
@@ -112,9 +113,9 @@ public class PartTimerAbility : TargetCustomButtonBase
         if (!Player.IsAlive()) return;
 
         // 雇用主の生死チェック（会議終了後のみ）
-        if (_employer != null && _employer.IsDead())
+        if (Employer != null && Employer.IsDead())
         {
-            _employer = null;
+            Employer = null;
             _deathTurn = _data.deathTurn + 1; // DeathTurnをリセット
         }
 
@@ -148,12 +149,12 @@ public class PartTimerAbility : TargetCustomButtonBase
                 if (Player.MeetingInfoText != null)
                     Player.MeetingInfoText.text += turnText;
             }
-            else if (_employer.AmOwner)
+            else if (Employer.AmOwner)
             {
                 setMarkTo(Player);
             }
         }
-        else if (Player.AmOwner && _employer == data.Player)
+        else if (Player.AmOwner && Employer == data.Player)
         {
             setMarkTo(data.Player);
         }
@@ -166,7 +167,7 @@ public class PartTimerAbility : TargetCustomButtonBase
     [CustomRPC]
     public void RpcEmploy(ExPlayerControl employer)
     {
-        _employer = employer;
+        Employer = employer;
         NameText.UpdateNameInfo(Player);
         NameText.UpdateNameInfo(employer);
     }

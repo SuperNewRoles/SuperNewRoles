@@ -124,7 +124,6 @@ public class CustomHatLayer : MonoBehaviour
             FrontLayer.sprite = null;
         }
         Hats[CurrentHatType] = hat;
-        Logger.Info($"SetHat: {hat.ProdId}");
         SetHat(color);
     }
 
@@ -282,7 +281,6 @@ public class CustomHatLayer : MonoBehaviour
     {
         UpdateMaterial();
         if (Hat == null) return;
-        if (Hat.Asset == null) return;
         if (CustomCosmeticHat == null) return;
 
         SpriteAnimNodeSync spriteAnimNodeSync = spriteSyncNode ?? GetComponent<SpriteAnimNodeSync>();

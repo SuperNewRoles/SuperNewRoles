@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using AmongUs.GameOptions;
 using SuperNewRoles.Ability;
+using SuperNewRoles.CustomOptions.Categories;
 using SuperNewRoles.Events;
 using SuperNewRoles.Extensions;
 using SuperNewRoles.Roles;
@@ -195,18 +196,18 @@ public class ExPlayerControl
     public void ResetKillCooldown()
     {
         if (!AmOwner) return;
-        if (FastDestroyableSingleton<HudManager>.Instance.KillButton.isActiveAndEnabled)
+        var killButton = FastDestroyableSingleton<HudManager>.Instance.KillButton;
+        if (killButton.isActiveAndEnabled)
         {
-            float coolTime = GameOptionsManager.Instance.CurrentGameOptions.GetFloat(FloatOptionNames.KillCooldown);
+            var options = GameOptionsManager.Instance.CurrentGameOptions;
+            float coolTime = options.GetFloat(FloatOptionNames.KillCooldown);
             SetKillTimerUnchecked(coolTime, coolTime);
         }
-        PlayerAbilities.ForEach(x =>
+        var customKillButtons = GetAbilities<CustomKillButtonAbility>();
+        for (var i = 0; i < customKillButtons.Count; i++)
         {
-            if (x is CustomKillButtonAbility customKillButtonAbility)
-            {
-                customKillButtonAbility.ResetTimer();
-            }
-        });
+            customKillButtons[i].ResetTimer();
+        }
     }
     public void SetKillTimerUnchecked(float time, float maxTime)
     {
@@ -466,6 +467,8 @@ public class ExPlayerControl
         // 両方のプレイヤーのRoleを保存
         RoleId myRole = Role;
         RoleId targetRole = target.Role;
+        IRoleBase myRoleBase = roleBase;
+        IRoleBase targetRoleBase = target.roleBase;
 
         // 両方のプレイヤーからAbilitiesをすべてDetach
         foreach (var abilityData in myAbilities)
@@ -484,9 +487,9 @@ public class ExPlayerControl
             SuperTrophyManager.DetachTrophy(Role);
 
         Role = targetRole;
-        roleBase = target.roleBase;
+        roleBase = targetRoleBase;
         target.Role = myRole;
-        target.roleBase = roleBase;
+        target.roleBase = myRoleBase;
 
         // アタッチする
         foreach (var ability in myAbilities)
@@ -494,7 +497,7 @@ public class ExPlayerControl
             var currentParent = ability.ability.Parent;
             if (currentParent is not AbilityParentRole)
                 continue;
-            currentParent.Player = Player;
+            currentParent.Player = target; // targetにAttachするのでParent.Playerはtarget
             target.AttachAbility(ability.ability, currentParent);
         }
         foreach (var ability in targetAbilities)
@@ -502,7 +505,7 @@ public class ExPlayerControl
             var currentParent = ability.ability.Parent;
             if (currentParent is not AbilityParentRole)
                 continue;
-            currentParent.Player = Player;
+            currentParent.Player = this; // thisにAttachするのでParent.Playerはthis
             AttachAbility(ability.ability, currentParent);
         }
         // 名前情報を更新
@@ -554,7 +557,20 @@ public class ExPlayerControl
         }
     }
     public bool IsKiller()
-        => IsImpostor() || IsPavlovsDog() || Role == RoleId.MadKiller || IsJackal() || HasCustomKillButton() || Role == RoleId.Hitman;
+    {
+        if (IsImpostor() || IsPavlovsDog() || Role == RoleId.MadKiller || IsJackal() || Role == RoleId.Hitman)
+            return true;
+
+        var customKillButtons = GetAbilities<CustomKillButtonAbility>();
+        for (var i = 0; i < customKillButtons.Count; i++)
+        {
+            var ability = customKillButtons[i];
+            if (ability?.CanKill?.Invoke() == true)
+                return true;
+        }
+
+        return false;
+    }
 
     public bool IsNonCrewKiller()
         => IsKiller() && !IsCrewmate();
@@ -626,6 +642,53 @@ public class ExPlayerControl
     }
     public bool IsCountTask()
         => _customTaskAbility != null ? _customTaskAbility.CheckIsTaskTrigger()?.countTask ?? IsCrewmate() : IsCrewmate();
+
+    /// <summary>
+    /// このプレイヤーの役職をローカルプレイヤーが見えるかどうかを判定します
+    /// </summary>
+    public bool CanSeeRoleOf(ExPlayerControl otherPlayer)
+    {
+        if (otherPlayer == null || otherPlayer.Player == null || !otherPlayer.Player.Visible)
+        {
+            return false;
+        }
+
+        // 自分自身の場合は常にtrue
+        if (PlayerId == otherPlayer.PlayerId)
+        {
+            return true;
+        }
+
+        // ローカルプレイヤーが生きている場合はfalse
+        if (!IsDead())
+        {
+            return false;
+        }
+
+        // バスカーの偽装死時は他のプレイヤーの役職を見えないようにする
+        bool isBuskerFakeDeath = GetAbility<BuskerPseudocideAbility>()?.isEffectActive == true;
+        if (isBuskerFakeDeath && PlayerId != otherPlayer.PlayerId)
+        {
+            return false;
+        }
+
+        // Local player is ghost
+        bool canSeeGhostRoles = !GameSettingOptions.HideGhostRoles ||
+                                (IsImpostor() && GameSettingOptions.ShowGhostRolesToImpostor);
+
+        if (!canSeeGhostRoles)
+        {
+            return false;
+        }
+
+        var hideRoleOnGhostAbility = GetAbility<HideRoleOnGhostAbility>();
+        if (hideRoleOnGhostAbility != null && hideRoleOnGhostAbility.IsHideRole(otherPlayer))
+        {
+            return false;
+        }
+
+        return true;
+    }
     public (int complete, int all) GetAllTaskForShowProgress()
     {
         (int complete, int all) result = ModHelpers.TaskCompletedData(Data);

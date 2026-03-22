@@ -156,7 +156,7 @@ public class RoleDictionaryHelpMenu : HelpMenuCategoryBase
 
         // 役職一覧を取得
         var roles = CustomRoleManager.AllRoles
-            .Where(r => r.QuoteMod != QuoteMod.Vanilla && !r.HideInRoleDictionary && (r.OptionTeam == teamType || (r.OptionTeam == RoleOptionMenuType.Hidden && r.AssignedTeam == (AssignedTeamType)teamType)))
+            .Where(r => r.QuoteMod != QuoteMod.Vanilla && !r.HideInRoleDictionary && !r.HiddenOption && (r.OptionTeam == teamType || (r.OptionTeam == RoleOptionMenuType.Hidden && r.AssignedTeam == (AssignedTeamType)teamType)))
             .OrderBy(r => r.Role.ToString())
             .ToList();
 
@@ -187,7 +187,7 @@ public class RoleDictionaryHelpMenu : HelpMenuCategoryBase
     {
         // ゴースト役職一覧を取得
         var ghostRoles = CustomRoleManager.AllGhostRoles
-            .Where(r => r.QuoteMod != QuoteMod.Vanilla && !r.HiddenOption)
+            .Where(r => r.QuoteMod != QuoteMod.Vanilla && !r.HideInRoleDictionary)
             .OrderBy(r => r.Role.ToString())
             .ToList();
 
@@ -218,7 +218,7 @@ public class RoleDictionaryHelpMenu : HelpMenuCategoryBase
     {
         // モディファイア役職一覧を取得
         var modifierRoles = CustomRoleManager.AllModifiers
-            .Where(r => r.QuoteMod != QuoteMod.Vanilla)
+            .Where(r => r.QuoteMod != QuoteMod.Vanilla && !r.HideInRoleDictionary)
             .OrderBy(r => r.ModifierRole.ToString())
             .ToList();
 
@@ -501,8 +501,6 @@ public class RoleDictionaryHelpMenu : HelpMenuCategoryBase
     private float CalculateContentYBoundsMax(int roleCount)
     {
         const int maxColumns = 4; // 1行に4役職
-        const float baseHeight = 1.2f; // 基本の高さ
-        const float rowHeight = 0.35f; // 1行の高さ
         const int baseRoleCount = 36; // 基準となる役職数
         const float additionalHeightPerRow = 1f; // 1行ごとに追加する高さ
 
@@ -543,17 +541,17 @@ public class RoleDictionaryHelpMenu : HelpMenuCategoryBase
         {
             case RoleOptionMenuType.Ghost:
                 return CustomRoleManager.AllGhostRoles
-                    .Where(r => r.QuoteMod != QuoteMod.Vanilla && !r.HiddenOption)
+                    .Where(r => r.QuoteMod != QuoteMod.Vanilla && !r.HideInRoleDictionary)
                     .Count();
 
             case RoleOptionMenuType.Modifier:
                 return CustomRoleManager.AllModifiers
-                    .Where(r => r.QuoteMod != QuoteMod.Vanilla)
+                    .Where(r => r.QuoteMod != QuoteMod.Vanilla && !r.HideInRoleDictionary)
                     .Count();
 
             default:
                 return CustomRoleManager.AllRoles
-                    .Where(r => r.QuoteMod != QuoteMod.Vanilla && (r.OptionTeam == teamType || (r.OptionTeam == RoleOptionMenuType.Hidden && r.AssignedTeam == (AssignedTeamType)teamType)))
+                    .Where(r => r.QuoteMod != QuoteMod.Vanilla && !r.HideInRoleDictionary && !r.HiddenOption && (r.OptionTeam == teamType || (r.OptionTeam == RoleOptionMenuType.Hidden && r.AssignedTeam == (AssignedTeamType)teamType)))
                     .Count();
         }
     }

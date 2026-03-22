@@ -81,7 +81,7 @@ public class BodyBuilderAbility : CustomButtonBase
 
     public override bool CheckIsAvailable()
     {
-        return true;
+        return ExPlayerControl.LocalPlayer.IsDead() || PlayerControl.LocalPlayer.CanMove;
     }
 
     public override bool CheckHasButton()

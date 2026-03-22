@@ -7,6 +7,8 @@ public static class GameSettingOptions
 {
     [CustomOptionBool("CannotTaskTrigger", false, parentFieldName: nameof(Categories.GameSettings))]
     public static bool CannotTaskTrigger;
+    [CustomOptionBool("CursedTaskOption", false, parentFieldName: nameof(Categories.GameSettings), displayMode: DisplayModeId.Default)]
+    public static bool CursedTaskOption;
     // |:========== ベントアニメーション有効化の設定 ==========:|
     [CustomOptionBool("VentAnimationPlaySetting", true, parentFieldName: nameof(Categories.GameSettings))]
     public static bool VentAnimationPlaySetting;
@@ -35,14 +37,27 @@ public static class GameSettingOptions
     [CustomOptionBool("AprilFoolsEnableDleks", false, parentFieldName: nameof(CustomAprilFools))]
     public static bool AprilFoolsEnableDleks;
 
+    // 死亡後の手動ズーム全体を有効化する親設定。
     [CustomOptionBool("EnabledZoomOnDead", true, parentFieldName: nameof(Categories.GameSettings))]
     public static bool EnabledZoomOnDead;
+    // タスク進捗での使用制限。親設定がOFFなら UI 上もロジック上も無効。
+    [CustomOptionBool("EnabledZoomOnDeadRequireCompletedTasks", false, parentFieldName: nameof(EnabledZoomOnDead))]
+    public static bool EnabledZoomOnDeadRequireCompletedTasks;
+    // 幽霊役職と GuardianAngel に対する使用制限。こちらも親設定配下の子設定。
+    [CustomOptionBool("EnabledZoomOnDeadDisableForGhostOrGuardianAngel", false, parentFieldName: nameof(EnabledZoomOnDead))]
+    public static bool EnabledZoomOnDeadDisableForGhostOrGuardianAngel;
 
-    [CustomOptionBool("ImmediateKillCooldown", false, parentFieldName: nameof(Categories.GameSettings))]
-    public static bool ImmediateKillCooldown;
+    [CustomOptionSelect("InitialCooldown", typeof(InitialCooldownType), "InitialCooldownType.", parentFieldName: nameof(Categories.GameSettings), defaultValue: InitialCooldownType.TenSeconds)]
+    public static InitialCooldownType InitialCooldown;
 
     [CustomOptionBool("DisableHauntNonCompleted", false, parentFieldName: nameof(Categories.GameSettings))]
     public static bool DisableHauntNonCompleted;
+}
+public enum InitialCooldownType
+{
+    TenSeconds,
+    Immediate,
+    OneThird,
 }
 public enum AprilFoolsOutfitType
 {

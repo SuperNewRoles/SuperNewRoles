@@ -138,7 +138,7 @@ public static class AssetManager
     /// <param name="path">アセットパス</param>
     /// <param name="assetBundleType">使用するアセットバンドルの種類</param>
     /// <returns>読み込まれたアセットまたはnull</returns>
-    public static T GetAsset<T>(string path, AssetBundleType assetBundleType = AssetBundleType.Sprite) where T : UnityEngine.Object
+    public static T? GetAsset<T>(string path, AssetBundleType assetBundleType = AssetBundleType.Sprite) where T : UnityEngine.Object
     {
         var typeKey = TypeToByte[assetBundleType];
         if (!_cachedAssets.TryGetValue(typeKey, out var typeCache))

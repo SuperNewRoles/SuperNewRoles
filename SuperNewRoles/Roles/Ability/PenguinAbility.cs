@@ -66,8 +66,15 @@ public class PenguinAbility : TargetCustomButtonBase, IButtonEffect
     }
     private void OnFixedUpdate()
     {
-        if (targetPlayer != null && targetPlayer.IsAlive())
-            targetPlayer.NetTransform.SnapTo(Player.transform.position);
+        if (targetPlayer == null) return;
+        // 死亡しても掴んでいる問題の対策
+        if (targetPlayer.IsDead() || Player.IsDead())
+        {
+            targetPlayer = null;
+            return;
+        }
+        // ここに来た時点で誰か掴んでる
+        targetPlayer.NetTransform.SnapTo(Player.transform.position);
     }
     public override bool CheckIsAvailable()
     {

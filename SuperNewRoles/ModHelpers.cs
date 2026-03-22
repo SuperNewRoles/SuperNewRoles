@@ -76,16 +76,15 @@ public static class ModHelpers
         if (percentage >= 100) return true;
         return GetRandomInt(100) < percentage;
     }
-    private static MD5 md5 = MD5.Create();
-    private static SHA256 sha256 = SHA256.Create();
     public static string HashMD5(string str)
     {
+        if (string.IsNullOrEmpty(str)) str = string.Empty;
         byte[] bytes = Encoding.UTF8.GetBytes(str);
         return HashMD5(bytes);
     }
     public static string HashMD5(byte[] bytes)
     {
-        return BitConverter.ToString(md5.ComputeHash(bytes)).Replace("-", "").ToLowerInvariant();
+        return BitConverter.ToString(MD5.HashData(bytes)).Replace("-", "").ToLowerInvariant();
     }
     public static string HashSHA256(string str)
     {
@@ -94,7 +93,7 @@ public static class ModHelpers
     }
     public static string HashSHA256(byte[] bytes)
     {
-        return BitConverter.ToString(sha256.ComputeHash(bytes)).Replace("-", "").ToLowerInvariant();
+        return BitConverter.ToString(SHA256.HashData(bytes)).Replace("-", "").ToLowerInvariant();
     }
 
     // MeetingHudのMaskAreaを更新するヘルパーメソッド
@@ -274,6 +273,29 @@ public static class ModHelpers
         // 最後に、全体の末尾の余分な改行を削除
         return overallResult.ToString().TrimEnd('\r', '\n');
     }
+    public static string ConvertSimpleMarkdownToRichText(string text)
+    {
+        if (string.IsNullOrEmpty(text))
+        {
+            return text;
+        }
+
+        string result = text;
+
+        // Convert the more specific patterns first so nested markers stay stable.
+        result = Regex.Replace(result, @"(?<!\\)\*\*\*(.+?)(?<!\\)\*\*\*", "<b><i>$1</i></b>");
+        result = Regex.Replace(result, @"(?<![\\\w])___(.+?)(?<!\\)___(?![\w])", "<b><i>$1</i></b>");
+        result = Regex.Replace(result, @"(?<!\\)\*\*(.+?)(?<!\\)\*\*", "<b>$1</b>");
+        result = Regex.Replace(result, @"(?<![\\\w])__(.+?)(?<!\\)__(?![\w])", "<b>$1</b>");
+        result = Regex.Replace(result, @"(?<!\\)~~(.+?)(?<!\\)~~", "<s>$1</s>");
+        result = Regex.Replace(result, @"(?<!\\)\*(?![\s\*])(.+?)(?<![\s\\])\*(?!\*)", "<i>$1</i>");
+        result = Regex.Replace(result, @"(?<![\\\w])_(?![\s_])(.+?)(?<![\s\\])_(?![\w])", "<i>$1</i>");
+
+        return result
+            .Replace(@"\*", "*")
+            .Replace(@"\_", "_")
+            .Replace(@"\~", "~");
+    }
     public static bool Il2CppIs<T1, T2>(this T1 before, out T2 after) where T1 : Il2CppObjectBase where T2 : Il2CppObjectBase
     {
         after = before?.TryCast<T2>();
@@ -435,6 +457,15 @@ public static class ModHelpers
         if (list == null || list.Count == 0) return default;
         // GetRandomIndex を使用するように変更
         return list[GetRandomIndex(list)];
+    }
+
+    public static T GetRandom<T>(this IEnumerable<T> list)
+    {
+        if (list == null) return default;
+        var array = list as T[] ?? list.ToArray();
+        if (array.Length == 0) return default;
+        int index = GetRandomInt(array.Length - 1);
+        return array[index];
     }
 
     /// <summary>
@@ -772,5 +803,33 @@ public static class ModHelpers
     {
         if (ShipStatus.Instance == null || ShipStatus.Instance.AllVents == null) return null;
         return ShipStatus.Instance.AllVents.FirstOrDefault(vent => vent.Id == id);
+    }
+
+    /// <summary>
+    /// AmongUsの現在の言語名を取得します。
+    /// </summary>
+    /// <returns>言語名</returns>
+    public static string GetCurrentLanguageName()
+    {
+        var currentKeyword = (uint)GameOptionsManager.Instance.GameHostOptions.Keywords;
+        return GetLanguageNameByKeyword(currentKeyword);
+    }
+    /// <summary>
+    /// 指定されたキーワードに対応する言語名を取得します。
+    /// </summary>
+    /// <param name="keyword">言語のキーワード</param>
+    /// <returns>言語名</returns>
+    public static string GetLanguageNameByKeyword(uint keyword)
+    {
+        var langName = "Unknown Language";
+        foreach (var lang in ChatLanguageSet.Instance.Languages)
+        {
+            if (lang.Value == keyword)
+            {
+                langName = lang.Key;
+                break;
+            }
+        }
+        return langName;
     }
 }

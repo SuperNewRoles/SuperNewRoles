@@ -8,6 +8,7 @@ using SuperNewRoles.Modules.Events.Bases;
 using SuperNewRoles.Events;
 using SuperNewRoles.Roles.Ability.CustomButton;
 using SuperNewRoles.CustomCosmetics.CosmeticsPlayer;
+using SuperNewRoles.Extensions;
 
 namespace SuperNewRoles.Roles.Ability;
 
@@ -186,6 +187,8 @@ public class CamouflagerAbility : AbilityBase
         }
 
         _originalOutfits.Clear();
+
+        NameText.UpdateAllNameInfo();
     }
 
     public class CamouflagerAbilityOption

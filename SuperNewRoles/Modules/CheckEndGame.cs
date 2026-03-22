@@ -17,6 +17,7 @@ namespace SuperNewRoles.Modules;
 public enum VictoryType
 {
     None,
+    LoversSolo,
     ImpostorKill,
     ImpostorVote,
     ImpostorSabotage,
@@ -142,6 +143,9 @@ public static class CheckGameEndPatch
         if (state.IsAllTasksCompleted() && !GameSettingOptions.DisableTaskWin)
             return VictoryType.CrewmateTask;
 
+        if (TryGetWinningLoversCouple() != null)
+            return VictoryType.LoversSolo;
+
         return null;
     }
     private static VictoryType? DeterminePlayerBasedVictory(GameState state, bool isHnS)
@@ -184,14 +188,22 @@ public static class CheckGameEndPatch
 
         var reason = MapVictoryTypeToGameOverReason(victoryType);
         (var winners, var color, var upperText) = GetEndGameData(victoryType);
+        var winType = GetWinType(victoryType);
 
-        EndGamer.EndGame(reason, WinType.Default, winners, color, upperText);
+        EndGamer.EndGame(reason, winType, winners, color, upperText);
     }
 
     private static (HashSet<ExPlayerControl> winners, Color32 color, string upperText) GetEndGameData(VictoryType victoryType)
     {
         switch (victoryType)
         {
+            case VictoryType.LoversSolo:
+            {
+                var loversCouple = TryGetWinningLoversCouple();
+                if (loversCouple == null)
+                    throw new ArgumentException($"Invalid lovers victory state: {victoryType}");
+                return (loversCouple.lovers.Select(ability => ability.Player).ToHashSet(), Lovers.Instance.RoleColor, "Lovers");
+            }
             case VictoryType.ImpostorKill:
             case VictoryType.ImpostorVote:
             case VictoryType.ImpostorSabotage:
@@ -215,6 +227,7 @@ public static class CheckGameEndPatch
 
     private static GameOverReason MapVictoryTypeToGameOverReason(VictoryType victoryType) => victoryType switch
     {
+        VictoryType.LoversSolo => (GameOverReason)CustomGameOverReason.LoversWin,
         VictoryType.ImpostorKill => GameOverReason.ImpostorsByKill,
         VictoryType.ImpostorVote => GameOverReason.ImpostorsByVote,
         VictoryType.ImpostorSabotage => GameOverReason.ImpostorsBySabotage,
@@ -226,6 +239,22 @@ public static class CheckGameEndPatch
         VictoryType.HitmanDomination => (GameOverReason)CustomGameOverReason.HitmanWin,
         _ => throw new ArgumentException($"無効な勝利タイプ: {victoryType}")
     };
+
+    private static WinType GetWinType(VictoryType victoryType) => victoryType switch
+    {
+        VictoryType.LoversSolo => WinType.SingleNeutral,
+        _ => WinType.Default
+    };
+
+    private static LoversCouple TryGetWinningLoversCouple()
+    {
+        return ExPlayerControl.ExPlayerControls
+            .Where(player => player != null && player.IsAlive() && player.IsLovers())
+            .Select(player => player.GetAbility<LoversAbility>()?.couple)
+            .Where(couple => couple != null)
+            .Distinct()
+            .FirstOrDefault(couple => couple.CanSoloWin());
+    }
 }
 
 public sealed class GameState : IDisposable
@@ -302,7 +331,7 @@ public class PlayerStatistics
     public int OwlAlive { get; }
     public int HitmanAlive { get; }
 
-    public bool IsKillerExist => TotalKiller > 0;
+    public bool IsKillerExist => TotalKiller > 0 || PavlovsOwnerRemaining;
     public bool IsImpostorDominating { get; }
     public bool IsJackalDominating { get; }
     public bool IsPavlovsWin { get; }

@@ -12,6 +12,7 @@ internal class Phosphorus : RoleBase<Phosphorus>
 {
     public override RoleId Role => RoleId.Phosphorus;
     public override Color32 RoleColor => new(249, 188, 81, byte.MaxValue);
+    public override Sprite RoleIcon => AssetManager.GetAsset<Sprite>("PhosphorusRoleIcon.png");
     public override AssignedTeamType AssignedTeam => AssignedTeamType.Crewmate;
     public override WinnerTeamType WinnerTeam => WinnerTeamType.Crewmate;
     public override TeamTag TeamTag => TeamTag.Crewmate;
