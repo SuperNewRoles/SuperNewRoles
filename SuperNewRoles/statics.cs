@@ -105,4 +105,36 @@ public static class Statics
 
     // バージョン互換性
     public static readonly string[] SupportVanillaVersion = VersionInfo.SupportedVanillaVersions;
+
+    /// <summary>
+    /// Among Us の <c>Constants.GetBroadcastVersion()</c> と同じ式（InnerSloth の GetVersion）。
+    /// </summary>
+    public static int ComputeAmongUsBroadcastVersion(int year, int month, int day, int revision = 0)
+    {
+        return year * 25000 + month * 1800 + day * 50 + revision;
+    }
+
+    /// <summary>
+    /// 互換とみなす Among Us の <c>GetBroadcastVersion()</c> 値。
+    /// オンラインでは <c>main.cs</c> の Postfix で +25 されるため、その値も列挙する。
+    /// 空の場合は同一数値のみ一致とみなす。
+    /// </summary>
+    public static readonly int[] CompatibleAmongUsBroadcastVersions =
+    {
+        // ComputeAmongUsBroadcastVersion(2024, 8, 10, 0),
+        // ComputeAmongUsBroadcastVersion(2024, 8, 10, 0) + 25,
+    };
+
+    /// <summary>
+    /// ローカルと相手の Among Us バージョン（GetBroadcastVersion）がプレイ可能とみなせるか。
+    /// 同一、または両方とも <see cref="CompatibleAmongUsBroadcastVersions"/> に含まれる場合に true。
+    /// </summary>
+    public static bool AreAmongUsBroadcastVersionsCompatible(int localBroadcast, int remoteBroadcast)
+    {
+        if (localBroadcast == remoteBroadcast) return true;
+        if (CompatibleAmongUsBroadcastVersions == null || CompatibleAmongUsBroadcastVersions.Length == 0)
+            return false;
+        return Array.IndexOf(CompatibleAmongUsBroadcastVersions, localBroadcast) >= 0
+            && Array.IndexOf(CompatibleAmongUsBroadcastVersions, remoteBroadcast) >= 0;
+    }
 }
