@@ -94,7 +94,7 @@ public partial class SuperNewRolesPlugin : BasePlugin
 
         MainThreadId = Thread.CurrentThread.ManagedThreadId;
         Logger = Log;
-        
+
         Instance = this;
 
         Encryption.SetEncryptKey();
@@ -117,7 +117,6 @@ public partial class SuperNewRolesPlugin : BasePlugin
         UpdateCPUProcessorAffinity();
         CustomRoleManager.Load();
         AssetManager.Load();
-        CustomRoleManager.Load();
         ModTranslation.Load();
         var tasks = CustomRPCManager.Load();
         CustomOptionManager.Load();

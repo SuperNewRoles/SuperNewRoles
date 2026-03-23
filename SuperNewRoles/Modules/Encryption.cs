@@ -33,7 +33,7 @@ public static class Encryption
 
     //AESキーをRSAで暗号化して返却する
     private static string EncryptKey(){
-        if (ThisAssembly.Git.Branch != BranchConfig.MasterBranch) return "Masterブランチでないのでログは暗号化されません";
+        if (BranchConfig.IsBeta) return "Masterブランチでないのでログは暗号化されません";
         using RSA rsa = RSA.Create();
         rsa.ImportFromPem(rsaPublicKey.ToCharArray());
         byte[] encryptedKey = rsa.Encrypt(Key,RSAEncryptionPadding.OaepSHA256);
@@ -42,7 +42,7 @@ public static class Encryption
 
     //文章をAESで暗号化して返却する
     public static string Encrypt(string plainText){
-        if (ThisAssembly.Git.Branch != BranchConfig.MasterBranch) return plainText;
+        if (BranchConfig.IsBeta) return plainText;
         using Aes aesAlg = Aes.Create();
         aesAlg.Key = Key;
         aesAlg.IV = RandomByte(16);
