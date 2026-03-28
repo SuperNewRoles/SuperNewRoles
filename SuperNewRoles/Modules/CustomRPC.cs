@@ -204,7 +204,7 @@ public static class CustomRPCManager
 
         List<Action> tasks = new();
 
-        SuperNewRolesPlugin.Logger.LogInfo($"[Splash] Start loading {methodsWithDetails.Count} RPC methods");
+        SuperNewRoles.Logger.Info($"[Splash] Start loading {methodsWithDetails.Count} RPC methods");
 
         // シグネチャから決定的なIDを割り当て
         for (int i = 0; i < methodsWithDetails.Count; i++)
@@ -232,10 +232,10 @@ public static class CustomRPCManager
                         $"CustomRPC ID collision detected: {rpcId} maps to both {existingHash} and {hash}");
                 }
             }
-            SuperNewRolesPlugin.Logger.LogInfo($"[Splash] Loading RPC method ({i + 1}/{methodsWithDetails.Count}): {method.Name}");
+            SuperNewRoles.Logger.Info($"[Splash] Loading RPC method ({i + 1}/{methodsWithDetails.Count}): {method.Name}");
             tasks.Add(RegisterRPC(method, attribute, rpcId, hash, paramTypes)); // ハッシュとパラメータ型を渡す
         }
-        SuperNewRolesPlugin.Logger.LogInfo($"[Splash] Registered {RpcMethods.Count} RPC methods");
+        SuperNewRoles.Logger.Info($"[Splash] Registered {RpcMethods.Count} RPC methods");
         return tasks;
     }
 

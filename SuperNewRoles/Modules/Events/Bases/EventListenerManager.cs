@@ -10,14 +10,14 @@ public static class EventListenerManager
     public static List<IEventTargetBase> listeners { get; } = new();
     public static void ResetAllListener()
     {
-        SuperNewRolesPlugin.Logger.LogInfo($"[EventListenerManager] Resetting {listeners.Count} listeners");
+        SuperNewRoles.Logger.Info($"[EventListenerManager] Resetting {listeners.Count} listeners");
         foreach (var listener in listeners)
         {
             var typeName = listener.GetType().Name;
-            SuperNewRolesPlugin.Logger.LogInfo($"[EventListenerManager] Resetting listener: {typeName}");
+            SuperNewRoles.Logger.Info($"[EventListenerManager] Resetting listener: {typeName}");
             listener.RemoveListenerAll();
         }
-        SuperNewRolesPlugin.Logger.LogInfo("[EventListenerManager] All listeners reset completed");
+        SuperNewRoles.Logger.Info("[EventListenerManager] All listeners reset completed");
     }
 
     public static void Load()
@@ -33,7 +33,7 @@ public static class EventListenerManager
             !t.IsAbstract &&
             typeof(IEventTargetBase).IsAssignableFrom(t)).ToList();
 
-        SuperNewRolesPlugin.Logger.LogInfo($"[Splash] Found {eventTargetTypes.Count} event target types");
+        SuperNewRoles.Logger.Info($"[Splash] Found {eventTargetTypes.Count} event target types");
         int index = 0;
         foreach (var type in eventTargetTypes)
         {
@@ -62,7 +62,7 @@ public static class EventListenerManager
                     listeners.Add(instance);
                 }
             }
-            SuperNewRolesPlugin.Logger.LogInfo($"[Splash] Loaded listeners ({index}/{eventTargetTypes.Count}): {type.Name}");
+            SuperNewRoles.Logger.Info($"[Splash] Loaded listeners ({index}/{eventTargetTypes.Count}): {type.Name}");
         }
     }
     [HarmonyPatch(typeof(GameStartManager), nameof(GameStartManager.Start))]

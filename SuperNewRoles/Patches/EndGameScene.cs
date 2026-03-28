@@ -562,7 +562,7 @@ public class EndGameManagerSetUpPatch
         }
         catch (Exception e)
         {
-            SuperNewRolesPlugin.Logger.LogInfo("エラー:" + e);
+            SuperNewRoles.Logger.Info("エラー:" + e);
         }
     }
 }
