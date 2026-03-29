@@ -357,7 +357,7 @@ FinalStatus.LoversSuicide,心中,Lovers’ double suicide,恋人自尽,戀人自
 FinalStatus.LaunchByRocket,花火,Launched like a firework,如烟花般升空,如煙火般升空
 FinalStatus.VampireKill,吸血死,Death by vampire,被吸血而死,被吸血而死
 FinalStatus.VampireWithDead,夜に呑まれた,Swallowed by the night,被夜晚吞噬,被夜晚吞噬
-FinalStatus.SpelunkerSetRoleDeath
+FinalStatus.SpelunkerSetRoleDeath,,
 FinalStatus.SpelunkerVentDeath,転倒,Slipped and fell,滑倒致死,滑倒致死
 FinalStatus.SpelunkerCommsElecDeath,不安死,Died of anxiety,因不安而死,因不安而死
 FinalStatus.SpelunkerOpenDoor,指挟み,Fingers caught in door,手指被门夹伤,手指被門夾傷
@@ -706,7 +706,7 @@ GhostMechanic.Description,タスクターンに使用できる能力を有する
 
 # Descriptions_Modifier
 ModifierGuesser.Description,会議に関する能力を有する追加役職です。\n元の役職の能力に加えてこの能力を有します。\n会議中に出現するボタンを押し、対象のプレイヤーの役職が何か当てると、そのプレイヤーをキルすることができます。\nただし、外すと自身が死亡してしまいます。\n\nホストモードでは、以下のコマンドを使用して推測します。\n/bt 色の名前 役職名,An additional role with a meeting-related ability.\nThey retain their original role’s powers and gain this extra ability.\nDuring meetings，by pressing the appearing button and correctly guessing a target player’s role，they can kill that player.\nHowever，an incorrect guess results in their own death.\n\nIn Host mode，use the following command to guess:\n/bt <color> <role>.,这是一个具有会议相关能力的额外职业。\n他们保留原始职业的能力，并获得此额外能力。\n会议期间，通过按下出现的按钮并正确猜测目标玩家的职业，可以将其击杀。\n但是，猜错自己就会死亡。\n\n在Host模式下，请使用以下命令进行猜测：\n/bt <颜色> <职业>。,這是一個具有會議相關能力的額外职业。\n他們保留原始职业的能力，並獲得此額外能力。\n會議期間，通過按下出現的按鈕並正確猜測目標玩家的职业，可以將其擊殺。\n但是，猜錯自己就會死亡。\n\n在Host模式下，請使用以下命令進行猜測：\n/bt <顏色> <职业>。
-ModifierMadmate.Description
+ModifierMadmate.Description,,,,
 RulerModifier.Description,タスクターンに使用できる能力を有するインポスター専用モディファイアです。\n「狂わせる」ボタンを押すことで、対象のプレイヤーの役職をマッドメイトに変更することができます。,An Impostor-only modifier with an ability usable during task turns.\nBy pressing the “Madness” button，they can change a target player’s role to Madmate.,这是一个仅限伪装者的附加职业，具备任务回合中可使用能力。\n按下“狼化”按钮后，可以将目标玩家的职业更改为叛徒。,這是一個僅限內鬼的副职业职业，具備任務回合中可使用能力。\n按下「瘋狂」按鈕後，可以將目標玩家的职业變更為叛徒。
 Lovers.Description,独自の勝利条件を持つモディファイアです。\nこのモディファイアは必ずペアで配役されます。\n一部役職によって後から付与されることもあります。\nペアの片方が死亡すると、もう片方もその後を追って共に死亡します。\nこのモディファイアを持つ二人のプレイヤーは、元の役職の勝利条件に加えて独自の勝利条件を持ちます。\n生存者数がラバーズを含む3名以下になると、ラバーズ単独勝利となります。\nただし、完全単独の場合、ラバーズとしてしか勝利できません。\nまた、ラバーズにキル能力を有する人外が含まれる場合、キル能力を有する人外とキル能力を有しないクルーが同数以下になっても、ラバーズが死亡するか、ラバーズが単独勝利するまでゲームが継続します(勝利モードが共勝利の場合を除く)。\n共勝利モードのときは、どちらも生存した状態かつ、ペアのどちらかが元陣営で勝利した際、もう片方のプレイヤーも共に勝利します。,A modifier with a unique win condition.\nThis modifier is always assigned in pairs.\nIt may also be granted later by certain roles.\nIf one member of the pair dies，the other dies shortly afterward.\nThese two players each have the original role’s win condition plus a shared win condition.\nIf the number of survivors (including the Lovers) drops to three or fewer，the Lovers achieve a solo win.\nHowever，in an absolute solo case，they can only win as Lovers.\nAlso，if the Lovers include a non-Crewmate with a kill ability and the number of kill-capable non-Crewmates becomes equal to or less than non-killing Crewmates，the game continues until the Lovers die or achieve a solo win (unless in shared-win mode).\nIn shared-win mode，if both Lovers are alive and one achieves their original faction’s victory，the other wins alongside them.,这是一个具有独特胜利条件的附加职业。\n此副职业始终成对分配。\n它也可以被某些职业后期赋予。\n如果一对中的一人死亡，另一人也会随之死亡。\n这两位玩家拥有原始职业的胜利条件以及一个共同的胜利条件。\n如果包括恋人在内的存活玩家人数降至三人或更少，恋人单独获胜。\n但是，在绝对单独的情况下，他们只能以恋人身份获得胜利。\n此外，如果恋人中包含具有击杀能力的非船员，当具有击杀能力的非船员数量与无法击杀的船员数量相等或更少时，游戏将继续，直到恋人死亡或实现单独获胜（除非在共赢模式）。\n在共赢模式下，如果两名恋人都存活并且其中一人实现其原始阵营的胜利，则另一人也随之获胜。,這是一個具有獨特勝利條件的副职业。\n此副职业始終成對分配。\n它也可以被某些职业後期賦予。\n如果一對中的一人死亡，另一人也會隨之死亡。\n這兩位玩家擁有原始职业的勝利條件以及一個共同的勝利條件。\n如果包括戀人在內的倖存者人數降至三人或更少，戀人單獨獲勝。\n但是，在絕對單獨的情況下，他們只能以戀人身份獲得勝利。\n此外，如果戀人中包含具有擊殺能力的非船員，當具有擊殺能力的非船員數量與無法擊殺的船員數量相等或更少時，遊戲將繼續，直到戀人死亡或實現單獨獲勝（除非在共贏模式）。\n在共贏模式下，如果兩名戀人都存活並且其中一人實現其原始陣營的勝利，則另一人也隨之獲勝。
 JumboModifier.Description,見た目に変化のあるモディファイアです。\n時間経過でどんどん大きくなっていきます。\nクルーメイトのジャンボが成長しきる前に追放されると、全員敗北になります。\nインポスターのジャンボは最大まで成長すると、一度だけ使えるサブキルボタンを獲得します。,A modifier that visibly changes a player’s size.\nThey grow continuously over time.\nIf a large Crewmate is ejected before fully growing，everyone loses.\nIf a large Impostor fully grows，they gain a one-time-use Subkill button.,这是一个视觉上会改变玩家体型的附加职业。\n随着时间推移，他们会不断变大。\n如果一个变大的船员在完全变大前被投出，所有玩家都将输掉比赛。\n如果一个变大的伪装者完全成长，他们会获得一个一次性使用的子击杀按钮。,這是一個視覺上會改變玩家體型的副职业。\n隨著時間推移，他們會不斷變大。\n如果一個變大的船員在完全變大前被投出，所有玩家都將輸掉比賽。\n如果一個變大的內鬼完全成長，他們會獲得一個一次性使用的子擊殺按鈕。
@@ -1913,7 +1913,7 @@ NunButtonName,ぬーん,Nun,升降平台,
 # WaveCannon BattleRoyalMode
 WCBattleRoyalMode,波動砲バトルロイヤル,Wave Cannon Battle Royale,重炮手乱斗,波動砲大逃殺
 BattleRoyalWinText,{0}の勝利,{0} Win,{0}获胜,
-BattleRoyalWaveCannon
+BattleRoyalWaveCannon,,
 WCBattleRoyalIntroTitle,波動砲バトルロイヤル,Battle Royale,大逃杀,大逃殺
 BattleRoyalIntroSubTitle,最後の一人になれ,Be the last one standing,成为最后一个,成為最後一人
 WCBattleRoyalIntroTeamTitle,波動砲バトルロイヤル チーム {0},Team {0},队伍 {0},隊伍 {0}
