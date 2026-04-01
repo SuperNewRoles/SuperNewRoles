@@ -512,9 +512,10 @@ internal static class SyncVersionErrorHandler
         if (badge != null) badge.gameObject.SetActive(false);
 
         PassiveButton passiveButton = ResyncButtonRoot.AddComponent<PassiveButton>();
-        var collider = ResyncButtonRoot.GetComponent<CircleCollider2D>();
-        if (collider != null)
-            passiveButton.Colliders = new Collider2D[] { collider };
+        CircleCollider2D collider = ResyncButtonRoot.AddComponent<CircleCollider2D>();
+        collider.offset = sprite.bounds.center;
+        collider.radius = Mathf.Max(sprite.bounds.extents.x, sprite.bounds.extents.y);
+        passiveButton.Colliders = new Collider2D[] { collider };
         passiveButton.OnClick = new();
         passiveButton.OnMouseOut = new();
         passiveButton.OnMouseOver = new();
@@ -527,13 +528,17 @@ internal static class SyncVersionErrorHandler
 
         if (hudManager.roomTracker != null && hudManager.roomTracker.text != null)
         {
-            TextMeshPro label = GameObject.Instantiate(hudManager.roomTracker.text, ResyncButtonRoot.transform);
+            TextMeshPro label = GameObject.Instantiate(hudManager.roomTracker.text);
             label.name = "ResyncLabel";
-            label.transform.localPosition = new Vector3(0f, -0.55f, 0f);
-            label.transform.localScale = Vector3.one * 0.35f;
+            GameObject.Destroy(label.GetComponent<RoomTracker>());
+            label.transform.SetParent(ResyncButtonRoot.transform, false);
+            label.transform.localPosition = new Vector3(0f, -1.25f, -1f);
+            label.transform.localScale = Vector3.one * 2.4f;
             label.text = ModTranslation.GetString("SyncVersion_ResyncButton");
             label.alignment = TextAlignmentOptions.Center;
             label.color = Color.white;
+            label.fontSizeMin = 1.2f;
+            label.enableWordWrapping = false;
         }
 
         ResyncButtonRoot.SetActive(false);
@@ -681,4 +686,3 @@ internal static class SyncVersionErrorHandler
         ErrorText.enableWordWrapping = false;
     }
 }
-
