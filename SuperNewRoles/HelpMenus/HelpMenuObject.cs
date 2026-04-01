@@ -1,6 +1,7 @@
 using UnityEngine;
 using TMPro;
 using SuperNewRoles.Modules;
+using SuperNewRoles.Patches;
 using UnityEngine.Events;
 using System;
 using System.Reflection;
@@ -9,6 +10,7 @@ using HarmonyLib;
 using System.Collections.Generic;
 using SuperNewRoles.CustomOptions;
 using SuperNewRoles.Roles;
+using InnerNet;
 
 namespace SuperNewRoles.HelpMenus;
 
@@ -288,7 +290,20 @@ public static class HelpMenuObjectManager
             }
 
             bool enabled = helpMenuObject == null || fadeCoroutine == null || !fadeCoroutine.isActive;
-            __instance.StartButton.enabled = enabled;
+            if (AmongUsClient.Instance.AmHost && GameData.Instance != null)
+            {
+                bool minOk = GameData.Instance.PlayerCount >= __instance.MinPlayers;
+                bool startEnabled = enabled && minOk;
+                if (AmongUsClient.Instance.NetworkMode == NetworkModes.OnlineGame)
+                    startEnabled = startEnabled && SyncVersion.CanHostStartGame();
+                __instance.StartButton.SetButtonEnableState(startEnabled);
+                if (__instance.StartButtonGlyph != null)
+                    __instance.StartButtonGlyph.SetColor(startEnabled ? Palette.EnabledColor : Palette.DisabledClear);
+            }
+            else
+            {
+                __instance.StartButton.enabled = enabled;
+            }
             __instance.LobbyInfoPane.EditButton.enabled = enabled;
             PassiveButton p = null;
             if (__instance.LobbyInfoPane.HostViewButton != null)

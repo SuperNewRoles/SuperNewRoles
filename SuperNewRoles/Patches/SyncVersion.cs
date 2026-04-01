@@ -3,11 +3,14 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Reflection;
+using System.Text;
 using HarmonyLib;
 using Hazel;
+using InnerNet;
 using SuperNewRoles.Modules;
 using TMPro;
 using UnityEngine;
+using UnityEngine.Events;
 
 namespace SuperNewRoles.Patches;
 
@@ -18,6 +21,7 @@ public enum SyncErrorType
     RpcMapMismatch,
     HashMismatch,
     NotInstalled,
+    AmongUsVersionMismatch,
 }
 public static class SyncVersion
 {
@@ -29,11 +33,29 @@ public static class SyncVersion
     private const float SYNC_SHOWERROR_DELAY = 1f;
     private const int MAX_RETRY_COUNT = 100;
 
+    /// <summary>古いSNRは末尾 int なし。以降 int（GetBroadcastVersion）、任意で表示用文字列。</summary>
+    private readonly record struct SyncVersionPayload(
+        byte PlayerId,
+        string Version,
+        string Hash,
+        string RpcMap,
+        int BroadcastVersion,
+        bool BroadcastPresent,
+        string AmongUsDisplayVersion,
+        bool DisplayVersionPresent);
 
     public static class VersionData
     {
         public static Dictionary<byte, SyncErrorType> IsError { get; } = new();
         public static Dictionary<byte, string> VersionMap { get; } = new();
+        /// <summary>各プレイヤーが報告した RpcMap ハッシュ（再同期・ホスト比較用）</summary>
+        public static Dictionary<byte, string> RpcMapByPlayer { get; } = new();
+        /// <summary>各プレイヤーが報告した Among Us バニラ GetBroadcastVersion()</summary>
+        public static Dictionary<byte, int> AmongUsBroadcastByPlayer { get; } = new();
+        /// <summary>各プレイヤーが報告した Among Us 表示バージョン（VersionShower と同様 v + Application.version）</summary>
+        public static Dictionary<byte, string> AmongUsDisplayVersionByPlayer { get; } = new();
+        /// <summary>各プレイヤーが報告した DLL ハッシュ</summary>
+        public static Dictionary<byte, string> HashByPlayer { get; } = new();
         public static string CurrentHash { get; private set; } = "";
         public static string CurrentRpcMap { get; private set; } = "";
 
@@ -42,7 +64,19 @@ public static class SyncVersion
             CurrentHash = hash;
             CurrentRpcMap = rpcMap;
         }
+
+        public static void ClearTrackedState()
+        {
+            IsError.Clear();
+            VersionMap.Clear();
+            RpcMapByPlayer.Clear();
+            AmongUsBroadcastByPlayer.Clear();
+            AmongUsDisplayVersionByPlayer.Clear();
+            HashByPlayer.Clear();
+        }
     }
+
+    private static int LocalBroadcastVersion => Constants.GetBroadcastVersion();
 
     public static void Load()
     {
@@ -55,48 +89,86 @@ public static class SyncVersion
     }
     private static string GenerateRpcMap()
     {
-        var rpcMapBuilder = new System.Text.StringBuilder();
+        var rpcMapBuilder = new StringBuilder();
         foreach (var method in CustomRPCManager.RpcMethods.OrderBy(m => m.Key))
         {
             AppendMethodInfo(rpcMapBuilder, method);
         }
         return ModHelpers.HashMD5(rpcMapBuilder.ToString());
     }
-    private static void AppendMethodInfo(System.Text.StringBuilder builder, KeyValuePair<int, MethodInfo> method)
+    private static void AppendMethodInfo(StringBuilder builder, KeyValuePair<int, MethodInfo> method)
     {
         builder.Append(method.Key)
                .Append(':')
                .Append(CustomRPCManager.GetStableMethodSignature(method.Value))
                .Append(';');
     }
+
     public static void ReceivedSyncVersion(MessageReader reader)
     {
-        var syncData = ReadSyncData(reader);
-        if (!ValidatePlayer(syncData.PlayerId, out var player)) return;
+        SyncVersionPayload payload = ReadSyncPayload(reader);
+        if (!TryGetPlayerControl(payload.PlayerId, out PlayerControl player)) return;
 
-        VersionData.VersionMap[syncData.PlayerId] = syncData.Version;
-        Logger.Info($"Received SyncVersion from {player.Data.PlayerName}: {syncData.Version} {syncData.Hash}");
+        ApplyPayloadToVersionData(payload);
 
-        var errorType = ValidateSyncData(syncData);
-        VersionData.IsError[syncData.PlayerId] = errorType;
+        string logDisplay = SanitizeAmongUsDisplayVersion(payload.AmongUsDisplayVersion);
+        Logger.Info($"Received SyncVersion from {player.Data.PlayerName}: SNR={payload.Version} AU={(payload.BroadcastPresent ? payload.BroadcastVersion.ToString() : "legacy")} display={logDisplay}");
 
-        LogValidationResult(player, errorType, syncData);
+        if (player.PlayerId == PlayerControl.LocalPlayer.PlayerId)
+        {
+            VersionData.IsError[payload.PlayerId] = SyncErrorType.NotMismatch;
+            VersionData.AmongUsBroadcastByPlayer[payload.PlayerId] = LocalBroadcastVersion;
+            VersionData.AmongUsDisplayVersionByPlayer[payload.PlayerId] = GetAmongUsDisplayVersion();
+            return;
+        }
+
+        SyncErrorType errorType = ValidateSyncPayload(payload);
+        VersionData.IsError[payload.PlayerId] = errorType;
+        LogValidationResult(player, errorType, payload);
     }
-    private static (byte PlayerId, string Version, string Hash, string RpcMap) ReadSyncData(MessageReader reader)
+
+    private static SyncVersionPayload ReadSyncPayload(MessageReader reader)
     {
-        return (
-            reader.ReadByte(),
-            reader.ReadString(),
-            reader.ReadString(),
-            reader.ReadString()
-        );
+        byte playerId = reader.ReadByte();
+        string version = reader.ReadString();
+        string hash = reader.ReadString();
+        string rpcMap = reader.ReadString();
+        bool broadcastPresent = reader.Length - reader.Position >= 4;
+        int broadcastVersion = broadcastPresent ? reader.ReadInt32() : 0;
+        bool displayVersionPresent = reader.Position < reader.Length;
+        string amongUsDisplayVersion = displayVersionPresent ? reader.ReadString() : string.Empty;
+        return new SyncVersionPayload(playerId, version, hash, rpcMap, broadcastVersion, broadcastPresent, amongUsDisplayVersion, displayVersionPresent);
     }
-    private static bool ValidatePlayer(byte playerId, out PlayerControl player)
+
+    private static void ApplyPayloadToVersionData(SyncVersionPayload p)
+    {
+        VersionData.VersionMap[p.PlayerId] = p.Version;
+        VersionData.RpcMapByPlayer[p.PlayerId] = p.RpcMap;
+        VersionData.HashByPlayer[p.PlayerId] = p.Hash;
+        if (p.BroadcastPresent)
+            VersionData.AmongUsBroadcastByPlayer[p.PlayerId] = p.BroadcastVersion;
+        else
+            VersionData.AmongUsBroadcastByPlayer.Remove(p.PlayerId);
+
+        if (p.DisplayVersionPresent && !string.IsNullOrEmpty(p.AmongUsDisplayVersion))
+        {
+            string sanitized = SanitizeAmongUsDisplayVersion(p.AmongUsDisplayVersion);
+            if (!string.IsNullOrEmpty(sanitized))
+                VersionData.AmongUsDisplayVersionByPlayer[p.PlayerId] = sanitized;
+            else
+                VersionData.AmongUsDisplayVersionByPlayer.Remove(p.PlayerId);
+        }
+        else
+            VersionData.AmongUsDisplayVersionByPlayer.Remove(p.PlayerId);
+    }
+
+    internal static bool TryGetPlayerControl(byte playerId, out PlayerControl player)
     {
         player = PlayerControl.AllPlayerControls.ToArray().FirstOrDefault(p => p.PlayerId == playerId);
         return player != null;
     }
-    private static SyncErrorType ValidateSyncData((byte PlayerId, string Version, string Hash, string RpcMap) data)
+
+    private static SyncErrorType ValidateSyncPayload(SyncVersionPayload data)
     {
         if (data.Version != VersionInfo.VersionString)
             return SyncErrorType.VersionMismatch;
@@ -104,9 +176,13 @@ public static class SyncVersion
             return SyncErrorType.HashMismatch;
         if (data.RpcMap != VersionData.CurrentRpcMap)
             return SyncErrorType.RpcMapMismatch;
+        if (data.BroadcastPresent
+            && !Statics.AreAmongUsBroadcastVersionsCompatible(LocalBroadcastVersion, data.BroadcastVersion))
+            return SyncErrorType.AmongUsVersionMismatch;
         return SyncErrorType.NotMismatch;
     }
-    private static void LogValidationResult(PlayerControl player, SyncErrorType errorType, (byte PlayerId, string Version, string Hash, string RpcMap) data)
+
+    private static void LogValidationResult(PlayerControl player, SyncErrorType errorType, SyncVersionPayload data)
     {
         if (errorType == SyncErrorType.VersionMismatch)
         {
@@ -122,6 +198,10 @@ public static class SyncVersion
         {
             Logger.Info($"Error Rpc Map: {player.Data.PlayerName}");
         }
+        else if (errorType == SyncErrorType.AmongUsVersionMismatch)
+        {
+            Logger.Info($"Error Among Us version: {player.Data.PlayerName} reported={data.AmongUsDisplayVersion} int={data.BroadcastVersion}");
+        }
         else if (errorType == SyncErrorType.NotInstalled)
         {
             Logger.Info($"Not Received Version: {player.Data.PlayerName}");
@@ -129,18 +209,177 @@ public static class SyncVersion
     }
     public static void SendSyncVersion()
     {
+        if (PlayerControl.LocalPlayer == null) return;
+        byte localId = PlayerControl.LocalPlayer.PlayerId;
+        string auDisplay = GetAmongUsDisplayVersion();
+        VersionData.VersionMap[localId] = VersionInfo.VersionString;
+        VersionData.RpcMapByPlayer[localId] = VersionData.CurrentRpcMap;
+        VersionData.HashByPlayer[localId] = VersionData.CurrentHash;
+        VersionData.AmongUsBroadcastByPlayer[localId] = LocalBroadcastVersion;
+        VersionData.AmongUsDisplayVersionByPlayer[localId] = auDisplay;
+        VersionData.IsError[localId] = SyncErrorType.NotMismatch;
+
         MessageWriter writer = AmongUsClient.Instance.StartRpcImmediately(PlayerControl.LocalPlayer.NetId, (byte)CustomRPCManager.SNRSyncVersionRpc, SendOption.Reliable, -1);
-        writer.Write(PlayerControl.LocalPlayer.PlayerId);
+        writer.Write(localId);
         writer.Write(VersionInfo.VersionString);
         writer.Write(VersionData.CurrentHash);
         writer.Write(VersionData.CurrentRpcMap);
+        writer.Write(LocalBroadcastVersion);
+        writer.Write(auDisplay);
         AmongUsClient.Instance.FinishRpcImmediately(writer);
     }
+
+    /// <summary>ゲームが表示に使う Among Us バージョン（ReferenceData の userFacingVersion）。表示は <see cref="SanitizeAmongUsDisplayVersion"/> 済み。</summary>
+    public static string GetAmongUsDisplayVersion()
+    {
+        string raw;
+        try
+        {
+            var rdm = FastDestroyableSingleton<ReferenceDataManager>.Instance;
+            if (rdm?.Refdata == null)
+                raw = RawFallbackAmongUsDisplayVersion();
+            else
+            {
+                string u = rdm.Refdata.userFacingVersion;
+                raw = string.IsNullOrEmpty(u) ? RawFallbackAmongUsDisplayVersion() : u;
+            }
+        }
+        catch
+        {
+            raw = RawFallbackAmongUsDisplayVersion();
+        }
+        return SanitizeAmongUsDisplayVersion(raw);
+    }
+
+    private static string RawFallbackAmongUsDisplayVersion() => "v" + Application.version;
+
+    /// <summary>
+    /// 表示用 Among Us バージョン。小文字の v・数字・. のみ残し、それ以外は除去する。残らなければ空文字。
+    /// 不正な文章が表示されることの対策として。
+    /// </summary>
+    public static string SanitizeAmongUsDisplayVersion(string raw)
+    {
+        if (string.IsNullOrEmpty(raw)) return string.Empty;
+        StringBuilder sb = new(raw.Length);
+        foreach (char c in raw)
+        {
+            if (c == 'v' || c == '.' || (c >= '0' && c <= '9'))
+                sb.Append(c);
+        }
+        return sb.ToString();
+    }
+
+    /// <summary>
+    /// クライアントがホスト報告の SNR / RpcMap / AU / ハッシュと一致しているか。
+    /// </summary>
+    public static bool LocalIsOutOfSyncWithHost()
+    {
+        if (AmongUsClient.Instance.AmHost) return false;
+        if (GameData.Instance == null || PlayerControl.LocalPlayer == null) return false;
+        NetworkedPlayerInfo host = GameData.Instance.GetHost();
+        if (host == null || host.Disconnected) return false;
+        byte hostId = host.PlayerId;
+        if (!VersionData.VersionMap.TryGetValue(hostId, out string hostSnr) || string.IsNullOrEmpty(hostSnr))
+            return false;
+        if (VersionInfo.VersionString != hostSnr)
+            return true;
+        if (!VersionData.RpcMapByPlayer.TryGetValue(hostId, out string hostRpc) || string.IsNullOrEmpty(hostRpc))
+            return false;
+        if (VersionData.CurrentRpcMap != hostRpc)
+            return true;
+        if (!VersionData.HashByPlayer.TryGetValue(hostId, out string hostHash) || string.IsNullOrEmpty(hostHash))
+            return false;
+        if (VersionData.CurrentHash != hostHash)
+            return true;
+        if (!VersionData.AmongUsBroadcastByPlayer.TryGetValue(hostId, out int hostAu))
+            return false;
+        if (!Statics.AreAmongUsBroadcastVersionsCompatible(LocalBroadcastVersion, hostAu))
+            return true;
+        return false;
+    }
+
+    /// <summary>Among Us の GetBroadcastVersion を表示用 v年.月.日.改訂 に変換</summary>
+    public static string FormatAmongUsBroadcastVersion(int broadcastVersion)
+    {
+        int y = broadcastVersion / 25000;
+        broadcastVersion -= y * 25000;
+        int m = broadcastVersion / 1800;
+        broadcastVersion -= m * 1800;
+        int d = broadcastVersion / 50;
+        broadcastVersion -= d * 50;
+        int rev = broadcastVersion;
+        return $"v{y}.{m}.{d}.{rev}";
+    }
+
+    /// <summary>
+    /// ホストがオンラインロビーでゲームを開始してよいか。
+    /// ハッシュ不一致は開始を妨げない（たまにリリースミスるので例外）。
+    /// </summary>
+    public static bool CanHostStartGame()
+    {
+        if (GameData.Instance == null) return true;
+        foreach (NetworkedPlayerInfo p in GameData.Instance.AllPlayers)
+        {
+            if (p == null || p.Disconnected) continue;
+            byte id = p.PlayerId;
+            if (!VersionData.VersionMap.TryGetValue(id, out string snr) || string.IsNullOrEmpty(snr))
+                return false;
+            if (!VersionData.IsError.TryGetValue(id, out SyncErrorType err))
+                return false;
+            if (err == SyncErrorType.NotMismatch || err == SyncErrorType.HashMismatch)
+                continue;
+            return false;
+        }
+        return true;
+    }
+
+    /// <summary>
+    /// バニラ Update が人数変更時に SetButtonEnableState(人数のみ) する・他 Postfix の順で無効化が上書きされるため、
+    /// BeginGame 本体を止めるのが確実（OldSNR 系と同様）。
+    /// </summary>
+    [HarmonyPatch(typeof(GameStartManager), nameof(GameStartManager.BeginGame))]
+    public static class GameStartManagerBeginGameSyncVersionPatch
+    {
+        public static bool Prefix(GameStartManager __instance)
+        {
+            if (!AmongUsClient.Instance.AmHost) return true;
+            if (AmongUsClient.Instance.NetworkMode is NetworkModes.LocalGame or NetworkModes.FreePlay) return true;
+            if (AmongUsClient.Instance.NetworkMode != NetworkModes.OnlineGame) return true;
+            if (CanHostStartGame()) return true;
+            if (GameData.Instance != null && GameData.Instance.PlayerCount >= __instance.MinPlayers)
+                __instance.StartCoroutine(Effects.SwayX(__instance.PlayerCounter.transform));
+            return false;
+        }
+    }
+
+    /// <summary>
+    /// HelpMenu 等の Postfix の後でも、バージョン不一致なら開始ボタンを必ず無効化する。
+    /// </summary>
+    [HarmonyPatch(typeof(GameStartManager), nameof(GameStartManager.Update))]
+    [HarmonyAfter("SuperNewRoles.HelpMenus.HelpMenuObjectManager+GameStartManagerUpdatePatch")]
+    public static class GameStartManagerUpdateSyncVersionEnforcePatch
+    {
+        public static void Postfix(GameStartManager __instance)
+        {
+            if (!AmongUsClient.Instance.AmHost) return;
+            if (GameData.Instance == null) return;
+            if (AmongUsClient.Instance.NetworkMode is NetworkModes.LocalGame or NetworkModes.FreePlay) return;
+            if (AmongUsClient.Instance.NetworkMode != NetworkModes.OnlineGame) return;
+            if (__instance.StartButton == null || !__instance.StartButton.gameObject.activeSelf) return;
+            if (GameData.Instance.PlayerCount < __instance.MinPlayers) return;
+            if (CanHostStartGame()) return;
+            __instance.StartButton.SetButtonEnableState(false);
+            if (__instance.StartButtonGlyph != null)
+                __instance.StartButtonGlyph.SetColor(Palette.DisabledClear);
+        }
+    }
+
     [HarmonyPatch(typeof(GameStartManager), nameof(GameStartManager.Start))]
     public static class GameStartManagerStartPatch
     {
         public static void Postfix()
         {
+            VersionData.ClearTrackedState();
             RetryManager.CreateRetryTask(
                 () => PlayerControl.LocalPlayer != null,
                 SendSyncVersion,
@@ -197,12 +436,22 @@ public static class SyncVersion
             }
         }
     }
+    [HarmonyPatch(typeof(HudManager), nameof(HudManager.Start))]
+    public static class SyncVersionHudManagerStartPatch
+    {
+        public static void Postfix(HudManager __instance)
+        {
+            SyncVersionErrorHandler.CreateResyncButton(__instance);
+        }
+    }
+
     [HarmonyPatch(typeof(HudManager), nameof(HudManager.Update))]
     public static class SyncVersionHudManagerUpdatePatch
     {
         public static void Postfix(HudManager __instance)
         {
             SyncVersionErrorHandler.UpdateErrorDisplay(__instance);
+            SyncVersionErrorHandler.UpdateResyncButton(__instance);
         }
     }
 }
@@ -234,9 +483,102 @@ internal static class RetryManager
 
 internal static class SyncVersionErrorHandler
 {
-    private static readonly System.Text.StringBuilder ErrorMessageBuilder = new();
+    private const float ResyncCooldownSeconds = 0.25f;
+    private static float _lastResyncButtonTime = float.NegativeInfinity;
+
+    private static readonly StringBuilder ErrorMessageBuilder = new();
     private static TextMeshPro ErrorText;
     private static readonly List<string> ErrorCache = new();
+    private static GameObject ResyncButtonRoot;
+
+    public static void CreateResyncButton(HudManager hudManager)
+    {
+        if (ResyncButtonRoot != null) return;
+        Sprite sprite = AssetManager.GetAsset<Sprite>("ReloadVersion");
+        if (sprite == null)
+        {
+            Logger.Warning("SyncVersion: ReloadVersion asset not found; resync button skipped.");
+            return;
+        }
+
+        ResyncButtonRoot = new GameObject();
+        ResyncButtonRoot.transform.SetParent(hudManager.transform);
+        ResyncButtonRoot.name = "SNRSyncVersionResyncButton";
+        ResyncButtonRoot.transform.localScale = Vector3.one * 0.35f;
+
+        ResyncButtonRoot.AddComponent<SpriteRenderer>().sprite = sprite;
+
+        Transform badge = ResyncButtonRoot.transform.Find("badge");
+        if (badge != null) badge.gameObject.SetActive(false);
+
+        PassiveButton passiveButton = ResyncButtonRoot.AddComponent<PassiveButton>();
+        var collider = ResyncButtonRoot.GetComponent<CircleCollider2D>();
+        if (collider != null)
+            passiveButton.Colliders = new Collider2D[] { collider };
+        passiveButton.OnClick = new();
+        passiveButton.OnMouseOut = new();
+        passiveButton.OnMouseOver = new();
+        passiveButton.OnClick.AddListener((UnityAction)OnResyncButtonClicked);
+
+        AspectPosition aspectPosition = ResyncButtonRoot.AddComponent<AspectPosition>();
+        aspectPosition.Alignment = AspectPosition.EdgeAlignments.Bottom;
+        aspectPosition.DistanceFromEdge = new Vector3(0f, 0.2f, -25f);
+        aspectPosition.OnEnable();
+
+        if (hudManager.roomTracker != null && hudManager.roomTracker.text != null)
+        {
+            TextMeshPro label = GameObject.Instantiate(hudManager.roomTracker.text, ResyncButtonRoot.transform);
+            label.name = "ResyncLabel";
+            label.transform.localPosition = new Vector3(0f, -0.55f, 0f);
+            label.transform.localScale = Vector3.one * 0.35f;
+            label.text = ModTranslation.GetString("SyncVersion_ResyncButton");
+            label.alignment = TextAlignmentOptions.Center;
+            label.color = Color.white;
+        }
+
+        ResyncButtonRoot.SetActive(false);
+    }
+
+    private static void OnResyncButtonClicked()
+    {
+        if (Time.time - _lastResyncButtonTime < ResyncCooldownSeconds)
+            return;
+        _lastResyncButtonTime = Time.time;
+        SyncVersion.SendSyncVersion();
+    }
+
+    public static void UpdateResyncButton(HudManager hudManager)
+    {
+        if (ResyncButtonRoot == null) return;
+        ResyncButtonRoot.SetActive(ShouldShowResyncButton());
+    }
+
+    private static bool ShouldShowResyncButton()
+    {
+        if (AmongUsClient.Instance.GameState != InnerNet.InnerNetClient.GameStates.Joined)
+            return false;
+        if (PlayerControl.LocalPlayer == null)
+            return false;
+        if (AmongUsClient.Instance.AmHost)
+            return HasAnyDisplayedSyncError();
+
+        byte localId = PlayerControl.LocalPlayer.PlayerId;
+        if (SyncVersion.LocalIsOutOfSyncWithHost())
+            return true;
+        return HasAnyDisplayedSyncError()
+            && SyncVersion.VersionData.IsError.TryGetValue(localId, out SyncErrorType err)
+            && err != SyncErrorType.NotMismatch;
+    }
+
+    private static bool HasAnyDisplayedSyncError()
+    {
+        foreach (var kvp in SyncVersion.VersionData.IsError)
+        {
+            if (CreateErrorMessage(kvp) != null)
+                return true;
+        }
+        return false;
+    }
 
     public static void UpdateErrorDisplay(HudManager hudManager)
     {
@@ -276,10 +618,19 @@ internal static class SyncVersionErrorHandler
         }
     }
 
+    private static string GetAmongUsVersionMismatchDisplay(byte playerId)
+    {
+        if (SyncVersion.VersionData.AmongUsDisplayVersionByPlayer.TryGetValue(playerId, out string disp) && !string.IsNullOrEmpty(disp))
+            return SyncVersion.SanitizeAmongUsDisplayVersion(disp);
+        if (SyncVersion.VersionData.AmongUsBroadcastByPlayer.TryGetValue(playerId, out int au))
+            return SyncVersion.SanitizeAmongUsDisplayVersion(SyncVersion.FormatAmongUsBroadcastVersion(au));
+        return "";
+    }
+
     private static string CreateErrorMessage(KeyValuePair<byte, SyncErrorType> kvp)
     {
-        PlayerControl player = PlayerControl.AllPlayerControls.ToArray().FirstOrDefault(p => p.PlayerId == kvp.Key);
-        if (player == null) return null;
+        if (!SyncVersion.TryGetPlayerControl(kvp.Key, out PlayerControl player))
+            return null;
 
         return kvp.Value switch
         {
@@ -290,6 +641,9 @@ internal static class SyncVersionErrorHandler
                 .Replace("{player}", player.Data.PlayerName),
             SyncErrorType.RpcMapMismatch => ModTranslation.GetString("SyncError_RpcMapMismatch")
                 .Replace("{player}", player.Data.PlayerName),
+            SyncErrorType.AmongUsVersionMismatch => ModTranslation.GetString("SyncError_AmongUsVersionMismatch")
+                .Replace("{player}", player.Data.PlayerName)
+                .Replace("{version}", GetAmongUsVersionMismatchDisplay(kvp.Key)),
             SyncErrorType.NotInstalled => ModTranslation.GetString("SyncError_NotInstalled")
                 .Replace("{player}", player.Data.PlayerName),
             _ => null
