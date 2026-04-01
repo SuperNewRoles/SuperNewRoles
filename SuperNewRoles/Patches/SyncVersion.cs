@@ -494,16 +494,19 @@ internal static class SyncVersionErrorHandler
     public static void CreateResyncButton(HudManager hudManager)
     {
         if (ResyncButtonRoot != null) return;
-        GameObject prefab = AssetManager.GetAsset<GameObject>("bugReport");
-        if (prefab == null)
+        Sprite sprite = AssetManager.GetAsset<Sprite>("ReloadVersion");
+        if (sprite == null)
         {
-            Logger.Warning("SyncVersion: bugReport asset not found; resync button skipped.");
+            Logger.Warning("SyncVersion: ReloadVersion asset not found; resync button skipped.");
             return;
         }
 
-        ResyncButtonRoot = GameObject.Instantiate(prefab, hudManager.transform);
+        ResyncButtonRoot = new GameObject();
+        ResyncButtonRoot.transform.SetParent(hudManager.transform);
         ResyncButtonRoot.name = "SNRSyncVersionResyncButton";
-        ResyncButtonRoot.transform.localScale = Vector3.one * 0.15f;
+        ResyncButtonRoot.transform.localScale = Vector3.one * 0.35f;
+
+        ResyncButtonRoot.AddComponent<SpriteRenderer>().sprite = sprite;
 
         Transform badge = ResyncButtonRoot.transform.Find("badge");
         if (badge != null) badge.gameObject.SetActive(false);
@@ -518,8 +521,8 @@ internal static class SyncVersionErrorHandler
         passiveButton.OnClick.AddListener((UnityAction)OnResyncButtonClicked);
 
         AspectPosition aspectPosition = ResyncButtonRoot.AddComponent<AspectPosition>();
-        aspectPosition.Alignment = AspectPosition.EdgeAlignments.RightBottom;
-        aspectPosition.DistanceFromEdge = new Vector3(0.55f, 0.42f, -25f);
+        aspectPosition.Alignment = AspectPosition.EdgeAlignments.Bottom;
+        aspectPosition.DistanceFromEdge = new Vector3(0f, 0.2f, -25f);
         aspectPosition.OnEnable();
 
         if (hudManager.roomTracker != null && hudManager.roomTracker.text != null)
