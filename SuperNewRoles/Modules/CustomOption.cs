@@ -126,7 +126,7 @@ public static class CustomOptionManager
     private static void LoadCustomOptions()
     {
         var fieldNames = new HashSet<string>();
-        SuperNewRolesPlugin.Logger.LogInfo("[Splash] Loading CustomOptions...");
+        SuperNewRoles.Logger.Info("[Splash] Loading CustomOptions...");
         foreach (var type in SuperNewRolesPlugin.Assembly.GetTypes())
         {
             foreach (var field in type.GetFields(BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Static))
@@ -197,13 +197,13 @@ public static class CustomOptionManager
                 CustomOptions.Add(option);
             }
         }
-        SuperNewRolesPlugin.Logger.LogInfo($"[Splash] {CustomOptions.Count} CustomOptions loaded");
+        SuperNewRoles.Logger.Info($"[Splash] {CustomOptions.Count} CustomOptions loaded");
     }
 
     // 属性で指定された親フィールド名があるオプションについて、親オプションと紐付ける処理
     private static void LinkParentOptions()
     {
-        SuperNewRolesPlugin.Logger.LogInfo("[Splash] Linking parent options...");
+        SuperNewRoles.Logger.Info("[Splash] Linking parent options...");
         // 各カスタムオプションをフィールド名をキーとするディクショナリに変換してキャッシュ
         var taskOptionNames = new[]
         {
@@ -236,7 +236,7 @@ public static class CustomOptionManager
                 }
             }
         }
-        SuperNewRolesPlugin.Logger.LogInfo("[Splash] Parent options linked");
+        SuperNewRoles.Logger.Info("[Splash] Parent options linked");
     }
 
     internal static void RegisterOptionCategory(CustomOptionCategory category)
@@ -500,6 +500,26 @@ public static class RoleOptionManager
     public static readonly Dictionary<ModifierRoleId, LateTask> DelayedSyncTasksModifier = new();
     public static readonly Dictionary<GhostRoleId, LateTask> DelayedSyncTasksGhost = new(); // GhostRole用 RoleId -> GhostRoleId
     private static readonly float SyncDelay = 0.5f; // 0.5秒の遅延
+    public static List<ExclusivityData> LocalExclusivitySettings { get; } = new();
+    public static List<ExclusivityData> HostExclusivitySettings { get; } = new();
+
+    private static bool IsRemoteClient()
+    {
+        try
+        {
+            return AmongUsClient.Instance != null && AmongUsClient.Instance.AmConnected && !AmongUsClient.Instance.AmHost;
+        }
+        catch
+        {
+            // In unit tests or non-AU environments, AmongUsClient may not initialize
+            return false;
+        }
+    }
+
+    private static List<ExclusivityData> GetWritableExclusivitySettings()
+    {
+        return IsRemoteClient() ? HostExclusivitySettings : LocalExclusivitySettings;
+    }
 
     public class RoleOption
     {
@@ -843,7 +863,7 @@ public static class RoleOptionManager
     public static RoleOption[] RoleOptions { get; private set; }
     public static ModifierRoleOption[] ModifierRoleOptions { get; private set; }
     public static GhostRoleOption[] GhostRoleOptions { get; private set; } // GhostRole用
-    public static List<ExclusivityData> ExclusivitySettings { get; private set; } = new();
+    public static List<ExclusivityData> ExclusivitySettings => IsRemoteClient() ? HostExclusivitySettings : LocalExclusivitySettings;
 
     // キャッシュ用のディクショナリ
     private static Dictionary<ushort, RoleOption> _roleOptionsByByte = new();
@@ -1193,12 +1213,32 @@ public static class RoleOptionManager
 
     public static void AddExclusivitySetting(int maxAssign, string[] roles)
     {
-        ExclusivitySettings.Add(new ExclusivityData(maxAssign, roles));
+        GetWritableExclusivitySettings().Add(new ExclusivityData(maxAssign, roles));
     }
 
     public static void ClearExclusivitySettings()
     {
-        ExclusivitySettings.Clear();
+        GetWritableExclusivitySettings().Clear();
+    }
+
+    public static void AddLocalExclusivitySetting(int maxAssign, string[] roles)
+    {
+        LocalExclusivitySettings.Add(new ExclusivityData(maxAssign, roles));
+    }
+
+    public static void ClearLocalExclusivitySettings()
+    {
+        LocalExclusivitySettings.Clear();
+    }
+
+    public static void AddHostExclusivitySetting(int maxAssign, string[] roles)
+    {
+        HostExclusivitySettings.Add(new ExclusivityData(maxAssign, roles));
+    }
+
+    public static void ClearHostExclusivitySettings()
+    {
+        HostExclusivitySettings.Clear();
     }
 
     /// <summary>
@@ -1581,7 +1621,7 @@ public class FileOptionStorage : IOptionStorage
     private void LoadExclusivitySettingsData(BinaryReader reader)
     {
         int exclusivityCount = reader.ReadInt32();
-        RoleOptionManager.ClearExclusivitySettings();
+        RoleOptionManager.ClearLocalExclusivitySettings();
         for (int i = 0; i < exclusivityCount; i++)
         {
             int maxAssign = reader.ReadInt32();
@@ -1591,7 +1631,7 @@ public class FileOptionStorage : IOptionStorage
             {
                 roles[j] = reader.ReadString();
             }
-            RoleOptionManager.AddExclusivitySetting(maxAssign, roles);
+            RoleOptionManager.AddLocalExclusivitySetting(maxAssign, roles);
         }
     }
 
@@ -1767,7 +1807,7 @@ public class FileOptionStorage : IOptionStorage
 
     private void WriteExclusivitySettingsData(BinaryWriter writer)
     {
-        var exclusivitySettings = RoleOptionManager.ExclusivitySettings;
+        var exclusivitySettings = RoleOptionManager.LocalExclusivitySettings;
         writer.Write(exclusivitySettings.Count);
         foreach (var setting in exclusivitySettings)
         {

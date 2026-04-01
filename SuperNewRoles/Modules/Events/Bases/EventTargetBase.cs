@@ -77,14 +77,14 @@ public abstract class EventTargetBase<T, U> : InternalEventTargetBase<T, EventLi
     {
         var listenerCount = listeners.Count;
         var pendingCount = _pendingRemoval.Count;
-        SuperNewRolesPlugin.Logger.LogInfo($"[{GetType().Name}] RemoveListenerAll: {listenerCount} listeners, {pendingCount} pending removal");
+        SuperNewRoles.Logger.Info($"[{GetType().Name}] RemoveListenerAll: {listenerCount} listeners, {pendingCount} pending removal");
 
         base.RemoveListenerAll();
         _pendingRemoval.Clear();
         _listenersCacheDirty = true;
         _listenersCache = null;
 
-        SuperNewRolesPlugin.Logger.LogInfo($"[{GetType().Name}] RemoveListenerAll completed");
+        SuperNewRoles.Logger.Info($"[{GetType().Name}] RemoveListenerAll completed");
     }
 }
 /// <summary>
@@ -156,14 +156,14 @@ public abstract class EventTargetBase<T> : InternalEventTargetBase<T, EventListe
     {
         var listenerCount = listeners.Count;
         var pendingCount = _pendingRemoval.Count;
-        SuperNewRolesPlugin.Logger.LogInfo($"[{GetType().Name}] RemoveListenerAll: {listenerCount} listeners, {pendingCount} pending removal");
+        SuperNewRoles.Logger.Info($"[{GetType().Name}] RemoveListenerAll: {listenerCount} listeners, {pendingCount} pending removal");
 
         base.RemoveListenerAll();
         _pendingRemoval.Clear();
         _listenersCacheDirty = true;
         _listenersCache = null;
 
-        SuperNewRolesPlugin.Logger.LogInfo($"[{GetType().Name}] RemoveListenerAll completed");
+        SuperNewRoles.Logger.Info($"[{GetType().Name}] RemoveListenerAll completed");
     }
 }
 
