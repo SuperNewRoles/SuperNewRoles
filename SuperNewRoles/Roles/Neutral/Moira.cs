@@ -175,8 +175,9 @@ public class MoiraMeetingAbility : CustomMeetingButtonBase, IAbilityCount
     [CustomRPC]
     public void RpcResetMoira()
     {
-        foreach (var data in swapData)
+        for (int i = swapData.Count - 1; i >= 0; i--)
         {
+            var data = swapData[i];
             var player1 = ExPlayerControl.ById(data.Item1);
             var player2 = ExPlayerControl.ById(data.Item2);
             player1.ReverseRole(player2);
