@@ -24,7 +24,11 @@ public class CustomVentAbility : CustomButtonBase, IButtonEffect
 
     public bool isEffectActive { get; set; }
 
-    public Action OnEffectEnds => () => { if (Vent.currentVent != null) ExitVent(); };
+    public Action OnEffectEnds => () =>
+    {
+        if (!Player.AmOwner) return;
+        if (Vent.currentVent != null) ExitVent();
+    };
 
     public float EffectDuration => VentDuration?.Invoke() ?? 0f;
 
