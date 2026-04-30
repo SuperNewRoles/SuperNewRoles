@@ -31,7 +31,7 @@ class MadKiller : RoleBase<MadKiller>
     public override AssignedTeamType AssignedTeam => AssignedTeamType.Impostor;
     public override WinnerTeamType WinnerTeam => WinnerTeamType.Impostor;
     public override TeamTag TeamTag => TeamTag.Madmate;
-    public override RoleTag[] RoleTags => new[] { RoleTag.SpecialKiller };
+    public override RoleTag[] RoleTags => [];
     public override RoleOptionMenuType OptionTeam => RoleOptionMenuType.Hidden;
     public override RoleId[] RelatedRoleIds => new[] { RoleId.SideKiller };
 }
