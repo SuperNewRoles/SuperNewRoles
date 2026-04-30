@@ -12,6 +12,9 @@ public class DisconnectedResultSaver
         public RoleId RoleId { get; set; }
         public ModifierRoleId ModifierRoleId { get; set; }
         public GhostRoleId GhostRoleId { get; set; }
+        public List<RoleId> RoleHistory { get; set; }
+        public List<GhostRoleId> GhostRoleHistory { get; set; }
+        public List<ModifierRoleId> ModifierRoleHistory { get; set; }
         public (int completed, int total) Tasks { get; set; }
         public bool IsImpostor { get; set; }
         public bool IsDead { get; set; }
@@ -25,6 +28,9 @@ public class DisconnectedResultSaver
             ModifierRoleId = player.ModifierRole;
             GhostRoleId = player.GhostRole;
             IsDead = player.IsDead();
+            RoleHistory = new List<RoleId>(player.RoleHistory);
+            GhostRoleHistory = new List<GhostRoleId>(player.GhostRoleHistory);
+            ModifierRoleHistory = new List<ModifierRoleId>(player.ModifierRoleHistory);
             CustomCosmeticsLayer customCosmeticsLayer = CustomCosmeticsLayers.ExistsOrInitialize(player.Player.cosmetics);
             Hat2Id = customCosmeticsLayer?.hat2?.Hat?.ProdId ?? "";
             Visor2Id = customCosmeticsLayer?.visor2?.Visor?.ProdId ?? "";
