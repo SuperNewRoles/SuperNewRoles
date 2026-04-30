@@ -9,6 +9,14 @@ public class NonAnimationVentButtonAbility : CustomVentAbility
     public NonAnimationVentButtonAbility(Func<bool> canUseVent, Func<float?> ventCooldown = null, Func<float?> ventDuration = null) : base(canUseVent, ventCooldown, ventDuration)
     {
     }
+
+    public new Action OnEffectEnds => () =>
+    {
+        if (!Player.AmOwner) return;
+        if (Vent.currentVent != null)
+            ExitVent();
+    };
+
     public override void OnClick()
     {
         if (PlayerControl.LocalPlayer.inVent)
