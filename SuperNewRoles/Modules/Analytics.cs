@@ -57,6 +57,12 @@ public static class Analytics
 
             if (currentPopup == null)
                 currentPopup = null;
+
+            if (OnboardingPopup.TryHandle(__instance, ref currentPopup))
+                return;
+
+            // オンボーディング内で同意済みならここでは何もしない。
+            // 途中で右上のバツから閉じた場合だけ、従来の解析同意ポップアップを単体で出す。
             if (!isAnalyticsPopupViewd && ConfigRoles.IsSendAnalyticsPopupViewd.Value)
                 isAnalyticsPopupViewd = true;
             if (currentPopup == null && !isAnalyticsPopupViewd)
