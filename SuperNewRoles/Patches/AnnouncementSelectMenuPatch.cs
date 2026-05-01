@@ -29,7 +29,7 @@ public static class AnnouncementPopUpOnEnablePatch
         }
         catch (Exception ex)
         {
-            SuperNewRolesPlugin.Logger.LogWarning($"AnnouncementPopUpOnEnablePatch failed: {ex}");
+            SuperNewRoles.Logger.Warning($"AnnouncementPopUpOnEnablePatch failed: {ex}");
         }
     }
 }
@@ -45,7 +45,7 @@ public static class AnnouncementPopUpOnDisablePatch
         }
         catch (Exception ex)
         {
-            SuperNewRolesPlugin.Logger.LogWarning($"AnnouncementPopUpOnDisablePatch failed: {ex}");
+            SuperNewRoles.Logger.Warning($"AnnouncementPopUpOnDisablePatch failed: {ex}");
         }
     }
 }
@@ -62,7 +62,7 @@ public static class AnnouncementPopUpSetMenuPatch
         }
         catch (Exception ex)
         {
-            SuperNewRolesPlugin.Logger.LogWarning($"AnnouncementPopUpSetMenuPatch failed: {ex}");
+            SuperNewRoles.Logger.Warning($"AnnouncementPopUpSetMenuPatch failed: {ex}");
         }
     }
 }
@@ -78,7 +78,7 @@ public static class AnnouncementPopUpUpdateAnnouncementTextTitlePatch
         }
         catch (Exception ex)
         {
-            SuperNewRolesPlugin.Logger.LogWarning($"AnnouncementPopUpUpdateAnnouncementTextTitlePatch failed: {ex}");
+            SuperNewRoles.Logger.Warning($"AnnouncementPopUpUpdateAnnouncementTextTitlePatch failed: {ex}");
         }
     }
 }
@@ -94,7 +94,7 @@ public static class AnnouncementPopUpUpdateTitlePatch
         }
         catch (Exception ex)
         {
-            SuperNewRolesPlugin.Logger.LogWarning($"AnnouncementPopUpUpdateTitlePatch failed: {ex}");
+            SuperNewRoles.Logger.Warning($"AnnouncementPopUpUpdateTitlePatch failed: {ex}");
         }
     }
 }
@@ -251,7 +251,7 @@ internal static class AnnouncementSelectMenuHelper
         }
         catch (Exception ex)
         {
-            SuperNewRolesPlugin.Logger.LogWarning($"Failed to mark announcement as read: {ex.Message}");
+            SuperNewRoles.Logger.Warning($"Failed to mark announcement as read: {ex.Message}");
         }
     }
 
@@ -277,7 +277,7 @@ internal static class AnnouncementSelectMenuHelper
         }
         catch (Exception ex)
         {
-            SuperNewRolesPlugin.Logger.LogWarning($"Failed to create unread badge: {ex.Message}");
+            SuperNewRoles.Logger.Warning($"Failed to create unread badge: {ex.Message}");
             return null;
         }
     }
@@ -753,7 +753,7 @@ internal static class AnnouncementSelectMenuHelper
         }
         catch (Exception ex)
         {
-            SuperNewRolesPlugin.Logger.LogWarning($"ApplyAnnouncements failed: {ex}");
+            SuperNewRoles.Logger.Warning($"ApplyAnnouncements failed: {ex}");
         }
     }
 
@@ -794,7 +794,7 @@ internal static class AnnouncementSelectMenuHelper
         }
         catch (Exception ex)
         {
-            SuperNewRolesPlugin.Logger.LogWarning($"Failed to reset scroll position: {ex.Message}");
+            SuperNewRoles.Logger.Warning($"Failed to reset scroll position: {ex.Message}");
         }
     }
 

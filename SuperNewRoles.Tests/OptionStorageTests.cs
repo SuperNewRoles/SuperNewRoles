@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using FluentAssertions;
 using SuperNewRoles.Modules;
+using SuperNewRoles.Roles;
 using Xunit;
 
 namespace SuperNewRoles.Tests;
@@ -11,6 +12,27 @@ namespace SuperNewRoles.Tests;
 // ファイルベースのストレージ挙動を確認するテスト。
 public class OptionStorageTests
 {
+    [Fact]
+    public void RoleOptionManager_ExclusivitySettings_SeparatesLocalAndHostStorage()
+    {
+        RoleOptionManager.ClearLocalExclusivitySettings();
+        RoleOptionManager.ClearHostExclusivitySettings();
+
+        RoleOptionManager.AddLocalExclusivitySetting(1, new[] { RoleId.Crewmate.ToString() });
+        RoleOptionManager.AddHostExclusivitySetting(2, new[] { RoleId.Impostor.ToString() });
+
+        RoleOptionManager.LocalExclusivitySettings.Should().HaveCount(1);
+        RoleOptionManager.LocalExclusivitySettings[0].MaxAssign.Should().Be(1);
+        RoleOptionManager.LocalExclusivitySettings[0].Roles.Should().ContainSingle().Which.Should().Be(RoleId.Crewmate);
+
+        RoleOptionManager.HostExclusivitySettings.Should().HaveCount(1);
+        RoleOptionManager.HostExclusivitySettings[0].MaxAssign.Should().Be(2);
+        RoleOptionManager.HostExclusivitySettings[0].Roles.Should().ContainSingle().Which.Should().Be(RoleId.Impostor);
+
+        RoleOptionManager.ClearLocalExclusivitySettings();
+        RoleOptionManager.ClearHostExclusivitySettings();
+    }
+
     // 目的: SaveOptionData/LoadOptionData とプリセット名の保存/復元を一括で検証
     [Fact]
     public void FileOptionStorage_SaveAndLoad_OptionDataAndPresetNames()
@@ -92,6 +114,36 @@ public class OptionStorageTests
         dict.Should().NotContainKey(optA.Id);
         // 目的: 変更されたオプションのみ保存されること
         dict.Should().ContainKey(optB.Id).WhoseValue.Should().Be((byte)optB.Selection);
+    }
+
+    [Fact]
+    public void FileOptionStorage_LoadPresetData_RestoresOnlyLocalExclusivitySettings()
+    {
+        var tempDir = new DirectoryInfo(Path.Combine(Path.GetTempPath(), "snr-tests-" + Guid.NewGuid().ToString("N")));
+        var storage = new FileOptionStorage(tempDir, "Options.data", "PresetOptions_");
+        storage.EnsureStorageExists();
+
+        RoleOptionManager.ClearLocalExclusivitySettings();
+        RoleOptionManager.ClearHostExclusivitySettings();
+        RoleOptionManager.AddLocalExclusivitySetting(1, new[] { RoleId.Crewmate.ToString() });
+        RoleOptionManager.AddHostExclusivitySetting(2, new[] { RoleId.Impostor.ToString() });
+
+        storage.SavePresetData(5, Array.Empty<CustomOption>());
+
+        RoleOptionManager.ClearLocalExclusivitySettings();
+
+        var (ok, _) = storage.LoadPresetData(5);
+
+        ok.Should().BeTrue();
+        RoleOptionManager.LocalExclusivitySettings.Should().HaveCount(1);
+        RoleOptionManager.LocalExclusivitySettings[0].MaxAssign.Should().Be(1);
+        RoleOptionManager.LocalExclusivitySettings[0].Roles.Should().ContainSingle().Which.Should().Be(RoleId.Crewmate);
+        RoleOptionManager.HostExclusivitySettings.Should().HaveCount(1);
+        RoleOptionManager.HostExclusivitySettings[0].MaxAssign.Should().Be(2);
+        RoleOptionManager.HostExclusivitySettings[0].Roles.Should().ContainSingle().Which.Should().Be(RoleId.Impostor);
+
+        RoleOptionManager.ClearLocalExclusivitySettings();
+        RoleOptionManager.ClearHostExclusivitySettings();
     }
 
     // 目的: チェックサム不一致時に読み込みが失敗し、プリセット名がクリアされることを検証

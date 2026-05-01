@@ -53,6 +53,39 @@ public class SaboAndVent
                 __instance.ImpostorVentButton.SetTarget(Vent.currentVent);
         }
     }
+    [HarmonyPatch(typeof(HudManager), nameof(HudManager.SetHudActive), new[] { typeof(PlayerControl), typeof(RoleBehaviour), typeof(bool) })]
+    class HudManagerSetHudActivePatch
+    {
+        public static void Postfix()
+        {
+            if (PlayerControl.LocalPlayer == null || ExPlayerControl.LocalPlayer == null)
+                return;
+
+            SaboAndVentUpdate();
+        }
+    }
+    [HarmonyPatch(typeof(NormalGameManager), nameof(NormalGameManager.GetMapOptions))]
+    class NormalGameManagerGetMapOptionsPatch
+    {
+        public static void Postfix(ref MapOptions __result)
+        {
+            if (__result == null)
+                return;
+
+            if (MeetingHud.Instance)
+            {
+                __result.Mode = MapOptions.Modes.Normal;
+                return;
+            }
+
+            if (ExPlayerControl.LocalPlayer == null)
+                return;
+
+            __result.Mode = ExPlayerControl.LocalPlayer.CanSabotage() && GameManager.Instance.SabotagesEnabled()
+                ? MapOptions.Modes.Sabotage
+                : MapOptions.Modes.Normal;
+        }
+    }
     [HarmonyPatch(typeof(MapBehaviour), nameof(MapBehaviour.ShowNormalMap))]
     class MapBehaviourShowNormalMapPatch
     {
@@ -91,6 +124,31 @@ public class SaboAndVent
                 return false;
             }
             return true;
+        }
+    }
+    [HarmonyPatch(typeof(SabotageButton), nameof(SabotageButton.DoClick))]
+    class SabotageButtonDoClickPatch
+    {
+        public static bool Prefix()
+        {
+            if (ExPlayerControl.LocalPlayer == null)
+                return true;
+
+            if (!ExPlayerControl.LocalPlayer.CanSabotage())
+                return false;
+
+            if (PlayerControl.LocalPlayer.Data.Role.IsImpostor)
+                return true;
+
+            if (!PlayerControl.LocalPlayer.inVent && GameManager.Instance.SabotagesEnabled())
+            {
+                DestroyableSingleton<HudManager>.Instance.ToggleMapVisible(new MapOptions
+                {
+                    Mode = MapOptions.Modes.Sabotage,
+                    AllowMovementWhileMapOpen = true
+                });
+            }
+            return false;
         }
     }
 }

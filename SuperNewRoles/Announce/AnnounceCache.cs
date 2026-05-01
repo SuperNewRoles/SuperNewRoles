@@ -57,7 +57,7 @@ public static class AnnounceCache
         }
         catch (Exception ex)
         {
-            SuperNewRolesPlugin.Logger.LogWarning($"Failed to load article cache for {id}/{lang}: {ex.Message}");
+            SuperNewRoles.Logger.Warning($"Failed to load article cache for {id}/{lang}: {ex.Message}");
         }
 
         return null;
@@ -94,7 +94,7 @@ public static class AnnounceCache
         }
         catch (Exception ex)
         {
-            SuperNewRolesPlugin.Logger.LogWarning($"Failed to save article cache for {id}/{lang}: {ex.Message}");
+            SuperNewRoles.Logger.Warning($"Failed to save article cache for {id}/{lang}: {ex.Message}");
         }
     }
 
@@ -134,7 +134,7 @@ public static class AnnounceCache
         }
         catch (Exception ex)
         {
-            SuperNewRolesPlugin.Logger.LogWarning($"Failed to load articles list cache for {lang}: {ex.Message}");
+            SuperNewRoles.Logger.Warning($"Failed to load articles list cache for {lang}: {ex.Message}");
         }
 
         return null;
@@ -170,7 +170,7 @@ public static class AnnounceCache
         }
         catch (Exception ex)
         {
-            SuperNewRolesPlugin.Logger.LogWarning($"Failed to save articles list cache for {lang}: {ex.Message}");
+            SuperNewRoles.Logger.Warning($"Failed to save articles list cache for {lang}: {ex.Message}");
         }
     }
 
@@ -189,7 +189,7 @@ public static class AnnounceCache
         }
         catch (Exception ex)
         {
-            SuperNewRolesPlugin.Logger.LogWarning($"Failed to clear cache directory: {ex.Message}");
+            SuperNewRoles.Logger.Warning($"Failed to clear cache directory: {ex.Message}");
         }
     }
 

@@ -58,6 +58,17 @@ public class PhosphorusLightingAbility : CustomButtonBase, IButtonEffect
         return activeLanterns.Count > 0;
     }
 
+    public override void OnMeetingEnds()
+    {
+        if (isEffectActive)
+        {
+            // 会議で効果が中断された時も、見た目だけ点灯したまま残らないよう必ず消灯する
+            RpcLightingOff(Player.PlayerId);
+        }
+
+        base.OnMeetingEnds();
+    }
+
     [CustomRPC]
     public static void RpcLightingOn(byte playerId)
     {

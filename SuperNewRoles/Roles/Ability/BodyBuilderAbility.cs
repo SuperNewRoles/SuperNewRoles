@@ -43,6 +43,12 @@ public class BodyBuilderAbility : CustomButtonBase
     public override void AttachToLocalPlayer()
     {
         base.AttachToLocalPlayer();
+        _onPlayerPhysicsFixedUpdateEvent = PlayerPhysicsFixedUpdateEvent.Instance.AddListener(x => UpdatePhysics(x));
+    }
+
+    public override void AttachToAlls()
+    {
+        base.AttachToAlls();
         _murderEvent = MurderEvent.Instance.AddListener(x =>
         {
             if (x.target == Player)
@@ -50,15 +56,11 @@ public class BodyBuilderAbility : CustomButtonBase
         });
         _meetingStartEvent = MeetingStartEvent.Instance.AddListener(x => CancelPosing());
         _exileEvent = ExileEvent.Instance.AddListener(x => CancelPosing());
-        _onPlayerPhysicsFixedUpdateEvent = PlayerPhysicsFixedUpdateEvent.Instance.AddListener(x => UpdatePhysics(x));
     }
 
     public override void DetachToLocalPlayer()
     {
         base.DetachToLocalPlayer();
-        _murderEvent?.RemoveListener();
-        _meetingStartEvent?.RemoveListener();
-        _exileEvent?.RemoveListener();
         _onPlayerPhysicsFixedUpdateEvent?.RemoveListener();
     }
 
@@ -69,6 +71,9 @@ public class BodyBuilderAbility : CustomButtonBase
         {
             CancelPosing();
         }
+        _murderEvent?.RemoveListener();
+        _meetingStartEvent?.RemoveListener();
+        _exileEvent?.RemoveListener();
     }
 
     public override void OnClick()
@@ -81,7 +86,7 @@ public class BodyBuilderAbility : CustomButtonBase
 
     public override bool CheckIsAvailable()
     {
-        return true;
+        return ExPlayerControl.LocalPlayer.IsDead() || PlayerControl.LocalPlayer.CanMove;
     }
 
     public override bool CheckHasButton()

@@ -127,7 +127,8 @@ public class CreateGameOptionsStartPatch
         classicButton.ReceiveMouseOut();
 
         // 位置を上書き
-        languageOption.transform.localPosition = new Vector3(1.61f, -3.445f, 0f);
+        float y = AprilFoolsMode.IsAprilFoolsModeToggledOn ? -3.865f : -3.445f;
+        languageOption.transform.localPosition = new Vector3(1.61f, y, 0f);
 
         UpdateLanguage();
     }

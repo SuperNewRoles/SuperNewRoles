@@ -91,10 +91,6 @@ public class BlackHatHackerAbility : AbilityBase
         Player.AttachAbility(VitalsAbility, parentAbility);
         Player.AttachAbility(TaskPanel, parentAbility);
 
-        // イベントリスナーの登録
-        _fixedUpdateEvent = FixedUpdateEvent.Instance.AddListener(OnFixedUpdate);
-        _wrapUpEvent = WrapUpEvent.Instance.AddListener(OnWrapUp);
-
         // ローカルプレイヤーの場合、静的参照を設定
         if (Player.AmOwner)
         {
@@ -106,6 +102,14 @@ public class BlackHatHackerAbility : AbilityBase
                 InfectionTimer[player.PlayerId] = 0f;
             }
         }
+    }
+
+    public override void AttachToLocalPlayer()
+    {
+        base.AttachToLocalPlayer();
+        // イベントリスナーの登録
+        _fixedUpdateEvent = FixedUpdateEvent.Instance.AddListener(OnFixedUpdate);
+        _wrapUpEvent = WrapUpEvent.Instance.AddListener(OnWrapUp);
     }
 
     public override void DetachToLocalPlayer()
@@ -121,7 +125,6 @@ public class BlackHatHackerAbility : AbilityBase
 
     private void OnFixedUpdate()
     {
-        if (!Player.AmOwner) return;
         if (ExPlayerControl.LocalPlayer == null) return;
 
         // 共有タイマーの更新

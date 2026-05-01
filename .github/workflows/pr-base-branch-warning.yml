@@ -1,0 +1,209 @@
+name: PR Base Branch Warning
+
+on:
+  pull_request_target:
+    types:
+      - opened
+      - reopened
+      - edited
+
+permissions:
+  issues: write
+  pull-requests: write
+
+jobs:
+  warn-base-branch:
+    runs-on: ubuntu-latest
+    env:
+      # 通常PRで想定するマージ先ブランチ
+      EXPECTED_BASE_BRANCH: Develop
+      COMMENT_MARKER: "<!-- pr-base-branch-warning -->"
+      # 既存コメントから前回の base を復元するための内部マーカー
+      COMMENT_STATE_MARKER_PREFIX: "<!-- pr-base-branch-warning:current-base="
+      BOT_LOGIN: github-actions[bot]
+      NOTIFICATION_LOCALE: ja-JP
+      NOTIFICATION_TIME_ZONE: Asia/Tokyo
+    steps:
+      - name: Warn when pull request targets a non-default branch
+        uses: actions/github-script@v7
+        with:
+          script: |
+            // ワークフロー設定を 1 箇所に寄せて、本文生成側から直接 env を触らないようにする。
+            const config = {
+              expectedBranch: process.env.EXPECTED_BASE_BRANCH,
+              commentMarker: process.env.COMMENT_MARKER,
+              commentStateMarkerPrefix: process.env.COMMENT_STATE_MARKER_PREFIX,
+              botLogin: process.env.BOT_LOGIN,
+              notificationLocale: process.env.NOTIFICATION_LOCALE,
+              notificationTimeZone: process.env.NOTIFICATION_TIME_ZONE,
+            };
+
+            // 既存コメントの内部マーカーと、旧フォーマットの本文の両方から base 情報を拾う。
+            const commentStatePattern = /<!-- pr-base-branch-warning:current-base=([^\s]+) -->/;
+            const legacyBranchPatterns = [
+              /現在のPRのマージ先は\s*<code>(.*?)<\/code>/,
+              /The current merge target for this PR is set to\s*<code>(.*?)<\/code>/,
+            ];
+
+            const escapeHtml = (value) =>
+              String(value)
+                .replaceAll("&", "&amp;")
+                .replaceAll("<", "&lt;")
+                .replaceAll(">", "&gt;")
+                .replaceAll('"', "&quot;")
+                .replaceAll("'", "&#39;");
+
+            const unescapeHtml = (value) =>
+              String(value)
+                .replaceAll("&#39;", "'")
+                .replaceAll("&quot;", '"')
+                .replaceAll("&gt;", ">")
+                .replaceAll("&lt;", "<")
+                .replaceAll("&amp;", "&");
+
+            const formatBranchName = (value) => `<code>${escapeHtml(value)}</code>`;
+
+            const createCommentStateMarker = (branchName) =>
+              `${config.commentStateMarkerPrefix}${encodeURIComponent(branchName)} -->`;
+
+            const renderComment = (...sections) => sections.filter(Boolean).join("\n\n");
+
+            const formatNotificationTime = () =>
+              new Date().toLocaleTimeString(config.notificationLocale, {
+                timeZone: config.notificationTimeZone,
+                hour: "2-digit",
+                minute: "2-digit",
+                hour12: false,
+              });
+
+            const extractRecordedBaseBranch = (body) => {
+              const normalizedBody = String(body ?? "");
+              const stateMarkerMatch = normalizedBody.match(commentStatePattern);
+
+              if (stateMarkerMatch) {
+                return decodeURIComponent(stateMarkerMatch[1]);
+              }
+
+              for (const pattern of legacyBranchPatterns) {
+                const match = normalizedBody.match(pattern);
+
+                if (match) {
+                  return unescapeHtml(match[1]);
+                }
+              }
+
+              return null;
+            };
+
+            const buildSuccessComment = ({ currentBaseBranch, originalBaseBranch }) => {
+              const notificationTime = formatNotificationTime();
+              const message =
+                originalBaseBranch && originalBaseBranch !== currentBaseBranch
+                  ? `✅️ ${notificationTime}: ${formatBranchName(originalBaseBranch)}が${formatBranchName(currentBaseBranch)}に変更されました。`
+                  : `✅️ ${notificationTime}: マージ先が${formatBranchName(currentBaseBranch)}に変更されました。`;
+
+              return renderComment(
+                config.commentMarker,
+                createCommentStateMarker(currentBaseBranch),
+                message
+              );
+            };
+
+            const buildWarningComment = ({ currentBaseBranch }) =>
+              renderComment(
+                config.commentMarker,
+                createCommentStateMarker(currentBaseBranch),
+                `:warning: 現在のPRのマージ先は ${formatBranchName(currentBaseBranch)} に設定されています。`,
+                `通常のPRのマージ先は ${formatBranchName(config.expectedBranch)} を想定しています。意図した向き先か確認してください。`,
+                `The current merge target for this PR is set to ${formatBranchName(currentBaseBranch)}.`,
+                `The merge target for a standard PR is expected to be ${formatBranchName(config.expectedBranch)}. Please confirm if this is the intended target.`
+              );
+
+            const listComments = async (issueNumber) =>
+              github.paginate(github.rest.issues.listComments, {
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                issue_number: issueNumber,
+                per_page: 100,
+              });
+
+            const findExistingComment = async (issueNumber) => {
+              const comments = await listComments(issueNumber);
+
+              return comments.find(
+                (comment) =>
+                  comment.user?.login === config.botLogin &&
+                  comment.body?.includes(config.commentMarker)
+              );
+            };
+
+            const createComment = async (issueNumber, body) =>
+              github.rest.issues.createComment({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                issue_number: issueNumber,
+                body,
+              });
+
+            const updateComment = async (commentId, body) =>
+              github.rest.issues.updateComment({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                comment_id: commentId,
+                body,
+              });
+
+            // 既存コメントがあれば更新し、なければ新規作成する。
+            const syncComment = async ({ existingComment, issueNumber, body }) => {
+              if (existingComment) {
+                if (existingComment.body === body) {
+                  return;
+                }
+
+                await updateComment(existingComment.id, body);
+                return;
+              }
+
+              await createComment(issueNumber, body);
+            };
+
+            const pullRequest = context.payload.pull_request;
+            const previousBaseBranch = context.payload.changes?.base?.ref?.from ?? null;
+
+            // edited はタイトルや本文編集でも飛ぶので、base が変わっていない更新は無視する。
+            if (context.payload.action === "edited" && !previousBaseBranch) {
+              return;
+            }
+
+            const issueNumber = pullRequest.number;
+            const currentBaseBranch = pullRequest.base.ref;
+            const existingComment = await findExistingComment(issueNumber);
+
+            // 正しい向き先に戻ったら、警告コメントを成功メッセージに置き換える。
+            if (currentBaseBranch === config.expectedBranch) {
+              if (!existingComment) {
+                return;
+              }
+
+              const originalBaseBranch =
+                previousBaseBranch ?? extractRecordedBaseBranch(existingComment.body);
+              const body = buildSuccessComment({
+                currentBaseBranch,
+                originalBaseBranch,
+              });
+
+              await syncComment({
+                existingComment,
+                issueNumber,
+                body,
+              });
+              return;
+            }
+
+            const body = buildWarningComment({ currentBaseBranch });
+
+            await syncComment({
+              existingComment,
+              issueNumber,
+              body,
+            });

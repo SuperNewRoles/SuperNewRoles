@@ -95,10 +95,14 @@ public partial class SuperNewRolesPlugin : BasePlugin
         MainThreadId = Thread.CurrentThread.ManagedThreadId;
         Logger = Log;
 
-        SuperNewRolesPlugin.Logger.LogInfo($"BaseDirectory: {BaseDirectory}");
-        SuperNewRolesPlugin.Logger.LogInfo($"SecretDirectory: {SecretDirectory}");
-
         Instance = this;
+
+        Encryption.SetEncryptKey();
+
+        SuperNewRoles.Logger.Info($"BaseDirectory: {BaseDirectory}");
+        SuperNewRoles.Logger.Info($"SecretDirectory: {SecretDirectory}");
+
+        SuperNewRoles.Logger.Info($"Current version: {Constants.GetBroadcastVersion()}");
 
         SuperNewRoles.Patches.CursedTasks.Main.ClearAndReload();
 
@@ -113,8 +117,8 @@ public partial class SuperNewRolesPlugin : BasePlugin
 
         ConfigRoles.Init();
         UpdateCPUProcessorAffinity();
-        AssetManager.Load();
         CustomRoleManager.Load();
+        AssetManager.Load();
         ModTranslation.Load();
         var tasks = CustomRPCManager.Load();
         CustomOptionManager.Load();

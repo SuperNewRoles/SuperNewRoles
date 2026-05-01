@@ -111,9 +111,9 @@ public class TriggerHappyGatlingGun : MonoBehaviour
         // オーナーはローカルのマウス方向、非オーナーはRPCで同期されたtargetAngleを使用する。
         if (Player.AmOwner)
         {
-            // 画面中心基準の方向ベクトルから角度を出す（Among Usの視点/画面座標系に合わせる）
-            Vector3 mouseDirection = Input.mousePosition - new Vector3(Screen.width / 2, Screen.height / 2);
-            currentAngle = Mathf.Atan2(mouseDirection.y, mouseDirection.x);
+            Vector2 aimDirection = AndroidRightStickAim.GetAimDirection(lastAimDirection);
+            lastAimDirection = aimDirection;
+            currentAngle = Mathf.Atan2(aimDirection.y, aimDirection.x);
             targetAngle = currentAngle;
         }
         else

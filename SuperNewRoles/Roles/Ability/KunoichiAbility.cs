@@ -91,6 +91,7 @@ public class KunoichiKunaiAbility : CustomButtonBase
     public int KillThreshold => _killThreshold;
 
     private readonly List<KunaiProjectile> _projectiles = new();
+    private bool _androidAimVisible;
 
     private class KunaiProjectile
     {
@@ -117,8 +118,14 @@ public class KunoichiKunaiAbility : CustomButtonBase
     {
         base.AttachToAlls();
         _wrapUpEvent = WrapUpEvent.Instance.AddListener(_ => ClearDeadHits());
-        _meetingStartEvent = MeetingStartEvent.Instance.AddListener(_ => { ClearDeadHits(); DestroyProjectiles(); });
+        _meetingStartEvent = MeetingStartEvent.Instance.AddListener(_ =>
+        {
+            ClearDeadHits();
+            DestroyProjectiles();
+            SetAndroidAimVisible(false);
+        });
         _fixedUpdateEvent = FixedUpdateEvent.Instance.AddListener(OnFixedUpdate);
+        UpdateAndroidAimVisibility();
     }
 
 
@@ -130,6 +137,7 @@ public class KunoichiKunaiAbility : CustomButtonBase
         _fixedUpdateEvent?.RemoveListener();
         DestroyProjectiles();
         ClearLocalHits();
+        SetAndroidAimVisible(false);
     }
 
     public override bool CheckIsAvailable()
@@ -214,11 +222,8 @@ public class KunoichiKunaiAbility : CustomButtonBase
         sr.sortingOrder = 310;
 
         var start = shooter.GetTruePosition();
-        Vector3 mouseDirection = Input.mousePosition - new Vector3(Screen.width / 2f, Screen.height / 2f);
-        if (mouseDirection == Vector3.zero) mouseDirection = Vector3.right;
-        float mouseAngle = Mathf.Atan2(mouseDirection.y, mouseDirection.x);
-        Vector2 dir = new(Mathf.Cos(mouseAngle), Mathf.Sin(mouseAngle));
-        if (dir == Vector2.zero) dir = Vector2.right;
+        Vector2 dir = AndroidRightStickAim.GetAimDirection(Vector2.right);
+        float mouseAngle = Mathf.Atan2(dir.y, dir.x);
 
         const float handOffset = 0.8f;   // 手元の表示位置に合わせる
         const float heightOffset = 0.35f;
@@ -238,6 +243,8 @@ public class KunoichiKunaiAbility : CustomButtonBase
 
     private void OnFixedUpdate()
     {
+        UpdateAndroidAimVisibility();
+
         if (_projectiles.Count == 0) return;
         var shooter = Player;
         if (shooter == null || shooter.Player == null)
@@ -282,6 +289,38 @@ public class KunoichiKunaiAbility : CustomButtonBase
                 }
             }
         }
+    }
+
+    private void UpdateAndroidAimVisibility()
+    {
+        if (!Player.AmOwner)
+            return;
+
+        bool introDisplayed = DestroyableSingleton<HudManager>.InstanceExists
+            && DestroyableSingleton<HudManager>.Instance.IsIntroDisplayed;
+        bool canMove = Player?.Player != null && Player.Player.CanMove;
+        bool inVent = Player?.Player != null && Player.Player.inVent;
+        bool invisibleBlocked = !_allowWhileInvisible && _isInvisible != null && _isInvisible();
+        bool shouldShow = AndroidAimVisibilityPolicy.ShouldShowForKunoichi(
+            ModHelpers.IsAndroid(),
+            Player.AmOwner,
+            Player != null && Player.IsAlive(),
+            canMove,
+            inVent,
+            MeetingHud.Instance != null || ExileController.Instance != null,
+            introDisplayed,
+            invisibleBlocked);
+
+        SetAndroidAimVisible(shouldShow);
+    }
+
+    private void SetAndroidAimVisible(bool visible)
+    {
+        if (_androidAimVisible == visible)
+            return;
+
+        _androidAimVisible = visible;
+        AndroidRightStickAim.SetVisible(AbilityId, visible);
     }
 
     private void HandleHit(PlayerControl target)
@@ -668,13 +707,12 @@ public class KunoichiKunaiDisplayAbility : CustomButtonBase
 
         if (Player == null || Player.Player == null) return false;
 
-        Vector3 mouseDirection = Input.mousePosition - new Vector3(Screen.width / 2, Screen.height / 2);
-        if (mouseDirection == Vector3.zero) mouseDirection = Vector3.right;
-        mouseAngle = Mathf.Atan2(mouseDirection.y, mouseDirection.x);
+        Vector2 aimDirection = AndroidRightStickAim.GetAimDirection(Vector2.right);
+        mouseAngle = Mathf.Atan2(aimDirection.y, aimDirection.x);
 
         const float handOffset = 0.8f;
         const float heightOffset = 0.35f;
-        var targetPosition = Player.GetTruePosition() + new Vector2(handOffset * Mathf.Cos(mouseAngle), handOffset * Mathf.Sin(mouseAngle));
+        var targetPosition = Player.GetTruePosition() + aimDirection * handOffset;
         desired = new Vector3(targetPosition.x, targetPosition.y + heightOffset, Player.transform.position.z);
         return true;
     }
@@ -707,12 +745,20 @@ public class KunoichiKunaiDisplayAbility : CustomButtonBase
             return;
         }
 
-        Vector3 mouseDirection = Input.mousePosition - new Vector3(Screen.width / 2, Screen.height / 2);
-        var mouseAngle = Mathf.Atan2(mouseDirection.y, mouseDirection.x);
+        if (!_canThrowWhileInvisible && _isInvisible != null && _isInvisible())
+        {
+            _displayKunai.SetActive(false);
+            _hasInitialPosition = false;
+            _followVelocity = Vector3.zero;
+            return;
+        }
+
+        Vector2 aimDirection = AndroidRightStickAim.GetAimDirection(Vector2.right);
+        var mouseAngle = Mathf.Atan2(aimDirection.y, aimDirection.x);
         const float handOffset = 0.8f;
         const float heightOffset = 0.35f;
         const float followSmoothTime = 0.05f;
-        var targetPosition = Player.GetTruePosition() + new Vector2(handOffset * Mathf.Cos(mouseAngle), handOffset * Mathf.Sin(mouseAngle));
+        var targetPosition = Player.GetTruePosition() + aimDirection * handOffset;
         var desired = new Vector3(targetPosition.x, targetPosition.y + heightOffset, Player.transform.position.z);
         if (!_hasInitialPosition)
         {

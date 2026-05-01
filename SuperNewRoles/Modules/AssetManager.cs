@@ -63,13 +63,13 @@ public static class AssetManager
     private static Dictionary<byte, AssetBundle> Bundles { get; } = new(3);
     public static void Load()
     {
-        SuperNewRolesPlugin.Logger.LogInfo("[Splash] Loading AssetBundles...");
+        SuperNewRoles.Logger.Info("[Splash] Loading AssetBundles...");
         Logger.Info("-------Start AssetBundle-------");
         Logger.Info("IsAndroid:" + ModHelpers.IsAndroid());
         var ExcAssembly = SuperNewRolesPlugin.Assembly;
         foreach (var data in AssetPathes)
         {
-            SuperNewRolesPlugin.Logger.LogInfo($"[Splash] Loading AssetBundle: {data.Type}");
+            SuperNewRoles.Logger.Info($"[Splash] Loading AssetBundle: {data.Type}");
             string platform = ModHelpers.IsAndroid() ? "_android" : "";
             AssetBundle assetBundle = null;
             try
@@ -128,7 +128,7 @@ public static class AssetManager
                 Logger.Error(e.ToString(), "LoadAssetBundle");
             }
         }
-        SuperNewRolesPlugin.Logger.LogInfo("[Splash] AssetBundles loaded");
+        SuperNewRoles.Logger.Info("[Splash] AssetBundles loaded");
         Logger.Info("-------End LoadAssetBundle-------");
     }
     /// <summary>
@@ -285,7 +285,7 @@ public static class AssetManager
 
     public static void UnloadAllAssets()
     {
-        SuperNewRolesPlugin.Logger.LogInfo("[AssetManager] Unloading all cached assets...");
+        SuperNewRoles.Logger.Info("[AssetManager] Unloading all cached assets...");
         foreach (var typeCache in _cachedAssets.Values)
         {
             foreach (var asset in typeCache)
@@ -299,7 +299,7 @@ public static class AssetManager
         // Bundles.Clear();
         if (!ModHelpers.IsAndroid())
             Resources.UnloadUnusedAssets();
-        SuperNewRolesPlugin.Logger.LogInfo("[AssetManager] All cached assets unloaded.");
+        SuperNewRoles.Logger.Info("[AssetManager] All cached assets unloaded.");
     }
     [HarmonyPatch(typeof(AmongUsClient), nameof(AmongUsClient.OnActiveSceneChange))]
     public static class OnActiveSceneChangePatch

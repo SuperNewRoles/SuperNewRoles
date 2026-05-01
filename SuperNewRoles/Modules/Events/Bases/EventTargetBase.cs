@@ -32,17 +32,8 @@ public abstract class EventTargetBase<T, U> : InternalEventTargetBase<T, EventLi
         // 配列でイテレート（高速）
         foreach (EventListener<U> listener in _listenersCache)
         {
-            if (!_pendingRemoval.Contains(listener))
-            {
-                try
-                {
-                    listener.Do(obj);
-                }
-                catch (Exception e)
-                {
-                    SuperNewRolesPlugin.Logger.LogError($"Error in {listener.GetType().Name}: {e}");
-                }
-            }
+            if (_pendingRemoval.Count == 0 || !_pendingRemoval.Contains(listener))
+                listener.Do(obj);
         }
         _isAwaking = false;
 
@@ -86,14 +77,14 @@ public abstract class EventTargetBase<T, U> : InternalEventTargetBase<T, EventLi
     {
         var listenerCount = listeners.Count;
         var pendingCount = _pendingRemoval.Count;
-        SuperNewRolesPlugin.Logger.LogInfo($"[{GetType().Name}] RemoveListenerAll: {listenerCount} listeners, {pendingCount} pending removal");
+        SuperNewRoles.Logger.Info($"[{GetType().Name}] RemoveListenerAll: {listenerCount} listeners, {pendingCount} pending removal");
 
         base.RemoveListenerAll();
         _pendingRemoval.Clear();
         _listenersCacheDirty = true;
         _listenersCache = null;
 
-        SuperNewRolesPlugin.Logger.LogInfo($"[{GetType().Name}] RemoveListenerAll completed");
+        SuperNewRoles.Logger.Info($"[{GetType().Name}] RemoveListenerAll completed");
     }
 }
 /// <summary>
@@ -120,7 +111,7 @@ public abstract class EventTargetBase<T> : InternalEventTargetBase<T, EventListe
         // 配列でイテレート（高速）
         foreach (EventListener listener in _listenersCache)
         {
-            if (!_pendingRemoval.Contains(listener))
+            if (_pendingRemoval.Count == 0 || !_pendingRemoval.Contains(listener))
                 listener.Do();
         }
         _isAwaking = false;
@@ -165,14 +156,14 @@ public abstract class EventTargetBase<T> : InternalEventTargetBase<T, EventListe
     {
         var listenerCount = listeners.Count;
         var pendingCount = _pendingRemoval.Count;
-        SuperNewRolesPlugin.Logger.LogInfo($"[{GetType().Name}] RemoveListenerAll: {listenerCount} listeners, {pendingCount} pending removal");
+        SuperNewRoles.Logger.Info($"[{GetType().Name}] RemoveListenerAll: {listenerCount} listeners, {pendingCount} pending removal");
 
         base.RemoveListenerAll();
         _pendingRemoval.Clear();
         _listenersCacheDirty = true;
         _listenersCache = null;
 
-        SuperNewRolesPlugin.Logger.LogInfo($"[{GetType().Name}] RemoveListenerAll completed");
+        SuperNewRoles.Logger.Info($"[{GetType().Name}] RemoveListenerAll completed");
     }
 }
 

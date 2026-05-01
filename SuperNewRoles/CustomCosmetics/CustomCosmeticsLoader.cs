@@ -50,6 +50,8 @@ public class CustomCosmeticsLoader
     private static readonly HttpClient client = new();
     private static readonly int maxRetryAttempts = 1;
     private static readonly TimeSpan retryDelay = TimeSpan.FromSeconds(5);
+    // 到達不能ホストを一定時間再試行しないためのクールダウン
+    private static readonly TimeSpan HostUnreachableCacheDuration = TimeSpan.FromMinutes(10);
     private static readonly List<string> notLoadedAssetBundles = new();
     private static readonly List<CustomCosmeticsPackage> loadedPackages = new();
     public static List<CustomCosmeticsPackage> LoadedPackages => loadedPackages;
@@ -57,6 +59,10 @@ public class CustomCosmeticsLoader
     public static readonly Dictionary<string, CustomCosmeticsVisor> moddedVisors = new();
     public static readonly Dictionary<string, CustomCosmeticsNamePlate> moddedNamePlates = new();
     private static Dictionary<string, List<(string, string)>> willDownloads = new();
+    // セッション中に到達確認済みのホスト
+    private static readonly HashSet<string> reachableHosts = new(StringComparer.OrdinalIgnoreCase);
+    // 到達不能と判断したホストの再試行可能時刻
+    private static readonly Dictionary<string, DateTime> unreachableHostsUntilUtc = new(StringComparer.OrdinalIgnoreCase);
 
     // Android版はメモリ節約のため、ダウンロードしたバイト列を保持しない
     private static readonly Dictionary<string, byte[]> downloadedSprites = null; //ModHelpers.IsAndroid() ? null : new();
@@ -69,7 +75,15 @@ public class CustomCosmeticsLoader
     public static int SpritesAllCount;
     public static bool SpritesDownloading = false;
 
-    public static readonly int MAX_CONCURRENT_DOWNLOADS = ModHelpers.IsAndroid() ? 10 : 30;
+    public static readonly int MAX_CONCURRENT_DOWNLOADS = ModHelpers.IsAndroid() ? 15 : 30;
+    // 到達性プローブは短くし、失敗時は早めにスキップする
+    private const float HostProbeTimeoutSeconds = 3f;
+    // JSONメタデータは短めのタイムアウト
+    private const int MetadataRequestTimeoutSeconds = 6;
+    // バンドルはサイズが大きい可能性があるためスプライトより長め
+    private const float AssetBundleRequestTimeoutSeconds = 20f;
+    // スプライト単体は短めに切って待ち時間を抑える
+    private const float SpriteDownloadTimeoutSeconds = 5f;
 
     private static string SanitizeFileName(string fileName)
     {
@@ -440,8 +454,20 @@ public class CustomCosmeticsLoader
     }
     public static IEnumerator GetStringAsync(string url, Action<string> onSuccess, Action<string> onError)
     {
+        // JSON取得前にホスト到達性を確認し、無駄な待機を避ける
+        bool canReachHost = true;
+        yield return EnsureHostReachable(url, reachable => canReachHost = reachable);
+        if (!canReachHost)
+        {
+            string errorMessage = $"Host unreachable. Skip metadata download: {url}";
+            Logger.Error(errorMessage);
+            onError(errorMessage);
+            yield break;
+        }
+
         // UnityWebRequestを使用して非同期でデータを取得
         UnityWebRequest request = UnityWebRequest.Get(url);
+        request.timeout = MetadataRequestTimeoutSeconds;
         yield return request.SendWebRequest();
 
         if (request.result == UnityWebRequest.Result.Success)
@@ -843,9 +869,19 @@ public class CustomCosmeticsLoader
             }
             else // Remote
             {
+                // バンドル本体の取得前にもホスト到達性を確認
+                bool canReachHost = true;
+                yield return EnsureHostReachable(assetBundleUrl, reachable => canReachHost = reachable);
+                if (!canReachHost)
+                {
+                    Logger.Warning($"Host unreachable. Skip asset bundle download: {assetBundleUrl}");
+                    onFinish();
+                    yield break;
+                }
+
                 request = SNRHttpClient.Get(assetBundleUrl);
                 // ユーザーが設定したタイムアウト値を使用
-                request.timeout = 60;
+                request.timeout = AssetBundleRequestTimeoutSeconds;
                 request.ignoreSslErrors = true;
 
                 IEnumerator webRequestEnumerator = SendSNRHttpClientHelper(request);
@@ -1058,8 +1094,18 @@ public class CustomCosmeticsLoader
 
     private static IEnumerator DownloadSingleSprite(string spriteName, string spriteUrl, string packageSavePath, string filePath, Action onComplete)
     {
+        // スプライト単位でも事前チェックし、到達不能ホストでの連続タイムアウトを防ぐ
+        bool canReachHost = true;
+        yield return EnsureHostReachable(spriteUrl, reachable => canReachHost = reachable);
+        if (!canReachHost)
+        {
+            Logger.Warning($"Host unreachable. Skip sprite download: {spriteName} ({spriteUrl})");
+            onComplete?.Invoke();
+            yield break;
+        }
+
         SNRHttpClient request = SNRHttpClient.Get(spriteUrl);
-        request.timeout = 30; // 30 seconds timeout
+        request.timeout = SpriteDownloadTimeoutSeconds;
         request.ignoreSslErrors = true;
 
         yield return request.SendWebRequest();
@@ -1106,6 +1152,89 @@ public class CustomCosmeticsLoader
             Logger.Error($"Failed to download sprite {spriteName} from {spriteUrl}. Error: {request.error}, Code: {request.responseCode}");
         }
         onComplete?.Invoke();
+    }
+
+    // リモートURLのホスト到達性を確認し、結果をホスト単位でキャッシュする
+    private static IEnumerator EnsureHostReachable(string url, Action<bool> onComplete)
+    {
+        Uri uri = null;
+        // ローカルパスや非HTTP(S)は到達性チェック対象外
+        if (!TryParseRemoteUri(url, out uri))
+        {
+            onComplete?.Invoke(true);
+            yield break;
+        }
+
+        if (!string.Equals(uri.Scheme, Uri.UriSchemeHttp, StringComparison.OrdinalIgnoreCase) &&
+            !string.Equals(uri.Scheme, Uri.UriSchemeHttps, StringComparison.OrdinalIgnoreCase))
+        {
+            onComplete?.Invoke(true);
+            yield break;
+        }
+
+        string host = uri.Host;
+        if (string.IsNullOrWhiteSpace(host))
+        {
+            onComplete?.Invoke(true);
+            yield break;
+        }
+
+        // 既に成功済みなら再プローブ不要
+        if (reachableHosts.Contains(host))
+        {
+            onComplete?.Invoke(true);
+            yield break;
+        }
+
+        // 直近で失敗したホストはクールダウン中スキップ
+        if (unreachableHostsUntilUtc.TryGetValue(host, out DateTime blockedUntilUtc) &&
+            blockedUntilUtc > DateTime.UtcNow)
+        {
+            onComplete?.Invoke(false);
+            yield break;
+        }
+
+        SNRHttpClient probeRequest = SNRHttpClient.Get(BuildHostProbeUrl(uri));
+        probeRequest.timeout = HostProbeTimeoutSeconds;
+        probeRequest.ignoreSslErrors = true;
+        yield return probeRequest.SendWebRequest();
+
+        bool reachable = probeRequest.responseCode > 0 || string.IsNullOrEmpty(probeRequest.error);
+        if (reachable)
+        {
+            reachableHosts.Add(host);
+            unreachableHostsUntilUtc.Remove(host);
+        }
+        else
+        {
+            unreachableHostsUntilUtc[host] = DateTime.UtcNow.Add(HostUnreachableCacheDuration);
+            Logger.Warning($"Host reachability probe failed: {host}. Skip for {HostUnreachableCacheDuration.TotalMinutes:0} min.");
+        }
+
+        onComplete?.Invoke(reachable);
+    }
+
+    // パスを含めずホスト直下を叩いて到達性のみを確認
+    private static string BuildHostProbeUrl(Uri uri)
+    {
+        string portPart = uri.IsDefaultPort ? string.Empty : $":{uri.Port}";
+        return $"{uri.Scheme}://{uri.Host}{portPart}/";
+    }
+
+    // ローカルパスを除外し、リモートURLだけを判定対象にする
+    private static bool TryParseRemoteUri(string url, out Uri uri)
+    {
+        uri = null;
+        if (string.IsNullOrWhiteSpace(url))
+            return false;
+
+        bool isLocalPath = url.StartsWith("./", StringComparison.Ordinal) ||
+                           url.StartsWith("../", StringComparison.Ordinal) ||
+                           Path.IsPathRooted(url);
+        if (isLocalPath)
+            return false;
+
+        return Uri.TryCreate(url, UriKind.Absolute, out uri);
     }
 
     public static Sprite LoadSpriteFromPath(string path)

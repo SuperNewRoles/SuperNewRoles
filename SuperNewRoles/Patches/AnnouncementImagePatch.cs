@@ -67,7 +67,7 @@ namespace SuperNewRoles.Patches
             }
             catch (Exception ex)
             {
-                SuperNewRolesPlugin.Logger.LogWarning($"AnnouncementPopUpUpdateAnnouncementTextPatch failed: {ex}");
+                SuperNewRoles.Logger.Warning($"AnnouncementPopUpUpdateAnnouncementTextPatch failed: {ex}");
                 SuperNewRolesPlugin.DisableAnnouncementImageSupport(ex.Message);
             }
         }
@@ -98,7 +98,7 @@ namespace SuperNewRoles.Patches
             }
             catch (Exception ex)
             {
-                SuperNewRolesPlugin.Logger.LogWarning($"AnnouncementPopUpOnDisableImagePatch failed: {ex}");
+                SuperNewRoles.Logger.Warning($"AnnouncementPopUpOnDisableImagePatch failed: {ex}");
                 SuperNewRolesPlugin.DisableAnnouncementImageSupport(ex.Message);
             }
         }
@@ -163,7 +163,7 @@ namespace SuperNewRoles.Patches
             }
             catch (Exception ex)
             {
-                SuperNewRolesPlugin.Logger.LogWarning($"AnnouncementPopUpUpdateImagePatch failed: {ex}");
+                SuperNewRoles.Logger.Warning($"AnnouncementPopUpUpdateImagePatch failed: {ex}");
                 SuperNewRolesPlugin.DisableAnnouncementImageSupport(ex.Message);
             }
         }

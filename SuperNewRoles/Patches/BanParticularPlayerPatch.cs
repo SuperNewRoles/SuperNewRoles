@@ -17,19 +17,19 @@ public static class PlayerKickHelper
         if (kickPC && (pf == Platforms.StandaloneSteamPC || pf == Platforms.StandaloneEpicPC || pf == Platforms.StandaloneWin10))
         {
             AmongUsClient.Instance.KickPlayer(client.Id, false);
-            SuperNewRolesPlugin.Logger.LogInfo($"PCプレイヤー {client.PlayerName} をキックしました");
+            SuperNewRoles.Logger.Info($"PCプレイヤー {client.PlayerName} をキックしました");
             return true;
         }
         if (kickAndroid && pf == Platforms.Android)
         {
             AmongUsClient.Instance.KickPlayer(client.Id, false);
-            SuperNewRolesPlugin.Logger.LogInfo($"Androidプレイヤー {client.PlayerName} をキックしました");
+            SuperNewRoles.Logger.Info($"Androidプレイヤー {client.PlayerName} をキックしました");
             return true;
         }
         if (kickOther && pf != Platforms.StandaloneSteamPC && pf != Platforms.StandaloneEpicPC && pf != Platforms.StandaloneWin10 && pf != Platforms.Android)
         {
             AmongUsClient.Instance.KickPlayer(client.Id, false);
-            SuperNewRolesPlugin.Logger.LogInfo($"その他プラットフォームのプレイヤー {client.PlayerName} をキックしました");
+            SuperNewRoles.Logger.Info($"その他プラットフォームのプレイヤー {client.PlayerName} をキックしました");
             return true;
         }
         return false;
@@ -41,7 +41,7 @@ class BanParticularPlayerPatch
 {
     public static void Postfix([HarmonyArgument(0)] ClientData client)
     {
-        SuperNewRolesPlugin.Logger.LogInfo($"{client.PlayerName}(ClientID:{client.Id})が参加");
+        SuperNewRoles.Logger.Info($"{client.PlayerName}(ClientID:{client.Id})が参加");
 
         if (!AmongUsClient.Instance.AmHost)
             return;
@@ -57,7 +57,7 @@ class BanParticularPlayerPatch
         if (GeneralSettingOptions.BanNoFriendCodePlayers && (string.IsNullOrEmpty(client.FriendCode) || !client.FriendCode.Contains("#")))
         {
             AmongUsClient.Instance.KickPlayer(client.Id, true);
-            SuperNewRolesPlugin.Logger.LogInfo($"フレンドコードを持っていないプレイヤー {client?.PlayerName} をBANしました");
+            SuperNewRoles.Logger.Info($"フレンドコードを持っていないプレイヤー {client?.PlayerName} をBANしました");
             return;
         }
     }

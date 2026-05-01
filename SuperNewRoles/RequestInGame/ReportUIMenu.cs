@@ -180,7 +180,7 @@ public class ReportUIMenu
             case RequestInGameType.Bug:
                 AmongUsClient.Instance.StartCoroutine(RequestInGameManager.GetOrCreateToken(token =>
                 {
-                    if (token == null)
+                    if (string.IsNullOrEmpty(token))
                     {
                         Logger.Error($"Failed to get token");
                         isActive = false;
@@ -225,7 +225,7 @@ public class ReportUIMenu
             default:
                 AmongUsClient.Instance.StartCoroutine(RequestInGameManager.GetOrCreateToken(token =>
                 {
-                    if (token == null)
+                    if (string.IsNullOrEmpty(token))
                     {
                         Logger.Error($"Failed to get token");
                         isActive = false;

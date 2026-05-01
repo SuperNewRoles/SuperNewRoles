@@ -33,6 +33,7 @@ public class JumpDancerAbility : CustomButtonBase, IAbilityCount
         }
     }
     private readonly float cooldown;
+    private readonly bool affectsGhosts;
     public override string buttonText => ModTranslation.GetString("JumpDancerButtonName");
 
     public override float DefaultTimer => cooldown;
@@ -41,9 +42,10 @@ public class JumpDancerAbility : CustomButtonBase, IAbilityCount
 
     protected override KeyType keytype => KeyType.Ability1;
 
-    public JumpDancerAbility(float cooldown) : base()
+    public JumpDancerAbility(float cooldown, bool affectsGhosts) : base()
     {
         this.cooldown = cooldown;
+        this.affectsGhosts = affectsGhosts;
     }
 
     public override bool CheckIsAvailable()
@@ -69,6 +71,8 @@ public class JumpDancerAbility : CustomButtonBase, IAbilityCount
         float LightRadius = ShipStatus.Instance.CalculateLightRadius(PlayerControl.LocalPlayer.Data);
         foreach (PlayerControl player in PlayerControl.AllPlayerControls)
         {
+            if (player == null || player.Data == null) continue;
+            if (!affectsGhosts && player.Data.IsDead) continue;
             if (CheckCan(player)) continue;
             if (PlayerControl.LocalPlayer.PlayerId == player.PlayerId)
             {
