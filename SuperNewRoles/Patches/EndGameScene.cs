@@ -526,9 +526,7 @@ public class EndGameManagerSetUpPatch
 
     private static string BuildRoleHistoryText(AdditionalTempData.PlayerRoleInfo roleInfo)
     {
-        string arrow = ModTranslation.GetString("RoleHistoryArrow");
-        if (string.IsNullOrEmpty(arrow) || arrow == "RoleHistoryArrow")
-            arrow = "→";
+        string arrow = "→";
 
         var history = roleInfo.RoleHistory;
         if (history == null || history.Count == 0)
