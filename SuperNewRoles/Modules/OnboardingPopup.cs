@@ -38,9 +38,9 @@ public static class OnboardingPopup
     private const float PopupCloseYOffset = 0.16f;
     private const float RoleIconCarouselSeconds = 1.8f;
     private const float RoleIconFadeSeconds = 0.35f;
-    private const float RoleIconBaseScale = 0.14f;
+    private const float RoleIconBaseScale = 0.17f;
     private const float RoleIconPulseScale = 0.02f;
-    private const float WelcomeLogoScale = 0.28f;
+    private const float WelcomeLogoScale = 0.75f;
     private const int WelcomeStepIndex = 0;
     private const int RoleCarouselStepIndex = 1;
     private const int PlayStepIndex = 2;
@@ -65,9 +65,9 @@ public static class OnboardingPopup
     private const float PlayFootY = -2.15f;
 
     // バグ報告ページ。スクショ枠 → キャプション（縦並び）。
-    private const float BugReportImageLocalY = 1.45f;
+    private const float BugReportImageLocalY = 1.65f;
     private const float BugReportImageSpacingX = 4.7f;
-    private const float BugReportImageDisplayScale = 0.28f;
+    private const float BugReportImageDisplayScale = 0.41f;
     private const float BugReportImageWidth = 4.0f;
     private const float BugReportImageHeight = 2.4f;
     private const float BugReportCaptionLocalY = -0.45f;
@@ -107,7 +107,7 @@ public static class OnboardingPopup
     // オンボーディングの全ページ定義。Render() は _currentStep を使ってこの配列から表示内容を引く。
     private static readonly Step[] Steps = new[]
     {
-        new Step { TitleKey = "OnboardingWelcomeTitle", BodyKey = "OnboardingWelcomeBody", BodyFontScale = 0.88f, BodyYOffset = -0.35f },
+        new Step { TitleKey = "OnboardingWelcomeTitle", BodyKey = "OnboardingWelcomeBody", BodyFontScale = 0.88f, BodyYOffset = -1.85f },
         new Step { TitleKey = "OnboardingAboutTitle",   BodyKey = "OnboardingAboutBody", BodyFontScale = 0.76f, BodyYOffset = -0.05f },
         new Step { TitleKey = "OnboardingPlayTitle", BodyKey = null, BodyFontScale = 0.7f, BodyYOffset = 0f },
         new Step { TitleKey = "OnboardingBugReportTitle", BodyKey = null, BodyFontScale = 0.7f, BodyYOffset = 0f },
@@ -199,7 +199,7 @@ public static class OnboardingPopup
     private static readonly List<SpriteRenderer> _roleIconRenderers = new();
     private static readonly List<GameObject> _roleIconObjects = new();
     private static GameObject _welcomeLogoObject;
-    private static readonly Vector3 WelcomeLogoBaseLocalPosition = new(0f, 1.15f, 0f);
+    private static readonly Vector3 WelcomeLogoBaseLocalPosition = new(0f, 1.85f, 0f);
 
     // テンプレートボタンの元位置と元スケール。リンクボタン配置の基準に使う。
     private static Vector3 _buttonAnchor;
@@ -324,7 +324,7 @@ public static class OnboardingPopup
         if (closeButton == null) return;
 
         _closeButton = closeButton.gameObject;
-        MoveInFrontOfPopup(closeButton);
+        MoveInFrontOfPopup(closeButton, additionalOffset: 0.1f);
         AttachButton(_closeButton, CloseOnboarding);
     }
 
@@ -964,8 +964,8 @@ public static class OnboardingPopup
         {
             new(-6.15f, 1.55f, GetPopupForegroundZ(0.04f)),
             new(6.15f, 1.55f, GetPopupForegroundZ(0.04f)),
-            new(-6.15f, -0.65f, GetPopupForegroundZ(0.04f)),
-            new(6.15f, -0.65f, GetPopupForegroundZ(0.04f)),
+            new(-5.55f, -1.45f, GetPopupForegroundZ(0.04f)),
+            new(5.55f, -1.45f, GetPopupForegroundZ(0.04f)),
         };
 
         for (int i = 0; i < positions.Length; i++)
