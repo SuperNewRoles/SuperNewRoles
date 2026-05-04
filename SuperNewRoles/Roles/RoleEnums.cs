@@ -150,6 +150,7 @@ public enum RoleId : short
     DyingMessenger,
     PoliceSurgeon,
     Banshee,
+    Orpheus,
     TriggerHappy,
 }
 

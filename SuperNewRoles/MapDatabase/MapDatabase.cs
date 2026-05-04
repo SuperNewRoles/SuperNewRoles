@@ -149,6 +149,44 @@ public abstract class MapDatabase
         return CreateReadableTexture(texture);
     }
 
+    /// <summary>
+    /// マップ参照点（MapArea / NonMapArea）を包む AABB＋余白。オルフェウス等のランダムスポーン探索に使用。
+    /// </summary>
+    public bool TryGetSpawnScanBounds(out Vector2 min, out Vector2 max)
+    {
+        min = max = Vector2.zero;
+        if (MapArea == null || MapArea.Length == 0)
+            return false;
+
+        float minX = float.MaxValue, minY = float.MaxValue, maxX = float.MinValue, maxY = float.MinValue;
+        void Acc(Vector2 p)
+        {
+            minX = Mathf.Min(minX, p.x);
+            minY = Mathf.Min(minY, p.y);
+            maxX = Mathf.Max(maxX, p.x);
+            maxY = Mathf.Max(maxY, p.y);
+        }
+        foreach (Vector2 p in MapArea)
+            Acc(p);
+        if (NonMapArea != null)
+            foreach (Vector2 p in NonMapArea)
+                Acc(p);
+        const float pad = 2f;
+        min = new Vector2(minX - pad, minY - pad);
+        max = new Vector2(maxX + pad, maxY + pad);
+        return true;
+    }
+
+    // 死体をスポーンできる場所をキャッシュから取得するか生成する
+    public static bool TryGetSpawnScanBoundsForCurrentMap(out Vector2 min, out Vector2 max)
+    {
+        min = max = Vector2.zero;
+        MapDatabase data = GetCurrentMapData();
+        if (data == null)
+            return false;
+        return data.TryGetSpawnScanBounds(out min, out max);
+    }
+
     static private MapDatabase[] AllMapData = new MapDatabase[] { new SkeldData(), new MiraData(), new PolusData(), null!, new AirshipData(), new FungleData() };
     static public MapDatabase GetCurrentMapData() => AllMapData.Length > currentMapId ? AllMapData[currentMapId] : null!;
     static int currentMapId => GameOptionsManager.Instance.CurrentGameOptions.GetByte(ByteOptionNames.MapId);
