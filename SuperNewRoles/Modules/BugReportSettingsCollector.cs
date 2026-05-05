@@ -429,10 +429,16 @@ public static class BugReportSettingsCollector
         sb.Append(':');
         if (value is string s)
             sb.Append(EscapeJson(s));
+        else if (value is Enum e)
+            sb.Append(EscapeJson(e.ToString()));
         else if (value is bool b)
             sb.Append(b.ToString().ToLower());
         else if (value is float f)
             sb.Append(f.ToString(System.Globalization.CultureInfo.InvariantCulture));
+        else if (value is double d)
+            sb.Append(d.ToString(System.Globalization.CultureInfo.InvariantCulture));
+        else if (value is decimal m)
+            sb.Append(m.ToString(System.Globalization.CultureInfo.InvariantCulture));
         else
             sb.Append(value);
         hasPrev = true;
