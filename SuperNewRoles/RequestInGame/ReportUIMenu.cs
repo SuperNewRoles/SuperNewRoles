@@ -191,6 +191,9 @@ public class ReportUIMenu
                         Dictionary<string, string> additionalInfo = new();
                         additionalInfo["mode"] = Categories.ModeOption.ToString();
                         additionalInfo["log_compressed"] = LogCompression.CompressAndEncryptLog(SNRLogListener.Instance.logBuilder.ToString());
+                        string settingsData = BugReportSettingsCollector.CollectAndCompress();
+                        if (!string.IsNullOrEmpty(settingsData))
+                            additionalInfo["settings_data_compressed"] = settingsData;
                         if (extra != null)
                         {
                             foreach (var kv in extra)
