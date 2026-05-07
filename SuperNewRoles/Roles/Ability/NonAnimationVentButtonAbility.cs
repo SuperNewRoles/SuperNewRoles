@@ -52,7 +52,10 @@ public class NonAnimationVentButtonAbility : CustomVentAbility
         if (inVent == null) return;
 
         if (Player.AmOwner)
+        {
             Vent.currentVent = inVent;
+            VentilationSystem.Update(VentilationSystem.Operation.Enter, id);
+        }
         Player.Player.moveable = false;
         Player.Player.Visible = false;
         Player.Player.inVent = true;
@@ -65,7 +68,10 @@ public class NonAnimationVentButtonAbility : CustomVentAbility
         if (inVent == null) return;
 
         if (Player.AmOwner)
+        {
             Vent.currentVent = null;
+            VentilationSystem.Update(VentilationSystem.Operation.Exit, id);
+        }
         Player.Player.moveable = true;
         Player.Player.Visible = true;
         Player.Player.inVent = false;

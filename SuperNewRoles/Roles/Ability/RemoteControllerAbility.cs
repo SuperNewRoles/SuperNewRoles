@@ -326,8 +326,28 @@ public sealed class RemoteControllerAbility : AbilityBase
         Vector3 center = bounds.center;
         Vector3 position = vent.transform.position;
         float distance = Vector2.Distance(center, position);
-        canUse = distance <= vent.UsableDistance && !PhysicsHelpers.AnythingBetween(targetPlayer.Player.Collider, center, position, Constants.ShipOnlyMask, false);
+        canUse = !IsVentBlockedByCleaning(targetPlayer, vent)
+            && distance <= vent.UsableDistance
+            && !PhysicsHelpers.AnythingBetween(targetPlayer.Player.Collider, center, position, Constants.ShipOnlyMask, false);
         return distance;
+    }
+
+    internal static bool IsVentBlockedByCleaning(ExPlayerControl targetPlayer, Vent vent)
+    {
+        if (targetPlayer?.Player == null || vent == null)
+            return true;
+
+        bool isCurrentVent = targetPlayer.Player.inVent && TryGetVentId(targetPlayer.PlayerId, out int currentVentId) && currentVentId == vent.Id;
+        if (!isCurrentVent && targetPlayer.Player.MustCleanVent(vent.Id))
+            return true;
+
+        if (ShipStatus.Instance == null)
+            return false;
+
+        if (!ShipStatus.Instance.Systems.TryGetValue(SystemTypes.Ventilation, out var system))
+            return false;
+
+        return system.Il2CppIs(out VentilationSystem ventilation) && ventilation.IsVentCurrentlyBeingCleaned(vent.Id);
     }
 
     public void CancelAndClearTarget()
@@ -593,14 +613,11 @@ public static class RemoteControllerRpc
     {
         var target = (ExPlayerControl)PlayerControl.AllPlayerControls.ToArray().FirstOrDefault(p => p.PlayerId == targetPlayerId);
         if (target == null) return;
+        if (!target.AmOwner) return;
         if (ShipStatus.Instance == null) return;
-        if (!ShipStatus.Instance.Systems.TryGetValue(SystemTypes.Ventilation, out var system)) return;
-        if (!system.Il2CppIs(out VentilationSystem ventilation)) return;
+        if (!ShipStatus.Instance.Systems.TryGetValue(SystemTypes.Ventilation, out _)) return;
         VentilationSystem.Update(VentilationSystem.Operation.Move, ventId);
-        if (target.AmOwner)
-        {
-            Vent.currentVent = ModHelpers.VentById(ventId);
-        }
+        Vent.currentVent = ModHelpers.VentById(ventId);
     }
 }
 
@@ -748,6 +765,12 @@ public static class RemoteControllerVentMovePatch
         if (operatorTarget.Player.walkingToVent || operatorTarget.Player.Visible)
         {
             error = "Player was still in the middle of animating into current vent";
+            __result = false;
+            return false;
+        }
+        if (RemoteControllerAbility.IsVentBlockedByCleaning(operatorTarget, otherVent))
+        {
+            error = "Vent is blocked by vent cleaning";
             __result = false;
             return false;
         }
