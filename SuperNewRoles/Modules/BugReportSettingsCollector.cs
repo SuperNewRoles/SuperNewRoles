@@ -1,7 +1,4 @@
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Reflection;
 using System.Text;
 using AmongUs.GameOptions;
 using SuperNewRoles.CustomOptions.Categories;
@@ -114,7 +111,6 @@ public static class BugReportSettingsCollector
             if (gameOptions == null) return string.Empty;
 
             AppendEnumOptions(sb, gameOptions, ref hasPrev);
-            AppendPropertyOptions(sb, gameOptions, ref hasPrev);
 
             try
             {
@@ -190,30 +186,6 @@ public static class BugReportSettingsCollector
         catch { }
     }
 
-    private static void AppendPropertyOptions(StringBuilder sb, IGameOptions opts, ref bool hasPrev)
-    {
-        try
-        {
-            var type = opts.GetType();
-            foreach (var prop in type.GetProperties(BindingFlags.Public | BindingFlags.Instance))
-            {
-                if (!prop.CanRead || prop.GetIndexParameters().Length > 0) continue;
-                try
-                {
-                    var val = prop.GetValue(opts);
-                    if (val == null) continue;
-                    var pt = val.GetType();
-                    if (pt.IsPrimitive || pt.IsEnum || val is string)
-                    {
-                        AppendJsonField(sb, $"Prop_{prop.Name}", val, ref hasPrev);
-                    }
-                }
-                catch { }
-            }
-        }
-        catch { }
-    }
-
     #endregion
 
     #region SNR Custom Options
@@ -263,7 +235,7 @@ public static class BugReportSettingsCollector
                 sb.Append($"\"role_id\":{EscapeJson(opt.RoleId.ToString())},");
                 sb.Append($"\"number_of_crews\":{opt.NumberOfCrews},");
                 sb.Append($"\"percentage\":{opt.Percentage},");
-                sb.Append($"\"options\":[{CollectCustomOptionsArrayJson(opt.Options)}]");
+                sb.Append($"\"option_ids\":[{CollectCustomOptionIdsArrayJson(opt.Options)}]");
                 sb.Append('}');
                 hasPrev = true;
             }
@@ -299,7 +271,7 @@ public static class BugReportSettingsCollector
                 sb.Append($"\"neutral_chance\":{opt.NeutralChance},");
                 sb.Append($"\"max_crewmates\":{opt.MaxCrewmates},");
                 sb.Append($"\"crewmate_chance\":{opt.CrewmateChance},");
-                sb.Append($"\"options\":[{CollectCustomOptionsArrayJson(opt.Options)}]");
+                sb.Append($"\"option_ids\":[{CollectCustomOptionIdsArrayJson(opt.Options)}]");
                 sb.Append('}');
                 hasPrev = true;
             }
@@ -329,7 +301,7 @@ public static class BugReportSettingsCollector
                 sb.Append($"\"ghost_role_id\":{EscapeJson(opt.RoleId.ToString())},");
                 sb.Append($"\"number_of_crews\":{opt.NumberOfCrews},");
                 sb.Append($"\"percentage\":{opt.Percentage},");
-                sb.Append($"\"options\":[{CollectCustomOptionsArrayJson(opt.Options)}]");
+                sb.Append($"\"option_ids\":[{CollectCustomOptionIdsArrayJson(opt.Options)}]");
                 sb.Append('}');
                 hasPrev = true;
             }
@@ -383,7 +355,7 @@ public static class BugReportSettingsCollector
 
     #region Helpers
 
-    private static string CollectCustomOptionsArrayJson(CustomOption[] options)
+    private static string CollectCustomOptionIdsArrayJson(CustomOption[] options)
     {
         if (options == null || options.Length == 0) return string.Empty;
         var sb = new StringBuilder();
@@ -391,14 +363,7 @@ public static class BugReportSettingsCollector
         foreach (var opt in options)
         {
             if (hasPrev) sb.Append(',');
-            sb.Append('{');
-            sb.Append($"\"id\":{EscapeJson(opt.Id)},");
-            sb.Append($"\"name\":{EscapeJson(opt.Name)},");
-            sb.Append($"\"selection\":{opt.Selection},");
-            sb.Append($"\"value\":{EscapeJson(ToInvariantString(opt.Value))},");
-            sb.Append($"\"default_selection\":{opt.DefaultSelection},");
-            sb.Append($"\"is_default\":{opt.IsDefaultValue.ToString().ToLower()}");
-            sb.Append('}');
+            sb.Append(EscapeJson(opt.Id));
             hasPrev = true;
         }
         return sb.ToString();
