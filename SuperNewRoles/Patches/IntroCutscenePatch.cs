@@ -335,6 +335,7 @@ public static class IntroCutscenePatch
         NameText.RegisterNameTextUpdateEvent();
         SaboAndVent.RegisterListener();
         FinalStatusListener.LoadListener();
+        GameStateLogger.LoadListeners();
         CustomDeathExtensions.Register();
         SetTargetPatch.Register();
         CursedTasks.Main.IntroFinished();

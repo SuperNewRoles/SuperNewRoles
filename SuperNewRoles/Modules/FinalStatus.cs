@@ -55,7 +55,9 @@ public static class FinalStatusListener
     private static void SetFinalStatus(ExPlayerControl exPlayer, FinalStatus finalStatus)
     {
         if (exPlayer == null) return;
+        var oldStatus = exPlayer.FinalStatus;
         exPlayer.FinalStatus = finalStatus;
+        Logger.Info($"[FinalStatus] {exPlayer.PlayerId}:{exPlayer.Player?.name ?? "??"}({exPlayer.Role}): {oldStatus} -> {finalStatus}", "SNR.GameState");
     }
 }
 public static class FinalStatusManager
@@ -67,6 +69,9 @@ public static class FinalStatusManager
     }
     public static void SetFinalStatus(ExPlayerControl exPlayer, FinalStatus finalStatus)
     {
+        if (exPlayer == null) return;
+        var oldStatus = exPlayer.FinalStatus;
         exPlayer.FinalStatus = finalStatus;
+        Logger.Info($"[FinalStatus] {exPlayer.PlayerId}:{exPlayer.Player?.name ?? "??"}({exPlayer.Role}): {oldStatus} -> {finalStatus}", "SNR.GameState");
     }
 }

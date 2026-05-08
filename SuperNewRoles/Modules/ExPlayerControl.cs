@@ -227,6 +227,7 @@ public class ExPlayerControl
         if (ModifierRoleHistory.Count == 0 && oldModifier != ModifierRoleId.None)
             ModifierRoleHistory.Add(oldModifier);
         ModifierRoleHistory.Add(ModifierRole);
+        Logger.Info($"[Modifier] {PlayerId}:{Player?.name ?? "??"}({Role}) += {modifierRoleId}", "SNR.GameState");
         if (CustomRoleManager.TryGetModifierById(modifierRoleId, out var modifier))
         {
             modifier.OnSetRole(Player);
@@ -248,7 +249,9 @@ public class ExPlayerControl
         DetachOldGhostRole(GhostRole);
         if (AmOwner && GhostRole != GhostRoleId.None)
             SuperTrophyManager.DetachTrophy(GhostRole);
+        var oldGhostRole = GhostRole;
         GhostRole = ghostRoleId;
+        Logger.Info($"[GhostRole] {PlayerId}:{Player?.name ?? "??"}({Role}): {oldGhostRole} -> {ghostRoleId}", "SNR.GameState");
         if (CustomRoleManager.TryGetGhostRoleById(ghostRoleId, out var role))
         {
             role.OnSetRole(Player);

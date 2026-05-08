@@ -22,7 +22,9 @@ public static class CustomDeathExtensions
     }
     public static void CustomDeath(this ExPlayerControl player, CustomDeathType deathType, ExPlayerControl source = null)
     {
-        Logger.Info($"CustomDeath: {deathType}, Source: {source?.Player.Data.PlayerName ?? "NoPlayer"}, Target: {player.Player.Data.PlayerName}");
+        string sourceName = source?.Player?.Data?.PlayerName ?? "NoPlayer";
+        string sourceRoleStr = source != null ? source.Role.ToString() : "NoRole";
+        Logger.Info($"[Death] {deathType}: {player.PlayerId}:{player.Player.Data.PlayerName}({player.Role}) killed by {source?.PlayerId ?? -1}:{sourceName}({sourceRoleStr})", "SNR.GameState");
         switch (deathType)
         {
             case CustomDeathType.Exile:
