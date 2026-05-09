@@ -89,7 +89,7 @@ public class ReportUIMenu
         agreementButton.OnClick = new();
         agreementButton.OnClick.AddListener((UnityAction)(() =>
         {
-            Application.OpenURL(SNRURLs.ReportInGameAgreement);
+            Constants.OpenURL(SNRURLs.ReportInGameAgreement);
         }));
         agreementButton.OnMouseOver = new();
         agreementButton.OnMouseOver.AddListener((UnityAction)(() =>
