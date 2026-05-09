@@ -382,6 +382,8 @@ public sealed class RemoteControllerAbility : AbilityBase
     [CustomRPC]
     public void RpcSetUnderOperation(bool underOperation, byte targetPlayerId)
     {
+        ResetLocalTargetNetworkTransformQueue(targetPlayerId);
+
         if (underOperation)
         {
             RegisterControlledPlayer(targetPlayerId);
@@ -432,6 +434,22 @@ public sealed class RemoteControllerAbility : AbilityBase
         if (!ability.UnderOperation) return false;
         target = ability.TargetPlayer;
         return target != null;
+    }
+
+    public static bool IsLocalOperationTargetNetworkTransform(CustomNetworkTransform netTransform)
+    {
+        if (netTransform == null || netTransform.myPlayer == null) return false;
+        if (netTransform.myPlayer.AmOwner) return false;
+        if (!TryGetLocalOperationTarget(out _, out var target)) return false;
+        return target?.Player != null && target.Player == netTransform.myPlayer;
+    }
+
+    private void ResetLocalTargetNetworkTransformQueue(byte targetPlayerId)
+    {
+        if (!Player.AmOwner || targetPlayerId == byte.MaxValue) return;
+        var target = ExPlayerControl.ById(targetPlayerId);
+        if (target?.NetTransform == null || target.AmOwner) return;
+        target.NetTransform.ClearPositionQueues();
     }
 
     public static bool TryGetVentId(byte playerId, out int ventId)
@@ -633,17 +651,23 @@ public static class RemoteControllerNetworkTransformPatch
 {
     public static bool Prefix(CustomNetworkTransform __instance)
     {
-        var local = ExPlayerControl.LocalPlayer;
-        if (local == null) return true;
-        if (!local.TryGetAbility<RemoteControllerAbility>(out var ability)) return true;
-        if (!ability.UnderOperation) return true;
         if (GeneralSettingOptions.NetworkTransformType != NetworkTransformType.Vanilla) return true;
 
-        var target = ability.TargetPlayer;
-        if (target == null) return true;
-
         // 操作者側のクライアントだけ、ターゲットのネットワーク同期を受信しない
-        return __instance.myPlayer != target.Player;
+        return !RemoteControllerAbility.IsLocalOperationTargetNetworkTransform(__instance);
+    }
+}
+
+[HarmonyPatch(typeof(CustomNetworkTransform), nameof(CustomNetworkTransform.FixedUpdate))]
+public static class RemoteControllerNetworkTransformFixedUpdatePatch
+{
+    public static bool Prefix(CustomNetworkTransform __instance)
+    {
+        if (GeneralSettingOptions.NetworkTransformType != NetworkTransformType.Vanilla) return true;
+
+        // Deserializeだけ止めても既存のincomingPosQueueが通常同期を続けるため、
+        // 操作者側の被操作ターゲットだけFixedUpdateも止める。
+        return !RemoteControllerAbility.IsLocalOperationTargetNetworkTransform(__instance);
     }
 }
 
