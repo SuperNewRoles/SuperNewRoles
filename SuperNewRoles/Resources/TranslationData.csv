@@ -904,7 +904,7 @@ Sheriff.SuicideMode.AlwaysKill,誤射時も対象をキルする,Kills the targe
 NiceGuesserMaxShots,打てる最大数,Maximum Number of Shots,最大射击次数,最大射擊次數
 NiceGuesserShotsPerMeeting,1会議に打てる回数,Shots Per Meeting,每次会议射击次数,每次會議射擊次數
 NiceGuesserCannotShootFirstTurn,初手会議では撃てない,Cannot Shoot First Meeting,首次会议不能射击,首次會議不能射擊
-NiceGuesserCannotShootNoDead,初手以外の死者なし会議では撃てない,Cannot Shoot No-Death Meetings After First,首次之后无死亡会议不能射击,首次之後無死亡會議不能射擊
+NiceGuesserCannotShootNoDead,死者なしの会議では撃てない,Cannot Shoot No-Death Meetings After First,首次之后无死亡会议不能射击,首次之後無死亡會議不能射擊
 NiceGuesserCannotShootCrewmate,クルーメイトを打てない,Cannot Shoot Crewmate,不能射击船员,不能射擊船員
 NiceGuesserCannotShootStar,スターを打てない,Cannot Shoot Star,不能射击星星,不能射擊星星
 NiceGuesserLimitedTurns,打てないターンを制限する,Limit Turns Cannot Shoot,限制不能射击的回合,限制不能射擊的回合
