@@ -31,10 +31,11 @@ public class GuesserAbility : CustomMeetingButtonBase, IAbilityCount
     private int MeetingCount = -1;
     private TMPro.TextMeshPro limitText;
     public override Sprite Sprite => AssetManager.GetAsset<Sprite>("TargetIcon.png");
+    private EventListener<DieEventData> dieEventListener;
+    private bool anyoneDied = false;
 
     public GuesserAbility(int maxShots, int shotsPerMeeting, bool cannotShootCrewmate, bool cannotShootCelebrity, bool celebrityLimitedTurns = false, int celebrityLimitedTurnsCount = 3, bool madmateSuicide = false, bool cannotShootFirstTurn = false, bool cannotShootNoDead = false)
     {
-        GuesserMeetingDeathTracker.Initialize();
         this.maxShots = maxShots;
         this.shotsPerMeeting = shotsPerMeeting;
         this.cannotShootCrewmate = cannotShootCrewmate;
@@ -47,20 +48,36 @@ public class GuesserAbility : CustomMeetingButtonBase, IAbilityCount
         Count = maxShots;
     }
 
+    public override void AttachToLocalPlayer()
+    {
+        base.AttachToLocalPlayer();
+        dieEventListener = DieEvent.Instance.AddListener(OnPlayerDie);
+    }
+    public override void DetachToLocalPlayer()
+    {
+        base.DetachToLocalPlayer();
+        dieEventListener?.RemoveListener();
+    }
+    private void OnPlayerDie(DieEventData data)
+    {
+        anyoneDied = true;
+    }
+
     public override bool CheckHasButton(ExPlayerControl player)
     {
         if (CannotShootThisMeeting())
-        {
             return false;
-        }
-
-        // スターを撃てない設定がONで、撃てないターンを制限する設定がONの場合、
-        // 指定されたターン数まではスターを撃てないようにする
-        if (cannotShootCelebrity && (!CelebrityLimitedTurns || MeetingCount < CelebrityLimitedTurnsCount) && player.Role == RoleId.Celebrity)
-        {
+        if (ExPlayerControl.LocalPlayer.IsDead())
             return false;
-        }
-        return ExPlayerControl.LocalPlayer.IsAlive() && !HideButtons && HasCount && player.IsAlive() && ShotThisMeeting < shotsPerMeeting;
+        // 既にUIを開いているなどの要因の場合は、ボタンを表示しないことでUIの重複を防止する
+        if (HideButtons)
+            return false;
+        if (!HasCount || player.IsDead())
+            return false;
+        // 既に今のミーティングで撃った回数が上限に達している場合は、これ以上撃てないようにする
+        if (ShotThisMeeting >= shotsPerMeeting)
+            return false;
+        return true;
     }
 
     public override bool CheckIsAvailable(ExPlayerControl player)
@@ -70,6 +87,10 @@ public class GuesserAbility : CustomMeetingButtonBase, IAbilityCount
 
     public override void OnMeetingStart()
     {
+        // もし死亡後にアタッチされている場合に備えて
+        if (!anyoneDied && ExPlayerControl.ExPlayerControls.Any(x => x.IsDead()))
+            anyoneDied = true;
+
         HideButtons = false;
         if (guesserUI != null)
             GameObject.Destroy(guesserUI);
@@ -81,7 +102,6 @@ public class GuesserAbility : CustomMeetingButtonBase, IAbilityCount
         if (Player.IsDead()) return;
         if (limitText != null)
             GameObject.Destroy(limitText.gameObject);
-        if (CannotShootThisMeeting()) return;
         limitText = GameObject.Instantiate(FastDestroyableSingleton<HudManager>.Instance.KillButton.cooldownTimerText, MeetingHud.Instance.transform);
         limitText.text = ModTranslation.GetString("GuesserLimitText", Count, Math.Min(maxShots, shotsPerMeeting) - ShotThisMeeting);
         limitText.enableWordWrapping = false;
@@ -529,8 +549,12 @@ public class GuesserAbility : CustomMeetingButtonBase, IAbilityCount
     }
     private bool CannotShootThisMeeting()
     {
+        // 
+        if (cannotShootFirstTurn && MeetingCount <= 0)
+            return true;
         return (cannotShootFirstTurn && MeetingCount <= 0) ||
-               (cannotShootNoDead && MeetingCount > 0 && !GuesserMeetingDeathTracker.CurrentMeetingHadDeath);
+               (cannotShootNoDead && anyoneDied) ||
+               (cannotShootCelebrity && CelebrityLimitedTurns && MeetingCount < CelebrityLimitedTurnsCount && ExPlayerControl.LocalPlayer.Role == RoleId.Celebrity);
     }
 
     [CustomRPC]
@@ -574,96 +598,6 @@ public class GuesserAbility : CustomMeetingButtonBase, IAbilityCount
             {
                 FastDestroyableSingleton<HudManager>.Instance.KillOverlay.ShowKillAnimation(killer.Data, dyingTarget.Data);
             }
-        }
-    }
-}
-
-static class GuesserMeetingDeathTracker
-{
-    private static bool hasDeathSinceLastMeeting;
-    private static int deadCountAtTurnStart;
-    private static EventListener<DieEventData> dieListener;
-    private static EventListener<CalledMeetingEventData> calledMeetingListener;
-    private static EventListener<MeetingStartEventData> meetingStartListener;
-    private static EventListener<MeetingCloseEventData> meetingCloseListener;
-    private static EventListener<WrapUpEventData> wrapUpListener;
-
-    public static bool CurrentMeetingHadDeath { get; private set; }
-
-    public static void Initialize()
-    {
-        Unregister();
-        dieListener = DieEvent.Instance.AddListener(OnDie);
-        calledMeetingListener = CalledMeetingEvent.Instance.AddListener(OnCalledMeeting);
-        meetingStartListener = MeetingStartEvent.Instance.AddListener(OnMeetingStart);
-        meetingCloseListener = MeetingCloseEvent.Instance.AddListener(_ => ScheduleResetTurnDeath());
-        wrapUpListener = WrapUpEvent.Instance.AddListener(_ => ScheduleResetTurnDeath());
-    }
-
-    private static void Unregister()
-    {
-        dieListener?.RemoveListener();
-        calledMeetingListener?.RemoveListener();
-        meetingStartListener?.RemoveListener();
-        meetingCloseListener?.RemoveListener();
-        wrapUpListener?.RemoveListener();
-        dieListener = null;
-        calledMeetingListener = null;
-        meetingStartListener = null;
-        meetingCloseListener = null;
-        wrapUpListener = null;
-    }
-
-    public static void ResetForGame()
-    {
-        hasDeathSinceLastMeeting = false;
-        CurrentMeetingHadDeath = false;
-        deadCountAtTurnStart = CountDeadPlayers();
-    }
-
-    private static void OnDie(DieEventData data)
-    {
-        if (data?.player == null) return;
-        if (MeetingHud.Instance != null || ExileController.Instance != null) return;
-
-        hasDeathSinceLastMeeting = true;
-    }
-
-    private static void OnCalledMeeting(CalledMeetingEventData data)
-    {
-        if (data?.target == null) return;
-
-        hasDeathSinceLastMeeting = true;
-    }
-
-    private static void OnMeetingStart(MeetingStartEventData data)
-    {
-        CurrentMeetingHadDeath = hasDeathSinceLastMeeting || CountDeadPlayers() > deadCountAtTurnStart;
-    }
-
-    private static void ScheduleResetTurnDeath()
-    {
-        hasDeathSinceLastMeeting = false;
-        CurrentMeetingHadDeath = false;
-        new LateTask(() =>
-        {
-            hasDeathSinceLastMeeting = false;
-            CurrentMeetingHadDeath = false;
-            deadCountAtTurnStart = CountDeadPlayers();
-        }, 0.5f, "GuesserMeetingDeathTrackerReset");
-    }
-
-    private static int CountDeadPlayers()
-    {
-        return ExPlayerControl.ExPlayerControls.Count(player => player?.Data != null && player.Data.IsDead);
-    }
-
-    [HarmonyPatch(typeof(AmongUsClient), nameof(AmongUsClient.CoStartGame))]
-    public static class AmongUsClientCoStartGamePatch
-    {
-        public static void Postfix()
-        {
-            ResetForGame();
         }
     }
 }
