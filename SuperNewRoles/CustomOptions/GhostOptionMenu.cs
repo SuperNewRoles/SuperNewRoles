@@ -143,6 +143,7 @@ public static class GhostOptionMenu
                     ghostRoleOption.Percentage = 100;
                 }
                 UpdateRoleDetailButtonColor(spriteRenderer, ghostRoleOption);
+                SnrSettingChangeNotifier.NotifyGhostRoleOptionChanged(ghostRoleOption);
                 // 変更を同期
                 RoleOptionManager.RpcSyncGhostRoleOptionDelay(ghostRoleOption.RoleId, ghostRoleOption.NumberOfCrews, ghostRoleOption.Percentage);
 

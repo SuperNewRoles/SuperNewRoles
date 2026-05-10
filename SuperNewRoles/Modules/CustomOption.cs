@@ -978,10 +978,11 @@ public static class RoleOptionManager
             Logger.Warning($"モディファイアロールオプションが見つかりません: {modifierRoleId}");
             return;
         }
-        var changedSetting = SnrSettingChangeNotifier.GetChangedModifierSetting(roleOption, numberOfCrews, percentage, maxImpostors, impostorChance, maxNeutrals, neutralChance, maxCrewmates, crewmateChance);
+        var changedSettings = SnrSettingChangeNotifier.GetChangedModifierSettings(roleOption, numberOfCrews, percentage, maxImpostors, impostorChance, maxNeutrals, neutralChance, maxCrewmates, crewmateChance).ToArray();
+        bool playSound = SnrSettingChangeNotifier.ShouldPlayRemoteSound();
         roleOption.UpdateValues(numberOfCrews, percentage, maxImpostors, impostorChance, maxNeutrals, neutralChance, maxCrewmates, crewmateChance);
-        if (changedSetting.HasValue)
-            SnrSettingChangeNotifier.NotifyModifierRoleSettingChanged(roleOption, changedSetting.Value.Label, changedSetting.Value.Value, SnrSettingChangeNotifier.ShouldPlayRemoteSound());
+        foreach (var changedSetting in changedSettings)
+            SnrSettingChangeNotifier.NotifyModifierRoleSettingChanged(roleOption, changedSetting.Label, changedSetting.Value, playSound);
     }
 
     /// <summary>
@@ -1127,17 +1128,76 @@ public static class RoleOptionManager
     [CustomRPC]
     public static void RpcSyncExclusivitySettings(ExclusivitySettingsRpcData data)
     {
+        var oldSettings = ExclusivitySettings
+            .Select(setting => new ExclusivitySettingSnapshot(setting.MaxAssign, setting.Roles.ToArray()))
+            .ToArray();
+        var newSettings = data?.Settings?.ToArray() ?? Array.Empty<ExclusivitySettingRpcData>();
+
         ClearExclusivitySettings();
 
-        if (data?.Settings != null)
+        foreach (var setting in newSettings)
         {
-            foreach (var setting in data.Settings)
-            {
-                AddExclusivitySetting(setting.MaxAssign, setting.Roles?.ToArray() ?? Array.Empty<string>());
-            }
+            AddExclusivitySetting(setting.MaxAssign, setting.Roles?.ToArray() ?? Array.Empty<string>());
         }
 
+        NotifyChangedExclusivitySettings(oldSettings, newSettings);
         ExclusivityOptionMenu.RefreshDisplayedMenu();
+    }
+
+    private static void NotifyChangedExclusivitySettings(
+        IReadOnlyList<ExclusivitySettingSnapshot> oldSettings,
+        IReadOnlyList<ExclusivitySettingRpcData> newSettings)
+    {
+        int maxCount = Math.Max(oldSettings.Count, newSettings.Count);
+        bool playSound = SnrSettingChangeNotifier.ShouldPlayRemoteSound();
+
+        for (int i = 0; i < maxCount; i++)
+        {
+            ExclusivitySettingSnapshot? oldSetting = i < oldSettings.Count ? oldSettings[i] : null;
+            var newSetting = i < newSettings.Count ? newSettings[i] : null;
+            if (newSetting == null) continue;
+
+            if (!oldSetting.HasValue || oldSetting.Value.MaxAssign != newSetting.MaxAssign)
+            {
+                SnrSettingChangeNotifier.NotifyExclusivitySettingsChanged(
+                    i,
+                    ModTranslation.GetString("ExclusivityOptionMenuMaxText"),
+                    newSetting.MaxAssign.ToString(),
+                    playSound);
+            }
+
+            var newRoles = newSetting.Roles?
+                .Select(role => Enum.Parse<RoleId>(role))
+                .ToList() ?? new List<RoleId>();
+            var oldRoles = oldSetting.HasValue ? oldSetting.Value.Roles : Array.Empty<RoleId>();
+            if (!oldSetting.HasValue || !oldRoles.SequenceEqual(newRoles))
+            {
+                SnrSettingChangeNotifier.NotifyExclusivitySettingsChanged(
+                    i,
+                    ModTranslation.GetString("ExclusivityOptionMenuAssignedRoleText"),
+                    FormatExclusivityAssignedRoles(newRoles),
+                    playSound);
+            }
+        }
+    }
+
+    private static string FormatExclusivityAssignedRoles(IReadOnlyCollection<RoleId> roles)
+    {
+        return roles.Count == 0
+            ? ModTranslation.GetString("HelpMenu.Exclusivity.Empty")
+            : string.Join(", ", roles.Select(role => ModTranslation.GetString(role.ToString())));
+    }
+
+    private readonly struct ExclusivitySettingSnapshot
+    {
+        public int MaxAssign { get; }
+        public RoleId[] Roles { get; }
+
+        public ExclusivitySettingSnapshot(int maxAssign, RoleId[] roles)
+        {
+            MaxAssign = maxAssign;
+            Roles = roles;
+        }
     }
 
     public static void RpcSyncRoleOptionsAll()

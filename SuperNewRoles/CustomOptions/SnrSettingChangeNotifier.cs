@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using InnerNet;
 using SuperNewRoles.Modules;
@@ -100,7 +101,7 @@ public static class SnrSettingChangeNotifier
             playSound);
     }
 
-    public static (string Label, string Value)? GetChangedModifierSetting(
+    public static IEnumerable<(string Label, string Value)> GetChangedModifierSettings(
         RoleOptionManager.ModifierRoleOption roleOption,
         byte numberOfCrews,
         int percentage,
@@ -111,26 +112,24 @@ public static class SnrSettingChangeNotifier
         int maxCrewmates,
         int crewmateChance)
     {
-        if (roleOption == null) return null;
+        if (roleOption == null) yield break;
 
         if (roleOption.NumberOfCrews != numberOfCrews)
-            return (ModTranslation.GetString("NumberOfCrews"), FormatCount(numberOfCrews));
+            yield return (ModTranslation.GetString("NumberOfCrews"), FormatCount(numberOfCrews));
         if (roleOption.Percentage != percentage)
-            return (ModTranslation.GetString("AssignPer"), FormatPercent(percentage));
+            yield return (ModTranslation.GetString("AssignPer"), FormatPercent(percentage));
         if (roleOption.MaxImpostors != maxImpostors)
-            return (ModTranslation.GetString("ModifierMaxImpostors"), FormatCount(maxImpostors));
+            yield return (ModTranslation.GetString("ModifierMaxImpostors"), FormatCount(maxImpostors));
         if (roleOption.ImpostorChance != impostorChance)
-            return (ModTranslation.GetString("ModifierImpostorChance"), FormatPercent(impostorChance));
+            yield return (ModTranslation.GetString("ModifierImpostorChance"), FormatPercent(impostorChance));
         if (roleOption.MaxNeutrals != maxNeutrals)
-            return (ModTranslation.GetString("ModifierMaxNeutrals"), FormatCount(maxNeutrals));
+            yield return (ModTranslation.GetString("ModifierMaxNeutrals"), FormatCount(maxNeutrals));
         if (roleOption.NeutralChance != neutralChance)
-            return (ModTranslation.GetString("ModifierNeutralChance"), FormatPercent(neutralChance));
+            yield return (ModTranslation.GetString("ModifierNeutralChance"), FormatPercent(neutralChance));
         if (roleOption.MaxCrewmates != maxCrewmates)
-            return (ModTranslation.GetString("ModifierMaxCrewmates"), FormatCount(maxCrewmates));
+            yield return (ModTranslation.GetString("ModifierMaxCrewmates"), FormatCount(maxCrewmates));
         if (roleOption.CrewmateChance != crewmateChance)
-            return (ModTranslation.GetString("ModifierCrewmateChance"), FormatPercent(crewmateChance));
-
-        return null;
+            yield return (ModTranslation.GetString("ModifierCrewmateChance"), FormatPercent(crewmateChance));
     }
 
     public static bool ShouldPlayRemoteSound()
