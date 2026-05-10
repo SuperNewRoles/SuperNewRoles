@@ -323,6 +323,10 @@ CustomOptionTask_Common,通常タスク,Common Tasks,共同任務,共同任務
 SkipStartGameCountdown,ゲーム開始カウントダウンをスキップ,Skip Game Start Countdown,跳过游戏开始倒计时,跳過遊戲開始倒計時
 CustomOptionTrue,オン,Enabled,启用,啟用
 CustomOptionFalse,オフ,Disabled,无效,无效
+SettingNotificationStandardCategory,全体設定,General Settings,整体设置,整體設定
+SettingNotificationRoleAssignment,割り当て,Assignment,分配,分配
+SettingNotificationUpdatedValue,更新,Updated,已更新,已更新
+SettingNotificationMessage,{0}の「<b>{1}</b>」を{2}に変更,Changed {0}'s "<b>{1}</b>" to {2},已将{0}的“<b>{1}</b>”更改为{2},已將{0}的「<b>{1}</b>」變更為{2}
 
 # Win
 WinName,勝利,Win,勝利,勝利

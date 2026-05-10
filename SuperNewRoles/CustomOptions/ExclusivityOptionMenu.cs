@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using System.Linq;
 using InnerNet;
 using SuperNewRoles.CustomOptions.Data;
@@ -114,6 +115,10 @@ public static class ExclusivityOptionMenu
         selectedText.text = newValue.ToString();
 
         RoleOptionManager.ExclusivitySettings[index].MaxAssign = newValue;
+        SnrSettingChangeNotifier.NotifyExclusivitySettingsChanged(
+            index,
+            ModTranslation.GetString("ExclusivityOptionMenuMaxText"),
+            newValue.ToString());
         RoleOptionManager.RpcSyncExclusivitySettingsAll();
     }
 
@@ -302,6 +307,10 @@ public static class ExclusivityOptionMenu
 
             RoleOptionManager.ExclusivitySettings[editingIndex].Roles = roles;
             ReGenerateMenu();
+            SnrSettingChangeNotifier.NotifyExclusivitySettingsChanged(
+                editingIndex,
+                ModTranslation.GetString("ExclusivityOptionMenuAssignedRoleText"),
+                FormatAssignedRoles(roles));
             RoleOptionManager.RpcSyncExclusivitySettingsAll();
         }));
 
@@ -330,6 +339,13 @@ public static class ExclusivityOptionMenu
             : new();
         instance.ExclusivityEditMenu.transform.Find("TitleText").GetComponent<TextMeshPro>().text =
             $"{ModTranslation.GetString("ExclusivityEditMenuGroupTitle", index + 1)}";
+    }
+
+    private static string FormatAssignedRoles(List<RoleId> roles)
+    {
+        return roles.Count == 0
+            ? ModTranslation.GetString("HelpMenu.Exclusivity.Empty")
+            : string.Join(", ", roles.Select(role => ModTranslation.GetString(role.ToString())));
     }
 
     private static void ReGenerateMenu()

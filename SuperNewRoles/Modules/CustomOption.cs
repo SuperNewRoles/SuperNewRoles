@@ -81,7 +81,10 @@ public static class CustomOptionManager
             Logger.Warning($"オプションが見つかりません: {optionId}");
             return;
         }
+        bool changed = option.Selection != selection;
         option.UpdateSelection(selection);
+        if (changed)
+            SnrSettingChangeNotifier.NotifyOptionChanged(option, SnrSettingChangeNotifier.ShouldPlayRemoteSound());
     }
     [CustomRPC]
     public static void _RpcSyncOptionsAll(Dictionary<ushort, byte> options, bool resetToDefault)
@@ -960,7 +963,10 @@ public static class RoleOptionManager
             Logger.Warning($"ロールオプションが見つかりません: {roleId}");
             return;
         }
+        bool changed = roleOption.NumberOfCrews != numberOfCrews || roleOption.Percentage != percentage;
         roleOption.UpdateValues(numberOfCrews, percentage);
+        if (changed)
+            SnrSettingChangeNotifier.NotifyRoleOptionChanged(roleOption, SnrSettingChangeNotifier.ShouldPlayRemoteSound());
     }
 
     [CustomRPC]
@@ -972,7 +978,10 @@ public static class RoleOptionManager
             Logger.Warning($"モディファイアロールオプションが見つかりません: {modifierRoleId}");
             return;
         }
+        var changedSetting = SnrSettingChangeNotifier.GetChangedModifierSetting(roleOption, numberOfCrews, percentage, maxImpostors, impostorChance, maxNeutrals, neutralChance, maxCrewmates, crewmateChance);
         roleOption.UpdateValues(numberOfCrews, percentage, maxImpostors, impostorChance, maxNeutrals, neutralChance, maxCrewmates, crewmateChance);
+        if (changedSetting.HasValue)
+            SnrSettingChangeNotifier.NotifyModifierRoleSettingChanged(roleOption, changedSetting.Value.Label, changedSetting.Value.Value, SnrSettingChangeNotifier.ShouldPlayRemoteSound());
     }
 
     /// <summary>
@@ -1075,7 +1084,10 @@ public static class RoleOptionManager
             Logger.Warning($"ゴーストロールオプションが見つかりません: {roleId}");
             return;
         }
+        bool changed = roleOption.NumberOfCrews != numberOfCrews || roleOption.Percentage != percentage;
         roleOption.UpdateValues(numberOfCrews, percentage);
+        if (changed)
+            SnrSettingChangeNotifier.NotifyGhostRoleOptionChanged(roleOption, SnrSettingChangeNotifier.ShouldPlayRemoteSound());
     }
 
     [CustomRPC]

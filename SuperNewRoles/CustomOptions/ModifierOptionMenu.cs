@@ -446,6 +446,12 @@ public static class ModifierOptionMenu
             option.UpdateSelection(newValue ? (byte)1 : (byte)0);
             UpdateOptionsActive();
             RecalculateOptionsPosition(check.transform.parent, ModifierOptionMenuObjectData.Instance.RightAreaScroller);
+            SnrSettingChangeNotifier.NotifyOptionChanged(option);
+
+            if (AmongUsClient.Instance.AmHost)
+            {
+                CustomOptionManager.RpcSyncOption(option.Id, newValue ? (byte)1 : (byte)0);
+            }
         }), spriteRenderer);
     }
 
@@ -532,6 +538,7 @@ public static class ModifierOptionMenu
         option.UpdateSelection(newSelection);
         selectedText.text = option.GetCurrentSelectionString();
         ModifierOptionMenuObjectData.Instance.UpdateOptionDisplay();
+        SnrSettingChangeNotifier.NotifyOptionChanged(option);
     }
 
     private static void UpdateOptionUIValues(CustomOption option, Transform menuTransform)
@@ -604,7 +611,7 @@ public static class ModifierOptionMenu
         var selectedText = selectObject.transform.Find("SelectedText").GetComponent<TMPro.TextMeshPro>();
         selectedText.text = getter().ToString() + suffix; // Initial display
 
-        ConfigureModifierNumberSelectButtons(selectObject, selectedText, modifierOption, getter, setter, min, max, step, suffix);
+        ConfigureModifierNumberSelectButtons(selectObject, selectedText, modifierOption, nameKey, getter, setter, min, max, step, suffix);
         return selectObject;
     }
 
@@ -612,13 +619,14 @@ public static class ModifierOptionMenu
         GameObject selectObject,
         TextMeshPro selectedText,
         RoleOptionManager.ModifierRoleOption modifierOption,
+        string nameKey,
         Func<float> getter,
         Action<float> setter,
         float min, float max, float step,
         string suffix)
     {
-        ConfigureModifierNumberSelectButton(selectObject, "Button_Minus", selectedText, modifierOption, getter, setter, min, max, step, suffix, false);
-        ConfigureModifierNumberSelectButton(selectObject, "Button_Plus", selectedText, modifierOption, getter, setter, min, max, step, suffix, true);
+        ConfigureModifierNumberSelectButton(selectObject, "Button_Minus", selectedText, modifierOption, nameKey, getter, setter, min, max, step, suffix, false);
+        ConfigureModifierNumberSelectButton(selectObject, "Button_Plus", selectedText, modifierOption, nameKey, getter, setter, min, max, step, suffix, true);
     }
 
     private static void ConfigureModifierNumberSelectButton(
@@ -626,6 +634,7 @@ public static class ModifierOptionMenu
         string buttonName,
         TextMeshPro selectedText,
         RoleOptionManager.ModifierRoleOption modifierOption,
+        string nameKey,
         Func<float> getter,
         Action<float> setter,
         float min, float max, float step,
@@ -639,13 +648,14 @@ public static class ModifierOptionMenu
 
         UIHelper.ConfigurePassiveButton(passiveButton, (UnityAction)(() =>
         {
-            HandleModifierNumberSelection(selectedText, modifierOption, getter, setter, min, max, step, suffix, isIncrement);
+            HandleModifierNumberSelection(selectedText, modifierOption, nameKey, getter, setter, min, max, step, suffix, isIncrement);
         }), spriteRenderer);
     }
 
     private static void HandleModifierNumberSelection(
         TextMeshPro selectedText,
         RoleOptionManager.ModifierRoleOption modifierOption,
+        string nameKey,
         Func<float> getter,
         Action<float> setter,
         float min, float max, float step,
@@ -669,6 +679,7 @@ public static class ModifierOptionMenu
 
         setter(newValue);
         selectedText.text = newValue.ToString() + suffix;
+        SnrSettingChangeNotifier.NotifyModifierRoleSettingChanged(modifierOption, ModTranslation.GetString(nameKey), selectedText.text);
 
         // ホストの場合、他のプレイヤーに同期
         if (AmongUsClient.Instance.AmHost)
