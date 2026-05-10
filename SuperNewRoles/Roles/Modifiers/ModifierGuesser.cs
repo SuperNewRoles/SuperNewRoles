@@ -20,7 +20,9 @@ class ModifierGuesser : ModifierBase<ModifierGuesser>
             cannotShootCelebrity: ModifierGuesserCannotShootStar,
             celebrityLimitedTurns: ModifierGuesserLimitedTurns,
             celebrityLimitedTurnsCount: ModifierGuesserLimitedTurnsCount,
-            madmateSuicide: ModifierGuesserMadmateSuicide
+            madmateSuicide: ModifierGuesserMadmateSuicide,
+            cannotShootFirstTurn: ModifierGuesserCannotShootFirstTurn,
+            cannotShootNoDead: ModifierGuesserCannotShootNoDead
         )];
 
     public override QuoteMod QuoteMod => QuoteMod.NebulaOnTheShip;
@@ -44,6 +46,12 @@ class ModifierGuesser : ModifierBase<ModifierGuesser>
 
     [CustomOptionInt("ModifierGuesserShotsPerMeeting", 1, 15, 1, 3, translationName: "EvilGuesserShotsPerMeeting")]
     public static int ModifierGuesserShotsPerMeeting = 3;
+
+    [CustomOptionBool("ModifierGuesserCannotShootFirstTurn", false, translationName: "EvilGuesserCannotShootFirstTurn")]
+    public static bool ModifierGuesserCannotShootFirstTurn;
+
+    [CustomOptionBool("ModifierGuesserCannotShootNoDead", false, translationName: "EvilGuesserCannotShootNoDead")]
+    public static bool ModifierGuesserCannotShootNoDead;
 
     [CustomOptionBool("ModifierGuesserCannotShootStar", true, translationName: "EvilGuesserCannotShootStar")]
     public static bool ModifierGuesserCannotShootStar = true;

@@ -12,7 +12,7 @@ class NiceGuesser : RoleBase<NiceGuesser>
 {
     public override RoleId Role { get; } = RoleId.NiceGuesser;
     public override Color32 RoleColor { get; } = Color.yellow;
-    public override List<Func<AbilityBase>> Abilities { get; } = [() => new GuesserAbility(NiceGuesserMaxShots, NiceGuesserShotsPerMeeting, NiceGuesserCannotShootCrewmate, NiceGuesserCannotShootStar, NiceGuesserLimitedTurns, NiceGuesserLimitedTurnsCount)];
+    public override List<Func<AbilityBase>> Abilities { get; } = [() => new GuesserAbility(NiceGuesserMaxShots, NiceGuesserShotsPerMeeting, NiceGuesserCannotShootCrewmate, NiceGuesserCannotShootStar, NiceGuesserLimitedTurns, NiceGuesserLimitedTurnsCount, cannotShootFirstTurn: NiceGuesserCannotShootFirstTurn, cannotShootNoDead: NiceGuesserCannotShootNoDead)];
 
     public override QuoteMod QuoteMod { get; } = QuoteMod.TheOtherRoles;
     public override RoleTypes IntroSoundType { get; } = RoleTypes.Crewmate;
@@ -29,6 +29,12 @@ class NiceGuesser : RoleBase<NiceGuesser>
 
     [CustomOptionInt("NiceGuesserShotsPerMeeting", 1, 15, 1, 3)]
     public static int NiceGuesserShotsPerMeeting;
+
+    [CustomOptionBool("NiceGuesserCannotShootFirstTurn", false)]
+    public static bool NiceGuesserCannotShootFirstTurn;
+
+    [CustomOptionBool("NiceGuesserCannotShootNoDead", false)]
+    public static bool NiceGuesserCannotShootNoDead;
 
     [CustomOptionBool("NiceGuesserCannotShootStar", true)]
     public static bool NiceGuesserCannotShootStar = true;
