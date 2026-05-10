@@ -1126,11 +1126,13 @@ public static class RoleOptionManager
     }
 
     [CustomRPC]
-    public static void RpcSyncExclusivitySettings(ExclusivitySettingsRpcData data)
+    public static void RpcSyncExclusivitySettings(ExclusivitySettingsRpcData data, bool notifyChanges)
     {
-        var oldSettings = ExclusivitySettings
-            .Select(setting => new ExclusivitySettingSnapshot(setting.MaxAssign, setting.Roles.ToArray()))
-            .ToArray();
+        var oldSettings = notifyChanges
+            ? ExclusivitySettings
+                .Select(setting => new ExclusivitySettingSnapshot(setting.MaxAssign, setting.Roles.ToArray()))
+                .ToArray()
+            : Array.Empty<ExclusivitySettingSnapshot>();
         var newSettings = data?.Settings?.ToArray() ?? Array.Empty<ExclusivitySettingRpcData>();
 
         ClearExclusivitySettings();
@@ -1140,7 +1142,8 @@ public static class RoleOptionManager
             AddExclusivitySetting(setting.MaxAssign, setting.Roles?.ToArray() ?? Array.Empty<string>());
         }
 
-        NotifyChangedExclusivitySettings(oldSettings, newSettings);
+        if (notifyChanges)
+            NotifyChangedExclusivitySettings(oldSettings, newSettings);
         ExclusivityOptionMenu.RefreshDisplayedMenu();
     }
 
@@ -1218,12 +1221,12 @@ public static class RoleOptionManager
         RpcSyncExclusivitySettingsAll();
     }
 
-    public static void RpcSyncExclusivitySettingsAll()
+    public static void RpcSyncExclusivitySettingsAll(bool notifyChanges = false)
     {
         if (AmongUsClient.Instance != null && AmongUsClient.Instance.AmConnected && !AmongUsClient.Instance.AmHost)
             return;
 
-        RpcSyncExclusivitySettings(new ExclusivitySettingsRpcData(ExclusivitySettings));
+        RpcSyncExclusivitySettings(new ExclusivitySettingsRpcData(ExclusivitySettings), notifyChanges);
     }
 
     public static void RoleOptionLoad()

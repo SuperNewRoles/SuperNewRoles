@@ -119,7 +119,7 @@ public static class ExclusivityOptionMenu
             index,
             ModTranslation.GetString("ExclusivityOptionMenuMaxText"),
             newValue.ToString());
-        RoleOptionManager.RpcSyncExclusivitySettingsAll();
+        RoleOptionManager.RpcSyncExclusivitySettingsAll(true);
     }
 
     private static void ConfigureEditButton(GameObject button, int index)
@@ -311,7 +311,7 @@ public static class ExclusivityOptionMenu
                 editingIndex,
                 ModTranslation.GetString("ExclusivityOptionMenuAssignedRoleText"),
                 FormatAssignedRoles(roles));
-            RoleOptionManager.RpcSyncExclusivitySettingsAll();
+            RoleOptionManager.RpcSyncExclusivitySettingsAll(true);
         }));
 
         passiveButton.OnMouseOver = new();
