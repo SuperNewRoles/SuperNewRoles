@@ -65,7 +65,7 @@ public class GuesserAbility : CustomMeetingButtonBase, IAbilityCount
 
     public override bool CheckHasButton(ExPlayerControl player)
     {
-        if (CannotShootThisMeeting())
+        if (CannotShootThisMeeting(player))
             return false;
         if (ExPlayerControl.LocalPlayer.IsDead())
             return false;
@@ -145,7 +145,7 @@ public class GuesserAbility : CustomMeetingButtonBase, IAbilityCount
             return;
 
         if (exPlayer.IsDead()) return;
-        if (CannotShootThisMeeting()) return;
+        if (CannotShootThisMeeting(exPlayer)) return;
 
         // スターを撃てない設定がONで、撃てないターンを制限する設定がONの場合、
         // 指定されたターン数まではスターを撃てないようにする
@@ -547,13 +547,13 @@ public class GuesserAbility : CustomMeetingButtonBase, IAbilityCount
         guesserSelectRole(AssignedTeamType.Crewmate);
         ReloadPage();
     }
-    private bool CannotShootThisMeeting()
+    private bool CannotShootThisMeeting(ExPlayerControl player = null)
     {
         if (cannotShootFirstTurn && MeetingCount <= 0)
             return true;
         if (cannotShootNoDead && !anyoneDied)
             return true;
-        if (cannotShootCelebrity && CelebrityLimitedTurns && MeetingCount < CelebrityLimitedTurnsCount && ExPlayerControl.LocalPlayer.Role == RoleId.Celebrity)
+        if (player != null && cannotShootCelebrity && CelebrityLimitedTurns && MeetingCount < CelebrityLimitedTurnsCount && player.Role == RoleId.Celebrity)
             return true;
         return false;
     }
