@@ -549,12 +549,13 @@ public class GuesserAbility : CustomMeetingButtonBase, IAbilityCount
     }
     private bool CannotShootThisMeeting()
     {
-        // 
         if (cannotShootFirstTurn && MeetingCount <= 0)
             return true;
-        return (cannotShootFirstTurn && MeetingCount <= 0) ||
-               (cannotShootNoDead && anyoneDied) ||
-               (cannotShootCelebrity && CelebrityLimitedTurns && MeetingCount < CelebrityLimitedTurnsCount && ExPlayerControl.LocalPlayer.Role == RoleId.Celebrity);
+        if (cannotShootNoDead && !anyoneDied)
+            return true;
+        if (cannotShootCelebrity && CelebrityLimitedTurns && MeetingCount < CelebrityLimitedTurnsCount && ExPlayerControl.LocalPlayer.Role == RoleId.Celebrity)
+            return true;
+        return false;
     }
 
     [CustomRPC]
