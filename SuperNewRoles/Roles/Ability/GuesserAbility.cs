@@ -553,8 +553,15 @@ public class GuesserAbility : CustomMeetingButtonBase, IAbilityCount
             return true;
         if (cannotShootNoDead && !anyoneDied)
             return true;
-        if (player != null && cannotShootCelebrity && CelebrityLimitedTurns && MeetingCount < CelebrityLimitedTurnsCount && player.Role == RoleId.Celebrity)
-            return true;
+        if (player != null && cannotShootCelebrity && player.Role == RoleId.Celebrity)
+        {
+            // スターを撃てない設定がONで、撃てないターンを制限する設定がOFFなら常に拒否
+            if (!CelebrityLimitedTurns)
+                return true;
+            // スターを撃てない設定がONで、撃てないターンを制限する設定がONの場合、指定されたターン数まではスターを撃てないようにする
+            else if (MeetingCount < CelebrityLimitedTurnsCount)
+                return true;
+        }
         return false;
     }
 
