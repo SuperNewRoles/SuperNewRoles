@@ -52,7 +52,11 @@ public class GetSampleAbility : TargetCustomButtonBase
     {
         var labAbility = Player.GetAbility<ClinicalLaboratoryTechnicianAbility>();
         if (labAbility == null || labAbility.RemainingUses <= 0 || _isComplete) return false;
-        return Player.IsAlive() && Target != null && !Target.IsDead() && Target.PlayerId != Player.PlayerId;
+        return Player.IsAlive()
+               && Target != null
+               && !Target.IsDead()
+               && Target.PlayerId != Player.PlayerId
+               && (_firstTarget == null || Target.PlayerId != _firstTarget.PlayerId);
     }
 
     public override ShowTextType showTextType => ShowTextType.Show;
