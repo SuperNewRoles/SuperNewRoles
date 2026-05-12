@@ -95,8 +95,9 @@ public class PavlovsOwnerAbility : AbilityBase
     [CustomRPC]
     public static void RpcSetDogAbility(PavlovsOwnerAbility owner, PavlovsDogAbility dog, int sidekickCount)
     {
+        if (owner == null || dog == null) return;
         owner.dogAbility = dog;
-        dog.ownerAbility = owner;
+        dog.SetOwnerAbility(owner);
         owner._sidekickCount = sidekickCount;
     }
     public bool HasRemainingDogCount()

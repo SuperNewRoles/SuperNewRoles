@@ -192,6 +192,7 @@ public class MoiraMeetingAbility : CustomMeetingButtonBase, IAbilityCount
             RoleManager.Instance.SetRole(player2.Player, player2TargetRole);
         }
         swapData.Clear();
+        NameText.UpdateAllNameInfo();
     }
 
     [CustomRPC]
@@ -212,6 +213,7 @@ public class MoiraMeetingAbility : CustomMeetingButtonBase, IAbilityCount
 
         RoleManager.Instance.SetRole(player1.Player, player1TargetRole);
         RoleManager.Instance.SetRole(player2.Player, player2TargetRole);
+        NameText.UpdateAllNameInfo();
     }
 
     private void OnCalculateVotes(MeetingHudCalculateVotesOnPlayerOnlyHostEventData data)

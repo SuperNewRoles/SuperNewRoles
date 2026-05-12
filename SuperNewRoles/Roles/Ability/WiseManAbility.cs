@@ -144,7 +144,10 @@ public class WiseManAbility : CustomButtonBase, IButtonEffect
         }
         // 自視点のみじゃないと有効にしたタイミングでむっちゃ不自然になる
         else if (Player.AmOwner)
+        {
             Player.MyPhysics.body.velocity = Vector2.zero;
+            Player.transform.position = position;
+        }
     }
 
     private void OnMeetingStart()

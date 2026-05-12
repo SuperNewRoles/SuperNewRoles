@@ -305,6 +305,15 @@ public class ExPlayerControl
             Logger.Error($"SetRoleEvent.Invoke failed: {oldRole} -> {roleId}", "ExPlayerControl");
             Logger.Error(e.ToString(), "ExPlayerControl");
         }
+        if (AmOwner)
+        {
+            foreach (var taskAbility in GetAbilities<CustomTaskAbility>())
+            {
+                if (taskAbility.assignTaskData == null) continue;
+                taskAbility.AssignTasks();
+                break;
+            }
+        }
     }
 
     public bool HasCustomKillButton()
@@ -439,6 +448,23 @@ public class ExPlayerControl
         }
 
         // 表示を更新
+        NameText.UpdateNameInfo(this);
+        NameText.UpdateNameInfo(target);
+    }
+    public void CopyTaskProgressFrom(ExPlayerControl target)
+    {
+        if (target == null || target.Player == null) return;
+
+        var targetTasks = target.Player.myTasks.Where(x => x.TryCast<NormalPlayerTask>() != null).ToArray();
+        var targetTaskIds = targetTasks.Select(x => (byte)x.Index).ToArray();
+        var targetCompletedTaskIds = targetTasks.Where(x => x.IsComplete).Select(x => (byte)x.Id);
+
+        Data.SetTasks(targetTaskIds);
+        foreach (var taskId in targetCompletedTaskIds)
+        {
+            Player.CompleteTask((uint)taskId);
+        }
+
         NameText.UpdateNameInfo(this);
         NameText.UpdateNameInfo(target);
     }
@@ -658,6 +684,12 @@ public class ExPlayerControl
 
         // 自分自身の場合は常にtrue
         if (PlayerId == otherPlayer.PlayerId)
+        {
+            return true;
+        }
+
+        // 神は生存中でも全プレイヤーの役職を確認できる。
+        if (Role == RoleId.God)
         {
             return true;
         }

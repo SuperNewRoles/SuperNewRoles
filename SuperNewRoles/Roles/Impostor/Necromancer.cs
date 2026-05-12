@@ -85,6 +85,8 @@ public class NecromancerCurseButtonAbility : TargetCustomButtonBase, IAbilityCou
     [CustomRPC]
     public static void RpcAssignRevenant(ExPlayerControl player)
     {
+        RevenantAbility.ClearHauntedStatus(player);
+
         // 憑依で動けなくなることへの対策
         if (player.AmOwner)
         {

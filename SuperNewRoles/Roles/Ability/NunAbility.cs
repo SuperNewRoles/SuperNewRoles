@@ -26,6 +26,7 @@ public class NunAbility : CustomButtonBase
         if (airshipStatus == null) return;
 
         MovingPlatformBehaviour platform = airshipStatus.GapPlatform;
+        if (platform == null) return;
         RpcUsePlatform(platform.IsLeft, platform.Target?.PlayerId ?? byte.MaxValue);
         ResetTimer();
     }
@@ -34,7 +35,7 @@ public class NunAbility : CustomButtonBase
     public void RpcUsePlatform(bool startIsLeft, byte movingTargetId)
     {
         AirshipStatus airshipStatus = GameObject.FindObjectOfType<AirshipStatus>();
-        if (airshipStatus)
+        if (airshipStatus && airshipStatus.GapPlatform != null)
         {
             airshipStatus.GapPlatform.StopAllCoroutines();
             airshipStatus.GapPlatform.StartCoroutine(NotMoveUsePlatform(airshipStatus.GapPlatform, startIsLeft, movingTargetId).WrapToIl2Cpp());
@@ -46,10 +47,10 @@ public class NunAbility : CustomButtonBase
         platform.IsLeft = startIsLeft;
 
         PlayerControl movingTarget = movingTargetId == byte.MaxValue ? null : ExPlayerControl.ById(movingTargetId);
-        bool isTargetOn = movingTarget != null;
-        if (isTargetOn)
+        bool hasMovingTarget = movingTarget != null;
+        bool carryMovingTarget = hasMovingTarget && IsTargetOnPlatform(platform, movingTarget);
+        if (hasMovingTarget)
         {
-            // リプレイ機能は新版では削除されているため省略
             platform.Target = movingTarget;
         }
         if (platform.Target == null)
@@ -60,6 +61,23 @@ public class NunAbility : CustomButtonBase
         Vector3 targetPos = (!startIsLeft) ? platform.LeftPosition : platform.RightPosition;
         Vector3 worldUseTargetPos = platform.transform.parent.TransformPoint(val2);
         Vector3 worldTargetPos2 = platform.transform.parent.TransformPoint(targetPos);
+        Vector3 movingTargetOffset = Vector3.zero;
+        Vector3 movingTargetDestination = Vector3.zero;
+
+        if (hasMovingTarget)
+        {
+            RestoreInterruptedTarget(movingTarget, releaseMovement: !carryMovingTarget);
+            if (carryMovingTarget)
+            {
+                movingTarget.moveable = false;
+                movingTarget.NetTransform.SetPaused(true);
+                movingTarget.SetKinematic(true);
+                movingTarget.inMovingPlat = true;
+                movingTarget.ForceKillTimerContinue = true;
+                movingTargetOffset = movingTarget.transform.position - platform.transform.position;
+                movingTargetDestination = worldTargetPos2 + movingTargetOffset;
+            }
+        }
 
         if (Constants.ShouldPlaySfx())
         {
@@ -69,11 +87,11 @@ public class NunAbility : CustomButtonBase
 
         platform.IsLeft = !startIsLeft;
 
-        if (isTargetOn)
+        if (carryMovingTarget)
         {
             yield return Effects.All(
                 Effects.Slide2D(platform.transform, platform.transform.localPosition, targetPos, movingTarget.MyPhysics.Speed),
-                Effects.Slide2DWorld(movingTarget.transform, platform.transform.position + new Vector3(0, 0.3f), worldTargetPos2 + new Vector3(0, 0.3f), movingTarget.MyPhysics.Speed)
+                Effects.Slide2DWorld(movingTarget.transform, movingTarget.transform.position, movingTargetDestination, movingTarget.MyPhysics.Speed)
             );
         }
         else
@@ -86,21 +104,14 @@ public class NunAbility : CustomButtonBase
             SoundManager.Instance.StopNamedSound("PlatformMoving");
         }
 
-        if (isTargetOn)
+        if (hasMovingTarget)
         {
-            movingTarget.MyPhysics.enabled = true;
-            yield return movingTarget.MyPhysics.WalkPlayerTo(worldUseTargetPos);
-            movingTarget.MyPhysics.ResetMoveState();
-            movingTarget.MyPhysics.ResetAnimState();
-            movingTarget.MyPhysics.body.velocity = Vector2.zero;
-            movingTarget.NetTransform.RpcSnapTo(movingTarget.transform.position);
-            movingTarget.SetPetPosition(movingTarget.transform.position);
-            yield return Effects.Wait(0.1f);
-            movingTarget.inMovingPlat = false;
-            movingTarget.onLadder = false;
-            movingTarget.Collider.enabled = true;
-            movingTarget.moveable = true;
-            movingTarget.NetTransform.enabled = true;
+            if (carryMovingTarget)
+            {
+                yield return movingTarget.MyPhysics.WalkPlayerTo(worldUseTargetPos);
+                yield return Effects.Wait(0.1f);
+            }
+            RestoreInterruptedTarget(movingTarget, releaseMovement: true);
         }
 
         platform.Target = null;
@@ -108,6 +119,36 @@ public class NunAbility : CustomButtonBase
 
     public override bool CheckIsAvailable()
     {
-        return Timer <= 0 && PlayerControl.LocalPlayer.CanMove && ShipStatus.Instance.TryCast<AirshipStatus>() != null;
+        AirshipStatus airshipStatus = ShipStatus.Instance.TryCast<AirshipStatus>();
+        return Timer <= 0 && PlayerControl.LocalPlayer.CanMove && airshipStatus?.GapPlatform != null;
+    }
+
+    private static bool IsTargetOnPlatform(MovingPlatformBehaviour platform, PlayerControl target)
+    {
+        if (platform == null || target == null) return false;
+        return Vector3.Distance(target.transform.position, platform.transform.position) <= 1.25f;
+    }
+
+    private static void RestoreInterruptedTarget(PlayerControl target, bool releaseMovement)
+    {
+        if (target == null) return;
+
+        target.MyPhysics.enabled = true;
+        target.MyPhysics.ResetMoveState();
+        target.MyPhysics.ResetAnimState();
+        target.MyPhysics.body.velocity = Vector2.zero;
+        target.Collider.enabled = true;
+        target.NetTransform.enabled = true;
+
+        if (!releaseMovement) return;
+
+        target.inMovingPlat = false;
+        target.onLadder = false;
+        target.moveable = true;
+        target.ForceKillTimerContinue = false;
+        target.NetTransform.SetPaused(false);
+        target.SetKinematic(false);
+        target.NetTransform.SnapTo(target.transform.position);
+        target.SetPetPosition(target.transform.position);
     }
 }

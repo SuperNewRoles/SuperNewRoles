@@ -20,7 +20,15 @@ public class PenguinAbility : TargetCustomButtonBase, IButtonEffect
     // IButtonEffect
     private float effectDuration;
     public float EffectDuration => effectDuration;
-    public Action OnEffectEnds => () => { RpcKillPenguinTarget(PlayerControl.LocalPlayer, this, targetPlayer, false); };
+    public Action OnEffectEnds => () =>
+    {
+        if (Player == null || Player.IsDead() || targetPlayer == null || targetPlayer.IsDead())
+        {
+            RpcEndPenguin();
+            return;
+        }
+        RpcKillPenguinTarget(Player, this, targetPlayer, false);
+    };
     public bool isEffectActive { get; set; }
     public float EffectTimer { get; set; }
     public bool effectCancellable => false;
@@ -38,6 +46,7 @@ public class PenguinAbility : TargetCustomButtonBase, IButtonEffect
 
     private EventListener fixedUpdateEvent;
     private EventListener<WrapUpEventData> wrapUpEvent;
+    private EventListener<DieEventData> dieEvent;
     private KillableAbility customKillButtonAbility;
     private bool CanDefaultKill;
     private Sprite _sprite;
@@ -52,8 +61,10 @@ public class PenguinAbility : TargetCustomButtonBase, IButtonEffect
 
     public override void OnClick()
     {
+        if (isEffectActive) return;
+        if (Target == null || Target.IsDead()) return;
         targetPlayer = Target;
-        RpcStartPenguin(Target);
+        RpcStartPenguin(targetPlayer);
         new LateTask(() => ExPlayerControl.LocalPlayer.SetKillTimerUnchecked(0.00001f, 0.00001f), 0f);
         ResetTimer();
     }
@@ -63,6 +74,7 @@ public class PenguinAbility : TargetCustomButtonBase, IButtonEffect
         fixedUpdateEvent?.RemoveListener();
         _calledMeeting?.RemoveListener();
         wrapUpEvent?.RemoveListener();
+        dieEvent?.RemoveListener();
     }
     private void OnFixedUpdate()
     {
@@ -89,6 +101,15 @@ public class PenguinAbility : TargetCustomButtonBase, IButtonEffect
         Player.AttachAbility(customKillButtonAbility, new AbilityParentAbility(this));
         fixedUpdateEvent = FixedUpdateEvent.Instance.AddListener(OnFixedUpdate);
         wrapUpEvent = WrapUpEvent.Instance.AddListener(OnWrapUp);
+        dieEvent = DieEvent.Instance.AddListener(OnDie);
+    }
+
+    private void OnDie(DieEventData data)
+    {
+        if (targetPlayer == null) return;
+        ExPlayerControl deadPlayer = data.player;
+        if (deadPlayer != Player && deadPlayer != targetPlayer) return;
+        RpcEndPenguin();
     }
 
     private void OnCalledMeeting(CalledMeetingEventData data)

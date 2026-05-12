@@ -122,7 +122,8 @@ public class JumpDancerAbility : CustomButtonBase, IAbilityCount
             if (data.Value > 0.9f || player.Player.inMovingPlat || player.Player.onLadder)
             {
                 player.transform.localScale = new(0.7f, 0.7f, 1);
-                player.Player.moveable = true;
+                if (!HasActiveMovementBlock(player))
+                    player.Player.moveable = true;
                 if (player.IsAlive()) player.Player.Collider.enabled = true;
 
                 // 削除対象をリストに追加
@@ -165,6 +166,11 @@ public class JumpDancerAbility : CustomButtonBase, IAbilityCount
                 JumpingPlayerIds.Remove(key);
             }
         }
+    }
+
+    private static bool HasActiveMovementBlock(ExPlayerControl player)
+    {
+        return player.GetAbilities<HawkAbility>().Any(ability => ability.BlocksMovement);
     }
 
     private EventListener fixedUpdateEventListener;

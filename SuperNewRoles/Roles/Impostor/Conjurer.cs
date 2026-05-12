@@ -150,7 +150,7 @@ public class ConjurerAbility : AbilityBase
             if (!Data.CanKillImpostor && target.IsImpostor())
                 continue;
 
-            target.CustomDeath(CustomDeathType.Suicide);
+            target.CustomDeath(CustomDeathType.ConjurerMagic, source: Player);
         }
     }
 

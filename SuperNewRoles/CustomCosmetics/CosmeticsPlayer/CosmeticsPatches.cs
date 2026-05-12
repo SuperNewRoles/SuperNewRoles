@@ -1,5 +1,6 @@
 using AmongUs.Data;
 using HarmonyLib;
+using SuperNewRoles.CustomOptions.Categories;
 using SuperNewRoles.CustomCosmetics.UI;
 using SuperNewRoles.Modules;
 using SuperNewRoles.Roles.Modifiers;
@@ -90,6 +91,23 @@ public static class CosmeticsLayer_SetDeadFlipX
         CustomCosmeticsLayer customCosmeticsLayer = CustomCosmeticsLayers.ExistsOrInitialize(__instance);
         customCosmeticsLayer?.visor1?.SetFlipX(flipped);
         customCosmeticsLayer?.visor2?.SetFlipX(flipped);
+    }
+}
+[HarmonyPatch(typeof(CosmeticsLayer), nameof(CosmeticsLayer.SetBodyAsGhost))]
+public static class CosmeticsLayer_SetBodyAsGhost
+{
+    public static void Postfix(CosmeticsLayer __instance)
+    {
+        CustomCosmeticsAlpha.Set(__instance, 0.5f);
+    }
+}
+[HarmonyPatch(typeof(PlayerControl), nameof(PlayerControl.SetHatAndVisorAlpha))]
+public static class PlayerControl_SetHatAndVisorAlpha
+{
+    public static void Postfix(PlayerControl __instance, float a)
+    {
+        if (__instance?.cosmetics == null) return;
+        CustomCosmeticsAlpha.Set(__instance.cosmetics, a);
     }
 }
 [HarmonyPatch(typeof(CosmeticsLayer), nameof(CosmeticsLayer.SetFlipXWithoutPet))]
@@ -207,6 +225,7 @@ public static class PoolablePlayer_UpdateFromEitherPlayerDataOrCache
         if (pData.Object == null) return;
         CustomCosmeticsLayer customCosmeticsLayer = CustomCosmeticsLayers.ExistsOrInitialize(__instance.cosmetics);
         CustomCosmeticsLayer pcLayer = CustomCosmeticsLayers.ExistsOrInitialize(pData.Object.cosmetics);
+        CustomCosmeticsAlpha.Set(customCosmeticsLayer, pData.IsDead ? 0.5f : 1f);
 
         // Hat2/Visor2の設定時、DefaultHat/DefaultVisorがnullの場合はCustomCosmeticsSaverから取得
         string hat2Id = pcLayer.hat2.DefaultHat?.ProdId;
@@ -233,6 +252,7 @@ public static class PoolablePlayer_UpdateFromPlayerData
         if (pData.Object == null) return;
         CustomCosmeticsLayer customCosmeticsLayer = CustomCosmeticsLayers.ExistsOrInitialize(__instance.cosmetics);
         CustomCosmeticsLayer pcLayer = CustomCosmeticsLayers.ExistsOrInitialize(pData.Object.cosmetics);
+        CustomCosmeticsAlpha.Set(customCosmeticsLayer, pData.IsDead ? 0.5f : 1f);
 
         // Hat2/Visor2の設定時、DefaultHat/DefaultVisorがnullの場合はCustomCosmeticsSaverから取得
         string hat2Id = pcLayer.hat2.DefaultHat?.ProdId;
@@ -578,5 +598,48 @@ public static class MushroomMixupSabotageSystem_Deteriorate
             customCosmeticsLayer.hat2.gameObject.SetActive(true);
             customCosmeticsLayer.visor2.gameObject.SetActive(true);
         }
+        RestorePetOnlyMeState();
+    }
+
+    private static void RestorePetOnlyMeState()
+    {
+        if (!GeneralSettingOptions.PetOnlyMe) return;
+
+        foreach (var player in ExPlayerControl.ExPlayerControls)
+        {
+            if (player?.Player == null || player.Player.Data == null || player.Player.cosmetics == null) continue;
+            if (player.IsDead()) continue;
+
+            if (player.AmOwner)
+            {
+                string petId = player.Player.Data.DefaultOutfit.PetId;
+                if (string.IsNullOrEmpty(petId))
+                    petId = DataManager.Player.Customization.Pet;
+                player.Player.SetPet(petId ?? string.Empty);
+            }
+            else
+            {
+                player.Player.SetPet(string.Empty);
+            }
+        }
+    }
+}
+
+public static class CustomCosmeticsAlpha
+{
+    public static void Set(CosmeticsLayer cosmeticsLayer, float alpha)
+    {
+        Set(CustomCosmeticsLayers.ExistsOrInitialize(cosmeticsLayer), alpha);
+    }
+
+    public static void Set(CustomCosmeticsLayer customCosmeticsLayer, float alpha)
+    {
+        if (customCosmeticsLayer == null) return;
+
+        Color color = new(1f, 1f, 1f, alpha);
+        customCosmeticsLayer.hat1.SpriteColor = color;
+        customCosmeticsLayer.hat2.SpriteColor = color;
+        customCosmeticsLayer.visor1.Alpha = alpha;
+        customCosmeticsLayer.visor2.Alpha = alpha;
     }
 }
