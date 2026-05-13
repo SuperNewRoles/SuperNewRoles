@@ -55,6 +55,9 @@ public class ExPlayerControl
     public RoleId Role { get; private set; }
     public ModifierRoleId ModifierRole { get; private set; }
     public GhostRoleId GhostRole { get; private set; }
+    public List<RoleId> RoleHistory { get; private set; } = new();
+    public List<GhostRoleId> GhostRoleHistory { get; private set; } = new();
+    public List<ModifierRoleId> ModifierRoleHistory { get; private set; } = new();
     public IRoleBase roleBase { get; private set; }
     public List<IModifierBase> ModifierRoleBases { get; private set; } = new();
     public IGhostRoleBase GhostRoleBase { get; private set; }
@@ -217,9 +220,13 @@ public class ExPlayerControl
     public void SetModifierRole(ModifierRoleId modifierRoleId)
     {
         if (ModifierRole.HasFlag(modifierRoleId)) return;
+        ModifierRoleId oldModifier = ModifierRole;
         if (AmOwner)
             SuperTrophyManager.DetachTrophy(Role);
         ModifierRole |= modifierRoleId;
+        if (ModifierRoleHistory.Count == 0 && oldModifier != ModifierRoleId.None)
+            ModifierRoleHistory.Add(oldModifier);
+        ModifierRoleHistory.Add(ModifierRole);
         Logger.Info($"[Modifier] {PlayerId}:{Player?.name ?? "??"}({Role}) += {modifierRoleId}", "SNR.GameState");
         if (CustomRoleManager.TryGetModifierById(modifierRoleId, out var modifier))
         {
@@ -236,6 +243,9 @@ public class ExPlayerControl
     public void SetGhostRole(GhostRoleId ghostRoleId)
     {
         if (GhostRole == ghostRoleId) return;
+        if (GhostRoleHistory.Count == 0 && GhostRole != GhostRoleId.None)
+            GhostRoleHistory.Add(GhostRole);
+        GhostRoleHistory.Add(ghostRoleId);
         DetachOldGhostRole(GhostRole);
         if (AmOwner && GhostRole != GhostRoleId.None)
             SuperTrophyManager.DetachTrophy(GhostRole);
@@ -263,6 +273,9 @@ public class ExPlayerControl
         DetachOldRole(Role);
         if (AmOwner)
             SuperTrophyManager.DetachTrophy(Role);
+        if (RoleHistory.Count == 0 && oldRole != RoleId.None)
+            RoleHistory.Add(oldRole);
+        RoleHistory.Add(roleId);
         Role = roleId;
         Logger.Info($"[SetRole] Player {Player?.name} ({PlayerId}) changing role from {oldRole} to {roleId}, AmOwner: {AmOwner}");
         if (CustomRoleManager.TryGetRoleById(roleId, out var role))
@@ -418,8 +431,15 @@ public class ExPlayerControl
         }
         if (AmOwner)
             SuperTrophyManager.DetachTrophy(abilitiesToDetach);
+        ModifierRoleId oldModifier = ModifierRole;
         ModifierRole &= ~modifierRoleId;
         ModifierRoleBases.RemoveAll(x => modifierRoleId.HasFlag(x.ModifierRole));
+        if (ModifierRole != oldModifier)
+        {
+            if (ModifierRoleHistory.Count == 0 && oldModifier != ModifierRoleId.None)
+                ModifierRoleHistory.Add(oldModifier);
+            ModifierRoleHistory.Add(ModifierRole);
+        }
     }
     public void ReverseTask(ExPlayerControl target)
     {
@@ -514,6 +534,13 @@ public class ExPlayerControl
 
         if (Player.AmOwner)
             SuperTrophyManager.DetachTrophy(Role);
+
+        if (RoleHistory.Count == 0 && myRole != RoleId.None)
+            RoleHistory.Add(myRole);
+        RoleHistory.Add(targetRole);
+        if (target.RoleHistory.Count == 0 && targetRole != RoleId.None)
+            target.RoleHistory.Add(targetRole);
+        target.RoleHistory.Add(myRole);
 
         Role = targetRole;
         roleBase = targetRoleBase;
