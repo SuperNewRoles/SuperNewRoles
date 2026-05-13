@@ -631,9 +631,11 @@ public static class RemoteControllerRpc
         var target = (ExPlayerControl)PlayerControl.AllPlayerControls.ToArray().FirstOrDefault(p => p.PlayerId == targetPlayerId);
         if (target == null) return;
         if (!target.AmOwner) return;
-        if (ShipStatus.Instance == null) return;
-        if (!ShipStatus.Instance.Systems.TryGetValue(SystemTypes.Ventilation, out _)) return;
-        VentilationSystem.Update(VentilationSystem.Operation.Move, ventId);
+        if (ShipStatus.Instance != null && ShipStatus.Instance.Systems.TryGetValue(SystemTypes.Ventilation, out _))
+        {
+            VentilationSystem.Update(VentilationSystem.Operation.Move, ventId);
+        }
+
         Vent.currentVent = ModHelpers.VentById(ventId);
     }
 }
