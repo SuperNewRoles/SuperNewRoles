@@ -147,13 +147,6 @@ public class GuesserAbility : CustomMeetingButtonBase, IAbilityCount
         if (exPlayer.IsDead()) return;
         if (CannotShootThisMeeting(exPlayer)) return;
 
-        // スターを撃てない設定がONで、撃てないターンを制限する設定がONの場合、
-        // 指定されたターン数まではスターを撃てないようにする
-        if (cannotShootCelebrity && CelebrityLimitedTurns && MeetingCount < CelebrityLimitedTurnsCount && exPlayer.Role == RoleId.Celebrity)
-        {
-            return;
-        }
-
         // UI生成に必要なローカル変数群
         int Page = 1;
         int currentTeamType = (int)AssignedTeamType.Crewmate;
