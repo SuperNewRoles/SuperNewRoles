@@ -68,6 +68,14 @@ public class RevengeExileAbility : AbilityBase
             if (data.exiled?.PlayerId == PlayerControl.LocalPlayer.Data.PlayerId) RandomExile();
         });
     }
+
+    public override void DetachToLocalPlayer()
+    {
+        base.DetachToLocalPlayer();
+        exileEvent?.RemoveListener();
+        exileEvent = null;
+    }
+
     public void RandomExile()
     {
         // 生きているプレイヤーをリストアップ
