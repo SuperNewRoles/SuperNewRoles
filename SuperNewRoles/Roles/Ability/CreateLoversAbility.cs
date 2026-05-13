@@ -80,7 +80,7 @@ public class CreateLoversAbility : TargetCustomButtonBase
     private bool ShouldIgnoreTarget(ExPlayerControl player)
     {
         if (player == null || player.IsLovers()) return true;
-        if (!_isLoversMe && player.HasAbility<CreateLoversAbility>()) return true;
+        if (player.HasAbility<CreateLoversAbility>() && (!_isLoversMe || player != Player)) return true;
         if (player.HasAbility<LoversBreakerAbility>()) return true;
         return false;
     }
