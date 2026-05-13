@@ -1,9 +1,9 @@
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using AmongUs.GameOptions;
 using Hazel;
 using SuperNewRoles.Events;
+using SuperNewRoles.Events.PCEvents;
 using SuperNewRoles.Modules;
 using SuperNewRoles.Modules.Events.Bases;
 using SuperNewRoles.Patches;
@@ -36,7 +36,7 @@ public class ArsonistData
 public class ArsonistAbility : AbilityBase
 {
     private readonly ArsonistData _data;
-    private List<byte> _dousedPlayers = new();
+    private HashSet<byte> _dousedPlayers = new();
     private List<ExPlayerControl> _dousedPlayersControls = new();
     private DouseButtonAbility _douseAbility;
     private IgniteButtonAbility _igniteAbility;
@@ -44,7 +44,9 @@ public class ArsonistAbility : AbilityBase
     private ImpostorVisionAbility _impostorVisionAbility;
     private ShowPlayerUIAbility _showPlayerUIAbility;
 
-    private EventListener<NameTextUpdateEventData> _nameTextUpdateListener;
+    private EventListener<NameTextUpdateEventData> _dousedNameTextUpdateListener;
+    private EventListener<NameTextUpdateEventData> _progressNameTextUpdateListener;
+    private EventListener<DieEventData> _dieListener;
 
     public ArsonistAbility(ArsonistData data)
     {
@@ -77,24 +79,52 @@ public class ArsonistAbility : AbilityBase
         Player.AddAbility(_ventAbility, new AbilityParentAbility(this));
         Player.AddAbility(_impostorVisionAbility, new AbilityParentAbility(this));
         Player.AddAbility(_showPlayerUIAbility, new AbilityParentAbility(this));
+
+        _progressNameTextUpdateListener = NameTextUpdateEvent.Instance.AddListener(OnProgressNameTextUpdate);
+        _dieListener = DieEvent.Instance.AddListener(OnDie);
     }
 
     public override void AttachToLocalPlayer()
     {
-        _nameTextUpdateListener = NameTextUpdateEvent.Instance.AddListener(OnNameTextUpdate);
+        _dousedNameTextUpdateListener = NameTextUpdateEvent.Instance.AddListener(OnDousedNameTextUpdate);
     }
 
     public override void DetachToLocalPlayer()
     {
-        _nameTextUpdateListener.RemoveListener();
+        _dousedNameTextUpdateListener?.RemoveListener();
     }
 
-    private void OnNameTextUpdate(NameTextUpdateEventData data)
+    public override void DetachToAlls()
+    {
+        _progressNameTextUpdateListener?.RemoveListener();
+        _dieListener?.RemoveListener();
+        base.DetachToAlls();
+    }
+
+    private void OnDousedNameTextUpdate(NameTextUpdateEventData data)
     {
         if (!_dousedPlayers.Contains(data.Player.PlayerId)) return;
         data.Player.cosmetics.nameText.text += ModHelpers.Cs(Arsonist.Instance.RoleColor, " §");
         if (data.Player.VoteArea != null)
             data.Player.VoteArea.NameText.text += ModHelpers.Cs(Arsonist.Instance.RoleColor, " §");
+    }
+
+    private void OnProgressNameTextUpdate(NameTextUpdateEventData data)
+    {
+        if (data.Player != Player) return;
+        if (!data.Visible) return;
+        if (ExPlayerControl.LocalPlayer == null || !ExPlayerControl.LocalPlayer.IsDead()) return;
+
+        string progressText = GetDouseProgressText();
+        data.Player.PlayerInfoText.text += progressText;
+        if (data.Player.MeetingInfoText != null)
+            data.Player.MeetingInfoText.text += progressText;
+    }
+
+    private void OnDie(DieEventData data)
+    {
+        if (ExPlayerControl.LocalPlayer == null || !ExPlayerControl.LocalPlayer.IsDead()) return;
+        NameText.UpdateNameInfo(Player);
     }
 
     private bool IsDousable(ExPlayerControl target)
@@ -111,19 +141,51 @@ public class ArsonistAbility : AbilityBase
     private bool CanIgnite()
     {
         // 自分以外の生存プレイヤー全員に油がついていたら点火可能
-        var allPlayers = PlayerControl.AllPlayerControls
-            .ToArray()
-            .Where(p => !p.Data.IsDead && p.PlayerId != Player.PlayerId);
-        return !allPlayers.Any(p => !_dousedPlayers.Contains(p.PlayerId));
+        foreach (var player in PlayerControl.AllPlayerControls)
+        {
+            if (player == null || player.Data == null) continue;
+            if (player.Data.IsDead) continue;
+            if (player.PlayerId == Player.PlayerId) continue;
+            if (!_dousedPlayers.Contains(player.PlayerId)) return false;
+        }
+        return true;
+    }
+
+    private string GetDouseProgressText()
+    {
+        var (doused, total) = GetDouseProgress();
+        return ModHelpers.Cs(Arsonist.Instance.RoleColor, $"({doused}/{total})");
+    }
+
+    private (int doused, int total) GetDouseProgress()
+    {
+        int doused = _dousedPlayers.Count;
+        int remaining = 0;
+
+        foreach (var player in PlayerControl.AllPlayerControls)
+        {
+            if (player == null || player.Data == null) continue;
+            if (player.Data.IsDead) continue;
+            if (player.PlayerId == Player.PlayerId) continue;
+            if (_dousedPlayers.Contains(player.PlayerId)) continue;
+
+            remaining++;
+        }
+
+        return (doused, doused + remaining);
     }
 
     [CustomRPC]
     public static void RpcDousePlayer(ArsonistAbility source, ExPlayerControl target)
     {
-        if (!source._dousedPlayers.Contains(target.PlayerId))
+        if (source._dousedPlayers.Add(target.PlayerId))
         {
-            source._dousedPlayers.Add(target.PlayerId);
             source._dousedPlayersControls.Add(target);
+
+            if (ExPlayerControl.LocalPlayer != null && ExPlayerControl.LocalPlayer.IsDead())
+                NameText.UpdateNameInfo(source.Player);
+            if (source.Player.AmOwner)
+                NameText.UpdateNameInfo(target);
         }
     }
 
