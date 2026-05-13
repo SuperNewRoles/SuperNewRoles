@@ -111,7 +111,8 @@ public class NunAbility : CustomButtonBase
                 yield return movingTarget.MyPhysics.WalkPlayerTo(worldUseTargetPos);
                 yield return Effects.Wait(0.1f);
             }
-            RestoreInterruptedTarget(movingTarget, releaseMovement: true);
+            if (movingTarget != null)
+                RestoreInterruptedTarget(movingTarget, releaseMovement: true);
         }
 
         platform.Target = null;
