@@ -602,6 +602,12 @@ public static class StandardOptionMenu
             option.UpdateSelection(newValue ? (byte)1 : (byte)0);
             UpdateOptionsActive();
             RecalculateOptionsPosition(check.transform.parent, StandardOptionMenuObjectData.Instance.RightAreaScroller);
+            SnrSettingChangeNotifier.NotifyOptionChanged(option);
+
+            if (AmongUsClient.Instance.AmHost)
+            {
+                CustomOptionManager.RpcSyncOption(option.Id, newValue ? (byte)1 : (byte)0);
+            }
         }), spriteRenderer);
     }
 
@@ -697,6 +703,7 @@ public static class StandardOptionMenu
         option.UpdateSelection(newSelection);
         selectedText.text = option.GetCurrentSelectionString();
         StandardOptionMenuObjectData.Instance.UpdateOptionDisplay();
+        SnrSettingChangeNotifier.NotifyOptionChanged(option);
     }
 
     private static void UpdatePresetText(TMPro.TextMeshPro textComponent, int preset)

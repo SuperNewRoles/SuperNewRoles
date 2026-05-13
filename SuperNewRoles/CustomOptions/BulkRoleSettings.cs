@@ -203,6 +203,8 @@ public static class BulkRoleSettings
         {
             RoleOptionMenu.UpdateRoleDetailButtonColor(roleDetailButton.GetComponent<SpriteRenderer>(), roleOption);
         }
+        SnrSettingChangeNotifier.NotifyRoleOptionChanged(roleOption);
+        RoleOptionManager.RpcSyncRoleOptionDelay(roleOption.RoleId, roleOption.NumberOfCrews, roleOption.Percentage);
         if (newValue == 0)
         {
             RoleOptionMenu.RoleOptionMenuObjectData.CurrentBulkSettingsIndex--;
@@ -222,6 +224,8 @@ public static class BulkRoleSettings
 
         text.text = $"{newValue}%";
         roleOption.Percentage = newValue;
+        SnrSettingChangeNotifier.NotifyRoleOptionChanged(roleOption);
+        RoleOptionManager.RpcSyncRoleOptionDelay(roleOption.RoleId, roleOption.NumberOfCrews, roleOption.Percentage);
     }
     private static void ConfigurePassiveButton(PassiveButton button, System.Action onClick, SpriteRenderer spriteRenderer)
     {
