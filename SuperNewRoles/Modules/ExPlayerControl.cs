@@ -509,6 +509,13 @@ public class ExPlayerControl
         if (Player.AmOwner)
             SuperTrophyManager.DetachTrophy(Role);
 
+        if (RoleHistory.Count == 0 && myRole != RoleId.None)
+            RoleHistory.Add(myRole);
+        RoleHistory.Add(targetRole);
+        if (target.RoleHistory.Count == 0 && targetRole != RoleId.None)
+            target.RoleHistory.Add(targetRole);
+        target.RoleHistory.Add(myRole);
+
         Role = targetRole;
         roleBase = targetRoleBase;
         target.Role = myRole;

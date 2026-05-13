@@ -552,7 +552,7 @@ public class EndGameManagerSetUpPatch
                 else
                     ghostParts.Add(g.ToString());
             }
-            roleChain += $"\n<pos=27%>[Ghost] {string.Join($" {arrow} ", ghostParts)}";
+            roleChain += $"\n[Ghost] {string.Join($" {arrow} ", ghostParts)}";
         }
 
         if (roleInfo.modifierMarks.Count > 0)
