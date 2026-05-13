@@ -29,7 +29,8 @@ public static class CustomDeathExtensions
         {
             case CustomDeathType.Exile:
                 player.Player.Exiled();
-                ExileEvent.Invoke(player);
+                if (ExileEvent.Invoke(player).RefCanceled)
+                    break;
                 FinalStatusManager.SetFinalStatus(player, FinalStatus.Exiled);
                 break;
             case CustomDeathType.FalseCharge:
@@ -215,6 +216,15 @@ public static class CustomDeathExtensions
                 FinalStatusManager.SetFinalStatus(player, FinalStatus.SluggerSlug);
                 MurderDataManager.AddMurderData(source, player);
                 break;
+            case CustomDeathType.ConjurerMagic:
+                if (source == null)
+                    throw new Exception("Source is null");
+                if (!TryKillEvent.Invoke(source, ref player).RefSuccess)
+                    break;
+                player.Player.MurderPlayer(player.Player, MurderResultFlags.Succeeded);
+                FinalStatusManager.SetFinalStatus(player, FinalStatus.ConjurerMagic);
+                MurderDataManager.AddMurderData(source, player);
+                break;
             case CustomDeathType.KnifeKill:
                 if (source == null)
                     throw new Exception("Source is null");
@@ -270,4 +280,5 @@ public enum CustomDeathType
     HappyGatling,
     SluggerSlug,
     WaveCannonSanta,
+    ConjurerMagic,
 }

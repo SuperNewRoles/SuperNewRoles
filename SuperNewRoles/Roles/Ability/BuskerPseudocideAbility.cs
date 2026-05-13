@@ -112,6 +112,7 @@ public class BuskerPseudocideAbility : CustomButtonBase, IButtonEffect
         Player.CustomDeath(CustomDeathType.BuskerFakeDeath);
         GenerateDeadbody();
         RoleManager.Instance.SetRole(Player, RoleTypes.CrewmateGhost);
+        SetHauntButtonVisible(false);
 
     }
 
@@ -155,7 +156,17 @@ public class BuskerPseudocideAbility : CustomButtonBase, IButtonEffect
         // 時間切れで本当に死ぬ
         Player.CustomDeath(CustomDeathType.SuicideSecrets);
         CleanDeadbody();
+        SetHauntButtonVisible(false);
 
+    }
+
+    private void SetHauntButtonVisible(bool visible)
+    {
+        if (!Player.AmOwner) return;
+        if (FastDestroyableSingleton<HudManager>.Instance == null) return;
+        var abilityButton = FastDestroyableSingleton<HudManager>.Instance.AbilityButton;
+        if (abilityButton != null)
+            abilityButton.gameObject.SetActive(visible);
     }
 
     public override void OnMeetingEnds()

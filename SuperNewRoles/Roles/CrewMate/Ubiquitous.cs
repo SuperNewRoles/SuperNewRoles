@@ -308,10 +308,12 @@ public static class UbiquitousPlayerControlPatch
     [HarmonyPatch(nameof(PlayerControl.CanMove), MethodType.Getter), HarmonyPostfix]
     public static void CanMoveGetterPostfix(PlayerControl __instance, ref bool __result)
     {
+        if (__instance == null || AmongUsClient.Instance == null) return;
         if (AmongUsClient.Instance.GameState != InnerNet.InnerNetClient.GameStates.Started) return;
-        if (HudManager.Instance.IsIntroDisplayed) return;
+        if (HudManager.Instance == null || HudManager.Instance.IsIntroDisplayed) return;
         if (!__result) return;
         var exPlayer = (ExPlayerControl)__instance;
+        if (exPlayer == null) return;
         if (!exPlayer.TryGetAbility<UbiquitousAbility>(out var ubiquitousAbility)) return;
         __result = !ubiquitousAbility.UnderOperation;
     }

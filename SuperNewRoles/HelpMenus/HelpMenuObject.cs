@@ -24,6 +24,7 @@ public static class HelpMenuObjectManager
     public static HelpMenuCategoryBase? CurrentCategory;
     public const HelpMenuCategory DEFAULT_MENU_GAME = HelpMenuCategory.MyRoleInfomation;
     public const HelpMenuCategory DEFAULT_MENU_LOBBY = HelpMenuCategory.AssignmentsSettingInfomation;
+    public static bool IsHelpMenuActive => helpMenuObject != null && fadeCoroutine != null && fadeCoroutine.isActive;
 
     private static bool IsLobbySettingsMenuOpen()
     {
@@ -184,7 +185,7 @@ public static class HelpMenuObjectManager
 
     public static void ShowOrHideHelpMenu()
     {
-        if (!CanToggleHelpMenu())
+        if (!IsHelpMenuActive && !CanToggleHelpMenu())
             return;
 
         if (helpMenuObject == null)
@@ -256,6 +257,10 @@ public static class HelpMenuObjectManager
         // ヘルプメニューを非表示にするときにホスト情報とMeetingHudのマスクエリアを表示する
         RoleOptionMenu.UpdateHostInfoMaskArea(!IsLobbySettingsMenuOpen());
         ModHelpers.UpdateMeetingHudMaskAreas(true);
+
+        var activeIndicator = HelpMenusHudManagerStartPatch.helpMenuButton?.transform.Find("active");
+        if (activeIndicator != null)
+            activeIndicator.gameObject.SetActive(false);
     }
     // overlayを閉じる時。
     [HarmonyPatch(typeof(KeyboardJoystick), nameof(KeyboardJoystick.Update))]
@@ -269,10 +274,10 @@ public static class HelpMenuObjectManager
                 return;
             }
 
-            // チャットがアクティブ、またはEsc, Tab, Hキーのいずれかが押された場合、
+            // チャットがアクティブ、またはEsc/Tabキーのいずれかが押された場合、
             // Overlayが表示されているなら非表示に切り替える
             bool isChatActive = FastDestroyableSingleton<HudManager>.Instance.Chat.IsOpenOrOpening;
-            bool isCancelKeyPressed = Input.GetKeyDown(KeyCode.Escape);
+            bool isCancelKeyPressed = Input.GetKeyDown(KeyCode.Escape) || Input.GetKeyDown(KeyCode.Tab);
             if (isChatActive || isCancelKeyPressed)
             {
                 HideHelpMenu();

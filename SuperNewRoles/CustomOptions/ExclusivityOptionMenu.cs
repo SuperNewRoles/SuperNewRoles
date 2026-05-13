@@ -12,6 +12,11 @@ namespace SuperNewRoles.CustomOptions;
 public static class ExclusivityOptionMenu
 {
     private static bool CanEditSettings => AmongUsClient.Instance?.AmHost == true;
+    private const int MainMenuVisibleButtonCount = 9;
+    private const float MainMenuButtonVerticalSpacing = 1.8f;
+    private const int EditMenuRoleColumns = 5;
+    private const int EditMenuVisibleRoleRows = 5;
+    private const float EditMenuRoleRowSpacing = 1.85f;
 
     public static void ShowExclusivityOptionMenu()
     {
@@ -250,8 +255,7 @@ public static class ExclusivityOptionMenu
             index++;
         }
 
-        // スクロール範囲の調整
-        instance.ExclusivityEditRightAreaScroller.ContentYBounds.max = index < 25 ? 0f : (0.38f * ((index - 24) / 4 + 1)) - 0.5f;
+        UpdateEditMenuScrollerBounds(index);
     }
 
     private static GameObject GenerateRoleDetailButton(string roleName, Transform parent, int index, RoleOptionManager.RoleOption roleOption)
@@ -358,7 +362,18 @@ public static class ExclusivityOptionMenu
     {
         var scroller = ExclusivityOptionMenuObjectData.Instance.MainAreaScroller;
         var childCount = ExclusivityOptionMenuObjectData.Instance.ExclusivityOptionButtonContainer.transform.childCount;
-        scroller.ContentYBounds.max = childCount <= 9 ? 0 : (childCount - 9) * 1.64f;
+        scroller.ContentYBounds.max = Mathf.Max(0f, (childCount - MainMenuVisibleButtonCount) * MainMenuButtonVerticalSpacing);
+        scroller.UpdateScrollBars();
+    }
+
+    private static void UpdateEditMenuScrollerBounds(int roleCount)
+    {
+        var scroller = ExclusivityOptionMenuObjectData.Instance.ExclusivityEditRightAreaScroller;
+        if (scroller == null) return;
+
+        int rowCount = Mathf.CeilToInt(roleCount / (float)EditMenuRoleColumns);
+        scroller.ContentYBounds.max = Mathf.Max(0f, (rowCount - EditMenuVisibleRoleRows) * EditMenuRoleRowSpacing);
+        scroller.UpdateScrollBars();
     }
 
     public static void RefreshDisplayedMenu()

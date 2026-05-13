@@ -179,7 +179,7 @@ public class HitmanAbility : AbilityBase
     }
     private void reSelect()
     {
-        _currentTarget = ModHelpers.GetRandom(ExPlayerControl.ExPlayerControls.Where(p => !p.AmOwner && !p.IsImpostor() && p.IsAlive()).ToList());
+        _currentTarget = ModHelpers.GetRandom(ExPlayerControl.ExPlayerControls.Where(p => !p.AmOwner && p.IsAlive()).ToList());
     }
     private void IncreaseFailedCount()
     {

@@ -30,7 +30,7 @@ class Squid : RoleBase<Squid>
     ];
 
     public override QuoteMod QuoteMod { get; } = QuoteMod.SuperNewRoles;
-    public override short IntroNum { get; } = 2;
+    public override short IntroNum { get; } = 1;
 
     public override AssignedTeamType AssignedTeam { get; } = AssignedTeamType.Crewmate;
     public override WinnerTeamType WinnerTeam { get; } = WinnerTeamType.Crewmate;

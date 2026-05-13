@@ -209,6 +209,7 @@ public class BlackHatHackerAbility : AbilityBase
 
     public bool IsSelfPropagation(float timer)
     {
+        if (timer <= 0f) return false;
         return timer >= Data.HackInfectiousTime * ((int)Data.StartSelfPropagation / 100f);
     }
 

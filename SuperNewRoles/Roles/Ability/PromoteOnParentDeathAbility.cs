@@ -38,9 +38,17 @@ public class PromoteOnParentDeathAbility : AbilityBase
     private void OnFixedUpdate()
     {
         if (_hasPromoted) return;
-        if (Owner != null && Owner.Player != null && Owner.Player.IsAlive()) return;
+        if (IsOwnerStillOriginalRole()) return;
         Promote();
         _hasPromoted = true;
+    }
+    private bool IsOwnerStillOriginalRole()
+    {
+        return Owner?.Player != null &&
+            Owner.Player.IsAlive() &&
+            Owner.ParentRole != null &&
+            // 親Abilityの役職と実際に割り当てられている役職が違う場合は、親の役職が変わったとみなす
+            Owner.Player.Role == Owner.ParentRole.Role;
     }
     private void Promote()
     {

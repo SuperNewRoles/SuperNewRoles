@@ -38,7 +38,8 @@ public static class MapCustomHandler
     /// <returns>いずれかのカスタム機能が有効な場合はtrue</returns>
     private static bool IsAnyCustomOptionEnabled()
     {
-        return MapEditSettingsOptions.AirshipRandomSpawn ||
+        return MapEditSettingsOptions.PolusSetting ||
+               MapEditSettingsOptions.AirshipSetting ||
                MapEditSettingsOptions.TheFungleSetting;
     }
 

@@ -128,7 +128,28 @@ public class ArsonistAbility : AbilityBase
     }
 
     [CustomRPC]
-    public static void RpcIgniteAll(ExPlayerControl source)
+    public static void RpcIgniteAndWin(ExPlayerControl source)
+    {
+        if (source == null) return;
+
+        if (ShipStatus.Instance != null)
+            ShipStatus.Instance.enabled = false;
+
+        IgniteAll(source);
+
+        if (AmongUsClient.Instance.AmHost)
+        {
+            EndGamer.EndGame(
+                (GameOverReason)CustomGameOverReason.ArsonistWin,
+                WinType.SingleNeutral,
+                [source],
+                Arsonist.Instance.RoleColor,
+                "Arsonist"
+            );
+        }
+    }
+
+    private static void IgniteAll(ExPlayerControl source)
     {
         var sourceComponent = source.GetAbility<ArsonistAbility>();
         if (sourceComponent != null)
@@ -239,8 +260,6 @@ public class IgniteButtonAbility : CustomButtonBase
     {
         if (!CheckIsAvailable()) return;
 
-        // 点火処理
-        ArsonistAbility.RpcIgniteAll(Player);
-        EndGamer.RpcEndGameWithWinner(CustomGameOverReason.ArsonistWin, WinType.SingleNeutral, [Player], Arsonist.Instance.RoleColor, "Arsonist", string.Empty);
+        ArsonistAbility.RpcIgniteAndWin(Player);
     }
 }

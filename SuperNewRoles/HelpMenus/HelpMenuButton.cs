@@ -26,7 +26,7 @@ public static class HelpMenusHudManagerStartPatch
         passiveButton.OnMouseOver = new();
         passiveButton.OnClick.AddListener((UnityAction)(() =>
         {
-            if (!HelpMenuObjectManager.CanToggleHelpMenu())
+            if (!HelpMenuObjectManager.IsHelpMenuActive && !HelpMenuObjectManager.CanToggleHelpMenu())
             {
                 passiveButton.transform.Find("active").gameObject.SetActive(false);
                 return;
