@@ -52,7 +52,10 @@ public class NonAnimationVentButtonAbility : CustomVentAbility
         if (inVent == null) return;
 
         if (Player.AmOwner)
+        {
             Vent.currentVent = inVent;
+            UpdateVentilationIfAvailable(VentilationSystem.Operation.Enter, id);
+        }
         Player.Player.moveable = false;
         Player.Player.Visible = false;
         Player.Player.inVent = true;
@@ -65,9 +68,20 @@ public class NonAnimationVentButtonAbility : CustomVentAbility
         if (inVent == null) return;
 
         if (Player.AmOwner)
+        {
             Vent.currentVent = null;
+            UpdateVentilationIfAvailable(VentilationSystem.Operation.Exit, id);
+        }
         Player.Player.moveable = true;
         Player.Player.Visible = true;
         Player.Player.inVent = false;
+    }
+
+    private static void UpdateVentilationIfAvailable(VentilationSystem.Operation operation, int ventId)
+    {
+        if (ShipStatus.Instance == null) return;
+        if (!ShipStatus.Instance.Systems.TryGetValue(SystemTypes.Ventilation, out var system)) return;
+        if (!system.Il2CppIs(out VentilationSystem _)) return;
+        VentilationSystem.Update(operation, ventId);
     }
 }
