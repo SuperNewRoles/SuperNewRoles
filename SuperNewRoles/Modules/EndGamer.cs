@@ -145,6 +145,7 @@ public static class EndGamer
                 winners = members.ToHashSet();
                 color = TheThreeLittlePigs.Instance.RoleColor;
                 upperText = "TheThreeLittlePigs";
+                winText = null;
                 winType = WinType.Hijackers;
                 return;
             }
@@ -173,6 +174,7 @@ public static class EndGamer
                     winners = [player];
                     color = Tuna.Instance.RoleColor;
                     upperText = "Tuna";
+                    winText = null;
                     winType = WinType.Hijackers;
                 }
             }
@@ -190,6 +192,7 @@ public static class EndGamer
                 winners = winnersList;
                 color = OrientalShaman.Instance.RoleColor;
                 upperText = "OrientalShaman";
+                winText = null;
                 winType = WinType.Hijackers;
                 break;
             }
@@ -205,6 +208,7 @@ public static class EndGamer
                     winners = [player];
                     color = Spelunker.Instance.RoleColor;
                     upperText = "Spelunker";
+                    winText = null;
                     winType = WinType.Hijackers;
                 }
             }
@@ -219,6 +223,7 @@ public static class EndGamer
             winners = [player];
             color = Moira.Instance.RoleColor;
             upperText = "Moira";
+            winText = null;
             winType = WinType.SingleNeutral;
             return;
         }
@@ -233,6 +238,7 @@ public static class EndGamer
             winners = [player];
             color = Frankenstein.Instance.RoleColor;
             upperText = "Frankenstein";
+            winText = null;
             winType = WinType.SingleNeutral;
             return;
         }
