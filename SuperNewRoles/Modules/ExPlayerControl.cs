@@ -266,16 +266,15 @@ public class ExPlayerControl
             Logger.Error($"GhostRole {ghostRoleId} not found");
         }
     }
-    public void SetRole(RoleId roleId)
+    public void SetRole(RoleId roleId, bool recordHistory = true)
     {
         if (Role == roleId) return;
         RoleId oldRole = Role;
         DetachOldRole(Role);
         if (AmOwner)
             SuperTrophyManager.DetachTrophy(Role);
-        if (RoleHistory.Count == 0 && oldRole != RoleId.None)
-            RoleHistory.Add(oldRole);
-        RoleHistory.Add(roleId);
+        if (recordHistory)
+            AddRoleHistory(RoleHistory, oldRole, roleId);
         Role = roleId;
         Logger.Info($"[SetRole] Player {Player?.name} ({PlayerId}) changing role from {oldRole} to {roleId}, AmOwner: {AmOwner}");
         if (CustomRoleManager.TryGetRoleById(roleId, out var role))
@@ -327,6 +326,13 @@ public class ExPlayerControl
                 break;
             }
         }
+    }
+
+    internal static void AddRoleHistory(List<RoleId> roleHistory, RoleId oldRole, RoleId roleId)
+    {
+        if (roleHistory.Count == 0 && oldRole != RoleId.None)
+            roleHistory.Add(oldRole);
+        roleHistory.Add(roleId);
     }
 
     public bool HasCustomKillButton()
@@ -535,12 +541,8 @@ public class ExPlayerControl
         if (Player.AmOwner)
             SuperTrophyManager.DetachTrophy(Role);
 
-        if (RoleHistory.Count == 0 && myRole != RoleId.None)
-            RoleHistory.Add(myRole);
-        RoleHistory.Add(targetRole);
-        if (target.RoleHistory.Count == 0 && targetRole != RoleId.None)
-            target.RoleHistory.Add(targetRole);
-        target.RoleHistory.Add(myRole);
+        AddRoleHistory(RoleHistory, myRole, targetRole);
+        AddRoleHistory(target.RoleHistory, targetRole, myRole);
 
         Role = targetRole;
         roleBase = targetRoleBase;
