@@ -687,7 +687,9 @@ public static class ModHelpers
 
     public static bool IsHnS()
     {
-        return GameOptionsManager.Instance.CurrentGameOptions.GameMode is AmongUs.GameOptions.GameModes.HideNSeek or AmongUs.GameOptions.GameModes.SeekFools;
+        var currentGameOptions = GameOptionsManager.Instance?.CurrentGameOptions;
+        return currentGameOptions != null &&
+               currentGameOptions.GameMode is AmongUs.GameOptions.GameModes.HideNSeek or AmongUs.GameOptions.GameModes.SeekFools;
     }
     public static bool TryCastOut<T>(this Il2CppInterop.Runtime.InteropTypes.Il2CppObjectBase obj, out T result) where T : Il2CppInterop.Runtime.InteropTypes.Il2CppObjectBase
     {
