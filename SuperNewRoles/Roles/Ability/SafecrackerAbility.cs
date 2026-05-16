@@ -106,6 +106,12 @@ public class SafecrackerAbility : AbilityBase
         return Player?.Data?.Tasks?.Count ?? 0;
     }
 
+    private int GetEffectiveTotalTaskCount()
+    {
+        var total = GetTotalTaskCount();
+        return total > 0 ? total : _allTaskCount;
+    }
+
     private int GetCompletedTaskCount()
     {
         return ModHelpers.TaskCompletedData(Player.Player.Data).completed;
@@ -116,7 +122,7 @@ public class SafecrackerAbility : AbilityBase
         if (requiredRate <= 0f) return false;
         if (_unlockedAbilities.TryGetValue(taskType, out var unlocked) && unlocked) return true;
 
-        var requiredTasks = Mathf.CeilToInt(_allTaskCount * (requiredRate / 100f));
+        var requiredTasks = Mathf.CeilToInt(GetEffectiveTotalTaskCount() * (requiredRate / 100f));
         if (GetCompletedTaskCount() < requiredTasks) return false;
 
         _unlockedAbilities[taskType] = true;
@@ -142,7 +148,7 @@ public class SafecrackerAbility : AbilityBase
         CheckAllAbilities();
 
         // すべてのタスクが完了したかチェック
-        if (GetCompletedTaskCount() >= _allTaskCount)
+        if (GetCompletedTaskCount() >= GetEffectiveTotalTaskCount())
         {
             // Safecrackerの勝利（ただし生存している場合のみ）
             if (AmongUsClient.Instance.AmHost && !Player.Data.IsDead)
@@ -182,6 +188,7 @@ public class SafecrackerAbility : AbilityBase
             RoleManager.Instance.SetRole(Player, RoleTypes.Crewmate);
             FinalStatusManager.SetFinalStatus(Player, FinalStatus.Alive);
             Player.Data.IsDead = false;
+            data.RefCanceled = true;
             _exiledGuardCount++;
 
             if (Player.AmOwner)

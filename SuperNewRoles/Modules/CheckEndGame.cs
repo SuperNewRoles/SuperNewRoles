@@ -387,7 +387,7 @@ public class PlayerStatistics
         TeamJackalAlive = teamJackalAlive;
         PavlovsDogAlive = pavlovsDogAlive;
         PavlovsOwnerAlive = pavlovsOwnerAlive;
-        PavlovsOwnerRemaining = pavlovsOwnerRemaining > 0;
+        PavlovsOwnerRemaining = pavlovsOwnerRemaining > 0 && pavlovsDogAlive <= 0;
         TeamPavlovsAlive = pavlovsDogAlive > 0
             ? pavlovsDogAlive + pavlovsOwnerAlive
             : pavlovsOwnerRemaining;

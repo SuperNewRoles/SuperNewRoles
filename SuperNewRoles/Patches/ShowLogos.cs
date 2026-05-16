@@ -209,7 +209,7 @@ public static class VersionTextHandler
             passiveButton.OnMouseOut = new();
             passiveButton.OnMouseOver = new();
 
-            passiveButton.OnClick.AddListener((UnityAction)(() => Application.OpenURL(targetUrl)));
+            passiveButton.OnClick.AddListener((UnityAction)(() => Constants.OpenURL(targetUrl)));
             passiveButton.OnMouseOver.AddListener((UnityAction)(() =>
             {
                 iconObject.transform.localScale = SocialIconScale * SocialIconHoverScale;

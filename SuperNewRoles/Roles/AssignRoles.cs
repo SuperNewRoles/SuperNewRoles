@@ -78,6 +78,7 @@ public static class AssignRoles
         try
         {
             Logger.Info("AssignCustomRoles() 開始: カスタム役職のアサイン処理を開始します。");
+            Logger.Info($"[GameStart] Map={GameOptionsManager.Instance.CurrentGameOptions.MapId}, Players={PlayerControl.AllPlayerControls.Count}, Mode={Categories.ModeOption}", "SNR.GameState");
 
             // プレイヤーの接続状態を確認
             if (PlayerControl.AllPlayerControls == null)
@@ -136,6 +137,13 @@ public static class AssignRoles
 
             // Assign Lovers
             AssignLovers();
+
+            // 役職割り当てサマリー
+            var roleSummary = string.Join(", ", ExPlayerControl.ExPlayerControls
+                .Select(x => $"{x.PlayerId}:{x.Player?.name ?? "??"}={x.Role}" +
+                    (x.ModifierRole != ModifierRoleId.None ? $"+{x.ModifierRole}" : "") +
+                    (x.GhostRole != GhostRoleId.None ? $"+{x.GhostRole}" : "")));
+            Logger.Info($"[RoleAssignSummary] {roleSummary}", "SNR.GameState");
 
             Logger.Info("AssignCustomRoles() 終了: カスタム役職のアサイン処理が完了しました。");
         }

@@ -33,9 +33,14 @@ public class DisableOtherPlayerInfoAbility : AbilityBase
         if (!_isAvailable()) return;
         if (data.Player.PlayerInfoText != null)
             data.Player.PlayerInfoText.enabled = false;
-        if (data.Player.PlayerInfoText != null)
-            data.Player.PlayerInfoText.enabled = false;
+        if (data.Player.MeetingInfoText != null)
+            data.Player.MeetingInfoText.enabled = false;
         data.Player.cosmetics.nameText.color = Color.white;
         data.Player.cosmetics.nameText.text = data.Player.Data.PlayerName;
+        if (data.Player.VoteArea != null)
+        {
+            data.Player.VoteArea.NameText.color = Color.white;
+            data.Player.VoteArea.NameText.text = data.Player.Data.PlayerName;
+        }
     }
 }

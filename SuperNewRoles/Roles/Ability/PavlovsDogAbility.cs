@@ -81,6 +81,13 @@ public class PavlovsDogAbility : AbilityBase
         }
     }
 
+    public void SetOwnerAbility(PavlovsOwnerAbility owner)
+    {
+        ownerAbility = owner;
+        if (!_isRampage && timerText != null)
+            timerText.text = "";
+    }
+
     public override void AttachToLocalPlayer()
     {
         _dieEventListener = DieEvent.Instance.AddListener(OnPlayerDead);

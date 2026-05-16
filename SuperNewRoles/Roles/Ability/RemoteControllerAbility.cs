@@ -34,6 +34,7 @@ public sealed class RemoteControllerAbility : AbilityBase
     private float _velocitySyncTimer;
 
     private static readonly HashSet<byte> _controlledPlayerIds = new();
+    private static readonly Dictionary<byte, int> _controlledVentIds = new();
 
     public byte TargetPlayerId { get; private set; } = byte.MaxValue;
     public bool UnderOperation { get; private set; }
@@ -326,8 +327,28 @@ public sealed class RemoteControllerAbility : AbilityBase
         Vector3 center = bounds.center;
         Vector3 position = vent.transform.position;
         float distance = Vector2.Distance(center, position);
-        canUse = distance <= vent.UsableDistance && !PhysicsHelpers.AnythingBetween(targetPlayer.Player.Collider, center, position, Constants.ShipOnlyMask, false);
+        canUse = !IsVentBlockedByCleaning(targetPlayer, vent)
+            && distance <= vent.UsableDistance
+            && !PhysicsHelpers.AnythingBetween(targetPlayer.Player.Collider, center, position, Constants.ShipOnlyMask, false);
         return distance;
+    }
+
+    internal static bool IsVentBlockedByCleaning(ExPlayerControl targetPlayer, Vent vent)
+    {
+        if (targetPlayer?.Player == null || vent == null)
+            return true;
+
+        bool isCurrentVent = targetPlayer.Player.inVent && TryGetVentId(targetPlayer.PlayerId, out int currentVentId) && currentVentId == vent.Id;
+        if (!isCurrentVent && targetPlayer.Player.MustCleanVent(vent.Id))
+            return true;
+
+        if (ShipStatus.Instance == null)
+            return false;
+
+        if (!ShipStatus.Instance.Systems.TryGetValue(SystemTypes.Ventilation, out var system))
+            return false;
+
+        return system.Il2CppIs(out VentilationSystem ventilation) && ventilation.IsVentCurrentlyBeingCleaned(vent.Id);
     }
 
     public void CancelAndClearTarget()
@@ -345,6 +366,7 @@ public sealed class RemoteControllerAbility : AbilityBase
         if (target != null && target.Player != null && target.Player.inVent && TryGetVentId(target.PlayerId, out int inVentId))
         {
             target.MyPhysics?.RpcExitVent(inVentId);
+            ClearControlledVentId(target.PlayerId);
             ModHelpers.VentById(inVentId)?.SetButtons(false);
         }
 
@@ -382,6 +404,8 @@ public sealed class RemoteControllerAbility : AbilityBase
     [CustomRPC]
     public void RpcSetUnderOperation(bool underOperation, byte targetPlayerId)
     {
+        ResetLocalTargetNetworkTransformQueue(targetPlayerId);
+
         if (underOperation)
         {
             RegisterControlledPlayer(targetPlayerId);
@@ -409,6 +433,7 @@ public sealed class RemoteControllerAbility : AbilityBase
     {
         if (playerId == byte.MaxValue) return;
         _controlledPlayerIds.Remove(playerId);
+        ClearControlledVentId(playerId);
     }
 
     public static bool IsPlayerBeingControlled(byte playerId)
@@ -434,15 +459,44 @@ public sealed class RemoteControllerAbility : AbilityBase
         return target != null;
     }
 
+    public static bool IsLocalOperationTargetNetworkTransform(CustomNetworkTransform netTransform)
+    {
+        if (netTransform == null || netTransform.myPlayer == null) return false;
+        if (netTransform.myPlayer.AmOwner) return false;
+        if (!TryGetLocalOperationTarget(out _, out var target)) return false;
+        return target?.Player != null && target.Player == netTransform.myPlayer;
+    }
+
+    private void ResetLocalTargetNetworkTransformQueue(byte targetPlayerId)
+    {
+        if (!Player.AmOwner || targetPlayerId == byte.MaxValue) return;
+        var target = ExPlayerControl.ById(targetPlayerId);
+        if (target?.NetTransform == null || target.AmOwner) return;
+        target.NetTransform.ClearPositionQueues();
+    }
+
     public static bool TryGetVentId(byte playerId, out int ventId)
     {
         ventId = -1;
+        if (_controlledVentIds.TryGetValue(playerId, out ventId)) return true;
         if (ShipStatus.Instance == null) return false;
         if (!ShipStatus.Instance.Systems.TryGetValue(SystemTypes.Ventilation, out var system)) return false;
         if (!system.Il2CppIs(out VentilationSystem ventilation)) return false;
         if (!ventilation.PlayersInsideVents.TryGetValue(playerId, out byte id)) return false;
         ventId = id;
         return true;
+    }
+
+    public static void SetControlledVentId(byte playerId, int ventId)
+    {
+        if (playerId == byte.MaxValue || ventId < 0) return;
+        _controlledVentIds[playerId] = ventId;
+    }
+
+    public static void ClearControlledVentId(byte playerId)
+    {
+        if (playerId == byte.MaxValue) return;
+        _controlledVentIds.Remove(playerId);
     }
 }
 
@@ -549,6 +603,7 @@ internal sealed class RemoteControllerOperationButton : CustomButtonBase, IButto
             if (target.Player != null && target.Player.inVent && RemoteControllerAbility.TryGetVentId(target.PlayerId, out int inVentId))
             {
                 ModHelpers.VentById(inVentId)?.SetButtons(true);
+                RemoteControllerAbility.SetControlledVentId(target.PlayerId, inVentId);
             }
             if (Camera.main != null)
             {
@@ -593,14 +648,13 @@ public static class RemoteControllerRpc
     {
         var target = (ExPlayerControl)PlayerControl.AllPlayerControls.ToArray().FirstOrDefault(p => p.PlayerId == targetPlayerId);
         if (target == null) return;
-        if (ShipStatus.Instance == null) return;
-        if (!ShipStatus.Instance.Systems.TryGetValue(SystemTypes.Ventilation, out var system)) return;
-        if (!system.Il2CppIs(out VentilationSystem ventilation)) return;
-        VentilationSystem.Update(VentilationSystem.Operation.Move, ventId);
-        if (target.AmOwner)
+        if (!target.AmOwner) return;
+        if (ShipStatus.Instance != null && ShipStatus.Instance.Systems.TryGetValue(SystemTypes.Ventilation, out _))
         {
-            Vent.currentVent = ModHelpers.VentById(ventId);
+            VentilationSystem.Update(VentilationSystem.Operation.Move, ventId);
         }
+
+        Vent.currentVent = ModHelpers.VentById(ventId);
     }
 }
 
@@ -633,17 +687,23 @@ public static class RemoteControllerNetworkTransformPatch
 {
     public static bool Prefix(CustomNetworkTransform __instance)
     {
-        var local = ExPlayerControl.LocalPlayer;
-        if (local == null) return true;
-        if (!local.TryGetAbility<RemoteControllerAbility>(out var ability)) return true;
-        if (!ability.UnderOperation) return true;
         if (GeneralSettingOptions.NetworkTransformType != NetworkTransformType.Vanilla) return true;
 
-        var target = ability.TargetPlayer;
-        if (target == null) return true;
-
         // 操作者側のクライアントだけ、ターゲットのネットワーク同期を受信しない
-        return __instance.myPlayer != target.Player;
+        return !RemoteControllerAbility.IsLocalOperationTargetNetworkTransform(__instance);
+    }
+}
+
+[HarmonyPatch(typeof(CustomNetworkTransform), nameof(CustomNetworkTransform.FixedUpdate))]
+public static class RemoteControllerNetworkTransformFixedUpdatePatch
+{
+    public static bool Prefix(CustomNetworkTransform __instance)
+    {
+        if (GeneralSettingOptions.NetworkTransformType != NetworkTransformType.Vanilla) return true;
+
+        // Deserializeだけ止めても既存のincomingPosQueueが通常同期を続けるため、
+        // 操作者側の被操作ターゲットだけFixedUpdateも止める。
+        return !RemoteControllerAbility.IsLocalOperationTargetNetworkTransform(__instance);
     }
 }
 
@@ -707,6 +767,7 @@ public static class RemoteControllerVentButtonPatch
         {
             if (!RemoteControllerAbility.TryGetVentId(operatorTarget.PlayerId, out int inVentId)) return false;
             operatorTarget.MyPhysics.RpcExitVent(inVentId);
+            RemoteControllerAbility.ClearControlledVentId(operatorTarget.PlayerId);
             ModHelpers.VentById(inVentId)?.SetButtons(false);
             return false;
         }
@@ -716,6 +777,7 @@ public static class RemoteControllerVentButtonPatch
         RemoteControllerAbility.RemoteVentCanUse(operatorTarget, vent, out bool canUse);
         if (!canUse) return false;
         operatorTarget.MyPhysics.RpcEnterVent(vent.Id);
+        RemoteControllerAbility.SetControlledVentId(operatorTarget.PlayerId, vent.Id);
         vent.SetButtons(true);
         return false;
     }
@@ -751,6 +813,12 @@ public static class RemoteControllerVentMovePatch
             __result = false;
             return false;
         }
+        if (RemoteControllerAbility.IsVentBlockedByCleaning(operatorTarget, otherVent))
+        {
+            error = "Vent is blocked by vent cleaning";
+            __result = false;
+            return false;
+        }
 
         Vector3 position = otherVent.transform.position;
         position -= (Vector3)operatorTarget.Player.Collider.offset;
@@ -767,6 +835,7 @@ public static class RemoteControllerVentMovePatch
         __instance.SetButtons(enabled: false);
         otherVent.SetButtons(enabled: true);
 
+        RemoteControllerAbility.SetControlledVentId(operatorTarget.PlayerId, otherVent.Id);
         RemoteControllerRpc.RpcMoveVent(operatorTarget.PlayerId, otherVent.Id);
 
         error = string.Empty;

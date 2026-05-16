@@ -1,3 +1,5 @@
+using System;
+
 namespace SuperNewRoles;
 
 public static class Logger
@@ -16,6 +18,8 @@ public static class Logger
         else
             System.Console.Error.WriteLine($"[ERROR] [{source}] {message}");
     }
+    public static void Error(Exception e, string source = "SuperNewRoles")
+        => Error(e.ToString(), source);
     public static void Warning(string message, string source = "SuperNewRoles")
     {
         if (SuperNewRolesPlugin.Instance?.Log != null)

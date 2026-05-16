@@ -194,7 +194,16 @@ class RevenantAbility : TargetCustomButtonBase
     }
     private void RecheckArrows()
     {
-        Arrows.RemoveAll(arrow => arrow.arrow == null || arrow.player == null || arrow.player.Role != RoleId.Necromancer);
+        for (int i = Arrows.Count - 1; i >= 0; i--)
+        {
+            var arrow = Arrows[i];
+            if (arrow.arrow != null && arrow.player != null && arrow.player.Role == RoleId.Necromancer)
+                continue;
+
+            if (arrow.arrow?.arrow != null)
+                GameObject.Destroy(arrow.arrow.arrow);
+            Arrows.RemoveAt(i);
+        }
         foreach (ExPlayerControl player in ExPlayerControl.ExPlayerControls)
         {
             if (player.Role == RoleId.Necromancer && !Arrows.Any(arrow => arrow.player == player))
@@ -264,13 +273,35 @@ class RevenantAbility : TargetCustomButtonBase
     [CustomRPC]
     public static void RpcSetRevenantStatus(RevenantAbility ability, ExPlayerControl player, bool isHaunted)
     {
+        SetRevenantStatusLocal(ability, player, isHaunted);
+    }
+
+    public static void ClearHauntedStatus(ExPlayerControl player)
+    {
+        if (player == null) return;
+
+        foreach (var revenant in ExPlayerControl.ExPlayerControls)
+        {
+            foreach (var ability in revenant.GetAbilities<RevenantAbility>())
+            {
+                SetRevenantStatusLocal(ability, player, false);
+            }
+        }
+    }
+
+    private static void SetRevenantStatusLocal(RevenantAbility ability, ExPlayerControl player, bool isHaunted)
+    {
         if (isHaunted)
         {
             if (player.AmOwner)
                 ability.AmHaunted = true;
+            ability.HauntedPlayers.RemoveAll(haunted => haunted.player == player);
             ability.HauntedPlayers.Add((Time.time + ability.Data.HauntDuration, player));
             if (ExPlayerControl.LocalPlayer.Role == RoleId.Necromancer || ExPlayerControl.LocalPlayer.GhostRole == GhostRoleId.Revenant)
             {
+                if (ability.NecromancerHitodamas.TryGetValue(player, out var existingHitodama))
+                    GameObject.Destroy(existingHitodama);
+
                 ability.NecromancerHitodamas[player] = GameObject.Instantiate(AssetManager.GetAsset<GameObject>("NecromancerHitodama"));
                 ability.NecromancerHitodamas[player].transform.SetParent(player.transform);
                 ability.NecromancerHitodamas[player].transform.localPosition = new(0, 0.6f, -0.0001f);

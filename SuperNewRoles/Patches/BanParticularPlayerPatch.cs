@@ -1,3 +1,4 @@
+using System;
 using HarmonyLib;
 using InnerNet;
 using SuperNewRoles.Modules;
@@ -7,6 +8,29 @@ namespace SuperNewRoles.Patches;
 
 public static class PlayerKickHelper
 {
+    private static bool IsPcPlatform(Platforms platform) =>
+        platform == Platforms.StandaloneSteamPC ||
+        platform == Platforms.StandaloneEpicPC ||
+        platform == Platforms.StandaloneWin10;
+
+    private static bool IsAndroidPlatform(Platforms platform) =>
+        platform == Platforms.Android ||
+        platform.ToString().IndexOf("Android", StringComparison.OrdinalIgnoreCase) >= 0;
+
+    private static bool IsUnclassifiedPlatform(Platforms platform)
+    {
+        string platformName = platform.ToString();
+        return string.IsNullOrWhiteSpace(platformName) ||
+               int.TryParse(platformName, out _) ||
+               platformName.IndexOf("Unknown", StringComparison.OrdinalIgnoreCase) >= 0 ||
+               platformName.IndexOf("Invalid", StringComparison.OrdinalIgnoreCase) >= 0;
+    }
+
+    private static bool IsOtherKnownPlatform(Platforms platform) =>
+        !IsPcPlatform(platform) &&
+        !IsAndroidPlatform(platform) &&
+        !IsUnclassifiedPlatform(platform);
+
     public static bool KickPlayerIfNeeded(ClientData client, bool kickPC, bool kickAndroid, bool kickOther)
     {
         if (client == null || client.PlatformData == null) return false;
@@ -14,19 +38,19 @@ public static class PlayerKickHelper
 
         var pf = client.PlatformData.Platform;
 
-        if (kickPC && (pf == Platforms.StandaloneSteamPC || pf == Platforms.StandaloneEpicPC || pf == Platforms.StandaloneWin10))
+        if (kickPC && IsPcPlatform(pf))
         {
             AmongUsClient.Instance.KickPlayer(client.Id, false);
             SuperNewRoles.Logger.Info($"PCプレイヤー {client.PlayerName} をキックしました");
             return true;
         }
-        if (kickAndroid && pf == Platforms.Android)
+        if (kickAndroid && IsAndroidPlatform(pf))
         {
             AmongUsClient.Instance.KickPlayer(client.Id, false);
             SuperNewRoles.Logger.Info($"Androidプレイヤー {client.PlayerName} をキックしました");
             return true;
         }
-        if (kickOther && pf != Platforms.StandaloneSteamPC && pf != Platforms.StandaloneEpicPC && pf != Platforms.StandaloneWin10 && pf != Platforms.Android)
+        if (kickOther && IsOtherKnownPlatform(pf))
         {
             AmongUsClient.Instance.KickPlayer(client.Id, false);
             SuperNewRoles.Logger.Info($"その他プラットフォームのプレイヤー {client.PlayerName} をキックしました");
