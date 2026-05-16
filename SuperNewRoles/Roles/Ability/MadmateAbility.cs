@@ -20,6 +20,8 @@ public class MadmateAbility : AbilityBase
     }
     public override void AttachToAlls()
     {
+        MadData.ResetTaskCheck();
+
         VentAbility = new CustomVentAbility(() => MadData.CouldUseVent);
         KnowImpostorAbility = new KnowImpostorAbility(MadData.CouldKnowImpostors);
         ImpostorVisionAbility = new ImpostorVisionAbility(() => MadData.HasImpostorVision);
@@ -53,10 +55,21 @@ public class MadmateData
     private bool _lastTaskChecked;
     public bool CouldKnowImpostors()
     {
+        var (complete, all) = ModHelpers.TaskCompletedData(ExPlayerControl.LocalPlayer.Data);
+        return CouldKnowImpostors(complete, all);
+    }
+
+    public void ResetTaskCheck()
+    {
+        _lastTaskChecked = false;
+    }
+
+    internal bool CouldKnowImpostors(int complete, int all)
+    {
         if (!_couldKnowImpostors) return false;
         if (_lastTaskChecked) return true;
-        var (complete, all) = ModHelpers.TaskCompletedData(ExPlayerControl.LocalPlayer.Data);
         if (complete == -1 || all == -1) return false;
+        if (all <= 0) return _lastTaskChecked = TaskNeeded <= 0;
         return _lastTaskChecked = complete >= Math.Min(TaskNeeded, all);
     }
     public MadmateData(bool hasImpostorVision, bool couldUseVent, bool couldKnowImpostors, int taskNeeded, TaskOptionData specialTasks)
