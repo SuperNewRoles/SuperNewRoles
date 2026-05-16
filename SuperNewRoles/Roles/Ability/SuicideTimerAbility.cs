@@ -34,11 +34,13 @@ public class SuicideTimerAbility : AbilityBase
         // 初期状態でタイマーをセット
         ResetSuicideTimer();
 
-        timerText = GameObject.Instantiate(FastDestroyableSingleton<HudManager>.Instance.KillButton.cooldownTimerText, FastDestroyableSingleton<HudManager>.Instance.KillButton.cooldownTimerText.transform.parent);
+        Transform timerParent = GetTimerTextParent();
+        timerText = GameObject.Instantiate(FastDestroyableSingleton<HudManager>.Instance.KillButton.cooldownTimerText, timerParent);
         timerText.text = "";
         timerText.enableWordWrapping = false;
         timerText.transform.localScale = Vector3.one * 0.5f;
         timerText.transform.localPosition += new Vector3(-0.05f, 0.7f, 0);
+        timerText.gameObject.SetActive(true);
     }
 
     public override void DetachToLocalPlayer()
@@ -47,6 +49,11 @@ public class SuicideTimerAbility : AbilityBase
         MurderEvent.Instance.RemoveListener(MurderEventListener);
         WrapUpEvent.Instance.RemoveListener(WrapUpEventListener);
         FixedUpdateEvent.Instance.RemoveListener(UpdateEventListener);
+        if (timerText != null)
+        {
+            GameObject.Destroy(timerText.gameObject);
+            timerText = null;
+        }
     }
 
     private void OnMurder(MurderEventData data)
@@ -89,7 +96,10 @@ public class SuicideTimerAbility : AbilityBase
         if (ExPlayerControl.LocalPlayer.IsDead())
         {
             if (timerText != null)
+            {
                 GameObject.Destroy(timerText.gameObject);
+                timerText = null;
+            }
             return;
         }
         timer -= Time.fixedDeltaTime;
@@ -99,5 +109,14 @@ public class SuicideTimerAbility : AbilityBase
         }
         if (timerText == null) return;
         timerText.text = string.Format(ModTranslation.GetString("SerialKillerSuicideText"), ((int)timer) + 1);
+    }
+
+    private Transform GetTimerTextParent()
+    {
+        var killButton = Player?.GetAbility<CustomKillButtonAbility>();
+        if (killButton?.actionButton != null)
+            return killButton.actionButton.transform;
+
+        return FastDestroyableSingleton<HudManager>.Instance.KillButton.cooldownTimerText.transform.parent;
     }
 }
