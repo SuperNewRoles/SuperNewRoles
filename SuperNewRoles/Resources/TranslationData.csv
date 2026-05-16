@@ -731,7 +731,7 @@ Psychometrist.Description,タスクターンに使用できる能力を有する
 DyingMessenger.Description,通報時に発動する能力を有するクルーメイトです。\n死体を通報すると、その死体が発生してから一定時間の間であれば、その死体に関する情報を得ることが出来ます。\n得られる情報は下記の二種類です。\n　・そのプレイヤーをキルした人の役職\n　・そのプレイヤーをキルした人の色の明暗,This is a crewmate with an ability that activates upon reporting.\nWhen you report a body， if it is within a certain amount of time since the death occurred， you can obtain information regarding that body.\nThe information obtained consists of the following two types:\n　・The role of the person who killed that player\n　・Whether the color of the person who killed that player is light or dark,这是在报告时拥有发动能力的船员。\n如果报告尸体，只要是在尸体产生后的一定时间内，就可以获得关于该尸体的信息。\n可以获得的信息有以下两种：\n　・杀害该玩家的人的职业\n　・杀害该玩家的人的颜色的明暗
 PoliceSurgeon.Description,会議時に発動する能力を有するクルーメイトです。\nそのターンに死亡したプレイヤーの死亡推定時刻を知ることが出来ます。\nまた、会議中に過去に死亡したプレイヤーの死亡推定時刻を確認することも出来ます。\n設定でタスクターン中にどこでもバイタルを見ることも出来ます。,This is a crewmate who possesses abilities that activate during meetings.\nThey can determine the estimated time of death for players who died during that turn.\nFurthermore， they can check the estimated time of death of players who died in the past during a meeting.\nDepending on the settings， it is also possible to view vitals from anywhere during task turns.,这是拥有在会议期间发动能力的船员。\n可以获知在该回合中死亡玩家的推测死亡时间。\n此外，在会议中也可以确认过去死亡玩家的推测死亡时间。\n通过设置，还可以在执行任务的回合中随时随地查看生命体征。
 Squid.Description,タスクターンに使用できる能力を有するクルーメイトです。\n「警戒」ボタンを押すと、一定時間の間警戒モードになります。\n警戒中にキルされると、そのキルを防ぎ、キル者の視界を妨害します。\nまた、一定の間足が早くなり、キル者から逃げることが出来ます。,This is a Crewmate who possesses abilities that can be used during task turns.\nPressing the "Alert" button activates Alert Mode for a certain period of time.\nIf you are killed while on alert， the kill is prevented and the killer's vision is obstructed.\nAdditionally， your movement speed increases for a short duration， allowing you to escape from the killer.,这是拥有可用于任务回合能力的船员。\n按下“警戒”按钮后，会在一定时间内进入警戒模式。\n如果在警戒中被击杀，将防止该次击杀，并干扰击杀者的视野。\n此外，移动速度会在一段时间内变快，从而可以从击杀者手中逃脱。
-ElectionCommissioner.Description,会議に関する能力を有するクルーメイトです。\nこの役職は、全てのプレイヤーの投票先がどこかを見ることができます。,,,
+ElectionCommissioner.Description,会議に関する能力を有するクルーメイトです。\nこの役職は、全てのプレイヤーの投票先がどこかを見ることができます。,A Crewmate with a meeting-related ability.\nThis role can see who every player voted for.,这是一个拥有会议相关能力的船员。\n此职业可以看到所有玩家的投票目标。,這是一個具備會議相關能力的船員。\n此職業可以看到所有玩家的投票目標。
 
 # Descriptions_MadRoles
 Madmate.Description,インポスターの味方のクルーメイトです。\nいわゆる狂人と呼ばれる役職です。\n勝利条件はクルーメイトの勝利ではなく、インポスターの勝利です。\nその勝利に自身の生死は問われないので、あの手この手でインポスターを勝利に導きましょう。,A Crewmate allied with the Impostors.\nOften known as the Madmate.\nTheir win condition is not for the Crewmates to win，but for the Impostors to win.\nTheir own survival is irrelevant，so use any means necessary to secure an Impostor victory.,这是一个帮助伪装者的船员，也称为叛徒。\n他们的胜利条件不是船员获胜，而是伪装者获胜，并且他们的生死并不影响胜利。\n所以，尽可能地采用各种手段促成伪装者获胜。,這是一個支持內鬼的船員，俗稱叛徒职业。\n其勝利條件並非船員勝利，而是內鬼勝利，且自身生死不影響結果。\n因此，請用一切手段助內鬼取勝。
@@ -2017,8 +2017,8 @@ BattleRoyalWin,バトルロイヤル,Battle Royale,大逃杀,大逃殺
 Draw,引き分け,Draw,平局,平局
 
 # Banshee
-BansheeReleaseCooldown,「放つ」クールタイム,Release Cooldown,释放冷却时间,
-BansheeWhisperCooldown,「囁く」クールタイム,Whisper Cooldown,低语冷却时间,
+BansheeReleaseCooldown,「放つ」クールタイム,Release Cooldown,释放冷却时间,釋放冷卻時間
+BansheeWhisperCooldown,「囁く」クールタイム,Whisper Cooldown,低语冷却时间,低語冷卻時間
 BansheeFairyRange,乗り移る射程,Fairy Transfer Range,妖精转移射程,妖精轉移射程
 BansheeCanKillImpostor,インポスターもキルする,Can Kill Impostor,也能击杀伪装者,也能擊殺內鬼
 BansheeCanNormalKill,通常キルが出来る,Can Normal Kill,可以普通击杀,可以普通擊殺
@@ -2108,7 +2108,7 @@ PostMortemCertificate_DeadReason2,死因 <color=#89c3eb>追放</color>,Cause of 
 PostMortemCertificate_CauseOfDeath1,<color=#89c3eb>推定</color>,<color=#89c3eb>estimated</color>,<color=#89c3eb>推测</color>,<color=#89c3eb>推定</color>
 PostMortemCertificate_CauseOfDeath2,<color=#89c3eb>確認</color>,<color=#89c3eb>confirmed</color>,<color=#89c3eb>确定</color>,<color=#89c3eb>確認</color>
 PostMortemCertificate_CauseOfDeath3,<color=#89c3eb>頃</color>,<color=#89c3eb>Approximate</color>,<color=#89c3eb>近似</color>,<color=#89c3eb>大約</color>
-PostMortemCertificate_NoDeaths,{0}\n警察医 {1}\n「{2}」,"{0}\nPoliceSurgeon {1}:/ ""{2}""",{0}\n法医 {1}\n「{2}」,{0}\n法醫 {1}\n「{2}」
+PostMortemCertificate_NoDeaths,{0}\n警察医 {1}\n「{2}」,{0}\nPoliceSurgeon {1}: "{2}",{0}\n法医 {1}\n「{2}」,{0}\n法醫 {1}\n「{2}」
 PostMortemCertificate_NoDeaths_RandomMessage_1,今回ターンの死者はいなかった。,There were no deaths during this turn.,本轮未发现死者。,這個回合沒有死者。
 PostMortemCertificate_NoDeaths_RandomMessage_2,今回ターンの死者はいなかった。\n...以降一気に死者が増えるのではないか...,There were no deaths during this round. ...I wonder if there will be a sudden increase in deaths from now on...,本轮未发现死者。\n……下一次，会看到多少死者呢……,這個回合沒有死者。\n...之後會不會暴增呢...
 PostMortemCertificate_NoDeaths_RandomMessage_3,今回ターンは誰も死亡していなかった。\n私にはインポスターに殺される仲間を助ける術はない...\nただ無念を晴らす為に、いつか会議に招集されるであろう死体の、死亡推定時刻を判断する事しかできない...,This turn，no one died.\nI have no way of saving crewmate from being killed by the Impostor...\nThe only thing I can do is to determine the estimated time of death of the body that will be called in the meeting someday，just to alleviate my regret..,本轮未发现死者。\n对那些已经逝去的同伴们，我什么也做不到……\n我能做的，也只有等到会议开始，姗姗来迟地为他们做尸检……,這個回合一個死者也沒有。\n我沒有能力拯救被內鬼殺害的船員...\n我唯一能做的就是，診斷未來出現屍體的死亡時間。
