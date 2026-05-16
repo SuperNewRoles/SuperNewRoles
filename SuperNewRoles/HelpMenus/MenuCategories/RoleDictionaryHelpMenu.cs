@@ -156,7 +156,7 @@ public class RoleDictionaryHelpMenu : HelpMenuCategoryBase
 
         // 役職一覧を取得
         var roles = CustomRoleManager.AllRoles
-            .Where(r => r.QuoteMod != QuoteMod.Vanilla && !r.HideInRoleDictionary && !r.HiddenOption && (r.OptionTeam == teamType || (r.OptionTeam == RoleOptionMenuType.Hidden && r.AssignedTeam == (AssignedTeamType)teamType)))
+            .Where(r => ShouldShowRoleForTeam(r, teamType))
             .OrderBy(r => r.Role.ToString())
             .ToList();
 
@@ -181,6 +181,28 @@ public class RoleDictionaryHelpMenu : HelpMenuCategoryBase
 
             CreateRoleButton(container, roles[i], position);
         }
+    }
+
+    internal static bool ShouldShowRoleForTeam(IRoleBase role, RoleOptionMenuType teamType)
+    {
+        if (role.QuoteMod == QuoteMod.Vanilla || role.HideInRoleDictionary)
+            return false;
+
+        if (role.OptionTeam == RoleOptionMenuType.Hidden)
+            return GetHiddenRoleDictionaryTeam(role) == teamType;
+
+        return !role.HiddenOption && role.OptionTeam == teamType;
+    }
+
+    private static RoleOptionMenuType GetHiddenRoleDictionaryTeam(IRoleBase role)
+    {
+        return role.WinnerTeam switch
+        {
+            WinnerTeamType.Crewmate => RoleOptionMenuType.Crewmate,
+            WinnerTeamType.Impostor => RoleOptionMenuType.Impostor,
+            WinnerTeamType.Neutral => RoleOptionMenuType.Neutral,
+            _ => (RoleOptionMenuType)role.AssignedTeam,
+        };
     }
 
     private void GenerateGhostRoleButtons(Transform container)
@@ -551,7 +573,7 @@ public class RoleDictionaryHelpMenu : HelpMenuCategoryBase
 
             default:
                 return CustomRoleManager.AllRoles
-                    .Where(r => r.QuoteMod != QuoteMod.Vanilla && !r.HideInRoleDictionary && !r.HiddenOption && (r.OptionTeam == teamType || (r.OptionTeam == RoleOptionMenuType.Hidden && r.AssignedTeam == (AssignedTeamType)teamType)))
+                    .Where(r => ShouldShowRoleForTeam(r, teamType))
                     .Count();
         }
     }
