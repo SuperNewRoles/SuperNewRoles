@@ -45,15 +45,27 @@ public class DarkKillerAbility : AbilityBase
         base.AttachToAlls();
 
         // カスタムキルボタンを追加
-        Player.AttachAbility(new CustomKillButtonAbility(
-            () => ModHelpers.IsElectrical(), // キルボタンが無効化されていない時のみ使用可能
-            () => DarkKiller.DarkKillerKillCoolTime, // カスタムキルクールタイム
-            () => true // クルーメイトのみをターゲット
-        ), new AbilityParentAbility(this));
+        Player.AttachAbility(new DarkKillerKillButtonAbility(), new AbilityParentAbility(this));
 
         // ベント使用能力
         Player.AttachAbility(new CustomVentAbility(
             () => DarkKiller.DarkKillerCanUseVent
         ), new AbilityParentAbility(this));
+    }
+}
+
+public class DarkKillerKillButtonAbility : CustomKillButtonAbility
+{
+    public DarkKillerKillButtonAbility() : base(
+        () => ModHelpers.IsElectrical(),
+        () => DarkKiller.DarkKillerKillCoolTime,
+        () => true
+    )
+    {
+    }
+
+    public override bool CheckHasButton()
+    {
+        return ExPlayerControl.LocalPlayer.IsAlive();
     }
 }
