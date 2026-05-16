@@ -7,6 +7,15 @@ namespace SuperNewRoles.Tests;
 
 public class HawkPatchTests
 {
+    // ヘルプメニュー表示中は、スクロールをヘルプ側だけに使わせるため死亡後手動ズーム入力を処理しない。
+    [Theory]
+    [InlineData(false, true)]
+    [InlineData(true, false)]
+    public void CanProcessManualZoomInput_DisablesInput_WhenHelpMenuIsActive(bool isHelpMenuActive, bool expected)
+    {
+        HawkZoom.CanProcessManualZoomInput(isHelpMenuActive).Should().Be(expected);
+    }
+
     // 親設定がOFFなら、子設定の内容に関係なく死亡後手動ズーム自体が無効。
     [Fact]
     public void EvaluateManualDeadZoom_IgnoresChildRestrictions_WhenParentOptionIsDisabled()
