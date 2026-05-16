@@ -53,16 +53,24 @@ public static class AmongUsClient_CoStartGame
 {
     public static void Postfix()
     {
-        PlayerControlRpcExtensions.RpcCustomSetCosmetics(PlayerControl.LocalPlayer.PlayerId, CostumeTabType.Hat2, CustomCosmeticsSaver.CurrentHat2Id, (PlayerControl.LocalPlayer.Data?.DefaultOutfit?.ColorId).GetValueOrDefault());
-        PlayerControlRpcExtensions.RpcCustomSetCosmetics(PlayerControl.LocalPlayer.PlayerId, CostumeTabType.Visor2, CustomCosmeticsSaver.CurrentVisor2Id, (PlayerControl.LocalPlayer.Data?.DefaultOutfit?.ColorId).GetValueOrDefault());
+        var localPlayer = PlayerControl.LocalPlayer;
+        if (localPlayer != null)
+        {
+            int colorId = (localPlayer.Data?.DefaultOutfit?.ColorId).GetValueOrDefault();
+            PlayerControlRpcExtensions.RpcCustomSetCosmetics(localPlayer.PlayerId, CostumeTabType.Hat2, CustomCosmeticsSaver.CurrentHat2Id, colorId);
+            PlayerControlRpcExtensions.RpcCustomSetCosmetics(localPlayer.PlayerId, CostumeTabType.Visor2, CustomCosmeticsSaver.CurrentVisor2Id, colorId);
+        }
+
         if (ModHelpers.IsHnS())
         {
-            foreach (ExPlayerControl pc in PlayerControl.AllPlayerControls)
+            foreach (PlayerControl player in PlayerControl.AllPlayerControls)
             {
-                if (!pc.Data.Role.IsImpostor) continue;
-                CustomCosmeticsLayer customCosmeticsLayer = CustomCosmeticsLayers.ExistsOrInitialize(pc.cosmetics);
-                customCosmeticsLayer.visor1.gameObject.SetActive(false);
-                customCosmeticsLayer.visor2.gameObject.SetActive(false);
+                if (player?.Data?.Role == null || !player.Data.Role.IsImpostor) continue;
+                if (player.cosmetics == null) continue;
+
+                CustomCosmeticsLayer customCosmeticsLayer = CustomCosmeticsLayers.ExistsOrInitialize(player.cosmetics);
+                customCosmeticsLayer?.visor1?.gameObject?.SetActive(false);
+                customCosmeticsLayer?.visor2?.gameObject?.SetActive(false);
             }
         }
     }
@@ -460,7 +468,9 @@ public static class AmongUsClient_CoStartGame_Patch
     {
         foreach (PlayerControl player in PlayerControl.AllPlayerControls)
         {
-            CustomCosmeticsLayer customCosmeticsLayer = CustomCosmeticsLayers.ExistsOrInitialize(player.cosmetics);
+            if (player?.cosmetics?.nameTextContainer == null) continue;
+
+            _ = CustomCosmeticsLayers.ExistsOrInitialize(player.cosmetics);
 
             foreach (var textMeshPro in player.cosmetics.nameTextContainer.GetComponentsInChildren<TextMeshPro>())
             {
