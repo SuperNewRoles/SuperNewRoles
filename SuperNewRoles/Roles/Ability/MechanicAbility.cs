@@ -115,7 +115,34 @@ public class MechanicAbility : VentTargetCustomButtonBase, IAbilityCount, IButto
             SetHideStatus(player, true);
             if (data.Instance.myPlayer.moveable)
                 moveableVentPosition = currentVent.transform.position;
+
+            FollowPlayersInsideCurrentVent();
         }
+    }
+
+    private void FollowPlayersInsideCurrentVent()
+    {
+        if (currentVent == null) return;
+
+        Vector2 ventPosition = currentVent.transform.position;
+        foreach (PlayerControl player in PlayerControl.AllPlayerControls)
+        {
+            if (player == null || !player.inVent) continue;
+            if (!TryGetVentId(player.PlayerId, out int ventId) || ventId != currentVent.Id) continue;
+
+            player.NetTransform.SnapTo(ventPosition);
+        }
+    }
+
+    private static bool TryGetVentId(byte playerId, out int ventId)
+    {
+        ventId = -1;
+        if (ShipStatus.Instance == null) return false;
+        if (!ShipStatus.Instance.Systems.TryGetValue(SystemTypes.Ventilation, out var system)) return false;
+        if (!system.Il2CppIs(out VentilationSystem ventilation)) return false;
+        if (!ventilation.PlayersInsideVents.TryGetValue(playerId, out byte id)) return false;
+        ventId = id;
+        return true;
     }
 
     private void OnDie(DieEventData data)

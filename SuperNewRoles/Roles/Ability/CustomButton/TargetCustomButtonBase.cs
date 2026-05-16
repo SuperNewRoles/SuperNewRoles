@@ -40,10 +40,12 @@ public abstract class TargetCustomButtonBase : CustomButtonBase
     internal bool ShouldCancelClickForTarget()
     {
         if (Target == null) return false;
+        if (ShouldCancelClickForTargetCore()) return true;
         if (CanTargetFrankensteinBody) return false;
         ExPlayerControl exTarget = Target;
         return exTarget != null && exTarget.TryGetAbility<FrankensteinAbility>(out var frankensteinAbility) && frankensteinAbility.IsMonster;
     }
+    protected virtual bool ShouldCancelClickForTargetCore() => false;
     private static void SetOutline(PlayerControl player, bool show, Color32 color)
     {
         var rend = player.cosmetics.currentBodySprite.BodySprite;

@@ -147,6 +147,7 @@ public class ModSettingsInformationHelpMenu : HelpMenuCategoryBase
 
         CreateExclusivitySettingsUI(optionBaseTemplate.gameObject, settingsInformation, ref lastY, ref contentYBoundsMax);
         scroller.ContentYBounds.max = contentYBoundsMax / 0.9f + 0.2f;  // スクロール領域の調整値
+        scroller.UpdateScrollBars();
     }
 
     private void CreateOptionUI(GameObject template, Transform container, CustomOption option, float currentX, ref float optionYPos, ref float lastYRef, ref float bounds, float indentWidth)
@@ -165,7 +166,7 @@ public class ModSettingsInformationHelpMenu : HelpMenuCategoryBase
 
         optionYPos -= optionYOffset;
         lastYRef -= textYOffset;
-        bounds += textYOffset * 0.45f;
+        bounds += textYOffset * 0.6f;
 
         // 子オプションがあれば、表示条件を確認して再帰的に生成
         if (option.ChildrenOption.Count > 0)
@@ -289,7 +290,7 @@ public class ModSettingsInformationHelpMenu : HelpMenuCategoryBase
 
         optionYPos -= optionYOffset;
         lastYRef -= textYOffset;
-        bounds += textYOffset * 0.45f;
+        bounds += textYOffset * 0.6f;
     }
 
     private static Color GetExclusivityRoleColor(RoleId roleId)

@@ -143,6 +143,7 @@ public static class GhostOptionMenu
                     ghostRoleOption.Percentage = 100;
                 }
                 UpdateRoleDetailButtonColor(spriteRenderer, ghostRoleOption);
+                SnrSettingChangeNotifier.NotifyGhostRoleOptionChanged(ghostRoleOption);
                 // 変更を同期
                 RoleOptionManager.RpcSyncGhostRoleOptionDelay(ghostRoleOption.RoleId, ghostRoleOption.NumberOfCrews, ghostRoleOption.Percentage);
 
@@ -266,6 +267,7 @@ public static class GhostOptionMenu
             checkMark.gameObject.SetActive(newValue);
             option.UpdateSelection(newValue ? (byte)1 : (byte)0);
             UpdateDisplayAfterOptionChange(passiveButton.transform.parent, option);
+            SnrSettingChangeNotifier.NotifyOptionChanged(option);
             if (AmongUsClient.Instance.AmHost)
                 CustomOptionManager.RpcSyncOption(option.Id, newValue ? (byte)1 : (byte)0);
         }, spriteRenderer);
@@ -296,6 +298,7 @@ public static class GhostOptionMenu
             option.UpdateSelection(newSelection);
             selectedText.text = UIHelper.FormatOptionValue(option.Selections[option.Selection], option);
             UpdateDisplayAfterOptionChange(selectedText.transform.parent.parent, option);
+            SnrSettingChangeNotifier.NotifyOptionChanged(option);
             if (AmongUsClient.Instance.AmHost)
                 CustomOptionManager.RpcSyncOption(option.Id, newSelection);
         }, spriteRenderer);
@@ -320,6 +323,7 @@ public static class GhostOptionMenu
             option.UpdateSelection(newSelection);
             selectedText.text = UIHelper.FormatOptionValue(option.Selections[option.Selection], option);
             UpdateDisplayAfterOptionChange(selectedText.transform.parent.parent, option);
+            SnrSettingChangeNotifier.NotifyOptionChanged(option);
             if (AmongUsClient.Instance.AmHost)
                 CustomOptionManager.RpcSyncOption(option.Id, newSelection);
         }, spriteRenderer);
@@ -410,6 +414,7 @@ public static class GhostOptionMenu
                 ghostRoleOption.NumberOfCrews = playerCount;
             selectedText.text = ModTranslation.GetString("NumberOfCrewsSelected", ghostRoleOption.NumberOfCrews);
             UpdateRoleDetailButtonColor(spriteRenderer, ghostRoleOption);
+            SnrSettingChangeNotifier.NotifyGhostRoleOptionChanged(ghostRoleOption);
             RoleOptionManager.RpcSyncGhostRoleOptionDelay(ghostRoleOption.RoleId, ghostRoleOption.NumberOfCrews, ghostRoleOption.Percentage);
         }, minusSpriteRenderer);
         var plusButton = optionInstance.transform.Find("Button_Plus").gameObject;
@@ -428,6 +433,7 @@ public static class GhostOptionMenu
             }
             selectedText.text = ModTranslation.GetString("NumberOfCrewsSelected", ghostRoleOption.NumberOfCrews);
             UpdateRoleDetailButtonColor(spriteRenderer, ghostRoleOption);
+            SnrSettingChangeNotifier.NotifyGhostRoleOptionChanged(ghostRoleOption);
             RoleOptionManager.RpcSyncGhostRoleOptionDelay(ghostRoleOption.RoleId, ghostRoleOption.NumberOfCrews, ghostRoleOption.Percentage);
         }, plusSpriteRenderer);
         // 確率設定
@@ -453,6 +459,7 @@ public static class GhostOptionMenu
             if (ghostRoleOption.Percentage > 100)
                 ghostRoleOption.Percentage = 100;
             selectedText.text = ghostRoleOption.Percentage + "%";
+            SnrSettingChangeNotifier.NotifyGhostRoleOptionChanged(ghostRoleOption);
             RoleOptionManager.RpcSyncGhostRoleOptionDelay(ghostRoleOption.RoleId, ghostRoleOption.NumberOfCrews, ghostRoleOption.Percentage);
         }, minusSpriteRenderer);
         var plusButton = optionInstance.transform.Find("Button_Plus").gameObject;
@@ -464,6 +471,7 @@ public static class GhostOptionMenu
             if (ghostRoleOption.Percentage > 100)
                 ghostRoleOption.Percentage = 0;
             selectedText.text = ghostRoleOption.Percentage + "%";
+            SnrSettingChangeNotifier.NotifyGhostRoleOptionChanged(ghostRoleOption);
             RoleOptionManager.RpcSyncGhostRoleOptionDelay(ghostRoleOption.RoleId, ghostRoleOption.NumberOfCrews, ghostRoleOption.Percentage);
         }, plusSpriteRenderer);
         return optionInstance;

@@ -75,8 +75,24 @@ internal class TeleporterAbility : CustomButtonBase, IButtonEffect
 
     private void Teleport()
     {
-        ExPlayerControl targetPlayer = ExPlayerControl.ExPlayerControls.Where(p => p.IsAlive() && p.moveable).ToList().GetRandom();
+        ExPlayerControl targetPlayer = ExPlayerControl.ExPlayerControls
+            .Where(IsValidTeleportTarget)
+            .ToList()
+            .GetRandom();
+        if (targetPlayer == null) return;
         RpcAllTeleportTo(targetPlayer.transform.position, targetPlayer);
+    }
+
+    private static bool IsValidTeleportTarget(ExPlayerControl player)
+    {
+        if (player == null || !player.IsAlive() || !player.moveable)
+            return false;
+        if (player.Player == null || player.MyPhysics == null)
+            return false;
+        if (player.Player.inVent || player.Player.inMovingPlat || player.Player.onLadder)
+            return false;
+
+        return player.MyPhysics.enabled;
     }
 
     [CustomRPC]

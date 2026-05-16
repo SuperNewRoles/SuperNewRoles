@@ -24,7 +24,11 @@ public class CustomVentAbility : CustomButtonBase, IButtonEffect
 
     public bool isEffectActive { get; set; }
 
-    public Action OnEffectEnds => () => { if (Vent.currentVent != null) ExitVent(); };
+    public Action OnEffectEnds => () =>
+    {
+        if (!Player.AmOwner) return;
+        if (Vent.currentVent != null) ExitVent();
+    };
 
     public float EffectDuration => VentDuration?.Invoke() ?? 0f;
 
@@ -86,7 +90,29 @@ public class CustomVentAbility : CustomButtonBase, IButtonEffect
         if (vent == null)
             return false;
 
+        if (IsBlockedByVentCleaning(vent))
+            return false;
+
         return !WormHole.IsWormHole(vent) || ExPlayerControl.LocalPlayer.IsImpostor();
+    }
+
+    private static bool IsBlockedByVentCleaning(Vent vent)
+    {
+        PlayerControl localPlayer = PlayerControl.LocalPlayer;
+        if (localPlayer == null)
+            return true;
+
+        bool isCurrentVent = localPlayer.inVent && Vent.currentVent != null && Vent.currentVent.Id == vent.Id;
+        if (!isCurrentVent && localPlayer.MustCleanVent(vent.Id))
+            return true;
+
+        if (ShipStatus.Instance == null)
+            return false;
+
+        if (!ShipStatus.Instance.Systems.TryGetValue(SystemTypes.Ventilation, out var system))
+            return false;
+
+        return system.Il2CppIs(out VentilationSystem ventilation) && ventilation.IsVentCurrentlyBeingCleaned(vent.Id);
     }
 
     protected Vent SetVentTarget(float? distance = null)
@@ -196,14 +222,15 @@ public class VentSetButtonsPatch
         canUse = couldUse = false;
         __result = 0;
         if (AmongUsClient.Instance.NetworkMode == NetworkModes.FreePlay) return true;
-        if (!ExPlayerControl.LocalPlayer.CanUseVent())
+        ExPlayerControl player = pc?.Object;
+        if (player == null || !player.CanUseVent())
         {
             canUse = couldUse = false;
             __result = 0;
             return false;
         }
 
-        if (WormHole.IsWormHole(__instance) && !((ExPlayerControl)pc.Object).IsImpostor())
+        if (WormHole.IsWormHole(__instance) && !player.IsImpostor())
         {
             __result = float.MaxValue;
             canUse = false;

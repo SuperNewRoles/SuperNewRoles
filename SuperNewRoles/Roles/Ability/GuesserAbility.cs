@@ -5,6 +5,10 @@ using SuperNewRoles.Roles.Ability.CustomButton;
 using UnityEngine.Events;
 using System.Linq;
 using System.Collections.Generic;
+using HarmonyLib;
+using SuperNewRoles.Events;
+using SuperNewRoles.Events.PCEvents;
+using SuperNewRoles.Modules.Events.Bases;
 
 namespace SuperNewRoles.Roles.Ability;
 
@@ -13,6 +17,8 @@ public class GuesserAbility : CustomMeetingButtonBase, IAbilityCount
     private readonly int shotsPerMeeting;
     private readonly bool cannotShootCrewmate;
     private readonly bool cannotShootCelebrity;
+    private readonly bool cannotShootFirstTurn;
+    private readonly bool cannotShootNoDead;
     private readonly bool CelebrityLimitedTurns;
     private readonly int CelebrityLimitedTurnsCount;
     private readonly int maxShots;
@@ -25,28 +31,53 @@ public class GuesserAbility : CustomMeetingButtonBase, IAbilityCount
     private int MeetingCount = -1;
     private TMPro.TextMeshPro limitText;
     public override Sprite Sprite => AssetManager.GetAsset<Sprite>("TargetIcon.png");
+    private EventListener<DieEventData> dieEventListener;
+    private bool anyoneDied = false;
 
-    public GuesserAbility(int maxShots, int shotsPerMeeting, bool cannotShootCrewmate, bool cannotShootCelebrity, bool celebrityLimitedTurns = false, int celebrityLimitedTurnsCount = 3, bool madmateSuicide = false)
+    public GuesserAbility(int maxShots, int shotsPerMeeting, bool cannotShootCrewmate, bool cannotShootCelebrity, bool celebrityLimitedTurns = false, int celebrityLimitedTurnsCount = 3, bool madmateSuicide = false, bool cannotShootFirstTurn = false, bool cannotShootNoDead = false)
     {
         this.maxShots = maxShots;
         this.shotsPerMeeting = shotsPerMeeting;
         this.cannotShootCrewmate = cannotShootCrewmate;
         this.cannotShootCelebrity = cannotShootCelebrity;
+        this.cannotShootFirstTurn = cannotShootFirstTurn;
+        this.cannotShootNoDead = cannotShootNoDead;
         this.CelebrityLimitedTurns = celebrityLimitedTurns;
         this.CelebrityLimitedTurnsCount = celebrityLimitedTurnsCount;
         this.madmateSuicide = madmateSuicide;
         Count = maxShots;
     }
 
+    public override void AttachToLocalPlayer()
+    {
+        base.AttachToLocalPlayer();
+        dieEventListener = DieEvent.Instance.AddListener(OnPlayerDie);
+    }
+    public override void DetachToLocalPlayer()
+    {
+        base.DetachToLocalPlayer();
+        dieEventListener?.RemoveListener();
+    }
+    private void OnPlayerDie(DieEventData data)
+    {
+        anyoneDied = true;
+    }
+
     public override bool CheckHasButton(ExPlayerControl player)
     {
-        // スターを撃てない設定がONで、撃てないターンを制限する設定がONの場合、
-        // 指定されたターン数まではスターを撃てないようにする
-        if (cannotShootCelebrity && (!CelebrityLimitedTurns || MeetingCount < CelebrityLimitedTurnsCount) && player.Role == RoleId.Celebrity)
-        {
+        if (CannotShootThisMeeting(player))
             return false;
-        }
-        return ExPlayerControl.LocalPlayer.IsAlive() && !HideButtons && HasCount && player.IsAlive() && ShotThisMeeting < shotsPerMeeting;
+        if (ExPlayerControl.LocalPlayer.IsDead())
+            return false;
+        // 既にUIを開いているなどの要因の場合は、ボタンを表示しないことでUIの重複を防止する
+        if (HideButtons)
+            return false;
+        if (!HasCount || player.IsDead())
+            return false;
+        // 既に今のミーティングで撃った回数が上限に達している場合は、これ以上撃てないようにする
+        if (ShotThisMeeting >= shotsPerMeeting)
+            return false;
+        return true;
     }
 
     public override bool CheckIsAvailable(ExPlayerControl player)
@@ -56,6 +87,10 @@ public class GuesserAbility : CustomMeetingButtonBase, IAbilityCount
 
     public override void OnMeetingStart()
     {
+        // もし死亡後にアタッチされている場合に備えて
+        if (!anyoneDied && ExPlayerControl.ExPlayerControls.Any(x => x.IsDead()))
+            anyoneDied = true;
+
         HideButtons = false;
         if (guesserUI != null)
             GameObject.Destroy(guesserUI);
@@ -110,13 +145,7 @@ public class GuesserAbility : CustomMeetingButtonBase, IAbilityCount
             return;
 
         if (exPlayer.IsDead()) return;
-
-        // スターを撃てない設定がONで、撃てないターンを制限する設定がONの場合、
-        // 指定されたターン数まではスターを撃てないようにする
-        if (cannotShootCelebrity && CelebrityLimitedTurns && MeetingCount < CelebrityLimitedTurnsCount && exPlayer.Role == RoleId.Celebrity)
-        {
-            return;
-        }
+        if (CannotShootThisMeeting(exPlayer)) return;
 
         // UI生成に必要なローカル変数群
         int Page = 1;
@@ -511,6 +540,24 @@ public class GuesserAbility : CustomMeetingButtonBase, IAbilityCount
         guesserSelectRole(AssignedTeamType.Crewmate);
         ReloadPage();
     }
+    private bool CannotShootThisMeeting(ExPlayerControl player = null)
+    {
+        if (cannotShootFirstTurn && MeetingCount <= 0)
+            return true;
+        if (cannotShootNoDead && !anyoneDied)
+            return true;
+        if (player != null && cannotShootCelebrity && player.Role == RoleId.Celebrity)
+        {
+            // スターを撃てない設定がONで、撃てないターンを制限する設定がOFFなら常に拒否
+            if (!CelebrityLimitedTurns)
+                return true;
+            // スターを撃てない設定がONで、撃てないターンを制限する設定がONの場合、指定されたターン数まではスターを撃てないようにする
+            else if (MeetingCount < CelebrityLimitedTurnsCount)
+                return true;
+        }
+        return false;
+    }
+
     [CustomRPC]
     public static void RpcShotGuesser(PlayerControl killer, ExPlayerControl dyingTarget, bool isSuicide, bool isMisFire)
     {

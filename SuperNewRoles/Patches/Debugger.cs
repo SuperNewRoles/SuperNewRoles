@@ -23,7 +23,7 @@ public static class Debugger
         }
         else if (!ModHelpers.GetManyKeyDown(ControllerManagerUpdatePatch.HaisonKeyCodes)
             && Input.GetKeyDown(KeyCode.H)
-            && HelpMenuObjectManager.CanToggleHelpMenu())
+            && (HelpMenuObjectManager.IsHelpMenuActive || HelpMenuObjectManager.CanToggleHelpMenu()))
         {
             HelpMenuObjectManager.ShowOrHideHelpMenu();
         }

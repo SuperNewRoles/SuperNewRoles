@@ -130,6 +130,7 @@ public partial class SuperNewRolesPlugin : BasePlugin
         ApiServerManager.Initialize();
         RequestInGameManager.Load();
         FixOver15();
+        StartGameHandlerManager.Load();
 
         CustomServer.UpdateRegions();
 
