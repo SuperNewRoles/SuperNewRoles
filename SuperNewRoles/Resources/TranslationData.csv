@@ -1106,7 +1106,7 @@ SerialKillerResetOnMeeting,会議に入るとリセットされる,Reset on Meet
 SerialKillerKillCooldown,キルクールタイム,Kill Cooldown,杀人冷却时间,殺人冷卻時間
 SerialKillerSuicideTime,自殺までの時間,Time Until Suicide,自杀前的时间,自殺前的時間
 SerialKillerCanSabotage,サボタージュを使用できる,Can Sabotage,可以使用破坏,可以使用破壞
-SerialKillerSuicideText,自殺まで{0}秒,Suicide in {0} seconds,自杀前{0}秒,自殺前{0}秒
+SerialKillerSuicideText,自爆まで:{0}秒,Self-destruct in {0} seconds,自爆前{0}秒,自爆前{0}秒
 
 # Pavlovs
 Pavlovs,パブロフの犬,Pavlov's Dog,巴普洛夫之狗,巴普洛夫的狗

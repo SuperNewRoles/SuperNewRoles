@@ -280,7 +280,7 @@ public class OwlDeadBodyTransportAbility : CustomButtonBase, IButtonEffect
         {
             if (body.ParentId == id)
             {
-                body.transform.position = new(9999f, 9999f);
+                body.transform.position = DeadBodyVisibility.HiddenPosition;
                 break;
             }
         }

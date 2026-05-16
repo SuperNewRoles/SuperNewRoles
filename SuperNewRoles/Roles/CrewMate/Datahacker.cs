@@ -149,6 +149,8 @@ public class DatahackerAbility : AbilityBase
         taskCompleteListener = TaskCompleteEvent.Instance.AddListener((data) => TaskCompleted(data));
         fixedUpdateListener = FixedUpdateEvent.Instance.AddListener(() => UpdateArrow());
         nameTextUpdateListener = NameTextUpdateEvent.Instance.AddListener((data) => UpdateNameText(data));
+
+        RefreshTaskProgress(forceNameUpdate: true);
     }
 
     public override void DetachToAlls()
@@ -158,9 +160,11 @@ public class DatahackerAbility : AbilityBase
         taskCompleteListener?.RemoveListener();
         nameTextUpdateListener?.RemoveListener();
         nameTextUpdateVisiableListener?.RemoveListener();
-        if (arrow != null && arrow.arrow != null)
-            UnityEngine.Object.Destroy(arrow.arrow);
+        DestroyArrow();
         arrow = null;
+        customTaskAbility = null;
+        exposedToImpostors = false;
+        hackingCompleted = false;
     }
 
     private void UpdateNameText(NameTextUpdateEventData data)
@@ -193,16 +197,18 @@ public class DatahackerAbility : AbilityBase
         // データハッカーはタスク進捗で能力発動の計算
         var (taskCompletedCount, totalTasks) = ModHelpers.TaskCompletedData(Player.Data);
 
-        // タスク進捗が0の場合は発動しない
-        if (totalTasks == 0) return (false, false);
+        return EvaluateTaskProgress(taskCompletedCount, totalTasks, hackingData.TaskRequirePercent, hackingData.ExposeTasksLeft);
+    }
 
-        // タスク進捗率を計算
+    internal static (bool exposedToImpostors, bool hackingCompleted) EvaluateTaskProgress(int taskCompletedCount, int totalTasks, float taskRequirePercent, int exposeTasksLeft)
+    {
+        // タスクがない役職から転職した場合は、進捗率100%として扱わず能力を発動させない。
+        if (totalTasks <= 0) return (false, false);
+
         float progress = (float)taskCompletedCount / totalTasks * 100f;
+        int exposeTaskThreshold = Math.Max(0, (int)Math.Ceiling(totalTasks * taskRequirePercent / 100f) - exposeTasksLeft);
 
-        // 能力発動残りタスク数（人外にバレるタイミング）を計算
-        int exposeTaskThreshold = Math.Max(0, (int)Math.Ceiling(totalTasks * hackingData.TaskRequirePercent / 100f) - hackingData.ExposeTasksLeft);
-
-        return (taskCompletedCount >= exposeTaskThreshold, progress >= hackingData.TaskRequirePercent);
+        return (taskCompletedCount >= exposeTaskThreshold, progress >= taskRequirePercent);
     }
 
     /// <summary>
@@ -211,15 +217,25 @@ public class DatahackerAbility : AbilityBase
     private void TaskCompleted(TaskCompleteEventData data)
     {
         if (data.player != Player) return;
+        RefreshTaskProgress();
+    }
+
+    private void RefreshTaskProgress(bool forceNameUpdate = false)
+    {
         bool oldhackingCompleted = hackingCompleted;
         (exposedToImpostors, hackingCompleted) = CanSeeOtherPlayer();
         if (exposedToImpostors && arrow == null)
         {
-            arrow = new Arrow(Datahacker.Instance.RoleColor);
-            arrow.arrow.SetActive(false);
+            EnsureArrow();
+            NameText.UpdateNameInfo(Player);
+        }
+        else if (forceNameUpdate && exposedToImpostors)
+        {
             NameText.UpdateNameInfo(Player);
         }
         if (hackingCompleted && !oldhackingCompleted)
+            NameText.UpdateAllNameInfo();
+        else if (forceNameUpdate && hackingCompleted)
             NameText.UpdateAllNameInfo();
     }
 
@@ -235,11 +251,27 @@ public class DatahackerAbility : AbilityBase
         }
         else
         {
-            if (arrow == null || arrow.arrow == null || !arrow.arrow.activeSelf)
+            EnsureArrow();
+            if (arrow?.arrow == null) return;
+            if (!arrow.arrow.activeSelf)
                 arrow.arrow.SetActive(true);
             arrow.Update(Player.transform.position);
         }
     }
+
+    private void EnsureArrow()
+    {
+        if (arrow != null) return;
+        arrow = new Arrow(Datahacker.Instance.RoleColor);
+        arrow.arrow.SetActive(false);
+    }
+
+    private void DestroyArrow()
+    {
+        if (arrow != null && arrow.arrow != null)
+            UnityEngine.Object.Destroy(arrow.arrow);
+    }
+
     private bool CanSeeRole(ExPlayerControl target, out Color32 color)
     {
         color = Color.white;

@@ -16,7 +16,7 @@ public static class PlayerControlRpcExtensions
     [CustomRPC]
     public static void RpcCustomSetRole(this ExPlayerControl player, RoleId roleId)
     {
-        player.SetRole(roleId);
+        player.SetRole(roleId, recordHistory: false);
     }
     [CustomRPC]
     public static void RpcCustomSetRoleInGame(this ExPlayerControl player, RoleId roleId)
