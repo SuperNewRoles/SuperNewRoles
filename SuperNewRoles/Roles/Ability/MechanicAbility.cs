@@ -147,6 +147,11 @@ public class MechanicAbility : VentTargetCustomButtonBase, IAbilityCount, IButto
         return MovingVentIds.Contains(ventId);
     }
 
+    public static void ClearMovingVents()
+    {
+        MovingVentIds.Clear();
+    }
+
     private static void EjectLocalPlayerFromVent(Vent targetvent)
     {
         PlayerControl localPlayer = PlayerControl.LocalPlayer;
@@ -223,5 +228,14 @@ public static class MechanicMovingVentMovePatch
         error = "Vent is moving";
         __result = false;
         return false;
+    }
+}
+
+[HarmonyPatch(typeof(AmongUsClient), nameof(AmongUsClient.CoStartGame))]
+public static class MechanicMovingVentResetPatch
+{
+    public static void Prefix()
+    {
+        MechanicAbility.ClearMovingVents();
     }
 }
