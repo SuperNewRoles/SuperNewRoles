@@ -61,17 +61,27 @@ public static class NameText
             && !player.Data.Role.IsSimpleRole
             && player.Role is RoleId.Crewmate or RoleId.Impostor;
     }
+    private static Color GetFallbackRoleInfoColor(ExPlayerControl player)
+    {
+        return player?.Data?.Role?.TeamColor ?? Color.white;
+    }
+    private static string GetFallbackRoleInfoText(ExPlayerControl player)
+    {
+        return player?.Data?.Role?.NiceName ?? string.Empty;
+    }
     private static Color GetRoleInfoColor(ExPlayerControl player)
     {
-        return ShouldShowVanillaRole(player)
-            ? player.Data.Role.TeamColor
-            : player.roleBase.RoleColor;
+        if (ShouldShowVanillaRole(player))
+            return player.Data.Role.TeamColor;
+        return player?.roleBase?.RoleColor ?? GetFallbackRoleInfoColor(player);
     }
     private static string GetRoleInfoText(ExPlayerControl player)
     {
-        return ShouldShowVanillaRole(player)
-            ? ModHelpers.Cs(player.Data.Role.TeamColor, player.Data.Role.NiceName)
-            : ModHelpers.CsWithTranslation(player.roleBase.RoleColor, player.roleBase.Role.ToString());
+        if (ShouldShowVanillaRole(player))
+            return ModHelpers.Cs(player.Data.Role.TeamColor, player.Data.Role.NiceName);
+        return player?.roleBase != null
+            ? ModHelpers.CsWithTranslation(player.roleBase.RoleColor, player.roleBase.Role.ToString())
+            : ModHelpers.Cs(GetFallbackRoleInfoColor(player), GetFallbackRoleInfoText(player));
     }
     private static void SetPlayerNameColor(ExPlayerControl player, bool isRoleInfoVisible)
     {
