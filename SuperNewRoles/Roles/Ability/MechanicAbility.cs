@@ -1,4 +1,6 @@
 using System;
+using System.Collections.Generic;
+using HarmonyLib;
 using UnityEngine;
 using SuperNewRoles.Modules;
 using SuperNewRoles.Roles.Ability.CustomButton;
@@ -16,7 +18,9 @@ public class MechanicAbility : VentTargetCustomButtonBase, IAbilityCount, IButto
     protected override KeyType keytype => KeyType.Ability1;
     public override float DefaultTimer => coolTime;
     public override Color32 OutlineColor => new(82, 108, 173, byte.MaxValue);
+    public override Func<Vent, bool> IsTargetable => vent => !IsMovingVent(vent);
 
+    private static readonly HashSet<int> MovingVentIds = new();
     private float coolTime;
     private float durationTime;
     private Vent currentVent;
@@ -98,7 +102,7 @@ public class MechanicAbility : VentTargetCustomButtonBase, IAbilityCount, IButto
 
     private void OnEnterVentPrefix(PlayerPhysicsRpcEnterVentPrefixEventData data)
     {
-        if (currentVent == null || data.ventId != currentVent.Id) return;
+        if (!IsMovingVentId(data.ventId)) return;
         data.result = false;
     }
 
@@ -133,6 +137,40 @@ public class MechanicAbility : VentTargetCustomButtonBase, IAbilityCount, IButto
             RpcSetVentStatus(ExPlayerControl.LocalPlayer, currentVent, false, moveableVentPosition);
     }
 
+    public static bool IsMovingVent(Vent vent)
+    {
+        return vent != null && IsMovingVentId(vent.Id);
+    }
+
+    private static bool IsMovingVentId(int ventId)
+    {
+        return MovingVentIds.Contains(ventId);
+    }
+
+    private static void EjectLocalPlayerFromVent(Vent targetvent)
+    {
+        PlayerControl localPlayer = PlayerControl.LocalPlayer;
+        if (localPlayer == null || localPlayer.MyPhysics == null || !localPlayer.inVent) return;
+        bool isInTargetVent = TryGetVentId(localPlayer.PlayerId, out int ventId)
+            ? ventId == targetvent.Id
+            : Vent.currentVent != null && Vent.currentVent.Id == targetvent.Id;
+        if (!isInTargetVent) return;
+
+        targetvent.SetButtons(false);
+        localPlayer.MyPhysics.RpcExitVent(targetvent.Id);
+    }
+
+    private static bool TryGetVentId(byte playerId, out int ventId)
+    {
+        ventId = -1;
+        if (ShipStatus.Instance == null) return false;
+        if (!ShipStatus.Instance.Systems.TryGetValue(SystemTypes.Ventilation, out var system)) return false;
+        if (!system.Il2CppIs(out VentilationSystem ventilation)) return false;
+        if (!ventilation.PlayersInsideVents.TryGetValue(playerId, out byte id)) return false;
+        ventId = id;
+        return true;
+    }
+
     [CustomRPC]
     public void RpcSetVentStatus(ExPlayerControl source, Vent targetvent, bool isUsing, Vector3 originalPos)
     {
@@ -143,6 +181,8 @@ public class MechanicAbility : VentTargetCustomButtonBase, IAbilityCount, IButto
     {
         if (isUsing)
         {
+            MovingVentIds.Add(targetvent.Id);
+            EjectLocalPlayerFromVent(targetvent);
             currentVent = targetvent;
             Vector2 truepos = source.GetTruePosition();
             targetvent.transform.position = new(truepos.x, truepos.y, source.transform.position.z + 0.0025f);
@@ -150,6 +190,7 @@ public class MechanicAbility : VentTargetCustomButtonBase, IAbilityCount, IButto
         }
         else
         {
+            MovingVentIds.Remove(targetvent.Id);
             currentVent = null;
             targetvent.transform.position = originalPos;
             SetHideStatus(source, false);
@@ -169,5 +210,18 @@ public class MechanicAbility : VentTargetCustomButtonBase, IAbilityCount, IButto
             opacity = 1.5f;
         }
         ModHelpers.SetOpacity(target, opacity);
+    }
+}
+
+[HarmonyPatch(typeof(Vent), nameof(Vent.TryMoveToVent))]
+public static class MechanicMovingVentMovePatch
+{
+    public static bool Prefix(Vent otherVent, ref string error, ref bool __result)
+    {
+        if (!MechanicAbility.IsMovingVent(otherVent)) return true;
+
+        error = "Vent is moving";
+        __result = false;
+        return false;
     }
 }
