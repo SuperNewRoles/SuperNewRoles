@@ -205,18 +205,27 @@ public class CustomVisorLayer : MonoBehaviour
 
     public void SetMaskType(PlayerMaterial.MaskType maskType)
     {
+        if (matProperties.MaskType == maskType)
+            return;
+
         matProperties.MaskType = maskType;
         UpdateMaterial();
     }
 
     public void SetMaterialColor(int color)
     {
+        if (matProperties.ColorId == color)
+            return;
+
         matProperties.ColorId = color;
         UpdateMaterial();
     }
 
     public void SetMaskLayer(int layer)
     {
+        if (matProperties.MaskLayer == layer)
+            return;
+
         matProperties.MaskLayer = layer;
         UpdateMaterial();
     }

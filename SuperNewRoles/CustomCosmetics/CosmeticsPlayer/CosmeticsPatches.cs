@@ -410,6 +410,8 @@ public static class MeetingHud_PopulateButtons
     public static void Postfix(MeetingHud __instance)
     {
         Logger.Info("MeetingHud_PopulateButtons.Postfix");
+        CustomCosmeticsMeetingMask.ClearAppliedLayers();
+
         foreach (var playerState in __instance.playerStates)
         {
             if (playerState?.PlayerIcon?.cosmetics == null) continue;
@@ -468,14 +470,42 @@ public static class MeetingHud_Update
 }
 public static class CustomCosmeticsMeetingMask
 {
+    private static readonly System.Collections.Generic.HashSet<int> AppliedLayers = new();
+
+    public static void ClearAppliedLayers()
+    {
+        AppliedLayers.Clear();
+    }
+
     public static void SetSimpleUiMask(CustomCosmeticsLayer customCosmeticsLayer)
     {
         if (customCosmeticsLayer == null) return;
 
-        customCosmeticsLayer.hat1?.SetMaskType(PlayerMaterial.MaskType.SimpleUI);
-        customCosmeticsLayer.hat2?.SetMaskType(PlayerMaterial.MaskType.SimpleUI);
-        customCosmeticsLayer.visor1?.SetMaskType(PlayerMaterial.MaskType.SimpleUI);
-        customCosmeticsLayer.visor2?.SetMaskType(PlayerMaterial.MaskType.SimpleUI);
+        int layerId = customCosmeticsLayer.cosmeticsLayer != null
+            ? customCosmeticsLayer.cosmeticsLayer.GetInstanceID()
+            : customCosmeticsLayer.GetHashCode();
+        if (!AppliedLayers.Add(layerId)) return;
+
+        SetSimpleUiMaskInteraction(customCosmeticsLayer.hat1);
+        SetSimpleUiMaskInteraction(customCosmeticsLayer.hat2);
+        SetSimpleUiMaskInteraction(customCosmeticsLayer.visor1);
+        SetSimpleUiMaskInteraction(customCosmeticsLayer.visor2);
+    }
+
+    private static void SetSimpleUiMaskInteraction(CustomHatLayer hatLayer)
+    {
+        if (hatLayer == null) return;
+
+        if (hatLayer.FrontLayer != null)
+            hatLayer.FrontLayer.maskInteraction = SpriteMaskInteraction.VisibleInsideMask;
+        if (hatLayer.BackLayer != null)
+            hatLayer.BackLayer.maskInteraction = SpriteMaskInteraction.VisibleInsideMask;
+    }
+
+    private static void SetSimpleUiMaskInteraction(CustomVisorLayer visorLayer)
+    {
+        if (visorLayer?.Image != null)
+            visorLayer.Image.maskInteraction = SpriteMaskInteraction.VisibleInsideMask;
     }
 }
 [HarmonyPatch(typeof(AmongUsClient), nameof(AmongUsClient.CoStartGame))]
