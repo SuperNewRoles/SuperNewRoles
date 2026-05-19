@@ -5,6 +5,8 @@ using System.Linq;
 using System.Reflection;
 using System.Runtime.InteropServices;
 using System.Text;
+using InnerNet;
+using TMPro;
 using UnityEngine;
 
 namespace SuperNewRoles.Modules;
@@ -315,6 +317,7 @@ internal sealed class WindowsPresetFilePicker : IPresetFilePicker
 
 internal sealed class AndroidPresetFilePicker : IPresetFilePicker
 {
+    private const int AndroidSafWarningStringName = 100000 + 0x534e52;
     private const string BridgeResourceName = "SuperNewRoles.Resources.AndroidPresetFilePickerBridge.jar";
     private const string BridgeClassName = "com.supernewroles.preset.PresetFilePickerBridge";
     private const string ExportMethodName = "exportPreset";
@@ -322,18 +325,30 @@ internal sealed class AndroidPresetFilePicker : IPresetFilePicker
     private const string ReceiverObjectName = PresetFilePickerAndroidCallbackReceiver.GameObjectName;
     private static readonly object PendingRequestsLock = new();
     private static readonly Dictionary<string, PendingRequest> PendingRequests = new();
+    // SAFの選択画面にいる間だけ、Among Usのサスペンド切断猶予を延ばして戻す。
+    private static readonly AndroidSafSuspensionGuard SafSuspensionGuard = new(
+        () => InnerNetClient.SecondsSuspendedBeforeDisconnect,
+        value => InnerNetClient.SecondsSuspendedBeforeDisconnect = value,
+        () => Application.runInBackground,
+        value => Application.runInBackground = value,
+        message => Logger.Warning(message));
     private static IntPtr _dexClassLoader;
     private static IntPtr _bridgeClass;
 
     public void Export(string defaultFileName, byte[] contents, Action<PresetFilePickerResult> onComplete)
     {
+        string requestId = string.Empty;
+        IDisposable suspensionScope = null;
         try
         {
-            string requestId = Guid.NewGuid().ToString("N");
+            requestId = Guid.NewGuid().ToString("N");
             string sourcePath = Path.Combine(Application.temporaryCachePath, $"snr-preset-export-{requestId}.snrpresets");
             Directory.CreateDirectory(Path.GetDirectoryName(sourcePath));
             File.WriteAllBytes(sourcePath, contents ?? Array.Empty<byte>());
-            RegisterPendingRequest(requestId, new PendingRequest("export", sourcePath, onComplete));
+            suspensionScope = BeginAndroidSafSession();
+            // ここでscopeの所有権をPendingRequestへ移す。コールバック未到達時も失敗経路でDisposeする。
+            RegisterPendingRequest(requestId, new PendingRequest("export", sourcePath, onComplete, suspensionScope));
+            suspensionScope = null;
 
             InvokeBridge(
                 ExportMethodName,
@@ -345,18 +360,23 @@ internal sealed class AndroidPresetFilePicker : IPresetFilePicker
         }
         catch (Exception ex)
         {
-            onComplete(PresetFilePickerResult.Error(ex.Message));
+            CompleteFailedStart(requestId, suspensionScope, onComplete, ex);
         }
     }
 
     public void Import(Action<PresetFilePickerResult> onComplete)
     {
+        string requestId = string.Empty;
+        IDisposable suspensionScope = null;
         try
         {
-            string requestId = Guid.NewGuid().ToString("N");
+            requestId = Guid.NewGuid().ToString("N");
             string targetPath = Path.Combine(Application.temporaryCachePath, $"snr-preset-import-{requestId}.snrpresets");
             Directory.CreateDirectory(Path.GetDirectoryName(targetPath));
-            RegisterPendingRequest(requestId, new PendingRequest("import", targetPath, onComplete));
+            suspensionScope = BeginAndroidSafSession();
+            // ここでscopeの所有権をPendingRequestへ移す。コールバック未到達時も失敗経路でDisposeする。
+            RegisterPendingRequest(requestId, new PendingRequest("import", targetPath, onComplete, suspensionScope));
+            suspensionScope = null;
 
             InvokeBridge(
                 ImportMethodName,
@@ -367,12 +387,14 @@ internal sealed class AndroidPresetFilePicker : IPresetFilePicker
         }
         catch (Exception ex)
         {
-            onComplete(PresetFilePickerResult.Error(ex.Message));
+            CompleteFailedStart(requestId, suspensionScope, onComplete, ex);
         }
     }
 
     internal static void HandleAndroidResult(string payload)
     {
+        PendingRequest pendingRequest = null;
+        bool completed = false;
         try
         {
             var data = JsonParser.Parse(payload) as Dictionary<string, object>
@@ -381,33 +403,36 @@ internal sealed class AndroidPresetFilePicker : IPresetFilePicker
             string status = ReadString(data, "status");
             string error = data.TryGetValue("error", out var errorValue) ? errorValue as string ?? string.Empty : string.Empty;
 
-            PendingRequest pendingRequest;
-            lock (PendingRequestsLock)
-            {
-                if (!PendingRequests.TryGetValue(requestId, out pendingRequest))
-                    return;
-                PendingRequests.Remove(requestId);
-            }
+            pendingRequest = RemovePendingRequest(requestId);
+            if (pendingRequest == null)
+                return;
 
             if (status == "cancelled")
             {
+                completed = true;
                 pendingRequest.Complete(PresetFilePickerResult.Cancelled());
                 return;
             }
             if (status != "success")
             {
+                completed = true;
                 pendingRequest.Complete(PresetFilePickerResult.Error(string.IsNullOrEmpty(error) ? "Android file picker failed." : error));
                 return;
             }
 
-            if (pendingRequest.Action == "import")
-                pendingRequest.Complete(PresetFilePickerResult.Success(File.ReadAllBytes(pendingRequest.TempFilePath)));
-            else
-                pendingRequest.Complete(PresetFilePickerResult.Success());
+            var result = pendingRequest.Action == "import"
+                ? PresetFilePickerResult.Success(File.ReadAllBytes(pendingRequest.TempFilePath))
+                : PresetFilePickerResult.Success();
+            completed = true;
+            pendingRequest.Complete(result);
         }
         catch (Exception ex)
         {
             Logger.Error($"Android preset file picker callback failed: {ex}");
+            if (pendingRequest != null && !completed)
+                pendingRequest.Complete(PresetFilePickerResult.Error(ex.Message));
+            else if (pendingRequest == null)
+                CompleteAllPendingRequests(PresetFilePickerResult.Error("Android file picker callback failed."));
         }
     }
 
@@ -416,6 +441,119 @@ internal sealed class AndroidPresetFilePicker : IPresetFilePicker
         lock (PendingRequestsLock)
         {
             PendingRequests[requestId] = pendingRequest;
+        }
+    }
+
+    private static PendingRequest RemovePendingRequest(string requestId)
+    {
+        if (string.IsNullOrEmpty(requestId))
+            return null;
+
+        lock (PendingRequestsLock)
+        {
+            if (!PendingRequests.TryGetValue(requestId, out var pendingRequest))
+                return null;
+            PendingRequests.Remove(requestId);
+            return pendingRequest;
+        }
+    }
+
+    private static void CompleteAllPendingRequests(PresetFilePickerResult result)
+    {
+        List<PendingRequest> pendingRequests;
+        lock (PendingRequestsLock)
+        {
+            // コールバック内容が壊れてrequestIdを特定できない場合は、残っているSAF待ちをまとめて閉じる。
+            pendingRequests = PendingRequests.Values.ToList();
+            PendingRequests.Clear();
+        }
+
+        foreach (var pendingRequest in pendingRequests)
+            pendingRequest.Complete(result);
+    }
+
+    private static void CompleteFailedStart(
+        string requestId,
+        IDisposable suspensionScope,
+        Action<PresetFilePickerResult> onComplete,
+        Exception ex)
+    {
+        // RegisterPendingRequest後にDexClassLoaderやJava呼び出しで失敗した場合も、必ずguardを解除する。
+        var pendingRequest = RemovePendingRequest(requestId);
+        if (pendingRequest != null)
+        {
+            pendingRequest.Complete(PresetFilePickerResult.Error(ex.Message));
+            return;
+        }
+
+        suspensionScope?.Dispose();
+        onComplete?.Invoke(PresetFilePickerResult.Error(ex.Message));
+    }
+
+    private static IDisposable BeginAndroidSafSession()
+    {
+        var scope = SafSuspensionGuard.Begin();
+        try
+        {
+            // 完全なKeepAliveではないため、オンライン中はユーザーに切断リスクを知らせる。
+            ShowConnectedSafWarningIfNeeded();
+        }
+        catch (Exception ex)
+        {
+            Logger.Warning($"Could not prepare Android SAF file picker warning: {ex.Message}");
+        }
+        return scope;
+    }
+
+    private static void ShowConnectedSafWarningIfNeeded()
+    {
+        if (!IsConnected())
+            return;
+
+        string message = ModTranslation.GetString("PresetAndroidFilePickerDisconnectWarning");
+        try
+        {
+            if (DestroyableSingleton<HudManager>.InstanceExists &&
+                DestroyableSingleton<HudManager>.Instance.Notifier != null)
+            {
+                // NotifierはStringNames前提なので、一旦ユニークな文言を出してから実メッセージへ差し替える。
+                string placeholder = $"SNRPresetFilePicker:{Environment.TickCount}";
+                DestroyableSingleton<HudManager>.Instance.Notifier.AddSettingsChangeMessage(
+                    (StringNames)AndroidSafWarningStringName,
+                    placeholder,
+                    false);
+                ReplaceNotificationPlaceholder(placeholder, message);
+                return;
+            }
+        }
+        catch (Exception ex)
+        {
+            Logger.Warning($"Could not show Android preset file picker warning notification: {ex.Message}");
+        }
+
+        Logger.Warning(message);
+    }
+
+    private static bool IsConnected()
+    {
+        try
+        {
+            return AmongUsClient.Instance != null && AmongUsClient.Instance.AmConnected;
+        }
+        catch
+        {
+            return false;
+        }
+    }
+
+    private static void ReplaceNotificationPlaceholder(string placeholder, string message)
+    {
+        foreach (var text in UnityEngine.Object.FindObjectsOfType<TextMeshPro>(true))
+        {
+            if (text == null || string.IsNullOrEmpty(text.text))
+                continue;
+            if (text.text.Contains(placeholder))
+                text.text = message;
         }
     }
 
@@ -666,16 +804,168 @@ internal sealed class AndroidPresetFilePicker : IPresetFilePicker
         public string Action { get; }
         public string TempFilePath { get; }
         private readonly Action<PresetFilePickerResult> _onComplete;
+        private readonly IDisposable _suspensionScope;
 
-        public PendingRequest(string action, string tempFilePath, Action<PresetFilePickerResult> onComplete)
+        public PendingRequest(string action, string tempFilePath, Action<PresetFilePickerResult> onComplete, IDisposable suspensionScope)
         {
             Action = action;
             TempFilePath = tempFilePath;
             _onComplete = onComplete;
+            _suspensionScope = suspensionScope;
         }
 
         public void Complete(PresetFilePickerResult result)
-            => _onComplete?.Invoke(result);
+        {
+            // 成功・キャンセル・エラーのどれでもSAF用の一時変更はここで戻す。
+            _suspensionScope?.Dispose();
+            _onComplete?.Invoke(result);
+        }
+    }
+}
+
+// AndroidのSAF画面へ遷移するとUnityがサスペンド扱いになり、Among Us側が一定秒数で切断する。
+// その間だけ切断猶予とバックグラウンド実行を広げ、最後のSAF要求が終わった時に元へ戻す。
+internal sealed class AndroidSafSuspensionGuard
+{
+    public const int MinimumSuspendedSeconds = 300;
+
+    private readonly object _lock = new();
+    private readonly Func<int> _getSuspendedSeconds;
+    private readonly Action<int> _setSuspendedSeconds;
+    private readonly Func<bool> _getRunInBackground;
+    private readonly Action<bool> _setRunInBackground;
+    private readonly Action<string> _logWarning;
+    private int _activeCount;
+    private int _originalSuspendedSeconds;
+    private bool _originalRunInBackground;
+    private bool _hasOriginalSuspendedSeconds;
+    private bool _hasOriginalRunInBackground;
+
+    public AndroidSafSuspensionGuard(
+        Func<int> getSuspendedSeconds,
+        Action<int> setSuspendedSeconds,
+        Func<bool> getRunInBackground,
+        Action<bool> setRunInBackground,
+        Action<string> logWarning = null)
+    {
+        _getSuspendedSeconds = getSuspendedSeconds ?? throw new ArgumentNullException(nameof(getSuspendedSeconds));
+        _setSuspendedSeconds = setSuspendedSeconds ?? throw new ArgumentNullException(nameof(setSuspendedSeconds));
+        _getRunInBackground = getRunInBackground ?? throw new ArgumentNullException(nameof(getRunInBackground));
+        _setRunInBackground = setRunInBackground ?? throw new ArgumentNullException(nameof(setRunInBackground));
+        _logWarning = logWarning;
+    }
+
+    public int ActiveCount
+    {
+        get
+        {
+            lock (_lock)
+                return _activeCount;
+        }
+    }
+
+    public IDisposable Begin()
+    {
+        lock (_lock)
+        {
+            if (_activeCount == 0)
+            {
+                // 複数リクエストが重なっても、復元元は最初の1回だけ保持する。
+                CaptureOriginalValues();
+                ApplyTemporaryValues();
+            }
+
+            _activeCount++;
+        }
+
+        return new Scope(this);
+    }
+
+    private void End()
+    {
+        lock (_lock)
+        {
+            if (_activeCount <= 0)
+                return;
+
+            _activeCount--;
+            // 最後のSAF要求が閉じた時だけ元値へ戻す。
+            if (_activeCount == 0)
+                RestoreOriginalValues();
+        }
+    }
+
+    private void CaptureOriginalValues()
+    {
+        _hasOriginalSuspendedSeconds = TryGet(_getSuspendedSeconds, out _originalSuspendedSeconds, "SecondsSuspendedBeforeDisconnect");
+        _hasOriginalRunInBackground = TryGet(_getRunInBackground, out _originalRunInBackground, "Application.runInBackground");
+    }
+
+    private void ApplyTemporaryValues()
+    {
+        // 既に長い猶予が設定されている環境では短くしない。
+        int suspendedSeconds = _hasOriginalSuspendedSeconds
+            ? Math.Max(_originalSuspendedSeconds, MinimumSuspendedSeconds)
+            : MinimumSuspendedSeconds;
+        TrySet(() => _setSuspendedSeconds(suspendedSeconds), "SecondsSuspendedBeforeDisconnect");
+        TrySet(() => _setRunInBackground(true), "Application.runInBackground");
+    }
+
+    private void RestoreOriginalValues()
+    {
+        if (_hasOriginalSuspendedSeconds)
+            TrySet(() => _setSuspendedSeconds(_originalSuspendedSeconds), "SecondsSuspendedBeforeDisconnect");
+        if (_hasOriginalRunInBackground)
+            TrySet(() => _setRunInBackground(_originalRunInBackground), "Application.runInBackground");
+    }
+
+    private bool TryGet<T>(Func<T> getter, out T value, string targetName)
+    {
+        try
+        {
+            value = getter();
+            return true;
+        }
+        catch (Exception ex)
+        {
+            // Android/Among Usのバージョン差で対象APIが取れなくても、SAF自体は続行する。
+            value = default;
+            _logWarning?.Invoke($"Could not read {targetName} before Android SAF file picker: {ex.Message}");
+            return false;
+        }
+    }
+
+    private void TrySet(Action setter, string targetName)
+    {
+        try
+        {
+            setter();
+        }
+        catch (Exception ex)
+        {
+            // 復元処理で例外が出てもコールバック完了処理を止めない。
+            _logWarning?.Invoke($"Could not update {targetName} for Android SAF file picker: {ex.Message}");
+        }
+    }
+
+    private sealed class Scope : IDisposable
+    {
+        private readonly AndroidSafSuspensionGuard _owner;
+        private bool _disposed;
+
+        public Scope(AndroidSafSuspensionGuard owner)
+        {
+            _owner = owner;
+        }
+
+        public void Dispose()
+        {
+            if (_disposed)
+                return;
+
+            _disposed = true;
+            _owner.End();
+        }
     }
 }
 

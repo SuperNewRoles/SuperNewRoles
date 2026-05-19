@@ -259,6 +259,31 @@ public class OptionStorageTests
     }
 
     [Fact]
+    public void PresetImportExportService_ExportPresetArchive_SkipsMissingPresetIds()
+    {
+        var tempDir = new DirectoryInfo(Path.Combine(Path.GetTempPath(), "snr-tests-" + Guid.NewGuid().ToString("N")));
+        var storage = new FileOptionStorage(tempDir, "Options.data", "PresetOptions_");
+        storage.EnsureStorageExists();
+        var names = new Dictionary<int, string> { [0] = "Default", [5] = "Missing" };
+
+        storage.SavePresetSnapshot(0, new PresetSnapshot { Options = new Dictionary<string, byte> { ["a"] = 1 } });
+
+        byte[] archiveBytes = PresetImportExportService.ExportPresetArchive(
+            storage,
+            new[] { 0, 5 },
+            id => names[id],
+            currentPreset: 5,
+            currentVersion: 1);
+        var entries = ReadArchiveEntries(archiveBytes);
+        var optionsData = ReadOptionsDataForTest(entries[PresetImportExportService.OptionsArchivePath]);
+
+        entries.Should().ContainKey("SuperNewRolesNext/SaveData/PresetOptions_0.data");
+        entries.Should().NotContainKey("SuperNewRolesNext/SaveData/PresetOptions_5.data");
+        optionsData.CurrentPreset.Should().Be(0);
+        optionsData.Names.Should().ContainSingle().Which.Should().Be(new KeyValuePair<int, string>(0, "Default"));
+    }
+
+    [Fact]
     public void PresetImportExportService_ImportPresetArchive_AddsNewIdsWithoutOverwritingExistingFiles()
     {
         var tempDir = new DirectoryInfo(Path.Combine(Path.GetTempPath(), "snr-tests-" + Guid.NewGuid().ToString("N")));
@@ -409,6 +434,81 @@ public class OptionStorageTests
 
         errorPicker.ExportCalls.Should().Be(1);
         warning.Should().Be("save failed");
+    }
+
+    [Fact]
+    public void AndroidSafSuspensionGuard_BeginEnd_RestoresOriginalValues()
+    {
+        int suspendedSeconds = 30;
+        bool runInBackground = false;
+        var guard = new AndroidSafSuspensionGuard(
+            () => suspendedSeconds,
+            value => suspendedSeconds = value,
+            () => runInBackground,
+            value => runInBackground = value);
+
+        var scope = guard.Begin();
+
+        guard.ActiveCount.Should().Be(1);
+        suspendedSeconds.Should().Be(AndroidSafSuspensionGuard.MinimumSuspendedSeconds);
+        runInBackground.Should().BeTrue();
+
+        scope.Dispose();
+
+        guard.ActiveCount.Should().Be(0);
+        suspendedSeconds.Should().Be(30);
+        runInBackground.Should().BeFalse();
+    }
+
+    [Fact]
+    public void AndroidSafSuspensionGuard_NestedScopes_RestoreOnlyAfterLastDispose()
+    {
+        int suspendedSeconds = 45;
+        bool runInBackground = false;
+        var guard = new AndroidSafSuspensionGuard(
+            () => suspendedSeconds,
+            value => suspendedSeconds = value,
+            () => runInBackground,
+            value => runInBackground = value);
+
+        var first = guard.Begin();
+        var second = guard.Begin();
+
+        guard.ActiveCount.Should().Be(2);
+        suspendedSeconds.Should().Be(AndroidSafSuspensionGuard.MinimumSuspendedSeconds);
+        runInBackground.Should().BeTrue();
+
+        first.Dispose();
+
+        guard.ActiveCount.Should().Be(1);
+        suspendedSeconds.Should().Be(AndroidSafSuspensionGuard.MinimumSuspendedSeconds);
+        runInBackground.Should().BeTrue();
+
+        second.Dispose();
+
+        guard.ActiveCount.Should().Be(0);
+        suspendedSeconds.Should().Be(45);
+        runInBackground.Should().BeFalse();
+    }
+
+    [Fact]
+    public void AndroidSafSuspensionGuard_DisposeIsIdempotent()
+    {
+        int suspendedSeconds = 60;
+        bool runInBackground = false;
+        var guard = new AndroidSafSuspensionGuard(
+            () => suspendedSeconds,
+            value => suspendedSeconds = value,
+            () => runInBackground,
+            value => runInBackground = value);
+        var scope = guard.Begin();
+
+        scope.Dispose();
+        scope.Dispose();
+
+        guard.ActiveCount.Should().Be(0);
+        suspendedSeconds.Should().Be(60);
+        runInBackground.Should().BeFalse();
     }
 
     [Fact]

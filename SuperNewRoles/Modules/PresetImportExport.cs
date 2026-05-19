@@ -359,19 +359,18 @@ public static partial class CustomOptionSaver
 {
     public static byte[] ExportCurrentPresetArchive()
     {
-        Save();
-        return PresetImportExportService.ExportPresetArchive(
-            Storage,
-            new[] { CurrentPreset },
-            GetPresetName,
-            CurrentPreset,
-            CurrentVersion);
+        return ExportSelectedPresetsArchive(new[] { CurrentPreset });
     }
 
     public static byte[] ExportAllPresetsArchive()
     {
-        Save();
         var presetIds = PresetNames.Keys.Concat(new[] { CurrentPreset });
+        return ExportSelectedPresetsArchive(presetIds);
+    }
+
+    public static byte[] ExportSelectedPresetsArchive(IEnumerable<int> presetIds)
+    {
+        Save();
         return PresetImportExportService.ExportPresetArchive(
             Storage,
             presetIds,
