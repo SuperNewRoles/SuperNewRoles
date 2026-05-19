@@ -13,6 +13,7 @@ public sealed class PresetSnapshot
     public string Name { get; set; } = string.Empty;
     public Dictionary<string, byte> Options { get; set; } = new();
     public List<RoleOptionSnapshot> RoleOptions { get; set; } = new();
+    public bool HasExclusivitySettingsSection { get; set; }
     public List<ExclusivitySettingSnapshot> ExclusivitySettings { get; set; } = new();
     public List<ModifierRoleOptionSnapshot> ModifierRoleOptions { get; set; } = new();
     public List<GhostRoleOptionSnapshot> GhostRoleOptions { get; set; } = new();
@@ -352,7 +353,7 @@ public static class PresetImportExportService
 
     private static void ReadOptionsForValidation(BinaryReader reader)
     {
-        int optionCount = ReadNonNegativeCount(reader, "option count");
+        int optionCount = PresetRawDataLimits.ReadCount(reader, PresetRawDataLimits.MaxOptions, "option count");
         for (int i = 0; i < optionCount; i++)
         {
             _ = reader.ReadString();
@@ -362,7 +363,7 @@ public static class PresetImportExportService
 
     private static void ReadRoleOptionsForValidation(BinaryReader reader)
     {
-        int count = ReadNonNegativeCount(reader, "role option count");
+        int count = PresetRawDataLimits.ReadCount(reader, PresetRawDataLimits.MaxRoleOptions, "role option count");
         for (int i = 0; i < count; i++)
         {
             _ = reader.ReadString();
@@ -373,22 +374,14 @@ public static class PresetImportExportService
 
     private static void ReadExclusivitySettingsForValidation(BinaryReader reader)
     {
-        int count = ReadNonNegativeCount(reader, "exclusivity setting count");
+        int count = PresetRawDataLimits.ReadCount(reader, PresetRawDataLimits.MaxExclusivitySettings, "exclusivity setting count");
         for (int i = 0; i < count; i++)
         {
             _ = reader.ReadInt32();
-            int roleCount = ReadNonNegativeCount(reader, "exclusivity role count");
+            int roleCount = PresetRawDataLimits.ReadCount(reader, PresetRawDataLimits.MaxExclusivityRoles, "exclusivity role count");
             for (int j = 0; j < roleCount; j++)
                 _ = reader.ReadString();
         }
-    }
-
-    private static int ReadNonNegativeCount(BinaryReader reader, string fieldName)
-    {
-        int count = reader.ReadInt32();
-        if (count < 0)
-            throw new PresetImportExportException($"Preset data {fieldName} is invalid.");
-        return count;
     }
 
     private static bool ValidateChecksum(BinaryReader reader)
@@ -494,13 +487,29 @@ public static partial class CustomOptionSaver
             CurrentVersion);
 }
 
+internal static class PresetRawDataLimits
+{
+    public const int MaxOptions = 4096;
+    public const int MaxRoleOptions = 256;
+    public const int MaxExclusivitySettings = 256;
+    public const int MaxExclusivityRoles = 256;
+    public const int MaxModifierRoleOptions = 256;
+    public const int MaxModifierAssignFilterRoles = 256;
+    public const int MaxGhostRoleOptions = 256;
+    public const int MaxCategoryAssignFilters = 128;
+    public const int MaxCategoryAssignFilterRoles = 256;
+
+    public static int ReadCount(BinaryReader reader, int maxCount, string fieldName)
+    {
+        int count = reader.ReadInt32();
+        if (count < 0 || count > maxCount)
+            throw new InvalidDataException($"Preset data {fieldName} is invalid.");
+        return count;
+    }
+}
+
 internal static class PresetRawDataTailReader
 {
-    private const int MaxModifierRoleOptions = 256;
-    private const int MaxModifierAssignFilterRoles = 256;
-    private const int MaxGhostRoleOptions = 256;
-    private const int MaxCategoryAssignFilters = 128;
-    private const int MaxCategoryAssignFilterRoles = 256;
     private const int MaxParseBranchAttempts = 4096;
 
     public static void Read(
@@ -538,7 +547,7 @@ internal static class PresetRawDataTailReader
         {
             using var memoryStream = new MemoryStream(tail, writable: false);
             using var reader = new BinaryReader(memoryStream);
-            int modifierCount = ReadCount(reader, MaxModifierRoleOptions);
+            int modifierCount = PresetRawDataLimits.ReadCount(reader, PresetRawDataLimits.MaxModifierRoleOptions, "modifier role option count");
             int parseBranchAttempts = 0;
             if (TryReadModifierRoleOptions(
                 reader,
@@ -685,14 +694,14 @@ internal static class PresetRawDataTailReader
 
     private static void ReadAssignFilterRoles(BinaryReader reader, List<string> roles)
     {
-        int assignFilterCount = ReadCount(reader, MaxModifierAssignFilterRoles);
+        int assignFilterCount = PresetRawDataLimits.ReadCount(reader, PresetRawDataLimits.MaxModifierAssignFilterRoles, "modifier assign filter count");
         for (int i = 0; i < assignFilterCount; i++)
             roles.Add(reader.ReadString());
     }
 
     private static List<GhostRoleOptionSnapshot> ReadGhostRoleOptions(BinaryReader reader)
     {
-        int count = ReadCount(reader, MaxGhostRoleOptions);
+        int count = PresetRawDataLimits.ReadCount(reader, PresetRawDataLimits.MaxGhostRoleOptions, "ghost role option count");
         var snapshots = new List<GhostRoleOptionSnapshot>(count);
         for (int i = 0; i < count; i++)
         {
@@ -709,12 +718,12 @@ internal static class PresetRawDataTailReader
 
     private static List<CategoryAssignFilterSnapshot> ReadCategoryAssignFilters(BinaryReader reader)
     {
-        int count = ReadCount(reader, MaxCategoryAssignFilters);
+        int count = PresetRawDataLimits.ReadCount(reader, PresetRawDataLimits.MaxCategoryAssignFilters, "category assign filter count");
         var snapshots = new List<CategoryAssignFilterSnapshot>(count);
         for (int i = 0; i < count; i++)
         {
             string categoryName = reader.ReadString();
-            int roleCount = ReadCount(reader, MaxCategoryAssignFilterRoles);
+            int roleCount = PresetRawDataLimits.ReadCount(reader, PresetRawDataLimits.MaxCategoryAssignFilterRoles, "category assign filter role count");
             var roles = new List<string>(roleCount);
             for (int j = 0; j < roleCount; j++)
                 roles.Add(reader.ReadString());
@@ -727,14 +736,6 @@ internal static class PresetRawDataTailReader
         }
 
         return snapshots;
-    }
-
-    private static int ReadCount(BinaryReader reader, int maxCount)
-    {
-        int count = reader.ReadInt32();
-        if (count < 0 || count > maxCount)
-            throw new InvalidDataException("Preset data count is invalid.");
-        return count;
     }
 
     private static bool ModifierHasAssignFilter(string modifierRoleId)
@@ -831,7 +832,10 @@ public partial class FileOptionStorage
             if (fileStream.Position < fileStream.Length)
                 snapshot.RoleOptions = ReadRoleOptionSnapshots(reader);
             if (fileStream.Position < fileStream.Length)
+            {
+                snapshot.HasExclusivitySettingsSection = true;
                 snapshot.ExclusivitySettings = ReadExclusivitySettingSnapshots(reader);
+            }
             if (fileStream.Position < fileStream.Length)
             {
                 PresetRawDataTailReader.Read(
@@ -872,7 +876,7 @@ public partial class FileOptionStorage
 
     private static List<RoleOptionSnapshot> ReadRoleOptionSnapshots(BinaryReader reader)
     {
-        int count = reader.ReadInt32();
+        int count = PresetRawDataLimits.ReadCount(reader, PresetRawDataLimits.MaxRoleOptions, "role option count");
         var snapshots = new List<RoleOptionSnapshot>(count);
         for (int i = 0; i < count; i++)
         {
@@ -888,12 +892,12 @@ public partial class FileOptionStorage
 
     private static List<ExclusivitySettingSnapshot> ReadExclusivitySettingSnapshots(BinaryReader reader)
     {
-        int count = reader.ReadInt32();
+        int count = PresetRawDataLimits.ReadCount(reader, PresetRawDataLimits.MaxExclusivitySettings, "exclusivity setting count");
         var snapshots = new List<ExclusivitySettingSnapshot>(count);
         for (int i = 0; i < count; i++)
         {
             int maxAssign = reader.ReadInt32();
-            int roleCount = reader.ReadInt32();
+            int roleCount = PresetRawDataLimits.ReadCount(reader, PresetRawDataLimits.MaxExclusivityRoles, "exclusivity role count");
             var roles = new List<string>(roleCount);
             for (int j = 0; j < roleCount; j++)
                 roles.Add(reader.ReadString());
@@ -1002,7 +1006,8 @@ internal static class PresetSnapshotRuntimeApplier
     public static void Apply(PresetSnapshot snapshot)
     {
         ApplyRoleOptions(snapshot.RoleOptions);
-        ApplyExclusivitySettings(snapshot.ExclusivitySettings);
+        if (snapshot.HasExclusivitySettingsSection)
+            ApplyExclusivitySettings(snapshot.ExclusivitySettings);
         ApplyModifierRoleOptions(snapshot.ModifierRoleOptions);
         ApplyGhostRoleOptions(snapshot.GhostRoleOptions);
         ApplyCategoryAssignFilters(snapshot.CategoryAssignFilters);

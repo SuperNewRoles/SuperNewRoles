@@ -1807,7 +1807,7 @@ public partial class FileOptionStorage : IOptionStorage
 
     private static Dictionary<string, byte> ReadOptions(BinaryReader reader)
     {
-        int optionCount = reader.ReadInt32();
+        int optionCount = PresetRawDataLimits.ReadCount(reader, PresetRawDataLimits.MaxOptions, "option count");
         var options = new Dictionary<string, byte>();
 
         for (int i = 0; i < optionCount; i++)

@@ -192,6 +192,27 @@ public class OptionStorageTests
     }
 
     [Fact]
+    public void FileOptionStorage_LoadPresetData_LegacyPresetWithoutExclusivitySection_PreservesRuntimeExclusivity()
+    {
+        var tempDir = new DirectoryInfo(Path.Combine(Path.GetTempPath(), "snr-tests-" + Guid.NewGuid().ToString("N")));
+        var storage = new FileOptionStorage(tempDir, "Options.data", "PresetOptions_");
+        storage.EnsureStorageExists();
+
+        RoleOptionManager.ClearLocalExclusivitySettings();
+        RoleOptionManager.AddLocalExclusivitySetting(7, new[] { RoleId.Crewmate.ToString() });
+        storage.SavePresetRawData(2, CreateLegacyPresetRawDataWithoutOptionalSections());
+
+        var (ok, _) = storage.LoadPresetData(2);
+
+        ok.Should().BeTrue();
+        RoleOptionManager.LocalExclusivitySettings.Should().ContainSingle();
+        RoleOptionManager.LocalExclusivitySettings[0].MaxAssign.Should().Be(7);
+        RoleOptionManager.LocalExclusivitySettings[0].Roles.Should().ContainSingle().Which.Should().Be(RoleId.Crewmate);
+
+        RoleOptionManager.ClearLocalExclusivitySettings();
+    }
+
+    [Fact]
     public void PresetImportExportService_ExportCurrentPresetArchive_WritesLauncherCompatibleEntries()
     {
         var tempDir = new DirectoryInfo(Path.Combine(Path.GetTempPath(), "snr-tests-" + Guid.NewGuid().ToString("N")));
@@ -633,6 +654,14 @@ public class OptionStorageTests
             names,
             currentPreset: 0,
             currentVersion: 1);
+        Action tooManyRoleOptions = () => PresetImportExportService.ImportPresetsArchive(
+            CreatePresetArchive(
+                storage.BuildOptionDataBytes(1, 11, new Dictionary<int, string> { [11] = "TooManyRoleOptions" }),
+                new Dictionary<int, byte[]> { [11] = CreatePresetRawDataWithTooManyRoleOptions() }),
+            storage,
+            names,
+            currentPreset: 0,
+            currentVersion: 1);
 
         corruptZip.Should().Throw<PresetImportExportException>();
         missingOptions.Should().Throw<PresetImportExportException>();
@@ -641,6 +670,7 @@ public class OptionStorageTests
         oversizedOptionsData.Should().Throw<PresetImportExportException>();
         oversizedPresetData.Should().Throw<PresetImportExportException>();
         tooManyModifiers.Should().Throw<PresetImportExportException>();
+        tooManyRoleOptions.Should().Throw<PresetImportExportException>();
     }
 
     // 目的: チェックサム不一致時に読み込みが失敗し、プリセット名がクリアされることを検証
@@ -716,6 +746,33 @@ public class OptionStorageTests
             writer.Write(0);
             writer.Write(0);
             writer.Write(257);
+        }
+
+        return memoryStream.ToArray();
+    }
+
+    private static byte[] CreatePresetRawDataWithTooManyRoleOptions()
+    {
+        using var memoryStream = new MemoryStream();
+        using (var writer = new BinaryWriter(memoryStream))
+        {
+            writer.Write((byte)2);
+            writer.Write((byte)4);
+            writer.Write(0);
+            writer.Write(257);
+        }
+
+        return memoryStream.ToArray();
+    }
+
+    private static byte[] CreateLegacyPresetRawDataWithoutOptionalSections()
+    {
+        using var memoryStream = new MemoryStream();
+        using (var writer = new BinaryWriter(memoryStream))
+        {
+            writer.Write((byte)2);
+            writer.Write((byte)4);
+            writer.Write(0);
         }
 
         return memoryStream.ToArray();

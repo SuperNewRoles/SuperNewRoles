@@ -93,10 +93,11 @@ public final class PresetFilePickerBridge {
         FragmentManager fragmentManager = activity.getFragmentManager();
         String tag = FRAGMENT_TAG + ":" + requestId;
         Fragment oldFragment = fragmentManager.findFragmentByTag(tag);
-        FragmentTransaction transaction = fragmentManager.beginTransaction();
         if (oldFragment != null) {
-            transaction.remove(oldFragment);
+            throw new IllegalStateException("Preset file picker request is already open.");
         }
+
+        FragmentTransaction transaction = fragmentManager.beginTransaction();
         transaction.add(fragment, tag);
         transaction.commitAllowingStateLoss();
         fragmentManager.executePendingTransactions();

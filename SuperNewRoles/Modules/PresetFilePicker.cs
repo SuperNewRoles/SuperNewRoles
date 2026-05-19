@@ -355,11 +355,12 @@ internal sealed class AndroidPresetFilePicker : IPresetFilePicker
     public void Export(string defaultFileName, byte[] contents, Action<PresetFilePickerResult> onComplete)
     {
         string requestId = string.Empty;
+        string sourcePath = string.Empty;
         IDisposable suspensionScope = null;
         try
         {
             requestId = Guid.NewGuid().ToString("N");
-            string sourcePath = Path.Combine(Application.temporaryCachePath, $"snr-preset-export-{requestId}.snrpresets");
+            sourcePath = Path.Combine(Application.temporaryCachePath, $"snr-preset-export-{requestId}.snrpresets");
             Directory.CreateDirectory(Path.GetDirectoryName(sourcePath));
             File.WriteAllBytes(sourcePath, contents ?? Array.Empty<byte>());
             suspensionScope = BeginAndroidSafSession();
@@ -368,6 +369,7 @@ internal sealed class AndroidPresetFilePicker : IPresetFilePicker
             {
                 suspensionScope.Dispose();
                 suspensionScope = null;
+                DeleteTempFile(sourcePath);
                 onComplete?.Invoke(PresetFilePickerResult.Error(registerError));
                 return;
             }
@@ -383,18 +385,19 @@ internal sealed class AndroidPresetFilePicker : IPresetFilePicker
         }
         catch (Exception ex)
         {
-            CompleteFailedStart(requestId, suspensionScope, onComplete, ex);
+            CompleteFailedStart(requestId, sourcePath, suspensionScope, onComplete, ex);
         }
     }
 
     public void Import(Action<PresetFilePickerResult> onComplete)
     {
         string requestId = string.Empty;
+        string targetPath = string.Empty;
         IDisposable suspensionScope = null;
         try
         {
             requestId = Guid.NewGuid().ToString("N");
-            string targetPath = Path.Combine(Application.temporaryCachePath, $"snr-preset-import-{requestId}.snrpresets");
+            targetPath = Path.Combine(Application.temporaryCachePath, $"snr-preset-import-{requestId}.snrpresets");
             Directory.CreateDirectory(Path.GetDirectoryName(targetPath));
             suspensionScope = BeginAndroidSafSession();
             // ここでscopeの所有権をPendingRequestへ移す。コールバック未到達時も失敗経路でDisposeする。
@@ -402,6 +405,7 @@ internal sealed class AndroidPresetFilePicker : IPresetFilePicker
             {
                 suspensionScope.Dispose();
                 suspensionScope = null;
+                DeleteTempFile(targetPath);
                 onComplete?.Invoke(PresetFilePickerResult.Error(registerError));
                 return;
             }
@@ -416,7 +420,7 @@ internal sealed class AndroidPresetFilePicker : IPresetFilePicker
         }
         catch (Exception ex)
         {
-            CompleteFailedStart(requestId, suspensionScope, onComplete, ex);
+            CompleteFailedStart(requestId, targetPath, suspensionScope, onComplete, ex);
         }
     }
 
@@ -461,6 +465,8 @@ internal sealed class AndroidPresetFilePicker : IPresetFilePicker
             Logger.Error($"Android preset file picker callback failed: {ex}");
             if (pendingRequest != null && !completed)
                 pendingRequest.Complete(PresetFilePickerResult.Error(ex.Message));
+            else if (TryRemoveOnlyPendingRequest(out pendingRequest))
+                pendingRequest.Complete(PresetFilePickerResult.Error("Android file picker callback failed."));
         }
     }
 
@@ -494,8 +500,26 @@ internal sealed class AndroidPresetFilePicker : IPresetFilePicker
         }
     }
 
+    private static bool TryRemoveOnlyPendingRequest(out PendingRequest pendingRequest)
+    {
+        lock (PendingRequestsLock)
+        {
+            if (PendingRequests.Count != 1)
+            {
+                pendingRequest = null;
+                return false;
+            }
+
+            string requestId = PendingRequests.Keys.First();
+            pendingRequest = PendingRequests[requestId];
+            PendingRequests.Remove(requestId);
+            return true;
+        }
+    }
+
     private static void CompleteFailedStart(
         string requestId,
+        string tempFilePath,
         IDisposable suspensionScope,
         Action<PresetFilePickerResult> onComplete,
         Exception ex)
@@ -509,7 +533,24 @@ internal sealed class AndroidPresetFilePicker : IPresetFilePicker
         }
 
         suspensionScope?.Dispose();
+        DeleteTempFile(tempFilePath);
         onComplete?.Invoke(PresetFilePickerResult.Error(ex.Message));
+    }
+
+    private static void DeleteTempFile(string path)
+    {
+        if (string.IsNullOrEmpty(path))
+            return;
+
+        try
+        {
+            if (File.Exists(path))
+                File.Delete(path);
+        }
+        catch (Exception ex)
+        {
+            Logger.Warning($"Could not delete Android preset file picker temp file: {ex.Message}");
+        }
     }
 
     private static IDisposable BeginAndroidSafSession()
@@ -857,9 +898,16 @@ internal sealed class AndroidPresetFilePicker : IPresetFilePicker
 
         public void Complete(PresetFilePickerResult result)
         {
-            // 成功・キャンセル・エラーのどれでもSAF用の一時変更はここで戻す。
-            _suspensionScope?.Dispose();
-            _onComplete?.Invoke(result);
+            try
+            {
+                // 成功・キャンセル・エラーのどれでもSAF用の一時変更はここで戻す。
+                _suspensionScope?.Dispose();
+                _onComplete?.Invoke(result);
+            }
+            finally
+            {
+                DeleteTempFile(TempFilePath);
+            }
         }
     }
 }
