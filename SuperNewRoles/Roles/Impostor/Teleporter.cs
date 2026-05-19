@@ -126,11 +126,19 @@ internal class TeleporterAbility : CustomButtonBase, IButtonEffect
 
     private static bool IsTeleportRecipient(ExPlayerControl player)
     {
-        return player != null
-            && player.IsAlive()
-            && player.Player != null
-            && player.NetTransform != null
-            && player.transform != null;
+        try
+        {
+            return player != null
+                && player.IsAlive()
+                && player.Player != null
+                && player.NetTransform != null
+                && player.transform != null;
+        }
+        catch (Exception ex)
+        {
+            Logger.Warning($"Skipping invalid teleport recipient: {ex.Message}", "Teleporter");
+            return false;
+        }
     }
 
     private static void TeleportPlayer(ExPlayerControl player, Vector2 position)
