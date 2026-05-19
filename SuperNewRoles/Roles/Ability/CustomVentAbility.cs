@@ -90,6 +90,9 @@ public class CustomVentAbility : CustomButtonBase, IButtonEffect
         if (vent == null)
             return false;
 
+        if (MechanicAbility.IsMovingVent(vent))
+            return false;
+
         if (IsBlockedByVentCleaning(vent))
             return false;
 
@@ -227,6 +230,14 @@ public class VentSetButtonsPatch
         {
             canUse = couldUse = false;
             __result = 0;
+            return false;
+        }
+
+        if (MechanicAbility.IsMovingVent(__instance))
+        {
+            __result = float.MaxValue;
+            canUse = false;
+            couldUse = false;
             return false;
         }
 

@@ -328,6 +328,7 @@ public sealed class RemoteControllerAbility : AbilityBase
         Vector3 position = vent.transform.position;
         float distance = Vector2.Distance(center, position);
         canUse = !IsVentBlockedByCleaning(targetPlayer, vent)
+            && !MechanicAbility.IsMovingVent(vent)
             && distance <= vent.UsableDistance
             && !PhysicsHelpers.AnythingBetween(targetPlayer.Player.Collider, center, position, Constants.ShipOnlyMask, false);
         return distance;
@@ -818,6 +819,12 @@ public static class RemoteControllerVentMovePatch
         if (RemoteControllerAbility.IsVentBlockedByCleaning(operatorTarget, otherVent))
         {
             error = "Vent is blocked by vent cleaning";
+            __result = false;
+            return false;
+        }
+        if (MechanicAbility.IsMovingVent(otherVent))
+        {
+            error = "Vent is moving";
             __result = false;
             return false;
         }
