@@ -1628,7 +1628,7 @@ public partial class FileOptionStorage : IOptionStorage
             for (int i = 0; i < nameCount; i++)
             {
                 int presetId = reader.ReadInt32();
-                string name = PresetRawDataLimits.ReadLimitedString(reader, PresetRawDataLimits.MaxPresetNameBytes, PresetRawDataLimits.MaxPresetNameLength, "preset name");
+                string name = PresetRawDataLimits.ReadPresetName(reader);
                 CustomOptionSaver.presetNames[presetId] = name;
             }
 
@@ -1815,7 +1815,7 @@ public partial class FileOptionStorage : IOptionStorage
 
         for (int i = 0; i < optionCount; i++)
         {
-            string id = PresetRawDataLimits.ReadLimitedString(reader, PresetRawDataLimits.MaxOptionIdBytes, PresetRawDataLimits.MaxOptionIdLength, "option id");
+            string id = PresetRawDataLimits.ReadOptionId(reader);
             options[id] = reader.ReadByte();
         }
 
