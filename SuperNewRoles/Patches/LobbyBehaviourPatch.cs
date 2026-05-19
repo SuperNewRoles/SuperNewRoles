@@ -34,6 +34,9 @@ public static class LobbyBehaviourPatch
         if (lobby == null || ConfigRoles.IsMuteLobbyBGM == null)
             return;
 
+        if (SoundManager.Instance == null)
+            return;
+
         if (ConfigRoles.IsMuteLobbyBGM.Value)
         {
             if (SoundManager.Instance.HasNamedSound(MapThemeName))
