@@ -162,6 +162,7 @@ public class OptionStorageTests
         storage.SavePresetSnapshot(4, new PresetSnapshot
         {
             Options = new Dictionary<string, byte> { ["option-a"] = 1 },
+            HasExclusivitySettingsSection = true,
             ExclusivitySettings = new List<ExclusivitySettingSnapshot>
             {
                 new()
@@ -189,6 +190,32 @@ public class OptionStorageTests
 
         RoleOptionManager.ClearLocalExclusivitySettings();
         RoleOptionManager.ClearHostExclusivitySettings();
+    }
+
+    [Fact]
+    public void FileOptionStorage_SavePresetSnapshot_CreatesStorageDirectory()
+    {
+        var tempDir = new DirectoryInfo(Path.Combine(Path.GetTempPath(), "snr-tests-" + Guid.NewGuid().ToString("N")));
+        var storage = new FileOptionStorage(tempDir, "Options.data", "PresetOptions_");
+
+        storage.SavePresetSnapshot(1, new PresetSnapshot { Options = new Dictionary<string, byte> { ["option-a"] = 1 } });
+
+        tempDir.Exists.Should().BeTrue();
+        storage.PresetDataExists(1).Should().BeTrue();
+    }
+
+    [Fact]
+    public void FileOptionStorage_SavePresetSnapshot_PreservesMissingExclusivitySection()
+    {
+        var tempDir = new DirectoryInfo(Path.Combine(Path.GetTempPath(), "snr-tests-" + Guid.NewGuid().ToString("N")));
+        var storage = new FileOptionStorage(tempDir, "Options.data", "PresetOptions_");
+
+        storage.SavePresetSnapshot(1, new PresetSnapshot { Options = new Dictionary<string, byte> { ["option-a"] = 1 } });
+
+        var (ok, snapshot) = storage.LoadPresetSnapshot(1);
+
+        ok.Should().BeTrue();
+        snapshot.HasExclusivitySettingsSection.Should().BeFalse();
     }
 
     [Fact]
@@ -329,6 +356,27 @@ public class OptionStorageTests
         names.Should().ContainKey(10).WhoseValue.Should().Be("Imported");
         storage.LoadPresetRawData(0).data.Should().Equal(existingRaw);
         storage.LoadPresetSnapshot(10).snapshot.Options.Should().ContainKey("imported").WhoseValue.Should().Be(2);
+    }
+
+    [Fact]
+    public void PresetImportExportService_ImportSaveOptionFailure_RollsBackPresetRawDataAndNames()
+    {
+        var tempDir = new DirectoryInfo(Path.Combine(Path.GetTempPath(), "snr-tests-" + Guid.NewGuid().ToString("N")));
+        var innerStorage = new FileOptionStorage(tempDir, "Options.data", "PresetOptions_");
+        innerStorage.EnsureStorageExists();
+        innerStorage.SavePresetSnapshot(0, new PresetSnapshot { Options = new Dictionary<string, byte> { ["existing"] = 1 } });
+        var storage = new SaveOptionFailingStorage(innerStorage);
+        var names = new Dictionary<int, string> { [0] = "Existing" };
+        byte[] archiveBytes = CreatePresetArchive(
+            innerStorage.BuildOptionDataBytes(1, 4, new Dictionary<int, string> { [4] = "Imported" }),
+            new Dictionary<int, byte[]> { [4] = CreatePresetRawData(new Dictionary<string, byte> { ["imported"] = 2 }) });
+
+        Action import = () => PresetImportExportService.ImportPresetsArchive(archiveBytes, storage, names, currentPreset: 0, currentVersion: 1);
+
+        import.Should().Throw<PresetImportExportException>();
+        names.Should().ContainSingle().Which.Should().Be(new KeyValuePair<int, string>(0, "Existing"));
+        storage.PresetDataExists(1).Should().BeFalse();
+        storage.DeletedPresetIds.Should().Contain(1);
     }
 
     [Fact]
@@ -704,6 +752,14 @@ public class OptionStorageTests
             names,
             currentPreset: 0,
             currentVersion: 1);
+        Action tooLongOptionId = () => PresetImportExportService.ImportPresetsArchive(
+            CreatePresetArchive(
+                storage.BuildOptionDataBytes(1, 14, new Dictionary<int, string> { [14] = "TooLongOptionId" }),
+                new Dictionary<int, byte[]> { [14] = CreatePresetRawDataWithTooLongOptionId() }),
+            storage,
+            names,
+            currentPreset: 0,
+            currentVersion: 1);
 
         corruptZip.Should().Throw<PresetImportExportException>();
         missingOptions.Should().Throw<PresetImportExportException>();
@@ -715,6 +771,7 @@ public class OptionStorageTests
         tooLongPresetName.Should().Throw<PresetImportExportException>();
         tooManyModifiers.Should().Throw<PresetImportExportException>();
         tooManyRoleOptions.Should().Throw<PresetImportExportException>();
+        tooLongOptionId.Should().Throw<PresetImportExportException>();
     }
 
     // 目的: チェックサム不一致時に読み込みが失敗し、プリセット名がクリアされることを検証
@@ -806,6 +863,21 @@ public class OptionStorageTests
             writer.Write((byte)4);
             writer.Write(0);
             writer.Write(257);
+        }
+
+        return memoryStream.ToArray();
+    }
+
+    private static byte[] CreatePresetRawDataWithTooLongOptionId()
+    {
+        using var memoryStream = new MemoryStream();
+        using (var writer = new BinaryWriter(memoryStream))
+        {
+            writer.Write((byte)2);
+            writer.Write((byte)4);
+            writer.Write(1);
+            writer.Write(new string('A', PresetRawDataLimits.MaxOptionIdLength + 1));
+            writer.Write((byte)1);
         }
 
         return memoryStream.ToArray();
@@ -919,6 +991,42 @@ public class OptionStorageTests
             ImportCalls++;
             onComplete(ImportResult);
         }
+    }
+
+    private sealed class SaveOptionFailingStorage : IOptionStorage
+    {
+        private readonly FileOptionStorage _inner;
+        public List<int> DeletedPresetIds { get; } = new();
+
+        public SaveOptionFailingStorage(FileOptionStorage inner)
+        {
+            _inner = inner;
+        }
+
+        public void EnsureStorageExists() => _inner.EnsureStorageExists();
+        public (bool success, byte version, int preset) LoadOptionData() => _inner.LoadOptionData();
+        public (bool success, Dictionary<string, byte> options) LoadPresetData(int preset) => _inner.LoadPresetData(preset);
+        public (bool success, PresetSnapshot snapshot) LoadPresetSnapshot(int preset) => _inner.LoadPresetSnapshot(preset);
+        public (bool success, byte[] data) LoadPresetRawData(int preset) => _inner.LoadPresetRawData(preset);
+        public (bool success, Dictionary<int, string> names) LoadPresetNames() => _inner.LoadPresetNames();
+        public byte[] BuildOptionDataBytes(byte version, int preset, IReadOnlyDictionary<int, string> presetNames)
+            => _inner.BuildOptionDataBytes(version, preset, presetNames);
+        public void SaveOptionData(byte version, int preset)
+            => throw new IOException("Options.data save failed.");
+        public void SaveOptionData(byte version, int preset, IReadOnlyDictionary<int, string> presetNames)
+            => throw new IOException("Options.data save failed.");
+        public void SavePresetData(int preset, IEnumerable<CustomOption> options) => _inner.SavePresetData(preset, options);
+        public void SavePresetSnapshot(int preset, PresetSnapshot snapshot) => _inner.SavePresetSnapshot(preset, snapshot);
+        public void SavePresetRawData(int preset, byte[] data) => _inner.SavePresetRawData(preset, data);
+
+        public void DeletePresetRawData(int preset)
+        {
+            DeletedPresetIds.Add(preset);
+            _inner.DeletePresetRawData(preset);
+        }
+
+        public bool PresetDataExists(int preset) => _inner.PresetDataExists(preset);
+        public IReadOnlyCollection<int> GetExistingPresetDataIds() => _inner.GetExistingPresetDataIds();
     }
 
     private static bool _dummyBool;

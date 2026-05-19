@@ -1572,6 +1572,7 @@ public interface IOptionStorage
     void SavePresetData(int preset, IEnumerable<CustomOption> options);
     void SavePresetSnapshot(int preset, PresetSnapshot snapshot);
     void SavePresetRawData(int preset, byte[] data);
+    void DeletePresetRawData(int preset);
     bool PresetDataExists(int preset);
     IReadOnlyCollection<int> GetExistingPresetDataIds();
 }
@@ -1623,11 +1624,11 @@ public partial class FileOptionStorage : IOptionStorage
 
             // プリセット名を読み込む (this.presetNames を更新)
             CustomOptionSaver.presetNames.Clear();
-            int nameCount = reader.ReadInt32();
+            int nameCount = PresetRawDataLimits.ReadCount(reader, PresetRawDataLimits.MaxPresetNames, "preset name count");
             for (int i = 0; i < nameCount; i++)
             {
                 int presetId = reader.ReadInt32();
-                string name = reader.ReadString();
+                string name = PresetRawDataLimits.ReadLimitedString(reader, PresetRawDataLimits.MaxPresetNameBytes, PresetRawDataLimits.MaxPresetNameLength, "preset name");
                 CustomOptionSaver.presetNames[presetId] = name;
             }
 
@@ -1680,6 +1681,7 @@ public partial class FileOptionStorage : IOptionStorage
     {
         lock (FileLocker)
         {
+            EnsureStorageExists();
             File.WriteAllBytes(_optionFileName, BuildOptionDataBytes(version, preset, presetNames));
         }
     }
@@ -1688,6 +1690,7 @@ public partial class FileOptionStorage : IOptionStorage
     {
         lock (FileLocker)
         {
+            EnsureStorageExists();
             string fileName = $"{_presetFileNameBase}{preset}.data";
             using var fileStream = new FileStream(fileName, FileMode.Create);
             using var writer = new BinaryWriter(fileStream);
@@ -1812,7 +1815,7 @@ public partial class FileOptionStorage : IOptionStorage
 
         for (int i = 0; i < optionCount; i++)
         {
-            string id = reader.ReadString();
+            string id = PresetRawDataLimits.ReadLimitedString(reader, PresetRawDataLimits.MaxOptionIdBytes, PresetRawDataLimits.MaxOptionIdLength, "option id");
             options[id] = reader.ReadByte();
         }
 

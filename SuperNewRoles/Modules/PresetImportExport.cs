@@ -198,21 +198,55 @@ public static class PresetImportExportService
                     .Select(NormalizePresetNameKey),
                 StringComparer.OrdinalIgnoreCase);
             long nextPresetId = usedIds.Count == 0 ? 0 : (long)usedIds.Max() + 1;
-            var importedIds = new List<int>();
+            var importPlans = new List<ArchivePresetImportPlan>();
 
             foreach (var pair in requestedPresets)
             {
                 int targetPresetId = GetNextImportedPresetId(usedIds, ref nextPresetId);
                 string targetName = GetUniquePresetName(pair.Name, usedNames);
-
-                storage.SavePresetRawData(targetPresetId, presetDataBySourceId[pair.SourcePresetId]);
-                presetNames[targetPresetId] = targetName;
                 usedIds.Add(targetPresetId);
-                importedIds.Add(targetPresetId);
+                importPlans.Add(new ArchivePresetImportPlan(
+                    targetPresetId,
+                    targetName,
+                    presetDataBySourceId[pair.SourcePresetId]));
             }
 
-            storage.SaveOptionData(currentVersion, currentPreset, new Dictionary<int, string>(presetNames));
-            return new PresetImportResult(importedIds);
+            var updatedPresetNames = new Dictionary<int, string>(presetNames);
+            foreach (var plan in importPlans)
+                updatedPresetNames[plan.TargetPresetId] = plan.Name;
+
+            var savedPresetIds = new List<int>();
+            try
+            {
+                foreach (var plan in importPlans)
+                {
+                    storage.SavePresetRawData(plan.TargetPresetId, plan.Data);
+                    savedPresetIds.Add(plan.TargetPresetId);
+                }
+
+                storage.SaveOptionData(currentVersion, currentPreset, updatedPresetNames);
+            }
+            catch
+            {
+                foreach (int savedPresetId in savedPresetIds)
+                {
+                    try
+                    {
+                        storage.DeletePresetRawData(savedPresetId);
+                    }
+                    catch (Exception rollbackEx)
+                    {
+                        Logger.Warning($"Failed to roll back imported preset {savedPresetId}: {rollbackEx.Message}");
+                    }
+                }
+                throw;
+            }
+
+            presetNames.Clear();
+            foreach (var pair in updatedPresetNames)
+                presetNames[pair.Key] = pair.Value;
+
+            return new PresetImportResult(importPlans.Select(plan => plan.TargetPresetId).ToList());
         }
         catch (PresetImportExportException)
         {
@@ -367,7 +401,7 @@ public static class PresetImportExportService
         int optionCount = PresetRawDataLimits.ReadCount(reader, PresetRawDataLimits.MaxOptions, "option count");
         for (int i = 0; i < optionCount; i++)
         {
-            _ = reader.ReadString();
+            _ = PresetRawDataLimits.ReadLimitedString(reader, PresetRawDataLimits.MaxOptionIdBytes, PresetRawDataLimits.MaxOptionIdLength, "option id");
             _ = reader.ReadByte();
         }
     }
@@ -377,7 +411,7 @@ public static class PresetImportExportService
         int count = PresetRawDataLimits.ReadCount(reader, PresetRawDataLimits.MaxRoleOptions, "role option count");
         for (int i = 0; i < count; i++)
         {
-            _ = reader.ReadString();
+            _ = PresetRawDataLimits.ReadLimitedString(reader, PresetRawDataLimits.MaxRoleIdBytes, PresetRawDataLimits.MaxRoleIdLength, "role id");
             _ = reader.ReadByte();
             _ = reader.ReadInt32();
         }
@@ -391,7 +425,7 @@ public static class PresetImportExportService
             _ = reader.ReadInt32();
             int roleCount = PresetRawDataLimits.ReadCount(reader, PresetRawDataLimits.MaxExclusivityRoles, "exclusivity role count");
             for (int j = 0; j < roleCount; j++)
-                _ = reader.ReadString();
+                _ = PresetRawDataLimits.ReadLimitedString(reader, PresetRawDataLimits.MaxRoleIdBytes, PresetRawDataLimits.MaxRoleIdLength, "exclusivity role id");
         }
     }
 
@@ -463,6 +497,20 @@ public static class PresetImportExportService
             Name = name;
         }
     }
+
+    private sealed class ArchivePresetImportPlan
+    {
+        public int TargetPresetId { get; }
+        public string Name { get; }
+        public byte[] Data { get; }
+
+        public ArchivePresetImportPlan(int targetPresetId, string name, byte[] data)
+        {
+            TargetPresetId = targetPresetId;
+            Name = name;
+            Data = data;
+        }
+    }
 }
 
 public static partial class CustomOptionSaver
@@ -503,6 +551,12 @@ internal static class PresetRawDataLimits
     public const int MaxPresetNames = 256;
     public const int MaxPresetNameBytes = 1024;
     public const int MaxPresetNameLength = 128;
+    public const int MaxOptionIdBytes = 1024;
+    public const int MaxOptionIdLength = 256;
+    public const int MaxRoleIdBytes = 256;
+    public const int MaxRoleIdLength = 128;
+    public const int MaxCategoryNameBytes = 512;
+    public const int MaxCategoryNameLength = 128;
     public const int MaxOptions = 4096;
     public const int MaxRoleOptions = 256;
     public const int MaxExclusivitySettings = 256;
@@ -726,7 +780,7 @@ internal static class PresetRawDataTailReader
     {
         return new ModifierRoleOptionSnapshot
         {
-            ModifierRoleId = reader.ReadString(),
+            ModifierRoleId = PresetRawDataLimits.ReadLimitedString(reader, PresetRawDataLimits.MaxRoleIdBytes, PresetRawDataLimits.MaxRoleIdLength, "modifier role id"),
             NumberOfCrews = reader.ReadByte(),
             Percentage = reader.ReadInt32(),
             MaxImpostors = reader.ReadInt32(),
@@ -742,7 +796,7 @@ internal static class PresetRawDataTailReader
     {
         int assignFilterCount = PresetRawDataLimits.ReadCount(reader, PresetRawDataLimits.MaxModifierAssignFilterRoles, "modifier assign filter count");
         for (int i = 0; i < assignFilterCount; i++)
-            roles.Add(reader.ReadString());
+            roles.Add(PresetRawDataLimits.ReadLimitedString(reader, PresetRawDataLimits.MaxRoleIdBytes, PresetRawDataLimits.MaxRoleIdLength, "modifier assign filter role id"));
     }
 
     private static List<GhostRoleOptionSnapshot> ReadGhostRoleOptions(BinaryReader reader)
@@ -753,7 +807,7 @@ internal static class PresetRawDataTailReader
         {
             snapshots.Add(new GhostRoleOptionSnapshot
             {
-                GhostRoleId = reader.ReadString(),
+                GhostRoleId = PresetRawDataLimits.ReadLimitedString(reader, PresetRawDataLimits.MaxRoleIdBytes, PresetRawDataLimits.MaxRoleIdLength, "ghost role id"),
                 NumberOfCrews = reader.ReadByte(),
                 Percentage = reader.ReadInt32()
             });
@@ -768,11 +822,11 @@ internal static class PresetRawDataTailReader
         var snapshots = new List<CategoryAssignFilterSnapshot>(count);
         for (int i = 0; i < count; i++)
         {
-            string categoryName = reader.ReadString();
+            string categoryName = PresetRawDataLimits.ReadLimitedString(reader, PresetRawDataLimits.MaxCategoryNameBytes, PresetRawDataLimits.MaxCategoryNameLength, "category name");
             int roleCount = PresetRawDataLimits.ReadCount(reader, PresetRawDataLimits.MaxCategoryAssignFilterRoles, "category assign filter role count");
             var roles = new List<string>(roleCount);
             for (int j = 0; j < roleCount; j++)
-                roles.Add(reader.ReadString());
+                roles.Add(PresetRawDataLimits.ReadLimitedString(reader, PresetRawDataLimits.MaxRoleIdBytes, PresetRawDataLimits.MaxRoleIdLength, "category assign filter role id"));
 
             snapshots.Add(new CategoryAssignFilterSnapshot
             {
@@ -828,6 +882,16 @@ public partial class FileOptionStorage
         {
             EnsureStorageExists();
             File.WriteAllBytes(GetPresetFileName(preset), data ?? Array.Empty<byte>());
+        }
+    }
+
+    public void DeletePresetRawData(int preset)
+    {
+        lock (FileLocker)
+        {
+            string fileName = GetPresetFileName(preset);
+            if (File.Exists(fileName))
+                File.Delete(fileName);
         }
     }
 
@@ -903,6 +967,7 @@ public partial class FileOptionStorage
     {
         lock (FileLocker)
         {
+            EnsureStorageExists();
             string fileName = GetPresetFileName(preset);
             using var fileStream = new FileStream(fileName, FileMode.Create);
             using var writer = new BinaryWriter(fileStream);
@@ -910,6 +975,17 @@ public partial class FileOptionStorage
             WriteChecksum(writer);
             WriteOptionSnapshots(writer, snapshot.Options);
             WriteRoleOptionSnapshots(writer, snapshot.RoleOptions);
+            bool hasTailSections =
+                snapshot.ModifierRoleOptions.Count > 0 ||
+                snapshot.GhostRoleOptions.Count > 0 ||
+                snapshot.CategoryAssignFilters.Count > 0;
+            bool hasExclusivitySection =
+                snapshot.HasExclusivitySettingsSection ||
+                snapshot.ExclusivitySettings.Count > 0 ||
+                hasTailSections;
+            if (!hasExclusivitySection)
+                return;
+
             WriteExclusivitySettingSnapshots(writer, snapshot.ExclusivitySettings);
             WriteModifierRoleOptionSnapshots(writer, snapshot.ModifierRoleOptions);
             WriteGhostRoleOptionSnapshots(writer, snapshot.GhostRoleOptions);
@@ -928,7 +1004,7 @@ public partial class FileOptionStorage
         {
             snapshots.Add(new RoleOptionSnapshot
             {
-                RoleId = reader.ReadString(),
+                RoleId = PresetRawDataLimits.ReadLimitedString(reader, PresetRawDataLimits.MaxRoleIdBytes, PresetRawDataLimits.MaxRoleIdLength, "role id"),
                 NumberOfCrews = reader.ReadByte(),
                 Percentage = reader.ReadInt32()
             });
@@ -946,7 +1022,7 @@ public partial class FileOptionStorage
             int roleCount = PresetRawDataLimits.ReadCount(reader, PresetRawDataLimits.MaxExclusivityRoles, "exclusivity role count");
             var roles = new List<string>(roleCount);
             for (int j = 0; j < roleCount; j++)
-                roles.Add(reader.ReadString());
+                roles.Add(PresetRawDataLimits.ReadLimitedString(reader, PresetRawDataLimits.MaxRoleIdBytes, PresetRawDataLimits.MaxRoleIdLength, "exclusivity role id"));
 
             snapshots.Add(new ExclusivitySettingSnapshot
             {
