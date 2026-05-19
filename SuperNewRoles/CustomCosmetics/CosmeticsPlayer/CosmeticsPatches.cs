@@ -243,10 +243,7 @@ public static class PoolablePlayer_UpdateFromEitherPlayerDataOrCache
         if (!string.IsNullOrEmpty(visor2Id))
             customCosmeticsLayer?.visor2?.SetVisor(visor2Id, pData.DefaultOutfit.ColorId);
 
-        customCosmeticsLayer?.hat1?.SetMaskType(maskType);
-        customCosmeticsLayer?.hat2?.SetMaskType(maskType);
-        customCosmeticsLayer?.visor1?.SetMaskType(maskType);
-        customCosmeticsLayer?.visor2?.SetMaskType(maskType);
+        CustomCosmeticsLayerMask.ApplyMaskType(customCosmeticsLayer, maskType);
     }
 }
 [HarmonyPatch(typeof(PoolablePlayer), nameof(PoolablePlayer.UpdateFromPlayerData))]
@@ -272,10 +269,7 @@ public static class PoolablePlayer_UpdateFromPlayerData
         if (!string.IsNullOrEmpty(visor2Id))
             customCosmeticsLayer?.visor2?.SetVisor(visor2Id, pData.DefaultOutfit.ColorId);
 
-        customCosmeticsLayer?.hat1?.SetMaskType(maskType);
-        customCosmeticsLayer?.hat2?.SetMaskType(maskType);
-        customCosmeticsLayer?.visor1?.SetMaskType(maskType);
-        customCosmeticsLayer?.visor2?.SetMaskType(maskType);
+        CustomCosmeticsLayerMask.ApplyMaskType(customCosmeticsLayer, maskType);
     }
 }
 [HarmonyPatch(typeof(ChatBubble), nameof(ChatBubble.SetCosmetics))]
@@ -295,10 +289,39 @@ public static class CosmeticsLayer_SetMaskType
     public static void Postfix(CosmeticsLayer __instance, PlayerMaterial.MaskType type)
     {
         CustomCosmeticsLayer customCosmeticsLayer = CustomCosmeticsLayers.ExistsOrInitialize(__instance);
-        customCosmeticsLayer?.hat1?.SetMaskType(type);
-        customCosmeticsLayer?.hat2?.SetMaskType(type);
-        customCosmeticsLayer?.visor1?.SetMaskType(type);
-        customCosmeticsLayer?.visor2?.SetMaskType(type);
+        CustomCosmeticsLayerMask.ApplyMaskType(customCosmeticsLayer, type);
+    }
+}
+[HarmonyPatch(typeof(CosmeticsLayer), nameof(CosmeticsLayer.SetMaskLayer))]
+public static class CosmeticsLayer_SetMaskLayer
+{
+    public static void Postfix(CosmeticsLayer __instance, int layer)
+    {
+        if (!CustomCosmeticsLayers.Exists(__instance, out var customCosmeticsLayer)) return;
+
+        CustomCosmeticsLayerMask.ApplyMaskLayer(customCosmeticsLayer, layer);
+    }
+}
+public static class CustomCosmeticsLayerMask
+{
+    public static void ApplyMaskType(CustomCosmeticsLayer customCosmeticsLayer, PlayerMaterial.MaskType type)
+    {
+        if (customCosmeticsLayer == null) return;
+
+        customCosmeticsLayer.hat1?.SetMaskType(type);
+        customCosmeticsLayer.hat2?.SetMaskType(type);
+        customCosmeticsLayer.visor1?.SetMaskType(type);
+        customCosmeticsLayer.visor2?.SetMaskType(type);
+    }
+
+    public static void ApplyMaskLayer(CustomCosmeticsLayer customCosmeticsLayer, int layer)
+    {
+        if (customCosmeticsLayer == null) return;
+
+        customCosmeticsLayer.hat1?.SetMaskLayer(layer);
+        customCosmeticsLayer.hat2?.SetMaskLayer(layer);
+        customCosmeticsLayer.visor1?.SetMaskLayer(layer);
+        customCosmeticsLayer.visor2?.SetMaskLayer(layer);
     }
 }
 [HarmonyPatch(typeof(CosmeticsLayer), nameof(CosmeticsLayer.AnimateClimb))]
