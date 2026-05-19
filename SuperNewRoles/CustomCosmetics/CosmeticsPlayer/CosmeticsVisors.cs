@@ -232,9 +232,7 @@ public class CustomVisorLayer : MonoBehaviour
 
     private void UpdateMaterial()
     {
-        if (Image == null)
-            return;
-        if (!DestroyableSingleton<HatManager>.InstanceExists)
+        if (!IsRendererReady() || !DestroyableSingleton<HatManager>.InstanceExists)
             return;
 
         PlayerMaterial.MaskType maskType = matProperties.MaskType;
