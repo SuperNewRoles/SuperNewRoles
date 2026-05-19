@@ -1,5 +1,7 @@
 using System;
+using System.Reflection;
 using FluentAssertions;
+using SuperNewRoles.CustomOptions;
 using SuperNewRoles.CustomOptions.Categories;
 using SuperNewRoles.Modules;
 using Xunit;
@@ -8,6 +10,28 @@ namespace SuperNewRoles.Tests;
 
 public class TaskSelectionExclusionTests
 {
+    [Fact]
+    public void ExclusionOptions_DefaultToOff()
+    {
+        string[] fieldNames =
+        [
+            nameof(GameSettingOptions.ExcludeSpecificTasksFromSelection),
+            nameof(GameSettingOptions.ExcludeUnlockSafeTaskFromSelection),
+            nameof(GameSettingOptions.ExcludeResetBreakersTaskFromSelection),
+            nameof(GameSettingOptions.ExcludeCatchFishTaskFromSelection),
+            nameof(GameSettingOptions.ExcludeUploadDataTaskFromSelection),
+            nameof(GameSettingOptions.ExcludeVentCleaningTaskFromSelection),
+            nameof(GameSettingOptions.ExcludeSubmitScanTaskFromSelection),
+        ];
+
+        foreach (var fieldName in fieldNames)
+        {
+            var field = typeof(GameSettingOptions).GetField(fieldName, BindingFlags.Public | BindingFlags.Static);
+            field.Should().NotBeNull();
+            field!.GetCustomAttribute<CustomOptionBoolAttribute>()!.DefaultValue.Should().BeFalse(fieldName);
+        }
+    }
+
     [Fact]
     public void IsExcluded_ParentDisabled_DoesNotExcludeTasks()
     {
