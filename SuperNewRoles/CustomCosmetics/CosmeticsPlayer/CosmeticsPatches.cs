@@ -243,7 +243,9 @@ public static class PoolablePlayer_UpdateFromEitherPlayerDataOrCache
         if (!string.IsNullOrEmpty(visor2Id))
             customCosmeticsLayer?.visor2?.SetVisor(visor2Id, pData.DefaultOutfit.ColorId);
 
+        customCosmeticsLayer?.hat1?.SetMaskType(maskType);
         customCosmeticsLayer?.hat2?.SetMaskType(maskType);
+        customCosmeticsLayer?.visor1?.SetMaskType(maskType);
         customCosmeticsLayer?.visor2?.SetMaskType(maskType);
     }
 }
@@ -270,7 +272,9 @@ public static class PoolablePlayer_UpdateFromPlayerData
         if (!string.IsNullOrEmpty(visor2Id))
             customCosmeticsLayer?.visor2?.SetVisor(visor2Id, pData.DefaultOutfit.ColorId);
 
+        customCosmeticsLayer?.hat1?.SetMaskType(maskType);
         customCosmeticsLayer?.hat2?.SetMaskType(maskType);
+        customCosmeticsLayer?.visor1?.SetMaskType(maskType);
         customCosmeticsLayer?.visor2?.SetMaskType(maskType);
     }
 }
@@ -291,7 +295,9 @@ public static class CosmeticsLayer_SetMaskType
     public static void Postfix(CosmeticsLayer __instance, PlayerMaterial.MaskType type)
     {
         CustomCosmeticsLayer customCosmeticsLayer = CustomCosmeticsLayers.ExistsOrInitialize(__instance);
+        customCosmeticsLayer?.hat1?.SetMaskType(type);
         customCosmeticsLayer?.hat2?.SetMaskType(type);
+        customCosmeticsLayer?.visor1?.SetMaskType(type);
         customCosmeticsLayer?.visor2?.SetMaskType(type);
     }
 }
