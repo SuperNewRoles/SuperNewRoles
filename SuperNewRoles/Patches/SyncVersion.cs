@@ -667,6 +667,8 @@ internal static class SyncVersionErrorHandler
             bool hasError = SyncVersion.VersionData.IsError.TryGetValue(playerId, out SyncErrorType errorType);
             if (hasVersion && hasError && (errorType == SyncErrorType.NotMismatch || errorType == SyncErrorType.HashMismatch))
                 continue;
+            if (!hasVersion && hasError && errorType == SyncErrorType.NotMismatch)
+                continue;
 
             var displayErrorType = hasVersion && hasError ? errorType : SyncErrorType.NotInstalled;
             var errorMessage = CreateErrorMessage(new KeyValuePair<byte, SyncErrorType>(playerId, displayErrorType));
