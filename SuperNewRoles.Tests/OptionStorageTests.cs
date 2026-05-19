@@ -596,6 +596,26 @@ public class OptionStorageTests
     }
 
     [Fact]
+    public void PresetImportExportService_ReadArchiveFileBytes_ShouldRejectOversizedFiles()
+    {
+        string path = Path.Combine(Path.GetTempPath(), "snr-tests-" + Guid.NewGuid().ToString("N") + ".snrpresets");
+        try
+        {
+            using (var fileStream = new FileStream(path, FileMode.CreateNew, FileAccess.Write, FileShare.None))
+                fileStream.SetLength((long)PresetImportExportService.MaxArchiveFileBytes + 1);
+
+            Action read = () => PresetImportExportService.ReadArchiveFileBytes(path);
+
+            read.Should().Throw<PresetImportExportException>();
+        }
+        finally
+        {
+            if (File.Exists(path))
+                File.Delete(path);
+        }
+    }
+
+    [Fact]
     public void PresetImportExportService_InvalidArchive_ShouldFail()
     {
         var tempDir = new DirectoryInfo(Path.Combine(Path.GetTempPath(), "snr-tests-" + Guid.NewGuid().ToString("N")));
@@ -646,6 +666,28 @@ public class OptionStorageTests
             names,
             currentPreset: 0,
             currentVersion: 1);
+        Action tooManyPresetNames = () => PresetImportExportService.ImportPresetsArchive(
+            CreatePresetArchive(
+                storage.BuildOptionDataBytes(
+                    1,
+                    12,
+                    Enumerable.Range(0, PresetRawDataLimits.MaxPresetNames + 1).ToDictionary(id => id, id => "Preset" + id)),
+                new Dictionary<int, byte[]>()),
+            storage,
+            names,
+            currentPreset: 0,
+            currentVersion: 1);
+        Action tooLongPresetName = () => PresetImportExportService.ImportPresetsArchive(
+            CreatePresetArchive(
+                storage.BuildOptionDataBytes(
+                    1,
+                    13,
+                    new Dictionary<int, string> { [13] = new string('A', PresetRawDataLimits.MaxPresetNameLength + 1) }),
+                new Dictionary<int, byte[]>()),
+            storage,
+            names,
+            currentPreset: 0,
+            currentVersion: 1);
         Action tooManyModifiers = () => PresetImportExportService.ImportPresetsArchive(
             CreatePresetArchive(
                 storage.BuildOptionDataBytes(1, 10, new Dictionary<int, string> { [10] = "TooManyModifiers" }),
@@ -669,6 +711,8 @@ public class OptionStorageTests
         corruptPresetData.Should().Throw<PresetImportExportException>();
         oversizedOptionsData.Should().Throw<PresetImportExportException>();
         oversizedPresetData.Should().Throw<PresetImportExportException>();
+        tooManyPresetNames.Should().Throw<PresetImportExportException>();
+        tooLongPresetName.Should().Throw<PresetImportExportException>();
         tooManyModifiers.Should().Throw<PresetImportExportException>();
         tooManyRoleOptions.Should().Throw<PresetImportExportException>();
     }
@@ -703,7 +747,9 @@ public class OptionStorageTests
         var storage = new FileOptionStorage(tempDir, "Options.data", "PresetOptions_");
         storage.EnsureStorageExists();
         storage.SavePresetSnapshot(1, new PresetSnapshot { Options = options });
-        return storage.LoadPresetRawData(1).data;
+        var (ok, data) = storage.LoadPresetRawData(1);
+        ok.Should().BeTrue();
+        return data;
     }
 
     private static byte[] CreatePresetRawDataWithUnknownModifierAssignFilter()

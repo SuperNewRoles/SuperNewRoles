@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.IO.Compression;
 using System.Linq;
+using System.Text;
 using SuperNewRoles.Roles;
 
 namespace SuperNewRoles.Modules;
@@ -88,8 +89,20 @@ public static class PresetImportExportService
     public const string OptionsArchivePath = "SuperNewRolesNext/SaveData/Options.data";
     public const string PresetArchivePathPrefix = "SuperNewRolesNext/SaveData/PresetOptions_";
     public const string PresetArchivePathSuffix = ".data";
+    public const int MaxArchiveFileBytes = 32 * 1024 * 1024;
     private const int MaxOptionsEntryBytes = 1024 * 1024;
     private const int MaxPresetEntryBytes = 4 * 1024 * 1024;
+
+    public static byte[] ReadArchiveFileBytes(string path)
+    {
+        var fileInfo = new FileInfo(path);
+        if (!fileInfo.Exists)
+            throw new FileNotFoundException("Preset archive file was not found.", path);
+        if (fileInfo.Length > MaxArchiveFileBytes)
+            throw new PresetImportExportException("Preset archive file is too large.");
+
+        return File.ReadAllBytes(path);
+    }
 
     public static byte[] ExportPresetArchive(
         IOptionStorage storage,
@@ -305,15 +318,13 @@ public static class PresetImportExportService
             throw new PresetImportExportException("Options.data checksum is invalid.");
 
         int currentPreset = reader.ReadInt32();
-        int presetNameCount = reader.ReadInt32();
-        if (presetNameCount < 0)
-            throw new PresetImportExportException("Options.data preset name count is invalid.");
+        int presetNameCount = PresetRawDataLimits.ReadCount(reader, PresetRawDataLimits.MaxPresetNames, "preset name count");
 
         var presetNames = new Dictionary<int, string>();
         for (int i = 0; i < presetNameCount; i++)
         {
             int presetId = reader.ReadInt32();
-            string name = reader.ReadString();
+            string name = PresetRawDataLimits.ReadLimitedString(reader, PresetRawDataLimits.MaxPresetNameBytes, PresetRawDataLimits.MaxPresetNameLength, "preset name");
             if (presetId >= 0)
                 presetNames[presetId] = name ?? string.Empty;
         }
@@ -489,6 +500,9 @@ public static partial class CustomOptionSaver
 
 internal static class PresetRawDataLimits
 {
+    public const int MaxPresetNames = 256;
+    public const int MaxPresetNameBytes = 1024;
+    public const int MaxPresetNameLength = 128;
     public const int MaxOptions = 4096;
     public const int MaxRoleOptions = 256;
     public const int MaxExclusivitySettings = 256;
@@ -505,6 +519,38 @@ internal static class PresetRawDataLimits
         if (count < 0 || count > maxCount)
             throw new InvalidDataException($"Preset data {fieldName} is invalid.");
         return count;
+    }
+
+    public static string ReadLimitedString(BinaryReader reader, int maxBytes, int maxLength, string fieldName)
+    {
+        int byteCount = Read7BitEncodedInt(reader, fieldName);
+        if (byteCount < 0 || byteCount > maxBytes)
+            throw new InvalidDataException($"Preset data {fieldName} is too long.");
+
+        byte[] bytes = reader.ReadBytes(byteCount);
+        if (bytes.Length != byteCount)
+            throw new EndOfStreamException();
+
+        string value = Encoding.UTF8.GetString(bytes);
+        if (value.Length > maxLength)
+            throw new InvalidDataException($"Preset data {fieldName} is too long.");
+        return value;
+    }
+
+    private static int Read7BitEncodedInt(BinaryReader reader, string fieldName)
+    {
+        int count = 0;
+        int shift = 0;
+        while (shift != 35)
+        {
+            byte b = reader.ReadByte();
+            count |= (b & 0x7F) << shift;
+            shift += 7;
+            if ((b & 0x80) == 0)
+                return count;
+        }
+
+        throw new InvalidDataException($"Preset data {fieldName} length is invalid.");
     }
 }
 

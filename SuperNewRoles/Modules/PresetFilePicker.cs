@@ -184,7 +184,7 @@ internal sealed class WindowsPresetFilePicker : IPresetFilePicker
                 return;
             }
 
-            onComplete(PresetFilePickerResult.Success(File.ReadAllBytes(path)));
+            onComplete(PresetFilePickerResult.Success(PresetImportExportService.ReadArchiveFileBytes(path)));
         }
         catch (Exception ex)
         {
@@ -455,7 +455,7 @@ internal sealed class AndroidPresetFilePicker : IPresetFilePicker
             }
 
             var result = pendingRequest.Action == "import"
-                ? PresetFilePickerResult.Success(File.ReadAllBytes(pendingRequest.TempFilePath))
+                ? PresetFilePickerResult.Success(PresetImportExportService.ReadArchiveFileBytes(pendingRequest.TempFilePath))
                 : PresetFilePickerResult.Success();
             completed = true;
             pendingRequest.Complete(result);
