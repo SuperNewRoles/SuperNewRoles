@@ -44,7 +44,7 @@ public final class PresetFilePickerBridge {
                             sourceFilePath,
                             suggestedName,
                             receiverObjectName);
-                    addFragment(activity, fragment);
+                    addFragment(activity, fragment, requestId);
                     fragment.startExport();
                 } catch (Exception ex) {
                     if (fragment != null) {
@@ -77,7 +77,7 @@ public final class PresetFilePickerBridge {
                             targetFilePath,
                             null,
                             receiverObjectName);
-                    addFragment(activity, fragment);
+                    addFragment(activity, fragment, requestId);
                     fragment.startImport();
                 } catch (Exception ex) {
                     if (fragment != null) {
@@ -89,14 +89,15 @@ public final class PresetFilePickerBridge {
         });
     }
 
-    private static void addFragment(Activity activity, PresetFilePickerFragment fragment) {
+    private static void addFragment(Activity activity, PresetFilePickerFragment fragment, String requestId) {
         FragmentManager fragmentManager = activity.getFragmentManager();
-        Fragment oldFragment = fragmentManager.findFragmentByTag(FRAGMENT_TAG);
+        String tag = FRAGMENT_TAG + ":" + requestId;
+        Fragment oldFragment = fragmentManager.findFragmentByTag(tag);
         FragmentTransaction transaction = fragmentManager.beginTransaction();
         if (oldFragment != null) {
             transaction.remove(oldFragment);
         }
-        transaction.add(fragment, FRAGMENT_TAG);
+        transaction.add(fragment, tag);
         transaction.commitAllowingStateLoss();
         fragmentManager.executePendingTransactions();
     }
@@ -166,8 +167,8 @@ public final class PresetFilePickerBridge {
     }
 
     public static final class PresetFilePickerFragment extends Fragment {
-        private static final int REQUEST_EXPORT = 0x534e51;
-        private static final int REQUEST_IMPORT = 0x534e52;
+        private static final int REQUEST_EXPORT = 0x4e51;
+        private static final int REQUEST_IMPORT = 0x4e52;
         private String requestId;
         private String action;
         private String filePath;

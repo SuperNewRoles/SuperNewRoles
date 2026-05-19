@@ -429,12 +429,13 @@ internal sealed class AndroidPresetFilePicker : IPresetFilePicker
             var data = JsonParser.Parse(payload) as Dictionary<string, object>
                 ?? throw new PresetImportExportException("Android file picker returned invalid JSON.");
             string requestId = ReadString(data, "requestId");
-            string status = ReadString(data, "status");
-            string error = data.TryGetValue("error", out var errorValue) ? errorValue as string ?? string.Empty : string.Empty;
 
             pendingRequest = RemovePendingRequest(requestId);
             if (pendingRequest == null)
                 return;
+
+            string status = ReadString(data, "status");
+            string error = data.TryGetValue("error", out var errorValue) ? errorValue as string ?? string.Empty : string.Empty;
 
             if (status == "cancelled")
             {
@@ -460,8 +461,6 @@ internal sealed class AndroidPresetFilePicker : IPresetFilePicker
             Logger.Error($"Android preset file picker callback failed: {ex}");
             if (pendingRequest != null && !completed)
                 pendingRequest.Complete(PresetFilePickerResult.Error(ex.Message));
-            else if (pendingRequest == null)
-                CompleteAllPendingRequests(PresetFilePickerResult.Error("Android file picker callback failed."));
         }
     }
 
@@ -493,20 +492,6 @@ internal sealed class AndroidPresetFilePicker : IPresetFilePicker
             PendingRequests.Remove(requestId);
             return pendingRequest;
         }
-    }
-
-    private static void CompleteAllPendingRequests(PresetFilePickerResult result)
-    {
-        List<PendingRequest> pendingRequests;
-        lock (PendingRequestsLock)
-        {
-            // コールバック内容が壊れてrequestIdを特定できない場合は、残っているSAF待ちをまとめて閉じる。
-            pendingRequests = PendingRequests.Values.ToList();
-            PendingRequests.Clear();
-        }
-
-        foreach (var pendingRequest in pendingRequests)
-            pendingRequest.Complete(result);
     }
 
     private static void CompleteFailedStart(

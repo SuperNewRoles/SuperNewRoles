@@ -87,6 +87,8 @@ public static class PresetImportExportService
     public const string OptionsArchivePath = "SuperNewRolesNext/SaveData/Options.data";
     public const string PresetArchivePathPrefix = "SuperNewRolesNext/SaveData/PresetOptions_";
     public const string PresetArchivePathSuffix = ".data";
+    private const int MaxOptionsEntryBytes = 1024 * 1024;
+    private const int MaxPresetEntryBytes = 4 * 1024 * 1024;
 
     public static byte[] ExportPresetArchive(
         IOptionStorage storage,
@@ -147,7 +149,7 @@ public static class PresetImportExportService
             using var archive = new ZipArchive(memoryStream, ZipArchiveMode.Read);
             var optionsEntry = FindOptionsEntry(archive)
                 ?? throw new PresetImportExportException("Preset archive does not contain Options.data.");
-            ArchiveOptionData optionsData = ReadOptionsData(ReadEntryBytes(optionsEntry));
+            ArchiveOptionData optionsData = ReadOptionsData(ReadEntryBytes(optionsEntry, MaxOptionsEntryBytes, "Options.data"));
             var presetDataBySourceId = ReadPresetEntries(archive);
             var requestedPresets = optionsData.PresetNames.Keys
                 .Concat(presetDataBySourceId.Keys)
@@ -245,7 +247,7 @@ public static class PresetImportExportService
             if (!TryReadPresetId(entry.FullName, out int presetId))
                 continue;
             if (!presetDataBySourceId.ContainsKey(presetId))
-                presetDataBySourceId[presetId] = ReadEntryBytes(entry);
+                presetDataBySourceId[presetId] = ReadEntryBytes(entry, MaxPresetEntryBytes, $"PresetOptions_{presetId}.data");
         }
 
         return presetDataBySourceId;
@@ -271,11 +273,22 @@ public static class PresetImportExportService
     private static string NormalizeArchivePath(string path)
         => (path ?? string.Empty).Replace('\\', '/').TrimStart('/').ToLowerInvariant();
 
-    private static byte[] ReadEntryBytes(ZipArchiveEntry entry)
+    private static byte[] ReadEntryBytes(ZipArchiveEntry entry, int maxBytes, string entryName)
     {
+        if (entry.Length > maxBytes)
+            throw new PresetImportExportException($"{entryName} is too large.");
+
         using var stream = entry.Open();
         using var memoryStream = new MemoryStream();
-        stream.CopyTo(memoryStream);
+        byte[] buffer = new byte[8192];
+        int read;
+        while ((read = stream.Read(buffer, 0, buffer.Length)) > 0)
+        {
+            if (memoryStream.Length + read > maxBytes)
+                throw new PresetImportExportException($"{entryName} is too large.");
+            memoryStream.Write(buffer, 0, read);
+        }
+
         return memoryStream.ToArray();
     }
 
@@ -483,6 +496,13 @@ public static partial class CustomOptionSaver
 
 internal static class PresetRawDataTailReader
 {
+    private const int MaxModifierRoleOptions = 256;
+    private const int MaxModifierAssignFilterRoles = 256;
+    private const int MaxGhostRoleOptions = 256;
+    private const int MaxCategoryAssignFilters = 128;
+    private const int MaxCategoryAssignFilterRoles = 256;
+    private const int MaxParseBranchAttempts = 4096;
+
     public static void Read(
         BinaryReader reader,
         long streamLength,
@@ -518,11 +538,13 @@ internal static class PresetRawDataTailReader
         {
             using var memoryStream = new MemoryStream(tail, writable: false);
             using var reader = new BinaryReader(memoryStream);
-            int modifierCount = ReadNonNegativeCount(reader);
+            int modifierCount = ReadCount(reader, MaxModifierRoleOptions);
+            int parseBranchAttempts = 0;
             if (TryReadModifierRoleOptions(
                 reader,
                 modifierCount,
                 new List<ModifierRoleOptionSnapshot>(modifierCount),
+                ref parseBranchAttempts,
                 out modifierRoleOptions,
                 out ghostRoleOptions,
                 out categoryAssignFilters))
@@ -544,6 +566,7 @@ internal static class PresetRawDataTailReader
         BinaryReader reader,
         int remainingCount,
         List<ModifierRoleOptionSnapshot> snapshots,
+        ref int parseBranchAttempts,
         out List<ModifierRoleOptionSnapshot> modifierRoleOptions,
         out List<GhostRoleOptionSnapshot> ghostRoleOptions,
         out List<CategoryAssignFilterSnapshot> categoryAssignFilters)
@@ -578,6 +601,10 @@ internal static class PresetRawDataTailReader
 
         foreach (bool readAssignFilterPayload in branchOrder)
         {
+            parseBranchAttempts++;
+            if (parseBranchAttempts > MaxParseBranchAttempts)
+                return false;
+
             reader.BaseStream.Position = snapshotStart;
             int snapshotCountBeforeBranch = snapshots.Count;
             try
@@ -591,6 +618,7 @@ internal static class PresetRawDataTailReader
                     reader,
                     remainingCount - 1,
                     snapshots,
+                    ref parseBranchAttempts,
                     out modifierRoleOptions,
                     out ghostRoleOptions,
                     out categoryAssignFilters))
@@ -657,14 +685,14 @@ internal static class PresetRawDataTailReader
 
     private static void ReadAssignFilterRoles(BinaryReader reader, List<string> roles)
     {
-        int assignFilterCount = ReadNonNegativeCount(reader);
+        int assignFilterCount = ReadCount(reader, MaxModifierAssignFilterRoles);
         for (int i = 0; i < assignFilterCount; i++)
             roles.Add(reader.ReadString());
     }
 
     private static List<GhostRoleOptionSnapshot> ReadGhostRoleOptions(BinaryReader reader)
     {
-        int count = ReadNonNegativeCount(reader);
+        int count = ReadCount(reader, MaxGhostRoleOptions);
         var snapshots = new List<GhostRoleOptionSnapshot>(count);
         for (int i = 0; i < count; i++)
         {
@@ -681,12 +709,12 @@ internal static class PresetRawDataTailReader
 
     private static List<CategoryAssignFilterSnapshot> ReadCategoryAssignFilters(BinaryReader reader)
     {
-        int count = ReadNonNegativeCount(reader);
+        int count = ReadCount(reader, MaxCategoryAssignFilters);
         var snapshots = new List<CategoryAssignFilterSnapshot>(count);
         for (int i = 0; i < count; i++)
         {
             string categoryName = reader.ReadString();
-            int roleCount = ReadNonNegativeCount(reader);
+            int roleCount = ReadCount(reader, MaxCategoryAssignFilterRoles);
             var roles = new List<string>(roleCount);
             for (int j = 0; j < roleCount; j++)
                 roles.Add(reader.ReadString());
@@ -701,10 +729,10 @@ internal static class PresetRawDataTailReader
         return snapshots;
     }
 
-    private static int ReadNonNegativeCount(BinaryReader reader)
+    private static int ReadCount(BinaryReader reader, int maxCount)
     {
         int count = reader.ReadInt32();
-        if (count < 0)
+        if (count < 0 || count > maxCount)
             throw new InvalidDataException("Preset data count is invalid.");
         return count;
     }

@@ -608,11 +608,39 @@ public class OptionStorageTests
             names,
             currentPreset: 0,
             currentVersion: 1);
+        Action oversizedOptionsData = () => PresetImportExportService.ImportPresetsArchive(
+            CreateArchiveWithEntries(new Dictionary<string, byte[]>
+            {
+                [PresetImportExportService.OptionsArchivePath] = new byte[(1024 * 1024) + 1]
+            }),
+            storage,
+            names,
+            currentPreset: 0,
+            currentVersion: 1);
+        Action oversizedPresetData = () => PresetImportExportService.ImportPresetsArchive(
+            CreatePresetArchive(
+                storage.BuildOptionDataBytes(1, 9, new Dictionary<int, string> { [9] = "Oversized" }),
+                new Dictionary<int, byte[]> { [9] = new byte[(4 * 1024 * 1024) + 1] }),
+            storage,
+            names,
+            currentPreset: 0,
+            currentVersion: 1);
+        Action tooManyModifiers = () => PresetImportExportService.ImportPresetsArchive(
+            CreatePresetArchive(
+                storage.BuildOptionDataBytes(1, 10, new Dictionary<int, string> { [10] = "TooManyModifiers" }),
+                new Dictionary<int, byte[]> { [10] = CreatePresetRawDataWithTooManyModifiers() }),
+            storage,
+            names,
+            currentPreset: 0,
+            currentVersion: 1);
 
         corruptZip.Should().Throw<PresetImportExportException>();
         missingOptions.Should().Throw<PresetImportExportException>();
         missingPresetData.Should().Throw<PresetImportExportException>();
         corruptPresetData.Should().Throw<PresetImportExportException>();
+        oversizedOptionsData.Should().Throw<PresetImportExportException>();
+        oversizedPresetData.Should().Throw<PresetImportExportException>();
+        tooManyModifiers.Should().Throw<PresetImportExportException>();
     }
 
     // 目的: チェックサム不一致時に読み込みが失敗し、プリセット名がクリアされることを検証
@@ -672,6 +700,22 @@ public class OptionStorageTests
             writer.Write(RoleId.Crewmate.ToString());
             writer.Write(0);
             writer.Write(0);
+        }
+
+        return memoryStream.ToArray();
+    }
+
+    private static byte[] CreatePresetRawDataWithTooManyModifiers()
+    {
+        using var memoryStream = new MemoryStream();
+        using (var writer = new BinaryWriter(memoryStream))
+        {
+            writer.Write((byte)2);
+            writer.Write((byte)4);
+            writer.Write(0);
+            writer.Write(0);
+            writer.Write(0);
+            writer.Write(257);
         }
 
         return memoryStream.ToArray();
