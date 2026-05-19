@@ -9,6 +9,20 @@ public static class GameSettingOptions
     public static bool CannotTaskTrigger;
     [CustomOptionBool("CursedTaskOption", false, parentFieldName: nameof(Categories.GameSettings), displayMode: DisplayModeId.Default)]
     public static bool CursedTaskOption;
+    [CustomOptionBool("ExcludeSpecificTasksFromSelection", false, parentFieldName: nameof(Categories.GameSettings))]
+    public static bool ExcludeSpecificTasksFromSelection;
+    [CustomOptionBool("ExcludeUnlockSafeTaskFromSelection", false, parentFieldName: nameof(ExcludeSpecificTasksFromSelection))]
+    public static bool ExcludeUnlockSafeTaskFromSelection;
+    [CustomOptionBool("ExcludeResetBreakersTaskFromSelection", false, parentFieldName: nameof(ExcludeSpecificTasksFromSelection))]
+    public static bool ExcludeResetBreakersTaskFromSelection;
+    [CustomOptionBool("ExcludeCatchFishTaskFromSelection", false, parentFieldName: nameof(ExcludeSpecificTasksFromSelection))]
+    public static bool ExcludeCatchFishTaskFromSelection;
+    [CustomOptionBool("ExcludeUploadDataTaskFromSelection", false, parentFieldName: nameof(ExcludeSpecificTasksFromSelection))]
+    public static bool ExcludeUploadDataTaskFromSelection;
+    [CustomOptionBool("ExcludeVentCleaningTaskFromSelection", false, parentFieldName: nameof(ExcludeSpecificTasksFromSelection))]
+    public static bool ExcludeVentCleaningTaskFromSelection;
+    [CustomOptionBool("ExcludeSubmitScanTaskFromSelection", false, parentFieldName: nameof(ExcludeSpecificTasksFromSelection))]
+    public static bool ExcludeSubmitScanTaskFromSelection;
     // |:========== ベントアニメーション有効化の設定 ==========:|
     [CustomOptionBool("VentAnimationPlaySetting", true, parentFieldName: nameof(Categories.GameSettings))]
     public static bool VentAnimationPlaySetting;
