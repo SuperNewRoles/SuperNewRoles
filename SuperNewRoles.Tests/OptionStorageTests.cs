@@ -330,6 +330,69 @@ public class OptionStorageTests
     }
 
     [Fact]
+    public void PresetImportExportService_ImportPresetArchive_DoesNotUseInvalidMaxPresetId()
+    {
+        var tempDir = new DirectoryInfo(Path.Combine(Path.GetTempPath(), "snr-tests-" + Guid.NewGuid().ToString("N")));
+        var storage = new FileOptionStorage(tempDir, "Options.data", "PresetOptions_");
+        storage.EnsureStorageExists();
+        var names = new Dictionary<int, string> { [CustomOptionSaver.MaxPresetCount - 1] = "Last" };
+        storage.SavePresetSnapshot(CustomOptionSaver.MaxPresetCount - 1, new PresetSnapshot { Options = new Dictionary<string, byte> { ["last"] = 1 } });
+        byte[] archiveBytes = CreatePresetArchive(
+            storage.BuildOptionDataBytes(1, 3, new Dictionary<int, string> { [3] = "Imported" }),
+            new Dictionary<int, byte[]> { [3] = CreatePresetRawData(new Dictionary<string, byte> { ["new"] = 2 }) });
+
+        var result = PresetImportExportService.ImportPresetsArchive(archiveBytes, storage, names, currentPreset: 0, currentVersion: 1);
+
+        int importedId = result.ImportedPresetIds.Single();
+        importedId.Should().Be(0);
+        importedId.Should().BeLessThan(CustomOptionSaver.MaxPresetCount);
+        names.Should().NotContainKey(CustomOptionSaver.MaxPresetCount);
+        names.Should().ContainKey(importedId).WhoseValue.Should().Be("Imported");
+    }
+
+    [Fact]
+    public void PresetImportExportService_ImportPresetArchive_ImportsPresetDataWithoutNameEntry()
+    {
+        var tempDir = new DirectoryInfo(Path.Combine(Path.GetTempPath(), "snr-tests-" + Guid.NewGuid().ToString("N")));
+        var storage = new FileOptionStorage(tempDir, "Options.data", "PresetOptions_");
+        storage.EnsureStorageExists();
+        var names = new Dictionary<int, string>();
+        byte[] archiveBytes = CreatePresetArchive(
+            storage.BuildOptionDataBytes(1, 0, new Dictionary<int, string>()),
+            new Dictionary<int, byte[]>
+            {
+                [0] = CreatePresetRawData(new Dictionary<string, byte> { ["unnamed"] = 4 })
+            });
+
+        var result = PresetImportExportService.ImportPresetsArchive(archiveBytes, storage, names, currentPreset: 0, currentVersion: 1);
+
+        int importedId = result.ImportedPresetIds.Single();
+        importedId.Should().Be(0);
+        names.Should().ContainKey(importedId).WhoseValue.Should().Be("Preset 1");
+        storage.LoadPresetSnapshot(importedId).snapshot.Options.Should().ContainKey("unnamed").WhoseValue.Should().Be(4);
+    }
+
+    [Fact]
+    public void PresetImportExportService_ImportPresetArchive_KeepsModifierAssignFilterPayloadWhenRuntimeFlagDiffers()
+    {
+        var tempDir = new DirectoryInfo(Path.Combine(Path.GetTempPath(), "snr-tests-" + Guid.NewGuid().ToString("N")));
+        var storage = new FileOptionStorage(tempDir, "Options.data", "PresetOptions_");
+        storage.EnsureStorageExists();
+        var names = new Dictionary<int, string>();
+        byte[] archiveBytes = CreatePresetArchive(
+            storage.BuildOptionDataBytes(1, 6, new Dictionary<int, string> { [6] = "Modifier" }),
+            new Dictionary<int, byte[]> { [6] = CreatePresetRawDataWithUnknownModifierAssignFilter() });
+
+        var result = PresetImportExportService.ImportPresetsArchive(archiveBytes, storage, names, currentPreset: 0, currentVersion: 1);
+
+        int importedId = result.ImportedPresetIds.Single();
+        var snapshot = storage.LoadPresetSnapshot(importedId).snapshot;
+        snapshot.ModifierRoleOptions.Should().ContainSingle();
+        snapshot.ModifierRoleOptions[0].ModifierRoleId.Should().Be("UnknownModifier");
+        snapshot.ModifierRoleOptions[0].AssignFilterRoles.Should().ContainSingle().Which.Should().Be(RoleId.Crewmate.ToString());
+    }
+
+    [Fact]
     public void PresetFilePickerWorkflow_Import_HandlesSuccessCancelAndError()
     {
         byte[] importBytes = { 1, 2, 3 };
@@ -537,10 +600,19 @@ public class OptionStorageTests
             names,
             currentPreset: 0,
             currentVersion: 1);
+        Action corruptPresetData = () => PresetImportExportService.ImportPresetsArchive(
+            CreatePresetArchive(
+                storage.BuildOptionDataBytes(1, 8, new Dictionary<int, string> { [8] = "Corrupt" }),
+                new Dictionary<int, byte[]> { [8] = new byte[] { 1, 2, 3, 4, 5, 6 } }),
+            storage,
+            names,
+            currentPreset: 0,
+            currentVersion: 1);
 
         corruptZip.Should().Throw<PresetImportExportException>();
         missingOptions.Should().Throw<PresetImportExportException>();
         missingPresetData.Should().Throw<PresetImportExportException>();
+        corruptPresetData.Should().Throw<PresetImportExportException>();
     }
 
     // 目的: チェックサム不一致時に読み込みが失敗し、プリセット名がクリアされることを検証
@@ -574,6 +646,35 @@ public class OptionStorageTests
         storage.EnsureStorageExists();
         storage.SavePresetSnapshot(1, new PresetSnapshot { Options = options });
         return storage.LoadPresetRawData(1).data;
+    }
+
+    private static byte[] CreatePresetRawDataWithUnknownModifierAssignFilter()
+    {
+        using var memoryStream = new MemoryStream();
+        using (var writer = new BinaryWriter(memoryStream))
+        {
+            writer.Write((byte)2);
+            writer.Write((byte)4);
+            writer.Write(0);
+            writer.Write(0);
+            writer.Write(0);
+            writer.Write(1);
+            writer.Write("UnknownModifier");
+            writer.Write((byte)1);
+            writer.Write(100);
+            writer.Write(0);
+            writer.Write(0);
+            writer.Write(0);
+            writer.Write(0);
+            writer.Write(0);
+            writer.Write(0);
+            writer.Write(1);
+            writer.Write(RoleId.Crewmate.ToString());
+            writer.Write(0);
+            writer.Write(0);
+        }
+
+        return memoryStream.ToArray();
     }
 
     private static byte[] CreatePresetArchive(byte[] optionsData, IReadOnlyDictionary<int, byte[]> presetDataById)

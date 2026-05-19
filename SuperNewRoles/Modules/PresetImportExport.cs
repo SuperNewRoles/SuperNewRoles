@@ -149,9 +149,16 @@ public static class PresetImportExportService
                 ?? throw new PresetImportExportException("Preset archive does not contain Options.data.");
             ArchiveOptionData optionsData = ReadOptionsData(ReadEntryBytes(optionsEntry));
             var presetDataBySourceId = ReadPresetEntries(archive);
-            var requestedPresets = optionsData.PresetNames
-                .Where(pair => pair.Key >= 0)
-                .OrderBy(pair => pair.Key)
+            var requestedPresets = optionsData.PresetNames.Keys
+                .Concat(presetDataBySourceId.Keys)
+                .Where(presetId => presetId >= 0)
+                .Distinct()
+                .OrderBy(presetId => presetId)
+                .Select(presetId => new ArchivePresetReference(
+                    presetId,
+                    optionsData.PresetNames.TryGetValue(presetId, out string name)
+                        ? name
+                        : GetExportPresetName(string.Empty, presetId)))
                 .ToList();
 
             if (requestedPresets.Count == 0)
@@ -159,8 +166,9 @@ public static class PresetImportExportService
 
             foreach (var pair in requestedPresets)
             {
-                if (!presetDataBySourceId.ContainsKey(pair.Key))
-                    throw new PresetImportExportException($"Preset archive is missing PresetOptions_{pair.Key}.data.");
+                if (!presetDataBySourceId.TryGetValue(pair.SourcePresetId, out byte[] presetData))
+                    throw new PresetImportExportException($"Preset archive is missing PresetOptions_{pair.SourcePresetId}.data.");
+                ValidatePresetRawData(pair.SourcePresetId, presetData);
             }
 
             storage.EnsureStorageExists();
@@ -179,9 +187,9 @@ public static class PresetImportExportService
             foreach (var pair in requestedPresets)
             {
                 int targetPresetId = GetNextImportedPresetId(usedIds, ref nextPresetId);
-                string targetName = GetUniquePresetName(pair.Value, usedNames);
+                string targetName = GetUniquePresetName(pair.Name, usedNames);
 
-                storage.SavePresetRawData(targetPresetId, presetDataBySourceId[pair.Key]);
+                storage.SavePresetRawData(targetPresetId, presetDataBySourceId[pair.SourcePresetId]);
                 presetNames[targetPresetId] = targetName;
                 usedIds.Add(targetPresetId);
                 importedIds.Add(targetPresetId);
@@ -296,10 +304,78 @@ public static class PresetImportExportService
                 presetNames[presetId] = name ?? string.Empty;
         }
 
-        if (presetNames.Count == 0)
-            throw new PresetImportExportException("Options.data has no presets.");
-
         return new ArchiveOptionData(currentPreset, presetNames);
+    }
+
+    private static void ValidatePresetRawData(int sourcePresetId, byte[] data)
+    {
+        if (data == null || data.Length < 6)
+            throw new PresetImportExportException($"PresetOptions_{sourcePresetId}.data is too short.");
+
+        try
+        {
+            using var memoryStream = new MemoryStream(data, writable: false);
+            using var reader = new BinaryReader(memoryStream);
+            if (!ValidateChecksum(reader))
+                throw new PresetImportExportException($"PresetOptions_{sourcePresetId}.data checksum is invalid.");
+
+            ReadOptionsForValidation(reader);
+            if (memoryStream.Position < memoryStream.Length)
+                ReadRoleOptionsForValidation(reader);
+            if (memoryStream.Position < memoryStream.Length)
+                ReadExclusivitySettingsForValidation(reader);
+            if (memoryStream.Position < memoryStream.Length)
+                PresetRawDataTailReader.Read(reader, memoryStream.Length, out _, out _, out _);
+        }
+        catch (PresetImportExportException)
+        {
+            throw;
+        }
+        catch (Exception ex)
+        {
+            throw new PresetImportExportException($"PresetOptions_{sourcePresetId}.data is invalid.", ex);
+        }
+    }
+
+    private static void ReadOptionsForValidation(BinaryReader reader)
+    {
+        int optionCount = ReadNonNegativeCount(reader, "option count");
+        for (int i = 0; i < optionCount; i++)
+        {
+            _ = reader.ReadString();
+            _ = reader.ReadByte();
+        }
+    }
+
+    private static void ReadRoleOptionsForValidation(BinaryReader reader)
+    {
+        int count = ReadNonNegativeCount(reader, "role option count");
+        for (int i = 0; i < count; i++)
+        {
+            _ = reader.ReadString();
+            _ = reader.ReadByte();
+            _ = reader.ReadInt32();
+        }
+    }
+
+    private static void ReadExclusivitySettingsForValidation(BinaryReader reader)
+    {
+        int count = ReadNonNegativeCount(reader, "exclusivity setting count");
+        for (int i = 0; i < count; i++)
+        {
+            _ = reader.ReadInt32();
+            int roleCount = ReadNonNegativeCount(reader, "exclusivity role count");
+            for (int j = 0; j < roleCount; j++)
+                _ = reader.ReadString();
+        }
+    }
+
+    private static int ReadNonNegativeCount(BinaryReader reader, string fieldName)
+    {
+        int count = reader.ReadInt32();
+        if (count < 0)
+            throw new PresetImportExportException($"Preset data {fieldName} is invalid.");
+        return count;
     }
 
     private static bool ValidateChecksum(BinaryReader reader)
@@ -311,13 +387,18 @@ public static class PresetImportExportService
 
     private static int GetNextImportedPresetId(ISet<int> usedIds, ref long nextPresetId)
     {
-        if (nextPresetId < 0)
+        long maxPresetCount = CustomOptionSaver.MaxPresetCount;
+        if (nextPresetId < 0 || nextPresetId >= maxPresetCount)
             nextPresetId = 0;
 
-        while (nextPresetId <= int.MaxValue)
+        long scanned = 0;
+        while (scanned < maxPresetCount)
         {
             int candidate = (int)nextPresetId;
             nextPresetId++;
+            scanned++;
+            if (nextPresetId >= maxPresetCount)
+                nextPresetId = 0;
             if (!usedIds.Contains(candidate))
                 return candidate;
         }
@@ -353,6 +434,18 @@ public static class PresetImportExportService
             PresetNames = presetNames;
         }
     }
+
+    private sealed class ArchivePresetReference
+    {
+        public int SourcePresetId { get; }
+        public string Name { get; }
+
+        public ArchivePresetReference(int sourcePresetId, string name)
+        {
+            SourcePresetId = sourcePresetId;
+            Name = name;
+        }
+    }
 }
 
 public static partial class CustomOptionSaver
@@ -386,6 +479,250 @@ public static partial class CustomOptionSaver
             presetNames,
             CurrentPreset,
             CurrentVersion);
+}
+
+internal static class PresetRawDataTailReader
+{
+    public static void Read(
+        BinaryReader reader,
+        long streamLength,
+        out List<ModifierRoleOptionSnapshot> modifierRoleOptions,
+        out List<GhostRoleOptionSnapshot> ghostRoleOptions,
+        out List<CategoryAssignFilterSnapshot> categoryAssignFilters)
+    {
+        long tailStart = reader.BaseStream.Position;
+        if (tailStart > streamLength)
+            throw new PresetImportExportException("Preset data tail position is invalid.");
+
+        if (streamLength - tailStart > int.MaxValue)
+            throw new PresetImportExportException("Preset data tail is too large.");
+
+        byte[] tail = reader.ReadBytes((int)(streamLength - tailStart));
+        if (TryRead(tail, out modifierRoleOptions, out ghostRoleOptions, out categoryAssignFilters))
+            return;
+
+        throw new PresetImportExportException("Preset data modifier/ghost/category sections are invalid.");
+    }
+
+    private static bool TryRead(
+        byte[] tail,
+        out List<ModifierRoleOptionSnapshot> modifierRoleOptions,
+        out List<GhostRoleOptionSnapshot> ghostRoleOptions,
+        out List<CategoryAssignFilterSnapshot> categoryAssignFilters)
+    {
+        modifierRoleOptions = new List<ModifierRoleOptionSnapshot>();
+        ghostRoleOptions = new List<GhostRoleOptionSnapshot>();
+        categoryAssignFilters = new List<CategoryAssignFilterSnapshot>();
+
+        try
+        {
+            using var memoryStream = new MemoryStream(tail, writable: false);
+            using var reader = new BinaryReader(memoryStream);
+            int modifierCount = ReadNonNegativeCount(reader);
+            if (TryReadModifierRoleOptions(
+                reader,
+                modifierCount,
+                new List<ModifierRoleOptionSnapshot>(modifierCount),
+                out modifierRoleOptions,
+                out ghostRoleOptions,
+                out categoryAssignFilters))
+            {
+                return true;
+            }
+        }
+        catch (Exception ex) when (IsReadFailure(ex))
+        {
+        }
+
+        modifierRoleOptions = new List<ModifierRoleOptionSnapshot>();
+        ghostRoleOptions = new List<GhostRoleOptionSnapshot>();
+        categoryAssignFilters = new List<CategoryAssignFilterSnapshot>();
+        return false;
+    }
+
+    private static bool TryReadModifierRoleOptions(
+        BinaryReader reader,
+        int remainingCount,
+        List<ModifierRoleOptionSnapshot> snapshots,
+        out List<ModifierRoleOptionSnapshot> modifierRoleOptions,
+        out List<GhostRoleOptionSnapshot> ghostRoleOptions,
+        out List<CategoryAssignFilterSnapshot> categoryAssignFilters)
+    {
+        modifierRoleOptions = new List<ModifierRoleOptionSnapshot>();
+        ghostRoleOptions = new List<GhostRoleOptionSnapshot>();
+        categoryAssignFilters = new List<CategoryAssignFilterSnapshot>();
+
+        if (remainingCount == 0)
+        {
+            if (!TryReadRemainingSections(reader, out ghostRoleOptions, out categoryAssignFilters))
+                return false;
+
+            modifierRoleOptions = snapshots;
+            return true;
+        }
+
+        long snapshotStart = reader.BaseStream.Position;
+        ModifierRoleOptionSnapshot snapshot;
+        try
+        {
+            snapshot = ReadModifierRoleOptionWithoutAssignFilters(reader);
+        }
+        catch (Exception ex) when (IsReadFailure(ex))
+        {
+            return false;
+        }
+
+        var branchOrder = ModifierHasAssignFilter(snapshot.ModifierRoleId)
+            ? new[] { true, false }
+            : new[] { false, true };
+
+        foreach (bool readAssignFilterPayload in branchOrder)
+        {
+            reader.BaseStream.Position = snapshotStart;
+            int snapshotCountBeforeBranch = snapshots.Count;
+            try
+            {
+                var candidate = ReadModifierRoleOptionWithoutAssignFilters(reader);
+                if (readAssignFilterPayload)
+                    ReadAssignFilterRoles(reader, candidate.AssignFilterRoles);
+
+                snapshots.Add(candidate);
+                if (TryReadModifierRoleOptions(
+                    reader,
+                    remainingCount - 1,
+                    snapshots,
+                    out modifierRoleOptions,
+                    out ghostRoleOptions,
+                    out categoryAssignFilters))
+                {
+                    return true;
+                }
+
+                snapshots.RemoveAt(snapshots.Count - 1);
+            }
+            catch (Exception ex) when (IsReadFailure(ex))
+            {
+                while (snapshots.Count > snapshotCountBeforeBranch)
+                    snapshots.RemoveAt(snapshots.Count - 1);
+            }
+        }
+
+        reader.BaseStream.Position = snapshotStart;
+        return false;
+    }
+
+    private static bool TryReadRemainingSections(
+        BinaryReader reader,
+        out List<GhostRoleOptionSnapshot> ghostRoleOptions,
+        out List<CategoryAssignFilterSnapshot> categoryAssignFilters)
+    {
+        ghostRoleOptions = new List<GhostRoleOptionSnapshot>();
+        categoryAssignFilters = new List<CategoryAssignFilterSnapshot>();
+
+        try
+        {
+            if (reader.BaseStream.Position == reader.BaseStream.Length)
+                return true;
+
+            ghostRoleOptions = ReadGhostRoleOptions(reader);
+            if (reader.BaseStream.Position == reader.BaseStream.Length)
+                return true;
+
+            categoryAssignFilters = ReadCategoryAssignFilters(reader);
+            return reader.BaseStream.Position == reader.BaseStream.Length;
+        }
+        catch (Exception ex) when (IsReadFailure(ex))
+        {
+            ghostRoleOptions = new List<GhostRoleOptionSnapshot>();
+            categoryAssignFilters = new List<CategoryAssignFilterSnapshot>();
+            return false;
+        }
+    }
+
+    private static ModifierRoleOptionSnapshot ReadModifierRoleOptionWithoutAssignFilters(BinaryReader reader)
+    {
+        return new ModifierRoleOptionSnapshot
+        {
+            ModifierRoleId = reader.ReadString(),
+            NumberOfCrews = reader.ReadByte(),
+            Percentage = reader.ReadInt32(),
+            MaxImpostors = reader.ReadInt32(),
+            ImpostorChance = reader.ReadInt32(),
+            MaxNeutrals = reader.ReadInt32(),
+            NeutralChance = reader.ReadInt32(),
+            MaxCrewmates = reader.ReadInt32(),
+            CrewmateChance = reader.ReadInt32()
+        };
+    }
+
+    private static void ReadAssignFilterRoles(BinaryReader reader, List<string> roles)
+    {
+        int assignFilterCount = ReadNonNegativeCount(reader);
+        for (int i = 0; i < assignFilterCount; i++)
+            roles.Add(reader.ReadString());
+    }
+
+    private static List<GhostRoleOptionSnapshot> ReadGhostRoleOptions(BinaryReader reader)
+    {
+        int count = ReadNonNegativeCount(reader);
+        var snapshots = new List<GhostRoleOptionSnapshot>(count);
+        for (int i = 0; i < count; i++)
+        {
+            snapshots.Add(new GhostRoleOptionSnapshot
+            {
+                GhostRoleId = reader.ReadString(),
+                NumberOfCrews = reader.ReadByte(),
+                Percentage = reader.ReadInt32()
+            });
+        }
+
+        return snapshots;
+    }
+
+    private static List<CategoryAssignFilterSnapshot> ReadCategoryAssignFilters(BinaryReader reader)
+    {
+        int count = ReadNonNegativeCount(reader);
+        var snapshots = new List<CategoryAssignFilterSnapshot>(count);
+        for (int i = 0; i < count; i++)
+        {
+            string categoryName = reader.ReadString();
+            int roleCount = ReadNonNegativeCount(reader);
+            var roles = new List<string>(roleCount);
+            for (int j = 0; j < roleCount; j++)
+                roles.Add(reader.ReadString());
+
+            snapshots.Add(new CategoryAssignFilterSnapshot
+            {
+                CategoryName = categoryName,
+                Roles = roles
+            });
+        }
+
+        return snapshots;
+    }
+
+    private static int ReadNonNegativeCount(BinaryReader reader)
+    {
+        int count = reader.ReadInt32();
+        if (count < 0)
+            throw new InvalidDataException("Preset data count is invalid.");
+        return count;
+    }
+
+    private static bool ModifierHasAssignFilter(string modifierRoleId)
+    {
+        if (!Enum.TryParse<ModifierRoleId>(modifierRoleId, out var parsedModifierRoleId))
+            return false;
+        return CustomRoleManager.AllModifiers
+            .FirstOrDefault(role => role.ModifierRole == parsedModifierRoleId)
+            ?.AssignFilter == true;
+    }
+
+    private static bool IsReadFailure(Exception ex)
+        => ex is EndOfStreamException
+            || ex is IOException
+            || ex is ArgumentException
+            || ex is InvalidDataException;
 }
 
 public partial class FileOptionStorage
@@ -468,11 +805,17 @@ public partial class FileOptionStorage
             if (fileStream.Position < fileStream.Length)
                 snapshot.ExclusivitySettings = ReadExclusivitySettingSnapshots(reader);
             if (fileStream.Position < fileStream.Length)
-                snapshot.ModifierRoleOptions = ReadModifierRoleOptionSnapshots(reader);
-            if (fileStream.Position < fileStream.Length)
-                snapshot.GhostRoleOptions = ReadGhostRoleOptionSnapshots(reader);
-            if (fileStream.Position < fileStream.Length)
-                snapshot.CategoryAssignFilters = ReadCategoryAssignFilterSnapshots(reader);
+            {
+                PresetRawDataTailReader.Read(
+                    reader,
+                    fileStream.Length,
+                    out var modifierRoleOptions,
+                    out var ghostRoleOptions,
+                    out var categoryAssignFilters);
+                snapshot.ModifierRoleOptions = modifierRoleOptions;
+                snapshot.GhostRoleOptions = ghostRoleOptions;
+                snapshot.CategoryAssignFilters = categoryAssignFilters;
+            }
 
             return (true, snapshot);
         }
@@ -530,75 +873,6 @@ public partial class FileOptionStorage
             snapshots.Add(new ExclusivitySettingSnapshot
             {
                 MaxAssign = maxAssign,
-                Roles = roles
-            });
-        }
-        return snapshots;
-    }
-
-    private static List<ModifierRoleOptionSnapshot> ReadModifierRoleOptionSnapshots(BinaryReader reader)
-    {
-        int count = reader.ReadInt32();
-        var snapshots = new List<ModifierRoleOptionSnapshot>(count);
-        for (int i = 0; i < count; i++)
-        {
-            string modifierRoleId = reader.ReadString();
-            var snapshot = new ModifierRoleOptionSnapshot
-            {
-                ModifierRoleId = modifierRoleId,
-                NumberOfCrews = reader.ReadByte(),
-                Percentage = reader.ReadInt32(),
-                MaxImpostors = reader.ReadInt32(),
-                ImpostorChance = reader.ReadInt32(),
-                MaxNeutrals = reader.ReadInt32(),
-                NeutralChance = reader.ReadInt32(),
-                MaxCrewmates = reader.ReadInt32(),
-                CrewmateChance = reader.ReadInt32()
-            };
-
-            if (ModifierHasAssignFilter(modifierRoleId))
-            {
-                int assignFilterCount = reader.ReadInt32();
-                for (int j = 0; j < assignFilterCount; j++)
-                    snapshot.AssignFilterRoles.Add(reader.ReadString());
-            }
-
-            snapshots.Add(snapshot);
-        }
-        return snapshots;
-    }
-
-    private static List<GhostRoleOptionSnapshot> ReadGhostRoleOptionSnapshots(BinaryReader reader)
-    {
-        int count = reader.ReadInt32();
-        var snapshots = new List<GhostRoleOptionSnapshot>(count);
-        for (int i = 0; i < count; i++)
-        {
-            snapshots.Add(new GhostRoleOptionSnapshot
-            {
-                GhostRoleId = reader.ReadString(),
-                NumberOfCrews = reader.ReadByte(),
-                Percentage = reader.ReadInt32()
-            });
-        }
-        return snapshots;
-    }
-
-    private static List<CategoryAssignFilterSnapshot> ReadCategoryAssignFilterSnapshots(BinaryReader reader)
-    {
-        int count = reader.ReadInt32();
-        var snapshots = new List<CategoryAssignFilterSnapshot>(count);
-        for (int i = 0; i < count; i++)
-        {
-            string categoryName = reader.ReadString();
-            int roleCount = reader.ReadInt32();
-            var roles = new List<string>(roleCount);
-            for (int j = 0; j < roleCount; j++)
-                roles.Add(reader.ReadString());
-
-            snapshots.Add(new CategoryAssignFilterSnapshot
-            {
-                CategoryName = categoryName,
                 Roles = roles
             });
         }

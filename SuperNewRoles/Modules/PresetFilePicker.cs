@@ -153,9 +153,11 @@ internal sealed class WindowsPresetFilePicker : IPresetFilePicker
     {
         try
         {
-            if (!TryGetSavePath(defaultFileName, out string path))
+            if (!TryGetSavePath(defaultFileName, out string path, out string dialogError))
             {
-                onComplete(PresetFilePickerResult.Cancelled());
+                onComplete(string.IsNullOrEmpty(dialogError)
+                    ? PresetFilePickerResult.Cancelled()
+                    : PresetFilePickerResult.Error(dialogError));
                 return;
             }
 
@@ -174,9 +176,11 @@ internal sealed class WindowsPresetFilePicker : IPresetFilePicker
     {
         try
         {
-            if (!TryGetOpenPath(out string path))
+            if (!TryGetOpenPath(out string path, out string dialogError))
             {
-                onComplete(PresetFilePickerResult.Cancelled());
+                onComplete(string.IsNullOrEmpty(dialogError)
+                    ? PresetFilePickerResult.Cancelled()
+                    : PresetFilePickerResult.Error(dialogError));
                 return;
             }
 
@@ -188,24 +192,34 @@ internal sealed class WindowsPresetFilePicker : IPresetFilePicker
         }
     }
 
-    private static bool TryGetSavePath(string defaultFileName, out string path)
+    private static bool TryGetSavePath(string defaultFileName, out string path, out string errorMessage)
     {
         using var dialogData = OpenFileNameData.Create(defaultFileName, "Export Preset", "snrpresets");
         dialogData.OpenFileName.Flags = OfnExplorer | OfnHideReadOnly | OfnNoChangeDir | OfnOverwritePrompt | OfnPathMustExist;
 
         bool success = GetSaveFileNameW(ref dialogData.OpenFileName);
         path = success ? dialogData.GetSelectedPath() : string.Empty;
+        errorMessage = success ? string.Empty : GetCommonDialogErrorMessage();
         return success;
     }
 
-    private static bool TryGetOpenPath(out string path)
+    private static bool TryGetOpenPath(out string path, out string errorMessage)
     {
         using var dialogData = OpenFileNameData.Create(string.Empty, "Import Preset", string.Empty);
         dialogData.OpenFileName.Flags = OfnExplorer | OfnFileMustExist | OfnHideReadOnly | OfnNoChangeDir | OfnPathMustExist;
 
         bool success = GetOpenFileNameW(ref dialogData.OpenFileName);
         path = success ? dialogData.GetSelectedPath() : string.Empty;
+        errorMessage = success ? string.Empty : GetCommonDialogErrorMessage();
         return success;
+    }
+
+    private static string GetCommonDialogErrorMessage()
+    {
+        int errorCode = CommDlgExtendedError();
+        return errorCode == 0
+            ? string.Empty
+            : $"Windows file dialog failed with error 0x{errorCode:X}.";
     }
 
     [DllImport("comdlg32.dll", CharSet = CharSet.Unicode, SetLastError = true, EntryPoint = "GetOpenFileNameW")]
@@ -213,6 +227,9 @@ internal sealed class WindowsPresetFilePicker : IPresetFilePicker
 
     [DllImport("comdlg32.dll", CharSet = CharSet.Unicode, SetLastError = true, EntryPoint = "GetSaveFileNameW")]
     private static extern bool GetSaveFileNameW(ref OpenFileName ofn);
+
+    [DllImport("comdlg32.dll", SetLastError = true, EntryPoint = "CommDlgExtendedError")]
+    private static extern int CommDlgExtendedError();
 
     private sealed class OpenFileNameData : IDisposable
     {
@@ -347,7 +364,13 @@ internal sealed class AndroidPresetFilePicker : IPresetFilePicker
             File.WriteAllBytes(sourcePath, contents ?? Array.Empty<byte>());
             suspensionScope = BeginAndroidSafSession();
             // ここでscopeの所有権をPendingRequestへ移す。コールバック未到達時も失敗経路でDisposeする。
-            RegisterPendingRequest(requestId, new PendingRequest("export", sourcePath, onComplete, suspensionScope));
+            if (!TryRegisterPendingRequest(requestId, new PendingRequest("export", sourcePath, onComplete, suspensionScope), out string registerError))
+            {
+                suspensionScope.Dispose();
+                suspensionScope = null;
+                onComplete?.Invoke(PresetFilePickerResult.Error(registerError));
+                return;
+            }
             suspensionScope = null;
 
             InvokeBridge(
@@ -375,7 +398,13 @@ internal sealed class AndroidPresetFilePicker : IPresetFilePicker
             Directory.CreateDirectory(Path.GetDirectoryName(targetPath));
             suspensionScope = BeginAndroidSafSession();
             // ここでscopeの所有権をPendingRequestへ移す。コールバック未到達時も失敗経路でDisposeする。
-            RegisterPendingRequest(requestId, new PendingRequest("import", targetPath, onComplete, suspensionScope));
+            if (!TryRegisterPendingRequest(requestId, new PendingRequest("import", targetPath, onComplete, suspensionScope), out string registerError))
+            {
+                suspensionScope.Dispose();
+                suspensionScope = null;
+                onComplete?.Invoke(PresetFilePickerResult.Error(registerError));
+                return;
+            }
             suspensionScope = null;
 
             InvokeBridge(
@@ -436,11 +465,19 @@ internal sealed class AndroidPresetFilePicker : IPresetFilePicker
         }
     }
 
-    private static void RegisterPendingRequest(string requestId, PendingRequest pendingRequest)
+    private static bool TryRegisterPendingRequest(string requestId, PendingRequest pendingRequest, out string errorMessage)
     {
         lock (PendingRequestsLock)
         {
+            if (PendingRequests.Count > 0)
+            {
+                errorMessage = "Android file picker is already open.";
+                return false;
+            }
+
             PendingRequests[requestId] = pendingRequest;
+            errorMessage = string.Empty;
+            return true;
         }
     }
 
@@ -677,6 +714,7 @@ internal sealed class AndroidPresetFilePicker : IPresetFilePicker
         try
         {
             IntPtr methodId = AndroidJNI.GetMethodID(objClass, methodName, signature);
+            ThrowIfJavaException(methodName);
             var args = objectArgs.Select(arg => new jvalue { l = arg }).ToArray();
             IntPtr result = AndroidJNI.CallObjectMethod(obj, methodId, args);
             ThrowIfJavaException(methodName);
@@ -690,13 +728,30 @@ internal sealed class AndroidPresetFilePicker : IPresetFilePicker
 
     private static IntPtr TryCallObjectMethod(IntPtr obj, string methodName, string signature)
     {
+        IntPtr objClass = IntPtr.Zero;
         try
         {
-            return CallObjectMethod(obj, methodName, signature);
+            objClass = AndroidJNI.GetObjectClass(obj);
+            IntPtr methodId = AndroidJNI.GetMethodID(objClass, methodName, signature);
+            if (AndroidJNI.ExceptionOccurred() != IntPtr.Zero)
+            {
+                AndroidJNI.ExceptionClear();
+                return IntPtr.Zero;
+            }
+
+            IntPtr result = AndroidJNI.CallObjectMethod(obj, methodId, Array.Empty<jvalue>());
+            ThrowIfJavaException(methodName);
+            return result;
         }
         catch
         {
+            if (AndroidJNI.ExceptionOccurred() != IntPtr.Zero)
+                AndroidJNI.ExceptionClear();
             return IntPtr.Zero;
+        }
+        finally
+        {
+            DeleteLocalRef(objClass);
         }
     }
 
@@ -706,6 +761,7 @@ internal sealed class AndroidPresetFilePicker : IPresetFilePicker
         try
         {
             IntPtr methodId = AndroidJNI.GetMethodID(objClass, methodName, signature);
+            ThrowIfJavaException(methodName);
             string result = AndroidJNI.CallStringMethod(obj, methodId, Array.Empty<jvalue>());
             ThrowIfJavaException(methodName);
             return result;

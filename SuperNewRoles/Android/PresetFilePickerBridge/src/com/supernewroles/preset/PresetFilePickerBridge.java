@@ -36,14 +36,22 @@ public final class PresetFilePickerBridge {
         activity.runOnUiThread(new Runnable() {
             @Override
             public void run() {
-                PresetFilePickerFragment fragment = PresetFilePickerFragment.create(
-                        requestId,
-                        "export",
-                        sourceFilePath,
-                        suggestedName,
-                        receiverObjectName);
-                addFragment(activity, fragment);
-                fragment.startExport();
+                PresetFilePickerFragment fragment = null;
+                try {
+                    fragment = PresetFilePickerFragment.create(
+                            requestId,
+                            "export",
+                            sourceFilePath,
+                            suggestedName,
+                            receiverObjectName);
+                    addFragment(activity, fragment);
+                    fragment.startExport();
+                } catch (Exception ex) {
+                    if (fragment != null) {
+                        fragment.removeSelf();
+                    }
+                    send(receiverObjectName, requestId, "export", "error", sourceFilePath, ex.toString());
+                }
             }
         });
     }
@@ -61,14 +69,22 @@ public final class PresetFilePickerBridge {
         activity.runOnUiThread(new Runnable() {
             @Override
             public void run() {
-                PresetFilePickerFragment fragment = PresetFilePickerFragment.create(
-                        requestId,
-                        "import",
-                        targetFilePath,
-                        null,
-                        receiverObjectName);
-                addFragment(activity, fragment);
-                fragment.startImport();
+                PresetFilePickerFragment fragment = null;
+                try {
+                    fragment = PresetFilePickerFragment.create(
+                            requestId,
+                            "import",
+                            targetFilePath,
+                            null,
+                            receiverObjectName);
+                    addFragment(activity, fragment);
+                    fragment.startImport();
+                } catch (Exception ex) {
+                    if (fragment != null) {
+                        fragment.removeSelf();
+                    }
+                    send(receiverObjectName, requestId, "import", "error", targetFilePath, ex.toString());
+                }
             }
         });
     }
