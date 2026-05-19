@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using HarmonyLib;
 using SuperNewRoles.Modules;
@@ -242,7 +243,109 @@ public static class StandardOptionMenu
             HandleAddPreset();
         }), spriteRenderer);
 
+        ConfigurePresetImportExportButtons(submitPreset.transform);
+
         return menu;
+    }
+
+    private static void ConfigurePresetImportExportButtons(Transform submitPreset)
+    {
+        ConfigurePresetActionButton(
+            submitPreset,
+            "ImportPresetButton",
+            "PresetImportButton",
+            (UnityAction)HandleImportPreset);
+        ConfigurePresetActionButton(
+            submitPreset,
+            "ExportCurrentPresetButton",
+            "PresetExportCurrentButton",
+            (UnityAction)HandleExportCurrentPreset);
+        ConfigurePresetActionButton(
+            submitPreset,
+            "ExportAllPresetsButton",
+            "PresetExportAllButton",
+            (UnityAction)HandleExportAllPresets);
+    }
+
+    private static void ConfigurePresetActionButton(Transform parent, string buttonName, string translationKey, UnityAction onClick)
+    {
+        var buttonTransform = parent.Find(buttonName);
+        if (buttonTransform == null)
+        {
+            Logger.Warning($"Preset menu prefab is missing {buttonName}. Import/export button setup skipped.");
+            return;
+        }
+
+        var buttonObj = buttonTransform.gameObject;
+        UIHelper.SetText(buttonObj, ModTranslation.GetString(translationKey));
+
+        var collider = buttonObj.GetComponent<BoxCollider2D>();
+        if (collider == null)
+        {
+            Logger.Warning($"Preset menu button {buttonName} is missing BoxCollider2D.");
+            return;
+        }
+
+        var passiveButton = buttonObj.AddComponent<PassiveButton>();
+        passiveButton.Colliders = new Collider2D[] { collider };
+        var spriteRenderer = buttonObj.GetComponent<SpriteRenderer>()
+            ?? buttonObj.transform.Find("Background")?.GetComponent<SpriteRenderer>();
+        UIHelper.ConfigurePassiveButton(passiveButton, onClick, spriteRenderer);
+    }
+
+    private static void HandleImportPreset()
+    {
+        PresetFilePickerWorkflow.Import(
+            PresetFilePickerFactory.Create(),
+            CustomOptionSaver.ImportPresetsArchive,
+            importResult =>
+            {
+                Logger.Info($"Imported {importResult.ImportedCount} preset(s).");
+                RefreshPresetMenuAfterImport();
+            },
+            errorMessage => Logger.Warning($"Preset import was not completed: {errorMessage}"),
+            ex => Logger.Error($"Preset import failed: {ex}"));
+    }
+
+    private static void HandleExportCurrentPreset()
+    {
+        string fileName = BuildPresetExportFileName(CustomOptionSaver.GetPresetName(CustomOptionSaver.CurrentPreset));
+        PresetFilePickerWorkflow.Export(
+            PresetFilePickerFactory.Create(),
+            fileName,
+            CustomOptionSaver.ExportCurrentPresetArchive,
+            () => Logger.Info("Preset export completed."),
+            errorMessage => Logger.Warning($"Preset export was not completed: {errorMessage}"),
+            ex => Logger.Error($"Current preset export failed: {ex}"));
+    }
+
+    private static void HandleExportAllPresets()
+    {
+        PresetFilePickerWorkflow.Export(
+            PresetFilePickerFactory.Create(),
+            "SuperNewRoles_Presets.snrpresets",
+            CustomOptionSaver.ExportAllPresetsArchive,
+            () => Logger.Info("Preset export completed."),
+            errorMessage => Logger.Warning($"Preset export was not completed: {errorMessage}"),
+            ex => Logger.Error($"All presets export failed: {ex}"));
+    }
+
+    private static void RefreshPresetMenuAfterImport()
+    {
+        var menuData = StandardOptionMenuObjectData.Instance;
+        if (menuData?.RightAreaInner == null)
+            return;
+
+        GeneratePresetButtons(menuData.RightAreaInner);
+        UpdateNowPresetText(menuData.CurrentOptionMenu);
+    }
+
+    private static string BuildPresetExportFileName(string presetName)
+    {
+        string safeName = string.IsNullOrWhiteSpace(presetName) ? "Preset" : presetName.Trim();
+        foreach (char invalidChar in Path.GetInvalidFileNameChars())
+            safeName = safeName.Replace(invalidChar, '_');
+        return $"{safeName}.snrpresets";
     }
 
     private static void HandleAddPreset()
