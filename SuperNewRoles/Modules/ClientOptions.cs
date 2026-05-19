@@ -19,6 +19,7 @@ public static class ClientOptions
     private const string CategoryButtonAssetName = "RoleDetailButton";
     private const string CheckOptionAssetName = "StandardOption_Check";
     private const string SelectOptionAssetName = "StandardOption_Select";
+    private const string CloseButtonAssetName = "closeButton";
     private const string TitleKey = "ClientOptions.Title";
 
     private const float CategoryButtonSpacing = 0.6125f;
@@ -38,6 +39,8 @@ public static class ClientOptions
     private const float BackdropHeight = 13f;
     private const float BackdropAlpha = 0.72f;
 
+    private static readonly Vector3 DialogCloseButtonPosition = new(-5f, 2.8f, -1f);
+    private static readonly Vector3 DialogCloseButtonScale = Vector3.one * 0.65f;
     private static readonly Color32 HoverColor = new(45, 235, 198, 255);
 
     private static GameObject _dialogObject;
@@ -106,10 +109,6 @@ public static class ClientOptions
                         ConfigRoles.IsMuteLobbyBGM.Value = value;
                         LobbyBehaviourPatch.ApplyCurrentLobbyBgmSetting();
                     }),
-                ClientOptionEntry.Toggle(
-                    "ClientOptions.CompressCosmetics",
-                    () => ConfigRoles.IsCompressCosmetics,
-                    ConfigRoles.SetIsCompressCosmetics),
             ]),
         new(
             "ClientOptions.Category.Network",
@@ -244,7 +243,7 @@ public static class ClientOptions
         ReparentDialog(owner);
         CreateBlackBackdrop(owner);
         CreateDialogBackground(owner);
-        CreateDialogCloseButton(owner);
+        CreateDialogCloseButton();
 
         _menuObject = GameObject.Instantiate(AssetManager.GetAsset<GameObject>(StandardOptionMenuAssetName), _dialogObject.transform);
         _menuObject.name = MenuObjectName;
@@ -397,16 +396,16 @@ public static class ClientOptions
         ConfigureEmptyPassiveButton(backdrop, backdropRenderer.size, (UnityAction)Close);
     }
 
-    private static void CreateDialogCloseButton(OptionsMenuBehaviour owner)
+    private static void CreateDialogCloseButton()
     {
-        var sourceCloseButton = owner.transform.Find("CloseButton")?.gameObject;
-        if (sourceCloseButton == null)
+        var closeButtonPrefab = AssetManager.GetAsset<GameObject>(CloseButtonAssetName);
+        if (closeButtonPrefab == null)
             return;
 
-        var closeButtonObject = GameObject.Instantiate(sourceCloseButton, _dialogObject.transform);
+        var closeButtonObject = GameObject.Instantiate(closeButtonPrefab, _dialogObject.transform);
         closeButtonObject.name = "DialogCloseButton";
-        closeButtonObject.transform.localPosition = new Vector3((-DialogWidth / 2f) + 0.35f, (DialogHeight / 2f) - 0.35f, -1f);
-        closeButtonObject.transform.localScale = sourceCloseButton.transform.localScale;
+        closeButtonObject.transform.localPosition = DialogCloseButtonPosition;
+        closeButtonObject.transform.localScale = DialogCloseButtonScale;
         closeButtonObject.transform.localRotation = Quaternion.identity;
 
         var aspectPosition = closeButtonObject.GetComponent<AspectPosition>();
@@ -415,10 +414,16 @@ public static class ClientOptions
 
         var passiveButton = closeButtonObject.GetComponent<PassiveButton>();
         if (passiveButton == null)
-            return;
+            passiveButton = closeButtonObject.AddComponent<PassiveButton>();
+
+        var collider = closeButtonObject.GetComponent<Collider2D>();
+        if (collider != null)
+            passiveButton.Colliders = new Collider2D[] { collider };
 
         passiveButton.OnClick = new();
         passiveButton.OnClick.AddListener((UnityAction)Close);
+        passiveButton.OnMouseOver = new();
+        passiveButton.OnMouseOut = new();
     }
 
     private static void ConfigureEmptyPassiveButton(GameObject obj, Vector2 colliderSize, UnityAction onClick)

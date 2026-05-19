@@ -230,7 +230,7 @@ ClientOptions.Category.Display,表示/演出,Display / Effects,显示/演出,顯
 ClientOptions.Category.Network,通信/データ,Network / Data,通信/数据,通訊/資料
 ClientOptions.Category.Performance,パフォーマンス,Performance,性能,效能
 ClientOptions.AutoCopyGameCode,ルームコードを自動コピー,Auto copy room code,自动复制房间代码,自動複製房間代碼
-ClientOptions.IsSendAnalytics,利用状況データを送信,Send usage analytics,发送使用情况数据,傳送使用狀況資料
+ClientOptions.IsSendAnalytics,解析データを送信,Send usage analytics,发送使用情况数据,傳送使用狀況資料
 ClientOptions.IsVersionErrorView,同期エラーを表示,Show sync errors,显示同步错误,顯示同步錯誤
 ClientOptions.IsModCosmeticsAreNotLoaded,カスタムコスメを読み込まない,Do not load custom cosmetics,不加载自定义装扮,不載入自訂裝扮
 ClientOptions.IsNotUsingBlood,血の色を黒にする,Make blood black,将血液显示为黑色,將血液顯示為黑色
