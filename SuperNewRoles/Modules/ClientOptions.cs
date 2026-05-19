@@ -916,6 +916,9 @@ public static class ClientOptions
 public static class ClientOptionsPatches
 {
     private const string ButtonObjectName = "SNR_ClientOptionsButton";
+    private static readonly Vector3 ReturnToGamePosition = new(1.35f, -2.321f, -1f);
+    private static readonly Vector3 LeaveGameButtonPosition = new(-1.35f, -2.321f, -1f);
+    private static readonly Vector3 ClientOptionButtonPosition = new(0f, -1.47f, -1f);
 
     [HarmonyPatch(typeof(OptionsMenuBehaviour), nameof(OptionsMenuBehaviour.Start))]
     public static class OptionsMenuBehaviourStartPatch
@@ -925,13 +928,15 @@ public static class ClientOptionsPatches
             if (__instance.CensorChatButton == null)
                 return;
 
+            ConfigureGeneralTabButtonPositions(__instance);
+
             if (FindClientOptionButton(__instance) != null)
                 return;
 
             var parent = GetClientOptionButtonParent(__instance);
             var buttonObject = GameObject.Instantiate(__instance.CensorChatButton.gameObject, parent);
             buttonObject.name = ButtonObjectName;
-            buttonObject.transform.localPosition = GetClientOptionButtonPosition(__instance);
+            buttonObject.transform.localPosition = ClientOptionButtonPosition;
             buttonObject.SetActive(true);
 
             var aspectPosition = buttonObject.GetComponent<AspectPosition>();
@@ -940,7 +945,13 @@ public static class ClientOptionsPatches
 
             var toggleButton = buttonObject.GetComponent<ToggleButtonBehaviour>();
             if (toggleButton != null)
+            {
+                if (toggleButton.Background != null)
+                    toggleButton.Background.color = Color.white;
+                if (toggleButton.Rollover != null)
+                    toggleButton.Rollover.ChangeOutColor(Color.white);
                 GameObject.Destroy(toggleButton);
+            }
 
             var text = buttonObject.GetComponentInChildren<TextMeshPro>();
             if (text != null)
@@ -950,10 +961,18 @@ public static class ClientOptionsPatches
             if (passiveButton == null)
                 return;
 
-            UIHelper.ConfigurePassiveButton(
-                passiveButton,
-                (UnityAction)(() => ClientOptions.Toggle(__instance)),
-                buttonObject.GetComponent<SpriteRenderer>());
+            passiveButton.OnClick = new();
+            passiveButton.OnClick.AddListener((UnityAction)(() => ClientOptions.Toggle(__instance)));
+        }
+
+        private static void ConfigureGeneralTabButtonPositions(OptionsMenuBehaviour optionsMenu)
+        {
+            var generalTab = FindChildByName(optionsMenu.transform, "GeneralTab");
+            if (generalTab == null)
+                return;
+
+            SetChildLocalPosition(generalTab, "ReturnToGameButton", ReturnToGamePosition);
+            SetChildLocalPosition(generalTab, "LeaveGameButton", LeaveGameButtonPosition);
         }
 
         private static Transform FindClientOptionButton(OptionsMenuBehaviour optionsMenu)
@@ -967,6 +986,32 @@ public static class ClientOptionsPatches
             return null;
         }
 
+        private static Transform FindChildByName(Transform parent, string name)
+        {
+            if (parent == null)
+                return null;
+
+            for (int i = 0; i < parent.childCount; i++)
+            {
+                var child = parent.GetChild(i);
+                if (child.name == name)
+                    return child;
+
+                var nested = FindChildByName(child, name);
+                if (nested != null)
+                    return nested;
+            }
+
+            return null;
+        }
+
+        private static void SetChildLocalPosition(Transform parent, string name, Vector3 position)
+        {
+            var child = FindChildByName(parent, name);
+            if (child != null)
+                child.localPosition = position;
+        }
+
         private static Transform GetClientOptionButtonParent(OptionsMenuBehaviour optionsMenu)
         {
             if (optionsMenu.EnableFriendInvitesButton != null)
@@ -975,14 +1020,6 @@ public static class ClientOptionsPatches
             return optionsMenu.CensorChatButton.transform.parent;
         }
 
-        private static Vector3 GetClientOptionButtonPosition(OptionsMenuBehaviour optionsMenu)
-        {
-            var basePosition = optionsMenu.CensorChatButton.transform.localPosition;
-            if (optionsMenu.EnableFriendInvitesButton != null)
-                basePosition = optionsMenu.EnableFriendInvitesButton.transform.localPosition;
-
-            return basePosition + new Vector3(0f, -0.78f, 0f);
-        }
     }
 
     [HarmonyPatch(typeof(OptionsMenuBehaviour), nameof(OptionsMenuBehaviour.Close))]
