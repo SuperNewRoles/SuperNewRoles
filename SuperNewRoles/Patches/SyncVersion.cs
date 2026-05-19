@@ -602,6 +602,14 @@ internal static class SyncVersionErrorHandler
 
     private static bool ShouldDisplayErrors(HudManager hudManager)
     {
+        if (ConfigRoles.IsVersionErrorView != null
+            && !ConfigRoles.IsVersionErrorView.Value
+            && !ShouldForceDisplayErrorsForHost())
+        {
+            if (ErrorText != null) ErrorText.gameObject.SetActive(false);
+            return false;
+        }
+
         if (AmongUsClient.Instance.GameState != InnerNet.InnerNetClient.GameStates.Joined)
         {
             if (ErrorText != null) ErrorText.gameObject.SetActive(false);
@@ -610,15 +618,62 @@ internal static class SyncVersionErrorHandler
         return true;
     }
 
+    private static bool ShouldForceDisplayErrorsForHost()
+    {
+        return AmongUsClient.Instance != null
+            && AmongUsClient.Instance.GameState == InnerNet.InnerNetClient.GameStates.Joined
+            && AmongUsClient.Instance.NetworkMode == NetworkModes.OnlineGame
+            && AmongUsClient.Instance.AmHost
+            && !SyncVersion.CanHostStartGame();
+    }
+
     private static void CollectErrors()
     {
         ErrorCache.Clear();
+        HashSet<byte> addedPlayers = new();
         foreach (var error in SyncVersion.VersionData.IsError)
         {
             var errorMessage = CreateErrorMessage(error);
             if (!string.IsNullOrEmpty(errorMessage))
             {
                 ErrorCache.Add(errorMessage);
+                addedPlayers.Add(error.Key);
+            }
+        }
+
+        CollectHostStartBlockErrors(addedPlayers);
+    }
+
+    private static void CollectHostStartBlockErrors(HashSet<byte> addedPlayers)
+    {
+        if (AmongUsClient.Instance == null
+            || !AmongUsClient.Instance.AmHost
+            || AmongUsClient.Instance.NetworkMode != NetworkModes.OnlineGame
+            || GameData.Instance == null)
+        {
+            return;
+        }
+
+        foreach (NetworkedPlayerInfo playerInfo in GameData.Instance.AllPlayers)
+        {
+            if (playerInfo == null || playerInfo.Disconnected)
+                continue;
+
+            byte playerId = playerInfo.PlayerId;
+            if (addedPlayers.Contains(playerId))
+                continue;
+
+            bool hasVersion = SyncVersion.VersionData.VersionMap.TryGetValue(playerId, out string version) && !string.IsNullOrEmpty(version);
+            bool hasError = SyncVersion.VersionData.IsError.TryGetValue(playerId, out SyncErrorType errorType);
+            if (hasVersion && hasError && (errorType == SyncErrorType.NotMismatch || errorType == SyncErrorType.HashMismatch))
+                continue;
+
+            var displayErrorType = hasVersion && hasError ? errorType : SyncErrorType.NotInstalled;
+            var errorMessage = CreateErrorMessage(new KeyValuePair<byte, SyncErrorType>(playerId, displayErrorType));
+            if (!string.IsNullOrEmpty(errorMessage))
+            {
+                ErrorCache.Add(errorMessage);
+                addedPlayers.Add(playerId);
             }
         }
     }
