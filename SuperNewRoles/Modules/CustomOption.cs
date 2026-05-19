@@ -1389,10 +1389,21 @@ public static partial class CustomOptionSaver
         return ModTranslation.GetString("PresetDefault", preset + 1);
     }
 
-    public static void SetPresetName(int preset, string name)
+    public static bool SetPresetName(int preset, string name)
     {
-        if (preset < 0 || preset >= MaxPresetCount) return;
+        if (preset < 0 || preset >= MaxPresetCount) return false;
+        if (!presetNames.ContainsKey(preset) && presetNames.Count >= PresetRawDataLimits.MaxPresetNames)
+        {
+            Logger.Warning($"No free preset name slot available (max {PresetRawDataLimits.MaxPresetNames}).");
+            return false;
+        }
+        if (!PresetRawDataLimits.IsPresetNameWithinLimits(name))
+        {
+            Logger.Warning("Preset name is too long.");
+            return false;
+        }
         presetNames[preset] = name;
+        return true;
     }
 
     public static void RemovePreset(int preset)
@@ -1660,6 +1671,8 @@ public partial class FileOptionStorage : IOptionStorage
 
     public byte[] BuildOptionDataBytes(byte version, int preset, IReadOnlyDictionary<int, string> presetNames)
     {
+        PresetRawDataLimits.ValidatePresetNamesForWrite(presetNames);
+
         using var memoryStream = new MemoryStream();
         using var writer = new BinaryWriter(memoryStream);
 

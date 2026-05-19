@@ -170,6 +170,7 @@ public final class PresetFilePickerBridge {
     public static final class PresetFilePickerFragment extends Fragment {
         private static final int REQUEST_EXPORT = 0x4e51;
         private static final int REQUEST_IMPORT = 0x4e52;
+        private static final long MAX_COPY_BYTES = 32L * 1024L * 1024L;
         private String requestId;
         private String action;
         private String filePath;
@@ -229,25 +230,61 @@ public final class PresetFilePickerBridge {
                 return;
             }
 
-            try {
-                if (requestCode == REQUEST_EXPORT) {
-                    copyToUri(data.getData(), filePath);
-                    PresetFilePickerBridge.send(receiverObjectName, requestId, "export", "success", filePath, "");
-                } else if (requestCode == REQUEST_IMPORT) {
-                    copyFromUri(data.getData(), filePath);
-                    PresetFilePickerBridge.send(receiverObjectName, requestId, "import", "success", filePath, "");
-                } else {
-                    PresetFilePickerBridge.send(receiverObjectName, requestId, action, "error", filePath, "Unknown request code.");
-                }
-            } catch (Exception ex) {
-                PresetFilePickerBridge.send(receiverObjectName, requestId, action, "error", filePath, ex.toString());
-            } finally {
+            if (requestCode != REQUEST_EXPORT && requestCode != REQUEST_IMPORT) {
+                PresetFilePickerBridge.send(receiverObjectName, requestId, action, "error", filePath, "Unknown request code.");
                 removeSelf();
+                return;
             }
+
+            startTransfer(requestCode, data.getData());
         }
 
-        private void copyToUri(Uri uri, String sourcePath) throws Exception {
-            ContentResolver resolver = getActivity().getContentResolver();
+        private void startTransfer(final int requestCode, final Uri uri) {
+            final Activity activity = getActivity();
+            if (activity == null) {
+                PresetFilePickerBridge.send(receiverObjectName, requestId, action, "error", filePath, "Activity is null.");
+                removeSelf();
+                return;
+            }
+
+            final ContentResolver resolver = activity.getContentResolver();
+            final String resultAction = requestCode == REQUEST_EXPORT ? "export" : "import";
+            Thread transferThread = new Thread(new Runnable() {
+                @Override
+                public void run() {
+                    String status = "success";
+                    String error = "";
+                    try {
+                        if (requestCode == REQUEST_EXPORT) {
+                            copyToUri(resolver, uri, filePath);
+                        } else {
+                            copyFromUri(resolver, uri, filePath);
+                        }
+                    } catch (Exception ex) {
+                        status = "error";
+                        error = ex.toString();
+                    }
+                    sendResultAndRemove(activity, resultAction, status, error);
+                }
+            }, "SNRPresetFilePickerCopy");
+            transferThread.start();
+        }
+
+        private void sendResultAndRemove(
+                Activity activity,
+                final String resultAction,
+                final String status,
+                final String error) {
+            activity.runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    PresetFilePickerBridge.send(receiverObjectName, requestId, resultAction, status, filePath, error);
+                    removeSelf();
+                }
+            });
+        }
+
+        private void copyToUri(ContentResolver resolver, Uri uri, String sourcePath) throws Exception {
             InputStream input = null;
             OutputStream output = null;
             try {
@@ -256,15 +293,14 @@ public final class PresetFilePickerBridge {
                 if (output == null) {
                     throw new IllegalStateException("Could not open output stream.");
                 }
-                copy(input, output);
+                copy(input, output, MAX_COPY_BYTES);
             } finally {
                 closeQuietly(input);
                 closeQuietly(output);
             }
         }
 
-        private void copyFromUri(Uri uri, String targetPath) throws Exception {
-            ContentResolver resolver = getActivity().getContentResolver();
+        private void copyFromUri(ContentResolver resolver, Uri uri, String targetPath) throws Exception {
             InputStream input = null;
             OutputStream output = null;
             try {
@@ -273,17 +309,22 @@ public final class PresetFilePickerBridge {
                     throw new IllegalStateException("Could not open input stream.");
                 }
                 output = new FileOutputStream(targetPath, false);
-                copy(input, output);
+                copy(input, output, MAX_COPY_BYTES);
             } finally {
                 closeQuietly(input);
                 closeQuietly(output);
             }
         }
 
-        private static void copy(InputStream input, OutputStream output) throws Exception {
+        private static void copy(InputStream input, OutputStream output, long maxBytes) throws Exception {
             byte[] buffer = new byte[8192];
+            long totalBytes = 0;
             int read;
             while ((read = input.read(buffer)) >= 0) {
+                totalBytes += read;
+                if (totalBytes > maxBytes) {
+                    throw new IllegalStateException("Preset archive is too large.");
+                }
                 output.write(buffer, 0, read);
             }
             output.flush();

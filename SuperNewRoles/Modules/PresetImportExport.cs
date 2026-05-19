@@ -402,6 +402,7 @@ public static class PresetImportExportService
         var updatedPresetNames = new Dictionary<int, string>(currentPresetNames);
         foreach (var plan in importPlans)
             updatedPresetNames[plan.TargetPresetId] = plan.Name;
+        PresetRawDataLimits.ValidatePresetNamesForWrite(updatedPresetNames);
         return updatedPresetNames;
     }
 
@@ -636,6 +637,30 @@ internal static class PresetRawDataLimits
 
     public static string ReadCategoryName(BinaryReader reader)
         => ReadLimitedString(reader, MaxCategoryNameBytes, MaxCategoryNameLength, "category name");
+
+    public static void ValidatePresetNamesForWrite(IReadOnlyDictionary<int, string> presetNames)
+    {
+        if (presetNames == null)
+            throw new InvalidDataException("Preset name list is null.");
+        if (presetNames.Count > MaxPresetNames)
+            throw new InvalidDataException("Preset data preset name count is invalid.");
+
+        foreach (var pair in presetNames)
+            ValidatePresetNameForWrite(pair.Value);
+    }
+
+    public static bool IsPresetNameWithinLimits(string value)
+    {
+        string name = value ?? string.Empty;
+        return name.Length <= MaxPresetNameLength
+            && Encoding.UTF8.GetByteCount(name) <= MaxPresetNameBytes;
+    }
+
+    private static void ValidatePresetNameForWrite(string value)
+    {
+        if (!IsPresetNameWithinLimits(value))
+            throw new InvalidDataException("Preset data preset name is too long.");
+    }
 
     public static int ReadCount(BinaryReader reader, int maxCount, string fieldName)
     {

@@ -376,7 +376,8 @@ public static class StandardOptionMenu
         }
         int newPreset = (int)candidate;
 
-        CustomOptionSaver.SetPresetName(newPreset, text);
+        if (!CustomOptionSaver.SetPresetName(newPreset, text))
+            return;
         CustomOptionSaver.CurrentPreset = newPreset;
         CustomOptionSaver.Save();
         writeBoxTextBoxTMP.Clear();

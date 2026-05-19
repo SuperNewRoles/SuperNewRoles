@@ -69,6 +69,26 @@ public class OptionStorageTests
         names.Should().ContainKey(3).WhoseValue.Should().Be("Tournament");
     }
 
+    [Fact]
+    public void FileOptionStorage_BuildOptionDataBytes_RejectsPresetNamesThatCannotBeReloaded()
+    {
+        var tempDir = new DirectoryInfo(Path.Combine(Path.GetTempPath(), "snr-tests-" + Guid.NewGuid().ToString("N")));
+        var storage = new FileOptionStorage(tempDir, "Options.data", "PresetOptions_");
+        storage.EnsureStorageExists();
+
+        Action tooManyPresetNames = () => storage.BuildOptionDataBytes(
+            1,
+            0,
+            Enumerable.Range(0, PresetRawDataLimits.MaxPresetNames + 1).ToDictionary(id => id, id => "Preset" + id));
+        Action tooLongPresetName = () => storage.BuildOptionDataBytes(
+            1,
+            0,
+            new Dictionary<int, string> { [0] = new string('A', PresetRawDataLimits.MaxPresetNameLength + 1) });
+
+        tooManyPresetNames.Should().Throw<InvalidDataException>();
+        tooLongPresetName.Should().Throw<InvalidDataException>();
+    }
+
     // 目的: オプションファイルが存在しない場合に false を返し、プリセット名がクリアされることを検証
     [Fact]
     public void FileOptionStorage_LoadOptionData_MissingFile_ClearsPresetNames()
@@ -716,7 +736,7 @@ public class OptionStorageTests
             currentVersion: 1);
         Action tooManyPresetNames = () => PresetImportExportService.ImportPresetsArchive(
             CreatePresetArchive(
-                storage.BuildOptionDataBytes(
+                BuildUncheckedOptionDataBytes(
                     1,
                     12,
                     Enumerable.Range(0, PresetRawDataLimits.MaxPresetNames + 1).ToDictionary(id => id, id => "Preset" + id)),
@@ -727,7 +747,7 @@ public class OptionStorageTests
             currentVersion: 1);
         Action tooLongPresetName = () => PresetImportExportService.ImportPresetsArchive(
             CreatePresetArchive(
-                storage.BuildOptionDataBytes(
+                BuildUncheckedOptionDataBytes(
                     1,
                     13,
                     new Dictionary<int, string> { [13] = new string('A', PresetRawDataLimits.MaxPresetNameLength + 1) }),
@@ -955,6 +975,26 @@ public class OptionStorageTests
         for (int i = 0; i < nameCount; i++)
             names[reader.ReadInt32()] = reader.ReadString();
         return new OptionsDataForTest(currentPreset, names);
+    }
+
+    private static byte[] BuildUncheckedOptionDataBytes(byte version, int preset, IReadOnlyDictionary<int, string> presetNames)
+    {
+        using var memoryStream = new MemoryStream();
+        using (var writer = new BinaryWriter(memoryStream))
+        {
+            writer.Write(version);
+            writer.Write((byte)5);
+            writer.Write((byte)25);
+            writer.Write(preset);
+            writer.Write(presetNames.Count);
+            foreach (var pair in presetNames)
+            {
+                writer.Write(pair.Key);
+                writer.Write(pair.Value ?? string.Empty);
+            }
+        }
+
+        return memoryStream.ToArray();
     }
 
     private sealed class OptionsDataForTest
