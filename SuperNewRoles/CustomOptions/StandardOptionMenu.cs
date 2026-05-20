@@ -309,6 +309,7 @@ public static class StandardOptionMenu
     private static void HandleExportPresets()
     {
         var selectedPresetIds = GetSelectedPresetExportIds();
+        ClearPresetExportSelections();
         PresetFilePickerWorkflow.Export(
             PresetFilePickerFactory.Create(),
             BuildPresetExportFileName(selectedPresetIds),
@@ -578,6 +579,45 @@ public static class StandardOptionMenu
 
     private static void UpdatePresetExportSelectVisual(GameObject checkMark, int presetId)
         => checkMark?.SetActive(SelectedPresetExportIds.Contains(presetId));
+
+    public static void ClearPresetExportSelections()
+    {
+        if (SelectedPresetExportIds.Count == 0)
+        {
+            UpdateExportPresetsButtonText();
+            return;
+        }
+
+        SelectedPresetExportIds.Clear();
+        UpdateAllPresetExportSelectVisuals();
+        UpdateExportPresetsButtonText();
+    }
+
+    private static void UpdateAllPresetExportSelectVisuals()
+    {
+        var buttonsContainer = StandardOptionMenuObjectData.Instance?.PresetButtonsContainer;
+        if (buttonsContainer == null)
+            return;
+
+        for (int i = 0; i < buttonsContainer.transform.childCount; i++)
+        {
+            var presetButton = buttonsContainer.transform.GetChild(i);
+            if (!TryReadPresetIdFromButtonName(presetButton.name, out int presetId))
+                continue;
+
+            var checkMark = presetButton.Find("ExportSelectButton/CheckMark")?.gameObject;
+            UpdatePresetExportSelectVisual(checkMark, presetId);
+        }
+    }
+
+    private static bool TryReadPresetIdFromButtonName(string buttonName, out int presetId)
+    {
+        const string Prefix = "PresetButton_";
+        presetId = 0;
+        return buttonName != null
+            && buttonName.StartsWith(Prefix)
+            && int.TryParse(buttonName[Prefix.Length..], out presetId);
+    }
 
     private static void PruneMissingPresetExportSelections()
         => SelectedPresetExportIds.RemoveWhere(presetId => !CustomOptionSaver.PresetNames.ContainsKey(presetId));

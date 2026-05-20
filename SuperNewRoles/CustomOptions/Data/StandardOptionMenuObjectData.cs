@@ -106,6 +106,7 @@ namespace SuperNewRoles.CustomOptions.Data
 
         public override void Hide()
         {
+            SuperNewRoles.CustomOptions.StandardOptionMenu.ClearPresetExportSelections();
             if (StandardOptionMenu != null)
                 StandardOptionMenu.SetActive(false);
         }
