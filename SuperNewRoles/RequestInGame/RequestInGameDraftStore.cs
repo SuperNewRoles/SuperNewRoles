@@ -95,20 +95,27 @@ public static class RequestInGameDraftStore
 
     private static void SaveAll(Dictionary<string, RequestInGameDraft> drafts)
     {
-        string saveFilePath = SaveFilePath;
-        string directory = Path.GetDirectoryName(saveFilePath);
-        if (!string.IsNullOrEmpty(directory) && !Directory.Exists(directory))
-            Directory.CreateDirectory(directory);
-
-        if (drafts.Count == 0)
+        try
         {
-            if (File.Exists(saveFilePath))
-                File.Delete(saveFilePath);
-            return;
-        }
+            string saveFilePath = SaveFilePath;
+            string directory = Path.GetDirectoryName(saveFilePath);
+            if (!string.IsNullOrEmpty(directory) && !Directory.Exists(directory))
+                Directory.CreateDirectory(directory);
 
-        string json = JsonSerializer.Serialize(drafts, JsonSerializerOptions);
-        File.WriteAllText(saveFilePath, json);
+            if (drafts.Count == 0)
+            {
+                if (File.Exists(saveFilePath))
+                    File.Delete(saveFilePath);
+                return;
+            }
+
+            string json = JsonSerializer.Serialize(drafts, JsonSerializerOptions);
+            File.WriteAllText(saveFilePath, json);
+        }
+        catch (Exception)
+        {
+            // Draft persistence is best-effort; report UI should keep working if saving fails.
+        }
     }
 
     private static RequestInGameDraft Normalize(RequestInGameDraft draft)

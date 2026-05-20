@@ -65,6 +65,20 @@ public class RequestInGameDraftStoreTests : IDisposable
     }
 
     [Fact]
+    public void Save_WhenSavePathCannotBeWritten_DoesNotThrow()
+    {
+        string directoryPath = Path.Combine(tempDirectory, "DraftDirectory");
+        Directory.CreateDirectory(directoryPath);
+        RequestInGameDraftStore.SetTestSaveFilePath(directoryPath);
+
+        Action act = () => RequestInGameDraftStore.Save(
+            RequestInGameType.Bug,
+            new RequestInGameDraft("title", "description", "Skeld", "Sheriff", "Meeting"));
+
+        act.Should().NotThrow();
+    }
+
+    [Fact]
     public void Load_CorruptJson_ReturnsEmptyDraft()
     {
         File.WriteAllText(saveFilePath, "{ this is not valid json");

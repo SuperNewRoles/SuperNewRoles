@@ -5,6 +5,8 @@ namespace SuperNewRoles.RequestInGame;
 
 public class RequestInGameDraftAutoSaver : MonoBehaviour
 {
+    private const float MinSaveIntervalSeconds = 0.3f;
+
     private RequestInGameType requestInGameType;
     private TextBoxTMP titleTextBox;
     private TextBoxTMP descriptionTextBox;
@@ -12,6 +14,7 @@ public class RequestInGameDraftAutoSaver : MonoBehaviour
     private TextBoxTMP roleTextBox;
     private TextBoxTMP timingTextBox;
     private RequestInGameDraft lastDraft = RequestInGameDraft.Empty;
+    private float lastSaveAt;
     private bool initialized;
     private bool savingEnabled = true;
 
@@ -56,17 +59,20 @@ public class RequestInGameDraftAutoSaver : MonoBehaviour
         if (!initialized || !savingEnabled)
             return;
 
-        SaveIfChanged();
+        SaveIfChanged(true);
     }
 
-    private void SaveIfChanged()
+    private void SaveIfChanged(bool force = false)
     {
         RequestInGameDraft currentDraft = CreateCurrentDraft();
         if (currentDraft == lastDraft)
             return;
+        if (!force && Time.unscaledTime - lastSaveAt < MinSaveIntervalSeconds)
+            return;
 
         RequestInGameDraftStore.Save(requestInGameType, currentDraft);
         lastDraft = currentDraft;
+        lastSaveAt = Time.unscaledTime;
     }
 
     private RequestInGameDraft CreateCurrentDraft()
