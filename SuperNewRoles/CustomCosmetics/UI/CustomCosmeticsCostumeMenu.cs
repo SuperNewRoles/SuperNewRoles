@@ -773,7 +773,10 @@ public class CustomCosmeticsCostumeMenu : CustomCosmeticsMenuBase<CustomCosmetic
         categoryScroller.transform.localScale = Vector3.one * 1.05f;
         var categoryScrollerscroller = categoryScroller.GetComponentInChildren<Scroller>();
         if (tabType == CostumeTabType.Skin)
+        {
+            categoryScroller.transform.localPosition = new(10f, -0.085f, -20);
             categoryScroller.SetActive(false);
+        }
         var slotBase = GameObject.Instantiate(AssetManager.GetAsset<GameObject>("CosmeticItemSlot"), CurrentCostumeTab.transform);
         var slotBasePassive = slotBase.AddComponent<PassiveButton>();
         slotBase.SetActive(false);
