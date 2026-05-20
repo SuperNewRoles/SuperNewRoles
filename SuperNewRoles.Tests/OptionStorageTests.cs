@@ -1018,11 +1018,12 @@ public class OptionStorageTests
         public string ExportDefaultFileName { get; private set; } = string.Empty;
         public byte[] ExportContents { get; private set; } = Array.Empty<byte>();
 
-        public void Export(string defaultFileName, byte[] contents, Action<PresetFilePickerResult> onComplete)
+        public void Export(string defaultFileName, byte[] contents, Action<PresetFilePickerResult> onComplete, Action onBeforeWrite = null)
         {
             ExportCalls++;
             ExportDefaultFileName = defaultFileName;
             ExportContents = contents ?? Array.Empty<byte>();
+            onBeforeWrite?.Invoke();
             onComplete(ExportResult);
         }
 

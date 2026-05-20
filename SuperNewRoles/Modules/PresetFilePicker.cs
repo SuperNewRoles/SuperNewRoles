@@ -43,7 +43,7 @@ public sealed class PresetFilePickerResult
 
 public interface IPresetFilePicker
 {
-    void Export(string defaultFileName, byte[] contents, Action<PresetFilePickerResult> onComplete);
+    void Export(string defaultFileName, byte[] contents, Action<PresetFilePickerResult> onComplete, Action onBeforeWrite = null);
     void Import(Action<PresetFilePickerResult> onComplete);
 }
 
@@ -56,6 +56,16 @@ public static class PresetFilePickerWorkflow
         Action onSuccess,
         Action<string> onNotCompleted,
         Action<Exception> onFailed)
+        => Export(filePicker, defaultFileName, createContents, null, onSuccess, onNotCompleted, onFailed);
+
+    public static void Export(
+        IPresetFilePicker filePicker,
+        string defaultFileName,
+        Func<byte[]> createContents,
+        Action onBeforeWrite,
+        Action onSuccess,
+        Action<string> onNotCompleted,
+        Action<Exception> onFailed)
     {
         try
         {
@@ -63,7 +73,10 @@ public static class PresetFilePickerWorkflow
             filePicker.Export(defaultFileName, contents, result =>
             {
                 if (result.Status == PresetFilePickerStatus.Cancelled)
+                {
+                    onNotCompleted(string.Empty);
                     return;
+                }
                 if (result.Status == PresetFilePickerStatus.Error)
                 {
                     onNotCompleted(result.ErrorMessage);
@@ -71,7 +84,7 @@ public static class PresetFilePickerWorkflow
                 }
 
                 onSuccess();
-            });
+            }, onBeforeWrite);
         }
         catch (Exception ex)
         {
@@ -129,7 +142,7 @@ public static class PresetFilePickerFactory
 
 internal sealed class UnsupportedPresetFilePicker : IPresetFilePicker
 {
-    public void Export(string defaultFileName, byte[] contents, Action<PresetFilePickerResult> onComplete)
+    public void Export(string defaultFileName, byte[] contents, Action<PresetFilePickerResult> onComplete, Action onBeforeWrite = null)
         => onComplete(PresetFilePickerResult.Error("Preset file picker is not supported on this platform."));
 
     public void Import(Action<PresetFilePickerResult> onComplete)
@@ -149,7 +162,7 @@ internal sealed class WindowsPresetFilePicker : IPresetFilePicker
     private const string PresetFilter =
         "SuperNewRoles Presets (*.snrpresets)\0*.snrpresets\0ZIP Archive (*.zip)\0*.zip\0All Files (*.*)\0*.*\0\0";
 
-    public void Export(string defaultFileName, byte[] contents, Action<PresetFilePickerResult> onComplete)
+    public void Export(string defaultFileName, byte[] contents, Action<PresetFilePickerResult> onComplete, Action onBeforeWrite = null)
     {
         try
         {
@@ -163,8 +176,20 @@ internal sealed class WindowsPresetFilePicker : IPresetFilePicker
 
             if (string.IsNullOrWhiteSpace(Path.GetExtension(path)))
                 path += ".snrpresets";
-            File.WriteAllBytes(path, contents ?? Array.Empty<byte>());
-            onComplete(PresetFilePickerResult.Success());
+
+            onBeforeWrite?.Invoke();
+            new LateTask(() =>
+            {
+                try
+                {
+                    File.WriteAllBytes(path, contents ?? Array.Empty<byte>());
+                    onComplete(PresetFilePickerResult.Success());
+                }
+                catch (Exception ex)
+                {
+                    onComplete(PresetFilePickerResult.Error(ex.Message));
+                }
+            }, 0.05f, "WritePresetExportFile", false);
         }
         catch (Exception ex)
         {
@@ -352,7 +377,7 @@ internal sealed class AndroidPresetFilePicker : IPresetFilePicker
     private static IntPtr _dexClassLoader;
     private static IntPtr _bridgeClass;
 
-    public void Export(string defaultFileName, byte[] contents, Action<PresetFilePickerResult> onComplete)
+    public void Export(string defaultFileName, byte[] contents, Action<PresetFilePickerResult> onComplete, Action onBeforeWrite = null)
     {
         string requestId = string.Empty;
         string sourcePath = string.Empty;
