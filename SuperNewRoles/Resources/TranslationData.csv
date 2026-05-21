@@ -115,6 +115,7 @@ DeviceOptionType.Restrict,時間制限,Time Limit,时间限制,時間限制
 DeviceTimeSettingAdmin,アドミンの制限時間,Admin Limit Time,管理地图限制时间,管理地圖限制時間
 DeviceTimeSettingVitalOrDoorLog,バイタル・ドアログの制限時間,Vital/Doorlog Limit Time,生命体征/门禁记录限制时间,生命體徵/門禁記錄限制時間
 DeviceTimeSettingCamera,カメラの制限時間,Camera Limit Time,摄像头限制时间,監視器限制時間
+AllowSimultaneousScanTask,スキャンタスクを同時に出来る,Allow simultaneous scan tasks,允许同时进行扫描任务,允許同時進行掃描任務
 
 NeutralSubIntro,自分のことだけ考えろ。他人のことは利用せよ。,Think only about yourself. Use others.,只考虑自己，利用他人,只考慮自己。利用他人。
 
