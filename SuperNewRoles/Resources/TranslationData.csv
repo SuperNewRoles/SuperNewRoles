@@ -152,6 +152,7 @@ ExcludeCatchFishTaskFromSelection,釣りタスクを選出しない,Exclude fish
 ExcludeUploadDataTaskFromSelection,ダウンロードタスクを選出しない,Exclude download task from selection,不选择下载任务,不選擇下載任務
 ExcludeVentCleaningTaskFromSelection,ベント掃除タスクを選出しない,Exclude vent cleaning task from selection,不选择清理通风口任务,不選擇清理通風口任務
 ExcludeSubmitScanTaskFromSelection,クルーメイトスキャンタスクを選出しない,Exclude crewmate scan task from selection,不选择船员扫描任务,不選擇船員掃描任務
+RandomizeFixLightsSwitches,停電修理の初期状態を完全にランダムにする,Fully randomize lights repair switches,完全随机化修灯开关,完全隨機化修燈開關
 SyncSpawn,スポーンを同期する(選択スポーンのみ),Sync Spawn (Selected Spawn Only),同步出生点(仅选择出生点),同步出生點(僅選擇出生點)
 AdvancedRandom,よりランダムな乱数を使用する,Use Enhanced Randomness,使用增强型随机数,使用更隨機的隨機數
 DisableTaskWin,タスク勝利を無効にする,Disable task victory,禁用任务胜利,禁用任務勝利
