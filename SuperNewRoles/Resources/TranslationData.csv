@@ -402,6 +402,7 @@ FinalStatus.GuesserMisFire,推殺失敗,Guess misfire,误赌,推測失敗
 FinalStatus.Push,突き落とし,Shoved off,被推下,被推下
 FinalStatus.LoversSuicide,心中,Lovers’ double suicide,恋人自尽,戀人自盡
 FinalStatus.LaunchByRocket,花火,Launched like a firework,如烟花般升空,如煙火般升空
+FinalStatus.RocketLauncher,爆散,Blasted,爆炸,爆炸
 FinalStatus.VampireKill,吸血死,Death by vampire,被吸血而死,被吸血而死
 FinalStatus.VampireWithDead,夜に呑まれた,Swallowed by the night,被夜晚吞噬,被夜晚吞噬
 FinalStatus.SpelunkerSetRoleDeath,,
@@ -529,6 +530,7 @@ ToiletFan,トイレファン,ToiletFan,厕所管理员,廁所管理員
 JumboModifier,ジャンボ,Jumbo,巨汉,巨漢
 VentTrapper,ベントトラッパー,Vent Trapper,管道工,管道工
 Rocket,ロケット,Rocket,火箭兵,火箭兵
+RocketLauncher,ロケットランチャー,Rocket Launcher,火箭发射器,火箭發射器
 Vampire,ヴァンパイア,Vampire,吸血鬼,吸血鬼
 VampireDependent,眷属,Dependent,眷属,眷屬
 Spelunker,スペランカー,Spelunker,倒霉蛋,倒霉蛋
@@ -625,6 +627,7 @@ Pursuer.Description,タスクターンに発動する能力を有するインポ
 Crab.Description,タスクターンに使用できる能力を有するインポスターです。\n「カニ」ボタンを押すことで全てのプレイヤーを少しの間横方向にしか移動できなくします。,An Impostor with an ability usable during task turns.\nBy pressing the “Crab” button，they restrict all players to move only horizontally for a short period.,伪装者阵营职业，在任务回合中可使用能力。\n按下「螃蟹」按钮后，可使所有玩家在短时间内仅能横向移动。,內鬼陣營职业，在任務回合中可使用能力。\n按下「螃蟹」按鈕後，可使所有玩家在短時間內僅能橫向移動。
 EvilSpeedBooster.Description,タスクターンに使用できる能力を有するインポスターです。\n「ブースト！」ボタンを押すことでしばらくの間素早く動けるようになります。,An Impostor with an ability usable during task turns.\nBy pressing the “Boost!” button，they can move quickly for a short period.,伪装者阵营职业，在任务回合中可使用能力。\n按下「加速！」按钮后，可在短时间内大幅提升移动速度。,內鬼陣營职业，在任務回合中可使用能力。\n按下「加速！」按鈕後，可在短時間內大幅提升移動速度。
 Rocket.Description,特殊なキル能力を有するインポスターです。\n「掴む」ボタンを押すと、対象のプレイヤーを掴んで運べるようになります。\n「打ち上げる」ボタンを押すと、掴んでいたプレイヤーを空に打ち上げて花火にします。\n死体は残りません。\n「打ち上げる」ボタンを押すまで何人でも掴むことができますが、その状態で会議が召集され、その会議で追放されるとキルに失敗してしまいます。\n追放されなければ掴んでいたプレイヤーを打ち上げて次のタスクターンへ移行します。,An Impostor with a special kill ability.\nBy pressing the “Grab” button，they can grab and carry a target player.\nBy pressing the “Launch” button，they send the grabbed player into the sky to create a fireworks-like explosion.\nNo body remains.\nThey can grab multiple players until pressing “Launch，” but if a meeting is called and they are ejected while holding players，the kill fails.\nIf not ejected，they launch all held players and proceed to the next task turn.,伪装者阵营职业，拥有特殊击杀能力。\n按下「抓取」按钮后，可抓住并携带目标玩家。\n按下「发射」按钮后，将抓取的玩家发射至空中，形成烟花效果。\n不会留下尸体。\n在按下「发射」按钮前，可抓取任意数量的玩家，但若在此状态下召开会议并被投票出局，击杀将失败。\n若未被投票出局，会发射所有抓取的玩家并进入下一任务回合。,內鬼陣營职业，具備特殊擊殺能力。\n按下「抓取」按鈕後，可抓住並攜帶目標玩家。\n按下「發射」按鈕後，將抓取的玩家發射至空中，形成煙火效果。\n不會留下屍體。\n在按下「發射」按鈕前，可抓取任意數量的玩家，但若在此狀態下召開會議並被投票出局，擊殺將失敗。\n若未被投票出局，會發射所有抓取的玩家並進入下一任務回合。
+RocketLauncher.Description,特殊なキル能力を有するインポスターです。\n「Launch!」で近くのプレイヤーを拘束し「Shot!!」で向いている方向へ発射します。\n発射されたプレイヤーは壁やプレイヤーに衝突すると爆発し周囲のプレイヤーを巻き込んで死亡させます。\n爆発では死体が残ります。,An Impostor with a special kill ability.\nUse Launch! to grab a nearby player and Shot!! to fire them in the facing direction.\nThe fired player explodes on walls or players and kills players in range.\nExplosion deaths leave bodies.,伪装者阵营职业 拥有特殊击杀能力。\n使用Launch!拘束附近玩家 再用Shot!!朝面向方向发射。\n被发射的玩家撞到墙或玩家时会爆炸 并击杀范围内玩家。\n爆炸死亡会留下尸体。,內鬼陣營职业 具備特殊擊殺能力。\n使用Launch!拘束附近玩家 再用Shot!!朝面向方向發射。\n被發射的玩家撞到牆或玩家時會爆炸 並擊殺範圍內玩家。\n爆炸死亡會留下屍體。
 Kunoichi.Description,特殊なキル能力を有するインポスターです。\n「クナイ表示」ボタンを押すと、自分にのみ見えるクナイを構えます。\nその状態で「クナイ」ボタンを押すか、キルボタンのショートカットキーを押すと、向けている方向に向かってクナイを飛ばします。\n一定回数クナイを当てると、そのプレイヤーをキルします。\nクナイを当てた回数は会議を挟んでも持ち越します。\n一定時間立ち止まると透明化することも出来ます。,,伪装者阵营职业，拥有特殊击杀能力。\n按下「显示苦无」按钮后，将持起仅自身可见的苦无。\n在此状态下按下「苦无」按钮或击杀键，即可朝瞄准方向投掷苦无。\n命中苦无达到一定次数即可击杀该玩家。\n苦无命中次数在会议间隙仍会累积。\n静止站立一定时间后亦可进入隐形状态。,內鬼陣營职业，具備特殊擊殺能力。\n按下「顯示苦無」按鈕後，將持起僅自身可見的苦無。\n在此狀態下按下「苦無」按鈕或擊殺鍵，即可朝瞄準方向投擲苦無。\n命中苦無達到一定次數即可擊殺該玩家。\n苦無命中次數在會議間隙仍會累積。\n靜止站立一定時間後亦可進入隱形狀態。
 Vampire.Description,特殊なキル能力を有するインポスターです。\nキルボタンを押すと、設定秒数経過後に対象のプレイヤーが死亡します。\n次のターン、キルボタンを押した場所から、対象のプレイヤーが死亡した場所まで血痕が残ります。\nこの役職は、アドミンに映らず、死亡してもバイタル上では死亡表記になりません。\nまた、停電を直す気がありません。\n設定次第では「夜に堕とす」ボタンを押すことで、対象のプレイヤーの役職を眷属に変更することができます。,An Impostor with a special kill ability.\nPressing the kill button causes the target player to die after a set delay.\nOn the next turn，bloodstains remain from the kill location to the victim’s death location.\nThis role does not appear on Admin and is not marked as dead on Vitals even when killed.\nAlso，they do not repair lights.\nDepending on settings，by pressing the “Doom in the Night” button，they can change the target player’s role to Thrall.,这是一个拥有特殊击杀能力的伪装者。\n按下击杀按钮后，目标玩家在设定秒数后死亡。\n在下一回合，从击杀地点到目标死亡地点会留下血迹。\n此职业不会在管理员界面出现，也不会在生命迹象面板上显示死亡。\n此外，他们不会修复停电。\n根据设置，按下“堕入夜幕”按钮可以将目标玩家的职业更改为眷属。,這是一個具有特殊擊殺能力的內鬼。\n按下擊殺按鈕後，目標玩家在設定秒數後死亡。\n在下一回合，從擊殺地點到目標死亡地點會留下血跡。\n此职业不會在管理員介面出現，也不會在生命跡象面板上顯示死亡。\n此外，他們不會修復停電。\n根據設定，按下「墮入夜幕」按鈕可以將目標玩家的职业更改為眷屬。
 VampireDependent.Description,インポスター陣営に属する役職です。\nキル能力を有します。\n通常時は視野が狭く、停電時は視野が広くなります。\nこの役職は、アドミンに映らず、死亡してもバイタル上では死亡表記になりません。\nまた、停電を直す気がありません。\nマッドメイト同様クルーメイト判定の役職です。\n自身を眷属に変化させたヴァンパイアが死亡すると、共に死亡します。,A role belonging to the Impostor faction.\nThey have a kill ability.\nTheir vision is narrow normally but becomes wide during a blackout.\nThis role does not appear on Admin and is not marked as dead on Vitals when killed.\nThey also do not repair lights.\nThey are considered a Crewmate similar to Madmate.\nIf the Vampire they turned into a Thrall dies，they die as well.,一个隶属于伪装者阵营的职业。\n他们具有击杀能力。\n在正常情况下视野狭窄，但在停电时视野变宽。\n此职业不会在管理员界面出现，也不会在生命迹象面板上显示死亡。\n此外，他们不会修复停电。\n他们被视为与叛徒相同的船员职业。\n当将其变为眷属的吸血鬼死亡时，他们也会死亡。,一個隸屬於內鬼陣營的职业。\n他們具有擊殺能力。\n在正常情況下視野狹窄，但在停電時視野變寬。\n此职业不會在管理員介面出現，也不會在生命跡象面板上顯示死亡。\n此外，他們不會修復停電。\n他們被視為與叛徒相同的船員职业。\n當將其變為眷屬的吸血鬼死亡時，他們也會死亡。
@@ -793,6 +796,7 @@ PursuerIntro1,この刃から逃げられると思うなかれ,Don’t think you
 CrabIntro1,カニッカニッカニッカニッ,Crazy Crab Cacophony!,狂蟹狂响！,狂蟹狂響！
 EvilSpeedBoosterIntro1,果まで追い詰める,Pushing to the edge,逼至终点,逼至終點
 RocketIntro1,打ち上がれ！,Launch into spectacle!,升空吧！,升空吧！
+RocketLauncherIntro1,飛べ！命よ！！,Fly life itself!,飞吧生命！！,飛吧生命！！
 VampireIntro1,闇に舞うは夜の帝王,The Night King dances in darkness,夜之帝王于暗舞,夜之帝王於暗舞
 VampireDependentIntro1,夜に魅入られし者,One enthralled by the night,夜之魅者,夜之魅者
 EvilMechanicIntro1,独善的な改造,Self-absorbed modification,自私的改造,自私的改造
@@ -2034,6 +2038,15 @@ BansheeWhisperButtonText,囁く,Whisper,低语,低語
 BansheeFairyRange.Short,ショート,Short,短的,短的
 BansheeFairyRange.Medium,ミディアム,Medium,中等的,中等的
 BansheeFairyRange.Long,ロング,Long,长的,長的
+
+# RocketLauncher
+RocketLauncherLaunchCooldown,Launch!クールタイム,Launch! Cooldown,Launch!冷却时间,Launch!冷卻時間
+RocketLauncherCollideWithPlayers,クルーにも衝突するか,Collide With Players,会撞到玩家,會撞到玩家
+RocketLauncherKillImpostors,インポスターも巻き込むか,Kill Impostors Too,也波及伪装者,也波及偽裝者
+RocketLauncherExplosionRange,爆発の範囲,Explosion Range,爆炸范围,爆炸範圍
+RocketLauncherCanUseNormalKill,通常キルが出来るか,Can Use Normal Kill,可以普通击杀,可以普通擊殺
+RocketLauncherLaunchButtonText,Launch!,Launch!,Launch!,Launch!
+RocketLauncherShotButtonText,Shot!!,Shot!!,Shot!!,Shot!!
 
 # TriggerHappy
 TriggerHappyButtonText,乱射,Barrage,乱射,亂射
