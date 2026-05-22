@@ -4,7 +4,6 @@ using System.IO;
 using System.Reflection;
 using HarmonyLib;
 using Il2CppInterop.Runtime;
-using Il2CppInterop.Runtime.InteropTypes.Arrays;
 using UnityEngine;
 using UnityEngine.U2D;
 
@@ -64,18 +63,20 @@ public static class AssetManager
 
     private readonly struct SpriteAtlasEntry
     {
-        public readonly SpriteAtlas Atlas;
+        public readonly string AtlasAssetName;
         public readonly string SpriteName;
 
-        public SpriteAtlasEntry(SpriteAtlas atlas, string spriteName)
+        public SpriteAtlasEntry(string atlasAssetName, string spriteName)
         {
-            Atlas = atlas;
+            AtlasAssetName = atlasAssetName;
             SpriteName = spriteName;
         }
     }
 
     private static Dictionary<byte, AssetBundle> Bundles { get; } = new(3);
     private static readonly Dictionary<byte, Dictionary<string, SpriteAtlasEntry>> SpriteAtlasLookup = new(3);
+    private const string SpriteAtlasLookupAssetName = "SpriteAtlasLookup";
+    private const string AndroidAssetBundleStampExtension = ".stamp";
     public static void Load()
     {
         SuperNewRoles.Logger.Info("[Splash] Loading AssetBundles...");
@@ -93,36 +94,9 @@ public static class AssetManager
                 string resourceName = $"SuperNewRoles.Resources.{data.Path}{platform}.bundle";
                 if (ModHelpers.IsAndroid())
                 {
-                    // メモリ量削減の為Androidはファイルから読み込む
-                    using (var bundleStream = ExcAssembly.GetManifestResourceStream(resourceName))
-                    {
-                        if (bundleStream == null)
-                        {
-                            Logger.Error($"Could not find embedded resource: {resourceName}", "LoadAssetBundle");
-                            continue;
-                        }
-
-                        string assetBundlesDirectory = Path.GetFullPath(Path.Combine(SuperNewRolesPlugin.BaseDirectory, "AssetBundles"));
-                        Directory.CreateDirectory(assetBundlesDirectory); // ディレクトリが存在しない場合は作成
-
-                        string fileName = $"{data.Path}{platform}.bundle"; // 例: snrsprites.bundle または snrsprites_android.bundle
-                        string filePath = Path.GetFullPath(Path.Combine(assetBundlesDirectory, fileName));
-
-                        // Streamの内容を一時ファイルに保存
-                        using (var fileStream = new FileStream(filePath, FileMode.Create, FileAccess.Write))
-                        {
-                            bundleStream.CopyTo(fileStream);
-                        }
-
-                        // 一時ファイルからAssetBundleを読み込む
-                        assetBundle = AssetBundle.LoadFromFile(filePath);
-                        if (assetBundle == null)
-                        {
-                            Logger.Error($"Failed to load AssetBundle from file: {filePath}", "LoadAssetBundle");
-                            continue;
-                        }
-                        Logger.Info($"Loaded AssetBundle: {data.Type} from {filePath}");
-                    } // bundleStream は using ステートメントにより自動的に破棄されます
+                    assetBundle = LoadAndroidAssetBundleFromFileCache(ExcAssembly, resourceName, $"{data.Path}{platform}.bundle");
+                    if (assetBundle == null)
+                        continue;
                 }
                 else
                 {
@@ -136,7 +110,7 @@ public static class AssetManager
                 Bundles[TypeToByte[data.Type]] = assetBundle;
                 //キャッシュ用のDictionaryを作成
                 _cachedAssets[TypeToByte[data.Type]] = new(EqualityComparer<AssetCacheKey>.Default);
-                BuildSpriteAtlasLookup(TypeToByte[data.Type], assetBundle);
+                LoadSpriteAtlasLookup(TypeToByte[data.Type], assetBundle);
             }
             catch (Exception e)
             {
@@ -148,61 +122,218 @@ public static class AssetManager
         Logger.Info("-------End LoadAssetBundle-------");
     }
 
-    private static void BuildSpriteAtlasLookup(byte typeKey, AssetBundle assetBundle)
+    // 毎回AssetBundleをコピーするのではなく、AndroidでのみAssemblyのメタデータの判定によるファイルキャッシュを利用して効率化
+    private static AssetBundle LoadAndroidAssetBundleFromFileCache(Assembly assembly, string resourceName, string fileName)
+    {
+        string assetBundlesDirectory = Path.GetFullPath(Path.Combine(SuperNewRolesPlugin.BaseDirectory, "AssetBundles"));
+        Directory.CreateDirectory(assetBundlesDirectory);
+
+        string filePath = Path.GetFullPath(Path.Combine(assetBundlesDirectory, fileName));
+        string stampPath = filePath + AndroidAssetBundleStampExtension;
+        string expectedStamp = GetAndroidAssetBundleStamp(assembly, resourceName);
+        bool hasMatchingStamp = false;
+
+        try
+        {
+            hasMatchingStamp = File.Exists(filePath) && File.Exists(stampPath) && File.ReadAllText(stampPath) == expectedStamp;
+        }
+        catch (Exception e)
+        {
+            Logger.Warning($"Failed to read Android AssetBundle stamp: {e.Message}", "LoadAssetBundle");
+        }
+
+        if (hasMatchingStamp)
+        {
+            AssetBundle cachedBundle = AssetBundle.LoadFromFile(filePath);
+            if (cachedBundle != null)
+            {
+                Logger.Info($"Loaded cached Android AssetBundle: {filePath}", "LoadAssetBundle");
+                return cachedBundle;
+            }
+
+            Logger.Warning($"Cached Android AssetBundle was invalid. Re-extracting: {filePath}", "LoadAssetBundle");
+            File.Delete(stampPath);
+        }
+
+        using (var bundleStream = assembly.GetManifestResourceStream(resourceName))
+        {
+            if (bundleStream == null)
+            {
+                Logger.Error($"Could not find embedded resource: {resourceName}", "LoadAssetBundle");
+                return null;
+            }
+
+            using (var fileStream = new FileStream(filePath, FileMode.Create, FileAccess.Write))
+            {
+                bundleStream.CopyTo(fileStream);
+            }
+        }
+
+        File.WriteAllText(stampPath, expectedStamp);
+
+        AssetBundle assetBundle = AssetBundle.LoadFromFile(filePath);
+        if (assetBundle == null)
+        {
+            Logger.Error($"Failed to load AssetBundle from file: {filePath}", "LoadAssetBundle");
+            return null;
+        }
+
+        Logger.Info($"Extracted and loaded Android AssetBundle: {filePath}", "LoadAssetBundle");
+        return assetBundle;
+    }
+
+    private static string GetAndroidAssetBundleStamp(Assembly assembly, string resourceName)
+    {
+        string assemblyLocation = string.Empty;
+        long assemblyLength = 0;
+        long assemblyTicks = 0;
+
+        try
+        {
+            assemblyLocation = assembly.Location ?? string.Empty;
+            if (!string.IsNullOrEmpty(assemblyLocation) && File.Exists(assemblyLocation))
+            {
+                var info = new FileInfo(assemblyLocation);
+                assemblyLength = info.Length;
+                assemblyTicks = info.LastWriteTimeUtc.Ticks;
+            }
+        }
+        catch (Exception e)
+        {
+            Logger.Warning($"Failed to read assembly stamp: {e.Message}", "LoadAssetBundle");
+        }
+
+        return string.Join("\n", resourceName, assembly.FullName, assemblyLocation, assemblyLength.ToString(), assemblyTicks.ToString());
+    }
+
+    private static void LoadSpriteAtlasLookup(byte typeKey, AssetBundle assetBundle)
     {
         var lookup = new Dictionary<string, SpriteAtlasEntry>(StringComparer.OrdinalIgnoreCase);
         SpriteAtlasLookup[typeKey] = lookup;
 
-        int atlasCount = 0;
         int spriteCount = 0;
         int duplicateCount = 0;
 
         try
         {
-            foreach (string assetName in assetBundle.GetAllAssetNames())
+            TextAsset lookupAsset = LoadSpriteAtlasLookupAsset(assetBundle);
+            if (lookupAsset == null)
             {
-                if (!assetName.EndsWith(".spriteatlas", StringComparison.OrdinalIgnoreCase))
-                    continue;
-
-                SpriteAtlas atlas = assetBundle.LoadAsset(assetName, Il2CppType.Of<SpriteAtlas>())?.TryCast<SpriteAtlas>();
-                if (atlas == null)
-                {
-                    Logger.Warning($"Failed to load SpriteAtlas: {assetName}", "AssetManager.SpriteAtlasLookup");
-                    continue;
-                }
-
-                atlas.hideFlags |= HideFlags.DontUnloadUnusedAsset;
-                CacheSpriteAtlas(typeKey, assetName, atlas);
-                atlasCount++;
-                var sprites = new Il2CppReferenceArray<Sprite>(atlas.spriteCount);
-                int loadedSpriteCount = atlas.GetSprites(sprites);
-
-                for (int i = 0; i < loadedSpriteCount && i < sprites.Length; i++)
-                {
-                    Sprite sprite = sprites[i];
-                    if (sprite == null)
-                        continue;
-
-                    string spriteName = NormalizeSpriteAtlasName(sprite.name);
-                    if (string.IsNullOrEmpty(spriteName))
-                        continue;
-
-                    var entry = new SpriteAtlasEntry(atlas, spriteName);
-                    if (AddSpriteAtlasLookupKey(lookup, spriteName, entry))
-                        spriteCount++;
-                    else
-                        duplicateCount++;
-
-                    AddSpriteAtlasLookupKey(lookup, spriteName + ".png", entry);
-                }
+                Logger.Warning("SpriteAtlas lookup asset was not found. SpriteAtlas fallback is disabled until the bundle is rebuilt.", "AssetManager.SpriteAtlasLookup");
+                return;
             }
 
-            Logger.Info($"Built SpriteAtlas lookup: atlases={atlasCount}, sprites={spriteCount}, keys={lookup.Count}, duplicates={duplicateCount}", "AssetManager.SpriteAtlasLookup");
+            string[] lines = lookupAsset.text.Split(new[] { '\r', '\n' }, StringSplitOptions.RemoveEmptyEntries);
+            foreach (string rawLine in lines)
+            {
+                if (rawLine.StartsWith("#", StringComparison.Ordinal))
+                    continue;
+
+                string[] parts = rawLine.Split('\t');
+                if (parts.Length < 3)
+                    continue;
+
+                string spriteKey = NormalizeSpriteAtlasName(parts[0]);
+                string atlasAssetName = parts[1];
+                string spriteName = NormalizeSpriteAtlasName(parts[2]);
+
+                if (string.IsNullOrEmpty(spriteKey) || string.IsNullOrEmpty(atlasAssetName) || string.IsNullOrEmpty(spriteName))
+                    continue;
+
+                var entry = new SpriteAtlasEntry(atlasAssetName, spriteName);
+                if (AddSpriteAtlasLookupKey(lookup, spriteKey, entry))
+                    spriteCount++;
+                else
+                    duplicateCount++;
+
+                if (!spriteKey.EndsWith(".png", StringComparison.OrdinalIgnoreCase))
+                    AddSpriteAtlasLookupKey(lookup, spriteKey + ".png", entry);
+            }
+
+            Logger.Info($"Loaded SpriteAtlas lookup: sprites={spriteCount}, keys={lookup.Count}, duplicates={duplicateCount}", "AssetManager.SpriteAtlasLookup");
         }
         catch (Exception e)
         {
-            Logger.Error($"Failed to build SpriteAtlas lookup: {e}", "AssetManager.SpriteAtlasLookup");
+            Logger.Error($"Failed to load SpriteAtlas lookup: {e}", "AssetManager.SpriteAtlasLookup");
         }
+    }
+
+    private static TextAsset LoadSpriteAtlasLookupAsset(AssetBundle assetBundle)
+    {
+        return assetBundle.LoadAsset(SpriteAtlasLookupAssetName, Il2CppType.Of<TextAsset>())?.TryCast<TextAsset>();
+    }
+
+    private static SpriteAtlas GetOrLoadSpriteAtlas(byte typeKey, string atlasAssetName)
+    {
+        if (!_cachedAssets.TryGetValue(typeKey, out var typeCache))
+            return null;
+
+        var atlasType = Il2CppType.Of<SpriteAtlas>();
+        foreach (string name in GetSpriteAtlasAssetLookupNames(atlasAssetName))
+        {
+            if (typeCache.TryGetValue(new AssetCacheKey(name, atlasType), out var cachedAtlas) && cachedAtlas != null)
+                return cachedAtlas.TryCast<SpriteAtlas>();
+        }
+
+        if (!Bundles.TryGetValue(typeKey, out var bundle) || bundle == null)
+            return null;
+
+        foreach (string name in GetSpriteAtlasAssetLookupNames(atlasAssetName))
+        {
+            SpriteAtlas atlas = bundle.LoadAsset(name, atlasType)?.TryCast<SpriteAtlas>();
+            if (atlas == null)
+                continue;
+
+            atlas.hideFlags |= HideFlags.DontUnloadUnusedAsset;
+            CacheSpriteAtlas(typeKey, atlasAssetName, atlas);
+            CacheSpriteAtlas(typeKey, name, atlas);
+            return atlas;
+        }
+
+        Logger.Warning($"Failed to load SpriteAtlas: {atlasAssetName}", "AssetManager.SpriteAtlasLookup");
+        return null;
+    }
+
+    private static IEnumerable<string> GetSpriteAtlasAssetLookupNames(string atlasAssetName)
+    {
+        if (string.IsNullOrEmpty(atlasAssetName))
+            yield break;
+
+        yield return atlasAssetName;
+
+        string fileName = Path.GetFileName(atlasAssetName);
+        if (!string.IsNullOrEmpty(fileName) && fileName != atlasAssetName)
+            yield return fileName;
+
+        string pathWithoutExtension = Path.ChangeExtension(atlasAssetName, null);
+        if (!string.IsNullOrEmpty(pathWithoutExtension) && pathWithoutExtension != atlasAssetName)
+            yield return pathWithoutExtension;
+
+        string fileNameWithoutExtension = Path.GetFileNameWithoutExtension(atlasAssetName);
+        if (!string.IsNullOrEmpty(fileNameWithoutExtension) && fileNameWithoutExtension != pathWithoutExtension)
+            yield return fileNameWithoutExtension;
+    }
+
+    private static bool EnsureSpriteAtlasLookup(byte typeKey)
+    {
+        if (SpriteAtlasLookup.TryGetValue(typeKey, out var lookup) && lookup.Count > 0)
+            return true;
+
+        if (!Bundles.TryGetValue(typeKey, out var bundle) || bundle == null)
+            return false;
+
+        LoadSpriteAtlasLookup(typeKey, bundle);
+        return SpriteAtlasLookup.TryGetValue(typeKey, out lookup) && lookup.Count > 0;
+    }
+
+    private static void RemoveCachedSpriteAtlas(byte typeKey, string atlasAssetName)
+    {
+        if (!_cachedAssets.TryGetValue(typeKey, out var typeCache))
+            return;
+
+        var atlasType = Il2CppType.Of<SpriteAtlas>();
+        foreach (string name in GetSpriteAtlasAssetLookupNames(atlasAssetName))
+            typeCache.Remove(new AssetCacheKey(name, atlasType));
     }
 
     private static void CacheSpriteAtlas(byte typeKey, string assetName, SpriteAtlas atlas)
@@ -235,17 +366,6 @@ public static class AssetManager
         return name;
     }
 
-    private static bool EnsureSpriteAtlasLookup(byte typeKey)
-    {
-        if (SpriteAtlasLookup.TryGetValue(typeKey, out var lookup) && lookup.Count > 0)
-            return true;
-
-        if (!Bundles.TryGetValue(typeKey, out var bundle) || bundle == null)
-            return false;
-
-        BuildSpriteAtlasLookup(typeKey, bundle);
-        return SpriteAtlasLookup.TryGetValue(typeKey, out lookup) && lookup.Count > 0;
-    }
     /// <summary>
     /// 指定されたパスからアセットを取得します
     /// </summary>
@@ -359,23 +479,25 @@ public static class AssetManager
 
                 try
                 {
-                    if (entry.Atlas == null)
+                    SpriteAtlas atlas = GetOrLoadSpriteAtlas(typeKey, entry.AtlasAssetName);
+                    if (atlas == null)
                     {
                         foundStaleAtlas = true;
                         lookup.Remove(lookupName);
                         continue;
                     }
 
-                    Sprite sprite = entry.Atlas.GetSprite(entry.SpriteName);
+                    Sprite sprite = atlas.GetSprite(entry.SpriteName);
                     if (sprite == null)
                         continue;
 
-                    Logger.Debug($"Loaded sprite from SpriteAtlas fallback: {path} -> {entry.Atlas.name}/{entry.SpriteName}", "AssetManager.GetAsset");
+                    Logger.Debug($"Loaded sprite from SpriteAtlas fallback: {path} -> {atlas.name}/{entry.SpriteName}", "AssetManager.GetAsset");
                     return sprite;
                 }
                 catch (Exception e)
                 {
                     foundStaleAtlas = true;
+                    RemoveCachedSpriteAtlas(typeKey, entry.AtlasAssetName);
                     Logger.Warning($"SpriteAtlas fallback failed: {path} -> {entry.SpriteName}: {e.Message}", "AssetManager.GetAsset");
                 }
             }
@@ -383,7 +505,10 @@ public static class AssetManager
             if (!foundStaleAtlas)
                 return null;
 
-            SpriteAtlasLookup.Remove(typeKey);
+            if (!Bundles.TryGetValue(typeKey, out var bundle) || bundle == null)
+                return null;
+
+            LoadSpriteAtlasLookup(typeKey, bundle);
         }
 
         return null;
@@ -473,6 +598,10 @@ public static class AssetManager
     public static void UnloadAllAssets()
     {
         SuperNewRoles.Logger.Info("[AssetManager] Unloading all cached assets...");
+        bool isAndroid = ModHelpers.IsAndroid();
+        int removedAssetCount = 0;
+        int removedAndroidAtlasCount = 0;
+
         foreach (var typeCache in _cachedAssets.Values)
         {
             var keysToRemove = new List<AssetCacheKey>();
@@ -486,7 +615,15 @@ public static class AssetManager
 
                 if (asset.Value is SpriteAtlas)
                 {
-                    asset.Value.hideFlags |= HideFlags.DontUnloadUnusedAsset;
+                    if (!isAndroid)
+                    {
+                        asset.Value.hideFlags |= HideFlags.DontUnloadUnusedAsset;
+                        continue;
+                    }
+
+                    asset.Value.hideFlags &= ~HideFlags.DontUnloadUnusedAsset;
+                    keysToRemove.Add(asset.Key);
+                    removedAndroidAtlasCount++;
                     continue;
                 }
 
@@ -495,13 +632,17 @@ public static class AssetManager
             }
 
             foreach (var key in keysToRemove)
+            {
                 typeCache.Remove(key);
+                removedAssetCount++;
+            }
         }
+
         // Optionally, if you also want to clear the Bundles dictionary (though this might not be what you want if bundles are meant to persist across scenes)
         // Bundles.Clear();
-        if (!ModHelpers.IsAndroid())
+        if (!isAndroid || removedAssetCount > 0)
             Resources.UnloadUnusedAssets();
-        SuperNewRoles.Logger.Info("[AssetManager] All cached assets unloaded.");
+        SuperNewRoles.Logger.Info($"[AssetManager] Cached assets unloaded. removed={removedAssetCount}, androidAtlases={removedAndroidAtlasCount}");
     }
     [HarmonyPatch(typeof(AmongUsClient), nameof(AmongUsClient.OnActiveSceneChange))]
     public static class OnActiveSceneChangePatch
