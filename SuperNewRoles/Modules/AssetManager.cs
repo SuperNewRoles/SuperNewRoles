@@ -4,7 +4,9 @@ using System.IO;
 using System.Reflection;
 using HarmonyLib;
 using Il2CppInterop.Runtime;
+using Il2CppInterop.Runtime.InteropTypes.Arrays;
 using UnityEngine;
+using UnityEngine.U2D;
 
 namespace SuperNewRoles.Modules;
 
@@ -60,7 +62,20 @@ public static class AssetManager
         (AssetBundleType.Sprite, "snrsprites"),
     };
 
+    private readonly struct SpriteAtlasEntry
+    {
+        public readonly SpriteAtlas Atlas;
+        public readonly string SpriteName;
+
+        public SpriteAtlasEntry(SpriteAtlas atlas, string spriteName)
+        {
+            Atlas = atlas;
+            SpriteName = spriteName;
+        }
+    }
+
     private static Dictionary<byte, AssetBundle> Bundles { get; } = new(3);
+    private static readonly Dictionary<byte, Dictionary<string, SpriteAtlasEntry>> SpriteAtlasLookup = new(3);
     public static void Load()
     {
         SuperNewRoles.Logger.Info("[Splash] Loading AssetBundles...");
@@ -121,6 +136,7 @@ public static class AssetManager
                 Bundles[TypeToByte[data.Type]] = assetBundle;
                 //キャッシュ用のDictionaryを作成
                 _cachedAssets[TypeToByte[data.Type]] = new(EqualityComparer<AssetCacheKey>.Default);
+                BuildSpriteAtlasLookup(TypeToByte[data.Type], assetBundle);
             }
             catch (Exception e)
             {
@@ -130,6 +146,105 @@ public static class AssetManager
         }
         SuperNewRoles.Logger.Info("[Splash] AssetBundles loaded");
         Logger.Info("-------End LoadAssetBundle-------");
+    }
+
+    private static void BuildSpriteAtlasLookup(byte typeKey, AssetBundle assetBundle)
+    {
+        var lookup = new Dictionary<string, SpriteAtlasEntry>(StringComparer.OrdinalIgnoreCase);
+        SpriteAtlasLookup[typeKey] = lookup;
+
+        int atlasCount = 0;
+        int spriteCount = 0;
+        int duplicateCount = 0;
+
+        try
+        {
+            foreach (string assetName in assetBundle.GetAllAssetNames())
+            {
+                if (!assetName.EndsWith(".spriteatlas", StringComparison.OrdinalIgnoreCase))
+                    continue;
+
+                SpriteAtlas atlas = assetBundle.LoadAsset(assetName, Il2CppType.Of<SpriteAtlas>())?.TryCast<SpriteAtlas>();
+                if (atlas == null)
+                {
+                    Logger.Warning($"Failed to load SpriteAtlas: {assetName}", "AssetManager.SpriteAtlasLookup");
+                    continue;
+                }
+
+                atlas.hideFlags |= HideFlags.DontUnloadUnusedAsset;
+                CacheSpriteAtlas(typeKey, assetName, atlas);
+                atlasCount++;
+                var sprites = new Il2CppReferenceArray<Sprite>(atlas.spriteCount);
+                int loadedSpriteCount = atlas.GetSprites(sprites);
+
+                for (int i = 0; i < loadedSpriteCount && i < sprites.Length; i++)
+                {
+                    Sprite sprite = sprites[i];
+                    if (sprite == null)
+                        continue;
+
+                    string spriteName = NormalizeSpriteAtlasName(sprite.name);
+                    if (string.IsNullOrEmpty(spriteName))
+                        continue;
+
+                    var entry = new SpriteAtlasEntry(atlas, spriteName);
+                    if (AddSpriteAtlasLookupKey(lookup, spriteName, entry))
+                        spriteCount++;
+                    else
+                        duplicateCount++;
+
+                    AddSpriteAtlasLookupKey(lookup, spriteName + ".png", entry);
+                }
+            }
+
+            Logger.Info($"Built SpriteAtlas lookup: atlases={atlasCount}, sprites={spriteCount}, keys={lookup.Count}, duplicates={duplicateCount}", "AssetManager.SpriteAtlasLookup");
+        }
+        catch (Exception e)
+        {
+            Logger.Error($"Failed to build SpriteAtlas lookup: {e}", "AssetManager.SpriteAtlasLookup");
+        }
+    }
+
+    private static void CacheSpriteAtlas(byte typeKey, string assetName, SpriteAtlas atlas)
+    {
+        if (!_cachedAssets.TryGetValue(typeKey, out var typeCache))
+            return;
+
+        var atlasType = Il2CppType.Of<SpriteAtlas>();
+        typeCache[new AssetCacheKey(assetName, atlasType)] = atlas;
+
+        if (!string.IsNullOrEmpty(atlas.name))
+            typeCache[new AssetCacheKey(atlas.name, atlasType)] = atlas;
+    }
+
+    private static bool AddSpriteAtlasLookupKey(Dictionary<string, SpriteAtlasEntry> lookup, string key, SpriteAtlasEntry entry)
+    {
+        if (lookup.ContainsKey(key))
+            return false;
+
+        lookup[key] = entry;
+        return true;
+    }
+
+    private static string NormalizeSpriteAtlasName(string name)
+    {
+        const string cloneSuffix = "(Clone)";
+        if (name != null && name.EndsWith(cloneSuffix, StringComparison.Ordinal))
+            return name.Substring(0, name.Length - cloneSuffix.Length);
+
+        return name;
+    }
+
+    private static bool EnsureSpriteAtlasLookup(byte typeKey)
+    {
+        if (SpriteAtlasLookup.TryGetValue(typeKey, out var lookup) && lookup.Count > 0)
+            return true;
+
+        if (!Bundles.TryGetValue(typeKey, out var bundle) || bundle == null)
+            return false;
+
+        BuildSpriteAtlasLookup(typeKey, bundle);
+        return SpriteAtlasLookup.TryGetValue(typeKey, out lookup) && lookup.Count > 0;
     }
     /// <summary>
     /// 指定されたパスからアセットを取得します
@@ -164,9 +279,13 @@ public static class AssetManager
 
         if (loadedUnityObject == null)
         {
-            Logger.Error($"Failed to load asset: {path} of type {Il2CppType.Of<T>().Name} from bundle {assetBundleType}.", "AssetManager.GetAsset");
-            typeCache[cacheKey] = null;
-            return null;
+            loadedUnityObject = TryLoadSpriteFromAtlas<T>(path, typeKey);
+            if (loadedUnityObject == null)
+            {
+                Logger.Error($"Failed to load asset: {path} of type {Il2CppType.Of<T>().Name} from bundle {assetBundleType}.", "AssetManager.GetAsset");
+                typeCache[cacheKey] = null;
+                return null;
+            }
         }
 
         if (ConfigRoles.IsCompressCosmetics)
@@ -220,6 +339,74 @@ public static class AssetManager
 
         typeCache[cacheKey] = loadedUnityObject; // Cache the potentially modified Unity Object
         return loadedUnityObject.TryCast<T>();
+    }
+
+    private static UnityEngine.Object TryLoadSpriteFromAtlas<T>(string path, byte typeKey) where T : UnityEngine.Object
+    {
+        if (typeof(T) != typeof(Sprite))
+            return null;
+
+        for (int attempt = 0; attempt < 2; attempt++)
+        {
+            if (!EnsureSpriteAtlasLookup(typeKey) || !SpriteAtlasLookup.TryGetValue(typeKey, out var lookup))
+                return null;
+
+            bool foundStaleAtlas = false;
+            foreach (string lookupName in GetSpriteAtlasLookupNames(path))
+            {
+                if (!lookup.TryGetValue(lookupName, out var entry))
+                    continue;
+
+                try
+                {
+                    if (entry.Atlas == null)
+                    {
+                        foundStaleAtlas = true;
+                        lookup.Remove(lookupName);
+                        continue;
+                    }
+
+                    Sprite sprite = entry.Atlas.GetSprite(entry.SpriteName);
+                    if (sprite == null)
+                        continue;
+
+                    Logger.Debug($"Loaded sprite from SpriteAtlas fallback: {path} -> {entry.Atlas.name}/{entry.SpriteName}", "AssetManager.GetAsset");
+                    return sprite;
+                }
+                catch (Exception e)
+                {
+                    foundStaleAtlas = true;
+                    Logger.Warning($"SpriteAtlas fallback failed: {path} -> {entry.SpriteName}: {e.Message}", "AssetManager.GetAsset");
+                }
+            }
+
+            if (!foundStaleAtlas)
+                return null;
+
+            SpriteAtlasLookup.Remove(typeKey);
+        }
+
+        return null;
+    }
+
+    private static IEnumerable<string> GetSpriteAtlasLookupNames(string path)
+    {
+        if (string.IsNullOrEmpty(path))
+            yield break;
+
+        yield return path;
+
+        string fileName = Path.GetFileName(path);
+        if (!string.IsNullOrEmpty(fileName) && fileName != path)
+            yield return fileName;
+
+        string pathWithoutExtension = Path.ChangeExtension(path, null);
+        if (!string.IsNullOrEmpty(pathWithoutExtension) && pathWithoutExtension != path)
+            yield return pathWithoutExtension;
+
+        string fileNameWithoutExtension = Path.GetFileNameWithoutExtension(path);
+        if (!string.IsNullOrEmpty(fileNameWithoutExtension) && fileNameWithoutExtension != pathWithoutExtension)
+            yield return fileNameWithoutExtension;
     }
 
     private static bool IsUncompressedTextureFormat(TextureFormat format)
@@ -288,12 +475,27 @@ public static class AssetManager
         SuperNewRoles.Logger.Info("[AssetManager] Unloading all cached assets...");
         foreach (var typeCache in _cachedAssets.Values)
         {
+            var keysToRemove = new List<AssetCacheKey>();
             foreach (var asset in typeCache)
             {
-                if (asset.Value != null)
-                    asset.Value.hideFlags &= ~HideFlags.DontUnloadUnusedAsset;
+                if (asset.Value == null)
+                {
+                    keysToRemove.Add(asset.Key);
+                    continue;
+                }
+
+                if (asset.Value is SpriteAtlas)
+                {
+                    asset.Value.hideFlags |= HideFlags.DontUnloadUnusedAsset;
+                    continue;
+                }
+
+                asset.Value.hideFlags &= ~HideFlags.DontUnloadUnusedAsset;
+                keysToRemove.Add(asset.Key);
             }
-            typeCache.Clear();
+
+            foreach (var key in keysToRemove)
+                typeCache.Remove(key);
         }
         // Optionally, if you also want to clear the Bundles dictionary (though this might not be what you want if bundles are meant to persist across scenes)
         // Bundles.Clear();
