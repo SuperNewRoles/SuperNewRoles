@@ -115,6 +115,7 @@ DeviceOptionType.Restrict,時間制限,Time Limit,时间限制,時間限制
 DeviceTimeSettingAdmin,アドミンの制限時間,Admin Limit Time,管理地图限制时间,管理地圖限制時間
 DeviceTimeSettingVitalOrDoorLog,バイタル・ドアログの制限時間,Vital/Doorlog Limit Time,生命体征/门禁记录限制时间,生命體徵/門禁記錄限制時間
 DeviceTimeSettingCamera,カメラの制限時間,Camera Limit Time,摄像头限制时间,監視器限制時間
+AllowSimultaneousScanTask,スキャンタスクを同時に出来る,Allow simultaneous scan tasks,允许同时进行扫描任务,允許同時進行掃描任務
 
 NeutralSubIntro,自分のことだけ考えろ。他人のことは利用せよ。,Think only about yourself. Use others.,只考虑自己，利用他人,只考慮自己。利用他人。
 
@@ -145,6 +146,14 @@ WaitingSpawnText,ロドー中... 残り:{0}/{1}クルー,Waiting... {0}/{1} Crew
 # GameSettings
 CannotTaskTrigger,タスクに関係ない役職の場合、タスクをできなくする,Disable tasks for non-task-related roles,如果职业与任务无关，则无法完成任务,如果职业與任務無關，則無法完成任務
 CursedTaskOption,呪いタスク,Cursed Tasks,诅咒任务,詛咒任務
+ExcludeSpecificTasksFromSelection,特定のタスクを選出しない,Exclude specific tasks from selection,不选择特定任务,不選擇特定任務
+ExcludeUnlockSafeTaskFromSelection,金庫タスクを選出しない,Exclude safe task from selection,不选择保险柜任务,不選擇保險箱任務
+ExcludeResetBreakersTaskFromSelection,レバータスクを選出しない,Exclude lever task from selection,不选择拉杆任务,不選擇拉桿任務
+ExcludeCatchFishTaskFromSelection,釣りタスクを選出しない,Exclude fishing task from selection,不选择钓鱼任务,不選擇釣魚任務
+ExcludeUploadDataTaskFromSelection,ダウンロードタスクを選出しない,Exclude download task from selection,不选择下载任务,不選擇下載任務
+ExcludeVentCleaningTaskFromSelection,ベント掃除タスクを選出しない,Exclude vent cleaning task from selection,不选择清理通风口任务,不選擇清理通風口任務
+ExcludeSubmitScanTaskFromSelection,クルーメイトスキャンタスクを選出しない,Exclude crewmate scan task from selection,不选择船员扫描任务,不選擇船員掃描任務
+RandomizeFixLightsSwitches,停電修理の初期状態を完全にランダムにする,Fully randomize lights repair switches,完全随机化修灯开关,完全隨機化修燈開關
 SyncSpawn,スポーンを同期する(選択スポーンのみ),Sync Spawn (Selected Spawn Only),同步出生点(仅选择出生点),同步出生點(僅選擇出生點)
 AdvancedRandom,よりランダムな乱数を使用する,Use Enhanced Randomness,使用增强型随机数,使用更隨機的隨機數
 DisableTaskWin,タスク勝利を無効にする,Disable task victory,禁用任务胜利,禁用任務勝利
@@ -337,6 +346,13 @@ DisableGapRoomShadowForNonImpostor,インポスター視界のプレイヤー以
 PresetDefault,プリセット {0},Preset {0},预设 {0},預設 {0}
 PresetSelected,プリセット {0},Preset {0},预设 {0},預設 {0}
 AddPreset,プリセットを追加,Add Preset,新增预设,新增預設
+PresetImportButton,インポート,Import,导入,匯入
+PresetExportCurrentButton,現在をエクスポート,Export Current,导出当前,匯出目前
+PresetExportAllButton,全てをエクスポート,Export All,导出全部,匯出全部
+PresetExportSelectedButton,選択をエクスポート,Export Selected,导出所选,匯出所選
+PresetExportingButton,エクスポート中,Exporting,导出中,匯出中
+PresetExportCompletedButton,エクスポート完了！,Export complete!,导出完成！,匯出完成！
+PresetAndroidFilePickerDisconnectWarning,Androidではファイル選択が長いと切断される場合があります。,On Android staying in the file picker for too long may disconnect you.,在 Android 上文件选择时间过长可能会断开连接。,在 Android 上檔案選擇時間過長可能會斷線。
 PresetMenuTitle,プリセット,Preset,预设,預設
 PresetPleaseInput,ここにプリセット名を入力,Please enter preset name here,请输入预设名称,請在此輸入預設名稱
 PresetSettings.NowPreset,現在のプリセット:,Current Preset:,当前预设:,現在的預設:

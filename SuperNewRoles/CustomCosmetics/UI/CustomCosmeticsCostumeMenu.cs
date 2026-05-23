@@ -772,6 +772,12 @@ public class CustomCosmeticsCostumeMenu : CustomCosmeticsMenuBase<CustomCosmetic
         categoryScroller.transform.localPosition = new(-0.05f, -0.085f, -20);
         categoryScroller.transform.localScale = Vector3.one * 1.05f;
         var categoryScrollerscroller = categoryScroller.GetComponentInChildren<Scroller>();
+        if (tabType == CostumeTabType.Skin)
+        {
+            // スキンタブの場合、カテゴリースクロールを右側に配置して見えないようにする
+            // こうすればマウススクロールが効きながらスクローラーを非表示にできる
+            categoryScroller.transform.localPosition = new(10f, -0.085f, -20);
+        }
         var slotBase = GameObject.Instantiate(AssetManager.GetAsset<GameObject>("CosmeticItemSlot"), CurrentCostumeTab.transform);
         var slotBasePassive = slotBase.AddComponent<PassiveButton>();
         slotBase.SetActive(false);

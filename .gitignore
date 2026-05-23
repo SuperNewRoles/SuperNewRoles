@@ -3,6 +3,7 @@ SuperNewRoles/obj/
 SuperNewRoles/bin/
 SuperNewRoles.Tests/bin/
 SuperNewRoles.Tests/obj/
+SuperNewRoles/Android/PresetFilePickerBridge/build/
 Build/
 Claude.md
 *.v2

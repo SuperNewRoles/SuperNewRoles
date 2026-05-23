@@ -79,20 +79,75 @@ internal class TeleporterAbility : CustomButtonBase, IButtonEffect
             .Where(IsValidTeleportTarget)
             .ToList()
             .GetRandom();
-        if (targetPlayer == null) return;
-        RpcAllTeleportTo(targetPlayer.transform.position, targetPlayer);
+        if (targetPlayer == null || !TryGetPlayerPosition(targetPlayer, out Vector2 targetPosition)) return;
+        RpcAllTeleportTo(targetPosition, targetPlayer);
     }
 
     private static bool IsValidTeleportTarget(ExPlayerControl player)
     {
-        if (player == null || !player.IsAlive() || !player.moveable)
-            return false;
-        if (player.Player == null || player.MyPhysics == null)
-            return false;
-        if (player.Player.inVent || player.Player.inMovingPlat || player.Player.onLadder)
-            return false;
+        try
+        {
+            PlayerControl playerControl = player?.Player;
+            PlayerPhysics playerPhysics = playerControl?.MyPhysics;
+            if (player == null || playerControl == null || playerPhysics == null)
+                return false;
+            if (!player.IsAlive() || !player.moveable)
+                return false;
+            if (playerControl.inVent || playerControl.inMovingPlat || playerControl.onLadder)
+                return false;
 
-        return player.MyPhysics.enabled;
+            return playerPhysics.enabled;
+        }
+        catch (Exception ex)
+        {
+            Logger.Warning($"Skipping invalid teleport target: {ex.Message}", "Teleporter");
+            return false;
+        }
+    }
+
+    private static bool TryGetPlayerPosition(ExPlayerControl player, out Vector2 position)
+    {
+        position = Vector2.zero;
+        try
+        {
+            PlayerControl playerControl = player?.Player;
+            if (playerControl == null)
+                return false;
+
+            position = playerControl.transform.position;
+            return true;
+        }
+        catch (Exception ex)
+        {
+            Logger.Warning($"Failed to read teleport target position: {ex.Message}", "Teleporter");
+            return false;
+        }
+    }
+
+    private static bool IsTeleportRecipient(ExPlayerControl player)
+    {
+        try
+        {
+            return player != null
+                && player.IsAlive()
+                && player.Player != null
+                && player.NetTransform != null
+                && player.transform != null;
+        }
+        catch (Exception ex)
+        {
+            Logger.Warning($"Skipping invalid teleport recipient: {ex.Message}", "Teleporter");
+            return false;
+        }
+    }
+
+    private static void TeleportPlayer(ExPlayerControl player, Vector2 position)
+    {
+        if (!IsTeleportRecipient(player))
+            return;
+
+        player.Player.transform.position = position;
+        player.NetTransform.SnapTo(position);
     }
 
     [CustomRPC]
@@ -118,15 +173,16 @@ internal class TeleporterAbility : CustomButtonBase, IButtonEffect
     {
         foreach (var player in ExPlayerControl.ExPlayerControls)
         {
-            player.transform.position = position;
-            player.NetTransform.SnapTo(position);
+            TeleportPlayer(player, position);
         }
-        ExPlayerControl.LocalPlayer.RpcCustomSnapTo(position);
+        if (IsTeleportRecipient(ExPlayerControl.LocalPlayer))
+            ExPlayerControl.LocalPlayer.RpcCustomSnapTo(position);
         if (CurrentMessage != null)
         {
             GameObject.Destroy(CurrentMessage.text.gameObject);
             CurrentMessage = null;
         }
-        CurrentMessage = new CustomMessage(ModTranslation.GetString("TeleporterTeleportText", target.Data.PlayerName), 1, true);
+        string targetName = target?.Data?.PlayerName ?? "Unknown";
+        CurrentMessage = new CustomMessage(ModTranslation.GetString("TeleporterTeleportText", targetName), 1, true);
     }
 }

@@ -90,6 +90,9 @@ public static class MapSettingOptions
 
     [CustomOptionFloat("ZiplineImpostorCoolTimeSetting", 0f, 60f, 2.5f, 7.5f, parentFieldName: nameof(ZiplineImpostorCoolChangeOption))]
     public static float ZiplineImpostorCoolTimeOption;
+
+    [CustomOptionBool("AllowSimultaneousScanTask", false, parentFieldName: nameof(Categories.MapSettings))]
+    public static bool AllowSimultaneousScanTask;
 }
 
 public enum DeviceRestrictionModeType

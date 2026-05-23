@@ -1,4 +1,6 @@
 using System;
+using System.Collections.Generic;
+using HarmonyLib;
 using UnityEngine;
 using SuperNewRoles.Modules;
 using SuperNewRoles.Roles.Ability.CustomButton;
@@ -16,12 +18,15 @@ public class MechanicAbility : VentTargetCustomButtonBase, IAbilityCount, IButto
     protected override KeyType keytype => KeyType.Ability1;
     public override float DefaultTimer => coolTime;
     public override Color32 OutlineColor => new(82, 108, 173, byte.MaxValue);
+    public override Func<Vent, bool> IsTargetable => vent => !IsMovingVent(vent);
 
+    private static readonly HashSet<int> MovingVentIds = new();
     private float coolTime;
     private float durationTime;
     private Vent currentVent;
     private EventListener<MeetingStartEventData> _onMeetingStartEvent;
     private EventListener<PlayerPhysicsFixedUpdateEventData> _onPlayerPhysicsFixedUpdateEvent;
+    private EventListener<PlayerPhysicsRpcEnterVentPrefixEventData> _onEnterVentPrefixEvent;
     private EventListener<DieEventData> _onDie;
 
     public string SpriteName { get; }
@@ -82,15 +87,23 @@ public class MechanicAbility : VentTargetCustomButtonBase, IAbilityCount, IButto
     {
         base.AttachToAlls();
         _onPlayerPhysicsFixedUpdateEvent = PlayerPhysicsFixedUpdateEvent.Instance.AddListener(OnPlayerPhysicsFixedUpdate);
+        _onEnterVentPrefixEvent = PlayerPhysicsRpcEnterVentPrefixEvent.Instance.AddListener(OnEnterVentPrefix);
     }
 
     public override void DetachToAlls()
     {
         base.DetachToAlls();
         _onPlayerPhysicsFixedUpdateEvent?.RemoveListener();
+        _onEnterVentPrefixEvent?.RemoveListener();
         if (currentVent != null)
             SetVentStatus(Player, currentVent, false, moveableVentPosition);
         ModHelpers.SetOpacity(Player, 1f);
+    }
+
+    private void OnEnterVentPrefix(PlayerPhysicsRpcEnterVentPrefixEventData data)
+    {
+        if (!IsMovingVentId(data.ventId)) return;
+        data.result = false;
     }
 
     private void OnMeetingStart(MeetingStartEventData data)
@@ -115,23 +128,60 @@ public class MechanicAbility : VentTargetCustomButtonBase, IAbilityCount, IButto
             SetHideStatus(player, true);
             if (data.Instance.myPlayer.moveable)
                 moveableVentPosition = currentVent.transform.position;
-
-            FollowPlayersInsideCurrentVent();
         }
     }
 
-    private void FollowPlayersInsideCurrentVent()
+    private void OnDie(DieEventData data)
     {
-        if (currentVent == null) return;
+        if (data.player == Player && currentVent != null)
+            RpcSetVentStatus(ExPlayerControl.LocalPlayer, currentVent, false, moveableVentPosition);
+    }
 
-        Vector2 ventPosition = currentVent.transform.position;
-        foreach (PlayerControl player in PlayerControl.AllPlayerControls)
+    public static bool IsMovingVent(Vent vent)
+    {
+        return vent != null && IsMovingVentId(vent.Id);
+    }
+
+    private static bool IsMovingVentId(int ventId)
+    {
+        return MovingVentIds.Contains(ventId);
+    }
+
+    public static void ClearMovingVents()
+    {
+        MovingVentIds.Clear();
+    }
+
+    public static void ApplyMovingVentIndicators(Vent sourceVent)
+    {
+        if (sourceVent == null || sourceVent.NearbyVents == null || sourceVent.Buttons == null || sourceVent.CleaningIndicators == null) return;
+
+        int count = Math.Min(sourceVent.NearbyVents.Length, Math.Min(sourceVent.Buttons.Length, sourceVent.CleaningIndicators.Length));
+        for (int i = 0; i < count; i++)
         {
-            if (player == null || !player.inVent) continue;
-            if (!TryGetVentId(player.PlayerId, out int ventId) || ventId != currentVent.Id) continue;
+            Vent targetVent = sourceVent.NearbyVents[i];
+            if (!IsMovingVent(targetVent)) continue;
 
-            player.NetTransform.SnapTo(ventPosition);
+            ButtonBehavior button = sourceVent.Buttons[i];
+            GameObject indicator = sourceVent.CleaningIndicators[i];
+            if (button != null)
+                ((Behaviour)button).enabled = false;
+            if (indicator != null)
+                indicator.SetActive(true);
         }
+    }
+
+    private static void EjectLocalPlayerFromVent(Vent targetvent)
+    {
+        PlayerControl localPlayer = PlayerControl.LocalPlayer;
+        if (localPlayer == null || localPlayer.MyPhysics == null || !localPlayer.inVent) return;
+        bool isInTargetVent = TryGetVentId(localPlayer.PlayerId, out int ventId)
+            ? ventId == targetvent.Id
+            : Vent.currentVent != null && Vent.currentVent.Id == targetvent.Id;
+        if (!isInTargetVent) return;
+
+        targetvent.SetButtons(false);
+        localPlayer.MyPhysics.RpcExitVent(targetvent.Id);
     }
 
     private static bool TryGetVentId(byte playerId, out int ventId)
@@ -145,10 +195,12 @@ public class MechanicAbility : VentTargetCustomButtonBase, IAbilityCount, IButto
         return true;
     }
 
-    private void OnDie(DieEventData data)
+    private static void RefreshLocalVentButtons()
     {
-        if (data.player == Player && currentVent != null)
-            RpcSetVentStatus(ExPlayerControl.LocalPlayer, currentVent, false, moveableVentPosition);
+        PlayerControl localPlayer = PlayerControl.LocalPlayer;
+        if (localPlayer == null || !localPlayer.inVent || Vent.currentVent == null) return;
+
+        Vent.currentVent.SetButtons(true);
     }
 
     [CustomRPC]
@@ -161,6 +213,9 @@ public class MechanicAbility : VentTargetCustomButtonBase, IAbilityCount, IButto
     {
         if (isUsing)
         {
+            MovingVentIds.Add(targetvent.Id);
+            RefreshLocalVentButtons();
+            EjectLocalPlayerFromVent(targetvent);
             currentVent = targetvent;
             Vector2 truepos = source.GetTruePosition();
             targetvent.transform.position = new(truepos.x, truepos.y, source.transform.position.z + 0.0025f);
@@ -168,6 +223,8 @@ public class MechanicAbility : VentTargetCustomButtonBase, IAbilityCount, IButto
         }
         else
         {
+            MovingVentIds.Remove(targetvent.Id);
+            RefreshLocalVentButtons();
             currentVent = null;
             targetvent.transform.position = originalPos;
             SetHideStatus(source, false);
@@ -187,5 +244,46 @@ public class MechanicAbility : VentTargetCustomButtonBase, IAbilityCount, IButto
             opacity = 1.5f;
         }
         ModHelpers.SetOpacity(target, opacity);
+    }
+}
+
+[HarmonyPatch(typeof(Vent), nameof(Vent.SetButtons))]
+public static class MechanicMovingVentSetButtonsPatch
+{
+    public static void Postfix(Vent __instance, bool enabled)
+    {
+        if (!enabled) return;
+        MechanicAbility.ApplyMovingVentIndicators(__instance);
+    }
+}
+
+[HarmonyPatch(typeof(Vent), nameof(Vent.UpdateArrows))]
+public static class MechanicMovingVentUpdateArrowsPatch
+{
+    public static void Postfix(Vent __instance)
+    {
+        MechanicAbility.ApplyMovingVentIndicators(__instance);
+    }
+}
+
+[HarmonyPatch(typeof(Vent), nameof(Vent.TryMoveToVent))]
+public static class MechanicMovingVentMovePatch
+{
+    public static bool Prefix(Vent otherVent, ref string error, ref bool __result)
+    {
+        if (!MechanicAbility.IsMovingVent(otherVent)) return true;
+
+        error = "Vent is moving";
+        __result = false;
+        return false;
+    }
+}
+
+[HarmonyPatch(typeof(AmongUsClient), nameof(AmongUsClient.CoStartGame))]
+public static class MechanicMovingVentResetPatch
+{
+    public static void Prefix()
+    {
+        MechanicAbility.ClearMovingVents();
     }
 }
