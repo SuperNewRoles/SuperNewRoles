@@ -233,6 +233,24 @@ OnboardingEnjoyBody,<size=150%>これで全ての準備が整いました。\n\n
 # ClientOptions
 ClientOptionsVanilla,バニラ設定,Vanilla Settings,原版设置,原版設定
 ClientOptionsMod,Mod設定,Mod Settings,模组设置,模組設定
+ClientOptions.Title,Mod設定,Mod Settings,模组设置,模組設定
+ClientOptions.Category.General,一般,General,常规,一般
+ClientOptions.Category.Display,表示/演出,Display / Effects,显示/演出,顯示/演出
+ClientOptions.Category.Network,通信/データ,Network / Data,通信/数据,通訊/資料
+ClientOptions.Category.Performance,パフォーマンス,Performance,性能,效能
+ClientOptions.AutoCopyGameCode,ルームコードを自動コピー,Auto copy room code,自动复制房间代码,自動複製房間代碼
+ClientOptions.IsSendAnalytics,解析データを送信,Send usage analytics,发送使用情况数据,傳送使用狀況資料
+ClientOptions.IsVersionErrorView,同期エラーを表示,Show sync errors,显示同步错误,顯示同步錯誤
+ClientOptions.IsModCosmeticsAreNotLoaded,カスタムコスメを読み込まない,Do not load custom cosmetics,不加载自定义装扮,不載入自訂裝扮
+ClientOptions.IsNotUsingBlood,血の色を黒にする,Make blood black,将血液显示为黑色,將血液顯示為黑色
+ClientOptions.IsLightAndDarker,会議で明暗アイコンを表示,Show light/dark icon in meetings,会议中显示明暗图标,會議中顯示明暗圖示
+ClientOptions.CompressCosmetics,コスメ画像を圧縮,Compress cosmetic images,压缩装扮图片,壓縮裝扮圖片
+ClientOptions.IsMuteLobbyBGM,ロビーBGMを再生しない,Disable lobby BGM,不播放大厅BGM,不播放大廳BGM
+ClientOptions.CanUseDataConnection,モバイル回線でコスメを取得,Download cosmetics on mobile data,使用移动数据下载装扮,使用行動資料下載裝扮
+ClientOptions.CPUProcessorAffinity,CPU使用コアを制限,Limit CPU cores,限制CPU核心使用,限制CPU核心使用
+ClientOptions.ProcessorAffinityMask,使用するCPUコア数,CPU cores to use,要使用的CPU核心数,要使用的CPU核心數
+ClientOptions.ProcessorAffinityMask.OneCore,1コア,1 core,1核,1核心
+ClientOptions.ProcessorAffinityMask.TwoCores,2コア,2 cores,2核,2核心
 
 # winners
 Winners.NoData,データがありません,No data,没有数据,沒有數據
