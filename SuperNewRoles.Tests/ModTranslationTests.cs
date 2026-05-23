@@ -126,4 +126,24 @@ public class ModTranslationTests
         // 目的: Cleanup 後はキーをそのまま返すこと
         ModTranslation.GetString("Test.Close").Should().Be("Test.Close");
     }
+
+    [Fact]
+    public void EmbeddedCsv_IncludesRequestInGameClearButtonKeys()
+    {
+        try
+        {
+            ModTranslation.ClearTestTranslationCsv();
+            ModTranslation.SetTestLanguage(SupportedLangs.Japanese);
+            ModTranslation.Cleanup();
+            ModTranslation.Load();
+
+            ModTranslation.GetString("RequestInGameClearButton").Should().Be("入力クリア");
+            ModTranslation.GetString("RequestInGameClearConfirmButton").Should().Be("本当にクリアしますか？");
+        }
+        finally
+        {
+            ModTranslation.SetTestLanguage(SupportedLangs.English);
+            ModTranslation.Cleanup();
+        }
+    }
 }
