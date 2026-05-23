@@ -23,6 +23,8 @@ public static class GameSettingOptions
     public static bool ExcludeVentCleaningTaskFromSelection;
     [CustomOptionBool("ExcludeSubmitScanTaskFromSelection", false, parentFieldName: nameof(ExcludeSpecificTasksFromSelection))]
     public static bool ExcludeSubmitScanTaskFromSelection;
+    [CustomOptionBool("RandomizeFixLightsSwitches", false, parentFieldName: nameof(Categories.GameSettings))]
+    public static bool RandomizeFixLightsSwitches;
     // |:========== ベントアニメーション有効化の設定 ==========:|
     [CustomOptionBool("VentAnimationPlaySetting", true, parentFieldName: nameof(Categories.GameSettings))]
     public static bool VentAnimationPlaySetting;
