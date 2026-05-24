@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using AmongUs.GameOptions;
 using SuperNewRoles.Modules;
+using SuperNewRoles.Roles.Neutral;
 using UnityEngine;
 
 namespace SuperNewRoles.Roles.Ability.CustomButton;
@@ -21,6 +22,7 @@ public abstract class TargetCustomButtonBase : CustomButtonBase
     public virtual Func<bool> IsDeadPlayerOnly { get; } = null;
     public bool TargetIsExist => Target != null;
     public virtual bool IgnoreWalls => false;
+    protected virtual bool CanTargetFrankensteinBody => false;
     public override void OnUpdate()
     {
         base.OnUpdate();
@@ -34,6 +36,16 @@ public abstract class TargetCustomButtonBase : CustomButtonBase
             _lastShowTarget = Target;
         }
     }
+
+    internal bool ShouldCancelClickForTarget()
+    {
+        if (Target == null) return false;
+        if (ShouldCancelClickForTargetCore()) return true;
+        if (CanTargetFrankensteinBody) return false;
+        ExPlayerControl exTarget = Target;
+        return exTarget != null && exTarget.TryGetAbility<FrankensteinAbility>(out var frankensteinAbility) && frankensteinAbility.IsMonster;
+    }
+    protected virtual bool ShouldCancelClickForTargetCore() => false;
     private static void SetOutline(PlayerControl player, bool show, Color32 color)
     {
         var rend = player.cosmetics.currentBodySprite.BodySprite;

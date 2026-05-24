@@ -24,14 +24,12 @@ public class HawkAbility : CustomButtonBase, IButtonEffect
     public float EffectDuration => _duration;
     public Action OnEffectEnds => () =>
     {
-        if (ExPlayerControl.LocalPlayer.IsAlive())
-            FastDestroyableSingleton<HudManager>.Instance.ShadowQuad.gameObject.SetActive(true);
-        if (_cannotWalkInEffect)
-            PlayerControl.LocalPlayer.moveable = true;
+        RestoreLocalState();
     };
     public bool isEffectActive { get; set; }
     public float EffectTimer { get; set; }
     private readonly bool _cannotWalkInEffect;
+    public bool BlocksMovement => isEffectActive && _cannotWalkInEffect;
 
     private EventListener<HawkEventData> hawkEventListener;
     private EventListener<MeetingStartEventData> meetingStartEventListener;
@@ -98,15 +96,23 @@ public class HawkAbility : CustomButtonBase, IButtonEffect
     private void OnStartMeeting()
     {
         isEffectActive = false;
-        if (ExPlayerControl.LocalPlayer.IsAlive())
-            FastDestroyableSingleton<HudManager>.Instance.ShadowQuad.gameObject.SetActive(true);
+        RestoreLocalState();
         ResetTimer();
     }
 
     private void OnDie()
     {
         isEffectActive = false;
+        RestoreLocalState();
         ResetTimer();
+    }
+
+    private void RestoreLocalState()
+    {
+        if (ExPlayerControl.LocalPlayer.IsAlive())
+            FastDestroyableSingleton<HudManager>.Instance.ShadowQuad.gameObject.SetActive(true);
+        if (_cannotWalkInEffect && PlayerControl.LocalPlayer != null)
+            PlayerControl.LocalPlayer.moveable = true;
     }
 
     public override bool CheckIsAvailable()

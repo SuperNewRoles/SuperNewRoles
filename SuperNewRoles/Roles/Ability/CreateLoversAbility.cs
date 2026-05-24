@@ -36,7 +36,7 @@ public class CreateLoversAbility : TargetCustomButtonBase
     private EventListener _fixedUpdateListener;
     public override bool OnlyCrewmates => false;
     private float _currentTimer = 0f;
-    public override Func<ExPlayerControl, bool> IsTargetable => (player) => !player.IsLovers() && CurrentTarget != player;
+    public override Func<ExPlayerControl, bool> IsTargetable => IsLoversTargetable;
     public override ShowTextType showTextType => _enabledTimeLimit ? ShowTextType.Show : ShowTextType.Hidden;
     public override string showText => _enabledTimeLimit ? ModTranslation.GetString("DurationTimerText", (int)(_timeLimit - _currentTimer) + 1) : string.Empty;
 
@@ -55,7 +55,7 @@ public class CreateLoversAbility : TargetCustomButtonBase
 
     public override bool CheckIsAvailable()
     {
-        return Player.IsAlive() && Target != null;
+        return Player.IsAlive() && Player.Player.CanMove && Target != null;
     }
 
     public override bool CheckHasButton()
@@ -70,6 +70,24 @@ public class CreateLoversAbility : TargetCustomButtonBase
             CurrentTarget = Player;
         else
             CurrentTarget = null;
+    }
+
+    private bool IsLoversTargetable(ExPlayerControl player)
+    {
+        return CurrentTarget != player;
+    }
+
+    private bool ShouldIgnoreTarget(ExPlayerControl player)
+    {
+        if (player == null || player.IsLovers()) return true;
+        if (player.HasAbility<CreateLoversAbility>() && (!_isLoversMe || player != Player)) return true;
+        if (player.HasAbility<LoversBreakerAbility>()) return true;
+        return false;
+    }
+
+    protected override bool ShouldCancelClickForTargetCore()
+    {
+        return ShouldIgnoreTarget(Target);
     }
 
     public override void AttachToLocalPlayer()
@@ -97,9 +115,9 @@ public class CreateLoversAbility : TargetCustomButtonBase
 
     public override void OnClick()
     {
-        if (Target.HasAbility<LoversBreakerAbility>())
+        if (ShouldIgnoreTarget(Target))
             return;
-        if (CurrentTarget == null || CurrentTarget.IsDead() || CurrentTarget.IsLovers())
+        if (CurrentTarget == null || CurrentTarget.IsDead() || ShouldIgnoreTarget(CurrentTarget))
         {
             CurrentTarget = Target;
             NameText.UpdateNameInfo(CurrentTarget);
@@ -114,8 +132,12 @@ public class CreateLoversAbility : TargetCustomButtonBase
     public void RpcCustomCreateLovers(ExPlayerControl playerA, ExPlayerControl playerB)
     {
         CreatedCouple = AssignRoles.CustomSetLovers(playerA, playerB, AssignRoles.LoversIndex, true);
+        // キューピッド能力にも作成したラバーズの情報を同期しておく
+        if (Player.TryGetAbility<CupidAbility>(out var cupidAbility))
+        {
+            cupidAbility.SetLovers(playerA.PlayerId, playerB.PlayerId);
+        }
         _created = true;
-        NameText.UpdateNameInfo(playerA);
-        NameText.UpdateNameInfo(playerB);
+        NameText.UpdateAllNameInfo();
     }
 }

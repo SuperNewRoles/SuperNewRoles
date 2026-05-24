@@ -8,6 +8,7 @@ using SuperNewRoles.Modules.Events.Bases;
 using SuperNewRoles.Events;
 using SuperNewRoles.Roles.Ability.CustomButton;
 using SuperNewRoles.CustomCosmetics.CosmeticsPlayer;
+using SuperNewRoles.Extensions;
 
 namespace SuperNewRoles.Roles.Ability;
 
@@ -48,6 +49,7 @@ public class CamouflagerAbility : AbilityBase
 
     public override void DetachToAlls()
     {
+        EndCamouflage();
         base.DetachToAlls();
         _meetingStartListener?.RemoveListener();
     }
@@ -172,7 +174,7 @@ public class CamouflagerAbility : AbilityBase
                 ColorId = originalOutfit.ColorId,
                 SkinId = originalOutfit.SkinId,
                 HatId = originalOutfit.Hat1Id,
-                VisorId = originalOutfit.Visor2Id,
+                VisorId = originalOutfit.Visor1Id,
                 PetId = originalOutfit.PetId
             };
 
@@ -186,6 +188,8 @@ public class CamouflagerAbility : AbilityBase
         }
 
         _originalOutfits.Clear();
+
+        NameText.UpdateAllNameInfo();
     }
 
     public class CamouflagerAbilityOption

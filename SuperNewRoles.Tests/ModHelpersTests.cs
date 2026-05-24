@@ -118,6 +118,28 @@ public class ModHelpersTests
         wrapped.Should().Be("abcd\nef");
     }
 
+    // 目的: シンプルな markdown が TMP rich text に変換されることを検証
+    [Fact]
+    public void ConvertSimpleMarkdownToRichText_Converts_Common_Syntax()
+    {
+        var input = "**bold** *italic* ~~strike~~";
+
+        var converted = ModHelpers.ConvertSimpleMarkdownToRichText(input);
+
+        converted.Should().Be("<b>bold</b> <i>italic</i> <s>strike</s>");
+    }
+
+    // 目的: エスケープ済みマーカーはそのまま残し、既存 rich text と共存できることを検証
+    [Fact]
+    public void ConvertSimpleMarkdownToRichText_Respects_Escapes_And_Existing_Tags()
+    {
+        var input = @"<color=red>**重要**</color> \*literal\*";
+
+        var converted = ModHelpers.ConvertSimpleMarkdownToRichText(input);
+
+        converted.Should().Be("<color=red><b>重要</b></color> *literal*");
+    }
+
     // 目的: アスペクト比の既約分数が正しく求まることを検証
     [Fact]
     public void AspectRatio_Computes_Reduced_Form()

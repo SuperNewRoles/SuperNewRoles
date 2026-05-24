@@ -19,6 +19,7 @@ public class ExitVentOnFixSabotageAbility : AbilityBase
 
     private void OnSaboEnd(SaboEndEventData data)
     {
+        Logger.Info("Sabo end");
         if (!PlayerControl.LocalPlayer.inVent || Vent.currentVent == null) return;
         Vent.currentVent.SetButtons(false);
         PlayerControl.LocalPlayer.MyPhysics.RpcExitVent(Vent.currentVent.Id);

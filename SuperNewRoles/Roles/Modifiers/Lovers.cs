@@ -81,7 +81,6 @@ public class LoversAbility : AbilityBase
     public LoversCouple couple { get; private set; }
     private EventListener<DieEventData> _dieListener;
     private EventListener<NameTextUpdateEventData> _nameTextUpdateListener;
-    private EventListener _fixedUpdateListener;
     private PlayerArrowsAbility _playerArrowsAbility;
     private KnowOtherAbility _knowOtherAbility;
     private bool knowPartnerRole;
@@ -108,31 +107,20 @@ public class LoversAbility : AbilityBase
         );
         Player.AttachAbility(_playerArrowsAbility, new AbilityParentAbility(this));
         Player.AttachAbility(_knowOtherAbility, new AbilityParentAbility(this));
-        _fixedUpdateListener = FixedUpdateEvent.Instance.AddListener(OnFixedUpdate);
     }
     public override void DetachToAlls()
     {
         _dieListener?.RemoveListener();
         _nameTextUpdateListener?.RemoveListener();
-        _fixedUpdateListener?.RemoveListener();
-    }
-    private void OnFixedUpdate()
-    {
-        if (!AmongUsClient.Instance.AmHost) return;
-        if (Player.IsDead()) return;
-        if (ShipStatus.Instance?.enabled != true) return;
-        if (!couple.CheckWin(Player)) return;
-        if (couple.lovers.Any(x => x.Player == null || x.Player.IsDead())) return;
-        if (ExPlayerControl.ExPlayerControls.Count(player => player.IsAlive()) == couple.lovers.Count + 1)
-        {
-            EndGamer.RpcEndGameWithWinner(Patches.CustomGameOverReason.LoversWin, WinType.SingleNeutral, couple.lovers.Select(ability => ability.Player).ToArray(), Lovers.Instance.RoleColor, "Lovers", "WinText");
-        }
     }
     private void OnNameTextUpdate(NameTextUpdateEventData data)
     {
         if (data.Player != Player) return;
         if (!data.Player.IsLovers()) return;
-        if (ExPlayerControl.LocalPlayer.IsAlive() && ExPlayerControl.LocalPlayer.Role != RoleId.God && !IsCoupleWith(ExPlayerControl.LocalPlayer)) return;
+        bool canSeeHeart = IsCoupleWith(ExPlayerControl.LocalPlayer)
+            || ExPlayerControl.LocalPlayer.CanSeeRoleOf(data.Player)
+            || ExPlayerControl.LocalPlayer.Role == RoleId.God;
+        if (!canSeeHeart) return;
         if (data.Player.cosmetics.nameText.text.Contains("♥")) return;
         NameText.AddNameText(data.Player, ModHelpers.Cs(ExPlayerControl.LocalPlayer.IsDead() || ExPlayerControl.LocalPlayer.Role == RoleId.God ? HeartColor : Lovers.Instance.RoleColor, "♥"));
     }/*
@@ -155,9 +143,17 @@ public class LoversAbility : AbilityBase
         if (ExPlayerControl.LocalPlayer.IsDead()) return;
         if (IsCoupleWith(data.player))
         {
+            // バスカーの偽装死亡中は心中しない
+            var partner = (ExPlayerControl)data.player;
+            if (partner.GetAbility<BuskerPseudocideAbility>()?.isEffectActive == true)
+            {
+                Logger.Info($"Lovers suicide aborted: Partner {data.player.name} is in busker fake death");
+                return;
+            }
+
             // 相方が実際に死亡しているかを確認する安全チェック
             // スタントマンなどの防御能力により相方が生存している場合は心中しない
-            if (((ExPlayerControl)data.player).IsAlive())
+            if (partner.IsAlive())
             {
                 Logger.Info($"Lovers suicide aborted: Partner {data.player.name} is still alive");
                 return;
@@ -184,6 +180,14 @@ public class LoversCouple
     public bool CheckWin(ExPlayerControl player)
     {
         return lovers.Min(l => l.Player.PlayerId) == player.PlayerId;
+    }
+    public bool CanSoloWin()
+    {
+        if (lovers == null || lovers.Count == 0)
+            return false;
+
+        return lovers.All(ability => ability?.Player != null && ability.Player.IsAlive())
+            && ExPlayerControl.ExPlayerControls.Count(player => player.IsAlive()) <= lovers.Count + 1;
     }
     public static readonly Color32[] LoversHearts = [
         new(255, 145, 200, byte.MaxValue),

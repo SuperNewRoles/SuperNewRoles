@@ -35,6 +35,7 @@ public class OrientalShamanAbility : AbilityBase
     public override void AttachToAlls()
     {
         base.AttachToAlls();
+        ClearServant();
 
         // ベント能力の初期化
         _ventAbility = new NonAnimationVentButtonAbility(
@@ -88,6 +89,12 @@ public class OrientalShamanAbility : AbilityBase
         Player.AttachAbility(_playerArrowsAbility, new AbilityParentAbility(this));
     }
 
+    public override void DetachToAlls()
+    {
+        base.DetachToAlls();
+        ClearServant();
+    }
+
     public override void AttachToLocalPlayer()
     {
         base.AttachToLocalPlayer();
@@ -123,5 +130,11 @@ public class OrientalShamanAbility : AbilityBase
         NameText.UpdateNameInfo(Player);
         // 式神作成時の処理
         Logger.Info($"OrientalShaman created servant: {target.Data.PlayerName}");
+    }
+
+    private void ClearServant()
+    {
+        _servant?.ClearParent(this);
+        _servant = null;
     }
 }

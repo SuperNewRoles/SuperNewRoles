@@ -139,249 +139,6 @@ public static class ModifierOptionMenu
         }));
     }
 
-    public static void ShowPresetOptionMenu()
-    {
-        var menuData = ModifierOptionMenuObjectData.Instance;
-        // プリセットボタンを生成
-        var rightAreaInner = ModifierOptionMenuObjectData.Instance.RightAreaInner;
-        GeneratePresetButtons(rightAreaInner);
-        if (menuData.StandardOptionMenus.TryGetValue(Categories.Categories.PresetSettings.Name, out var menu))
-        {
-            menuData.CurrentOptionMenu = menu;
-            menu.SetActive(true);
-            return;
-        }
-
-        var presetMenu = CreatePresetMenu();
-        ConfigurePresetWriteBox(presetMenu);
-
-        ConfigurePresetTitle(presetMenu);
-        ConfigureNowPresetText(presetMenu);
-
-        menuData.StandardOptionMenus[Categories.Categories.PresetSettings.Name] = presetMenu;
-        menuData.CurrentOptionMenu = presetMenu;
-    }
-    private static void ConfigureNowPresetText(GameObject presetMenu)
-    {
-        var nowPresetText = presetMenu?.transform?.Find("NowPreset")?.gameObject;
-        if (nowPresetText == null)
-            return;
-        nowPresetText.transform.Find("StaticText").GetComponent<TextMeshPro>().text = ModTranslation.GetString("PresetSettings.NowPreset");
-        UpdateNowPresetText(presetMenu);
-    }
-    private static void UpdateNowPresetText(GameObject presetMenu)
-    {
-        var nowPresetText = presetMenu?.transform?.Find("NowPreset")?.gameObject;
-        if (nowPresetText == null)
-            return;
-        nowPresetText.transform.Find("NowPresetText").GetComponent<TextMeshPro>().text = CustomOptionSaver.GetPresetName(CustomOptionSaver.CurrentPreset);
-    }
-    private static void ConfigurePresetTitle(GameObject presetMenu)
-    {
-        var presetTitle = presetMenu?.transform?.Find("PresetTitle")?.gameObject;
-        if (presetTitle == null)
-            return;
-        UIHelper.SetText(presetTitle, ModTranslation.GetString("PresetSettings"));
-    }
-    private static GameObject CreatePresetMenu()
-    {
-        var menu = UIHelper.InstantiateUIElement(
-            "PresetMenu",
-            ModifierOptionMenuObjectData.Instance.RightArea.transform,
-            new(0, 0, -5f),
-            Vector3.one);
-
-        // PresetTitleのテキストを翻訳
-        var presetTitle = menu.transform.Find("PresetTitle/Text").gameObject;
-        UIHelper.SetText(presetTitle, ModTranslation.GetString("PresetMenuTitle"));
-
-        var submitPreset = menu.transform.Find("SubmitPreset").gameObject;
-        var addPresetButton = submitPreset.transform.Find("AddPresetButton").gameObject;
-
-        // テキストの設定
-        UIHelper.SetText(addPresetButton, ModTranslation.GetString("AddPreset"));
-
-        // PassiveButtonの設定
-        var passiveButton = addPresetButton.AddComponent<PassiveButton>();
-        passiveButton.Colliders = new Collider2D[1] { addPresetButton.GetComponent<BoxCollider2D>() };
-        var spriteRenderer = addPresetButton.GetComponent<SpriteRenderer>();
-
-        UIHelper.ConfigurePassiveButton(passiveButton, (UnityAction)(() =>
-        {
-            HandleAddPreset();
-        }), spriteRenderer);
-
-        return menu;
-    }
-
-    private static void HandleAddPreset()
-    {
-        var writeBox = ModifierOptionMenuObjectData.Instance.CurrentOptionMenu.transform.Find("SubmitPreset/WriteBox");
-        var writeBoxTextBoxTMP = writeBox.GetComponent<TextBoxTMP>();
-        var writeBoxTMP = writeBox.transform.Find("Text").GetComponent<TextMeshPro>();
-        string text = writeBoxTextBoxTMP.text;
-        Logger.Info(text);
-        if (string.IsNullOrEmpty(text))
-            return;
-        int maxPreset = CustomOptionSaver.PresetNames.Any() ? CustomOptionSaver.PresetNames.Keys.Max() : -1;
-        int newPreset = maxPreset + 1;
-
-        CustomOptionSaver.SetPresetName(newPreset, text);
-        CustomOptionSaver.CurrentPreset = newPreset;
-        CustomOptionSaver.Save();
-        writeBoxTextBoxTMP.Clear();
-        writeBoxTMP.text = ModTranslation.GetString("PresetPleaseInput");
-        GeneratePresetButtons(ModifierOptionMenuObjectData.Instance.RightAreaInner);
-        UpdateNowPresetText(ModifierOptionMenuObjectData.Instance.CurrentOptionMenu);
-
-        // プリセット変更後に表示を更新
-        OptionMenuBase.UpdateOptionDisplayAll();
-    }
-    private static void GeneratePresetButtons(GameObject container)
-    {
-        var menuData = ModifierOptionMenuObjectData.Instance;
-
-        // 新しいコンテナを作成
-        var buttonsContainer = new GameObject("PresetButtonsContainer");
-        buttonsContainer.transform.SetParent(container.transform);
-        buttonsContainer.transform.localScale = Vector3.one;
-        buttonsContainer.transform.localPosition = new(0, 0, 4.7f);
-        buttonsContainer.SetActive(true);
-
-        float xPos = 1.25f;
-        float yPos = 1f;
-        const float ySpacing = -0.55f;
-
-        int index = 0;
-        foreach (var preset in CustomOptionSaver.PresetNames)
-        {
-            var buttonPosition = new Vector3(
-                xPos,
-                yPos + (index * ySpacing),
-                -0.21f
-            );
-
-            // プリセットボタンの生成
-            var presetButton = UIHelper.InstantiateUIElement(
-                "PresetButton",
-                buttonsContainer.transform,
-                buttonPosition,
-                Vector3.one * 0.4f
-            );
-            presetButton.name = $"PresetButton_{preset.Key}";
-
-            UIHelper.SetText(presetButton, preset.Value);
-            ConfigurePresetButton(presetButton, preset.Key);
-
-            // ゴミ箱ボタンの生成
-            var trashButton = presetButton.transform.Find("TrashButton").gameObject;
-            ConfigureTrashButton(trashButton, preset.Key);
-
-            index++;
-        }
-
-        // Scrollerの更新
-        if (menuData.RightAreaScroller != null)
-        {
-            float maxBound = index <= 4 ? 0f : ((index - 4) * 0.7f);
-            menuData.RightAreaScroller.ContentYBounds.max = maxBound;
-        }
-    }
-
-    private static void ConfigurePresetButton(GameObject buttonObj, int presetId)
-    {
-        var passiveButton = buttonObj.AddComponent<PassiveButton>();
-        passiveButton.Colliders = new Collider2D[] { buttonObj.GetComponent<BoxCollider2D>() };
-        var spriteRenderer = buttonObj.transform.Find("Background").GetComponent<SpriteRenderer>();
-
-        UIHelper.ConfigurePassiveButton(passiveButton, (UnityAction)(() =>
-        {
-            Logger.Info($"Preset {presetId} selected");
-            CustomOptionSaver.Save();
-            CustomOptionSaver.LoadPreset(presetId);
-            UpdateNowPresetText(ModifierOptionMenuObjectData.Instance.CurrentOptionMenu);
-            OptionMenuBase.UpdateOptionDisplayAll();
-        }), spriteRenderer, selectedObject: buttonObj.transform.Find("Selected")?.gameObject);
-    }
-
-    private static void ConfigureTrashButton(GameObject buttonObj, int presetId)
-    {
-        var passiveButton = buttonObj.AddComponent<PassiveButton>();
-        passiveButton.Colliders = new Collider2D[] { buttonObj.GetComponent<BoxCollider2D>() };
-        var selectedObject = buttonObj.transform.Find("Selected")?.gameObject;
-        if (selectedObject != null)
-            selectedObject.SetActive(false);
-
-        UIHelper.ConfigurePassiveButton(passiveButton, (UnityAction)(() =>
-        {
-            HandleDeletePreset(presetId);
-        }));
-        passiveButton.OnMouseOver = new();
-        passiveButton.OnMouseOver.AddListener((UnityAction)(() =>
-        {
-            selectedObject?.SetActive(true);
-        }));
-
-        passiveButton.OnMouseOut = new();
-        passiveButton.OnMouseOut.AddListener((UnityAction)(() =>
-        {
-            selectedObject?.SetActive(false);
-        }));
-    }
-
-    private static void HandleDeletePreset(int presetId)
-    {
-        if (!CustomOptionSaver.PresetNames.ContainsKey(presetId))
-            return;
-
-        CustomOptionSaver.RemovePreset(presetId);
-
-        // プリセットボタンを再生成
-        var rightAreaInner = ModifierOptionMenuObjectData.Instance.RightAreaInner;
-        GeneratePresetButtons(rightAreaInner);
-        UpdateNowPresetText(ModifierOptionMenuObjectData.Instance.CurrentOptionMenu);
-
-        // プリセット削除後に表示を更新
-        OptionMenuBase.UpdateOptionDisplayAll();
-    }
-
-    private static void ConfigurePresetWriteBox(GameObject presetMenu)
-    {
-        var writeBox = presetMenu.transform.Find("SubmitPreset/WriteBox").gameObject;
-        var writeBoxTextBoxTMP = writeBox.GetComponent<TextBoxTMP>();
-        var writeBoxTMP = writeBox.transform.Find("Text").GetComponent<TextMeshPro>();
-        var writeBoxPassiveButton = writeBox.AddComponent<PassiveButton>();
-        var writeBoxSpriteRenderer = writeBox.transform.Find("Background").GetComponent<SpriteRenderer>();
-
-        UIHelper.SetText(writeBox, ModTranslation.GetString("PresetPleaseInput"));
-
-        ConfigureWriteBoxButton(writeBox, writeBoxPassiveButton, writeBoxSpriteRenderer, writeBoxTextBoxTMP, writeBoxTMP);
-        writeBoxTextBoxTMP.OnFocusLost = new();
-        writeBoxTextBoxTMP.OnFocusLost.AddListener((UnityAction)(() =>
-        {
-            if (string.IsNullOrEmpty(writeBoxTextBoxTMP.text))
-                UIHelper.SetText(writeBox, ModTranslation.GetString("PresetPleaseInput"));
-        }));
-        // ConfigureWriteBoxEnterEvent(writeBoxTextBoxTMP);
-    }
-
-    private static void ConfigureWriteBoxButton(
-        GameObject writeBox,
-        PassiveButton writeBoxPassiveButton,
-        SpriteRenderer writeBoxSpriteRenderer,
-        TextBoxTMP writeBoxTextBoxTMP,
-        TextMeshPro writeBoxTMP)
-    {
-        writeBoxPassiveButton.Colliders = new Collider2D[] { writeBox.GetComponent<BoxCollider2D>() };
-
-        UIHelper.ConfigurePassiveButton(writeBoxPassiveButton, (UnityAction)(() =>
-        {
-            writeBoxTextBoxTMP.GiveFocus();
-            if (string.IsNullOrEmpty(writeBoxTextBoxTMP.text))
-                writeBoxTMP.text = "";
-        }), writeBoxSpriteRenderer, Color.green);
-    }
-
     public static void ShowDefaultOptionMenu(ModifierOptionMenuObjectData.ModifierCategoryDataBase category, Transform parent)
     {
         var menuData = ModifierOptionMenuObjectData.Instance;
@@ -689,6 +446,12 @@ public static class ModifierOptionMenu
             option.UpdateSelection(newValue ? (byte)1 : (byte)0);
             UpdateOptionsActive();
             RecalculateOptionsPosition(check.transform.parent, ModifierOptionMenuObjectData.Instance.RightAreaScroller);
+            SnrSettingChangeNotifier.NotifyOptionChanged(option);
+
+            if (AmongUsClient.Instance.AmHost)
+            {
+                CustomOptionManager.RpcSyncOption(option.Id, newValue ? (byte)1 : (byte)0);
+            }
         }), spriteRenderer);
     }
 
@@ -775,6 +538,7 @@ public static class ModifierOptionMenu
         option.UpdateSelection(newSelection);
         selectedText.text = option.GetCurrentSelectionString();
         ModifierOptionMenuObjectData.Instance.UpdateOptionDisplay();
+        SnrSettingChangeNotifier.NotifyOptionChanged(option);
     }
 
     private static void UpdateOptionUIValues(CustomOption option, Transform menuTransform)
@@ -847,7 +611,7 @@ public static class ModifierOptionMenu
         var selectedText = selectObject.transform.Find("SelectedText").GetComponent<TMPro.TextMeshPro>();
         selectedText.text = getter().ToString() + suffix; // Initial display
 
-        ConfigureModifierNumberSelectButtons(selectObject, selectedText, modifierOption, getter, setter, min, max, step, suffix);
+        ConfigureModifierNumberSelectButtons(selectObject, selectedText, modifierOption, nameKey, getter, setter, min, max, step, suffix);
         return selectObject;
     }
 
@@ -855,13 +619,14 @@ public static class ModifierOptionMenu
         GameObject selectObject,
         TextMeshPro selectedText,
         RoleOptionManager.ModifierRoleOption modifierOption,
+        string nameKey,
         Func<float> getter,
         Action<float> setter,
         float min, float max, float step,
         string suffix)
     {
-        ConfigureModifierNumberSelectButton(selectObject, "Button_Minus", selectedText, modifierOption, getter, setter, min, max, step, suffix, false);
-        ConfigureModifierNumberSelectButton(selectObject, "Button_Plus", selectedText, modifierOption, getter, setter, min, max, step, suffix, true);
+        ConfigureModifierNumberSelectButton(selectObject, "Button_Minus", selectedText, modifierOption, nameKey, getter, setter, min, max, step, suffix, false);
+        ConfigureModifierNumberSelectButton(selectObject, "Button_Plus", selectedText, modifierOption, nameKey, getter, setter, min, max, step, suffix, true);
     }
 
     private static void ConfigureModifierNumberSelectButton(
@@ -869,6 +634,7 @@ public static class ModifierOptionMenu
         string buttonName,
         TextMeshPro selectedText,
         RoleOptionManager.ModifierRoleOption modifierOption,
+        string nameKey,
         Func<float> getter,
         Action<float> setter,
         float min, float max, float step,
@@ -882,13 +648,14 @@ public static class ModifierOptionMenu
 
         UIHelper.ConfigurePassiveButton(passiveButton, (UnityAction)(() =>
         {
-            HandleModifierNumberSelection(selectedText, modifierOption, getter, setter, min, max, step, suffix, isIncrement);
+            HandleModifierNumberSelection(selectedText, modifierOption, nameKey, getter, setter, min, max, step, suffix, isIncrement);
         }), spriteRenderer);
     }
 
     private static void HandleModifierNumberSelection(
         TextMeshPro selectedText,
         RoleOptionManager.ModifierRoleOption modifierOption,
+        string nameKey,
         Func<float> getter,
         Action<float> setter,
         float min, float max, float step,
@@ -912,6 +679,7 @@ public static class ModifierOptionMenu
 
         setter(newValue);
         selectedText.text = newValue.ToString() + suffix;
+        SnrSettingChangeNotifier.NotifyModifierRoleSettingChanged(modifierOption, ModTranslation.GetString(nameKey), selectedText.text);
 
         // ホストの場合、他のプレイヤーに同期
         if (AmongUsClient.Instance.AmHost)

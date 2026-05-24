@@ -8,6 +8,7 @@ using HarmonyLib;
 using SuperNewRoles.Events;
 using SuperNewRoles.Modules;
 using SuperNewRoles.Modules.Events.Bases;
+using SuperNewRoles.CustomOptions.Categories;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
@@ -327,6 +328,8 @@ public abstract class CustomButtonBase : AbilityBase
     }
     public void OnClickEvent()
     {
+        if (this is TargetCustomButtonBase targetButton && targetButton.ShouldCancelClickForTarget())
+            return;
         if (this.Timer <= 0f && CheckIsAvailable() && (buttonEffect == null || !buttonEffect.isEffectActive))
         {
             actionButton.graphic.color = GrayOut;
@@ -377,9 +380,20 @@ public abstract class CustomButtonBase : AbilityBase
         WrapUpEvent.Instance.RemoveListener(wrapUpEvent);
         GameObject.Destroy(actionButton.gameObject);
     }
-    public void SetCoolTenSeconds()
+    public void SetInitialCooldown()
     {
-        Timer = 10f;
+        switch (GameSettingOptions.InitialCooldown)
+        {
+            case InitialCooldownType.TenSeconds:
+                Timer = 10f;
+                break;
+            case InitialCooldownType.OneThird:
+                Timer = DefaultTimer / 3f;
+                break;
+            case InitialCooldownType.Immediate:
+                Timer = DefaultTimer;
+                break;
+        }
     }
 
     [HarmonyPatch(typeof(AbilityButton), nameof(AbilityButton.Update))]

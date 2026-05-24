@@ -55,6 +55,7 @@ public class JammerAbility : TargetCustomButtonBase, IButtonEffect
     private ExPlayerControl _invisibleTarget;
     private EventListener<MeetingStartEventData> _onMeetingStart;
     private EventListener _onFixedUpdate;
+    private readonly OpacityFadeController _opacityFader = new();
 
     public bool isEffectActive { get; set; }
     public float EffectTimer { get; set; }
@@ -120,6 +121,7 @@ public class JammerAbility : TargetCustomButtonBase, IButtonEffect
     {
         base.DetachToAlls();
         _onFixedUpdate?.RemoveListener();
+        _opacityFader.StopAll();
     }
 
     public override void AttachToLocalPlayer()
@@ -153,7 +155,7 @@ public class JammerAbility : TargetCustomButtonBase, IButtonEffect
     {
         if (_invisibleTarget != null && !_invisibleTarget.IsDead())
         {
-            SetInvisible(_invisibleTarget, true);
+            _opacityFader.Apply(_invisibleTarget, CanSeeTranslucentState(_invisibleTarget, out var opacity) ? opacity : 0f, forceSnap: true);
         }
     }
 
@@ -167,11 +169,11 @@ public class JammerAbility : TargetCustomButtonBase, IButtonEffect
     {
         if (isInvisible)
         {
-            ModHelpers.SetOpacity(target.Player, CanSeeTranslucentState(target, out var opacity) ? opacity : 0f);
+            _opacityFader.Apply(target, CanSeeTranslucentState(target, out var opacity) ? opacity : 0f);
         }
         else
         {
-            ModHelpers.SetOpacity(target.Player, 1f);
+            _opacityFader.Apply(target, 1f);
         }
     }
 

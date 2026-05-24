@@ -39,10 +39,14 @@ public class ExPlayerControlMoreTests
         SetAutoProp(ex, nameof(ExPlayerControl.Role), role);
         SetAutoProp(ex, nameof(ExPlayerControl.GhostRole), GhostRoleId.None);
         SetAutoProp(ex, nameof(ExPlayerControl.ModifierRole), ModifierRoleId.None);
+        SetAutoProp(ex, nameof(ExPlayerControl.RoleHistory), new List<RoleId>());
+        SetAutoProp(ex, nameof(ExPlayerControl.GhostRoleHistory), new List<GhostRoleId>());
+        SetAutoProp(ex, nameof(ExPlayerControl.ModifierRoleHistory), new List<ModifierRoleId>());
 
         SetField(ex, "_abilityCache", new Dictionary<string, AbilityBase>());
         SetAutoProp(ex, nameof(ExPlayerControl.PlayerAbilities), new List<AbilityBase>());
         SetAutoProp(ex, nameof(ExPlayerControl.PlayerAbilitiesDictionary), new Dictionary<ulong, AbilityBase>());
+        SetAutoProp(ex, nameof(ExPlayerControl.ModifierRoleBases), new List<IModifierBase>());
         SetField(ex, "_impostorVisionAbilities", new List<ImpostorVisionAbility>());
         SetField(ex, "_hasAbilityCache", new Dictionary<string, bool>());
 
@@ -80,7 +84,8 @@ public class ExPlayerControlMoreTests
     // 簡易 Attach: 内部キャッシュの無効化まで含め、Attach 相当の状態遷移を再現する
     private static ulong ShallowAttach(ExPlayerControl ex, AbilityBase ability)
     {
-        var id = IRoleBase.GenerateAbilityId(ex.PlayerId, GetAutoProp<RoleId>(ex, nameof(ExPlayerControl.Role)), ex.lastAbilityId);
+        // Generate deterministic ability id using current player as parent for stable tests
+        var id = ExPlayerControlExtensions.GenerateDeterministicAbilityId(ex.PlayerId, new AbilityParentPlayer(ex), ability.GetType());
         typeof(ExPlayerControl).GetProperty(nameof(ExPlayerControl.lastAbilityId))!.SetValue(ex, ex.lastAbilityId + 1);
         ex.PlayerAbilities.Add(ability);
         ex.PlayerAbilitiesDictionary[id] = ability;
@@ -113,6 +118,39 @@ public class ExPlayerControlMoreTests
     {
         var f = obj.GetType().GetField($"<{propName}>k__BackingField", BindingFlags.Instance | BindingFlags.NonPublic)!;
         return (TProp)f.GetValue(obj)!;
+    }
+
+    [Fact]
+    public void RpcCustomSetRole_DoesNotRecordInitialAssignmentHistory()
+    {
+        var rolesByIdField = typeof(CustomRoleManager).GetField("<AllRolesByRoleId>k__BackingField", BindingFlags.Static | BindingFlags.NonPublic)!;
+        var originalRolesById = (Dictionary<int, IRoleBase>?)rolesByIdField.GetValue(null);
+        rolesByIdField.SetValue(null, new Dictionary<int, IRoleBase>());
+
+        try
+        {
+            var ex = CreateBareEx(role: RoleId.None);
+
+            ex.RpcCustomSetRole(RoleId.Crewmate);
+            ex.RpcCustomSetRole(RoleId.SpeedBooster);
+
+            ex.Role.Should().Be(RoleId.SpeedBooster);
+            ex.RoleHistory.Should().BeEmpty();
+        }
+        finally
+        {
+            rolesByIdField.SetValue(null, originalRolesById);
+        }
+    }
+
+    [Fact]
+    public void AddRoleHistory_RecordsOldRoleOnFirstInGameChange()
+    {
+        var history = new List<RoleId>();
+
+        ExPlayerControl.AddRoleHistory(history, RoleId.Crewmate, RoleId.SpeedBooster);
+
+        history.Should().Equal(RoleId.Crewmate, RoleId.SpeedBooster);
     }
 
     // 目的: TryGetAbility のキャッシュ動作と Detach 後の反映を検証

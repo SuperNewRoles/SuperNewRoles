@@ -85,14 +85,18 @@ public class NecromancerCurseButtonAbility : TargetCustomButtonBase, IAbilityCou
     [CustomRPC]
     public static void RpcAssignRevenant(ExPlayerControl player)
     {
+        RevenantAbility.ClearHauntedStatus(player);
+
         // 憑依で動けなくなることへの対策
         if (player.AmOwner)
         {
             if (Minigame.Instance != null)
                 Minigame.Instance.Close();
         }
+        bool isImpostorTeam = player.IsImpostor();
+        player.SetRole(isImpostorTeam ? RoleId.Impostor : RoleId.Crewmate);
         player.SetGhostRole(GhostRoleId.Revenant);
-        RoleManager.Instance.SetRole(player, RoleTypes.CrewmateGhost);
+        RoleManager.Instance.SetRole(player, isImpostorTeam ? RoleTypes.ImpostorGhost : RoleTypes.CrewmateGhost);
         NameText.UpdateNameInfo(player);
     }
 }

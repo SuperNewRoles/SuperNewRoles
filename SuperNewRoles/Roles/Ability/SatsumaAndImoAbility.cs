@@ -16,6 +16,8 @@ public class SatsumaAndImoAbility : AbilityBase
 
     public override void AttachToAlls()
     {
+        var customTaskAbility = new CustomTaskAbility(() => (true, false, null));
+        Player.AttachAbility(customTaskAbility, new AbilityParentAbility(this));
         _nameTextListener = NameTextUpdateEvent.Instance.AddListener(OnNameTextUpdate);
         _wrapUpListener = WrapUpEvent.Instance.AddListener(OnWrapUp);
     }
@@ -32,6 +34,8 @@ public class SatsumaAndImoAbility : AbilityBase
         {
             // WrapUp ごとにチームを切り替え
             _teamState = _teamState == SatsumaTeam.Crewmate ? SatsumaTeam.Madmate : SatsumaTeam.Crewmate;
+            if (AmongUsClient.Instance.AmHost && GameData.Instance != null)
+                GameData.Instance.RecomputeTaskCounts();
             // 名前更新
             NameText.UpdateAllNameInfo();
         }, 0.6f, "SatsumaAndImoAbility");

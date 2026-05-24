@@ -1,4 +1,6 @@
+using System.Collections.Generic;
 using System.Linq;
+using InnerNet;
 using SuperNewRoles.CustomOptions.Data;
 using SuperNewRoles.Modules;
 using SuperNewRoles.Roles;
@@ -10,6 +12,13 @@ namespace SuperNewRoles.CustomOptions;
 
 public static class ExclusivityOptionMenu
 {
+    private static bool CanEditSettings => AmongUsClient.Instance?.AmHost == true;
+    private const int MainMenuVisibleButtonCount = 9;
+    private const float MainMenuButtonVerticalSpacing = 1.8f;
+    private const int EditMenuRoleColumns = 5;
+    private const int EditMenuVisibleRoleRows = 5;
+    private const float EditMenuRoleRowSpacing = 1.85f;
+
     public static void ShowExclusivityOptionMenu()
     {
         while (RoleOptionManager.ExclusivitySettings.Count <= 15)
@@ -60,7 +69,8 @@ public static class ExclusivityOptionMenu
             : 0;
         selectedText.text = maxAssign.ToString();
 
-        button.transform.Find("AssignedText").GetComponent<TextMeshPro>().text = string.Join(", ", exclusivitySetting.Select(x => ModTranslation.GetString(x.ToString())));
+        var visibleRoles = exclusivitySetting.Where(roleId => !RoleReleaseLock.IsLocked(roleId));
+        button.transform.Find("AssignedText").GetComponent<TextMeshPro>().text = string.Join(", ", visibleRoles.Select(roleId => ModTranslation.GetString(roleId.ToString())));
 
         ConfigureMaxAssignSelectButtons(maxAssignSelect, selectedText, index);
 
@@ -93,6 +103,8 @@ public static class ExclusivityOptionMenu
 
     private static void HandleMaxAssignSelection(TextMeshPro selectedText, bool isIncrement, int index)
     {
+        if (!CanEditSettings) return;
+
         int currentValue = int.Parse(selectedText.text);
         int newValue;
 
@@ -108,6 +120,11 @@ public static class ExclusivityOptionMenu
         selectedText.text = newValue.ToString();
 
         RoleOptionManager.ExclusivitySettings[index].MaxAssign = newValue;
+        SnrSettingChangeNotifier.NotifyExclusivitySettingsChanged(
+            index,
+            ModTranslation.GetString("ExclusivityOptionMenuMaxText"),
+            newValue.ToString());
+        RoleOptionManager.RpcSyncExclusivitySettingsAll(true);
     }
 
     private static void ConfigureEditButton(GameObject button, int index)
@@ -139,6 +156,7 @@ public static class ExclusivityOptionMenu
         if (instance.RoleDetailButtonContainer != null)
             GameObject.Destroy(instance.RoleDetailButtonContainer);
         UpdateEditMenuContent(index);
+        GenerateRoleDetailButtons(instance.CurrentRoleType);
     }
 
     private static void InitializeEditMenu()
@@ -194,6 +212,7 @@ public static class ExclusivityOptionMenu
     {
         var instance = ExclusivityOptionMenuObjectData.Instance;
         if (instance.ExclusivityEditRightAreaInner == null) return;
+        instance.CurrentRoleType = roleType;
 
         // 既存のコンテナを削除
         if (instance.RoleDetailButtonContainer != null)
@@ -210,7 +229,7 @@ public static class ExclusivityOptionMenu
         var roles = RoleOptionManager.RoleOptions.Where(x =>
         {
             var roleInfo = CustomRoleManager.AllRoles.FirstOrDefault(r => r.Role == x.RoleId);
-            if (roleInfo == null) return false;
+            if (roleInfo == null || roleInfo.HiddenOption) return false;
             return roleType switch
             {
                 "Impostor" => roleInfo.AssignedTeam == AssignedTeamType.Impostor,
@@ -241,8 +260,7 @@ public static class ExclusivityOptionMenu
             index++;
         }
 
-        // スクロール範囲の調整
-        instance.ExclusivityEditRightAreaScroller.ContentYBounds.max = index < 25 ? 0f : (0.38f * ((index - 24) / 4 + 1)) - 0.5f;
+        UpdateEditMenuScrollerBounds(index);
     }
 
     private static GameObject GenerateRoleDetailButton(string roleName, Transform parent, int index, RoleOptionManager.RoleOption roleOption)
@@ -274,6 +292,8 @@ public static class ExclusivityOptionMenu
         passiveButton.OnClick = new();
         passiveButton.OnClick.AddListener((UnityAction)(() =>
         {
+            if (!CanEditSettings) return;
+
             var roleName = roleOption.RoleId;
             var settings = RoleOptionManager.ExclusivitySettings[editingIndex];
             var roles = settings.Roles.ToList();
@@ -291,6 +311,11 @@ public static class ExclusivityOptionMenu
 
             RoleOptionManager.ExclusivitySettings[editingIndex].Roles = roles;
             ReGenerateMenu();
+            SnrSettingChangeNotifier.NotifyExclusivitySettingsChanged(
+                editingIndex,
+                ModTranslation.GetString("ExclusivityOptionMenuAssignedRoleText"),
+                FormatAssignedRoles(roles));
+            RoleOptionManager.RpcSyncExclusivitySettingsAll(true);
         }));
 
         passiveButton.OnMouseOver = new();
@@ -320,6 +345,13 @@ public static class ExclusivityOptionMenu
             $"{ModTranslation.GetString("ExclusivityEditMenuGroupTitle", index + 1)}";
     }
 
+    private static string FormatAssignedRoles(List<RoleId> roles)
+    {
+        return roles.Count == 0
+            ? ModTranslation.GetString("HelpMenu.Exclusivity.Empty")
+            : string.Join(", ", roles.Select(role => ModTranslation.GetString(role.ToString())));
+    }
+
     private static void ReGenerateMenu()
     {
         var instance = ExclusivityOptionMenuObjectData.Instance;
@@ -346,6 +378,35 @@ public static class ExclusivityOptionMenu
     {
         var scroller = ExclusivityOptionMenuObjectData.Instance.MainAreaScroller;
         var childCount = ExclusivityOptionMenuObjectData.Instance.ExclusivityOptionButtonContainer.transform.childCount;
-        scroller.ContentYBounds.max = childCount <= 9 ? 0 : (childCount - 9) * 1.64f;
+        scroller.ContentYBounds.max = Mathf.Max(0f, (childCount - MainMenuVisibleButtonCount) * MainMenuButtonVerticalSpacing);
+        scroller.UpdateScrollBars();
+    }
+
+    private static void UpdateEditMenuScrollerBounds(int roleCount)
+    {
+        var scroller = ExclusivityOptionMenuObjectData.Instance.ExclusivityEditRightAreaScroller;
+        if (scroller == null) return;
+
+        int rowCount = Mathf.CeilToInt(roleCount / (float)EditMenuRoleColumns);
+        scroller.ContentYBounds.max = Mathf.Max(0f, (rowCount - EditMenuVisibleRoleRows) * EditMenuRoleRowSpacing);
+        scroller.UpdateScrollBars();
+    }
+
+    public static void RefreshDisplayedMenu()
+    {
+        var instance = ExclusivityOptionMenuObjectData.Instance;
+        if (instance?.ExclusivityOptionMenu == null) return;
+
+        if (instance.ExclusivityOptionMenu.activeSelf)
+        {
+            ReGenerateMenu();
+            RecalculateScrollerMax();
+        }
+
+        if (instance.ExclusivityEditMenu != null && instance.ExclusivityEditMenu.activeSelf && instance.CurrentEditingIndex >= 0)
+        {
+            UpdateEditMenuContent(instance.CurrentEditingIndex);
+            GenerateRoleDetailButtons(instance.CurrentRoleType);
+        }
     }
 }

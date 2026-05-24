@@ -1,4 +1,5 @@
 using HarmonyLib;
+using SuperNewRoles.Modules;
 using SuperNewRoles.Modules.Events.Bases;
 
 namespace SuperNewRoles.Events.PCEvents;
@@ -27,6 +28,20 @@ public class ShapeshiftEvent : EventTargetBase<ShapeshiftEvent, ShapeshiftEventD
     }
 }
 
+[HarmonyPatch(typeof(PlayerControl), nameof(PlayerControl.RpcShapeshift))]
+public static class TryShapeshiftPatch
+{
+    public static bool Prefix(PlayerControl __instance, PlayerControl target, bool shouldAnimate)
+    {
+        RpcCustomShapeshift(__instance, target, shouldAnimate);
+        return false;
+    }
+    [CustomRPC]
+    public static void RpcCustomShapeshift(PlayerControl __instance, PlayerControl target, bool animate)
+    {
+        __instance.Shapeshift(target, animate);
+    }
+}
 [HarmonyPatch(typeof(PlayerControl), nameof(PlayerControl.Shapeshift))]
 public static class ShapeshiftEventPatch
 {

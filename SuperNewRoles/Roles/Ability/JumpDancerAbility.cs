@@ -33,6 +33,7 @@ public class JumpDancerAbility : CustomButtonBase, IAbilityCount
         }
     }
     private readonly float cooldown;
+    private readonly bool affectsGhosts;
     public override string buttonText => ModTranslation.GetString("JumpDancerButtonName");
 
     public override float DefaultTimer => cooldown;
@@ -41,9 +42,10 @@ public class JumpDancerAbility : CustomButtonBase, IAbilityCount
 
     protected override KeyType keytype => KeyType.Ability1;
 
-    public JumpDancerAbility(float cooldown) : base()
+    public JumpDancerAbility(float cooldown, bool affectsGhosts) : base()
     {
         this.cooldown = cooldown;
+        this.affectsGhosts = affectsGhosts;
     }
 
     public override bool CheckIsAvailable()
@@ -69,6 +71,8 @@ public class JumpDancerAbility : CustomButtonBase, IAbilityCount
         float LightRadius = ShipStatus.Instance.CalculateLightRadius(PlayerControl.LocalPlayer.Data);
         foreach (PlayerControl player in PlayerControl.AllPlayerControls)
         {
+            if (player == null || player.Data == null) continue;
+            if (!affectsGhosts && player.Data.IsDead) continue;
             if (CheckCan(player)) continue;
             if (PlayerControl.LocalPlayer.PlayerId == player.PlayerId)
             {
@@ -118,7 +122,8 @@ public class JumpDancerAbility : CustomButtonBase, IAbilityCount
             if (data.Value > 0.9f || player.Player.inMovingPlat || player.Player.onLadder)
             {
                 player.transform.localScale = new(0.7f, 0.7f, 1);
-                player.Player.moveable = true;
+                if (!HasActiveMovementBlock(player))
+                    player.Player.moveable = true;
                 if (player.IsAlive()) player.Player.Collider.enabled = true;
 
                 // 削除対象をリストに追加
@@ -161,6 +166,11 @@ public class JumpDancerAbility : CustomButtonBase, IAbilityCount
                 JumpingPlayerIds.Remove(key);
             }
         }
+    }
+
+    private static bool HasActiveMovementBlock(ExPlayerControl player)
+    {
+        return player.GetAbilities<HawkAbility>().Any(ability => ability.BlocksMovement);
     }
 
     private EventListener fixedUpdateEventListener;

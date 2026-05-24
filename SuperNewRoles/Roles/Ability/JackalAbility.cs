@@ -4,8 +4,6 @@ using SuperNewRoles.Modules;
 using SuperNewRoles.Roles.Ability.CustomButton;
 using AmongUs.GameOptions;
 using SuperNewRoles.Roles.Neutral;
-using System.Linq;
-
 namespace SuperNewRoles.Roles.Ability;
 
 public class JackalAbility : AbilityBase
@@ -16,6 +14,8 @@ public class JackalAbility : AbilityBase
     public CustomSidekickButtonAbility SidekickAbility { get; private set; }
     public KnowOtherAbility KnowJackalAbility { get; private set; }
     public ImpostorVisionAbility ImpostorVisionAbility { get; private set; }
+    // 忘却者などで通報した時に状況がリセットされることへの対策
+    public bool CreatedSidekick { get; private set; }
 
     public JackalAbility(JackalData jackData)
     {
@@ -36,7 +36,7 @@ public class JackalAbility : AbilityBase
         );
 
         SidekickAbility = new CustomSidekickButtonAbility(new(
-            (bool sidekickCreated) => JackData.CanCreateSidekick && !sidekickCreated,
+            (bool sidekickCreated) => JackData.CanCreateSidekick && !sidekickCreated && !CreatedSidekick,
             () => JackData.SidekickCooldown,
             () => JackData.SidekickType,
             () => RoleTypes.Crewmate,
@@ -47,21 +47,9 @@ public class JackalAbility : AbilityBase
             sidekickedPromoteData: getPromoteData(JackData.SidekickType),
             onSidekickCreated: (player) =>
             {
+                // 全ての視点で共有していないと意味がないのでRPCで通知する
+                RpcJackalCreatedSidekick();
                 Logger.Info($"OnSidekickCreated: {player.PlayerId}");
-                new LateTask(() =>
-                {
-                    Logger.Info($"OnSidekickCreated2: {player.PlayerId}");
-                    if (JackData.SidekickType is RoleId.Sidekick or RoleId.SidekickWaveCannon or RoleId.Bullet)
-                    {
-                        Logger.Info($"OnSidekickCreated3: {player.PlayerId}");
-                        var jsidekick = player.GetAbility<JSidekickAbility>();
-                        if (jsidekick != null)
-                        {
-                            Logger.Info($"OnSidekickCreated4: {player.PlayerId}");
-                            jsidekick.RpcSetCanInfinite(JackData.IsInfiniteJackal);
-                        }
-                    }
-                }, 0.5f, "JackalAbility.OnSidekickCreated");
             },
             isSubButton: JackData.HasOtherButton
         ));
@@ -83,18 +71,28 @@ public class JackalAbility : AbilityBase
         Player.AttachAbility(ImpostorVisionAbility, parentAbility);
     }
 
+    [CustomRPC]
+    public void RpcJackalCreatedSidekick()
+    {
+        CreatedSidekick = true;
+    }
+
     private SidekickedPromoteData getPromoteData(RoleId sidekickType)
     {
         switch (sidekickType)
         {
             case RoleId.Sidekick:
-                return new(RoleId.Jackal, RoleTypes.Crewmate);
+                return new(RoleId.Jackal, RoleTypes.Crewmate, JackData.IsInfiniteJackal);
             case RoleId.JackalFriends:
                 return null;
             case RoleId.SidekickWaveCannon:
-                return new(RoleId.WaveCannonJackal, RoleTypes.Crewmate);
+                return new(RoleId.WaveCannonJackal, RoleTypes.Crewmate, JackData.IsInfiniteJackal);
             case RoleId.Bullet:
-                return new(WaveCannonJackal.WaveCannonJackalCreateBulletToJackal ? RoleId.WaveCannonJackal : RoleId.Bullet, RoleTypes.Crewmate);
+                return new(
+                    WaveCannonJackal.WaveCannonJackalCreateBulletToJackal ? RoleId.WaveCannonJackal : RoleId.Bullet,
+                    RoleTypes.Crewmate,
+                    JackData.IsInfiniteJackal
+                );
             default:
                 throw new Exception("Invalid sidekick type in getPromoteData: " + sidekickType);
         }

@@ -39,6 +39,7 @@ public class CustomHatLayer : MonoBehaviour
     {
         set
         {
+            if (!AreRenderersReady()) return;
             FrontLayer.gameObject.SetActive(value);
             BackLayer.gameObject.SetActive(value);
         }
@@ -48,6 +49,7 @@ public class CustomHatLayer : MonoBehaviour
     {
         set
         {
+            if (!AreRenderersReady()) return;
             BackLayer.color = value;
             FrontLayer.color = value;
         }
@@ -57,6 +59,7 @@ public class CustomHatLayer : MonoBehaviour
     {
         set
         {
+            if (!AreRenderersReady()) return;
             BackLayer.flipX = value;
             FrontLayer.flipX = value;
         }
@@ -120,11 +123,13 @@ public class CustomHatLayer : MonoBehaviour
     {
         if (hat == null || hat != Hat)
         {
-            BackLayer.sprite = null;
-            FrontLayer.sprite = null;
+            if (AreRenderersReady())
+            {
+                BackLayer.sprite = null;
+                FrontLayer.sprite = null;
+            }
         }
         Hats[CurrentHatType] = hat;
-        Logger.Info($"SetHat: {hat.ProdId}");
         SetHat(color);
     }
 
@@ -173,6 +178,9 @@ public class CustomHatLayer : MonoBehaviour
 
     public void SetFloorAnim()
     {
+        if (!AreRenderersReady() || Hat == null)
+            return;
+
         BackLayer.enabled = false;
         FrontLayer.enabled = true;
         FrontLayer.flipX = false;
@@ -181,6 +189,9 @@ public class CustomHatLayer : MonoBehaviour
 
     public void SetClimbAnim()
     {
+        if (!AreRenderersReady() || CustomCosmeticHat == null)
+            return;
+
         if (!CustomCosmeticHat.Options.climb.HasFlag(HatOptionType.None))
         {
             base.transform.localPosition = new Vector3(base.transform.localPosition.x, base.transform.localPosition.y, -0.02f);
@@ -192,24 +203,36 @@ public class CustomHatLayer : MonoBehaviour
 
     public void SetLocalPlayer(bool localPlayer)
     {
+        if (matProperties.IsLocalPlayer == localPlayer)
+            return;
+
         matProperties.IsLocalPlayer = localPlayer;
         UpdateMaterial();
     }
 
     public void SetMaterialColor(int color)
     {
+        if (matProperties.ColorId == color)
+            return;
+
         matProperties.ColorId = color;
         UpdateMaterial();
     }
 
     public void SetMaskType(PlayerMaterial.MaskType maskType)
     {
+        if (matProperties.MaskType == maskType)
+            return;
+
         matProperties.MaskType = maskType;
         UpdateMaterial();
     }
 
     public void SetMaskLayer(int layer)
     {
+        if (matProperties.MaskLayer == layer)
+            return;
+
         matProperties.MaskLayer = layer;
         UpdateMaterial();
     }
@@ -225,6 +248,9 @@ public class CustomHatLayer : MonoBehaviour
 
     private void UpdateMaterial()
     {
+        if (!AreRenderersReady() || !DestroyableSingleton<HatManager>.InstanceExists)
+            return;
+
         PlayerMaterial.MaskType maskType = matProperties.MaskType;
         if (Hat != null && Hat.PreviewCrewmateColor)
         {
@@ -280,9 +306,11 @@ public class CustomHatLayer : MonoBehaviour
 
     private void PopulateFromViewData()
     {
+        if (!AreRenderersReady())
+            return;
+
         UpdateMaterial();
         if (Hat == null) return;
-        if (Hat.Asset == null) return;
         if (CustomCosmeticHat == null) return;
 
         SpriteAnimNodeSync spriteAnimNodeSync = spriteSyncNode ?? GetComponent<SpriteAnimNodeSync>();
@@ -336,7 +364,7 @@ public class CustomHatLayer : MonoBehaviour
 
     public void LateUpdate()
     {
-        if (Parent == null || !HasHat() || Hat.Asset == null)
+        if (!AreRenderersReady() || Parent == null || !HasHat() || Hat.Asset == null)
         {
             return;
         }
@@ -399,5 +427,10 @@ public class CustomHatLayer : MonoBehaviour
                 syncNode.NodeId = 0;
             }
         }
+    }
+
+    private bool AreRenderersReady()
+    {
+        return BackLayer != null && FrontLayer != null;
     }
 }

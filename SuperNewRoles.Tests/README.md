@@ -9,6 +9,7 @@
   - ロガーはプラグイン未初期化時に Console にフォールバックします。
   - `CustomOption` は `AmongUsClient` アクセスを try/catch で安全化しており、テスト環境ではローカル扱いで動作します。
   - `BaseDirectory` は BepInEx 未設定時に `AppContext.BaseDirectory` を使用します。
+  - RPC データのユニットテストでは `Hazel.MessageReader/MessageWriter` を直接使わず、test 側の `BinaryReader` / `BinaryWriter` ベースの補助処理で wire format を検証して IL2CPP 初期化を回避します。
 - IL2CPP/Unity に依存する重い経路（Harmony パッチ、ClassInjector、実ゲームオブジェクト操作）にはテストから到達しないようにしています。
 
 ## 実行方法 (ローカル)

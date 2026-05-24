@@ -51,7 +51,7 @@ public abstract class CustomMeetingButtonBase : AbilityBase
         OnMeetingClose();
         DestroyAllButton();
     }
-    private void DestroyAllButton()
+    protected void DestroyAllButton()
     {
         foreach (var button in targetButtons)
         {

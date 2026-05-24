@@ -15,7 +15,7 @@ class HamburgerShop : RoleBase<HamburgerShop>
     public override List<Func<AbilityBase>> Abilities { get; } = [
         () => new CustomTaskTypeAbility(TaskTypes.MakeBurger, HamburgerShopChangeAllTasksToBurger, MapNames.Airship),
         () => new CustomTaskAbility(
-            () => (true, HamburgerShopTaskOptionAvailable, HamburgerShopTaskOptionAvailable ? HamburgerShopTaskOption.Total : null),
+            () => (true, true, HamburgerShopTaskOptionAvailable ? HamburgerShopTaskOption.Total : null),
             HamburgerShopTaskOptionAvailable ? HamburgerShopTaskOption : null
         )
     ];

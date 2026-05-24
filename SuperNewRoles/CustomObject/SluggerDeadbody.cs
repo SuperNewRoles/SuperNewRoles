@@ -44,6 +44,11 @@ public class SluggerDeadbody : MonoBehaviour
         this.sprites = sprites;
         this.frame = 0;
         this.timer = 0f;
+        // 色周りの設定
+        SpriteRenderer.sharedMaterial = FastDestroyableSingleton<HatManager>.Instance.PlayerMaterial;
+        SpriteRenderer.maskInteraction = SpriteMaskInteraction.None;
+        PlayerMaterial.SetMaskLayerBasedOnLocalPlayer(SpriteRenderer, false);
+        PlayerMaterial.SetColors(target.Data.DefaultOutfit.ColorId, SpriteRenderer);
     }
 
     public Sprite[] GetSprites()
@@ -55,7 +60,7 @@ public class SluggerDeadbody : MonoBehaviour
         {
             Sprite[] arr = new Sprite[8];
             for (int i = 1; i <= 8; i++)
-                arr[i - 1] = AssetManager.GetAsset<Sprite>($"deadbody_{type}_{i:000}.png");
+                arr[i - 1] = AssetManager.GetAsset<Sprite>($"deadbody_{type}_{i}.png");
             return arr;
         }
         else

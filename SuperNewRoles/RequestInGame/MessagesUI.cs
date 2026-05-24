@@ -1,6 +1,3 @@
-using System.Linq;
-using System.Text.RegularExpressions;
-using System.Threading;
 using BepInEx.Unity.IL2CPP.Utils.Collections;
 using SuperNewRoles.Modules;
 using TMPro;
@@ -11,6 +8,26 @@ namespace SuperNewRoles.RequestInGame;
 
 public class MessagesUI
 {
+    private const float InitialMessageAnchorY = 5.5f;
+    private const float ThreadHeaderSpacing = 1.5f;
+    private const float VisibleContentHeight = 7f;
+    private const float ScrollBottomPadding = 1.25f;
+
+    private const float InterMessageSpacing = 0.15f;
+    private const float SenderChangeSpacing = 0.2f;
+    private const float ForcedAuthorSpacing = 0.3f;
+    private const float MultiLineTopSpacingPerLine = 0.1f;
+    private const float BaseMessageHeight = 1f;
+    private const float AdditionalLineHeight = 0.6f;
+    private const float MultiLineBottomSpacingPerLine = 0.1f;
+
+    private const float BackgroundHeightPerExtraLine = 0.7f;
+    private const float BackgroundOffsetPerExtraLine = 0.74f;
+    private const float TextOffsetPerExtraLine = 0.33f;
+    private const float AuthorOffsetPerExtraLine = 0.072f;
+    private const float WidthMeasurementPadding = 0.45f;
+    private const float MinimumTextWidthRatio = 0.18f;
+
     public static GameObject ShowMessagesUI(Transform parent, RequestInGameManager.Thread thread)
     {
         GameObject chatUI = AssetManager.Instantiate("ChatUI", parent);
@@ -22,7 +39,7 @@ public class MessagesUI
         PassiveButton sendButton = chatUI.transform.Find("SendButton").gameObject.AddComponent<PassiveButton>();
         sendButton.Colliders = new Collider2D[] { sendButton.GetComponent<Collider2D>() };
         sendButton.OnClick = new();
-        float lastY = 5.5f;
+        float lastY = InitialMessageAnchorY;
         string lastMessageSender = ""; // 最後のメッセージの送信者を追跡
         sendButton.OnClick.AddListener((UnityAction)(() =>
         {
@@ -52,8 +69,8 @@ public class MessagesUI
                             GenerateMessage(textBox.text, scroller, true, "", isContinuity, false, true, ref lastY);
                             lastMessageSender = currentToken; // 送信者を更新
                             textBox.SetText("");
-                            UpdateScrollerMax(scroller);
-                        }).WrapToIl2Cpp());
+                            UpdateScrollerMax(scroller, lastY);
+                        }, createIfMissing: false).WrapToIl2Cpp());
                     }, 0f, "MessagesUI");
                 }
             }).WrapToIl2Cpp());
@@ -91,7 +108,7 @@ public class MessagesUI
                         {
                             string lastSender = "";
                             bool lastTarget = false;
-                            lastY -= 1.5f;
+                            lastY -= ThreadHeaderSpacing;
                             GenerateMessage(thread.first_message, scroller, true, "", false, false, true, ref lastY);
                             lastMessageSender = token; // 最初のメッセージの送信者を設定
                             int index = 1;
@@ -110,7 +127,17 @@ public class MessagesUI
                                         index++;
                                         break;
                                     case RequestInGameManager.StatusUpdate statusUpdate:
-                                        GenerateMessage($"<color={statusUpdate.status.color}> {statusUpdate.status.mark} </color>: " + ModTranslation.GetString("RequestInGame.UpdateStatusTo", $"\"{statusUpdate.status.status}\""), scroller, false, ModTranslation.GetString("RequestInGame.UpdateStatus"), lastSender == RequestInGameManager.StatusUpdater, lastSender != RequestInGameManager.StatusUpdater, false, ref lastY, false);
+                                        GenerateMessage(
+                                            $"<color={statusUpdate.status.color}> {statusUpdate.status.mark} </color>: " + ModTranslation.GetString("RequestInGame.UpdateStatusTo", $"\"{statusUpdate.status.status}\""),
+                                            scroller,
+                                            false,
+                                            ModTranslation.GetString("RequestInGame.UpdateStatus"),
+                                            lastSender == RequestInGameManager.StatusUpdater,
+                                            lastSender != RequestInGameManager.StatusUpdater,
+                                            false,
+                                            ref lastY,
+                                            enableWordWrapping: false,
+                                            renderMarkdown: false);
                                         lastSender = RequestInGameManager.StatusUpdater;
                                         lastMessageSender = RequestInGameManager.StatusUpdater; // 最後のメッセージの送信者を更新
                                         lastTarget = true;
@@ -121,123 +148,142 @@ public class MessagesUI
                                         break;
                                 }
                             }
-                            UpdateScrollerMax(scroller);
+                            UpdateScrollerMax(scroller, lastY);
                         }, 0f, "MessagesUI");
                     }
                 }).WrapToIl2Cpp());
             }
-        }).WrapToIl2Cpp());
+        }, createIfMissing: false).WrapToIl2Cpp());
         return chatUI;
     }
-    private static void UpdateScrollerMax(Scroller scroller)
+    private static void UpdateScrollerMax(Scroller scroller, float lastY)
     {
-        int childCount = scroller.Inner.childCount;
-
-        // 各メッセージの行数を考慮した実質的なメッセージ数を計算
-        float effectiveMessageCount = 0f;
-        float totalHeight = 0f;
-
-        for (int i = 0; i < childCount; i++)
-        {
-            Transform messageTransform = scroller.Inner.GetChild(i);
-            TextMeshPro textComponent = messageTransform.Find("Text")?.GetComponent<TextMeshPro>();
-            if (textComponent != null)
-            {
-                int lineCount = textComponent.text.Split('\n').Length;
-                // 基本の高さ + 追加行による高さ
-                float messageHeight = 1.4f + (lineCount - 1) * 0.8f;
-                totalHeight += messageHeight;
-                // 行数に応じて実質的なメッセージ数を増加
-                effectiveMessageCount += 1f + (lineCount - 1) * 0.57f; // 0.8f / 1.4f ≈ 0.57f
-            }
-            else
-            {
-                // テキストコンポーネントが見つからない場合はデフォルト値を使用
-                totalHeight += 1.4f;
-                effectiveMessageCount += 1f;
-            }
-        }
-
-        if (effectiveMessageCount <= 5f)
-        {
-            scroller.ContentYBounds.max = 0;
-        }
-        else
-        {
-            // 表示可能な範囲を超えた分を可動域として設定
-            float visibleHeight = 5 * 1.4f; // 5メッセージ分の高さ
-            scroller.ContentYBounds.max = totalHeight > visibleHeight ? totalHeight - visibleHeight + 1.25f : 0;
-        }
+        float totalContentHeight = Mathf.Max(0f, InitialMessageAnchorY - lastY);
+        scroller.ContentYBounds.max = Mathf.Max(0f, totalContentHeight - VisibleContentHeight + ScrollBottomPadding);
         scroller.Inner.transform.localPosition = new(0, scroller.ContentYBounds.max, 0);
     }
-    private static void GenerateMessage(string message, Scroller scroller, bool isMe, string author, bool isContinuity, bool showAuthorForce, bool showChatTail, ref float lastY, bool wrapping = true)
+    private static void GenerateMessage(string message, Scroller scroller, bool isMe, string author, bool isContinuity, bool showAuthorForce, bool showChatTail, ref float lastY, bool enableWordWrapping = true, bool renderMarkdown = true)
     {
-        // 20文字で強制改行する
-        if (wrapping)
-        {
-            message = ModHelpers.WrapText(message, 20);
-        }
         GameObject messageObject = AssetManager.Instantiate("ChatMessage", scroller.Inner);
+        Transform textTransform = messageObject.transform.Find("Text");
+        Transform authorTransform = messageObject.transform.Find("Author");
+        Transform textBG = messageObject.transform.Find("ChatWindow/chatTextBG");
+        Transform chatTail = messageObject.transform.Find("ChatWindow/chatTail");
 
-        int lineCount = message.Split('\n').Length;
+        TextMeshPro textMeshPro = textTransform.GetComponent<TextMeshPro>();
+        TextMeshPro authorText = authorTransform.GetComponent<TextMeshPro>();
+        RectTransform textRect = textTransform.GetComponent<RectTransform>();
+        RectTransform authorRect = authorTransform.GetComponent<RectTransform>();
+        SpriteRenderer textBackgroundRenderer = textBG.GetComponent<SpriteRenderer>();
+        string renderedMessage = renderMarkdown ? ModHelpers.ConvertSimpleMarkdownToRichText(message) : message;
+
+        Vector3 baseTextLocalPosition = textTransform.localPosition;
+        Vector3 baseAuthorLocalPosition = authorTransform.localPosition;
+        Vector3 baseTextBGLocalPosition = textBG.localPosition;
+        Vector3 baseTailLocalPosition = chatTail.localPosition;
+        Vector2 baseTextSize = textRect.sizeDelta;
+        Vector2 baseAuthorSize = authorRect.sizeDelta;
+        Vector2 baseBackgroundSize = textBackgroundRenderer.size;
+
+        float baseBubbleRight = baseTextBGLocalPosition.x + baseBackgroundSize.x * 0.5f;
+        float baseBubbleLeft = baseTextBGLocalPosition.x - baseBackgroundSize.x * 0.5f;
+        float baseTextRight = baseTextLocalPosition.x + baseTextSize.x * 0.5f;
+        float baseTextLeft = baseTextLocalPosition.x - baseTextSize.x * 0.5f;
+        float leftPadding = baseTextLeft - baseBubbleLeft;
+        float rightPadding = baseBubbleRight - baseTextRight;
+        float minimumTextWidth = baseTextSize.x * MinimumTextWidthRatio;
+
+        textMeshPro.richText = true;
+        textMeshPro.enableWordWrapping = enableWordWrapping;
+        textMeshPro.overflowMode = TextOverflowModes.Overflow;
+        textRect.sizeDelta = baseTextSize;
+        textMeshPro.text = renderedMessage;
+        textMeshPro.ForceMeshUpdate();
+
+        float targetTextWidth = Mathf.Clamp(
+            (textMeshPro.textBounds.size.x > 0f ? textMeshPro.textBounds.size.x : textMeshPro.preferredWidth) + WidthMeasurementPadding,
+            minimumTextWidth,
+            baseTextSize.x);
+        textRect.sizeDelta = new Vector2(targetTextWidth, baseTextSize.y);
+        textMeshPro.ForceMeshUpdate();
+
+        int lineCount = Mathf.Max(1, textMeshPro.textInfo.lineCount);
+        int extraLineCount = lineCount - 1;
 
         // メッセージ間のスペース（調整）
-        lastY -= 0.15f; // 0.3f から 0.15f に縮小
+        lastY -= InterMessageSpacing;
 
         // 送信者が変わる場合の追加マージン（継続性がない場合）
         if (!isContinuity)
         {
-            lastY -= 0.2f; // 送信者変更時の追加スペース
+            lastY -= SenderChangeSpacing;
         }
 
         // 作者表示の強制がある場合の追加スペース
         if (showAuthorForce)
         {
-            lastY -= 0.3f; // 0.5f から 0.3f に縮小
+            lastY -= ForcedAuthorSpacing;
         }
 
         // 複数行メッセージの場合、上部に少し余裕を持たせる
-        if (lineCount > 1)
+        if (extraLineCount > 0)
         {
-            lastY -= 0.1f * (lineCount - 1); // 複数行の場合の上部マージン
+            lastY -= MultiLineTopSpacingPerLine * extraLineCount;
         }
 
         // メッセージオブジェクトの位置設定
         messageObject.transform.localPosition = new Vector3(isMe ? 2.8f : -2f, lastY, -2f);
-        messageObject.transform.localScale = Vector3.one * 0.9f;
+        messageObject.transform.localScale = isMe ? Vector3.one * 0.9f : Vector3.one;
 
         if (!isMe)
         {
             messageObject.transform.localScale = new(-1, 1, 1);
-            messageObject.transform.Find("Text").transform.localScale = new(-1, 1, 1);
-            messageObject.transform.Find("Author").transform.localScale = new(-1, 1, 1);
-            messageObject.transform.Find("Author").transform.localPosition = new(-0.06f, 1.5f + 0.072f * (lineCount - 1), 0);
+            textTransform.localScale = new(-1, 1, 1);
+            authorTransform.localScale = new(-1, 1, 1);
         }
-
-        var textBG = messageObject.transform.Find("ChatWindow/chatTextBG");
-        textBG.localScale = new Vector3(1, 1 + 0.7f * (lineCount - 1), 1);
-        textBG.localPosition = new Vector3(0, -0.74f * (lineCount - 1), 0);
 
         if (!showChatTail)
         {
-            messageObject.transform.Find("ChatWindow/chatTail").gameObject.SetActive(false);
+            chatTail.gameObject.SetActive(false);
         }
 
-        TextMeshPro textMeshPro = messageObject.transform.Find("Text").GetComponent<TextMeshPro>();
-        TextMeshPro authorText = messageObject.transform.Find("Author").GetComponent<TextMeshPro>();
-        textMeshPro.text = message;
         authorText.text = isMe || (isContinuity && !showAuthorForce) ? "" : author;
-        textMeshPro.transform.localPosition -= new Vector3(0, 0.33f * (lineCount - 1), 0);
+        authorRect.sizeDelta = baseAuthorSize;
+        authorText.ForceMeshUpdate();
+        bool hasVisibleAuthor = !string.IsNullOrEmpty(authorText.text);
+
+        float targetAuthorWidth = !hasVisibleAuthor
+            ? baseAuthorSize.x
+            : Mathf.Clamp(
+                Mathf.Max(targetTextWidth, authorText.preferredWidth + WidthMeasurementPadding),
+                minimumTextWidth,
+                baseAuthorSize.x);
+
+        float textAreaWidth = hasVisibleAuthor ? Mathf.Max(targetTextWidth, targetAuthorWidth) : targetTextWidth;
+
+        textRect.sizeDelta = new Vector2(textAreaWidth, baseTextSize.y);
+
+        float bubbleWidth = textAreaWidth + leftPadding + rightPadding;
+        float bubbleCenterX = baseBubbleRight - bubbleWidth * 0.5f;
+        float textCenterX = baseBubbleRight - rightPadding - textAreaWidth * 0.5f;
+        float authorCenterX = baseBubbleRight - rightPadding - targetAuthorWidth * 0.5f;
+
+        textBackgroundRenderer.size = new Vector2(bubbleWidth, baseBackgroundSize.y + BackgroundHeightPerExtraLine * extraLineCount);
+        textBG.localPosition = new Vector3(bubbleCenterX, baseTextBGLocalPosition.y - BackgroundOffsetPerExtraLine * extraLineCount, baseTextBGLocalPosition.z);
+        chatTail.localPosition = baseTailLocalPosition;
+        textTransform.localPosition = new Vector3(textCenterX, baseTextLocalPosition.y - TextOffsetPerExtraLine * extraLineCount, baseTextLocalPosition.z);
+        authorRect.sizeDelta = new Vector2(targetAuthorWidth, baseAuthorSize.y);
+        authorTransform.localPosition = new Vector3(authorCenterX, baseAuthorLocalPosition.y + AuthorOffsetPerExtraLine * extraLineCount, baseAuthorLocalPosition.z);
 
         // 次のメッセージのためにlastYを更新
         // 基本の高さ + 複数行による追加高さ + 下部マージン
-        float messageHeight = 1.0f + (lineCount - 1) * 0.6f; // 基本高さと追加行高さを調整
+        float messageHeight = BaseMessageHeight + extraLineCount * AdditionalLineHeight;
         lastY -= messageHeight;
 
         // 複数行メッセージの場合、下部に追加マージン
-        if (lineCount > 1)
+        if (extraLineCount > 0)
         {
-            lastY -= 0.1f * (lineCount - 1);
+            lastY -= MultiLineBottomSpacingPerLine * extraLineCount;
         }
     }
 }

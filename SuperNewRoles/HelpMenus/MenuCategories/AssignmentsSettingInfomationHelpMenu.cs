@@ -138,6 +138,8 @@ public class AssignmentsSettingInfomationHelpMenu : HelpMenuCategoryBase
         {
             if (role.AssignTeam != assignedTeam || role.Percentage == 0 || role.NumberOfCrews == 0)
                 continue;
+            if (!CustomRoleManager.TryGetRoleById(role.RoleId, out var roleBase) || roleBase.HiddenOption)
+                continue;
 
             // テンプレートからロール情報オブジェクトを複製
             var newRole = GameObject.Instantiate(rolesTemplate, info);
@@ -245,6 +247,8 @@ public class AssignmentsSettingInfomationHelpMenu : HelpMenuCategoryBase
         StringBuilder sb = new();
         foreach (var role in RoleOptionManager.RoleOptions)
         {
+            if (!CustomRoleManager.TryGetRoleById(role.RoleId, out var roleBase) || roleBase.HiddenOption)
+                continue;
             sb.Append($"{role.RoleId} x{role.NumberOfCrews} ({role.Percentage}%)\n");
         }
         string hash = sb.ToString();

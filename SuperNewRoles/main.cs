@@ -35,6 +35,8 @@ using System.Diagnostics;
 using UnityEngine.SceneManagement;
 using AmongUs.GameOptions;
 using Il2CppInterop.Runtime;
+using SuperNewRoles.WaveCannonObj;
+using static SuperNewRoles.Patches.CursedTasks.CursedBuildSandcastleTask;
 
 namespace SuperNewRoles;
 
@@ -49,6 +51,7 @@ public partial class SuperNewRolesPlugin : BasePlugin
     public Harmony Harmony { get; } = new Harmony(PluginConfig.Id);
     public static SuperNewRolesPlugin Instance;
     public static ManualLogSource Logger { get; private set; }
+    public static bool IsAnnouncementImageSupported { get; private set; } = true;
 
     public static int MainThreadId { get; private set; }
     private readonly List<Action> _mainThreadActions = new();
@@ -92,10 +95,16 @@ public partial class SuperNewRolesPlugin : BasePlugin
         MainThreadId = Thread.CurrentThread.ManagedThreadId;
         Logger = Log;
 
-        SuperNewRolesPlugin.Logger.LogInfo($"BaseDirectory: {BaseDirectory}");
-        SuperNewRolesPlugin.Logger.LogInfo($"SecretDirectory: {SecretDirectory}");
-
         Instance = this;
+
+        Encryption.SetEncryptKey();
+
+        SuperNewRoles.Logger.Info($"BaseDirectory: {BaseDirectory}");
+        SuperNewRoles.Logger.Info($"SecretDirectory: {SecretDirectory}");
+
+        SuperNewRoles.Logger.Info($"Current version: {Constants.GetBroadcastVersion()}");
+
+        SuperNewRoles.Patches.CursedTasks.Main.ClearAndReload();
 
         RegisterCustomObjects();
         CustomLoadingScreen.Patch(Harmony);
@@ -121,6 +130,7 @@ public partial class SuperNewRolesPlugin : BasePlugin
         ApiServerManager.Initialize();
         RequestInGameManager.Load();
         FixOver15();
+        StartGameHandlerManager.Load();
 
         CustomServer.UpdateRegions();
 
@@ -258,6 +268,18 @@ public partial class SuperNewRolesPlugin : BasePlugin
     }
     private static void RegisterCustomObjects()
     {
+        bool isAndroid = ModHelpers.IsAndroid();
+        if (!isAndroid)
+        {
+            Type videoPlayerType = Type.GetType("UnityEngine.Video.VideoPlayer, UnityEngine.VideoModule")
+                ?? Type.GetType("UnityEngine.Video.VideoPlayer, UnityEngine.CoreModule");
+
+            if (videoPlayerType == null)
+            {
+                DisableAnnouncementImageSupport("VideoPlayer type is not available in this build.");
+            }
+        }
+
         ClassInjector.RegisterTypeInIl2Cpp<RightClickDetector>();
         ClassInjector.RegisterTypeInIl2Cpp<FadeCoroutine>();
         ClassInjector.RegisterTypeInIl2Cpp<HelpMenuObjectComponent>();
@@ -273,15 +295,59 @@ public partial class SuperNewRolesPlugin : BasePlugin
         ClassInjector.RegisterTypeInIl2Cpp<SelectButtonsMenuOpenAnimation>();
         ClassInjector.RegisterTypeInIl2Cpp<LoadingUIComponent>();
         ClassInjector.RegisterTypeInIl2Cpp<ActionOnEsc>();
+        ClassInjector.RegisterTypeInIl2Cpp<RequestInGameDraftAutoSaver>();
         ClassInjector.RegisterTypeInIl2Cpp<RocketDeadbody>();
         ClassInjector.RegisterTypeInIl2Cpp<VersionUpdatesComponent>();
         ClassInjector.RegisterTypeInIl2Cpp<ReleaseNoteComponent>();
         ClassInjector.RegisterTypeInIl2Cpp<PatcherUpdaterComponent>();
+        ClassInjector.RegisterTypeInIl2Cpp<PresetFilePickerAndroidCallbackReceiver>();
         ClassInjector.RegisterTypeInIl2Cpp<Lantern>();
         ClassInjector.RegisterTypeInIl2Cpp<Drone>();
         ClassInjector.RegisterTypeInIl2Cpp<WormHole>();
         ClassInjector.RegisterTypeInIl2Cpp<SluggerDeadbody>();
+        ClassInjector.RegisterTypeInIl2Cpp<TriggerHappyGatlingGun>();
+        ClassInjector.RegisterTypeInIl2Cpp<TriggerHappyBullet>();
+        ClassInjector.RegisterTypeInIl2Cpp<AttenuatedAudioSource>();
+        ClassInjector.RegisterTypeInIl2Cpp<BuildSandcastleMinigamePatch.CursedSandcastleBucketRootMarker>();
+        ClassInjector.RegisterTypeInIl2Cpp<BuildSandcastleMinigamePatch.CursedSandcastleBucketCloneMarker>();
+        ClassInjector.RegisterTypeInIl2Cpp<WCSantaHandler>();
+        ClassInjector.RegisterTypeInIl2Cpp<AnnouncementSelectMenuMarker>();
+
+        try
+        {
+            if (IsAnnouncementImageSupported)
+            {
+                if (isAndroid)
+                {
+                    ClassInjector.RegisterTypeInIl2Cpp<AnnouncementImageRendererAndroid>();
+                }
+                else
+                {
+                    ClassInjector.RegisterTypeInIl2Cpp<AnnouncementImageRenderer>();
+                    ClassInjector.RegisterTypeInIl2Cpp<AnnouncementImageSpinner>();
+                }
+            }
+        }
+        catch (Exception ex)
+        {
+            DisableAnnouncementImageSupport($"failed to register announcement image renderer types: {ex}");
+        }
         // lassInjector.RegisterTypeInIl2Cpp<AddressableReleaseOnDestroy>();
+    }
+
+    public static void DisableAnnouncementImageSupport(string reason = null)
+    {
+        if (!IsAnnouncementImageSupported)
+            return;
+
+        IsAnnouncementImageSupported = false;
+        if (Logger != null)
+        {
+            if (string.IsNullOrWhiteSpace(reason))
+                Logger.LogWarning("Announcement image support disabled.");
+            else
+                Logger.LogWarning($"Announcement image support disabled: {reason}");
+        }
     }
 
     public void ExecuteInMainThread(Action action)

@@ -182,6 +182,8 @@ public class CustomColors
         List<StringNames> longList = Enumerable.ToList(Palette.ColorNames);
         List<Color32> colorList = Enumerable.ToList(Palette.PlayerColors);
         List<Color32> shadowList = Enumerable.ToList(Palette.ShadowColors);
+        List<Color32> textColorList = Enumerable.ToList(Palette.TextColors);
+        List<Color32> textOutlineList = Enumerable.ToList(Palette.TextOutlineColors);
         List<CustomColor> colors = new();
         var noLighterColorTemp = new List<KeyValuePair<ColorType, (Color32, Color32, bool)>>();
         CustomColorData = new();
@@ -259,12 +261,16 @@ public class CustomColors
             ColorStrings[id++] = cc.longName;
             colorList.Add(cc.color);
             shadowList.Add(cc.shadow);
+            textColorList.Add(cc.color);
+            textOutlineList.Add(cc.isLighterColor ? new Color32(0, 0, 0, bmv) : new Color32(bmv, bmv, bmv, bmv));
             if (cc.isLighterColor)
                 LighterColors.Add(colorList.Count - 1);
         }
         Palette.ColorNames = longList.ToArray();
         Palette.PlayerColors = colorList.ToArray();
         Palette.ShadowColors = shadowList.ToArray();
+        Palette.TextColors = textColorList.ToArray();
+        Palette.TextOutlineColors = textOutlineList.ToArray();
 
     }
 

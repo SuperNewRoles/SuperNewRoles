@@ -13,11 +13,8 @@ class HomeSecurityGuard : RoleBase<HomeSecurityGuard>
     public override RoleId Role { get; } = RoleId.HomeSecurityGuard;
     public override Color32 RoleColor { get; } = new(0, 255, 0, byte.MaxValue);
     public override List<Func<AbilityBase>> Abilities { get; } = [() => new CustomTaskAbility(
-        () => {
-            var exPlayer = ExPlayerControl.LocalPlayer;
-            return (false, null, 0);
-        },
-        new TaskOptionData(1, 0, 0)
+        () => (false, false, 0),
+        new TaskOptionData(0, 0, 0)
     )];
 
     public override QuoteMod QuoteMod { get; } = QuoteMod.SuperNewRoles;

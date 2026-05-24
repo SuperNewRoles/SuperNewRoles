@@ -1,9 +1,11 @@
 using System;
 using System.Linq;
 using SuperNewRoles.Modules;
+using SuperNewRoles.Roles;
 using TMPro;
 using UnityEngine;
 using UnityEngine.Events;
+using static SuperNewRoles.Roles.CustomRoleManager;
 
 namespace SuperNewRoles.CustomOptions;
 public class RoleOptionSettings
@@ -154,6 +156,7 @@ public class RoleOptionSettings
 
             // 表示状態を更新
             UpdateDisplayAfterOptionChange(passiveButton.transform.parent, option);
+            SnrSettingChangeNotifier.NotifyOptionChanged(option);
 
             // ホストの場合、他のプレイヤーに同期
             if (AmongUsClient.Instance.AmHost)
@@ -200,6 +203,7 @@ public class RoleOptionSettings
             selectedText.text = ModTranslation.GetString("NumberOfCrewsSelected", roleOption.NumberOfCrews);
             if (isExist)
                 RoleOptionMenu.UpdateRoleDetailButtonColor(roleDetailButton.GetComponent<SpriteRenderer>(), roleOption);
+            SnrSettingChangeNotifier.NotifyRoleOptionChanged(roleOption);
             RoleOptionManager.RpcSyncRoleOptionDelay(roleOption.RoleId, roleOption.NumberOfCrews, roleOption.Percentage);
         }, minusSpriteRenderer);
 
@@ -228,6 +232,7 @@ public class RoleOptionSettings
             }
             if (isExist)
                 RoleOptionMenu.UpdateRoleDetailButtonColor(roleDetailButton.GetComponent<SpriteRenderer>(), roleOption);
+            SnrSettingChangeNotifier.NotifyRoleOptionChanged(roleOption);
             RoleOptionManager.RpcSyncRoleOptionDelay(roleOption.RoleId, roleOption.NumberOfCrews, roleOption.Percentage);
         }, plusSpriteRenderer);
 
@@ -258,6 +263,7 @@ public class RoleOptionSettings
             selectedText.text = roleOption.Percentage + "%";
             if (isExist)
                 RoleOptionMenu.UpdateRoleDetailButtonColor(roleDetailButton.GetComponent<SpriteRenderer>(), roleOption);
+            SnrSettingChangeNotifier.NotifyRoleOptionChanged(roleOption);
             RoleOptionManager.RpcSyncRoleOptionDelay(roleOption.RoleId, roleOption.NumberOfCrews, roleOption.Percentage);
         }, minusSpriteRenderer);
 
@@ -273,6 +279,7 @@ public class RoleOptionSettings
             selectedText.text = roleOption.Percentage + "%";
             if (isExist)
                 RoleOptionMenu.UpdateRoleDetailButtonColor(roleDetailButton.GetComponent<SpriteRenderer>(), roleOption);
+            SnrSettingChangeNotifier.NotifyRoleOptionChanged(roleOption);
             RoleOptionManager.RpcSyncRoleOptionDelay(roleOption.RoleId, roleOption.NumberOfCrews, roleOption.Percentage);
         }, plusSpriteRenderer);
         return optionInstance;
@@ -333,6 +340,7 @@ public class RoleOptionSettings
 
         // 表示状態を更新
         UpdateDisplayAfterOptionChange(selectedText.transform.parent.parent, option);
+        SnrSettingChangeNotifier.NotifyOptionChanged(option);
 
         // ホストの場合、他のプレイヤーに同期
         if (AmongUsClient.Instance.AmHost)
@@ -452,6 +460,13 @@ public class RoleOptionSettings
 
     private static int CreateRoleOptions(RoleOptionManager.RoleOption roleOption, ref float lastY)
     {
+        // SettingsScroller/RoleIconに役職アイコンを設定
+        var roleIcon = RoleOptionMenu.RoleOptionMenuObjectData.SettingsScroller?.transform.Find("RoleIcon")?.GetComponent<SpriteRenderer>();
+        if (roleIcon != null && CustomRoleManager.TryGetRoleById(roleOption.RoleId, out var role))
+        {
+            roleIcon.sprite = role.RoleIcon;
+        }
+
         var parent = new GameObject("Parent");
         parent.transform.SetParent(RoleOptionMenu.RoleOptionMenuObjectData.SettingsInner);
         parent.transform.localScale = Vector3.one;
@@ -548,5 +563,12 @@ public class RoleOptionSettings
         // 表示リストをクリア
         if (RoleOptionMenu.RoleOptionMenuObjectData?.CurrentOptionDisplays != null)
             RoleOptionMenu.RoleOptionMenuObjectData.CurrentOptionDisplays.Clear();
+
+        // RoleIconをクリア
+        var roleIcon = RoleOptionMenu.RoleOptionMenuObjectData?.SettingsScroller?.transform.Find("RoleIcon")?.GetComponent<SpriteRenderer>();
+        if (roleIcon != null)
+        {
+            roleIcon.sprite = null;
+        }
     }
 }

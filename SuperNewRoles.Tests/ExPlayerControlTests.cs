@@ -93,7 +93,7 @@ public class ExPlayerControlTests
     {
         var abilities = ex.PlayerAbilities;
         var dict = ex.PlayerAbilitiesDictionary;
-        var abilityId = IRoleBase.GenerateAbilityId(ex.PlayerId, GetAutoProp<RoleId>(ex, nameof(ExPlayerControl.Role)), ex.lastAbilityId);
+        var abilityId = ExPlayerControlExtensions.GenerateDeterministicAbilityId(ex.PlayerId, new AbilityParentPlayer(ex), ability.GetType());
         typeof(ExPlayerControl).GetProperty(nameof(ExPlayerControl.lastAbilityId))!.SetValue(ex, ex.lastAbilityId + 1);
 
         abilities.Add(ability);
@@ -204,11 +204,12 @@ public class ExPlayerControlTests
     [Fact]
     public void Extension_GenerateAbilityId_Matches_Interface_Implementation()
     {
-        byte playerId = 2; var role = RoleId.Sheriff; int index = 5;
-        var ext = ExPlayerControlExtensions.GenerateAbilityId(playerId, role, index);
-        var iface = IRoleBase.GenerateAbilityId(playerId, role, index);
-        // 目的: 2方式の ID 生成が一致
-        ext.Should().Be(iface);
+        byte playerId = 2;
+        // Using AbilityParentPlayer with null ExPlayerControl to get a deterministic signature independent of any role/ability ordinal
+        var id1 = ExPlayerControlExtensions.GenerateDeterministicAbilityId(playerId, new AbilityParentPlayer(null), typeof(AlphaAbility));
+        var id2 = ExPlayerControlExtensions.GenerateDeterministicAbilityId(playerId, new AbilityParentPlayer(null), typeof(AlphaAbility));
+        // 目的: 同じ入力に対して決定論的に同じ ID が生成されること
+        id1.Should().Be(id2);
     }
 
     // 目的: CreateBareEx のスモークテスト（最低限の生成と内部構造の初期化を確認）

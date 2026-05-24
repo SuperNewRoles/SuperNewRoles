@@ -18,13 +18,14 @@ class BattleRoyalWaveCannon : RoleBase<BattleRoyalWaveCannon>, IRoleBase
         () => new WaveCannonAbility(
             WCBattleRoyalMode.WaveCannonBattleRoyalCooldown,
             WCBattleRoyalMode.WaveCannonBattleRoyalChargeTime,
-            WaveCannonType.Tank,
+            (WaveCannonType)WCBattleRoyalMode.WaveCannonBattleRoyalWaveCannonType,
             false,
             friendlyFire: WCBattleRoyalMode.WaveCannonBattleRoyalFriendlyFire,
             KillSound: WCBattleRoyalMode.WaveCannonBattleRoyalKillSound,
             distributedKillSound: WCBattleRoyalMode.WaveCannonBattleRoyalKillSoundDistributed
         ),
-        () => new CustomVentAbility(() => WCBattleRoyalMode.WaveCannonBattleRoyalCanUseVent)
+        () => new CustomVentAbility(() => WCBattleRoyalMode.WaveCannonBattleRoyalCanUseVent),
+        () => new CanUseReportButtonAbility(() => false)
     ];
     public override QuoteMod QuoteMod => QuoteMod.SuperNewRoles;
     public override AssignedTeamType AssignedTeam => AssignedTeamType.Neutral;
@@ -33,4 +34,5 @@ class BattleRoyalWaveCannon : RoleBase<BattleRoyalWaveCannon>, IRoleBase
     public override RoleTag[] RoleTags => [RoleTag.Information, RoleTag.SpecialWinner];
     public override short IntroNum => 1;
     public override RoleOptionMenuType OptionTeam => RoleOptionMenuType.Hidden; // バトルロワイヤルモードでのみ使用
+    public override bool HideInRoleDictionary => true;
 }

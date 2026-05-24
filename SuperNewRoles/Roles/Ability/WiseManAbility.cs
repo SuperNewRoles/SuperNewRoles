@@ -106,9 +106,13 @@ public class WiseManAbility : CustomButtonBase, IButtonEffect
         data.RefSuccess = false;
         
         // 波動砲による攻撃の場合、攻撃者をカウンターキルしない
-        if (!data.Killer.TryGetAbility<WaveCannonAbility>(out var waveCannonAbility))
+        if (!data.Killer.TryGetAbility<WaveCannonAbility>(out _))
         {
-            data.Killer.CustomDeath(CustomDeathType.Suicide);
+            // 反撃キルはホストのみがRPC送信し、クライアント間の死亡表示ズレを防ぐ
+            if (AmongUsClient.Instance.AmHost && data.Killer != null && data.Killer.IsAlive())
+            {
+                data.Killer.RpcCustomDeath(CustomDeathType.Suicide);
+            }
         }
         
         Guarded = true;
@@ -140,7 +144,10 @@ public class WiseManAbility : CustomButtonBase, IButtonEffect
         }
         // 自視点のみじゃないと有効にしたタイミングでむっちゃ不自然になる
         else if (Player.AmOwner)
+        {
             Player.MyPhysics.body.velocity = Vector2.zero;
+            Player.transform.position = position;
+        }
     }
 
     private void OnMeetingStart()

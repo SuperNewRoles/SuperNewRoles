@@ -438,7 +438,7 @@ public static class DevicesPatch
                 }
             }
 
-            if (!(MapSettingOptions.DeviceOptions && MapSettingOptions.RestrictionMode == DeviceRestrictionModeType.TimeLimit && IsVitalRestrict)) return;
+            if (!(MapSettingOptions.DeviceOptions && MapSettingOptions.RestrictionMode == DeviceRestrictionModeType.TimeLimit && IsVitalRestrict && !DontCountBecausePortableVitals)) return;
             if (PlayerControl.LocalPlayer.Data.IsDead)
             {
                 if (TimeRemaining != null) GameObject.Destroy(TimeRemaining.gameObject);

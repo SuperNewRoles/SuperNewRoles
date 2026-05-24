@@ -66,6 +66,7 @@ public class DeadBodyArrowsAbility : AbilityBase
         Dictionary<int, DeadBody> deadBodiesByParentId = new();
         foreach (DeadBody dead in allDeadBodies)
         {
+            if (!IsTrackableDeadBody(dead)) continue;
             if (!deadBodiesByParentId.ContainsKey(dead.ParentId))
                 deadBodiesByParentId.Add(dead.ParentId, dead);
         }
@@ -113,6 +114,22 @@ public class DeadBodyArrowsAbility : AbilityBase
             _deadBodyArrows[kv.Value].arrow.arrow.SetActive(true);
         }
     }
+
+    private static bool IsTrackableDeadBody(DeadBody dead)
+    {
+        return dead != null && IsTrackableDeadBodyPosition(dead.transform.position);
+    }
+
+    internal static bool IsTrackableDeadBodyPosition(Vector3 position)
+    {
+        return IsTrackableDeadBodyPosition(position.x, position.y);
+    }
+
+    internal static bool IsTrackableDeadBodyPosition(float x, float y)
+    {
+        return !DeadBodyVisibility.IsHiddenPosition(x, y);
+    }
+
     public override void DetachToLocalPlayer()
     {
         base.DetachToLocalPlayer();
@@ -138,7 +155,7 @@ public class DeadBodyArrowsAbility : AbilityBase
         var exp = ExPlayerControl.ById(db.ParentId);
         int deadBodyColorId;
 
-        if (exp == null) return _defaultArrowColor;
+        if (exp == null || exp.Data == null) return _defaultArrowColor;
 
         // 明暗表示関連
         const int lightColorId = (int)SuperNewRoles.CustomCosmetics.CustomColors.ColorType.Pitchwhite;

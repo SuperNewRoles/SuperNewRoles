@@ -15,10 +15,10 @@ class BodyBuilder : RoleBase<BodyBuilder>
     public override List<Func<AbilityBase>> Abilities { get; } = [
         () => new BodyBuilderAbility(),
         () => new LiftWeightsMinigameAbility(),
-        () => new CustomTaskTypeAbility(TaskTypes.LiftWeights, ChangeAllTaskLiftWeights, MapNames.Fungle),
+        () => new CustomTaskTypeAbility(TaskTypes.LiftWeights, BodyBuilderChangeAllTaskLiftWeights, MapNames.Fungle),
         () => new CustomTaskAbility(
-            () => (true, TaskOptionAvailable, TaskOptionAvailable ? TaskOption.Total : null),
-            TaskOptionAvailable ? TaskOption : null
+            () => (true, BodyBuilderTaskOptionAvailable, BodyBuilderTaskOptionAvailable ? BodyBuilderTaskOption.Total : null),
+            BodyBuilderTaskOptionAvailable ? BodyBuilderTaskOption : null
         )
     ];
 
@@ -33,11 +33,11 @@ class BodyBuilder : RoleBase<BodyBuilder>
     public override RoleOptionMenuType OptionTeam { get; } = RoleOptionMenuType.Crewmate;
 
     [CustomOptionBool("BodyBuilderChangeAllTaskLiftWeights", false)]
-    public static bool ChangeAllTaskLiftWeights;
+    public static bool BodyBuilderChangeAllTaskLiftWeights;
 
     [CustomOptionBool("BodyBuilderTaskOptionAvailable", false)]
-    public static bool TaskOptionAvailable;
+    public static bool BodyBuilderTaskOptionAvailable;
 
-    [CustomOptionTask("BodyBuilderTaskOption", 2, 3, 1, parentFieldName: nameof(TaskOptionAvailable), parentActiveValue: true)]
-    public static TaskOptionData TaskOption;
+    [CustomOptionTask("BodyBuilderTaskOption", 2, 3, 1, parentFieldName: nameof(BodyBuilderTaskOptionAvailable), parentActiveValue: true)]
+    public static TaskOptionData BodyBuilderTaskOption;
 }

@@ -50,6 +50,7 @@ public class CustomVisorLayer : MonoBehaviour
     {
         set
         {
+            if (!IsRendererReady()) return;
             Image.enabled = value;
         }
     }
@@ -58,6 +59,7 @@ public class CustomVisorLayer : MonoBehaviour
     {
         set
         {
+            if (!IsRendererReady()) return;
             Image.color = Image.color.SetAlpha(value);
         }
     }
@@ -131,15 +133,15 @@ public class CustomVisorLayer : MonoBehaviour
 
     public void SetVisor(ICosmeticData data, int color)
     {
-        Logger.Info($"SetVisor: {data.ProdId}");
         if (data == null || data != Visor)
         {
-            Image.sprite = null;
+            if (IsRendererReady())
+                Image.sprite = null;
         }
         Visors[CurrentVisorType] = data;
         SetMaterialColor(color);
         // UnloadAsset();
-        Visor.LoadAsync(() =>
+        Visor?.LoadAsync(() =>
         {
             PopulateFromViewData();
         });
@@ -147,6 +149,9 @@ public class CustomVisorLayer : MonoBehaviour
 
     private void PopulateFromViewData()
     {
+        if (!IsRendererReady())
+            return;
+
         UpdateMaterial();
         if (Visor != null && (bool)Visor.Asset && !this.IsDestroyedOrNull() && !base.gameObject.IsDestroyedOrNull())
         {
@@ -156,6 +161,7 @@ public class CustomVisorLayer : MonoBehaviour
 
     public void SetFlipX(bool flipX)
     {
+        if (!IsRendererReady()) return;
         Image.flipX = flipX;
         if (Visor != null)
         {
@@ -191,7 +197,7 @@ public class CustomVisorLayer : MonoBehaviour
             base.transform.localPosition = new Vector3(base.transform.localPosition.x, base.transform.localPosition.y, -0.01f);
             Image.sprite = CustomCosmeticVisor.Climb;
         }*/
-        if (CustomCosmeticVisor != null)
+        if (IsRendererReady() && CustomCosmeticVisor != null)
         {
             Image.sprite = CustomCosmeticVisor.Climb;
         }
@@ -199,24 +205,36 @@ public class CustomVisorLayer : MonoBehaviour
 
     public void SetMaskType(PlayerMaterial.MaskType maskType)
     {
+        if (matProperties.MaskType == maskType)
+            return;
+
         matProperties.MaskType = maskType;
         UpdateMaterial();
     }
 
     public void SetMaterialColor(int color)
     {
+        if (matProperties.ColorId == color)
+            return;
+
         matProperties.ColorId = color;
         UpdateMaterial();
     }
 
     public void SetMaskLayer(int layer)
     {
+        if (matProperties.MaskLayer == layer)
+            return;
+
         matProperties.MaskLayer = layer;
         UpdateMaterial();
     }
 
     private void UpdateMaterial()
     {
+        if (!IsRendererReady() || !DestroyableSingleton<HatManager>.InstanceExists)
+            return;
+
         PlayerMaterial.MaskType maskType = matProperties.MaskType;
         if (Visor != null && Visor.PreviewCrewmateColor)
         {
@@ -258,6 +276,11 @@ public class CustomVisorLayer : MonoBehaviour
         {
             PlayerMaterial.SetMaskLayerBasedOnLocalPlayer(Image, matProperties.IsLocalPlayer);
         }
+    }
+
+    private bool IsRendererReady()
+    {
+        return Image != null;
     }
 
     public void SetVisorColor(Color color)

@@ -12,7 +12,7 @@ internal class JumpDancer : RoleBase<JumpDancer>
 {
     public override RoleId Role => RoleId.JumpDancer;
     public override Color32 RoleColor => new(175, 225, 214, byte.MaxValue);
-    public override List<Func<AbilityBase>> Abilities => [() => new JumpDancerAbility(JumpDancerCoolTime)];
+    public override List<Func<AbilityBase>> Abilities => [() => new JumpDancerAbility(JumpDancerCoolTime, JumpDancerAffectsGhosts)];
     public override QuoteMod QuoteMod => QuoteMod.SuperNewRoles;
     public override AssignedTeamType AssignedTeam => AssignedTeamType.Crewmate;
     public override WinnerTeamType WinnerTeam => WinnerTeamType.Crewmate;
@@ -25,4 +25,6 @@ internal class JumpDancer : RoleBase<JumpDancer>
     // 保存されるオプション
     [CustomOptionFloat("JumpDancerCoolTime", 0f, 120f, 2.5f, 25f, translationName: "CoolTime")]
     public static float JumpDancerCoolTime = 25f;
+    [CustomOptionBool("JumpDancerAffectsGhosts", true, translationName: "AbilityAffectsGhosts")]
+    public static bool JumpDancerAffectsGhosts;
 }

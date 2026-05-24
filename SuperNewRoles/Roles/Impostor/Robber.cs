@@ -82,8 +82,14 @@ public class RobberAbility : AbilityBase
         if (target == null || target.Data == null) return new List<uint>();
 
         // 完了したタスクのリストを取得
+        var rewindableTaskIds = target.Player.myTasks.ToArray()
+            .Select(task => task.TryCast<NormalPlayerTask>())
+            .Where(task => task != null && task.IsComplete)
+            .Select(task => (uint)task.Id)
+            .ToHashSet();
+
         var completedTasks = target.Data.Tasks.ToArray()
-            .Where(task => task.Complete)
+            .Where(task => task.Complete && rewindableTaskIds.Contains(task.Id))
             .ToList();
 
         if (completedTasks.Count == 0) return new List<uint>();
@@ -121,13 +127,13 @@ public class RobberAbility : AbilityBase
                 var playerTask = target.Player.myTasks.ToArray()
                     .FirstOrDefault(task => task.Id == taskId);
 
-                if (playerTask != null)
+                var normalTask = playerTask?.TryCast<NormalPlayerTask>();
+                if (normalTask != null)
                 {
-                    if (playerTask.TryCast<NormalPlayerTask>() != null)
-                    {
-                        var normalTask = playerTask.TryCast<NormalPlayerTask>();
-                        normalTask.taskStep = 0;
-                    }
+                    normalTask.taskStep = 0;
+                    normalTask.Initialize();
+                    normalTask.UpdateArrowAndLocation();
+                    normalTask.LocationDirty = true;
                 }
             }
         }

@@ -1,21 +1,43 @@
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
+using HarmonyLib;
 using SuperNewRoles.Modules;
 using UnityEngine;
 using UnityEngine.Events;
 using SuperNewRoles.CustomOptions.Data;
 using TMPro;
+using InnerNet;
+using SuperNewRoles.Roles;
 
 namespace SuperNewRoles.CustomOptions;
 
 public static class StandardOptionMenu
 {
+    private static readonly HashSet<int> SelectedPresetExportIds = new();
+    private static bool warnedMissingPresetExportSelectButton;
+    private static PresetExportButtonState presetExportButtonState;
+    private static int presetExportButtonStateVersion;
+
+    private enum PresetExportButtonState
+    {
+        Normal,
+        Exporting,
+        Completed
+    }
+
     private static class Constants
     {
         public const float ButtonSpacing = 0.6125f;
         public const float ButtonScale = 0.48f;
         public const float InitialYPosition = 1.4f;
         public const float InitialXPosition = -3.614f;
+        public const float PresetButtonInitialY = 1f;
+        public const float PresetButtonYSpacing = -0.55f;
+        public const int PresetVisibleRows = 4;
+        public const float PresetDisplayUpperLimit = 1.8f;
+        public const float PresetDisplayLowerLimit = -2.3f;
+        public const float PresetExportCompletedDisplaySeconds = 3f;
     }
 
     public static void ShowStandardOptionMenu()
@@ -186,7 +208,10 @@ public static class StandardOptionMenu
     }
     private static void ConfigureNowPresetText(GameObject presetMenu)
     {
-        var nowPresetText = presetMenu?.transform?.Find("NowPreset")?.gameObject;
+        if (presetMenu == null)
+            return;
+
+        var nowPresetText = presetMenu.transform.Find("NowPreset")?.gameObject;
         if (nowPresetText == null)
             return;
         nowPresetText.transform.Find("StaticText").GetComponent<TextMeshPro>().text = ModTranslation.GetString("PresetSettings.NowPreset");
@@ -194,14 +219,20 @@ public static class StandardOptionMenu
     }
     private static void UpdateNowPresetText(GameObject presetMenu)
     {
-        var nowPresetText = presetMenu?.transform?.Find("NowPreset")?.gameObject;
+        if (presetMenu == null)
+            return;
+
+        var nowPresetText = presetMenu.transform.Find("NowPreset")?.gameObject;
         if (nowPresetText == null)
             return;
         nowPresetText.transform.Find("NowPresetText").GetComponent<TextMeshPro>().text = CustomOptionSaver.GetPresetName(CustomOptionSaver.CurrentPreset);
     }
     private static void ConfigurePresetTitle(GameObject presetMenu)
     {
-        var presetTitle = presetMenu?.transform?.Find("PresetTitle")?.gameObject;
+        if (presetMenu == null)
+            return;
+
+        var presetTitle = presetMenu.transform.Find("PresetTitle")?.gameObject;
         if (presetTitle == null)
             return;
         UIHelper.SetText(presetTitle, ModTranslation.GetString("PresetSettings"));
@@ -234,7 +265,133 @@ public static class StandardOptionMenu
             HandleAddPreset();
         }), spriteRenderer);
 
+        ConfigurePresetImportExportButtons(submitPreset.transform);
+
         return menu;
+    }
+
+    private static void ConfigurePresetImportExportButtons(Transform submitPreset)
+    {
+        ConfigurePresetActionButton(
+            submitPreset,
+            "ImportPresetButton",
+            "PresetImportButton",
+            (UnityAction)HandleImportPreset);
+        ConfigurePresetActionButton(
+            submitPreset,
+            "ExportPresetsButton",
+            "PresetExportAllButton",
+            (UnityAction)HandleExportPresets);
+        UpdateExportPresetsButtonText();
+    }
+
+    private static void ConfigurePresetActionButton(Transform parent, string buttonName, string translationKey, UnityAction onClick)
+    {
+        var buttonTransform = parent.Find(buttonName);
+        if (buttonTransform == null)
+        {
+            Logger.Warning($"Preset menu prefab is missing {buttonName}. Import/export button setup skipped.");
+            return;
+        }
+
+        var buttonObj = buttonTransform.gameObject;
+        UIHelper.SetText(buttonObj, ModTranslation.GetString(translationKey));
+
+        var collider = buttonObj.GetComponent<BoxCollider2D>();
+        if (collider == null)
+        {
+            Logger.Warning($"Preset menu button {buttonName} is missing BoxCollider2D.");
+            return;
+        }
+
+        var passiveButton = buttonObj.AddComponent<PassiveButton>();
+        passiveButton.Colliders = new Collider2D[] { collider };
+        var spriteRenderer = buttonObj.GetComponent<SpriteRenderer>()
+            ?? buttonObj.transform.Find("Background")?.GetComponent<SpriteRenderer>();
+        UIHelper.ConfigurePassiveButton(passiveButton, onClick, spriteRenderer);
+    }
+
+    private static void HandleImportPreset()
+    {
+        PresetFilePickerWorkflow.Import(
+            PresetFilePickerFactory.Create(),
+            CustomOptionSaver.ImportPresetsArchive,
+            importResult =>
+            {
+                Logger.Info($"Imported {importResult.ImportedCount} preset(s).");
+                RefreshPresetMenuAfterImport();
+            },
+            errorMessage => Logger.Warning($"Preset import was not completed: {errorMessage}"),
+            ex => Logger.Error($"Preset import failed: {ex}"));
+    }
+
+    private static void HandleExportPresets()
+    {
+        if (presetExportButtonState == PresetExportButtonState.Exporting)
+            return;
+
+        var selectedPresetIds = GetSelectedPresetExportIds();
+        ClearPresetExportSelections();
+        PresetFilePickerWorkflow.Export(
+            PresetFilePickerFactory.Create(),
+            BuildPresetExportFileName(selectedPresetIds),
+            selectedPresetIds.Count == 0
+                ? CustomOptionSaver.ExportAllPresetsArchive
+                : () => CustomOptionSaver.ExportSelectedPresetsArchive(selectedPresetIds),
+            () => SetPresetExportButtonState(PresetExportButtonState.Exporting),
+            () =>
+            {
+                Logger.Info("Preset export completed.");
+                SetPresetExportButtonState(PresetExportButtonState.Completed);
+                SchedulePresetExportButtonReset(presetExportButtonStateVersion);
+            },
+            errorMessage =>
+            {
+                if (!string.IsNullOrEmpty(errorMessage))
+                    Logger.Warning($"Preset export was not completed: {errorMessage}");
+                SetPresetExportButtonState(PresetExportButtonState.Normal);
+            },
+            ex =>
+            {
+                Logger.Error($"Preset export failed: {ex}");
+                SetPresetExportButtonState(PresetExportButtonState.Normal);
+            });
+    }
+
+    private static void RefreshPresetMenuAfterImport()
+    {
+        var menuData = StandardOptionMenuObjectData.Instance;
+        if (menuData?.RightAreaInner == null)
+            return;
+
+        GeneratePresetButtons(menuData.RightAreaInner);
+        UpdateNowPresetText(menuData.CurrentOptionMenu);
+    }
+
+    private static List<int> GetSelectedPresetExportIds()
+    {
+        PruneMissingPresetExportSelections();
+        return SelectedPresetExportIds
+            .Where(CustomOptionSaver.PresetNames.ContainsKey)
+            .OrderBy(presetId => presetId)
+            .ToList();
+    }
+
+    private static string BuildPresetExportFileName(IReadOnlyCollection<int> selectedPresetIds)
+    {
+        if (selectedPresetIds.Count == 0)
+            return "SuperNewRoles_Presets.snrpresets";
+        if (selectedPresetIds.Count == 1)
+            return BuildPresetExportFileName(CustomOptionSaver.GetPresetName(selectedPresetIds.First()));
+        return "SuperNewRoles_SelectedPresets.snrpresets";
+    }
+
+    private static string BuildPresetExportFileName(string presetName)
+    {
+        string safeName = string.IsNullOrWhiteSpace(presetName) ? "Preset" : presetName.Trim();
+        foreach (char invalidChar in Path.GetInvalidFileNameChars())
+            safeName = safeName.Replace(invalidChar, '_');
+        return $"{safeName}.snrpresets";
     }
 
     private static void HandleAddPreset()
@@ -246,10 +403,19 @@ public static class StandardOptionMenu
         Logger.Info(text);
         if (string.IsNullOrEmpty(text))
             return;
-        int maxPreset = CustomOptionSaver.PresetNames.Any() ? CustomOptionSaver.PresetNames.Keys.Max() : -1;
-        int newPreset = maxPreset + 1;
 
-        CustomOptionSaver.SetPresetName(newPreset, text);
+        // 既存IDの最大値+1 を新しいプリセットIDとする（常に「一番下」に追加）
+        int maxPreset = CustomOptionSaver.PresetNames.Any() ? CustomOptionSaver.PresetNames.Keys.Max() : -1;
+        long candidate = (long)maxPreset + 1;
+        if (candidate >= CustomOptionSaver.MaxPresetCount)
+        {
+            Logger.Warning($"No free preset slot available (0-{CustomOptionSaver.MaxPresetCount - 1}).");
+            return;
+        }
+        int newPreset = (int)candidate;
+
+        if (!CustomOptionSaver.SetPresetName(newPreset, text))
+            return;
         CustomOptionSaver.CurrentPreset = newPreset;
         CustomOptionSaver.Save();
         writeBoxTextBoxTMP.Clear();
@@ -260,6 +426,7 @@ public static class StandardOptionMenu
     private static void GeneratePresetButtons(GameObject container)
     {
         var menuData = StandardOptionMenuObjectData.Instance;
+        PruneMissingPresetExportSelections();
 
         // 既存のコンテナを削除
         if (menuData.PresetButtonsContainer != null)
@@ -276,8 +443,8 @@ public static class StandardOptionMenu
         buttonsContainer.SetActive(true);
 
         float xPos = 1.25f;
-        float yPos = 1f;
-        const float ySpacing = -0.55f;
+        float yPos = Constants.PresetButtonInitialY;
+        float ySpacing = Constants.PresetButtonYSpacing;
 
         int index = 0;
         foreach (var preset in CustomOptionSaver.PresetNames)
@@ -304,14 +471,54 @@ public static class StandardOptionMenu
             var trashButton = presetButton.transform.Find("TrashButton").gameObject;
             ConfigureTrashButton(trashButton, preset.Key);
 
+            var exportSelectButton = presetButton.transform.Find("ExportSelectButton")?.gameObject;
+            ConfigurePresetExportSelectButton(exportSelectButton, preset.Key);
+
             index++;
         }
 
         // Scrollerの更新
         if (menuData.RightAreaScroller != null)
         {
-            float maxBound = index <= 4 ? 0f : ((index - 4) * 0.7f);
+            float maxBound = index <= Constants.PresetVisibleRows ? 0f : ((index - Constants.PresetVisibleRows) * 0.7f);
             menuData.RightAreaScroller.ContentYBounds.max = maxBound;
+            menuData.RightAreaScroller.UpdateScrollBars();
+        }
+
+        UpdatePresetButtonsVisibility(menuData);
+        UpdateExportPresetsButtonText();
+    }
+
+    private static void UpdatePresetButtonsVisibility(StandardOptionMenuObjectData menuData)
+    {
+        if (menuData?.PresetButtonsContainer == null || menuData.RightAreaScroller == null)
+            return;
+        if (!menuData.PresetButtonsContainer.activeInHierarchy)
+            return;
+
+        var scrollerTransform = menuData.RightAreaScroller.transform;
+        var buttonsTransform = menuData.PresetButtonsContainer.transform;
+
+        for (int i = 0; i < buttonsTransform.childCount; i++)
+        {
+            var child = buttonsTransform.GetChild(i);
+            Vector3 relativePos = scrollerTransform.InverseTransformPoint(child.position);
+            bool shouldDisplay = relativePos.y < Constants.PresetDisplayUpperLimit && relativePos.y > Constants.PresetDisplayLowerLimit;
+            if (child.gameObject.activeSelf != shouldDisplay)
+                child.gameObject.SetActive(shouldDisplay);
+        }
+    }
+
+    [HarmonyPatch(typeof(ModManager), nameof(ModManager.LateUpdate))]
+    private static class StandardOptionMenuLateUpdatePatch
+    {
+        private static void Postfix()
+        {
+            var menuData = StandardOptionMenuObjectData.Instance;
+            if (menuData == null || menuData.CurrentCategory != Categories.Categories.PresetSettings)
+                return;
+
+            UpdatePresetButtonsVisibility(menuData);
         }
     }
 
@@ -328,6 +535,12 @@ public static class StandardOptionMenu
             CustomOptionSaver.LoadPreset(presetId);
             UpdateNowPresetText(StandardOptionMenuObjectData.Instance.CurrentOptionMenu);
             OptionMenuBase.UpdateOptionDisplayAll();
+            // プリセット変更時に設定を同期する
+            if (AmongUsClient.Instance.AmHost)
+            {
+                CustomOptionManager.RpcSyncOptionsAll();
+                RoleOptionManager.RpcSyncRoleOptionsAll();
+            }
         }), spriteRenderer, selectedObject: buttonObj.transform.Find("Selected")?.gameObject);
     }
 
@@ -356,58 +569,158 @@ public static class StandardOptionMenu
         }));
     }
 
+    private static void ConfigurePresetExportSelectButton(GameObject buttonObj, int presetId)
+    {
+        if (buttonObj == null)
+        {
+            if (!warnedMissingPresetExportSelectButton)
+            {
+                Logger.Warning("Preset button prefab is missing ExportSelectButton. Preset export selection setup skipped.");
+                warnedMissingPresetExportSelectButton = true;
+            }
+            return;
+        }
+
+        var collider = buttonObj.GetComponent<BoxCollider2D>();
+        if (collider == null)
+        {
+            Logger.Warning($"Preset export select button for preset {presetId} is missing BoxCollider2D.");
+            return;
+        }
+
+        var checkMark = buttonObj.transform.Find("CheckMark")?.gameObject;
+        UpdatePresetExportSelectVisual(checkMark, presetId);
+        var selectedObject = buttonObj.transform.Find("Selected")?.gameObject;
+        if (selectedObject != null)
+            selectedObject.SetActive(false);
+
+        var passiveButton = buttonObj.AddComponent<PassiveButton>();
+        passiveButton.Colliders = new Collider2D[] { collider };
+        var spriteRenderer = buttonObj.GetComponent<SpriteRenderer>()
+            ?? buttonObj.transform.Find("Background")?.GetComponent<SpriteRenderer>();
+        UIHelper.ConfigurePassiveButton(passiveButton, (UnityAction)(() =>
+        {
+            TogglePresetExportSelection(presetId);
+            UpdatePresetExportSelectVisual(checkMark, presetId);
+            UpdateExportPresetsButtonText();
+        }), spriteRenderer, selectedObject: selectedObject);
+    }
+
+    private static void TogglePresetExportSelection(int presetId)
+    {
+        if (SelectedPresetExportIds.Contains(presetId))
+            SelectedPresetExportIds.Remove(presetId);
+        else if (CustomOptionSaver.PresetNames.ContainsKey(presetId))
+            SelectedPresetExportIds.Add(presetId);
+    }
+
+    private static void UpdatePresetExportSelectVisual(GameObject checkMark, int presetId)
+        => checkMark?.SetActive(SelectedPresetExportIds.Contains(presetId));
+
+    public static void ClearPresetExportSelections()
+    {
+        if (SelectedPresetExportIds.Count == 0)
+        {
+            UpdateExportPresetsButtonText();
+            return;
+        }
+
+        SelectedPresetExportIds.Clear();
+        UpdateAllPresetExportSelectVisuals();
+        UpdateExportPresetsButtonText();
+    }
+
+    private static void UpdateAllPresetExportSelectVisuals()
+    {
+        var buttonsContainer = StandardOptionMenuObjectData.Instance?.PresetButtonsContainer;
+        if (buttonsContainer == null)
+            return;
+
+        for (int i = 0; i < buttonsContainer.transform.childCount; i++)
+        {
+            var presetButton = buttonsContainer.transform.GetChild(i);
+            if (!TryReadPresetIdFromButtonName(presetButton.name, out int presetId))
+                continue;
+
+            var checkMark = presetButton.Find("ExportSelectButton/CheckMark")?.gameObject;
+            UpdatePresetExportSelectVisual(checkMark, presetId);
+        }
+    }
+
+    private static bool TryReadPresetIdFromButtonName(string buttonName, out int presetId)
+    {
+        const string Prefix = "PresetButton_";
+        presetId = 0;
+        return buttonName != null
+            && buttonName.StartsWith(Prefix)
+            && int.TryParse(buttonName[Prefix.Length..], out presetId);
+    }
+
+    private static void PruneMissingPresetExportSelections()
+        => SelectedPresetExportIds.RemoveWhere(presetId => !CustomOptionSaver.PresetNames.ContainsKey(presetId));
+
+    private static void UpdateExportPresetsButtonText()
+    {
+        var buttonObj = GetExportPresetsButton();
+        if (buttonObj == null)
+            return;
+
+        string translationKey = presetExportButtonState switch
+        {
+            PresetExportButtonState.Exporting => "PresetExportingButton",
+            PresetExportButtonState.Completed => "PresetExportCompletedButton",
+            _ => GetSelectedPresetExportIds().Count == 0
+                ? "PresetExportAllButton"
+                : "PresetExportSelectedButton"
+        };
+        UIHelper.SetText(buttonObj, ModTranslation.GetString(translationKey));
+    }
+
+    private static GameObject GetExportPresetsButton()
+    {
+        var menuData = StandardOptionMenuObjectData.Instance;
+        if (menuData == null)
+            return null;
+
+        GameObject presetMenu = null;
+        menuData.StandardOptionMenus?.TryGetValue(Categories.Categories.PresetSettings.Name, out presetMenu);
+        presetMenu ??= menuData.CurrentOptionMenu;
+        if (presetMenu == null)
+            return null;
+
+        return presetMenu.transform.Find("SubmitPreset/ExportPresetsButton")?.gameObject;
+    }
+
+    private static void SetPresetExportButtonState(PresetExportButtonState state)
+    {
+        presetExportButtonState = state;
+        presetExportButtonStateVersion++;
+        UpdateExportPresetsButtonText();
+    }
+
+    private static void SchedulePresetExportButtonReset(int stateVersion)
+    {
+        new LateTask(() =>
+        {
+            if (presetExportButtonStateVersion != stateVersion || presetExportButtonState != PresetExportButtonState.Completed)
+                return;
+
+            SetPresetExportButtonState(PresetExportButtonState.Normal);
+        }, Constants.PresetExportCompletedDisplaySeconds, "ResetPresetExportButtonText", false);
+    }
+
     private static void HandleDeletePreset(int presetId)
     {
         if (!CustomOptionSaver.PresetNames.ContainsKey(presetId))
             return;
 
+        SelectedPresetExportIds.Remove(presetId);
         CustomOptionSaver.RemovePreset(presetId);
 
         // プリセットボタンを再生成
         var rightAreaInner = StandardOptionMenuObjectData.Instance.RightAreaInner;
         GeneratePresetButtons(rightAreaInner);
         UpdateNowPresetText(StandardOptionMenuObjectData.Instance.CurrentOptionMenu);
-    }
-
-    private static void ConfigurePresetButton(
-        GameObject selectPresets,
-        string buttonName,
-        TMPro.TextMeshPro selectedText,
-        bool isIncrement)
-    {
-        var button = selectPresets.transform.Find(buttonName).gameObject;
-        var passiveButton = button.AddComponent<PassiveButton>();
-        passiveButton.Colliders = new Collider2D[] { button.GetComponent<BoxCollider2D>() };
-        var spriteRenderer = passiveButton.GetComponent<SpriteRenderer>();
-
-        UIHelper.ConfigurePassiveButton(passiveButton, (UnityAction)(() =>
-        {
-            HandlePresetNavigation(selectedText, isIncrement);
-        }), spriteRenderer);
-    }
-
-    private static void HandlePresetNavigation(TMPro.TextMeshPro selectedText, bool isIncrement)
-    {
-        CustomOptionSaver.Save(); // 現在のプリセットを保存
-
-        int newPreset;
-        if (isIncrement)
-        {
-            newPreset = CustomOptionSaver.CurrentPreset < CustomOptionSaver.PresetNames.Keys.Max() ?
-                CustomOptionSaver.CurrentPreset + 1 :
-                0;
-        }
-        else
-        {
-            newPreset = CustomOptionSaver.CurrentPreset > 0 ?
-                CustomOptionSaver.CurrentPreset - 1 :
-                CustomOptionSaver.PresetNames.Keys.Max();
-        }
-
-        CustomOptionSaver.LoadPreset(newPreset);
-        UpdateNowPresetText(StandardOptionMenuObjectData.Instance.CurrentOptionMenu);
-        OptionMenuBase.UpdateOptionDisplayAll();
-        selectedText.text = CustomOptionSaver.GetPresetName(newPreset);
     }
 
     private static void ConfigurePresetWriteBox(GameObject presetMenu)
@@ -585,6 +898,12 @@ public static class StandardOptionMenu
             option.UpdateSelection(newValue ? (byte)1 : (byte)0);
             UpdateOptionsActive();
             RecalculateOptionsPosition(check.transform.parent, StandardOptionMenuObjectData.Instance.RightAreaScroller);
+            SnrSettingChangeNotifier.NotifyOptionChanged(option);
+
+            if (AmongUsClient.Instance.AmHost)
+            {
+                CustomOptionManager.RpcSyncOption(option.Id, newValue ? (byte)1 : (byte)0);
+            }
         }), spriteRenderer);
     }
 
@@ -680,6 +999,7 @@ public static class StandardOptionMenu
         option.UpdateSelection(newSelection);
         selectedText.text = option.GetCurrentSelectionString();
         StandardOptionMenuObjectData.Instance.UpdateOptionDisplay();
+        SnrSettingChangeNotifier.NotifyOptionChanged(option);
     }
 
     private static void UpdatePresetText(TMPro.TextMeshPro textComponent, int preset)

@@ -52,7 +52,7 @@ public static class SendChatPatch
                 {
                     handled = true;
                     __instance.AddChat(PlayerControl.LocalPlayer, ModTranslation.GetString("CannotUseRenameMessage"));
-                    SuperNewRolesPlugin.Logger.LogWarning($"ホストでない時に{text}を使用しました。ホストでない時は/renameは使用できません。");
+                    SuperNewRoles.Logger.Warning($"ホストでない時に{text}を使用しました。ホストでない時は/renameは使用できません。");
                 }
             }
             else if (text.StartsWith("/winners", StringComparison.OrdinalIgnoreCase)

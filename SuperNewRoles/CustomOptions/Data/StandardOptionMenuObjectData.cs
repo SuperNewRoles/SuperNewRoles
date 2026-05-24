@@ -106,6 +106,7 @@ namespace SuperNewRoles.CustomOptions.Data
 
         public override void Hide()
         {
+            SuperNewRoles.CustomOptions.StandardOptionMenu.ClearPresetExportSelections();
             if (StandardOptionMenu != null)
                 StandardOptionMenu.SetActive(false);
         }
@@ -122,11 +123,17 @@ namespace SuperNewRoles.CustomOptions.Data
                     var option = optionUIData.Option;
                     if (option.IsBooleanOption && optionUIData is CheckOptionUIData checkData)
                     {
-                        checkData.CheckMark.SetActive((bool)option.Value);
+                        if (checkData.CheckMark != null)
+                        {
+                            checkData.CheckMark.SetActive((bool)option.Value);
+                        }
                     }
                     else if (!option.IsBooleanOption && optionUIData is SelectOptionUIData selectData)
                     {
-                        selectData.SelectedText.text = option.GetCurrentSelectionString();
+                        if (selectData.SelectedText != null)
+                        {
+                            selectData.SelectedText.text = option.GetCurrentSelectionString();
+                        }
                     }
                 }
             }

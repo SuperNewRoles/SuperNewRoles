@@ -23,11 +23,14 @@
   <!-- Resolve managed stubs from either -p:Build or %AmongUs%/BepInEx automatically -->
   <PropertyGroup>
     <!-- If Build is not provided, but AmongUs env var is set, infer BepInEx root under AmongUs -->
-    <Build Condition=" '$(Build)' == '' and '$(AmongUs)' != '' ">$(AmongUs)/BepInEx</Build>
+    <Build Condition=" '$(AmongUs)' != '' ">$(AmongUs)/BepInEx</Build>
   </PropertyGroup>
 
   <!-- Add interop references so test project can compile against exposed types in ExPlayerControl -->
   <ItemGroup Condition="Exists('$(Build)/core/BepInEx.Core.dll')">
-    <Reference Include="$(Build)/**" />
+    <!-- Only reference managed DLLs under `core` and `interop` to avoid importing plugin DLLs (e.g. SuperNewRoles.dll) under `plugins` -->
+    <LibReference Include="$(Build)/core/*.dll" />
+    <LibReference Include="$(Build)/interop/*.dll" />
+    <Reference Include="@(LibReference)" />
   </ItemGroup>
 </Project>

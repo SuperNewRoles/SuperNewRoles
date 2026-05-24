@@ -76,7 +76,7 @@ public static class CustomSpores
         Mushroom newmushRoom = UnityEngine.Object.Instantiate(templateMushroom, ShipStatus.Instance.transform);
         newmushRoom.transform.position = position3;
         newmushRoom.id = id;
-        newmushRoom.origPosition = position;
+        newmushRoom.origPosition = position3;
 
         if (mushrooms != null)
             mushrooms.Add(id, newmushRoom);

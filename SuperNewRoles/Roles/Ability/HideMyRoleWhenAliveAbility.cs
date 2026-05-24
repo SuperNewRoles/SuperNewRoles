@@ -49,12 +49,26 @@ public class HideMyRoleWhenAliveAbility : AbilityBase
     /// <returns>true => 満たしている(非表示) / false => 満たしていない or 対象のModifierRoleIdでない(表示)</returns>
     public bool IsCheckTargetModifierRoleHidden(ExPlayerControl player, ModifierRoleId id) => IsHide(player).modifier && HideModifierRoleId == id;
 
+    /// <summary>生存中は他プレイヤーからも秘匿される役職かどうか</summary>
+    public bool IsRoleHiddenWhileAlive(ExPlayerControl player) => player != null && player.Player != null && player.IsAlive() && _hasHideRole;
+
+    /// <summary>生存中は他プレイヤーからも秘匿されるモディファイアかどうか</summary>
+    public bool IsModifierHiddenWhileAlive(ExPlayerControl player, ModifierRoleId id)
+        => player != null && player.Player != null && player.IsAlive() && _hasHideModifier && HideModifierRoleId == id;
+
     /// <summary>非表示の条件が満たされている場合、役職名を上書きする</summary>
     /// <param name="player">確認対象</param>
     /// <param name="roleName">役職名</param>
     public void DisplayRoleName(ExPlayerControl player, ref string roleName)
     {
         if (!IsHide(player).role) return;
+        roleName = $"{(player.Data.Role.IsImpostor ? ImpostorName : CrewmateName)}";
+    }
+
+    /// <summary>生存中に秘匿される役職なら、他プレイヤー向け表示も偽装する</summary>
+    public void DisplayFalseRoleNameWhileAlive(ExPlayerControl player, ref string roleName)
+    {
+        if (!IsRoleHiddenWhileAlive(player)) return;
         roleName = $"{(player.Data.Role.IsImpostor ? ImpostorName : CrewmateName)}";
     }
 

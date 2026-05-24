@@ -53,43 +53,35 @@ public static class NameText
     }
     private static bool GetRoleInfoVisibility(ExPlayerControl player, HideRoleOnGhostAbility localPlayerHrg)
     {
-        if (player == null || player.Player == null || !player.Player.Visible)
-        {
-            return false;
-        }
-
-        if (ExPlayerControl.LocalPlayer.PlayerId == player.PlayerId)
-        {
-            return true;
-        }
-
-        if (!ExPlayerControl.LocalPlayer.IsDead())
-        {
-            return false;
-        }
-
-        // バスカーの偽装死時は他のプレイヤーの役職を見えないようにする
-        bool isBuskerFakeDeath = ExPlayerControl.LocalPlayer.GetAbility<BuskerPseudocideAbility>()?.isEffectActive == true;
-        if (isBuskerFakeDeath && ExPlayerControl.LocalPlayer.PlayerId != player.PlayerId)
-        {
-            return false;
-        }
-
-        // Local player is ghost
-        bool canSeeGhostRoles = !GameSettingOptions.HideGhostRoles ||
-                                (ExPlayerControl.LocalPlayer.IsImpostor() && GameSettingOptions.ShowGhostRolesToImpostor);
-
-        if (!canSeeGhostRoles)
-        {
-            return false;
-        }
-
-        if (localPlayerHrg != null && localPlayerHrg.IsHideRole(player))
-        {
-            return false;
-        }
-
-        return true;
+        return ExPlayerControl.LocalPlayer.CanSeeRoleOf(player);
+    }
+    private static bool ShouldShowVanillaRole(ExPlayerControl player)
+    {
+        return player?.Data?.Role != null
+            && !player.Data.Role.IsSimpleRole
+            && player.Role is RoleId.Crewmate or RoleId.Impostor;
+    }
+    private static Color GetFallbackRoleInfoColor(ExPlayerControl player)
+    {
+        return player?.Data?.Role?.TeamColor ?? Color.white;
+    }
+    private static string GetFallbackRoleInfoText(ExPlayerControl player)
+    {
+        return player?.Data?.Role?.NiceName ?? string.Empty;
+    }
+    private static Color GetRoleInfoColor(ExPlayerControl player)
+    {
+        if (ShouldShowVanillaRole(player))
+            return player.Data.Role.TeamColor;
+        return player?.roleBase?.RoleColor ?? GetFallbackRoleInfoColor(player);
+    }
+    private static string GetRoleInfoText(ExPlayerControl player)
+    {
+        if (ShouldShowVanillaRole(player))
+            return ModHelpers.Cs(player.Data.Role.TeamColor, player.Data.Role.NiceName);
+        return player?.roleBase != null
+            ? ModHelpers.CsWithTranslation(player.roleBase.RoleColor, player.roleBase.Role.ToString())
+            : ModHelpers.Cs(GetFallbackRoleInfoColor(player), GetFallbackRoleInfoText(player));
     }
     private static void SetPlayerNameColor(ExPlayerControl player, bool isRoleInfoVisible)
     {
@@ -104,8 +96,9 @@ public static class NameText
         { // 通常の役職表示
             if (isRoleInfoVisible)
             {
-                player.Data.Role.NameColor = player.roleBase.RoleColor;
-                SetNameTextColor(player, player.roleBase.RoleColor, true);
+                Color roleInfoColor = GetRoleInfoColor(player);
+                player.Data.Role.NameColor = roleInfoColor;
+                SetNameTextColor(player, roleInfoColor, true);
             }
             else if (ExPlayerControl.LocalPlayer.IsImpostor() && player.IsImpostor())
             {
@@ -145,11 +138,12 @@ public static class NameText
         catch { }
         string playerInfoText = "";
         string meetingInfoText = "";
-        string roleName = $"{ModHelpers.CsWithTranslation(player.roleBase.RoleColor, player.roleBase.Role.ToString())}";
+        string roleName = GetRoleInfoText(player);
 
-        // 生きている時は役職を自覚できない役の役職名を上書き
-        var hideMyRoleAbility = !player.AmOwner || player.IsDead() ? null : player.GetAbility<HideMyRoleWhenAliveAbility>();
-        hideMyRoleAbility?.DisplayRoleName(player, ref roleName);
+        // 生存中は秘匿される役職/モディファイアを、相方などの他人向け表示でも漏らさない
+        var hideMyRoleAbilities = player.GetAbilities<HideMyRoleWhenAliveAbility>();
+        foreach (var hideMyRoleAbility in hideMyRoleAbilities)
+            hideMyRoleAbility.DisplayFalseRoleNameWhileAlive(player, ref roleName);
 
         // 幽霊役職の表示は役職可視性チェックに従う
         var hrg = ExPlayerControl.LocalPlayer.GetAbility<HideRoleOnGhostAbility>();
@@ -161,8 +155,7 @@ public static class NameText
             roleName += " ";
         foreach (var modifier in player.ModifierRoleBases)
         {
-            // 生きている時は役職を自覚できないモディファイアは処理をスキップ
-            if (hideMyRoleAbility != null && hideMyRoleAbility.IsCheckTargetModifierRoleHidden(player, modifier.ModifierRole)) continue;
+            if (hideMyRoleAbilities.Any(hideMyRoleAbility => hideMyRoleAbility.IsModifierHiddenWhileAlive(player, modifier.ModifierRole))) continue;
             roleName = modifier.ModifierMark(player).Replace("{0}", roleName);
         }
         playerInfoText = roleName;
@@ -251,7 +244,7 @@ public static class NameText
         if (player == null || player.Player == null)
             return;
 
-        bool visiable = GetRoleInfoVisibility(player, localHideRoleOnGhostAbility);
+        bool visiable = ExPlayerControl.LocalPlayer.CanSeeRoleOf(player);
         UpdateVisible(player, visiable);
         if (!visiable && localHideRoleOnGhostAbility != null && localHideRoleOnGhostAbility.IsHideRole(player))
         {

@@ -41,4 +41,5 @@ public static class Il2CppExtensions
     {
         return [.. array.Cast<T>()];
     }
+    public static Il2CppSystem.Collections.Generic.IEnumerable<T> IEnumerableToIl2Cpp<T>(this System.Collections.Generic.IEnumerable<T> values) => Il2CppSystem.Linq.Enumerable.Cast<T>(values.WrapToIl2Cpp());
 }

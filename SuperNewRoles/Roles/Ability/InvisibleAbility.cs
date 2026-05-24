@@ -21,6 +21,7 @@ public class InvisibleAbility : CustomButtonBase, IButtonEffect
     private EventListener<MeetingStartEventData> _onMeetingStartEvent;
     private EventListener<DieEventData> _onDie;
     private EventListener _onFixedUpdate;
+    private readonly OpacityFadeController _opacityFader = new();
 
     public string SpriteName { get; }
     public bool isEffectActive { get; set; }
@@ -66,6 +67,7 @@ public class InvisibleAbility : CustomButtonBase, IButtonEffect
     {
         base.DetachToAlls();
         _onFixedUpdate?.RemoveListener();
+        _opacityFader.StopAll();
     }
 
     public override void AttachToLocalPlayer()
@@ -106,18 +108,18 @@ public class InvisibleAbility : CustomButtonBase, IButtonEffect
     private void OnFixedUpdate()
     {
         if (invisible)
-            SetInvisible(Player, true);
+            _opacityFader.Apply(Player, CanSeeTranslucentState(Player) ? 0.4f : 0f, forceSnap: true);
     }
 
     public void SetInvisible(ExPlayerControl player, bool isInvisible)
     {
         if (isInvisible)
         {
-            ModHelpers.SetOpacity(player.Player, CanSeeTranslucentState(player) ? 0.4f : 0f);
+            _opacityFader.Apply(player, CanSeeTranslucentState(player) ? 0.4f : 0f);
         }
         else
         {
-            ModHelpers.SetOpacity(player.Player, 1f);
+            _opacityFader.Apply(player, 1f);
         }
     }
 

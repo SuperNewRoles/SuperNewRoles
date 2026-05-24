@@ -24,7 +24,8 @@ public static class CustomCosmeticsLayers
     public static Dictionary<int, CustomVisorLayer> visorLayer2s = new();
     public static bool Exists(CosmeticsLayer cosmeticsLayer, out CustomCosmeticsLayer layer)
     {
-        return layers.TryGetValue(cosmeticsLayer.GetInstanceID(), out layer) ? layers != null : false;
+        layer = null;
+        return cosmeticsLayer != null && layers != null && layers.TryGetValue(cosmeticsLayer.GetInstanceID(), out layer) && layer != null;
     }
     public static CustomCosmeticsLayer ExistsOrInitialize(CosmeticsLayer cosmeticsLayer)
     {
@@ -84,17 +85,27 @@ public class CustomCosmeticsLayer
         cosmeticsLayer.transform.parent.gameObject.AddComponent<SortingGroup>();
         this.cosmeticsLayer = cosmeticsLayer;
 
-        foreach (var bodySprite in cosmeticsLayer.bodySprites)
+        if (cosmeticsLayer.bodySprites != null)
         {
-            bodySprite.BodySprite.sortingOrder = 6;
+            foreach (var bodySprite in cosmeticsLayer.bodySprites)
+            {
+                if (bodySprite?.BodySprite != null)
+                    bodySprite.BodySprite.sortingOrder = 6;
+            }
         }
-        foreach (var spriteRenderer in cosmeticsLayer.skin.GetComponentsInChildren<SpriteRenderer>())
+        if (cosmeticsLayer.skin != null)
         {
-            spriteRenderer.sortingOrder = 7;
+            foreach (var spriteRenderer in cosmeticsLayer.skin.GetComponentsInChildren<SpriteRenderer>())
+            {
+                spriteRenderer.sortingOrder = 7;
+            }
         }
-        foreach (var textMeshPro in cosmeticsLayer.nameTextContainer.GetComponentsInChildren<TextMeshPro>())
+        if (cosmeticsLayer.nameTextContainer != null)
         {
-            textMeshPro.sortingOrder = 500;
+            foreach (var textMeshPro in cosmeticsLayer.nameTextContainer.GetComponentsInChildren<TextMeshPro>())
+            {
+                textMeshPro.sortingOrder = 500;
+            }
         }
 
         ModdedCosmetics = new GameObject("ModdedCosmetics");
@@ -177,8 +188,6 @@ public class CustomCosmeticsLayer
             baseLayer.transform.parent.GetComponentInChildren<PlayerAnimations>()?.group?.NodeSyncs?.Add(nodeSync);
             hatLayer.spriteSyncNode = nodeSync;
         }
-        else
-            Logger.Debug("NULLLLLLLLLLLLLLLLLLLLLL");
         hatLayer.vanillaNodeSyncs = cosmeticsLayer.hat.GetComponents<SpriteAnimNodeSync>().ToList();
 
         // バックレイヤーの作成と設定

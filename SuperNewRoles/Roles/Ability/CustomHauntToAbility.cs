@@ -40,8 +40,7 @@ public class CustomHauntToAbility : AbilityBase
         base.DetachToLocalPlayer();
         _fixedUpdateEvent?.RemoveListener();
         _meetingStartEvent?.RemoveListener();
-        if (lastEnabled)
-            ExPlayerControl.LocalPlayer.Player.moveable = true;
+        ClearLocalHauntMove();
     }
 
     private void OnFixedUpdate()
@@ -51,7 +50,7 @@ public class CustomHauntToAbility : AbilityBase
         if (target == null)
         {
             if (lastEnabled)
-                ExPlayerControl.LocalPlayer.Player.moveable = true;
+                ClearLocalHauntMove();
             lastEnabled = false;
             return;
         }
@@ -76,6 +75,19 @@ public class CustomHauntToAbility : AbilityBase
     }
     private void OnMeetingStart(MeetingStartEventData _)
     {
+        ClearLocalHauntMove();
+    }
+
+    private void ClearLocalHauntMove()
+    {
+        var local = ExPlayerControl.LocalPlayer;
+        if (local?.Player == null) return;
+
+        if (lastEnabled)
+            local.Player.moveable = true;
+        if (local.MyPhysics?.body != null)
+            local.MyPhysics.body.velocity = Vector2.zero;
+        local.MyPhysics?.SetNormalizedVelocity(Vector2.zero);
         lastEnabled = false;
     }
 }

@@ -102,7 +102,7 @@ public static class HarmonyCoroutinePatchProcessor
             }
         }
 
-        SuperNewRolesPlugin.Logger.LogWarning($"親インスタンスフィールド ({parentType.Name}) がコルーチンステートマシン ({stateMachineType.Name}) 内に見つかりませんでした。");
+        SuperNewRoles.Logger.Warning($"親インスタンスフィールド ({parentType.Name}) がコルーチンステートマシン ({stateMachineType.Name}) 内に見つかりませんでした。");
         return false;
     }
 
@@ -181,7 +181,7 @@ public static class HarmonyCoroutinePatchProcessor
             return parent;
         }
 
-        SuperNewRolesPlugin.Logger.LogError($"親インスタンス ({typeof(TParent).Name}) をコルーチンステートマシン ({coroutineStateMachineInstance.GetType().Name}) から取得できませんでした。");
+        SuperNewRoles.Logger.Error($"親インスタンス ({typeof(TParent).Name}) をコルーチンステートマシン ({coroutineStateMachineInstance.GetType().Name}) から取得できませんでした。");
         return null;
     }
 
@@ -205,13 +205,13 @@ public static class HarmonyCoroutinePatchProcessor
                 }
                 catch (Exception ex)
                 {
-                    SuperNewRolesPlugin.Logger.LogError($"コルーチンパッチの適用に失敗しました: {patchClass.Name} - {ex}");
+                    SuperNewRoles.Logger.Error($"コルーチンパッチの適用に失敗しました: {patchClass.Name} - {ex}");
                 }
             }
         }
         catch (Exception ex)
         {
-            SuperNewRolesPlugin.Logger.LogError($"コルーチンパッチ処理中にエラーが発生しました: {ex}");
+            SuperNewRoles.Logger.Error($"コルーチンパッチ処理中にエラーが発生しました: {ex}");
         }
     }
 
@@ -227,7 +227,7 @@ public static class HarmonyCoroutinePatchProcessor
         var coroutineType = FindCoroutineTypeWithCache(attribute.TargetType, attribute.CoroutineMethodName);
         if (coroutineType == null)
         {
-            SuperNewRolesPlugin.Logger.LogWarning($"コルーチンタイプが見つかりません: {attribute.TargetType.Name}.{attribute.CoroutineMethodName}");
+            SuperNewRoles.Logger.Warning($"コルーチンタイプが見つかりません: {attribute.TargetType.Name}.{attribute.CoroutineMethodName}");
             return;
         }
 
@@ -235,7 +235,7 @@ public static class HarmonyCoroutinePatchProcessor
         var moveNextMethod = GetMoveNextMethodWithCache(coroutineType);
         if (moveNextMethod == null)
         {
-            SuperNewRolesPlugin.Logger.LogWarning($"MoveNextメソッドが見つかりません: {coroutineType.Name}");
+            SuperNewRoles.Logger.Warning($"MoveNextメソッドが見つかりません: {coroutineType.Name}");
             return;
         }
 
@@ -244,7 +244,7 @@ public static class HarmonyCoroutinePatchProcessor
 
         if (prefixMethod == null && postfixMethod == null)
         {
-            SuperNewRolesPlugin.Logger.LogWarning($"PrefixまたはPostfixメソッドが見つかりません: {patchClass.Name}");
+            SuperNewRoles.Logger.Warning($"PrefixまたはPostfixメソッドが見つかりません: {patchClass.Name}");
             return;
         }
 
@@ -254,7 +254,7 @@ public static class HarmonyCoroutinePatchProcessor
 
         harmony.Patch(moveNextMethod, prefix, postfix);
 
-        SuperNewRolesPlugin.Logger.LogInfo($"コルーチンパッチを適用しました: {attribute.TargetType.Name}.{attribute.CoroutineMethodName} -> {coroutineType.Name}.MoveNext");
+        SuperNewRoles.Logger.Info($"コルーチンパッチを適用しました: {attribute.TargetType.Name}.{attribute.CoroutineMethodName} -> {coroutineType.Name}.MoveNext");
     }
 
     /// <summary>
@@ -274,7 +274,7 @@ public static class HarmonyCoroutinePatchProcessor
         {
             // 部分的な読み込み失敗の場合は、読み込めた型のみを使用
             types = ex.Types.Where(t => t != null).ToArray();
-            SuperNewRolesPlugin.Logger.LogWarning($"一部の型の読み込みに失敗しました: {assembly.FullName}");
+            SuperNewRoles.Logger.Warning($"一部の型の読み込みに失敗しました: {assembly.FullName}");
         }
 
         for (int i = 0; i < types.Length; i++)
@@ -288,7 +288,7 @@ public static class HarmonyCoroutinePatchProcessor
             }
             catch (Exception ex)
             {
-                SuperNewRolesPlugin.Logger.LogWarning($"型 {type?.Name} の属性取得に失敗しました: {ex.Message}");
+                SuperNewRoles.Logger.Warning($"型 {type?.Name} の属性取得に失敗しました: {ex.Message}");
                 continue;
             }
 
@@ -406,7 +406,7 @@ public static class HarmonyCoroutinePatchProcessor
         }
         catch (Exception ex)
         {
-            SuperNewRolesPlugin.Logger.LogError($"コルーチン型の検索中にエラーが発生しました: {targetType.Name}.{coroutineMethodName} - {ex.Message}");
+            SuperNewRoles.Logger.Error($"コルーチン型の検索中にエラーが発生しました: {targetType.Name}.{coroutineMethodName} - {ex.Message}");
             return null;
         }
     }

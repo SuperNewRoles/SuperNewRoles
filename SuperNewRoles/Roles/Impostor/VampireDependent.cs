@@ -7,6 +7,8 @@ using SuperNewRoles.Modules;
 using SuperNewRoles.Roles.Ability;
 using SuperNewRoles.Modules.Events.Bases;
 using SuperNewRoles.Events.PCEvents;
+using SuperNewRoles.Events;
+using SuperNewRoles.CustomOptions.Categories;
 
 namespace SuperNewRoles.Roles.Impostor;
 
@@ -24,7 +26,8 @@ class VampireDependent : RoleBase<VampireDependent>
             vampireCannotFixSabotage: Vampire.VampireCannotFixSabotage,
             vampireCannotUseDevice: Vampire.VampireCannotUseDevice,
             vampireDependentHasReverseVision: Vampire.VampireDependentHasReverseVision,
-            vampireDependentHasImpostorVisionInLightsoff: Vampire.VampireDependentHasImpostorVisionInLightsoff
+            vampireDependentHasImpostorVisionInLightsoff: Vampire.VampireDependentHasImpostorVisionInLightsoff,
+            vampireNoDeathOnVitals: Vampire.VampireNoDeathOnVitals
         )
     )];
 
@@ -48,15 +51,19 @@ public class VampireDependentAbility : AbilityBase
     private CustomKillButtonAbility killButtonAbility;
     public VampireDependentData Data { get; }
     private EventListener<MurderEventData> _murderListener;
+    private EventListener<ExileEventData> _exileListener;
+    private EventListener<NameTextUpdateEventData> _nameTextUpdateListener;
     private SabotageCanUseAbility sabotageCanUseAbility;
     private DeviceCanUseAbility deviceCanUseAbility;
     private HideInAdminAbility hideInAdminAbility;
     private ReverseVisionAbility reverseVisionAbility;
+
     public VampireDependentAbility(VampireDependentData data, VampireData vampire)
     {
         this.Data = data;
         this.VampireData = vampire;
     }
+
     public override void AttachToAlls()
     {
         base.AttachToAlls();
@@ -80,32 +87,58 @@ public class VampireDependentAbility : AbilityBase
             () => VampireData.vampireDependentHasReverseVision,
             () => VampireData.vampireDependentHasImpostorVisionInLightsoff
         );
+
         Player.AttachAbility(killButtonAbility, new AbilityParentAbility(this));
         Player.AttachAbility(ventAbility, new AbilityParentAbility(this));
         Player.AttachAbility(sabotageCanUseAbility, new AbilityParentAbility(this));
         Player.AttachAbility(deviceCanUseAbility, new AbilityParentAbility(this));
         Player.AttachAbility(hideInAdminAbility, new AbilityParentAbility(this));
         Player.AttachAbility(reverseVisionAbility, new AbilityParentAbility(this));
+        Player.AttachAbility(new KnowOtherAbility((player) => player.Player == vampire?.Player, () => true), new AbilityParentAbility(this));
     }
+
     public override void DetachToAlls()
     {
         base.DetachToAlls();
     }
+
     public override void AttachToLocalPlayer()
     {
         base.AttachToLocalPlayer();
         _murderListener = MurderEvent.Instance.AddListener(OnMurder);
+        _exileListener = ExileEvent.Instance.AddListener(OnExile);
+        _nameTextUpdateListener = NameTextUpdateEvent.Instance.AddListener(OnNameTextUpdate);
     }
+
     public override void DetachToLocalPlayer()
     {
         base.DetachToLocalPlayer();
         _murderListener?.RemoveListener();
+        _exileListener?.RemoveListener();
+        _nameTextUpdateListener?.RemoveListener();
     }
+
+    private void OnNameTextUpdate(NameTextUpdateEventData data)
+    {
+        // 親ヴァンパイアの名前に印を付ける
+        if (vampire?.Player == data.Player)
+        {
+            NameText.SetNameTextColor(data.Player, Palette.ImpostorRed, true);
+        }
+    }
+
     private void OnMurder(MurderEventData data)
     {
         if (data.target == vampire?.Player && Player.IsAlive())
             ExPlayerControl.LocalPlayer.RpcCustomDeath(CustomDeathType.VampireWithDead);
     }
+
+    private void OnExile(ExileEventData data)
+    {
+        if (data.exiled == vampire?.Player && Player.IsAlive())
+            ExPlayerControl.LocalPlayer.RpcCustomDeath(CustomDeathType.VampireWithDeadNonDeadbody);
+    }
+
     public void SetVampire(VampireAbility vampire)
     {
         this.vampire = vampire;

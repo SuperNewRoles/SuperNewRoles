@@ -21,6 +21,12 @@ public class EventListenerTests
     }
     private class DataEvent : EventTargetBase<DataEvent, DummyData> { }
 
+    private static void ResetEvents()
+    {
+        NoArgEvent.Instance.RemoveListenerAll();
+        DataEvent.Instance.RemoveListenerAll();
+    }
+
     // Ensure plugin logger exists so verbose code paths are safe if touched
     private static void EnsurePluginLogger()
     {
@@ -37,6 +43,7 @@ public class EventListenerTests
     public void AddListener_Then_Awake_Invokes_Action()
     {
         EnsurePluginLogger();
+        ResetEvents();
         int called = 0;
         NoArgEvent.Instance.AddListener(() => called++);
         NoArgEvent.Instance.Awake();
@@ -49,6 +56,7 @@ public class EventListenerTests
     public void RemoveListener_Immediately_Prevents_Future_Invocation()
     {
         EnsurePluginLogger();
+        ResetEvents();
         int called = 0;
         var listener = NoArgEvent.Instance.AddListener(() => called++);
         // Remove outside of Awake, should take effect immediately
@@ -63,6 +71,7 @@ public class EventListenerTests
     public void RemoveListener_During_Awake_Is_Deferred()
     {
         EnsurePluginLogger();
+        ResetEvents();
         int a = 0, b = 0;
         EventListener? l1 = null;
         l1 = NoArgEvent.Instance.AddListener(() => { a++; l1!.RemoveListener(); });
@@ -86,11 +95,44 @@ public class EventListenerTests
     public void GenericEvent_Passes_Data_To_Action()
     {
         EnsurePluginLogger();
+        ResetEvents();
         int observed = -1;
         DataEvent.Instance.AddListener(d => observed = d.Value);
         DataEvent.Instance.Awake(new DummyData { Value = 42 });
         // 目的: 渡したデータがそのままリスナーに届く
         observed.Should().Be(42);
+    }
+
+    // 目的: 1つのリスナーが例外を投げても他のリスナー実行は継続されることを検証
+    [Fact]
+    public void NoArgEvent_Exception_In_Listener_Does_Not_Stop_Others()
+    {
+        EnsurePluginLogger();
+        ResetEvents();
+
+        int called = 0;
+        NoArgEvent.Instance.AddListener(() => throw new InvalidOperationException("boom"));
+        NoArgEvent.Instance.AddListener(() => called++);
+
+        Action act = () => NoArgEvent.Instance.Awake();
+        act.Should().NotThrow();
+        called.Should().Be(1);
+    }
+
+    // 目的: データ付きイベントでも例外発生時に他リスナー実行が継続されることを検証
+    [Fact]
+    public void GenericEvent_Exception_In_Listener_Does_Not_Stop_Others()
+    {
+        EnsurePluginLogger();
+        ResetEvents();
+
+        int called = 0;
+        DataEvent.Instance.AddListener(_ => throw new InvalidOperationException("boom"));
+        DataEvent.Instance.AddListener(_ => called++);
+
+        Action act = () => DataEvent.Instance.Awake(new DummyData { Value = 1 });
+        act.Should().NotThrow();
+        called.Should().Be(1);
     }
 }
 

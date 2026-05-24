@@ -33,6 +33,13 @@ public static class SetTargetPatch
     }
     public static ExPlayerControl SetImpostorTarget()
     {
+        if (ExPlayerControl.LocalPlayer != null &&
+            ExPlayerControl.LocalPlayer.TryGetAbility<RemoteControllerAbility>(out var remote) &&
+            remote.UnderOperation &&
+            remote.TargetPlayer != null)
+        {
+            return TargetCustomButtonBase.SetTarget(onlyCrewmates: true, targetingPlayer: remote.TargetPlayer.Player, isTargetable: ValidMadkiller);
+        }
         return TargetCustomButtonBase.SetTarget(onlyCrewmates: true, isTargetable: ValidMadkiller);
     }
 }

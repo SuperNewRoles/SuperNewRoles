@@ -20,7 +20,9 @@ class ModifierGuesser : ModifierBase<ModifierGuesser>
             cannotShootCelebrity: ModifierGuesserCannotShootStar,
             celebrityLimitedTurns: ModifierGuesserLimitedTurns,
             celebrityLimitedTurnsCount: ModifierGuesserLimitedTurnsCount,
-            madmateSuicide: ModifierGuesserMadmateSuicide
+            madmateSuicide: ModifierGuesserMadmateSuicide,
+            cannotShootFirstTurn: ModifierGuesserCannotShootFirstTurn,
+            cannotShootNoDead: ModifierGuesserCannotShootNoDead
         )];
 
     public override QuoteMod QuoteMod => QuoteMod.NebulaOnTheShip;
@@ -35,7 +37,7 @@ class ModifierGuesser : ModifierBase<ModifierGuesser>
     public override Func<ExPlayerControl, string> ModifierMark => (player) => "{0}" + ModHelpers.Cs(RoleColor, "⊕");
     public override bool AssignFilter => true;
 
-    public override RoleId[] DoNotAssignRoles => [RoleId.God, RoleId.NiceGuesser, RoleId.EvilGuesser, RoleId.Balancer, RoleId.ShiftActor, RoleId.PartTimer, RoleId.OrientalShaman, RoleId.Safecracker, RoleId.Medium, RoleId.MeetingSheriff, RoleId.Datahacker];
+    public override RoleId[] DoNotAssignRoles => [RoleId.God, RoleId.NiceGuesser, RoleId.EvilGuesser, RoleId.Balancer, RoleId.ShiftActor, RoleId.PartTimer, RoleId.OrientalShaman, RoleId.Safecracker, RoleId.Medium, RoleId.MeetingSheriff, RoleId.Datahacker, RoleId.Moira];
 
     public override bool UseTeamSpecificAssignment => true;
 
@@ -44,6 +46,12 @@ class ModifierGuesser : ModifierBase<ModifierGuesser>
 
     [CustomOptionInt("ModifierGuesserShotsPerMeeting", 1, 15, 1, 3, translationName: "EvilGuesserShotsPerMeeting")]
     public static int ModifierGuesserShotsPerMeeting = 3;
+
+    [CustomOptionBool("ModifierGuesserCannotShootFirstTurn", false, translationName: "EvilGuesserCannotShootFirstTurn")]
+    public static bool ModifierGuesserCannotShootFirstTurn;
+
+    [CustomOptionBool("ModifierGuesserCannotShootNoDead", false, translationName: "EvilGuesserCannotShootNoDead")]
+    public static bool ModifierGuesserCannotShootNoDead;
 
     [CustomOptionBool("ModifierGuesserCannotShootStar", true, translationName: "EvilGuesserCannotShootStar")]
     public static bool ModifierGuesserCannotShootStar = true;

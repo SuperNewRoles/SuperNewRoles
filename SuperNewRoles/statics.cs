@@ -22,7 +22,7 @@ public static class VersionInfo
     public static string VersionString => Current.ToString() + (SnapShotVersion?.ToString() ?? string.Empty);
 
     public static bool IsSnapShot => SnapShotVersion != null;
-    public static char? SnapShotVersion = null;
+    public static char? SnapShotVersion = 'b';
 
     public static string NewVersion = "";
     public static bool IsUpdate = false;
@@ -33,11 +33,14 @@ public static class SNRURLs
 {
     public const string ReportInGameAgreement = "https://wiki.supernewroles.com/reporting-in-game-terms";
     public const string AnalyticsURL = "https://analytics.supernewroles.com/api/v2/";
-    public const string SNRCS = "https://cs.supernewroles.com";
+    public const string AndroidNoticeCheckURL = "https://raw.githubusercontent.com/SuperNewRoles/Notice/refs/heads/main/notice.txt";
+    public const string SNRCS_JP = "https://cs.supernewroles.com";
+    public const string SNRCS_USEast = "https://cs-useast.supernewroles.com";
     public const string ReportInGameAPI = "https://reports-api.supernewroles.com/api/v3";
     public const string UpdateURL = "https://update.supernewroles.com/";
     public const string GithubAPITags = "https://api.github.com/repos/supernewroles/SuperNewRoles/releases/tags";
     public const string JoinRoomHost = "joinroom.supernewroles.com";
+    public const string SuperNewAnnounceApi = "https://announce.supernewroles.com/api/v1";
 }
 public static class BranchConfig
 {
@@ -66,6 +69,7 @@ public static class SocialLinks
     public const string DiscordServer = "https://supernewroles.com/discord";
     public const string TwitterSnrDevs = "https://twitter.com/SNRDevs";
     public const string TwitterSnrOfficials = "https://twitter.com/SNROfficials";
+    public const string XSnrOfficials = "https://x.com/SNROfficials";
 }
 
 public static class Statics
@@ -101,4 +105,44 @@ public static class Statics
 
     // バージョン互換性
     public static readonly string[] SupportVanillaVersion = VersionInfo.SupportedVanillaVersions;
+
+    /// <summary>
+    /// Among Us の <c>Constants.GetBroadcastVersion()</c> と同じ式（InnerSloth の GetVersion）。
+    /// </summary>
+    public static int ComputeAmongUsBroadcastVersion(int year, int month, int day, int revision = 0)
+    {
+        return year * 25000 + month * 1800 + day * 50 + revision;
+    }
+
+    /// <summary>
+    /// 互換とみなす Among Us の <c>GetBroadcastVersion()</c> 値。
+    /// オンラインでは <c>main.cs</c> の Postfix で +25 されるため、その値も列挙する。
+    /// 空の場合は同一数値のみ一致とみなす。
+    /// </summary>
+    public static readonly int[] CompatibleAmongUsBroadcastVersions =
+    {
+        // v17.3.1
+        50656275,
+        50656275 + 25,
+
+        50652425,
+        50652425 + 25
+
+
+        // ComputeAmongUsBroadcastVersion(2024, 8, 10, 0),
+        // ComputeAmongUsBroadcastVersion(2024, 8, 10, 0) + 25,
+    };
+
+    /// <summary>
+    /// ローカルと相手の Among Us バージョン（GetBroadcastVersion）がプレイ可能とみなせるか。
+    /// 同一、または両方とも <see cref="CompatibleAmongUsBroadcastVersions"/> に含まれる場合に true。
+    /// </summary>
+    public static bool AreAmongUsBroadcastVersionsCompatible(int localBroadcast, int remoteBroadcast)
+    {
+        if (localBroadcast == remoteBroadcast) return true;
+        if (CompatibleAmongUsBroadcastVersions == null || CompatibleAmongUsBroadcastVersions.Length == 0)
+            return false;
+        return Array.IndexOf(CompatibleAmongUsBroadcastVersions, localBroadcast) >= 0
+            && Array.IndexOf(CompatibleAmongUsBroadcastVersions, remoteBroadcast) >= 0;
+    }
 }
