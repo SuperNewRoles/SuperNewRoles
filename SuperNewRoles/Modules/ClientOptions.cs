@@ -28,6 +28,7 @@ public static class ClientOptions
     private const float CategoryX = -3.614f;
     private const float OptionInitialY = 1.5f;
     private const float OptionX = 3.42f;
+    private const float ButtonOptionX = 0f;
     private const float OptionSpacing = 0.7f;
     private const float OptionScale = 0.4f;
     private const int RightVisibleRows = 6;
@@ -77,6 +78,10 @@ public static class ClientOptions
                     "ClientOptions.IsVersionErrorView",
                     () => ConfigRoles.IsVersionErrorView.Value,
                     value => ConfigRoles.IsVersionErrorView.Value = value),
+                ClientOptionEntry.Button(
+                    "ClientOptions.ShowOnboarding",
+                    OpenOnboardingFromClientOptions,
+                    ShouldShowOnboardingButton),
             ]),
         new(
             "ClientOptions.Category.Display",
@@ -655,11 +660,19 @@ public static class ClientOptions
             if (!option.IsVisible())
                 continue;
 
-            var optionObject = option.Kind == ClientOptionKind.Toggle
-                ? GenerateToggleOption(option)
-                : GenerateSelectOption(option);
+            var optionObject = option.Kind switch
+            {
+                ClientOptionKind.Toggle => GenerateToggleOption(option),
+                ClientOptionKind.Select => GenerateSelectOption(option),
+                ClientOptionKind.Button => GenerateButtonOption(option),
+                _ => null,
+            };
 
-            optionObject.transform.localPosition = new Vector3(OptionX, OptionInitialY - (activeCount * OptionSpacing), -0.21f);
+            if (optionObject == null)
+                continue;
+
+            float xPosition = option.Kind == ClientOptionKind.Button ? ButtonOptionX : OptionX;
+            optionObject.transform.localPosition = new Vector3(xPosition, OptionInitialY - (activeCount * OptionSpacing), -0.21f);
             activeCount++;
         }
 
@@ -683,6 +696,21 @@ public static class ClientOptions
             checkMark?.SetActive(newValue);
             RefreshCurrentCategory();
         });
+
+        return optionObject;
+    }
+
+    private static GameObject GenerateButtonOption(ClientOptionEntry option)
+    {
+        var optionObject = GameObject.Instantiate(AssetManager.GetAsset<GameObject>(CategoryButtonAssetName), _rightAreaInner);
+        optionObject.name = $"ClientOption_{option.TitleKey}";
+        optionObject.transform.localScale = Vector3.one * CategoryButtonScale;
+        UIHelper.SetText(optionObject, ModTranslation.GetString(option.TitleKey));
+        BringOptionTextToFront(optionObject);
+
+        var passiveButton = optionObject.AddComponent<PassiveButton>();
+        passiveButton.Colliders = new Collider2D[] { optionObject.GetComponent<BoxCollider2D>() };
+        ConfigureButtonOptionButton(passiveButton, optionObject, option.Invoke);
 
         return optionObject;
     }
@@ -768,6 +796,20 @@ public static class ClientOptions
         }));
     }
 
+    private static void ConfigureButtonOptionButton(PassiveButton button, GameObject optionObject, Action onClick)
+    {
+        var selectedObject = optionObject.transform.Find("Selected")?.gameObject;
+        if (selectedObject != null)
+            selectedObject.SetActive(false);
+
+        button.OnClick = new();
+        button.OnClick.AddListener((UnityAction)(() => onClick()));
+        button.OnMouseOver = new();
+        button.OnMouseOver.AddListener((UnityAction)(() => selectedObject?.SetActive(true)));
+        button.OnMouseOut = new();
+        button.OnMouseOut.AddListener((UnityAction)(() => selectedObject?.SetActive(false)));
+    }
+
     private static void UpdateSelectText(ClientOptionEntry option, TextMeshPro selectedText)
     {
         if (selectedText == null || option.Choices.Length == 0)
@@ -840,6 +882,20 @@ public static class ClientOptions
         SuperNewRolesPlugin.UpdateCPUProcessorAffinity();
     }
 
+    private static void OpenOnboardingFromClientOptions()
+    {
+        var owner = _animationOwner;
+        OnboardingPopup.RequestShowAgain();
+        CloseImmediate();
+        owner?.Close();
+    }
+
+    private static bool ShouldShowOnboardingButton()
+    {
+        return AmongUsClient.Instance == null
+            || AmongUsClient.Instance.GameState == InnerNet.InnerNetClient.GameStates.NotJoined;
+    }
+
     private sealed class ClientOptionCategory
     {
         public string TitleKey { get; }
@@ -861,6 +917,7 @@ public static class ClientOptions
         private readonly Action<bool> _setBool;
         private readonly Func<int> _getSelection;
         private readonly Action<int> _setSelection;
+        private readonly Action _onClick;
         private readonly Func<bool> _isVisible;
 
         private ClientOptionEntry(
@@ -871,6 +928,7 @@ public static class ClientOptions
             Func<int> getSelection,
             Action<int> setSelection,
             ClientOptionChoice[] choices,
+            Action onClick,
             Func<bool> isVisible)
         {
             TitleKey = titleKey;
@@ -879,6 +937,7 @@ public static class ClientOptions
             _setBool = setBool;
             _getSelection = getSelection;
             _setSelection = setSelection;
+            _onClick = onClick;
             Choices = choices ?? Array.Empty<ClientOptionChoice>();
             _isVisible = isVisible ?? (() => true);
         }
@@ -889,7 +948,7 @@ public static class ClientOptions
             Action<bool> setValue,
             Func<bool> isVisible = null)
         {
-            return new ClientOptionEntry(titleKey, ClientOptionKind.Toggle, getValue, setValue, null, null, null, isVisible);
+            return new ClientOptionEntry(titleKey, ClientOptionKind.Toggle, getValue, setValue, null, null, null, null, isVisible);
         }
 
         public static ClientOptionEntry Select(
@@ -899,7 +958,15 @@ public static class ClientOptions
             ClientOptionChoice[] choices,
             Func<bool> isVisible = null)
         {
-            return new ClientOptionEntry(titleKey, ClientOptionKind.Select, null, null, getSelection, setSelection, choices, isVisible);
+            return new ClientOptionEntry(titleKey, ClientOptionKind.Select, null, null, getSelection, setSelection, choices, null, isVisible);
+        }
+
+        public static ClientOptionEntry Button(
+            string titleKey,
+            Action onClick,
+            Func<bool> isVisible = null)
+        {
+            return new ClientOptionEntry(titleKey, ClientOptionKind.Button, null, null, null, null, null, onClick, isVisible);
         }
 
         public bool IsVisible() => _isVisible();
@@ -907,6 +974,7 @@ public static class ClientOptions
         public void SetBool(bool value) => _setBool(value);
         public int GetSelection() => _getSelection();
         public void SetSelection(int selection) => _setSelection(selection);
+        public void Invoke() => _onClick?.Invoke();
     }
 
     private readonly record struct ClientOptionChoice(string TitleKey);
@@ -915,6 +983,7 @@ public static class ClientOptions
     {
         Toggle,
         Select,
+        Button,
     }
 }
 
