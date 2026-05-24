@@ -486,17 +486,23 @@ public class CustomCosmeticsCostumeMenu : CustomCosmeticsMenuBase<CustomCosmetic
             {
                 combinedCosmetics.Add(new CosmeticDataWrapperVisor(cosmetic));
             }
-            foreach (var moddedVisor in CustomCosmeticsLoader.LoadedPackages.SelectMany(package => package.visors))
+            if (CustomCosmeticsLoader.ShouldShowModdedCosmetics)
             {
-                combinedCosmetics.Add(new ModdedVisorDataWrapper(moddedVisor));
+                foreach (var moddedVisor in CustomCosmeticsLoader.LoadedPackages.SelectMany(package => package.visors))
+                {
+                    combinedCosmetics.Add(new ModdedVisorDataWrapper(moddedVisor));
+                }
             }
             ICosmeticData getVisor()
             {
                 if (!DataManager.Player.Customization.Visor.StartsWith(CustomCosmeticsLoader.ModdedPrefix))
                     return new CosmeticDataWrapperVisor(FastDestroyableSingleton<HatManager>.Instance.GetVisorById(DataManager.Player.Customization.Visor));
-                var moddedVisor = CustomCosmeticsLoader.GetModdedVisor(DataManager.Player.Customization.Visor);
-                if (moddedVisor != null)
-                    return new ModdedVisorDataWrapper(moddedVisor);
+                if (CustomCosmeticsLoader.ShouldShowModdedCosmetics)
+                {
+                    var moddedVisor = CustomCosmeticsLoader.GetModdedVisor(DataManager.Player.Customization.Visor);
+                    if (moddedVisor != null)
+                        return new ModdedVisorDataWrapper(moddedVisor);
+                }
                 return new CosmeticDataWrapperVisor(FastDestroyableSingleton<HatManager>.Instance.GetVisorById("visor_NoVisor"));
             }
             ShowCostumeTab(CostumeTabType.Visor1, obj, combinedCosmetics, getVisor, (cosmetic) =>
@@ -525,17 +531,23 @@ public class CustomCosmeticsCostumeMenu : CustomCosmeticsMenuBase<CustomCosmetic
             {
                 combinedCosmetics.Add(new CosmeticDataWrapperHat(cosmetic));
             }
-            foreach (var moddedHat in CustomCosmeticsLoader.LoadedPackages.SelectMany(package => package.hats))
+            if (CustomCosmeticsLoader.ShouldShowModdedCosmetics)
             {
-                combinedCosmetics.Add(new ModdedHatDataWrapper(moddedHat));
+                foreach (var moddedHat in CustomCosmeticsLoader.LoadedPackages.SelectMany(package => package.hats))
+                {
+                    combinedCosmetics.Add(new ModdedHatDataWrapper(moddedHat));
+                }
             }
             ICosmeticData getHat()
             {
                 if (!DataManager.Player.Customization.Hat.StartsWith(CustomCosmeticsLoader.ModdedPrefix))
                     return new CosmeticDataWrapperHat(FastDestroyableSingleton<HatManager>.Instance.GetHatById(DataManager.Player.Customization.Hat));
-                var moddedHat = CustomCosmeticsLoader.GetModdedHat(DataManager.Player.Customization.Hat);
-                if (moddedHat != null)
-                    return new ModdedHatDataWrapper(moddedHat);
+                if (CustomCosmeticsLoader.ShouldShowModdedCosmetics)
+                {
+                    var moddedHat = CustomCosmeticsLoader.GetModdedHat(DataManager.Player.Customization.Hat);
+                    if (moddedHat != null)
+                        return new ModdedHatDataWrapper(moddedHat);
+                }
                 return new CosmeticDataWrapperHat(FastDestroyableSingleton<HatManager>.Instance.GetHatById("hat_NoHat"));
             }
             ShowCostumeTab(CostumeTabType.Hat1, obj, combinedCosmetics, getHat, (cosmetic) =>
@@ -564,9 +576,12 @@ public class CustomCosmeticsCostumeMenu : CustomCosmeticsMenuBase<CustomCosmetic
             {
                 combinedCosmetics.Add(new CosmeticDataWrapperVisor(cosmetic));
             }
-            foreach (var moddedVisor in CustomCosmeticsLoader.LoadedPackages.SelectMany(package => package.visors))
+            if (CustomCosmeticsLoader.ShouldShowModdedCosmetics)
             {
-                combinedCosmetics.Add(new ModdedVisorDataWrapper(moddedVisor));
+                foreach (var moddedVisor in CustomCosmeticsLoader.LoadedPackages.SelectMany(package => package.visors))
+                {
+                    combinedCosmetics.Add(new ModdedVisorDataWrapper(moddedVisor));
+                }
             }
 
             ICosmeticData getVisor()
@@ -577,9 +592,12 @@ public class CustomCosmeticsCostumeMenu : CustomCosmeticsMenuBase<CustomCosmetic
                 {
                     if (CustomCosmeticsSaver.CurrentVisor2Id.StartsWith(CustomCosmeticsLoader.ModdedPrefix))
                     {
-                        var moddedVisor = CustomCosmeticsLoader.GetModdedVisor(CustomCosmeticsSaver.CurrentVisor2Id);
-                        if (moddedVisor != null)
-                            return new ModdedVisorDataWrapper(moddedVisor);
+                        if (CustomCosmeticsLoader.ShouldShowModdedCosmetics)
+                        {
+                            var moddedVisor = CustomCosmeticsLoader.GetModdedVisor(CustomCosmeticsSaver.CurrentVisor2Id);
+                            if (moddedVisor != null)
+                                return new ModdedVisorDataWrapper(moddedVisor);
+                        }
                         return new CosmeticDataWrapperVisor(FastDestroyableSingleton<HatManager>.Instance.GetVisorById("visor_NoVisor"));
                     }
                     else
@@ -615,9 +633,12 @@ public class CustomCosmeticsCostumeMenu : CustomCosmeticsMenuBase<CustomCosmetic
                 combinedCosmetics.Add(new CosmeticDataWrapperHat(cosmetic));
             }
 
-            foreach (var moddedHat in CustomCosmeticsLoader.moddedHats.Values)
+            if (CustomCosmeticsLoader.ShouldShowModdedCosmetics)
             {
-                combinedCosmetics.Add(new ModdedHatDataWrapper(moddedHat));
+                foreach (var moddedHat in CustomCosmeticsLoader.moddedHats.Values)
+                {
+                    combinedCosmetics.Add(new ModdedHatDataWrapper(moddedHat));
+                }
             }
             ICosmeticData getHat()
             {
@@ -627,9 +648,12 @@ public class CustomCosmeticsCostumeMenu : CustomCosmeticsMenuBase<CustomCosmetic
                 {
                     if (CustomCosmeticsSaver.CurrentHat2Id.StartsWith(CustomCosmeticsLoader.ModdedPrefix))
                     {
-                        var moddedHat = CustomCosmeticsLoader.GetModdedHat(CustomCosmeticsSaver.CurrentHat2Id);
-                        if (moddedHat != null)
-                            return new ModdedHatDataWrapper(moddedHat);
+                        if (CustomCosmeticsLoader.ShouldShowModdedCosmetics)
+                        {
+                            var moddedHat = CustomCosmeticsLoader.GetModdedHat(CustomCosmeticsSaver.CurrentHat2Id);
+                            if (moddedHat != null)
+                                return new ModdedHatDataWrapper(moddedHat);
+                        }
                         return new CosmeticDataWrapperHat(FastDestroyableSingleton<HatManager>.Instance.GetHatById("hat_NoHat"));
                     }
                     else
@@ -1451,11 +1475,18 @@ public class CustomCosmeticsCostumeMenu : CustomCosmeticsMenuBase<CustomCosmetic
         ICosmeticData visor1Data;
         if (DataManager.Player.Customization.Visor.StartsWith(CustomCosmeticsLoader.ModdedPrefix))
         {
-            var moddedVisor = CustomCosmeticsLoader.GetModdedVisor(DataManager.Player.Customization.Visor);
-            if (moddedVisor != null)
-                visor1Data = new ModdedVisorDataWrapper(moddedVisor);
+            if (CustomCosmeticsLoader.ShouldShowModdedCosmetics)
+            {
+                var moddedVisor = CustomCosmeticsLoader.GetModdedVisor(DataManager.Player.Customization.Visor);
+                if (moddedVisor != null)
+                    visor1Data = new ModdedVisorDataWrapper(moddedVisor);
+                else
+                    visor1Data = new CosmeticDataWrapperVisor(FastDestroyableSingleton<HatManager>.Instance.GetVisorById("visor_NoVisor"));
+            }
             else
-                visor1Data = new CosmeticDataWrapperVisor(FastDestroyableSingleton<HatManager>.Instance.GetVisorById(DataManager.Player.Customization.Visor));
+            {
+                visor1Data = new CosmeticDataWrapperVisor(FastDestroyableSingleton<HatManager>.Instance.GetVisorById("visor_NoVisor"));
+            }
         }
         else
         {
@@ -1467,11 +1498,18 @@ public class CustomCosmeticsCostumeMenu : CustomCosmeticsMenuBase<CustomCosmetic
         ICosmeticData hat1Data;
         if (DataManager.Player.Customization.Hat.StartsWith(CustomCosmeticsLoader.ModdedPrefix))
         {
-            var moddedHat = CustomCosmeticsLoader.GetModdedHat(DataManager.Player.Customization.Hat);
-            if (moddedHat != null)
-                hat1Data = new ModdedHatDataWrapper(moddedHat);
+            if (CustomCosmeticsLoader.ShouldShowModdedCosmetics)
+            {
+                var moddedHat = CustomCosmeticsLoader.GetModdedHat(DataManager.Player.Customization.Hat);
+                if (moddedHat != null)
+                    hat1Data = new ModdedHatDataWrapper(moddedHat);
+                else
+                    hat1Data = new CosmeticDataWrapperHat(FastDestroyableSingleton<HatManager>.Instance.GetHatById("hat_NoHat"));
+            }
             else
+            {
                 hat1Data = new CosmeticDataWrapperHat(FastDestroyableSingleton<HatManager>.Instance.GetHatById("hat_NoHat"));
+            }
         }
         else
         {
@@ -1487,11 +1525,18 @@ public class CustomCosmeticsCostumeMenu : CustomCosmeticsMenuBase<CustomCosmetic
         }
         else if (CustomCosmeticsSaver.CurrentVisor2Id.StartsWith(CustomCosmeticsLoader.ModdedPrefix))
         {
-            var moddedVisor = CustomCosmeticsLoader.GetModdedVisor(CustomCosmeticsSaver.CurrentVisor2Id);
-            if (moddedVisor != null)
-                visor2Data = new ModdedVisorDataWrapper(moddedVisor);
+            if (CustomCosmeticsLoader.ShouldShowModdedCosmetics)
+            {
+                var moddedVisor = CustomCosmeticsLoader.GetModdedVisor(CustomCosmeticsSaver.CurrentVisor2Id);
+                if (moddedVisor != null)
+                    visor2Data = new ModdedVisorDataWrapper(moddedVisor);
+                else
+                    visor2Data = new CosmeticDataWrapperVisor(FastDestroyableSingleton<HatManager>.Instance.GetVisorById("visor_EmptyVisor"));
+            }
             else
+            {
                 visor2Data = new CosmeticDataWrapperVisor(FastDestroyableSingleton<HatManager>.Instance.GetVisorById("visor_EmptyVisor"));
+            }
         }
         else
         {
@@ -1507,11 +1552,18 @@ public class CustomCosmeticsCostumeMenu : CustomCosmeticsMenuBase<CustomCosmetic
         }
         else if (CustomCosmeticsSaver.CurrentHat2Id.StartsWith(CustomCosmeticsLoader.ModdedPrefix))
         {
-            var moddedHat = CustomCosmeticsLoader.GetModdedHat(CustomCosmeticsSaver.CurrentHat2Id);
-            if (moddedHat != null)
-                hat2Data = new ModdedHatDataWrapper(moddedHat);
+            if (CustomCosmeticsLoader.ShouldShowModdedCosmetics)
+            {
+                var moddedHat = CustomCosmeticsLoader.GetModdedHat(CustomCosmeticsSaver.CurrentHat2Id);
+                if (moddedHat != null)
+                    hat2Data = new ModdedHatDataWrapper(moddedHat);
+                else
+                    hat2Data = new CosmeticDataWrapperHat(FastDestroyableSingleton<HatManager>.Instance.GetHatById("hat_NoHat"));
+            }
             else
+            {
                 hat2Data = new CosmeticDataWrapperHat(FastDestroyableSingleton<HatManager>.Instance.GetHatById("hat_NoHat"));
+            }
         }
         else
         {
