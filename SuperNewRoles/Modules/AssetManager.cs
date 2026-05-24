@@ -203,6 +203,8 @@ public static class AssetManager
             Logger.Warning($"Failed to read assembly stamp: {e.Message}", "LoadAssetBundle");
         }
 
+        Logger.Info($"Android AssetBundle assembly stamp source: location='{assemblyLocation}', length={assemblyLength}, lastWriteTimeUtcTicks={assemblyTicks}", "LoadAssetBundle");
+
         return string.Join("\n", resourceName, assembly.FullName, assemblyLocation, assemblyLength.ToString(), assemblyTicks.ToString());
     }
 

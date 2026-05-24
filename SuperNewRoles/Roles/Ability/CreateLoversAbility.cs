@@ -55,7 +55,7 @@ public class CreateLoversAbility : TargetCustomButtonBase
 
     public override bool CheckIsAvailable()
     {
-        return Player.IsAlive() && Target != null;
+        return Player.IsAlive() && Player.Player.CanMove && Target != null;
     }
 
     public override bool CheckHasButton()
