@@ -1,7 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Text.Json;
+using SuperNewRoles.Modules;
 
 namespace SuperNewRoles.RequestInGame;
 
@@ -23,7 +23,6 @@ public record RequestInGameDraft(string Title, string Description, string Map, s
 public static class RequestInGameDraftStore
 {
     private const string SaveFileName = "RequestInGameDrafts.json";
-    private static readonly JsonSerializerOptions JsonSerializerOptions = new() { WriteIndented = true };
     private static string testSaveFilePath;
 
     public static RequestInGameDraft Load(RequestInGameType requestInGameType)
@@ -84,10 +83,18 @@ public static class RequestInGameDraftStore
         try
         {
             string json = File.ReadAllText(saveFilePath);
-            return JsonSerializer.Deserialize<Dictionary<string, RequestInGameDraft>>(json)
-                ?? new Dictionary<string, RequestInGameDraft>();
+            if (JsonParser.Parse(json) is not Dictionary<string, object> parsed)
+                return new Dictionary<string, RequestInGameDraft>();
+
+            Dictionary<string, RequestInGameDraft> drafts = new();
+            foreach (var pair in parsed)
+            {
+                if (pair.Value is Dictionary<string, object> draftDict)
+                    drafts[pair.Key] = ParseDraft(draftDict);
+            }
+            return drafts;
         }
-        catch (Exception ex) when (ex is IOException || ex is UnauthorizedAccessException || ex is JsonException)
+        catch (Exception ex) when (ex is IOException || ex is UnauthorizedAccessException || ex is JsonParseException)
         {
             return new Dictionary<string, RequestInGameDraft>();
         }
@@ -109,7 +116,7 @@ public static class RequestInGameDraftStore
                 return;
             }
 
-            string json = JsonSerializer.Serialize(drafts, JsonSerializerOptions);
+            string json = JsonParser.Serialize(SerializeDrafts(drafts));
             File.WriteAllText(saveFilePath, json);
         }
         catch (Exception)
@@ -129,5 +136,43 @@ public static class RequestInGameDraftStore
             draft.Map ?? string.Empty,
             draft.Role ?? string.Empty,
             draft.Timing ?? string.Empty);
+    }
+
+    private static Dictionary<string, object> SerializeDrafts(Dictionary<string, RequestInGameDraft> drafts)
+    {
+        Dictionary<string, object> serializedDrafts = new();
+        foreach (var pair in drafts)
+            serializedDrafts[pair.Key] = SerializeDraft(pair.Value);
+        return serializedDrafts;
+    }
+
+    private static Dictionary<string, object> SerializeDraft(RequestInGameDraft draft)
+    {
+        draft = Normalize(draft);
+        return new Dictionary<string, object>
+        {
+            ["Title"] = draft.Title,
+            ["Description"] = draft.Description,
+            ["Map"] = draft.Map,
+            ["Role"] = draft.Role,
+            ["Timing"] = draft.Timing
+        };
+    }
+
+    private static RequestInGameDraft ParseDraft(Dictionary<string, object> draft)
+    {
+        return Normalize(new RequestInGameDraft(
+            GetString(draft, "Title"),
+            GetString(draft, "Description"),
+            GetString(draft, "Map"),
+            GetString(draft, "Role"),
+            GetString(draft, "Timing")));
+    }
+
+    private static string GetString(Dictionary<string, object> dict, string key)
+    {
+        return dict.TryGetValue(key, out object value) && value is string stringValue
+            ? stringValue
+            : string.Empty;
     }
 }
