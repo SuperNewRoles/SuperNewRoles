@@ -84,6 +84,7 @@ public class VentTrapperAbility : CustomButtonBase, IButtonEffect, IAbilityCount
     public override ShowTextType showTextType => ShowTextType.ShowWithCount;
     public override bool CheckHasButton() => base.CheckHasButton() && Count > 0;
     private EventListener<PlayerPhysicsFixedUpdateEventData> _fixedUpdateEvent;
+    private EventListener<MeetingStartEventData> _meetingStartEvent;
     private Vector3 _lastPosition;
     public override bool CheckIsAvailable()
     {
@@ -109,12 +110,14 @@ public class VentTrapperAbility : CustomButtonBase, IButtonEffect, IAbilityCount
     {
         base.AttachToLocalPlayer();
         _fixedUpdateEvent = PlayerPhysicsFixedUpdateEvent.Instance.AddListener(OnFixedUpdate);
+        _meetingStartEvent = MeetingStartEvent.Instance.AddListener(OnMeetingStart);
     }
 
     public override void DetachToLocalPlayer()
     {
         base.DetachToLocalPlayer();
         _fixedUpdateEvent?.RemoveListener();
+        _meetingStartEvent?.RemoveListener();
     }
 
     private void OnFixedUpdate(PlayerPhysicsFixedUpdateEventData data)
@@ -125,6 +128,11 @@ public class VentTrapperAbility : CustomButtonBase, IButtonEffect, IAbilityCount
             Player.Player.transform.position = _lastPosition;
             data.Instance.body.velocity = Vector2.zero;
         }
+    }
+
+    private void OnMeetingStart(MeetingStartEventData data)
+    {
+        CancelPlanting();
     }
 
     private void OnVentUsePrefix(PlayerPhysicsRpcEnterVentPrefixEventData data)
@@ -169,6 +177,14 @@ public class VentTrapperAbility : CustomButtonBase, IButtonEffect, IAbilityCount
         batu.AddComponent<SpriteRenderer>().sprite = AssetManager.GetAsset<Sprite>("VentTrapped.png");
         SetTrapRPC(_targetVent.Id);
         ResetTimer();
+    }
+
+    private void CancelPlanting()
+    {
+        if (!isEffectActive) return;
+
+        ResetTimer();
+        _targetVent = null;
     }
 
     private bool TryGetNearbyVent(IEnumerable<Vent> vents, out Vent vent)
