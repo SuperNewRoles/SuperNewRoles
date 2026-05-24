@@ -7,6 +7,7 @@ public static class GeneralSettingOptions
 {
     [CustomOptionBool("KickPlatformPlayers", false, parentFieldName: nameof(Categories.GeneralSettings))]
     public static bool KickPlatformPlayers;
+  
     [CustomOptionBool("KickPCPlayers", false, parentFieldName: nameof(KickPlatformPlayers))]
     public static bool KickPCPlayers;
     [CustomOptionBool("KickAndroidPlayers", false, parentFieldName: nameof(KickPlatformPlayers))]
