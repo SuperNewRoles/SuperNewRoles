@@ -115,6 +115,7 @@ DeviceOptionType.Restrict,時間制限,Time Limit,时间限制,時間限制
 DeviceTimeSettingAdmin,アドミンの制限時間,Admin Limit Time,管理地图限制时间,管理地圖限制時間
 DeviceTimeSettingVitalOrDoorLog,バイタル・ドアログの制限時間,Vital/Doorlog Limit Time,生命体征/门禁记录限制时间,生命體徵/門禁記錄限制時間
 DeviceTimeSettingCamera,カメラの制限時間,Camera Limit Time,摄像头限制时间,監視器限制時間
+AllowSimultaneousScanTask,スキャンタスクを同時に出来る,Allow simultaneous scan tasks,允许同时进行扫描任务,允許同時進行掃描任務
 
 NeutralSubIntro,自分のことだけ考えろ。他人のことは利用せよ。,Think only about yourself. Use others.,只考虑自己，利用他人,只考慮自己。利用他人。
 
@@ -145,6 +146,14 @@ WaitingSpawnText,ロドー中... 残り:{0}/{1}クルー,Waiting... {0}/{1} Crew
 # GameSettings
 CannotTaskTrigger,タスクに関係ない役職の場合、タスクをできなくする,Disable tasks for non-task-related roles,如果职业与任务无关，则无法完成任务,如果职业與任務無關，則無法完成任務
 CursedTaskOption,呪いタスク,Cursed Tasks,诅咒任务,詛咒任務
+ExcludeSpecificTasksFromSelection,特定のタスクを選出しない,Exclude specific tasks from selection,不选择特定任务,不選擇特定任務
+ExcludeUnlockSafeTaskFromSelection,金庫タスクを選出しない,Exclude safe task from selection,不选择保险柜任务,不選擇保險箱任務
+ExcludeResetBreakersTaskFromSelection,レバータスクを選出しない,Exclude lever task from selection,不选择拉杆任务,不選擇拉桿任務
+ExcludeCatchFishTaskFromSelection,釣りタスクを選出しない,Exclude fishing task from selection,不选择钓鱼任务,不選擇釣魚任務
+ExcludeUploadDataTaskFromSelection,ダウンロードタスクを選出しない,Exclude download task from selection,不选择下载任务,不選擇下載任務
+ExcludeVentCleaningTaskFromSelection,ベント掃除タスクを選出しない,Exclude vent cleaning task from selection,不选择清理通风口任务,不選擇清理通風口任務
+ExcludeSubmitScanTaskFromSelection,クルーメイトスキャンタスクを選出しない,Exclude crewmate scan task from selection,不选择船员扫描任务,不選擇船員掃描任務
+RandomizeFixLightsSwitches,停電修理の初期状態を完全にランダムにする,Fully randomize lights repair switches,完全随机化修灯开关,完全隨機化修燈開關
 SyncSpawn,スポーンを同期する(選択スポーンのみ),Sync Spawn (Selected Spawn Only),同步出生点(仅选择出生点),同步出生點(僅選擇出生點)
 AdvancedRandom,よりランダムな乱数を使用する,Use Enhanced Randomness,使用增强型随机数,使用更隨機的隨機數
 DisableTaskWin,タスク勝利を無効にする,Disable task victory,禁用任务胜利,禁用任務勝利
@@ -224,6 +233,24 @@ OnboardingEnjoyBody,<size=150%>これで全ての準備が整いました。\n\n
 # ClientOptions
 ClientOptionsVanilla,バニラ設定,Vanilla Settings,原版设置,原版設定
 ClientOptionsMod,Mod設定,Mod Settings,模组设置,模組設定
+ClientOptions.Title,Mod設定,Mod Settings,模组设置,模組設定
+ClientOptions.Category.General,一般,General,常规,一般
+ClientOptions.Category.Display,表示/演出,Display / Effects,显示/演出,顯示/演出
+ClientOptions.Category.Network,通信/データ,Network / Data,通信/数据,通訊/資料
+ClientOptions.Category.Performance,パフォーマンス,Performance,性能,效能
+ClientOptions.AutoCopyGameCode,ルームコードを自動コピー,Auto copy room code,自动复制房间代码,自動複製房間代碼
+ClientOptions.IsSendAnalytics,解析データを送信,Send usage analytics,发送使用情况数据,傳送使用狀況資料
+ClientOptions.IsVersionErrorView,同期エラーを表示,Show sync errors,显示同步错误,顯示同步錯誤
+ClientOptions.IsModCosmeticsAreNotLoaded,カスタムコスメを読み込まない,Do not load custom cosmetics,不加载自定义装扮,不載入自訂裝扮
+ClientOptions.IsNotUsingBlood,血の色を黒にする,Make blood black,将血液显示为黑色,將血液顯示為黑色
+ClientOptions.IsLightAndDarker,会議で明暗アイコンを表示,Show light/dark icon in meetings,会议中显示明暗图标,會議中顯示明暗圖示
+ClientOptions.CompressCosmetics,コスメ画像を圧縮,Compress cosmetic images,压缩装扮图片,壓縮裝扮圖片
+ClientOptions.IsMuteLobbyBGM,ロビーBGMを再生しない,Disable lobby BGM,不播放大厅BGM,不播放大廳BGM
+ClientOptions.CanUseDataConnection,モバイル回線でコスメを取得,Download cosmetics on mobile data,使用移动数据下载装扮,使用行動資料下載裝扮
+ClientOptions.CPUProcessorAffinity,CPU使用コアを制限,Limit CPU cores,限制CPU核心使用,限制CPU核心使用
+ClientOptions.ProcessorAffinityMask,使用するCPUコア数,CPU cores to use,要使用的CPU核心数,要使用的CPU核心數
+ClientOptions.ProcessorAffinityMask.OneCore,1コア,1 core,1核,1核心
+ClientOptions.ProcessorAffinityMask.TwoCores,2コア,2 cores,2核,2核心
 
 # winners
 Winners.NoData,データがありません,No data,没有数据,沒有數據
@@ -261,6 +288,8 @@ RequestInGameSendDescriptionGray,メッセージ,Message,消息,訊息
 RequestInGameSendDescriptionBack,メッセージを入力してください(10文字以上),Please enter a message (at least 10 characters),请输入消息（至少10个字符）,請輸入訊息（至少10個字元）
 RequestInGameAgreement,利用規約はこちら,Terms of Service,服务条款,利用規約在這裡
 RequestInGameSendButton,同意して送信,Send with agreement,同意并发送,同意後發送
+RequestInGameClearButton,入力クリア,Clear input,清除输入,清除輸入
+RequestInGameClearConfirmButton,本当にクリアしますか？,Are you sure you want to clear?,确定要清除吗？,確定要清除嗎？
 RequestInGameSendMapGray,マップ,Map,地图,地圖
 RequestInGameSendMapBack,バグが発生したマップ(ゲーム内でなければその他でも可),The map where the bug occurred (if not in the game，it can also be other),发生错误的地图（若不在游戏中，也可指其他场景）,The map where the bug occurred (如果不在遊戲中，也可以是其他)
 RequestInGameSendRoleGray,役職・機能,Role/Feature,职业/功能,职业/功能
@@ -335,6 +364,13 @@ DisableGapRoomShadowForNonImpostor,インポスター視界のプレイヤー以
 PresetDefault,プリセット {0},Preset {0},预设 {0},預設 {0}
 PresetSelected,プリセット {0},Preset {0},预设 {0},預設 {0}
 AddPreset,プリセットを追加,Add Preset,新增预设,新增預設
+PresetImportButton,インポート,Import,导入,匯入
+PresetExportCurrentButton,現在をエクスポート,Export Current,导出当前,匯出目前
+PresetExportAllButton,全てをエクスポート,Export All,导出全部,匯出全部
+PresetExportSelectedButton,選択をエクスポート,Export Selected,导出所选,匯出所選
+PresetExportingButton,エクスポート中,Exporting,导出中,匯出中
+PresetExportCompletedButton,エクスポート完了！,Export complete!,导出完成！,匯出完成！
+PresetAndroidFilePickerDisconnectWarning,Androidではファイル選択が長いと切断される場合があります。,On Android staying in the file picker for too long may disconnect you.,在 Android 上文件选择时间过长可能会断开连接。,在 Android 上檔案選擇時間過長可能會斷線。
 PresetMenuTitle,プリセット,Preset,预设,預設
 PresetPleaseInput,ここにプリセット名を入力,Please enter preset name here,请输入预设名称,請在此輸入預設名稱
 PresetSettings.NowPreset,現在のプリセット:,Current Preset:,当前预设:,現在的預設:

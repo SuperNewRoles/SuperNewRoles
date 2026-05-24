@@ -76,7 +76,7 @@ public class CursedSafeTask
         public static bool CheckTumblrPrefix(SafeMinigame __instance, float delta, float tumRotZ, int unlatched, int expected)
         {
             if (!Main.IsCursed)
-                return !TryLatchSecondNumber(__instance, delta, tumRotZ, unlatched, expected);
+                return true;
 
             float num = __instance.lastTumDir;
             float num2 = -Mathf.Sign(delta);
@@ -127,32 +127,6 @@ public class CursedSafeTask
                 }
             }
             return false;
-        }
-
-        private static bool TryLatchSecondNumber(SafeMinigame instance, float delta, float tumRotZ, int unlatched, int expected)
-        {
-            if (unlatched != 1) return false;
-            if (instance.combo == null || instance.combo.Length != 3) return false;
-            if (instance.latched == null || instance.latched.Length != 3) return false;
-            if (instance.latched[unlatched]) return false;
-
-            float direction = instance.lastTumDir;
-            if (direction == 0f) return false;
-            if (!instance.AngleNear(tumRotZ + 45f, direction, expected, 5f)) return false;
-
-            instance.latched[unlatched] = true;
-            instance.UpdateComboInstructions();
-
-            if (Constants.ShouldPlaySfx())
-            {
-                SoundManager.Instance.PlaySound(instance.DialGoodSound, false, 1f, null);
-            }
-
-            float newDirection = -Mathf.Sign(delta);
-            if (newDirection != 0f)
-                instance.reversalBuffer = 0.15f * -newDirection;
-
-            return true;
         }
     }
 }

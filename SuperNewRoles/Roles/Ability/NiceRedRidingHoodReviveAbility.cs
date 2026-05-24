@@ -53,13 +53,15 @@ public class NiceRedRidingHoodReviveAbility : AbilityBase, IAbilityCount
 
     private void OnMurderEvent(MurderEventData data)
     {
-        // 自分が殺された場合、キラーを記録
-        if (data.target == Player && data.killer != Player && RemainingReviveCount > 0)
-        {
-            Killer = data.killer;
-            IsRevivable = true;
-            Logger.Info($"ナイス赤ずきん {Player.Player.name} がキラー {Killer.Player.name} に殺されました", "NiceRedRidingHood");
-        }
+        if (data.target != Player || RemainingReviveCount <= 0 || !data.resultFlags.HasFlag(MurderResultFlags.Succeeded))
+            return;
+
+        if (TrySetKiller(data.killer))
+            return;
+
+        // 一部のカスタム死亡は MurderEvent 上では自殺扱いになるため、
+        // CustomDeath 側の MurderData 登録後に実キラーを解決する。
+        new LateTask(TrySetKillerFromMurderData, 0f, "NiceRedRidingHoodResolveKiller", log: false);
     }
 
     private void OnWrapUpEvent(WrapUpEventData data)
@@ -91,10 +93,33 @@ public class NiceRedRidingHoodReviveAbility : AbilityBase, IAbilityCount
 
         RemainingReviveCount--;
         IsRevivable = false;
+        MurderDataManager.RevivedMurderData(Player);
         Killer = null;
         Player.Data.IsDead = false;
 
         Logger.Info($"復活完了 残り復活回数: {RemainingReviveCount}", "NiceRedRidingHood");
+    }
+
+    private bool TrySetKiller(ExPlayerControl killer)
+    {
+        if (killer == null || killer == Player)
+            return false;
+
+        Killer = killer;
+        IsRevivable = true;
+        Logger.Info($"ナイス赤ずきん {Player.Player.name} がキラー {Killer.Player.name} に殺されました", "NiceRedRidingHood");
+        return true;
+    }
+
+    private void TrySetKillerFromMurderData()
+    {
+        if (IsRevivable || RemainingReviveCount <= 0 || Player.IsAlive())
+            return;
+
+        if (MurderDataManager.TryGetMurderData(Player, out var murderData))
+        {
+            TrySetKiller(murderData.Killer);
+        }
     }
 }
 
@@ -115,8 +140,8 @@ public class NiceRedRidingHoodGhostAbility : AbilityBase
         if (_reviveAbility != null)
         {
             // 復活可能な場合は役職表示とHaunt能力を無効化
-            _disableHauntAbility = new DisibleHauntAbility(() => _reviveAbility.RemainingReviveCount > 0 && _reviveAbility.Killer != Player);
-            _hideRoleOnGhostAbility = new HideRoleOnGhostAbility((player) => _reviveAbility.RemainingReviveCount > 0 && _reviveAbility.Killer != Player);
+            _disableHauntAbility = new DisibleHauntAbility(() => _reviveAbility.IsRevivable);
+            _hideRoleOnGhostAbility = new HideRoleOnGhostAbility((player) => _reviveAbility.IsRevivable);
 
             Player.AttachAbility(_disableHauntAbility, new AbilityParentAbility(this));
             Player.AttachAbility(_hideRoleOnGhostAbility, new AbilityParentAbility(this));
