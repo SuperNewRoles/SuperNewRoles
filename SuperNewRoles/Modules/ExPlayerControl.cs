@@ -505,7 +505,7 @@ public class ExPlayerControl
         // ToArray()を使わずに直接リストから収集
         foreach (var ability in PlayerAbilities)
         {
-            if (ability != null && ability.Parent != null && ability.Parent is not AbilityParentPlayer)
+            if (ability != null && IsRoleAbility(ability.Parent))
             {
                 myAbilities.Add((ability, ability.AbilityId));
             }
@@ -513,7 +513,7 @@ public class ExPlayerControl
 
         foreach (var ability in target.PlayerAbilities)
         {
-            if (ability != null && ability.Parent != null && ability.Parent is not AbilityParentPlayer)
+            if (ability != null && IsRoleAbility(ability.Parent))
             {
                 targetAbilities.Add((ability, ability.AbilityId));
             }
@@ -553,21 +553,56 @@ public class ExPlayerControl
         foreach (var ability in myAbilities)
         {
             var currentParent = ability.ability.Parent;
-            if (currentParent is not AbilityParentRole)
+            if (!TryMoveRoleParent(currentParent, target))
                 continue;
-            currentParent.Player = target; // targetにAttachするのでParent.Playerはtarget
             target.AttachAbility(ability.ability, currentParent);
         }
         foreach (var ability in targetAbilities)
         {
             var currentParent = ability.ability.Parent;
-            if (currentParent is not AbilityParentRole)
+            if (!TryMoveRoleParent(currentParent, this))
                 continue;
-            currentParent.Player = this; // thisにAttachするのでParent.Playerはthis
             AttachAbility(ability.ability, currentParent);
         }
         // 名前情報を更新
         NameText.UpdateAllNameInfo();
+    }
+
+    private static bool IsRoleAbility(AbilityParentBase parent)
+    {
+        while (parent != null)
+        {
+            switch (parent)
+            {
+                case AbilityParentRole:
+                    return true;
+                case AbilityParentAbility parentAbility when parentAbility.ParentAbility != null:
+                    parent = parentAbility.ParentAbility.Parent;
+                    continue;
+                default:
+                    return false;
+            }
+        }
+        return false;
+    }
+
+    private static bool TryMoveRoleParent(AbilityParentBase parent, ExPlayerControl player)
+    {
+        while (parent != null)
+        {
+            switch (parent)
+            {
+                case AbilityParentRole parentRole:
+                    parentRole.Player = player;
+                    return true;
+                case AbilityParentAbility parentAbility when parentAbility.ParentAbility != null:
+                    parent = parentAbility.ParentAbility.Parent;
+                    continue;
+                default:
+                    return false;
+            }
+        }
+        return false;
     }
     public void Disconnected()
     {
