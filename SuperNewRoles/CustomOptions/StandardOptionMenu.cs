@@ -208,7 +208,10 @@ public static class StandardOptionMenu
     }
     private static void ConfigureNowPresetText(GameObject presetMenu)
     {
-        var nowPresetText = presetMenu?.transform?.Find("NowPreset")?.gameObject;
+        if (presetMenu == null)
+            return;
+
+        var nowPresetText = presetMenu.transform.Find("NowPreset")?.gameObject;
         if (nowPresetText == null)
             return;
         nowPresetText.transform.Find("StaticText").GetComponent<TextMeshPro>().text = ModTranslation.GetString("PresetSettings.NowPreset");
@@ -216,14 +219,20 @@ public static class StandardOptionMenu
     }
     private static void UpdateNowPresetText(GameObject presetMenu)
     {
-        var nowPresetText = presetMenu?.transform?.Find("NowPreset")?.gameObject;
+        if (presetMenu == null)
+            return;
+
+        var nowPresetText = presetMenu.transform.Find("NowPreset")?.gameObject;
         if (nowPresetText == null)
             return;
         nowPresetText.transform.Find("NowPresetText").GetComponent<TextMeshPro>().text = CustomOptionSaver.GetPresetName(CustomOptionSaver.CurrentPreset);
     }
     private static void ConfigurePresetTitle(GameObject presetMenu)
     {
-        var presetTitle = presetMenu?.transform?.Find("PresetTitle")?.gameObject;
+        if (presetMenu == null)
+            return;
+
+        var presetTitle = presetMenu.transform.Find("PresetTitle")?.gameObject;
         if (presetTitle == null)
             return;
         UIHelper.SetText(presetTitle, ModTranslation.GetString("PresetSettings"));
@@ -676,7 +685,10 @@ public static class StandardOptionMenu
         GameObject presetMenu = null;
         menuData.StandardOptionMenus?.TryGetValue(Categories.Categories.PresetSettings.Name, out presetMenu);
         presetMenu ??= menuData.CurrentOptionMenu;
-        return presetMenu?.transform.Find("SubmitPreset/ExportPresetsButton")?.gameObject;
+        if (presetMenu == null)
+            return null;
+
+        return presetMenu.transform.Find("SubmitPreset/ExportPresetsButton")?.gameObject;
     }
 
     private static void SetPresetExportButtonState(PresetExportButtonState state)
