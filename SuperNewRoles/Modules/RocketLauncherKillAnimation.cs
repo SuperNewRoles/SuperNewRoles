@@ -9,14 +9,15 @@ public sealed class RocketLauncherKillAnimation : ICustomKillAnimation
 {
     private const string ProjectileSpriteName = "RocketLauncherProjectile.png";
     private const string ExplosionPrefabName = "RocketLauncherExplosion";
-    private const string ShootSoundName = "RocketLauncherShoot.wav";
+    private const string ShootSoundName = "RocketLauncherShot.wav";
+    private const string ExplosionSoundName = "RocketLauncherExplosion.wav";
 
     private const float LaunchStartTime = 0.42f;
     private const float ExplosionStartTime = 1.45f;
     private const float ExplosionFadeStartTime = 2.12f;
     private const float EndTime = 2.75f;
-    private const float ProjectileStartScale = 0.85f * 1.1f;
-    private const float ProjectileEndScale = 0.62f * 1.1f;
+    private const float ProjectileStartScale = 0.85f * 1.2f;
+    private const float ProjectileEndScale = 0.62f * 1.2f;
     private const float ExplosionScale = 1.35f * 1.3f;
 
     private Transform _root;
@@ -26,6 +27,7 @@ public sealed class RocketLauncherKillAnimation : ICustomKillAnimation
     private GameObject _explosionObject;
     private SpriteRenderer[] _explosionRenderers;
     private AudioSource _shootSource;
+    private AudioSource _explosionSource;
     private float _timer;
     private bool _launched;
     private bool _exploded;
@@ -106,6 +108,9 @@ public sealed class RocketLauncherKillAnimation : ICustomKillAnimation
         var shootClip = AssetManager.GetAsset<AudioClip>(ShootSoundName);
         if (shootClip == null)
             throw new Exception($"Failed to load Asset: {ShootSoundName}");
+        var explosionClip = AssetManager.GetAsset<AudioClip>(ExplosionSoundName);
+        if (explosionClip == null)
+            throw new Exception($"Failed to load Asset: {ExplosionSoundName}");
 
         _projectileObject = new GameObject("RocketLauncherKillProjectile") { layer = 5 };
         _projectileObject.transform.SetParent(_root, worldPositionStays: false);
@@ -184,6 +189,11 @@ public sealed class RocketLauncherKillAnimation : ICustomKillAnimation
         _explosionObject.transform.localScale = Vector3.one * ExplosionScale;
         _explosionObject.transform.localRotation = Quaternion.identity;
 
+        var explosionClip = AssetManager.GetAsset<AudioClip>(ExplosionSoundName);
+        if (explosionClip == null)
+            throw new Exception($"Failed to load Asset: {ExplosionSoundName}");
+        _explosionSource = SoundManager.Instance.PlaySound(explosionClip, loop: false, 0.9f);
+
         var animator = _explosionObject.GetComponent<Animator>();
         if (animator == null || animator.runtimeAnimatorController == null)
         {
@@ -236,6 +246,11 @@ public sealed class RocketLauncherKillAnimation : ICustomKillAnimation
         {
             _shootSource.Stop();
             _shootSource = null;
+        }
+        if (_explosionSource != null)
+        {
+            _explosionSource.Stop();
+            _explosionSource = null;
         }
         if (_victimPlayer != null)
             GameObject.Destroy(_victimPlayer.gameObject);

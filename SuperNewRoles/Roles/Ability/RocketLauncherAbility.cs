@@ -44,10 +44,14 @@ public class RocketLauncherButtonAbility : TargetCustomButtonBase
 {
     private const string LaunchButtonSprite = "RocketLauncherLaunchButton.png";
     private const string ShotButtonSprite = "RocketLauncherShotButton.png";
-    private const string LoadSound = "RocketLauncherLoad.wav";
-    private const string ShootSound = "RocketLauncherShoot.wav";
+    private const string LoadSound = "RocketLauncherLaunch.wav";
+    private const string ShootSound = "RocketLauncherShot.wav";
     private const string ExplosionPrefab = "RocketLauncherExplosion";
+    private const string ExplosionSound = "RocketLauncherExplosion.wav";
     private const float ExplosionVisualScaleMultiplier = 0.8f;
+    private const float ExplosionSoundMaxDistanceMultiplier = 3f;
+    private const float ExplosionSoundMinMaxDistance = 3f;
+    private const float ExplosionSoundMinDistance = 1.25f;
 
     private readonly RocketLauncherData _data;
     private ExPlayerControl _heldTarget;
@@ -324,6 +328,7 @@ public class RocketLauncherButtonAbility : TargetCustomButtonBase
             MoveTargetTo(launchedTarget, position);
         DetachProjectileLocally(restoreTarget: true);
         SpawnExplosionAnimation(position);
+        PlayExplosionSound(position);
 
         HashSet<byte> killedPlayerIds = new();
         foreach (var victim in victims ?? [])
@@ -453,6 +458,22 @@ public class RocketLauncherButtonAbility : TargetCustomButtonBase
         animator.cullingMode = AnimatorCullingMode.AlwaysAnimate;
         if (explosionObject.GetComponent<DestroyOnAnimationEndObject>() == null)
             explosionObject.AddComponent<DestroyOnAnimationEndObject>();
+    }
+
+    private void PlayExplosionSound(Vector2 position)
+    {
+        var clip = AssetManager.GetAsset<AudioClip>(ExplosionSound);
+        if (clip == null)
+            throw new Exception($"Failed to load Asset: {ExplosionSound}");
+
+        var audioObject = new GameObject("RocketLauncherExplosionSound");
+        audioObject.transform.position = new Vector3(position.x, position.y, -4.5f);
+        float maxDistance = Mathf.Max(ExplosionSoundMinMaxDistance, _data.ExplosionRange * ExplosionSoundMaxDistanceMultiplier);
+        var attenuatedAudio = AttenuatedAudioSourceUtility.SetupSimple(audioObject, clip, loop: false, maxDistance: maxDistance, minDistance: ExplosionSoundMinDistance);
+        var audioSource = attenuatedAudio.GetComponent<AudioSource>();
+        audioSource.Play();
+        attenuatedAudio.ManualUpdate();
+        GameObject.Destroy(audioObject, clip.length + 0.1f);
     }
 
     private void PlayOwnerSound(string assetName)
