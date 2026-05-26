@@ -472,7 +472,7 @@ public static class OnboardingPopup
                     new Vector3(startX + i * spacing, step.LinkButtonY, _buttonAnchor.z),
                     _buttonAnchorScale * 0.62f,
                     link.LabelKey,
-                    () => Application.OpenURL(url));
+                    () => OpenExternalLink(url));
                 _linkButtons.Add(linkButton);
                 RegisterAnimatedContent(linkButton.transform, linkButton.transform.localPosition);
             }
@@ -751,8 +751,14 @@ public static class OnboardingPopup
 
         var linkInfo = tmp.textInfo.linkInfo[linkIndex];
         if (linkInfo.GetLinkID() != DiscordLinkId) return false;
-        Application.OpenURL(SocialLinks.DiscordServer);
+        OpenExternalLink(SocialLinks.DiscordServer);
         return true;
+    }
+
+    private static void OpenExternalLink(string url)
+    {
+        if (string.IsNullOrWhiteSpace(url)) return;
+        Constants.OpenURL(url);
     }
 
     private static void StartPageTransition(int targetStep, int direction)
