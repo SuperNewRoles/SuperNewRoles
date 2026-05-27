@@ -98,6 +98,22 @@ public class CustomCosmeticsLoader
 
     public static IEnumerator LoadAsync(Func<IEnumerator, Coroutine> startCoroutine)
     {
+        if (ConfigRoles.IsModCosmeticsAreNotLoaded != null && ConfigRoles.IsModCosmeticsAreNotLoaded.Value)
+        {
+            Logger.Info("カスタムコスメティックを読み込まない設定です。");
+            willLoad = () => { };
+            willDownloads = new();
+            AssetBundlesDownloadedCount = 0;
+            AssetBundlesAllCount = 0;
+            AssetBundlesDownloading = false;
+            SpritesDownloadingCount = 0;
+            SpritesAllCount = 0;
+            SpritesDownloading = false;
+            yield return null;
+            runned = true;
+            yield break;
+        }
+
         switch (Application.internetReachability)
         {
             case NetworkReachability.NotReachable:

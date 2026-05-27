@@ -7,8 +7,11 @@ namespace SuperNewRoles.CustomObject;
 public class BloodStain
 {
     public static List<BloodStain> BloodStains = new();
+    private static readonly Color BloodRed = new(179f / 255f, 0f, 0f);
+    private static readonly Color BloodBlack = new(0.2f, 0.2f, 0.2f);
     private static Sprite sprite;
     private Color color;
+    private readonly bool forceBlack;
 
     //「血液表現」が現在一つしかない為、無駄なメモリ確保を防ぐ為、color指定を直接数字で行っています。
     // 今後増やす時は以下のコメントアウトを解除し、BloodStain.colorへの代入をこちらの変数にしてください。
@@ -29,7 +32,7 @@ public class BloodStain
     {
         this.owner = player;
         this.ownerId = player.PlayerId;
-        this.color = isBlack ? new Color(0.2f, 0.2f, 0.2f) : new Color(179f / 255f, 0f, 0f); // 直接数値で血の色代入中 [? BloodBlack : BloodRed;]
+        this.forceBlack = isBlack;
 
         Vector3 posdata = pos ?? player.transform.position;
         BloodStainObject = new("BloodStain");
@@ -42,7 +45,7 @@ public class BloodStain
 
         spriteRenderer = BloodStainObject.AddComponent<SpriteRenderer>();
         spriteRenderer.sprite = getBloodStainSprite();
-        spriteRenderer.color = color;
+        ApplyColor();
 
         BloodStainObject.SetActive(true);
 
@@ -52,7 +55,7 @@ public class BloodStain
     {
         this.owner = null;
         this.ownerId = 255;
-        this.color = isBlack ? new Color(0.2f, 0.2f, 0.2f) : new Color(179f / 255f, 0f, 0f);
+        this.forceBlack = isBlack;
 
         BloodStainObject = new("BloodStain");
         Vector3 position = new(pos.x, pos.y, pos.z + 1f);
@@ -62,8 +65,37 @@ public class BloodStain
         BloodStainObject.transform.Rotate(0f, 0f, Random.Range(0f, 360f));
         spriteRenderer = BloodStainObject.AddComponent<SpriteRenderer>();
         spriteRenderer.sprite = getBloodStainSprite();
-        spriteRenderer.color = color;
+        ApplyColor();
 
         BloodStains.Add(this);
+    }
+
+    private Color GetColor()
+    {
+        return forceBlack || (ConfigRoles.IsNotUsingBlood != null && ConfigRoles.IsNotUsingBlood.Value)
+            ? BloodBlack
+            : BloodRed;
+    }
+
+    private void ApplyColor()
+    {
+        color = GetColor();
+        if (spriteRenderer != null)
+            spriteRenderer.color = color;
+    }
+
+    public static void RefreshAllColors()
+    {
+        for (int i = BloodStains.Count - 1; i >= 0; i--)
+        {
+            BloodStain bloodStain = BloodStains[i];
+            if (bloodStain == null || bloodStain.BloodStainObject == null || bloodStain.spriteRenderer == null)
+            {
+                BloodStains.RemoveAt(i);
+                continue;
+            }
+
+            bloodStain.ApplyColor();
+        }
     }
 }
