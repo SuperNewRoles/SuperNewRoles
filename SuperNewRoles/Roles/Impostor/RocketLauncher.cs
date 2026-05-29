@@ -18,6 +18,8 @@ class RocketLauncher : RoleBase<RocketLauncher>
             RocketLauncherCollideWithPlayers,
             RocketLauncherKillImpostors,
             RocketLauncherExplosionRange,
+            RocketLauncherLimitLoadedTime,
+            RocketLauncherLoadedTimeLimit,
             RocketLauncherCanUseNormalKill))
     ];
 
@@ -42,6 +44,12 @@ class RocketLauncher : RoleBase<RocketLauncher>
 
     [CustomOptionFloat("RocketLauncherExplosionRange", 0.25f, 2f, 0.25f, 0.5f)]
     public static float RocketLauncherExplosionRange;
+
+    [CustomOptionBool("RocketLauncherLimitLoadedTime", false)]
+    public static bool RocketLauncherLimitLoadedTime;
+
+    [CustomOptionFloat("RocketLauncherLoadedTimeLimit", 2.5f, 60f, 2.5f, 10f, parentFieldName: nameof(RocketLauncherLimitLoadedTime), suffix: "Seconds")]
+    public static float RocketLauncherLoadedTimeLimit;
 
     [CustomOptionBool("RocketLauncherCanUseNormalKill", true)]
     public static bool RocketLauncherCanUseNormalKill;

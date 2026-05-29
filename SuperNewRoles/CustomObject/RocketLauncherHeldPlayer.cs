@@ -9,7 +9,7 @@ public sealed class RocketLauncherHeldPlayer : MonoBehaviour
 {
     private const string HeldPlayerSpriteName = "RocketLauncherLaunchPlayer.png";
     private const float ForwardOffset = 0.62f;
-    private const float HeightOffset = 0.42f;
+    private const float HeightOffset = 0.52f;
     private const float LocalDepth = 0.65f;
     private const float HeldScale = 1.44f;
 
@@ -78,8 +78,8 @@ public sealed class RocketLauncherHeldPlayer : MonoBehaviour
         if (_source?.Player == null)
             return;
 
-        bool playerFlipX = IsPlayerFlipX();
-        float direction = playerFlipX ? -1f : 1f;
+        bool playerFlipX = IsPlayerFlipX(_source);
+        float direction = GetFacingDirection(_source);
         transform.localPosition = new Vector3(direction * ForwardOffset, HeightOffset, LocalDepth);
         transform.localRotation = Quaternion.identity;
         transform.localScale = Vector3.one * HeldScale;
@@ -118,11 +118,25 @@ public sealed class RocketLauncherHeldPlayer : MonoBehaviour
         return _source?.cosmetics?.currentBodySprite?.BodySprite;
     }
 
-    private bool IsPlayerFlipX()
+    internal static Vector2 GetHeldTargetPosition(ExPlayerControl source)
     {
-        if (_source?.cosmetics != null)
-            return _source.cosmetics.FlipX;
-        return _source?.Player?.MyPhysics != null && _source.Player.MyPhysics.FlipX;
+        if (source?.Player == null)
+            return Vector2.zero;
+
+        var localOffset = new Vector3(GetFacingDirection(source) * ForwardOffset, HeightOffset, 0f);
+        return source.Player.transform.TransformPoint(localOffset);
+    }
+
+    private static float GetFacingDirection(ExPlayerControl source)
+    {
+        return IsPlayerFlipX(source) ? -1f : 1f;
+    }
+
+    private static bool IsPlayerFlipX(ExPlayerControl source)
+    {
+        if (source?.cosmetics != null)
+            return source.cosmetics.FlipX;
+        return source?.Player?.MyPhysics != null && source.Player.MyPhysics.FlipX;
     }
 
     private void ApplyTargetColor()

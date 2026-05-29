@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using SuperNewRoles.Modules;
 using SuperNewRoles.Roles.Ability;
 using UnityEngine;
@@ -16,10 +17,10 @@ public class RocketLauncherProjectile : MonoBehaviour
     private const float IgnoreWiseManDuration = 0.15f;
     private const float IgnoreSourceDuration = 0.25f;
     private const float WallHitInset = 0.03f;
-    private const float WallDeadBodyBackoff = 0.45f;
-    private const float WallDeadBodyClearanceRadius = 0.35f;
+    private const float WallDeadBodyBackoff = 0.55f;
+    private const float WallDeadBodyClearanceRadius = 0.5f;
     private const float WallOverlapResolveStep = 0.08f;
-    private const int WallOverlapResolveMaxCount = 12;
+    private const int WallOverlapResolveMaxCount = 18;
     private const string ProjectileSpriteName = "RocketLauncherProjectile.png";
     private const float ProjectileSpriteForwardAngleOffset = 180f;
     private static readonly float[] ReflectAngles = [135f, 90f, 270f, 225f];
@@ -186,6 +187,7 @@ public class RocketLauncherProjectile : MonoBehaviour
     {
         transform.position = new Vector3(position.x, position.y, -4.5f);
         RocketLauncherButtonAbility.MoveTargetTo(_target, position);
+        RocketLauncherButtonAbility.SetTargetVisible(_target, false);
     }
 
     private void UpdateRotation()
@@ -198,6 +200,31 @@ public class RocketLauncherProjectile : MonoBehaviour
         if (direction.sqrMagnitude <= 0f)
             direction = Vector2.right;
         return (Mathf.Atan2(direction.y, direction.x) * Mathf.Rad2Deg) + ProjectileSpriteForwardAngleOffset;
+    }
+
+    internal static bool TryGetLaunchPathHitPosition(Vector2 sourcePosition, Vector2 launchPosition, out Vector2 hitPosition)
+    {
+        hitPosition = default;
+        Vector2 step = launchPosition - sourcePosition;
+        float distance = step.magnitude;
+        if (distance <= 0f)
+            return false;
+
+        Vector2 direction = step / distance;
+        float radius = BaseColliderRadius * ProjectileCollisionScale;
+        float castDistance = distance + radius;
+        bool hitByLine = PhysicsHelpers.AnyNonTriggersBetween(sourcePosition, direction, castDistance, Constants.ShipAndAllObjectsMask);
+        bool hitByOverlap = IsOverlappingWall(launchPosition, radius);
+        if (!hitByLine && !hitByOverlap)
+            return false;
+
+        float nearestDistance = GetNearestWallHitDistance(sourcePosition, direction, castDistance);
+        if (nearestDistance < float.MaxValue)
+            hitPosition = GetWallSafeExplosionPosition(sourcePosition, direction, nearestDistance, radius);
+        else
+            hitPosition = ResolveWallOverlap(launchPosition, -direction);
+
+        return true;
     }
 
     private void UpdateIgnoreWiseManTimer()
@@ -262,7 +289,7 @@ public class RocketLauncherProjectile : MonoBehaviour
         if (nearestDistance < float.MaxValue)
             hitPosition = GetWallSafeExplosionPosition(currentPosition, direction, nearestDistance, radius);
         else
-            hitPosition = ResolveWallOverlap(currentPosition - (direction * WallDeadBodyBackoff), -direction);
+            hitPosition = ResolveWallOverlap(currentPosition + step, -direction);
 
         return true;
     }
@@ -315,7 +342,42 @@ public class RocketLauncherProjectile : MonoBehaviour
             resolvedPosition += normalizedEscapeDirection * WallOverlapResolveStep;
         }
 
+        if (!IsOverlappingWall(resolvedPosition, WallDeadBodyClearanceRadius))
+            return resolvedPosition;
+
+        foreach (var candidate in EnumerateClearanceCandidates(position, normalizedEscapeDirection))
+        {
+            if (!IsOverlappingWall(candidate, WallDeadBodyClearanceRadius))
+                return candidate;
+        }
+
         return resolvedPosition;
+    }
+
+    private static IEnumerable<Vector2> EnumerateClearanceCandidates(Vector2 position, Vector2 preferredDirection)
+    {
+        Vector2[] directions =
+        [
+            preferredDirection,
+            (preferredDirection + Vector2.up).normalized,
+            Vector2.up,
+            (-preferredDirection + Vector2.up).normalized,
+            -preferredDirection,
+            (preferredDirection + Vector2.down).normalized,
+            Vector2.down,
+            (-preferredDirection + Vector2.down).normalized
+        ];
+
+        for (int i = 1; i <= WallOverlapResolveMaxCount; i++)
+        {
+            float distance = i * WallOverlapResolveStep;
+            foreach (var direction in directions)
+            {
+                if (direction.sqrMagnitude <= 0f)
+                    continue;
+                yield return position + (direction.normalized * distance);
+            }
+        }
     }
 
     private ExPlayerControl GetCollisionTarget(Collider2D hit)
