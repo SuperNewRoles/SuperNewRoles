@@ -5,6 +5,7 @@ using AmongUs.GameOptions;
 using HarmonyLib;
 using InnerNet;
 using Il2CppInterop.Runtime.InteropTypes.Arrays;
+using SuperNewRoles.CustomObject;
 using SuperNewRoles.CustomOptions;
 using SuperNewRoles.Events;
 using SuperNewRoles.Events.PCEvents;
@@ -51,6 +52,9 @@ internal sealed class Orpheus : RoleBase<Orpheus>
 public sealed class OrpheusMainAbility : AbilityBase
 {
     private const int RandomRitualPositionAttempts = 48;
+    private const int RitualCorpseEffectFrameCount = 8;
+    private const int RitualCorpseEffectFrameRate = 9;
+    private const float RitualCorpseEffectScale = 0.2f;
 
     /// <summary>
     /// RoundsRemaining: あと何回の WrapUp で儀式死体をスポーンするか（死亡直後のタスクフェーズは儀式死体なし）。
@@ -465,6 +469,42 @@ public sealed class OrpheusMainAbility : AbilityBase
             outfitSrc.SetPlayerMaterialColors(deadBody.bloodSplatter);
         }
         deadBody.transform.position = DeadBodyWorldPosition(pos);
+        AttachRitualCorpseEffect(deadBody);
+    }
+
+    private static void AttachRitualCorpseEffect(DeadBody deadBody)
+    {
+        Sprite[] sprites = GetRitualCorpseEffectSprites();
+        if (sprites == null || sprites.Length == 0)
+            return;
+
+        GameObject effect = new("OrpheusRitualCorpseEffect");
+        effect.transform.SetParent(deadBody.transform, false);
+        effect.transform.localPosition = new Vector3(-0.3f, 0f, 0.001f);
+        effect.transform.localScale = new Vector3(RitualCorpseEffectScale, RitualCorpseEffectScale, 1f);
+        effect.layer = deadBody.gameObject.layer;
+
+        SpriteRenderer renderer = effect.AddComponent<SpriteRenderer>();
+        renderer.sprite = sprites[0];
+        renderer.maskInteraction = SpriteMaskInteraction.None;
+
+        CustomAnimationObject animation = effect.AddComponent<CustomAnimationObject>();
+        animation.Init(new CustomAnimationObjectOption(sprites, true, RitualCorpseEffectFrameRate), renderer);
+    }
+
+    private static Sprite[] GetRitualCorpseEffectSprites()
+    {
+        // 後ろに2フレーム入れて自然にする
+        Sprite[] sprites = new Sprite[RitualCorpseEffectFrameCount + 2];
+        for (int i = 0; i < RitualCorpseEffectFrameCount; i++)
+        {
+            string spriteName = $"OrpheusDeadBodyEffect_{i + 1:00}";
+            sprites[i] = AssetManager.GetAsset<Sprite>(spriteName) ?? AssetManager.GetAsset<Sprite>($"{spriteName}.png");
+            if (sprites[i] == null)
+                return null;
+        }
+
+        return sprites;
     }
 
     [CustomRPC]
