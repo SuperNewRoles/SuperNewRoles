@@ -227,7 +227,7 @@ public class ExPlayerControl
         if (ModifierRoleHistory.Count == 0 && oldModifier != ModifierRoleId.None)
             ModifierRoleHistory.Add(oldModifier);
         ModifierRoleHistory.Add(ModifierRole);
-        Logger.Info($"[Modifier] {PlayerId}:{Player?.name ?? "??"}{Role}) += {modifierRoleId}", "SNR.GameState");
+        Logger.Info($"[Modifier] {PlayerId}:{Player?.name ?? "??"}({Role}) += {modifierRoleId}", "SNR.GameState");
         if (CustomRoleManager.TryGetModifierById(modifierRoleId, out var modifier))
         {
             modifier.OnSetRole(Player);
@@ -251,7 +251,7 @@ public class ExPlayerControl
             SuperTrophyManager.DetachTrophy(GhostRole);
         var oldGhostRole = GhostRole;
         GhostRole = ghostRoleId;
-        Logger.Info($"[GhostRole] {PlayerId}:{Player?.name ?? "??"}{Role}): {oldGhostRole} -> {ghostRoleId}", "SNR.GameState");
+        Logger.Info($"[GhostRole] {PlayerId}:{Player?.name ?? "??"}({Role}): {oldGhostRole} -> {ghostRoleId}", "SNR.GameState");
         if (CustomRoleManager.TryGetGhostRoleById(ghostRoleId, out var role))
         {
             role.OnSetRole(Player);
@@ -616,7 +616,7 @@ public class ExPlayerControl
     }
     public bool IsKiller()
     {
-        // 🟢 修正③：昇進前のマッドキラーは IsKiller から除外
+        //昇進前のマッドキラーは IsKiller から除外
         if (IsImpostor() || IsPavlovsDog() || (Role == RoleId.MadKiller && GetAbility<MadKillerAbility>()?.IsAwakened == true) || IsJackal() || Role == RoleId.Hitman)
             return true;
 
@@ -646,7 +646,7 @@ public class ExPlayerControl
     [System.Runtime.CompilerServices.MethodImpl(System.Runtime.CompilerServices.MethodImplOptions.AggressiveInlining)]
     public bool IsImpostor()
     {
-        // 🟢 修正①：昇進前のマッドキラーは false を返す
+        //昇進前のマッドキラーはfalse
         if (Role == RoleId.MadKiller && GetAbility<MadKillerAbility>()?.IsAwakened == false)
             return false;
 
@@ -655,13 +655,7 @@ public class ExPlayerControl
     public bool IsNeutral()
         => roleBase != null ? roleBase.AssignedTeam == AssignedTeamType.Neutral : false;
     public bool IsImpostorWinTeam()
-    {
-        // 🟢 修正②：昇進前のマッドキラーは false を返す
-        if (Role == RoleId.MadKiller && GetAbility<MadKillerAbility>()?.IsAwakened == false)
-            return false;
-
-        return IsImpostor() || IsMadRoles() || Role == RoleId.MadKiller;
-    }
+        => IsImpostor() || IsMadRoles() || Role == RoleId.MadKiller;
     public bool IsPavlovsTeam()
         => Role is RoleId.PavlovsDog or RoleId.PavlovsOwner || GetAbility<SchrodingersCatAbility>()?.CurrentTeam is SchrodingersCatTeam.Pavlovs or SchrodingersCatTeam.PavlovFriends;
     public bool IsPavlovsDog()
@@ -1057,7 +1051,7 @@ public static class ExPlayerControlExtensions
 
     /// <summary>
     /// 親コンテキストを文字列シグネチャ化します。
-    /// Role/Modifier/Ghost はそれぞれ "R:""M:""G:" にIDを付与。
+    /// Role/Modifier/Ghost はそれぞれ "R:"/"M:"/"G:" にIDを付与。
     /// Ability 親は "A:" + 親アビリティID、プレイヤー直下は "P"、不明は "U"。
     /// </summary>
     /// <param name="parent">親コンテキスト</param>
