@@ -12,6 +12,8 @@ public class ReportDeadBodyHostEventData : IEventData
 {
     public PlayerControl reporter { get; }
     public NetworkedPlayerInfo target { get; }
+    public bool CanReport { get; set; } = true;
+
     public ReportDeadBodyHostEventData(PlayerControl reporter, NetworkedPlayerInfo target)
     {
         this.reporter = reporter;
@@ -25,7 +27,7 @@ public class ReportDeadBodyHostEvent : EventTargetBase<ReportDeadBodyHostEvent, 
     {
         var data = new ReportDeadBodyHostEventData(reporter, target);
         Instance.Awake(data);
-        return true;
+        return data.CanReport;
     }
 }
 

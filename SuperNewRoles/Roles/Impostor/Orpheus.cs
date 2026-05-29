@@ -21,6 +21,7 @@ namespace SuperNewRoles.Roles.Impostor;
 /// <summary>オルフェウスで WrapUp ごとにスポーンする偽死体の識別用。</summary>
 public sealed class OrpheusRitualCorpseMarker : MonoBehaviour
 {
+    public bool ReportDisabledByRange;
 }
 
 /// <summary>オルフェウス役職。</summary>
@@ -46,6 +47,9 @@ internal sealed class Orpheus : RoleBase<Orpheus>
 
     [CustomOptionFloat(nameof(OrpheusReviveCooldown), 2.5f, 60f, 2.5f, 30f)]
     public static float OrpheusReviveCooldown;
+
+    [CustomOptionFloat(nameof(OrpheusRitualCorpseReportDistancePercent), 0f, 100f, 5f, 50f, suffix: "%")]
+    public static float OrpheusRitualCorpseReportDistancePercent;
 }
 
 /// <summary>キル・ベント・インポ視界と蘇生ボタン、管理死体フローを束ねる。</summary>
@@ -76,6 +80,8 @@ public sealed class OrpheusMainAbility : AbilityBase
     private static EventListener<DieEventData> _dieListener;
     private static EventListener<WrapUpEventData> _wrapListener;
     private static EventListener<ReportDeadBodyHostEventData> _reportListener;
+    private static EventListener _hudUpdateListener;
+    private static EventListener _fixedUpdateListener;
 
     private static int _attachedCount;
     private static ShipStatus _stateShipStatus;
@@ -202,9 +208,12 @@ public sealed class OrpheusMainAbility : AbilityBase
             if (!collider.CompareTag("DeadBody"))
                 continue;
             DeadBody db = collider.GetComponent<DeadBody>();
-            if (db == null || !db.gameObject.activeInHierarchy || db.Reported)
+            if (db == null || !db.gameObject.activeInHierarchy)
                 continue;
-            if (!IsManagedCorpseBody(db))
+            OrpheusRitualCorpseMarker marker = db.GetComponent<OrpheusRitualCorpseMarker>();
+            if (marker == null)
+                continue;
+            if (db.Reported && !marker.ReportDisabledByRange)
                 continue;
 
             Vector2 bp = db.TruePosition;
@@ -254,6 +263,8 @@ public sealed class OrpheusMainAbility : AbilityBase
         _dieListener = DieEvent.Instance.AddListener(OnDie);
         _wrapListener = WrapUpEvent.Instance.AddListener(OnWrapUp);
         _reportListener = ReportDeadBodyHostEvent.Instance.AddListener(OnReport);
+        _hudUpdateListener = HudUpdateEvent.Instance.AddListener(UpdateRitualCorpseReportability);
+        _fixedUpdateListener = FixedUpdateEvent.Instance.AddListener(UpdateRitualCorpseReportability);
     }
 
     private static void UnregisterSharedListeners()
@@ -264,6 +275,10 @@ public sealed class OrpheusMainAbility : AbilityBase
         _wrapListener = null;
         _reportListener?.RemoveListener();
         _reportListener = null;
+        _hudUpdateListener?.RemoveListener();
+        _hudUpdateListener = null;
+        _fixedUpdateListener?.RemoveListener();
+        _fixedUpdateListener = null;
     }
 
     private static void EnsureStateForCurrentShip()
@@ -337,6 +352,12 @@ public sealed class OrpheusMainAbility : AbilityBase
         // 偽死体生成前であれば対象外にする
         if (!entry.Targetable)
             return;
+
+        if (!CanReporterReportRitualCorpse(data.reporter, id))
+        {
+            data.CanReport = false;
+            return;
+        }
 
         if (entry.PendingRevive)
         {
@@ -470,6 +491,64 @@ public sealed class OrpheusMainAbility : AbilityBase
         }
         deadBody.transform.position = DeadBodyWorldPosition(pos);
         AttachRitualCorpseEffect(deadBody);
+        UpdateRitualCorpseReportability();
+    }
+
+    private static void UpdateRitualCorpseReportability()
+    {
+        PlayerControl reporter = PlayerControl.LocalPlayer;
+        if (reporter == null)
+            return;
+
+        foreach (DeadBody body in Object.FindObjectsOfType<DeadBody>())
+        {
+            if (body == null || !body.gameObject.activeInHierarchy)
+                continue;
+            OrpheusRitualCorpseMarker marker = body.GetComponent<OrpheusRitualCorpseMarker>();
+            if (marker == null)
+                continue;
+
+            bool canReport = IsWithinRitualCorpseReportDistance(reporter, body);
+            if (!canReport)
+            {
+                if (!body.Reported)
+                    marker.ReportDisabledByRange = true;
+                body.Reported = true;
+                continue;
+            }
+
+            if (marker.ReportDisabledByRange)
+            {
+                body.Reported = false;
+                marker.ReportDisabledByRange = false;
+            }
+        }
+    }
+
+    private static bool CanReporterReportRitualCorpse(PlayerControl reporter, byte victimId)
+    {
+        foreach (DeadBody body in Object.FindObjectsOfType<DeadBody>())
+        {
+            if (body != null
+                && body.ParentId == victimId
+                && IsManagedCorpseBody(body)
+                && IsWithinRitualCorpseReportDistance(reporter, body))
+                return true;
+        }
+
+        return false;
+    }
+
+    private static bool IsWithinRitualCorpseReportDistance(PlayerControl reporter, DeadBody body)
+    {
+        if (reporter == null || body == null)
+            return false;
+
+        float maxDist = reporter.MaxReportDistance * (Orpheus.OrpheusRitualCorpseReportDistancePercent / 100f);
+        Vector2 reporterPos = reporter.GetTruePosition();
+        Vector2 bodyPos = body.TruePosition;
+        return Vector2.Distance(reporterPos, bodyPos) <= maxDist
+            && !PhysicsHelpers.AnythingBetween(reporterPos, bodyPos, Constants.ShipAndObjectsMask, false);
     }
 
     private static void AttachRitualCorpseEffect(DeadBody deadBody)
