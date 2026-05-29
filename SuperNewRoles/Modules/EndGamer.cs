@@ -77,7 +77,16 @@ public static class EndGamer
         Logger.Info("winText: " + winText);
         Logger.Info("----------- Finished EndGame End -----------");
         RpcSyncAlive(ExPlayerControl.ExPlayerControls.ToDictionary(x => x.PlayerId, x => x.IsDead()));
-        EndGameManagerSetUpPatch.RpcEndGameWithCondition(reason, winners.Select(x => x.PlayerId).ToList(), upperText ?? reason.ToString(), addWinners.Select(x => x.ToString()).ToHashSet().ToList(), color, false, winText ?? "WinText");
+        string resolvedWinText = winText;
+        // 単独勝利の場合、三人称単数になるので「wins」にする
+        if (winType == WinType.SingleNeutral
+            && reason != (GameOverReason)CustomGameOverReason.LoversWin
+            && (string.IsNullOrEmpty(resolvedWinText) || resolvedWinText == "WinText"))
+        {
+            resolvedWinText = "SingleNeutralWinText";
+        }
+        resolvedWinText ??= "WinText";
+        EndGameManagerSetUpPatch.RpcEndGameWithCondition(reason, winners.Select(x => x.PlayerId).ToList(), upperText ?? reason.ToString(), addWinners.Select(x => x.ToString()).ToHashSet().ToList(), color, false, resolvedWinText);
     }
     public static void RpcHaison()
     {
@@ -136,6 +145,7 @@ public static class EndGamer
                 winners = members.ToHashSet();
                 color = TheThreeLittlePigs.Instance.RoleColor;
                 upperText = "TheThreeLittlePigs";
+                winText = null;
                 winType = WinType.Hijackers;
                 return;
             }
@@ -164,6 +174,7 @@ public static class EndGamer
                     winners = [player];
                     color = Tuna.Instance.RoleColor;
                     upperText = "Tuna";
+                    winText = null;
                     winType = WinType.Hijackers;
                 }
             }
@@ -181,6 +192,7 @@ public static class EndGamer
                 winners = winnersList;
                 color = OrientalShaman.Instance.RoleColor;
                 upperText = "OrientalShaman";
+                winText = null;
                 winType = WinType.Hijackers;
                 break;
             }
@@ -196,6 +208,7 @@ public static class EndGamer
                     winners = [player];
                     color = Spelunker.Instance.RoleColor;
                     upperText = "Spelunker";
+                    winText = null;
                     winType = WinType.Hijackers;
                 }
             }
@@ -210,6 +223,7 @@ public static class EndGamer
             winners = [player];
             color = Moira.Instance.RoleColor;
             upperText = "Moira";
+            winText = null;
             winType = WinType.SingleNeutral;
             return;
         }
@@ -224,6 +238,7 @@ public static class EndGamer
             winners = [player];
             color = Frankenstein.Instance.RoleColor;
             upperText = "Frankenstein";
+            winText = null;
             winType = WinType.SingleNeutral;
             return;
         }
@@ -271,7 +286,7 @@ public static class EndGamer
                 }
             }
         }
-        foreach (ExPlayerControl winner in winners)
+        foreach (ExPlayerControl winner in winners.ToArray())
         {
             if (Lovers.LoversWinType == LoversWinType.Shared && winner.IsLovers())
             {
@@ -294,6 +309,7 @@ public static class EndGamer
             foreach (ExPlayerControl cupid in creatorCupid)
             {
                 winners.Add(cupid);
+                addWinners.Add(cupid.Role.ToString());
             }
         }
         foreach (ExPlayerControl player in ExPlayerControl.ExPlayerControls)

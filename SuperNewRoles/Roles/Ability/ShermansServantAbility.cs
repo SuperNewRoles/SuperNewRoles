@@ -81,6 +81,12 @@ public class ShermansServantAbility : AbilityBase
         _orientalShamanAbility = orientalShamanAbility;
     }
 
+    public void ClearParent(OrientalShamanAbility orientalShamanAbility)
+    {
+        if (_orientalShamanAbility == orientalShamanAbility)
+            _orientalShamanAbility = null;
+    }
+
     private void OnFixedUpdate()
     {
         // OrientalShamanが死んだ場合、ShermansServantも死ぬ

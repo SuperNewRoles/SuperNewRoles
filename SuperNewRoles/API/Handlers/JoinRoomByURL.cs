@@ -385,7 +385,7 @@ public class JoinRoomURLGenerator // または既存のクラスに追加
             var selected = new GameObject("Selected");
             selected.transform.SetParent(obj.transform);
             selected.transform.localPosition = Vector3.zero;
-            selected.transform.localScale = Vector3.one * 4.65f;
+            selected.transform.localScale = Vector3.one * 1.1f;
             SpriteRenderer selectedRenderer = selected.AddComponent<SpriteRenderer>();
             selectedRenderer.sprite = AssetManager.GetAsset<Sprite>("processed_white2.png");
             selectedRenderer.color = new Color(1, 1, 1, 0.6f);

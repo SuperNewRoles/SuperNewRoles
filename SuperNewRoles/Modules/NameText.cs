@@ -55,6 +55,34 @@ public static class NameText
     {
         return ExPlayerControl.LocalPlayer.CanSeeRoleOf(player);
     }
+    private static bool ShouldShowVanillaRole(ExPlayerControl player)
+    {
+        return player?.Data?.Role != null
+            && !player.Data.Role.IsSimpleRole
+            && player.Role is RoleId.Crewmate or RoleId.Impostor;
+    }
+    private static Color GetFallbackRoleInfoColor(ExPlayerControl player)
+    {
+        return player?.Data?.Role?.TeamColor ?? Color.white;
+    }
+    private static string GetFallbackRoleInfoText(ExPlayerControl player)
+    {
+        return player?.Data?.Role?.NiceName ?? string.Empty;
+    }
+    private static Color GetRoleInfoColor(ExPlayerControl player)
+    {
+        if (ShouldShowVanillaRole(player))
+            return player.Data.Role.TeamColor;
+        return player?.roleBase?.RoleColor ?? GetFallbackRoleInfoColor(player);
+    }
+    private static string GetRoleInfoText(ExPlayerControl player)
+    {
+        if (ShouldShowVanillaRole(player))
+            return ModHelpers.Cs(player.Data.Role.TeamColor, player.Data.Role.NiceName);
+        return player?.roleBase != null
+            ? ModHelpers.CsWithTranslation(player.roleBase.RoleColor, player.roleBase.Role.ToString())
+            : ModHelpers.Cs(GetFallbackRoleInfoColor(player), GetFallbackRoleInfoText(player));
+    }
     private static void SetPlayerNameColor(ExPlayerControl player, bool isRoleInfoVisible)
     {
         if (player.TryGetAbility<HideMyRoleWhenAliveAbility>(out var hmr) && hmr.IsHide(player).role)
@@ -68,8 +96,9 @@ public static class NameText
         { // 通常の役職表示
             if (isRoleInfoVisible)
             {
-                player.Data.Role.NameColor = player.roleBase.RoleColor;
-                SetNameTextColor(player, player.roleBase.RoleColor, true);
+                Color roleInfoColor = GetRoleInfoColor(player);
+                player.Data.Role.NameColor = roleInfoColor;
+                SetNameTextColor(player, roleInfoColor, true);
             }
             else if (ExPlayerControl.LocalPlayer.IsImpostor() && player.IsImpostor())
             {
@@ -109,7 +138,7 @@ public static class NameText
         catch { }
         string playerInfoText = "";
         string meetingInfoText = "";
-        string roleName = $"{ModHelpers.CsWithTranslation(player.roleBase.RoleColor, player.roleBase.Role.ToString())}";
+        string roleName = GetRoleInfoText(player);
 
         // 生存中は秘匿される役職/モディファイアを、相方などの他人向け表示でも漏らさない
         var hideMyRoleAbilities = player.GetAbilities<HideMyRoleWhenAliveAbility>();

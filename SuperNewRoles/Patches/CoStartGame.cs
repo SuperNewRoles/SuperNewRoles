@@ -67,6 +67,8 @@ class AmongUsClientStartPatch
 
             PsychometristSharedState.CoStartGame();
             SquidSharedState.CoStartGame();
+
+            StartGameHandlerManager.OnStartGame();
         }
         catch (Exception ex)
         {

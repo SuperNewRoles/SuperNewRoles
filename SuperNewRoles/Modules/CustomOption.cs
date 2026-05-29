@@ -81,7 +81,10 @@ public static class CustomOptionManager
             Logger.Warning($"オプションが見つかりません: {optionId}");
             return;
         }
+        bool changed = option.Selection != selection;
         option.UpdateSelection(selection);
+        if (changed)
+            SnrSettingChangeNotifier.NotifyOptionChanged(option, SnrSettingChangeNotifier.ShouldPlayRemoteSound());
     }
     [CustomRPC]
     public static void _RpcSyncOptionsAll(Dictionary<ushort, byte> options, bool resetToDefault)
@@ -960,7 +963,10 @@ public static class RoleOptionManager
             Logger.Warning($"ロールオプションが見つかりません: {roleId}");
             return;
         }
+        bool changed = roleOption.NumberOfCrews != numberOfCrews || roleOption.Percentage != percentage;
         roleOption.UpdateValues(numberOfCrews, percentage);
+        if (changed)
+            SnrSettingChangeNotifier.NotifyRoleOptionChanged(roleOption, SnrSettingChangeNotifier.ShouldPlayRemoteSound());
     }
 
     [CustomRPC]
@@ -972,7 +978,11 @@ public static class RoleOptionManager
             Logger.Warning($"モディファイアロールオプションが見つかりません: {modifierRoleId}");
             return;
         }
+        var changedSettings = SnrSettingChangeNotifier.GetChangedModifierSettings(roleOption, numberOfCrews, percentage, maxImpostors, impostorChance, maxNeutrals, neutralChance, maxCrewmates, crewmateChance).ToArray();
+        bool playSound = SnrSettingChangeNotifier.ShouldPlayRemoteSound();
         roleOption.UpdateValues(numberOfCrews, percentage, maxImpostors, impostorChance, maxNeutrals, neutralChance, maxCrewmates, crewmateChance);
+        foreach (var changedSetting in changedSettings)
+            SnrSettingChangeNotifier.NotifyModifierRoleSettingChanged(roleOption, changedSetting.Label, changedSetting.Value, playSound);
     }
 
     /// <summary>
@@ -1075,7 +1085,10 @@ public static class RoleOptionManager
             Logger.Warning($"ゴーストロールオプションが見つかりません: {roleId}");
             return;
         }
+        bool changed = roleOption.NumberOfCrews != numberOfCrews || roleOption.Percentage != percentage;
         roleOption.UpdateValues(numberOfCrews, percentage);
+        if (changed)
+            SnrSettingChangeNotifier.NotifyGhostRoleOptionChanged(roleOption, SnrSettingChangeNotifier.ShouldPlayRemoteSound());
     }
 
     [CustomRPC]
@@ -1113,19 +1126,81 @@ public static class RoleOptionManager
     }
 
     [CustomRPC]
-    public static void RpcSyncExclusivitySettings(ExclusivitySettingsRpcData data)
+    public static void RpcSyncExclusivitySettings(ExclusivitySettingsRpcData data, bool notifyChanges)
     {
+        var oldSettings = notifyChanges
+            ? ExclusivitySettings
+                .Select(setting => new ExclusivitySettingSnapshot(setting.MaxAssign, setting.Roles.ToArray()))
+                .ToArray()
+            : Array.Empty<ExclusivitySettingSnapshot>();
+        var newSettings = data?.Settings?.ToArray() ?? Array.Empty<ExclusivitySettingRpcData>();
+
         ClearExclusivitySettings();
 
-        if (data?.Settings != null)
+        foreach (var setting in newSettings)
         {
-            foreach (var setting in data.Settings)
-            {
-                AddExclusivitySetting(setting.MaxAssign, setting.Roles?.ToArray() ?? Array.Empty<string>());
-            }
+            AddExclusivitySetting(setting.MaxAssign, setting.Roles?.ToArray() ?? Array.Empty<string>());
         }
 
+        if (notifyChanges)
+            NotifyChangedExclusivitySettings(oldSettings, newSettings);
         ExclusivityOptionMenu.RefreshDisplayedMenu();
+    }
+
+    private static void NotifyChangedExclusivitySettings(
+        IReadOnlyList<ExclusivitySettingSnapshot> oldSettings,
+        IReadOnlyList<ExclusivitySettingRpcData> newSettings)
+    {
+        int maxCount = Math.Max(oldSettings.Count, newSettings.Count);
+        bool playSound = SnrSettingChangeNotifier.ShouldPlayRemoteSound();
+
+        for (int i = 0; i < maxCount; i++)
+        {
+            ExclusivitySettingSnapshot? oldSetting = i < oldSettings.Count ? oldSettings[i] : null;
+            var newSetting = i < newSettings.Count ? newSettings[i] : null;
+            if (newSetting == null) continue;
+
+            if (!oldSetting.HasValue || oldSetting.Value.MaxAssign != newSetting.MaxAssign)
+            {
+                SnrSettingChangeNotifier.NotifyExclusivitySettingsChanged(
+                    i,
+                    ModTranslation.GetString("ExclusivityOptionMenuMaxText"),
+                    newSetting.MaxAssign.ToString(),
+                    playSound);
+            }
+
+            var newRoles = newSetting.Roles?
+                .Select(role => Enum.Parse<RoleId>(role))
+                .ToList() ?? new List<RoleId>();
+            var oldRoles = oldSetting.HasValue ? oldSetting.Value.Roles : Array.Empty<RoleId>();
+            if (!oldSetting.HasValue || !oldRoles.SequenceEqual(newRoles))
+            {
+                SnrSettingChangeNotifier.NotifyExclusivitySettingsChanged(
+                    i,
+                    ModTranslation.GetString("ExclusivityOptionMenuAssignedRoleText"),
+                    FormatExclusivityAssignedRoles(newRoles),
+                    playSound);
+            }
+        }
+    }
+
+    private static string FormatExclusivityAssignedRoles(IReadOnlyCollection<RoleId> roles)
+    {
+        return roles.Count == 0
+            ? ModTranslation.GetString("HelpMenu.Exclusivity.Empty")
+            : string.Join(", ", roles.Select(role => ModTranslation.GetString(role.ToString())));
+    }
+
+    private readonly struct ExclusivitySettingSnapshot
+    {
+        public int MaxAssign { get; }
+        public RoleId[] Roles { get; }
+
+        public ExclusivitySettingSnapshot(int maxAssign, RoleId[] roles)
+        {
+            MaxAssign = maxAssign;
+            Roles = roles;
+        }
     }
 
     public static void RpcSyncRoleOptionsAll()
@@ -1146,12 +1221,12 @@ public static class RoleOptionManager
         RpcSyncExclusivitySettingsAll();
     }
 
-    public static void RpcSyncExclusivitySettingsAll()
+    public static void RpcSyncExclusivitySettingsAll(bool notifyChanges = false)
     {
         if (AmongUsClient.Instance != null && AmongUsClient.Instance.AmConnected && !AmongUsClient.Instance.AmHost)
             return;
 
-        RpcSyncExclusivitySettings(new ExclusivitySettingsRpcData(ExclusivitySettings));
+        RpcSyncExclusivitySettings(new ExclusivitySettingsRpcData(ExclusivitySettings), notifyChanges);
     }
 
     public static void RoleOptionLoad()
@@ -1286,7 +1361,7 @@ public static class RoleOptionManager
     }
 }
 
-public static class CustomOptionSaver
+public static partial class CustomOptionSaver
 {
     private static readonly IOptionStorage Storage;
     private const byte CurrentVersion = 1;
@@ -1314,10 +1389,21 @@ public static class CustomOptionSaver
         return ModTranslation.GetString("PresetDefault", preset + 1);
     }
 
-    public static void SetPresetName(int preset, string name)
+    public static bool SetPresetName(int preset, string name)
     {
-        if (preset < 0 || preset >= MaxPresetCount) return;
+        if (preset < 0 || preset >= MaxPresetCount) return false;
+        if (!presetNames.ContainsKey(preset) && presetNames.Count >= PresetRawDataLimits.MaxPresetNames)
+        {
+            Logger.Warning($"No free preset name slot available (max {PresetRawDataLimits.MaxPresetNames}).");
+            return false;
+        }
+        if (!PresetRawDataLimits.IsPresetNameWithinLimits(name))
+        {
+            Logger.Warning("Preset name is too long.");
+            return false;
+        }
         presetNames[preset] = name;
+        return true;
     }
 
     public static void RemovePreset(int preset)
@@ -1488,12 +1574,21 @@ public interface IOptionStorage
     void EnsureStorageExists();
     (bool success, byte version, int preset) LoadOptionData();
     (bool success, Dictionary<string, byte> options) LoadPresetData(int preset);
+    (bool success, PresetSnapshot snapshot) LoadPresetSnapshot(int preset);
+    (bool success, byte[] data) LoadPresetRawData(int preset);
     (bool success, Dictionary<int, string> names) LoadPresetNames();
+    byte[] BuildOptionDataBytes(byte version, int preset, IReadOnlyDictionary<int, string> presetNames);
     void SaveOptionData(byte version, int preset);
+    void SaveOptionData(byte version, int preset, IReadOnlyDictionary<int, string> presetNames);
     void SavePresetData(int preset, IEnumerable<CustomOption> options);
+    void SavePresetSnapshot(int preset, PresetSnapshot snapshot);
+    void SavePresetRawData(int preset, byte[] data);
+    void DeletePresetRawData(int preset);
+    bool PresetDataExists(int preset);
+    IReadOnlyCollection<int> GetExistingPresetDataIds();
 }
 
-public class FileOptionStorage : IOptionStorage
+public partial class FileOptionStorage : IOptionStorage
 {
     private readonly DirectoryInfo _directory;
     private readonly string _optionFileName;
@@ -1540,11 +1635,11 @@ public class FileOptionStorage : IOptionStorage
 
             // プリセット名を読み込む (this.presetNames を更新)
             CustomOptionSaver.presetNames.Clear();
-            int nameCount = reader.ReadInt32();
+            int nameCount = PresetRawDataLimits.ReadCount(reader, PresetRawDataLimits.MaxPresetNames, "preset name count");
             for (int i = 0; i < nameCount; i++)
             {
                 int presetId = reader.ReadInt32();
-                string name = reader.ReadString();
+                string name = PresetRawDataLimits.ReadPresetName(reader);
                 CustomOptionSaver.presetNames[presetId] = name;
             }
 
@@ -1554,187 +1649,12 @@ public class FileOptionStorage : IOptionStorage
 
     public (bool success, Dictionary<string, byte> options) LoadPresetData(int preset)
     {
-        lock (FileLocker)
-        {
-            string fileName = $"{_presetFileNameBase}{preset}.data";
-            if (!File.Exists(fileName))
-            {
-                return (false, new());
-            }
+        var (success, snapshot) = LoadPresetSnapshot(preset);
+        if (!success)
+            return (false, new());
 
-            using var fileStream = new FileStream(fileName, FileMode.Open);
-            using var reader = new BinaryReader(fileStream);
-
-            if (!ValidateChecksum(reader))
-            {
-                return (false, new());
-            }
-
-            Dictionary<string, byte> options = ReadOptions(reader);
-
-            // RoleOption, Exclusivity, ModifierRole, GhostRoleの情報を読み込む
-            if (fileStream.Position < fileStream.Length)
-            {
-                LoadRoleOptionsData(reader);
-                if (fileStream.Position < fileStream.Length)
-                {
-                    LoadExclusivitySettingsData(reader);
-                    if (fileStream.Position < fileStream.Length)
-                    {
-                        LoadModifierRoleOptionsData(reader);
-                        if (fileStream.Position < fileStream.Length)
-                        {
-                            LoadGhostRoleOptionsData(reader);
-                            if (fileStream.Position < fileStream.Length)
-                            {
-                                LoadCategoryAssignFilterData(reader);
-                            }
-                        }
-                    }
-                }
-            }
-            return (true, options);
-        }
-    }
-
-    private void LoadRoleOptionsData(BinaryReader reader)
-    {
-        int roleOptionCount = reader.ReadInt32();
-        for (int i = 0; i < roleOptionCount; i++)
-        {
-            string roleIdStr = reader.ReadString();
-            byte numberOfCrews = reader.ReadByte();
-            int percentage = reader.ReadInt32();
-
-            if (Enum.TryParse(typeof(RoleId), roleIdStr, out var roleIdObj) && roleIdObj is RoleId roleId)
-            {
-                var roleOption = RoleOptionManager.RoleOptions.FirstOrDefault(x => x.RoleId == roleId);
-                if (roleOption != null)
-                {
-                    roleOption.NumberOfCrews = numberOfCrews;
-                    roleOption.Percentage = percentage;
-                }
-            }
-        }
-    }
-
-    private void LoadExclusivitySettingsData(BinaryReader reader)
-    {
-        int exclusivityCount = reader.ReadInt32();
-        RoleOptionManager.ClearLocalExclusivitySettings();
-        for (int i = 0; i < exclusivityCount; i++)
-        {
-            int maxAssign = reader.ReadInt32();
-            int rolesCount = reader.ReadInt32();
-            string[] roles = new string[rolesCount];
-            for (int j = 0; j < rolesCount; j++)
-            {
-                roles[j] = reader.ReadString();
-            }
-            RoleOptionManager.AddLocalExclusivitySetting(maxAssign, roles);
-        }
-    }
-
-    private void LoadModifierRoleOptionsData(BinaryReader reader)
-    {
-        int modifierRoleCount = reader.ReadInt32();
-        for (int i = 0; i < modifierRoleCount; i++)
-        {
-            string modifierRoleIdStr = reader.ReadString();
-            byte numberOfCrews = reader.ReadByte();
-            int percentage = reader.ReadInt32();
-
-            // 陣営別設定を読み込み
-            int maxImpostors = reader.ReadInt32();
-            int impostorChance = reader.ReadInt32();
-            int maxNeutrals = reader.ReadInt32();
-            int neutralChance = reader.ReadInt32();
-            int maxCrewmates = reader.ReadInt32();
-            int crewmateChance = reader.ReadInt32();
-
-            if (Enum.TryParse(typeof(ModifierRoleId), modifierRoleIdStr, out var modifierRoleIdObj) && modifierRoleIdObj is ModifierRoleId modifierRoleId)
-            {
-                var modifierRoleOption = RoleOptionManager.ModifierRoleOptions.FirstOrDefault(x => x.ModifierRoleId == modifierRoleId);
-                if (modifierRoleOption != null)
-                {
-                    modifierRoleOption.NumberOfCrews = numberOfCrews;
-                    modifierRoleOption.Percentage = percentage;
-                    modifierRoleOption.MaxImpostors = maxImpostors;
-                    modifierRoleOption.ImpostorChance = impostorChance;
-                    modifierRoleOption.MaxNeutrals = maxNeutrals;
-                    modifierRoleOption.NeutralChance = neutralChance;
-                    modifierRoleOption.MaxCrewmates = maxCrewmates;
-                    modifierRoleOption.CrewmateChance = crewmateChance;
-
-                    // AssignFilterListの復元
-                    var roleBase = CustomRoleManager.AllModifiers.FirstOrDefault(r => r.ModifierRole == modifierRoleId);
-                    if (roleBase != null && roleBase.AssignFilter)
-                    {
-                        int assignFilterCount = reader.ReadInt32();
-                        modifierRoleOption.AssignFilterList.Clear();
-                        for (int j = 0; j < assignFilterCount; j++)
-                        {
-                            string roleIdStr = reader.ReadString();
-                            if (Enum.TryParse(typeof(RoleId), roleIdStr, out var roleIdObj) && roleIdObj is RoleId roleId)
-                            {
-                                modifierRoleOption.AssignFilterList.Add(roleId);
-                            }
-                        }
-                    }
-                }
-            }
-        }
-    }
-
-    private void LoadGhostRoleOptionsData(BinaryReader reader)
-    {
-        int ghostRoleCount = reader.ReadInt32();
-        for (int i = 0; i < ghostRoleCount; i++)
-        {
-            string ghostRoleIdStr = reader.ReadString();
-            byte numberOfCrews = reader.ReadByte();
-            int percentage = reader.ReadInt32();
-            if (Enum.TryParse(typeof(GhostRoleId), ghostRoleIdStr, out var ghostRoleIdObj) && ghostRoleIdObj is GhostRoleId ghostRoleId)
-            {
-                var ghostRoleOption = RoleOptionManager.GhostRoleOptions.FirstOrDefault(x => x.RoleId == ghostRoleId);
-                if (ghostRoleOption != null)
-                {
-                    ghostRoleOption.NumberOfCrews = numberOfCrews;
-                    ghostRoleOption.Percentage = percentage;
-                }
-            }
-        }
-    }
-
-    private void LoadCategoryAssignFilterData(BinaryReader reader)
-    {
-        int categoryCount = reader.ReadInt32();
-        for (int i = 0; i < categoryCount; i++)
-        {
-            string categoryName = reader.ReadString();
-            int assignFilterCount = reader.ReadInt32();
-            var category = CustomOptionManager.OptionCategories.FirstOrDefault(c => c.Name == categoryName && c.HasModifierAssignFilter);
-            if (category != null)
-            {
-                category.ModifierAssignFilter.Clear();
-                for (int j = 0; j < assignFilterCount; j++)
-                {
-                    string roleIdStr = reader.ReadString();
-                    if (Enum.TryParse(typeof(RoleId), roleIdStr, out var roleIdObj) && roleIdObj is RoleId roleId)
-                    {
-                        category.ModifierAssignFilter.Add(roleId);
-                    }
-                }
-            }
-            else
-            {
-                // 読み飛ばし
-                for (int j = 0; j < assignFilterCount; j++)
-                {
-                    reader.ReadString();
-                }
-            }
-        }
+        PresetSnapshotRuntimeApplier.Apply(snapshot);
+        return (true, snapshot.Options);
     }
 
     public (bool success, Dictionary<int, string> names) LoadPresetNames()
@@ -1747,23 +1667,35 @@ public class FileOptionStorage : IOptionStorage
     }
 
     public void SaveOptionData(byte version, int preset)
+        => SaveOptionData(version, preset, CustomOptionSaver.presetNames);
+
+    public byte[] BuildOptionDataBytes(byte version, int preset, IReadOnlyDictionary<int, string> presetNames)
+    {
+        PresetRawDataLimits.ValidatePresetNamesForWrite(presetNames);
+
+        using var memoryStream = new MemoryStream();
+        using var writer = new BinaryWriter(memoryStream);
+
+        writer.Write(version);
+        WriteChecksum(writer);
+        writer.Write(preset);
+
+        writer.Write(presetNames.Count);
+        foreach (KeyValuePair<int, string> pair in presetNames)
+        {
+            writer.Write(pair.Key);
+            writer.Write(pair.Value ?? string.Empty);
+        }
+
+        return memoryStream.ToArray();
+    }
+
+    public void SaveOptionData(byte version, int preset, IReadOnlyDictionary<int, string> presetNames)
     {
         lock (FileLocker)
         {
-            using var fileStream = new FileStream(_optionFileName, FileMode.Create);
-            using var writer = new BinaryWriter(fileStream);
-
-            writer.Write(version);
-            WriteChecksum(writer);
-            writer.Write(preset);
-
-            // プリセット名を保存
-            writer.Write(CustomOptionSaver.presetNames.Count);
-            foreach (KeyValuePair<int, string> pair in CustomOptionSaver.presetNames)
-            {
-                writer.Write(pair.Key);
-                writer.Write(pair.Value);
-            }
+            EnsureStorageExists();
+            File.WriteAllBytes(_optionFileName, BuildOptionDataBytes(version, preset, presetNames));
         }
     }
 
@@ -1771,6 +1703,7 @@ public class FileOptionStorage : IOptionStorage
     {
         lock (FileLocker)
         {
+            EnsureStorageExists();
             string fileName = $"{_presetFileNameBase}{preset}.data";
             using var fileStream = new FileStream(fileName, FileMode.Create);
             using var writer = new BinaryWriter(fileStream);
@@ -1890,12 +1823,12 @@ public class FileOptionStorage : IOptionStorage
 
     private static Dictionary<string, byte> ReadOptions(BinaryReader reader)
     {
-        int optionCount = reader.ReadInt32();
+        int optionCount = PresetRawDataLimits.ReadCount(reader, PresetRawDataLimits.MaxOptions, "option count");
         var options = new Dictionary<string, byte>();
 
         for (int i = 0; i < optionCount; i++)
         {
-            string id = reader.ReadString();
+            string id = PresetRawDataLimits.ReadOptionId(reader);
             options[id] = reader.ReadByte();
         }
 

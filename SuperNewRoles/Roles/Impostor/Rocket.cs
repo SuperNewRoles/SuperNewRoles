@@ -80,6 +80,7 @@ public class RocketGrabAbility : TargetCustomButtonBase
     public RocketLaunchAbility launchAbility { get; private set; }
 
     public List<ExPlayerControl> GrabbedPlayers { get; } = new();
+    private readonly Dictionary<byte, Vector2> _grabbedOriginalPositions = new();
     private bool launchAfterMeeting = false;
     private bool launchAfterMeetingOption = false;
 
@@ -218,6 +219,7 @@ public class RocketGrabAbility : TargetCustomButtonBase
         if (targetEx != null && !GrabbedPlayers.Contains(targetEx))
         {
             GrabbedPlayers.Add(targetEx);
+            _grabbedOriginalPositions[targetEx.PlayerId] = targetEx.GetTruePosition();
             if (Player != null && Player.AmOwner && launchAbility != null)
             {
                 launchAbility.SetActive(launchAbility.CheckIsAvailable());
@@ -233,6 +235,7 @@ public class RocketGrabAbility : TargetCustomButtonBase
 
         if (targetEx != null && GrabbedPlayers.Remove(targetEx))
         {
+            _grabbedOriginalPositions.Remove(targetEx.PlayerId);
             if (Player != null && Player.AmOwner && launchAbility != null)
             {
                 launchAbility.SetActive(launchAbility.CheckIsAvailable());
@@ -247,12 +250,28 @@ public class RocketGrabAbility : TargetCustomButtonBase
     }
 
     // Called locally by LaunchAbility after successful launch
-    public void ClearGrabbedPlayersLocally()
+    public void ClearGrabbedPlayersLocally(bool releaseAlivePlayers = true)
     {
+        if (releaseAlivePlayers)
+            ReleaseGrabbedPlayersToOriginalPosition();
         GrabbedPlayers.Clear();
+        _grabbedOriginalPositions.Clear();
         if (Player != null && Player.AmOwner && launchAbility != null)
         {
             launchAbility.SetActive(launchAbility.CheckIsAvailable());
+        }
+    }
+
+    private void ReleaseGrabbedPlayersToOriginalPosition()
+    {
+        foreach (var grabbedPlayer in GrabbedPlayers)
+        {
+            if (grabbedPlayer == null || !grabbedPlayer.IsAlive()) continue;
+            if (!_grabbedOriginalPositions.TryGetValue(grabbedPlayer.PlayerId, out Vector2 originalPosition)) continue;
+
+            grabbedPlayer.transform.position = originalPosition;
+            grabbedPlayer.NetTransform.SnapTo(originalPosition);
+            grabbedPlayer.MyPhysics.body.velocity = Vector2.zero;
         }
     }
 }
@@ -312,7 +331,7 @@ public class RocketLaunchAbility : CustomButtonBase
                 targetControl.CustomDeath(CustomDeathType.LaunchByRocket, source: Player);
             }
         }
-        grabAbility.ClearGrabbedPlayersLocally();
+        grabAbility.ClearGrabbedPlayersLocally(releaseAlivePlayers: false);
     }
 
     [CustomRPC]
@@ -336,6 +355,6 @@ public class RocketLaunchAbility : CustomButtonBase
             new GameObject("RocketDeadbody").AddComponent<RocketDeadbody>().Init(targetEx, count, targets.Count);
             count++;
         }
-        grabAbility.ClearGrabbedPlayersLocally();
+        grabAbility.ClearGrabbedPlayersLocally(releaseAlivePlayers: false);
     }
 }

@@ -28,8 +28,13 @@ public class ReportUIMenu
         TextBoxTMP roleTextBox = null;
         TextBoxTMP timingTextBox = null;
         // Translation
-        Inner.transform.Find("InputBoxDescription/Text").GetComponent<TextMeshPro>().text = ModTranslation.GetString("RequestInGameSendDescriptionBack");
-        Inner.transform.Find("InputBoxTitle/Text").GetComponent<TextMeshPro>().text = ModTranslation.GetString("RequestInGameSendTitleBack");
+        string descriptionPlaceholder = ModTranslation.GetString("RequestInGameSendDescriptionBack");
+        string titlePlaceholder = ModTranslation.GetString("RequestInGameSendTitleBack");
+        string mapPlaceholder = string.Empty;
+        string rolePlaceholder = string.Empty;
+        string timingPlaceholder = string.Empty;
+        Inner.transform.Find("InputBoxDescription/Text").GetComponent<TextMeshPro>().text = descriptionPlaceholder;
+        Inner.transform.Find("InputBoxTitle/Text").GetComponent<TextMeshPro>().text = titlePlaceholder;
         Inner.transform.Find("TextGrayTitle/Text").GetComponent<TextMeshPro>().text = ModTranslation.GetString("RequestInGameSendTitleGray");
         Inner.transform.Find("TextGrayDescription/Text").GetComponent<TextMeshPro>().text = ModTranslation.GetString("RequestInGameSendDescriptionGray");
         if (requestInGameType == RequestInGameType.Bug)
@@ -42,12 +47,15 @@ public class ReportUIMenu
             var textGrayTiming = Inner.transform.Find("TextGrayTiming/Text");
             var inputBoxTiming = Inner.transform.Find("InputBoxTiming/Text");
 
+            mapPlaceholder = ModTranslation.GetString("RequestInGameSendMapBack");
+            rolePlaceholder = ModTranslation.GetString("RequestInGameSendRoleBack");
+            timingPlaceholder = ModTranslation.GetString("RequestInGameSendTimingBack");
             if (textGrayMap != null) textGrayMap.GetComponent<TextMeshPro>().text = ModTranslation.GetString("RequestInGameSendMapGray");
-            if (inputBoxMap != null) inputBoxMap.GetComponent<TextMeshPro>().text = ModTranslation.GetString("RequestInGameSendMapBack");
+            if (inputBoxMap != null) inputBoxMap.GetComponent<TextMeshPro>().text = mapPlaceholder;
             if (textGrayRole != null) textGrayRole.GetComponent<TextMeshPro>().text = ModTranslation.GetString("RequestInGameSendRoleGray");
-            if (inputBoxRole != null) inputBoxRole.GetComponent<TextMeshPro>().text = ModTranslation.GetString("RequestInGameSendRoleBack");
+            if (inputBoxRole != null) inputBoxRole.GetComponent<TextMeshPro>().text = rolePlaceholder;
             if (textGrayTiming != null) textGrayTiming.GetComponent<TextMeshPro>().text = ModTranslation.GetString("RequestInGameSendTimingGray");
-            if (inputBoxTiming != null) inputBoxTiming.GetComponent<TextMeshPro>().text = ModTranslation.GetString("RequestInGameSendTimingBack");
+            if (inputBoxTiming != null) inputBoxTiming.GetComponent<TextMeshPro>().text = timingPlaceholder;
 
             // TextBoxTMP 参照の取得と設定
             var mapBox = Inner.transform.Find("InputBoxMap");
@@ -89,7 +97,7 @@ public class ReportUIMenu
         agreementButton.OnClick = new();
         agreementButton.OnClick.AddListener((UnityAction)(() =>
         {
-            Application.OpenURL(SNRURLs.ReportInGameAgreement);
+            Constants.OpenURL(SNRURLs.ReportInGameAgreement);
         }));
         agreementButton.OnMouseOver = new();
         agreementButton.OnMouseOver.AddListener((UnityAction)(() =>
@@ -109,6 +117,30 @@ public class ReportUIMenu
             if (mapTextBox != null) ConfigureTextBox(mapTextBox);
             if (roleTextBox != null) ConfigureTextBox(roleTextBox);
             if (timingTextBox != null) ConfigureTextBox(timingTextBox);
+        }
+
+        RequestInGameDraftAutoSaver draftAutoSaver = null;
+        try
+        {
+            RestoreDraft(requestInGameType, titleTextBox, descriptionTextBox, mapTextBox, roleTextBox, timingTextBox);
+            draftAutoSaver = reportUIMenu.AddComponent<RequestInGameDraftAutoSaver>();
+            if (draftAutoSaver != null)
+                draftAutoSaver.Init(requestInGameType, titleTextBox, descriptionTextBox, mapTextBox, roleTextBox, timingTextBox);
+            else
+                Logger.Warning("Failed to add RequestInGameDraftAutoSaver.");
+        }
+        catch (Exception ex)
+        {
+            Logger.Warning($"Failed to initialize RequestInGame draft restore: {ex}");
+        }
+
+        try
+        {
+            SetupClearButton(Inner, requestInGameType, draftAutoSaver, titleTextBox, titlePlaceholder, descriptionTextBox, descriptionPlaceholder, mapTextBox, mapPlaceholder, roleTextBox, rolePlaceholder, timingTextBox, timingPlaceholder);
+        }
+        catch (Exception ex)
+        {
+            Logger.Warning($"Failed to setup RequestInGame clear button: {ex}");
         }
 
         GameObject Button_Send = Inner.transform.Find("Button_Send").gameObject;
@@ -145,6 +177,129 @@ public class ReportUIMenu
             Button_Send.transform.Find("Selected").gameObject.SetActive(false);
         }));
     }
+    private static void RestoreDraft(
+        RequestInGameType requestInGameType,
+        TextBoxTMP titleTextBox,
+        TextBoxTMP descriptionTextBox,
+        TextBoxTMP mapTextBox,
+        TextBoxTMP roleTextBox,
+        TextBoxTMP timingTextBox)
+    {
+        RequestInGameDraft draft = RequestInGameDraftStore.Load(requestInGameType);
+        if (draft.IsEmpty())
+            return;
+
+        RestoreTextBoxValue(titleTextBox, draft.Title);
+        RestoreTextBoxValue(descriptionTextBox, draft.Description);
+        RestoreTextBoxValue(mapTextBox, draft.Map);
+        RestoreTextBoxValue(roleTextBox, draft.Role);
+        RestoreTextBoxValue(timingTextBox, draft.Timing);
+    }
+
+    private static void SetupClearButton(
+        GameObject inner,
+        RequestInGameType requestInGameType,
+        RequestInGameDraftAutoSaver draftAutoSaver,
+        TextBoxTMP titleTextBox,
+        string titlePlaceholder,
+        TextBoxTMP descriptionTextBox,
+        string descriptionPlaceholder,
+        TextBoxTMP mapTextBox,
+        string mapPlaceholder,
+        TextBoxTMP roleTextBox,
+        string rolePlaceholder,
+        TextBoxTMP timingTextBox,
+        string timingPlaceholder)
+    {
+        if (inner == null)
+        {
+            Logger.Warning("Report clear button setup skipped because Inner was null.");
+            return;
+        }
+
+        Transform clearButtonTransform = inner.transform.Find("Button_Clear");
+        if (clearButtonTransform == null)
+        {
+            Logger.Warning("Report clear button was not found: Inner/Button_Clear");
+            return;
+        }
+
+        GameObject clearButton = clearButtonTransform.gameObject;
+        Collider2D clearCollider = clearButton.GetComponent<Collider2D>();
+        TextMeshPro clearButtonText = clearButton.transform.Find("Text")?.GetComponent<TextMeshPro>();
+        if (clearCollider == null || clearButtonText == null)
+        {
+            Logger.Warning("Report clear button requires Collider2D and Text child.");
+            return;
+        }
+
+        bool confirmClear = false;
+        string clearText = ModTranslation.GetString("RequestInGameClearButton");
+        string confirmText = ModTranslation.GetString("RequestInGameClearConfirmButton");
+        clearButtonText.text = clearText;
+
+        PassiveButton clearPassiveButton = clearButton.GetComponent<PassiveButton>() ?? clearButton.AddComponent<PassiveButton>();
+        clearPassiveButton.Colliders = new Collider2D[] { clearCollider };
+        clearPassiveButton.OnClick = new();
+        clearPassiveButton.OnClick.AddListener((UnityAction)(() =>
+        {
+            if (!confirmClear)
+            {
+                confirmClear = true;
+                clearButtonText.text = confirmText;
+                return;
+            }
+
+            RequestInGameDraftStore.Clear(requestInGameType);
+            ClearTextBoxValue(titleTextBox, titlePlaceholder);
+            ClearTextBoxValue(descriptionTextBox, descriptionPlaceholder);
+            ClearTextBoxValue(mapTextBox, mapPlaceholder);
+            ClearTextBoxValue(roleTextBox, rolePlaceholder);
+            ClearTextBoxValue(timingTextBox, timingPlaceholder);
+            draftAutoSaver?.RefreshSnapshot();
+            confirmClear = false;
+            clearButtonText.text = clearText;
+        }));
+        clearPassiveButton.OnMouseOver = new();
+        clearPassiveButton.OnMouseOver.AddListener((UnityAction)(() => SetSelectedActive(clearButton, true)));
+        clearPassiveButton.OnMouseOut = new();
+        clearPassiveButton.OnMouseOut.AddListener((UnityAction)(() => SetSelectedActive(clearButton, false)));
+    }
+
+    private static void RestoreTextBoxValue(TextBoxTMP textBox, string value)
+    {
+        if (textBox == null || string.IsNullOrEmpty(value))
+            return;
+
+        textBox.SetText(value);
+    }
+
+    private static void ClearTextBoxValue(TextBoxTMP textBox, string placeholder)
+    {
+        if (textBox == null)
+            return;
+
+        textBox.Clear();
+        if (textBox.outputText != null)
+            textBox.outputText.text = placeholder;
+    }
+
+    private static void SetSelectedActive(GameObject button, bool active)
+    {
+        Transform selected = button.transform.Find("Selected");
+        if (selected != null)
+            selected.gameObject.SetActive(active);
+    }
+
+    private static void ClearDraftAfterSuccess(Transform parent, RequestInGameType requestInGameType)
+    {
+        RequestInGameDraftAutoSaver draftAutoSaver = parent.GetComponent<RequestInGameDraftAutoSaver>();
+        if (draftAutoSaver != null)
+            draftAutoSaver.StopSaving();
+
+        RequestInGameDraftStore.Clear(requestInGameType);
+    }
+
     private static bool ValidateReport(string description, string title, out string errorMessage)
     {
         if (string.IsNullOrEmpty(description))
@@ -191,6 +346,12 @@ public class ReportUIMenu
                         Dictionary<string, string> additionalInfo = new();
                         additionalInfo["mode"] = Categories.ModeOption.ToString();
                         additionalInfo["log_compressed"] = LogCompression.CompressAndEncryptLog(SNRLogListener.Instance.logBuilder.ToString());
+                        string errorLogData = BugReportErrorLogCollector.CollectAndCompress();
+                        if (!string.IsNullOrEmpty(errorLogData))
+                            additionalInfo[BugReportErrorLogCollector.PayloadKey] = errorLogData;
+                        string settingsData = BugReportSettingsCollector.CollectAndCompress();
+                        if (!string.IsNullOrEmpty(settingsData))
+                            additionalInfo["settings_data_compressed"] = settingsData;
                         if (extra != null)
                         {
                             foreach (var kv in extra)
@@ -209,6 +370,7 @@ public class ReportUIMenu
                             {
                                 Logger.Info($"Report sent: {title} - {description}");
                                 isActive = false;
+                                ClearDraftAfterSuccess(parent, requestInGameType);
                                 new LateTask(() =>
                                 {
                                     CreateSuccessUI(parent.parent);
@@ -244,6 +406,7 @@ public class ReportUIMenu
                             {
                                 Logger.Info($"Report sent: {title} - {description}");
                                 isActive = false;
+                                ClearDraftAfterSuccess(parent, requestInGameType);
                                 new LateTask(() =>
                                 {
                                     CreateSuccessUI(parent.parent);

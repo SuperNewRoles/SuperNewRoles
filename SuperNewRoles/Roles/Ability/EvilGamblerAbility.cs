@@ -42,6 +42,7 @@ public class EvilGamblerAbility : AbilityBase
     {
         if (Player == null) return;
         if (data.killer == null) return;
+        if (!data.resultFlags.HasFlag(MurderResultFlags.Succeeded)) return;
         if (Player.PlayerId == data.killer.PlayerId)
         {
             // キルが発生した時に確率判定を行い、キルクールを設定
@@ -51,7 +52,7 @@ public class EvilGamblerAbility : AbilityBase
             new LateTask(() =>
             {
                 ((ExPlayerControl)Player).SetKillTimerUnchecked(killTime, killTime);
-            }, 0.017f);
+            }, 0.05f);
         }
     }
 

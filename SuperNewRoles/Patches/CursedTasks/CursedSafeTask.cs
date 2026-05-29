@@ -75,7 +75,9 @@ public class CursedSafeTask
         [HarmonyPatch(nameof(SafeMinigame.CheckTumblr)), HarmonyPrefix]
         public static bool CheckTumblrPrefix(SafeMinigame __instance, float delta, float tumRotZ, int unlatched, int expected)
         {
-            if (!Main.IsCursed) return true;
+            if (!Main.IsCursed)
+                return true;
+
             float num = __instance.lastTumDir;
             float num2 = -Mathf.Sign(delta);
             if (num2 != 0f && num != num2)

@@ -3,6 +3,7 @@ using AmongUs.GameOptions;
 using HarmonyLib;
 using SuperNewRoles.CustomOptions.Categories;
 using SuperNewRoles.Events;
+using SuperNewRoles.HelpMenus;
 using SuperNewRoles.Modules;
 using SuperNewRoles.Roles;
 using SuperNewRoles.Roles.Ability;
@@ -31,6 +32,9 @@ public static class HawkZoom
         last = 0f;
         zoomSpeed = 0f;
     }
+
+    internal static bool CanProcessManualZoomInput(bool isHelpMenuActive)
+        => !isHelpMenuActive;
 
     public static void Postfix()
     {
@@ -120,12 +124,14 @@ public static class HawkZoom
         // ユーザーが編集した手動ズーム条件
         else if (deadZoomState.CanUseManualZoom)
         {
+            bool canProcessManualZoomInput = CanProcessManualZoomInput(HelpMenuObjectManager.IsHelpMenuActive);
+
             if (!PlayerControl.LocalPlayer.CanMove)
             {
                 // 操作不能中は拡大縮小の入力を受け付けず、既定倍率へ戻す。
                 manualTargetSize = DefaultManualTargetSize;
             }
-            else if (ModHelpers.IsAndroid())
+            else if (canProcessManualZoomInput && ModHelpers.IsAndroid())
             {
                 // Android はピンチ操作で目標倍率を更新する。
                 if (Input.touchCount == 2)
@@ -145,7 +151,7 @@ public static class HawkZoom
                     manualTargetSize = Mathf.Clamp(manualTargetSize, 2.46f, 15f);
                 }
             }
-            else // PCの手動ズーム
+            else if (canProcessManualZoomInput) // PCの手動ズーム
             {
                 // PC はホイールで目標倍率を上下させる。
                 float scrollDelta = Input.mouseScrollDelta.y;

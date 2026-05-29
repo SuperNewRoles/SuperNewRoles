@@ -58,8 +58,15 @@ public static class Analytics
             if (currentPopup == null)
                 currentPopup = null;
 
-            if (AndroidStartupNoticePopup.TryHandle(__instance, ref currentPopup))
+            if (OnboardingPopup.TryHandle(__instance, ref currentPopup))
                 return;
+
+            // 現在は最新バージョンでもAndroid版が正常に動作するので、NoticePopupは無効化
+            // if (AndroidStartupNoticePopup.TryHandle(__instance, ref currentPopup))
+            //    return;
+
+            // オンボーディング内で同意済みならここでは何もしない。
+            // 途中で右上のバツから閉じた場合だけ、従来の解析同意ポップアップを単体で出す。
 
             if (!isAnalyticsPopupViewd && ConfigRoles.IsSendAnalyticsPopupViewd.Value)
                 isAnalyticsPopupViewd = true;

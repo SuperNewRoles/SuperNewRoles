@@ -42,6 +42,7 @@ public enum FinalStatus
     HappyGatling,
     SluggerSlug,
     TheThirdLittlePigCounterKill,
+    ConjurerMagic,
 }
 
 public static class FinalStatusListener

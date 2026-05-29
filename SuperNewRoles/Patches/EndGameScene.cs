@@ -139,6 +139,9 @@ static class AdditionalTempData
         public string Hat2Id { get; set; }
         public string Visor2Id { get; set; }
         public Color? LoversHeartColor { get; set; }
+        public List<RoleId> RoleHistory { get; set; }
+        public List<GhostRoleId> GhostRoleHistory { get; set; }
+        public List<ModifierRoleId> ModifierRoleHistory { get; set; }
         public PlayerRoleInfo Clone()
         {
             return (PlayerRoleInfo)MemberwiseClone();
@@ -521,6 +524,47 @@ public class EndGameManagerSetUpPatch
         }
     }
 
+    private static string BuildRoleHistoryText(AdditionalTempData.PlayerRoleInfo roleInfo)
+    {
+        string arrow = "→";
+
+        var history = roleInfo.RoleHistory;
+        if (history == null || history.Count == 0)
+            history = new List<RoleId> { roleInfo.RoleId };
+
+        var parts = new List<string>();
+        foreach (var r in history)
+        {
+            if (CustomRoleManager.TryGetRoleById(r, out var role))
+                parts.Add(ModHelpers.CsWithTranslation(role.RoleColor, r.ToString()));
+            else
+                parts.Add(r.ToString());
+        }
+        string roleChain = string.Join($" {arrow} ", parts);
+
+        if (roleInfo.GhostRoleHistory != null && roleInfo.GhostRoleHistory.Count > 1)
+        {
+            var ghostParts = new List<string>();
+            foreach (var g in roleInfo.GhostRoleHistory)
+            {
+                if (CustomRoleManager.TryGetGhostRoleById(g, out var ghostRole))
+                    ghostParts.Add(ModHelpers.CsWithTranslation(ghostRole.RoleColor, g.ToString()));
+                else
+                    ghostParts.Add(g.ToString());
+            }
+            roleChain += $"\n[Ghost] {string.Join($" {arrow} ", ghostParts)}";
+        }
+
+        if (roleInfo.modifierMarks.Count > 0)
+        {
+            roleChain += " ";
+            foreach (var modifier in roleInfo.modifierMarks)
+                roleChain = modifier.Replace("{0}", roleChain);
+        }
+
+        return roleChain;
+    }
+
     private static void CreateRoleSummary(EndGameManager instance)
     {
         try
@@ -536,16 +580,24 @@ public class EndGameManagerSetUpPatch
             foreach (var roleInfo in AdditionalTempData.playerRoles)
             {
                 var taskInfo = roleInfo.TasksTotal > 0 ? $"<color=#FAD934FF>({roleInfo.TasksCompleted}/{roleInfo.TasksTotal})</color>" : "";
-                string roleText = ModHelpers.CsWithTranslation(roleInfo.roleBase.RoleColor, roleInfo.roleBase.Role.ToString());
-                if (roleInfo.modifierMarks.Count > 0)
-                    roleText += " ";
-                foreach (var modifier in roleInfo.modifierMarks)
-                    roleText = modifier.Replace("{0}", roleText);
+                string roleText = BuildRoleHistoryText(roleInfo);
                 string playerName = ModHelpers.Cs(Palette.PlayerColors[roleInfo.ColorId], roleInfo.PlayerName);
                 if (roleInfo.LoversHeartColor != null)
                     playerName += ModHelpers.Cs(roleInfo.LoversHeartColor.Value, " ♥");
-                string result = $"{playerName}{roleInfo.NameSuffix}<pos=17%>{taskInfo} - <pos=27%>{ModTranslation.GetString("FinalStatus." + roleInfo.Status)} - {roleText}";
-                summaryBuilder.AppendLine(result);
+
+                string[] roleLines = roleText.Split('\n');
+                for (int i = 0; i < roleLines.Length; i++)
+                {
+                    if (i == 0)
+                    {
+                        string result = $"{playerName}{roleInfo.NameSuffix}<pos=17%>{taskInfo} - <pos=27%>{ModTranslation.GetString("FinalStatus." + roleInfo.Status)} - {roleLines[i]}";
+                        summaryBuilder.AppendLine(result);
+                    }
+                    else
+                    {
+                        summaryBuilder.AppendLine($"<pos=27%>{roleLines[i]}");
+                    }
+                }
             }
 
             TMPro.TMP_Text summaryTextMesh = roleSummary.GetComponent<TMPro.TMP_Text>();
@@ -634,6 +686,9 @@ public static class OnGameEndPatch
         Color? loversHeartColor = null;
         List<string> modifierMarks = [];
 
+        List<RoleId> roleHistory = new();
+        List<GhostRoleId> ghostRoleHistory = new();
+        List<ModifierRoleId> modifierRoleHistory = new();
         if (player.Disconnected)
         {
             DisconnectedResultSaver.DisconnectedData data = DisconnectedResultSaver.Instance.GetDisconnectedData(player.PlayerId);
@@ -645,6 +700,9 @@ public static class OnGameEndPatch
             status = FinalStatus.Disconnect;
             hat2Id = data.Hat2Id;
             visor2Id = data.Visor2Id;
+            roleHistory = data.RoleHistory ?? new List<RoleId> { roleId };
+            ghostRoleHistory = data.GhostRoleHistory ?? new List<GhostRoleId> { ghostRoleId };
+            modifierRoleHistory = data.ModifierRoleHistory ?? new List<ModifierRoleId> { modifierRoleId };
         }
         else
         {
@@ -664,6 +722,9 @@ public static class OnGameEndPatch
             {
                 modifierMarks.Add(modifier.ModifierMark(exPlayer));
             }
+            roleHistory = exPlayer.RoleHistory.Count > 0 ? new List<RoleId>(exPlayer.RoleHistory) : new List<RoleId> { roleId };
+            ghostRoleHistory = exPlayer.GhostRoleHistory.Count > 0 ? new List<GhostRoleId>(exPlayer.GhostRoleHistory) : new List<GhostRoleId> { ghostRoleId };
+            modifierRoleHistory = exPlayer.ModifierRoleHistory.Count > 0 ? new List<ModifierRoleId>(exPlayer.ModifierRoleHistory) : new List<ModifierRoleId> { modifierRoleId };
         }
         additionalSize *= modifierRoleId.HasFlag(ModifierRoleId.JumboModifier) ? 2f : 1f;
 
@@ -688,6 +749,9 @@ public static class OnGameEndPatch
             Visor2Id = visor2Id,
             additionalSize = additionalSize,
             LoversHeartColor = loversHeartColor,
+            RoleHistory = roleHistory,
+            GhostRoleHistory = ghostRoleHistory,
+            ModifierRoleHistory = modifierRoleHistory,
         };
     }
 

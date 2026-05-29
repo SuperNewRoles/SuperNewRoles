@@ -152,6 +152,7 @@ public enum RoleId : short
     Banshee,
     Orpheus,
     TriggerHappy,
+    ElectionCommissioner
 }
 
 public enum GhostRoleId : short

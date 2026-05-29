@@ -211,6 +211,11 @@ public class OwlDeadBodyTransportAbility : CustomButtonBase, IButtonEffect
     {
         if (DeadBodyInTransport != null)
         {
+            if (!_canUse())
+            {
+                RpcDeadBodyInTransport(this);
+                return;
+            }
             // 死体を自分の位置に移動
             DeadBodyInTransport.transform.position = Player.transform.position;
         }
@@ -275,7 +280,7 @@ public class OwlDeadBodyTransportAbility : CustomButtonBase, IButtonEffect
         {
             if (body.ParentId == id)
             {
-                body.transform.position = new(9999f, 9999f);
+                body.transform.position = DeadBodyVisibility.HiddenPosition;
                 break;
             }
         }

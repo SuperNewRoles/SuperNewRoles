@@ -28,6 +28,12 @@ public class CustomTaskAbility : AbilityBase
         // ローカルプレイヤーでない場合は処理しない（各プレイヤーが自分自身のタスクのみを設定するようにする）
         if (!Player.AmOwner) return;
 
+        if (assignTaskData != null && assignTaskData.Total <= 0)
+        {
+            RpcUncheckedSetTasks(Player, new System.Collections.Generic.List<byte>());
+            return;
+        }
+
         CustomTaskTypeAbility customTaskTypeAbility = Player.GetAbility<CustomTaskTypeAbility>();
         if (customTaskTypeAbility != null && !customTaskTypeAbility.ShouldChangeTask())
         {
@@ -75,10 +81,7 @@ public class CustomTaskAbility : AbilityBase
         ShipStatus.Instance.AddTasksFromList(ref startIndex, assignTaskData.Long, taskList, types, shuffledLongTasks.ToIl2CppList());
 
         // タスクをプレイヤーに割り当てる
-        if (taskList.Count > 0)
-        {
-            RpcUncheckedSetTasks(Player, taskList.ToSystemList());
-        }
+        RpcUncheckedSetTasks(Player, taskList.ToSystemList());
     }
     [CustomRPC]
     public static void RpcUncheckedSetTasks(PlayerControl player, System.Collections.Generic.List<byte> taskList)

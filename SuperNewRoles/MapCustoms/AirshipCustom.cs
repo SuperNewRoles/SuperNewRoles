@@ -49,15 +49,26 @@ public static class AirshipCustom
                     if (c.name == "DivertRecieve" && (c.Room == SystemTypes.Armory || c.Room == SystemTypes.MainHall)) c.checkWalls = true;
                 }
             }
+            new LateTask(ApplyGapRoomShadowForLocalPlayer, 0.1f, "ApplyGapRoomShadowForLocalPlayer");
             SetRoleEvent.Instance.AddListener((data) => OnSetRole(data));
         }
         private static void OnSetRole(SetRoleEventData data)
         {
             if (!data.player.AmOwner) return;
+            ApplyGapRoomShadowForLocalPlayer();
+        }
+
+        private static void ApplyGapRoomShadowForLocalPlayer()
+        {
+            if (ShipStatus.Instance == null || ExPlayerControl.LocalPlayer == null) return;
             if (MapEditSettingsOptions.ModifyGapRoomOneWayShadow && ShipStatus.Instance.FastRooms.TryGetValue(SystemTypes.GapRoom, out var gapRoom))
             {
-                var gapRoomShadow = gapRoom.GetComponentInChildren<OneWayShadows>();
+                var gapRoomShadow = gapRoom.GetComponentInChildren<OneWayShadows>(true);
                 if (gapRoomShadow == null) return;
+
+                gapRoomShadow.gameObject.SetActive(true);
+                gapRoomShadow.enabled = true;
+
                 var amImpostorLight = ExPlayerControl.LocalPlayer.IsImpostor() || ExPlayerControl.LocalPlayer.HasImpostorVision();
                 if (MapEditSettingsOptions.GapRoomShadowIgnoresImpostors && amImpostorLight)
                 {

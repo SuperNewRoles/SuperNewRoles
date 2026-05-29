@@ -12,7 +12,7 @@ class EvilGuesser : RoleBase<EvilGuesser>
 {
     public override RoleId Role { get; } = RoleId.EvilGuesser;
     public override Color32 RoleColor { get; } = Palette.ImpostorRed;
-    public override List<Func<AbilityBase>> Abilities { get; } = [() => new GuesserAbility(EvilGuesserMaxShots, EvilGuesserShotsPerMeeting, EvilGuesserCannotShootCrewmate, EvilGuesserCannotShootStar, EvilGuesserLimitedTurns, EvilGuesserLimitedTurnsCount)];
+    public override List<Func<AbilityBase>> Abilities { get; } = [() => new GuesserAbility(EvilGuesserMaxShots, EvilGuesserShotsPerMeeting, EvilGuesserCannotShootCrewmate, EvilGuesserCannotShootStar, EvilGuesserLimitedTurns, EvilGuesserLimitedTurnsCount, cannotShootFirstTurn: EvilGuesserCannotShootFirstTurn, cannotShootNoDead: EvilGuesserCannotShootNoDead)];
 
     public override QuoteMod QuoteMod { get; } = QuoteMod.TheOtherRoles;
     public override RoleTypes IntroSoundType { get; } = RoleTypes.Impostor;
@@ -29,6 +29,12 @@ class EvilGuesser : RoleBase<EvilGuesser>
 
     [CustomOptionInt("EvilGuesserShotsPerMeeting", 1, 15, 1, 3)]
     public static int EvilGuesserShotsPerMeeting = 3;
+
+    [CustomOptionBool("EvilGuesserCannotShootFirstTurn", false)]
+    public static bool EvilGuesserCannotShootFirstTurn;
+
+    [CustomOptionBool("EvilGuesserCannotShootNoDead", false)]
+    public static bool EvilGuesserCannotShootNoDead;
 
     [CustomOptionBool("EvilGuesserCannotShootStar", true)]
     public static bool EvilGuesserCannotShootStar = true;

@@ -156,6 +156,7 @@ public class RoleOptionSettings
 
             // 表示状態を更新
             UpdateDisplayAfterOptionChange(passiveButton.transform.parent, option);
+            SnrSettingChangeNotifier.NotifyOptionChanged(option);
 
             // ホストの場合、他のプレイヤーに同期
             if (AmongUsClient.Instance.AmHost)
@@ -202,6 +203,7 @@ public class RoleOptionSettings
             selectedText.text = ModTranslation.GetString("NumberOfCrewsSelected", roleOption.NumberOfCrews);
             if (isExist)
                 RoleOptionMenu.UpdateRoleDetailButtonColor(roleDetailButton.GetComponent<SpriteRenderer>(), roleOption);
+            SnrSettingChangeNotifier.NotifyRoleOptionChanged(roleOption);
             RoleOptionManager.RpcSyncRoleOptionDelay(roleOption.RoleId, roleOption.NumberOfCrews, roleOption.Percentage);
         }, minusSpriteRenderer);
 
@@ -230,6 +232,7 @@ public class RoleOptionSettings
             }
             if (isExist)
                 RoleOptionMenu.UpdateRoleDetailButtonColor(roleDetailButton.GetComponent<SpriteRenderer>(), roleOption);
+            SnrSettingChangeNotifier.NotifyRoleOptionChanged(roleOption);
             RoleOptionManager.RpcSyncRoleOptionDelay(roleOption.RoleId, roleOption.NumberOfCrews, roleOption.Percentage);
         }, plusSpriteRenderer);
 
@@ -260,6 +263,7 @@ public class RoleOptionSettings
             selectedText.text = roleOption.Percentage + "%";
             if (isExist)
                 RoleOptionMenu.UpdateRoleDetailButtonColor(roleDetailButton.GetComponent<SpriteRenderer>(), roleOption);
+            SnrSettingChangeNotifier.NotifyRoleOptionChanged(roleOption);
             RoleOptionManager.RpcSyncRoleOptionDelay(roleOption.RoleId, roleOption.NumberOfCrews, roleOption.Percentage);
         }, minusSpriteRenderer);
 
@@ -275,6 +279,7 @@ public class RoleOptionSettings
             selectedText.text = roleOption.Percentage + "%";
             if (isExist)
                 RoleOptionMenu.UpdateRoleDetailButtonColor(roleDetailButton.GetComponent<SpriteRenderer>(), roleOption);
+            SnrSettingChangeNotifier.NotifyRoleOptionChanged(roleOption);
             RoleOptionManager.RpcSyncRoleOptionDelay(roleOption.RoleId, roleOption.NumberOfCrews, roleOption.Percentage);
         }, plusSpriteRenderer);
         return optionInstance;
@@ -335,6 +340,7 @@ public class RoleOptionSettings
 
         // 表示状態を更新
         UpdateDisplayAfterOptionChange(selectedText.transform.parent.parent, option);
+        SnrSettingChangeNotifier.NotifyOptionChanged(option);
 
         // ホストの場合、他のプレイヤーに同期
         if (AmongUsClient.Instance.AmHost)

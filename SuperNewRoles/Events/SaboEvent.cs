@@ -84,8 +84,9 @@ public static class SaboStateTracker
             }
 
             Logger.Info("Sabotage Start: " + systemType);
-            SaboStartEvent.Invoke(systemType);
+            // Listeners can call ShipStatus.UpdateSystem, so commit state before firing events.
             activeSaboTypes.Add(systemType);
+            SaboStartEvent.Invoke(systemType);
         }
 
         var endedSaboTypes = new List<SystemTypes>();
@@ -100,8 +101,9 @@ public static class SaboStateTracker
         foreach (var systemType in endedSaboTypes)
         {
             Logger.Info("Sabotage End: " + systemType);
-            SaboEndEvent.Invoke(systemType);
+            // Listeners can call ShipStatus.UpdateSystem, so commit state before firing events.
             activeSaboTypes.Remove(systemType);
+            SaboEndEvent.Invoke(systemType);
         }
     }
 
