@@ -583,6 +583,9 @@ public sealed class OrpheusMainAbility : AbilityBase
                 return null;
         }
 
+        sprites[RitualCorpseEffectFrameCount] = sprites[RitualCorpseEffectFrameCount - 1];
+        sprites[RitualCorpseEffectFrameCount + 1] = sprites[RitualCorpseEffectFrameCount - 1];
+
         return sprites;
     }
 
@@ -617,7 +620,7 @@ public sealed class OrpheusMainAbility : AbilityBase
         ex.Player.Revive();
         RoleManager.Instance.SetRole(ex.Player, RoleTypes.Impostor);
         ex.Data.IsDead = false;
-        FinalStatusManager.RpcSetFinalStatus(ex, FinalStatus.Alive);
+        FinalStatusManager.SetFinalStatus(ex, FinalStatus.Alive);
         MurderDataManager.RevivedMurderData(ex);
         ex.SetRole((RoleId)roleId);
         NameText.UpdateAllNameInfo();

@@ -177,7 +177,7 @@ public abstract class MapDatabase
         return true;
     }
 
-    // 死体をスポーンできる場所をキャッシュから取得するか生成する
+    // 現在のマップのスポーン探索用境界を取得する
     public static bool TryGetSpawnScanBoundsForCurrentMap(out Vector2 min, out Vector2 max)
     {
         min = max = Vector2.zero;

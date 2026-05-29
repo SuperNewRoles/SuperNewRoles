@@ -207,6 +207,9 @@ public sealed class FrankensteinAbility : AbilityBase
 
     private static bool IsDeadBodyInUse(DeadBody body)
     {
+        if (OrpheusMainAbility.IsManagedCorpseBody(body))
+            return true;
+
         foreach (ExPlayerControl player in ExPlayerControl.ExPlayerControls)
         {
             if (player == null) continue;
@@ -218,9 +221,6 @@ public sealed class FrankensteinAbility : AbilityBase
                 return true;
 
             if (player.Role == RoleId.Frankenstein && player.TryGetAbility<FrankensteinAbility>(out var franken) && franken._monsterBody == body)
-                return true;
-
-            if (OrpheusMainAbility.IsManagedCorpseBody(body))
                 return true;
         }
 
