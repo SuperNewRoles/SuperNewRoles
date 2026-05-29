@@ -54,7 +54,7 @@ public sealed class OrpheusMainAbility : AbilityBase
     private const int RandomRitualPositionAttempts = 48;
     private const int RitualCorpseEffectFrameCount = 8;
     private const int RitualCorpseEffectFrameRate = 9;
-    private const float RitualCorpseEffectScale = 0.2f;
+    private const float RitualCorpseEffectScale = 0.22f;
 
     /// <summary>
     /// RoundsRemaining: あと何回の WrapUp で儀式死体をスポーンするか（死亡直後のタスクフェーズは儀式死体なし）。
@@ -480,7 +480,7 @@ public sealed class OrpheusMainAbility : AbilityBase
 
         GameObject effect = new("OrpheusRitualCorpseEffect");
         effect.transform.SetParent(deadBody.transform, false);
-        effect.transform.localPosition = new Vector3(-0.3f, 0f, 0.001f);
+        effect.transform.localPosition = new Vector3(-0.3f, 0.1f, 0.001f);
         effect.transform.localScale = new Vector3(RitualCorpseEffectScale, RitualCorpseEffectScale, 1f);
         effect.layer = deadBody.gameObject.layer;
 
