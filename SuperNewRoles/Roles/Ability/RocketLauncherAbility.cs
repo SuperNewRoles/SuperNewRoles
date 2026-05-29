@@ -62,6 +62,7 @@ public class RocketLauncherButtonAbility : TargetCustomButtonBase, IButtonEffect
     private RocketLauncherHeldPlayer _heldVisual;
     private EventListener<MeetingStartEventData> _meetingStartListener;
     private EventListener _fixedUpdateListener;
+    private EventListener _hudUpdateListener;
     private EventListener<DieEventData> _dieListener;
     private EventListener<DisconnectEventData> _disconnectListener;
     private EventListener<MurderEventData> _murderListener;
@@ -96,6 +97,7 @@ public class RocketLauncherButtonAbility : TargetCustomButtonBase, IButtonEffect
         base.AttachToAlls();
         _meetingStartListener = MeetingStartEvent.Instance.AddListener(OnMeetingStart);
         _fixedUpdateListener = FixedUpdateEvent.Instance.AddListener(OnFixedUpdate);
+        _hudUpdateListener = HudUpdateEvent.Instance.AddListener(OnHudUpdate);
         _dieListener = DieEvent.Instance.AddListener(OnDie);
         _disconnectListener = DisconnectEvent.Instance.AddListener(OnDisconnect);
     }
@@ -117,6 +119,7 @@ public class RocketLauncherButtonAbility : TargetCustomButtonBase, IButtonEffect
         base.DetachToAlls();
         _meetingStartListener?.RemoveListener();
         _fixedUpdateListener?.RemoveListener();
+        _hudUpdateListener?.RemoveListener();
         _dieListener?.RemoveListener();
         _disconnectListener?.RemoveListener();
         ClearHeldTargetLocally(restoreMoveable: true);
@@ -193,6 +196,22 @@ public class RocketLauncherButtonAbility : TargetCustomButtonBase, IButtonEffect
         if (_heldTarget == null)
             return;
 
+        UpdateHeldTargetFollow();
+    }
+
+    private void OnHudUpdate()
+    {
+        if (Player == null || !Player.IsAlive() || MeetingHud.Instance != null)
+            return;
+
+        UpdateHeldTargetFollow();
+    }
+
+    private void UpdateHeldTargetFollow()
+    {
+        if (_heldTarget == null)
+            return;
+
         if (!_heldTarget.IsAlive())
         {
             ClearHeldTargetLocally(restoreMoveable: true);
@@ -233,7 +252,7 @@ public class RocketLauncherButtonAbility : TargetCustomButtonBase, IButtonEffect
         if (!ShouldLimitLoadedTime || !HasHeldTarget)
             return;
         if (Player.AmOwner)
-            RpcExpireHeldTarget(_heldTarget, Player.GetTruePosition());
+            RpcExpireHeldTarget(_heldTarget, GetPlayerTransformPosition(Player));
     }
 
     private void OnMeetingStart(MeetingStartEventData data)
@@ -244,7 +263,7 @@ public class RocketLauncherButtonAbility : TargetCustomButtonBase, IButtonEffect
         if (HasHeldTarget)
         {
             var target = _heldTarget;
-            RpcKillHeldByMeeting(target, target.GetTruePosition());
+            RpcKillHeldByMeeting(target, GetPlayerTransformPosition(target));
             return;
         }
 
@@ -269,13 +288,13 @@ public class RocketLauncherButtonAbility : TargetCustomButtonBase, IButtonEffect
 
         if (_heldTarget != null && data.player.PlayerId == _heldTarget.PlayerId)
         {
-            ClearHeldTargetLocally(restoreMoveable: true);
+            ClearDeadHeldTargetLocally(data.player);
             return;
         }
 
         if (_activeProjectile != null && _activeProjectile.Target != null && data.player.PlayerId == _activeProjectile.Target.PlayerId)
         {
-            DetachProjectileLocally(restoreTarget: true);
+            DetachDeadProjectileTargetLocally(data.player);
             return;
         }
 
@@ -364,8 +383,12 @@ public class RocketLauncherButtonAbility : TargetCustomButtonBase, IButtonEffect
         MoveTargetTo(target, startPosition);
         SetTargetMoveable(target, false);
         _activeProjectile = RocketLauncherProjectile.Spawn(this, Player, target, startPosition, direction, _data.CollideWithPlayers);
-        if (Player.AmOwner && RocketLauncherProjectile.TryGetLaunchPathHitPosition(Player.GetTruePosition(), startPosition, out var hitPosition))
-            RequestExplodeFromProjectile(_activeProjectile, hitPosition);
+        if (Player.AmOwner)
+        {
+            Vector2 sourcePosition = GetPlayerTransformPosition(Player);
+            if (RocketLauncherProjectile.HasLaunchPathHit(sourcePosition, startPosition))
+                RequestExplodeFromProjectile(_activeProjectile, sourcePosition);
+        }
     }
 
     [CustomRPC]
@@ -385,7 +408,8 @@ public class RocketLauncherButtonAbility : TargetCustomButtonBase, IButtonEffect
     {
         if (launchedTarget != null)
             MoveTargetTo(launchedTarget, position);
-        DetachProjectileLocally(restoreTarget: true);
+        bool restoreLaunchedTargetOnDetach = !ContainsPlayer(victims, launchedTarget);
+        DetachProjectileLocally(restoreLaunchedTargetOnDetach);
         SpawnExplosionAnimation(position);
         PlayExplosionSound(position);
 
@@ -404,7 +428,13 @@ public class RocketLauncherButtonAbility : TargetCustomButtonBase, IButtonEffect
             }
             victim.CustomDeath(CustomDeathType.RocketLauncher, source: Player);
             if (launchedTarget != null && victim.PlayerId == launchedTarget.PlayerId)
+            {
+                if (victim.IsAlive())
+                    RestoreTargetControl(victim);
+                else
+                    ReleaseTargetVisibilityAfterDeath(victim);
                 PinDeadBodyToPosition(victim.PlayerId, position);
+            }
         }
 
         if (killedPlayerIds.Count > 0 && AmongUsClient.Instance.AmHost && ExPlayerControl.ExPlayerControls.Count(x => x.IsAlive()) == 0)
@@ -466,6 +496,11 @@ public class RocketLauncherButtonAbility : TargetCustomButtonBase, IButtonEffect
         return victims;
     }
 
+    private static bool ContainsPlayer(List<ExPlayerControl> players, ExPlayerControl target)
+    {
+        return target != null && players != null && players.Any(player => player != null && player.PlayerId == target.PlayerId);
+    }
+
     private void KillSingleTarget(ExPlayerControl target, Vector2 position)
     {
         if (target == null)
@@ -487,6 +522,15 @@ public class RocketLauncherButtonAbility : TargetCustomButtonBase, IButtonEffect
         EffectTimer = 0f;
     }
 
+    private void ClearDeadHeldTargetLocally(ExPlayerControl target)
+    {
+        DestroyHeldVisual();
+        ReleaseTargetVisibilityAfterDeath(target);
+        _heldTarget = null;
+        isEffectActive = false;
+        EffectTimer = 0f;
+    }
+
     private void DestroyHeldVisual()
     {
         if (_heldVisual == null)
@@ -501,6 +545,12 @@ public class RocketLauncherButtonAbility : TargetCustomButtonBase, IButtonEffect
             return;
         _activeProjectile.Detach(restoreTarget);
         _activeProjectile = null;
+    }
+
+    private void DetachDeadProjectileTargetLocally(ExPlayerControl target)
+    {
+        DetachProjectileLocally(restoreTarget: false);
+        ReleaseTargetVisibilityAfterDeath(target);
     }
 
     private void SpawnExplosionAnimation(Vector2 position)
@@ -554,6 +604,14 @@ public class RocketLauncherButtonAbility : TargetCustomButtonBase, IButtonEffect
         return RocketLauncherHeldPlayer.GetHeldTargetPosition(Player);
     }
 
+    private static Vector2 GetPlayerTransformPosition(ExPlayerControl player)
+    {
+        if (player?.Player == null)
+            return Vector2.zero;
+
+        return player.Player.transform.position;
+    }
+
     private static void PlayWiseManGuardEffect(ExPlayerControl wiseMan)
     {
         if (wiseMan?.Player == null)
@@ -596,10 +654,13 @@ public class RocketLauncherButtonAbility : TargetCustomButtonBase, IButtonEffect
         if (target?.Player == null)
             return;
 
-        // target.transform.position = new Vector3(position.x, position.y, target.transform.position.z);
-        target.transform.position = (position);
-        if (target.MyPhysics?.body != null)
-            target.MyPhysics.body.velocity = Vector2.zero;
+        target.Player.transform.position = new Vector3(position.x, position.y, target.Player.transform.position.z);
+        var body = target.MyPhysics?.body;
+        if (body != null)
+        {
+            body.position = position;
+            body.velocity = Vector2.zero;
+        }
     }
 
     internal static void SetTargetMoveable(ExPlayerControl target, bool moveable)
@@ -625,15 +686,12 @@ public class RocketLauncherButtonAbility : TargetCustomButtonBase, IButtonEffect
 
     private static void HideTargetRenderers(ExPlayerControl target)
     {
-        var renderers = CollectTargetRenderers(target);
         if (!HiddenTargetVisibilityStates.TryGetValue(target.PlayerId, out var state))
         {
-            state = new TargetVisibilityState(renderers);
+            var renderers = CollectTargetRenderers(target);
+            var gameObjects = CollectTargetVisibilityObjects(target, renderers);
+            state = new TargetVisibilityState(target, renderers, gameObjects);
             HiddenTargetVisibilityStates[target.PlayerId] = state;
-        }
-        else
-        {
-            state.AddRenderers(renderers);
         }
 
         state.Hide();
@@ -648,9 +706,20 @@ public class RocketLauncherButtonAbility : TargetCustomButtonBase, IButtonEffect
         HiddenTargetVisibilityStates.Remove(target.PlayerId);
     }
 
+    private static void ReleaseTargetVisibilityAfterDeath(ExPlayerControl target)
+    {
+        if (target == null || !HiddenTargetVisibilityStates.TryGetValue(target.PlayerId, out var state))
+            return;
+
+        state.ReleaseHidden();
+        HiddenTargetVisibilityStates.Remove(target.PlayerId);
+    }
+
     private static Renderer[] CollectTargetRenderers(ExPlayerControl target)
     {
         List<Renderer> renderers = new();
+        if (target.Player != null)
+            renderers.AddRange(target.Player.GetComponentsInChildren<Renderer>(true));
         if (target.cosmetics != null)
             renderers.AddRange(target.cosmetics.GetComponentsInChildren<Renderer>(true));
 
@@ -660,6 +729,28 @@ public class RocketLauncherButtonAbility : TargetCustomButtonBase, IButtonEffect
 
         return renderers
             .Where(renderer => renderer != null)
+            .Distinct()
+            .ToArray();
+    }
+
+    private static GameObject[] CollectTargetVisibilityObjects(ExPlayerControl target, Renderer[] renderers)
+    {
+        List<GameObject> gameObjects = new();
+        if (target.cosmetics != null)
+            gameObjects.Add(target.cosmetics.gameObject);
+
+        var bodySpriteObject = target.cosmetics?.currentBodySprite?.BodySprite?.gameObject;
+        if (bodySpriteObject != null)
+            gameObjects.Add(bodySpriteObject);
+
+        foreach (var renderer in renderers)
+        {
+            if (renderer?.gameObject != null)
+                gameObjects.Add(renderer.gameObject);
+        }
+
+        return gameObjects
+            .Where(gameObject => gameObject != null)
             .Distinct()
             .ToArray();
     }
@@ -675,15 +766,42 @@ public class RocketLauncherButtonAbility : TargetCustomButtonBase, IButtonEffect
 
     private sealed class TargetVisibilityState
     {
+        private readonly ExPlayerControl _target;
         private readonly List<Renderer> _renderers = new();
         private readonly List<bool> _enabledStates = new();
+        private readonly List<GameObject> _gameObjects = new();
+        private readonly List<bool> _activeStates = new();
+        private readonly bool _hasPlayerVisibleState;
+        private readonly bool _playerVisibleState;
+        private readonly bool _hasCosmeticsVisibleState;
+        private readonly bool _cosmeticsVisibleState;
+        private readonly bool _hasBodyVisibleState;
+        private readonly bool _bodyVisibleState;
 
-        public TargetVisibilityState(Renderer[] renderers)
+        public TargetVisibilityState(ExPlayerControl target, Renderer[] renderers, GameObject[] gameObjects)
         {
+            _target = target;
+            if (target?.Player != null)
+            {
+                _hasPlayerVisibleState = true;
+                _playerVisibleState = target.Player.Visible;
+            }
+            if (target?.cosmetics != null)
+            {
+                _hasCosmeticsVisibleState = true;
+                _cosmeticsVisibleState = target.cosmetics.Visible;
+            }
+            if (target?.cosmetics?.currentBodySprite != null)
+            {
+                _hasBodyVisibleState = true;
+                _bodyVisibleState = target.cosmetics.currentBodySprite.Visible;
+            }
+
             AddRenderers(renderers);
+            AddGameObjects(gameObjects);
         }
 
-        public void AddRenderers(Renderer[] renderers)
+        private void AddRenderers(Renderer[] renderers)
         {
             foreach (var renderer in renderers)
             {
@@ -695,21 +813,92 @@ public class RocketLauncherButtonAbility : TargetCustomButtonBase, IButtonEffect
             }
         }
 
+        private void AddGameObjects(GameObject[] gameObjects)
+        {
+            foreach (var gameObject in gameObjects)
+            {
+                if (gameObject == null || _gameObjects.Contains(gameObject))
+                    continue;
+
+                _gameObjects.Add(gameObject);
+                _activeStates.Add(gameObject.activeSelf);
+            }
+        }
+
         public void Hide()
         {
+            ApplyHighLevelVisibility(visible: false);
+
             foreach (var renderer in _renderers)
             {
-                if (renderer != null)
+                if (renderer != null && renderer.enabled)
                     renderer.enabled = false;
+            }
+
+            foreach (var gameObject in _gameObjects)
+            {
+                if (gameObject != null && gameObject.activeSelf)
+                    gameObject.SetActive(false);
             }
         }
 
         public void Restore()
         {
+            RestoreGameObjects();
+            RestoreRenderers();
+            RestoreHighLevelVisibility(force: true);
+        }
+
+        public void ReleaseHidden()
+        {
+            RestoreGameObjects();
+            RestoreRenderers();
+            ApplyHighLevelVisibility(visible: false, force: true);
+        }
+
+        private void ApplyHighLevelVisibility(bool visible, bool force = false)
+        {
+            if (_target?.Player != null && (force || _target.Player.Visible != visible))
+                _target.Player.Visible = visible;
+            if (_target?.cosmetics != null && (force || _target.cosmetics.Visible != visible))
+                _target.cosmetics.Visible = visible;
+            if (_target?.cosmetics?.currentBodySprite != null
+                && (force || _target.cosmetics.currentBodySprite.Visible != visible))
+                _target.cosmetics.currentBodySprite.Visible = visible;
+        }
+
+        private void RestoreHighLevelVisibility(bool force = false)
+        {
+            if (_hasPlayerVisibleState
+                && _target?.Player != null
+                && (force || _target.Player.Visible != _playerVisibleState))
+                _target.Player.Visible = _playerVisibleState;
+            if (_hasCosmeticsVisibleState
+                && _target?.cosmetics != null
+                && (force || _target.cosmetics.Visible != _cosmeticsVisibleState))
+                _target.cosmetics.Visible = _cosmeticsVisibleState;
+            if (_hasBodyVisibleState
+                && _target?.cosmetics?.currentBodySprite != null
+                && (force || _target.cosmetics.currentBodySprite.Visible != _bodyVisibleState))
+                _target.cosmetics.currentBodySprite.Visible = _bodyVisibleState;
+        }
+
+        private void RestoreGameObjects()
+        {
+            for (int i = 0; i < _gameObjects.Count; i++)
+            {
+                var gameObject = _gameObjects[i];
+                if (gameObject != null && gameObject.activeSelf != _activeStates[i])
+                    gameObject.SetActive(_activeStates[i]);
+            }
+        }
+
+        private void RestoreRenderers()
+        {
             for (int i = 0; i < _renderers.Count; i++)
             {
                 var renderer = _renderers[i];
-                if (renderer != null)
+                if (renderer != null && renderer.enabled != _enabledStates[i])
                     renderer.enabled = _enabledStates[i];
             }
         }

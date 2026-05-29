@@ -202,9 +202,8 @@ public class RocketLauncherProjectile : MonoBehaviour
         return (Mathf.Atan2(direction.y, direction.x) * Mathf.Rad2Deg) + ProjectileSpriteForwardAngleOffset;
     }
 
-    internal static bool TryGetLaunchPathHitPosition(Vector2 sourcePosition, Vector2 launchPosition, out Vector2 hitPosition)
+    internal static bool HasLaunchPathHit(Vector2 sourcePosition, Vector2 launchPosition)
     {
-        hitPosition = default;
         Vector2 step = launchPosition - sourcePosition;
         float distance = step.magnitude;
         if (distance <= 0f)
@@ -213,18 +212,8 @@ public class RocketLauncherProjectile : MonoBehaviour
         Vector2 direction = step / distance;
         float radius = BaseColliderRadius * ProjectileCollisionScale;
         float castDistance = distance + radius;
-        bool hitByLine = PhysicsHelpers.AnyNonTriggersBetween(sourcePosition, direction, castDistance, Constants.ShipAndAllObjectsMask);
-        bool hitByOverlap = IsOverlappingWall(launchPosition, radius);
-        if (!hitByLine && !hitByOverlap)
-            return false;
-
-        float nearestDistance = GetNearestWallHitDistance(sourcePosition, direction, castDistance);
-        if (nearestDistance < float.MaxValue)
-            hitPosition = GetWallSafeExplosionPosition(sourcePosition, direction, nearestDistance, radius);
-        else
-            hitPosition = ResolveWallOverlap(launchPosition, -direction);
-
-        return true;
+        return PhysicsHelpers.AnyNonTriggersBetween(sourcePosition, direction, castDistance, Constants.ShipAndAllObjectsMask) ||
+            IsOverlappingWall(launchPosition, radius);
     }
 
     private void UpdateIgnoreWiseManTimer()
