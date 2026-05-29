@@ -16,6 +16,14 @@ public sealed class RocketLauncherHeldPlayer : MonoBehaviour
     private ExPlayerControl _source;
     private ExPlayerControl _target;
     private SpriteRenderer _spriteRenderer;
+    private Material _lastSharedMaterial;
+    private SpriteMaskInteraction _lastMaskInteraction;
+    private int _lastLayer = int.MinValue;
+    private int _lastSortingLayerId = int.MinValue;
+    private int _lastSortingOrder = int.MinValue;
+    private int _lastTargetColorId = int.MinValue;
+    private bool _lastMaskOwner;
+    private bool _hasAppliedMaskLayer;
 
     public static RocketLauncherHeldPlayer Spawn(ExPlayerControl source, ExPlayerControl target)
     {
@@ -40,8 +48,7 @@ public sealed class RocketLauncherHeldPlayer : MonoBehaviour
 
         _spriteRenderer = gameObject.AddComponent<SpriteRenderer>();
         _spriteRenderer.sprite = sprite;
-        ApplySourceRendererSettings();
-        ApplyTargetColor();
+        ApplySourceRendererSettings(force: true);
 
         UpdatePose();
     }
@@ -87,30 +94,95 @@ public sealed class RocketLauncherHeldPlayer : MonoBehaviour
             _spriteRenderer.flipX = !playerFlipX;
     }
 
-    private void ApplySourceRendererSettings()
+    private void ApplySourceRendererSettings(bool force = false)
     {
         if (_spriteRenderer == null)
             return;
 
+        bool settingsChanged = false;
+        bool materialChanged = false;
         var sourceBodyRenderer = GetSourceBodyRenderer();
         if (sourceBodyRenderer != null)
         {
-            gameObject.layer = sourceBodyRenderer.gameObject.layer;
-            _spriteRenderer.sharedMaterial = sourceBodyRenderer.sharedMaterial;
-            _spriteRenderer.maskInteraction = sourceBodyRenderer.maskInteraction;
-            _spriteRenderer.sortingLayerID = sourceBodyRenderer.sortingLayerID;
-            _spriteRenderer.sortingOrder = sourceBodyRenderer.sortingOrder - 1;
-            _spriteRenderer.enabled = sourceBodyRenderer.enabled && sourceBodyRenderer.gameObject.activeInHierarchy && sourceBodyRenderer.color.a > 0.001f;
+            settingsChanged |= ApplyLayer(sourceBodyRenderer.gameObject.layer);
+            materialChanged = ApplySharedMaterial(sourceBodyRenderer.sharedMaterial);
+            settingsChanged |= materialChanged;
+            settingsChanged |= ApplyMaskInteraction(sourceBodyRenderer.maskInteraction);
+            settingsChanged |= ApplySorting(sourceBodyRenderer.sortingLayerID, sourceBodyRenderer.sortingOrder - 1);
+            SetEnabledIfChanged(sourceBodyRenderer.enabled && sourceBodyRenderer.gameObject.activeInHierarchy && sourceBodyRenderer.color.a > 0.001f);
         }
         else
         {
-            _spriteRenderer.sharedMaterial = FastDestroyableSingleton<HatManager>.Instance.PlayerMaterial;
-            _spriteRenderer.maskInteraction = SpriteMaskInteraction.None;
-            _spriteRenderer.enabled = true;
+            materialChanged = ApplySharedMaterial(FastDestroyableSingleton<HatManager>.Instance.PlayerMaterial);
+            settingsChanged |= materialChanged;
+            settingsChanged |= ApplyMaskInteraction(SpriteMaskInteraction.None);
+            SetEnabledIfChanged(true);
         }
 
-        PlayerMaterial.SetMaskLayerBasedOnLocalPlayer(_spriteRenderer, _source != null && _source.AmOwner);
-        ApplyTargetColor();
+        ApplyMaskLayerIfNeeded(force || settingsChanged);
+        ApplyTargetColorIfNeeded(force: materialChanged);
+    }
+
+    private bool ApplyLayer(int layer)
+    {
+        if (_lastLayer == layer && gameObject.layer == layer)
+            return false;
+
+        gameObject.layer = layer;
+        _lastLayer = layer;
+        return true;
+    }
+
+    private bool ApplySharedMaterial(Material material)
+    {
+        if (_lastSharedMaterial == material)
+            return false;
+
+        _spriteRenderer.sharedMaterial = material;
+        _lastSharedMaterial = material;
+        return true;
+    }
+
+    private bool ApplyMaskInteraction(SpriteMaskInteraction maskInteraction)
+    {
+        if (_lastMaskInteraction == maskInteraction && _spriteRenderer.maskInteraction == maskInteraction)
+            return false;
+
+        _spriteRenderer.maskInteraction = maskInteraction;
+        _lastMaskInteraction = maskInteraction;
+        return true;
+    }
+
+    private bool ApplySorting(int sortingLayerId, int sortingOrder)
+    {
+        if (_lastSortingLayerId == sortingLayerId
+            && _lastSortingOrder == sortingOrder
+            && _spriteRenderer.sortingLayerID == sortingLayerId
+            && _spriteRenderer.sortingOrder == sortingOrder)
+            return false;
+
+        _spriteRenderer.sortingLayerID = sortingLayerId;
+        _spriteRenderer.sortingOrder = sortingOrder;
+        _lastSortingLayerId = sortingLayerId;
+        _lastSortingOrder = sortingOrder;
+        return true;
+    }
+
+    private void SetEnabledIfChanged(bool enabled)
+    {
+        if (_spriteRenderer.enabled != enabled)
+            _spriteRenderer.enabled = enabled;
+    }
+
+    private void ApplyMaskLayerIfNeeded(bool force)
+    {
+        bool isOwner = _source != null && _source.AmOwner;
+        if (!force && _hasAppliedMaskLayer && _lastMaskOwner == isOwner)
+            return;
+
+        PlayerMaterial.SetMaskLayerBasedOnLocalPlayer(_spriteRenderer, isOwner);
+        _lastMaskOwner = isOwner;
+        _hasAppliedMaskLayer = true;
     }
 
     private SpriteRenderer GetSourceBodyRenderer()
@@ -139,11 +211,17 @@ public sealed class RocketLauncherHeldPlayer : MonoBehaviour
         return source?.Player?.MyPhysics != null && source.Player.MyPhysics.FlipX;
     }
 
-    private void ApplyTargetColor()
+    private void ApplyTargetColorIfNeeded(bool force = false)
     {
         if (_target?.Data == null || _spriteRenderer == null)
             return;
-        PlayerMaterial.SetColors(_target.Data.DefaultOutfit.ColorId, _spriteRenderer);
+
+        int colorId = _target.Data.DefaultOutfit.ColorId;
+        if (!force && _lastTargetColorId == colorId)
+            return;
+
+        PlayerMaterial.SetColors(colorId, _spriteRenderer);
+        _lastTargetColorId = colorId;
     }
 
     private void OnDestroy()
@@ -153,5 +231,6 @@ public sealed class RocketLauncherHeldPlayer : MonoBehaviour
         _source = null;
         _target = null;
         _spriteRenderer = null;
+        _lastSharedMaterial = null;
     }
 }
