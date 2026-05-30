@@ -16,6 +16,7 @@ public class ExPlayerControlMoreTests
 {
     private class AlphaAbility : AbilityBase { }
     private class BetaAbility : AbilityBase { }
+    private class ParentAwareAbility : AbilityBase { }
 
     private class TrackableAbility : AbilityBase
     {
@@ -79,6 +80,23 @@ public class ExPlayerControlMoreTests
     {
         var f = obj.GetType().GetField(fieldName, BindingFlags.Instance | BindingFlags.NonPublic)!;
         return (T)f.GetValue(obj)!;
+    }
+    private static void SetAbilityParent(AbilityBase ability, AbilityParentBase parent)
+    {
+        var f = typeof(AbilityBase).GetField("<Parent>k__BackingField", BindingFlags.Instance | BindingFlags.NonPublic)!;
+        f.SetValue(ability, parent);
+    }
+
+    private static bool InvokeIsRoleAbility(AbilityParentBase parent)
+    {
+        var method = typeof(ExPlayerControl).GetMethod("IsRoleAbility", BindingFlags.Static | BindingFlags.NonPublic)!;
+        return (bool)method.Invoke(null, new object[] { parent })!;
+    }
+
+    private static bool InvokeTryMoveRoleParent(AbilityParentBase parent, ExPlayerControl player)
+    {
+        var method = typeof(ExPlayerControl).GetMethod("TryMoveRoleParent", BindingFlags.Static | BindingFlags.NonPublic)!;
+        return (bool)method.Invoke(null, new object[] { parent, player })!;
     }
 
     // 簡易 Attach: 内部キャッシュの無効化まで含め、Attach 相当の状態遷移を再現する
@@ -151,6 +169,44 @@ public class ExPlayerControlMoreTests
         ExPlayerControl.AddRoleHistory(history, RoleId.Crewmate, RoleId.SpeedBooster);
 
         history.Should().Equal(RoleId.Crewmate, RoleId.SpeedBooster);
+    }
+
+    [Fact]
+    public void ReverseRoleFilter_OnlyTreatsRoleRootedAbilitiesAsRoleAbilities()
+    {
+        var ex = CreateBareEx(playerId: 21);
+        var roleParent = new AbilityParentRole(ex, null!);
+        var roleAbility = new ParentAwareAbility();
+        SetAbilityParent(roleAbility, roleParent);
+
+        var ghostParent = new AbilityParentGhostRole(ex, null!);
+        var ghostAbility = new ParentAwareAbility();
+        SetAbilityParent(ghostAbility, ghostParent);
+
+        InvokeIsRoleAbility(roleParent).Should().BeTrue();
+        InvokeIsRoleAbility(new AbilityParentAbility(roleAbility)).Should().BeTrue();
+        InvokeIsRoleAbility(ghostParent).Should().BeFalse();
+        InvokeIsRoleAbility(new AbilityParentAbility(ghostAbility)).Should().BeFalse();
+        InvokeIsRoleAbility(new AbilityParentPlayer(ex)).Should().BeFalse();
+    }
+
+    [Fact]
+    public void ReverseRoleFilter_MovesOnlyRoleRootParent()
+    {
+        var source = CreateBareEx(playerId: 22);
+        var destination = CreateBareEx(playerId: 23);
+
+        var roleParent = new AbilityParentRole(source, null!);
+        var roleAbility = new ParentAwareAbility();
+        SetAbilityParent(roleAbility, roleParent);
+        InvokeTryMoveRoleParent(new AbilityParentAbility(roleAbility), destination).Should().BeTrue();
+        roleParent.Player.Should().BeSameAs(destination);
+
+        var ghostParent = new AbilityParentGhostRole(source, null!);
+        var ghostAbility = new ParentAwareAbility();
+        SetAbilityParent(ghostAbility, ghostParent);
+        InvokeTryMoveRoleParent(new AbilityParentAbility(ghostAbility), destination).Should().BeFalse();
+        ghostParent.Player.Should().BeSameAs(source);
     }
 
     // 目的: TryGetAbility のキャッシュ動作と Detach 後の反映を検証

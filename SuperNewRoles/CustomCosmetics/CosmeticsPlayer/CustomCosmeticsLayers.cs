@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using Il2CppInterop.Runtime;
 using PowerTools;
+using SuperNewRoles.CustomCosmetics;
 using SuperNewRoles.Modules;
 using TMPro;
 using UnityEngine;
@@ -114,6 +115,7 @@ public class CustomCosmeticsLayer
         ModdedCosmetics.transform.localScale = Vector3.one;
         ModdedCosmetics.transform.localRotation = Quaternion.identity;
         ModdedCosmetics.layer = cosmeticsLayer.gameObject.layer;
+        ModdedCosmetics.SetActive(CustomCosmeticsLoader.IsRuntimeEnabled);
 
         cosmeticsLayer.transform.localPosition = new(0, 0, -0.0001f);
 

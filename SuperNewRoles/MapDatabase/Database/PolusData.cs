@@ -50,7 +50,53 @@ public class PolusData : MapDatabase
         new(24f, -14.6f), new(26f, -12.2f), new(29.8f, -15.7f)
     };
 
+    // オルフェウスの儀式死体を優先的に出す座標。空なら境界ランダム探索を使う。
+    static private readonly Vector2[] orpheusDeadBodySpawnPositionPool = [
+        // ボイラー
+        new(0.795f, -23.533f),
+        // ウェポン左外下
+        new(9.014f, -25.306f),
+        // ウェポン内部
+        new(12.555f, -24.76f),
+        // アドミン下
+        new(22.235f, -25.142f),
+        // 通信室
+        new(12.846f, -17.317f),
+        // ストレージ
+        new(19.749f, -12.479f),
+        // 木の部屋
+        new(1.131f, -17.595f),
+        // ボンベ室
+        new(1.264f, -18.782f),
+        // 外大岩右
+        new(32.704f, -13.292f),
+        // 標本室
+        new(36.211f, -22.082f),
+        // ラボベント
+        new(32.952f, -9.308f),
+        // 通信外左
+        new(7.089f, -17.392f),
+        // 左リアクター下
+        new(3.767f, -7.685f),
+        // オフィス左下外
+        new(19.254f, -25.699f),
+    ];
+    static private readonly Vector2[] PlayerSpawnPositionPool =
+    [
+        new(25.7343f, -12.8777f), // BackRock
+        new(3.3584f, -21.68f),    // Oxygen
+        new(5.3372f, -9.7048f),   // Electrical
+        new(23.9309f, -22.5169f), // Admin
+        new(19.5145f, -17.4998f), // Office
+        new(12.0384f, -23.34f),   // Weapons
+        new(10.6821f, -16.0105f), // Comms
+        new(20.5637f, -11.9088f), // Storage
+        new(16.6458f, -3.2058f),  // Dropship
+        new(34.3056f, -7.8901f)   // Laboratory / Specimens
+    ];
     protected override Vector2[] MapArea => MapPositions;
     protected override Vector2[] NonMapArea => [];
+    public override Vector2[] OrpheusDeadBodySpawnPositionPool => orpheusDeadBodySpawnPositionPool;
+    protected override Vector2[] PlayerSpawnPositions => PlayerSpawnPositionPool;
     protected override SystemTypes[] SabotageTypes => new SystemTypes[] { SystemTypes.Laboratory, SystemTypes.Comms, SystemTypes.Electrical };
 }

@@ -56,7 +56,46 @@ public class FungleData : MapDatabase
         new(20.9f,10.8f),new(24.1f,13.2f),new(17.9f,12.7f),
         };
 
+    // オルフェウスの儀式死体を優先的に出す座標。空なら境界ランダム探索を使う。
+    static private readonly Vector2[] orpheusDeadBodySpawnPositionPool = [
+        // ドロップシップ
+        new(-11.169f, 12.341f),
+        // 焚き火左
+        new(-16.1866f, 2.4168f),
+        // スプラッシュゾーン
+        new(-18.542f, -2.247f),
+        // ジャングル左下
+        new(-6.526f, -15.033f),
+        // キッチン
+        new(-17.461f, -9.304f),
+        // 展望台
+        new(10.19f, 1.396f),
+        // ジャングル右下
+        new(14.308f, -16.523f),
+        // 鉱山
+        new(13.937f, 9.407f),
+        // 上部エンジン
+        new(22.107f, 2.055f),
+        // 宿舎上
+        new(2.084f, 1.664f),
+        // ドロシ左
+        new(-11.268f, 8.235f),
+        // ジップライン下
+        new(3.543f, 6.969f),
+    ];
+    static private readonly Vector2[] PlayerSpawnPositionPool =
+    [
+        new(-9.81f, 0.6f),    // Campfire
+        new(-8f, 10.5f),      // Dropship
+        new(-16.16f, 7.25f),  // Cafeteria
+        new(-15.5f, -7.5f),   // Kitchen
+        new(9.25f, -12f),     // Greenhouse
+        new(14.75f, 0f),      // UpperEngine
+        new(21.65f, 13.75f)   // Comms
+    ];
     protected override Vector2[] MapArea => MapPositions;
     protected override Vector2[] NonMapArea => [];
+    public override Vector2[] OrpheusDeadBodySpawnPositionPool => orpheusDeadBodySpawnPositionPool;
+    protected override Vector2[] PlayerSpawnPositions => PlayerSpawnPositionPool;
     protected override SystemTypes[] SabotageTypes => new SystemTypes[] { SystemTypes.Reactor, SystemTypes.Comms };
 }

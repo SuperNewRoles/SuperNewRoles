@@ -67,17 +67,31 @@ public static class TaskmasterPatch
         if (ModHelpers.IsSabotage(__instance.TaskTypes.FirstOrDefault()))
         {
             if (!Taskmaster.TaskmasterCanFixSabotageInstantly) return;
-            ModHelpers.RpcFixingSabotage(__instance.TaskTypes.FirstOrDefault());
-            CloseMinigameSafely();
+            UseConsoleInstantly(() => ModHelpers.RpcFixingSabotage(__instance.TaskTypes.FirstOrDefault()));
         }
         else
         {
             NormalPlayerTask task = __instance.FindTask(ExPlayerControl.LocalPlayer)?.TryCast<NormalPlayerTask>();
             if (task != null)
             {
-                task.NextStep();
-                CloseMinigameSafely();
+                UseConsoleInstantly(task.NextStep);
             }
+        }
+    }
+
+    private static void UseConsoleInstantly(Action action)
+    {
+        try
+        {
+            action();
+        }
+        catch (Exception ex)
+        {
+            Logger.Warning($"Taskmaster instant console use failed; closing minigame anyway: {ex}", "Taskmaster");
+        }
+        finally
+        {
+            CloseMinigameSafely();
         }
     }
 

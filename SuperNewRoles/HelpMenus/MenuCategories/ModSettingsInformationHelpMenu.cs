@@ -290,7 +290,12 @@ public class ModSettingsInformationHelpMenu : HelpMenuCategoryBase
 
         optionYPos -= optionYOffset;
         lastYRef -= textYOffset;
-        bounds += textYOffset * 0.6f;
+        bounds += CalculateExclusivityTextBounds(1);
+    }
+
+    internal static float CalculateExclusivityTextBounds(int lineCount)
+    {
+        return lineCount <= 0 ? 0f : lineCount * optionYOffset;
     }
 
     private static Color GetExclusivityRoleColor(RoleId roleId)
