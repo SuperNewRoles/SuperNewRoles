@@ -19,6 +19,7 @@ public record CelebrityData
 public class CelebrityAbility : AbilityBase
 {
     private EventListener<NameTextUpdateEventData> _nameTextUpdateEvent;
+    private EventListener<NameTextUpdateVisiableEventData> _nameTextUpdateVisiableEvent;
     private EventListener _fixedUpdateEvent;
     private EventListener<MeetingStartEventData> _meetingStartEvent;
     private float _glowTimer = 0f;
@@ -35,6 +36,7 @@ public class CelebrityAbility : AbilityBase
     public override void AttachToAlls()
     {
         _nameTextUpdateEvent = NameTextUpdateEvent.Instance.AddListener(OnNameTextUpdate);
+        _nameTextUpdateVisiableEvent = NameTextUpdateVisiableEvent.Instance.AddListener(OnNameTextUpdateVisiable);
         _meetingStartEvent = MeetingStartEvent.Instance.AddListener(OnMeetingStart);
         _isAlive = ExPlayerControl.LocalPlayer.IsAlive();
         if (Data.YellowChangedRole)
@@ -49,7 +51,12 @@ public class CelebrityAbility : AbilityBase
     private void OnNameTextUpdate(NameTextUpdateEventData data)
     {
         // 他のプレイヤーから自分がスターと分かるように、スターの名前の色を変更する
-        UpdateCelebrityNameColor(data);
+        UpdateCelebrityNameColor(data.Player);
+    }
+
+    private void OnNameTextUpdateVisiable(NameTextUpdateVisiableEventData data)
+    {
+        UpdateCelebrityNameColor(data.Player, true);
     }
 
     // 固定更新イベントハンドラ - 発光効果を管理
@@ -82,10 +89,24 @@ public class CelebrityAbility : AbilityBase
     }
 
     // スターの名前の色を更新
-    private void UpdateCelebrityNameColor(NameTextUpdateEventData data)
+    private void UpdateCelebrityNameColor(ExPlayerControl player, bool skipUnchanged = false)
     {
-        if (data.Player.Role == RoleId.Celebrity)
-            NameText.SetNameTextColor(data.Player, Celebrity.Instance.RoleColor);
+        if (player.Role == RoleId.Celebrity)
+            SetCelebrityNameColor(player, skipUnchanged);
+    }
+
+    internal static void SetCelebrityNameColor(ExPlayerControl player, bool skipUnchanged = false)
+    {
+        Color color = Celebrity.Instance.RoleColor;
+        if (skipUnchanged && HasNameTextColor(player, color)) return;
+        NameText.SetNameTextColor(player, color, skipUnchanged);
+    }
+
+    private static bool HasNameTextColor(ExPlayerControl player, Color color)
+    {
+        if (player.Player?.cosmetics?.nameText != null && player.Player.cosmetics.nameText.color != color) return false;
+        if (player.VoteArea?.NameText != null && player.VoteArea.NameText.color != color) return false;
+        return true;
     }
 
     public override void DetachToLocalPlayer()
@@ -97,25 +118,35 @@ public class CelebrityAbility : AbilityBase
     {
         base.DetachToAlls();
         _nameTextUpdateEvent?.RemoveListener();
+        _nameTextUpdateVisiableEvent?.RemoveListener();
         _meetingStartEvent?.RemoveListener();
     }
 }
 public class AlwaysCelebrityAbility : AbilityBase
 {
     private EventListener<NameTextUpdateEventData> _nameTextUpdateEvent;
+    private EventListener<NameTextUpdateVisiableEventData> _nameTextUpdateVisiableEvent;
     public override void AttachToAlls()
     {
         base.AttachToAlls();
         _nameTextUpdateEvent = NameTextUpdateEvent.Instance.AddListener(OnNameTextUpdate);
+        _nameTextUpdateVisiableEvent = NameTextUpdateVisiableEvent.Instance.AddListener(OnNameTextUpdateVisiable);
     }
     public override void DetachToAlls()
     {
         base.DetachToAlls();
         _nameTextUpdateEvent?.RemoveListener();
+        _nameTextUpdateVisiableEvent?.RemoveListener();
     }
     private void OnNameTextUpdate(NameTextUpdateEventData data)
     {
         if (data.Player != Player) return;
-        NameText.SetNameTextColor(Player, Celebrity.Instance.RoleColor);
+        CelebrityAbility.SetCelebrityNameColor(Player);
+    }
+
+    private void OnNameTextUpdateVisiable(NameTextUpdateVisiableEventData data)
+    {
+        if (data.Player != Player) return;
+        CelebrityAbility.SetCelebrityNameColor(Player, true);
     }
 }
