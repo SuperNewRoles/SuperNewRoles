@@ -43,6 +43,7 @@ public enum FinalStatus
     SluggerSlug,
     TheThirdLittlePigCounterKill,
     ConjurerMagic,
+    RocketLauncher,
 }
 
 public static class FinalStatusListener

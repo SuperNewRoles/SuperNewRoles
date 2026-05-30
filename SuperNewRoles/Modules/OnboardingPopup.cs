@@ -213,6 +213,7 @@ public static class OnboardingPopup
     private static float _roleIconCarouselStartTime;
     private static int _roleIconCarouselPage = -1;
     private static bool _hasAcceptedAnalytics;
+    private static bool _forceShowRequested;
 
     // 他のポップアップと競合しない時だけオンボーディングを表示する。
     public static bool TryHandle(MainMenuManager instance, ref GameObject currentPopup)
@@ -226,7 +227,7 @@ public static class OnboardingPopup
         if (_isShown) return false;
 
         // 設定に完了済みと残っている場合は、この起動中も再表示しない。
-        if (ConfigRoles.IsOnboardingViewd.Value)
+        if (!_forceShowRequested && ConfigRoles.IsOnboardingViewd.Value)
         {
             _isShown = true;
             return false;
@@ -244,6 +245,12 @@ public static class OnboardingPopup
         UpdateRoleIconCarousel();
         HandleBodyTextLinks();
         return true;
+    }
+
+    public static void RequestShowAgain()
+    {
+        _forceShowRequested = true;
+        _isShown = false;
     }
 
     // prefab を生成し、固定 UI とナビゲーションボタンを初期化する。
@@ -472,7 +479,7 @@ public static class OnboardingPopup
                     new Vector3(startX + i * spacing, step.LinkButtonY, _buttonAnchor.z),
                     _buttonAnchorScale * 0.62f,
                     link.LabelKey,
-                    () => Application.OpenURL(url));
+                    () => OpenExternalLink(url));
                 _linkButtons.Add(linkButton);
                 RegisterAnimatedContent(linkButton.transform, linkButton.transform.localPosition);
             }
@@ -751,8 +758,14 @@ public static class OnboardingPopup
 
         var linkInfo = tmp.textInfo.linkInfo[linkIndex];
         if (linkInfo.GetLinkID() != DiscordLinkId) return false;
-        Application.OpenURL(SocialLinks.DiscordServer);
+        OpenExternalLink(SocialLinks.DiscordServer);
         return true;
+    }
+
+    private static void OpenExternalLink(string url)
+    {
+        if (string.IsNullOrWhiteSpace(url)) return;
+        Constants.OpenURL(url);
     }
 
     private static void StartPageTransition(int targetStep, int direction)
@@ -839,6 +852,7 @@ public static class OnboardingPopup
         _isPageTransitioning = false;
         _isClosing = false;
         _nextButtonUnlockTime = 0f;
+        _forceShowRequested = false;
     }
 
     private static void CapturePopupAlphaTargets()
@@ -1106,6 +1120,7 @@ public static class OnboardingPopup
     {
         ConfigRoles.IsOnboardingViewd.Value = true;
         _isShown = true;
+        _forceShowRequested = false;
         StartCloseTransition();
     }
 

@@ -74,6 +74,14 @@ public static class CustomCosmeticsUIStart
         }
     }
 
+    public static void RefreshCurrentMenu()
+    {
+        if (CurrentMenu == null || MenuObject == null || PlayerCustomizationMenu.Instance == null)
+            return;
+
+        HandleCategoryClick("cosmetic_" + CurrentMenu.MenuType, MenuObject);
+    }
+
     /// <summary>
     /// オフセットに応じたメニュー切替処理を行うヘルパー
     /// </summary>

@@ -314,6 +314,8 @@ public partial class SuperNewRolesPlugin : BasePlugin
         ClassInjector.RegisterTypeInIl2Cpp<WCSantaHandler>();
         ClassInjector.RegisterTypeInIl2Cpp<AnnouncementSelectMenuMarker>();
         ClassInjector.RegisterTypeInIl2Cpp<OrpheusRitualCorpseMarker>();
+        ClassInjector.RegisterTypeInIl2Cpp<RocketLauncherProjectile>();
+        ClassInjector.RegisterTypeInIl2Cpp<RocketLauncherHeldPlayer>();
 
         try
         {
