@@ -67,6 +67,7 @@ public sealed class DyingMessengerReportAbility : AbilityBase
     {
         if (!AmongUsClient.Instance.AmHost) return;
         if (data?.reporter == null || data.target == null) return;
+        if (!data.CanReport) return;
 
         // ここで役職を持っている人のみに制限している
         if (data.reporter.PlayerId != Player.PlayerId) return;

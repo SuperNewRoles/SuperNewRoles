@@ -9,6 +9,7 @@ using SuperNewRoles.SuperTrophies;
 using SuperNewRoles.Mode;
 using SuperNewRoles.MapCustoms;
 using SuperNewRoles.Roles.Crewmate;
+using SuperNewRoles.Roles.Impostor;
 
 namespace SuperNewRoles.Patches;
 
@@ -41,6 +42,8 @@ class AmongUsClientStartPatch
             // 初期化処理を一箇所に統合
             ExPlayerControl.SetUpExPlayers();
             EventListenerManager.ResetAllListener();
+            ProctedMessager.Init();
+            OrpheusMainAbility.ResetForNewGame();
             SuperTrophyManager.CoStartGame();
 
             // RoleBaseのClearAndReloadを一括実行

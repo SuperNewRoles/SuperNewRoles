@@ -152,6 +152,7 @@ public enum RoleId : short
     Banshee,
     TriggerHappy,
     ElectionCommissioner,
+    Orpheus,
     RocketLauncher
 }
 
