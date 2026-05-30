@@ -50,6 +50,7 @@ public class RocketLauncherButtonAbility : TargetCustomButtonBase, IButtonEffect
     private const string ShootSound = "RocketLauncherShot.wav";
     private const string ExplosionPrefab = "RocketLauncherExplosion";
     private const string ExplosionSound = "RocketLauncherExplosion.wav";
+    private const float ExplosionRangeInternalMultiplier = 2f;
     private const float ExplosionVisualScaleMultiplier = 0.8f;
     private const float ExplosionSoundMaxDistanceMultiplier = 3f;
     private const float ExplosionSoundMinMaxDistance = 3f;
@@ -487,7 +488,7 @@ public class RocketLauncherButtonAbility : TargetCustomButtonBase, IButtonEffect
                 continue;
             if (!_data.KillImpostors && player.IsImpostor())
                 continue;
-            if (Vector2.Distance(position, player.GetTruePosition()) > _data.ExplosionRange)
+            if (Vector2.Distance(position, player.GetTruePosition()) > GetEffectiveExplosionRange())
                 continue;
 
             victims.Add(player);
@@ -602,6 +603,11 @@ public class RocketLauncherButtonAbility : TargetCustomButtonBase, IButtonEffect
     private Vector2 GetHeldTargetFollowPosition()
     {
         return RocketLauncherHeldPlayer.GetHeldTargetPosition(Player);
+    }
+
+    private float GetEffectiveExplosionRange()
+    {
+        return _data.ExplosionRange * ExplosionRangeInternalMultiplier;
     }
 
     private static Vector2 GetPlayerTransformPosition(ExPlayerControl player)
