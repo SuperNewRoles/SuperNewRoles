@@ -13,6 +13,7 @@ public class LateTask
     private static readonly List<LateTask> Tasks = new();
     private static readonly List<LateTask> AddTasks = new();
     private static readonly List<LateTask> RemoveTasks = new();
+    private static readonly List<LateTask> CompletedTasks = new();
 
     public string Name { get; }
     public float Timer { get; private set; }
@@ -53,11 +54,11 @@ public class LateTask
         }
     }
 
-    private bool Execute()
+    private bool Execute(float deltaTime)
     {
         try
         {
-            Timer -= Time.deltaTime;
+            Timer -= deltaTime;
             if (Timer > 0) return false;
 
             Action.Invoke();
@@ -74,17 +75,15 @@ public class LateTask
 
     public static void Update(float deltaTime)
     {
-        var completedTasks = new List<LateTask>(Tasks.Count);
+        CompletedTasks.Clear();
         foreach (var task in Tasks)
         {
-            if (task.Execute())
-                completedTasks.Add(task);
+            if (task.Execute(deltaTime))
+                CompletedTasks.Add(task);
         }
 
-        if (completedTasks.Count > 0)
-        {
-            Tasks.RemoveAll(t => completedTasks.Contains(t));
-        }
+        RemoveFromTasks(CompletedTasks);
+        CompletedTasks.Clear();
 
         lock (_lock)
         {
@@ -95,9 +94,21 @@ public class LateTask
             }
             if (RemoveTasks.Count > 0)
             {
-                Tasks.RemoveAll(t => RemoveTasks.Contains(t));
+                RemoveFromTasks(RemoveTasks);
                 RemoveTasks.Clear();
             }
+        }
+    }
+
+    private static void RemoveFromTasks(List<LateTask> removeTasks)
+    {
+        if (removeTasks.Count <= 0)
+            return;
+
+        for (int i = Tasks.Count - 1; i >= 0; i--)
+        {
+            if (removeTasks.Contains(Tasks[i]))
+                Tasks.RemoveAt(i);
         }
     }
 }
