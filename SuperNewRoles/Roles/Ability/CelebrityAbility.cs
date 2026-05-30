@@ -56,7 +56,7 @@ public class CelebrityAbility : AbilityBase
 
     private void OnNameTextUpdateVisiable(NameTextUpdateVisiableEventData data)
     {
-        UpdateCelebrityNameColor(data.Player);
+        UpdateCelebrityNameColor(data.Player, true);
     }
 
     // 固定更新イベントハンドラ - 発光効果を管理
@@ -89,10 +89,24 @@ public class CelebrityAbility : AbilityBase
     }
 
     // スターの名前の色を更新
-    private void UpdateCelebrityNameColor(ExPlayerControl player)
+    private void UpdateCelebrityNameColor(ExPlayerControl player, bool skipUnchanged = false)
     {
         if (player.Role == RoleId.Celebrity)
-            NameText.SetNameTextColor(player, Celebrity.Instance.RoleColor);
+            SetCelebrityNameColor(player, skipUnchanged);
+    }
+
+    internal static void SetCelebrityNameColor(ExPlayerControl player, bool skipUnchanged = false)
+    {
+        Color color = Celebrity.Instance.RoleColor;
+        if (skipUnchanged && HasNameTextColor(player, color)) return;
+        NameText.SetNameTextColor(player, color, skipUnchanged);
+    }
+
+    private static bool HasNameTextColor(ExPlayerControl player, Color color)
+    {
+        if (player.Player?.cosmetics?.nameText != null && player.Player.cosmetics.nameText.color != color) return false;
+        if (player.VoteArea?.NameText != null && player.VoteArea.NameText.color != color) return false;
+        return true;
     }
 
     public override void DetachToLocalPlayer()
@@ -127,12 +141,12 @@ public class AlwaysCelebrityAbility : AbilityBase
     private void OnNameTextUpdate(NameTextUpdateEventData data)
     {
         if (data.Player != Player) return;
-        NameText.SetNameTextColor(Player, Celebrity.Instance.RoleColor);
+        CelebrityAbility.SetCelebrityNameColor(Player);
     }
 
     private void OnNameTextUpdateVisiable(NameTextUpdateVisiableEventData data)
     {
         if (data.Player != Player) return;
-        NameText.SetNameTextColor(Player, Celebrity.Instance.RoleColor);
+        CelebrityAbility.SetCelebrityNameColor(Player, true);
     }
 }
