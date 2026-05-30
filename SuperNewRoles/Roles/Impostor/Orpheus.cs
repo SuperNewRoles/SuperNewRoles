@@ -345,12 +345,9 @@ public sealed class OrpheusMainAbility : AbilityBase
         if (!HostEntries.TryGetValue(id, out CorpseEntry entry))
             return;
 
-        // 偽死体生成前に元の死体が報告された場合は、蘇生フローをキャンセルして通常報告を通す。
+        // 偽死体生成前に元の死体が報告された場合は、蘇生フローをキャンセルする。
         if (!entry.Targetable)
-        {
-            HostEntries.Remove(id);
             return;
-        }
 
         if (entry.PendingRevive)
         {
@@ -584,9 +581,6 @@ public sealed class OrpheusMainAbility : AbilityBase
             if (sprites[i] == null)
                 return null;
         }
-
-        sprites[RitualCorpseEffectFrameCount] = sprites[RitualCorpseEffectFrameCount - 1];
-        sprites[RitualCorpseEffectFrameCount + 1] = sprites[RitualCorpseEffectFrameCount - 1];
 
         return sprites;
     }
