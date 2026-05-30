@@ -150,9 +150,9 @@ public enum RoleId : short
     DyingMessenger,
     PoliceSurgeon,
     Banshee,
-    Orpheus,
     TriggerHappy,
-    ElectionCommissioner
+    ElectionCommissioner,
+    Orpheus,
 }
 
 public enum GhostRoleId : short

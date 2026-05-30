@@ -53,33 +53,33 @@ public class PolusData : MapDatabase
     // オルフェウスの儀式死体を優先的に出す座標。空なら境界ランダム探索を使う。
     static private readonly Vector2[] orpheusDeadBodySpawnPositionPool = [
         // ボイラー
-        new Vector3(0.795f, -23.533f, -0.023f),
+        new(0.795f, -23.533f),
         // ウェポン左外下
-        new Vector3(9.014f, -25.306f, -0.025f),
+        new(9.014f, -25.306f),
         // ウェポン内部
-        new Vector3(12.555f, -24.76f, -0.025f),
+        new(12.555f, -24.76f),
         // アドミン下
-        new Vector3(22.235f, -25.142f, -0.025f),
+        new(22.235f, -25.142f),
         // 通信室
-        new Vector3(12.846f, -17.317f, -0.015f),
+        new(12.846f, -17.317f),
         // ストレージ
-        new Vector3(19.749f, -12.479f, -0.012f),
+        new(19.749f, -12.479f),
         // 木の部屋
-        new Vector3(1.131f, -17.595f, -0.018f),
+        new(1.131f, -17.595f),
         // ボンベ室
-        new Vector3(1.264f, -18.782f, -0.019f),
+        new(1.264f, -18.782f),
         // 外大岩右
-        new Vector3(32.704f, -13.292f, -0.013f),
+        new(32.704f, -13.292f),
         // 標本室
-        new Vector3(36.211f, -22.082f, -0.022f),
+        new(36.211f, -22.082f),
         // ラボベント
-        new Vector3(32.952f, -9.308f, -0.009f),
+        new(32.952f, -9.308f),
         // 通信外左
-        new Vector3(7.089f, -17.392f, -0.017f),
+        new(7.089f, -17.392f),
         // 左リアクター下
-        new Vector3(3.767f, -7.685f, 0),
+        new(3.767f, -7.685f),
         // オフィス左下外
-        new Vector3(19.254f, -25.699f, -0.026f),
+        new(19.254f, -25.699f),
     ];
     static private readonly Vector2[] PlayerSpawnPositionPool =
     [

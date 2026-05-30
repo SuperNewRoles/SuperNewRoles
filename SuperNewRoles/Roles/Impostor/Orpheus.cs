@@ -79,7 +79,6 @@ public sealed class OrpheusMainAbility : AbilityBase
 
     private static EventListener<DieEventData> _dieListener;
     private static EventListener<WrapUpEventData> _wrapListener;
-    private static EventListener<ReportDeadBodyHostEventData> _reportListener;
     private static EventListener _hudUpdateListener;
     private static EventListener _fixedUpdateListener;
 
@@ -262,7 +261,6 @@ public sealed class OrpheusMainAbility : AbilityBase
         UnregisterSharedListeners();
         _dieListener = DieEvent.Instance.AddListener(OnDie);
         _wrapListener = WrapUpEvent.Instance.AddListener(OnWrapUp);
-        _reportListener = ReportDeadBodyHostEvent.Instance.AddListener(OnReport);
         _hudUpdateListener = HudUpdateEvent.Instance.AddListener(UpdateRitualCorpseReportability);
         _fixedUpdateListener = FixedUpdateEvent.Instance.AddListener(UpdateRitualCorpseReportability);
     }
@@ -273,8 +271,6 @@ public sealed class OrpheusMainAbility : AbilityBase
         _dieListener = null;
         _wrapListener?.RemoveListener();
         _wrapListener = null;
-        _reportListener?.RemoveListener();
-        _reportListener = null;
         _hudUpdateListener?.RemoveListener();
         _hudUpdateListener = null;
         _fixedUpdateListener?.RemoveListener();
@@ -341,7 +337,7 @@ public sealed class OrpheusMainAbility : AbilityBase
     private static bool CanCreateManagedCorpse(ExPlayerControl victim) =>
         victim != null && victim.IsImpostor() && victim.Role != RoleId.Orpheus;
 
-    private static void OnReport(ReportDeadBodyHostEventData data)
+    internal static void OnReport(ReportDeadBodyHostEventData data)
     {
         if (!AmongUsClient.Instance.AmHost || data.target == null)
             return;
@@ -349,13 +345,10 @@ public sealed class OrpheusMainAbility : AbilityBase
         if (!HostEntries.TryGetValue(id, out CorpseEntry entry))
             return;
 
-        // 偽死体生成前であれば対象外にする
+        // 偽死体生成前に元の死体が報告された場合は、蘇生フローをキャンセルして通常報告を通す。
         if (!entry.Targetable)
-            return;
-
-        if (!CanReporterReportRitualCorpse(data.reporter, id))
         {
-            data.CanReport = false;
+            HostEntries.Remove(id);
             return;
         }
 
@@ -363,6 +356,12 @@ public sealed class OrpheusMainAbility : AbilityBase
         {
             HostEntries.Remove(id);
             RpcRollbackConsumedCorpse(id);
+            return;
+        }
+
+        if (!CanReporterReportRitualCorpse(data.reporter, id))
+        {
+            data.CanReport = false;
             return;
         }
 

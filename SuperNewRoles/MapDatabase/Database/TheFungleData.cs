@@ -59,29 +59,29 @@ public class FungleData : MapDatabase
     // オルフェウスの儀式死体を優先的に出す座標。空なら境界ランダム探索を使う。
     static private readonly Vector2[] orpheusDeadBodySpawnPositionPool = [
         // ドロップシップ
-        new Vector3(-11.169f, 12.341f, 0.012f),
+        new(-11.169f, 12.341f),
         // 焚き火左
-        new Vector3(-16.1866f, 2.4168f, 0f),
+        new(-16.1866f, 2.4168f),
         // スプラッシュゾーン
-        new Vector3(-18.542f, -2.247f, -0.002f),
+        new(-18.542f, -2.247f),
         // ジャングル左下
-        new Vector3(-6.526f, -15.033f, -0.015f),
+        new(-6.526f, -15.033f),
         // キッチン
-        new Vector3(-17.461f, -9.304f, -0.009f),
+        new(-17.461f, -9.304f),
         // 展望台
-        new Vector3(10.19f, 1.396f, 0.001f),
+        new(10.19f, 1.396f),
         // ジャングル右下
-        new Vector3(14.308f, -16.523f, -0.017f),
+        new(14.308f, -16.523f),
         // 鉱山
-        new Vector3(13.937f, 9.407f, 0.009f),
+        new(13.937f, 9.407f),
         // 上部エンジン
-        new Vector3(22.107f, 2.055f, 0.002f),
+        new(22.107f, 2.055f),
         // 宿舎上
-        new Vector3(2.084f, 1.664f, 0.002f),
+        new(2.084f, 1.664f),
         // ドロシ左
-        new Vector3(-11.268f, 8.235f, 0.008f),
+        new(-11.268f, 8.235f),
         // ジップライン下
-        new Vector3(3.543f, 6.969f, 0.007f),
+        new(3.543f, 6.969f),
     ];
     static private readonly Vector2[] PlayerSpawnPositionPool =
     [

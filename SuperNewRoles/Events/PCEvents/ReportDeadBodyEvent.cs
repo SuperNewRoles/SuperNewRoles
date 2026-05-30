@@ -26,6 +26,9 @@ public class ReportDeadBodyHostEvent : EventTargetBase<ReportDeadBodyHostEvent, 
     public static bool Invoke(PlayerControl reporter, NetworkedPlayerInfo target)
     {
         var data = new ReportDeadBodyHostEventData(reporter, target);
+        Roles.Impostor.OrpheusMainAbility.OnReport(data);
+        if (!data.CanReport)
+            return false;
         Instance.Awake(data);
         return data.CanReport;
     }

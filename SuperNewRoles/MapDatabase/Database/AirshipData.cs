@@ -61,27 +61,27 @@ public class AirshipData : MapDatabase
     // オルフェウスの儀式死体を優先的に出す座標。空なら境界ランダム探索を使う。
     static private readonly Vector2[] orpheusDeadBodySpawnPositionPool = [
         // 電気室
-        new Vector3(10.196f, -5.969f, -0.006f),
+        new(10.196f, -5.969f),
         // 貨物室
-        new Vector3(36.727f, -3.089f, -0.003f),
+        new(36.727f, -3.089f),
         // セキュ,
-        new Vector3(5.084f, -10.091f, -0.01f),
+        new(5.084f, -10.091f),
         // 展望右
-        new Vector3(5.599f, -14.548f, -0.01f),
+        new(5.599f, -14.548f),
         // コクピ
-        new Vector3(-17.19f, 0.557f, 0.001f),
+        new(-17.19f, 0.557f),
         // 金庫
-        new Vector3(-11.638f, 10.925f, 0.011f),
+        new(-11.638f, 10.925f),
         // ラウンジ
-        new Vector3(24.805f, 5.18f, 0.01f),
+        new(24.805f, 5.18f),
         // メイン左上
-        new Vector3(5.737f, 3.407f, 0.01f),
+        new(5.737f, 3.407f),
         // 暗室左上
-        new Vector3(11.424f, 2.766f, 0.01f),
+        new(11.424f, 2.766f),
         // ミーテ
-        new Vector3(17.213f, 14.63f, 0.015f),
+        new(17.213f, 14.63f),
         // 診察
-        new Vector3(28.839f, -6.572f, -0.007f)
+        new(28.839f, -6.572f)
     ];
     static private readonly Vector2[] PlayerSpawnPositionPool =
     [
