@@ -50,7 +50,53 @@ public class PolusData : MapDatabase
         new(24f, -14.6f), new(26f, -12.2f), new(29.8f, -15.7f)
     };
 
+    // オルフェウスの儀式死体を優先的に出す座標。空なら境界ランダム探索を使う。
+    static private readonly Vector2[] orpheusDeadBodySpawnPositionPool = [
+        // ボイラー
+        new Vector3(0.795f, -23.533f, -0.023f),
+        // ウェポン左外下
+        new Vector3(9.014f, -25.306f, -0.025f),
+        // ウェポン内部
+        new Vector3(12.555f, -24.76f, -0.025f),
+        // アドミン下
+        new Vector3(22.235f, -25.142f, -0.025f),
+        // 通信室
+        new Vector3(12.846f, -17.317f, -0.015f),
+        // ストレージ
+        new Vector3(19.749f, -12.479f, -0.012f),
+        // 木の部屋
+        new Vector3(1.131f, -17.595f, -0.018f),
+        // ボンベ室
+        new Vector3(1.264f, -18.782f, -0.019f),
+        // 外大岩右
+        new Vector3(32.704f, -13.292f, -0.013f),
+        // 標本室
+        new Vector3(36.211f, -22.082f, -0.022f),
+        // ラボベント
+        new Vector3(32.952f, -9.308f, -0.009f),
+        // 通信外左
+        new Vector3(7.089f, -17.392f, -0.017f),
+        // 左リアクター下
+        new Vector3(3.767f, -7.685f, 0),
+        // オフィス左下外
+        new Vector3(19.254f, -25.699f, -0.026f),
+    ];
+    static private readonly Vector2[] PlayerSpawnPositionPool =
+    [
+        new(25.7343f, -12.8777f), // BackRock
+        new(3.3584f, -21.68f),    // Oxygen
+        new(5.3372f, -9.7048f),   // Electrical
+        new(23.9309f, -22.5169f), // Admin
+        new(19.5145f, -17.4998f), // Office
+        new(12.0384f, -23.34f),   // Weapons
+        new(10.6821f, -16.0105f), // Comms
+        new(20.5637f, -11.9088f), // Storage
+        new(16.6458f, -3.2058f),  // Dropship
+        new(34.3056f, -7.8901f)   // Laboratory / Specimens
+    ];
     protected override Vector2[] MapArea => MapPositions;
     protected override Vector2[] NonMapArea => [];
+    public override Vector2[] OrpheusDeadBodySpawnPositionPool => orpheusDeadBodySpawnPositionPool;
+    protected override Vector2[] PlayerSpawnPositions => PlayerSpawnPositionPool;
     protected override SystemTypes[] SabotageTypes => new SystemTypes[] { SystemTypes.Laboratory, SystemTypes.Comms, SystemTypes.Electrical };
 }

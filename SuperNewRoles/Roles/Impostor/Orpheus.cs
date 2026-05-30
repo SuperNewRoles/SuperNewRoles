@@ -417,6 +417,9 @@ public sealed class OrpheusMainAbility : AbilityBase
 
     private static Vector2 TryPickRandomRitualPosition(byte victimId)
     {
+        if (SuperNewRoles.MapDatabase.MapDatabase.TryGetRandomDeadBodySpawnPositionForCurrentMap(out Vector2 pooledPosition))
+            return pooledPosition;
+
         SuperNewRoles.MapDatabase.MapDatabase mapData = SuperNewRoles.MapDatabase.MapDatabase.GetCurrentMapData();
         if (mapData != null
             && SuperNewRoles.MapDatabase.MapDatabase.TryGetSpawnScanBoundsForCurrentMap(out Vector2 min, out Vector2 max))
@@ -426,7 +429,7 @@ public sealed class OrpheusMainAbility : AbilityBase
                 float x = ModHelpers.GetRandomFloat(max.x, min.x);
                 float y = ModHelpers.GetRandomFloat(max.y, min.y);
                 Vector2 p = new(x, y);
-                if (mapData.CheckMapArea(p))
+                if (mapData.CheckMapArea(p) && !mapData.IsNearPlayerSpawnPosition(p))
                     return p;
             }
         }

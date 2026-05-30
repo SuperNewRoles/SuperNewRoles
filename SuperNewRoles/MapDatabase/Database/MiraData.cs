@@ -42,7 +42,18 @@ public class MiraData : MapDatabase
         new(13.2f, 22.3f), new(22.4f, 23.3f), new(20.2f, 24.3f), new(16.5f, 24.4f), new(20.7f, 22.2f), new(18f, 25.3f),
     };
 
+    // オルフェウスの儀式死体を優先的に出す座標。空なら境界ランダム探索を使う。
+    static private readonly Vector2[] orpheusDeadBodySpawnPositionPool = [];
+    static private readonly Vector2[] PlayerSpawnPositionPool =
+    [
+        // ラウンチパッド
+        new(-4.4f, 3.3f),
+        // カフェ周辺
+        new(21.8f, 5f), new(28.3f, 0.2f), new(25.5f, 2.3f), new(22.1f, 2.6f)
+    ];
     protected override Vector2[] MapArea => MapPositions;
     protected override Vector2[] NonMapArea => [];
+    public override Vector2[] OrpheusDeadBodySpawnPositionPool => orpheusDeadBodySpawnPositionPool;
+    protected override Vector2[] PlayerSpawnPositions => PlayerSpawnPositionPool;
     protected override SystemTypes[] SabotageTypes => new SystemTypes[] { SystemTypes.Reactor, SystemTypes.Comms, SystemTypes.Electrical, SystemTypes.LifeSupp };
 }

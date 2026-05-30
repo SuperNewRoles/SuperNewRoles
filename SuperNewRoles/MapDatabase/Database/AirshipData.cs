@@ -58,8 +58,41 @@ public class AirshipData : MapDatabase
         new(6.5f, 15.3f), new(11.8f, 14.1f), new(11.8f, 16f), new(16.3f, 15.2f),
         };
 
+    // オルフェウスの儀式死体を優先的に出す座標。空なら境界ランダム探索を使う。
+    static private readonly Vector2[] orpheusDeadBodySpawnPositionPool = [
+        // 電気室
+        new Vector3(10.196f, -5.969f, -0.006f),
+        // 貨物室
+        new Vector3(36.727f, -3.089f, -0.003f),
+        // セキュ,
+        new Vector3(5.084f, -10.091f, -0.01f),
+        // 展望右
+        new Vector3(5.599f, -14.548f, -0.01f),
+        // コクピ
+        new Vector3(-17.19f, 0.557f, 0.001f),
+        // 金庫
+        new Vector3(-11.638f, 10.925f, 0.011f),
+        // ラウンジ
+        new Vector3(24.805f, 5.18f, 0.01f),
+        // メイン左上
+        new Vector3(5.737f, 3.407f, 0.01f),
+        // 暗室左上
+        new Vector3(11.424f, 2.766f, 0.01f),
+        // ミーテ
+        new Vector3(17.213f, 14.63f, 0.015f),
+        // 診察
+        new Vector3(28.839f, -6.572f, -0.007f)
+    ];
+    static private readonly Vector2[] PlayerSpawnPositionPool =
+    [
+        // バニラ選択スポーン候補
+        new(0f, -1.4f), new(20f, 11.5f), new(10.8f, 0f),
+        new(-7.5f, -7.5f), new(34f, 1.4f), new(11.8f, 14.1f)
+    ];
     protected override Vector2[] MapArea => MapPositions;
     protected override Vector2[] NonMapArea => [];
+    public override Vector2[] OrpheusDeadBodySpawnPositionPool => orpheusDeadBodySpawnPositionPool;
+    protected override Vector2[] PlayerSpawnPositions => PlayerSpawnPositionPool;
 
     protected override SystemTypes[] SabotageTypes => new SystemTypes[] { SystemTypes.HeliSabotage, SystemTypes.Comms, SystemTypes.Electrical };
 }

@@ -13,6 +13,11 @@ public abstract class MapDatabase
     abstract protected Vector2[] MapArea { get; }
     abstract protected Vector2[] NonMapArea { get; }
     abstract protected SystemTypes[] SabotageTypes { get; }
+    // オルフェウスの儀式死体を優先的にスポーンさせる候補位置。空なら境界ランダム探索にフォールバックする。
+    public virtual Vector2[] OrpheusDeadBodySpawnPositionPool => [];
+    // 境界ランダム探索時に避けるプレイヤースポーン候補位置。
+    protected virtual Vector2[] PlayerSpawnPositions => [];
+    protected virtual float PlayerSpawnExclusionRadius => 3f;
 
     public SystemTypes[] GetSabotageSystemTypes() => SabotageTypes;
     public bool CheckMapArea(Vector2 position)
@@ -177,6 +182,43 @@ public abstract class MapDatabase
         return true;
     }
 
+    public bool TryGetRandomDeadBodySpawnPosition(out Vector2 position)
+    {
+        position = Vector2.zero;
+        Vector2[] positions = OrpheusDeadBodySpawnPositionPool;
+        if (positions == null || positions.Length == 0)
+            return false;
+
+        int startIndex = ModHelpers.GetRandomInt(positions.Length - 1);
+        for (int i = 0; i < positions.Length; i++)
+        {
+            Vector2 candidate = positions[(startIndex + i) % positions.Length];
+            if (CheckMapArea(candidate))
+            {
+                position = candidate;
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    public bool IsNearPlayerSpawnPosition(Vector2 position)
+    {
+        Vector2[] positions = PlayerSpawnPositions;
+        if (positions == null || positions.Length == 0)
+            return false;
+
+        float sqrRadius = PlayerSpawnExclusionRadius * PlayerSpawnExclusionRadius;
+        foreach (Vector2 spawnPosition in positions)
+        {
+            if (((Vector2)(position - spawnPosition)).sqrMagnitude <= sqrRadius)
+                return true;
+        }
+
+        return false;
+    }
+
     // 現在のマップのスポーン探索用境界を取得する
     public static bool TryGetSpawnScanBoundsForCurrentMap(out Vector2 min, out Vector2 max)
     {
@@ -185,6 +227,15 @@ public abstract class MapDatabase
         if (data == null)
             return false;
         return data.TryGetSpawnScanBounds(out min, out max);
+    }
+
+    public static bool TryGetRandomDeadBodySpawnPositionForCurrentMap(out Vector2 position)
+    {
+        position = Vector2.zero;
+        MapDatabase data = GetCurrentMapData();
+        if (data == null)
+            return false;
+        return data.TryGetRandomDeadBodySpawnPosition(out position);
     }
 
     static private MapDatabase[] AllMapData = new MapDatabase[] { new SkeldData(), new MiraData(), new PolusData(), null!, new AirshipData(), new FungleData() };

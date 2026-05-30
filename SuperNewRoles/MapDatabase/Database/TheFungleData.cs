@@ -56,7 +56,46 @@ public class FungleData : MapDatabase
         new(20.9f,10.8f),new(24.1f,13.2f),new(17.9f,12.7f),
         };
 
+    // オルフェウスの儀式死体を優先的に出す座標。空なら境界ランダム探索を使う。
+    static private readonly Vector2[] orpheusDeadBodySpawnPositionPool = [
+        // ドロップシップ
+        new Vector3(-11.169f, 12.341f, 0.012f),
+        // 焚き火左
+        new Vector3(-16.1866f, 2.4168f, 0f),
+        // スプラッシュゾーン
+        new Vector3(-18.542f, -2.247f, -0.002f),
+        // ジャングル左下
+        new Vector3(-6.526f, -15.033f, -0.015f),
+        // キッチン
+        new Vector3(-17.461f, -9.304f, -0.009f),
+        // 展望台
+        new Vector3(10.19f, 1.396f, 0.001f),
+        // ジャングル右下
+        new Vector3(14.308f, -16.523f, -0.017f),
+        // 鉱山
+        new Vector3(13.937f, 9.407f, 0.009f),
+        // 上部エンジン
+        new Vector3(22.107f, 2.055f, 0.002f),
+        // 宿舎上
+        new Vector3(2.084f, 1.664f, 0.002f),
+        // ドロシ左
+        new Vector3(-11.268f, 8.235f, 0.008f),
+        // ジップライン下
+        new Vector3(3.543f, 6.969f, 0.007f),
+    ];
+    static private readonly Vector2[] PlayerSpawnPositionPool =
+    [
+        new(-9.81f, 0.6f),    // Campfire
+        new(-8f, 10.5f),      // Dropship
+        new(-16.16f, 7.25f),  // Cafeteria
+        new(-15.5f, -7.5f),   // Kitchen
+        new(9.25f, -12f),     // Greenhouse
+        new(14.75f, 0f),      // UpperEngine
+        new(21.65f, 13.75f)   // Comms
+    ];
     protected override Vector2[] MapArea => MapPositions;
     protected override Vector2[] NonMapArea => [];
+    public override Vector2[] OrpheusDeadBodySpawnPositionPool => orpheusDeadBodySpawnPositionPool;
+    protected override Vector2[] PlayerSpawnPositions => PlayerSpawnPositionPool;
     protected override SystemTypes[] SabotageTypes => new SystemTypes[] { SystemTypes.Reactor, SystemTypes.Comms };
 }
