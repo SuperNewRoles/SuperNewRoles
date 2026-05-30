@@ -28,20 +28,29 @@ public static class RoleReleaseLock
         RoleId.DyingMessenger,
     };
 
+    private static readonly HashSet<RoleId> ReleaseAtMay31Roles = new()
+    {
+        RoleId.Orpheus,
+        RoleId.RocketLauncher,
+    };
+
     private static Il2CppSystem.DateTime ReleaseAtJan4Utc = new(2026, 1, 4, 8, 0, 0, Il2CppSystem.DateTimeKind.Utc);
     private static Il2CppSystem.DateTime ReleaseAtJan5Utc = new(2026, 1, 5, 8, 0, 0, Il2CppSystem.DateTimeKind.Utc);
+    private static Il2CppSystem.DateTime ReleaseAtMay31Utc = new(2026, 5, 31, 3, 0, 0, Il2CppSystem.DateTimeKind.Utc);
 
     private static bool IsReleaseLockEnabled = ThisAssembly.Git.Branch == BranchConfig.MasterBranch;
 
     public static int GetReleaseStateToken()
     {
         if (!IsReleaseLockEnabled)
-            return 3;
+            return 7;
         int token = 0;
         if (AmongUsDateTime.UtcNow >= ReleaseAtJan4Utc)
             token |= 4;
         if (AmongUsDateTime.UtcNow >= ReleaseAtJan5Utc)
             token |= 2;
+        if (AmongUsDateTime.UtcNow >= ReleaseAtMay31Utc)
+            token |= 1;
         return token;
     }
 
@@ -53,6 +62,8 @@ public static class RoleReleaseLock
             return AmongUsDateTime.UtcNow < ReleaseAtJan4Utc;
         if (ReleaseAtJan5Roles.Contains(roleId))
             return AmongUsDateTime.UtcNow < ReleaseAtJan5Utc;
+        if (ReleaseAtMay31Roles.Contains(roleId))
+            return AmongUsDateTime.UtcNow < ReleaseAtMay31Utc;
         return false;
     }
 
