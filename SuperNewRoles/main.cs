@@ -37,6 +37,7 @@ using AmongUs.GameOptions;
 using Il2CppInterop.Runtime;
 using SuperNewRoles.WaveCannonObj;
 using static SuperNewRoles.Patches.CursedTasks.CursedBuildSandcastleTask;
+using SuperNewRoles.Roles.Impostor;
 
 namespace SuperNewRoles;
 
@@ -312,6 +313,9 @@ public partial class SuperNewRolesPlugin : BasePlugin
         ClassInjector.RegisterTypeInIl2Cpp<BuildSandcastleMinigamePatch.CursedSandcastleBucketCloneMarker>();
         ClassInjector.RegisterTypeInIl2Cpp<WCSantaHandler>();
         ClassInjector.RegisterTypeInIl2Cpp<AnnouncementSelectMenuMarker>();
+        ClassInjector.RegisterTypeInIl2Cpp<OrpheusRitualCorpseMarker>();
+        ClassInjector.RegisterTypeInIl2Cpp<RocketLauncherProjectile>();
+        ClassInjector.RegisterTypeInIl2Cpp<RocketLauncherHeldPlayer>();
 
         try
         {

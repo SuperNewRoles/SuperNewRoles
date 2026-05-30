@@ -151,7 +151,9 @@ public enum RoleId : short
     PoliceSurgeon,
     Banshee,
     TriggerHappy,
-    ElectionCommissioner
+    ElectionCommissioner,
+    Orpheus,
+    RocketLauncher
 }
 
 public enum GhostRoleId : short

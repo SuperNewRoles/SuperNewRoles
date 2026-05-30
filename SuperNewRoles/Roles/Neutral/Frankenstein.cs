@@ -8,6 +8,7 @@ using SuperNewRoles.Modules;
 using SuperNewRoles.Modules.Events.Bases;
 using SuperNewRoles.Roles.Ability;
 using SuperNewRoles.Roles.Ability.CustomButton;
+using SuperNewRoles.Roles.Impostor;
 using UnityEngine;
 using Object = UnityEngine.Object;
 
@@ -206,6 +207,9 @@ public sealed class FrankensteinAbility : AbilityBase
 
     private static bool IsDeadBodyInUse(DeadBody body)
     {
+        if (OrpheusMainAbility.IsManagedCorpseBody(body))
+            return true;
+
         foreach (ExPlayerControl player in ExPlayerControl.ExPlayerControls)
         {
             if (player == null) continue;
