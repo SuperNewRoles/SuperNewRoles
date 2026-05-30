@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using System.Linq;
+using AmongUs.GameOptions;
 using HarmonyLib;
 using SuperNewRoles.CustomOptions.Categories;
 using SuperNewRoles.Events;
@@ -69,6 +70,15 @@ public static class NameText
     {
         return player?.Data?.Role?.NiceName ?? string.Empty;
     }
+    internal static string GetVanillaRoleDisplayName(RoleTypes roleType, string niceName)
+    {
+        return roleType switch
+        {
+            RoleTypes.CrewmateGhost => ModTranslation.GetString(nameof(RoleId.Crewmate)),
+            RoleTypes.ImpostorGhost => ModTranslation.GetString(nameof(RoleId.Impostor)),
+            _ => niceName,
+        };
+    }
     private static Color GetRoleInfoColor(ExPlayerControl player)
     {
         if (ShouldShowVanillaRole(player))
@@ -78,7 +88,7 @@ public static class NameText
     private static string GetRoleInfoText(ExPlayerControl player)
     {
         if (ShouldShowVanillaRole(player))
-            return ModHelpers.Cs(player.Data.Role.TeamColor, player.Data.Role.NiceName);
+            return ModHelpers.Cs(player.Data.Role.TeamColor, GetVanillaRoleDisplayName(player.Data.Role.Role, player.Data.Role.NiceName));
         return player?.roleBase != null
             ? ModHelpers.CsWithTranslation(player.roleBase.RoleColor, player.roleBase.Role.ToString())
             : ModHelpers.Cs(GetFallbackRoleInfoColor(player), GetFallbackRoleInfoText(player));
