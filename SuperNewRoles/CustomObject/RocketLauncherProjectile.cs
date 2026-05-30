@@ -10,13 +10,12 @@ public class RocketLauncherProjectile : MonoBehaviour
 {
     private const float Speed = 7.5f;
     private const float MaxLifetime = 8f;
-    private const float BaseColliderRadius = 0.28f;
-    private const float ProjectileCollisionScale = 0.65f;
+    private const float PlayerCollisionRadius = 0.1f;
     private const float ProjectileVisualScale = 0.6f;
+    private const float ProjectileVisualWorldYOffset = 0.4f;
     private const float ReflectPushDistance = 0.12f;
     private const float IgnoreWiseManDuration = 0.15f;
     private const float IgnoreSourceDuration = 0.25f;
-    private const float WallHitInset = 0.03f;
     private const float WallDeadBodyBackoff = 0.55f;
     private const float WallDeadBodyClearanceRadius = 0.5f;
     private const float WallOverlapResolveStep = 0.08f;
@@ -36,6 +35,7 @@ public class RocketLauncherProjectile : MonoBehaviour
     private float _ignoreSourceTimer;
     private byte _ignoreWiseManId = byte.MaxValue;
     private SpriteRenderer _spriteRenderer;
+    private Transform _spriteTransform;
     private CircleCollider2D _collider;
 
     public bool IsActive => _isActive;
@@ -93,6 +93,7 @@ public class RocketLauncherProjectile : MonoBehaviour
         spriteObject.transform.SetParent(transform, false);
         spriteObject.transform.localScale = Vector3.one * ProjectileVisualScale;
         spriteObject.layer = gameObject.layer;
+        _spriteTransform = spriteObject.transform;
 
         _spriteRenderer = spriteObject.AddComponent<SpriteRenderer>();
         _spriteRenderer.sharedMaterial = FastDestroyableSingleton<HatManager>.Instance.PlayerMaterial;
@@ -101,7 +102,7 @@ public class RocketLauncherProjectile : MonoBehaviour
 
         _collider = gameObject.AddComponent<CircleCollider2D>();
         _collider.isTrigger = true;
-        _collider.radius = BaseColliderRadius * ProjectileCollisionScale;
+        _collider.radius = PlayerCollisionRadius;
     }
 
     private void ApplyTargetColor()
@@ -193,6 +194,15 @@ public class RocketLauncherProjectile : MonoBehaviour
     private void UpdateRotation()
     {
         transform.rotation = Quaternion.Euler(0f, 0f, GetSpriteAngle(_direction));
+        UpdateSpriteVisualOffset();
+    }
+
+    private void UpdateSpriteVisualOffset()
+    {
+        if (_spriteTransform == null)
+            return;
+
+        _spriteTransform.localPosition = Quaternion.Inverse(transform.rotation) * (Vector3.up * ProjectileVisualWorldYOffset);
     }
 
     internal static float GetSpriteAngle(Vector2 direction)
@@ -210,10 +220,7 @@ public class RocketLauncherProjectile : MonoBehaviour
             return false;
 
         Vector2 direction = step / distance;
-        float radius = BaseColliderRadius * ProjectileCollisionScale;
-        float castDistance = distance + radius;
-        return PhysicsHelpers.AnyNonTriggersBetween(sourcePosition, direction, castDistance, Constants.ShipAndAllObjectsMask) ||
-            IsOverlappingWall(launchPosition, radius);
+        return PhysicsHelpers.AnyNonTriggersBetween(sourcePosition, direction, distance, Constants.ShipAndAllObjectsMask);
     }
 
     private void UpdateIgnoreWiseManTimer()
@@ -267,26 +274,23 @@ public class RocketLauncherProjectile : MonoBehaviour
             return false;
 
         Vector2 direction = step / distance;
-        float radius = GetCollisionRadius();
-        float castDistance = distance + radius;
+        float castDistance = distance;
         bool hitByLine = PhysicsHelpers.AnyNonTriggersBetween(currentPosition, direction, castDistance, Constants.ShipAndAllObjectsMask);
-        bool hitByOverlap = IsOverlappingWall(currentPosition + step, radius);
-        if (!hitByLine && !hitByOverlap)
+        if (!hitByLine)
             return false;
 
         float nearestDistance = GetNearestWallHitDistance(currentPosition, direction, castDistance);
         if (nearestDistance < float.MaxValue)
-            hitPosition = GetWallSafeExplosionPosition(currentPosition, direction, nearestDistance, radius);
+            hitPosition = GetWallSafeExplosionPosition(currentPosition, direction, nearestDistance);
         else
             hitPosition = ResolveWallOverlap(currentPosition + step, -direction);
 
         return true;
     }
 
-    private static Vector2 GetWallSafeExplosionPosition(Vector2 currentPosition, Vector2 direction, float nearestDistance, float radius)
+    private static Vector2 GetWallSafeExplosionPosition(Vector2 currentPosition, Vector2 direction, float nearestDistance)
     {
-        float backoff = Mathf.Max(WallDeadBodyBackoff, radius + WallHitInset);
-        Vector2 position = currentPosition + (direction * (nearestDistance - backoff));
+        Vector2 position = currentPosition + (direction * (nearestDistance - WallDeadBodyBackoff));
         return ResolveWallOverlap(position, -direction);
     }
 
@@ -419,7 +423,7 @@ public class RocketLauncherProjectile : MonoBehaviour
     private float GetCollisionRadius()
     {
         if (_collider == null)
-            return BaseColliderRadius;
+            return PlayerCollisionRadius;
         return _collider.radius * Mathf.Max(transform.lossyScale.x, transform.lossyScale.y);
     }
 }
