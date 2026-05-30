@@ -1,6 +1,9 @@
 using System;
+using System.Collections;
 using System.Collections.Generic;
+using BepInEx.Unity.IL2CPP.Utils.Collections;
 using HarmonyLib;
+using SuperNewRoles.CustomCosmetics;
 using SuperNewRoles.CustomObject;
 using SuperNewRoles.CustomOptions;
 using SuperNewRoles.Patches;
@@ -89,7 +92,11 @@ public static class ClientOptions
                 ClientOptionEntry.Toggle(
                     "ClientOptions.IsModCosmeticsAreNotLoaded",
                     () => ConfigRoles.IsModCosmeticsAreNotLoaded.Value,
-                    value => ConfigRoles.IsModCosmeticsAreNotLoaded.Value = value),
+                    value =>
+                    {
+                        ConfigRoles.IsModCosmeticsAreNotLoaded.Value = value;
+                        ApplyCustomCosmeticsRuntimeSetting();
+                    }),
                 ClientOptionEntry.Toggle(
                     "ClientOptions.IsNotUsingBlood",
                     () => ConfigRoles.IsNotUsingBlood.Value,
@@ -823,6 +830,23 @@ public static class ClientOptions
     {
         if (_currentCategory != null)
             ShowCategory(_currentCategory, _currentSelectedCategory);
+    }
+
+    private static void ApplyCustomCosmeticsRuntimeSetting()
+    {
+        Func<IEnumerator, Coroutine> startCoroutine = null;
+        if (AmongUsClient.Instance != null)
+            startCoroutine = coroutine => AmongUsClient.Instance.StartCoroutine(coroutine.WrapToIl2Cpp());
+        else if (_animationOwner != null)
+            startCoroutine = coroutine => _animationOwner.StartCoroutine(coroutine.WrapToIl2Cpp());
+
+        if (startCoroutine == null)
+        {
+            Logger.Warning("ClientOptions: カスタムコスメティックのランタイム反映に使えるCoroutineホストがありません。");
+            return;
+        }
+
+        CustomCosmeticsLoader.ApplyRuntimeSetting(startCoroutine);
     }
 
     private static void ClearChildren(Transform parent)

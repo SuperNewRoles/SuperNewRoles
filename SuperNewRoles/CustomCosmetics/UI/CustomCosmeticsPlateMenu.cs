@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using AmongUs.Data;
 using Innersloth.Assets;
 using SuperNewRoles.Modules;
@@ -23,7 +24,10 @@ public class CustomCosmeticsPlateMenu : CustomCosmeticsMenuBase<CustomCosmeticsP
     public override void Initialize()
     {
         playerVoteArea = PlayerCustomizationMenu.Instance.nameplateMaskArea.GetComponent<PlayerVoteArea>();
-        playerVoteArea.PreviewNameplate(PlayerControl.LocalPlayer != null ? PlayerControl.LocalPlayer.Data.DefaultOutfit.NamePlateId : DataManager.Player.Customization.NamePlate);
+        string currentCosmeticId = PlayerControl.LocalPlayer != null ? PlayerControl.LocalPlayer.Data.DefaultOutfit.NamePlateId : DataManager.Player.Customization.NamePlate;
+        ICosmeticData currentNamePlate = ResolveNamePlateData(currentCosmeticId);
+        if (currentNamePlate != null)
+            playerVoteArea.PreviewNameplate(currentNamePlate.ProdId);
         playerVoteArea.gameObject.SetActive(true);
         playerVoteArea.transform.localPosition = new(-0.06f, -0.4f, -70.71f);
         playerVoteArea.transform.localScale = Vector3.one;
@@ -35,14 +39,15 @@ public class CustomCosmeticsPlateMenu : CustomCosmeticsMenuBase<CustomCosmeticsP
         {
             unlockedNamePlates.Add(new CosmeticDataWrapperNamePlate(namePlate));
         }
-        foreach (var namePlate in CustomCosmeticsLoader.moddedNamePlates.Values)
+        if (CustomCosmeticsLoader.ShouldShowModdedCosmetics)
         {
-            unlockedNamePlates.Add(new ModdedNamePlateDataWrapper(namePlate));
+            foreach (var namePlate in CustomCosmeticsLoader.moddedNamePlates.Values)
+            {
+                unlockedNamePlates.Add(new ModdedNamePlateDataWrapper(namePlate));
+            }
         }
 
-        string currentCosmeticId = PlayerControl.LocalPlayer != null ? PlayerControl.LocalPlayer.Data.DefaultOutfit.NamePlateId : DataManager.Player.Customization.NamePlate;
-        NamePlateData currentNamePlate = FastDestroyableSingleton<HatManager>.Instance.GetNamePlateById(currentCosmeticId);
-        PlayerCustomizationMenu.Instance.SetItemName(currentNamePlate.GetItemName());
+        PlayerCustomizationMenu.Instance.SetItemName(currentNamePlate?.GetItemName() ?? string.Empty);
 
         slots = [];
         activeSlots = [];
@@ -119,8 +124,7 @@ public class CustomCosmeticsPlateMenu : CustomCosmeticsMenuBase<CustomCosmeticsP
                 if (selectedButton != slot.button)
                     slot.transform.Find("Selected").gameObject.SetActive(false);
                 var currentProdId = PlayerControl.LocalPlayer != null ? PlayerControl.LocalPlayer.Data.DefaultOutfit.NamePlateId : DataManager.Player.Customization.NamePlate;
-                ICosmeticData cosmetic = currentProdId.StartsWith(CustomCosmeticsLoader.ModdedPrefix) ? new ModdedNamePlateDataWrapper(CustomCosmeticsLoader.GetModdedNamePlate(currentProdId)) : new CosmeticDataWrapperNamePlate(FastDestroyableSingleton<HatManager>.Instance.GetNamePlateById(currentProdId));
-                PreviewCosmetic(cosmetic);
+                PreviewCosmetic(ResolveNamePlateData(currentProdId));
             }));
             ControllerManager.Instance.AddSelectableUiElement(slot.button);
             slot.gameObject.SetActive(true);
@@ -158,6 +162,28 @@ public class CustomCosmeticsPlateMenu : CustomCosmeticsMenuBase<CustomCosmeticsP
         {
             playerVoteArea.Background.sprite = cosmeticData.Asset;
         });
+    }
+
+    private static ICosmeticData ResolveNamePlateData(string namePlateId)
+    {
+        if (!string.IsNullOrEmpty(namePlateId) && namePlateId.StartsWith(CustomCosmeticsLoader.ModdedPrefix))
+        {
+            if (CustomCosmeticsLoader.ShouldShowModdedCosmetics)
+            {
+                var moddedNamePlate = CustomCosmeticsLoader.GetModdedNamePlate(namePlateId);
+                if (moddedNamePlate != null)
+                    return new ModdedNamePlateDataWrapper(moddedNamePlate);
+            }
+        }
+        else
+        {
+            var vanillaNamePlate = FastDestroyableSingleton<HatManager>.Instance.GetNamePlateById(namePlateId);
+            if (vanillaNamePlate != null)
+                return new CosmeticDataWrapperNamePlate(vanillaNamePlate);
+        }
+
+        var fallback = FastDestroyableSingleton<HatManager>.Instance.GetUnlockedNamePlates().FirstOrDefault();
+        return fallback != null ? new CosmeticDataWrapperNamePlate(fallback) : null;
     }
     public override void Update()
     {

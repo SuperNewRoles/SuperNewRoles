@@ -11,6 +11,7 @@ using System.Linq;
 using HarmonyLib;
 using Newtonsoft.Json.Linq;
 using BepInEx.Unity.IL2CPP.Utils.Collections;
+using SuperNewRoles.CustomCosmetics.CosmeticsPlayer;
 using SuperNewRoles.Modules;
 using SuperNewRoles.CustomCosmetics.UI;
 using Il2CppInterop.Runtime;
@@ -48,6 +49,10 @@ public class CustomCosmeticsLoader
     public static Action willLoad;
     public static bool runned = true;
     public const string ModdedPrefix = "Modded_";
+    public static bool IsRuntimeLoadInProgress { get; private set; }
+    public static bool IsRuntimeEnabled => ConfigRoles.IsModCosmeticsAreNotLoaded == null || !ConfigRoles.IsModCosmeticsAreNotLoaded.Value;
+    public static bool HasLoadedCosmetics => loadedPackages.Count > 0 || moddedHats.Count > 0 || moddedVisors.Count > 0 || moddedNamePlates.Count > 0;
+    public static bool ShouldShowModdedCosmetics => IsRuntimeEnabled && HasLoadedCosmetics;
     private static readonly HttpClient client = new();
     private static readonly int maxRetryAttempts = 1;
     private static readonly TimeSpan retryDelay = TimeSpan.FromSeconds(5);
@@ -97,8 +102,102 @@ public class CustomCosmeticsLoader
         return sanitized;
     }
 
-    public static IEnumerator LoadAsync(Func<IEnumerator, Coroutine> startCoroutine)
+    public static void ApplyRuntimeSetting(Func<IEnumerator, Coroutine> startCoroutine)
     {
+        if (!IsRuntimeEnabled)
+        {
+            Logger.Info("ランタイム設定でカスタムコスメティックを非表示にします。");
+            SetRuntimeCosmeticsVisible(false);
+            CustomCosmeticsUIStart.RefreshCurrentMenu();
+            return;
+        }
+
+        SetRuntimeCosmeticsVisible(true);
+        if (HasLoadedCosmetics)
+        {
+            Logger.Info("ロード済みのカスタムコスメティックをランタイム設定で再表示します。");
+            ReapplyLocalLayeredCosmetics();
+            CustomCosmeticsUIStart.RefreshCurrentMenu();
+            return;
+        }
+
+        if (IsRuntimeLoadInProgress || startCoroutine == null)
+            return;
+
+        Logger.Info("ランタイム設定でカスタムコスメティックのロードを開始します。");
+        startCoroutine(LoadCosmeticsRuntimeTaskAsync(startCoroutine));
+    }
+
+    public static void SetRuntimeCosmeticsVisible(bool visible)
+    {
+        foreach (var layer in CustomCosmeticsLayers.layers.Values.ToArray())
+        {
+            if (layer?.ModdedCosmetics == null)
+                continue;
+
+            layer.ModdedCosmetics.SetActive(visible);
+            if (!visible)
+            {
+                layer.HideBody = (false, false);
+                if (layer.cosmeticsLayer?.currentBodySprite?.BodySprite != null)
+                    layer.cosmeticsLayer.currentBodySprite.BodySprite.enabled = layer.cosmeticsLayer.Visible;
+            }
+        }
+    }
+
+    private static IEnumerator LoadCosmeticsRuntimeTaskAsync(Func<IEnumerator, Coroutine> startCoroutine)
+    {
+        IsRuntimeLoadInProgress = true;
+        IEnumerator loadTask = LoadCosmeticsTaskAsync(startCoroutine, notifySplash: false);
+        while (true)
+        {
+            object current = null;
+            bool hasNext;
+            try
+            {
+                hasNext = loadTask.MoveNext();
+                if (hasNext)
+                    current = loadTask.Current;
+            }
+            catch (Exception ex)
+            {
+                Logger.Error($"ランタイム中のカスタムコスメティックロードに失敗しました: {ex}");
+                break;
+            }
+
+            if (!hasNext)
+                break;
+
+            yield return current;
+        }
+
+        IsRuntimeLoadInProgress = false;
+        SetRuntimeCosmeticsVisible(IsRuntimeEnabled);
+        if (IsRuntimeEnabled)
+            ReapplyLocalLayeredCosmetics();
+
+        CustomCosmeticsUIStart.RefreshCurrentMenu();
+    }
+
+    private static void ReapplyLocalLayeredCosmetics()
+    {
+        var localPlayer = PlayerControl.LocalPlayer;
+        if (localPlayer == null)
+            return;
+
+        int colorId = (localPlayer.Data?.DefaultOutfit?.ColorId).GetValueOrDefault();
+        PlayerControlRpcExtensions.RpcCustomSetCosmetics(localPlayer.PlayerId, CostumeTabType.Hat2, CustomCosmeticsSaver.CurrentHat2Id, colorId);
+        PlayerControlRpcExtensions.RpcCustomSetCosmetics(localPlayer.PlayerId, CostumeTabType.Visor2, CustomCosmeticsSaver.CurrentVisor2Id, colorId);
+    }
+
+    public static IEnumerator LoadAsync(Func<IEnumerator, Coroutine> startCoroutine, bool notifySplash = true)
+    {
+        if (!HasLoadedCosmetics)
+        {
+            notLoadedAssetBundles.Clear();
+            willDownloads = new();
+        }
+
         if (ConfigRoles.IsModCosmeticsAreNotLoaded != null && ConfigRoles.IsModCosmeticsAreNotLoaded.Value)
         {
             Logger.Info("カスタムコスメティックを読み込まない設定です。");
@@ -120,13 +219,15 @@ public class CustomCosmeticsLoader
             case NetworkReachability.NotReachable:
                 Logger.Error("インターネットに接続されていません");
                 willLoad = () => { };
-                CustomLoadingScreen.PleaseDoWillLoad = true;
+                if (notifySplash)
+                    CustomLoadingScreen.PleaseDoWillLoad = true;
                 runned = true;
                 yield break;
             case NetworkReachability.ReachableViaCarrierDataNetwork when !ConfigRoles.CanUseDataConnection.Value:
                 Logger.Error("データ通信ではダウンロードしない設定です。");
                 willLoad = () => { };
-                CustomLoadingScreen.PleaseDoWillLoad = true;
+                if (notifySplash)
+                    CustomLoadingScreen.PleaseDoWillLoad = true;
                 runned = true;
                 yield break;
             default:
@@ -464,7 +565,8 @@ public class CustomCosmeticsLoader
         });
 
         willLoad = () => { };
-        CustomLoadingScreen.PleaseDoWillLoad = true;
+        if (notifySplash)
+            CustomLoadingScreen.PleaseDoWillLoad = true;
 
         runned = true;
         Logger.Info("CustomCosmeticsLoader willLoad done");
@@ -1394,13 +1496,13 @@ public class CustomCosmeticsLoader
         return null;
     }
 
-    public static IEnumerator LoadCosmeticsTaskAsync(Func<IEnumerator, Coroutine> startCoroutine)
+    public static IEnumerator LoadCosmeticsTaskAsync(Func<IEnumerator, Coroutine> startCoroutine, bool notifySplash = true)
     {
         IEnumerator loadAsyncEnumerator = null;
         try
         {
             // LoadAsyncの呼び出し自体が例外を投げる可能性を考慮
-            loadAsyncEnumerator = LoadAsync(startCoroutine);
+            loadAsyncEnumerator = LoadAsync(startCoroutine, notifySplash);
         }
         catch (Exception setupEx)
         {
