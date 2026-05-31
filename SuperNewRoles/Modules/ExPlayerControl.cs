@@ -651,7 +651,8 @@ public class ExPlayerControl
     }
     public bool IsKiller()
     {
-        if (IsImpostor() || IsPavlovsDog() || Role == RoleId.MadKiller || IsJackal() || Role == RoleId.Hitman)
+        //昇進前のマッドキラーは IsKiller から除外
+        if (IsImpostor() || IsPavlovsDog() || (Role == RoleId.MadKiller && GetAbility<MadKillerAbility>()?.IsAwakened == true) || IsJackal() || Role == RoleId.Hitman)
             return true;
 
         var customKillButtons = GetAbilities<CustomKillButtonAbility>();
@@ -679,7 +680,13 @@ public class ExPlayerControl
         => IsCrewmate() || IsMadRoles() || IsFriendRoles();
     [System.Runtime.CompilerServices.MethodImpl(System.Runtime.CompilerServices.MethodImplOptions.AggressiveInlining)]
     public bool IsImpostor()
-        => Data.Role.IsImpostor || GetAbility<SchrodingersCatAbility>()?.CurrentTeam == SchrodingersCatTeam.Impostor;
+    {
+        //昇進前のマッドキラーはfalse
+        if (Role == RoleId.MadKiller && GetAbility<MadKillerAbility>()?.IsAwakened == false)
+            return false;
+
+        return Data.Role.IsImpostor || GetAbility<SchrodingersCatAbility>()?.CurrentTeam == SchrodingersCatTeam.Impostor;
+    }
     public bool IsNeutral()
         => roleBase != null ? roleBase.AssignedTeam == AssignedTeamType.Neutral : false;
     public bool IsImpostorWinTeam()

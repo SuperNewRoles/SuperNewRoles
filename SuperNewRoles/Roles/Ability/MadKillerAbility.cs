@@ -83,9 +83,21 @@ public class MadKillerAbility : AbilityBase
     private void OnFixedUpdate()
     {
         if (_isAwakened || Player.IsDead()) return;
-        if (ownerAbility?.Player == null || ownerAbility.Player.IsDead())
+
+        //忘却者引き継ぎ時、親のデータが存在するかどうか
+        //存在する
+        if (ownerAbility?.Player != null)
         {
-            Awaken();
+            // 特定の親単体が死んでいる場合のみ覚醒する
+            if (ownerAbility.Player.IsDead())
+            {
+                Awaken();
+            }
+        }
+        //存在しない
+        else
+        {
+            return;
         }
     }
 
