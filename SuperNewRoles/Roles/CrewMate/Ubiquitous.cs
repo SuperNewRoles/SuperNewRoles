@@ -185,6 +185,58 @@ class UbiquitousAbility : AbilityBase
             else renderer.gameObject.SetActive(false);
         }
     }
+
+    [CustomRPC]
+    public void RpcHackDoor(int doorIndex, bool isOpen)
+    {
+        var allDoors = ShipStatus.Instance?.AllDoors;
+        if (allDoors == null || doorIndex < 0 || doorIndex >= allDoors.Length) return;
+
+        var door = allDoors[doorIndex];
+        if (door == null) return;
+
+        SetDoorway(door, isOpen);
+    }
+
+    private static void SetDoorway(OpenableDoor door, bool isOpen)
+    {
+        var shipStatus = ShipStatus.Instance;
+        if (door is AutoOpenDoor autoOpenDoor && shipStatus && shipStatus.Systems.TryGetValue(SystemTypes.Doors, out var doorSystem))
+        {
+            var autoDoorsSystem = doorSystem.TryCast<AutoDoorsSystemType>();
+            if (autoDoorsSystem != null)
+            {
+                if (shipStatus.Type == ShipStatus.MapType.Ship)
+                {
+                    SetRoomAutoDoors(autoDoorsSystem, shipStatus.AllDoors, autoOpenDoor, isOpen);
+                }
+                else
+                {
+                    autoDoorsSystem.SetDoor(autoOpenDoor, isOpen);
+                }
+                return;
+            }
+        }
+
+        door.SetDoorway(isOpen);
+    }
+
+    private static void SetRoomAutoDoors(AutoDoorsSystemType autoDoorsSystem, OpenableDoor[] allDoors, AutoOpenDoor targetDoor, bool isOpen)
+    {
+        bool updated = false;
+        for (int i = 0; i < allDoors.Length; i++)
+        {
+            if (allDoors[i] is not AutoOpenDoor roomDoor || roomDoor.Room != targetDoor.Room) continue;
+
+            autoDoorsSystem.SetDoor(roomDoor, isOpen);
+            updated = true;
+        }
+
+        if (!updated)
+        {
+            autoDoorsSystem.SetDoor(targetDoor, isOpen);
+        }
+    }
 }
 
 class CallAndHomeButton : CustomButtonBase
@@ -276,23 +328,20 @@ class DoorHackButton : CustomButtonBase
 
     public override void OnClick()
     {
-        foreach (OpenableDoor door in ShipStatus.Instance.AllDoors)
+        var allDoors = ShipStatus.Instance.AllDoors;
+        for (int i = 0; i < allDoors.Length; i++)
         {
+            var door = allDoors[i];
             if (door.IsOpen) continue;
             if (door.TryCast<AutoCloseDoor>()) continue;
             if (Vector2.Distance(_ability.MyDrone.transform.position, door.transform.position) > Ubiquitous.DoorHackScope * 3) continue;
-            if (door.TryCast<AutoOpenDoor>())
-            {
-                foreach (var d in ShipStatus.Instance.AllDoors)
-                {
-                    if (door.Room == d.Room) d.SetDoorway(true);
-                }
-                continue;
-            }
-            door.SetDoorway(true);
+
+            // RPC呼び出しに変更
+            _ability.RpcHackDoor(i, true);
         }
     }
 }
+
 public static class UbiquitousRPC
 {
     [CustomRPC]
