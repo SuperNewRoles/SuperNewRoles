@@ -5,7 +5,6 @@ using AmongUs.GameOptions;
 using HarmonyLib;
 using SuperNewRoles.Ability;
 using SuperNewRoles.CustomOptions;
-using SuperNewRoles.Events;
 using SuperNewRoles.Events.PCEvents;
 using SuperNewRoles.Modules;
 using SuperNewRoles.Modules.Events.Bases;
@@ -38,14 +37,13 @@ class Tasker : RoleBase<Tasker>
     [CustomOptionBool("TaskerEnableIndividualTasks", true, translationName: "TaskOption")]
     public static bool TaskerEnableIndividualTasks;
 
-    [CustomOptionTask("TaskerTaskCount", 1, 1, 1, parentFieldName: nameof(TaskerEnableIndividualTasks), parentActiveValue: true)]
+    [CustomOptionTask("TaskerTaskCount", 1, 1, 1, parentFieldName: nameof(TaskerEnableIndividualTasks))]
     public static TaskOptionData TaskerTaskCount;
-
-    [CustomOptionBool("TaskerIsKillCoolTaskNow", true)]
-    public static bool TaskerIsKillCoolTaskNow;
 
     [CustomOptionBool("TaskerCanKill", true)]
     public static bool TaskerCanKill;
+    [CustomOptionBool("TaskerIsKillCoolTaskNow", true, parentFieldName: nameof(TaskerCanKill))]
+    public static bool TaskerIsKillCoolTaskNow;
 
     private static TaskOptionData GetTaskData()
     {
@@ -63,28 +61,16 @@ class Tasker : RoleBase<Tasker>
 public class TaskerAbility : AbilityBase
 {
     private EventListener<TaskCompleteEventData> _taskCompleteListener;
-    private EventListener _fixedUpdateListener;
 
     public override void AttachToAlls()
     {
         _taskCompleteListener = TaskCompleteEvent.Instance.AddListener(OnTaskComplete);
     }
 
-    public override void AttachToLocalPlayer()
-    {
-        _fixedUpdateListener = FixedUpdateEvent.Instance.AddListener(OnFixedUpdate);
-    }
-
     public override void DetachToAlls()
     {
         _taskCompleteListener?.RemoveListener();
         _taskCompleteListener = null;
-    }
-
-    public override void DetachToLocalPlayer()
-    {
-        _fixedUpdateListener?.RemoveListener();
-        _fixedUpdateListener = null;
     }
 
     private void OnTaskComplete(TaskCompleteEventData data)
@@ -95,16 +81,50 @@ public class TaskerAbility : AbilityBase
 
         EndGamer.EndGameImpostorWin();
     }
+}
 
-    private void OnFixedUpdate()
+[HarmonyPatch(typeof(PlayerControl), nameof(PlayerControl.FixedUpdate))]
+public static class TaskerPlayerControlFixedUpdatePatch
+{
+    private static float? _killTimerBeforeFixedUpdate;
+
+    [HarmonyPrefix]
+    [HarmonyPriority(Priority.First)]
+    public static void Prefix(PlayerControl __instance)
     {
-        if (!Tasker.TaskerIsKillCoolTaskNow) return;
-        if (Player?.Player == null || Player.IsDead()) return;
-        if (Player.Player.CanMove || Minigame.Instance == null) return;
-        if (Minigame.Instance.MyNormTask == null || !Minigame.Instance.MyNormTask.Owner.AmOwner) return;
+        _killTimerBeforeFixedUpdate = null;
+        if (!ShouldHoldKillTimer(__instance)) return;
+
+        _killTimerBeforeFixedUpdate = __instance.killTimer;
+    }
+
+    [HarmonyPostfix]
+    [HarmonyPriority(Priority.Last)]
+    public static void Postfix(PlayerControl __instance)
+    {
+        if (!_killTimerBeforeFixedUpdate.HasValue) return;
+        if (__instance != PlayerControl.LocalPlayer)
+        {
+            _killTimerBeforeFixedUpdate = null;
+            return;
+        }
 
         float maxTimer = GameOptionsManager.Instance.CurrentGameOptions.GetFloat(FloatOptionNames.KillCooldown);
-        Player.SetKillTimerUnchecked(Player.Player.killTimer - Time.fixedDeltaTime, maxTimer);
+        ExPlayerControl.LocalPlayer.SetKillTimerUnchecked(_killTimerBeforeFixedUpdate.Value, maxTimer);
+        _killTimerBeforeFixedUpdate = null;
+    }
+
+    private static bool ShouldHoldKillTimer(PlayerControl player)
+    {
+        if (player == null || player != PlayerControl.LocalPlayer) return false;
+        if (Tasker.TaskerIsKillCoolTaskNow) return false;
+
+        var localPlayer = ExPlayerControl.LocalPlayer;
+        if (localPlayer == null || localPlayer.Role != RoleId.Tasker || localPlayer.IsDead()) return false;
+        if (player.CanMove || Minigame.Instance == null) return false;
+        if (Minigame.Instance.MyNormTask == null || !Minigame.Instance.MyNormTask.Owner.AmOwner) return false;
+
+        return true;
     }
 }
 

@@ -49,7 +49,10 @@ public static class EndGamer
     public static void EndGame(GameOverReason reason, WinType winType, HashSet<ExPlayerControl> winners, Color32 color, string upperText, string winText = null)
     {
         if (CustomOptionManager.DebugMode && CustomOptionManager.DebugModeNoGameEnd && reason != (GameOverReason)CustomGameOverReason.Haison)
+        {
+            Logger.Info("EndGame called but skipped due to DebugModeNoGameEnd. reason: " + reason);
             return;
+        }
         HashSet<string> addWinners = new();
 
         // サボタージュ勝ちの時はインポスター以外死んだ判定で判定していく
@@ -114,6 +117,10 @@ public static class EndGamer
     public static void RpcEndGameImpostorWin()
     {
         if (!AmongUsClient.Instance.AmHost) return;
+        EndGameImpostorWin();
+    }
+    public static void EndGameImpostorWin()
+    {
         EndGame(GameOverReason.ImpostorsByKill, WinType.Default, ExPlayerControl.ExPlayerControls.Where(x => x.IsImpostorWinTeam()).ToHashSet(), Palette.ImpostorRed, "ImpostorWin");
     }
     private static void UpdateHijackers(ref GameOverReason reason, ref HashSet<ExPlayerControl> winners, ref Color32 color, ref string upperText, ref string winText, ref WinType winType)
