@@ -331,7 +331,8 @@ public static class UbiquitousRPC
     private static void SetDoorway(OpenableDoor door, bool isOpen)
     {
         var shipStatus = ShipStatus.Instance;
-        if (door is AutoOpenDoor autoOpenDoor && shipStatus && shipStatus.Systems.TryGetValue(SystemTypes.Doors, out var doorSystem))
+        var autoOpenDoor = door.TryCast<AutoOpenDoor>();
+        if (autoOpenDoor != null && shipStatus && shipStatus.Systems.TryGetValue(SystemTypes.Doors, out var doorSystem))
         {
             // AutoOpenDoor は System 経由で更新しないと dirty bit が立たず同期されない。
             var autoDoorsSystem = doorSystem.TryCast<AutoDoorsSystemType>();
@@ -357,7 +358,8 @@ public static class UbiquitousRPC
         bool updated = false;
         for (int i = 0; i < allDoors.Length; i++)
         {
-            if (allDoors[i] is not AutoOpenDoor roomDoor || roomDoor.Room != targetDoor.Room) continue;
+            var roomDoor = allDoors[i].TryCast<AutoOpenDoor>();
+            if (roomDoor == null || roomDoor.Room != targetDoor.Room) continue;
 
             autoDoorsSystem.SetDoor(roomDoor, isOpen);
             updated = true;
