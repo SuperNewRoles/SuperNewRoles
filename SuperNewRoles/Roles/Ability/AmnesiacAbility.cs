@@ -4,6 +4,7 @@ using SuperNewRoles.Events;
 using SuperNewRoles.Events.PCEvents;
 using SuperNewRoles.Modules;
 using SuperNewRoles.Modules.Events.Bases;
+using SuperNewRoles.Roles.Impostor;
 using SuperNewRoles.Roles.Neutral;
 using UnityEngine;
 
@@ -39,6 +40,7 @@ public class AmnesiacAbility : AbilityBase
         // 死体のプレイヤーを取得
         ExPlayerControl deadPlayer = ExPlayerControl.ById(deadPlayerId);
         if (deadPlayer == null) return;
+        if (OrpheusMainAbility.WasRitualCorpseReported(deadPlayerId)) return;
 
         // 役職変更のRPCを呼び出す
         _willChangeRole = deadPlayer;

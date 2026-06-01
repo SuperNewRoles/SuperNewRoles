@@ -10,6 +10,7 @@ using SuperNewRoles.Modules.Events.Bases;
 using SuperNewRoles.Patches;
 using SuperNewRoles.Roles.Ability;
 using SuperNewRoles.Roles.Ability.CustomButton;
+using SuperNewRoles.Roles.Impostor;
 using UnityEngine;
 
 namespace SuperNewRoles.Roles.Neutral;
@@ -165,6 +166,7 @@ public class EatDeadBodyAbility : CustomButtonBase
                 GameObject.Destroy(deadBody.gameObject);
             }
         }
+        OrpheusMainAbility.MarkCorpseUnavailableFromExternalUse((byte)parentId);
         ability._eatenBodies++;
     }
 }
