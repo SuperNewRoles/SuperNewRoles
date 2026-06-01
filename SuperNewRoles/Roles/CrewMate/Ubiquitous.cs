@@ -58,6 +58,8 @@ class Ubiquitous : RoleBase<Ubiquitous>
 
 class UbiquitousAbility : AbilityBase
 {
+    private const int MapHerePointMaskLayer = 255;
+
     private CallAndHomeButton _callAndHomeButton;
     private OperationButton _operationButton;
     private DoorHackButton _doorHackButton;
@@ -159,6 +161,7 @@ class UbiquitousAbility : AbilityBase
         for (int i = 0; i < MapHerePoints.Length; i++)
         {
             MapHerePoints[i] = Object.Instantiate(data.__instance.HerePoint, data.__instance.HerePoint.transform.parent);
+            SetMapHerePointMaskLayer(MapHerePoints[i]);
             MapHerePoints[i].gameObject.SetActive(false);
         }
     }
@@ -184,6 +187,11 @@ class UbiquitousAbility : AbilityBase
             }
             else renderer.gameObject.SetActive(false);
         }
+    }
+
+    private static void SetMapHerePointMaskLayer(SpriteRenderer renderer)
+    {
+        renderer.material.SetInt(PlayerMaterial.MaskLayer, MapHerePointMaskLayer);
     }
 }
 
