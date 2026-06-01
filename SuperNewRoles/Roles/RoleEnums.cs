@@ -153,7 +153,8 @@ public enum RoleId : short
     TriggerHappy,
     ElectionCommissioner,
     Orpheus,
-    RocketLauncher
+    RocketLauncher,
+    Tasker
 }
 
 public enum GhostRoleId : short
