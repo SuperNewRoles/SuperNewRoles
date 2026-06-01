@@ -7,6 +7,7 @@ using AmongUs.Data;
 namespace SuperNewRoles.Tests;
 
 // 翻訳 CSV のロード/言語切替/エスケープ処理/クリーンアップ時の動作を検証するテスト。
+[Collection("ModTranslation")]
 public class ModTranslationTests
 {
     private const string TestCsv =
