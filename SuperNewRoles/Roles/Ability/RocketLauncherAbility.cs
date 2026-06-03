@@ -63,6 +63,7 @@ public class RocketLauncherButtonAbility : TargetCustomButtonBase, IButtonEffect
     private RocketLauncherHeldPlayer _heldVisual;
     private bool _isHoldingGuardedWiseMan;
     private Vector2 _guardedWiseManHoldPosition;
+    private Vector2 _guardedWiseManLauncherPosition;
     private EventListener<MeetingStartEventData> _meetingStartListener;
     private EventListener _fixedUpdateListener;
     private EventListener _hudUpdateListener;
@@ -140,12 +141,12 @@ public class RocketLauncherButtonAbility : TargetCustomButtonBase, IButtonEffect
             return false;
         if (MeetingHud.Instance != null)
             return false;
-        if (PlayerControl.LocalPlayer == null || !PlayerControl.LocalPlayer.CanMove)
-            return false;
         if (HasActiveProjectile)
             return false;
         if (HasHeldTarget)
-            return true;
+            return _isHoldingGuardedWiseMan || PlayerControl.LocalPlayer?.CanMove == true;
+        if (PlayerControl.LocalPlayer == null || !PlayerControl.LocalPlayer.CanMove)
+            return false;
         return Target != null && Target.IsAlive();
     }
 
@@ -178,18 +179,12 @@ public class RocketLauncherButtonAbility : TargetCustomButtonBase, IButtonEffect
 
         if (_isHoldingGuardedWiseMan)
         {
-            if (!IsWiseManGuardActive(target))
-            {
-                ReleaseGuardedWiseManHold(resetCooldown: true);
-                return;
-            }
-
-            Vector2 explosionPosition = _guardedWiseManHoldPosition;
+            Vector2 wiseManPosition = _guardedWiseManHoldPosition;
+            Vector2 explosionPosition = _guardedWiseManLauncherPosition;
             PlayOwnerSound(ShootSound);
             var victims = CollectExplosionVictims(null, explosionPosition, target);
-            RpcExplodeGuardedWiseManHold(target, explosionPosition, victims);
-            if (_data.CanUseNormalKill)
-                Player.ResetKillCooldown();
+            victims.RemoveAll(victim => IsSamePlayer(victim, Player));
+            RpcExplodeGuardedWiseManHold(target, wiseManPosition, explosionPosition, victims);
             return;
         }
 
@@ -240,15 +235,11 @@ public class RocketLauncherButtonAbility : TargetCustomButtonBase, IButtonEffect
 
         if (_isHoldingGuardedWiseMan)
         {
-            if (IsWiseManGuardActive(_heldTarget))
-            {
-                MoveTargetTo(_heldTarget, _guardedWiseManHoldPosition);
-                SetTargetMoveable(_heldTarget, false);
-                SetTargetVisible(_heldTarget, true);
-                return;
-            }
-
-            ReleaseGuardedWiseManHold(resetCooldown: true);
+            MoveTargetTo(Player, _guardedWiseManLauncherPosition);
+            SetTargetMoveable(Player, false);
+            MoveTargetTo(_heldTarget, _guardedWiseManHoldPosition);
+            SetTargetMoveable(_heldTarget, false);
+            SetTargetVisible(_heldTarget, true);
             return;
         }
 
@@ -265,6 +256,8 @@ public class RocketLauncherButtonAbility : TargetCustomButtonBase, IButtonEffect
             return false;
         if (MeetingHud.Instance != null)
             return false;
+        if (_isHoldingGuardedWiseMan)
+            return true;
         if (PlayerControl.LocalPlayer == null || !PlayerControl.LocalPlayer.CanMove)
             return false;
         return !HasActiveProjectile;
@@ -386,6 +379,9 @@ public class RocketLauncherButtonAbility : TargetCustomButtonBase, IButtonEffect
         {
             _isHoldingGuardedWiseMan = true;
             _guardedWiseManHoldPosition = GetPlayerTransformPosition(target);
+            _guardedWiseManLauncherPosition = GetPlayerTransformPosition(Player);
+            MoveTargetTo(Player, _guardedWiseManLauncherPosition);
+            SetTargetMoveable(Player, false);
             MoveTargetTo(target, _guardedWiseManHoldPosition);
             SetTargetMoveable(target, false);
             SetTargetVisible(target, true);
@@ -491,21 +487,21 @@ public class RocketLauncherButtonAbility : TargetCustomButtonBase, IButtonEffect
     }
 
     [CustomRPC]
-    public void RpcExplodeGuardedWiseManHold(ExPlayerControl wiseMan, Vector2 position, List<ExPlayerControl> victims)
+    public void RpcExplodeGuardedWiseManHold(ExPlayerControl wiseMan, Vector2 wiseManPosition, Vector2 explosionPosition, List<ExPlayerControl> victims)
     {
         if (wiseMan == null || !wiseMan.IsAlive())
             return;
 
         ClearHeldTargetLocally(restoreMoveable: true);
-        MoveTargetTo(wiseMan, position);
-        ForceTargetTransformTo(wiseMan, position);
+        MoveTargetTo(wiseMan, wiseManPosition);
+        ForceTargetTransformTo(wiseMan, wiseManPosition);
         RestoreTargetControl(wiseMan);
         PlayWiseManGuardEffect(wiseMan);
         if (wiseMan.TryGetAbility<WiseManAbility>(out var wiseManAbility))
             wiseManAbility.Guarded = true;
 
-        SpawnExplosionAnimation(position);
-        PlayExplosionSound(position);
+        SpawnExplosionAnimation(explosionPosition);
+        PlayExplosionSound(explosionPosition);
 
         HashSet<byte> killedPlayerIds = new();
         foreach (var victim in victims ?? [])
@@ -514,11 +510,16 @@ public class RocketLauncherButtonAbility : TargetCustomButtonBase, IButtonEffect
                 continue;
             if (victim.PlayerId == wiseMan.PlayerId)
                 continue;
+            if (victim.PlayerId == Player?.PlayerId)
+                continue;
             if (!killedPlayerIds.Add(victim.PlayerId))
                 continue;
 
             victim.CustomDeath(CustomDeathType.RocketLauncher, source: Player);
         }
+
+        if (Player != null && Player.IsAlive())
+            Player.CustomDeath(CustomDeathType.SelfBomb, source: Player);
 
         if (killedPlayerIds.Count > 0 && AmongUsClient.Instance.AmHost && ExPlayerControl.ExPlayerControls.Count(x => x.IsAlive()) == 0)
             EndGamer.RpcEndGameImpostorWin();
@@ -607,9 +608,12 @@ public class RocketLauncherButtonAbility : TargetCustomButtonBase, IButtonEffect
         DestroyHeldVisual();
         if (_heldTarget != null && restoreMoveable)
             RestoreTargetControl(_heldTarget);
+        if (_isHoldingGuardedWiseMan && Player != null && Player.IsAlive())
+            SetTargetMoveable(Player, true);
         _heldTarget = null;
         _isHoldingGuardedWiseMan = false;
         _guardedWiseManHoldPosition = Vector2.zero;
+        _guardedWiseManLauncherPosition = Vector2.zero;
         isEffectActive = false;
         EffectTimer = 0f;
     }
@@ -618,9 +622,12 @@ public class RocketLauncherButtonAbility : TargetCustomButtonBase, IButtonEffect
     {
         DestroyHeldVisual();
         ReleaseTargetVisibilityAfterDeath(target);
+        if (_isHoldingGuardedWiseMan && Player != null && Player.IsAlive())
+            SetTargetMoveable(Player, true);
         _heldTarget = null;
         _isHoldingGuardedWiseMan = false;
         _guardedWiseManHoldPosition = Vector2.zero;
+        _guardedWiseManLauncherPosition = Vector2.zero;
         isEffectActive = false;
         EffectTimer = 0f;
     }
@@ -714,21 +721,6 @@ public class RocketLauncherButtonAbility : TargetCustomButtonBase, IButtonEffect
             target.TryGetAbility<WiseManAbility>(out var wiseManAbility) &&
             wiseManAbility.Active &&
             !wiseManAbility.Guarded;
-    }
-
-    private void ReleaseGuardedWiseManHold(bool resetCooldown)
-    {
-        var target = _heldTarget;
-        Vector2 position = _guardedWiseManHoldPosition;
-        ClearHeldTargetLocally(restoreMoveable: true);
-        if (target != null)
-        {
-            MoveTargetTo(target, position);
-            ForceTargetTransformTo(target, position);
-            RestoreTargetControl(target);
-        }
-        if (resetCooldown && Player.AmOwner)
-            ResetTimer();
     }
 
     private static Vector2 GetPlayerTransformPosition(ExPlayerControl player)
