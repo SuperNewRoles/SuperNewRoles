@@ -854,7 +854,7 @@ BansheeIntro1,死を招く妖精の歌声,Death-bringing fairy song,带来死亡
 OrpheusIntro1,君一人では逝かせない,I won't let you go alone.,不会让你独自逝去。,不會讓你獨自逝去。
 OrpheusMeetingBanner,オルフェウスがあの世から連れ戻したようです。,It seems Orpheus brought someone back from the other world.,似乎俄耳甫斯从冥界带回了某人。,似乎俄耳甫斯從冥界帶回了某人。
 OrpheusReviveButton,蘇生,Revive,复活,復活
-OrpheusCorpseTurnCount,儀式死体が出る会議の回数,Ritual corpse spawns (meetings),仪式尸体出现的会议次数,儀式屍體出現的會議次數
+OrpheusCorpseTurnCount,儀式死体が発生するターン数,Turns until ritual corpse appears,仪式尸体产生的回合数,儀式屍體產生的回合數
 OrpheusReviveCooldown,蘇生クールタイム,Revive cooldown,复活冷却,復活冷卻
 OrpheusRitualCorpseReportDistancePercent,儀式死体の通報距離倍率,Ritual corpse report distance %,仪式尸体报告距离比例,儀式屍體通報距離比例
 TriggerHappyIntro1,派手にぶちかますぜ！,I'm gonna go out with a bang!,我要大干一场！,我要大幹一場！
