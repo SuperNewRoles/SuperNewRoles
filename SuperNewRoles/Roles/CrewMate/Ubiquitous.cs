@@ -205,7 +205,7 @@ class CallAndHomeButton : CustomButtonBase
         _ability = ability;
     }
 
-    public override float DefaultTimer => _ability.MyDrone ? Ubiquitous.CallCoolTime : 2.5f;
+    public override float DefaultTimer => Ubiquitous.CallCoolTime;
     public override string buttonText => ModTranslation.GetString(_isCallMode ? "UbiquitousCallButton" : "UbiquitousCallHomeButton");
     public override Sprite Sprite => AssetManager.GetAsset<Sprite>(_isCallMode ? "UbiquitousCallButton.png" : "UbiquitousCallHomeButton.png");
     protected override KeyType keytype => KeyType.Ability1;
@@ -238,7 +238,7 @@ class OperationButton : CustomButtonBase, IButtonEffect
     public override Sprite Sprite => AssetManager.GetAsset<Sprite>("UbiquitousOperationButton.png");
     protected override KeyType keytype => KeyType.Ability2;
 
-    public override bool CheckIsAvailable() => _ability.MyDrone != null;
+    public override bool CheckIsAvailable() => _ability.MyDrone != null && Minigame.Instance == null;
 
     public override void OnClick()
     {
@@ -279,26 +279,35 @@ class DoorHackButton : CustomButtonBase
     {
         // ドローンが存在しており、かつ操作中でないとドアハックは使用不可
         if (!_ability.MyDrone || !_ability.UnderOperation) return false;
-        return ShipStatus.Instance.AllDoors.Any(x => Vector2.Distance(_ability.MyDrone.transform.position, x.transform.position) <= Ubiquitous.DoorHackScope * 3 && !x.IsOpen && !x.TryCast<AutoCloseDoor>());
+        return GetHackTargetDoorIndexes().Length > 0;
     }
 
     public override void OnClick()
     {
-        foreach (OpenableDoor door in ShipStatus.Instance.AllDoors)
+        var doorIndexes = GetHackTargetDoorIndexes();
+        if (doorIndexes.Length <= 0) return;
+
+        UbiquitousRPC.RpcOpenDoors(doorIndexes);
+    }
+
+    private uint[] GetHackTargetDoorIndexes()
+    {
+        var allDoors = ShipStatus.Instance?.AllDoors;
+        if (allDoors == null || _ability.MyDrone == null) return [];
+
+        List<uint> indexes = new();
+        for (int i = 0; i < allDoors.Length; i++)
         {
+            OpenableDoor door = allDoors[i];
+            if (door == null) continue;
             if (door.IsOpen) continue;
             if (door.TryCast<AutoCloseDoor>()) continue;
             if (Vector2.Distance(_ability.MyDrone.transform.position, door.transform.position) > Ubiquitous.DoorHackScope * 3) continue;
-            if (door.TryCast<AutoOpenDoor>())
-            {
-                foreach (var d in ShipStatus.Instance.AllDoors)
-                {
-                    if (door.Room == d.Room) d.SetDoorway(true);
-                }
-                continue;
-            }
-            door.SetDoorway(true);
+
+            indexes.Add((uint)i);
         }
+
+        return indexes.ToArray();
     }
 }
 public static class UbiquitousRPC
@@ -307,6 +316,67 @@ public static class UbiquitousRPC
     public static void RpcSyncDronePosition(float x, float y)
     {
         Drone.CreateIdleDrone($"Idle {ExPlayerControl.LocalPlayer.PlayerId}", new(x, y), ExPlayerControl.LocalPlayer);
+    }
+
+    [CustomRPC]
+    public static void RpcOpenDoors(uint[] doorIndexes)
+    {
+        var allDoors = ShipStatus.Instance?.AllDoors;
+        if (allDoors == null || doorIndexes == null) return;
+
+        foreach (uint doorIndex in doorIndexes)
+        {
+            if (doorIndex > int.MaxValue) continue;
+            int index = (int)doorIndex;
+            if (index < 0 || index >= allDoors.Length) continue;
+
+            OpenableDoor door = allDoors[index];
+            if (door == null || door.IsOpen || door.TryCast<AutoCloseDoor>()) continue;
+            SetDoorway(door, true);
+        }
+    }
+
+    private static void SetDoorway(OpenableDoor door, bool isOpen)
+    {
+        var shipStatus = ShipStatus.Instance;
+        var autoOpenDoor = door.TryCast<AutoOpenDoor>();
+        if (autoOpenDoor != null && shipStatus && shipStatus.Systems.TryGetValue(SystemTypes.Doors, out var doorSystem))
+        {
+            // AutoOpenDoor は System 経由で更新しないと dirty bit が立たず同期されない。
+            var autoDoorsSystem = doorSystem.TryCast<AutoDoorsSystemType>();
+            if (autoDoorsSystem != null)
+            {
+                if (shipStatus.Type == ShipStatus.MapType.Ship)
+                {
+                    SetRoomAutoDoors(autoDoorsSystem, shipStatus.AllDoors, autoOpenDoor, isOpen);
+                }
+                else
+                {
+                    autoDoorsSystem.SetDoor(autoOpenDoor, isOpen);
+                }
+                return;
+            }
+        }
+
+        door.SetDoorway(isOpen);
+    }
+
+    private static void SetRoomAutoDoors(AutoDoorsSystemType autoDoorsSystem, OpenableDoor[] allDoors, AutoOpenDoor targetDoor, bool isOpen)
+    {
+        bool updated = false;
+        for (int i = 0; i < allDoors.Length; i++)
+        {
+            var roomDoor = allDoors[i].TryCast<AutoOpenDoor>();
+            if (roomDoor == null || roomDoor.Room != targetDoor.Room) continue;
+
+            autoDoorsSystem.SetDoor(roomDoor, isOpen);
+            updated = true;
+        }
+
+        if (!updated)
+        {
+            autoDoorsSystem.SetDoor(targetDoor, isOpen);
+        }
     }
 }
 

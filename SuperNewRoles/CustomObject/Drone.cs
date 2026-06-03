@@ -48,6 +48,7 @@ public class Drone : MonoBehaviour
     public float HoveringTimer;
     public int RemainingTurn;
     public bool UnderOperation => DestroyableSingleton<HudManager>.Instance.PlayerCam.Target == this;
+    private bool CanMoveByOperation => UnderOperation && Minigame.Instance == null;
 
     // 設定値（後でUbiquitousクラスから参照）
     public static float DroneStayTurn = 5f;
@@ -105,7 +106,7 @@ public class Drone : MonoBehaviour
         Vector3 position = transform.position;
         if (IsActive)
         {
-            if (UnderOperation) Body.velocity = DestroyableSingleton<HudManager>.Instance.joystick.DeltaL * FlyingSpeed * Owner.MyPhysics.Speed;
+            if (CanMoveByOperation) Body.velocity = DestroyableSingleton<HudManager>.Instance.joystick.DeltaL * FlyingSpeed * Owner.MyPhysics.Speed;
             else Body.velocity = Vector2.zero;
             position.z = -1f;
         }
