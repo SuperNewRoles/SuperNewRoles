@@ -286,7 +286,10 @@ public class RocketLauncherButtonAbility : TargetCustomButtonBase, IButtonEffect
         if (!ShouldLimitLoadedTime || !HasHeldTarget)
             return;
         if (Player.AmOwner)
-            RpcExpireHeldTarget(_heldTarget, _isHoldingGuardedWiseMan ? _guardedWiseManHoldPosition : GetPlayerTransformPosition(Player));
+        {
+            ShootHeldTarget();
+            ResetTimer();
+        }
     }
 
     private void OnMeetingStart(MeetingStartEventData data)
