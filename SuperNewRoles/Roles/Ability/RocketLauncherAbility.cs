@@ -286,7 +286,10 @@ public class RocketLauncherButtonAbility : TargetCustomButtonBase, IButtonEffect
         if (!ShouldLimitLoadedTime || !HasHeldTarget)
             return;
         if (Player.AmOwner)
+        {
             ShootHeldTarget();
+            ResetTimer();
+        }
     }
 
     private void OnMeetingStart(MeetingStartEventData data)
