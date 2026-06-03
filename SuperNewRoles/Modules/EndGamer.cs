@@ -139,6 +139,15 @@ public static class EndGamer
                 .Where(p => p != null && p.IsAlive())
                 .All(p => !p.IsNonCrewKiller() && !p.IsJackalTeam());
 
+            // 【特例】本来のキラーが全滅していても、未覚醒マッドキラーが生きているなら、全滅とみなさない
+            if (allKillerDead && ExPlayerControl.ExPlayerControls.Any(p => 
+                p != null && p.IsAlive() && 
+                p.Role == RoleId.MadKiller && 
+                p.TryGetAbility<MadKillerAbility>(out var mk) && !mk.IsAwakened))
+            {
+                allKillerDead = false;
+            }
+
             if (allAlive || allKillerDead)
             {
                 reason = (GameOverReason)CustomGameOverReason.TheThreeLittlePigsWin;
