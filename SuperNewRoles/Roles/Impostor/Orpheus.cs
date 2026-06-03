@@ -73,6 +73,9 @@ public sealed class OrpheusMainAbility : AbilityBase
 
     private static readonly Dictionary<byte, CorpseEntry> HostEntries = new();
     private static readonly HashSet<byte> ActiveRitualCorpseVictims = new();
+    private static readonly HashSet<byte> ReversibleCorpseVictims = new();
+    // CalledMeetingEvent では通報対象が通常死体か儀式死体か判別できないため、直近の儀式死体通報だけを一時記録する。
+    private static readonly HashSet<byte> ReportedRitualCorpseVictims = new();
     // Destroy はフレーム終端まで遅延するため、会議イントロ側でも除外できるよう記録する。
     private static readonly HashSet<byte> HiddenMeetingCorpseVictims = new();
     private static byte CurrentMeetingReportedBodyId = byte.MaxValue;
@@ -124,6 +127,20 @@ public sealed class OrpheusMainAbility : AbilityBase
 
     public static bool IsManagedCorpseBody(DeadBody body) =>
         body != null && body.GetComponent<OrpheusRitualCorpseMarker>() != null;
+
+    public static bool ShouldHideGhostRolesFor(byte playerId) =>
+        ReversibleCorpseVictims.Contains(playerId) && AnyOrpheusAlive();
+
+    public static bool WasRitualCorpseReported(byte playerId) =>
+        ReportedRitualCorpseVictims.Contains(playerId);
+
+    public static void MarkCorpseUnavailableFromExternalUse(byte victimId)
+    {
+        ActiveRitualCorpseVictims.Remove(victimId);
+        SetCorpseReversibleLocal(victimId, false);
+        if (AmongUsClient.Instance.AmHost)
+            HostEntries.Remove(victimId);
+    }
 
     internal static void HideRitualCorpsesForMeeting(NetworkedPlayerInfo reportedBody)
     {
@@ -292,8 +309,39 @@ public sealed class OrpheusMainAbility : AbilityBase
     {
         HostEntries.Clear();
         ActiveRitualCorpseVictims.Clear();
+        ReversibleCorpseVictims.Clear();
+        ReportedRitualCorpseVictims.Clear();
         HiddenMeetingCorpseVictims.Clear();
         CurrentMeetingReportedBodyId = byte.MaxValue;
+    }
+
+    private static void SetCorpseReversibleLocal(byte victimId, bool reversible)
+    {
+        if (reversible)
+            ReversibleCorpseVictims.Add(victimId);
+        else
+            ReversibleCorpseVictims.Remove(victimId);
+
+        if (ExPlayerControl.LocalPlayer?.PlayerId == victimId)
+            NameText.UpdateAllNameInfo();
+    }
+
+    [CustomRPC]
+    public static void RpcSetCorpseReversible(byte victimId, bool reversible)
+    {
+        SetCorpseReversibleLocal(victimId, reversible);
+    }
+
+    private static void MarkRitualCorpseReportedLocal(byte victimId)
+    {
+        ReportedRitualCorpseVictims.Clear();
+        ReportedRitualCorpseVictims.Add(victimId);
+    }
+
+    [CustomRPC]
+    public static void RpcMarkRitualCorpseReported(byte victimId)
+    {
+        MarkRitualCorpseReportedLocal(victimId);
     }
 
     private static bool AnyOrpheusAlive() =>
@@ -326,6 +374,7 @@ public sealed class OrpheusMainAbility : AbilityBase
             StoredRoleId = (short)victim.Role,
             Targetable = false
         };
+        RpcSetCorpseReversible(victimId, true);
     }
 
     private static void ExpireUnconsumedEntriesFromHost()
@@ -347,11 +396,16 @@ public sealed class OrpheusMainAbility : AbilityBase
 
         // 偽死体生成前に元の死体が報告された場合は、蘇生フローをキャンセルする。
         if (!entry.Targetable)
+        {
+            HostEntries.Remove(id);
+            RpcSetCorpseReversible(id, false);
             return;
+        }
 
         if (entry.PendingRevive)
         {
             HostEntries.Remove(id);
+            RpcSetCorpseReversible(id, false);
             RpcRollbackConsumedCorpse(id);
             return;
         }
@@ -363,13 +417,17 @@ public sealed class OrpheusMainAbility : AbilityBase
         }
 
         bool reportedRitualCorpse = HasRitualCorpseForVictim(id);
+        if (reportedRitualCorpse)
+            RpcMarkRitualCorpseReported(id);
         HostEntries.Remove(id);
+        RpcSetCorpseReversible(id, false);
         if (!reportedRitualCorpse)
             DestroyRitualCorpsesForVictim(id);
     }
 
     private static void OnWrapUp(WrapUpEventData _)
     {
+        ReportedRitualCorpseVictims.Clear();
         if (!AmongUsClient.Instance.AmHost)
             return;
         ApplyPendingRevivals();
@@ -401,6 +459,7 @@ public sealed class OrpheusMainAbility : AbilityBase
             if (entry.RoundsRemaining <= 0)
             {
                 HostEntries.Remove(victimId);
+                RpcSetCorpseReversible(victimId, false);
                 continue;
             }
 
@@ -591,6 +650,7 @@ public sealed class OrpheusMainAbility : AbilityBase
         DestroyRitualCorpsesForVictim(victimId);
         if (AmongUsClient.Instance.AmHost)
             HostEntries.Remove(victimId);
+        SetCorpseReversibleLocal(victimId, false);
     }
 
     [CustomRPC]
@@ -613,6 +673,7 @@ public sealed class OrpheusMainAbility : AbilityBase
         if (ex?.Player == null)
             return;
 
+        SetCorpseReversibleLocal(victimId, false);
         ex.Player.Revive();
         RoleManager.Instance.SetRole(ex.Player, RoleTypes.Impostor);
         ex.Data.IsDead = false;

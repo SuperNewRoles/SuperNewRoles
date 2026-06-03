@@ -777,6 +777,11 @@ public class ExPlayerControl
             return false;
         }
 
+        if (SuperNewRoles.Roles.Impostor.OrpheusMainAbility.ShouldHideGhostRolesFor(PlayerId))
+        {
+            return false;
+        }
+
         // Local player is ghost
         bool canSeeGhostRoles = !GameSettingOptions.HideGhostRoles ||
                                 (IsImpostor() && GameSettingOptions.ShowGhostRolesToImpostor);
