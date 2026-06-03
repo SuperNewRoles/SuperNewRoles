@@ -335,6 +335,12 @@ public class ExPlayerControl
         roleHistory.Add(roleId);
     }
 
+    internal static void AddRoleHistoryIfNeeded(List<RoleId> roleHistory, RoleId oldRole, RoleId roleId, bool recordHistory)
+    {
+        if (!recordHistory) return;
+        AddRoleHistory(roleHistory, oldRole, roleId);
+    }
+
     public bool HasCustomKillButton()
     {
         return _customKillButtonAbility != null;
@@ -494,7 +500,7 @@ public class ExPlayerControl
         NameText.UpdateNameInfo(this);
         NameText.UpdateNameInfo(target);
     }
-    public void ReverseRole(ExPlayerControl target)
+    public void ReverseRole(ExPlayerControl target, bool recordTargetHistory = true)
     {
         if (target == null || target.Player == null) return;
 
@@ -541,8 +547,8 @@ public class ExPlayerControl
         if (Player.AmOwner)
             SuperTrophyManager.DetachTrophy(Role);
 
-        AddRoleHistory(RoleHistory, myRole, targetRole);
-        AddRoleHistory(target.RoleHistory, targetRole, myRole);
+        AddRoleHistoryIfNeeded(RoleHistory, myRole, targetRole, true);
+        AddRoleHistoryIfNeeded(target.RoleHistory, targetRole, myRole, recordTargetHistory);
 
         Role = targetRole;
         roleBase = targetRoleBase;

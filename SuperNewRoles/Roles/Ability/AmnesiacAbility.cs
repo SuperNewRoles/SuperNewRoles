@@ -66,7 +66,7 @@ public class AmnesiacAbility : AbilityBase
         RoleId targetRoleId = deadPlayer.Role;
 
         // 忘却者の役職を変更
-        amnesiac.ReverseRole(deadPlayer);
+        amnesiac.ReverseRole(deadPlayer, recordTargetHistory: false);
 
         RoleTypes newRole = deadPlayer.Data.Role.Role switch
         {
@@ -76,7 +76,7 @@ public class AmnesiacAbility : AbilityBase
         };
         FastDestroyableSingleton<RoleManager>.Instance.SetRole(amnesiac.Player, newRole);
 
-        deadPlayer.SetRole(targetRoleId);
+        deadPlayer.SetRole(targetRoleId, recordHistory: false);
         amnesiac.CopyTaskProgressFrom(deadPlayer);
         // 役職変更後にゲーム状態を再チェック
         new LateTask(() =>
