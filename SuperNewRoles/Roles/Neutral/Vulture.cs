@@ -10,6 +10,7 @@ using SuperNewRoles.Modules.Events.Bases;
 using SuperNewRoles.Patches;
 using SuperNewRoles.Roles.Ability;
 using SuperNewRoles.Roles.Ability.CustomButton;
+using SuperNewRoles.Roles.Impostor;
 using UnityEngine;
 
 namespace SuperNewRoles.Roles.Neutral;
@@ -158,13 +159,17 @@ public class EatDeadBodyAbility : CustomButtonBase
     [CustomRPC]
     public static void RpcEatDeadBody(int parentId, EatDeadBodyAbility ability)
     {
+        bool ateOrpheusRitualCorpse = false;
         foreach (DeadBody deadBody in UnityEngine.Object.FindObjectsOfType<DeadBody>())
         {
             if (deadBody.ParentId == parentId)
             {
+                ateOrpheusRitualCorpse |= OrpheusMainAbility.IsManagedCorpseBody(deadBody);
                 GameObject.Destroy(deadBody.gameObject);
             }
         }
+        if (ateOrpheusRitualCorpse)
+            OrpheusMainAbility.MarkCorpseUnavailableFromExternalUse((byte)parentId);
         ability._eatenBodies++;
     }
 }
