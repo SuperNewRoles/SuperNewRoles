@@ -384,7 +384,7 @@ public sealed class OrpheusMainAbility : AbilityBase
     }
 
     private static bool CanCreateManagedCorpse(ExPlayerControl victim) =>
-        victim != null && victim.IsImpostor() && victim.Role != RoleId.Orpheus;
+        victim != null && victim.IsImpostor();
 
     internal static void OnReport(ReportDeadBodyHostEventData data)
     {
