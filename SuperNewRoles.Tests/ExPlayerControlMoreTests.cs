@@ -172,6 +172,20 @@ public class ExPlayerControlMoreTests
     }
 
     [Fact]
+    public void AddRoleHistoryIfNeeded_CanSkipTemporaryTargetHistory()
+    {
+        var amnesiacHistory = new List<RoleId>();
+        var deadPlayerHistory = new List<RoleId>();
+
+        ExPlayerControl.AddRoleHistoryIfNeeded(amnesiacHistory, RoleId.Amnesiac, RoleId.Sheriff, recordHistory: true);
+        ExPlayerControl.AddRoleHistoryIfNeeded(deadPlayerHistory, RoleId.Sheriff, RoleId.Amnesiac, recordHistory: false);
+        ExPlayerControl.AddRoleHistoryIfNeeded(deadPlayerHistory, RoleId.Amnesiac, RoleId.Sheriff, recordHistory: false);
+
+        amnesiacHistory.Should().Equal(RoleId.Amnesiac, RoleId.Sheriff);
+        deadPlayerHistory.Should().BeEmpty();
+    }
+
+    [Fact]
     public void ReverseRoleFilter_OnlyTreatsRoleRootedAbilitiesAsRoleAbilities()
     {
         var ex = CreateBareEx(playerId: 21);

@@ -5,6 +5,7 @@ using SuperNewRoles.Events;
 using SuperNewRoles.Modules;
 using SuperNewRoles.Modules.Events.Bases;
 using SuperNewRoles.Roles.Ability;
+using SuperNewRoles.Roles.Impostor;
 using SuperNewRoles.Roles.Neutral;
 using UnityEngine;
 
@@ -117,7 +118,9 @@ public class DeadBodyArrowsAbility : AbilityBase
 
     private static bool IsTrackableDeadBody(DeadBody dead)
     {
-        return dead != null && IsTrackableDeadBodyPosition(dead.transform.position);
+        return dead != null
+            && !OrpheusMainAbility.IsManagedCorpseBody(dead)
+            && IsTrackableDeadBodyPosition(dead.transform.position);
     }
 
     internal static bool IsTrackableDeadBodyPosition(Vector3 position)

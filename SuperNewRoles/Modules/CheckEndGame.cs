@@ -21,6 +21,7 @@ public enum VictoryType
     ImpostorKill,
     ImpostorVote,
     ImpostorSabotage,
+    TaskerTask,
     CrewmateTask,
     CrewmateVote,
     JackalDomination,
@@ -140,6 +141,9 @@ public static class CheckGameEndPatch
         if (state.IsSabotageActive())
             return VictoryType.ImpostorSabotage;
 
+        if (IsTaskerWin())
+            return VictoryType.TaskerTask;
+
         if (state.IsAllTasksCompleted() && !GameSettingOptions.DisableTaskWin)
             return VictoryType.CrewmateTask;
 
@@ -147,6 +151,15 @@ public static class CheckGameEndPatch
             return VictoryType.LoversSolo;
 
         return null;
+    }
+
+    private static bool IsTaskerWin()
+    {
+        return ExPlayerControl.ExPlayerControls.Any(player =>
+            player != null &&
+            player.Role == RoleId.Tasker &&
+            player.IsAlive() &&
+            player.IsTaskComplete());
     }
     private static VictoryType? DeterminePlayerBasedVictory(GameState state, bool isHnS)
     {
@@ -208,6 +221,8 @@ public static class CheckGameEndPatch
             case VictoryType.ImpostorVote:
             case VictoryType.ImpostorSabotage:
                 return (ExPlayerControl.ExPlayerControls.Where(player => player.IsImpostorWinTeam()).ToHashSet(), Palette.ImpostorRed, "ImpostorWin");
+            case VictoryType.TaskerTask:
+                return (ExPlayerControl.ExPlayerControls.Where(player => player.IsImpostorWinTeam()).ToHashSet(), Palette.ImpostorRed, "TaskerWinText");
             case VictoryType.CrewmateTask:
             case VictoryType.CrewmateVote:
                 return (ExPlayerControl.ExPlayerControls.Where(player => player.IsCrewmateWin()).ToHashSet(), Palette.CrewmateBlue, "CrewmateWin");
@@ -231,6 +246,7 @@ public static class CheckGameEndPatch
         VictoryType.ImpostorKill => GameOverReason.ImpostorsByKill,
         VictoryType.ImpostorVote => GameOverReason.ImpostorsByVote,
         VictoryType.ImpostorSabotage => GameOverReason.ImpostorsBySabotage,
+        VictoryType.TaskerTask => (GameOverReason)CustomGameOverReason.TaskerWin,
         VictoryType.CrewmateTask => GameOverReason.CrewmatesByTask,
         VictoryType.CrewmateVote => GameOverReason.CrewmatesByVote,
         VictoryType.JackalDomination => (GameOverReason)CustomGameOverReason.JackalWin,

@@ -45,6 +45,7 @@ public enum WinCondition
     MoiraWin,
     TheThreeLittlePigsWin,
     FrankensteinWin,
+    TaskerWin,
 }
 public enum CustomGameOverReason
 {
@@ -72,6 +73,7 @@ public enum CustomGameOverReason
     MoiraWin,
     TheThreeLittlePigsWin,
     FrankensteinWin,
+    TaskerWin,
 }
 
 static class AdditionalTempData
