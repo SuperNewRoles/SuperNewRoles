@@ -122,8 +122,21 @@ public class MyRoleInfomationMenu : HelpMenuCategoryBase
                     firstButton = button;
             }
 
+            string vanillaDescriptionKey = ExPlayerControl.LocalPlayer.GetVanillaRoleDescriptionKey();
+            if (vanillaDescriptionKey != null && firstButton != null)
+            {
+                var textComponent = firstButton.transform.Find("Text")?.GetComponent<TextMeshPro>();
+                if (textComponent != null)
+                {
+                    string vanillaRoleName = ExPlayerControl.NameText.GetVanillaRoleDisplayName(
+                        ExPlayerControl.LocalPlayer.Data.Role.Role,
+                        ExPlayerControl.LocalPlayer.Data.Role.NiceName);
+                    textComponent.text = ModHelpers.Cs(roleBase.RoleColor, vanillaRoleName);
+                }
+            }
+
             if (firstButton != null)
-                RoleDetailMenu.OnRoleButtonClicked(roleBase, firstButton);
+                RoleDetailMenu.OnRoleButtonClicked(roleBase, firstButton, vanillaDescriptionKey);
             else
                 RoleDetailMenu.OnRoleButtonClicked(roleBase, null);
         }

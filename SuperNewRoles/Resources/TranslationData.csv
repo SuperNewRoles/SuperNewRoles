@@ -477,6 +477,15 @@ SyncError_NotInstalled,{player}にSuperNewRolesが導入されていません。
 SyncError_AmongUsVersionMismatch,{player}のAmong Usバージョンが一致しません。({version}),{player}'s Among Us version does not match. ({version}),{player}的Among Us版本不匹配。({version}),{player}的Among Us版本不符。({version})
 SyncVersion_ResyncButton,バージョン再同期,Resync version,重新同步版本,重新同步版本
 
+# VanillaRole
+Engineer,エンジニア,Engineer,工程师,工程師
+Scientist,サイエンティスト,Scientist,科学家,科學家
+Tracker,トラッカー,Tracker,侦查员,偵查員
+Noisemaker,ノイズメーカー,Noisemaker,大嗓门,大嗓門
+GuardianAngel,ガーディアンエンジェル,Guardian Angel,毒蛇,毒蛇
+Shapeshifter,シェイプシフター,Shapeshifter,变形者,變形者
+Phantom,ファントム,Phantom,幻象师,幻象師
+
 # Role
 Bait,ベイト,Bait,诱饵,餌
 BestFalseCharge,ベスト冤罪ヤー,Best False Charge,最佳冤罪者,最佳冤罪者
@@ -632,6 +641,13 @@ ElectionCommissioner,選挙管理委員,Election Commissioner,选举管理委员
 # Descriptions_VanillaRoles
 Crewmate.Description,特に何も能力を持たない基本的なクルーメイト役職です。\n人狼ゲームにおける村人の役割を持ちます。\nキル能力を持つ人外を全て追放するか、タスクを全て完了すると勝利します。,A basic Crewmate role with no special abilities.\nThey serve the role of Villager from the Werewolf game.\nVictory is achieved by ejecting all non-Crewmate players with kill abilities or by completing all tasks.,基础船员职业，无特殊能力。\n在狼人游戏体系中扮演村民角色。\n胜利条件为：将所有拥有击杀能力的非船员玩家驱逐出局，或完成所有任务。,基礎船員职业，無特殊能力。\n在狼人遊戲體系中扮演村民角色。\n勝利條件為：將所有擁有擊殺能力的非船員玩家驅逐出局，或完成所有任務。
 Impostor.Description,基本的なインポスター役職です。\n人狼ゲームにおける人狼の役割を持ちます。\nキル能力を有しており、インポスター以外のプレイヤーをキルすることができます。\nサボタージュでクルーメイトを妨害したり、ベントを使って長距離を一瞬で移動できます。\nインポスターとクルーメイトが同数以下になるか、致命的なサボタージュの時間切れで勝利します。,A basic Impostor role.\nThey play the role of Werewolf in the Werewolf game.\nThey have a kill ability that can eliminate non-Impostor players.\nThey can sabotage to hinder Crewmates and use vents to instantly travel long distances.\nVictory is achieved when Impostors are equal to or outnumber Crewmates，or when a critical sabotage timer expires.,基础伪装者职业。\n在狼人游戏体系中扮演狼人角色。\n拥有击杀能力，可消灭非伪装者玩家。\n可通过破坏行动阻碍船员，并利用通风口实现瞬间长距离移动。\n胜利条件为：伪装者人数与船员相等或更多，或关键破坏行动计时结束。,基礎內鬼职业。\n在狼人遊戲體系中扮演狼人角色。\n擁有擊殺能力，可消滅非內鬼玩家。\n可透過破壞行動阻礙船員，並利用通風口實現瞬間長距離移動。\n勝利條件為：內鬼人數與船員相等或更多，或關鍵破壞行動計時結束。
+Engineer.Description,ベントを使用できるクルーメイト役職です。\nタスクを完了することでベントの使用回数を補充できます。,A Crewmate role that can use vents.\nComplete tasks to recharge vent uses.,可以使用通风口的船员职业。\n完成任务可补充通风口使用次数。,可以使用通風口的船員职业。\n完成任務可補充通風口使用次數。
+Scientist.Description,バイタルを常時確認できるクルーメイト役職です。\nタスクを完了することでバッテリーを充電できます。,A Crewmate role that can access vitals at any time.\nComplete tasks to recharge the battery.,可随时查看生命体征的船员职业。\n完成任务可为电池充电。,可隨時查看生命體徵的船員职业。\n完成任務可為電池充電。
+Tracker.Description,マップ上で他プレイヤーの位置を追跡できるクルーメイト役職です。\nタスクを完了することで追跡時間を補充できます。,A Crewmate role that can track other players' positions on the map.\nComplete tasks to recharge tracking duration.,可在地图上追踪其他玩家位置的船员职业。\n完成任务可补充追踪持续时间。,可在地圖上追蹤其他玩家位置的船員职业。\n完成任務可補充追蹤持續時間。
+Noisemaker.Description,死亡時にアラートを発動するクルーメイト役職です。\nキルされると、一定時間後に全てのプレイヤーに通知が行きます。,A Crewmate role that triggers an alert upon death.\nWhen killed，all players are notified after a delay.,死亡时触发警报的船员职业。\n被击杀后，延迟一段时间会通知所有玩家。,死亡時觸發警報的船員职业。\n被擊殺後，延遲一段時間會通知所有玩家。
+GuardianAngel.Description,死亡後に生存者を守護できる幽霊役職です。\n対象のプレイヤーに一時的な盾を付与し、キルから守ります。,A guardian role that can protect survivors after death.\nCast a temporary shield on a player to protect them from being killed.,死亡后可保护存活者的职业。\n为目标玩家施加临时护盾，保护其免受击杀。,死亡後可保護存活者的职业。\n為目標玩家施加臨時護盾，保護其免受擊殺。
+Shapeshifter.Description,他プレイヤーの姿に変身できるインポスター役職です。\n変身中は変身元のプレイヤーと同じ見た目になります。,An Impostor role that can shapeshift into other players.\nWhile shifted，you look identical to the target player.,可变身为其他玩家外貌的伪装者职业。\n变身期间，外观与目标玩家完全一致。,可變身為其他玩家外貌的內鬼职业。\n變身期間，外觀與目標玩家完全一致。
+Phantom.Description,透明化できるインポスター役職です。\n透明化中は他のプレイヤーから見えなくなりますが、一定時間で解除されます。,An Impostor role that can turn invisible.\nWhile invisible，other players cannot see you，but it wears off after a duration.,可隐身的伪装者职业。\n隐身期间其他玩家无法看到你，但持续一段时间后会解除。,可隱身的內鬼职业。\n隱身期間其他玩家無法看到你，但持續一段時間後會解除。
 
 # Descriptions_Impostor
 EvilGuesser.Description,会議に関する能力を有するインポスターです。\n会議中に出現するボタンを押し、対象のプレイヤーの役職が何か当てると、そのプレイヤーをキルすることができます。\nただし、外すと自身が死亡してしまいます。,An Impostor with a meeting-based ability.\nDuring meetings，by pressing the appearing button and correctly guessing a target player’s role，they can kill that player.\nHowever，an incorrect guess results in their own death.,伪装者阵营职业，拥有会议相关能力。\n会议期间，可点击目标玩家头上出现的按钮，尝试猜测其职业。若猜测正确，即可将目标击杀。\n若猜测错误，则自身将招致死亡。,內鬼陣營职业，具備會議相關能力。\n會議期間，可點擊目標玩家頭上出現的按鈕，嘗試猜測其职业。若猜測正確，即可將目標擊殺。\n若猜測錯誤，則自身將招致死亡。

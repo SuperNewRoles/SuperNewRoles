@@ -1,3 +1,4 @@
+using System.Drawing;
 using System.Linq;
 using SuperNewRoles.CustomOptions;
 using SuperNewRoles.Modules;
@@ -17,7 +18,8 @@ public static class RoleDetailMenu
     /// </summary>
     /// <param name="role">選択された役職</param>
     /// <param name="buttonObject">クリックされたボタンオブジェクト</param>
-    public static void OnRoleButtonClicked(IRoleInformation role, GameObject buttonObject)
+    /// <param name="vanillaDescriptionKey">バニラ役職の場合の説明文キー (任意)</param>
+    public static void OnRoleButtonClicked(IRoleInformation role, GameObject buttonObject, string vanillaDescriptionKey = null)
     {
         if (buttonObject == null) return;
 
@@ -34,14 +36,15 @@ public static class RoleDetailMenu
         selectedButton = buttonObject;
 
         Logger.Info($"{role.RoleName} ボタンがクリックされました");
-        ShowRoleInformation(role);
+        ShowRoleInformation(role, vanillaDescriptionKey);
     }
 
     /// <summary>
     /// 役職の情報を表示する
     /// </summary>
     /// <param name="role">表示する役職</param>
-    public static void ShowRoleInformation(IRoleInformation role)
+    /// <param name="vanillaDescriptionKey">バニラ役職の場合の説明文キー (任意)</param>
+    public static void ShowRoleInformation(IRoleInformation role, string vanillaDescriptionKey = null)
     {
         if (menuObject == null)
         {
@@ -67,7 +70,8 @@ public static class RoleDetailMenu
         // テキスト設定処理を共通化
         SetTextComponent(roleInformation, "RoleName", role.RoleColor, role.RoleName);
         SetTextComponent(roleInformation, "RoleTeam", Color.white, role.AssignedTeams.Count == 0 ? "HelpMenu.AllTeams" : string.Join(", ", role.AssignedTeams.Select(t => ModHelpers.CsWithTranslation(GetTeamColor(t), t.ToString()))));
-        SetTextComponent(roleInformation, "RoleDescription", Color.white, $"{role.RoleName}.Description");
+        string descriptionKey = vanillaDescriptionKey ?? $"{role.RoleName}.Description";
+        SetTextComponent(roleInformation, "RoleDescription", Color.white, descriptionKey);
         SetTextComponent(roleInformation, "RoleSettingsTitle", Color.white, "HelpMenu.MyRoleInformation.RoleSettingsTitle");
         string roleSettings = GenerateRoleSettingsText(role);
         SetTextComponent(roleInformation, "RoleSettings", Color.white, roleSettings);
