@@ -121,13 +121,13 @@ public static class Statics
     /// </summary>
     public static readonly int[] CompatibleAmongUsBroadcastVersions =
     {
-        // v17.3.1
-        50656275,
-        50656275 + 25,
+        // v17.4
+        ComputeAmongUsBroadcastVersion(2026, 3, 18), // 17.4 (PC)
+        ComputeAmongUsBroadcastVersion(2026, 4, 23), // 17.4 (Android)
 
-        50652425,
-        50652425 + 25
-
+        // v17.4 + 25
+        ComputeAmongUsBroadcastVersion(2026, 3, 18) + 25, // 17.4 (PC)
+        ComputeAmongUsBroadcastVersion(2026, 4, 23) + 25, // 17.4 (Android)
 
         // ComputeAmongUsBroadcastVersion(2024, 8, 10, 0),
         // ComputeAmongUsBroadcastVersion(2024, 8, 10, 0) + 25,
