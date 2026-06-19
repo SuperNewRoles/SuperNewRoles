@@ -34,7 +34,7 @@ class OverKiller : RoleBase<OverKiller>
     [CustomOptionFloat("OverKillerKillCooldown", 2.5f, 120f, 2.5f, 45f, translationName: "KillCoolTime")]
     public static float OverKillerKillCooldown;
 
-    [CustomOptionInt("OverKillerKillCount", 1, 60, 1, 30)]
+    [CustomOptionInt("OverKillerKillCount", 1, 60, 1, 10)]
     public static int OverKillerKillCount;
 
     [CustomOptionBool("OverKillerScatterBodies", true)]

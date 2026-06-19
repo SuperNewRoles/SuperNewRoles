@@ -181,6 +181,14 @@ public class PusherAbility : TargetCustomButtonBase
         if (source == null || target == null)
             return;
 
+        target.CustomDeath(CustomDeathType.Push, source: source);
+        if (!target.IsDead())
+        {
+            if (isLadder)
+                TeleportGuardedTargetToLadderBottom(target, targetLadder);
+            return;
+        }
+
         PushAnimation(source);
 
         target.NetTransform.SnapTo(pushPosition);
@@ -209,7 +217,6 @@ public class PusherAbility : TargetCustomButtonBase
         PushedPlayerDeadbody pushedPlayerDeadbody = new GameObject("PushedPlayerDeadBody").AddComponent<PushedPlayerDeadbody>();
         pushedPlayerDeadbody.Init(source, target, pushTarget, deadBody, deadBodyPosition);
 
-        target.CustomDeath(CustomDeathType.Push, source: source);
         if (_revengeRole)
         {
             foreach (var ability in target.GetAbilities<RevengeExileAbility>())
@@ -231,6 +238,98 @@ public class PusherAbility : TargetCustomButtonBase
             Adaptive: true
         ));
     }
+
+    private static void TeleportGuardedTargetToLadderBottom(ExPlayerControl target, Ladder targetLadder)
+    {
+        if (target == null || targetLadder?.Destination == null)
+            return;
+
+        Vector2 bottomPosition = GetSafeLadderBottomPosition(targetLadder, target.transform.position);
+        target.NetTransform.SnapTo(bottomPosition);
+        target.transform.position = bottomPosition;
+        if (target.Player?.MyPhysics?.body != null)
+            target.Player.MyPhysics.body.velocity = Vector2.zero;
+    }
+
+    private static Vector2 GetSafeLadderBottomPosition(Ladder targetLadder, Vector2 fallbackPosition)
+    {
+        Vector2 bottom = targetLadder.Destination.transform.position;
+        Vector2 top = targetLadder.transform.position;
+        Vector2 down = bottom - top;
+        down = down.sqrMagnitude > 0.001f ? down.normalized : Vector2.down;
+
+        Vector2[] baseCandidates =
+        [
+            bottom + down * 0.2f,
+            bottom + down * 0.35f,
+            bottom + new Vector2(0.15f, 0f) + down * 0.2f,
+            bottom + new Vector2(-0.15f, 0f) + down * 0.2f,
+            bottom + Vector2.right * 0.25f + down * 0.1f,
+            bottom + Vector2.left * 0.25f + down * 0.1f,
+            bottom
+        ];
+
+        foreach (Vector2 candidate in baseCandidates)
+        {
+            if (!IsOverlappingWall(candidate))
+                return candidate;
+        }
+
+        foreach (Vector2 candidate in EnumerateLadderBottomCandidates(bottom, down))
+        {
+            if (!IsOverlappingWall(candidate))
+                return candidate;
+        }
+
+        if (!IsOverlappingWall(fallbackPosition))
+            return fallbackPosition;
+
+        foreach (Vector2 candidate in EnumerateLadderBottomCandidates(fallbackPosition, down))
+        {
+            if (!IsOverlappingWall(candidate))
+                return candidate;
+        }
+
+        return fallbackPosition;
+    }
+
+    private static IEnumerable<Vector2> EnumerateLadderBottomCandidates(Vector2 position, Vector2 preferredDirection)
+    {
+        Vector2[] directions =
+        [
+            preferredDirection,
+            (preferredDirection + Vector2.right).normalized,
+            (preferredDirection + Vector2.left).normalized,
+            Vector2.right,
+            Vector2.left,
+            -preferredDirection,
+            (-preferredDirection + Vector2.right).normalized,
+            (-preferredDirection + Vector2.left).normalized
+        ];
+
+        for (int i = 1; i <= 16; i++)
+        {
+            float distance = i * 0.1f;
+            foreach (Vector2 direction in directions)
+            {
+                if (direction.sqrMagnitude <= 0f)
+                    continue;
+                yield return position + direction.normalized * distance;
+            }
+        }
+    }
+
+    private static bool IsOverlappingWall(Vector2 position)
+    {
+        var hits = Physics2D.OverlapCircleAll(position, 0.1f, Constants.ShipAndAllObjectsMask);
+        foreach (var hit in hits)
+        {
+            if (hit != null && !hit.isTrigger)
+                return true;
+        }
+        return false;
+    }
+
     private Ladder GetCanUseLadder(PlayerControl player)
     {
         if (player == null)
