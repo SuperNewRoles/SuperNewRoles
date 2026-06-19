@@ -3,6 +3,7 @@ using System.Linq;
 using HarmonyLib;
 using SuperNewRoles.Modules;
 using SuperNewRoles.CustomOptions.Categories;
+using SuperNewRoles.Roles.Impostor;
 
 namespace SuperNewRoles.Roles.Ability;
 
@@ -18,6 +19,13 @@ class KnowVoteAbility : AbilityBase
         return _isAnonymousVotes?.Invoke() ?? true;
     }
 }
+
+internal static class GhostVoteVisibilityHelper
+{
+    internal static bool ShouldOverrideAnonymousVotesForGhost(bool isDead, bool shouldHideGhostRolesFor)
+        => isDead && !shouldHideGhostRolesFor;
+}
+
 [HarmonyPatch(typeof(LogicOptionsNormal), nameof(LogicOptionsNormal.GetAnonymousVotes))]
 public static class LogicOptionsNormalGetAnonymousVotesPatch
 {
@@ -25,6 +33,12 @@ public static class LogicOptionsNormalGetAnonymousVotesPatch
     {
         if (ExPlayerControl.LocalPlayer.IsDead()) // 幽霊の場合
         {
+            // オルフェウスの能力で復活できる可能性があるなら非表示にする
+            if (OrpheusMainAbility.ShouldHideGhostRolesFor(ExPlayerControl.LocalPlayer.PlayerId))
+            {
+                __result = true; // 投票を非表示 (匿名投票を有効)
+                return false;
+            }
             switch (GameSettingOptions.GhostVoteDisplay)
             {
                 case GhostVoteDisplayType.Show:
@@ -40,7 +54,7 @@ public static class LogicOptionsNormalGetAnonymousVotesPatch
         }
         else if (ExPlayerControl.LocalPlayer.HasAbility<KnowVoteAbility>()) // 生存していてKnowVoteAbilityを持つ場合
         {
-            __result = ExPlayerControl.LocalPlayer.PlayerAbilities.Any(x => x is KnowVoteAbility knowVoteAbility && knowVoteAbility.IsAnonymousVotes());
+            __result = ExPlayerControl.LocalPlayer.TryGetAbility(out KnowVoteAbility knowVoteAbility) && knowVoteAbility.IsAnonymousVotes();
             return false;
         }
         return true; // 通常の処理

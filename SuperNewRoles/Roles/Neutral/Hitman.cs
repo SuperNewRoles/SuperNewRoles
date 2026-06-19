@@ -44,10 +44,10 @@ class Hitman : RoleBase<Hitman>
     public override RoleId[] RelatedRoleIds { get; } = [];
 
     // 殺し屋の設定
-    [CustomOptionFloat("HitmanKillCooldown", 2.5f, 60f, 2.5f, 25f, translationName: "CoolTime")]
+    [CustomOptionFloat("HitmanKillCooldown", 2.5f, 60f, 2.5f, 30f, translationName: "CoolTime")]
     public static float HitmanKillCooldown;
 
-    [CustomOptionFloat("HitmanChangeTargetTime", 10f, 60f, 2.5f, 35f)]
+    [CustomOptionFloat("HitmanChangeTargetTime", 10f, 60f, 2.5f, 60f)]
     public static float HitmanChangeTargetTime;
 
     [CustomOptionInt("HitmanWinKillCount", 1, 10, 1, 3)]
