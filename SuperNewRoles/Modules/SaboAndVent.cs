@@ -53,6 +53,15 @@ public class SaboAndVent
                 __instance.ImpostorVentButton.SetTarget(Vent.currentVent);
         }
     }
+    [HarmonyPatch(typeof(GameStartManager), nameof(GameStartManager.Start))]
+    class GameStartManagerStartPatch
+    {
+        public static void Postfix()
+        {
+            if (DestroyableSingleton<HudManager>.InstanceExists && HudManager.Instance.SabotageButton != null)
+                HudManager.Instance.SabotageButton.gameObject.SetActive(false);
+        }
+    }
     [HarmonyPatch(typeof(HudManager), nameof(HudManager.SetHudActive), new[] { typeof(PlayerControl), typeof(RoleBehaviour), typeof(bool) })]
     class HudManagerSetHudActivePatch
     {
