@@ -161,22 +161,21 @@ public static class NameText
 
         if (player.GhostRole != GhostRoleId.None && player.GhostRoleBase != null && isRoleVisible)
             roleName = $"{ModHelpers.CsWithTranslation(player.GhostRoleBase.RoleColor, player.GhostRole.ToString())} ({roleName}) ";
-
+        // ループの外で1回だけ判定してフラグ化（GetAbilityをループ内で毎回走らせない最適化）
+        bool shouldHideMadKillerModifier = false;
+        if (player.Role == RoleId.MadKiller && ExPlayerControl.LocalPlayer != player)
+        {
+            var mkAbility = player.GetAbility<MadKillerAbility>();
+            if (mkAbility?.ownerAbility?.Player == ExPlayerControl.LocalPlayer)
+                shouldHideMadKillerModifier = true;
+        }
+        
         if (player.ModifierRoleBases.Count > 0)
             roleName += " ";
         foreach (var modifier in player.ModifierRoleBases)
         {
             if (hideMyRoleAbilities.Any(hideMyRoleAbility => hideMyRoleAbility.IsModifierHiddenWhileAlive(player, modifier.ModifierRole))) continue;
-
-            // マッドキラーのモディファイアはオーナーのサイドキラーから昇格前後問わず隠す
-            // マッドキラー本人（LocalPlayer == player）は自分のモディファイアを見られる
-            if (player.Role == RoleId.MadKiller && ExPlayerControl.LocalPlayer != player)
-            {
-                var mkAbility = player.GetAbility<MadKillerAbility>();
-                if (mkAbility?.ownerAbility?.Player == ExPlayerControl.LocalPlayer)
-                    continue;
-            }
-
+            if (shouldHideMadKillerModifier) continue;
             roleName = modifier.ModifierMark(player).Replace("{0}", roleName);
         }
         playerInfoText = roleName;
