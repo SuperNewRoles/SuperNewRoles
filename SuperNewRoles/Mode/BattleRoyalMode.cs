@@ -484,6 +484,7 @@ public class BattleRoyalMode : ModeBase<BattleRoyalMode>, IModeBase
 
             // 全クライアントへ「バトル開始」を通知し、キルクールを同時リセットする、イントロ開始時からのキルク積算はズレが生じるため
             RpcStartBattle();
+            
             // プレイヤー名をリセット（キャッシュした元名で）
             foreach (var player in PlayerControl.AllPlayerControls)
             {
@@ -496,6 +497,18 @@ public class BattleRoyalMode : ModeBase<BattleRoyalMode>, IModeBase
         }
     }
 
+    /// 準備時間終了時）にキルクをリセットすることで、ホストとクライアント間のキルクのズレ解消
+    [CustomRPC]
+    public static void RpcStartBattle()
+    {
+        var localPlayer = PlayerControl.LocalPlayer;
+        if (localPlayer != null && !localPlayer.Data.IsDead && !localPlayer.Data.Disconnected)
+        {
+            localPlayer.SetKillTimer(
+                GameOptionsManager.Instance.CurrentGameOptions.GetFloat(FloatOptionNames.KillCooldown));
+        }
+    }
+    
     private void HandleGamePhase()
     {
         // 生存人数とキル数の表示更新
