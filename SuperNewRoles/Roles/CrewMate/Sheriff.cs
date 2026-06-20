@@ -85,7 +85,7 @@ public class SheriffAbilityData
     {
         bool canKill = false;
 
-        if (target.IsImpostor())
+        if (target.Role == RoleId.MadKiller || target.IsImpostor())
             canKill = CanKillImpostor;
         else if (target.IsNeutral())
             canKill = CanKillNeutral;
