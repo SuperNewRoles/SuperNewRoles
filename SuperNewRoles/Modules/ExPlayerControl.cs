@@ -657,7 +657,7 @@ public class ExPlayerControl
     }
     public bool IsKiller()
     {
-        if (IsImpostor() || IsPavlovsDog() || Role == RoleId.MadKiller || IsJackal() || Role == RoleId.Hitman)
+        if (IsImpostor() || IsPavlovsDog() || IsJackal() || Role == RoleId.Hitman)
             return true;
 
         var customKillButtons = GetAbilities<CustomKillButtonAbility>();
