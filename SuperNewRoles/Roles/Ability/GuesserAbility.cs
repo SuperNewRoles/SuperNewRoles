@@ -442,7 +442,10 @@ public class GuesserAbility : CustomMeetingButtonBase, IAbilityCount
         {
             if (generated.Contains(role.Role)) return;
 
-            CreateRole(role);
+            // 三匹の子豚（グループ）のボタン生成はしない
+            bool isMetaRole = role.Role == RoleId.TheThreeLittlePigs;
+            if (!isMetaRole)
+                CreateRole(role);
             generated.Add(role.Role);
 
             if (role.RelatedRoleIds == null) return;
