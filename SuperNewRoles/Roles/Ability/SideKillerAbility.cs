@@ -105,5 +105,6 @@ public class SideKillerAbility : AbilityBase
     {
         owner.madKillerAbility = madKiller;
         madKiller.ownerAbility = owner;
+        NameText.UpdateAllNameInfo();
     }
 }
