@@ -52,7 +52,7 @@ public class WCSantaHandler : MonoBehaviour
         if (transform.localScale.y < 0.725f)
             transform.localScale += new Vector3(flip * -0.05f, 0.05f, 0.05f);
 
-        transform.localPosition += new Vector3(flip * SantaSpeed * Time.deltaTime, 0, 0);
+        transform.localPosition += new Vector3(-flip * SantaSpeed * Time.deltaTime, 0, 0);
 
         // 撃ち終わり(Detach)後もサンタ自体が死亡判定を持ち続ける
         TryKillTouchingPlayers();
