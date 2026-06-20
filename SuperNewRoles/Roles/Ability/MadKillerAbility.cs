@@ -108,7 +108,8 @@ public class MadKillerAbility : AbilityBase
     {
         if (player.IsDead()) return;
         RoleManager.Instance.SetRole(player, RoleTypes.Impostor);
-        NameText.UpdateAllNameInfo();
+        // マッドキラーのモディファイアがサイドキラーから見えてしまう問題の修正
+        NameText.UpdateNameInfo(player);
     }
 
     // 新しい設定を適用するメソッド
