@@ -93,10 +93,6 @@ public class MadKillerAbility : AbilityBase
             Awaken();
             return;
         }
-        {
-            Awaken();
-            return;
-        }
     }
 
 
