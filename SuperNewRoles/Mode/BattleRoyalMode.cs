@@ -482,6 +482,8 @@ public class BattleRoyalMode : ModeBase<BattleRoyalMode>, IModeBase
 
             Logger.Info("BattleRoyalMode: Preparation phase ended, battle started!");
 
+            // 全クライアントへ「バトル開始」を通知し、キルクールを同時リセットする、イントロ開始時からのキルク積算はズレが生じるため
+            RpcStartBattle();
             // プレイヤー名をリセット（キャッシュした元名で）
             foreach (var player in PlayerControl.AllPlayerControls)
             {
