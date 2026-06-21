@@ -9,6 +9,7 @@ using HarmonyLib;
 using SuperNewRoles.Events;
 using SuperNewRoles.Events.PCEvents;
 using SuperNewRoles.Modules.Events.Bases;
+using SuperNewRoles.Roles;
 
 namespace SuperNewRoles.Roles.Ability;
 
@@ -442,8 +443,11 @@ public class GuesserAbility : CustomMeetingButtonBase, IAbilityCount
         {
             if (generated.Contains(role.Role)) return;
 
-            // 三匹の子豚（グループ）のボタン生成はしない
-            bool isMetaRole = role.Role == RoleId.TheThreeLittlePigs;
+            // チーム役職(メタ役職)はこのRoleId自体が直接アサインされることはないため
+            // ボタン生成はスキップするが、RelatedRoleIds（個別メンバー役職）の処理は継続する。
+            // 個別の役職IDで弾くのではなく ITeamRoleBase かどうかで判定することで、
+            // 今後同種のチーム役職が増えてもここを修正せず対応できる。
+            bool isMetaRole = role is ITeamRoleBase;
             if (!isMetaRole)
                 CreateRole(role);
             generated.Add(role.Role);
