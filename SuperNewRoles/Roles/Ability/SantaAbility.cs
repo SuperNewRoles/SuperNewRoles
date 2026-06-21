@@ -48,27 +48,27 @@ public class SantaAbility : AbilityBase
             isTargetable: (player) => player.IsAlive(),
             sidekickSuccess: (player) =>
             {
-                if ((player.IsMadRoles() || (player.Role == RoleId.MadKiller && !player.IsImpostor())) && _data.TryMadRolesToDeath)
+                if (player.IsMadRoles() && _data.TryMadRolesToDeath)
                     return false;
                 else if (player.IsLovers() && _data.TryLoversToDeath)
                     return false;
                 else if (player.IsFriendRoles() && _data.TryJackalFriendsToDeath)
                     return false;
                 _selectedRole = SelectRole();
-                return _data.ForImpostor ? player.IsImpostor() : player.IsCrewmateOrMadRoles() || (player.Role == RoleId.MadKiller && !player.IsImpostor());
+                return _data.ForImpostor ? player.IsImpostor() : player.IsCrewmateOrMadRoles();
             },
             onSidekickCreated: (player) =>
             {
                 Logger.Info($"SelectedRole: {_selectedRole}");
                 bool successed = false;
-                if ((player.IsMadRoles() || (player.Role == RoleId.MadKiller && !player.IsImpostor())) && _data.TryMadRolesToDeath)
+                if (player.IsMadRoles() && _data.TryMadRolesToDeath)
                     successed = false;
                 else if (player.IsLovers() && _data.TryLoversToDeath)
                     successed = false;
                 else if (player.IsFriendRoles() && _data.TryJackalFriendsToDeath)
                     successed = false;
                 else
-                    successed = _data.ForImpostor ? player.IsImpostor() : player.IsCrewmateOrMadRoles() || (player.Role == RoleId.MadKiller && !player.IsImpostor());
+                    successed = _data.ForImpostor ? player.IsImpostor() : player.IsCrewmateOrMadRoles();
                 RpcSantaAssigndRole(Player, player, successed);
             },
             showSidekickLimitText: () => true
