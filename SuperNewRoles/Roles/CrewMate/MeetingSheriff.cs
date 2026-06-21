@@ -88,13 +88,13 @@ public class MeetingSheriffAbilityData
     {
         bool canKill = false;
 
-        if (target.Role == RoleId.MadKiller || target.IsImpostor())
+        if (target.IsImpostor())
             canKill = CanKillImpostor;
         else if (target.IsNeutral())
             canKill = CanKillNeutral;
         else if (target.Role == RoleId.HauntedWolf || target.ModifierRole.HasFlag(ModifierRoleId.ModifierHauntedWolf)) // 第三陣営に付与される事はEvilSeerのAbilityによる付与時のみの為、第三陣営としての判定を優先
             canKill = CanKillImpostor;
-        else if (target.IsMadRoles())
+        else if (target.Role == RoleId.MadKiller || target.IsMadRoles())
             canKill = CanKillMadRoles;
         else if (target.IsFriendRoles())
             canKill = CanKillFriendRoles;
