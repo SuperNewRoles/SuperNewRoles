@@ -397,7 +397,7 @@ public class PlayerStatistics
                 if (mkAbility != null && !mkAbility.IsAwakened && mkAbility.ownerAbility != null)
                 {
                     var ownerPlayer = mkAbility.ownerAbility.Player;
-                    if (ownerPlayer.IsDead() || ownerPlayer.Role != RoleId.SideKiller)
+                    if (ownerPlayer == null ||　ownerPlayer.IsDead() || ownerPlayer.Role != RoleId.SideKiller)
                     {
                         teamImpostorsAlive++;
                         totalKiller++;
