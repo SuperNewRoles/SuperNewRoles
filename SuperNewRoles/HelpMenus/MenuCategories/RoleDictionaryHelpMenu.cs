@@ -1,7 +1,5 @@
 using System.Collections.Generic;
-using System.Drawing;
 using System.Linq;
-using System.Numerics;
 using AmongUs.GameOptions;
 using SuperNewRoles.CustomOptions;
 using SuperNewRoles.HelpMenus;
@@ -593,62 +591,38 @@ public class RoleDictionaryHelpMenu : HelpMenuCategoryBase
         }
     }
     /// <summary>
-    /// チームに属するバニラ役職の一覧を取得します。
+    /// チームに属するバニラ役職の一覧を動的に取得します。
+    /// RoleManager.Instance.AllRoles から全バニラ役職を取得し、SimpleRole を除外します。
     /// </summary>
     private static List<(VanillaRoleInfo Role, string DescriptionKey)> GetVanillaRolesForTeam(RoleOptionMenuType teamType)
     {
         var result = new List<(VanillaRoleInfo, string)>();
 
-        if (teamType == RoleOptionMenuType.Crewmate)
+        foreach (var roleBehaviour in RoleManager.Instance.AllRoles)
         {
+            var roleType = roleBehaviour.Role;
+            if (roleType is RoleTypes.Crewmate or RoleTypes.Impostor
+                or RoleTypes.CrewmateGhost or RoleTypes.ImpostorGhost)
+                continue;
+
+            bool isImpostor = roleBehaviour.TeamType == RoleTeamTypes.Impostor;
+            bool matchesTeam = teamType switch
+            {
+                RoleOptionMenuType.Crewmate => !isImpostor && roleType != RoleTypes.GuardianAngel,
+                RoleOptionMenuType.Impostor => isImpostor,
+                RoleOptionMenuType.Ghost => roleType == RoleTypes.GuardianAngel,
+                _ => false,
+            };
+
+            if (!matchesTeam) continue;
+
+            string roleName = roleType.ToString();
             result.Add((new VanillaRoleInfo
             {
-                RoleName = "Engineer",
-                RoleColor = Color.white,
-                AssignedTeams = new() { AssignedTeamType.Crewmate },
-            }, "Engineer.Description"));
-            result.Add((new VanillaRoleInfo
-            {
-                RoleName = "Scientist",
-                RoleColor = Color.white,
-                AssignedTeams = new() { AssignedTeamType.Crewmate },
-            }, "Scientist.Description"));
-            result.Add((new VanillaRoleInfo
-            {
-                RoleName = "Tracker",
-                RoleColor = Color.white,
-                AssignedTeams = new() { AssignedTeamType.Crewmate },
-            }, "Tracker.Description"));
-            result.Add((new VanillaRoleInfo
-            {
-                RoleName = "Noisemaker",
-                RoleColor = Color.white,
-                AssignedTeams = new() { AssignedTeamType.Crewmate },
-            }, "Noisemaker.Description"));
-        }
-        else if (teamType == RoleOptionMenuType.Impostor)
-        {
-            result.Add((new VanillaRoleInfo
-            {
-                RoleName = "Shapeshifter",
-                RoleColor = Palette.ImpostorRed,
-                AssignedTeams = new() { AssignedTeamType.Impostor },
-            }, "Shapeshifter.Description"));
-            result.Add((new VanillaRoleInfo
-            {
-                RoleName = "Phantom",
-                RoleColor = Palette.ImpostorRed,
-                AssignedTeams = new() { AssignedTeamType.Impostor },
-            }, "Phantom.Description"));
-        }
-        else if (teamType == RoleOptionMenuType.Ghost)
-        {
-            result.Add((new VanillaRoleInfo
-            {
-                RoleName = "GuardianAngel",
-                RoleColor = Color.white,
-                AssignedTeams = new() { AssignedTeamType.Crewmate },
-            }, "GuardianAngel.Description"));
+                RoleName = roleName,
+                RoleColor = isImpostor ? Palette.ImpostorRed : Color.white,
+                AssignedTeams = new() { isImpostor ? AssignedTeamType.Impostor : AssignedTeamType.Crewmate },
+            }, $"{roleName}.Description"));
         }
 
         return result;
@@ -673,7 +647,7 @@ public class RoleDictionaryHelpMenu : HelpMenuCategoryBase
         passiveButton.OnClick = new();
         passiveButton.OnClick.AddListener((UnityAction)(() =>
         {
-            ShowVanillaRoleDetail(roleInfo, descriptionKey);
+            ShowVanillaRoleDetail(roleInfo);
         }));
 
         passiveButton.OnMouseOver = new();
@@ -692,53 +666,16 @@ public class RoleDictionaryHelpMenu : HelpMenuCategoryBase
     }
 
     /// <summary>
-    /// バニラ役職の詳細を表示する
+    /// バニラ役職の詳細を表示する (RoleDetailHelperを使用)
     /// </summary>
-    private void ShowVanillaRoleDetail(IRoleInformation roleInfo, string descriptionKey)
+    private void ShowVanillaRoleDetail(IRoleInformation roleInfo)
     {
         if (RoleDetailObject != null)
             GameObject.Destroy(RoleDetailObject);
 
         isShowingRoleDetail = true;
 
-        if (MenuObject != null)
-            MenuObject.SetActive(false);
-
-        var roleDetailObject = GameObject.Instantiate(
-            AssetManager.GetAsset<GameObject>("MyRoleInfomationHelpMenu"), Container.transform);
-        roleDetailObject.transform.localPosition = Vector3.zero;
-        roleDetailObject.transform.localScale = Vector3.one;
-        roleDetailObject.transform.localRotation = Quaternion.identity;
-
-        var inLobbyText = roleDetailObject.transform.Find("InLobbyText")?.gameObject;
-        if (inLobbyText != null)
-            inLobbyText.SetActive(false);
-
-        var roleButtonsContainer = roleDetailObject.transform.Find("RoleButtons")?.gameObject;
-        if (roleButtonsContainer != null)
-        {
-            foreach (var child in roleButtonsContainer.GetChildren())
-            {
-                if (child.name.StartsWith("RoleButton_"))
-                    GameObject.Destroy(child);
-            }
-        }
-
-        var closeButton = roleDetailObject.transform.Find("CloseButton")?.gameObject;
-        if (closeButton != null)
-        {
-            var closePassive = closeButton.GetComponent<PassiveButton>();
-            if (closePassive != null)
-            {
-                closePassive.OnClick = new();
-                closePassive.OnClick.AddListener((UnityAction)(() => CloseRoleDetail()));
-            }
-        }
-
-        RoleDetailMenu.SetMenuObject(roleDetailObject);
-        RoleDetailMenu.ShowRoleInformation(roleInfo, descriptionKey);
-
-        RoleDetailObject = roleDetailObject;
+        RoleDetailObject = RoleDetailHelper.ShowRoleDetail(roleInfo, Container, MenuObject, CloseRoleDetail);
     }
 }
 

@@ -1113,23 +1113,4 @@ public static class ExPlayerControlExtensions
                 return "U";
         }
     }
-    /// <summary>
-    /// バニラ advanced role の説明文翻訳キーを取得します。
-    /// プレイヤーが通常のクルー/インポスターの場合は null を返します。
-    /// </summary>
-    public static string GetVanillaRoleDescriptionKey(this ExPlayerControl player)
-    {
-        if (player?.Data?.Role == null || player.Data.Role.IsSimpleRole) return null;
-        return player.Data.Role.Role switch
-        {
-            RoleTypes.Engineer => "Engineer.Description",
-            RoleTypes.Scientist => "Scientist.Description",
-            RoleTypes.Tracker => "Tracker.Description",
-            RoleTypes.Noisemaker => "Noisemaker.Description",
-            RoleTypes.GuardianAngel => "GuardianAngel.Description",
-            RoleTypes.Shapeshifter => "Shapeshifter.Description",
-            RoleTypes.Phantom => "Phantom.Description",
-            _ => null,
-        };
-    }
 }

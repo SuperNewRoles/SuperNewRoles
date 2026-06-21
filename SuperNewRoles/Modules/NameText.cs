@@ -74,13 +74,6 @@ public static class NameText
     {
         return roleType switch
         {
-            RoleTypes.Engineer => ModTranslation.GetString("Engineer"),
-            RoleTypes.Scientist => ModTranslation.GetString("Scientist"),
-            RoleTypes.Tracker => ModTranslation.GetString("Tracker"),
-            RoleTypes.Noisemaker => ModTranslation.GetString("Noisemaker"),
-            RoleTypes.GuardianAngel => ModTranslation.GetString("GuardianAngel"),
-            RoleTypes.Shapeshifter => ModTranslation.GetString("Shapeshifter"),
-            RoleTypes.Phantom => ModTranslation.GetString("Phantom"),
             RoleTypes.CrewmateGhost => ModTranslation.GetString(nameof(RoleId.Crewmate)),
             RoleTypes.ImpostorGhost => ModTranslation.GetString(nameof(RoleId.Impostor)),
             _ => niceName,
