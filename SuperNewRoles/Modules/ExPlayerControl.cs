@@ -698,7 +698,7 @@ public class ExPlayerControl
         => HasAbility(nameof(MadmateAbility))
            || GhostRole == GhostRoleId.Revenant
            || (Role == RoleId.SatsumaAndImo && GetAbility<SatsumaAndImoAbility>()?.IsMadTeam == true)
-           || (Role == RoleId.VampireDependent);
+           || (Role == RoleId.VampireDependent)
            || (Role == RoleId.MadKiller && !IsImpostor());
     public bool IsFriendRoles()
         => HasAbility(nameof(JFriendAbility)) || (Role == RoleId.Bullet && !WaveCannonJackal.WaveCannonJackalCreateBulletToJackal);
