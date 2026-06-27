@@ -81,6 +81,8 @@ public class CustomCosmeticsLoader
     public static int SpritesAllCount;
     public static bool SpritesDownloading = false;
 
+    private static string CustomCosmeticsCacheDirectory => Path.Combine(SuperNewRolesPlugin.BaseDirectory, "CustomCosmetics");
+
     public static readonly int MAX_CONCURRENT_DOWNLOADS = ModHelpers.IsAndroid() ? 15 : 30;
     // 到達性プローブは短くし、失敗時は早めにスキップする
     private const float HostProbeTimeoutSeconds = 3f;
@@ -290,15 +292,21 @@ public class CustomCosmeticsLoader
 
                         bool isAndroid = ModHelpers.IsAndroid();
 
-                        string currentUrl = isAndroid ? assetBundleAndroidUrl : assetBundleUrl;
-                        string currentExpectedHash = isAndroid ? expectedHashAndroid : expectedHash;
+                        string currentUrl = isAndroid && !string.IsNullOrWhiteSpace(assetBundleAndroidUrl) ? assetBundleAndroidUrl : assetBundleUrl;
+                        string currentExpectedHash = isAndroid && !string.IsNullOrWhiteSpace(expectedHashAndroid) ? expectedHashAndroid : expectedHash;
+                        if (string.IsNullOrWhiteSpace(currentUrl))
+                        {
+                            Logger.Warning($"カスタムコスメティックのアセットバンドルURLが空のためスキップします: {url}");
+                            continue;
+                        }
+
+                        assetBundleLoadingCount++;
+                        AssetBundlesAllCount++;
                         startCoroutine(DownloadAssetBundleWithRetryAsync(currentUrl, currentExpectedHash, () =>
                         {
                             assetBundleLoadingCount--;
                             AssetBundlesDownloadedCount++;
                         }));
-                        assetBundleLoadingCount++;
-                        AssetBundlesAllCount++;
                     }
                 }
                 else
@@ -363,7 +371,7 @@ public class CustomCosmeticsLoader
                             hatName,
                             hat["name"]?.ToString(),
                             hatName,
-                            $"{SuperNewRolesPlugin.BaseDirectory}/CustomCosmetics/{currentPackage.name}/{sanitizedHatName}_",
+                            $"{CustomCosmeticsCacheDirectory}/{currentPackage.name}/{sanitizedHatName}_",
                             hat["author"].ToString(),
                             currentPackage,
                             hatOption,
@@ -427,7 +435,7 @@ public class CustomCosmeticsLoader
                             visorName,
                             visor["name"]?.ToString(),
                             visorName,
-                            $"{SuperNewRolesPlugin.BaseDirectory}/CustomCosmetics/{currentPackage.name}/{sanitizedVisorName}_",
+                            $"{CustomCosmeticsCacheDirectory}/{currentPackage.name}/{sanitizedVisorName}_",
                             visor["author"].ToString(),
                             currentPackage,
                             visorOption,
@@ -475,7 +483,7 @@ public class CustomCosmeticsLoader
                             namePlateName,
                             namePlate["name"]?.ToString(),
                             namePlateName,
-                            $"{SuperNewRolesPlugin.BaseDirectory}/CustomCosmetics/{currentPackage.name}/{sanitizedNamePlateName}_",
+                            $"{CustomCosmeticsCacheDirectory}/{currentPackage.name}/{sanitizedNamePlateName}_",
                             namePlate["author"].ToString(),
                             currentPackage,
                             null
@@ -1140,7 +1148,7 @@ public class CustomCosmeticsLoader
             default:
                 break;
         }
-        string basePath = $"{SuperNewRolesPlugin.BaseDirectory}/CustomCosmetics/";
+        string basePath = $"{CustomCosmeticsCacheDirectory}/";
         int activeDownloads = 0;
         Queue<(string spriteName, string spritePath, string packageKey, string packagePath)> downloadQueue = new();
         SpritesAllCount = willDownloads.Sum(x => x.Value.Count);
@@ -1496,8 +1504,37 @@ public class CustomCosmeticsLoader
         return null;
     }
 
+    private static void DeleteCacheIfRequested()
+    {
+        if (ConfigRoles._isCustomCosmeticsCacheResetRequested.Value)
+        {
+            try
+            {
+                if (Directory.Exists(CustomCosmeticsCacheDirectory))
+                {
+                    Directory.Delete(CustomCosmeticsCacheDirectory, true);
+                    Logger.Info($"Deleted cosmetics cache directory: {CustomCosmeticsCacheDirectory}");
+                }
+                else
+                {
+                    Logger.Info($"Cosmetics cache directory does not exist: {CustomCosmeticsCacheDirectory}");
+                }
+            }
+            catch (Exception ex)
+            {
+                Logger.Error($"Failed to delete cosmetics cache directory: {CustomCosmeticsCacheDirectory}. Error: {ex}");
+            }
+            finally
+            {
+                ConfigRoles._isCustomCosmeticsCacheResetRequested.Value = false;
+                Logger.Info("Custom cosmetics cache reset request flag cleared.");
+            }
+        }
+    }
+
     public static IEnumerator LoadCosmeticsTaskAsync(Func<IEnumerator, Coroutine> startCoroutine, bool notifySplash = true)
     {
+        DeleteCacheIfRequested();
         IEnumerator loadAsyncEnumerator = null;
         try
         {

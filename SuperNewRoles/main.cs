@@ -108,7 +108,6 @@ public partial class SuperNewRolesPlugin : BasePlugin
         SuperNewRoles.Patches.CursedTasks.Main.ClearAndReload();
 
         RegisterCustomObjects();
-        CustomLoadingScreen.Patch(Harmony);
         HarmonyPatchAllTask = TaskRunIfWindows(() => PatchAll(Harmony));
 
         if (!Directory.Exists(BaseDirectory))
