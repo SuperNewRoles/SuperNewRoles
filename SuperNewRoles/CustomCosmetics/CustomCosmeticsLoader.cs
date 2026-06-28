@@ -81,9 +81,11 @@ public class CustomCosmeticsLoader
     public static int SpritesAllCount;
     public static bool SpritesDownloading = false;
 
+    private static long downloadReceivedBytes;
+
     private static string CustomCosmeticsCacheDirectory => Path.Combine(SuperNewRolesPlugin.BaseDirectory, "CustomCosmetics");
 
-    public static readonly int MAX_CONCURRENT_DOWNLOADS = ModHelpers.IsAndroid() ? 15 : 30;
+    public static readonly int MAX_CONCURRENT_DOWNLOADS = ModHelpers.IsAndroid() ? 15 : 3;
     // 到達性プローブは短くし、失敗時は早めにスキップする
     private const float HostProbeTimeoutSeconds = 3f;
     // JSONメタデータは短めのタイムアウト
@@ -92,6 +94,58 @@ public class CustomCosmeticsLoader
     private const float AssetBundleRequestTimeoutSeconds = 20f;
     // スプライト単体は短めに切って待ち時間を抑える
     private const float SpriteDownloadTimeoutSeconds = 5f;
+
+    public static string GetDownloadSizeProgressText()
+    {
+        long receivedBytes = System.Math.Max(0, Interlocked.Read(ref downloadReceivedBytes));
+        return receivedBytes > 0 ? FormatMegabytes(receivedBytes) : "";
+    }
+
+    private static string FormatMegabytes(long bytes)
+    {
+        return $"{bytes / 1024d / 1024d:0.0} MB";
+    }
+
+    private static void ResetDownloadSizeProgress()
+    {
+        Interlocked.Exchange(ref downloadReceivedBytes, 0);
+    }
+
+    private static DownloadSizeProgressTracker StartDownloadSizeProgressTracker()
+    {
+        return new DownloadSizeProgressTracker();
+    }
+
+    private sealed class DownloadSizeProgressTracker
+    {
+        private readonly object sync = new();
+        private long lastReceivedBytes;
+        private bool finished;
+
+        public void Report(long receivedBytes)
+        {
+            lock (sync)
+            {
+                if (finished)
+                    return;
+
+                receivedBytes = System.Math.Max(0, receivedBytes);
+                Interlocked.Add(ref downloadReceivedBytes, receivedBytes - lastReceivedBytes);
+                lastReceivedBytes = receivedBytes;
+            }
+        }
+
+        public void Finish()
+        {
+            lock (sync)
+            {
+                if (finished)
+                    return;
+
+                finished = true;
+            }
+        }
+    }
 
     private static string SanitizeFileName(string fileName)
     {
@@ -220,6 +274,7 @@ public class CustomCosmeticsLoader
             SpritesDownloadingCount = 0;
             SpritesAllCount = 0;
             SpritesDownloading = false;
+            ResetDownloadSizeProgress();
             yield return null;
             runned = true;
             yield break;
@@ -245,6 +300,7 @@ public class CustomCosmeticsLoader
                 break;
         }
         runned = false;
+        ResetDownloadSizeProgress();
         AssetBundlesDownloading = true;
         client.Timeout = TimeSpan.FromSeconds(5);
         List<(string url, string content)> fetchTasks = new();
@@ -979,6 +1035,7 @@ public class CustomCosmeticsLoader
             byte[] assetBundleData = null;
             bool successThisAttempt = false;
             SNRHttpClient request = null;
+            DownloadSizeProgressTracker progressTracker = null;
 
             bool isLocal = assetBundleUrl.StartsWith("./", StringComparison.Ordinal) ||
                            assetBundleUrl.StartsWith("../", StringComparison.Ordinal) ||
@@ -1021,6 +1078,8 @@ public class CustomCosmeticsLoader
                 // ユーザーが設定したタイムアウト値を使用
                 request.timeout = AssetBundleRequestTimeoutSeconds;
                 request.ignoreSslErrors = true;
+                progressTracker = StartDownloadSizeProgressTracker();
+                request.downloadProgressChanged = progressTracker.Report;
 
                 IEnumerator webRequestEnumerator = SendSNRHttpClientHelper(request);
                 bool moveNextSuccess = true;
@@ -1052,6 +1111,7 @@ public class CustomCosmeticsLoader
                         break; // ループを抜けて結果を処理
                     }
                 }
+                progressTracker.Finish();
 
                 // ループ後 (リクエスト完了または MoveNext エラー後) に結果を処理
                 try
@@ -1059,6 +1119,8 @@ public class CustomCosmeticsLoader
                     if (!webRequestFailedMidExecution && string.IsNullOrEmpty(request.error))
                     {
                         assetBundleData = request.downloadHandler.data;
+                        if (assetBundleData != null)
+                            progressTracker?.Report(assetBundleData.Length);
                     }
                     else if (!webRequestFailedMidExecution) // webRequestFailedMidExecution が true の場合、request.result は信頼できない可能性
                     {
@@ -1073,6 +1135,7 @@ public class CustomCosmeticsLoader
                 }
                 finally
                 {
+                    progressTracker?.Finish();
                 }
             }
 
@@ -1245,6 +1308,8 @@ public class CustomCosmeticsLoader
         SNRHttpClient request = SNRHttpClient.Get(spriteUrl);
         request.timeout = SpriteDownloadTimeoutSeconds;
         request.ignoreSslErrors = true;
+        DownloadSizeProgressTracker progressTracker = StartDownloadSizeProgressTracker();
+        request.downloadProgressChanged = progressTracker.Report;
 
         yield return request.SendWebRequest();
 
@@ -1268,6 +1333,7 @@ public class CustomCosmeticsLoader
 
             if (data != null)
             {
+                progressTracker.Report(data.Length);
                 if (downloadedSprites != null)
                     downloadedSprites[filePath] = data;
                 try
@@ -1289,6 +1355,7 @@ public class CustomCosmeticsLoader
         {
             Logger.Error($"Failed to download sprite {spriteName} from {spriteUrl}. Error: {request.error}, Code: {request.responseCode}");
         }
+        progressTracker.Finish();
         onComplete?.Invoke();
     }
 
