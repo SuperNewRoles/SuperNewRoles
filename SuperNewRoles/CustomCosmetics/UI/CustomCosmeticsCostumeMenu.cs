@@ -78,8 +78,11 @@ public abstract class CosmeticDataWrapper : ICosmeticData
 
     public void SetPreview(SpriteRenderer renderer, int colorId)
     {
+        if (renderer == null)
+            return;
+
         _data.SetPreview(renderer, colorId);
-        if (renderer == null || !DestroyableSingleton<HatManager>.InstanceExists)
+        if (!DestroyableSingleton<HatManager>.InstanceExists)
             return;
 
         if (PreviewCrewmateColor)
@@ -1140,6 +1143,7 @@ public class CustomCosmeticsCostumeMenu : CustomCosmeticsMenuBase<CustomCosmetic
             if (slot != null)
                 GameObject.Destroy(slot.gameObject);
         }
+        ControllerManager.Instance.ClearDestroyedSelectableUiElements();
         slotPool.Clear();
         boundSlotIndices.Clear();
         virtualSlotData.Clear();
