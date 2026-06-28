@@ -1111,7 +1111,6 @@ public class CustomCosmeticsLoader
                         break; // ループを抜けて結果を処理
                     }
                 }
-                progressTracker.Finish();
 
                 // ループ後 (リクエスト完了または MoveNext エラー後) に結果を処理
                 try
@@ -1615,49 +1614,60 @@ public class CustomCosmeticsLoader
 
     public static IEnumerator LoadCosmeticsTaskAsync(Func<IEnumerator, Coroutine> startCoroutine, bool notifySplash = true)
     {
-        DeleteCacheIfRequested();
-        IEnumerator loadAsyncEnumerator = null;
+        if (notifySplash)
+            IsRuntimeLoadInProgress = true;
+
         try
         {
-            // LoadAsyncの呼び出し自体が例外を投げる可能性を考慮
-            loadAsyncEnumerator = LoadAsync(startCoroutine, notifySplash);
-        }
-        catch (Exception setupEx)
-        {
-            Logger.Error($"LoadAsyncのセットアップ中にエラーが発生しました: {setupEx}");
-            yield break;
-        }
-
-        if (loadAsyncEnumerator == null)
-        {
-            // 基本的に上記catchで捕捉されるはずだが念のため
-            Logger.Error("LoadAsyncEnumeratorの取得に失敗しました。");
-            yield break;
-        }
-
-        while (true)
-        {
-            object currentYieldedValue = null;
-            bool hasMore;
+            DeleteCacheIfRequested();
+            IEnumerator loadAsyncEnumerator = null;
             try
             {
-                hasMore = loadAsyncEnumerator.MoveNext();
-                if (hasMore)
-                {
-                    currentYieldedValue = loadAsyncEnumerator.Current;
-                }
-                else
-                {
-                    // Inner coroutine finished
-                    yield break;
-                }
+                // LoadAsyncの呼び出し自体が例外を投げる可能性を考慮
+                loadAsyncEnumerator = LoadAsync(startCoroutine, notifySplash);
             }
-            catch (Exception runEx)
+            catch (Exception setupEx)
             {
-                Logger.Error($"カスタムコスメティックのロード中にエラーが発生しました (LoadAsync実行中): {runEx}");
-                yield break; // Stop on error from inner coroutine
+                Logger.Error($"LoadAsyncのセットアップ中にエラーが発生しました: {setupEx}");
+                yield break;
             }
-            yield return currentYieldedValue; // Yield what the sub-coroutine yielded
+
+            if (loadAsyncEnumerator == null)
+            {
+                // 基本的に上記catchで捕捉されるはずだが念のため
+                Logger.Error("LoadAsyncEnumeratorの取得に失敗しました。");
+                yield break;
+            }
+
+            while (true)
+            {
+                object currentYieldedValue = null;
+                bool hasMore;
+                try
+                {
+                    hasMore = loadAsyncEnumerator.MoveNext();
+                    if (hasMore)
+                    {
+                        currentYieldedValue = loadAsyncEnumerator.Current;
+                    }
+                    else
+                    {
+                        // Inner coroutine finished
+                        yield break;
+                    }
+                }
+                catch (Exception runEx)
+                {
+                    Logger.Error($"カスタムコスメティックのロード中にエラーが発生しました (LoadAsync実行中): {runEx}");
+                    yield break; // Stop on error from inner coroutine
+                }
+                yield return currentYieldedValue; // Yield what the sub-coroutine yielded
+            }
+        }
+        finally
+        {
+            if (notifySplash)
+                IsRuntimeLoadInProgress = false;
         }
     }
 }

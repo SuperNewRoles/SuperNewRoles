@@ -213,9 +213,9 @@ public static class CustomLoadingScreen
                     IsLoading = true;
                     long startTicks = Environment.TickCount64;
                     Logger.Info("Waiting load");
-                    WaitStartupTask(SuperNewRolesPlugin.CustomRPCManagerLoadTask, nameof(SuperNewRolesPlugin.CustomRPCManagerLoadTask), ref startTicks);
+                    WaitStartupTask(SuperNewRolesPlugin.CustomRPCManagerLoadTask, nameof(SuperNewRolesPlugin.CustomRPCManagerLoadTask));
                     Logger.Info("CustomRPCManagerLoadTask done");
-                    WaitStartupTask(SuperNewRolesPlugin.HarmonyPatchAllTask, nameof(SuperNewRolesPlugin.HarmonyPatchAllTask), ref startTicks);
+                    WaitStartupTask(SuperNewRolesPlugin.HarmonyPatchAllTask, nameof(SuperNewRolesPlugin.HarmonyPatchAllTask));
                     Logger.Info("HarmonyPatchAllTask done");
                     if (!WaitForCustomCosmeticsLoader(ref startTicks))
                     {
@@ -241,25 +241,14 @@ public static class CustomLoadingScreen
             return Math.Max(0, StartupLoadFallbackTimeoutMilliseconds - (int)elapsed);
         }
 
-        private static void WaitStartupTask(Task task, string taskName, ref long startTicks)
+        private static void WaitStartupTask(Task task, string taskName)
         {
             if (task == null)
                 return;
 
-            int remaining = GetRemainingTimeout(ref startTicks);
-            if (remaining <= 0)
-            {
-                Logger.Warning($"{taskName} did not finish before startup fallback timeout. Continue startup while it remains in progress.");
-                return;
-            }
-
             try
             {
-                if (!task.Wait(remaining))
-                {
-                    Logger.Warning($"{taskName} did not finish before startup fallback timeout. Continue startup while it remains in progress.");
-                    return;
-                }
+                task.Wait();
             }
             catch (AggregateException ex)
             {
