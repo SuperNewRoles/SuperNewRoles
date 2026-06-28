@@ -47,7 +47,7 @@ public class CustomCosmeticsLoader
             "https://raw.githubusercontent.com/Ujet222/TOPVisors/refs/heads/main/CustomVisors.json",
     };
     public static Action willLoad;
-    public static bool runned = true;
+    public static volatile bool runned = true;
     public const string ModdedPrefix = "Modded_";
     public static bool IsRuntimeLoadInProgress { get; private set; }
     public static bool IsRuntimeEnabled => ConfigRoles.IsModCosmeticsAreNotLoaded == null || !ConfigRoles.IsModCosmeticsAreNotLoaded.Value;
@@ -174,6 +174,15 @@ public class CustomCosmeticsLoader
         }
 
         IsRuntimeLoadInProgress = false;
+        SetRuntimeCosmeticsVisible(IsRuntimeEnabled);
+        if (IsRuntimeEnabled)
+            ReapplyLocalLayeredCosmetics();
+
+        CustomCosmeticsUIStart.RefreshCurrentMenu();
+    }
+
+    public static void RefreshAfterStartupLoadCompleted()
+    {
         SetRuntimeCosmeticsVisible(IsRuntimeEnabled);
         if (IsRuntimeEnabled)
             ReapplyLocalLayeredCosmetics();
@@ -577,6 +586,8 @@ public class CustomCosmeticsLoader
             CustomLoadingScreen.PleaseDoWillLoad = true;
 
         runned = true;
+        if (notifySplash)
+            CustomLoadingScreen.RefreshStartupLoadAfterFallbackIfNeeded();
         Logger.Info("CustomCosmeticsLoader willLoad done");
     }
     public static IEnumerator GetStringAsync(string url, Action<string> onSuccess, Action<string> onError)
@@ -1508,6 +1519,7 @@ public class CustomCosmeticsLoader
     {
         if (ConfigRoles._isCustomCosmeticsCacheResetRequested.Value)
         {
+            bool deleteCompleted = false;
             try
             {
                 if (Directory.Exists(CustomCosmeticsCacheDirectory))
@@ -1519,12 +1531,14 @@ public class CustomCosmeticsLoader
                 {
                     Logger.Info($"Cosmetics cache directory does not exist: {CustomCosmeticsCacheDirectory}");
                 }
+                deleteCompleted = true;
             }
             catch (Exception ex)
             {
                 Logger.Error($"Failed to delete cosmetics cache directory: {CustomCosmeticsCacheDirectory}. Error: {ex}");
             }
-            finally
+
+            if (deleteCompleted)
             {
                 ConfigRoles._isCustomCosmeticsCacheResetRequested.Value = false;
                 Logger.Info("Custom cosmetics cache reset request flag cleared.");
