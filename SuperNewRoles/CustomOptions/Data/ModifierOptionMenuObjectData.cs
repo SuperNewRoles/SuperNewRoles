@@ -193,19 +193,19 @@ public class ModifierOptionMenuObjectData : OptionMenuBase
                         switch (optionType)
                         {
                             case "ModifierMaxImpostors":
-                                selectedText.text = modifierBase.MaxImpostors.ToString();
+                                selectedText.text = modifierBase.MaxImpostors.ToString() + ModTranslation.GetString("NumberOfCrewsPostfix");
                                 break;
                             case "ModifierImpostorChance":
                                 selectedText.text = modifierBase.ImpostorChance.ToString() + "%";
                                 break;
                             case "ModifierMaxNeutrals":
-                                selectedText.text = modifierBase.MaxNeutrals.ToString();
+                                selectedText.text = modifierBase.MaxNeutrals.ToString() + ModTranslation.GetString("NumberOfCrewsPostfix");
                                 break;
                             case "ModifierNeutralChance":
                                 selectedText.text = modifierBase.NeutralChance.ToString() + "%";
                                 break;
                             case "ModifierMaxCrewmates":
-                                selectedText.text = modifierBase.MaxCrewmates.ToString();
+                                selectedText.text = modifierBase.MaxCrewmates.ToString() + ModTranslation.GetString("NumberOfCrewsPostfix");
                                 break;
                             case "ModifierCrewmateChance":
                                 selectedText.text = modifierBase.CrewmateChance.ToString() + "%";
