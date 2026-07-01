@@ -254,6 +254,19 @@ public class TriggerHappyGatlingGun : MonoBehaviour
     {
         if (attenuatedAudioSource == null || audioSource == null) return;
 
+        // 会議開始時にガトリングの音を即座に消す
+        if (pendingDestroy || MeetingHud.Instance != null)
+        {
+            currentVolume = 0f;
+            targetVolume = 0f;
+            if (attenuatedAudioSource != null) attenuatedAudioSource.maxVolume = 0f;
+            if (audioSource != null)
+            {
+                audioSource.volume = 0f;
+                if (audioSource.isPlaying) audioSource.Stop();
+            }
+            return;
+        }
         // 現在の音量を目標音量に向かってスムーズに変化させる
         float fadeSpeed = targetVolume > currentVolume ? FadeInSpeed : FadeOutSpeed;
         currentVolume = Mathf.MoveTowards(currentVolume, targetVolume, fadeSpeed * Time.deltaTime);

@@ -389,6 +389,22 @@ public class PlayerStatistics
             if (player.Role == RoleId.Hitman) hitmanAlive++;
             if (player.Role != RoleId.VampireDependent && (player.IsNonCrewKiller() || player.IsJackalTeam())) totalKiller++;
 
+            // 覚醒直前のマッドキラーを昇格済みとして計上する。
+            // FixedUpdate より先に試合終了チェックが走るタイミングバグへの対処。
+            if (player.Role == RoleId.MadKiller && !player.IsImpostor())
+            {
+                var mkAbility = player.GetAbility<MadKillerAbility>();
+                if (mkAbility != null && !mkAbility.IsAwakened && mkAbility.ownerAbility != null)
+                {
+                    var ownerPlayer = mkAbility.ownerAbility.Player;
+                    if (ownerPlayer == null ||　ownerPlayer.IsDead() || ownerPlayer.Role != RoleId.SideKiller)
+                    {
+                        teamImpostorsAlive++;
+                        totalKiller++;
+                    }
+                }
+            }
+            
             if (isLoversBlock && player.IsLovers())
             {
                 if (player.IsImpostorWinTeam() || (isHnS && player.IsMadRoles())) hasLoversImpostorTeam = true;
