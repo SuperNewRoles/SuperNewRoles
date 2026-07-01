@@ -135,7 +135,7 @@ public static class CalledMeetingPatch
 {
     public static void Postfix(PlayerControl __instance, NetworkedPlayerInfo target)
     {
-        CalledMeetingEvent.Invoke(__instance, target, false);
+        CalledMeetingEvent.Invoke(__instance, target, target == null);
     }
 }
 

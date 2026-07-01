@@ -166,6 +166,11 @@ GhostVoteDisplayType.Show,表示,Show,显示,顯示
 GhostVoteDisplayType.Hide,非表示,Hide,隐藏,隱藏
 ChangeReportDistance,レポート距離を変更する,Change report distance,修改报告尸体距离,修改報告屍體距離
 ReportDistanceOption,レポート距離,Report distance,报告距离,報告距離
+IsLimitEmergencyMeeting,緊急会議を使用できる回数を制限する,Limit emergency meeting uses,限制紧急会议召开次数,限制緊急會議召集次數
+EmergencyMeetingLimitCount,緊急会議 全体使用可能回数,Emergency meeting total uses,全体紧急会议最大召开次数,緊急會議總使用次數
+MeetingStatusPersonalEmergencyCount,クルー {0} が持つ 緊急会議残り {1} 回,Crewmember {0} has {1} emergency meetings left,玩家 {0} 剩余 {1} 次紧急会议,船員 {0} 剩餘 {1} 次緊急會議
+MeetingStatusAllEmergencyCount,クルー全体が持つ 緊急会議残り {0} 回,All crewmembers have {0} emergency meetings left,全体玩家剩余 {0} 次紧急会议,全體船員剩餘 {0} 次緊急會議
+MeetingStatusUpperLimitReached,緊急会議は\n全体の使用可能回数に達した,Emergency meetings cannot be used\nbecause the total limit was reached,紧急会议次数已用尽\n无法召开,達到上限\n緊急會議無法召開
 CustomAprilFools,エイプリルフールを有効にする,Enabled aprilfools,启用愚人节模式,啟用愚人節模式
 AprilFoolsOutfitType,姿,Outfit type,外观类型,外觀類型
 AprilFoolsOutfitType.None,なし,None,无变化,無變化
