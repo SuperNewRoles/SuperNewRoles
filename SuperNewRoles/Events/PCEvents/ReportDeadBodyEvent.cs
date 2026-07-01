@@ -29,6 +29,7 @@ public class ReportDeadBodyHostEvent : EventTargetBase<ReportDeadBodyHostEvent, 
         Roles.Impostor.OrpheusMainAbility.OnReport(data);
         if (!data.CanReport)
             return false;
+        SuperNewRoles.Events.PreCalledMeetingEvent.Invoke(reporter, target, target == null);
         Instance.Awake(data);
         return data.CanReport;
     }
