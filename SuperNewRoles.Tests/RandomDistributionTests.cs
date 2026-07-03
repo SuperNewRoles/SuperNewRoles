@@ -83,49 +83,63 @@ public class RandomDistributionTests
 
     // 目的: チケット選択シミュレーション - 複数の役職チケットからランダム選択した場合の偏りを検証
     // AssignRoles.AssignTickets のコアルゴリズムを模倣し、
-    // 全役100%の設定で各役職が均等に割り当てられることを確認する
+    // 全役100%の設定で各スロットにどの役職が割り当てられるかの分布が一様であることを確認する
     [Fact]
     public void TicketSelection_Is_Fair_Across_Roles()
     {
         // 5つの役職チケットがあり、それぞれ100% (NumberOfCrews=1) の場合
-        // 10人プレイヤーに対して5役職を割り当てるシミュレーション
+        // 各スロット(=何番目に割り当てられたか)にどの役職が来るかの分布を検証する
+        // 対称性より、各役職が各スロットに現れる確率は全て 1/roleCount になる
+        //   slot0: 5役職から1つ選ぶ -> 各役職 1/5
+        //   slot1: 残り4役職から1つ選ぶ -> 各役職 (4/5)*(1/4) = 1/5
+        //   slot2: 残り3役職から1つ選ぶ -> 各役職 (4/5)*(3/4)*(1/3) = 1/5
+        //   ...同様に全スロットで 1/5
         const int roleCount = 5;
-        const int simulations = 5000;
-        var assignmentCounts = new int[roleCount];
+        const int simulations = 20000;
+        // slotAssignmentCounts[slot, role] : 各スロットにどの役職が割り当てられたかの度数
+        var slotAssignmentCounts = new int[roleCount, roleCount];
 
         for (int sim = 0; sim < simulations; sim++)
         {
-            // 各役職が何回割り当てられたかをカウント
             var tickets = Enumerable.Range(0, roleCount).ToList();
-            var roleAssignments = new int[roleCount];
-
-            // 5つの役職枠を埋める
             for (int slot = 0; slot < roleCount; slot++)
             {
-                if (tickets.Count == 0) break;
                 int ticketIndex = ModHelpers.GetRandomInt(tickets.Count - 1);
                 int selectedRole = tickets[ticketIndex];
                 tickets.RemoveAt(ticketIndex);
-                roleAssignments[selectedRole]++;
+                slotAssignmentCounts[slot, selectedRole]++;
             }
+        }
 
-            // 各役職は1回ずつ割り当てられるはず
+        // 各スロットについて、役職の出現分布がほぼ一様であることをカイ二乗検定で確認する
+        // 期待度数は全 (slot, role) について simulations / roleCount
+        double expected = (double)simulations / roleCount;
+        for (int slot = 0; slot < roleCount; slot++)
+        {
+            double chiSquare = 0;
             for (int r = 0; r < roleCount; r++)
             {
-                if (roleAssignments[r] > 0)
-                    assignmentCounts[r]++;
+                int observed = slotAssignmentCounts[slot, r];
+                double diff = observed - expected;
+                chiSquare += (diff * diff) / expected;
             }
-        }
 
-        // 目的: 各役職が.simulations回のうち均等に割り当てられることを確認
-        // 全役100%で枠数=役職数の場合、各役職は毎回必ず割り当てられる
-        // なので全て simulations に等しいはず
-        foreach (var count in assignmentCounts)
-        {
-            count.Should().Be(simulations,
-                $"全役100%の場合、各役職は毎シミュレーションで必ず割り当てられるべきです。" +
-                $"実際の割り当て回数: [{string.Join(", ", assignmentCounts)}]");
+            // 自由度 = roleCount - 1 の0.1%棄却点
+            double criticalValue = ChiSquareCriticalValue(roleCount - 1);
+            chiSquare.Should().BeLessThan(
+                criticalValue,
+                $"スロット {slot} のカイ二乗統計量 {chiSquare:F2} が棄却点 {criticalValue:F2} " +
+                $"(自由度={roleCount - 1}) を超えました。分布に偏りがある可能性があります。" +
+                $"度数: [{GetRowString(slotAssignmentCounts, slot, roleCount)}]");
         }
+    }
+
+    private static string GetRowString(int[,] matrix, int row, int cols)
+    {
+        var vals = new List<int>();
+        for (int c = 0; c < cols; c++)
+            vals.Add(matrix[row, c]);
+        return string.Join(", ", vals);
     }
 
     // 目的: 確率付きチケット選択のシミュレーション
