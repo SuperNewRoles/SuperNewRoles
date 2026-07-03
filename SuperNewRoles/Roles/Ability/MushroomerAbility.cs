@@ -130,7 +130,7 @@ public class MushroomerAbility : AbilityBase
         mushroom.TriggerSpores();
         // カスタムキノコはテンプレートから生成されるため、TriggerSpores() 後に sporeMask が非アクティブのまま残ることがある。
         // バニラと同じ視界になるよう、明示的に有効化してスケールを設定する。
-        if (mushroom.sporeMask != null && mushroom.sporeMask.gameObject != null)
+        if (mushroom.sporeMask != null)
         {
             mushroom.sporeMask.gameObject.SetActive(true);
             mushroom.sporeMask.transform.localScale = new Vector3(2.4f, 2.4f, 1.2f);

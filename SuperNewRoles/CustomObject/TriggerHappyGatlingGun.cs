@@ -255,7 +255,7 @@ public class TriggerHappyGatlingGun : MonoBehaviour
         if (attenuatedAudioSource == null || audioSource == null) return;
 
         // 会議開始時にガトリングの音を即座に消す
-        if (pendingDestroy || MeetingHud.Instance != null)
+        if (MeetingHud.Instance != null)
         {
             currentVolume = 0f;
             targetVolume = 0f;
