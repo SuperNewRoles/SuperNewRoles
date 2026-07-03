@@ -248,7 +248,7 @@ public static class AssignRoles
         // 100%チケットの割り当て処理
         while (tickets_hundred.Count > 0 && targetPlayers.Count > 0 && maxBeans > 0)
         {
-            int ticketIndex = UnityEngine.Random.Range(0, tickets_hundred.Count);
+            int ticketIndex = ModHelpers.GetRandomInt(tickets_hundred.Count - 1);
             AssignTickets selectedTicket = tickets_hundred[ticketIndex];
             selectedTicket.IncrementRemainingAssignBeans();
             if (selectedTicket.RemainingAssignBeans <= 0)
@@ -268,7 +268,7 @@ public static class AssignRoles
                 }
                 else
                 {
-                    int playerIndex = UnityEngine.Random.Range(0, targetPlayers.Count);
+                    int playerIndex = ModHelpers.GetRandomInt(targetPlayers.Count - 1);
                     PlayerControl targetPlayer = targetPlayers[playerIndex];
                     targetPlayers.RemoveAt(playerIndex);
 
@@ -290,7 +290,7 @@ public static class AssignRoles
             if (tickets_not_hundred.Count == 0)
                 break;
 
-            int ticketIndex = UnityEngine.Random.Range(0, tickets_not_hundred.Count);
+            int ticketIndex = ModHelpers.GetRandomInt(tickets_not_hundred.Count - 1);
             AssignTickets selectedTicket = tickets_not_hundred[ticketIndex];
             selectedTicket.IncrementRemainingAssignBeans();
             if (selectedTicket.RemainingAssignBeans <= 0)
@@ -359,7 +359,7 @@ public static class AssignRoles
         var picked = new List<PlayerControl>(teamSize);
         for (int i = 0; i < teamSize; i++)
         {
-            int idx = UnityEngine.Random.Range(0, targetPlayers.Count);
+            int idx = ModHelpers.GetRandomInt(targetPlayers.Count - 1);
             picked.Add(targetPlayers[idx]);
             targetPlayers.RemoveAt(idx);
         }
