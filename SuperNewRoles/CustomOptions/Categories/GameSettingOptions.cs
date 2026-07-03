@@ -46,6 +46,11 @@ public static class GameSettingOptions
     [CustomOptionFloat("ReportDistanceOption", 0.4f, 10f, 0.2f, 5f, parentFieldName: nameof(ChangeReportDistance))]
     public static float ReportDistanceOption;
 
+    [CustomOptionBool("IsLimitEmergencyMeeting", false, parentFieldName: nameof(Categories.GameSettings))]
+    public static bool IsLimitEmergencyMeeting;
+    [CustomOptionInt("EmergencyMeetingLimitCount", 0, 20, 1, 10, parentFieldName: nameof(IsLimitEmergencyMeeting))]
+    public static int EmergencyMeetingLimitCount;
+
     [CustomOptionBool("CustomAprilFools", false, parentFieldName: nameof(Categories.GameSettings))]
     public static bool CustomAprilFools;
     [CustomOptionSelect("AprilFoolsOutfitType", typeof(AprilFoolsOutfitType), "AprilFoolsOutfitType.", parentFieldName: nameof(CustomAprilFools))]
