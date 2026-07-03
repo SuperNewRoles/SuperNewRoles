@@ -144,7 +144,7 @@ public static class CalledMeetingPatch
 {
     public static void Prefix(PlayerControl __instance, NetworkedPlayerInfo target)
     {
-        PreCalledMeetingEvent.Invoke(__instance, target, false);
+        PreCalledMeetingEvent.Invoke(__instance, target, target == null);
     }
 
     public static void Postfix(PlayerControl __instance, NetworkedPlayerInfo target)
