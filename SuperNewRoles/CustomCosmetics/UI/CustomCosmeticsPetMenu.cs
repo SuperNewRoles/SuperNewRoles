@@ -71,7 +71,7 @@ public class CustomCosmeticsPetMenu : CustomCosmeticsMenuBase<CustomCosmeticsPet
             {
                 slot.spriteRenderer.material = FastDestroyableSingleton<HatManager>.Instance.PlayerMaterial;
                 PlayerMaterial.SetMaskLayerBasedOnLocalPlayer(slot.spriteRenderer, false);
-                PlayerMaterial.SetColors(PlayerControl.LocalPlayer != null ? PlayerControl.LocalPlayer.Data.DefaultOutfit.ColorId : DataManager.Player.Customization.Color, slot.spriteRenderer);
+                PlayerMaterial.SetColors(CustomCosmeticsCostumeMenu.GetPreviewColorId(), slot.spriteRenderer);
             }
 
             slot.transform.localPosition = new(-15.78f + col * 2.63f, 2.63f - itemRow * 2.6f + offSetY, -10);
@@ -113,7 +113,7 @@ public class CustomCosmeticsPetMenu : CustomCosmeticsMenuBase<CustomCosmeticsPet
 
             ControllerManager.Instance.AddSelectableUiElement(slot.button);
 
-            cosmeticData.SetPreview(slot.spriteRenderer, PlayerControl.LocalPlayer != null ? PlayerControl.LocalPlayer.Data.DefaultOutfit.ColorId : DataManager.Player.Customization.Color);
+            cosmeticData.SetPreview(slot.spriteRenderer, CustomCosmeticsCostumeMenu.GetPreviewColorId());
             if (cosmeticData.ProdId == currentCosmeticId)
             {
                 slot.button.SelectButton(true);
@@ -143,7 +143,7 @@ public class CustomCosmeticsPetMenu : CustomCosmeticsMenuBase<CustomCosmeticsPet
         if (pet != null)
         {
             PlayerCustomizationMenu.Instance.SetItemName(pet.GetItemName());
-            PlayerCustomizationMenu.Instance.PreviewArea.SetPetIdle(pet.ProdId, PlayerControl.LocalPlayer != null ? PlayerControl.LocalPlayer.Data.DefaultOutfit.ColorId : DataManager.Player.Customization.Color);
+            PlayerCustomizationMenu.Instance.PreviewArea.SetPetIdle(pet.ProdId, CustomCosmeticsCostumeMenu.GetPreviewColorId());
         }
     }
 

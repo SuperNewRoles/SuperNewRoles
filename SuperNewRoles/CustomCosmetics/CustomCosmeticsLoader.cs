@@ -47,7 +47,7 @@ public class CustomCosmeticsLoader
             "https://raw.githubusercontent.com/Ujet222/TOPVisors/refs/heads/main/CustomVisors.json",
     };
     public static Action willLoad;
-    public static bool runned = true;
+    public static volatile bool runned = true;
     public const string ModdedPrefix = "Modded_";
     public static bool IsRuntimeLoadInProgress { get; private set; }
     public static bool IsRuntimeEnabled => ConfigRoles.IsModCosmeticsAreNotLoaded == null || !ConfigRoles.IsModCosmeticsAreNotLoaded.Value;
@@ -81,7 +81,11 @@ public class CustomCosmeticsLoader
     public static int SpritesAllCount;
     public static bool SpritesDownloading = false;
 
-    public static readonly int MAX_CONCURRENT_DOWNLOADS = ModHelpers.IsAndroid() ? 15 : 30;
+    private static long downloadReceivedBytes;
+
+    private static string CustomCosmeticsCacheDirectory => Path.Combine(SuperNewRolesPlugin.BaseDirectory, "CustomCosmetics");
+
+    public static readonly int MAX_CONCURRENT_DOWNLOADS = ModHelpers.IsAndroid() ? 15 : 3;
     // 到達性プローブは短くし、失敗時は早めにスキップする
     private const float HostProbeTimeoutSeconds = 3f;
     // JSONメタデータは短めのタイムアウト
@@ -90,6 +94,58 @@ public class CustomCosmeticsLoader
     private const float AssetBundleRequestTimeoutSeconds = 20f;
     // スプライト単体は短めに切って待ち時間を抑える
     private const float SpriteDownloadTimeoutSeconds = 5f;
+
+    public static string GetDownloadSizeProgressText()
+    {
+        long receivedBytes = System.Math.Max(0, Interlocked.Read(ref downloadReceivedBytes));
+        return receivedBytes > 0 ? FormatMegabytes(receivedBytes) : "";
+    }
+
+    private static string FormatMegabytes(long bytes)
+    {
+        return $"{bytes / 1024d / 1024d:0.0} MB";
+    }
+
+    private static void ResetDownloadSizeProgress()
+    {
+        Interlocked.Exchange(ref downloadReceivedBytes, 0);
+    }
+
+    private static DownloadSizeProgressTracker StartDownloadSizeProgressTracker()
+    {
+        return new DownloadSizeProgressTracker();
+    }
+
+    private sealed class DownloadSizeProgressTracker
+    {
+        private readonly object sync = new();
+        private long lastReceivedBytes;
+        private bool finished;
+
+        public void Report(long receivedBytes)
+        {
+            lock (sync)
+            {
+                if (finished)
+                    return;
+
+                receivedBytes = System.Math.Max(0, receivedBytes);
+                Interlocked.Add(ref downloadReceivedBytes, receivedBytes - lastReceivedBytes);
+                lastReceivedBytes = receivedBytes;
+            }
+        }
+
+        public void Finish()
+        {
+            lock (sync)
+            {
+                if (finished)
+                    return;
+
+                finished = true;
+            }
+        }
+    }
 
     private static string SanitizeFileName(string fileName)
     {
@@ -179,6 +235,15 @@ public class CustomCosmeticsLoader
         CustomCosmeticsUIStart.RefreshCurrentMenu();
     }
 
+    public static void RefreshAfterStartupLoadCompleted()
+    {
+        SetRuntimeCosmeticsVisible(IsRuntimeEnabled);
+        if (IsRuntimeEnabled)
+            ReapplyLocalLayeredCosmetics();
+
+        CustomCosmeticsUIStart.RefreshCurrentMenu();
+    }
+
     private static void ReapplyLocalLayeredCosmetics()
     {
         var localPlayer = PlayerControl.LocalPlayer;
@@ -209,6 +274,7 @@ public class CustomCosmeticsLoader
             SpritesDownloadingCount = 0;
             SpritesAllCount = 0;
             SpritesDownloading = false;
+            ResetDownloadSizeProgress();
             yield return null;
             runned = true;
             yield break;
@@ -234,6 +300,7 @@ public class CustomCosmeticsLoader
                 break;
         }
         runned = false;
+        ResetDownloadSizeProgress();
         AssetBundlesDownloading = true;
         client.Timeout = TimeSpan.FromSeconds(5);
         List<(string url, string content)> fetchTasks = new();
@@ -290,15 +357,21 @@ public class CustomCosmeticsLoader
 
                         bool isAndroid = ModHelpers.IsAndroid();
 
-                        string currentUrl = isAndroid ? assetBundleAndroidUrl : assetBundleUrl;
-                        string currentExpectedHash = isAndroid ? expectedHashAndroid : expectedHash;
+                        string currentUrl = isAndroid && !string.IsNullOrWhiteSpace(assetBundleAndroidUrl) ? assetBundleAndroidUrl : assetBundleUrl;
+                        string currentExpectedHash = isAndroid && !string.IsNullOrWhiteSpace(expectedHashAndroid) ? expectedHashAndroid : expectedHash;
+                        if (string.IsNullOrWhiteSpace(currentUrl))
+                        {
+                            Logger.Warning($"カスタムコスメティックのアセットバンドルURLが空のためスキップします: {url}");
+                            continue;
+                        }
+
+                        assetBundleLoadingCount++;
+                        AssetBundlesAllCount++;
                         startCoroutine(DownloadAssetBundleWithRetryAsync(currentUrl, currentExpectedHash, () =>
                         {
                             assetBundleLoadingCount--;
                             AssetBundlesDownloadedCount++;
                         }));
-                        assetBundleLoadingCount++;
-                        AssetBundlesAllCount++;
                     }
                 }
                 else
@@ -363,7 +436,7 @@ public class CustomCosmeticsLoader
                             hatName,
                             hat["name"]?.ToString(),
                             hatName,
-                            $"{SuperNewRolesPlugin.BaseDirectory}/CustomCosmetics/{currentPackage.name}/{sanitizedHatName}_",
+                            $"{CustomCosmeticsCacheDirectory}/{currentPackage.name}/{sanitizedHatName}_",
                             hat["author"].ToString(),
                             currentPackage,
                             hatOption,
@@ -427,7 +500,7 @@ public class CustomCosmeticsLoader
                             visorName,
                             visor["name"]?.ToString(),
                             visorName,
-                            $"{SuperNewRolesPlugin.BaseDirectory}/CustomCosmetics/{currentPackage.name}/{sanitizedVisorName}_",
+                            $"{CustomCosmeticsCacheDirectory}/{currentPackage.name}/{sanitizedVisorName}_",
                             visor["author"].ToString(),
                             currentPackage,
                             visorOption,
@@ -475,7 +548,7 @@ public class CustomCosmeticsLoader
                             namePlateName,
                             namePlate["name"]?.ToString(),
                             namePlateName,
-                            $"{SuperNewRolesPlugin.BaseDirectory}/CustomCosmetics/{currentPackage.name}/{sanitizedNamePlateName}_",
+                            $"{CustomCosmeticsCacheDirectory}/{currentPackage.name}/{sanitizedNamePlateName}_",
                             namePlate["author"].ToString(),
                             currentPackage,
                             null
@@ -569,6 +642,8 @@ public class CustomCosmeticsLoader
             CustomLoadingScreen.PleaseDoWillLoad = true;
 
         runned = true;
+        if (notifySplash)
+            CustomLoadingScreen.RefreshStartupLoadAfterFallbackIfNeeded();
         Logger.Info("CustomCosmeticsLoader willLoad done");
     }
     public static IEnumerator GetStringAsync(string url, Action<string> onSuccess, Action<string> onError)
@@ -960,6 +1035,7 @@ public class CustomCosmeticsLoader
             byte[] assetBundleData = null;
             bool successThisAttempt = false;
             SNRHttpClient request = null;
+            DownloadSizeProgressTracker progressTracker = null;
 
             bool isLocal = assetBundleUrl.StartsWith("./", StringComparison.Ordinal) ||
                            assetBundleUrl.StartsWith("../", StringComparison.Ordinal) ||
@@ -1002,6 +1078,8 @@ public class CustomCosmeticsLoader
                 // ユーザーが設定したタイムアウト値を使用
                 request.timeout = AssetBundleRequestTimeoutSeconds;
                 request.ignoreSslErrors = true;
+                progressTracker = StartDownloadSizeProgressTracker();
+                request.downloadProgressChanged = progressTracker.Report;
 
                 IEnumerator webRequestEnumerator = SendSNRHttpClientHelper(request);
                 bool moveNextSuccess = true;
@@ -1040,6 +1118,8 @@ public class CustomCosmeticsLoader
                     if (!webRequestFailedMidExecution && string.IsNullOrEmpty(request.error))
                     {
                         assetBundleData = request.downloadHandler.data;
+                        if (assetBundleData != null)
+                            progressTracker?.Report(assetBundleData.Length);
                     }
                     else if (!webRequestFailedMidExecution) // webRequestFailedMidExecution が true の場合、request.result は信頼できない可能性
                     {
@@ -1054,6 +1134,7 @@ public class CustomCosmeticsLoader
                 }
                 finally
                 {
+                    progressTracker?.Finish();
                 }
             }
 
@@ -1140,7 +1221,7 @@ public class CustomCosmeticsLoader
             default:
                 break;
         }
-        string basePath = $"{SuperNewRolesPlugin.BaseDirectory}/CustomCosmetics/";
+        string basePath = $"{CustomCosmeticsCacheDirectory}/";
         int activeDownloads = 0;
         Queue<(string spriteName, string spritePath, string packageKey, string packagePath)> downloadQueue = new();
         SpritesAllCount = willDownloads.Sum(x => x.Value.Count);
@@ -1226,6 +1307,8 @@ public class CustomCosmeticsLoader
         SNRHttpClient request = SNRHttpClient.Get(spriteUrl);
         request.timeout = SpriteDownloadTimeoutSeconds;
         request.ignoreSslErrors = true;
+        DownloadSizeProgressTracker progressTracker = StartDownloadSizeProgressTracker();
+        request.downloadProgressChanged = progressTracker.Report;
 
         yield return request.SendWebRequest();
 
@@ -1249,6 +1332,7 @@ public class CustomCosmeticsLoader
 
             if (data != null)
             {
+                progressTracker.Report(data.Length);
                 if (downloadedSprites != null)
                     downloadedSprites[filePath] = data;
                 try
@@ -1270,6 +1354,7 @@ public class CustomCosmeticsLoader
         {
             Logger.Error($"Failed to download sprite {spriteName} from {spriteUrl}. Error: {request.error}, Code: {request.responseCode}");
         }
+        progressTracker.Finish();
         onComplete?.Invoke();
     }
 
@@ -1496,50 +1581,93 @@ public class CustomCosmeticsLoader
         return null;
     }
 
-    public static IEnumerator LoadCosmeticsTaskAsync(Func<IEnumerator, Coroutine> startCoroutine, bool notifySplash = true)
+    private static void DeleteCacheIfRequested()
     {
-        IEnumerator loadAsyncEnumerator = null;
-        try
+        if (ConfigRoles._isCustomCosmeticsCacheResetRequested.Value)
         {
-            // LoadAsyncの呼び出し自体が例外を投げる可能性を考慮
-            loadAsyncEnumerator = LoadAsync(startCoroutine, notifySplash);
-        }
-        catch (Exception setupEx)
-        {
-            Logger.Error($"LoadAsyncのセットアップ中にエラーが発生しました: {setupEx}");
-            yield break;
-        }
-
-        if (loadAsyncEnumerator == null)
-        {
-            // 基本的に上記catchで捕捉されるはずだが念のため
-            Logger.Error("LoadAsyncEnumeratorの取得に失敗しました。");
-            yield break;
-        }
-
-        while (true)
-        {
-            object currentYieldedValue = null;
-            bool hasMore;
+            bool deleteCompleted = false;
             try
             {
-                hasMore = loadAsyncEnumerator.MoveNext();
-                if (hasMore)
+                if (Directory.Exists(CustomCosmeticsCacheDirectory))
                 {
-                    currentYieldedValue = loadAsyncEnumerator.Current;
+                    Directory.Delete(CustomCosmeticsCacheDirectory, true);
+                    Logger.Info($"Deleted cosmetics cache directory: {CustomCosmeticsCacheDirectory}");
                 }
                 else
                 {
-                    // Inner coroutine finished
-                    yield break;
+                    Logger.Info($"Cosmetics cache directory does not exist: {CustomCosmeticsCacheDirectory}");
                 }
+                deleteCompleted = true;
             }
-            catch (Exception runEx)
+            catch (Exception ex)
             {
-                Logger.Error($"カスタムコスメティックのロード中にエラーが発生しました (LoadAsync実行中): {runEx}");
-                yield break; // Stop on error from inner coroutine
+                Logger.Error($"Failed to delete cosmetics cache directory: {CustomCosmeticsCacheDirectory}. Error: {ex}");
             }
-            yield return currentYieldedValue; // Yield what the sub-coroutine yielded
+
+            if (deleteCompleted)
+            {
+                ConfigRoles._isCustomCosmeticsCacheResetRequested.Value = false;
+                Logger.Info("Custom cosmetics cache reset request flag cleared.");
+            }
+        }
+    }
+
+    public static IEnumerator LoadCosmeticsTaskAsync(Func<IEnumerator, Coroutine> startCoroutine, bool notifySplash = true)
+    {
+        if (notifySplash)
+            IsRuntimeLoadInProgress = true;
+
+        try
+        {
+            DeleteCacheIfRequested();
+            IEnumerator loadAsyncEnumerator = null;
+            try
+            {
+                // LoadAsyncの呼び出し自体が例外を投げる可能性を考慮
+                loadAsyncEnumerator = LoadAsync(startCoroutine, notifySplash);
+            }
+            catch (Exception setupEx)
+            {
+                Logger.Error($"LoadAsyncのセットアップ中にエラーが発生しました: {setupEx}");
+                yield break;
+            }
+
+            if (loadAsyncEnumerator == null)
+            {
+                // 基本的に上記catchで捕捉されるはずだが念のため
+                Logger.Error("LoadAsyncEnumeratorの取得に失敗しました。");
+                yield break;
+            }
+
+            while (true)
+            {
+                object currentYieldedValue = null;
+                bool hasMore;
+                try
+                {
+                    hasMore = loadAsyncEnumerator.MoveNext();
+                    if (hasMore)
+                    {
+                        currentYieldedValue = loadAsyncEnumerator.Current;
+                    }
+                    else
+                    {
+                        // Inner coroutine finished
+                        yield break;
+                    }
+                }
+                catch (Exception runEx)
+                {
+                    Logger.Error($"カスタムコスメティックのロード中にエラーが発生しました (LoadAsync実行中): {runEx}");
+                    yield break; // Stop on error from inner coroutine
+                }
+                yield return currentYieldedValue; // Yield what the sub-coroutine yielded
+            }
+        }
+        finally
+        {
+            if (notifySplash)
+                IsRuntimeLoadInProgress = false;
         }
     }
 }
