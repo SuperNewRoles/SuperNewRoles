@@ -657,7 +657,7 @@ public class ExPlayerControl
     }
     public bool IsKiller()
     {
-        if (IsImpostor() || IsPavlovsDog() || Role == RoleId.MadKiller || IsJackal() || Role == RoleId.Hitman)
+        if (IsImpostor() || IsPavlovsDog() || IsJackal() || Role == RoleId.Hitman)
             return true;
 
         var customKillButtons = GetAbilities<CustomKillButtonAbility>();
@@ -698,7 +698,8 @@ public class ExPlayerControl
         => HasAbility(nameof(MadmateAbility))
            || GhostRole == GhostRoleId.Revenant
            || (Role == RoleId.SatsumaAndImo && GetAbility<SatsumaAndImoAbility>()?.IsMadTeam == true)
-           || (Role == RoleId.VampireDependent);
+           || (Role == RoleId.VampireDependent)
+           || (Role == RoleId.MadKiller && !IsImpostor());
     public bool IsFriendRoles()
         => HasAbility(nameof(JFriendAbility)) || (Role == RoleId.Bullet && !WaveCannonJackal.WaveCannonJackalCreateBulletToJackal);
     public bool IsJackal()

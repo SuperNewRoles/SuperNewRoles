@@ -54,6 +54,8 @@ namespace SuperNewRoles.Modules
         public bool isDone { get; private set; }
         public string error { get; private set; }
         public long responseCode => _response?.StatusCode ?? 0;
+        public long downloadedBytes { get; private set; }
+        public Action<long> downloadProgressChanged { get; set; }
         public float timeout { get; set; } = 5f;
         public bool ignoreSslErrors { get; set; } = false;
 
@@ -80,6 +82,7 @@ namespace SuperNewRoles.Modules
         {
             isDone = false;
             error = null;
+            downloadedBytes = 0;
             // _response はコンストラクタまたはここでリセットしてもよい
             // 今回はコンストラクタで初期化、SendWebRequestが複数回呼ばれることを想定しないシンプルな形
 
@@ -196,26 +199,32 @@ namespace SuperNewRoles.Modules
                         {
                             byte[] buffer = new byte[8192]; // 8KB buffer
                             int bytesRead;
+                            bool headersParsedForProgress = false;
+                            int bodyStartIndexForProgress = -1;
                             // "Connection: Close" のため、サーバーが接続を閉じるまで読み込む
                             while ((bytesRead = await streamToUse.ReadAsync(buffer, 0, buffer.Length)) > 0)
                             {
                                 memoryStream.Write(buffer, 0, bytesRead);
+                                if (!headersParsedForProgress)
+                                {
+                                    byte[] currentBytes = memoryStream.ToArray();
+                                    int separatorIndex = FindHeaderBodySeparator(currentBytes, currentBytes.Length);
+                                    if (separatorIndex >= 0)
+                                    {
+                                        headersParsedForProgress = true;
+                                        bodyStartIndexForProgress = separatorIndex + 4;
+                                        UpdateDownloadProgress(currentBytes.Length - bodyStartIndexForProgress);
+                                    }
+                                }
+                                else
+                                {
+                                    UpdateDownloadProgress(Math.Max(0, memoryStream.Length - bodyStartIndexForProgress));
+                                }
                             }
                             byte[] fullResponseMessage = memoryStream.ToArray();
 
                             // HTTPレスポンスのパース
-                            int headerBodySeparatorIndex = -1;
-                            for (int i = 0; i < fullResponseMessage.Length - 3; i++)
-                            {
-                                if (fullResponseMessage[i] == 13 && fullResponseMessage[i + 1] == 10 && //
-                                    fullResponseMessage[i + 2] == 13 && fullResponseMessage[i + 3] == 10) //
-
-
-                                {
-                                    headerBodySeparatorIndex = i;
-                                    break;
-                                }
-                            }
+                            int headerBodySeparatorIndex = FindHeaderBodySeparator(fullResponseMessage, fullResponseMessage.Length);
 
                             if (headerBodySeparatorIndex == -1)
                             {
@@ -224,53 +233,8 @@ namespace SuperNewRoles.Modules
                                 return currentResponse;
                             }
 
-                            // ヘッダー部分をパース
-                            string headersPart = Encoding.UTF8.GetString(fullResponseMessage, 0, headerBodySeparatorIndex);
-                            string[] rawHeaderLines = headersPart.Split(new string[] { "\r\n" }, StringSplitOptions.None);
-
-                            if (rawHeaderLines.Length > 0)
-                            {
-                                string statusLine = rawHeaderLines[0];
-                                string[] statusParts = statusLine.Split(new[] { ' ' }, 3);
-                                if (statusParts.Length >= 2 && long.TryParse(statusParts[1], out long statusCodeVal))
-                                {
-                                    currentResponse.StatusCode = statusCodeVal;
-                                    if (statusParts.Length >= 3)
-                                        currentResponse.StatusDescription = statusParts[2];
-                                }
-                                else
-                                {
-                                    currentResponse.ErrorMessage = $"Could not parse HTTP status line: '{statusLine}'";
-                                    // ステータスコードがパースできない場合、StatusCodeは0のまま
-                                }
-
-                                // HTTPヘッダーを WebHeaderCollection に格納
-                                for (int i = 1; i < rawHeaderLines.Length; i++)
-                                {
-                                    string headerLine = rawHeaderLines[i];
-                                    if (string.IsNullOrWhiteSpace(headerLine)) continue;
-                                    int colonIndex = headerLine.IndexOf(':');
-                                    if (colonIndex > 0)
-                                    {
-                                        string name = headerLine.Substring(0, colonIndex).Trim();
-                                        string value = headerLine.Substring(colonIndex + 1).Trim();
-                                        try
-                                        {
-                                            currentResponse.Headers.Add(name, value);
-                                        }
-                                        catch (ArgumentException ex)
-                                        {
-                                            // Log or handle duplicate/invalid headers if necessary
-                                            // For now, just ignore to avoid crashing
-                                            Debug.LogWarning($"Could not add header '{name}': {value}. Error: {ex.Message}");
-                                        }
-                                    }
-                                }
-                            }
-                            else
-                            {
-                                currentResponse.ErrorMessage = "Empty headers received.";
-                            }
+                            ParseResponseHeaders(fullResponseMessage, headerBodySeparatorIndex, currentResponse);
+                            UpdateDownloadProgress(Math.Max(0, fullResponseMessage.Length - (headerBodySeparatorIndex + 4)));
 
                             // ボディ部分を抽出
                             int bodyStartIndex = headerBodySeparatorIndex + 4; // \r\n\r\n シーケンスの後
@@ -337,6 +301,74 @@ namespace SuperNewRoles.Modules
                 throw; // 例外を再スローして SendWebRequest の task.Exception で捕捉させる
             }
             return currentResponse;
+        }
+
+        private void UpdateDownloadProgress(long bytes)
+        {
+            downloadedBytes = Math.Max(0, bytes);
+            downloadProgressChanged?.Invoke(downloadedBytes);
+        }
+
+        private static int FindHeaderBodySeparator(byte[] responseBytes, int length)
+        {
+            for (int i = 0; i < length - 3; i++)
+            {
+                if (responseBytes[i] == 13 &&
+                    responseBytes[i + 1] == 10 &&
+                    responseBytes[i + 2] == 13 &&
+                    responseBytes[i + 3] == 10)
+                {
+                    return i;
+                }
+            }
+            return -1;
+        }
+
+        private static void ParseResponseHeaders(byte[] responseBytes, int headerBodySeparatorIndex, SNRWebResponse response)
+        {
+            string headersPart = Encoding.UTF8.GetString(responseBytes, 0, headerBodySeparatorIndex);
+            string[] rawHeaderLines = headersPart.Split(new string[] { "\r\n" }, StringSplitOptions.None);
+
+            if (rawHeaderLines.Length <= 0)
+            {
+                response.ErrorMessage = "Empty headers received.";
+                return;
+            }
+
+            string statusLine = rawHeaderLines[0];
+            string[] statusParts = statusLine.Split(new[] { ' ' }, 3);
+            if (statusParts.Length >= 2 && long.TryParse(statusParts[1], out long statusCodeVal))
+            {
+                response.StatusCode = statusCodeVal;
+                if (statusParts.Length >= 3)
+                    response.StatusDescription = statusParts[2];
+            }
+            else
+            {
+                response.ErrorMessage = $"Could not parse HTTP status line: '{statusLine}'";
+            }
+
+            for (int i = 1; i < rawHeaderLines.Length; i++)
+            {
+                string headerLine = rawHeaderLines[i];
+                if (string.IsNullOrWhiteSpace(headerLine))
+                    continue;
+
+                int colonIndex = headerLine.IndexOf(':');
+                if (colonIndex <= 0)
+                    continue;
+
+                string name = headerLine.Substring(0, colonIndex).Trim();
+                string value = headerLine.Substring(colonIndex + 1).Trim();
+                try
+                {
+                    response.Headers.Set(name, value);
+                }
+                catch (ArgumentException ex)
+                {
+                    Debug.LogWarning($"Could not add header '{name}': {value}. Error: {ex.Message}");
+                }
+            }
         }
     }
 }
