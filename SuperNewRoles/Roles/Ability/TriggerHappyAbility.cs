@@ -195,6 +195,14 @@ public class TriggerHappyAbility : CustomButtonBase, IAbilityCount, IButtonEffec
         if (_pendingBulletPositionsWithTime.Count == 0)
             return;
 
+        // 会議中は弾を送信せず廃棄する（gathering 中に集合場所へ弾が当たるバグ防止）
+        if (MeetingHud.Instance != null)
+        {
+            _pendingBulletPositionsWithTime.Clear();
+            _pendingBulletDirections.Clear();
+            return;
+        }
+        
         // バッチ送信時点のガトリングガン角度も一緒に送る（非オーナー側の表示角度同期用）
         float currentAngle = 0f;
         if (GatlingGunAnimation != null)
@@ -227,6 +235,8 @@ public class TriggerHappyAbility : CustomButtonBase, IAbilityCount, IButtonEffec
             float delay = batchData.GetDelay(i);
             new LateTask(() =>
             {
+                // LateTask 実行タイミングで会議が始まっていれば生成しない
+                if (MeetingHud.Instance != null) return;
                 TriggerHappyBullet.Spawn(Player, this, position, direction, _data.Range, _data.BulletSize, _data.PierceWalls);
             }, delay, "TriggerHappyBullet", log: false);
         }
