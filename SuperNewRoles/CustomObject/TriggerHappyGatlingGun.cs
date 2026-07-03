@@ -308,7 +308,6 @@ public class TriggerHappyGatlingGun : MonoBehaviour
         isFiring = false;
         targetVolume = 0f;
         pendingDestroy = true;
-        spriteRenderer.enabled = false;
         if (spriteRenderer != null)
         {
             spriteRenderer.enabled = false;
