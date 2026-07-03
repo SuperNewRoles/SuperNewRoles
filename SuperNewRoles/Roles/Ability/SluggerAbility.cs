@@ -46,8 +46,7 @@ public class SluggerAbility : CustomButtonBase, IButtonEffect
     public override void AttachToLocalPlayer()
     {
         base.AttachToLocalPlayer();
-        if (canKillWhileCharging && isSyncKillCoolTime)
-            _murderEvent = MurderEvent.Instance.AddListener(OnMurder);
+        _murderEvent = MurderEvent.Instance.AddListener(OnMurder);
     }
 
     public override void DetachToLocalPlayer()
@@ -96,9 +95,13 @@ public class SluggerAbility : CustomButtonBase, IButtonEffect
 
     private void OnMurder(MurderEventData data)
     {
-        if (!isEffectActive) return;
+        if (!isSyncKillCoolTime) return;
         if (data.killer != Player || !Player.AmOwner) return;
-        CancelCharge();
+        if (isEffectActive)
+        {
+            CancelCharge();
+        }
+        ResetTimer();
     }
 
     private void CancelCharge()
@@ -212,10 +215,7 @@ public class SluggerAbility : CustomButtonBase, IButtonEffect
         // キルクール同期は「ハリセンを振り終わった瞬間」に合わせる
         if (isSyncKillCoolTime && localPlayer != null && localPlayer.AmOwner)
         {
-            new LateTask(
-                () => ExPlayerControl.LocalPlayer?.ResetKillCooldown(),
-                attackDuration,
-                "SluggerSyncKillCooldownAfterSwing");
+            ExPlayerControl.LocalPlayer?.ResetKillCooldown();
         }
 
         ResetTimer();

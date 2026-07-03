@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using HarmonyLib;
+using SuperNewRoles.GameSettings;
 using SuperNewRoles.Mode;
 using SuperNewRoles.Modules;
 using SuperNewRoles.Modules.Events.Bases;
@@ -40,6 +41,8 @@ public static class ReportDeadBodyHostPatch
     public static bool Prefix(PlayerControl __instance, NetworkedPlayerInfo target)
     {
         if (ModeManager.IsMode(ModeId.BattleRoyal))
+            return false;
+        if (AmongUsClient.Instance.AmHost && EmergencyMeetingLimit.ShouldBlockMeeting(target))
             return false;
         if (AmongUsClient.Instance.AmHost && target != null && Roles.Crewmate.PsychometristReportBlock.IsBlocked(target.PlayerId))
             return false;

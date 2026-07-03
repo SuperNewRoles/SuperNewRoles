@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using HarmonyLib;
+using SuperNewRoles.GameSettings;
 using SuperNewRoles.Modules.Events.Bases;
 
 namespace SuperNewRoles.Events;
@@ -39,8 +40,10 @@ class EmergencyUpdatePatch
         List<string> emergencyTexts = [];
         List<string> numberTexts = [];
         EmergencyCheckEvent.Invoke(ref enabledEmergency, ref emergencyTexts, ref numberTexts);
+        bool useVanilla = enabledEmergency;
+        EmergencyMeetingLimit.ApplyEmergencyCheck(ref useVanilla, ref enabledEmergency, emergencyTexts, numberTexts);
 
-        if (enabledEmergency) return; // バニラ判定を使用するなら 離脱
+        if (useVanilla) return; // バニラ判定を使用するなら 離脱
 
         __instance.StatusText.text = string.Join("\n", emergencyTexts);
         __instance.NumberText.text = string.Join("\n", numberTexts);

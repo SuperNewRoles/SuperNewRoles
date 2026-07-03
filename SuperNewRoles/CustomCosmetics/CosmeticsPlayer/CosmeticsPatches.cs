@@ -407,7 +407,7 @@ public static class VisorLayer_SetVisor
 {
     public static void Postfix(VisorLayer __instance, string visorId, int colorId)
     {
-        if (StoreMenu.InstanceExists) return;
+        if (StoreMenu.InstanceExists || !CustomCosmeticsLoader.IsRuntimeEnabled) return;
         __instance.Image.enabled = false;
     }
 }
@@ -416,7 +416,7 @@ public static class HatParent_LateUpdate
 {
     public static void Postfix(HatParent __instance)
     {
-        if (StoreMenu.InstanceExists) return;
+        if (StoreMenu.InstanceExists || !CustomCosmeticsLoader.IsRuntimeEnabled) return;
         if (__instance.FrontLayer != null)
             __instance.FrontLayer.enabled = false;
         if (__instance.BackLayer != null)

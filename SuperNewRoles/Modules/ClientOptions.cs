@@ -70,27 +70,31 @@ public static class ClientOptions
             "ClientOptions.Category.General",
             [
                 ClientOptionEntry.Toggle(
-                    "ClientOptions.AutoCopyGameCode",
+                    () => "ClientOptions.AutoCopyGameCode",
                     () => ConfigRoles.AutoCopyGameCode.Value,
                     value => ConfigRoles.AutoCopyGameCode.Value = value),
                 ClientOptionEntry.Toggle(
-                    "ClientOptions.IsSendAnalytics",
+                    () => "ClientOptions.IsSendAnalytics",
                     () => ConfigRoles.IsSendAnalytics.Value,
                     value => ConfigRoles.IsSendAnalytics.Value = value),
                 ClientOptionEntry.Toggle(
-                    "ClientOptions.IsVersionErrorView",
+                    () => "ClientOptions.IsVersionErrorView",
                     () => ConfigRoles.IsVersionErrorView.Value,
                     value => ConfigRoles.IsVersionErrorView.Value = value),
                 ClientOptionEntry.Button(
-                    "ClientOptions.ShowOnboarding",
+                    () => "ClientOptions.ShowOnboarding",
                     OpenOnboardingFromClientOptions,
                     ShouldShowOnboardingButton),
+                ClientOptionEntry.Button(
+                    () => ConfigRoles._isCustomCosmeticsCacheResetRequested.Value ? "ClientOptions.ResetCustomCosmeticsCacheRequested" : "ClientOptions.ResetCustomCosmeticsCache",
+                    ResetCustomCosmeticsCache,
+                    () => true),
             ]),
         new(
             "ClientOptions.Category.Display",
             [
                 ClientOptionEntry.Toggle(
-                    "ClientOptions.IsModCosmeticsAreNotLoaded",
+                    () => "ClientOptions.IsModCosmeticsAreNotLoaded",
                     () => ConfigRoles.IsModCosmeticsAreNotLoaded.Value,
                     value =>
                     {
@@ -98,7 +102,7 @@ public static class ClientOptions
                         ApplyCustomCosmeticsRuntimeSetting();
                     }),
                 ClientOptionEntry.Toggle(
-                    "ClientOptions.IsNotUsingBlood",
+                    () => "ClientOptions.IsNotUsingBlood",
                     () => ConfigRoles.IsNotUsingBlood.Value,
                     value =>
                     {
@@ -106,7 +110,7 @@ public static class ClientOptions
                         BloodStain.RefreshAllColors();
                     }),
                 ClientOptionEntry.Toggle(
-                    "ClientOptions.IsLightAndDarker",
+                    () => "ClientOptions.IsLightAndDarker",
                     () => ConfigRoles.IsLightAndDarker.Value,
                     value =>
                     {
@@ -114,7 +118,7 @@ public static class ClientOptions
                         DarkLightPlayerVoteAreaPatch.ApplyCurrentSettingToMeeting();
                     }),
                 ClientOptionEntry.Toggle(
-                    "ClientOptions.IsMuteLobbyBGM",
+                    () => "ClientOptions.IsMuteLobbyBGM",
                     () => ConfigRoles.IsMuteLobbyBGM.Value,
                     value =>
                     {
@@ -126,7 +130,7 @@ public static class ClientOptions
             "ClientOptions.Category.Network",
             [
                 ClientOptionEntry.Toggle(
-                    "ClientOptions.CanUseDataConnection",
+                    () => "ClientOptions.CanUseDataConnection",
                     () => ConfigRoles.CanUseDataConnection.Value,
                     value => ConfigRoles.CanUseDataConnection.Value = value),
             ]),
@@ -134,7 +138,7 @@ public static class ClientOptions
             "ClientOptions.Category.Performance",
             [
                 ClientOptionEntry.Toggle(
-                    "ClientOptions.CPUProcessorAffinity",
+                    () => "ClientOptions.CPUProcessorAffinity",
                     () => ConfigRoles._isCPUProcessorAffinity.Value,
                     value =>
                     {
@@ -142,7 +146,7 @@ public static class ClientOptions
                         SuperNewRolesPlugin.UpdateCPUProcessorAffinity();
                     }),
                 ClientOptionEntry.Select(
-                    "ClientOptions.ProcessorAffinityMask",
+                    () => "ClientOptions.ProcessorAffinityMask",
                     GetProcessorAffinityMaskSelection,
                     SetProcessorAffinityMaskSelection,
                     [
@@ -690,7 +694,7 @@ public static class ClientOptions
 
     private static GameObject GenerateToggleOption(ClientOptionEntry option)
     {
-        var optionObject = InstantiateOptionObject(CheckOptionAssetName, option.TitleKey);
+        var optionObject = InstantiateOptionObject(CheckOptionAssetName, option.TitleKey());
         var checkMark = optionObject.transform.Find("CheckMark")?.gameObject;
         checkMark?.SetActive(option.GetBool());
 
@@ -710,21 +714,21 @@ public static class ClientOptions
     private static GameObject GenerateButtonOption(ClientOptionEntry option)
     {
         var optionObject = GameObject.Instantiate(AssetManager.GetAsset<GameObject>(CategoryButtonAssetName), _rightAreaInner);
-        optionObject.name = $"ClientOption_{option.TitleKey}";
+        optionObject.name = $"ClientOption_{option.TitleKey()}";
         optionObject.transform.localScale = Vector3.one * CategoryButtonScale;
-        UIHelper.SetText(optionObject, ModTranslation.GetString(option.TitleKey));
+        UIHelper.SetText(optionObject, ModTranslation.GetString(option.TitleKey()));
         BringOptionTextToFront(optionObject);
 
         var passiveButton = optionObject.AddComponent<PassiveButton>();
         passiveButton.Colliders = new Collider2D[] { optionObject.GetComponent<BoxCollider2D>() };
-        ConfigureButtonOptionButton(passiveButton, optionObject, option.Invoke);
+        ConfigureButtonOptionButton(passiveButton, optionObject, () => { option.Invoke(); RefreshCurrentCategory(); });
 
         return optionObject;
     }
 
     private static GameObject GenerateSelectOption(ClientOptionEntry option)
     {
-        var optionObject = InstantiateOptionObject(SelectOptionAssetName, option.TitleKey);
+        var optionObject = InstantiateOptionObject(SelectOptionAssetName, option.TitleKey());
         var selectedText = optionObject.transform.Find("SelectedText")?.GetComponent<TextMeshPro>();
         UpdateSelectText(option, selectedText);
 
@@ -914,6 +918,11 @@ public static class ClientOptions
         owner?.Close();
     }
 
+    private static void ResetCustomCosmeticsCache()
+    {
+        ConfigRoles._isCustomCosmeticsCacheResetRequested.Value = true;
+    }
+
     private static bool ShouldShowOnboardingButton()
     {
         return AmongUsClient.Instance == null
@@ -934,7 +943,7 @@ public static class ClientOptions
 
     private sealed class ClientOptionEntry
     {
-        public string TitleKey { get; }
+        public Func<string> TitleKey { get; }
         public ClientOptionKind Kind { get; }
         public ClientOptionChoice[] Choices { get; }
         private readonly Func<bool> _getBool;
@@ -945,7 +954,7 @@ public static class ClientOptions
         private readonly Func<bool> _isVisible;
 
         private ClientOptionEntry(
-            string titleKey,
+            Func<string> titleKey,
             ClientOptionKind kind,
             Func<bool> getBool,
             Action<bool> setBool,
@@ -967,7 +976,7 @@ public static class ClientOptions
         }
 
         public static ClientOptionEntry Toggle(
-            string titleKey,
+            Func<string> titleKey,
             Func<bool> getValue,
             Action<bool> setValue,
             Func<bool> isVisible = null)
@@ -976,7 +985,7 @@ public static class ClientOptions
         }
 
         public static ClientOptionEntry Select(
-            string titleKey,
+            Func<string> titleKey,
             Func<int> getSelection,
             Action<int> setSelection,
             ClientOptionChoice[] choices,
@@ -986,7 +995,7 @@ public static class ClientOptions
         }
 
         public static ClientOptionEntry Button(
-            string titleKey,
+            Func<string> titleKey,
             Action onClick,
             Func<bool> isVisible = null)
         {

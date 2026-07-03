@@ -212,35 +212,6 @@ public class AssignmentsSettingInfomationHelpMenu : HelpMenuCategoryBase
         // 表示内容を更新し直す
         DelayTask.UpdateOrAdd(() => UpdateShow(), 0.1f, ref _updateShowTask, "UpdateShowTask");
     }
-
-    // 役職ボタン生成用のヘルパー関数
-    private GameObject CreateRoleButton(IRoleBase role, Transform parent, Vector3 position)
-    {
-        var bulkRoleButtonAsset = AssetManager.GetAsset<GameObject>("BulkRoleButton");
-        var bulkRoleButton = GameObject.Instantiate(bulkRoleButtonAsset, parent);
-        bulkRoleButton.name = $"RoleButton_{role.Role}";
-        bulkRoleButton.transform.localPosition = position;
-        bulkRoleButton.transform.localScale = Vector3.one * 0.36f;
-
-        // テキスト設定
-        var textComponent = bulkRoleButton.transform.Find("Text")?.GetComponent<TextMeshPro>();
-        if (textComponent != null)
-        {
-            textComponent.text = ModHelpers.CsWithTranslation(role.RoleColor, role.Role.ToString());
-        }
-
-        // ボタンイベント設定
-        var passiveButton = bulkRoleButton.AddComponent<PassiveButton>();
-        passiveButton.Colliders = new Collider2D[] { bulkRoleButton.GetComponent<BoxCollider2D>() };
-        passiveButton.OnClick = new();
-        passiveButton.OnClick.AddListener((UnityEngine.Events.UnityAction)(() =>
-        {
-            RoleDetailMenu.OnRoleButtonClicked(role, bulkRoleButton);
-        }));
-
-        return bulkRoleButton;
-    }
-
     public override void OnUpdate()
     {
         // 全体の役職リスト（人数・パーセンテージ）用のハッシュを生成

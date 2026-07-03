@@ -33,7 +33,7 @@ public class PenguinAbility : TargetCustomButtonBase, IButtonEffect
     public float EffectTimer { get; set; }
     public bool effectCancellable => false;
     private bool meetingKill;
-    private EventListener<CalledMeetingEventData> _calledMeeting;
+    private EventListener<CalledMeetingEventData> _preCalledMeeting;
     public override Sprite Sprite => _sprite;
     public override string buttonText => ModTranslation.GetString("PenguinButtonText");
     protected override KeyType keytype => KeyType.Ability1;
@@ -72,7 +72,7 @@ public class PenguinAbility : TargetCustomButtonBase, IButtonEffect
     {
         base.DetachToAlls();
         fixedUpdateEvent?.RemoveListener();
-        _calledMeeting?.RemoveListener();
+        _preCalledMeeting?.RemoveListener();
         wrapUpEvent?.RemoveListener();
         dieEvent?.RemoveListener();
     }
@@ -96,7 +96,7 @@ public class PenguinAbility : TargetCustomButtonBase, IButtonEffect
     {
         base.AttachToAlls();
         SyncKillCoolTimeAbility.CreateAndAttach(this);
-        _calledMeeting = CalledMeetingEvent.Instance.AddListener(OnCalledMeeting);
+        _preCalledMeeting = PreCalledMeetingEvent.Instance.AddListener(OnPreCalledMeeting);
         customKillButtonAbility = new KillableAbility(() => CanDefaultKill || (targetPlayer != null && targetPlayer.IsAlive()));
         Player.AttachAbility(customKillButtonAbility, new AbilityParentAbility(this));
         fixedUpdateEvent = FixedUpdateEvent.Instance.AddListener(OnFixedUpdate);
@@ -112,13 +112,13 @@ public class PenguinAbility : TargetCustomButtonBase, IButtonEffect
         RpcEndPenguin();
     }
 
-    private void OnCalledMeeting(CalledMeetingEventData data)
+    private void OnPreCalledMeeting(CalledMeetingEventData data)
     {
-        // 各クライアントで処理しないと死体の集計に間に合わないので別処理
+        if (!AmongUsClient.Instance.AmHost)
+            return;
         if (targetPlayer != null && Player.IsAlive() && targetPlayer.IsAlive() && meetingKill)
         {
-            targetPlayer.CustomDeath(CustomDeathType.Kill, source: Player);
-            targetPlayer = null;
+            RpcKillPenguinTargetBeforeMeeting(Player, this, targetPlayer);
         }
     }
     private void OnWrapUp(WrapUpEventData data)
@@ -141,6 +141,18 @@ public class PenguinAbility : TargetCustomButtonBase, IButtonEffect
     public void RpcEndPenguin()
     {
         targetPlayer = null;
+    }
+
+    [CustomRPC]
+    public static void RpcKillPenguinTargetBeforeMeeting(ExPlayerControl source, PenguinAbility ability, ExPlayerControl target)
+    {
+        if (source != null && source.IsAlive() && target != null && target.IsAlive())
+        {
+            // 会議開始時の死体集計に間に合わせるため、通常キルアニメーションを経由せず死体を生成する
+            target.CustomDeath(CustomDeathType.KillWithoutKillAnimation, source: source);
+        }
+        if (ability != null)
+            ability.targetPlayer = null;
     }
 
     [CustomRPC]

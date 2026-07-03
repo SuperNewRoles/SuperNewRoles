@@ -26,11 +26,6 @@ public static class GhostOptionMenu
         HideRightSettings();
     }
 
-    public static void HideGhostOptionMenu()
-    {
-        GhostOptionMenuObjectData.Instance?.MenuObject.SetActive(false);
-    }
-
     private static void InitializeGhostOptionMenu()
     {
         var gameSettingMenu = GameObject.FindObjectOfType<GameSettingMenu>();

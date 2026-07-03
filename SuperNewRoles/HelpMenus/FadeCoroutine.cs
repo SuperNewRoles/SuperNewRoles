@@ -109,15 +109,6 @@ public class FadeCoroutine : MonoBehaviour
     }
 
     /// <summary>
-    /// 現在設定されているフェード時間を取得する
-    /// </summary>
-    /// <returns>フェード時間</returns>
-    public float GetDuration()
-    {
-        return duration;
-    }
-
-    /// <summary>
     /// 毎フレームの更新処理
     /// </summary>
     public void Update()
@@ -232,17 +223,5 @@ public class FadeCoroutine : MonoBehaviour
                 targetAlpha
             );
         }
-    }
-}
-public class DefaultAlpha : MonoBehaviour
-{
-    private float alpha;
-    public void SetAlpha(float alpha)
-    {
-        this.alpha = alpha;
-    }
-    public float GetAlpha()
-    {
-        return alpha;
     }
 }

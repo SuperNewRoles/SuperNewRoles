@@ -231,6 +231,8 @@ public static class CustomCosmeticsUIStart
         SetCurrentTab(categoryName, menuObject);
 
         PlayerCustomizationMenu.Instance.PreviewArea.UpdateFromDataManager(PlayerMaterial.MaskType.None);
+        PlayerCustomizationMenu.Instance.PreviewArea.SetBodyColor(CustomCosmeticsCostumeMenu.GetPreviewColorId());
+        PlayerCustomizationMenu.Instance.PreviewArea.SetPetColor(CustomCosmeticsCostumeMenu.GetPreviewColorId());
         SetFrameType(FrameType.Main);
 
         var menu = Menus.Find(m => "cosmetic_" + m.MenuType.ToString() == categoryName);
@@ -352,7 +354,9 @@ public static class CustomCosmeticsUIStart
         __instance.glyphR.SetActive(false);
         ControllerManager.Instance.ClearDestroyedSelectableUiElements();
         __instance.PreviewArea.UpdateFromDataManager(PlayerMaterial.MaskType.None);
-        __instance.PreviewArea.SetPetIdle(PlayerControl.LocalPlayer != null ? PlayerControl.LocalPlayer.Data.DefaultOutfit.PetId : DataManager.Player.Customization.Pet, PlayerControl.LocalPlayer != null ? PlayerControl.LocalPlayer.CurrentOutfit.ColorId : DataManager.Player.Customization.Color);
+        __instance.PreviewArea.SetBodyColor(CustomCosmeticsCostumeMenu.GetPreviewColorId());
+        __instance.PreviewArea.SetPetColor(CustomCosmeticsCostumeMenu.GetPreviewColorId());
+        __instance.PreviewArea.SetPetIdle(PlayerControl.LocalPlayer != null ? PlayerControl.LocalPlayer.Data.DefaultOutfit.PetId : DataManager.Player.Customization.Pet, CustomCosmeticsCostumeMenu.GetPreviewColorId());
         __instance.PreviewArea.ToggleName(active: false);
         __instance.PreviewArea.TogglePet(active: true);
         __instance.PreviewArea.gameObject.SetActive(true);

@@ -83,9 +83,15 @@ public class MadKillerAbility : AbilityBase
     private void OnFixedUpdate()
     {
         if (_isAwakened || Player.IsDead()) return;
-        if (ownerAbility?.Player == null || ownerAbility.Player.IsDead())
+        // 忘却者引き継ぎ直後などオーナー情報がまだ存在しない場合は覚醒しない
+        if (ownerAbility == null) return;
+        var ownerPlayer = ownerAbility.Player;
+
+        // プレイヤーデータが消えた、死亡した、または役職がサイドキラーでなくなった場合
+        if (ownerPlayer == null || ownerPlayer.IsDead() || ownerPlayer.Role != RoleId.SideKiller)
         {
             Awaken();
+            return;
         }
     }
 

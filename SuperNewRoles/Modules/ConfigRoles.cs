@@ -14,6 +14,7 @@ public static class ConfigRoles
     public static ConfigEntry<bool> IsNotUsingBlood;
     public static ConfigEntry<bool> IsLightAndDarker;
     public static ConfigEntry<bool> IsVersionErrorView;
+    public static ConfigEntry<bool> _isCustomCosmeticsCacheResetRequested;
 
     public static ConfigEntry<bool> _isCPUProcessorAffinity;
     public static ConfigEntry<ulong> _ProcessorAffinityMask;
@@ -40,7 +41,7 @@ public static class ConfigRoles
         IsNotUsingBlood = SuperNewRolesPlugin.Instance.Config.Bind("Custom", "IsNotUsingBlood", false, "血液表現を黒にするかどうか(Make blood expression black?)");
         IsLightAndDarker = SuperNewRolesPlugin.Instance.Config.Bind("Custom", "IsLightAndDarker", true, "明暗を表示するかどうか(Show light and dark indicator?)");
         IsVersionErrorView = SuperNewRolesPlugin.Instance.Config.Bind("Custom", "IsVersionErrorView", true, "同期エラーを表示するかどうか(Show sync errors?)");
-
+        _isCustomCosmeticsCacheResetRequested = SuperNewRolesPlugin.Instance.Config.Bind("Default", "IsCustomCosmeticsCacheResetRequested", false, "カスタムコスメティックのキャッシュを次回起動時にリセットするかどうか(Reset custom cosmetics cache on next launch?)");
         _isCPUProcessorAffinity = SuperNewRolesPlugin.Instance.Config.Bind("Default", "CPUProcessorAffinity", false, "CPUの割当を変更するかどうか(Change CPU affinity?)");
         _ProcessorAffinityMask = SuperNewRolesPlugin.Instance.Config.Bind("Default", "ProcessorAffinityMask", (ulong)3, "CPUの割当を変更するためのマスク(Mask for changing CPU affinity)");
 

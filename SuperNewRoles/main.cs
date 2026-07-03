@@ -108,7 +108,6 @@ public partial class SuperNewRolesPlugin : BasePlugin
         SuperNewRoles.Patches.CursedTasks.Main.ClearAndReload();
 
         RegisterCustomObjects();
-        CustomLoadingScreen.Patch(Harmony);
         HarmonyPatchAllTask = TaskRunIfWindows(() => PatchAll(Harmony));
 
         if (!Directory.Exists(BaseDirectory))
@@ -316,6 +315,7 @@ public partial class SuperNewRolesPlugin : BasePlugin
         ClassInjector.RegisterTypeInIl2Cpp<OrpheusRitualCorpseMarker>();
         ClassInjector.RegisterTypeInIl2Cpp<RocketLauncherProjectile>();
         ClassInjector.RegisterTypeInIl2Cpp<RocketLauncherHeldPlayer>();
+        ClassInjector.RegisterTypeInIl2Cpp<LoadingTextFadeRunner>();
 
         try
         {

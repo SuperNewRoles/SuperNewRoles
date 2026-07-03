@@ -32,6 +32,15 @@ public class CalledMeetingEvent : EventTargetBase<CalledMeetingEvent, CalledMeet
     }
 }
 
+public class PreCalledMeetingEvent : EventTargetBase<PreCalledMeetingEvent, CalledMeetingEventData>
+{
+    public static void Invoke(PlayerControl reporter, NetworkedPlayerInfo target, bool isEmergencyMeeting)
+    {
+        var data = new CalledMeetingEventData(reporter, target, isEmergencyMeeting);
+        Instance.Awake(data);
+    }
+}
+
 public class MeetingStartEventData : IEventData
 {
     public int meetingCount { get; }
@@ -133,9 +142,14 @@ public class MeetingHudCalculateVotesOnPlayerOnlyHostEvent : EventTargetBase<Mee
 [HarmonyPatch(typeof(PlayerControl), nameof(PlayerControl.StartMeeting))]
 public static class CalledMeetingPatch
 {
+    public static void Prefix(PlayerControl __instance, NetworkedPlayerInfo target)
+    {
+        PreCalledMeetingEvent.Invoke(__instance, target, target == null);
+    }
+
     public static void Postfix(PlayerControl __instance, NetworkedPlayerInfo target)
     {
-        CalledMeetingEvent.Invoke(__instance, target, false);
+        CalledMeetingEvent.Invoke(__instance, target, target == null);
     }
 }
 

@@ -2,6 +2,7 @@ using System;
 using System.Linq;
 using SuperNewRoles.Events;
 using SuperNewRoles.Events.PCEvents;
+using SuperNewRoles.Mode;
 using SuperNewRoles.WaveCannonObj;
 using UnityEngine;
 using UnityEngine.Rendering;
@@ -49,6 +50,18 @@ public static class CustomDeathExtensions
                 if (!TryKillEvent.Invoke(source, ref player).RefSuccess)
                     break;
                 source.Player.MurderPlayer(player.Player, MurderResultFlags.Succeeded);
+                FinalStatusManager.SetFinalStatus(player, FinalStatus.Kill);
+                MurderDataManager.AddMurderData(source, player);
+                break;
+            case CustomDeathType.KillWithoutKillAnimation:
+                if (source == null)
+                    throw new Exception("Source is null");
+                if (!TryKillEvent.Invoke(source, ref player).RefSuccess)
+                    break;
+                SpawnDeadBody(source, player);
+                player.Player.Die(DeathReason.Kill, assignGhostRole: true);
+                MurderEvent.Invoke(source, player, MurderResultFlags.Succeeded);
+                ModeManager.OnPlayerDeath(player.Player, source.Player);
                 FinalStatusManager.SetFinalStatus(player, FinalStatus.Kill);
                 MurderDataManager.AddMurderData(source, player);
                 break;
@@ -249,6 +262,29 @@ public static class CustomDeathExtensions
                 throw new Exception($"Invalid death type: {deathType}");
         }
     }
+
+    private static void SpawnDeadBody(ExPlayerControl source, ExPlayerControl target)
+    {
+        DeadBody deadBody = GameObject.Instantiate(GameManager.Instance.GetDeadBody(source.Data.Role));
+        deadBody.ParentId = target.PlayerId;
+        foreach (SpriteRenderer renderer in deadBody.bodyRenderers)
+        {
+            target.Player.SetPlayerMaterialColors(renderer);
+        }
+        target.Player.SetPlayerMaterialColors(deadBody.bloodSplatter);
+
+        Vector3 bodyOffset = Vector3.zero;
+        KillAnimation[] killAnimations = source.Player.KillAnimations;
+        if (killAnimations != null && killAnimations.Length > 0 && killAnimations[0] != null)
+            bodyOffset = killAnimations[0].BodyOffset;
+
+        Vector3 position = target.Player.transform.position + bodyOffset;
+        position.z = position.y / 1000f;
+        deadBody.transform.position = position;
+        source.Data.Role.KillAnimSpecialSetup(deadBody, source.Player, target.Player);
+        target.Data.Role.KillAnimSpecialSetup(deadBody, source.Player, target.Player);
+    }
+
     public static void Register()
     {
         WrapUpEvent.Instance.AddListener(x =>
@@ -264,6 +300,7 @@ public enum CustomDeathType
 {
     Exile,
     Kill,
+    KillWithoutKillAnimation,
     KnifeKill,
     Revange,
     FalseCharge,
