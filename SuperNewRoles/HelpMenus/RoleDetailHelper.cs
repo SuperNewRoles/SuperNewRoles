@@ -128,6 +128,106 @@ public static class RoleDetailHelper
     }
 
     /// <summary>
+    /// 役職詳細を表示する (IRoleInformation を受け取るオーバーロード)
+    /// </summary>
+    public static GameObject ShowRoleDetail(IRoleInformation roleInfo, GameObject container, GameObject menuObjectToHide, System.Action onCloseCallback)
+    {
+        // メニューを非表示にする
+        if (menuObjectToHide != null)
+            menuObjectToHide.SetActive(false);
+
+        // 左側のボタンを非表示にする
+        var leftButtonsObject = GameObject.Find("HelpMenuObject/LeftButtons");
+        if (leftButtonsObject != null)
+            leftButtonsObject.SetActive(false);
+
+        // MyRoleInfomationHelpMenuをAssetManagerから取得
+        var roleDetailObject = GameObject.Instantiate(AssetManager.GetAsset<GameObject>("MyRoleInfomationHelpMenu"), container.transform);
+        roleDetailObject.transform.localPosition = Vector3.zero;
+        roleDetailObject.transform.localScale = Vector3.one;
+        roleDetailObject.transform.localRotation = Quaternion.identity;
+
+        // InLobbyTextを非表示にする
+        var inLobbyText = roleDetailObject.transform.Find("InLobbyText")?.gameObject;
+        if (inLobbyText != null)
+            inLobbyText.SetActive(false);
+
+        // RoleDetailMenuにMenuObjectを設定
+        RoleDetailMenu.SetMenuObject(roleDetailObject);
+
+        // 役職情報を表示 (RoleButtonsは不要なので削除)
+        var roleButtonsContainer = roleDetailObject.transform.Find("RoleButtons")?.gameObject;
+        if (roleButtonsContainer != null)
+        {
+            foreach (var child in roleButtonsContainer.GetChildren())
+            {
+                if (child.name.StartsWith("RoleButton_"))
+                    GameObject.Destroy(child);
+            }
+        }
+
+        // 役職詳細を表示
+        RoleDetailMenu.ShowRoleInformation(roleInfo);
+
+        // 閉じるボタンの設定
+        SetupCloseButton(roleDetailObject, onCloseCallback);
+        SetupBackButton(roleDetailObject, onCloseCallback);
+
+        return roleDetailObject;
+    }
+
+    private static void SetupCloseButton(GameObject roleDetailObject, System.Action onCloseCallback)
+    {
+        var closeButton = roleDetailObject.transform.Find("CloseButton")?.gameObject;
+        if (closeButton == null)
+        {
+            closeButton = new GameObject("CloseButton");
+            closeButton.transform.SetParent(roleDetailObject.transform);
+            closeButton.transform.localPosition = new Vector3(2.5f, 2.5f, 0);
+            closeButton.transform.localScale = Vector3.one;
+
+            var buttonRenderer = closeButton.AddComponent<SpriteRenderer>();
+            buttonRenderer.sprite = AssetManager.GetAsset<Sprite>("CloseButton");
+
+            var collider = closeButton.AddComponent<BoxCollider2D>();
+            collider.size = new Vector2(0.5f, 0.5f);
+
+            var passiveButton = closeButton.AddComponent<PassiveButton>();
+            passiveButton.Colliders = new Collider2D[] { collider };
+            passiveButton.OnClick = new();
+            passiveButton.OnClick.AddListener((UnityAction)(() => onCloseCallback?.Invoke()));
+        }
+        else
+        {
+            var passiveButton = closeButton.GetComponent<PassiveButton>();
+            if (passiveButton != null)
+            {
+                passiveButton.OnClick = new();
+                passiveButton.OnClick.AddListener((UnityAction)(() => onCloseCallback?.Invoke()));
+            }
+        }
+    }
+
+    private static void SetupBackButton(GameObject roleDetailObject, System.Action onCloseCallback)
+    {
+        var backButton = new GameObject("BackButton");
+        backButton.transform.SetParent(roleDetailObject.transform);
+        backButton.transform.localPosition = new Vector3(-2.5f, 2.5f, 0);
+        backButton.transform.localScale = Vector3.one;
+
+        var backButtonRenderer = backButton.AddComponent<SpriteRenderer>();
+        backButtonRenderer.sprite = AssetManager.GetAsset<Sprite>("BackButton");
+
+        var backCollider = backButton.AddComponent<BoxCollider2D>();
+        backCollider.size = new Vector2(0.5f, 0.5f);
+
+        var backPassiveButton = backButton.AddComponent<PassiveButton>();
+        backPassiveButton.Colliders = new Collider2D[] { backCollider };
+        backPassiveButton.OnClick = new();
+        backPassiveButton.OnClick.AddListener((UnityAction)(() => onCloseCallback?.Invoke()));
+    }
+
+    /// <summary>
     /// 役職詳細を閉じる
     /// </summary>
     /// <param name="roleDetailObject">役職詳細オブジェクト</param>
