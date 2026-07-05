@@ -69,6 +69,15 @@ public static class HelpMenuObjectManager
         // 左側のボタンをセットアップ
         SetUpLeftButtons();
 
+        // AirColliderにPassiveButtonを設定して後ろの判定をクリックできないようにする。
+        var airCollider = helpMenuObject.transform.Find("AirCollider").gameObject;
+        var airPassiveButton = airCollider.AddComponent<PassiveButton>();
+        airPassiveButton.Colliders = new Collider2D[1];
+        airPassiveButton.Colliders[0] = airCollider.GetComponent<BoxCollider2D>();
+        airPassiveButton.OnClick = new();
+        airPassiveButton.OnMouseOver = new();
+        airPassiveButton.OnMouseOut = new();
+
         // ヘルプメニューを表示するときにホスト情報のマスクエリアを非表示にする
         RoleOptionMenu.UpdateHostInfoMaskArea(false);
 
