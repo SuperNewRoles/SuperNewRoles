@@ -11,6 +11,7 @@ namespace SuperNewRoles.Roles.Neutral;
 class Arsonist : RoleBase<Arsonist>
 {
     public override RoleId Role { get; } = RoleId.Arsonist;
+    public override Sprite RoleIcon => AssetManager.GetAsset<Sprite>("ArsonistRoleIcon.png");
     public override Color32 RoleColor { get; } = new Color32(255, 102, 0, 255); // オレンジ
     public override List<Func<AbilityBase>> Abilities { get; } = [
         () => new ArsonistAbility(new ArsonistData(

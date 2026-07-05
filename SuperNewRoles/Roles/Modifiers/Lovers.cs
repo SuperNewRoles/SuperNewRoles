@@ -14,6 +14,7 @@ namespace SuperNewRoles.Roles.Modifiers;
 class Lovers : ModifierBase<Lovers>
 {
     public override ModifierRoleId ModifierRole => ModifierRoleId.Lovers;
+    public override Sprite RoleIcon => AssetManager.GetAsset<Sprite>("LoversRoleIcon.png");
 
     public override Color32 RoleColor => new(255, 105, 180, byte.MaxValue);
 
