@@ -37,6 +37,18 @@
         <Reference Include="@(LibReference)" />
     </ItemGroup>
 
+    <Target Name="GenerateBuildTime" BeforeTargets="BeforeBuild">
+        <PropertyGroup>
+            <BuildTimeUtc>$([System.DateTime]::UtcNow.ToString("yyyy-MM-ddTHH:mm:ssZ"))</BuildTimeUtc>
+            <BuildTimeJst>$([System.DateTime]::UtcNow.AddHours(9).ToString("yyyy-MM-ddTHH:mm:ss+09:00"))</BuildTimeJst>
+            <DefineConstants>$(DefineConstants);GENERATED_BUILD_TIME</DefineConstants>
+        </PropertyGroup>
+        <WriteLinesToFile File="$(MSBuildProjectDirectory)\Generated\BuildTime.g.cs" Overwrite="true" Lines="#if GENERATED_BUILD_TIME&#xA;namespace SuperNewRoles&#xA;{&#xA;    internal static partial class BuildTimeInfo&#xA;    {&#xA;        public const string BuildTimeUtc = &quot;$(BuildTimeUtc)&quot;%3B&#xA;        public const string BuildTimeJst = &quot;$(BuildTimeJst)&quot;%3B&#xA;    }&#xA;}&#xA;#endif" />
+        <ItemGroup>
+            <Compile Include="$(MSBuildProjectDirectory)\Generated\BuildTime.g.cs" />
+        </ItemGroup>
+    </Target>
+
     <Target Name="CopyCustomContent" AfterTargets="AfterBuild" Condition="'$(Configuration)' == 'Debug' and '$(SkipGameLaunch)' != 'true'">
         <Message Text="Second occurrence" />
         <Copy SourceFiles="$(ProjectDir)bin\$(Configuration)\net6.0\SuperNewRoles.dll" DestinationFolder="$(AmongUs)/BepInEx/plugins/" />
