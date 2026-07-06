@@ -15,6 +15,7 @@ namespace SuperNewRoles.Roles.Impostor;
 class Jammer : RoleBase<Jammer>
 {
     public override RoleId Role => RoleId.Jammer;
+    public override Sprite RoleIcon => AssetManager.GetAsset<Sprite>("JammerRoleIcon.png");
     public override Color32 RoleColor => Palette.ImpostorRed;
     public override List<Func<AbilityBase>> Abilities => [
         () => new JammerAbility(
