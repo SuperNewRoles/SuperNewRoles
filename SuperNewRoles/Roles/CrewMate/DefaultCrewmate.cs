@@ -16,6 +16,7 @@ namespace SuperNewRoles.Roles.CrewMate;
 class Crewmate : RoleBase<Crewmate>
 {
     public override RoleId Role { get; } = RoleId.Crewmate;
+    public override Sprite RoleIcon => AssetManager.GetAsset<Sprite>("CrewmateRoleIcon.png");
 
     public override Color32 RoleColor { get; } = Color.white;
     public override List<Func<AbilityBase>> Abilities { get; } = [];
