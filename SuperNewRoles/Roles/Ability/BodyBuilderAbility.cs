@@ -238,15 +238,51 @@ internal static class BodyBuilderMuscleDisplay
     {
         [1] = Vector3.zero,
         [2] = Vector3.zero,
-        [3] = new(-0.1f, -0.3f, 0),
+        [3] = new(-0.1f, 0.3f, 0),
         [4] = new(0.3f, 0.4f, 0f),
         [5] = new(0, -0.2f, 9f)
+    };
+
+    internal static Dictionary<byte, Vector3> ChatPoseLocalPositions { get; } = new()
+    {
+        [1] = new(0.1f, -0.3f, -0.5f),
+        [2] = new(0.1f, -0.4f, -0.5f),
+        [3] = new(-0.15f, -0.1f, -0.5f),
+        [4] = new(0.3f, 0.4f, -0.5f),
+        [5] = new(0f, -0.2f, 8.5f)
+    };
+
+    internal static Dictionary<byte, float> ChatPoseLocalScales { get; } = new()
+    {
+        [1] = ChatScale,
+        [2] = ChatScale,
+        [3] = ChatScale,
+        [4] = ChatScale,
+        [5] = ChatScale
+    };
+
+    internal static Dictionary<byte, Vector3> NamePlatePoseLocalPositions { get; } = new()
+    {
+        [1] = new(0f, -0.3f, -0.5f),
+        [2] = new(0f, -0.3f, -0.5f),
+        [3] = new(-0.1f, 0f, -0.5f),
+        [4] = new(0.3f, 0.1f, -0.5f),
+        [5] = new(0f, -0.5f, 8.5f)
+    };
+
+    internal static Dictionary<byte, float> NamePlatePoseLocalScales { get; } = new()
+    {
+        [1] = NamePlateScale,
+        [2] = NamePlateScale,
+        [3] = NamePlateScale,
+        [4] = NamePlateScale,
+        [5] = NamePlateScale
     };
 
     public static void Refresh(
         PoolablePlayer target,
         NetworkedPlayerInfo playerInfo,
-        BodyBuilderMuscleDisplayContext context = BodyBuilderMuscleDisplayContext.Default)
+        BodyBuilderMuscleDisplayContext context)
     {
         if (target == null)
             return;
@@ -356,16 +392,25 @@ internal static class BodyBuilderMuscleDisplay
             _ => 0f
         };
         Vector3 poseOffset = PoseLocalPositionOffsets.TryGetValue(posingId, out Vector3 offset) ? offset : Vector3.zero;
-        pose.transform.localPosition = new Vector3(0f, localY, -0.5f) + poseOffset;
-        pose.transform.localRotation = Quaternion.identity;
-        pose.transform.localScale = Vector3.one * context switch
+        Vector3 defaultLocalPosition = new Vector3(0f, localY, -0.5f) + poseOffset;
+        pose.transform.localPosition = context switch
         {
+            BodyBuilderMuscleDisplayContext.Chat when ChatPoseLocalPositions.TryGetValue(posingId, out Vector3 position) => position,
+            BodyBuilderMuscleDisplayContext.NamePlate when NamePlatePoseLocalPositions.TryGetValue(posingId, out Vector3 position) => position,
+            _ => defaultLocalPosition
+        };
+        pose.transform.localRotation = Quaternion.identity;
+        float localScale = context switch
+        {
+            BodyBuilderMuscleDisplayContext.NamePlate when NamePlatePoseLocalScales.TryGetValue(posingId, out float scale) => scale,
+            BodyBuilderMuscleDisplayContext.Chat when ChatPoseLocalScales.TryGetValue(posingId, out float scale) => scale,
             BodyBuilderMuscleDisplayContext.NamePlate => NamePlateScale,
             BodyBuilderMuscleDisplayContext.Chat => ChatScale,
             BodyBuilderMuscleDisplayContext.MeetingCall => MeetingCallScale,
             BodyBuilderMuscleDisplayContext.Exile => ExileScale,
             _ => 1f
         };
+        pose.transform.localScale = Vector3.one * localScale;
 
         int displayLayer = referenceRenderer.gameObject.layer;
         foreach (Transform child in pose.GetComponentsInChildren<Transform>(true))
@@ -476,33 +521,10 @@ internal static class BodyBuilderMuscleDisplay
 
 internal enum BodyBuilderMuscleDisplayContext
 {
-    Default,
     NamePlate,
     Chat,
     MeetingCall,
     Exile
-}
-
-[HarmonyPatch(typeof(PoolablePlayer), nameof(PoolablePlayer.UpdateFromPlayerData))]
-public static class BodyBuilderPoolablePlayerUpdateFromPlayerDataPatch
-{
-    [HarmonyPriority(Priority.Last)]
-    public static void Postfix(PoolablePlayer __instance, NetworkedPlayerInfo pData)
-        => BodyBuilderMuscleDisplay.Refresh(
-            __instance,
-            pData,
-            ExileController.Instance?.Player == __instance ? BodyBuilderMuscleDisplayContext.Exile : BodyBuilderMuscleDisplayContext.Default);
-}
-
-[HarmonyPatch(typeof(PoolablePlayer), nameof(PoolablePlayer.UpdateFromEitherPlayerDataOrCache))]
-public static class BodyBuilderPoolablePlayerUpdateFromEitherPlayerDataOrCachePatch
-{
-    [HarmonyPriority(Priority.Last)]
-    public static void Postfix(PoolablePlayer __instance, NetworkedPlayerInfo pData)
-        => BodyBuilderMuscleDisplay.Refresh(
-            __instance,
-            pData,
-            ExileController.Instance?.Player == __instance ? BodyBuilderMuscleDisplayContext.Exile : BodyBuilderMuscleDisplayContext.Default);
 }
 
 [HarmonyPatch(typeof(PlayerVoteArea), nameof(PlayerVoteArea.SetCosmetics))]
