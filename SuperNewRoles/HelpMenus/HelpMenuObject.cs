@@ -26,24 +26,12 @@ public static class HelpMenuObjectManager
     public const HelpMenuCategory DEFAULT_MENU_LOBBY = HelpMenuCategory.AssignmentsSettingInfomation;
     public static bool IsHelpMenuActive => helpMenuObject != null && fadeCoroutine != null && fadeCoroutine.isActive;
 
-    private static bool IsLobbySettingsMenuOpen()
-    {
-        if (AmongUsClient.Instance?.GameState != InnerNet.InnerNetClient.GameStates.Joined)
-            return false;
-
-        var gameSettingMenu = RoleOptionMenu.GetGameSettingMenu();
-        return gameSettingMenu != null && gameSettingMenu.isActiveAndEnabled;
-    }
-
     public static bool CanToggleHelpMenu()
     {
         if (AmongUsClient.Instance == null || HudManager.Instance == null)
             return false;
 
         if (HudManager.Instance.IsIntroDisplayed)
-            return false;
-
-        if (IsLobbySettingsMenuOpen())
             return false;
 
         return !(AmongUsClient.Instance.GameState == InnerNet.InnerNetClient.GameStates.Started && isWaitingForIntroDisplay);
@@ -77,12 +65,6 @@ public static class HelpMenuObjectManager
         airPassiveButton.OnClick = new();
         airPassiveButton.OnMouseOver = new();
         airPassiveButton.OnMouseOut = new();
-
-        // ヘルプメニューを表示するときにホスト情報のマスクエリアを非表示にする
-        RoleOptionMenu.UpdateHostInfoMaskArea(false);
-
-        // 会議中の場合、playerStatesのMaskAreaを非表示にする
-        ModHelpers.UpdateMeetingHudMaskAreas(false);
 
         var defaultNow =
             AmongUsClient.Instance.GameState == InnerNet.InnerNetClient.GameStates.Started
@@ -246,11 +228,6 @@ public static class HelpMenuObjectManager
 
             fadeCoroutine.ReverseFade();
 
-            // ヘルプメニューの表示状態によってマスクエリアの表示を切り替える
-            // fadeCoroutine.isActiveが反転する前に呼ばれるため、現在の状態の逆を設定
-            bool shouldShowMaskAreas = !fadeCoroutine.isActive;
-            RoleOptionMenu.UpdateHostInfoMaskArea(shouldShowMaskAreas);
-            ModHelpers.UpdateMeetingHudMaskAreas(shouldShowMaskAreas);
         }
         if (fadeCoroutine.isActive)
         {
@@ -262,10 +239,6 @@ public static class HelpMenuObjectManager
     {
         if (helpMenuObject == null || fadeCoroutine == null) return;
         fadeCoroutine.StartFadeOut(helpMenuObject, 0.115f);
-
-        // ヘルプメニューを非表示にするときにホスト情報とMeetingHudのマスクエリアを表示する
-        RoleOptionMenu.UpdateHostInfoMaskArea(!IsLobbySettingsMenuOpen());
-        ModHelpers.UpdateMeetingHudMaskAreas(true);
 
         var activeIndicator = HelpMenusHudManagerStartPatch.helpMenuButton?.transform.Find("active");
         if (activeIndicator != null)
@@ -298,11 +271,6 @@ public static class HelpMenuObjectManager
     {
         public static void Postfix(GameStartManager __instance)
         {
-            if (fadeCoroutine != null && fadeCoroutine.isActive && IsLobbySettingsMenuOpen())
-            {
-                HideHelpMenu();
-            }
-
             bool enabled = helpMenuObject == null || fadeCoroutine == null || !fadeCoroutine.isActive;
             if (AmongUsClient.Instance.AmHost && GameData.Instance != null)
             {
@@ -357,8 +325,23 @@ public static class HelpMenuObjectManager
 }
 public class HelpMenuObjectComponent : MonoBehaviour
 {
+    public void Start()
+    {
+        HelpMenuClipMaterialController.Refresh(gameObject, force: true);
+    }
+
+    public void LateUpdate()
+    {
+        HelpMenuClipMaterialController.Refresh(gameObject);
+    }
+
     public void OnClick()
     {
         HelpMenuObjectManager.CurrentCategory?.OnUpdate();
+    }
+
+    public void OnDestroy()
+    {
+        HelpMenuClipMaterialController.Release();
     }
 }
