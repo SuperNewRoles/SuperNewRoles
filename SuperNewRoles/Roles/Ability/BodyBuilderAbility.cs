@@ -265,8 +265,8 @@ internal static class BodyBuilderMuscleDisplay
     {
         [1] = new(0f, -0.3f, -0.5f),
         [2] = new(0f, -0.3f, -0.5f),
-        [3] = new(-0.1f, 0f, -0.5f),
-        [4] = new(0.3f, 0.1f, -0.5f),
+        [3] = new(-0.1f, -0.1f, -0.5f),
+        [4] = new(0.3f, 0.4f, -0.5f),
         [5] = new(0f, -0.5f, 8.5f)
     };
 
@@ -277,6 +277,17 @@ internal static class BodyBuilderMuscleDisplay
         [3] = NamePlateScale,
         [4] = NamePlateScale,
         [5] = NamePlateScale
+    };
+
+    // 追放画面はマップごとに全ポーズ共通の位置・サイズを調整できる。
+    internal static Dictionary<MapNames, (Vector3 LocalPosition, float LocalScale)> ExileTransformsByMap { get; } = new()
+    {
+        [MapNames.Skeld] = (new(0f, 0f, -0.5f), ExileScale),
+        [MapNames.MiraHQ] = (new(0f, 0f, -0.5f), ExileScale),
+        [MapNames.Polus] = (new(0f, 0f, -0.5f), ExileScale),
+        [MapNames.Dleks] = (new(0f, 0f, -0.5f), ExileScale),
+        [MapNames.Airship] = (new(0f, 0f, -0.5f), ExileScale),
+        [MapNames.Fungle] = (new(0.2f, 0.4f, -0.5f), 1.35f)
     };
 
     public static void Refresh(
@@ -393,7 +404,7 @@ internal static class BodyBuilderMuscleDisplay
         };
         Vector3 poseOffset = PoseLocalPositionOffsets.TryGetValue(posingId, out Vector3 offset) ? offset : Vector3.zero;
         Vector3 defaultLocalPosition = new Vector3(0f, localY, -0.5f) + poseOffset;
-        pose.transform.localPosition = context switch
+        Vector3 localPosition = context switch
         {
             BodyBuilderMuscleDisplayContext.Chat when ChatPoseLocalPositions.TryGetValue(posingId, out Vector3 position) => position,
             BodyBuilderMuscleDisplayContext.NamePlate when NamePlatePoseLocalPositions.TryGetValue(posingId, out Vector3 position) => position,
@@ -410,6 +421,14 @@ internal static class BodyBuilderMuscleDisplay
             BodyBuilderMuscleDisplayContext.Exile => ExileScale,
             _ => 1f
         };
+        if (context == BodyBuilderMuscleDisplayContext.Exile
+            && TryGetExileTransform(out Vector3 exilePosition, out float exileScale))
+        {
+            localPosition = exilePosition;
+            localScale = exileScale;
+        }
+
+        pose.transform.localPosition = localPosition;
         pose.transform.localScale = Vector3.one * localScale;
 
         int displayLayer = referenceRenderer.gameObject.layer;
@@ -436,6 +455,24 @@ internal static class BodyBuilderMuscleDisplay
                 return posingId;
         }
         return 0;
+    }
+
+    private static bool TryGetExileTransform(out Vector3 localPosition, out float localScale)
+    {
+        localPosition = Vector3.zero;
+        localScale = ExileScale;
+
+        var gameOptions = GameOptionsManager.Instance?.CurrentGameOptions;
+        if (gameOptions == null)
+            return false;
+
+        MapNames map = (MapNames)gameOptions.MapId;
+        if (!ExileTransformsByMap.TryGetValue(map, out (Vector3 LocalPosition, float LocalScale) transform))
+            return false;
+
+        localPosition = transform.LocalPosition;
+        localScale = transform.LocalScale;
+        return true;
     }
 
     private static bool ShouldDisplay(NetworkedPlayerInfo playerInfo)
@@ -480,6 +517,31 @@ internal static class BodyBuilderMuscleDisplay
                     ReleaseForcedRendering(renderer);
             }
         }
+    }
+
+    public static void FadeOutExilePose(PoolablePlayer target)
+    {
+        Transform pose = target?.transform.Find(MuscleObjectName);
+        if (pose == null)
+            return;
+
+        SpriteRenderer[] renderers = pose.GetComponentsInChildren<SpriteRenderer>(true);
+        Color[] initialColors = renderers.Select(renderer => renderer.color).ToArray();
+        target.StartCoroutine(Effects.Lerp(0.6f, new Action<float>(progress =>
+        {
+            for (int i = 0; i < renderers.Length; i++)
+            {
+                if (renderers[i] == null)
+                    continue;
+
+                Color color = initialColors[i];
+                color.a *= 1f - progress;
+                renderers[i].color = color;
+            }
+
+            if (progress >= 1f && pose != null)
+                pose.gameObject.SetActive(false);
+        })));
     }
 
     private static bool IsMeetingButtonRenderer(SpriteRenderer renderer, Transform root)
@@ -549,4 +611,18 @@ public static class BodyBuilderExileControllerBeginPatch
     [HarmonyPriority(Priority.Last)]
     public static void Postfix(ExileController __instance)
         => BodyBuilderMuscleDisplay.Refresh(__instance.Player, __instance.initData.networkedPlayer, BodyBuilderMuscleDisplayContext.Exile);
+}
+
+[HarmonyCoroutinePatch(typeof(FungleExileController), "FadeBlackRaftAndPlayer")]
+public static class BodyBuilderFungleExileFirePatch
+{
+    public static void Postfix(object __instance, bool __result)
+    {
+        // コルーチン終了時には、黒フェードが完了して炎が有効化されている。
+        if (__result)
+            return;
+
+        FungleExileController controller = HarmonyCoroutinePatchProcessor.GetParentFromCoroutine<FungleExileController>(__instance);
+        BodyBuilderMuscleDisplay.FadeOutExilePose(controller?.Player);
+    }
 }
