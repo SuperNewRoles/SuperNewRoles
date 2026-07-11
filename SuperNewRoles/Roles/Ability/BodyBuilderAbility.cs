@@ -230,6 +230,7 @@ internal static class BodyBuilderMuscleDisplay
     private const string PoseIdMarkerPrefix = "BodyBuilderPoseId_";
     private const float NamePlateScale = 1.5f;
     private const float NamePlateMaskLeftInset = 0.08f;
+    private const float ChatScale = 1.6f;
     private const float MeetingCallScale = 2f;
     private const float ExileScale = 1.5f;
 
@@ -237,9 +238,9 @@ internal static class BodyBuilderMuscleDisplay
     {
         [1] = Vector3.zero,
         [2] = Vector3.zero,
-        [3] = Vector3.zero,
-        [4] = Vector3.zero,
-        [5] = Vector3.zero
+        [3] = new(-0.1f, -0.3f, 0),
+        [4] = new(0.3f, 0.4f, 0f),
+        [5] = new(0, -0.2f, 9f)
     };
 
     public static void Refresh(
@@ -360,6 +361,7 @@ internal static class BodyBuilderMuscleDisplay
         pose.transform.localScale = Vector3.one * context switch
         {
             BodyBuilderMuscleDisplayContext.NamePlate => NamePlateScale,
+            BodyBuilderMuscleDisplayContext.Chat => ChatScale,
             BodyBuilderMuscleDisplayContext.MeetingCall => MeetingCallScale,
             BodyBuilderMuscleDisplayContext.Exile => ExileScale,
             _ => 1f
@@ -476,6 +478,7 @@ internal enum BodyBuilderMuscleDisplayContext
 {
     Default,
     NamePlate,
+    Chat,
     MeetingCall,
     Exile
 }
@@ -515,7 +518,7 @@ public static class BodyBuilderChatBubbleSetCosmeticsPatch
 {
     [HarmonyPriority(Priority.Last)]
     public static void Postfix(ChatBubble __instance, NetworkedPlayerInfo playerInfo)
-        => BodyBuilderMuscleDisplay.Refresh(__instance.Player, playerInfo);
+        => BodyBuilderMuscleDisplay.Refresh(__instance.Player, playerInfo, BodyBuilderMuscleDisplayContext.Chat);
 }
 
 [HarmonyPatch(typeof(ExileController), nameof(ExileController.Begin))]
