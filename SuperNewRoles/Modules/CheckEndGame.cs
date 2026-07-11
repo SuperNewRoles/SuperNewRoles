@@ -46,6 +46,20 @@ public static class CoStartGamePatch
     }
 }
 
+// バニラの会議開始処理もタスク勝利を確認するため、デバッグのゲーム終了無効化を適用する。
+[HarmonyPatch(typeof(GameManager), nameof(GameManager.CheckTaskCompletion))]
+public static class CheckTaskCompletionPatch
+{
+    public static bool Prefix(ref bool __result)
+    {
+        if (!CustomOptionManager.DebugMode || !CustomOptionManager.DebugModeNoGameEnd)
+            return true;
+
+        __result = false;
+        return false;
+    }
+}
+
 [HarmonyPatch(typeof(LogicGameFlowHnS), nameof(LogicGameFlowHnS.CheckEndCriteria))]
 public static class CheckGameEndPatchHnS
 {
