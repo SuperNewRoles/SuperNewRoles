@@ -40,7 +40,7 @@ public class HomeSecurityGuardAbility : AbilityBase
     public const int TaskTextMax = 12;
     private ImportantTextTask _task;
     private EventListener<MeetingCloseEventData> _meetingCloseListener;
-    private int _currentIndex;
+    private int _currentIndex = -1;
 
     public override void AttachToLocalPlayer()
     {
