@@ -17,16 +17,23 @@ class GameStartManagerStartPatch
     public static void Postfix()
     {
         AssignRoles.LoversIndex = 0;
+        var client = AmongUsClient.Instance;
+        if (client != null && client.AmHost)
+            RoleAssignmentFairnessRuntime.EnterLobby(client.GameId);
     }
 }
 [HarmonyPatch(typeof(RoleManager), nameof(RoleManager.SelectRoles))]
 public static class RoleManagerSelectRolesPatch
 {
-    public static bool Prefix(RoleManager __instance)
+    public static bool Prefix(RoleManager __instance, out bool __state)
     {
-        // あとでいいかんじに
+        __state = false;
+        // BattleRoyalは独自の配役経路を持つため、通常ゲーム用の公平化処理を通さない。
         if (ModeManager.IsMode(ModeId.BattleRoyal))
+        {
+            RoleAssignmentFairnessRuntime.Reset();
             return false;
+        }
         var list = AmongUsClient.Instance.allClients.ToArray();
         var list2 = (from c in list
                      where c.Character != null
@@ -42,19 +49,42 @@ public static class RoleManagerSelectRolesPatch
             }
         }
         IGameOptions currentGameOptions = GameOptionsManager.Instance.CurrentGameOptions;
-        // バニラとの変更点ここ
-        // インポスターの数をそのまま使ってバリデーションを防いでる
+        // 既存仕様どおり、設定されたインポスター数をそのまま使ってバニラ側の再検証を避ける。
         int numImpostors = ModeManager.IsMode(ModeId.WCBattleRoyal) ? 0 : GameOptionsManager.Instance.CurrentGameOptions.NumImpostors;
-        __instance.DebugRoleAssignments(list2.ToIl2CppList(), ref numImpostors);
-        GameManager.Instance.LogicRoleSelection.AssignRolesForTeam(list2.ToIl2CppList(), currentGameOptions, RoleTeamTypes.Impostor, numImpostors, new Il2CppSystem.Nullable<RoleTypes>(RoleTypes.Impostor));
+        var debugCandidates = list2.ToIl2CppList();
+        __instance.DebugRoleAssignments(debugCandidates, ref numImpostors);
+
+        // DebugRoleAssignmentsが候補を調整し終えた後に、公平化用のゲームスナップショットを開始する。
+        __state = RoleAssignmentFairnessRuntime.TryBeginAssignment();
+        List<NetworkedPlayerInfo> impostorCandidates = list2;
+        if (__state && numImpostors > 0 &&
+            RoleAssignmentFairnessRuntime.TrySelectImpostors(
+                debugCandidates.ToSystemList(),
+                numImpostors,
+                out var fairImpostorCandidates,
+                out var pendingImpostorResult) &&
+            RoleAssignmentFairnessRuntime.Record(pendingImpostorResult))
+        {
+            impostorCandidates = fairImpostorCandidates;
+        }
+
+        GameManager.Instance.LogicRoleSelection.AssignRolesForTeam(impostorCandidates.ToIl2CppList(), currentGameOptions, RoleTeamTypes.Impostor, numImpostors, new Il2CppSystem.Nullable<RoleTypes>(RoleTypes.Impostor));
+        // Crewmate側は既存の役職出現分布を変えないため、従来どおり全候補を渡す。
         GameManager.Instance.LogicRoleSelection.AssignRolesForTeam(list2.ToIl2CppList(), currentGameOptions, RoleTeamTypes.Crewmate, int.MaxValue, new Il2CppSystem.Nullable<RoleTypes>(RoleTypes.Crewmate));
         return false;
     }
-    public static void Postfix(RoleManager __instance)
+    public static void Postfix(RoleManager __instance, bool __state)
     {
         if (ModeManager.IsMode(ModeId.BattleRoyal))
             return;
-        AssignRoles.AssignCustomRoles();
+        bool succeeded = AssignRoles.AssignCustomRoles();
+        RoleAssignmentFairnessRuntime.FinishAssignment(succeeded);
+    }
+    public static Exception Finalizer(Exception __exception, bool __state)
+    {
+        if (__exception != null && RoleAssignmentFairnessRuntime.MustStopAfterRoleRpcFailure)
+            RoleAssignmentFairnessRuntime.AbortAssignment("UnhandledAssignmentException", null);
+        return __exception;
     }
 }
 
@@ -73,7 +103,7 @@ public static class AssignRoles
     private static Dictionary<AssignedTeamType, List<AssignTickets>> AssignTickets_NotHundredPercent = new();
     private static List<RoleId> AssignedRoleIds = new(); // 既にアサインされた役職のIDを追跡
 
-    public static void AssignCustomRoles()
+    public static bool AssignCustomRoles()
     {
         try
         {
@@ -84,7 +114,7 @@ public static class AssignRoles
             if (PlayerControl.AllPlayerControls == null)
             {
                 Logger.Error("PlayerControl.AllPlayerControls is null in AssignCustomRoles");
-                return;
+                return false;
             }
 
             var disconnectedPlayers = PlayerControl.AllPlayerControls.ToArray()
@@ -111,12 +141,12 @@ public static class AssignRoles
                     AssignRole(player, player.Data.Role.IsImpostor ? RoleId.Impostor : RoleId.Crewmate);
             }
 
-            // Assign Impostors
+            // インポスター陣営のカスタム役職を割り当てる。
             AssignTickets(AssignTickets_HundredPercent[AssignedTeamType.Impostor],
             AssignTickets_NotHundredPercent[AssignedTeamType.Impostor],
             true, MaxImpostors);
 
-            // Assign Neutral
+            // 第三陣営のカスタム役職を割り当てる。
             AssignTickets(AssignTickets_HundredPercent[AssignedTeamType.Neutral],
             AssignTickets_NotHundredPercent[AssignedTeamType.Neutral],
             false, MaxNeutrals);
@@ -127,15 +157,15 @@ public static class AssignRoles
                 AssignTickets_NotHundredPercent[AssignedTeamType.Crewmate].RemoveAll(ticket => ticket.RoleOption.RoleId == RoleId.JackalFriends);
             }
 
-            // Assign Crews
+            // クルーメイト陣営のカスタム役職を割り当てる。
             AssignTickets(AssignTickets_HundredPercent[AssignedTeamType.Crewmate],
             AssignTickets_NotHundredPercent[AssignedTeamType.Crewmate],
             false, MaxCrews);
 
-            // Assign Modifiers
+            // Modifierの選出
             AssignModifiers();
 
-            // Assign Lovers
+            // Loversの選出
             AssignLovers();
 
             // 役職割り当てサマリー
@@ -146,11 +176,13 @@ public static class AssignRoles
             Logger.Info($"[RoleAssignSummary] {roleSummary}", "SNR.GameState");
 
             Logger.Info("AssignCustomRoles() 終了: カスタム役職のアサイン処理が完了しました。");
+            return true;
         }
         catch (Exception ex)
         {
             Logger.Error($"Error in AssignCustomRoles: {ex.Message}\n{ex.StackTrace}");
             // エラーが発生してもゲームを続行できるようにする
+            return false;
         }
     }
     private static void CreateTickets()
@@ -268,7 +300,16 @@ public static class AssignRoles
                 }
                 else
                 {
-                    int playerIndex = ModHelpers.GetRandomInt(targetPlayers.Count - 1);
+                    int playerIndex;
+                    if (!RoleAssignmentFairnessRuntime.TrySelectCustomRolePlayer(
+                            targetPlayers,
+                            roleId,
+                            out playerIndex,
+                            out var pendingResult) ||
+                        !RoleAssignmentFairnessRuntime.Record(pendingResult))
+                    {
+                        playerIndex = ModHelpers.GetRandomInt(targetPlayers.Count - 1);
+                    }
                     PlayerControl targetPlayer = targetPlayers[playerIndex];
                     targetPlayers.RemoveAt(playerIndex);
 
@@ -310,7 +351,16 @@ public static class AssignRoles
                 }
                 else
                 {
-                    int playerIndex = targetPlayers.GetRandomIndex();
+                    int playerIndex;
+                    if (!RoleAssignmentFairnessRuntime.TrySelectCustomRolePlayer(
+                            targetPlayers,
+                            roleId,
+                            out playerIndex,
+                            out var pendingResult) ||
+                        !RoleAssignmentFairnessRuntime.Record(pendingResult))
+                    {
+                        playerIndex = targetPlayers.GetRandomIndex();
+                    }
                     PlayerControl targetPlayer = targetPlayers[playerIndex];
                     targetPlayers.RemoveAt(playerIndex);
 
@@ -355,13 +405,30 @@ public static class AssignRoles
             return false;
         }
 
-        // TeamSize 人をランダムに抽出
-        var picked = new List<PlayerControl>(teamSize);
-        for (int i = 0; i < teamSize; i++)
+        List<PlayerControl> picked;
+        bool mustStopAfterRoleRpcFailure = RoleAssignmentFairnessRuntime.MustStopAfterRoleRpcFailure;
+        bool usedFairness = RoleAssignmentFairnessRuntime.TrySelectTeamRolePlayers(
+                targetPlayers,
+                teamRole,
+                out picked,
+                out var pendingResult) &&
+            RoleAssignmentFairnessRuntime.Record(pendingResult);
+        if (!usedFairness)
         {
-            int idx = ModHelpers.GetRandomInt(targetPlayers.Count - 1);
-            picked.Add(targetPlayers[idx]);
-            targetPlayers.RemoveAt(idx);
+            // 公平化OFFまたは検証失敗時は、従来の一様抽選へ完全に戻す。
+            // この分岐では公平化の選択結果を一切混ぜない。
+            picked = new List<PlayerControl>(teamSize);
+            for (int i = 0; i < teamSize; i++)
+            {
+                int idx = ModHelpers.GetRandomInt(targetPlayers.Count - 1);
+                picked.Add(targetPlayers[idx]);
+                targetPlayers.RemoveAt(idx);
+            }
+        }
+        else
+        {
+            foreach (var player in picked)
+                targetPlayers.Remove(player);
         }
 
         // 実際の割り当ては役職側に委譲
@@ -372,7 +439,17 @@ public static class AssignRoles
         catch (Exception ex)
         {
             Logger.Error($"Failed to assign team role {roleId}: {ex}");
-            // 失敗時は元に戻す（可能な範囲で）
+            if (mustStopAfterRoleRpcFailure)
+            {
+                // 公平抽選から従来抽選へ戻した場合も含め、RPC開始後は
+                // 配役全体を中止し、外側ループからの再試行を防ぐ。
+                RoleAssignmentFairnessRuntime.AbortAssignment(
+                    "TeamRoleAssignmentFailed",
+                    RoleAssignmentCategory.CustomMainRole);
+                throw;
+            }
+
+            // 公平化OFFまたは対象外モードでは、従来の失敗処理を維持する。
             targetPlayers.AddRange(picked);
             return false;
         }
