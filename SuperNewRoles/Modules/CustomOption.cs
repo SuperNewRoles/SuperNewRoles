@@ -21,6 +21,8 @@ public static class CustomOptionManager
     public static bool DebugMode = true;
     [CustomOptionBool("DebugModeNoGameEnd", false, parentFieldName: nameof(Categories.GeneralSettings))]
     public static bool DebugModeNoGameEnd;
+    [CustomOptionBool("NoGameEndUnlimitedEmergencyMeetings", false, parentFieldName: nameof(DebugModeNoGameEnd))]
+    public static bool NoGameEndUnlimitedEmergencyMeetings;
     [CustomOptionBool("SkipStartGameCountdown", false, parentFieldName: nameof(Categories.GeneralSettings))]
     public static bool SkipStartGameCountdown;
 

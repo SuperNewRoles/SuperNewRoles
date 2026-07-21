@@ -50,6 +50,8 @@ public static class GameSettingOptions
     public static bool IsLimitEmergencyMeeting;
     [CustomOptionInt("EmergencyMeetingLimitCount", 0, 20, 1, 10, parentFieldName: nameof(IsLimitEmergencyMeeting))]
     public static int EmergencyMeetingLimitCount;
+    [CustomOptionBool("UnlimitedEmergencyMeetings", false, parentFieldName: nameof(Categories.GameSettings))]
+    public static bool UnlimitedEmergencyMeetings;
 
     [CustomOptionBool("CustomAprilFools", false, parentFieldName: nameof(Categories.GameSettings))]
     public static bool CustomAprilFools;
