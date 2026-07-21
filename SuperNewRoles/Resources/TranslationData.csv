@@ -157,6 +157,7 @@ ExcludeSubmitScanTaskFromSelection,クルーメイトスキャンタスクを選
 RandomizeFixLightsSwitches,停電修理の初期状態を完全にランダムにする,Fully randomize lights repair switches,完全随机化修灯开关,完全隨機化修燈開關
 SyncSpawn,スポーンを同期する(選択スポーンのみ),Sync Spawn (Selected Spawn Only),同步出生点(仅选择出生点),同步出生點(僅選擇出生點)
 AdvancedRandom,よりランダムな乱数を使用する,Use Enhanced Randomness,使用增强型随机数,使用更隨機的隨機數
+ReduceRoleAssignmentBias,役職選出の偏りを軽減する,Reduce Perceived Role Assignment Bias,减少角色分配的体感偏差,降低角色分配的體感偏差
 DisableTaskWin,タスク勝利を無効にする,Disable task victory,禁用任务胜利,禁用任務勝利
 DisableHijackTaskWin,第三陣営のタスク勝利横取りを無効にする,Disable hijack task victory by third party,禁用中立阵营抢夺任务胜利,禁用中立陣營搶奪任務勝利
 HideGhostRoles,死亡時に他クルーの役職を表示しない,Hide Crew Roles on Death,死亡时隐藏船员职业,死亡時隱藏船員職業
