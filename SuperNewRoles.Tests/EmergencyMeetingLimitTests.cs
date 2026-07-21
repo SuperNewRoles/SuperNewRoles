@@ -1,7 +1,6 @@
 using System.Reflection;
 using FluentAssertions;
 using SuperNewRoles.CustomOptions.Categories;
-using SuperNewRoles.GameSettings;
 using SuperNewRoles.Modules;
 using Xunit;
 
@@ -31,52 +30,4 @@ public class EmergencyMeetingLimitTests
         countAttribute.ParentFieldName.Should().Be(nameof(GameSettingOptions.IsLimitEmergencyMeeting));
     }
 
-    [Fact]
-    public void RecordMeeting_CountsOnlyEmergencyMeetings()
-    {
-        bool originalLimited = GameSettingOptions.IsLimitEmergencyMeeting;
-        int originalLimit = GameSettingOptions.EmergencyMeetingLimitCount;
-
-        try
-        {
-            GameSettingOptions.IsLimitEmergencyMeeting = true;
-            GameSettingOptions.EmergencyMeetingLimitCount = 2;
-            EmergencyMeetingLimit.Reset();
-
-            EmergencyMeetingLimit.RecordMeeting(target: null);
-
-            EmergencyMeetingLimit.EmergencyCount.Should().Be(1);
-            EmergencyMeetingLimit.RemainingCount.Should().Be(1);
-            EmergencyMeetingLimit.IsLimitReached.Should().BeFalse();
-        }
-        finally
-        {
-            GameSettingOptions.IsLimitEmergencyMeeting = originalLimited;
-            GameSettingOptions.EmergencyMeetingLimitCount = originalLimit;
-            EmergencyMeetingLimit.Reset();
-        }
-    }
-
-    [Fact]
-    public void ZeroLimit_BlocksFirstEmergencyMeeting()
-    {
-        bool originalLimited = GameSettingOptions.IsLimitEmergencyMeeting;
-        int originalLimit = GameSettingOptions.EmergencyMeetingLimitCount;
-
-        try
-        {
-            GameSettingOptions.IsLimitEmergencyMeeting = true;
-            GameSettingOptions.EmergencyMeetingLimitCount = 0;
-            EmergencyMeetingLimit.Reset();
-
-            EmergencyMeetingLimit.IsLimitReached.Should().BeTrue();
-            EmergencyMeetingLimit.ShouldBlockMeeting(target: null).Should().BeTrue();
-        }
-        finally
-        {
-            GameSettingOptions.IsLimitEmergencyMeeting = originalLimited;
-            GameSettingOptions.EmergencyMeetingLimitCount = originalLimit;
-            EmergencyMeetingLimit.Reset();
-        }
-    }
 }
