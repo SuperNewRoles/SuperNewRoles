@@ -104,6 +104,8 @@ public partial class SuperNewRolesPlugin : BasePlugin
         SuperNewRoles.Logger.Info($"SecretDirectory: {SecretDirectory}");
 
         SuperNewRoles.Logger.Info($"Current version: {Constants.GetBroadcastVersion()}");
+        SuperNewRoles.Logger.Info($"Build time (UTC): {BuildTimeInfo.BuildTimeUtc}");
+        SuperNewRoles.Logger.Info($"Build time (JST): {BuildTimeInfo.BuildTimeJst}");
 
         SuperNewRoles.Patches.CursedTasks.Main.ClearAndReload();
 

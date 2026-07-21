@@ -16,6 +16,7 @@ namespace SuperNewRoles.Roles.Impostor;
 class Impostor : RoleBase<Impostor>
 {
     public override RoleId Role { get; } = RoleId.Impostor;
+    public override Sprite RoleIcon => AssetManager.GetAsset<Sprite>("ImpostorRoleIcon.png");
 
     public override Color32 RoleColor { get; } = Palette.ImpostorRed;
     public override List<Func<AbilityBase>> Abilities { get; } = [];

@@ -1,7 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
     <PropertyGroup>
         <TargetFramework>net6.0</TargetFramework>
-        <Version>3.1.5.3</Version>
+        <Version>3.1.5.4</Version>
         <Description>SuperNewRoles</Description>
         <Authors>ykundesu</Authors>
         <langVersion>preview</langVersion>
@@ -36,6 +36,33 @@
         <LibReference Include="$(Build)/interop/*.dll" />
         <Reference Include="@(LibReference)" />
     </ItemGroup>
+
+    <!-- SDKスタイルの既定glob (Compile **/*.cs) からGenerated/を除外し、
+         明示Includeでのみ拾うことで重複(CS2002)を回避する -->
+    <ItemGroup>
+        <Compile Remove="Generated\**" />
+    </ItemGroup>
+    <Target Name="GenerateBuildTime" BeforeTargets="BeforeBuild">
+        <PropertyGroup>
+            <BuildTimeUtc>$([System.DateTime]::UtcNow.ToString("yyyy-MM-ddTHH:mm:ssZ"))</BuildTimeUtc>
+            <BuildTimeJst>$([System.DateTime]::UtcNow.AddHours(9).ToString("yyyy-MM-ddTHH:mm:ss+09:00"))</BuildTimeJst>
+            <DefineConstants>$(DefineConstants);GENERATED_BUILD_TIME</DefineConstants>
+            <BuildTimeFileContent>#if GENERATED_BUILD_TIME
+namespace SuperNewRoles
+{
+    internal static partial class BuildTimeInfo
+    {
+        public const string BuildTimeUtc = "$(BuildTimeUtc)"%3B
+        public const string BuildTimeJst = "$(BuildTimeJst)"%3B
+    }
+}
+#endif</BuildTimeFileContent>
+        </PropertyGroup>
+        <WriteLinesToFile File="$(MSBuildProjectDirectory)\Generated\BuildTime.g.cs" Overwrite="true" Lines="$(BuildTimeFileContent)" />
+        <ItemGroup>
+            <Compile Include="$(MSBuildProjectDirectory)\Generated\BuildTime.g.cs" />
+        </ItemGroup>
+    </Target>
 
     <Target Name="CopyCustomContent" AfterTargets="AfterBuild" Condition="'$(Configuration)' == 'Debug' and '$(SkipGameLaunch)' != 'true'">
         <Message Text="Second occurrence" />

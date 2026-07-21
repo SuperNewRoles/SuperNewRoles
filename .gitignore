@@ -1,6 +1,7 @@
 SuperNewRoles/SuperNewRoles.csproj.user
 SuperNewRoles/obj/
 SuperNewRoles/bin/
+SuperNewRoles/Generated/
 SuperNewRoles.Tests/bin/
 SuperNewRoles.Tests/obj/
 SuperNewRoles/Android/PresetFilePickerBridge/build/

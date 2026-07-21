@@ -29,6 +29,11 @@ public static class ModdedNetworkTransform
     private const float SMOOTHING_TOTAL_TIME = 0.12f;
     // 位置同期を強制するまでのバッファデータ数
     private const int SYNC_POSITION_LIMIT_INITIAL_VALUE = 5;
+    // 通信の遅延やフレーム落ちが発生した際に、古い移動データが無制限に滞留しないようにする
+    private const int MAX_REMOTE_MOVEMENT_QUEUE_SIZE = 20;
+    // 通常の送信件数より十分大きな値に制限し、不正なRPCによる過剰な反復処理を防ぐ
+    private const int MAX_BATCH_MOVEMENT_COUNT = 256;
+    private const int MOVEMENT_DATA_BYTE_SIZE = sizeof(float) * 5;
     // 停止時の滑らかな動きにかける時間
     private const float STOP_SMOOTHING_TIME = 0.05f;
     // 方向転換検出の閾値 (ドット積)
@@ -257,6 +262,7 @@ public static class ModdedNetworkTransform
             writer.Write(player.transform.position.z);
             writer.Write(currentVelocity.x);
             writer.Write(currentVelocity.y);
+            AmongUsClient.Instance.FinishRpcImmediately(writer);
             // Add initial movement data immediately
             movementBuffer.Add(new MovementData { position = player.transform.position, velocity = currentVelocity });
         }
@@ -325,19 +331,19 @@ public static class ModdedNetworkTransform
         {
             case (byte)MovementRpcType.BatchMovement:
                 playerId = reader.ReadByte();
-                int count = Mathf.Min(reader.ReadInt32(), 20); // Read count, capped at 20
-                if (ShouldIgnoreRemoteControlSync(playerId))
+                int count = reader.ReadInt32();
+                int bytesRemaining = reader.BytesRemaining;
+                if (!IsValidBatchMovementPayload(count, bytesRemaining))
                 {
-                    reader.Position += count * 4 * 5;
-                    break;
-                }
-                if (skipNextBatchPlayers.Remove(playerId))
-                {
-                    reader.Position += count * 4 * 5;
+                    Logger.Warning($"Invalid BatchMovement payload: count={count}, bytesRemaining={bytesRemaining}");
                     break;
                 }
 
-                var queue = GetOrCreateQueue(playerId);
+                bool shouldIgnoreRemoteSync = ShouldIgnoreRemoteControlSync(playerId);
+                bool shouldSkipBatch = skipNextBatchPlayers.Remove(playerId);
+                Queue<MovementData> queue = shouldIgnoreRemoteSync || shouldSkipBatch
+                    ? null
+                    : GetOrCreateQueue(playerId);
                 for (int i = 0; i < count; i++)
                 {
                     float x = reader.ReadSingle();
@@ -345,7 +351,14 @@ public static class ModdedNetworkTransform
                     float z = reader.ReadSingle();
                     float vx = reader.ReadSingle();
                     float vy = reader.ReadSingle();
-                    queue.Enqueue(new MovementData { position = new Vector3(x, y, z), velocity = new Vector2(vx, vy) });
+                    if (queue != null)
+                    {
+                        EnqueueMovementData(queue, new MovementData
+                        {
+                            position = new Vector3(x, y, z),
+                            velocity = new Vector2(vx, vy)
+                        });
+                    }
                 }
                 break;
             case (byte)MovementRpcType.StartMovement:
@@ -379,6 +392,13 @@ public static class ModdedNetworkTransform
                 skipNextBatchPlayers.Add(playerId);
                 break;
         }
+    }
+    private static bool IsValidBatchMovementPayload(int count, int bytesRemaining)
+    {
+        return count >= 0
+            && count <= MAX_BATCH_MOVEMENT_COUNT
+            && bytesRemaining >= 0
+            && bytesRemaining == count * MOVEMENT_DATA_BYTE_SIZE;
     }
 
     private static bool ShouldIgnoreRemoteControlSync(byte playerId)
@@ -560,7 +580,15 @@ public static class ModdedNetworkTransform
 
         for (int i = 0; i < positions.Length; i++)
         {
-            queue.Enqueue(new MovementData { position = positions[i], velocity = velocities[i] });
+            EnqueueMovementData(queue, new MovementData { position = positions[i], velocity = velocities[i] });
+        }
+    }
+    private static void EnqueueMovementData(Queue<MovementData> queue, MovementData movementData)
+    {
+        queue.Enqueue(movementData);
+        while (queue.Count > MAX_REMOTE_MOVEMENT_QUEUE_SIZE)
+        {
+            queue.Dequeue();
         }
     }
     [HarmonyPatch(typeof(CustomNetworkTransform), nameof(CustomNetworkTransform.OnEnable))]

@@ -31,7 +31,7 @@ public static class ConfigRoles
 
     public static void Init()
     {
-        CanUseDataConnection = SuperNewRolesPlugin.Instance.Config.Bind("Default", "CanUseDataConnection", false, "サイズが大きいファイルをデータ通信でダウンロードするかどうか(Download large files over mobile data?)");
+        CanUseDataConnection = SuperNewRolesPlugin.Instance.Config.Bind("Default", "CanUseDataConnectionForCosmetics", true, "コスメティックスをデータ通信でダウンロードするかどうか(Download cosmetics over mobile data?)");
         IsSendAnalytics = SuperNewRolesPlugin.Instance.Config.Bind("Default", "IsSendAnalyticsSNR2", true, "アナリティクスを送信するかどうか(Send analytics?)");
         IsSendAnalyticsPopupViewd = SuperNewRolesPlugin.Instance.Config.Bind("Default", "IsSendAnalyticsPopupViewd", false, "アナリティクスのポップアップが表示されたかどうか(Has the analytics popup been viewed?)");
         IsOnboardingViewd = SuperNewRolesPlugin.Instance.Config.Bind("Default", "IsOnboardingViewd", false, "初回起動時のオンボーディングが完了したかどうか(Has the first-launch onboarding been completed?)");

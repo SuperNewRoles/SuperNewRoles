@@ -91,3 +91,15 @@ public enum BlackHatHackerInfectionScopeType
     Medium = 1,
     Long = 2,
 }
+
+internal static class BlackHatHackerInfectionScope
+{
+    // Among Usの標準キル距離（近距離・中距離・遠距離）に合わせる。
+    public static float GetDistance(BlackHatHackerInfectionScopeType scope) => scope switch
+    {
+        BlackHatHackerInfectionScopeType.Short => 1f,
+        BlackHatHackerInfectionScopeType.Medium => 1.8f,
+        BlackHatHackerInfectionScopeType.Long => 2.5f,
+        _ => throw new ArgumentOutOfRangeException(nameof(scope), scope, null),
+    };
+}

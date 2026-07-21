@@ -11,6 +11,7 @@ namespace SuperNewRoles.Roles.Neutral;
 class Jackal : RoleBase<Jackal>
 {
     public override RoleId Role { get; } = RoleId.Jackal;
+    public override Sprite RoleIcon => AssetManager.GetAsset<Sprite>("JackalRoleIcon.png");
     public override Color32 RoleColor { get; } = new(0, 180, 235, byte.MaxValue);
     public override List<Func<AbilityBase>> Abilities { get; } = [
         () => new JackalAbility(new JackalData(
