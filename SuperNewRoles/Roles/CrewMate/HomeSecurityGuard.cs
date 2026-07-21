@@ -40,11 +40,13 @@ public class HomeSecurityGuardAbility : AbilityBase
     public const int TaskTextMax = 12;
     private ImportantTextTask _task;
     private EventListener<MeetingCloseEventData> _meetingCloseListener;
+    private EventListener _introCutsceneInitializeListener;
     private int _currentIndex = -1;
 
     public override void AttachToLocalPlayer()
     {
         _meetingCloseListener = MeetingCloseEvent.Instance.AddListener(OnMeetingClose);
+        _introCutsceneInitializeListener = IntroCutsceneInitializeEvent.Instance.AddListener(OnIntroCutsceneInitialize);
         EnsureTask();
         UpdateIndexAndTaskText();
     }
@@ -52,7 +54,16 @@ public class HomeSecurityGuardAbility : AbilityBase
     public override void DetachToLocalPlayer()
     {
         _meetingCloseListener?.RemoveListener();
+        _introCutsceneInitializeListener?.RemoveListener();
         DestroyTask();
+    }
+
+    private void OnIntroCutsceneInitialize()
+    {
+        if (!Player.AmOwner) return;
+        UpdateIndexAndTaskText();
+        _introCutsceneInitializeListener?.RemoveListener();
+        _introCutsceneInitializeListener = null;
     }
 
     private void OnMeetingClose(MeetingCloseEventData data)
