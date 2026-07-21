@@ -389,6 +389,8 @@ public static class IntroCutscenePatch
                 }
             }
         }
+
+        IntroCutsceneInitializeEvent.Invoke();
     }
     private static void ReAssignTasks()
     {
