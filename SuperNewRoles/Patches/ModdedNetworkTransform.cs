@@ -339,8 +339,11 @@ public static class ModdedNetworkTransform
                     break;
                 }
 
-                bool shouldIgnore = ShouldIgnoreRemoteControlSync(playerId) || skipNextBatchPlayers.Remove(playerId);
-                Queue<MovementData> queue = shouldIgnore ? null : GetOrCreateQueue(playerId);
+                bool shouldIgnoreRemoteSync = ShouldIgnoreRemoteControlSync(playerId);
+                bool shouldSkipBatch = skipNextBatchPlayers.Remove(playerId);
+                Queue<MovementData> queue = shouldIgnoreRemoteSync || shouldSkipBatch
+                    ? null
+                    : GetOrCreateQueue(playerId);
                 for (int i = 0; i < count; i++)
                 {
                     float x = reader.ReadSingle();
@@ -395,7 +398,7 @@ public static class ModdedNetworkTransform
         return count >= 0
             && count <= MAX_BATCH_MOVEMENT_COUNT
             && bytesRemaining >= 0
-            && count <= bytesRemaining / MOVEMENT_DATA_BYTE_SIZE;
+            && bytesRemaining == count * MOVEMENT_DATA_BYTE_SIZE;
     }
 
     private static bool ShouldIgnoreRemoteControlSync(byte playerId)
