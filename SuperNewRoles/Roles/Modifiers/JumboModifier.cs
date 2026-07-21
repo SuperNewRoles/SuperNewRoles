@@ -70,7 +70,6 @@ public class JumboAbility : AbilityBase
     private JumboData Data { get; }
     private EventListener _fixedUpdateListener;
     private EventListener<NameTextUpdateEventData> _nameTextUpdateListener;
-    private EventListener<WrapUpEventData> _wrapUpListener;
     private EventListener<MurderEventData> _murderListener;
     private EventListener<ExileControllerEventData> _exileControllerListener;
     private EventListener<MeetingCalledAnimationInitializeEventData> _meetingCalledAnimationInitializeListener;
@@ -89,7 +88,6 @@ public class JumboAbility : AbilityBase
         base.AttachToAlls();
         _fixedUpdateListener = FixedUpdateEvent.Instance.AddListener(OnFixedUpdate);
         _nameTextUpdateListener = NameTextUpdateEvent.Instance.AddListener(OnNameTextUpdate);
-        _wrapUpListener = WrapUpEvent.Instance.AddListener(OnWrapUp);
         _murderListener = MurderEvent.Instance.AddListener(OnMurder);
         _exileControllerListener = ExileControllerEvent.Instance.AddListener(OnExileController);
         _meetingCalledAnimationInitializeListener = MeetingCalledAnimationInitializeEvent.Instance.AddListener(OnMeetingCalledAnimationInitialize);
@@ -99,18 +97,9 @@ public class JumboAbility : AbilityBase
         base.DetachToAlls();
         _fixedUpdateListener?.RemoveListener();
         _nameTextUpdateListener?.RemoveListener();
-        _wrapUpListener?.RemoveListener();
         _murderListener?.RemoveListener();
         _exileControllerListener?.RemoveListener();
         _meetingCalledAnimationInitializeListener?.RemoveListener();
-    }
-    private void OnWrapUp(WrapUpEventData data)
-    {
-        if (!Player.AmOwner) return;
-        if (data.exiled == null) return;
-        if (data.exiled != Player) return;
-        if (Player.IsCrewmate())
-            EndGamer.RpcEndGameWithWinner(Patches.CustomGameOverReason.NoWinner, WinType.Default, [], Color.white, "NoWinner", "");
     }
     private void OnMurder(MurderEventData data)
     {

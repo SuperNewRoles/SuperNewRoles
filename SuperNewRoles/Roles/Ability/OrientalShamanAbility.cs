@@ -22,7 +22,6 @@ public class OrientalShamanAbility : AbilityBase
     private EventListener<ExileEventData> _exileListener;
     private KnowOtherAbility _knowOtherAbility;
     private CustomTaskAbility _taskAbility;
-    private SabotageCanUseAbility _sabotageCanUseAbility;
     private PlayerArrowsAbility _playerArrowsAbility;
 
     public ShermansServantAbility _servant;
@@ -71,10 +70,6 @@ public class OrientalShamanAbility : AbilityBase
             Data.neededTaskComplete ? Data.task : null
         );
 
-        _sabotageCanUseAbility = new SabotageCanUseAbility(
-            () => SabotageType.All
-        );
-
         _playerArrowsAbility = new PlayerArrowsAbility(() => [_servant?.Player], (player) => OrientalShaman.Instance.RoleColor);
 
         _servantAbility = new CustomSidekickButtonAbility(servantOptions);
@@ -85,7 +80,6 @@ public class OrientalShamanAbility : AbilityBase
         Player.AttachAbility(_servantAbility, new AbilityParentAbility(this));
         Player.AttachAbility(_ventAbility, new AbilityParentAbility(this));
         Player.AttachAbility(_taskAbility, new AbilityParentAbility(this));
-        Player.AttachAbility(_sabotageCanUseAbility, new AbilityParentAbility(this));
         Player.AttachAbility(_playerArrowsAbility, new AbilityParentAbility(this));
     }
 
