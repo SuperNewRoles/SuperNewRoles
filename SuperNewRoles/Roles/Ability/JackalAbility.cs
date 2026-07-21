@@ -89,13 +89,23 @@ public class JackalAbility : AbilityBase
                 return new(RoleId.WaveCannonJackal, RoleTypes.Crewmate, JackData.IsInfiniteJackal);
             case RoleId.Bullet:
                 return new(
-                    WaveCannonJackal.WaveCannonJackalCreateBulletToJackal ? RoleId.WaveCannonJackal : RoleId.Bullet,
+                    GetBulletPromoteRole(
+                        WaveCannonJackal.WaveCannonJackalCreateBulletToJackal,
+                        WaveCannonJackal.WaveCannonJackalNewJackalHaveWaveCannon
+                    ),
                     RoleTypes.Crewmate,
                     JackData.IsInfiniteJackal
                 );
             default:
                 throw new Exception("Invalid sidekick type in getPromoteData: " + sidekickType);
         }
+    }
+
+    internal static RoleId GetBulletPromoteRole(bool canPromote, bool hasWaveCannon)
+    {
+        if (!canPromote)
+            return RoleId.Bullet;
+        return hasWaveCannon ? RoleId.WaveCannonJackal : RoleId.Jackal;
     }
 }
 

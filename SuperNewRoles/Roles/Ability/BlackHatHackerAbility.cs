@@ -173,9 +173,7 @@ public class BlackHatHackerAbility : AbilityBase
             PlayerControl player = GameData.Instance.GetPlayerById(id)?.Object;
             if (!player || player.Data.IsDead) continue;
 
-            if (GameManager.Instance == null || GameManager.Instance.LogicOptions == null) continue;
-
-            float scope = GameManager.Instance.LogicOptions.GetKillDistance();
+            float scope = BlackHatHackerInfectionScope.GetDistance(Data.InfectionScope);
             var infection = PlayerControl.AllPlayerControls.ToArray()
                 .Where(x => !x.AmOwner && Vector3.Distance(player.transform.position, x.transform.position) <= scope);
 

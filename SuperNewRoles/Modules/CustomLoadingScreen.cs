@@ -24,13 +24,15 @@ public static class CustomLoadingScreen
     private static bool LoadingTextFadeStarted = false;
     private static bool UseCenteredLoadingTextScale = false;
     private static float CenteredLoadingTextBaseOrthographicSize = -1f;
+    private static float SplashStartedAt = -1f;
 
     [HarmonyPatch(typeof(SplashManager), nameof(SplashManager.Update))]
     public static class SplashManagerUpdatePatch
     {
         public static bool Prefix(SplashManager __instance)
         {
-            bool splashFinished = Time.time - __instance.startTime > __instance.minimumSecondsBeforeSceneChange;
+            bool splashFinished = SplashStartedAt >= 0f
+                && Time.realtimeSinceStartup - SplashStartedAt > __instance.minimumSecondsBeforeSceneChange;
             string translateText = ModTranslation.GetString("CustomCosmetics_Loading") + (int)((Time.time * 4) % 4) switch
             {
                 0 => "",
@@ -60,7 +62,10 @@ public static class CustomLoadingScreen
                 CustomCosmeticsLoader.willLoad?.Invoke();
                 CustomCosmeticsLoader.willLoad = null;
                 RefreshStartupLoadAfterFallbackIfNeeded();
-                ShowLoadedTextAndStartFadeOut(splashFinished);
+                if (StartupContinuedBeforeCosmeticsFinished)
+                    DismissLoadingTextForBackgroundLoad();
+                else
+                    ShowLoadedTextAndStartFadeOut(splashFinished);
                 Logger.Info("Loading done");
                 return false;
             }
@@ -92,11 +97,26 @@ public static class CustomLoadingScreen
         if (useCenteredLayout)
             ApplyCenteredLoadingTextLayout();
 
+        // 正常完了表示だけは、シーン遷移後もフェードを完走できるよう一時的に残す。
+        LoadingText.transform.SetParent(null, true);
+        UnityEngine.Object.DontDestroyOnLoad(LoadingText.gameObject);
+
         // そのままだと大きすぎるので、30%に縮小して表示する
         LoadingText.text = $"<size=20%>{ModTranslation.GetString("CustomCosmetics_Loaded")}</size>";
         SetLoadingTextAlpha(1f);
 
         StartLoadingTextFadeOut(useCenteredLayout ? LoadingCompleteVisibleSeconds : 0f);
+    }
+
+    private static void DismissLoadingTextForBackgroundLoad()
+    {
+        if (LoadingText == null)
+            return;
+
+        // Androidでスプラッシュだけ先に終了しても、進捗表示をメインUIへ持ち越さない。
+        LoadingText.gameObject.SetActive(false);
+        UnityEngine.Object.Destroy(LoadingText.gameObject);
+        LoadingText = null;
     }
 
     private static void StartLoadingTextFadeOut(float visibleSeconds)
@@ -197,9 +217,7 @@ public static class CustomLoadingScreen
             LoadingTextFadeStarted = false;
             UseCenteredLoadingTextScale = false;
             CenteredLoadingTextBaseOrthographicSize = -1f;
-            text.SetParent(null, true);
-            UnityEngine.Object.DontDestroyOnLoad(text.gameObject);
-            text.gameObject.AddComponent<LoadingTextFadeRunner>();
+            SplashStartedAt = Time.realtimeSinceStartup;
             Inited = true;
             ModManager.Instance.StartCoroutine(CustomCosmeticsLoader.LoadCosmeticsTaskAsync((c) => ModManager.Instance.StartCoroutine(c.WrapToIl2Cpp())).WrapToIl2Cpp());
             PatcherUpdater.Initialize();

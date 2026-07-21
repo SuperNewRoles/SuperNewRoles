@@ -15,6 +15,7 @@ namespace SuperNewRoles.Roles.Impostor;
 class Necromancer : RoleBase<Necromancer>
 {
     public override RoleId Role { get; } = RoleId.Necromancer;
+    public override Sprite RoleIcon => AssetManager.GetAsset<Sprite>("NecromancerRoleIcon.png");
     public override Color32 RoleColor { get; } = Palette.ImpostorRed;
     public override List<Func<AbilityBase>> Abilities { get; } = [
         () => new VisibleGhostAbility(() => true),

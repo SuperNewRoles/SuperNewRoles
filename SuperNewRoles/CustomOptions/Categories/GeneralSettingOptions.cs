@@ -29,6 +29,9 @@ public static class GeneralSettingOptions
     [CustomOptionBool("AdvancedRandom", true, parentFieldName: nameof(Categories.GeneralSettings))]
     public static bool AdvancedRandom;
 
+    [CustomOptionBool("ReduceRoleAssignmentBias", true, parentFieldName: nameof(Categories.GeneralSettings))]
+    public static bool ReduceRoleAssignmentBias;
+
     [CustomOptionSelect("NetworkTransformType", typeof(NetworkTransformType), "NetworkTransformType.", parentFieldName: nameof(Categories.GeneralSettings))]
     public static NetworkTransformType NetworkTransformType;
 
