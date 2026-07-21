@@ -327,7 +327,7 @@ public class HelpMenuObjectComponent : MonoBehaviour
 {
     public void Start()
     {
-        HelpMenuClipMaterialController.Refresh(gameObject, force: true);
+        HelpMenuClipMaterialController.Refresh(gameObject, retryShaderLoad: true);
     }
 
     public void LateUpdate()

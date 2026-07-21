@@ -27,12 +27,12 @@ public static class HelpMenuClipMaterialController
     private static Shader _tmpMobileShader;
     private static bool _shaderLoadFailed;
 
-    public static void Refresh(GameObject helpMenuObject, bool force = false)
+    public static void Refresh(GameObject helpMenuObject, bool retryShaderLoad = false)
     {
         if (helpMenuObject == null)
             return;
 
-        if (!EnsureShadersLoaded())
+        if (!EnsureShadersLoaded(retryShaderLoad))
             return;
 
         // 毎フレーム最新のマスク・スクローラーを取得する。
@@ -66,18 +66,21 @@ public static class HelpMenuClipMaterialController
         MaterialBindings.Clear();
     }
 
-    private static bool EnsureShadersLoaded()
+    private static bool EnsureShadersLoaded(bool retryFailedLoad)
     {
         if (_spriteShader != null && _tmpShader != null && _tmpMobileShader != null)
             return true;
-        if (_shaderLoadFailed)
+        if (_shaderLoadFailed && !retryFailedLoad)
             return false;
 
         _spriteShader = AssetManager.GetAsset<Shader>(SpriteShaderAssetName);
         _tmpShader = AssetManager.GetAsset<Shader>(TmpShaderAssetName);
         _tmpMobileShader = AssetManager.GetAsset<Shader>(TmpMobileShaderAssetName);
         if (_spriteShader != null && _tmpShader != null && _tmpMobileShader != null)
+        {
+            _shaderLoadFailed = false;
             return true;
+        }
 
         _shaderLoadFailed = true;
         Logger.Error(
