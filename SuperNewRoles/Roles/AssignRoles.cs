@@ -56,7 +56,8 @@ public static class RoleManagerSelectRolesPatch
 
         // DebugRoleAssignmentsが候補を調整し終えた後に、公平化用のゲームスナップショットを開始する。
         __state = RoleAssignmentFairnessRuntime.TryBeginAssignment();
-        List<NetworkedPlayerInfo> impostorCandidates = list2;
+        // 公平化が無効・失敗した場合も、DebugRoleAssignmentsによる候補調整を維持する。
+        List<NetworkedPlayerInfo> impostorCandidates = debugCandidates.ToSystemList();
         if (__state && numImpostors > 0 &&
             RoleAssignmentFairnessRuntime.TrySelectImpostors(
                 debugCandidates.ToSystemList(),

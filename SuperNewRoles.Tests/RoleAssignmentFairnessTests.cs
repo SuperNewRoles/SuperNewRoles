@@ -200,7 +200,7 @@ public class RoleAssignmentFairnessTests
     [Fact]
     public void Selection_RejectsInvalidCandidatesAndRandomValuesWithoutPendingChanges()
     {
-        var tracker = new RoleAssignmentFairnessTracker(new SequenceRandom(double.NaN));
+        var tracker = new RoleAssignmentFairnessTracker(new SequenceRandom(double.NaN, 1.0));
         Begin(tracker, 1, 2);
 
         tracker.TrySelectWeightedWithoutReplacement(
@@ -220,10 +220,21 @@ public class RoleAssignmentFairnessTests
                 Candidates(1, 2),
                 RoleAssignmentCategory.ImpostorTeam,
                 new RoleId?[] { null },
-                out _,
-                out RoleAssignmentFairnessFailure randomFailure)
+                out IReadOnlyList<RoleAssignmentSelection> nanSelections,
+                out RoleAssignmentFairnessFailure nanFailure)
             .Should().BeFalse();
-        randomFailure.Should().Be(RoleAssignmentFairnessFailure.InvalidRandomValue);
+        nanFailure.Should().Be(RoleAssignmentFairnessFailure.InvalidRandomValue);
+        nanSelections.Should().BeEmpty();
+
+        tracker.TrySelectWeightedWithoutReplacement(
+                Candidates(1, 2),
+                RoleAssignmentCategory.ImpostorTeam,
+                new RoleId?[] { null },
+                out IReadOnlyList<RoleAssignmentSelection> rightEndpointSelections,
+                out RoleAssignmentFairnessFailure rightEndpointFailure)
+            .Should().BeFalse();
+        rightEndpointFailure.Should().Be(RoleAssignmentFairnessFailure.InvalidRandomValue);
+        rightEndpointSelections.Should().BeEmpty();
 
         tracker.CommitAssignment().Should().BeTrue();
         tracker.GetSnapshotWeight(1, RoleAssignmentCategory.ImpostorTeam, null).Should().Be(1);

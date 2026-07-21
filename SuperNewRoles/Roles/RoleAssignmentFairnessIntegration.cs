@@ -33,47 +33,57 @@ internal static class RoleAssignmentFairnessRuntime
         fairnessActiveForAssignment = false;
         fairnessStartedForAssignment = false;
 
-        if (!TryGetSupportedContext(out var client, out int lobbyId, out int hostId))
+        try
         {
-            Tracker.SetEnabled(false);
+            if (!TryGetSupportedContext(out var client, out int lobbyId, out int hostId))
+            {
+                Tracker.SetEnabled(false);
+                return false;
+            }
+
+            Tracker.SetEnabled(true);
+            // 対応コンテキストで公平化を試みた時点から、異常時に従来抽選へ戻った後も
+            // チーム役職の部分的なRPCを同じ配役内で再試行させない。
+            fairnessStartedForAssignment = true;
+
+            if (observedHostId.HasValue && observedHostId.Value != hostId)
+            {
+                Tracker.Reset();
+            }
+            observedHostId = hostId;
+            Tracker.SetLobby(lobbyId);
+
+            if (Tracker.HasActiveAssignment)
+            {
+                AbortWithFallback(RoleAssignmentFairnessFailure.AssignmentAlreadyStarted, null);
+                return false;
+            }
+
+            // ClientIdを解決できる接続中プレイヤーだけを履歴対象にする。
+            // Dummyはここに含まれなくても、後続の候補生成ではClientId=nullの候補として残る。
+            var activeClientIds = client.allClients.ToArray()
+                .Where(data => data != null && data.Id >= 0 && data.Character != null &&
+                               data.Character.Data != null && !data.Character.Data.Disconnected)
+                .Select(data => data.Id)
+                .ToArray();
+
+            if (!Tracker.TryBeginAssignment(activeClientIds, out var failure))
+            {
+                AbortWithFallback(failure, null);
+                return false;
+            }
+
+            fairnessActiveForAssignment = true;
+            fairnessStartedForAssignment = true;
+            return true;
+        }
+        catch (Exception ex)
+        {
+            // ゲーム側コレクションの列挙を含む開始処理で例外が起きても、
+            // 配役全体へ伝播させず、履歴を破棄して従来抽選へ安全に降格する。
+            AbortWithFallback($"TryBeginAssignmentException:{ex.GetType().Name}", null);
             return false;
         }
-
-        Tracker.SetEnabled(true);
-        // 対応コンテキストで公平化を試みた時点から、異常時に従来抽選へ戻った後も
-        // チーム役職の部分的なRPCを同じ配役内で再試行させない。
-        fairnessStartedForAssignment = true;
-
-        if (observedHostId.HasValue && observedHostId.Value != hostId)
-        {
-            Tracker.Reset();
-        }
-        observedHostId = hostId;
-        Tracker.SetLobby(lobbyId);
-
-        if (Tracker.HasActiveAssignment)
-        {
-            AbortWithFallback(RoleAssignmentFairnessFailure.AssignmentAlreadyStarted, null);
-            return false;
-        }
-
-        // ClientIdを解決できる接続中プレイヤーだけを履歴対象にする。
-        // Dummyはここに含まれなくても、後続の候補生成ではClientId=nullの候補として残る。
-        var activeClientIds = client.allClients.ToArray()
-            .Where(data => data != null && data.Id >= 0 && data.Character != null &&
-                           data.Character.Data != null && !data.Character.Data.Disconnected)
-            .Select(data => data.Id)
-            .ToArray();
-
-        if (!Tracker.TryBeginAssignment(activeClientIds, out var failure))
-        {
-            AbortWithFallback(failure, null);
-            return false;
-        }
-
-        fairnessActiveForAssignment = true;
-        fairnessStartedForAssignment = true;
-        return true;
     }
 
     internal static bool TrySelectImpostors(
@@ -397,7 +407,7 @@ internal static class RoleAssignmentFairnessRuntime
         }
     }
 
-    private static void AbortWithFallback(RoleAssignmentFairnessFailure failure, RoleAssignmentCategory? category)
+    private static void AbortWithFallback(object failure, RoleAssignmentCategory? category)
     {
         AbortAssignment(failure, category);
     }
