@@ -23,6 +23,7 @@ public class AnnouncementImageRendererAndroid : MonoBehaviour
     private Vector3? _defaultBodyTextPos;
     private int _requestToken;
     private float _extraHeight;
+    private GameObject _expandedImageViewer;
 
     public bool HasImages => _imageRenderers.Count > 0;
 
@@ -109,6 +110,7 @@ public class AnnouncementImageRendererAndroid : MonoBehaviour
 
     private void ClearImagesInternal()
     {
+        CloseExpandedImage();
         _extraHeight = 0f;
         foreach (var renderer in _imageRenderers.Values)
         {
@@ -130,7 +132,23 @@ public class AnnouncementImageRendererAndroid : MonoBehaviour
         renderer.sprite = sprite;
         SyncSorting(renderer);
         ApplyMask(renderer);
+        AnnouncementImageViewer.ConfigureThumbnail(go, sprite, () => OpenExpandedImage(sprite));
         return renderer;
+    }
+
+    [HideFromIl2Cpp]
+    private void OpenExpandedImage(Sprite sprite)
+    {
+        CloseExpandedImage();
+        _expandedImageViewer = AnnouncementImageViewer.Open(sprite, _bodyText, CloseExpandedImage);
+    }
+
+    [HideFromIl2Cpp]
+    private void CloseExpandedImage()
+    {
+        if (_expandedImageViewer != null)
+            Destroy(_expandedImageViewer);
+        _expandedImageViewer = null;
     }
 
     [HideFromIl2Cpp]
