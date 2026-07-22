@@ -98,6 +98,9 @@ public partial class SuperNewRolesPlugin : BasePlugin
 
         Instance = this;
 
+        if (!ModHelpers.IsAndroid())
+            EnsureBepInExInteropCompatibility();
+
         Encryption.SetEncryptKey();
 
         SuperNewRoles.Logger.Info($"BaseDirectory: {BaseDirectory}");
@@ -156,6 +159,28 @@ public partial class SuperNewRolesPlugin : BasePlugin
         Logger.LogInfo(ModTranslation.GetString("WelcomeNextSuperNewRoles"));
         Logger.LogInfo("--------------------------------");
     }
+
+    private static void EnsureBepInExInteropCompatibility()
+    {
+        try
+        {
+            string interopDirectory = Path.Combine(BepInEx.Paths.BepInExRootPath, "interop");
+            BepInExInteropCompatibilityResult result = BepInExInteropCompatibility.EnsureCompatible(
+                BepInEx.Configuration.ConfigFile.CoreConfig,
+                interopDirectory);
+
+            if (result.ScanMethodRefsChanged)
+                Logger.LogWarning("BepInEx [IL2CPP] ScanMethodRefs was false and has been changed to true.");
+
+            if (result.RegenerationScheduled)
+                Logger.LogWarning("BepInEx interop assemblies will be regenerated with method references on the next launch.");
+        }
+        catch (Exception exception)
+        {
+            Logger.LogError($"Failed to ensure BepInEx interop compatibility: {exception}");
+        }
+    }
+
     public void PatchAll(Harmony harmony)
     {
         var assembly = Assembly;
