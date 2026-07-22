@@ -2,14 +2,12 @@ using System;
 using System.Collections.Generic;
 using System.Net.Http;
 using System.Threading.Tasks;
-using Newtonsoft.Json;
 using UnityEngine;
 using System.IO;
 using System.Net;
 using System.Security.Cryptography;
 using System.Linq;
 using HarmonyLib;
-using Newtonsoft.Json.Linq;
 using BepInEx.Unity.IL2CPP.Utils.Collections;
 using SuperNewRoles.CustomCosmetics.CosmeticsPlayer;
 using SuperNewRoles.Modules;
@@ -342,8 +340,8 @@ public class CustomCosmeticsLoader
             {
                 string jsonContent = ft.content;
                 // JSONをパース
-                JObject json = JObject.Parse(jsonContent);
-                JToken assetBundlesToken = json["assetbundles"];
+                CustomCosmeticsJsonNode json = CustomCosmeticsJsonNode.Parse(jsonContent);
+                CustomCosmeticsJsonNode assetBundlesToken = json["assetbundles"];
                 if (assetBundlesToken != null)
                 {
 
@@ -377,7 +375,7 @@ public class CustomCosmeticsLoader
                 else
                     Logger.Error($"assetbundlesが見つかりません: {url}");
 
-                JToken hatsToken = json["hats"];
+                CustomCosmeticsJsonNode hatsToken = json["hats"];
                 if (hatsToken != null)
                 {
                     for (var hat = hatsToken.First; hat != null; hat = hat.Next)
@@ -467,7 +465,7 @@ public class CustomCosmeticsLoader
                     Logger.Error($"hatsが見つかりません: {url}");
 
                 // visorsとVisorsの両方のパターンがあるので
-                JToken visorsToken = json["visors"] ?? json["Visors"];
+                CustomCosmeticsJsonNode visorsToken = json["visors"] ?? json["Visors"];
                 if (visorsToken != null)
                 {
                     for (var visor = visorsToken.First; visor != null; visor = visor.Next)
@@ -523,7 +521,7 @@ public class CustomCosmeticsLoader
                     Logger.Error($"visorsが見つかりません: {url}");
 
                 // nameplatesとNamePlatesの両方のパターンがあるので
-                JToken namePlatesToken = json["nameplates"];
+                CustomCosmeticsJsonNode namePlatesToken = json["nameplates"];
                 if (namePlatesToken != null)
                 {
                     for (var namePlate = namePlatesToken.First; namePlate != null; namePlate = namePlate.Next)
@@ -730,8 +728,8 @@ public class CustomCosmeticsLoader
                 Logger.Error($"パッケージ: {package} の package.json が読み込めません(Hats)");
             }
             string packageJson = packageTextAsset.text;
-            JObject packageJsonObject = JObject.Parse(packageJson);
-            JToken packageInfo = packageJsonObject["package"];
+            CustomCosmeticsJsonNode packageJsonObject = CustomCosmeticsJsonNode.Parse(packageJson);
+            CustomCosmeticsJsonNode packageInfo = packageJsonObject["package"];
             if (packageInfo == null)
             {
                 Logger.Error($"パッケージ: {package} に package が見つかりません");
@@ -745,7 +743,7 @@ public class CustomCosmeticsLoader
             );
             loadedPackages.Add(cosmeticsPackage);
 
-            JToken hatsToken = packageJsonObject["hats"];
+            CustomCosmeticsJsonNode hatsToken = packageJsonObject["hats"];
             if (hatsToken != null)
             {
                 for (var hat = hatsToken.First; hat != null; hat = hat.Next)
@@ -779,8 +777,8 @@ public class CustomCosmeticsLoader
                 continue;
             }
             // バイザーの読み込み
-            JObject packageJsonObject = JObject.Parse(visorsTextAsset.text);
-            JToken packageInfo = packageJsonObject["package"];
+            CustomCosmeticsJsonNode packageJsonObject = CustomCosmeticsJsonNode.Parse(visorsTextAsset.text);
+            CustomCosmeticsJsonNode packageInfo = packageJsonObject["package"];
             if (packageInfo == null)
             {
                 Logger.Error($"パッケージ: {package} に package が見つかりません");
@@ -798,7 +796,7 @@ public class CustomCosmeticsLoader
                 loadedPackages.Add(cosmeticsPackage);
             }
 
-            JToken visorsToken = packageJsonObject["visors"];
+            CustomCosmeticsJsonNode visorsToken = packageJsonObject["visors"];
             if (visorsToken != null)
             {
                 for (var visor = visorsToken.First; visor != null; visor = visor.Next)
@@ -833,8 +831,8 @@ public class CustomCosmeticsLoader
                 Logger.Error($"パッケージ: {package} の package.json が読み込めません(NamePlates)");
                 continue;
             }
-            JObject packageJsonObject = JObject.Parse(namePlatesTextAsset.text);
-            JToken packageInfo = packageJsonObject["package"];
+            CustomCosmeticsJsonNode packageJsonObject = CustomCosmeticsJsonNode.Parse(namePlatesTextAsset.text);
+            CustomCosmeticsJsonNode packageInfo = packageJsonObject["package"];
             if (packageInfo == null)
             {
                 Logger.Error($"パッケージ: {package} に package が見つかりません");
@@ -852,7 +850,7 @@ public class CustomCosmeticsLoader
                 loadedPackages.Add(cosmeticsPackage);
             }
 
-            JToken namePlatesToken = packageJsonObject["nameplates"];
+            CustomCosmeticsJsonNode namePlatesToken = packageJsonObject["nameplates"];
             if (namePlatesToken != null)
             {
                 for (var namePlate = namePlatesToken.First; namePlate != null; namePlate = namePlate.Next)

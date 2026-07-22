@@ -8,17 +8,24 @@ namespace SuperNewRoles.Modules;
 public class JsonParser
 {
     private readonly string _json;
+    private readonly bool _allowComments;
+    private readonly bool _allowTrailingCommas;
     private int _pos;
 
-    private JsonParser(string json)
+    private JsonParser(string json, bool allowComments, bool allowTrailingCommas)
     {
         _json = json;
+        _allowComments = allowComments;
+        _allowTrailingCommas = allowTrailingCommas;
         _pos = 0;
     }
 
     public static object Parse(string json)
+        => Parse(json, allowComments: false, allowTrailingCommas: false);
+
+    public static object Parse(string json, bool allowComments, bool allowTrailingCommas)
     {
-        var parser = new JsonParser(json);
+        var parser = new JsonParser(json, allowComments, allowTrailingCommas);
         var result = parser.ParseValue();
         parser.SkipWhitespace();
         if (parser._pos != parser._json.Length)
@@ -176,8 +183,36 @@ public class JsonParser
 
     private void SkipWhitespace()
     {
-        while (_pos < _json.Length && char.IsWhiteSpace(_json[_pos]))
-            _pos++;
+        while (_pos < _json.Length)
+        {
+            if (char.IsWhiteSpace(_json[_pos]))
+            {
+                _pos++;
+                continue;
+            }
+
+            if (!_allowComments || _json[_pos] != '/' || _pos + 1 >= _json.Length)
+                return;
+
+            if (_json[_pos + 1] == '/')
+            {
+                _pos += 2;
+                while (_pos < _json.Length && _json[_pos] != '\r' && _json[_pos] != '\n')
+                    _pos++;
+                continue;
+            }
+
+            if (_json[_pos + 1] != '*')
+                return;
+
+            int commentStart = _pos;
+            _pos += 2;
+            while (_pos + 1 < _json.Length && (_json[_pos] != '*' || _json[_pos + 1] != '/'))
+                _pos++;
+            if (_pos + 1 >= _json.Length)
+                throw new JsonParseException("Unterminated block comment", commentStart);
+            _pos += 2;
+        }
     }
 
     private object ParseValue()
@@ -233,7 +268,12 @@ public class JsonParser
                 // Check for trailing comma before '}'
                 SkipWhitespace();
                 if (_pos < _json.Length && _json[_pos] == '}')
-                    throw new JsonParseException("Trailing comma is not allowed in object", _pos);
+                {
+                    if (!_allowTrailingCommas)
+                        throw new JsonParseException("Trailing comma is not allowed in object", _pos);
+                    _pos++;
+                    break;
+                }
                 continue;
             }
             if (nextChar == '}')
@@ -271,7 +311,12 @@ public class JsonParser
                 // Check for trailing comma before ']'
                 SkipWhitespace();
                 if (_pos < _json.Length && _json[_pos] == ']')
-                    throw new JsonParseException("Trailing comma is not allowed in array", _pos);
+                {
+                    if (!_allowTrailingCommas)
+                        throw new JsonParseException("Trailing comma is not allowed in array", _pos);
+                    _pos++;
+                    break;
+                }
                 continue;
             }
             if (nextChar == ']')
