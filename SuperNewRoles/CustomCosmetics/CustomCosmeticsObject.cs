@@ -1,7 +1,6 @@
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
-using Newtonsoft.Json.Linq;
 using SuperNewRoles.Modules;
 using UnityEngine;
 
@@ -417,7 +416,7 @@ public class CustomCosmeticsVisorOptions
     public bool flip { get; }
     public bool climb { get; set; }
     public bool isSNR { get; }
-    public CustomCosmeticsVisorOptions(JToken optionsJson)
+    public CustomCosmeticsVisorOptions(CustomCosmeticsJsonNode optionsJson)
     {
         adaptive = CustomCosmeticsHatOptions.GetBool(optionsJson["adaptive"]);
         flip = CustomCosmeticsHatOptions.GetBool(optionsJson["flip"]);
@@ -442,7 +441,7 @@ public class CustomCosmeticsHatOptions
     public bool blockVisors { get; }
     public bool HideBody { get; }
     /*
-        public CustomCosmeticsHatOptions(JToken optionsJson)
+        public CustomCosmeticsHatOptions(CustomCosmeticsJsonNode optionsJson)
         {
             front = GetOption(optionsJson, "front", true);
             front_left = GetOption(optionsJson, "front_left");
@@ -453,7 +452,7 @@ public class CustomCosmeticsHatOptions
             climb = GetOption(optionsJson, "climb");
             blockVisors = GetBool(optionsJson["block_visors"]);
         }*/
-    public CustomCosmeticsHatOptions(JToken optionsJson)
+    public CustomCosmeticsHatOptions(CustomCosmeticsJsonNode optionsJson)
     {
         bool adaptive = GetBool(optionsJson["adaptive"]);
         bool bounce = GetBool(optionsJson["bounce"]);
@@ -483,7 +482,7 @@ public class CustomCosmeticsHatOptions
     /// 指定されたプレフィックスに対してオプション値を取得します。
     /// useBaseFlagがtrueの場合、adaptiveがfalseならベースフラグの値を反映し、falseの場合は常にNoAdaptiveとなります。
     /// </summary>
-    private HatOptionType GetOption(JToken json, string keyPrefix, bool defaultOption = false, bool adaptive = false, bool bounce = false, bool behind = false)
+    private HatOptionType GetOption(CustomCosmeticsJsonNode json, string keyPrefix, bool defaultOption = false, bool adaptive = false, bool bounce = false, bool behind = false)
     {
         // ヘルパーローカル関数：トークンからbool値を安全に取得する
 
@@ -505,8 +504,8 @@ public class CustomCosmeticsHatOptions
 
         return option;
     }
-    public static bool GetBool(JToken token, bool defaultValue = false)
-        => token != null && token.Type == JTokenType.Boolean ? (bool)token : defaultValue;
+    public static bool GetBool(CustomCosmeticsJsonNode token, bool defaultValue = false)
+        => token != null && token.TryGetBoolean(out bool value) ? value : defaultValue;
 }
 [Flags]
 public enum HatOptionType
