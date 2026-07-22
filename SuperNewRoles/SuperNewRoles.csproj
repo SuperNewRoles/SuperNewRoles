@@ -20,6 +20,8 @@
 
     <ItemGroup>
         <EmbeddedResource Include="Resources\**" />
+        <EmbeddedResource Include="$(PkgSixLabors_ImageSharp)\lib\net6.0\SixLabors.ImageSharp.dll"
+                          LogicalName="SuperNewRoles.Dependencies.SixLabors.ImageSharp.dll" />
     </ItemGroup>
 
     <PropertyGroup>
@@ -87,6 +89,7 @@ namespace SuperNewRoles
         <PackageReference Include="Microsoft.Build" Version="17.12.6" />
         <PackageReference Include="Microsoft.Build.Framework" Version="17.12.6" />
         <PackageReference Include="Microsoft.Build.Utilities.Core" Version="17.12.6" />
+        <PackageReference Include="SixLabors.ImageSharp" Version="3.1.12" GeneratePathProperty="true" />
     </ItemGroup>
     
 </Project>
