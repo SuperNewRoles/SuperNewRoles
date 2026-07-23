@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Reflection;
@@ -98,7 +99,7 @@ public static class SyncVersion
     }
     private static void AppendMethodInfo(StringBuilder builder, KeyValuePair<int, MethodInfo> method)
     {
-        builder.Append(method.Key)
+        builder.Append(method.Key.ToString(CultureInfo.InvariantCulture))
                .Append(':')
                .Append(CustomRPCManager.GetStableMethodSignature(method.Value))
                .Append(';');

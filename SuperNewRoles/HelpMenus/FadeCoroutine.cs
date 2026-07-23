@@ -122,7 +122,12 @@ public class FadeCoroutine : MonoBehaviour
         bool active = alpha > 0f;
         if (gameObject.activeSelf != active)
             gameObject.SetActive(active);
-        if (destroyOnFinish && progress >= 1f)
+        if (progress < 1f)
+            return;
+
+        isFadeIn = false;
+        isFadeOut = false;
+        if (destroyOnFinish)
         {
             Destroy(gameObject);
         }
