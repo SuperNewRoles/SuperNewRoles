@@ -75,6 +75,7 @@ public class InvisibleAbility : CustomButtonBase, IButtonEffect
         base.DetachToAlls();
         _onFixedUpdate?.RemoveListener();
         _opacityFader.StopAll();
+        _invisiblePlayers.Remove(Player.PlayerId);
     }
 
     public override void AttachToLocalPlayer()
