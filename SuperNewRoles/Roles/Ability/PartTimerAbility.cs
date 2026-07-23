@@ -123,7 +123,7 @@ public class PartTimerAbility : TargetCustomButtonBase
             _deathTurn = _data.deathTurn + 1; // DeathTurnをリセット
         }
 
-       自殺判定・DeathTurn 減少はフリーター自身が生きている場合のみ
+       // 自殺判定・DeathTurn 減少はフリーター自身が生きている場合のみ
         if (!Player.IsAlive()) return;
 
         // 無職状態の場合、DeathTurnを減らす

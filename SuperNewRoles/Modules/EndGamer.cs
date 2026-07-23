@@ -4,6 +4,7 @@ using SuperNewRoles.Patches;
 using SuperNewRoles.Roles;
 using SuperNewRoles.Roles.Modifiers;
 using SuperNewRoles.Roles.Neutral;
+using SuperNewRoles.Roles.Impostor;
 using UnityEngine;
 using SuperNewRoles.CustomOptions.Categories;
 using SuperNewRoles.Roles.Ability;
@@ -106,7 +107,7 @@ public static class EndGamer
     }
     public static void RpcHaison()
     {
-        EndGameManagerSetUpPatch.RpcEndGameWithCondition((GameOverReason)CustomGameOverReason.Haison, ExPlayerControl.ExPlayerControls.Select(x => x.PlayerId).ToList(), "廃 of the 村", [], Color.white, true);
+        EndGameManagerSetUpPatch.RpcEndGameWithCondition((GameOverReason)CustomGameOverReason.Haison, ExPlayerControl.ExPlayerControls.Select(x => x.PlayerId).ToList(), "廃 of the 村", new List<string>(), Color.white, true);
     }
     [CustomRPC]
     public static void RpcSyncAlive(Dictionary<byte, bool> dead)
@@ -176,7 +177,7 @@ public static class EndGamer
         // ======================= 優先度(高) ===========================
         // 条件付き生存横取り勝利 — モイラ / フランケンシュタイン
         bool hasConditionalWon = false;
-        void AddConditionalWinner(ExPlayerControl player, string key, CustomGameOverReason customReason, Color32 roleColor)
+        void AddConditionalWinner(ref HashSet<ExPlayerControl> winners, ref List<string> hijackAddWinners, ref string upperText, ref Color32 color, ref bool hasConditionalWon, ref GameOverReason reason, ref string winText, ref WinType winType, ExPlayerControl player, string key, CustomGameOverReason customReason, Color32 roleColor)
         {
             if (!hasConditionalWon)
             {
@@ -195,26 +196,27 @@ public static class EndGamer
             reason = (GameOverReason)customReason;
             winText = null;
             winType = WinType.SingleNeutral;
+            winType = WinType.SingleNeutral;
         }
 
         foreach (ExPlayerControl player in ExPlayerControl.ExPlayerControls)
         {
             if (player.Role != RoleId.Moira || player.IsDead()) continue;
             if (!player.TryGetAbility<MoiraMeetingAbility>(out var moiraAbility) || moiraAbility.HasCount) continue;
-            AddConditionalWinner(player, "Moira", CustomGameOverReason.MoiraWin, Moira.Instance.RoleColor);
+            AddConditionalWinner(ref winners, ref hijackAddWinners, ref upperText, ref color, ref hasConditionalWon, ref reason, ref winText, ref winType, player, "Moira", CustomGameOverReason.MoiraWin, Moira.Instance.RoleColor);
         }
         foreach (ExPlayerControl player in ExPlayerControl.ExPlayerControls)
         {
             if (player.Role != RoleId.Frankenstein || player.IsDead()) continue;
             if (!player.TryGetAbility<FrankensteinAbility>(out var frankensteinAbility) || frankensteinAbility.RemainingKillsToWin > 0) continue;
-            AddConditionalWinner(player, "Frankenstein", CustomGameOverReason.FrankensteinWin, Frankenstein.Instance.RoleColor);
+            AddConditionalWinner(ref winners, ref hijackAddWinners, ref upperText, ref color, ref hasConditionalWon, ref reason, ref winText, ref winType, player, "Frankenstein", CustomGameOverReason.FrankensteinWin, Frankenstein.Instance.RoleColor);
         }
         if (hasConditionalWon) return;
 
         // ========================= 優先度(中) =========================
         // 単純生存横取り勝利 - スペランカー / マグロ / 陰陽師
         bool hasHijackWon = false;
-        void AddHijackWinner(ExPlayerControl player, string key, CustomGameOverReason customReason, Color32 roleColor)
+        void AddHijackWinner(ref HashSet<ExPlayerControl> winners, ref List<string> hijackAddWinners, ref string upperText, ref Color32 color, ref bool hasHijackWon, ref GameOverReason reason, ref string winText, ref WinType winType, ExPlayerControl player, string key, CustomGameOverReason customReason, Color32 roleColor)
         {
             if (!hasHijackWon)
             {
@@ -241,7 +243,7 @@ public static class EndGamer
             foreach (ExPlayerControl player in ExPlayerControl.ExPlayerControls)
             {
                 if (player.Role == RoleId.Spelunker && player.IsAlive())
-                    AddHijackWinner(player, "Spelunker", CustomGameOverReason.SpelunkerWin, Spelunker.Instance.RoleColor);
+                    AddHijackWinner(ref winners, ref hijackAddWinners, ref upperText, ref color, ref hasHijackWon, ref reason, ref winText, ref winType, player, "Spelunker", CustomGameOverReason.SpelunkerWin, Spelunker.Instance.RoleColor);
             }
         }
 
@@ -251,22 +253,19 @@ public static class EndGamer
             foreach (ExPlayerControl player in ExPlayerControl.ExPlayerControls)
             {
                 if (player.Role == RoleId.Tuna && player.IsAlive())
-                    AddHijackWinner(player, "Tuna", CustomGameOverReason.TunaWin, Tuna.Instance.RoleColor);
+                    AddHijackWinner(ref winners, ref hijackAddWinners, ref upperText, ref color, ref hasHijackWon, ref reason, ref winText, ref winType, player, "Tuna", CustomGameOverReason.TunaWin, Tuna.Instance.RoleColor);
             }
         }
 
         // 陰陽師 / 式神
         // CustomGameOverReason.OrientalShamanWinを追加
-        // break を入れていたため、陰陽師が複数人いる場合に最初の1人しか
-        // 判定されず勝利できないバグがあった。スペランカー/マグロと同様、
-        // 全員を判定して条件を満たした陰陽師は全員勝利できるようにする。
         foreach (ExPlayerControl player in ExPlayerControl.ExPlayerControls)
         {
             if (player.Role != RoleId.OrientalShaman || player.IsDead()) continue;
             if (OrientalShaman.OrientalShamanNeededTaskComplete && !player.IsTaskComplete()) continue;
             if (player.TryGetAbility<OrientalShamanAbility>(out var orientalShamanAbility))
             {
-                AddHijackWinner(player, "OrientalShaman", CustomGameOverReason.OrientalShamanWin, OrientalShaman.Instance.RoleColor);
+                AddHijackWinner(ref winners, ref hijackAddWinners, ref upperText, ref color, ref hasHijackWon, ref reason, ref winText, ref winType, player, "OrientalShaman", CustomGameOverReason.OrientalShamanWin, OrientalShaman.Instance.RoleColor);
                 if (orientalShamanAbility._servant?.Player != null)
                     winners.Add(orientalShamanAbility._servant.Player);
             }
@@ -281,7 +280,7 @@ public static class EndGamer
                 if (player.Role == RoleId.God && player.IsAlive())
                 {
                     if (God.GodNeededTask && !player.IsTaskComplete()) continue;
-                    AddHijackWinner(player, "God", CustomGameOverReason.GodWin, God.Instance.RoleColor);
+                    AddHijackWinner(ref winners, ref hijackAddWinners, ref upperText, ref color, ref hasHijackWon, ref reason, ref winText, ref winType, player, "God", CustomGameOverReason.GodWin, God.Instance.RoleColor);
                     winText = "GodDescends";
                 }
             }

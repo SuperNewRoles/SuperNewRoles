@@ -25,6 +25,7 @@ public class WCSantaHandler : MonoBehaviour
     private WaveCannonAbility _ability;
     private ExPlayerControl _source;
     private bool _friendlyFire;
+    private bool _isFlipX;
     private readonly HashSet<byte> _alreadyKilled = new();
 
     /// <summary>
