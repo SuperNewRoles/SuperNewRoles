@@ -17,6 +17,9 @@ namespace SuperNewRoles.HelpMenus;
 public static class HelpMenuObjectManager
 {
     private static GameObject helpMenuObject;
+    private static GameObject directRoleDetailObject;
+    private static GameObject directRoleDetailBackdropObject;
+    private static bool isDirectRoleDetailMode;
     private static bool isWaitingForIntroDisplay;
     public static FadeCoroutine fadeCoroutine;
     public static HelpMenuCategoryBase[] categories;
@@ -174,10 +177,138 @@ public static class HelpMenuObjectManager
         }
     }
 
+    /// <summary>
+    /// カテゴリ一覧を表示せず、指定した役職の説明をヘルプメニュー全体に表示する。
+    /// </summary>
+    public static void ShowRoleDetail(RoleId roleId)
+    {
+        if (!IsHelpMenuActive && !CanToggleHelpMenu())
+            return;
+
+        bool needsFadeIn = helpMenuObject == null || fadeCoroutine == null || !fadeCoroutine.isActive;
+        if (helpMenuObject == null)
+            Initialize();
+
+        var rightContainer = helpMenuObject.transform.Find("RightContainer")?.gameObject;
+        if (rightContainer == null)
+        {
+            Logger.Error("HelpMenuObject/RightContainer が見つかりませんでした。");
+            return;
+        }
+
+        if (isDirectRoleDetailMode && directRoleDetailObject != null)
+            GameObject.Destroy(directRoleDetailObject);
+        else
+            CurrentCategory?.Hide(rightContainer);
+
+        SetCategoryNavigationActive(false);
+        isDirectRoleDetailMode = true;
+        CreateDirectRoleDetailBackdrop();
+        directRoleDetailObject = RoleDetailHelper.ShowRoleDetail(
+            roleId,
+            rightContainer,
+            null,
+            HideHelpMenu,
+            useDirectRoleDetailLayout: true);
+
+        // 非表示中の既存メニューだけでなく、Initialize直後に追加した詳細画面も
+        // フェード対象へ含めるため、ここで改めてフェードインを開始する。
+        if (needsFadeIn)
+            fadeCoroutine.StartFadeIn(helpMenuObject, 0.115f);
+
+        var activeIndicator = HelpMenusHudManagerStartPatch.helpMenuButton?.transform.Find("active");
+        if (activeIndicator != null)
+            activeIndicator.gameObject.SetActive(true);
+    }
+
+    private static void SetCategoryNavigationActive(bool active)
+    {
+        var leftButtons = helpMenuObject?.transform.Find("LeftButtons");
+        if (leftButtons != null)
+            leftButtons.gameObject.SetActive(active);
+
+        var categorySeparator = helpMenuObject?.transform.Find("Line");
+        if (categorySeparator != null)
+            categorySeparator.gameObject.SetActive(active);
+    }
+
+    private static void CreateDirectRoleDetailBackdrop()
+    {
+        if (directRoleDetailBackdropObject != null)
+            GameObject.Destroy(directRoleDetailBackdropObject);
+
+        var backdropPrefab = AssetManager.GetAsset<GameObject>("GreenBack");
+        if (helpMenuObject == null || backdropPrefab == null)
+        {
+            Logger.Warning("役職説明用の画面外オーバーレイを生成できませんでした。");
+            return;
+        }
+
+        directRoleDetailBackdropObject = GameObject.Instantiate(backdropPrefab, helpMenuObject.transform);
+        directRoleDetailBackdropObject.name = "DirectRoleDetailBackdrop";
+        directRoleDetailBackdropObject.layer = 5;
+        directRoleDetailBackdropObject.transform.localPosition = new Vector3(0f, 0f, 2f);
+        directRoleDetailBackdropObject.transform.localRotation = Quaternion.identity;
+        directRoleDetailBackdropObject.transform.localScale = new Vector3(100f, 100f, 1f);
+
+        foreach (var renderer in directRoleDetailBackdropObject.GetComponentsInChildren<SpriteRenderer>(true))
+        {
+            renderer.color = new Color(0f, 0f, 0f, 0.7f);
+            renderer.maskInteraction = SpriteMaskInteraction.None;
+        }
+
+        var collider = directRoleDetailBackdropObject.GetComponent<BoxCollider2D>()
+            ?? directRoleDetailBackdropObject.AddComponent<BoxCollider2D>();
+        collider.size = Vector2.one;
+
+        var passiveButton = directRoleDetailBackdropObject.GetComponent<PassiveButton>()
+            ?? directRoleDetailBackdropObject.AddComponent<PassiveButton>();
+        passiveButton.Colliders = new Collider2D[] { collider };
+        passiveButton.OnClick = new();
+        passiveButton.OnClick.AddListener((UnityAction)HideHelpMenu);
+        passiveButton.OnMouseOver = new();
+        passiveButton.OnMouseOut = new();
+    }
+
+    private static void RestoreCategoryMenu()
+    {
+        if (!isDirectRoleDetailMode || helpMenuObject == null)
+            return;
+
+        if (directRoleDetailObject != null)
+            GameObject.Destroy(directRoleDetailObject);
+        directRoleDetailObject = null;
+        if (directRoleDetailBackdropObject != null)
+            GameObject.Destroy(directRoleDetailBackdropObject);
+        directRoleDetailBackdropObject = null;
+        isDirectRoleDetailMode = false;
+        SetCategoryNavigationActive(true);
+
+        var rightContainer = helpMenuObject.transform.Find("RightContainer")?.gameObject;
+        if (rightContainer == null || CurrentCategory == null)
+            return;
+
+        CurrentCategory.Show(rightContainer);
+        CurrentCategory.UpdateShow();
+        if (selectedButtons != null
+            && selectedButtons.TryGetValue(CurrentCategory.Name, out var selectedObject))
+        {
+            selectedObject.SetActive(true);
+        }
+    }
+
     public static void ShowOrHideHelpMenu()
     {
         if (!IsHelpMenuActive && !CanToggleHelpMenu())
             return;
+
+        if (isDirectRoleDetailMode && IsHelpMenuActive)
+        {
+            HideHelpMenu();
+            return;
+        }
+
+        RestoreCategoryMenu();
 
         if (helpMenuObject == null)
         {
@@ -307,6 +438,9 @@ public static class HelpMenuObjectManager
             {
                 GameObject.Destroy(helpMenuObject);
                 helpMenuObject = null;
+                directRoleDetailObject = null;
+                directRoleDetailBackdropObject = null;
+                isDirectRoleDetailMode = false;
                 fadeCoroutine = null;
                 CurrentCategory = null;
                 selectedButtons?.Clear();

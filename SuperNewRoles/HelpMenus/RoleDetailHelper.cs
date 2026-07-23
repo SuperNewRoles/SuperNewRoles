@@ -20,7 +20,12 @@ public static class RoleDetailHelper
     /// <param name="roleDetailObject">設定する役職詳細オブジェクト参照</param>
     /// <param name="onCloseCallback">閉じるボタン押下時のコールバック</param>
     /// <returns>作成された役職詳細オブジェクト</returns>
-    public static GameObject ShowRoleDetail(RoleId roleId, GameObject container, GameObject menuObjectToHide, System.Action onCloseCallback)
+    public static GameObject ShowRoleDetail(
+        RoleId roleId,
+        GameObject container,
+        GameObject menuObjectToHide,
+        System.Action onCloseCallback,
+        bool useDirectRoleDetailLayout = false)
     {
         // メニューを非表示にする
         if (menuObjectToHide != null)
@@ -42,12 +47,16 @@ public static class RoleDetailHelper
         if (mask != null)
         {
             mask.transform.localScale = new Vector3(mask.transform.localScale.x, 4.19f, mask.transform.localScale.z);
-            mask.transform.localPosition = new Vector3(mask.transform.localPosition.x, 0, mask.transform.localPosition.z);
+            mask.transform.localPosition = useDirectRoleDetailLayout
+                ? new Vector3(-0.8221f, 0f, 0f)
+                : new Vector3(mask.transform.localPosition.x, 0f, mask.transform.localPosition.z);
         }
         var scroller = roleDetailObject.transform.Find("Scroller");
         if (scroller != null)
         {
-            scroller.transform.localPosition = new Vector3(scroller.transform.localPosition.x, 0.45f, scroller.transform.localPosition.z);
+            scroller.transform.localPosition = useDirectRoleDetailLayout
+                ? new Vector3(-2.15f, 0.45f, 0f)
+                : new Vector3(scroller.transform.localPosition.x, 0.45f, scroller.transform.localPosition.z);
         }
 
         // RoleDetailMenuにMenuObjectを設定

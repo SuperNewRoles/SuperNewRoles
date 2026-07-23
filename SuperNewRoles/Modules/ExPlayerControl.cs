@@ -679,7 +679,7 @@ public class ExPlayerControl
         => roleBase != null ? (Role == RoleId.SchrodingersCat && GetAbility<SchrodingersCatAbility>()?.CurrentTeam == SchrodingersCatTeam.Crewmate) || (roleBase.AssignedTeam == AssignedTeamType.Crewmate && !IsMadRoles() && !IsFriendRoles()) : !Data.Role.IsImpostor;
 
     public bool IsCrewmateWin()
-        => IsCrewmate() && (roleBase == null || roleBase.WinnerTeam == WinnerTeamType.Crewmate);
+        => IsCrewmate() && (roleBase == null || roleBase.WinnerTeam == WinnerTeamType.Crewmate || (Role == RoleId.SchrodingersCat && GetAbility<SchrodingersCatAbility>()?.CurrentTeam == SchrodingersCatTeam.Crewmate));
 
     public bool IsCrewmateOrMadRoles()
         => IsCrewmate() || IsMadRoles() || IsFriendRoles();

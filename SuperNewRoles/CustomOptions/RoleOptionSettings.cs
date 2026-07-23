@@ -1,5 +1,6 @@
 using System;
 using System.Linq;
+using SuperNewRoles.HelpMenus;
 using SuperNewRoles.Modules;
 using SuperNewRoles.Roles;
 using TMPro;
@@ -16,6 +17,7 @@ public class RoleOptionSettings
     private const float ElementXPosition = -0.22f;
     private const float ElementZPosition = -5f;
     private const float ElementScale = 2f;
+    private const float RoleDetailButtonYPosition = 8.35f;
     private const float ScrollerXPosition = 18f;
     public const int ShiftSelection = 4;
 
@@ -390,6 +392,7 @@ public class RoleOptionSettings
     {
         RoleOptionMenu.RoleOptionMenuObjectData.SettingsScroller = parent.transform.Find("SettingsScroller").GetComponent<Scroller>();
         RoleOptionMenu.RoleOptionMenuObjectData.SettingsInner = parent.transform.Find("SettingsScroller/InnerContent");
+        SetupRoleDetailButton(RoleId.None);
     }
 
     public static void ClickedRole(RoleOptionManager.RoleOption roleOption)
@@ -406,12 +409,71 @@ public class RoleOptionSettings
         // 現在のロールオプションを保存（RoleIdだけでなく、直接ロールオプションへの参照も保持）
         RoleOptionMenu.RoleOptionMenuObjectData.CurrentRoleId = roleOption.RoleId;
 
+        SetupRoleDetailButton(roleOption.RoleId);
+
         int index = CreateRoleOptions(roleOption, ref lastY);
 
         // スクロール位置をリセット
         ResetScrollPosition();
 
         UpdateScrollerBounds(index);
+    }
+
+    private static void SetupRoleDetailButton(RoleId roleId)
+    {
+        var roleDetailButtonObject = RoleOptionMenu.RoleOptionMenuObjectData.SettingsInner?
+            .Find("RoleDetailButton")?.gameObject;
+        if (roleDetailButtonObject == null)
+        {
+            Logger.Warning("SettingsScroller/InnerContent/RoleDetailButton が見つかりませんでした。");
+            return;
+        }
+
+        // 右側の設定欄上部に固定している他の設定要素と、位置・奥行き・縮尺を揃える。
+        // 特に奥行きをScrollerのHitboxとずらすことで、実際のマウス入力を確実に拾えるようにする。
+        roleDetailButtonObject.transform.localPosition = new Vector3(
+            ElementXPosition,
+            RoleDetailButtonYPosition,
+            ElementZPosition);
+        roleDetailButtonObject.transform.localScale = Vector3.one * ElementScale;
+
+        var buttonText = roleDetailButtonObject.transform.Find("Text")?.GetComponent<TextMeshPro>();
+        if (buttonText != null)
+            buttonText.text = ModTranslation.GetString("RoleDetailButton");
+
+        bool hasSelectedRole = roleId != RoleId.None;
+        roleDetailButtonObject.SetActive(hasSelectedRole);
+
+        var passiveButton = roleDetailButtonObject.GetComponent<PassiveButton>()
+            ?? roleDetailButtonObject.AddComponent<PassiveButton>();
+        var collider = roleDetailButtonObject.GetComponent<Collider2D>();
+        if (collider != null)
+            collider.enabled = true;
+        passiveButton.Colliders = collider != null ? new[] { collider } : Array.Empty<Collider2D>();
+        passiveButton.OnClick = new();
+        passiveButton.OnClick.AddListener((UnityAction)(() =>
+        {
+            var currentRoleId = RoleOptionMenu.RoleOptionMenuObjectData.CurrentRoleId;
+            if (currentRoleId != RoleId.None)
+                HelpMenuObjectManager.ShowRoleDetail(currentRoleId);
+        }));
+
+        var selectedObject = roleDetailButtonObject.transform.Find("Selected")?.gameObject;
+        if (selectedObject != null)
+            selectedObject.SetActive(false);
+
+        passiveButton.OnMouseOver = new();
+        passiveButton.OnMouseOver.AddListener((UnityAction)(() =>
+        {
+            if (selectedObject != null)
+                selectedObject.SetActive(true);
+        }));
+        passiveButton.OnMouseOut = new();
+        passiveButton.OnMouseOut.AddListener((UnityAction)(() =>
+        {
+            if (selectedObject != null)
+                selectedObject.SetActive(false);
+        }));
     }
 
     // スクロール位置をリセットするメソッド
