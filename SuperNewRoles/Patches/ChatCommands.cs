@@ -6,6 +6,7 @@ using HarmonyLib;
 using InnerNet;
 using SuperNewRoles.Modules;
 using SuperNewRoles.Roles;
+using UnityEngine;
 
 namespace SuperNewRoles.Patches;
 
@@ -128,14 +129,35 @@ public static class SendChatPatch
         if (cond == null)
             return ModTranslation.GetString("Winners.NoData");
         var upperText = cond.UpperText;
+        // additionalWinTexts の各要素は "役職名\x1FRRGGBB" 形式でエンコードされている場合がある
+        // （EndGamer.EncodeWithColor 参照）。修正前は単純に連結して upperText 全体を
+        // 一括で ModHelpers.Cs(cond.UpperTextColor, upperText) に通していたため、
+        // ①色コード部分（\x1F以降）がデコードされずそのまま文字列として表示される
+        // ②追加役職名や「&」記号までメインの役職色で塗られてしまい、
+        //    各役職固有の色が反映されない
+        // という2つの表示崩れが起きていた。ここでメイン役職名と追加役職名をそれぞれ
+        // 個別に色付けしてから連結し、「&」区切りはデフォルト色（白）のまま残す。
+        string coloredUpperText = ModHelpers.Cs(cond.UpperTextColor, upperText);
         if (cond.additionalWinTexts != null && cond.additionalWinTexts.Any())
         {
-            upperText += " & " + string.Join(" & ", cond.additionalWinTexts);
+            foreach (var entry in cond.additionalWinTexts)
+            {
+                int sepIndex = entry.IndexOf(EndGamer.ColorEncodeSeparator);
+                string entryText = sepIndex >= 0 ? entry[..sepIndex] : entry;
+                string coloredEntry = entryText;
+                if (sepIndex >= 0)
+                {
+                    string hex = entry[(sepIndex + 1)..];
+                    if (ColorUtility.TryParseHtmlString("#" + hex, out Color parsedColor))
+                        coloredEntry = ModHelpers.Cs(parsedColor, entryText);
+                }
+                coloredUpperText += " & " + coloredEntry;
+            }
         }
-        upperText += " " + cond.winText;
+        coloredUpperText += " " + ModHelpers.Cs(cond.UpperTextColor, cond.winText);
         if (cond.IsHaison)
-            upperText = ModTranslation.GetString("Haison");
-        builder.AppendLine($"<size=150%>{ModHelpers.Cs(cond.UpperTextColor, upperText)}</size>");
+            coloredUpperText = ModTranslation.GetString("Haison");
+        builder.AppendLine($"<size=150%>{coloredUpperText}</size>");
         foreach (var data in AdditionalTempData.playerRoles)
         {
             builder.Append("<size=80%>");
