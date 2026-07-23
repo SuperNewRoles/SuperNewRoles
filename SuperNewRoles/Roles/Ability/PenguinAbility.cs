@@ -34,6 +34,7 @@ public class PenguinAbility : TargetCustomButtonBase, IButtonEffect
     public bool effectCancellable => false;
     private bool meetingKill;
     private EventListener<CalledMeetingEventData> _preCalledMeeting;
+    private EventListener<TryKillEventData> tryKillEvent;
     public override Sprite Sprite => _sprite;
     public override string buttonText => ModTranslation.GetString("PenguinButtonText");
     protected override KeyType keytype => KeyType.Ability1;
@@ -75,6 +76,7 @@ public class PenguinAbility : TargetCustomButtonBase, IButtonEffect
         _preCalledMeeting?.RemoveListener();
         wrapUpEvent?.RemoveListener();
         dieEvent?.RemoveListener();
+        tryKillEvent?.RemoveListener();
     }
     private void OnFixedUpdate()
     {
@@ -102,6 +104,13 @@ public class PenguinAbility : TargetCustomButtonBase, IButtonEffect
         fixedUpdateEvent = FixedUpdateEvent.Instance.AddListener(OnFixedUpdate);
         wrapUpEvent = WrapUpEvent.Instance.AddListener(OnWrapUp);
         dieEvent = DieEvent.Instance.AddListener(OnDie);
+        tryKillEvent = TryKillEvent.Instance.AddListener(OnTryKill);
+    }
+
+    private void OnTryKill(TryKillEventData data)
+    {
+        if (data.Killer != Player || data.RefTarget != targetPlayer) return;
+        EndPenguin();
     }
 
     private void OnDie(DieEventData data)
@@ -140,7 +149,14 @@ public class PenguinAbility : TargetCustomButtonBase, IButtonEffect
     [CustomRPC]
     public void RpcEndPenguin()
     {
+        EndPenguin();
+    }
+
+    private void EndPenguin()
+    {
         targetPlayer = null;
+        isEffectActive = false;
+        EffectTimer = EffectDuration;
     }
 
     [CustomRPC]
@@ -151,8 +167,7 @@ public class PenguinAbility : TargetCustomButtonBase, IButtonEffect
             // 会議開始時の死体集計に間に合わせるため、通常キルアニメーションを経由せず死体を生成する
             target.CustomDeath(CustomDeathType.KillWithoutKillAnimation, source: source);
         }
-        if (ability != null)
-            ability.targetPlayer = null;
+        ability?.EndPenguin();
     }
 
     [CustomRPC]
@@ -165,7 +180,7 @@ public class PenguinAbility : TargetCustomButtonBase, IButtonEffect
             else
                 target.CustomDeath(CustomDeathType.Kill, source: source);
         }
-        ability.targetPlayer = null;
+        ability?.EndPenguin();
     }
 }
 
