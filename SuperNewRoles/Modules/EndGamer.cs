@@ -107,7 +107,7 @@ public static class EndGamer
         // （死因:サボタージュがホスト視点にしか表示されない）ため、同期する。
         RpcSyncFinalStatus(ExPlayerControl.ExPlayerControls
             .Where(x => x.FinalStatus != FinalStatus.Alive)
-            .ToDictionary(x => x.PlayerId, x => x.FinalStatus));
+            .ToDictionary(x => x.PlayerId, x => (byte)x.FinalStatus));
         string resolvedWinText = winText;
         // 単独勝利の場合、三人称単数になるので「wins」にする
         if (winType == WinType.SingleNeutral
