@@ -18,7 +18,7 @@ public static class HelpMenuObjectManager
 {
     private static GameObject helpMenuObject;
     private static GameObject directRoleDetailObject;
-    private static GameObject directRoleDetailBackdropObject;
+    private static GameObject helpMenuBackdropObject;
     private static bool isDirectRoleDetailMode;
     private static bool isWaitingForIntroDisplay;
     public static FadeCoroutine fadeCoroutine;
@@ -68,6 +68,11 @@ public static class HelpMenuObjectManager
         airPassiveButton.OnClick = new();
         airPassiveButton.OnMouseOver = new();
         airPassiveButton.OnMouseOut = new();
+
+        // 外側クリックで閉じられる透明オーバーレイを置く。
+        // 通常ヘルプでは見た目だけ出さず、役職説明時のみ暗転する。
+        // メニュー本体のフェード対象外にするため、ヘルプメニューの兄弟として生成する。
+        SetHelpMenuBackdropState(menuOpen: true, dimmed: false);
 
         var defaultNow =
             AmongUsClient.Instance.GameState == InnerNet.InnerNetClient.GameStates.Started
@@ -203,7 +208,7 @@ public static class HelpMenuObjectManager
 
         SetCategoryNavigationActive(false);
         isDirectRoleDetailMode = true;
-        CreateDirectRoleDetailBackdrop();
+        SetHelpMenuBackdropState(menuOpen: true, dimmed: true);
         directRoleDetailObject = RoleDetailHelper.ShowRoleDetail(
             roleId,
             rightContainer,
@@ -232,42 +237,72 @@ public static class HelpMenuObjectManager
             categorySeparator.gameObject.SetActive(active);
     }
 
-    private static void CreateDirectRoleDetailBackdrop()
+    private static void EnsureHelpMenuBackdrop()
     {
-        if (directRoleDetailBackdropObject != null)
-            GameObject.Destroy(directRoleDetailBackdropObject);
+        if (helpMenuBackdropObject != null || helpMenuObject == null || HudManager.Instance == null)
+            return;
 
         var backdropPrefab = AssetManager.GetAsset<GameObject>("GreenBack");
-        if (helpMenuObject == null || backdropPrefab == null)
+        if (backdropPrefab == null)
         {
-            Logger.Warning("役職説明用の画面外オーバーレイを生成できませんでした。");
+            Logger.Warning("ヘルプメニュー用の画面外オーバーレイを生成できませんでした。");
             return;
         }
 
-        directRoleDetailBackdropObject = GameObject.Instantiate(backdropPrefab, helpMenuObject.transform);
-        directRoleDetailBackdropObject.name = "DirectRoleDetailBackdrop";
-        directRoleDetailBackdropObject.layer = 5;
-        directRoleDetailBackdropObject.transform.localPosition = new Vector3(0f, 0f, 2f);
-        directRoleDetailBackdropObject.transform.localRotation = Quaternion.identity;
-        directRoleDetailBackdropObject.transform.localScale = new Vector3(100f, 100f, 1f);
+        // helpMenuObject の子にするとフェード対象に含まれて開閉が不自然になるため、兄弟として配置する。
+        helpMenuBackdropObject = GameObject.Instantiate(backdropPrefab, HudManager.Instance.transform);
+        helpMenuBackdropObject.name = "HelpMenuBackdrop";
+        helpMenuBackdropObject.layer = 5;
+        // HelpMenuObject は z=-500。少し後ろに置いてメニュー本体の背面に回す。
+        helpMenuBackdropObject.transform.localPosition = new Vector3(0f, 0f, -498f);
+        helpMenuBackdropObject.transform.localRotation = Quaternion.identity;
+        helpMenuBackdropObject.transform.localScale = new Vector3(100f, 100f, 1f);
 
-        foreach (var renderer in directRoleDetailBackdropObject.GetComponentsInChildren<SpriteRenderer>(true))
+        foreach (var renderer in helpMenuBackdropObject.GetComponentsInChildren<SpriteRenderer>(true))
         {
-            renderer.color = new Color(0f, 0f, 0f, 0.7f);
+            renderer.color = new Color(0f, 0f, 0f, 0f);
             renderer.maskInteraction = SpriteMaskInteraction.None;
         }
 
-        var collider = directRoleDetailBackdropObject.GetComponent<BoxCollider2D>()
-            ?? directRoleDetailBackdropObject.AddComponent<BoxCollider2D>();
+        var collider = helpMenuBackdropObject.GetComponent<BoxCollider2D>()
+            ?? helpMenuBackdropObject.AddComponent<BoxCollider2D>();
         collider.size = Vector2.one;
+        collider.enabled = true;
 
-        var passiveButton = directRoleDetailBackdropObject.GetComponent<PassiveButton>()
-            ?? directRoleDetailBackdropObject.AddComponent<PassiveButton>();
+        var passiveButton = helpMenuBackdropObject.GetComponent<PassiveButton>()
+            ?? helpMenuBackdropObject.AddComponent<PassiveButton>();
         passiveButton.Colliders = new Collider2D[] { collider };
         passiveButton.OnClick = new();
         passiveButton.OnClick.AddListener((UnityAction)HideHelpMenu);
         passiveButton.OnMouseOver = new();
         passiveButton.OnMouseOut = new();
+    }
+
+    /// <summary>
+    /// ヘルプメニュー背面オーバーレイの状態を更新する。
+    /// 通常ヘルプでは暗転せず alpha=0 のまま当たり判定だけ残し、役職説明時のみ暗転する。
+    /// メニュー閉鎖時のみオブジェクト自体を非アクティブにする。
+    /// </summary>
+    private static void SetHelpMenuBackdropState(bool menuOpen, bool dimmed)
+    {
+        if (menuOpen)
+            EnsureHelpMenuBackdrop();
+        if (helpMenuBackdropObject == null)
+            return;
+
+        helpMenuBackdropObject.SetActive(menuOpen);
+        if (!menuOpen)
+            return;
+
+        float alpha = dimmed ? 0.7f : 0f;
+        foreach (var renderer in helpMenuBackdropObject.GetComponentsInChildren<SpriteRenderer>(true))
+        {
+            renderer.color = new Color(0f, 0f, 0f, alpha);
+            renderer.maskInteraction = SpriteMaskInteraction.None;
+        }
+
+        foreach (var collider in helpMenuBackdropObject.GetComponentsInChildren<Collider2D>(true))
+            collider.enabled = true;
     }
 
     private static void RestoreCategoryMenu()
@@ -278,11 +313,9 @@ public static class HelpMenuObjectManager
         if (directRoleDetailObject != null)
             GameObject.Destroy(directRoleDetailObject);
         directRoleDetailObject = null;
-        if (directRoleDetailBackdropObject != null)
-            GameObject.Destroy(directRoleDetailBackdropObject);
-        directRoleDetailBackdropObject = null;
         isDirectRoleDetailMode = false;
         SetCategoryNavigationActive(true);
+        SetHelpMenuBackdropState(menuOpen: true, dimmed: false);
 
         var rightContainer = helpMenuObject.transform.Find("RightContainer")?.gameObject;
         if (rightContainer == null || CurrentCategory == null)
@@ -363,6 +396,11 @@ public static class HelpMenuObjectManager
         if (fadeCoroutine.isActive)
         {
             CurrentCategory?.UpdateShow();
+            SetHelpMenuBackdropState(menuOpen: true, dimmed: isDirectRoleDetailMode);
+        }
+        else
+        {
+            SetHelpMenuBackdropState(menuOpen: false, dimmed: false);
         }
         HelpMenusHudManagerStartPatch.helpMenuButton?.transform.Find("active").gameObject.SetActive(fadeCoroutine.isActive);
     }
@@ -370,6 +408,7 @@ public static class HelpMenuObjectManager
     {
         if (helpMenuObject == null || fadeCoroutine == null) return;
         fadeCoroutine.StartFadeOut(helpMenuObject, 0.115f);
+        SetHelpMenuBackdropState(menuOpen: false, dimmed: false);
 
         var activeIndicator = HelpMenusHudManagerStartPatch.helpMenuButton?.transform.Find("active");
         if (activeIndicator != null)
@@ -439,7 +478,11 @@ public static class HelpMenuObjectManager
                 GameObject.Destroy(helpMenuObject);
                 helpMenuObject = null;
                 directRoleDetailObject = null;
-                directRoleDetailBackdropObject = null;
+                if (helpMenuBackdropObject != null)
+                {
+                    GameObject.Destroy(helpMenuBackdropObject);
+                    helpMenuBackdropObject = null;
+                }
                 isDirectRoleDetailMode = false;
                 fadeCoroutine = null;
                 CurrentCategory = null;
