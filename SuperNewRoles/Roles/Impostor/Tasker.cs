@@ -40,6 +40,9 @@ class Tasker : RoleBase<Tasker>
     [CustomOptionTask("TaskerTaskCount", 1, 1, 1, parentFieldName: nameof(TaskerEnableIndividualTasks))]
     public static TaskOptionData TaskerTaskCount;
 
+    [CustomOptionBool("DisableHijackTaskerWin", false)]
+    public static bool DisableHijackTaskerWin;
+
     [CustomOptionBool("TaskerCanKill", true)]
     public static bool TaskerCanKill;
     [CustomOptionBool("TaskerIsKillCoolTaskNow", true, parentFieldName: nameof(TaskerCanKill))]
@@ -79,8 +82,13 @@ public class TaskerAbility : AbilityBase
         if (data.player == null || data.player.PlayerId != Player.PlayerId) return;
         if (Player.IsDead() || !Player.IsTaskComplete()) return;
 
-        EndGamer.EndGameImpostorWin();
-    }
+        // CustomGameOverReason.TaskerWin があったので使用しました
+        EndGamer.RpcEndGameWithWinner(
+            CustomGameOverReason.TaskerWin,
+            WinType.Default,
+            ExPlayerControl.ExPlayerControls.Where(x => x.IsImpostorWinTeam()).ToArray(),
+            Palette.ImpostorRed,
+            "ImpostorWin");    }
 }
 
 [HarmonyPatch(typeof(PlayerControl), nameof(PlayerControl.FixedUpdate))]
