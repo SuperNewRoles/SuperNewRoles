@@ -1586,8 +1586,9 @@ TaskmasterEnableLightsFix,停電,Power Outage,停电,停電
 TaskmasterEnableCommsFix,コミュニケーション,Communications,通信,通訊
 
 # Tasker
-TaskerIsKillCoolTaskNow,タスク中にキルクールタイムが進む,Kill cooldown progresses during tasks,任务中击杀冷却会推进,任務中擊殺冷卻會推進
+DisabledHijackTaskerWin,タスカー勝利時の第三陣営のタスク勝利横取りを無効化する
 TaskerCanKill,キルできる,Can kill,可以击杀,可以擊殺
+TaskerIsKillCoolTaskNow,タスク中にキルクールタイムが進む,Kill cooldown progresses during tasks,任务中击杀冷却会推进,任務中擊殺冷卻會推進
 TaskerWinText,インポスタータスク,Impostor Task,内鬼任务,內鬼任務
 
 # ToiletFan

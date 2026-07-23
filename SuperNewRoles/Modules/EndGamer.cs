@@ -70,7 +70,15 @@ public static class EndGamer
             foreach (ExPlayerControl player in ExPlayerControl.ExPlayerControls)
             {
                 if (!player.IsImpostorWinTeam())
+                {
+                    // IsDead = true にする前に、まだ生存していたプレイヤーの死因をサボタージュとして記録する。
+                    // ここで先に IsDead を立ててしまうと、後段の UpdatePlayerStatusForSabotage
+                    // （EndGameScene.cs）が「!player.IsDead」を条件にしているため発動せず、
+                    // 死因がサボタージュとして表示されなくなるバグがあった。
+                    if (player.IsAlive())
+                        player.FinalStatus = FinalStatus.Sabotage;
                     player.Data.IsDead = true;
+                }
             }
         }
 
@@ -94,6 +102,12 @@ public static class EndGamer
         Logger.Info("winText: " + winText);
         Logger.Info("----------- Finished EndGame End -----------");
         RpcSyncAlive(ExPlayerControl.ExPlayerControls.ToDictionary(x => x.PlayerId, x => x.IsDead()));
+        / FinalStatus（サボタージュ死亡等）はホストのローカル状態にしか反映されず、
+        // 非ホストクライアントでは常に Alive のまま表示されてしまうバグがあった
+        // （死因:サボタージュがホスト視点にしか表示されない）ため、同期する。
+        RpcSyncFinalStatus(ExPlayerControl.ExPlayerControls
+            .Where(x => x.FinalStatus != FinalStatus.Alive)
+            .ToDictionary(x => x.PlayerId, x => x.FinalStatus));
         string resolvedWinText = winText;
         // 単独勝利の場合、三人称単数になるので「wins」にする
         if (winType == WinType.SingleNeutral
