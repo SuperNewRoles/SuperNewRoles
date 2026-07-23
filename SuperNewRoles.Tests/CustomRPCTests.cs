@@ -1,8 +1,10 @@
 using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Reflection;
+using System.Text;
 using FluentAssertions;
 using SuperNewRoles;
 using SuperNewRoles.Modules;
@@ -39,6 +41,41 @@ public class CustomRPCTests
         if (signatureMethod == null)
             throw new InvalidOperationException("GetStableMethodSignature was not found");
         return (string)signatureMethod.Invoke(null, new object[] { m })!;
+    }
+
+    private static void RpcMapEntryTarget() { }
+
+    [Fact]
+    public void RpcMapEntry_IsIdentical_AcrossCultures()
+    {
+        var appendMethod = typeof(SuperNewRoles.Patches.SyncVersion).GetMethod(
+            "AppendMethodInfo",
+            BindingFlags.Static | BindingFlags.NonPublic);
+        appendMethod.Should().NotBeNull();
+
+        var target = typeof(CustomRPCTests).GetMethod(
+            nameof(RpcMapEntryTarget),
+            BindingFlags.Static | BindingFlags.NonPublic)!;
+        var rpcMethod = new KeyValuePair<int, MethodInfo>(-1217537766, target);
+        string expected = $"-1217537766:{ComputeRpcHash(target)};";
+        CultureInfo originalCulture = CultureInfo.CurrentCulture;
+
+        try
+        {
+            foreach (string cultureName in new[] { "en-US", "ja-JP", "ar", "fa-IR", "sv-SE" })
+            {
+                CultureInfo.CurrentCulture = CultureInfo.GetCultureInfo(cultureName);
+                var builder = new StringBuilder();
+
+                appendMethod!.Invoke(null, new object[] { builder, rpcMethod });
+
+                builder.ToString().Should().Be(expected, $"RPC map entries must not depend on {cultureName}");
+            }
+        }
+        finally
+        {
+            CultureInfo.CurrentCulture = originalCulture;
+        }
     }
 
     // 目的: ロード時に [CustomRPC] メソッドがシグネチャ由来の決定論的 ID へ割り当てられることを検証
