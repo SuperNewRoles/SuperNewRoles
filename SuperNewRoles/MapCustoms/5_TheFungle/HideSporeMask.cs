@@ -36,6 +36,10 @@ public static class HideSporeMask
             // sporeMask が非アクティブ（SetActive(false)）の場合はカスタムキノコの発動前状態なので触らない
             // 発動前に霧が表示されたり、発動時に爆発範囲が初期値になるのを防ぐ
             if (__instance.sporeMask == null || !__instance.sporeMask.gameObject.activeSelf)
+            {
+                return;
+            }
+
             if (CanUseGasMask())
                 __instance.sporeMask.transform.localScale = new(0, 0, 0);
             else if (__instance.sporeMask.transform.localScale.x == 0)
