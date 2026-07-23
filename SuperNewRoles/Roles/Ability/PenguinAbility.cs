@@ -84,7 +84,7 @@ public class PenguinAbility : TargetCustomButtonBase, IButtonEffect
         // 死亡しても掴んでいる問題の対策
         if (targetPlayer.IsDead() || Player.IsDead())
         {
-            targetPlayer = null;
+            EndPenguin();
             return;
         }
         // ここに来た時点で誰か掴んでる
@@ -134,7 +134,7 @@ public class PenguinAbility : TargetCustomButtonBase, IButtonEffect
     {
         if (targetPlayer == null) return;
         if (data.exiled?.PlayerId == Player.PlayerId || Player.IsDead())
-            targetPlayer = null;
+            EndPenguin();
         else if (Player.AmOwner)
         {
             RpcKillPenguinTarget(Player, this, targetPlayer, true);
