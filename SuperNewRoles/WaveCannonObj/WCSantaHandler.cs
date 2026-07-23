@@ -37,7 +37,6 @@ public class WCSantaHandler : MonoBehaviour
         _ability = ability;
         _source = ability?.Player;
         _friendlyFire = ability?.friendlyFire ?? true;
-        _isFlipX = isFlipX;
     }
 
     public void Start()
