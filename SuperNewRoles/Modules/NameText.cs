@@ -235,7 +235,8 @@ public static class NameText
         }
         public static void Postfix(HudOverrideSystemType __instance)
         {
-            if (__instance.IsActive && !_lastActive)
+            //コミュサボ時・それ以外両方を評価するように変更
+            if (__instance.IsActive != _lastActive)
                 UpdateAllNameInfo();
         }
     }
