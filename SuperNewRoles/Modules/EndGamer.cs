@@ -132,13 +132,13 @@ public static class EndGamer
                 player.Data.IsDead = isDead;
         }
     }
-        [CustomRPC]
-    public static void RpcSyncFinalStatus(Dictionary<byte, FinalStatus> finalStatus)
+    [CustomRPC]
+    public static void RpcSyncFinalStatus(Dictionary<byte, byte> finalStatus)
     {
         foreach (ExPlayerControl player in ExPlayerControl.ExPlayerControls)
         {
-            if (finalStatus.TryGetValue(player.PlayerId, out FinalStatus status))
-                player.FinalStatus = status;
+            if (finalStatus.TryGetValue(player.PlayerId, out byte status))
+                player.FinalStatus = (FinalStatus)status;  // 受け取り側でキャスト
         }
     }
     [CustomRPC]
