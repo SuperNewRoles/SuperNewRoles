@@ -102,7 +102,7 @@ public static class EndGamer
         Logger.Info("winText: " + winText);
         Logger.Info("----------- Finished EndGame End -----------");
         RpcSyncAlive(ExPlayerControl.ExPlayerControls.ToDictionary(x => x.PlayerId, x => x.IsDead()));
-        / FinalStatus（サボタージュ死亡等）はホストのローカル状態にしか反映されず、
+        // FinalStatus（サボタージュ死亡等）はホストのローカル状態にしか反映されず、
         // 非ホストクライアントでは常に Alive のまま表示されてしまうバグがあった
         // （死因:サボタージュがホスト視点にしか表示されない）ため、同期する。
         RpcSyncFinalStatus(ExPlayerControl.ExPlayerControls
@@ -130,6 +130,15 @@ public static class EndGamer
         {
             if (dead.TryGetValue(player.PlayerId, out bool isDead))
                 player.Data.IsDead = isDead;
+        }
+    }
+        [CustomRPC]
+    public static void RpcSyncFinalStatus(Dictionary<byte, FinalStatus> finalStatus)
+    {
+        foreach (ExPlayerControl player in ExPlayerControl.ExPlayerControls)
+        {
+            if (finalStatus.TryGetValue(player.PlayerId, out FinalStatus status))
+                player.FinalStatus = status;
         }
     }
     [CustomRPC]
