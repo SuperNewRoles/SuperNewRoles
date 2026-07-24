@@ -153,6 +153,8 @@ internal sealed class WindowsPresetFilePicker : IPresetFilePicker
 {
     private const string PresetFilter =
         "SuperNewRoles Presets (*.snrpresets)|*.snrpresets|ZIP Archive (*.zip)|*.zip|All Files (*.*)|*.*";
+    // 対話的なファイル選択を想定し、無期限待ちは避けつつ十分な猶予を確保する。
+    private const int DialogTimeoutMilliseconds = 30 * 60 * 1000;
 
     public void Export(string defaultFileName, byte[] contents, Action<PresetFilePickerResult> onComplete, Action onBeforeWrite = null)
     {
@@ -238,13 +240,15 @@ internal sealed class WindowsPresetFilePicker : IPresetFilePicker
     private static string BuildDialogScript(string dialogType, string title, string extraConfiguration)
     {
         string encodedFilter = Convert.ToBase64String(Encoding.UTF8.GetBytes(PresetFilter));
+        // PowerShellのシングルクォートリテラル内では ' を '' にエスケープする。
+        string escapedTitle = (title ?? string.Empty).Replace("'", "''");
         return $@"
 $ErrorActionPreference = 'Stop'
 try {{
     Add-Type -AssemblyName System.Windows.Forms
     [Console]::OutputEncoding = [Text.UTF8Encoding]::new($false)
     $dialog = New-Object {dialogType}
-    $dialog.Title = '{title}'
+    $dialog.Title = '{escapedTitle}'
     $dialog.Filter = [Text.Encoding]::UTF8.GetString([Convert]::FromBase64String('{encodedFilter}'))
     $dialog.RestoreDirectory = $true
     {extraConfiguration}
@@ -304,10 +308,49 @@ try {{
             };
 
             using var process = new Process { StartInfo = startInfo };
+            var outputBuilder = new StringBuilder();
+            var errorBuilder = new StringBuilder();
+            // 同期ReadToEndの逐次呼び出しはパイプ満杯でデッドロックし得るため、イベント駆動で並行読取する。
+            process.OutputDataReceived += (_, e) =>
+            {
+                if (e.Data != null)
+                    outputBuilder.AppendLine(e.Data);
+            };
+            process.ErrorDataReceived += (_, e) =>
+            {
+                if (e.Data != null)
+                    errorBuilder.AppendLine(e.Data);
+            };
             process.Start();
-            string output = process.StandardOutput.ReadToEnd();
-            string standardError = process.StandardError.ReadToEnd();
+            process.BeginOutputReadLine();
+            process.BeginErrorReadLine();
+            if (!process.WaitForExit(DialogTimeoutMilliseconds))
+            {
+                try
+                {
+                    process.Kill();
+                }
+                catch
+                {
+                    // 既に終了している場合など、Kill失敗は無視してタイムアウトとして扱う。
+                }
+
+                try
+                {
+                    process.WaitForExit(5000);
+                }
+                catch
+                {
+                }
+
+                errorMessage = "Windows file dialog timed out.";
+                return false;
+            }
+
+            // タイムアウト付きWaitForExit後も、非同期ハンドラ完了のため無引数版を呼ぶ。
             process.WaitForExit();
+            string output = outputBuilder.ToString();
+            string standardError = errorBuilder.ToString();
 
             string marker = output
                 .Split(new[] { '\r', '\n' }, StringSplitOptions.RemoveEmptyEntries)
