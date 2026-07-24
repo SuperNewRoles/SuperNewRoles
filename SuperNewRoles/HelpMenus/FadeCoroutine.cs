@@ -97,7 +97,9 @@ public class FadeCoroutine : MonoBehaviour
     public bool ReverseFade()
     {
         if (parent == null) return false;
-        if (isFadeIn)
+        // フェード完了後は isFadeIn/isFadeOut を落とすため、表示状態は isActive で判定する。
+        // 表示中（またはフェードイン中）なら閉じ、非表示中なら開く。
+        if (isActive || isFadeIn)
         {
             StartFadeOut(parent, duration);
         }
