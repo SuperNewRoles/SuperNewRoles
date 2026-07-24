@@ -1,9 +1,9 @@
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Reflection;
-using System.Runtime.InteropServices;
 using System.Text;
 using InnerNet;
 using TMPro;
@@ -151,16 +151,10 @@ internal sealed class UnsupportedPresetFilePicker : IPresetFilePicker
 
 internal sealed class WindowsPresetFilePicker : IPresetFilePicker
 {
-    private const int MaxPathBuffer = 4096;
-    private const int OfnExplorer = 0x00080000;
-    private const int OfnFileMustExist = 0x00001000;
-    private const int OfnHideReadOnly = 0x00000004;
-    private const int OfnNoChangeDir = 0x00000008;
-    private const int OfnOverwritePrompt = 0x00000002;
-    private const int OfnPathMustExist = 0x00000800;
-
     private const string PresetFilter =
-        "SuperNewRoles Presets (*.snrpresets)\0*.snrpresets\0ZIP Archive (*.zip)\0*.zip\0All Files (*.*)\0*.*\0\0";
+        "SuperNewRoles Presets (*.snrpresets)|*.snrpresets|ZIP Archive (*.zip)|*.zip|All Files (*.*)|*.*";
+    // 対話的なファイル選択を想定し、無期限待ちは避けつつ十分な猶予を確保する。
+    private const int DialogTimeoutMilliseconds = 30 * 60 * 1000;
 
     public void Export(string defaultFileName, byte[] contents, Action<PresetFilePickerResult> onComplete, Action onBeforeWrite = null)
     {
@@ -218,142 +212,185 @@ internal sealed class WindowsPresetFilePicker : IPresetFilePicker
     }
 
     private static bool TryGetSavePath(string defaultFileName, out string path, out string errorMessage)
-    {
-        using var dialogData = OpenFileNameData.Create(defaultFileName, "Export Preset", "snrpresets");
-        dialogData.OpenFileName.Flags = OfnExplorer | OfnHideReadOnly | OfnNoChangeDir | OfnOverwritePrompt | OfnPathMustExist;
-
-        bool success = GetSaveFileNameW(ref dialogData.OpenFileName);
-        path = success ? dialogData.GetSelectedPath() : string.Empty;
-        errorMessage = success ? string.Empty : GetCommonDialogErrorMessage();
-        return success;
-    }
+        => TryRunDialog(BuildSaveDialogScript(defaultFileName), out path, out errorMessage);
 
     private static bool TryGetOpenPath(out string path, out string errorMessage)
-    {
-        using var dialogData = OpenFileNameData.Create(string.Empty, "Import Preset", string.Empty);
-        dialogData.OpenFileName.Flags = OfnExplorer | OfnFileMustExist | OfnHideReadOnly | OfnNoChangeDir | OfnPathMustExist;
+        => TryRunDialog(BuildOpenDialogScript(), out path, out errorMessage);
 
-        bool success = GetOpenFileNameW(ref dialogData.OpenFileName);
-        path = success ? dialogData.GetSelectedPath() : string.Empty;
-        errorMessage = success ? string.Empty : GetCommonDialogErrorMessage();
-        return success;
+    private static string BuildSaveDialogScript(string defaultFileName)
+    {
+        string encodedFileName = Convert.ToBase64String(Encoding.UTF8.GetBytes(defaultFileName ?? string.Empty));
+        return BuildDialogScript(
+            "System.Windows.Forms.SaveFileDialog",
+            "Export Preset",
+            $"$dialog.FileName = [Text.Encoding]::UTF8.GetString([Convert]::FromBase64String('{encodedFileName}'))\n" +
+            "$dialog.DefaultExt = 'snrpresets'\n" +
+            "$dialog.AddExtension = $true\n" +
+            "$dialog.OverwritePrompt = $true");
     }
 
-    private static string GetCommonDialogErrorMessage()
+    private static string BuildOpenDialogScript()
+        => BuildDialogScript(
+            "System.Windows.Forms.OpenFileDialog",
+            "Import Preset",
+            "$dialog.Multiselect = $false\n" +
+            "$dialog.CheckFileExists = $true\n" +
+            "$dialog.CheckPathExists = $true");
+
+    private static string BuildDialogScript(string dialogType, string title, string extraConfiguration)
     {
-        int errorCode = CommDlgExtendedError();
-        return errorCode == 0
-            ? string.Empty
-            : $"Windows file dialog failed with error 0x{errorCode:X}.";
+        string encodedFilter = Convert.ToBase64String(Encoding.UTF8.GetBytes(PresetFilter));
+        // PowerShellのシングルクォートリテラル内では ' を '' にエスケープする。
+        string escapedTitle = (title ?? string.Empty).Replace("'", "''");
+        return $@"
+$ErrorActionPreference = 'Stop'
+try {{
+    Add-Type -AssemblyName System.Windows.Forms
+    [Console]::OutputEncoding = [Text.UTF8Encoding]::new($false)
+    $dialog = New-Object {dialogType}
+    $dialog.Title = '{escapedTitle}'
+    $dialog.Filter = [Text.Encoding]::UTF8.GetString([Convert]::FromBase64String('{encodedFilter}'))
+    $dialog.RestoreDirectory = $true
+    {extraConfiguration}
+    $owner = New-Object System.Windows.Forms.Form
+    $owner.ShowInTaskbar = $false
+    $owner.TopMost = $true
+    $owner.Opacity = 0
+    $owner.Show()
+    try {{
+        $result = $dialog.ShowDialog($owner)
+    }} finally {{
+        $owner.Close()
+        $owner.Dispose()
+    }}
+    if ($result -eq [System.Windows.Forms.DialogResult]::OK) {{
+        'OK:' + [Convert]::ToBase64String([Text.Encoding]::UTF8.GetBytes($dialog.FileName))
+    }} else {{
+        'CANCELLED'
+    }}
+    $dialog.Dispose()
+}} catch {{
+    'ERROR:' + [Convert]::ToBase64String([Text.Encoding]::UTF8.GetBytes($_.Exception.Message))
+    exit 1
+}}";
     }
 
-    [DllImport("comdlg32.dll", CharSet = CharSet.Unicode, SetLastError = true, EntryPoint = "GetOpenFileNameW")]
-    private static extern bool GetOpenFileNameW(ref OpenFileName ofn);
-
-    [DllImport("comdlg32.dll", CharSet = CharSet.Unicode, SetLastError = true, EntryPoint = "GetSaveFileNameW")]
-    private static extern bool GetSaveFileNameW(ref OpenFileName ofn);
-
-    [DllImport("comdlg32.dll", SetLastError = true, EntryPoint = "CommDlgExtendedError")]
-    private static extern int CommDlgExtendedError();
-
-    private sealed class OpenFileNameData : IDisposable
+    private static bool TryRunDialog(string script, out string path, out string errorMessage)
     {
-        private readonly IntPtr _filterBuffer;
-        private readonly IntPtr _fileBuffer;
-        private readonly IntPtr _titleBuffer;
-        private readonly IntPtr _defaultExtensionBuffer;
+        path = string.Empty;
+        errorMessage = string.Empty;
 
-        public OpenFileName OpenFileName;
-
-        private OpenFileNameData(IntPtr filterBuffer, IntPtr fileBuffer, IntPtr titleBuffer, IntPtr defaultExtensionBuffer)
+        try
         {
-            _filterBuffer = filterBuffer;
-            _fileBuffer = fileBuffer;
-            _titleBuffer = titleBuffer;
-            _defaultExtensionBuffer = defaultExtensionBuffer;
-        }
-
-        public static OpenFileNameData Create(string fileName, string title, string defaultExtension)
-        {
-            IntPtr filterBuffer = Marshal.StringToHGlobalUni(PresetFilter);
-            IntPtr fileBuffer = Marshal.AllocHGlobal(MaxPathBuffer * sizeof(char));
-            IntPtr titleBuffer = Marshal.StringToHGlobalUni(title);
-            IntPtr defaultExtensionBuffer = string.IsNullOrEmpty(defaultExtension)
-                ? IntPtr.Zero
-                : Marshal.StringToHGlobalUni(defaultExtension);
-            ZeroMemory(fileBuffer, MaxPathBuffer * sizeof(char));
-
-            if (!string.IsNullOrEmpty(fileName))
+            string powerShellPath = Path.Combine(
+                Environment.GetFolderPath(Environment.SpecialFolder.System),
+                "WindowsPowerShell",
+                "v1.0",
+                "powershell.exe");
+            if (!File.Exists(powerShellPath))
             {
-                string clippedFileName = fileName.Length >= MaxPathBuffer ? fileName[..(MaxPathBuffer - 1)] : fileName;
-                byte[] fileNameBytes = Encoding.Unicode.GetBytes(clippedFileName);
-                Marshal.Copy(fileNameBytes, 0, fileBuffer, fileNameBytes.Length);
+                errorMessage = "Windows PowerShell was not found.";
+                return false;
             }
 
-            var data = new OpenFileNameData(filterBuffer, fileBuffer, titleBuffer, defaultExtensionBuffer);
-            data.OpenFileName = new OpenFileName
+            string encodedScript = Convert.ToBase64String(Encoding.Unicode.GetBytes(script));
+            var startInfo = new ProcessStartInfo
             {
-                lStructSize = Marshal.SizeOf<OpenFileName>(),
-                lpstrFilter = filterBuffer,
-                lpstrFile = fileBuffer,
-                nMaxFile = MaxPathBuffer,
-                lpstrTitle = titleBuffer,
-                nFilterIndex = 1,
-                lpstrDefExt = defaultExtensionBuffer
+                FileName = powerShellPath,
+                Arguments = $"-NoLogo -NoProfile -NonInteractive -STA -EncodedCommand {encodedScript}",
+                UseShellExecute = false,
+                CreateNoWindow = true,
+                WindowStyle = ProcessWindowStyle.Hidden,
+                RedirectStandardOutput = true,
+                RedirectStandardError = true,
+                StandardOutputEncoding = Encoding.UTF8,
+                StandardErrorEncoding = Encoding.UTF8
             };
-            return data;
+
+            using var process = new Process { StartInfo = startInfo };
+            var outputBuilder = new StringBuilder();
+            var errorBuilder = new StringBuilder();
+            // 同期ReadToEndの逐次呼び出しはパイプ満杯でデッドロックし得るため、イベント駆動で並行読取する。
+            process.OutputDataReceived += (_, e) =>
+            {
+                if (e.Data != null)
+                    outputBuilder.AppendLine(e.Data);
+            };
+            process.ErrorDataReceived += (_, e) =>
+            {
+                if (e.Data != null)
+                    errorBuilder.AppendLine(e.Data);
+            };
+            process.Start();
+            process.BeginOutputReadLine();
+            process.BeginErrorReadLine();
+            if (!process.WaitForExit(DialogTimeoutMilliseconds))
+            {
+                try
+                {
+                    process.Kill();
+                }
+                catch
+                {
+                    // 既に終了している場合など、Kill失敗は無視してタイムアウトとして扱う。
+                }
+
+                try
+                {
+                    process.WaitForExit(5000);
+                }
+                catch
+                {
+                }
+
+                errorMessage = "Windows file dialog timed out.";
+                return false;
+            }
+
+            // タイムアウト付きWaitForExit後も、非同期ハンドラ完了のため無引数版を呼ぶ。
+            process.WaitForExit();
+            string output = outputBuilder.ToString();
+            string standardError = errorBuilder.ToString();
+
+            string marker = output
+                .Split(new[] { '\r', '\n' }, StringSplitOptions.RemoveEmptyEntries)
+                .Select(line => line.Trim())
+                .LastOrDefault(line => line == "CANCELLED" || line.StartsWith("OK:") || line.StartsWith("ERROR:"));
+            if (marker == "CANCELLED")
+                return false;
+            if (marker?.StartsWith("OK:") == true)
+            {
+                path = DecodeDialogValue(marker[3..]);
+                return !string.IsNullOrWhiteSpace(path);
+            }
+            if (marker?.StartsWith("ERROR:") == true)
+            {
+                errorMessage = DecodeDialogValue(marker[6..]);
+                return false;
+            }
+
+            errorMessage = string.IsNullOrWhiteSpace(standardError)
+                ? $"Windows file dialog exited with code {process.ExitCode}."
+                : standardError.Trim();
+            return false;
         }
-
-        public string GetSelectedPath()
-            => Marshal.PtrToStringUni(_fileBuffer) ?? string.Empty;
-
-        public void Dispose()
+        catch (Exception ex)
         {
-            FreeHGlobal(_filterBuffer);
-            FreeHGlobal(_fileBuffer);
-            FreeHGlobal(_titleBuffer);
-            FreeHGlobal(_defaultExtensionBuffer);
-        }
-
-        private static void ZeroMemory(IntPtr target, int bytes)
-        {
-            byte[] zeroes = new byte[bytes];
-            Marshal.Copy(zeroes, 0, target, bytes);
-        }
-
-        private static void FreeHGlobal(IntPtr value)
-        {
-            if (value != IntPtr.Zero)
-                Marshal.FreeHGlobal(value);
+            errorMessage = ex.Message;
+            return false;
         }
     }
 
-    [StructLayout(LayoutKind.Sequential, CharSet = CharSet.Unicode)]
-    private struct OpenFileName
+    private static string DecodeDialogValue(string value)
     {
-        public int lStructSize;
-        public IntPtr hwndOwner;
-        public IntPtr hInstance;
-        public IntPtr lpstrFilter;
-        public IntPtr lpstrCustomFilter;
-        public int nMaxCustFilter;
-        public int nFilterIndex;
-        public IntPtr lpstrFile;
-        public int nMaxFile;
-        public IntPtr lpstrFileTitle;
-        public int nMaxFileTitle;
-        public IntPtr lpstrInitialDir;
-        public IntPtr lpstrTitle;
-        public int Flags;
-        public short nFileOffset;
-        public short nFileExtension;
-        public IntPtr lpstrDefExt;
-        public IntPtr lCustData;
-        public IntPtr lpfnHook;
-        public IntPtr lpTemplateName;
-        public IntPtr pvReserved;
-        public int dwReserved;
-        public int FlagsEx;
+        try
+        {
+            return Encoding.UTF8.GetString(Convert.FromBase64String(value));
+        }
+        catch
+        {
+            return string.Empty;
+        }
     }
 }
 
