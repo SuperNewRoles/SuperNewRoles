@@ -140,7 +140,8 @@ public class VampireAbility : AbilityBase
             isTargetable: (player) => !player.IsImpostor(),
             onSidekickCreated: (player) =>
             {
-                new LateTask(() => RpcSetDependent(player), 0.1f, "VampireSetDependent");
+                // 即時RPCをしないと、眷属作成時にdependent が null のままキルされる可能性がある
+                RpcSetDependent(player);
             }
         ));
         killButtonAbility = new CustomKillButtonAbility(

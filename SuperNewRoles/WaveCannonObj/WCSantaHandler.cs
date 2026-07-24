@@ -25,12 +25,14 @@ public class WCSantaHandler : MonoBehaviour
     private WaveCannonAbility _ability;
     private ExPlayerControl _source;
     private bool _friendlyFire;
+    private bool _isFlipX;
     private readonly HashSet<byte> _alreadyKilled = new();
 
     /// <summary>
     /// サンタが撃ち終わり後も死亡判定を継続するために、発射者情報を保持する。
+    /// staticのWCSantaHandler.IsFlipX を参照すると、他プレイヤーの発射向きが同期されてしまう
     /// </summary>
-    public void Init(WaveCannonAbility ability)
+    public void Init(WaveCannonAbility ability, bool isFlipX)
     {
         _ability = ability;
         _source = ability?.Player;
@@ -48,7 +50,7 @@ public class WCSantaHandler : MonoBehaviour
 
     public void Update()
     {
-        int flip = transform.parent == null && IsFlipX ? -1 : 1;
+        int flip = transform.parent == null && _isFlipX ? -1 : 1;
         if (transform.localScale.y < 0.725f)
             transform.localScale += new Vector3(flip * -0.05f, 0.05f, 0.05f);
 

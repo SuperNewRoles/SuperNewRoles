@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using UnityEngine;
 using SuperNewRoles.Modules;
 using SuperNewRoles.Roles.Ability.CustomButton;
@@ -6,6 +7,7 @@ using SuperNewRoles.Events;
 using SuperNewRoles.Modules.Events.Bases;
 using SuperNewRoles.Modules.Events;
 using SuperNewRoles.Events.PCEvents;
+using HarmonyLib;
 
 namespace SuperNewRoles.Roles.Ability;
 
@@ -38,6 +40,11 @@ public class InvisibleAbility : CustomButtonBase, IButtonEffect
 
     private bool invisible;
 
+    // バニラの PlayerControl.SetHatAndVisorAlpha がドア開閉などで任意に呼ばれ、
+    // ハット・バイザーのアルファ値を上書きして点滅して見えるバグの対策。
+    // 現在透明化中のプレイヤーを登録しておき、上書きされた直後に再適用する。
+    private static readonly Dictionary<byte, InvisibleAbility> _invisiblePlayers = new();
+
     public InvisibleAbility(float coolTime, float durationTime, bool canLighterSeeScientist, string sprite)
     {
         this.coolTime = coolTime;
@@ -68,6 +75,7 @@ public class InvisibleAbility : CustomButtonBase, IButtonEffect
         base.DetachToAlls();
         _onFixedUpdate?.RemoveListener();
         _opacityFader.StopAll();
+        _invisiblePlayers.Remove(Player.PlayerId);
     }
 
     public override void AttachToLocalPlayer()
@@ -115,10 +123,12 @@ public class InvisibleAbility : CustomButtonBase, IButtonEffect
     {
         if (isInvisible)
         {
+            _invisiblePlayers[player.PlayerId] = this;
             _opacityFader.Apply(player, CanSeeTranslucentState(player) ? 0.4f : 0f);
         }
         else
         {
+            _invisiblePlayers.Remove(player.PlayerId);
             _opacityFader.Apply(player, 1f);
         }
     }
@@ -139,5 +149,39 @@ public class InvisibleAbility : CustomButtonBase, IButtonEffect
             return true;
 
         return false;
+    }
+
+    // バニラの SetHatAndVisorAlpha がドア開閉・ラダー使用などで呼ばれた直後に
+    // 透明化中のプレイヤーの不透明度を再適用し、点滅して見えるバグを防ぐ。
+    [HarmonyPatch(typeof(PlayerControl), nameof(PlayerControl.SetHatAndVisorAlpha))]
+    public static class SetHatAndVisorAlphaPatch
+    {
+        public static void Postfix(PlayerControl __instance)
+        {
+            if (__instance == null) return;
+            if (!_invisiblePlayers.TryGetValue(__instance.PlayerId, out var ability)) return;
+
+            ExPlayerControl target = __instance;
+            if (target == null || target.IsDead())
+            {
+                _invisiblePlayers.Remove(__instance.PlayerId);
+                return;
+            }
+
+            float opacity = ability.CanSeeTranslucentState(target) ? 0.4f : 0f;
+            ModHelpers.SetOpacity(__instance, opacity);
+        }
+    }
+
+    // ゲーム開始時に静的辞書をリセットする。
+    // static フィールドはゲームをまたいで持続するため、前のセッションの
+    // エントリが次のゲームで同じ PlayerId の別プレイヤーに誤適用されるのを防ぐ。
+    [HarmonyPatch(typeof(AmongUsClient), nameof(AmongUsClient.CoStartGame))]
+    public static class CoStartGamePatch
+    {
+        public static void Postfix()
+        {
+            _invisiblePlayers.Clear();
+        }
     }
 }
