@@ -16,7 +16,11 @@ class God : RoleBase<God>
     public override List<Func<AbilityBase>> Abilities { get; } = [
         () => new KnowOtherAbility(x => MeetingHud.Instance != null ? true : x.IsAlive(), () => true),
         () => new KnowVoteAbility(() => !GodSeeVote),
-        () => new CustomTaskAbility(() => (GodNeededTask, false, GodTaskOption.Total), GodNeededTask ? GodTaskOption : null),
+        () => new CustomTaskAbility(
+            isTaskTrigger: () => GodNeededTask,
+            countsForCrewWin: () => false,
+            requiredTaskCount: () => GodTaskOption.Total,
+            taskOptions: () => GodNeededTask ? GodTaskOption : null),
         () => new SabotageCanUseAbility(() => sabotageCantUse()),
         () => new CanUseReportButtonAbility(() => !GodCannotUseReportButton),
         () => new CanUseEmergencyButtonAbility(() => !GodCannotUseEmergencyButton, () => ModTranslation.GetString("GodCannotUseEmergencyButtonText"))

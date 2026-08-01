@@ -130,7 +130,11 @@ internal sealed class TheFirstLittlePig : RoleBase<TheFirstLittlePig>
     public override Color32 RoleColor { get; } = TheThreeLittlePigs.Instance.RoleColor;
     public override List<Func<AbilityBase>> Abilities { get; } = [
         () => new KnowOtherAbility((player) => TheThreeLittlePigs.IsInSameTeam(player, ExPlayerControl.LocalPlayer), () => true),
-        () => new CustomTaskAbility(() => (true, false, Mathf.CeilToInt(TheThreeLittlePigs.GetAllTaskCount() * (TheThreeLittlePigs.TheFirstLittlePigClearTaskPercent / 100f))), TheThreeLittlePigs.TheThreeLittlePigsUseCustomTaskSetting ? TheThreeLittlePigs.TheThreeLittlePigsTaskData : null),
+        () => new CustomTaskAbility(
+            isTaskTrigger: () => true,
+            countsForCrewWin: () => false,
+            requiredTaskCount: () => Mathf.CeilToInt(TheThreeLittlePigs.GetAllTaskCount() * (TheThreeLittlePigs.TheFirstLittlePigClearTaskPercent / 100f)),
+            taskOptions: () => TheThreeLittlePigs.TheThreeLittlePigsUseCustomTaskSetting ? TheThreeLittlePigs.TheThreeLittlePigsTaskData : null),
         () => new FirstLittlePigFlashAbility()
     ];
     public override QuoteMod QuoteMod { get; } = QuoteMod.SuperNewRoles;
@@ -149,7 +153,11 @@ internal sealed class TheSecondLittlePig : RoleBase<TheSecondLittlePig>
     public override Color32 RoleColor { get; } = TheThreeLittlePigs.Instance.RoleColor;
     public override List<Func<AbilityBase>> Abilities { get; } = [
         () => new KnowOtherAbility((player) => TheThreeLittlePigs.IsInSameTeam(player, ExPlayerControl.LocalPlayer), () => true),
-        () => new CustomTaskAbility(() => (true, false, Mathf.CeilToInt(TheThreeLittlePigs.GetAllTaskCount() * (TheThreeLittlePigs.TheSecondLittlePigClearTaskPercent / 100f))), TheThreeLittlePigs.TheThreeLittlePigsUseCustomTaskSetting ? TheThreeLittlePigs.TheThreeLittlePigsTaskData : null),
+        () => new CustomTaskAbility(
+            isTaskTrigger: () => true,
+            countsForCrewWin: () => false,
+            requiredTaskCount: () => Mathf.CeilToInt(TheThreeLittlePigs.GetAllTaskCount() * (TheThreeLittlePigs.TheSecondLittlePigClearTaskPercent / 100f)),
+            taskOptions: () => TheThreeLittlePigs.TheThreeLittlePigsUseCustomTaskSetting ? TheThreeLittlePigs.TheThreeLittlePigsTaskData : null),
         () => new SecondLittlePigGuardAbility(TheThreeLittlePigs.TheSecondLittlePigMaxGuardCount)
     ];
     public override QuoteMod QuoteMod { get; } = QuoteMod.SuperNewRoles;
@@ -168,7 +176,11 @@ internal sealed class TheThirdLittlePig : RoleBase<TheThirdLittlePig>
     public override Color32 RoleColor { get; } = TheThreeLittlePigs.Instance.RoleColor;
     public override List<Func<AbilityBase>> Abilities { get; } = [
         () => new KnowOtherAbility((player) => TheThreeLittlePigs.IsInSameTeam(player, ExPlayerControl.LocalPlayer), () => true),
-        () => new CustomTaskAbility(() => (true, false, Mathf.CeilToInt(TheThreeLittlePigs.GetAllTaskCount() * (TheThreeLittlePigs.TheThirdLittlePigClearTaskPercent / 100f))), TheThreeLittlePigs.TheThreeLittlePigsUseCustomTaskSetting ? TheThreeLittlePigs.TheThreeLittlePigsTaskData : null),
+        () => new CustomTaskAbility(
+            isTaskTrigger: () => true,
+            countsForCrewWin: () => false,
+            requiredTaskCount: () => Mathf.CeilToInt(TheThreeLittlePigs.GetAllTaskCount() * (TheThreeLittlePigs.TheThirdLittlePigClearTaskPercent / 100f)),
+            taskOptions: () => TheThreeLittlePigs.TheThreeLittlePigsUseCustomTaskSetting ? TheThreeLittlePigs.TheThreeLittlePigsTaskData : null),
         () => new ThirdLittlePigCounterAbility()
     ];
     public override QuoteMod QuoteMod { get; } = QuoteMod.SuperNewRoles;

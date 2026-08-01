@@ -188,7 +188,11 @@ public class ChiefAbility : AbilityBase
         sheriffAbility.Count = maxKillCount;
         if (!isOldHasTak)
         {
-            CustomTaskAbility customTaskAbility = new(() => (false, false, 0));
+            CustomTaskAbility customTaskAbility = new(
+                isTaskTrigger: () => false,
+                countsForCrewWin: () => false,
+                requiredTaskCount: () => 0,
+                priority: AbilityPriority.RuntimeOverride);
             target.AttachAbility(customTaskAbility, new AbilityParentAbility(sheriffAbility));
         }
         NameText.UpdateAllNameInfo();

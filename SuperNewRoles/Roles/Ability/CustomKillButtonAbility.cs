@@ -35,7 +35,6 @@ public class CustomKillButtonAbility : TargetCustomButtonBase
     // キルボタンの処理をカスタムできる。
     private Func<ExPlayerControl, bool> _customKillHandler { get; } = null;
 
-    private EventListener<MurderEventData> _murderListener;
     public CustomKillButtonAbility(
         Func<bool> canKill,
         Func<float?> killCooldown,
@@ -61,13 +60,7 @@ public class CustomKillButtonAbility : TargetCustomButtonBase
     public override void AttachToLocalPlayer()
     {
         base.AttachToLocalPlayer();
-        _murderListener = MurderEvent.Instance.AddListener(OnMurder);
-    }
-
-    public override void DetachToLocalPlayer()
-    {
-        base.DetachToLocalPlayer();
-        _murderListener?.RemoveListener();
+        SubscribeWithAbility(MurderEvent.Instance, OnMurder);
     }
 
     private void OnMurder(MurderEventData data)

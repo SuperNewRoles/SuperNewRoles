@@ -16,7 +16,9 @@ public class SatsumaAndImoAbility : AbilityBase
 
     public override void AttachToAlls()
     {
-        var customTaskAbility = new CustomTaskAbility(() => (true, false, null));
+        var customTaskAbility = new CustomTaskAbility(
+            isTaskTrigger: () => true,
+            countsForCrewWin: () => false);
         Player.AttachAbility(customTaskAbility, new AbilityParentAbility(this));
         _nameTextListener = NameTextUpdateEvent.Instance.AddListener(OnNameTextUpdate);
         _wrapUpListener = WrapUpEvent.Instance.AddListener(OnWrapUp);

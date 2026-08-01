@@ -1,10 +1,7 @@
 using System;
 using AmongUs.GameOptions;
 using SuperNewRoles.Events;
-using SuperNewRoles.Events.PCEvents;
 using SuperNewRoles.Modules;
-using SuperNewRoles.Modules.Events.Bases;
-using System.Linq;
 
 namespace SuperNewRoles.Roles.Ability;
 
@@ -15,7 +12,6 @@ public class PromoteOnParentDeathAbility : AbilityBase
     public RoleTypes PromoteRoleVanilla { get; }
     public Action<ExPlayerControl> OnPromoted { get; set; } = (player) => { };
 
-    private EventListener _fixedUpdateEventListener;
     private bool _hasPromoted = false;
 
     public PromoteOnParentDeathAbility(AbilityParentRole owner, RoleId promoteRole, RoleTypes promoteRoleVanilla)
@@ -28,12 +24,7 @@ public class PromoteOnParentDeathAbility : AbilityBase
     public override void AttachToLocalPlayer()
     {
         base.AttachToLocalPlayer();
-        _fixedUpdateEventListener = FixedUpdateEvent.Instance.AddListener(OnFixedUpdate);
-    }
-    public override void DetachToLocalPlayer()
-    {
-        base.DetachToLocalPlayer();
-        _fixedUpdateEventListener?.RemoveListener();
+        SubscribeWithAbility(FixedUpdateEvent.Instance, OnFixedUpdate);
     }
     private void OnFixedUpdate()
     {

@@ -92,8 +92,11 @@ class RevenantAbility : TargetCustomButtonBase
         base.AttachToAlls();
 
         customTaskAbility = new CustomTaskAbility(
-            () => (true, false, Data.RequiredTasks),
-            taskOptionData
+            isTaskTrigger: () => true,
+            countsForCrewWin: () => false,
+            requiredTaskCount: () => Data.RequiredTasks,
+            taskOptions: () => taskOptionData,
+            priority: AbilityPriority.GhostRole
         );
         customHauntToAbility = new CustomHauntToAbility(() => HauntedPlayers?.FirstOrDefault().player);
         Player.AttachAbility(customTaskAbility, new AbilityParentAbility(this));

@@ -18,7 +18,13 @@ class Lovers : ModifierBase<Lovers>
 
     public override Color32 RoleColor => new(255, 105, 180, byte.MaxValue);
 
-    public override List<Func<AbilityBase>> Abilities => [() => new LoversAbility(LoversKnowPartnerRole, LoversKnowPartnerPosition), () => new CustomTaskAbility(() => (false, false, null), null)];
+    public override List<Func<AbilityBase>> Abilities => [
+        () => new LoversAbility(LoversKnowPartnerRole, LoversKnowPartnerPosition),
+        () => new CustomTaskAbility(
+            isTaskTrigger: () => false,
+            countsForCrewWin: () => false,
+            priority: AbilityPriority.Modifier)
+    ];
 
     public override QuoteMod QuoteMod => QuoteMod.TheOtherRoles;
 

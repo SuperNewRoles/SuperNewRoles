@@ -9,6 +9,7 @@ namespace SuperNewRoles.Roles.Ability;
 public record JFriendData(bool CanUseVent, bool IsImpostorVision, bool CouldKnowJackals, int TaskNeeded, TaskOptionData SpecialTasks);
 public class JFriendAbility : AbilityBase
 {
+    private readonly int _priority;
 
     public CustomVentAbility VentAbility { get; private set; }
     public KnowOtherAbility KnowJackalAbility { get; private set; }
@@ -17,26 +18,32 @@ public class JFriendAbility : AbilityBase
     private EventListener<TaskCompleteEventData> _taskCompleteEvent;
     private readonly JFriendData Data;
     private bool _canKnowJackal;
-    public JFriendAbility(JFriendData data)
+    public JFriendAbility(JFriendData data, int priority = AbilityPriority.Default)
     {
         Data = data;
+        _priority = priority;
     }
 
     public override void AttachToAlls()
     {
         VentAbility = new CustomVentAbility(
-            () => Data.CanUseVent
+            () => Data.CanUseVent,
+            priority: _priority
         );
         KnowJackalAbility = new KnowOtherAbility(
             (player) => CanKnowJackal() && player.IsJackalTeam(),
             () => true
         );
         ImpostorVisionAbility = new ImpostorVisionAbility(
-            () => Data.IsImpostorVision
+            () => Data.IsImpostorVision,
+            priority: _priority
         );
         CustomTaskAbility = new CustomTaskAbility(
-            () => (true, false, Data.TaskNeeded),
-            Data.SpecialTasks
+            isTaskTrigger: () => true,
+            countsForCrewWin: () => false,
+            requiredTaskCount: () => Data.TaskNeeded,
+            taskOptions: () => Data.SpecialTasks,
+            priority: _priority
         );
 
         _taskCompleteEvent = TaskCompleteEvent.Instance.AddListener(x => RecalucateTaskComplete(x.player));

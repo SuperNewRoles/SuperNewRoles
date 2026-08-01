@@ -322,7 +322,7 @@ public class SchrodingersCatAbility : AbilityBase
                     couldKnowImpostors: Madmate.MadmateCanKnowImpostors,
                     taskNeeded: Madmate.MadmateNeededTaskCount,
                     specialTasks: Madmate.MadmateSpecialTasks
-                ));
+                ), AbilityPriority.RuntimeOverride);
                 Player.AttachAbility(madmateAbility, new AbilityParentAbility(this));
                 if (Player.AmOwner)
                     madmateAbility.CustomTaskAbility.AssignTasks();
@@ -338,7 +338,7 @@ public class SchrodingersCatAbility : AbilityBase
                     CouldKnowJackals: JackalFriends.JackalFriendsCouldKnowJackals,
                     TaskNeeded: JackalFriends.JackalFriendsTaskNeed,
                     SpecialTasks: JackalFriends.JackalFriendsTaskOption
-                ));
+                ), AbilityPriority.RuntimeOverride);
                 Player.AttachAbility(jackalFriendsAbility, new AbilityParentAbility(this));
                 if (Player.AmOwner)
                     jackalFriendsAbility.CustomTaskAbility.AssignTasks();

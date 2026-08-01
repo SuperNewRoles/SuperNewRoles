@@ -86,7 +86,10 @@ public class SafecrackerAbility : AbilityBase
         _onTryKillListener = TryKillEvent.Instance.AddListener(OnTryKill);
         _exileListener = ExileEvent.Instance.AddListener(OnExile);
         _taskCompleteListener = TaskCompleteEvent.Instance.AddListener(OnTaskComplete);
-        Player.AttachAbility(new CustomTaskAbility(() => (true, false, null), _task), new AbilityParentAbility(this));
+        Player.AttachAbility(new CustomTaskAbility(
+            isTaskTrigger: () => true,
+            countsForCrewWin: () => false,
+            taskOptions: () => _task), new AbilityParentAbility(this));
         Player.AttachAbility(new CustomTaskTypeAbility(TaskTypes.UnlockSafe, ChangeTaskPrefab, MapNames.Airship), new AbilityParentAbility(this));
         CheckAllAbilities();
     }

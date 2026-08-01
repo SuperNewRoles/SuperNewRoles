@@ -71,19 +71,13 @@ public class ExPlayerControl
     private FinalStatus? _finalStatus;
     public FinalStatus FinalStatus { get { return _finalStatus ?? FinalStatus.Alive; } set { _finalStatus = value; } }
 
-    private CustomVentAbility _customVentAbility;
-    private CustomSaboAbility _customSaboAbility;
-    private CustomTaskAbility _customTaskAbility;
-    private CustomKillButtonAbility _customKillButtonAbility;
-    private KillableAbility _killableAbility;
-    public CustomTaskAbility CustomTaskAbility => _customTaskAbility;
-    private List<ImpostorVisionAbility> _impostorVisionAbilities = new();
     private Dictionary<string, bool> _hasAbilityCache = new();
 
     // パフォーマンス最適化用キャッシュ
     private readonly Dictionary<int, AbilityBase> _typeIdAbilityCache = new();
     private readonly Dictionary<int, List<AbilityBase>> _typeIdAbilitiesCache = new();
     private readonly Dictionary<int, IReadOnlyList<object>> _typeIdReadOnlyCache = new();
+    private readonly Dictionary<int, List<AbilityBase>> _prioritizedAbilities = new();
 
     // 型IDキャッシュ用配列。1024種類を超える型はキャッシュされないが、動作は継続する
     private readonly bool[] _hasAbilityByTypeId = new bool[1024]; // 最大1024種類のアビリティタイプを想定
@@ -192,9 +186,17 @@ public class ExPlayerControl
     public bool IsTaskComplete()
     {
         (int completed, int total) = ModHelpers.TaskCompletedData(Data);
-        if (_customTaskAbility == null) return completed >= total;
-        var (isTaskTrigger, countTask, all) = _customTaskAbility.CheckIsTaskTrigger() ?? (false, false, total);
-        return isTaskTrigger && completed >= (all ?? total);
+        var taskAbilities = GetPrioritizedAbilities<CustomTaskAbility>();
+        if (taskAbilities != null)
+        {
+            for (var i = 0; i < taskAbilities.Count; i++)
+            {
+                var isTaskTrigger = ((CustomTaskAbility)taskAbilities[i]).IsTaskTrigger?.Invoke();
+                if (isTaskTrigger.HasValue)
+                    return isTaskTrigger.Value && completed >= ResolveRequiredTaskCount(total);
+            }
+        }
+        return completed >= total;
     }
     public void ResetKillCooldown()
     {
@@ -319,12 +321,7 @@ public class ExPlayerControl
         }
         if (AmOwner)
         {
-            foreach (var taskAbility in GetAbilities<CustomTaskAbility>())
-            {
-                if (taskAbility.assignTaskData == null) continue;
-                taskAbility.AssignTasks();
-                break;
-            }
+            AssignCustomTasks();
         }
     }
 
@@ -343,11 +340,23 @@ public class ExPlayerControl
 
     public bool HasCustomKillButton()
     {
-        return _customKillButtonAbility != null;
+        return HasAbility<CustomKillButtonAbility>();
     }
     public bool showKillButtonVanilla()
     {
-        return IsImpostor() && IsAlive() && (_killableAbility == null || _killableAbility.CanKill);
+        var canKill = true;
+        var killableAbilities = GetPrioritizedAbilities<KillableAbility>();
+        if (killableAbilities != null)
+        {
+            for (var i = 0; i < killableAbilities.Count; i++)
+            {
+                var decision = ((KillableAbility)killableAbilities[i]).CanKill;
+                if (!decision.HasValue) continue;
+                canKill = decision.Value;
+                break;
+            }
+        }
+        return IsImpostor() && IsAlive() && canKill;
     }
     private void DetachOldRole(RoleId roleId)
     {
@@ -624,6 +633,7 @@ public class ExPlayerControl
         _typeIdAbilityCache.Clear();
         _typeIdAbilitiesCache.Clear();
         _typeIdReadOnlyCache.Clear();
+        _prioritizedAbilities.Clear();
         System.Array.Clear(_hasAbilityByTypeIdCached, 0, _hasAbilityByTypeIdCached.Length);
         System.Array.Clear(_hasAbilityByTypeId, 0, _hasAbilityByTypeId.Length);
     }
@@ -720,28 +730,30 @@ public class ExPlayerControl
         => !IsDead();
     public bool IsTaskTriggerRole()
     {
-        bool hasDefinitiveFalseFromCustom = false;
-        foreach (var cta in PlayerAbilities.OfType<CustomTaskAbility>())
+        var taskAbilities = GetPrioritizedAbilities<CustomTaskAbility>();
+        if (taskAbilities != null)
         {
-            var triggerCheck = cta.CheckIsTaskTrigger();
-            if (triggerCheck != null)
+            for (var i = 0; i < taskAbilities.Count; i++)
             {
-                if (triggerCheck.Value.isTaskTrigger)
-                {
-                    return true;
-                }
-                hasDefinitiveFalseFromCustom = true;
+                var candidate = ((CustomTaskAbility)taskAbilities[i]).IsTaskTrigger?.Invoke();
+                if (candidate.HasValue) return candidate.Value;
             }
-        }
-
-        if (hasDefinitiveFalseFromCustom)
-        {
-            return false;
         }
         return IsCrewmate();
     }
     public bool IsCountTask()
-        => _customTaskAbility != null ? _customTaskAbility.CheckIsTaskTrigger()?.countTask ?? IsCrewmate() : IsCrewmate();
+    {
+        var taskAbilities = GetPrioritizedAbilities<CustomTaskAbility>();
+        if (taskAbilities != null)
+        {
+            for (var i = 0; i < taskAbilities.Count; i++)
+            {
+                var candidate = ((CustomTaskAbility)taskAbilities[i]).CountsForCrewWin?.Invoke();
+                if (candidate.HasValue) return candidate.Value;
+            }
+        }
+        return IsCrewmate();
+    }
 
     /// <summary>
     /// このプレイヤーの役職をローカルプレイヤーが見えるかどうかを判定します
@@ -803,21 +815,101 @@ public class ExPlayerControl
     public (int complete, int all) GetAllTaskForShowProgress()
     {
         (int complete, int all) result = ModHelpers.TaskCompletedData(Data);
-        if (_customTaskAbility == null)
-        {
-            return result;
-        }
-        var (isTaskTrigger, countTask, all) = _customTaskAbility.CheckIsTaskTrigger() ?? (false, false, result.all);
-        return (result.complete, all ?? result.all);
+        return (result.complete, ResolveRequiredTaskCount(result.all));
     }
     public bool CanUseVent()
-        => _customVentAbility != null ? _customVentAbility.CheckCanUseVent() : (IsImpostor() && !ModHelpers.IsHnS()) || Data.Role.Role == RoleTypes.Engineer;
+        => TryGetVentDecision(out _, out var decision) ? decision : CanUseVentVanilla();
     public bool ShowVanillaVentButton()
-        => (IsImpostor() && !ModHelpers.IsHnS()) && IsAlive() && _customVentAbility == null;
+        => CanUseVentVanilla() && IsAlive() && !TryGetVentDecision(out _, out _);
+    internal bool ShouldShowVentAbility(CustomVentAbility ability)
+        => TryGetVentDecision(out var selected, out var decision) &&
+           ReferenceEquals(selected, ability) && decision;
     public bool CanSabotage()
-        => _customSaboAbility != null ? _customSaboAbility.CheckCanSabotage() : (IsImpostor() && !ModHelpers.IsHnS());
+        => TryGetSabotageDecision(out _, out var decision) ? decision : CanSabotageVanilla();
     public bool ShowVanillaSabotageButton()
-        => (IsImpostor() && !ModHelpers.IsHnS()) && _customSaboAbility == null;
+        => CanSabotageVanilla() && !TryGetSabotageDecision(out _, out _);
+    internal bool ShouldShowSabotageAbility(CustomSaboAbility ability)
+        => TryGetSabotageDecision(out var selected, out var decision) &&
+           ReferenceEquals(selected, ability) && decision;
+
+    private bool TryGetVentDecision(out CustomVentAbility source, out bool decision)
+    {
+        var abilities = GetPrioritizedAbilities<CustomVentAbility>();
+        if (abilities != null)
+        {
+            for (var i = 0; i < abilities.Count; i++)
+            {
+                var ability = (CustomVentAbility)abilities[i];
+                var candidate = ability.CanUseVent?.Invoke();
+                if (!candidate.HasValue) continue;
+                source = ability;
+                decision = candidate.Value;
+                return true;
+            }
+        }
+        source = null;
+        decision = default;
+        return false;
+    }
+
+    private bool TryGetSabotageDecision(out CustomSaboAbility source, out bool decision)
+    {
+        var abilities = GetPrioritizedAbilities<CustomSaboAbility>();
+        if (abilities != null)
+        {
+            for (var i = 0; i < abilities.Count; i++)
+            {
+                var ability = (CustomSaboAbility)abilities[i];
+                var candidate = ability.CanSabotage?.Invoke();
+                if (!candidate.HasValue) continue;
+                source = ability;
+                decision = candidate.Value;
+                return true;
+            }
+        }
+        source = null;
+        decision = default;
+        return false;
+    }
+
+    private int ResolveRequiredTaskCount(int vanillaTaskCount)
+    {
+        var abilities = GetPrioritizedAbilities<CustomTaskAbility>();
+        if (abilities != null)
+        {
+            for (var i = 0; i < abilities.Count; i++)
+            {
+                var candidate = ((CustomTaskAbility)abilities[i]).RequiredTaskCount?.Invoke();
+                if (candidate.HasValue) return candidate.Value;
+            }
+        }
+        return vanillaTaskCount;
+    }
+
+    public void AssignCustomTasks()
+    {
+        CustomTaskAbility.AssignTasks(this, ResolveTaskOptions(), GetAbility<CustomTaskTypeAbility>());
+    }
+
+    private TaskOptionData ResolveTaskOptions()
+    {
+        var abilities = GetPrioritizedAbilities<CustomTaskAbility>();
+        if (abilities != null)
+        {
+            for (var i = 0; i < abilities.Count; i++)
+            {
+                var taskOptions = ((CustomTaskAbility)abilities[i]).TaskOptions?.Invoke();
+                if (taskOptions != null) return taskOptions;
+            }
+        }
+        return null;
+    }
+
+    private bool CanUseVentVanilla()
+        => (IsImpostor() && !ModHelpers.IsHnS()) || Data.Role.Role == RoleTypes.Engineer;
+
+    private bool CanSabotageVanilla()
+        => IsImpostor() && !ModHelpers.IsHnS();
     public AbilityBase GetAbility(ulong abilityId)
     {
         return PlayerAbilitiesDictionary.TryGetValue(abilityId, out var ability) ? ability : null;
@@ -858,35 +950,9 @@ public class ExPlayerControl
         PlayerAbilitiesDictionary.Add(abilityId, ability);
         _abilityCache[ability.GetType().Name] = ability;
         SuperTrophyManager.RegisterTrophy(ability);
-        switch (ability)
-        {
-            case CustomVentAbility customVentAbility:
-                _customVentAbility = customVentAbility;
-                break;
-            case ImpostorVisionAbility impostorVisionAbility:
-                _impostorVisionAbilities.Add(impostorVisionAbility);
-                break;
-            case CustomSaboAbility customSaboAbility:
-                _customSaboAbility = customSaboAbility;
-                break;
-            case CustomTaskAbility customTaskAbility:
-                _customTaskAbility = customTaskAbility;
-                break;
-            case CustomKillButtonAbility customKillButtonAbility:
-                _customKillButtonAbility = customKillButtonAbility;
-                break;
-            case KillableAbility killableAbility:
-                _killableAbility = killableAbility;
-                break;
-        }
+        AddPrioritizedAbility(ability);
         ability.Attach(Player, abilityId, parent);
-        _hasAbilityCache.Clear();
-
-        // 新しいキャッシュシステムのクリア（最適化版）
-        _typeIdAbilityCache.Clear();
-        _typeIdAbilitiesCache.Clear();
-        _typeIdReadOnlyCache.Clear();
-        System.Array.Clear(_hasAbilityByTypeIdCached, 0, _hasAbilityByTypeIdCached.Length);
+        ClearAbilityCaches();
     }
     /// <summary>
     /// アビリティをプレイヤーにアタッチします。
@@ -902,46 +968,36 @@ public class ExPlayerControl
     }
     public bool HasImpostorVision()
     {
-        if (_impostorVisionAbilities.Count == 0) return IsImpostor();
-        return _impostorVisionAbilities.FirstOrDefault(x => x.HasImpostorVision?.Invoke() == true) != null;
+        var abilities = GetPrioritizedAbilities<ImpostorVisionAbility>();
+        if (abilities != null)
+        {
+            for (var i = 0; i < abilities.Count; i++)
+            {
+                var decision = ((ImpostorVisionAbility)abilities[i]).HasImpostorVision?.Invoke();
+                if (decision.HasValue) return decision.Value;
+            }
+        }
+        return IsImpostor();
     }
+
+    [System.Runtime.CompilerServices.MethodImpl(System.Runtime.CompilerServices.MethodImplOptions.AggressiveInlining)]
+    private List<AbilityBase> GetPrioritizedAbilities<T>() where T : AbilityBase, IPrioritizedAbility
+    {
+        _prioritizedAbilities.TryGetValue(AbilityPriorityGroup<T>.Id, out var abilities);
+        return abilities;
+    }
+
     public void DetachAbility(ulong abilityId)
     {
         if (!PlayerAbilitiesDictionary.TryGetValue(abilityId, out var ability))
             return;
         ability.Detach();
         SuperTrophyManager.DetachTrophy(ability);
-        switch (ability)
-        {
-            case CustomVentAbility customVentAbility:
-                _customVentAbility = null;
-                break;
-            case ImpostorVisionAbility impostorVisionAbility:
-                _impostorVisionAbilities.Remove(impostorVisionAbility);
-                break;
-            case CustomSaboAbility customSaboAbility:
-                _customSaboAbility = null;
-                break;
-            case CustomTaskAbility customTaskAbility:
-                _customTaskAbility = null;
-                break;
-            case CustomKillButtonAbility customKillButtonAbility:
-                _customKillButtonAbility = null;
-                break;
-            case KillableAbility killableAbility:
-                _killableAbility = null;
-                break;
-        }
+        RemovePrioritizedAbility(ability);
         PlayerAbilities.Remove(ability);
         PlayerAbilitiesDictionary.Remove(abilityId);
         _abilityCache.Remove(ability.GetType().Name);
-        _hasAbilityCache.Clear();
-
-        // 新しいキャッシュシステムのクリア（最適化版）
-        _typeIdAbilityCache.Clear();
-        _typeIdAbilitiesCache.Clear();
-        _typeIdReadOnlyCache.Clear();
-        System.Array.Clear(_hasAbilityByTypeIdCached, 0, _hasAbilityByTypeIdCached.Length);
+        ClearAbilityCaches();
     }
     public T GetAbility<T>() where T : AbilityBase
     {
@@ -1003,6 +1059,48 @@ public class ExPlayerControl
         _typeIdReadOnlyCache[typeId] = readOnlyCollection;
         return readOnlyCollection;
     }
+
+    /// <summary>優先度を持つ Ability を、自動判定した系統別リストへ登録します。</summary>
+    private void AddPrioritizedAbility(AbilityBase ability)
+    {
+        if (ability is not IPrioritizedAbility prioritizedAbility) return;
+
+        var groupId = AbilityPriorityGroupRegistry.GetGroupId(ability.GetType());
+        if (!_prioritizedAbilities.TryGetValue(groupId, out var abilities))
+        {
+            abilities = new List<AbilityBase>();
+            _prioritizedAbilities.Add(groupId, abilities);
+        }
+
+        var index = 0;
+        while (index < abilities.Count &&
+               ((IPrioritizedAbility)abilities[index]).Priority > prioritizedAbility.Priority)
+            index++;
+        abilities.Insert(index, ability);
+    }
+
+    /// <summary>優先度を持つ Ability を、自動判定した系統別リストから解除します。</summary>
+    private void RemovePrioritizedAbility(AbilityBase ability)
+    {
+        if (ability is not IPrioritizedAbility) return;
+
+        var groupId = AbilityPriorityGroupRegistry.GetGroupId(ability.GetType());
+        if (!_prioritizedAbilities.TryGetValue(groupId, out var abilities)) return;
+
+        abilities.Remove(ability);
+        if (abilities.Count == 0)
+            _prioritizedAbilities.Remove(groupId);
+    }
+
+    private void ClearAbilityCaches()
+    {
+        _hasAbilityCache.Clear();
+        _typeIdAbilityCache.Clear();
+        _typeIdAbilitiesCache.Clear();
+        _typeIdReadOnlyCache.Clear();
+        System.Array.Clear(_hasAbilityByTypeIdCached, 0, _hasAbilityByTypeIdCached.Length);
+    }
+
     public override string ToString()
     {
         return $"{Data?.PlayerName}({PlayerId}): {Role} {PlayerAbilities.Count}";

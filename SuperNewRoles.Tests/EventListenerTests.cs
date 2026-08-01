@@ -2,7 +2,9 @@ using System;
 using System.Reflection;
 using BepInEx.Logging;
 using FluentAssertions;
+using SuperNewRoles.Modules;
 using SuperNewRoles.Modules.Events.Bases;
+using SuperNewRoles.Roles.Ability;
 using Xunit;
 
 namespace SuperNewRoles.Tests;
@@ -20,6 +22,10 @@ public class EventListenerTests
         public int Value { get; set; }
     }
     private class DataEvent : EventTargetBase<DataEvent, DummyData> { }
+    private class ListenerOwningAbility : AbilityBase
+    {
+        public void Listen(Action action) => SubscribeWithAbility(NoArgEvent.Instance, action);
+    }
 
     private static void ResetEvents()
     {
@@ -101,6 +107,23 @@ public class EventListenerTests
         DataEvent.Instance.Awake(new DummyData { Value = 42 });
         // 目的: 渡したデータがそのままリスナーに届く
         observed.Should().Be(42);
+    }
+
+    [Fact]
+    public void SubscribeWithAbility_AutomaticallyRemovesListenerOnDetach()
+    {
+        EnsurePluginLogger();
+        ResetEvents();
+        var called = 0;
+        var ability = new ListenerOwningAbility();
+        ability.Attach(null, 1, new AbilityParentPlayer(null));
+        ability.Listen(() => called++);
+
+        NoArgEvent.Instance.Awake();
+        ability.Detach();
+        NoArgEvent.Instance.Awake();
+
+        called.Should().Be(1);
     }
 
     // 目的: 1つのリスナーが例外を投げても他のリスナー実行は継続されることを検証

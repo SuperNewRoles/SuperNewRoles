@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Reflection;
 using System.Runtime.Serialization;
 using FluentAssertions;
+using SuperNewRoles.Ability;
 using SuperNewRoles.Modules;
 using SuperNewRoles.Roles;
 using SuperNewRoles.Roles.Ability;
@@ -16,6 +17,11 @@ public class ExPlayerControlTests
     // Minimal ability types for testing
     private class AlphaAbility : AbilityBase { }
     private class BetaAbility : AbilityBase { }
+    private class DerivedVentAbility : CustomVentAbility
+    {
+        public DerivedVentAbility(Func<bool?> canUseVent, int priority)
+            : base(canUseVent, priority: priority) { }
+    }
 
     // テスト用: コンストラクタを通さずに必要最小のフィールド/プロパティを初期化して生成する
     private static ExPlayerControl CreateBareEx(byte playerId = 7, RoleId role = RoleId.None)
@@ -34,13 +40,13 @@ public class ExPlayerControlTests
         SetField(ex, "_abilityCache", new Dictionary<string, AbilityBase>());
         SetAutoProp(ex, nameof(ExPlayerControl.PlayerAbilities), new List<AbilityBase>());
         SetAutoProp(ex, nameof(ExPlayerControl.PlayerAbilitiesDictionary), new Dictionary<ulong, AbilityBase>());
-        SetField(ex, "_impostorVisionAbilities", new List<ImpostorVisionAbility>());
         SetField(ex, "_hasAbilityCache", new Dictionary<string, bool>());
 
         // Initialize optimized caches
         SetField(ex, "_typeIdAbilityCache", new Dictionary<int, AbilityBase>());
         SetField(ex, "_typeIdAbilitiesCache", new Dictionary<int, List<AbilityBase>>());
         SetField(ex, "_typeIdReadOnlyCache", new Dictionary<int, IReadOnlyList<object>>());
+        SetField(ex, "_prioritizedAbilities", new Dictionary<int, List<AbilityBase>>());
         SetField(ex, "_hasAbilityByTypeId", new bool[1024]);
         SetField(ex, "_hasAbilityByTypeIdCached", new bool[1024]);
 
@@ -98,6 +104,8 @@ public class ExPlayerControlTests
 
         abilities.Add(ability);
         dict[abilityId] = ability;
+        typeof(ExPlayerControl).GetMethod("AddPrioritizedAbility", BindingFlags.Instance | BindingFlags.NonPublic)!
+            .Invoke(ex, new object[] { ability });
 
         // Reset caches (equivalent to internal attach invalidation)
         GetField<Dictionary<string, bool>>(ex, "_hasAbilityCache").Clear();
@@ -119,6 +127,8 @@ public class ExPlayerControlTests
         }
         ex.PlayerAbilities.Remove(ability);
         if (key != 0) dict.Remove(key);
+        typeof(ExPlayerControl).GetMethod("RemovePrioritizedAbility", BindingFlags.Instance | BindingFlags.NonPublic)!
+            .Invoke(ex, new object[] { ability });
 
         // Reset caches
         GetField<Dictionary<string, bool>>(ex, "_hasAbilityCache").Clear();
@@ -188,19 +198,84 @@ public class ExPlayerControlTests
     public void HasImpostorVision_Uses_AbilityDelegate_When_Present()
     {
         var ex = CreateBareEx(playerId: 12, role: RoleId.Crewmate);
-        // Directly add to internal impostor-vision list to avoid Attach logic
-        GetField<List<ImpostorVisionAbility>>(ex, "_impostorVisionAbilities").Add(new ImpostorVisionAbility(() => true));
+        var vision = new ImpostorVisionAbility(() => true);
+        ShallowAttach(ex, vision);
         // 目的: true デリゲートで視界あり
         ex.HasImpostorVision().Should().BeTrue();
 
-        // Remove and add false-returning delegate
-        GetField<List<ImpostorVisionAbility>>(ex, "_impostorVisionAbilities").Clear();
-        GetField<List<ImpostorVisionAbility>>(ex, "_impostorVisionAbilities").Add(new ImpostorVisionAbility(() => false));
+        ShallowDetach(ex, vision);
+        ShallowAttach(ex, new ImpostorVisionAbility(() => false));
         // 目的: false デリゲートで視界なし
         ex.HasImpostorVision().Should().BeFalse();
     }
 
+    [Fact]
+    public void VentDecision_UsesPriority_NullDelegation_AndLatestTieBreaker()
+    {
+        var ex = CreateBareEx(playerId: 13, role: RoleId.Crewmate);
+        bool? highDecision = null;
+        var low = new CustomVentAbility(() => true, priority: 0);
+        var high = new CustomVentAbility(() => highDecision, priority: 10);
+        ShallowAttach(ex, low);
+        ShallowAttach(ex, high);
+
+        ex.CanUseVent().Should().BeTrue();
+
+        highDecision = false;
+        ex.CanUseVent().Should().BeFalse();
+
+        // Derived abilities are grouped with CustomVentAbility automatically.
+        var latestAtSamePriority = new DerivedVentAbility(() => true, priority: 10);
+        ShallowAttach(ex, latestAtSamePriority);
+        ex.CanUseVent().Should().BeTrue();
+        var priorityGroups = GetField<Dictionary<int, List<AbilityBase>>>(ex, "_prioritizedAbilities");
+        priorityGroups.Should().ContainSingle();
+        foreach (var abilities in priorityGroups.Values)
+            abilities[0].Should().BeSameAs(latestAtSamePriority);
+    }
+
     // 目的: 拡張メソッドとインターフェース実装の GenerateAbilityId が一致することを検証
+    [Fact]
+    public void TaskValues_AreResolvedIndependentlyByPriority()
+    {
+        var ex = CreateBareEx(playerId: 14, role: RoleId.Crewmate);
+        bool? highTrigger = false;
+        var lowTaskOptions = new TaskOptionData(1, 1, 1);
+        var middleTaskOptions = new TaskOptionData(2, 2, 2);
+
+        var low = new CustomTaskAbility(
+            isTaskTrigger: () => true,
+            countsForCrewWin: () => false,
+            requiredTaskCount: () => 3,
+            taskOptions: () => lowTaskOptions,
+            priority: AbilityPriority.Default);
+        var middle = new CustomTaskAbility(
+            countsForCrewWin: () => true,
+            taskOptions: () => middleTaskOptions,
+            priority: AbilityPriority.Modifier);
+        var high = new CustomTaskAbility(
+            isTaskTrigger: () => highTrigger,
+            priority: AbilityPriority.GhostRole);
+
+        ShallowAttach(ex, low);
+        ShallowAttach(ex, middle);
+        ShallowAttach(ex, high);
+
+        ex.IsTaskTriggerRole().Should().BeFalse();
+        ex.IsCountTask().Should().BeTrue();
+        InvokePrivate<int>(ex, "ResolveRequiredTaskCount", 99).Should().Be(3);
+        InvokePrivate<TaskOptionData>(ex, "ResolveTaskOptions").Should().BeSameAs(middleTaskOptions);
+
+        highTrigger = null;
+        ex.IsTaskTriggerRole().Should().BeTrue();
+    }
+
+    private static TResult InvokePrivate<TResult>(object target, string methodName, params object[] args)
+    {
+        var method = target.GetType().GetMethod(methodName, BindingFlags.Instance | BindingFlags.NonPublic)!;
+        return (TResult)method.Invoke(target, args)!;
+    }
+
     [Fact]
     public void Extension_GenerateAbilityId_Matches_Interface_Implementation()
     {

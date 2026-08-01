@@ -66,8 +66,9 @@ public class OrientalShamanAbility : AbilityBase
         );
 
         _taskAbility = new CustomTaskAbility(
-            () => (Data.neededTaskComplete, false, null),
-            Data.neededTaskComplete ? Data.task : null
+            isTaskTrigger: () => Data.neededTaskComplete,
+            countsForCrewWin: () => false,
+            taskOptions: () => Data.neededTaskComplete ? Data.task : null
         );
 
         _playerArrowsAbility = new PlayerArrowsAbility(() => [_servant?.Player], (player) => OrientalShaman.Instance.RoleColor);

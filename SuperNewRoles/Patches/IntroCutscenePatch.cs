@@ -395,16 +395,6 @@ public static class IntroCutscenePatch
     private static void ReAssignTasks()
     {
         // ローカルプレイヤーのみがタスクを再割り当てする
-        CustomTaskAbility customTaskAbility = null;
-        foreach (var taskAbility in ExPlayerControl.LocalPlayer.GetAbilities<CustomTaskAbility>())
-        {
-            customTaskAbility = taskAbility;
-            if (taskAbility.assignTaskData != null)
-            {
-                taskAbility.AssignTasks();
-                return;
-            }
-        }
-        customTaskAbility?.AssignTasks();
+        ExPlayerControl.LocalPlayer.AssignCustomTasks();
     }
 }

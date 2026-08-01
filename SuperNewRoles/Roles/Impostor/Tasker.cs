@@ -19,7 +19,10 @@ class Tasker : RoleBase<Tasker>
     public override RoleId Role { get; } = RoleId.Tasker;
     public override Color32 RoleColor { get; } = Palette.ImpostorRed;
     public override List<Func<AbilityBase>> Abilities { get; } = [
-        () => new CustomTaskAbility(() => (true, false, null), GetTaskData()),
+        () => new CustomTaskAbility(
+            isTaskTrigger: () => true,
+            countsForCrewWin: () => false,
+            taskOptions: () => GetTaskData()),
         () => new KillableAbility(() => TaskerCanKill),
         () => new TaskerAbility()
     ];

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Reflection;
 using System.Runtime.Serialization;
 using FluentAssertions;
+using SuperNewRoles.Ability;
 using SuperNewRoles.Modules;
 using SuperNewRoles.Roles;
 using SuperNewRoles.Roles.Ability;
@@ -48,12 +49,12 @@ public class ExPlayerControlMoreTests
         SetAutoProp(ex, nameof(ExPlayerControl.PlayerAbilities), new List<AbilityBase>());
         SetAutoProp(ex, nameof(ExPlayerControl.PlayerAbilitiesDictionary), new Dictionary<ulong, AbilityBase>());
         SetAutoProp(ex, nameof(ExPlayerControl.ModifierRoleBases), new List<IModifierBase>());
-        SetField(ex, "_impostorVisionAbilities", new List<ImpostorVisionAbility>());
         SetField(ex, "_hasAbilityCache", new Dictionary<string, bool>());
 
         SetField(ex, "_typeIdAbilityCache", new Dictionary<int, AbilityBase>());
         SetField(ex, "_typeIdAbilitiesCache", new Dictionary<int, List<AbilityBase>>());
         SetField(ex, "_typeIdReadOnlyCache", new Dictionary<int, IReadOnlyList<object>>());
+        SetField(ex, "_prioritizedAbilities", new Dictionary<int, List<AbilityBase>>());
         SetField(ex, "_hasAbilityByTypeId", new bool[1024]);
         SetField(ex, "_hasAbilityByTypeIdCached", new bool[1024]);
 
@@ -107,6 +108,8 @@ public class ExPlayerControlMoreTests
         typeof(ExPlayerControl).GetProperty(nameof(ExPlayerControl.lastAbilityId))!.SetValue(ex, ex.lastAbilityId + 1);
         ex.PlayerAbilities.Add(ability);
         ex.PlayerAbilitiesDictionary[id] = ability;
+        typeof(ExPlayerControl).GetMethod("AddPrioritizedAbility", BindingFlags.Instance | BindingFlags.NonPublic)!
+            .Invoke(ex, new object[] { ability });
         // invalidate caches equivalent to attach
         GetField<Dictionary<string, bool>>(ex, "_hasAbilityCache").Clear();
         GetField<Dictionary<int, AbilityBase>>(ex, "_typeIdAbilityCache").Clear();
@@ -125,6 +128,8 @@ public class ExPlayerControlMoreTests
         }
         ex.PlayerAbilities.Remove(ability);
         if (id != 0) ex.PlayerAbilitiesDictionary.Remove(id);
+        typeof(ExPlayerControl).GetMethod("RemovePrioritizedAbility", BindingFlags.Instance | BindingFlags.NonPublic)!
+            .Invoke(ex, new object[] { ability });
         GetField<Dictionary<string, bool>>(ex, "_hasAbilityCache").Clear();
         GetField<Dictionary<int, AbilityBase>>(ex, "_typeIdAbilityCache").Clear();
         GetField<Dictionary<int, List<AbilityBase>>>(ex, "_typeIdAbilitiesCache").Clear();
@@ -381,6 +386,7 @@ public class ExPlayerControlMoreTests
         GetField<Dictionary<int, List<AbilityBase>>>(ex, "_typeIdAbilitiesCache").Count.Should().Be(0);
         // 目的: typeId→ReadOnlyList キャッシュが空であること
         GetField<Dictionary<int, IReadOnlyList<object>>>(ex, "_typeIdReadOnlyCache").Count.Should().Be(0);
+        GetField<Dictionary<int, List<AbilityBase>>>(ex, "_prioritizedAbilities").Should().BeEmpty();
 
         // restore statics
         field.SetValue(null, original);

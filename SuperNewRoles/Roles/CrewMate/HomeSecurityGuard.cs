@@ -17,8 +17,10 @@ class HomeSecurityGuard : RoleBase<HomeSecurityGuard>
     public override List<Func<AbilityBase>> Abilities { get; } =
     [
         () => new CustomTaskAbility(
-            () => (false, false, 0),
-            new TaskOptionData(0, 0, 0)
+            isTaskTrigger: () => false,
+            countsForCrewWin: () => false,
+            requiredTaskCount: () => 0,
+            taskOptions: () => new TaskOptionData(0, 0, 0)
         ),
         () => new HomeSecurityGuardAbility(),
     ];

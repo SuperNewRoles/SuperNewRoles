@@ -143,7 +143,10 @@ public class DatahackerAbility : AbilityBase
     {
         base.AttachToAlls();
 
-        customTaskAbility = new CustomTaskAbility(() => (true, true, null), hackingData.UseIndividualTaskSetting ? hackingData.IndividualTasks : null);
+        customTaskAbility = new CustomTaskAbility(
+            isTaskTrigger: () => true,
+            countsForCrewWin: () => true,
+            taskOptions: () => hackingData.UseIndividualTaskSetting ? hackingData.IndividualTasks : null);
         Player.AttachAbility(customTaskAbility, new AbilityParentAbility(this));
 
         taskCompleteListener = TaskCompleteEvent.Instance.AddListener((data) => TaskCompleted(data));
