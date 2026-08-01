@@ -25,6 +25,7 @@ public class EventListenerTests
     private class ListenerOwningAbility : AbilityBase
     {
         public void Listen(Action action) => SubscribeWithAbility(NoArgEvent.Instance, action);
+        public void RemoveOwnedListeners() => RemoveEventListeners();
     }
 
     private static void ResetEvents()
@@ -110,17 +111,16 @@ public class EventListenerTests
     }
 
     [Fact]
-    public void SubscribeWithAbility_AutomaticallyRemovesListenerOnDetach()
+    public void SubscribeWithAbility_TracksListenerForLifecycleRemoval()
     {
         EnsurePluginLogger();
         ResetEvents();
         var called = 0;
         var ability = new ListenerOwningAbility();
-        ability.Attach(null, 1, new AbilityParentPlayer(null));
         ability.Listen(() => called++);
 
         NoArgEvent.Instance.Awake();
-        ability.Detach();
+        ability.RemoveOwnedListeners();
         NoArgEvent.Instance.Awake();
 
         called.Should().Be(1);

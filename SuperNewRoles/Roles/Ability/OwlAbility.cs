@@ -53,7 +53,7 @@ public class OwlAbility : AbilityBase
             () => _data.CanUseVent
         );
         _impostorVisionAbility = new(
-            ModHelpers.IsElectrical
+            () => ModHelpers.IsElectrical()
         );
         _nestAbility = new(
             vent => { if (!_hasNestVent) RpcSetNestVent(this, vent.Id); }
