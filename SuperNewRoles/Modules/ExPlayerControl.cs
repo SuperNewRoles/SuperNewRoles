@@ -196,7 +196,7 @@ public class ExPlayerControl
                     return isTaskTrigger.Value && completed >= ResolveRequiredTaskCount(total);
             }
         }
-        return completed >= total;
+        return completed >= ResolveRequiredTaskCount(total);
     }
     public void ResetKillCooldown()
     {
