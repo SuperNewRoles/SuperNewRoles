@@ -1428,6 +1428,7 @@ Pteranodon,プテラノドン,Pteranodon,翼龙,翼龍
 Pteranodon.ButtonTitle,飛行,Fly,飞行,飛行
 
 # Hitman
+HitmanResetTargetOnMeeting,会議終了時にターゲットをリセットする,Reset target after meeting,会议结束时重置目标,會議結束時重置目標
 HitmanChangeTargetTime,ターゲットがリセットされる時間,Target reset time,目标重置时间,目標重置時間
 HitmanWinKillCount,勝利に必要な成功数,Required kill count for victory,胜利所需的杀人成功数,勝利所需的殺人成功數
 HitmanIsOutMission,任務が遂行できないと自爆する,Self-destruct if mission fails,任务失败时自爆,任務失敗時自爆
