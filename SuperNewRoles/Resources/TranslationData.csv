@@ -142,7 +142,7 @@ SumouHighPerformance,高いパフォーマンス(遅延増),High Performance (In
 FixSpawnPacketSize,ホストが切断されにくくする(推奨:オン),Stabilize Host Connection (Recommended: On) ,修复出生点数据包大小,修復出生點數據包大小
 
 # SyncSpawn
-WaitingSpawnText,ロドー中... 残り:{0}/{1}クルー,Waiting... {0}/{1} Crewmates,等待中... {0}/{1} 船员,等待中... {0}/{1} 船員
+WaitingSpawnText,ロード中... 残り:{0}/{1}クルー,Waiting... {0}/{1} Crewmates,等待中... {0}/{1} 船员,等待中... {0}/{1} 船員
 
 # GameSettings
 CannotTaskTrigger,タスクに関係ない役職の場合、タスクをできなくする,Disable tasks for non-task-related roles,如果职业与任务无关，则无法完成任务,如果职业與任務無關，則無法完成任務
