@@ -17,6 +17,8 @@ public class WaveCannonObjectSanta : WaveCannonObjectBase
     private readonly List<WCSantaHandler> _santas = new();
     private float _santaSpawnTimer = -1f;
     private readonly string _shootSound;
+    // この発射の向きをインスタンスに保持する。
+    private readonly bool _isFlipX;
 
     public WaveCannonObjectSanta(
         WaveCannonAbility ability,
@@ -28,7 +30,7 @@ public class WaveCannonObjectSanta : WaveCannonObjectBase
         : base(ability, isFlipX, startPosition, isResetKillCooldown)
     {
         _shootSound = shootSound;
-        WCSantaHandler.IsFlipX = isFlipX;
+        _isFlipX = isFlipX;
         WCSantaHandler.WiseManVector = Vector3.zero;
         WCSantaHandler.Angle = 0f;
         WCSantaHandler.reflection = false;
@@ -149,10 +151,10 @@ public class WaveCannonObjectSanta : WaveCannonObjectBase
     private void SpawnSanta()
     {
         var santaHandler = new GameObject("Santa").AddComponent<WCSantaHandler>();
-        santaHandler.Init(ability);
+        santaHandler.Init(ability, _isFlipX);
         // 発射終了後にWaveCannonObjectがDestroyされてもサンタが破棄されないよう、親子付けしない
         santaHandler.transform.position = _gameObject.transform.TransformPoint(new Vector3(-2.4f + 3.3f, 0.275f, 0.1f));
-        santaHandler.transform.localScale = new(WCSantaHandler.IsFlipX ? 0.1f : -0.1f, 0.1f, 0.1f);
+        santaHandler.transform.localScale = new(_isFlipX ? -0.1f : 0.1f, 0.1f, 0.1f);
         santaHandler.moveX = 2.4f;
         _santas.Add(santaHandler);
         _santaSpawnTimer = SantaSpawnTimeInterval;

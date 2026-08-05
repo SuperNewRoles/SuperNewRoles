@@ -17,7 +17,7 @@ internal class ElectionCommissioner : RoleBase<ElectionCommissioner>
                 () => new KnowVoteAbility(() => !ElectionCommissionerSeeVote)
         ];
 
-    public override QuoteMod QuoteMod => QuoteMod.SuperNewRoles;
+    public override QuoteMod QuoteMod => QuoteMod.TheOtherRoles;
     public override AssignedTeamType AssignedTeam => AssignedTeamType.Crewmate;
     public override WinnerTeamType WinnerTeam => WinnerTeamType.Crewmate;
     public override TeamTag TeamTag => TeamTag.Crewmate;

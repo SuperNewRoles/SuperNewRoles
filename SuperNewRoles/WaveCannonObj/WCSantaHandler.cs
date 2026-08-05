@@ -15,7 +15,6 @@ public class WCSantaHandler : MonoBehaviour
     public SpriteRenderer Renderer;
     public PolygonCollider2D KillCollider { get; private set; }
     public static readonly float SantaSpeed = 6.5f;
-    public static bool IsFlipX;
     public float moveX;
     public static bool reflection = false;
     public static float Angle;
@@ -25,16 +24,21 @@ public class WCSantaHandler : MonoBehaviour
     private WaveCannonAbility _ability;
     private ExPlayerControl _source;
     private bool _friendlyFire;
+    // static IsFlipX を参照すると、
+    // 発射後のサンタ波動砲のビームの向きが、別のサンタ波動砲のビームの向きに更新されてしまう
+    private bool _isFlipX;
     private readonly HashSet<byte> _alreadyKilled = new();
 
     /// <summary>
     /// サンタが撃ち終わり後も死亡判定を継続するために、発射者情報を保持する。
+    ///  _isFlipXに発射した瞬間のプレイヤーの反転状態を保存
     /// </summary>
-    public void Init(WaveCannonAbility ability)
+    public void Init(WaveCannonAbility ability, bool isFlipX)
     {
         _ability = ability;
         _source = ability?.Player;
         _friendlyFire = ability?.friendlyFire ?? true;
+        _isFlipX = isFlipX;
     }
 
     public void Start()
@@ -48,7 +52,7 @@ public class WCSantaHandler : MonoBehaviour
 
     public void Update()
     {
-        int flip = transform.parent == null && IsFlipX ? -1 : 1;
+        int flip = transform.parent == null && _isFlipX ? -1 : 1;
         if (transform.localScale.y < 0.725f)
             transform.localScale += new Vector3(flip * -0.05f, 0.05f, 0.05f);
 

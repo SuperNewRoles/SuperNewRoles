@@ -128,9 +128,11 @@ public class MushroomerAbility : AbilityBase
         mushroom.secondsSporeIsActive = explosionDurationTime;
         mushroom.transform.localScale = Vector3.one * explosionRange;
         mushroom.TriggerSpores();
-        // カスタムキノコはテンプレートから生成されるため、TriggerSpores() 後に sporeMask が非アクティブのまま残ることがある。
-        // バニラと同じ視界になるよう、明示的に有効化してスケールを設定する。
-        if (mushroom.sporeMask != null)
+        // カスタムキノコはテンプレートから Instantiate されるため、
+        // sporeMask の activeSelf が false のまま引き継がれている。
+        // gameObject の親 SetActive(true/false) では子の activeSelf は変わらないため
+        // 明示的に SetActive(true) で有効化する必要がある。
+        if (mushroom.sporeMask != null && mushroom.sporeMask.gameObject != null)
         {
             mushroom.sporeMask.gameObject.SetActive(true);
             mushroom.sporeMask.transform.localScale = new Vector3(2.4f, 2.4f, 1.2f);
