@@ -437,12 +437,15 @@ public class RoleOptionSettings
             ElementZPosition);
         roleDetailButtonObject.transform.localScale = Vector3.one * ElementScale;
 
+        // 有効なPassiveButton上でUnityEventを差し替えると、IL2CPP側に古いイベント参照が
+        // 残ってネイティブクラッシュするため、設定が完了するまで無効化しておく。
+        roleDetailButtonObject.SetActive(false);
+
         var buttonText = roleDetailButtonObject.transform.Find("Text")?.GetComponent<TextMeshPro>();
         if (buttonText != null)
             buttonText.text = ModTranslation.GetString("RoleDetailButton");
 
         bool hasSelectedRole = roleId != RoleId.None;
-        roleDetailButtonObject.SetActive(hasSelectedRole);
 
         var passiveButton = roleDetailButtonObject.GetComponent<PassiveButton>()
             ?? roleDetailButtonObject.AddComponent<PassiveButton>();
@@ -474,6 +477,8 @@ public class RoleOptionSettings
             if (selectedObject != null)
                 selectedObject.SetActive(false);
         }));
+
+        roleDetailButtonObject.SetActive(hasSelectedRole);
     }
 
     // スクロール位置をリセットするメソッド
