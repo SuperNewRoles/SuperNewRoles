@@ -409,9 +409,8 @@ public class PlayerStatistics
             if (!isHnS && player.Role == RoleId.MadKiller && !player.IsImpostor())
             {
                 var mkAbility = player.GetAbility<MadKillerAbility>();
-                if (mkAbility != null && !mkAbility.IsAwakened && mkAbility.ownerAbility != null)
+                if (mkAbility != null && !mkAbility.IsAwakened && mkAbility.TryGetOwnerPlayer(out var ownerPlayer))
                 {
-                    var ownerPlayer = mkAbility.ownerAbility.Player;
                     if (ownerPlayer == null || ownerPlayer.IsDead() || ownerPlayer.Role != RoleId.SideKiller)
                     {
                         teamImpostorsAlive++;

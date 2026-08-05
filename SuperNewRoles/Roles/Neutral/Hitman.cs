@@ -28,7 +28,8 @@ class Hitman : RoleBase<Hitman>
             IsOutMission: HitmanIsOutMission,
             OutMissionLimit: HitmanOutMissionLimit,
             CanUseVent: HitmanCanUseVent,
-            HasImpostorVision: HitmanHasImpostorVision
+            HasImpostorVision: HitmanHasImpostorVision,
+            ResetTargetOnMeeting: HitmanResetTargetOnMeeting
         ))
     ];
 
@@ -63,6 +64,8 @@ class Hitman : RoleBase<Hitman>
     public static bool HitmanCanUseVent;
     [CustomOptionBool("HitmanHasImpostorVision", false, translationName: "HasImpostorVision")]
     public static bool HitmanHasImpostorVision;
+    [CustomOptionBool("HitmanResetTargetOnMeeting", true)]
+    public static bool HitmanResetTargetOnMeeting;
 
 }
 
@@ -73,7 +76,8 @@ public record HitmanData(
     int OutMissionLimit,
     bool CanUseVent,
     bool IsOutMission,
-    bool HasImpostorVision
+    bool HasImpostorVision,
+    bool ResetTargetOnMeeting
 );
 
 public class HitmanAbility : AbilityBase
@@ -93,6 +97,7 @@ public class HitmanAbility : AbilityBase
 
     private EventListener _fixedUpdateListener;
     private EventListener<MurderEventData> _murderListener;
+    private EventListener<MeetingCloseEventData> _meetingCloseListener;
     private EventListener<NameTextUpdateEventData> _nameTextUpdateListener;
 
     private Arrow ArrowToTarget;
@@ -133,6 +138,7 @@ public class HitmanAbility : AbilityBase
         base.AttachToLocalPlayer();
         _fixedUpdateListener = FixedUpdateEvent.Instance.AddListener(OnFixedUpdate);
         _murderListener = MurderEvent.Instance.AddListener(OnMurder);
+        _meetingCloseListener = MeetingCloseEvent.Instance.AddListener(OnMeetingClose);
         reSelect();
         ArrowToTarget = new Arrow(Color.red);
     }
@@ -140,6 +146,7 @@ public class HitmanAbility : AbilityBase
     {
         _fixedUpdateListener?.RemoveListener();
         _murderListener?.RemoveListener();
+        _meetingCloseListener?.RemoveListener();
         GameObject.Destroy(ArrowToTarget?.arrow.gameObject);
         ArrowToTarget = null;
     }
@@ -176,6 +183,14 @@ public class HitmanAbility : AbilityBase
             NameText.UpdateNameInfo(ExPlayerControl.LocalPlayer);
             reSelect();
         }
+    }
+    private void OnMeetingClose(MeetingCloseEventData _)
+    {
+        if (!Data.ResetTargetOnMeeting || Player.IsDead()) return;
+
+        // 会議でのターゲット変更は成功・失敗のどちらにも数えない。
+        reSelect();
+        _timer = Data.ChangeTargetTime;
     }
     private void reSelect()
     {

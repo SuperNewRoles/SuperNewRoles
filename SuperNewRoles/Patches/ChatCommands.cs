@@ -18,7 +18,11 @@ public static class SendChatPatch
     {
         string text = __instance.freeChatField.textArea.text;
         bool handled = false;
-        if (AmongUsClient.Instance.GameState == InnerNetClient.GameStates.Joined)
+        if (AmongUsClient.Instance.GameState == InnerNetClient.GameStates.Started)
+        {
+            handled = HandleGameCommand(text);
+        }
+        else if (AmongUsClient.Instance.GameState == InnerNetClient.GameStates.Joined)
         {
             if (text.ToLower().StartsWith("/mp "))
             { // Unfortunately server holds this - need to do more trickery
@@ -103,6 +107,35 @@ public static class SendChatPatch
         }
         return !handled;
     }
+
+    private static bool HandleGameCommand(string text)
+    {
+        if (!AmongUsClient.Instance.AmHost)
+            return false;
+
+        string command = text.Trim();
+        if (string.Equals(command, "/haison", StringComparison.OrdinalIgnoreCase)
+            || string.Equals(command, "/廃村", StringComparison.OrdinalIgnoreCase))
+        {
+            Logger.Info("===================== 廃村 =====================", "End Game");
+            EndGamer.RpcHaison();
+            if (ShipStatus.Instance != null)
+                ShipStatus.Instance.enabled = false;
+            return true;
+        }
+
+        if (string.Equals(command, "/endmeeting", StringComparison.OrdinalIgnoreCase)
+            || string.Equals(command, "/meetingend", StringComparison.OrdinalIgnoreCase)
+            || string.Equals(command, "/会議終了", StringComparison.OrdinalIgnoreCase))
+        {
+            if (MeetingHud.Instance != null)
+                MeetingHud.Instance.RpcClose();
+            return true;
+        }
+
+        return false;
+    }
+
     [CustomRPC]
     public static void RpcShowWinnerMessage()
     {
