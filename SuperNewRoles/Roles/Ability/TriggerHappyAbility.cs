@@ -158,8 +158,9 @@ public class TriggerHappyAbility : CustomButtonBase, IAbilityCount, IButtonEffec
 
         FlushBulletBatch();
         _batchTimer = 0f;
-        // ついでにこのタイミングでキルクールタイム同期もしておく
-        Player.ResetKillCooldown();
+        // キルクールタイムの同期設定が有効な場合だけ、バッチ送信に合わせてリセットする。
+        if (_data.SyncKillCoolTime)
+            Player.ResetKillCooldown();
     }
 
     public void QueueBullet(Vector2 position, Vector2 direction)
