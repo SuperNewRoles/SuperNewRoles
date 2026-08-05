@@ -18,8 +18,6 @@ public class WaveCannonObjectSanta : WaveCannonObjectBase
     private float _santaSpawnTimer = -1f;
     private readonly string _shootSound;
     // この発射の向きをインスタンスに保持する。
-    // WCSantaHandler.IsFlipX は static のため、上書きが起こるため、それを防ぐ
-    // SpawnSanta() ではこちらを参照する。
     private readonly bool _isFlipX;
 
     public WaveCannonObjectSanta(
@@ -33,7 +31,6 @@ public class WaveCannonObjectSanta : WaveCannonObjectBase
     {
         _shootSound = shootSound;
         _isFlipX = isFlipX;
-        WCSantaHandler.IsFlipX = isFlipX;
         WCSantaHandler.WiseManVector = Vector3.zero;
         WCSantaHandler.Angle = 0f;
         WCSantaHandler.reflection = false;

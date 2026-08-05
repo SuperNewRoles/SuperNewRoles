@@ -122,7 +122,12 @@ public class SchrodingersCatAbility : AbilityBase
         if (Player.IsLovers()) return;
         if (data.RefTarget != Player) return;
         if (data.Killer == Player) return;
-        if (CurrentTeam != SchrodingersCatTeam.SchrodingersCat) return;
+        // 既に陣営が確定している場合
+        if (CurrentTeam != SchrodingersCatTeam.SchrodingersCat)
+        {
+            data.RefSuccess = false;
+            return;
+        }
 
         // キル連対策：RPC伝播前に2回目のキルが届いた場合、陣営変化後にキルが起こってしまうので、キルされないようにする
         if (_isProcessingKill)
@@ -169,10 +174,7 @@ public class SchrodingersCatAbility : AbilityBase
                 NameText.UpdateNameInfo(data.RefTarget);
             data.RefSuccess = false;
             if (showKillAnimation && data.RefTarget.AmOwner)
-            {
-                data.RefTarget.MyPhysics.body.velocity = Vector2.zero;
                 DestroyableSingleton<HudManager>.Instance.KillOverlay.ShowKillAnimation(data.Killer.Data, data.RefTarget.Data);
-            }
         }
     }
     /// <summary>
