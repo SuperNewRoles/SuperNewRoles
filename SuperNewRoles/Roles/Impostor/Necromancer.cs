@@ -117,17 +117,28 @@ public class NecromancerRevenantArrowAbility : AbilityBase
 
     public void OnMeetingClose(MeetingCloseEventData _)
     {
+        RemoveInvalidArrows();
+    }
+
+    private void RemoveInvalidArrows()
+    {
         for (int i = _arrows.Count - 1; i >= 0; i--)
         {
             var data = _arrows[i];
-            if (data.player?.GhostRole != GhostRoleId.Revenant)
-            {
-                if (data.arrow?.arrow != null)
-                    GameObject.Destroy(data.arrow.arrow);
-                _arrows.RemoveAt(i);
-            }
+            if (IsActiveRevenant(data.player)) continue;
+
+            if (data.arrow?.arrow != null)
+                GameObject.Destroy(data.arrow.arrow);
+            _arrows.RemoveAt(i);
         }
     }
+
+    private static bool IsActiveRevenant(ExPlayerControl player)
+        => player != null &&
+           player.Data != null &&
+           !player.Data.Disconnected &&
+           ExPlayerControl.ById(player.PlayerId) == player &&
+           player.GhostRole == GhostRoleId.Revenant;
 
     public override void DetachToLocalPlayer()
     {
@@ -146,6 +157,7 @@ public class NecromancerRevenantArrowAbility : AbilityBase
 
     public void OnFixedUpdate()
     {
+        RemoveInvalidArrows();
         if (ExPlayerControl.LocalPlayer.IsDead()) return;
         foreach (ExPlayerControl player in ExPlayerControl.ExPlayerControls)
         {

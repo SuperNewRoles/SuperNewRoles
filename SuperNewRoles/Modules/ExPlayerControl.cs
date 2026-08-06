@@ -8,6 +8,7 @@ using SuperNewRoles.Events;
 using SuperNewRoles.Extensions;
 using SuperNewRoles.Roles;
 using SuperNewRoles.Roles.Ability;
+using SuperNewRoles.Roles.Ability.CustomButton;
 using SuperNewRoles.Roles.Neutral;
 using SuperNewRoles.SuperTrophies;
 using TMPro;
@@ -633,6 +634,7 @@ public class ExPlayerControl
     }
     public static void SetUpExPlayers()
     {
+        TargetCustomButtonBase.ClearOutlineOwners();
         _exPlayerControlsArray = new ExPlayerControl[256];
         _exPlayerControls.Clear();
         foreach (PlayerControl player in PlayerControl.AllPlayerControls)

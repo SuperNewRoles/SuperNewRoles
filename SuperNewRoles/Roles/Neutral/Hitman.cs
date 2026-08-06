@@ -208,6 +208,7 @@ public class HitmanAbility : AbilityBase
     {
         if (ExPlayerControl.LocalPlayer.IsDead()) return;
         if (data.killer != Player) return;
+        if (!data.resultFlags.HasFlag(MurderResultFlags.Succeeded)) return;
         if (_currentTarget == data.target)
             SuccessfulKill();
         else

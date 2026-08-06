@@ -14,6 +14,7 @@ public abstract class TargetCustomButtonBase : CustomButtonBase
     public virtual bool ShowOutline { get; protected set; } = true;
     public abstract Color32 OutlineColor { get; }
     private PlayerControl _lastShowTarget;
+    private static readonly Dictionary<PlayerControl, HashSet<TargetCustomButtonBase>> OutlineOwners = new();
     public abstract bool OnlyCrewmates { get; }
     public virtual bool TargetPlayersInVents { get; } = false;
     public virtual IEnumerable<PlayerControl> UntargetablePlayers { get; } = null;
@@ -60,7 +61,15 @@ public abstract class TargetCustomButtonBase : CustomButtonBase
         if (_lastShowTarget == Target) return;
         ClearTargetOutline();
         if (Target != null)
+        {
+            if (!OutlineOwners.TryGetValue(Target, out var owners))
+            {
+                owners = new HashSet<TargetCustomButtonBase>();
+                OutlineOwners[Target] = owners;
+            }
+            owners.Add(this);
             SetOutline(Target, true, OutlineColor);
+        }
         _lastShowTarget = Target;
     }
 
@@ -72,9 +81,33 @@ public abstract class TargetCustomButtonBase : CustomButtonBase
 
     private void ClearTargetOutline()
     {
-        if (_lastShowTarget != null)
-            SetOutline(_lastShowTarget, false, default);
+        PlayerControl previousTarget = _lastShowTarget;
         _lastShowTarget = null;
+        if (previousTarget == null) return;
+
+        if (!OutlineOwners.TryGetValue(previousTarget, out var owners))
+        {
+            SetOutline(previousTarget, false, default);
+            return;
+        }
+
+        owners.Remove(this);
+        if (owners.Count == 0)
+        {
+            OutlineOwners.Remove(previousTarget);
+            SetOutline(previousTarget, false, default);
+            return;
+        }
+
+        TargetCustomButtonBase remainingOwner = owners.First();
+        SetOutline(previousTarget, true, remainingOwner.OutlineColor);
+    }
+
+    internal static void ClearOutlineOwners()
+    {
+        foreach (PlayerControl target in OutlineOwners.Keys.ToArray())
+            SetOutline(target, false, default);
+        OutlineOwners.Clear();
     }
 
     internal bool ShouldCancelClickForTarget()

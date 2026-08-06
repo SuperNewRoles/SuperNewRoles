@@ -152,7 +152,7 @@ class RevenantAbility : TargetCustomButtonBase
     private void OnWrapUp(WrapUpEventData data)
     {
         if (!Player.AmOwner) return;
-        foreach (var haunted in HauntedPlayers)
+        foreach (var haunted in HauntedPlayers.ToArray())
         {
             RpcSetRevenantStatus(this, haunted.player, false);
         }
