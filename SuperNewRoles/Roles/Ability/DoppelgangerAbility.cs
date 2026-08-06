@@ -32,6 +32,8 @@ public class DoppelgangerAbility : AbilityBase
     public void OnMurderPlayer(MurderEventData data)
     {
         if (data == null || data.killer != Player) return;
+        if (!data.resultFlags.HasFlag(MurderResultFlags.Succeeded)) return;
+        if (data.target == null) return;
         if (data.target.IsAlive()) return;
         if (_shapeshiftButtonAbility == null) return;
 

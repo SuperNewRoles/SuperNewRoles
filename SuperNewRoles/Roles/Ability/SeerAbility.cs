@@ -1,5 +1,4 @@
 using System;
-using System.Collections.Generic;
 using UnityEngine;
 using SuperNewRoles.Roles.CrewMate;
 using SuperNewRoles.Modules;
@@ -24,9 +23,7 @@ public record SeerData
 /// </summary>
 public class SeerAbility : AbilityBase
 {
-    private readonly List<(Vector3 position, int colorId)> pendingSoulPositions = new();
     private EventListener<DieEventData> dieEventListener;
-    private EventListener<WrapUpEventData> wrapUpEventListener;
     public SeerData Data;
 
     // 通常霊魂カラーID
@@ -43,12 +40,12 @@ public class SeerAbility : AbilityBase
     public override void AttachToLocalPlayer()
     {
         dieEventListener = DieEvent.Instance.AddListener(OnPlayerDead);
-        wrapUpEventListener = WrapUpEvent.Instance.AddListener(OnWrapUp);
     }
 
     private void OnPlayerDead(DieEventData data)
     {
-        bool isExile = ExileController.Instance != null;
+        // Exiled players intentionally do not create souls or death flashes.
+        if (IsExiledPlayer(data.player)) return;
         // モードが「霊魂が見える」または「両方」の場合
         var mode = Data.Mode;
         if (mode is SeerMode.Both or SeerMode.SoulOnly)
@@ -67,13 +64,8 @@ public class SeerAbility : AbilityBase
             };
 
             // 霊魂を即表示（会議を待たずに表示）
-            if (isExile)
-                pendingSoulPositions.Add((data.player.transform.position, colorId));
-            else
-                CreateSoul(data.player.transform.position, colorId);
+            CreateSoul(data.player.transform.position, colorId);
         }
-
-        if (isExile) return;
 
         // モードが「死の点滅が見える」または「両方」の場合
         if (mode is SeerMode.Both or SeerMode.FlashOnly)
@@ -89,18 +81,16 @@ public class SeerAbility : AbilityBase
         }
     }
 
-    private void OnWrapUp(WrapUpEventData data)
+    private static bool IsExiledPlayer(ExPlayerControl player)
     {
-        // WrapUpリスナー内で追加の死亡処理が行われる場合があるため、全リスナーの完了後に表示する
-        new LateTask(FlushPendingSoulPositions, 0f, "SeerFlushPendingSouls", log: false);
-    }
+        if (player == null) return false;
 
-    private void FlushPendingSoulPositions()
-    {
-        foreach (var (position, colorId) in pendingSoulPositions)
-            CreateSoul(position, colorId);
-
-        pendingSoulPositions.Clear();
+        foreach (ExileController controller in UnityEngine.Object.FindObjectsOfType<ExileController>())
+        {
+            if (controller?.initData?.networkedPlayer?.PlayerId == player.PlayerId)
+                return true;
+        }
+        return false;
     }
 
     // 霊魂を作成する共通メソッド
@@ -204,8 +194,6 @@ public class SeerAbility : AbilityBase
     {
         if (dieEventListener != null)
             DieEvent.Instance.RemoveListener(dieEventListener);
-        if (wrapUpEventListener != null)
-            WrapUpEvent.Instance.RemoveListener(wrapUpEventListener);
-        pendingSoulPositions.Clear();
+        dieEventListener = null;
     }
 }

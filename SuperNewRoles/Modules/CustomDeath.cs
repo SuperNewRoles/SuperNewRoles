@@ -271,10 +271,8 @@ public static class CustomDeathExtensions
         if (source?.Player == null || target?.Player == null)
             return MurderResultFlags.FailedError;
 
-        // Ask the vanilla protection system before supplying the result flags.
-        // Custom kills used to force Succeeded here, bypassing Guardian Angel protection.
-        target.Player.protectedByGuardianThisRound = false;
-        source.Player.CheckProtect(target.Player);
+        // Preserve the protection state already synchronized by the vanilla game.
+        // Clearing it here would make a protected target look unprotected on every client.
         return target.Player.protectedByGuardianThisRound
             ? MurderResultFlags.FailedProtected
             : MurderResultFlags.Succeeded;

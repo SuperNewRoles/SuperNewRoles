@@ -41,6 +41,7 @@ public class PteranodonAbility : CustomButtonBase
 {
     private readonly PteranodonData _data;
     private EventListener<WrapUpEventData> _wrapUpListener;
+    private EventListener<MeetingStartEventData> _meetingStartListener;
     private EventListener _fixedUpdateListener;
 
     // 飛行状態の管理
@@ -66,6 +67,7 @@ public class PteranodonAbility : CustomButtonBase
     {
         base.AttachToLocalPlayer();
         _wrapUpListener = WrapUpEvent.Instance.AddListener(OnWrapUp);
+        _meetingStartListener = MeetingStartEvent.Instance.AddListener(OnMeetingStart);
         _isFlyingNow = false;
         _startPosition = new Vector2();
         _targetPosition = new Vector2();
@@ -85,21 +87,35 @@ public class PteranodonAbility : CustomButtonBase
         if (!_isFlyingNow || Player?.Player == null) return;
 
         // 通常の飛行終了と同じ終了RPCを送信し、ローカルと他クライアントの状態を復元する
-        Vector3 position = Player.Player.transform.position;
-        SetStatusRPC(this, false, position, _startPosition, 0f);
+        SetStatusRPC(this, false, _startPosition, _startPosition, 0f);
+    }
+
+    private void OnMeetingStart(MeetingStartEventData data)
+    {
+        if (!_isFlyingNow || Player?.Player == null) return;
+
+        SetStatusRPC(this, false, _startPosition, _startPosition, 0f);
     }
 
     public override void DetachToLocalPlayer()
     {
+        if (_isFlyingNow && Player?.AmOwner == true)
+            SetStatusRPC(this, false, _startPosition, _startPosition, 0f);
+
         // イベントリスナーを削除
         base.DetachToLocalPlayer();
         _wrapUpListener?.RemoveListener();
+        _wrapUpListener = null;
+        _meetingStartListener?.RemoveListener();
+        _meetingStartListener = null;
     }
 
     public override void DetachToAlls()
     {
+        RestoreFlyingStateLocally();
         base.DetachToAlls();
         _fixedUpdateListener?.RemoveListener();
+        _fixedUpdateListener = null;
     }
 
     public override void OnClick()
@@ -218,6 +234,18 @@ public class PteranodonAbility : CustomButtonBase
                 ability.Player.NetTransform.SnapTo(targetPosition);
             ability._isFlyingNow = false;
         }
+    }
+
+    private void RestoreFlyingStateLocally()
+    {
+        if (!_isFlyingNow || Player?.Player == null) return;
+
+        Player.Player.NetTransform.enabled = true;
+        Player.Player.Collider.enabled = true;
+        Player.Player.moveable = true;
+        Player.Player.transform.position = _startPosition;
+        Player.NetTransform.SnapTo(_startPosition);
+        _isFlyingNow = false;
     }
 }
 

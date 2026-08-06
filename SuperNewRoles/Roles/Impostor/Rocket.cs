@@ -162,8 +162,8 @@ public class RocketGrabAbility : TargetCustomButtonBase
             if (grabbedPlayer == null)
             {
                 // A disconnected object can disappear before its PlayerId can be read.
-                // Remove the local null entry instead of retrying an invalid RPC forever.
-                GrabbedPlayers.RemoveAll(player => player == null);
+                // Remove all state that no longer belongs to a remaining grabbed player.
+                RemoveNullGrabbedPlayersLocally();
                 continue;
             }
 
@@ -187,6 +187,21 @@ public class RocketGrabAbility : TargetCustomButtonBase
                 grabbedPlayer.transform.position = Player.transform.position;
             }
         }
+    }
+
+    private void RemoveNullGrabbedPlayersLocally()
+    {
+        if (GrabbedPlayers.RemoveAll(player => player == null) == 0) return;
+
+        HashSet<byte> remainingPlayerIds = GrabbedPlayers
+            .Where(player => player != null)
+            .Select(player => player.PlayerId)
+            .ToHashSet();
+        foreach (byte playerId in _grabbedOriginalPositions.Keys.Where(id => !remainingPlayerIds.Contains(id)).ToList())
+            _grabbedOriginalPositions.Remove(playerId);
+
+        if (Player != null && Player.AmOwner && launchAbility != null)
+            launchAbility.SetActive(launchAbility.CheckIsAvailable());
     }
 
     private void OnMeetingStart(MeetingStartEventData data)

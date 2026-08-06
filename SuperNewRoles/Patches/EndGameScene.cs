@@ -46,7 +46,6 @@ public enum WinCondition
     TheThreeLittlePigsWin,
     FrankensteinWin,
     TaskerWin,
-    OrientalShamanWin,
 }
 public enum CustomGameOverReason
 {
@@ -348,10 +347,6 @@ public class EndGameManagerSetUpPatch
             case WinCondition.FrankensteinWin:
                 baseText = "Frankenstein";
                 roleColor = Frankenstein.Instance.RoleColor;
-                break;
-            case WinCondition.OrientalShamanWin:
-                baseText = "OrientalShaman";
-                roleColor = OrientalShaman.Instance.RoleColor;
                 break;
             default:
                 baseText = "Unknown";
@@ -699,20 +694,34 @@ public static class OnGameEndPatch
         List<ModifierRoleId> modifierRoleHistory = new();
         if (player.Disconnected)
         {
-            DisconnectedResultSaver.DisconnectedData data = DisconnectedResultSaver.Instance.GetDisconnectedData(player.PlayerId);
-            (tasksCompleted, tasksTotal) = data.Tasks;
-            roleId = data.RoleId;
-            modifierRoleId = data.ModifierRoleId;
-            ghostRoleId = data.GhostRoleId;
-            isImpostor = data.IsImpostor;
             status = FinalStatus.Disconnect;
-            hat2Id = data.Hat2Id;
-            visor2Id = data.Visor2Id;
-            loversHeartColor = data.LoversHeartColor;
-            roleHistory = data.RoleHistory ?? new List<RoleId> { roleId };
-            ghostRoleHistory = data.GhostRoleHistory ?? new List<GhostRoleId> { ghostRoleId };
-            modifierRoleHistory = data.ModifierRoleHistory ?? new List<ModifierRoleId> { modifierRoleId };
-            modifierMarks = data.ModifierMarks ?? new List<string>();
+            DisconnectedResultSaver.DisconnectedData data = DisconnectedResultSaver.Instance?.GetDisconnectedData(player.PlayerId);
+            if (data != null)
+            {
+                (tasksCompleted, tasksTotal) = data.Tasks;
+                roleId = data.RoleId;
+                modifierRoleId = data.ModifierRoleId;
+                ghostRoleId = data.GhostRoleId;
+                isImpostor = data.IsImpostor;
+                hat2Id = data.Hat2Id;
+                visor2Id = data.Visor2Id;
+                loversHeartColor = data.LoversHeartColor;
+                roleHistory = data.RoleHistory ?? new List<RoleId> { roleId };
+                ghostRoleHistory = data.GhostRoleHistory ?? new List<GhostRoleId> { ghostRoleId };
+                modifierRoleHistory = data.ModifierRoleHistory ?? new List<ModifierRoleId> { modifierRoleId };
+                modifierMarks = data.ModifierMarks ?? new List<string>();
+            }
+            else
+            {
+                // A disconnect can remove ExPlayerControl before the prefix captures it.
+                // Fall back to the vanilla team so the result screen remains usable.
+                isImpostor = player.Role?.IsImpostor == true;
+                roleId = isImpostor ? RoleId.Impostor : RoleId.Crewmate;
+                roleHistory = new List<RoleId> { roleId };
+                ghostRoleHistory = new List<GhostRoleId> { ghostRoleId };
+                modifierRoleHistory = new List<ModifierRoleId> { modifierRoleId };
+                Logger.Warning($"Disconnected result data was not found for player {player.PlayerId}");
+            }
         }
         else
         {

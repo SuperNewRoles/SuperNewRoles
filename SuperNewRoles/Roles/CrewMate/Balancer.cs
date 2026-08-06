@@ -344,14 +344,8 @@ class BalancerAbility : AbilityBase, IAbilityCount
 
     private bool CheckPlayerStatus()
     {
-        bool leftDead = targetPlayerLeft == null
-            || targetPlayerLeft.Data == null
-            || targetPlayerLeft.Data.IsDead
-            || targetPlayerLeft.Data.Disconnected;
-        bool rightDead = targetPlayerRight == null
-            || targetPlayerRight.Data == null
-            || targetPlayerRight.Data.IsDead
-            || targetPlayerRight.Data.Disconnected;
+        bool leftDead = IsUnavailable(targetPlayerLeft);
+        bool rightDead = IsUnavailable(targetPlayerRight);
 
         if (leftDead || rightDead)
         {
@@ -369,6 +363,14 @@ class BalancerAbility : AbilityBase, IAbilityCount
             return true;
         }
         return false;
+    }
+
+    private static bool IsUnavailable(PlayerControl player)
+    {
+        return player == null
+            || player.Data == null
+            || player.Data.IsDead
+            || player.Data.Disconnected;
     }
 
     private bool CheckAllPlayersVoted()
@@ -520,7 +522,10 @@ class BalancerAbility : AbilityBase, IAbilityCount
         {
             isDoubleExile = true;
         }
-        else if (data.Exiled == null && (data.States == null || data.States.Length == 0))
+        else if (data.Exiled == null
+            && (data.States == null || data.States.Length == 0)
+            && IsUnavailable(targetPlayerLeft)
+            && IsUnavailable(targetPlayerRight))
         {
             // CheckPlayerStatusが投票状態を空にして終了させた「追放者なし」を全クライアントで共有する
             isNoPlayerToExile = true;

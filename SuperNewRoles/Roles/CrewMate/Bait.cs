@@ -62,20 +62,26 @@ class BaitAbility : AbilityBase
 {
     //何らかの要因で能力を失う時に使うのでListenerは保持しておく
     public EventListener<MurderEventData> killedEventListener;
+    private bool _isDetached;
 
     internal static bool ShouldSkipEventProcessing()
     {
-        return ExPlayerControl.LocalPlayer == null || ExPlayerControl.LocalPlayer.IsAlive();
+        return ExPlayerControl.LocalPlayer == null
+            || ExPlayerControl.LocalPlayer.IsAlive()
+            || MeetingHud.Instance != null
+            || ExileController.Instance != null;
     }
 
     public override void AttachToLocalPlayer()
     {
+        _isDetached = false;
         //ここでEventListenerと紐付ける
         killedEventListener = MurderEvent.Instance.AddListener(OnKilled);
     }
 
     public override void DetachToLocalPlayer()
     {
+        _isDetached = true;
         base.DetachToLocalPlayer();
         if (killedEventListener != null)
         {
@@ -86,7 +92,7 @@ class BaitAbility : AbilityBase
 
     public void OnKilled(MurderEventData data)
     {
-        if (ShouldSkipEventProcessing() || data == null || data.target == null || PlayerControl.LocalPlayer == null)
+        if (_isDetached || ShouldSkipEventProcessing() || data == null || data.target == null || PlayerControl.LocalPlayer == null)
             return;
 
         if (data.target.PlayerId == PlayerControl.LocalPlayer.PlayerId)
@@ -110,7 +116,7 @@ class BaitAbility : AbilityBase
         // 最低限の遅延（キラーへの警告が見えるように）
         yield return new WaitForSeconds(0.5f);
 
-        if (ShouldSkipEventProcessing())
+        if (_isDetached || ShouldSkipEventProcessing())
             yield break;
 
         // ランダム遅延が有効な場合
@@ -129,7 +135,8 @@ class BaitAbility : AbilityBase
             yield return new WaitForSeconds(Bait.BaitReportTime);
         }
 
-        if (ShouldSkipEventProcessing()
+        if (_isDetached
+            || ShouldSkipEventProcessing()
             || data.killer?.Player == null
             || data.target == null
             || data.target.Data == null)

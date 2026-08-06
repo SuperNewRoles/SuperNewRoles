@@ -17,7 +17,7 @@ public record MatryoshkaData(bool WearReport, int WearLimit, float WearTime, flo
 public class MatryoshkaAbility : CustomButtonBase, IButtonEffect, IAbilityCount
 {
     public DeadBody currentWearingBody { get; private set; }
-    private PlayerControl targetPlayer;
+    private DeadBody targetBody;
 
     public override Sprite Sprite => AssetManager.GetAsset<Sprite>(currentWearingBody != null ? "MatryoshkaTakeOffButton.png" : "MatryoshkaPutOnButton.png");
     public override string buttonText => currentWearingBody != null ? ModTranslation.GetString("MatryoshkaTakeOffButtonName") : ModTranslation.GetString("MatryoshkaPutOnButtonName");
@@ -52,8 +52,8 @@ public class MatryoshkaAbility : CustomButtonBase, IButtonEffect, IAbilityCount
 
     public override bool CheckIsAvailable()
     {
-        targetPlayer = GetClosestDeadBody();
-        return targetPlayer != null && PlayerControl.LocalPlayer.CanMove;
+        targetBody = GetClosestDeadBody();
+        return targetBody != null && PlayerControl.LocalPlayer.CanMove;
     }
     public override bool CheckHasButton()
     {
@@ -106,7 +106,7 @@ public class MatryoshkaAbility : CustomButtonBase, IButtonEffect, IAbilityCount
     }
     public override void OnClick()
     {
-        if (targetPlayer == null) return;
+        if (targetBody == null) return;
 
         PlayerControl localPlayer = PlayerControl.LocalPlayer;
         bool isWearing = currentWearingBody != null;
@@ -119,25 +119,31 @@ public class MatryoshkaAbility : CustomButtonBase, IButtonEffect, IAbilityCount
         else
         {
             // 新しい死体を着る
-            DeadBody targetBody = GetBodyByPlayerId(targetPlayer.PlayerId);
-            if (targetBody == null) return;
+            DeadBody selectedBody = targetBody;
+            if (selectedBody == null || IsDeadBodyInUse(selectedBody)) return;
 
-            RpcSetMatryoshkaDeadBody(this, targetPlayer, true, Vector3.zero);
-            Counter++;
-            this.UseAbilityCount();
+            ExPlayerControl target = ExPlayerControl.ById(selectedBody.ParentId);
+            if (target == null) return;
+
+            RpcSetMatryoshkaDeadBody(this, target, true, selectedBody.transform.position);
+            if (currentWearingBody != null)
+            {
+                Counter++;
+                this.UseAbilityCount();
+            }
         }
     }
 
-    private PlayerControl GetClosestDeadBody()
+    private DeadBody GetClosestDeadBody()
     {
         var localPlayer = PlayerControl.LocalPlayer;
         float closestDistance = float.MaxValue;
-        PlayerControl result = null;
+        DeadBody result = null;
 
         // 既に着用中の場合は、その死体を返す
         if (currentWearingBody != null)
         {
-            return ExPlayerControl.ById(currentWearingBody.ParentId);
+            return currentWearingBody;
         }
 
         // 死体を探す
@@ -145,33 +151,24 @@ public class MatryoshkaAbility : CustomButtonBase, IButtonEffect, IAbilityCount
         foreach (DeadBody body in deadBodies)
         {
             // 既に誰かが着用している死体はスキップ
-            if (ExPlayerControl.ExPlayerControls.Any(x =>
-                (x.Role == RoleId.Matryoshka && x.GetAbility<MatryoshkaAbility>()?.currentWearingBody == body) ||
-                (x.Role == RoleId.Owl && x.GetAbility<OwlDeadBodyTransportAbility>()?.DeadBodyInTransport == body)
-            )) continue;
+            if (IsDeadBodyInUse(body)) continue;
 
             float distance = Vector2.Distance(localPlayer.transform.position, body.transform.position);
             if (distance <= 2f && distance < closestDistance)
             {
                 closestDistance = distance;
-                result = ExPlayerControl.ById(body.ParentId);
+                result = body;
             }
         }
 
         return result;
     }
 
-    private DeadBody GetBodyByPlayerId(byte playerId)
+    private static bool IsDeadBodyInUse(DeadBody body)
     {
-        DeadBody[] deadBodies = UnityEngine.Object.FindObjectsOfType<DeadBody>();
-        foreach (DeadBody body in deadBodies)
-        {
-            if (body.ParentId == playerId)
-            {
-                return body;
-            }
-        }
-        return null;
+        return ExPlayerControl.ExPlayerControls.Any(x =>
+            (x.Role == RoleId.Matryoshka && x.GetAbility<MatryoshkaAbility>()?.currentWearingBody == body) ||
+            (x.Role == RoleId.Owl && x.GetAbility<OwlDeadBodyTransportAbility>()?.DeadBodyInTransport == body));
     }
 
     private static void UnlockMatryoshka(MatryoshkaAbility source, Vector3 position)
@@ -212,16 +209,10 @@ public class MatryoshkaAbility : CustomButtonBase, IButtonEffect, IAbilityCount
             // 新しい死体を着用
             if (target == null) return;
 
-            DeadBody targetBody = null;
-            DeadBody[] deadBodies = UnityEngine.Object.FindObjectsOfType<DeadBody>();
-            foreach (DeadBody body in deadBodies)
-            {
-                if (body.ParentId == target.PlayerId)
-                {
-                    targetBody = body;
-                    break;
-                }
-            }
+            DeadBody targetBody = UnityEngine.Object.FindObjectsOfType<DeadBody>()
+                .Where(body => body.ParentId == target.PlayerId && !IsDeadBodyInUse(body))
+                .OrderBy(body => Vector2.Distance(position, body.transform.position))
+                .FirstOrDefault();
 
             if (targetBody == null) return;
 
