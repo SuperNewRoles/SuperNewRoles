@@ -122,7 +122,8 @@ public class NecromancerRevenantArrowAbility : AbilityBase
             var data = _arrows[i];
             if (data.player?.GhostRole != GhostRoleId.Revenant)
             {
-                GameObject.Destroy(data.arrow.arrow);
+                if (data.arrow?.arrow != null)
+                    GameObject.Destroy(data.arrow.arrow);
                 _arrows.RemoveAt(i);
             }
         }
@@ -130,8 +131,17 @@ public class NecromancerRevenantArrowAbility : AbilityBase
 
     public override void DetachToLocalPlayer()
     {
+        foreach (var data in _arrows)
+        {
+            if (data.arrow?.arrow != null)
+                GameObject.Destroy(data.arrow.arrow);
+        }
+        _arrows.Clear();
+        _meetingCloseListener?.RemoveListener();
+        _meetingCloseListener = null;
         base.DetachToLocalPlayer();
         _fixedUpdateListener?.RemoveListener();
+        _fixedUpdateListener = null;
     }
 
     public void OnFixedUpdate()

@@ -16,8 +16,8 @@ class Workperson : RoleBase<Workperson>
     public override RoleId Role { get; } = RoleId.Workperson;
     public override Color32 RoleColor { get; } = new(210, 180, 140, byte.MaxValue);
     public override List<Func<AbilityBase>> Abilities { get; } = [() => new CustomTaskAbility(
-        () => (true, false, WorkpersonTaskData.Total),
-        WorkpersonTaskData
+        () => (true, false, WorkpersonUseCustomTaskSetting ? WorkpersonTaskData.Total : null),
+        WorkpersonUseCustomTaskSetting ? WorkpersonTaskData : null
     ),
     () => new WorkpersonAbility(WorkpersonNeedAliveToWin),
     () => new CustomVentAbility(

@@ -120,8 +120,9 @@ public class MatryoshkaAbility : CustomButtonBase, IButtonEffect, IAbilityCount
         {
             // 新しい死体を着る
             DeadBody targetBody = GetBodyByPlayerId(targetPlayer.PlayerId);
-            if (targetBody != null)
-                RpcSetMatryoshkaDeadBody(this, targetPlayer, true, Vector3.zero);
+            if (targetBody == null) return;
+
+            RpcSetMatryoshkaDeadBody(this, targetPlayer, true, Vector3.zero);
             Counter++;
             this.UseAbilityCount();
         }

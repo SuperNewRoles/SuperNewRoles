@@ -6,6 +6,7 @@ using SuperNewRoles.Modules;
 using SuperNewRoles.Roles.Impostor;
 using SuperNewRoles.Modules.Events.Bases;
 using SuperNewRoles.Events;
+using SuperNewRoles.Events.PCEvents;
 using SuperNewRoles.Roles.Ability.CustomButton;
 using SuperNewRoles.CustomCosmetics.CosmeticsPlayer;
 using SuperNewRoles.Extensions;
@@ -24,6 +25,7 @@ public class CamouflagerAbility : AbilityBase
     public bool _isCamouflaged { get; private set; }
 
     private EventListener<MeetingStartEventData> _meetingStartListener;
+    private EventListener<DieEventData> _dieListener;
 
     public CamouflagerAbility(CamouflagerAbilityOption option)
     {
@@ -39,6 +41,7 @@ public class CamouflagerAbility : AbilityBase
 
         _camouflageButtonAbility = new CamouflageButtonAbility(CoolTime, DurationTime, this);
         _meetingStartListener = MeetingStartEvent.Instance.AddListener(OnMeetingStart);
+        _dieListener = DieEvent.Instance.AddListener(OnDie);
         Player.AttachAbility(_camouflageButtonAbility, new AbilityParentAbility(this));
     }
 
@@ -47,11 +50,20 @@ public class CamouflagerAbility : AbilityBase
         EndCamouflage();
     }
 
+    private void OnDie(DieEventData data)
+    {
+        if (data.player != Player) return;
+
+        EndCamouflage();
+        _camouflageButtonAbility?.ResetTimer();
+    }
+
     public override void DetachToAlls()
     {
         EndCamouflage();
         base.DetachToAlls();
         _meetingStartListener?.RemoveListener();
+        _dieListener?.RemoveListener();
     }
 
     [CustomRPC]
@@ -71,7 +83,19 @@ public class CamouflagerAbility : AbilityBase
         if (_isCamouflaged) return;
 
         _isCamouflaged = true;
-        _originalOutfits.Clear();
+        var activeCamouflager = ExPlayerControl.ExPlayerControls
+            .Select(x => x.TryGetAbility<CamouflagerAbility>(out var ability) ? ability : null)
+            .FirstOrDefault(ability => ability != null && ability != this && ability._isCamouflaged);
+
+        if (activeCamouflager != null)
+        {
+            // 既に別のCamouflagerが有効なら、迷彩済みの見た目を再保存せず、
+            // 先行効果が保持している原装スナップショットを引き継ぐ。
+            _originalOutfits = activeCamouflager._originalOutfits.ToDictionary(x => x.Key, x => x.Value);
+        }
+        else
+        {
+            _originalOutfits.Clear();
 
         // 全プレイヤーの元の外見を保存
         foreach (var player in PlayerControl.AllPlayerControls)
@@ -91,6 +115,7 @@ public class CamouflagerAbility : AbilityBase
                 Visor2Id = layer.visor2?.DefaultVisor?.ProdId ?? "ERROR",
                 PetId = player.Data.DefaultOutfit.PetId
             };
+        }
         }
 
         // カモフラージュを適用

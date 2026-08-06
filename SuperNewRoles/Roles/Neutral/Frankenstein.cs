@@ -70,8 +70,10 @@ public sealed class FrankensteinAbility : AbilityBase
     private ImpostorVisionAbility _impostorVisionAbility;
 
     private EventListener<TryKillEventData> _tryKillListener;
+    private EventListener<MurderEventData> _murderListener;
     private EventListener<MeetingStartEventData> _meetingStartListener;
     private EventListener<DieEventData> _dieListener;
+    private byte _pendingKillTargetId = byte.MaxValue;
 
     private DeadBody _monsterBody;
     private byte _monsterBodyPlayerId = byte.MaxValue;
@@ -99,10 +101,11 @@ public sealed class FrankensteinAbility : AbilityBase
                 if (!IsMonster) return true;
                 if (target == null) return true;
 
+                byte targetId = target.PlayerId;
+                _pendingKillTargetId = targetId;
                 ExPlayerControl.LocalPlayer.RpcCustomDeath(target, CustomDeathType.Kill);
-
-                Vector2 dropPos = Player.Player.GetTruePosition();
-                RpcEndMonster(this, dropPos, decrementKill: true);
+                if (_pendingKillTargetId == targetId)
+                    _pendingKillTargetId = byte.MaxValue;
                 return true;
             }
         );
@@ -115,6 +118,7 @@ public sealed class FrankensteinAbility : AbilityBase
         Player.AddAbility(_impostorVisionAbility, new AbilityParentAbility(this));
 
         _tryKillListener = TryKillEvent.Instance.AddListener(OnTryKill);
+        _murderListener = MurderEvent.Instance.AddListener(OnMurder);
         _meetingStartListener = MeetingStartEvent.Instance.AddListener(OnMeetingStart);
         _dieListener = DieEvent.Instance.AddListener(OnDie);
     }
@@ -127,6 +131,8 @@ public sealed class FrankensteinAbility : AbilityBase
         }
 
         _tryKillListener?.RemoveListener();
+        _murderListener?.RemoveListener();
+        _pendingKillTargetId = byte.MaxValue;
         _meetingStartListener?.RemoveListener();
         _dieListener?.RemoveListener();
 
@@ -151,6 +157,18 @@ public sealed class FrankensteinAbility : AbilityBase
             Vector2 dropPos = Player.Player.GetTruePosition();
             RpcEndMonster(this, dropPos, decrementKill: false);
         }
+    }
+
+    private void OnMurder(MurderEventData data)
+    {
+        if (!Player.AmOwner || _pendingKillTargetId == byte.MaxValue)
+            return;
+        if (data.killer?.PlayerId != Player.PlayerId || data.target?.PlayerId != _pendingKillTargetId)
+            return;
+
+        _pendingKillTargetId = byte.MaxValue;
+        if (data.resultFlags.HasFlag(MurderResultFlags.Succeeded) && IsMonster)
+            RpcEndMonster(this, Player.Player.GetTruePosition(), decrementKill: true);
     }
 
     private void OnMeetingStart(MeetingStartEventData data)

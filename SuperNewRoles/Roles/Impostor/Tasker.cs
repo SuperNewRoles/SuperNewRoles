@@ -79,7 +79,7 @@ public class TaskerAbility : AbilityBase
         if (data.player == null || data.player.PlayerId != Player.PlayerId) return;
         if (Player.IsDead() || !Player.IsTaskComplete()) return;
 
-        EndGamer.EndGameImpostorWin();
+        CheckGameEndPatch.EndGame(VictoryType.TaskerTask);
     }
 }
 

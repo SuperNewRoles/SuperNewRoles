@@ -116,12 +116,12 @@ public class ChiefAbility : AbilityBase
 
         _nameTextUpdateEventListener = NameTextUpdateEvent.Instance.AddListener(OnNameTextUpdate);
     }
-    public override void AttachToLocalPlayer()
+
+    public override void DetachToAlls()
     {
-    }
-    public override void DetachToLocalPlayer()
-    {
-        NameTextUpdateEvent.Instance.RemoveListener(_nameTextUpdateEventListener);
+        base.DetachToAlls();
+        _nameTextUpdateEventListener?.RemoveListener();
+        _nameTextUpdateEventListener = null;
     }
 
     // 対象を任命可能かどうかの判定

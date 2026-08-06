@@ -76,8 +76,9 @@ public class OverKillerAbility : AbilityBase
         if (data.killer?.PlayerId != Player.PlayerId) return;
         if (data.resultFlags.HasFlag(MurderResultFlags.FailedError) || data.resultFlags.HasFlag(MurderResultFlags.FailedProtected)) return;
 
-        // 複数の死体を生成する
-        CreateMultipleBodies(data.target, OverKiller.OverKillerKillCount);
+        // 通常のキルで生成される死体を含めて設定値の数になるよう、追加分だけ生成する。
+        int additionalBodyCount = Math.Max(0, OverKiller.OverKillerKillCount - 1);
+        CreateMultipleBodies(data.target, additionalBodyCount);
     }
 
     private void CreateMultipleBodies(ExPlayerControl target, int bodyCount)

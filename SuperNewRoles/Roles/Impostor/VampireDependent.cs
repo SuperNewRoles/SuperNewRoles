@@ -129,7 +129,7 @@ public class VampireDependentAbility : AbilityBase
 
     private void OnMurder(MurderEventData data)
     {
-        if (data.target == vampire?.Player && Player.IsAlive())
+        if (data.target == vampire?.Player && Player.IsAlive() && data.resultFlags.HasFlag(MurderResultFlags.Succeeded))
             ExPlayerControl.LocalPlayer.RpcCustomDeath(CustomDeathType.VampireWithDead);
     }
 

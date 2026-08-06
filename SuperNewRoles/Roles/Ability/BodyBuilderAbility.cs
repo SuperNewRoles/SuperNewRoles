@@ -51,7 +51,7 @@ public class BodyBuilderAbility : CustomButtonBase
         base.AttachToAlls();
         _murderEvent = MurderEvent.Instance.AddListener(x =>
         {
-            if (x.target == Player)
+            if (x.target == Player && x.resultFlags.HasFlag(MurderResultFlags.Succeeded))
                 CancelPosing();
         });
         _meetingStartEvent = MeetingStartEvent.Instance.AddListener(x => CancelPosing());

@@ -82,16 +82,17 @@ public class PteranodonAbility : CustomButtonBase
     private void OnWrapUp(WrapUpEventData data)
     {
         // 会議時には飛行状態を解除
-        _isFlyingNow = false;
-        if (PlayerControl.LocalPlayer != null)
-        {
-            PlayerControl.LocalPlayer.Collider.enabled = true;
-        }
+        if (!_isFlyingNow || Player?.Player == null) return;
+
+        // 通常の飛行終了と同じ終了RPCを送信し、ローカルと他クライアントの状態を復元する
+        Vector3 position = Player.Player.transform.position;
+        SetStatusRPC(this, false, position, _startPosition, 0f);
     }
 
     public override void DetachToLocalPlayer()
     {
         // イベントリスナーを削除
+        base.DetachToLocalPlayer();
         _wrapUpListener?.RemoveListener();
     }
 
@@ -173,7 +174,6 @@ public class PteranodonAbility : CustomButtonBase
             if (Player.AmOwner)
             {
                 SetStatusRPC(this, false, position, _startPosition, 0f);
-                Player.NetTransform.RpcSnapTo(position);
             }
             else
                 Player.NetTransform.SnapTo(position);
@@ -211,6 +211,11 @@ public class PteranodonAbility : CustomButtonBase
             ability.Player.Player.NetTransform.enabled = true;
             ability.Player.Player.Collider.enabled = true;
             ability.Player.Player.moveable = true;
+            ability.Player.Player.transform.position = targetPosition;
+            if (ability.Player.AmOwner)
+                ability.Player.NetTransform.RpcSnapTo(targetPosition);
+            else
+                ability.Player.NetTransform.SnapTo(targetPosition);
             ability._isFlyingNow = false;
         }
     }

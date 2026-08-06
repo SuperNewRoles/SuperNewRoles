@@ -116,7 +116,14 @@ class RevenantAbility : TargetCustomButtonBase
         _emergencyCheckListener?.RemoveListener();
         _hudManagerUpdateListener?.RemoveListener();
         HauntedPlayers.Clear();
+        AmHaunted = false;
         _wrapUpListener?.RemoveListener();
+        foreach (var hitodama in NecromancerHitodamas.Values)
+        {
+            if (hitodama != null)
+                GameObject.Destroy(hitodama);
+        }
+        NecromancerHitodamas.Clear();
     }
     public override void AttachToLocalPlayer()
     {

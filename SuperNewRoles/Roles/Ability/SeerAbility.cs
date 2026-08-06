@@ -24,7 +24,7 @@ public record SeerData
 /// </summary>
 public class SeerAbility : AbilityBase
 {
-    private List<(Vector3, int)> deadBodyPositions = new();
+    private readonly List<(Vector3 position, int colorId)> pendingSoulPositions = new();
     private EventListener<DieEventData> dieEventListener;
     private EventListener<WrapUpEventData> wrapUpEventListener;
     public SeerData Data;
@@ -48,7 +48,7 @@ public class SeerAbility : AbilityBase
 
     private void OnPlayerDead(DieEventData data)
     {
-        if (ExileController.Instance != null) return;
+        bool isExile = ExileController.Instance != null;
         // モードが「霊魂が見える」または「両方」の場合
         var mode = Data.Mode;
         if (mode is SeerMode.Both or SeerMode.SoulOnly)
@@ -65,11 +65,15 @@ public class SeerAbility : AbilityBase
                 DeadBodyColorMode.Adaptive => data.player.Data.DefaultOutfit.ColorId, // イビルシーアで設定が有効な場合は、プレイヤーの色を使用
                 _ => DefaultSoulColorId, // その他
             };
-            deadBodyPositions.Add((data.player.transform.position, colorId));
 
             // 霊魂を即表示（会議を待たずに表示）
-            CreateSoul(data.player.transform.position, colorId);
+            if (isExile)
+                pendingSoulPositions.Add((data.player.transform.position, colorId));
+            else
+                CreateSoul(data.player.transform.position, colorId);
         }
+
+        if (isExile) return;
 
         // モードが「死の点滅が見える」または「両方」の場合
         if (mode is SeerMode.Both or SeerMode.FlashOnly)
@@ -87,19 +91,16 @@ public class SeerAbility : AbilityBase
 
     private void OnWrapUp(WrapUpEventData data)
     {
-        // モードが「霊魂が見える」または「両方」の場合のみ処理
-        var mode = Data.Mode;
-        if (mode != SeerMode.Both && mode != SeerMode.SoulOnly) return;
+        // WrapUpリスナー内で追加の死亡処理が行われる場合があるため、全リスナーの完了後に表示する
+        new LateTask(FlushPendingSoulPositions, 0f, "SeerFlushPendingSouls", log: false);
+    }
 
-        // 霊魂を表示
-        foreach ((Vector3, int) posAndColor in deadBodyPositions)
-        {
-            (Vector3 pos, int soulColorId) = posAndColor;
-            CreateSoul(pos, soulColorId);
-        }
+    private void FlushPendingSoulPositions()
+    {
+        foreach (var (position, colorId) in pendingSoulPositions)
+            CreateSoul(position, colorId);
 
-        // 霊魂の位置をリセット
-        deadBodyPositions = new();
+        pendingSoulPositions.Clear();
     }
 
     // 霊魂を作成する共通メソッド
@@ -201,7 +202,10 @@ public class SeerAbility : AbilityBase
 
     public override void DetachToLocalPlayer()
     {
-        DieEvent.Instance.RemoveListener(dieEventListener);
-        WrapUpEvent.Instance.RemoveListener(wrapUpEventListener);
+        if (dieEventListener != null)
+            DieEvent.Instance.RemoveListener(dieEventListener);
+        if (wrapUpEventListener != null)
+            WrapUpEvent.Instance.RemoveListener(wrapUpEventListener);
+        pendingSoulPositions.Clear();
     }
 }

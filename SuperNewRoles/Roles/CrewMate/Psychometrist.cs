@@ -496,6 +496,7 @@ internal static class PsychometristSharedState
     {
         if (data.killer == null || data.target == null) return;
         if (!Psychometrist.PsychometristIsCheckFootprints) return;
+        if (!data.resultFlags.HasFlag(MurderResultFlags.Succeeded)) return;
 
         var key = (killerId: data.killer.PlayerId, victimId: data.target.PlayerId);
         // 足跡追跡データの初期化

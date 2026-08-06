@@ -122,7 +122,7 @@ public class VentTrapperAbility : CustomButtonBase, IButtonEffect, IAbilityCount
 
     private void OnFixedUpdate(PlayerPhysicsFixedUpdateEventData data)
     {
-        if (!Player.AmOwner && !data.Instance.AmOwner) return;
+        if (!Player.AmOwner || !data.Instance.AmOwner) return;
         if (isEffectActive)
         {
             Player.Player.transform.position = _lastPosition;

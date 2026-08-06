@@ -195,8 +195,10 @@ public static class EndGamer
             if (player.TryGetAbility<OrientalShamanAbility>(out var orientalShamanAbility))
             {
                 var winnersList = new HashSet<ExPlayerControl> { player };
-                if (orientalShamanAbility._servant?.Player != null)
+                if (orientalShamanAbility._servant?.Player != null
+                    && orientalShamanAbility._servant.Player.Role == RoleId.ShermansServant)
                     winnersList.Add(orientalShamanAbility._servant.Player);
+                reason = (GameOverReason)CustomGameOverReason.OrientalShamanWin;
                 winners = winnersList;
                 color = OrientalShaman.Instance.RoleColor;
                 upperText = "OrientalShaman";
@@ -325,7 +327,7 @@ public static class EndGamer
             if (player.Role == RoleId.PartTimer)
             {
                 PartTimerAbility partTimerAbility = player.GetAbility<PartTimerAbility>();
-                if (partTimerAbility != null && partTimerAbility._employer != null && (winners.Contains(partTimerAbility._employer) || winners.Contains(partTimerAbility._employer)))
+                if (partTimerAbility != null && partTimerAbility._employer != null && partTimerAbility._employer.IsAlive() && winners.Contains(partTimerAbility._employer))
                 {
                     // 生存勝利設定がONで死んでいる場合は勝利しない
                     if (partTimerAbility._data.needAliveToWin && player.IsDead()) continue;

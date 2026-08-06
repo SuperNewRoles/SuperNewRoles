@@ -126,7 +126,7 @@ public class OrientalShamanAbility : AbilityBase
         Logger.Info($"OrientalShaman created servant: {target.Data.PlayerName}");
     }
 
-    private void ClearServant()
+    internal void ClearServant()
     {
         _servant?.ClearParent(this);
         _servant = null;

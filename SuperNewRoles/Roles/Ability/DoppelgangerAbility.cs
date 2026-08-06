@@ -31,10 +31,13 @@ public class DoppelgangerAbility : AbilityBase
 
     public void OnMurderPlayer(MurderEventData data)
     {
-        if (data.killer != Player) return;
+        if (data == null || data.killer != Player) return;
+        if (data.target.IsAlive()) return;
         if (_shapeshiftButtonAbility == null) return;
 
-        PlayerControl currentTarget = _shapeshiftButtonAbility.ShapeTarget;
+        PlayerControl currentTarget = _shapeshiftButtonAbility.isEffectActive
+            ? _shapeshiftButtonAbility.ShapeTarget
+            : null;
 
         float timer = data.target == currentTarget ?
                          SucCool :

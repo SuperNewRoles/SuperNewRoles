@@ -95,6 +95,8 @@ class BalancerAbility : AbilityBase, IAbilityCount
     private PlayerControl targetPlayerRight;
     private bool isDoubleExile = false;
     public bool isOnePlayerDead = false;
+    private bool isNoPlayerToExile = false;
+    private bool isPlayerStatusHandled = false;
 
     public static BalancerAbility BalancingAbility { get; private set; }
     public static MeetingHud currentMeetingHud;
@@ -154,6 +156,9 @@ class BalancerAbility : AbilityBase, IAbilityCount
         targetPlayerLeft = null;
         targetPlayerRight = null;
         isAbilityUsed = false;
+        isOnePlayerDead = false;
+        isNoPlayerToExile = false;
+        isPlayerStatusHandled = false;
         BalancingAbility = null;
         currentMeetingHud = null;
 
@@ -331,6 +336,7 @@ class BalancerAbility : AbilityBase, IAbilityCount
 
     private bool IsValidMeetingState()
     {
+        if (MeetingHud.Instance == null) return false;
         return MeetingHud.Instance.state is MeetingHud.VoteStates.Discussion
             or MeetingHud.VoteStates.Voted
             or MeetingHud.VoteStates.NotVoted;
@@ -338,15 +344,27 @@ class BalancerAbility : AbilityBase, IAbilityCount
 
     private bool CheckPlayerStatus()
     {
-        if (targetPlayerLeft?.Data?.IsDead == true || targetPlayerRight?.Data?.IsDead == true ||
-            targetPlayerLeft == null || targetPlayerRight == null)
-        {
-            PlayerControl target = targetPlayerLeft?.Data?.IsDead != true ? targetPlayerLeft : targetPlayerRight;
-            isOnePlayerDead = true;
+        bool leftDead = targetPlayerLeft == null
+            || targetPlayerLeft.Data == null
+            || targetPlayerLeft.Data.IsDead
+            || targetPlayerLeft.Data.Disconnected;
+        bool rightDead = targetPlayerRight == null
+            || targetPlayerRight.Data == null
+            || targetPlayerRight.Data.IsDead
+            || targetPlayerRight.Data.Disconnected;
 
-            if (AmongUsClient.Instance.AmHost && target != null)
+        if (leftDead || rightDead)
+        {
+            if (isPlayerStatusHandled) return true;
+
+            isPlayerStatusHandled = true;
+            PlayerControl target = !leftDead ? targetPlayerLeft : !rightDead ? targetPlayerRight : null;
+            isNoPlayerToExile = target == null;
+            isOnePlayerDead = !isNoPlayerToExile;
+
+            if (AmongUsClient.Instance.AmHost && MeetingHud.Instance != null)
             {
-                MeetingHud.Instance.RpcVotingComplete(new List<MeetingHud.VoterState>().ToArray(), target.Data, false);
+                MeetingHud.Instance.RpcVotingComplete(new List<MeetingHud.VoterState>().ToArray(), target?.Data, false);
             }
             return true;
         }
@@ -476,7 +494,7 @@ class BalancerAbility : AbilityBase, IAbilityCount
 
     public void OnWrapUp(WrapUpEventData data)
     {
-        if (BalancingAbility != null &&
+        if (BalancingAbility == this &&
             BalancingAbility.isDoubleExile &&
             ExileController.Instance != additionalExileController &&
             additionalExileController != null)
@@ -488,12 +506,26 @@ class BalancerAbility : AbilityBase, IAbilityCount
             GameObject.Destroy(additionalExileController.gameObject);
             additionalExileController = null;
         }
+
+        if (BalancingAbility == this)
+        {
+            ClearAndReload();
+        }
     }
     public void OnVotingComplete(VotingCompleteEventData data)
     {
-        if (data.IsTie && isAbilityUsed)
+        if (!isAbilityUsed) return;
+
+        if (data.IsTie)
         {
             isDoubleExile = true;
+        }
+        else if (data.Exiled == null && (data.States == null || data.States.Length == 0))
+        {
+            // CheckPlayerStatusが投票状態を空にして終了させた「追放者なし」を全クライアントで共有する
+            isNoPlayerToExile = true;
+            isOnePlayerDead = false;
+            isPlayerStatusHandled = true;
         }
     }
     public void OnMeetingStart()
@@ -540,6 +572,7 @@ class BalancerAbility : AbilityBase, IAbilityCount
         isAbilityUsed = true;
 
         // 会議時間を変更
+        // 6.5秒は演出の分
         MeetingHud.Instance.discussionTimer = GameOptionsManager.Instance.CurrentGameOptions.GetInt(Int32OptionNames.VotingTime) - Balancer.BalancerVoteTime - 6.5f;
 
         // 天秤会議の開始処理
@@ -979,6 +1012,10 @@ class BalancerAbility : AbilityBase, IAbilityCount
                 if (BalancingAbility.isDoubleExile)
                 {
                     __instance.completeString = ModTranslation.GetString("BalancerDoubleExileText");
+                }
+                else if (BalancingAbility.isNoPlayerToExile)
+                {
+                    __instance.completeString = ModTranslation.GetString("BalancerNoPlayerText");
                 }
                 else if (BalancingAbility.isOnePlayerDead)
                 {

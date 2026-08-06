@@ -77,7 +77,9 @@ public class FalseChargesAbility : TargetCustomButtonBase
     public override void DetachToLocalPlayer()
     {
         // イベントリスナーを削除
+        base.DetachToLocalPlayer();
         _wrapUpListener?.RemoveListener();
+        _wrapUpListener = null;
     }
 
     public override Color32 OutlineColor => FalseCharges.Instance.RoleColor;

@@ -63,6 +63,11 @@ class BaitAbility : AbilityBase
     //何らかの要因で能力を失う時に使うのでListenerは保持しておく
     public EventListener<MurderEventData> killedEventListener;
 
+    internal static bool ShouldSkipEventProcessing()
+    {
+        return ExPlayerControl.LocalPlayer == null || ExPlayerControl.LocalPlayer.IsAlive();
+    }
+
     public override void AttachToLocalPlayer()
     {
         //ここでEventListenerと紐付ける
@@ -81,12 +86,15 @@ class BaitAbility : AbilityBase
 
     public void OnKilled(MurderEventData data)
     {
-        if (data.target == PlayerControl.LocalPlayer)
+        if (ShouldSkipEventProcessing() || data == null || data.target == null || PlayerControl.LocalPlayer == null)
+            return;
+
+        if (data.target.PlayerId == PlayerControl.LocalPlayer.PlayerId)
         {
             // キラーに警告する（画面を青く光らせる）
-            if (Bait.BaitWarnKiller)
+            if (Bait.BaitWarnKiller && data.killer?.Player != null)
             {
-                FlashHandler.RpcShowFlash(data.killer, Color.cyan, 0.2f);
+                FlashHandler.RpcShowFlash(data.killer.Player, Color.cyan, 0.2f);
             }
 
             //Reportの遅延呼び出しを行う(多分Coroutineがよいのでは？)
@@ -96,19 +104,23 @@ class BaitAbility : AbilityBase
 
     IEnumerator DelayedReport(MurderEventData data)
     {
+        if (data == null)
+            yield break;
+
         // 最低限の遅延（キラーへの警告が見えるように）
         yield return new WaitForSeconds(0.5f);
 
-        float delay = 0f;
+        if (ShouldSkipEventProcessing())
+            yield break;
 
         // ランダム遅延が有効な場合
         if (Bait.BaitRandomDelay)
         {
-            int minDelay = Math.Max(0, (int)Bait.BaitReportTime - Bait.BaitDelayVariation);
-            int maxDelay = (int)Bait.BaitReportTime + Bait.BaitDelayVariation;
-            delay = UnityEngine.Random.Range(minDelay, maxDelay + 1);
+            float minDelay = Mathf.Max(0f, Bait.BaitReportTime - Bait.BaitDelayVariation);
+            float maxDelay = Bait.BaitReportTime + Bait.BaitDelayVariation;
+            float delay = UnityEngine.Random.Range(minDelay, maxDelay);
 
-            if (delay > 0)
+            if (delay > 0f)
                 yield return new WaitForSeconds(delay);
         }
         // 固定遅延の場合
@@ -117,142 +129,12 @@ class BaitAbility : AbilityBase
             yield return new WaitForSeconds(Bait.BaitReportTime);
         }
 
+        if (ShouldSkipEventProcessing()
+            || data.killer?.Player == null
+            || data.target == null
+            || data.target.Data == null)
+            yield break;
+
         data.killer.RpcCustomReportDeadBody(data.target.Data);
-    }
-}
-
-/// <summary>
-/// ベイトが自動通報されるとトロフィーを獲得するクラス
-/// </summary>
-public class BaitAutoReportTrophy : SuperTrophyAbility<BaitAutoReportTrophy>
-{
-    public override TrophiesEnum TrophyId => TrophiesEnum.BaitAutoReport;
-    public override TrophyRank TrophyRank => TrophyRank.Bronze;
-
-    public override Type[] TargetAbilities => [typeof(BaitAbility)];
-    private bool _killedMe = false;
-    private EventListener<MurderEventData> _onMurderEvent;
-    private EventListener<CalledMeetingEventData> _onCalledMeetingEvent;
-
-    public override void OnRegister()
-    {
-        _onMurderEvent = MurderEvent.Instance.AddListener(HandleMurderEvent);
-        _onCalledMeetingEvent = CalledMeetingEvent.Instance.AddListener(HandleCalledMeetingEvent);
-        _killedMe = false;
-        Logger.Info("BaitAutoReportTrophy OnRegister");
-    }
-
-    private void HandleMurderEvent(MurderEventData data)
-    {
-        Logger.Info("BaitAutoReportTrophy HandleMurderEvent: " + data.target.Player.name + " " + data.killer.Player.name);
-        if (data.target != PlayerControl.LocalPlayer)
-        {
-            return;
-        }
-        _killedMe = true;
-    }
-
-    private void HandleCalledMeetingEvent(CalledMeetingEventData data)
-    {
-        Logger.Info("BaitAutoReportTrophy HandleCalledMeetingEvent: " + data.target.name + " " + data.reporter.name + " " + _killedMe);
-        if (data.target == null || data.target.PlayerId != PlayerControl.LocalPlayer.PlayerId)
-            return;
-        if (_killedMe)
-            Complete();
-    }
-    public override void OnDetached()
-    {
-        if (_onMurderEvent != null)
-        {
-            MurderEvent.Instance.RemoveListener(_onMurderEvent);
-            _onMurderEvent = null;
-        }
-        if (_onCalledMeetingEvent != null)
-        {
-            CalledMeetingEvent.Instance.RemoveListener(_onCalledMeetingEvent);
-            _onCalledMeetingEvent = null;
-        }
-    }
-}
-
-/// <summary>
-/// ベイトが自動通報した後、キラーが2ターン以内に追放されるとトロフィーを獲得するクラス
-/// </summary>
-public class BaitKillerExiledTrophy : SuperTrophyAbility<BaitKillerExiledTrophy>
-{
-    public override TrophiesEnum TrophyId => TrophiesEnum.BaitKillerExiled;
-    public override TrophyRank TrophyRank => TrophyRank.Silver;
-
-    public override Type[] TargetAbilities => [typeof(BaitAbility)];
-
-    private BaitAbility _baitAbility;
-    private EventListener<MurderEventData> _onMurderEvent;
-    private EventListener<WrapUpEventData> _onWrapUpEvent;
-
-    private byte _killerPlayerId;
-    private int _meetingsCount;
-    private const int RequiredMeetings = 2; // 2ターン以内
-
-    public override void OnRegister()
-    {
-        _baitAbility = ExPlayerControl.LocalPlayer.PlayerAbilities
-            .FirstOrDefault(x => x is BaitAbility) as BaitAbility;
-        _onMurderEvent = MurderEvent.Instance.AddListener(HandleMurderEvent);
-        _onWrapUpEvent = WrapUpEvent.Instance.AddListener(HandleWrapUpEvent);
-        _killerPlayerId = byte.MaxValue;
-        _meetingsCount = 0;
-    }
-
-    private void HandleMurderEvent(MurderEventData data)
-    {
-        if (data.target != PlayerControl.LocalPlayer)
-        {
-            return;
-        }
-
-        // ベイトがキルされたとき、キラーのIDを記録
-        _killerPlayerId = data.killer.PlayerId;
-        _meetingsCount = 0;
-    }
-
-    private void HandleWrapUpEvent(WrapUpEventData data)
-    {
-        // キラーが設定されていない場合は無視
-        if (_killerPlayerId == byte.MaxValue)
-        {
-            return;
-        }
-
-        _meetingsCount++;
-
-        // 会議の回数が指定された回数以内で、追放されたプレイヤーがキラーである場合
-        if (_meetingsCount <= RequiredMeetings && data.exiled?.Object?.PlayerId == _killerPlayerId)
-        {
-            Complete();
-            // 達成したのでリセット
-            _killerPlayerId = byte.MaxValue;
-            _meetingsCount = 0;
-        }
-        // 指定された会議回数を超えた場合はリセット
-        else if (_meetingsCount > RequiredMeetings)
-        {
-            _killerPlayerId = byte.MaxValue;
-            _meetingsCount = 0;
-        }
-    }
-
-    public override void OnDetached()
-    {
-        if (_onMurderEvent != null)
-        {
-            MurderEvent.Instance.RemoveListener(_onMurderEvent);
-            _onMurderEvent = null;
-        }
-
-        if (_onWrapUpEvent != null)
-        {
-            WrapUpEvent.Instance.RemoveListener(_onWrapUpEvent);
-            _onWrapUpEvent = null;
-        }
     }
 }

@@ -72,10 +72,11 @@ public class ConjurerAbility : AbilityBase
         wrapUpListener = WrapUpEvent.Instance.AddListener(OnWrapUp);
     }
 
-    public override void DetachToLocalPlayer()
+    public override void DetachToAlls()
     {
         wrapUpListener?.RemoveListener();
         wrapUpListener = null;
+        base.DetachToAlls();
     }
 
     private void OnWrapUp(WrapUpEventData data)

@@ -64,6 +64,7 @@ public class RobberAbility : AbilityBase
         // 自分がキルした場合のみ処理
         if (data.killer != Player) return;
         if (!data.killer.AmOwner) return;
+        if (!data.resultFlags.HasFlag(MurderResultFlags.Succeeded)) return;
 
         // ローカルでどのタスクを巻き戻すかを決定
         var taskIdsToRewind = GetTasksToRewind(data.target, _rewindTaskCount);

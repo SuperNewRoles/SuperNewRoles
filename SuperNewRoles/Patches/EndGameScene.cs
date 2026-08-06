@@ -46,6 +46,7 @@ public enum WinCondition
     TheThreeLittlePigsWin,
     FrankensteinWin,
     TaskerWin,
+    OrientalShamanWin,
 }
 public enum CustomGameOverReason
 {
@@ -74,6 +75,7 @@ public enum CustomGameOverReason
     TheThreeLittlePigsWin,
     FrankensteinWin,
     TaskerWin,
+    OrientalShamanWin,
 }
 
 static class AdditionalTempData
@@ -346,6 +348,10 @@ public class EndGameManagerSetUpPatch
             case WinCondition.FrankensteinWin:
                 baseText = "Frankenstein";
                 roleColor = Frankenstein.Instance.RoleColor;
+                break;
+            case WinCondition.OrientalShamanWin:
+                baseText = "OrientalShaman";
+                roleColor = OrientalShaman.Instance.RoleColor;
                 break;
             default:
                 baseText = "Unknown";
@@ -702,9 +708,11 @@ public static class OnGameEndPatch
             status = FinalStatus.Disconnect;
             hat2Id = data.Hat2Id;
             visor2Id = data.Visor2Id;
+            loversHeartColor = data.LoversHeartColor;
             roleHistory = data.RoleHistory ?? new List<RoleId> { roleId };
             ghostRoleHistory = data.GhostRoleHistory ?? new List<GhostRoleId> { ghostRoleId };
             modifierRoleHistory = data.ModifierRoleHistory ?? new List<ModifierRoleId> { modifierRoleId };
+            modifierMarks = data.ModifierMarks ?? new List<string>();
         }
         else
         {

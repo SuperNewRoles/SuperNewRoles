@@ -64,6 +64,8 @@ public class ShermansServantAbility : AbilityBase
     {
         base.DetachToAlls();
         _wrapUpListener?.RemoveListener();
+        _orientalShamanAbility?.ClearServant();
+        _orientalShamanAbility = null;
     }
 
     private void OnWrapUp(WrapUpEventData data)

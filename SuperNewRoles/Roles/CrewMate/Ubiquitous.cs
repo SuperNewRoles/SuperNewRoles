@@ -121,7 +121,7 @@ class UbiquitousAbility : AbilityBase
     private void OnMeetingStart(MeetingStartEventData data)
     {
         if (!Player.AmOwner || !MyDrone) return;
-        UbiquitousRPC.RpcSyncDronePosition(MyDrone.transform.position.x, MyDrone.transform.position.y);
+        UbiquitousRPC.RpcSyncDronePosition(Player, MyDrone.transform.position.x, MyDrone.transform.position.y);
         MyDrone.IsActive = false;
         MyDrone = null;
         Camera.main.GetComponent<FollowerCamera>().SetTarget(ExPlayerControl.LocalPlayer.Player);
@@ -313,9 +313,10 @@ class DoorHackButton : CustomButtonBase
 public static class UbiquitousRPC
 {
     [CustomRPC]
-    public static void RpcSyncDronePosition(float x, float y)
+    public static void RpcSyncDronePosition(ExPlayerControl owner, float x, float y)
     {
-        Drone.CreateIdleDrone($"Idle {ExPlayerControl.LocalPlayer.PlayerId}", new(x, y), ExPlayerControl.LocalPlayer);
+        if (owner == null) return;
+        Drone.CreateIdleDrone($"Idle {owner.PlayerId}", new(x, y), owner);
     }
 
     [CustomRPC]

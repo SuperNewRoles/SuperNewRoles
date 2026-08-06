@@ -25,21 +25,63 @@ public abstract class TargetCustomButtonBase : CustomButtonBase
     protected virtual bool CanTargetFrankensteinBody => false;
     public override void OnUpdate()
     {
-        base.OnUpdate();
-        Target = SetTarget(onlyCrewmates: OnlyCrewmates, targetPlayersInVents: TargetPlayersInVents, untargetablePlayers: UntargetablePlayers, targetingPlayer: TargetingPlayer, isTargetable: IsTargetable, isDeadPlayerOnly: IsDeadPlayerOnly, ignoreWalls: IgnoreWalls);
-        if (ShowOutline && _lastShowTarget != Target)
+        // Refresh the target before CustomButtonBase handles keyboard input.
+        // Otherwise a target that died/disconnected between HUD updates can consume the click.
+        bool canUpdateTarget = PlayerControl.LocalPlayer?.Data != null &&
+            MeetingHud.Instance == null &&
+            ExileController.Instance == null &&
+            CheckHasButton();
+        if (!canUpdateTarget)
         {
-            if (_lastShowTarget != null)
-                SetOutline(_lastShowTarget, false, OutlineColor);
-            if (Target != null)
-                SetOutline(Target, true, OutlineColor);
-            _lastShowTarget = Target;
+            ClearTarget();
+            base.OnUpdate();
+            return;
         }
+
+        Target = SetTarget(onlyCrewmates: OnlyCrewmates, targetPlayersInVents: TargetPlayersInVents, untargetablePlayers: UntargetablePlayers, targetingPlayer: TargetingPlayer, isTargetable: IsTargetable, isDeadPlayerOnly: IsDeadPlayerOnly, ignoreWalls: IgnoreWalls);
+        UpdateTargetOutline();
+        base.OnUpdate();
+    }
+
+    public override void DetachToLocalPlayer()
+    {
+        ClearTarget();
+        base.DetachToLocalPlayer();
+    }
+
+    private void UpdateTargetOutline()
+    {
+        if (!ShowOutline)
+        {
+            ClearTargetOutline();
+            return;
+        }
+
+        if (_lastShowTarget == Target) return;
+        ClearTargetOutline();
+        if (Target != null)
+            SetOutline(Target, true, OutlineColor);
+        _lastShowTarget = Target;
+    }
+
+    private void ClearTarget()
+    {
+        ClearTargetOutline();
+        Target = null;
+    }
+
+    private void ClearTargetOutline()
+    {
+        if (_lastShowTarget != null)
+            SetOutline(_lastShowTarget, false, default);
+        _lastShowTarget = null;
     }
 
     internal bool ShouldCancelClickForTarget()
     {
         if (Target == null) return false;
+        if (Target.Data == null || Target.Data.Disconnected) return true;
+        if (Target.Data.IsDead && IsDeadPlayerOnly?.Invoke() != true) return true;
         if (ShouldCancelClickForTargetCore()) return true;
         if (CanTargetFrankensteinBody) return false;
         ExPlayerControl exTarget = Target;
@@ -48,8 +90,9 @@ public abstract class TargetCustomButtonBase : CustomButtonBase
     protected virtual bool ShouldCancelClickForTargetCore() => false;
     private static void SetOutline(PlayerControl player, bool show, Color32 color)
     {
+        if (player == null || player.cosmetics == null || player.cosmetics.currentBodySprite == null) return;
         var rend = player.cosmetics.currentBodySprite.BodySprite;
-        if (player == null || rend == null) return;
+        if (rend == null) return;
         rend.material.SetFloat("_Outline", show ? 1f : 0f);
         if (show)
             rend.material.SetColor("_OutlineColor", color);

@@ -21,6 +21,13 @@ public class CanUseEmergencyButtonAbility : AbilityBase
         _meetingMinigameEvent = EmergencyCheckEvent.Instance.AddListener(OnEmergencyCheck);
     }
 
+    public override void DetachToLocalPlayer()
+    {
+        _meetingMinigameEvent?.RemoveListener();
+        _meetingMinigameEvent = null;
+        base.DetachToLocalPlayer();
+    }
+
     private void OnEmergencyCheck(EmergencyCheckEventData data)
     {
         if (!_canUseMeetingButton())
