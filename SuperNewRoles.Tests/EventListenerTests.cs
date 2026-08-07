@@ -24,8 +24,24 @@ public class EventListenerTests
     private class DataEvent : EventTargetBase<DataEvent, DummyData> { }
     private class ListenerOwningAbility : AbilityBase
     {
-        public void Listen(Action action) => SubscribeWithAbility(NoArgEvent.Instance, action);
-        public void RemoveOwnedListeners() => RemoveEventListeners();
+        private readonly Action _action;
+        private readonly bool _throwOnDetachToAlls;
+
+        public ListenerOwningAbility(Action action, bool throwOnDetachToAlls = false)
+        {
+            _action = action;
+            _throwOnDetachToAlls = throwOnDetachToAlls;
+        }
+
+        protected override bool IsLocalPlayer(PlayerControl player) => true;
+
+        public override void AttachToAlls() => SubscribeWithAbility(NoArgEvent.Instance, _action);
+
+        public override void DetachToAlls()
+        {
+            if (_throwOnDetachToAlls)
+                throw new InvalidOperationException("detach failed");
+        }
     }
 
     private static void ResetEvents()
@@ -111,19 +127,35 @@ public class EventListenerTests
     }
 
     [Fact]
-    public void SubscribeWithAbility_TracksListenerForLifecycleRemoval()
+    public void Detach_RemovesAbilityOwnedListeners()
     {
         EnsurePluginLogger();
         ResetEvents();
         var called = 0;
-        var ability = new ListenerOwningAbility();
-        ability.Listen(() => called++);
+        var ability = new ListenerOwningAbility(() => called++);
+        ability.Attach(null, 1, new AbilityParentPlayer(null));
 
         NoArgEvent.Instance.Awake();
-        ability.RemoveOwnedListeners();
+        ability.Detach();
         NoArgEvent.Instance.Awake();
 
         called.Should().Be(1);
+    }
+
+    [Fact]
+    public void Detach_WhenLifecycleHookThrows_StillRemovesAbilityOwnedListeners()
+    {
+        EnsurePluginLogger();
+        ResetEvents();
+        var called = 0;
+        var ability = new ListenerOwningAbility(() => called++, throwOnDetachToAlls: true);
+        ability.Attach(null, 1, new AbilityParentPlayer(null));
+
+        Action act = ability.Detach;
+        act.Should().Throw<InvalidOperationException>().WithMessage("detach failed");
+        NoArgEvent.Instance.Awake();
+
+        called.Should().Be(0);
     }
 
     // 目的: 1つのリスナーが例外を投げても他のリスナー実行は継続されることを検証

@@ -52,11 +52,13 @@ public abstract class AbilityBase
         _eventListeners.Clear();
     }
 
+    protected virtual bool IsLocalPlayer(PlayerControl player) => player == PlayerControl.LocalPlayer;
+
     public virtual void Attach(PlayerControl player, ulong abilityId, AbilityParentBase parent)
     {
         Parent = parent;
         AbilityId = abilityId;
-        if (player == PlayerControl.LocalPlayer)
+        if (IsLocalPlayer(player))
             AttachToLocalPlayer();
         else
             AttachToOthers();
@@ -69,11 +71,11 @@ public abstract class AbilityBase
 
     public virtual void AttachToAlls() { }
 
-    public virtual void Detach()
+    public void Detach()
     {
         try
         {
-            if (Player == PlayerControl.LocalPlayer)
+            if (IsLocalPlayer(Player))
                 DetachToLocalPlayer();
             else
                 DetachToOthers();

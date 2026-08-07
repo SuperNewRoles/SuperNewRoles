@@ -22,10 +22,12 @@ public class ExPlayerControlMoreTests
     private class TrackableAbility : AbilityBase
     {
         public bool Detached { get; private set; }
-        public override void Detach()
+
+        protected override bool IsLocalPlayer(PlayerControl player) => false;
+
+        public override void DetachToAlls()
         {
             Detached = true;
-            // Avoid base which expects a valid Parent/Player in test context
         }
     }
 
@@ -104,7 +106,9 @@ public class ExPlayerControlMoreTests
     private static ulong ShallowAttach(ExPlayerControl ex, AbilityBase ability)
     {
         // Generate deterministic ability id using current player as parent for stable tests
-        var id = ExPlayerControlExtensions.GenerateDeterministicAbilityId(ex.PlayerId, new AbilityParentPlayer(ex), ability.GetType());
+        var parent = new AbilityParentPlayer(ex);
+        var id = ExPlayerControlExtensions.GenerateDeterministicAbilityId(ex.PlayerId, parent, ability.GetType());
+        SetAbilityParent(ability, parent);
         typeof(ExPlayerControl).GetProperty(nameof(ExPlayerControl.lastAbilityId))!.SetValue(ex, ex.lastAbilityId + 1);
         ex.PlayerAbilities.Add(ability);
         ex.PlayerAbilitiesDictionary[id] = ability;

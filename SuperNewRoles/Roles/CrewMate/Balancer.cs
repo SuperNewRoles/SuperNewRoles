@@ -246,9 +246,9 @@ class BalancerAbility : AbilityBase, IAbilityCount
         exPlayer.AddAbility(balancerButton, new AbilityParentAbility(this));
     }
 
-    public override void Detach()
+    public override void DetachToAlls()
     {
-        base.Detach();
+        base.DetachToAlls();
 
         // イベントリスナーを安全に解除
         if (meetingStartEventListener != null)

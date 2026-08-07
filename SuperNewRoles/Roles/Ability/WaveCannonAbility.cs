@@ -90,9 +90,9 @@ public class WaveCannonAbility : CustomButtonBase, IButtonEffect
     {
         return PlayerControl.LocalPlayer.CanMove;
     }
-    public override void Detach()
+    public override void DetachToAlls()
     {
-        base.Detach();
+        base.DetachToAlls();
         new LateTask(() => WaveCannonObject?.Detach(), 0f);
     }
     public void SpawnedWaveCannonObject(WaveCannonObjectBase waveCannonObject)

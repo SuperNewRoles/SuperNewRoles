@@ -6,7 +6,6 @@ using SuperNewRoles.CustomObject;
 using SuperNewRoles.CustomOptions;
 using SuperNewRoles.Events;
 using SuperNewRoles.Modules;
-using SuperNewRoles.Modules.Events.Bases;
 using SuperNewRoles.Roles.Ability;
 using SuperNewRoles.Roles.Ability.CustomButton;
 using SuperNewRoles.Roles.Madmates;
@@ -116,9 +115,6 @@ public class PusherAbility : TargetCustomButtonBase
     private bool _revengeRole;
     private List<PlayerControl> _untargetPlayers = new();
     private float updateUntargetPlayersTimer;
-    private EventListener fixedUpdateEvent;
-    private EventListener<WrapUpEventData> wrapupEvent;
-
     public override Sprite Sprite => AssetManager.GetAsset<Sprite>("PusherPushButton.png");
     public override string buttonText => ModTranslation.GetString("PusherButtonName");
     protected override KeyType keytype => KeyType.Ability1;
@@ -379,15 +375,8 @@ public class PusherAbility : TargetCustomButtonBase
     {
         base.Attach(player, abilityId, parent);
         SyncKillCoolTimeAbility.CreateAndAttach(this);
-        fixedUpdateEvent = FixedUpdateEvent.Instance.AddListener(OnFixedUpdate);
-        wrapupEvent = WrapUpEvent.Instance.AddListener(x => OnWrapup());
-    }
-
-    public override void Detach()
-    {
-        base.Detach();
-        fixedUpdateEvent?.RemoveListener();
-        wrapupEvent?.RemoveListener();
+        SubscribeWithAbility(FixedUpdateEvent.Instance, OnFixedUpdate);
+        SubscribeWithAbility(WrapUpEvent.Instance, _ => OnWrapup());
     }
 
     private void OnWrapup()
