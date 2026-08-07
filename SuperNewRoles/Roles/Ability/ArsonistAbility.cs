@@ -5,7 +5,6 @@ using Hazel;
 using SuperNewRoles.Events;
 using SuperNewRoles.Events.PCEvents;
 using SuperNewRoles.Modules;
-using SuperNewRoles.Modules.Events.Bases;
 using SuperNewRoles.Patches;
 using SuperNewRoles.Roles.Ability.CustomButton;
 using SuperNewRoles.Roles.Neutral;
@@ -44,9 +43,6 @@ public class ArsonistAbility : AbilityBase
     private ImpostorVisionAbility _impostorVisionAbility;
     private ShowPlayerUIAbility _showPlayerUIAbility;
 
-    private EventListener<NameTextUpdateEventData> _dousedNameTextUpdateListener;
-    private EventListener<NameTextUpdateEventData> _progressNameTextUpdateListener;
-    private EventListener<DieEventData> _dieListener;
 
     public ArsonistAbility(ArsonistData data)
     {
@@ -80,25 +76,13 @@ public class ArsonistAbility : AbilityBase
         Player.AddAbility(_impostorVisionAbility, new AbilityParentAbility(this));
         Player.AddAbility(_showPlayerUIAbility, new AbilityParentAbility(this));
 
-        _progressNameTextUpdateListener = NameTextUpdateEvent.Instance.AddListener(OnProgressNameTextUpdate);
-        _dieListener = DieEvent.Instance.AddListener(OnDie);
+        SubscribeWithAbility(NameTextUpdateEvent.Instance, OnProgressNameTextUpdate);
+        SubscribeWithAbility(DieEvent.Instance, OnDie);
     }
 
     public override void AttachToLocalPlayer()
     {
-        _dousedNameTextUpdateListener = NameTextUpdateEvent.Instance.AddListener(OnDousedNameTextUpdate);
-    }
-
-    public override void DetachToLocalPlayer()
-    {
-        _dousedNameTextUpdateListener?.RemoveListener();
-    }
-
-    public override void DetachToAlls()
-    {
-        _progressNameTextUpdateListener?.RemoveListener();
-        _dieListener?.RemoveListener();
-        base.DetachToAlls();
+        SubscribeWithAbility(NameTextUpdateEvent.Instance, OnDousedNameTextUpdate);
     }
 
     private void OnDousedNameTextUpdate(NameTextUpdateEventData data)

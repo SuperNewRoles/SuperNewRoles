@@ -60,23 +60,9 @@ class Bait : RoleBase<Bait>
 
 class BaitAbility : AbilityBase
 {
-    //何らかの要因で能力を失う時に使うのでListenerは保持しておく
-    public EventListener<MurderEventData> killedEventListener;
-
     public override void AttachToLocalPlayer()
     {
-        //ここでEventListenerと紐付ける
-        killedEventListener = MurderEvent.Instance.AddListener(OnKilled);
-    }
-
-    public override void DetachToLocalPlayer()
-    {
-        base.DetachToLocalPlayer();
-        if (killedEventListener != null)
-        {
-            MurderEvent.Instance.RemoveListener(killedEventListener);
-            killedEventListener = null;
-        }
+        SubscribeWithAbility(MurderEvent.Instance, OnKilled);
     }
 
     public void OnKilled(MurderEventData data)

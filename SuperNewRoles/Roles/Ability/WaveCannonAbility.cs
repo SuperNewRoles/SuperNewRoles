@@ -35,7 +35,6 @@ public class WaveCannonAbility : CustomButtonBase, IButtonEffect
     public bool friendlyFire { get; }
     public bool KillSound { get; }
     public bool distributedKillSound { get; }
-    private EventListener<MurderEventData> _onMurderEvent;
     public WaveCannonAbility(
         float coolDown,
         float effectDuration,
@@ -73,19 +72,12 @@ public class WaveCannonAbility : CustomButtonBase, IButtonEffect
     public override void AttachToLocalPlayer()
     {
         base.AttachToLocalPlayer();
-        _onMurderEvent = MurderEvent.Instance.AddListener(x =>
+        SubscribeWithAbility(MurderEvent.Instance, x =>
         {
             if (isResetKillCooldown && x.killer == PlayerControl.LocalPlayer)
                 ExPlayerControl.LocalPlayer.ResetKillCooldown();
         });
     }
-    public override void DetachToLocalPlayer()
-    {
-        base.DetachToLocalPlayer();
-        if (_onMurderEvent != null)
-            MurderEvent.Instance.RemoveListener(_onMurderEvent);
-    }
-
     public override bool CheckIsAvailable()
     {
         return PlayerControl.LocalPlayer.CanMove;

@@ -229,17 +229,17 @@ class BalancerAbility : AbilityBase, IAbilityCount
     #region Lifecycle
     public override void AttachToLocalPlayer()
     {
-        updateEventListener = FixedUpdateEvent.Instance.AddListener(Update);
+        updateEventListener = SubscribeWithAbility(FixedUpdateEvent.Instance, Update);
     }
 
     public override void Attach(PlayerControl player, ulong abilityId, AbilityParentBase parent)
     {
         base.Attach(player, abilityId, parent);
-        meetingStartEventListener = MeetingStartEvent.Instance.AddListener(x => OnMeetingStart());
-        meetingCloseEventListener = MeetingCloseEvent.Instance.AddListener(x => OnMeetingClosed());
-        fixedUpdateEventListener = FixedUpdateEvent.Instance.AddListener(FixedUpdateAnimation);
-        votingCompleteEventListener = VotingCompleteEvent.Instance.AddListener(OnVotingComplete);
-        wrapUpEventListener = WrapUpEvent.Instance.AddListener(OnWrapUp);
+        meetingStartEventListener = SubscribeWithAbility(MeetingStartEvent.Instance, x => OnMeetingStart());
+        meetingCloseEventListener = SubscribeWithAbility(MeetingCloseEvent.Instance, x => OnMeetingClosed());
+        fixedUpdateEventListener = SubscribeWithAbility(FixedUpdateEvent.Instance, FixedUpdateAnimation);
+        votingCompleteEventListener = SubscribeWithAbility(VotingCompleteEvent.Instance, OnVotingComplete);
+        wrapUpEventListener = SubscribeWithAbility(WrapUpEvent.Instance, OnWrapUp);
 
         balancerButton = new BalancerMeetingButton(this);
         ExPlayerControl exPlayer = (ExPlayerControl)player;

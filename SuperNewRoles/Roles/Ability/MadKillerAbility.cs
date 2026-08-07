@@ -2,7 +2,6 @@ using System;
 using SuperNewRoles.Events;
 using SuperNewRoles.Events.PCEvents;
 using SuperNewRoles.Modules;
-using SuperNewRoles.Modules.Events.Bases;
 using SuperNewRoles.Roles.Ability.CustomButton;
 using SuperNewRoles.Roles.Impostor;
 using UnityEngine;
@@ -27,8 +26,6 @@ public class MadKillerAbility : AbilityBase
     private CustomVentAbility _ventAbility;
     private ImpostorVisionAbility _visionAbility;
     private KnowImpostorAbility _knowImpostorAbility;
-    private EventListener _fixedUpdateEventListener;
-    private EventListener<NameTextUpdateEventData> _nameTextUpdateEventListener;
     public SideKillerAbility ownerAbility;
     public CustomKillButtonAbility _killButtonAbility;
     private bool _cannotBeSeenBeforePromotion;
@@ -52,7 +49,7 @@ public class MadKillerAbility : AbilityBase
     public override void AttachToAlls()
     {
         base.AttachToAlls();
-        _nameTextUpdateEventListener = NameTextUpdateEvent.Instance.AddListener(OnNameTextUpdate);
+        SubscribeWithAbility(NameTextUpdateEvent.Instance, OnNameTextUpdate);
         _ventAbility = new CustomVentAbility(() => _data.couldUseVent);
         _visionAbility = new ImpostorVisionAbility(() => _data.hasImpostorVision);
         _knowImpostorAbility = new KnowImpostorAbility(() => !_cannotBeSeenBeforePromotion || !_data.cannotSeeImpostorBeforePromotion);
@@ -64,22 +61,11 @@ public class MadKillerAbility : AbilityBase
         Player.AttachAbility(_knowImpostorAbility, parentAbility);
         Player.AttachAbility(_killButtonAbility, parentAbility);
     }
-    public override void DetachToAlls()
-    {
-        base.DetachToAlls();
-        _nameTextUpdateEventListener?.RemoveListener();
-    }
     public override void AttachToLocalPlayer()
     {
         base.AttachToLocalPlayer();
-        _fixedUpdateEventListener = FixedUpdateEvent.Instance.AddListener(OnFixedUpdate);
+        SubscribeWithAbility(FixedUpdateEvent.Instance, OnFixedUpdate);
     }
-    public override void DetachToLocalPlayer()
-    {
-        base.DetachToLocalPlayer();
-        _fixedUpdateEventListener?.RemoveListener();
-    }
-
     private void OnFixedUpdate()
     {
         if (_isAwakened || Player.IsDead()) return;

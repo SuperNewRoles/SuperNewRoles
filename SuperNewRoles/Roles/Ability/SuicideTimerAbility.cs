@@ -2,7 +2,6 @@ using System;
 using SuperNewRoles.Events;
 using SuperNewRoles.Events.PCEvents;
 using SuperNewRoles.Modules;
-using SuperNewRoles.Modules.Events.Bases;
 using TMPro;
 using UnityEngine;
 
@@ -12,9 +11,6 @@ public class SuicideTimerAbility : AbilityBase
 {
     public Func<float> SuicideTimeGetter { get; }
     public Func<bool> ResetOnMeetingGetter { get; }
-    private EventListener<MurderEventData> MurderEventListener;
-    private EventListener<WrapUpEventData> WrapUpEventListener;
-    private EventListener UpdateEventListener;
     private float timer;
     public float CurrentTimer => timer;
     private bool firstKilled = false;
@@ -28,9 +24,9 @@ public class SuicideTimerAbility : AbilityBase
 
     public override void AttachToLocalPlayer()
     {
-        MurderEventListener = MurderEvent.Instance.AddListener(OnMurder);
-        WrapUpEventListener = WrapUpEvent.Instance.AddListener(OnWrapUp);
-        UpdateEventListener = FixedUpdateEvent.Instance.AddListener(OnUpdate);
+        SubscribeWithAbility(MurderEvent.Instance, OnMurder);
+        SubscribeWithAbility(WrapUpEvent.Instance, OnWrapUp);
+        SubscribeWithAbility(FixedUpdateEvent.Instance, OnUpdate);
         // 初期状態でタイマーをセット
         ResetSuicideTimer();
 
@@ -46,9 +42,6 @@ public class SuicideTimerAbility : AbilityBase
     public override void DetachToLocalPlayer()
     {
         base.DetachToLocalPlayer();
-        MurderEvent.Instance.RemoveListener(MurderEventListener);
-        WrapUpEvent.Instance.RemoveListener(WrapUpEventListener);
-        FixedUpdateEvent.Instance.RemoveListener(UpdateEventListener);
         if (timerText != null)
         {
             GameObject.Destroy(timerText.gameObject);

@@ -8,7 +8,6 @@ using SuperNewRoles.Roles;
 using SuperNewRoles.Roles.Ability;
 using SuperNewRoles.Roles.Ability.CustomButton;
 using SuperNewRoles.Modules.Events;
-using SuperNewRoles.Modules.Events.Bases;
 
 namespace SuperNewRoles.Roles.Impostor;
 internal class Crab : RoleBase<Crab>
@@ -37,9 +36,6 @@ internal class Crab : RoleBase<Crab>
 
 public class CrabAbility : CustomButtonBase, IButtonEffect
 {
-    // イベント購読用
-    private EventListener<PlayerPhysicsFixedUpdateEventData> _physicsUpdateListener;
-
     private bool IsCrabActive;
     public bool isEffectActive { get; set; }
     public float EffectTimer { get; set; }
@@ -72,13 +68,7 @@ public class CrabAbility : CustomButtonBase, IButtonEffect
     public override void AttachToAlls()
     {
         base.AttachToAlls();
-        _physicsUpdateListener = PlayerPhysicsFixedUpdateEvent.Instance.AddListener(OnPhysicsFixedUpdate);
-    }
-
-    public override void DetachToAlls()
-    {
-        base.DetachToAlls();
-        _physicsUpdateListener?.RemoveListener();
+        SubscribeWithAbility(PlayerPhysicsFixedUpdateEvent.Instance, OnPhysicsFixedUpdate);
     }
 
     private void OnPhysicsFixedUpdate(PlayerPhysicsFixedUpdateEventData data)

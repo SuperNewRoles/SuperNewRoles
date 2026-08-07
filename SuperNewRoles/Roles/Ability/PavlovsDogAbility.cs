@@ -2,7 +2,6 @@ using System;
 using SuperNewRoles.Events;
 using SuperNewRoles.Events.PCEvents;
 using SuperNewRoles.Modules;
-using SuperNewRoles.Modules.Events.Bases;
 using SuperNewRoles.Roles.Neutral;
 using TMPro;
 using UnityEngine;
@@ -28,9 +27,6 @@ public class PavlovsDogAbility : AbilityBase
     private CustomKillButtonAbility _killAbility;
     private ImpostorVisionAbility _visionAbility;
     private KnowOtherAbility _knowOtherAbility;
-    private EventListener<DieEventData> _dieEventListener;
-    private EventListener<MeetingCloseEventData> _meetingCloseListener;
-    private EventListener _fixedUpdateListener;
     public PavlovsOwnerAbility ownerAbility;
     private TextMeshPro timerText;
     public PavlovsDogAbility(PavlovsDogData data)
@@ -90,9 +86,9 @@ public class PavlovsDogAbility : AbilityBase
 
     public override void AttachToLocalPlayer()
     {
-        _dieEventListener = DieEvent.Instance.AddListener(OnPlayerDead);
-        _meetingCloseListener = MeetingCloseEvent.Instance.AddListener(x => OnMeetingEnd());
-        _fixedUpdateListener = FixedUpdateEvent.Instance.AddListener(OnFixedUpdate);
+        SubscribeWithAbility(DieEvent.Instance, OnPlayerDead);
+        SubscribeWithAbility(MeetingCloseEvent.Instance, x => OnMeetingEnd());
+        SubscribeWithAbility(FixedUpdateEvent.Instance, OnFixedUpdate);
     }
 
     private void OnPlayerDead(DieEventData data)
@@ -133,11 +129,4 @@ public class PavlovsDogAbility : AbilityBase
         }
     }
 
-    public override void DetachToLocalPlayer()
-    {
-        base.DetachToLocalPlayer();
-        DieEvent.Instance.RemoveListener(_dieEventListener);
-        MeetingCloseEvent.Instance.RemoveListener(_meetingCloseListener);
-        FixedUpdateEvent.Instance.RemoveListener(_fixedUpdateListener);
-    }
 }

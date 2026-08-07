@@ -1,7 +1,6 @@
 using AmongUs.GameOptions;
 using SuperNewRoles.Events.PCEvents;
 using SuperNewRoles.Modules;
-using SuperNewRoles.Modules.Events.Bases;
 using SuperNewRoles.Roles.Neutral;
 
 namespace SuperNewRoles.Roles.Ability;
@@ -15,7 +14,6 @@ public class JFriendAbility : AbilityBase
     public KnowOtherAbility KnowJackalAbility { get; private set; }
     public ImpostorVisionAbility ImpostorVisionAbility { get; private set; }
     public CustomTaskAbility CustomTaskAbility { get; private set; }
-    private EventListener<TaskCompleteEventData> _taskCompleteEvent;
     private readonly JFriendData Data;
     private bool _canKnowJackal;
     public JFriendAbility(JFriendData data, int priority = AbilityPriority.Default)
@@ -46,7 +44,7 @@ public class JFriendAbility : AbilityBase
             priority: _priority
         );
 
-        _taskCompleteEvent = TaskCompleteEvent.Instance.AddListener(x => RecalucateTaskComplete(x.player));
+        SubscribeWithAbility(TaskCompleteEvent.Instance, x => RecalucateTaskComplete(x.player));
         RecalucateTaskComplete(Player);
 
         AbilityParentAbility parentAbility = new(this);
@@ -54,11 +52,6 @@ public class JFriendAbility : AbilityBase
         Player.AttachAbility(KnowJackalAbility, parentAbility);
         Player.AttachAbility(ImpostorVisionAbility, parentAbility);
         Player.AttachAbility(CustomTaskAbility, parentAbility);
-    }
-    public override void DetachToAlls()
-    {
-        base.DetachToAlls();
-        _taskCompleteEvent?.RemoveListener();
     }
     private bool CanKnowJackal()
     {

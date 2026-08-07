@@ -33,8 +33,6 @@ public class PenguinAbility : TargetCustomButtonBase, IButtonEffect
     public float EffectTimer { get; set; }
     public bool effectCancellable => false;
     private bool meetingKill;
-    private EventListener<CalledMeetingEventData> _preCalledMeeting;
-    private EventListener<TryKillEventData> tryKillEvent;
     public override Sprite Sprite => _sprite;
     public override string buttonText => ModTranslation.GetString("PenguinButtonText");
     protected override KeyType keytype => KeyType.Ability1;
@@ -45,9 +43,6 @@ public class PenguinAbility : TargetCustomButtonBase, IButtonEffect
 
     private ExPlayerControl targetPlayer;
 
-    private EventListener fixedUpdateEvent;
-    private EventListener<WrapUpEventData> wrapUpEvent;
-    private EventListener<DieEventData> dieEvent;
     private KillableAbility customKillButtonAbility;
     private bool CanDefaultKill;
     private Sprite _sprite;
@@ -69,15 +64,6 @@ public class PenguinAbility : TargetCustomButtonBase, IButtonEffect
         new LateTask(() => ExPlayerControl.LocalPlayer.SetKillTimerUnchecked(0.00001f, 0.00001f), 0f);
         ResetTimer();
     }
-    public override void DetachToAlls()
-    {
-        base.DetachToAlls();
-        fixedUpdateEvent?.RemoveListener();
-        _preCalledMeeting?.RemoveListener();
-        wrapUpEvent?.RemoveListener();
-        dieEvent?.RemoveListener();
-        tryKillEvent?.RemoveListener();
-    }
     private void OnFixedUpdate()
     {
         if (targetPlayer == null) return;
@@ -98,13 +84,13 @@ public class PenguinAbility : TargetCustomButtonBase, IButtonEffect
     {
         base.AttachToAlls();
         SyncKillCoolTimeAbility.CreateAndAttach(this);
-        _preCalledMeeting = PreCalledMeetingEvent.Instance.AddListener(OnPreCalledMeeting);
+        SubscribeWithAbility(PreCalledMeetingEvent.Instance, OnPreCalledMeeting);
         customKillButtonAbility = new KillableAbility(() => CanDefaultKill || (targetPlayer != null && targetPlayer.IsAlive()));
         Player.AttachAbility(customKillButtonAbility, new AbilityParentAbility(this));
-        fixedUpdateEvent = FixedUpdateEvent.Instance.AddListener(OnFixedUpdate);
-        wrapUpEvent = WrapUpEvent.Instance.AddListener(OnWrapUp);
-        dieEvent = DieEvent.Instance.AddListener(OnDie);
-        tryKillEvent = TryKillEvent.Instance.AddListener(OnTryKill);
+        SubscribeWithAbility(FixedUpdateEvent.Instance, OnFixedUpdate);
+        SubscribeWithAbility(WrapUpEvent.Instance, OnWrapUp);
+        SubscribeWithAbility(DieEvent.Instance, OnDie);
+        SubscribeWithAbility(TryKillEvent.Instance, OnTryKill);
     }
 
     private void OnTryKill(TryKillEventData data)

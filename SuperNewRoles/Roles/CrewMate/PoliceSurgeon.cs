@@ -558,10 +558,6 @@ internal static class PoliceSurgeonOverlay
 
 public sealed class PoliceSurgeonMeetingAbility : AbilityBase
 {
-    private EventListener<MeetingStartEventData> _meetingStartListener;
-    private EventListener<MeetingCloseEventData> _meetingCloseListener;
-    private EventListener _hudUpdateListener;
-
     private readonly Dictionary<byte, GameObject> _meetingButtons = new();
 
     public override void AttachToAlls()
@@ -572,17 +568,14 @@ public sealed class PoliceSurgeonMeetingAbility : AbilityBase
     public override void AttachToLocalPlayer()
     {
         base.AttachToLocalPlayer();
-        _meetingStartListener = MeetingStartEvent.Instance.AddListener(OnMeetingStart);
-        _meetingCloseListener = MeetingCloseEvent.Instance.AddListener(OnMeetingClose);
-        _hudUpdateListener = HudUpdateEvent.Instance.AddListener(OnHudUpdate);
+        SubscribeWithAbility(MeetingStartEvent.Instance, OnMeetingStart);
+        SubscribeWithAbility(MeetingCloseEvent.Instance, OnMeetingClose);
+        SubscribeWithAbility(HudUpdateEvent.Instance, OnHudUpdate);
     }
 
     public override void DetachToLocalPlayer()
     {
         base.DetachToLocalPlayer();
-        _meetingStartListener?.RemoveListener();
-        _meetingCloseListener?.RemoveListener();
-        _hudUpdateListener?.RemoveListener();
         DestroyMeetingButtons();
         PoliceSurgeonOverlay.Destroy();
     }

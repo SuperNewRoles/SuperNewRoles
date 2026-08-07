@@ -9,7 +9,6 @@ using SuperNewRoles.Modules;
 using SuperNewRoles.Roles.Ability.CustomButton;
 using SuperNewRoles.Events;
 using SuperNewRoles.Events.PCEvents;
-using SuperNewRoles.Modules.Events.Bases;
 using SuperNewRoles.Ability;
 using SuperNewRoles.CustomObject;
 
@@ -84,9 +83,6 @@ public class RocketGrabAbility : TargetCustomButtonBase
     private bool launchAfterMeeting = false;
     private bool launchAfterMeetingOption = false;
 
-    private EventListener<MeetingStartEventData> _onMeetingStartEvent;
-    private EventListener<WrapUpEventData> _onWrapUpEvent;
-    private EventListener _fixedUpdateEvent;
 
     // Use a placeholder sprite path for now
     public override Sprite Sprite => AssetManager.GetAsset<Sprite>("RocketGrabButton.png");
@@ -131,17 +127,14 @@ public class RocketGrabAbility : TargetCustomButtonBase
     public override void AttachToAlls()
     {
         base.AttachToAlls();
-        _onMeetingStartEvent = MeetingStartEvent.Instance.AddListener(OnMeetingStart);
-        _onWrapUpEvent = WrapUpEvent.Instance.AddListener(OnWrapUp);
-        _fixedUpdateEvent = FixedUpdateEvent.Instance.AddListener(OnFixedUpdate);
+        SubscribeWithAbility(MeetingStartEvent.Instance, OnMeetingStart);
+        SubscribeWithAbility(WrapUpEvent.Instance, OnWrapUp);
+        SubscribeWithAbility(FixedUpdateEvent.Instance, OnFixedUpdate);
     }
 
     public override void DetachToAlls()
     {
         base.DetachToAlls();
-        _onMeetingStartEvent?.RemoveListener();
-        _onWrapUpEvent?.RemoveListener();
-        _fixedUpdateEvent?.RemoveListener();
         if (Player != null && Player.AmOwner && GrabbedPlayers.Count > 0)
         {
             RpcClearGrabbedPlayers();

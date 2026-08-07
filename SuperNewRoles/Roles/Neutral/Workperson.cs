@@ -4,7 +4,6 @@ using AmongUs.GameOptions;
 using SuperNewRoles.CustomOptions;
 using SuperNewRoles.Events.PCEvents;
 using SuperNewRoles.Modules;
-using SuperNewRoles.Modules.Events.Bases;
 using SuperNewRoles.Patches;
 using SuperNewRoles.Roles.Ability;
 using UnityEngine;
@@ -48,7 +47,6 @@ class Workperson : RoleBase<Workperson>
 }
 public class WorkpersonAbility : AbilityBase
 {
-    private EventListener<TaskCompleteEventData> _taskCompleteListener;
     private bool _needAliveToWin { get; }
     public WorkpersonAbility(bool needAliveToWin)
     {
@@ -56,7 +54,7 @@ public class WorkpersonAbility : AbilityBase
     }
     public override void AttachToLocalPlayer()
     {
-        _taskCompleteListener = TaskCompleteEvent.Instance.AddListener(OnTaskComplete);
+        SubscribeWithAbility(TaskCompleteEvent.Instance, OnTaskComplete);
     }
     private void OnTaskComplete(TaskCompleteEventData data)
     {
@@ -66,9 +64,5 @@ public class WorkpersonAbility : AbilityBase
             if (_needAliveToWin && !ExPlayerControl.LocalPlayer.IsAlive()) return;
             EndGamer.RpcEndGameWithWinner(CustomGameOverReason.WorkpersonWin, WinType.SingleNeutral, [Player], Workperson.Instance.RoleColor, "Workperson", string.Empty);
         }
-    }
-    public override void DetachToLocalPlayer()
-    {
-        TaskCompleteEvent.Instance.RemoveListener(_taskCompleteListener);
     }
 }

@@ -8,7 +8,6 @@ using SuperNewRoles.CustomOptions;
 using SuperNewRoles.Modules;
 using System.Linq;
 using SuperNewRoles.Events;
-using SuperNewRoles.Modules.Events.Bases;
 using UnityEngine.AddressableAssets;
 using System.Runtime.CompilerServices;
 
@@ -79,7 +78,6 @@ public class ChiefAbility : AbilityBase
     private bool _isAppointFailure = true; // 未判定時も 失敗判定 として扱う
     private SheriffAbilityData _sheriffAbilityData;
     private SheriffAbility _createdSheriff = null;
-    private EventListener<NameTextUpdateEventData> _nameTextUpdateEventListener;
     private bool _canSeeCreatedSheriff;
     public ChiefAbility(SheriffAbilityData sheriffAbilityData, bool canSeeCreatedSheriff)
     {
@@ -114,16 +112,11 @@ public class ChiefAbility : AbilityBase
         AbilityParentAbility abilityParentAbility = new(this);
         exPlayer.AttachAbility(_sidekickButton, abilityParentAbility);
 
-        _nameTextUpdateEventListener = NameTextUpdateEvent.Instance.AddListener(OnNameTextUpdate);
+        SubscribeWithAbility(NameTextUpdateEvent.Instance, OnNameTextUpdate);
     }
     public override void AttachToLocalPlayer()
     {
     }
-    public override void DetachToLocalPlayer()
-    {
-        NameTextUpdateEvent.Instance.RemoveListener(_nameTextUpdateEventListener);
-    }
-
     // 対象を任命可能かどうかの判定
     private bool IsTargetable(ExPlayerControl target)
     {

@@ -4,7 +4,6 @@ using System.Linq;
 using SuperNewRoles.Events;
 using SuperNewRoles.Events.PCEvents;
 using SuperNewRoles.Modules;
-using SuperNewRoles.Modules.Events.Bases;
 using SuperNewRoles.Roles.Ability;
 using UnityEngine;
 
@@ -86,8 +85,6 @@ public class LoversAbility : AbilityBase
 {
     public Color32 HeartColor => couple.HeartColor;
     public LoversCouple couple { get; private set; }
-    private EventListener<DieEventData> _dieListener;
-    private EventListener<NameTextUpdateEventData> _nameTextUpdateListener;
     private PlayerArrowsAbility _playerArrowsAbility;
     private KnowOtherAbility _knowOtherAbility;
     private bool knowPartnerRole;
@@ -103,8 +100,8 @@ public class LoversAbility : AbilityBase
     }
     public override void AttachToAlls()
     {
-        _dieListener = DieEvent.Instance.AddListener(OnDie);
-        _nameTextUpdateListener = NameTextUpdateEvent.Instance.AddListener(OnNameTextUpdate);
+        SubscribeWithAbility(DieEvent.Instance, OnDie);
+        SubscribeWithAbility(NameTextUpdateEvent.Instance, OnNameTextUpdate);
         _playerArrowsAbility = new PlayerArrowsAbility(
             () => !knowPartnerPosition ? Array.Empty<ExPlayerControl>() : couple.lovers.Where(ability => !ability.Player.AmOwner && (ExPlayerControl.LocalPlayer.IsDead() || ability.Player.IsAlive())).Select(ability => ability.Player),
             (player) => Lovers.Instance.RoleColor
@@ -114,11 +111,6 @@ public class LoversAbility : AbilityBase
         );
         Player.AttachAbility(_playerArrowsAbility, new AbilityParentAbility(this));
         Player.AttachAbility(_knowOtherAbility, new AbilityParentAbility(this));
-    }
-    public override void DetachToAlls()
-    {
-        _dieListener?.RemoveListener();
-        _nameTextUpdateListener?.RemoveListener();
     }
     private void OnNameTextUpdate(NameTextUpdateEventData data)
     {

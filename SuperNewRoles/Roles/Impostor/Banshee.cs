@@ -8,7 +8,6 @@ using SuperNewRoles.Roles.Ability.CustomButton;
 using SuperNewRoles;
 using UnityEngine;
 using System.Linq;
-using SuperNewRoles.Modules.Events.Bases;
 using SuperNewRoles.Events;
 
 namespace SuperNewRoles.Roles.Impostor;
@@ -84,10 +83,6 @@ public class BansheeAbility : AbilityBase
     private bool canKillImpostor;
     private bool canDefaultKill;
 
-    /* イベント */
-    private EventListener _fixedUpdateListener;
-    private EventListener<MeetingStartEventData> _startMeetingListener;
-
     /* データ */
     private ExPlayerControl currentFairyPlayer;
     private bool whisperTriggered = false;
@@ -139,15 +134,8 @@ public class BansheeAbility : AbilityBase
         playersInRangeAlreadyChecked = new();
         currentFairyPlayer = null;
 
-        _fixedUpdateListener = FixedUpdateEvent.Instance.AddListener(OnFixedUpdate);
-        _startMeetingListener = MeetingStartEvent.Instance.AddListener(OnStartMeeting);
-    }
-
-    public override void DetachToLocalPlayer()
-    {
-        base.DetachToLocalPlayer();
-        _fixedUpdateListener?.RemoveListener();
-        _startMeetingListener?.RemoveListener();
+        SubscribeWithAbility(FixedUpdateEvent.Instance, OnFixedUpdate);
+        SubscribeWithAbility(MeetingStartEvent.Instance, OnStartMeeting);
     }
 
     private void OnStartMeeting(MeetingStartEventData data)

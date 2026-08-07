@@ -2,7 +2,6 @@ using System;
 using System.Linq;
 using SuperNewRoles.Events;
 using SuperNewRoles.Modules;
-using SuperNewRoles.Modules.Events.Bases;
 using SuperNewRoles.Patches;
 using SuperNewRoles.Roles.Ability.CustomButton;
 using UnityEngine;
@@ -143,7 +142,6 @@ public class OwlDeadBodyTransportAbility : CustomButtonBase, IButtonEffect
     private DeadBody _candidateTarget;
     public DeadBody DeadBodyInTransport { get; private set; }
 
-    private EventListener _fixedUpdateListener;
 
     public OwlDeadBodyTransportAbility(Func<Vent> nestVent, Action deadBodyCountIncrement, Func<bool> canUse)
     {
@@ -155,13 +153,7 @@ public class OwlDeadBodyTransportAbility : CustomButtonBase, IButtonEffect
     public override void AttachToAlls()
     {
         base.AttachToAlls();
-        _fixedUpdateListener = FixedUpdateEvent.Instance.AddListener(OnFixedUpdate);
-    }
-
-    public override void DetachToAlls()
-    {
-        base.DetachToAlls();
-        _fixedUpdateListener?.RemoveListener();
+        SubscribeWithAbility(FixedUpdateEvent.Instance, OnFixedUpdate);
     }
 
     public override bool CheckIsAvailable()
@@ -304,9 +296,6 @@ public class OwlSpecialBlackoutAbility : CustomButtonBase, IButtonEffect
     public bool IsSpecialBlackout;
     private float _contractionTimer;
 
-    private EventListener<MeetingStartEventData> _meetingStartListener;
-    private EventListener _fixedUpdateListener;
-    private EventListener<ShipStatusLightEventData> _shipStatusLightListener;
 
     public OwlSpecialBlackoutAbility(float cooldown, float effectDuration, Func<bool> canUse)
     {
@@ -320,27 +309,14 @@ public class OwlSpecialBlackoutAbility : CustomButtonBase, IButtonEffect
     public override void AttachToLocalPlayer()
     {
         base.AttachToLocalPlayer();
-        _meetingStartListener = MeetingStartEvent.Instance.AddListener(OnMeetingStart);
-    }
-
-    public override void DetachToLocalPlayer()
-    {
-        base.DetachToLocalPlayer();
-        _meetingStartListener?.RemoveListener();
+        SubscribeWithAbility(MeetingStartEvent.Instance, OnMeetingStart);
     }
 
     public override void AttachToOthers()
     {
         base.AttachToOthers();
-        _fixedUpdateListener = FixedUpdateEvent.Instance.AddListener(OnFixedUpdate);
-        _shipStatusLightListener = ShipStatusLightEvent.Instance.AddListener(OnShipStatusLight);
-    }
-
-    public override void DetachToOthers()
-    {
-        base.DetachToOthers();
-        _fixedUpdateListener?.RemoveListener();
-        _shipStatusLightListener?.RemoveListener();
+        SubscribeWithAbility(FixedUpdateEvent.Instance, OnFixedUpdate);
+        SubscribeWithAbility(ShipStatusLightEvent.Instance, OnShipStatusLight);
     }
 
     public override bool CheckIsAvailable() => true;

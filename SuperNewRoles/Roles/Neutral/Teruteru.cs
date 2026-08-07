@@ -4,7 +4,6 @@ using AmongUs.GameOptions;
 using SuperNewRoles.CustomOptions;
 using SuperNewRoles.Events;
 using SuperNewRoles.Modules;
-using SuperNewRoles.Modules.Events.Bases;
 using SuperNewRoles.Patches;
 using SuperNewRoles.Roles.Ability;
 using UnityEngine;
@@ -55,7 +54,6 @@ class Teruteru : RoleBase<Teruteru>
 public class TeruteruAbility : AbilityBase
 {
     private readonly TeruteruData _data;
-    private EventListener<ExileEventData> _playerExiledListener;
     private CustomVentAbility _ventAbility;
     private CustomTaskAbility _customTaskAbility;
 
@@ -79,7 +77,7 @@ public class TeruteruAbility : AbilityBase
         exPlayer.AttachAbility(_customTaskAbility, new AbilityParentAbility(this));
 
         // イベントリスナーを設定
-        _playerExiledListener = ExileEvent.Instance.AddListener(OnPlayerExiled);
+        SubscribeWithAbility(ExileEvent.Instance, OnPlayerExiled);
     }
 
     private void OnPlayerExiled(ExileEventData data)
@@ -108,11 +106,6 @@ public class TeruteruAbility : AbilityBase
 
     }
 
-    public override void DetachToAlls()
-    {
-        // イベントリスナーを削除
-        _playerExiledListener?.RemoveListener();
-    }
 }
 
 public class TeruteruData

@@ -7,7 +7,6 @@ using HarmonyLib;
 using SuperNewRoles.Events;
 using SuperNewRoles.Events.PCEvents;
 using SuperNewRoles.Modules;
-using SuperNewRoles.Modules.Events.Bases;
 using SuperNewRoles.Roles.Ability.CustomButton;
 using SuperNewRoles.CustomOptions;
 using UnityEngine;
@@ -35,33 +34,22 @@ public class BodyBuilderAbility : CustomButtonBase
     // ポーズID範囲
     private static readonly IntRange PosingIdRange = new(1, 5);
 
-    // アセットバンドル
-    private EventListener<MurderEventData> _murderEvent;
-    private EventListener<MeetingStartEventData> _meetingStartEvent;
-    private EventListener<ExileEventData> _exileEvent;
-    private EventListener<PlayerPhysicsFixedUpdateEventData> _onPlayerPhysicsFixedUpdateEvent;
     public override void AttachToLocalPlayer()
     {
         base.AttachToLocalPlayer();
-        _onPlayerPhysicsFixedUpdateEvent = PlayerPhysicsFixedUpdateEvent.Instance.AddListener(x => UpdatePhysics(x));
+        SubscribeWithAbility(PlayerPhysicsFixedUpdateEvent.Instance, x => UpdatePhysics(x));
     }
 
     public override void AttachToAlls()
     {
         base.AttachToAlls();
-        _murderEvent = MurderEvent.Instance.AddListener(x =>
+        SubscribeWithAbility(MurderEvent.Instance, x =>
         {
             if (x.target == Player)
                 CancelPosing();
         });
-        _meetingStartEvent = MeetingStartEvent.Instance.AddListener(x => CancelPosing());
-        _exileEvent = ExileEvent.Instance.AddListener(x => CancelPosing());
-    }
-
-    public override void DetachToLocalPlayer()
-    {
-        base.DetachToLocalPlayer();
-        _onPlayerPhysicsFixedUpdateEvent?.RemoveListener();
+        SubscribeWithAbility(MeetingStartEvent.Instance, x => CancelPosing());
+        SubscribeWithAbility(ExileEvent.Instance, x => CancelPosing());
     }
 
     public override void DetachToAlls()
@@ -71,9 +59,6 @@ public class BodyBuilderAbility : CustomButtonBase
         {
             CancelPosing();
         }
-        _murderEvent?.RemoveListener();
-        _meetingStartEvent?.RemoveListener();
-        _exileEvent?.RemoveListener();
     }
 
     public override void OnClick()

@@ -41,22 +41,19 @@ public class HomeSecurityGuardAbility : AbilityBase
     // タスク一覧に表示するランダムテキストの最大番号
     public const int TaskTextMax = 12;
     private ImportantTextTask _task;
-    private EventListener<MeetingCloseEventData> _meetingCloseListener;
     private EventListener _introCutsceneInitializeListener;
     private int _currentIndex = -1;
 
     public override void AttachToLocalPlayer()
     {
-        _meetingCloseListener = MeetingCloseEvent.Instance.AddListener(OnMeetingClose);
-        _introCutsceneInitializeListener = IntroCutsceneInitializeEvent.Instance.AddListener(OnIntroCutsceneInitialize);
+        SubscribeWithAbility(MeetingCloseEvent.Instance, OnMeetingClose);
+        _introCutsceneInitializeListener = SubscribeWithAbility(IntroCutsceneInitializeEvent.Instance, OnIntroCutsceneInitialize);
         EnsureTask();
         UpdateIndexAndTaskText();
     }
 
     public override void DetachToLocalPlayer()
     {
-        _meetingCloseListener?.RemoveListener();
-        _introCutsceneInitializeListener?.RemoveListener();
         DestroyTask();
     }
 

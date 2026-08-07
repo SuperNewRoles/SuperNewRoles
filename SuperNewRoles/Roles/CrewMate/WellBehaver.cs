@@ -8,7 +8,6 @@ using SuperNewRoles.CustomObject;
 using SuperNewRoles.CustomOptions;
 using SuperNewRoles.Events;
 using SuperNewRoles.Modules;
-using SuperNewRoles.Modules.Events.Bases;
 using SuperNewRoles.Patches;
 using SuperNewRoles.Roles.Ability;
 using SuperNewRoles.Roles.Ability.CustomButton;
@@ -84,9 +83,6 @@ public class WellBehaverAbility : AbilityBase
 {
     private WellBehaverButtonAbility button;
     private CustomTaskAbility customTaskAbility;
-    private EventListener<WrapUpEventData> _wrapUpEventListener;
-    private EventListener _fixedUpdateEventListener;
-    private EventListener<NameTextUpdateEventData> _nameTextUpdateEventListener;
 
     private PlayerControl garbager;
     private float timer;
@@ -116,24 +112,13 @@ public class WellBehaverAbility : AbilityBase
 
         new LateTask(() => _limitTrashCount = Data.LimitTrashCount * ExPlayerControl.ExPlayerControls.Count(x => x.Role == RoleId.WellBehaver), 1f);
         ReAssignGarbager();
-        _nameTextUpdateEventListener = NameTextUpdateEvent.Instance.AddListener(OnNameTextUpdate);
-    }
-
-    public override void DetachToAlls()
-    {
-        _nameTextUpdateEventListener?.RemoveListener();
+        SubscribeWithAbility(NameTextUpdateEvent.Instance, OnNameTextUpdate);
     }
 
     public override void AttachToLocalPlayer()
     {
-        _wrapUpEventListener = WrapUpEvent.Instance.AddListener(OnWrapUp);
-        _fixedUpdateEventListener = FixedUpdateEvent.Instance.AddListener(OnFixedUpdate);
-    }
-
-    public override void DetachToLocalPlayer()
-    {
-        _wrapUpEventListener?.RemoveListener();
-        _fixedUpdateEventListener?.RemoveListener();
+        SubscribeWithAbility(WrapUpEvent.Instance, OnWrapUp);
+        SubscribeWithAbility(FixedUpdateEvent.Instance, OnFixedUpdate);
     }
 
     private void OnNameTextUpdate(NameTextUpdateEventData data)

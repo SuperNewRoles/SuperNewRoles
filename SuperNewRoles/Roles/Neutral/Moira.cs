@@ -5,7 +5,6 @@ using AmongUs.GameOptions;
 using SuperNewRoles.CustomOptions;
 using SuperNewRoles.Events;
 using SuperNewRoles.Modules;
-using SuperNewRoles.Modules.Events.Bases;
 using SuperNewRoles.Roles.Ability;
 using SuperNewRoles.Roles.Ability.CustomButton;
 using UnityEngine;
@@ -57,11 +56,6 @@ public class MoiraMeetingAbility : CustomMeetingButtonBase, IAbilityCount
 
     public override Sprite Sprite => AssetManager.GetAsset<Sprite>("MoiraButton.png");
     public override bool HasButtonLocalPlayer => false;
-    private EventListener<WrapUpEventData> wrapUpEvent;
-    private EventListener<MeetingHudCalculateVotesOnPlayerOnlyHostEventData> calculateVotesEvent;
-    private EventListener<VotingCompleteEventData> votingCompleteEvent;
-    private EventListener<NameTextUpdateEventData> nameTextUpdateEvent;
-    private EventListener<MeetingStartEventData> meetingStartEvent;
 
     public override bool CheckHasButton(ExPlayerControl player)
     {
@@ -76,31 +70,16 @@ public class MoiraMeetingAbility : CustomMeetingButtonBase, IAbilityCount
     {
         base.AttachToLocalPlayer();
         lastMeetingDead = ExPlayerControl.LocalPlayer.IsDead();
-        wrapUpEvent = WrapUpEvent.Instance.AddListener(OnWrapUp);
-        calculateVotesEvent = MeetingHudCalculateVotesOnPlayerOnlyHostEvent.Instance.AddListener(OnCalculateVotes);
+        SubscribeWithAbility(WrapUpEvent.Instance, OnWrapUp);
+        SubscribeWithAbility(MeetingHudCalculateVotesOnPlayerOnlyHostEvent.Instance, OnCalculateVotes);
     }
 
     public override void AttachToAlls()
     {
         base.AttachToAlls();
-        votingCompleteEvent = VotingCompleteEvent.Instance.AddListener(OnVotingComplete);
-        nameTextUpdateEvent = NameTextUpdateEvent.Instance.AddListener(OnNameTextUpdate);
-        meetingStartEvent = MeetingStartEvent.Instance.AddListener(OnMeetingStartAll);
-    }
-
-    public override void DetachToLocalPlayer()
-    {
-        base.DetachToLocalPlayer();
-        wrapUpEvent?.RemoveListener();
-        calculateVotesEvent?.RemoveListener();
-    }
-
-    public override void DetachToAlls()
-    {
-        base.DetachToAlls();
-        votingCompleteEvent?.RemoveListener();
-        nameTextUpdateEvent?.RemoveListener();
-        meetingStartEvent?.RemoveListener();
+        SubscribeWithAbility(VotingCompleteEvent.Instance, OnVotingComplete);
+        SubscribeWithAbility(NameTextUpdateEvent.Instance, OnNameTextUpdate);
+        SubscribeWithAbility(MeetingStartEvent.Instance, OnMeetingStartAll);
     }
 
     private void OnNameTextUpdate(NameTextUpdateEventData data)

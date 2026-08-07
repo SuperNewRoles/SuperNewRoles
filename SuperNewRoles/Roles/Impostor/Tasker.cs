@@ -7,7 +7,6 @@ using SuperNewRoles.Ability;
 using SuperNewRoles.CustomOptions;
 using SuperNewRoles.Events.PCEvents;
 using SuperNewRoles.Modules;
-using SuperNewRoles.Modules.Events.Bases;
 using SuperNewRoles.Patches;
 using SuperNewRoles.Roles.Ability;
 using UnityEngine;
@@ -63,17 +62,10 @@ class Tasker : RoleBase<Tasker>
 
 public class TaskerAbility : AbilityBase
 {
-    private EventListener<TaskCompleteEventData> _taskCompleteListener;
 
     public override void AttachToAlls()
     {
-        _taskCompleteListener = TaskCompleteEvent.Instance.AddListener(OnTaskComplete);
-    }
-
-    public override void DetachToAlls()
-    {
-        _taskCompleteListener?.RemoveListener();
-        _taskCompleteListener = null;
+        SubscribeWithAbility(TaskCompleteEvent.Instance, OnTaskComplete);
     }
 
     private void OnTaskComplete(TaskCompleteEventData data)

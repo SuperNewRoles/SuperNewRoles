@@ -6,7 +6,6 @@ using SuperNewRoles.Roles.Ability.CustomButton;
 using SuperNewRoles.Roles.Neutral;
 using SuperNewRoles.Events;
 using SuperNewRoles.Events.PCEvents;
-using SuperNewRoles.Modules.Events.Bases;
 using UnityEngine;
 using Hazel;
 using AmongUs.GameOptions;
@@ -19,7 +18,6 @@ public class OrientalShamanAbility : AbilityBase
 
     private NonAnimationVentButtonAbility _ventAbility;
     private CustomSidekickButtonAbility _servantAbility;
-    private EventListener<ExileEventData> _exileListener;
     private KnowOtherAbility _knowOtherAbility;
     private CustomTaskAbility _taskAbility;
     private PlayerArrowsAbility _playerArrowsAbility;
@@ -93,12 +91,7 @@ public class OrientalShamanAbility : AbilityBase
     public override void AttachToLocalPlayer()
     {
         base.AttachToLocalPlayer();
-        _exileListener = ExileEvent.Instance.AddListener(OnExile);
-    }
-
-    public override void DetachToLocalPlayer()
-    {
-        _exileListener?.RemoveListener();
+        SubscribeWithAbility(ExileEvent.Instance, OnExile);
     }
 
     private void OnExile(ExileEventData data)

@@ -5,7 +5,6 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using SuperNewRoles.Events;
-using SuperNewRoles.Modules.Events.Bases;
 using SuperNewRoles.Roles.Crewmate;
 using SuperNewRoles.CustomCosmetics;
 using SuperNewRoles.Events.PCEvents;
@@ -26,8 +25,6 @@ namespace SuperNewRoles.Roles.Ability
         private static List<int> _willSendChat = new();
         private static Dictionary<int, List<byte>> _lastUsedVentData = new();
 
-        private EventListener<MeetingStartEventData> _meetingStartListener;
-        private EventListener<VentEnterEventData> _ventEnterListener;
 
 
         public SilverBulletAnalyzeAbility(int count, float cooltime)
@@ -39,15 +36,8 @@ namespace SuperNewRoles.Roles.Ability
         public override void AttachToLocalPlayer()
         {
             base.AttachToLocalPlayer();
-            _meetingStartListener = MeetingStartEvent.Instance.AddListener(OnMeetingStart);
-            _ventEnterListener = VentEnterEvent.Instance.AddListener(OnVentEnter);
-        }
-
-        public override void DetachToLocalPlayer()
-        {
-            base.DetachToLocalPlayer();
-            _meetingStartListener?.RemoveListener();
-            _ventEnterListener?.RemoveListener();
+            SubscribeWithAbility(MeetingStartEvent.Instance, OnMeetingStart);
+            SubscribeWithAbility(VentEnterEvent.Instance, OnVentEnter);
         }
 
         private void OnVentEnter(VentEnterEventData data)
