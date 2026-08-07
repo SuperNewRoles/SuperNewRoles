@@ -16,7 +16,6 @@ public class CustomTaskTypeAbility : AbilityBase
     public TaskTypes TargetTaskType { get; }
     public MapNames? TargetMap { get; }
     public bool ChangeAllTasks { get; }
-    public bool IsPrefabReplacementMode => ShouldChangeTask();
 
     public CustomTaskTypeAbility(
         TaskTypes targetTaskType,

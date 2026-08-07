@@ -28,9 +28,9 @@ class BodyBuilder : RoleBase<BodyBuilder>
     ];
 
     internal static TaskSelectionExclusionConfig CreateTaskSelectionExclusion() => new(
-        () => BodyBuilderExcludeSpecificTasksFromPrefabReplacement,
-        (TaskTypes.ResetBreakers, () => BodyBuilderExcludeResetBreakersTaskFromPrefabReplacement),
-        (TaskTypes.ClearAsteroids, () => BodyBuilderExcludeClearAsteroidsTaskFromPrefabReplacement));
+        () => BodyBuilderExcludeSpecificTasksFromSelection,
+        (TaskTypes.ResetBreakers, () => BodyBuilderExcludeResetBreakersTaskFromSelection),
+        (TaskTypes.ClearAsteroids, () => BodyBuilderExcludeClearAsteroidsTaskFromSelection));
 
     public override QuoteMod QuoteMod { get; } = QuoteMod.SuperNewRoles;
     public override RoleTypes IntroSoundType { get; } = RoleTypes.Crewmate;
@@ -45,14 +45,14 @@ class BodyBuilder : RoleBase<BodyBuilder>
     [CustomOptionBool("BodyBuilderChangeAllTaskLiftWeights", false)]
     public static bool BodyBuilderChangeAllTaskLiftWeights;
 
-    [CustomOptionBool("BodyBuilderExcludeSpecificTasksFromPrefabReplacement", false, translationName: "ExcludeSpecificTasksFromPrefabReplacement")]
-    public static bool BodyBuilderExcludeSpecificTasksFromPrefabReplacement;
+    [CustomOptionBool("BodyBuilderExcludeSpecificTasksFromSelection", false, translationName: "ExcludeSpecificTasksFromSelection")]
+    public static bool BodyBuilderExcludeSpecificTasksFromSelection;
 
-    [CustomOptionBool("BodyBuilderExcludeResetBreakersTaskFromPrefabReplacement", false, translationName: "ExcludeResetBreakersTaskFromPrefabReplacement", parentFieldName: nameof(BodyBuilderExcludeSpecificTasksFromPrefabReplacement))]
-    public static bool BodyBuilderExcludeResetBreakersTaskFromPrefabReplacement;
+    [CustomOptionBool("BodyBuilderExcludeResetBreakersTaskFromSelection", false, translationName: "ExcludeResetBreakersTaskFromSelection", parentFieldName: nameof(BodyBuilderExcludeSpecificTasksFromSelection))]
+    public static bool BodyBuilderExcludeResetBreakersTaskFromSelection;
 
-    [CustomOptionBool("BodyBuilderExcludeClearAsteroidsTaskFromPrefabReplacement", false, translationName: "ExcludeClearAsteroidsTaskFromPrefabReplacement", parentFieldName: nameof(BodyBuilderExcludeSpecificTasksFromPrefabReplacement))]
-    public static bool BodyBuilderExcludeClearAsteroidsTaskFromPrefabReplacement;
+    [CustomOptionBool("BodyBuilderExcludeClearAsteroidsTaskFromSelection", false, translationName: "ExcludeClearAsteroidsTaskFromSelection", parentFieldName: nameof(BodyBuilderExcludeSpecificTasksFromSelection))]
+    public static bool BodyBuilderExcludeClearAsteroidsTaskFromSelection;
 
     [CustomOptionBool("BodyBuilderTaskOptionAvailable", false)]
     public static bool BodyBuilderTaskOptionAvailable;

@@ -16,7 +16,6 @@ public class CustomTaskAbility : AbilityBase
     public TaskOptionData? assignTaskData { get; }
     public TaskSelectionExclusionConfig TaskSelectionExclusionConfig { get; }
     public bool IsTaskSelectionExclusionActive =>
-        Player?.GetAbility<CustomTaskTypeAbility>()?.IsPrefabReplacementMode == true &&
         TaskSelectionExclusionConfig?.IsActive == true;
 
     public CustomTaskAbility(
@@ -117,13 +116,7 @@ public class CustomTaskAbility : AbilityBase
 
     public bool ShouldExcludeTask(TaskTypes taskType)
     {
-        return ShouldExcludeTask(taskType, IsTaskSelectionExclusionActive);
-    }
-
-    internal bool ShouldExcludeTask(TaskTypes taskType, bool isPrefabReplacementMode)
-    {
-        return isPrefabReplacementMode &&
-               TaskSelectionExclusionConfig?.IsExcluded(taskType) == true;
+        return TaskSelectionExclusionConfig?.IsExcluded(taskType) == true;
     }
 
     [CustomRPC]

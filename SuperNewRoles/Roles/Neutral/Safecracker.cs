@@ -30,9 +30,9 @@ class Safecracker : RoleBase<Safecracker>
     ];
 
     internal static TaskSelectionExclusionConfig CreateTaskSelectionExclusion() => new(
-        () => SafecrackerExcludeSpecificTasksFromPrefabReplacement,
-        (TaskTypes.ResetBreakers, () => SafecrackerExcludeResetBreakersTaskFromPrefabReplacement),
-        (TaskTypes.ClearAsteroids, () => SafecrackerExcludeClearAsteroidsTaskFromPrefabReplacement));
+        () => SafecrackerExcludeSpecificTasksFromSelection,
+        (TaskTypes.ResetBreakers, () => SafecrackerExcludeResetBreakersTaskFromSelection),
+        (TaskTypes.ClearAsteroids, () => SafecrackerExcludeClearAsteroidsTaskFromSelection));
 
     public override QuoteMod QuoteMod { get; } = QuoteMod.SuperNewRoles;
     public override RoleTypes IntroSoundType { get; } = RoleTypes.Crewmate;
@@ -71,14 +71,14 @@ class Safecracker : RoleBase<Safecracker>
     [CustomOptionBool("SafecrackerChangeTaskPrefab", false, translationName: "SafecrackerChangeTaskPrefabSetting")]
     public static bool SafecrackerChangeTaskPrefab;
 
-    [CustomOptionBool("SafecrackerExcludeSpecificTasksFromPrefabReplacement", false, translationName: "ExcludeSpecificTasksFromPrefabReplacement")]
-    public static bool SafecrackerExcludeSpecificTasksFromPrefabReplacement;
+    [CustomOptionBool("SafecrackerExcludeSpecificTasksFromSelection", false, translationName: "ExcludeSpecificTasksFromSelection")]
+    public static bool SafecrackerExcludeSpecificTasksFromSelection;
 
-    [CustomOptionBool("SafecrackerExcludeResetBreakersTaskFromPrefabReplacement", false, translationName: "ExcludeResetBreakersTaskFromPrefabReplacement", parentFieldName: nameof(SafecrackerExcludeSpecificTasksFromPrefabReplacement))]
-    public static bool SafecrackerExcludeResetBreakersTaskFromPrefabReplacement;
+    [CustomOptionBool("SafecrackerExcludeResetBreakersTaskFromSelection", false, translationName: "ExcludeResetBreakersTaskFromSelection", parentFieldName: nameof(SafecrackerExcludeSpecificTasksFromSelection))]
+    public static bool SafecrackerExcludeResetBreakersTaskFromSelection;
 
-    [CustomOptionBool("SafecrackerExcludeClearAsteroidsTaskFromPrefabReplacement", false, translationName: "ExcludeClearAsteroidsTaskFromPrefabReplacement", parentFieldName: nameof(SafecrackerExcludeSpecificTasksFromPrefabReplacement))]
-    public static bool SafecrackerExcludeClearAsteroidsTaskFromPrefabReplacement;
+    [CustomOptionBool("SafecrackerExcludeClearAsteroidsTaskFromSelection", false, translationName: "ExcludeClearAsteroidsTaskFromSelection", parentFieldName: nameof(SafecrackerExcludeSpecificTasksFromSelection))]
+    public static bool SafecrackerExcludeClearAsteroidsTaskFromSelection;
 
     [CustomOptionTask("SafecrackerTask", 3, 3, 3)]
     public static TaskOptionData SafecrackerTask;

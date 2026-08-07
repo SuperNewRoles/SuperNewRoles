@@ -192,7 +192,7 @@ public class TaskSelectionExclusionTests
     }
 
     [Fact]
-    public void CustomTaskAbility_AppliesConfigOnlyInPrefabReplacementMode()
+    public void CustomTaskAbility_AppliesConfigWithoutTaskTypeAbility()
     {
         var config = new TaskSelectionExclusionConfig(
             () => true,
@@ -201,8 +201,8 @@ public class TaskSelectionExclusionTests
             () => (true, true, null),
             taskSelectionExclusionConfig: config);
 
-        ability.ShouldExcludeTask(TaskTypes.ResetBreakers, isPrefabReplacementMode: false).Should().BeFalse();
-        ability.ShouldExcludeTask(TaskTypes.ResetBreakers, isPrefabReplacementMode: true).Should().BeTrue();
+        ability.IsTaskSelectionExclusionActive.Should().BeTrue();
+        ability.ShouldExcludeTask(TaskTypes.ResetBreakers).Should().BeTrue();
     }
 
     [Fact]
@@ -211,21 +211,21 @@ public class TaskSelectionExclusionTests
         AssertRoleFactory(
             typeof(HamburgerShop),
             HamburgerShop.CreateTaskSelectionExclusion,
-            nameof(HamburgerShop.HamburgerShopExcludeSpecificTasksFromPrefabReplacement),
-            nameof(HamburgerShop.HamburgerShopExcludeResetBreakersTaskFromPrefabReplacement),
-            nameof(HamburgerShop.HamburgerShopExcludeClearAsteroidsTaskFromPrefabReplacement));
+            nameof(HamburgerShop.HamburgerShopExcludeSpecificTasksFromSelection),
+            nameof(HamburgerShop.HamburgerShopExcludeResetBreakersTaskFromSelection),
+            nameof(HamburgerShop.HamburgerShopExcludeClearAsteroidsTaskFromSelection));
         AssertRoleFactory(
             typeof(BodyBuilder),
             BodyBuilder.CreateTaskSelectionExclusion,
-            nameof(BodyBuilder.BodyBuilderExcludeSpecificTasksFromPrefabReplacement),
-            nameof(BodyBuilder.BodyBuilderExcludeResetBreakersTaskFromPrefabReplacement),
-            nameof(BodyBuilder.BodyBuilderExcludeClearAsteroidsTaskFromPrefabReplacement));
+            nameof(BodyBuilder.BodyBuilderExcludeSpecificTasksFromSelection),
+            nameof(BodyBuilder.BodyBuilderExcludeResetBreakersTaskFromSelection),
+            nameof(BodyBuilder.BodyBuilderExcludeClearAsteroidsTaskFromSelection));
         AssertRoleFactory(
             typeof(Safecracker),
             Safecracker.CreateTaskSelectionExclusion,
-            nameof(Safecracker.SafecrackerExcludeSpecificTasksFromPrefabReplacement),
-            nameof(Safecracker.SafecrackerExcludeResetBreakersTaskFromPrefabReplacement),
-            nameof(Safecracker.SafecrackerExcludeClearAsteroidsTaskFromPrefabReplacement));
+            nameof(Safecracker.SafecrackerExcludeSpecificTasksFromSelection),
+            nameof(Safecracker.SafecrackerExcludeResetBreakersTaskFromSelection),
+            nameof(Safecracker.SafecrackerExcludeClearAsteroidsTaskFromSelection));
     }
 
     [Fact]
@@ -233,21 +233,21 @@ public class TaskSelectionExclusionTests
     {
         AssertRoleOptions(
             typeof(HamburgerShop),
-            nameof(HamburgerShop.HamburgerShopExcludeSpecificTasksFromPrefabReplacement),
-            nameof(HamburgerShop.HamburgerShopExcludeResetBreakersTaskFromPrefabReplacement),
-            nameof(HamburgerShop.HamburgerShopExcludeClearAsteroidsTaskFromPrefabReplacement),
+            nameof(HamburgerShop.HamburgerShopExcludeSpecificTasksFromSelection),
+            nameof(HamburgerShop.HamburgerShopExcludeResetBreakersTaskFromSelection),
+            nameof(HamburgerShop.HamburgerShopExcludeClearAsteroidsTaskFromSelection),
             DisplayModeId.Default);
         AssertRoleOptions(
             typeof(BodyBuilder),
-            nameof(BodyBuilder.BodyBuilderExcludeSpecificTasksFromPrefabReplacement),
-            nameof(BodyBuilder.BodyBuilderExcludeResetBreakersTaskFromPrefabReplacement),
-            nameof(BodyBuilder.BodyBuilderExcludeClearAsteroidsTaskFromPrefabReplacement),
+            nameof(BodyBuilder.BodyBuilderExcludeSpecificTasksFromSelection),
+            nameof(BodyBuilder.BodyBuilderExcludeResetBreakersTaskFromSelection),
+            nameof(BodyBuilder.BodyBuilderExcludeClearAsteroidsTaskFromSelection),
             DisplayModeId.All);
         AssertRoleOptions(
             typeof(Safecracker),
-            nameof(Safecracker.SafecrackerExcludeSpecificTasksFromPrefabReplacement),
-            nameof(Safecracker.SafecrackerExcludeResetBreakersTaskFromPrefabReplacement),
-            nameof(Safecracker.SafecrackerExcludeClearAsteroidsTaskFromPrefabReplacement),
+            nameof(Safecracker.SafecrackerExcludeSpecificTasksFromSelection),
+            nameof(Safecracker.SafecrackerExcludeResetBreakersTaskFromSelection),
+            nameof(Safecracker.SafecrackerExcludeClearAsteroidsTaskFromSelection),
             DisplayModeId.All);
     }
 
