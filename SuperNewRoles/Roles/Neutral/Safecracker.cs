@@ -24,9 +24,15 @@ class Safecracker : RoleBase<Safecracker>
             impostorLightTaskRate: SafecrackerIsImpostorLightTask,
             checkImpostorTaskRate: SafecrackerCheckImpostorTask,
             changeTaskPrefab: SafecrackerChangeTaskPrefab,
+            taskSelectionExclusion: CreateTaskSelectionExclusion(),
             task: SafecrackerTask
         )
     ];
+
+    internal static TaskSelectionExclusionConfig CreateTaskSelectionExclusion() => new(
+        () => SafecrackerExcludeSpecificTasksFromPrefabReplacement,
+        (TaskTypes.ResetBreakers, () => SafecrackerExcludeResetBreakersTaskFromPrefabReplacement),
+        (TaskTypes.ClearAsteroids, () => SafecrackerExcludeClearAsteroidsTaskFromPrefabReplacement));
 
     public override QuoteMod QuoteMod { get; } = QuoteMod.SuperNewRoles;
     public override RoleTypes IntroSoundType { get; } = RoleTypes.Crewmate;
@@ -64,6 +70,15 @@ class Safecracker : RoleBase<Safecracker>
 
     [CustomOptionBool("SafecrackerChangeTaskPrefab", false, translationName: "SafecrackerChangeTaskPrefabSetting")]
     public static bool SafecrackerChangeTaskPrefab;
+
+    [CustomOptionBool("SafecrackerExcludeSpecificTasksFromPrefabReplacement", false, translationName: "ExcludeSpecificTasksFromPrefabReplacement")]
+    public static bool SafecrackerExcludeSpecificTasksFromPrefabReplacement;
+
+    [CustomOptionBool("SafecrackerExcludeResetBreakersTaskFromPrefabReplacement", false, translationName: "ExcludeResetBreakersTaskFromPrefabReplacement", parentFieldName: nameof(SafecrackerExcludeSpecificTasksFromPrefabReplacement))]
+    public static bool SafecrackerExcludeResetBreakersTaskFromPrefabReplacement;
+
+    [CustomOptionBool("SafecrackerExcludeClearAsteroidsTaskFromPrefabReplacement", false, translationName: "ExcludeClearAsteroidsTaskFromPrefabReplacement", parentFieldName: nameof(SafecrackerExcludeSpecificTasksFromPrefabReplacement))]
+    public static bool SafecrackerExcludeClearAsteroidsTaskFromPrefabReplacement;
 
     [CustomOptionTask("SafecrackerTask", 3, 3, 3)]
     public static TaskOptionData SafecrackerTask;

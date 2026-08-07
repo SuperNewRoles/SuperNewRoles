@@ -1,4 +1,5 @@
 using System;
+using AmongUs.GameOptions;
 using UnityEngine;
 using SuperNewRoles.Modules;
 using SuperNewRoles.Roles.Ability.CustomButton;
@@ -13,10 +14,19 @@ public class CustomTaskAbility : AbilityBase
 {
     public Func<(bool isTaskTrigger, bool? countTask, int? all)> IsTaskTrigger { get; }
     public TaskOptionData? assignTaskData { get; }
-    public CustomTaskAbility(Func<(bool isTaskTrigger, bool? countTask, int? all)> isTaskTrigger, TaskOptionData? assignTaskData = null)
+    public TaskSelectionExclusionConfig TaskSelectionExclusionConfig { get; }
+    public bool IsTaskSelectionExclusionActive =>
+        Player?.GetAbility<CustomTaskTypeAbility>()?.IsPrefabReplacementMode == true &&
+        TaskSelectionExclusionConfig?.IsActive == true;
+
+    public CustomTaskAbility(
+        Func<(bool isTaskTrigger, bool? countTask, int? all)> isTaskTrigger,
+        TaskOptionData? assignTaskData = null,
+        TaskSelectionExclusionConfig taskSelectionExclusionConfig = null)
     {
         IsTaskTrigger = isTaskTrigger;
         this.assignTaskData = assignTaskData;
+        TaskSelectionExclusionConfig = taskSelectionExclusionConfig;
     }
 
     public (bool isTaskTrigger, bool? countTask, int? all)? CheckIsTaskTrigger()
@@ -50,7 +60,18 @@ public class CustomTaskAbility : AbilityBase
             customTaskTypeAbility.AssignTasks(all);
             return;
         }
-        if (assignTaskData == null) return;
+        var taskData = assignTaskData;
+        if (taskData == null && IsTaskSelectionExclusionActive)
+        {
+            var options = GameOptionsManager.Instance?.CurrentGameOptions;
+            if (options == null) return;
+
+            taskData = CreateVanillaTaskData(
+                options.GetInt(Int32OptionNames.NumShortTasks),
+                options.GetInt(Int32OptionNames.NumLongTasks),
+                options.GetInt(Int32OptionNames.NumCommonTasks));
+        }
+        if (taskData == null) return;
 
         // ShipStatusのインスタンスが存在しない場合は処理しない
         if (ShipStatus.Instance == null) return;
@@ -64,25 +85,47 @@ public class CustomTaskAbility : AbilityBase
 
         // CommonTasksを追加
         int startIndex = 0;
-        Il2CppInterop.Runtime.InteropTypes.Arrays.Il2CppReferenceArray<NormalPlayerTask> commonTasks = ShipStatus.Instance.CommonTasks;
-        var shuffledCommonTasks = commonTasks.ToSystemList().Shuffled();
-        ShipStatus.Instance.AddTasksFromList(ref startIndex, assignTaskData.Common, taskList, types, shuffledCommonTasks.ToIl2CppList());
+        var shuffledCommonTasks = TaskSelectionExclusion.GetAvailableTasks(Player, ShipStatus.Instance.CommonTasks).Shuffled();
+        ShipStatus.Instance.AddTasksFromList(ref startIndex, GetTaskCountToAssign(taskData.Common, shuffledCommonTasks.Count), taskList, types, shuffledCommonTasks.ToIl2CppList());
 
         // ShortTasksを追加
         startIndex = 0;
-        var shortTasks = ShipStatus.Instance.ShortTasks;
-        var shuffledShortTasks = shortTasks.ToSystemList().Shuffled();
-        ShipStatus.Instance.AddTasksFromList(ref startIndex, assignTaskData.Short, taskList, types, shuffledShortTasks.ToIl2CppList());
+        var shuffledShortTasks = TaskSelectionExclusion.GetAvailableTasks(Player, ShipStatus.Instance.ShortTasks).Shuffled();
+        ShipStatus.Instance.AddTasksFromList(ref startIndex, GetTaskCountToAssign(taskData.Short, shuffledShortTasks.Count), taskList, types, shuffledShortTasks.ToIl2CppList());
 
         // LongTasksを追加
         startIndex = 0;
-        var longTasks = ShipStatus.Instance.LongTasks;
-        var shuffledLongTasks = longTasks.ToSystemList().Shuffled();
-        ShipStatus.Instance.AddTasksFromList(ref startIndex, assignTaskData.Long, taskList, types, shuffledLongTasks.ToIl2CppList());
+        var shuffledLongTasks = TaskSelectionExclusion.GetAvailableTasks(Player, ShipStatus.Instance.LongTasks).Shuffled();
+        ShipStatus.Instance.AddTasksFromList(ref startIndex, GetTaskCountToAssign(taskData.Long, shuffledLongTasks.Count), taskList, types, shuffledLongTasks.ToIl2CppList());
 
         // タスクをプレイヤーに割り当てる
         RpcUncheckedSetTasks(Player, taskList.ToSystemList());
     }
+
+    internal static TaskOptionData CreateVanillaTaskData(int shortTasks, int longTasks, int commonTasks)
+    {
+        if (shortTasks + longTasks + commonTasks == 0)
+            shortTasks = 1;
+
+        return new TaskOptionData(shortTasks, longTasks, commonTasks);
+    }
+
+    internal static int GetTaskCountToAssign(int requestedCount, int candidateCount)
+    {
+        return candidateCount == 0 ? 0 : requestedCount;
+    }
+
+    public bool ShouldExcludeTask(TaskTypes taskType)
+    {
+        return ShouldExcludeTask(taskType, IsTaskSelectionExclusionActive);
+    }
+
+    internal bool ShouldExcludeTask(TaskTypes taskType, bool isPrefabReplacementMode)
+    {
+        return isPrefabReplacementMode &&
+               TaskSelectionExclusionConfig?.IsExcluded(taskType) == true;
+    }
+
     [CustomRPC]
     public static void RpcUncheckedSetTasks(PlayerControl player, System.Collections.Generic.List<byte> taskList)
     {

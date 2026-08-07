@@ -15,12 +15,22 @@ class BodyBuilder : RoleBase<BodyBuilder>
     public override List<Func<AbilityBase>> Abilities { get; } = [
         () => new BodyBuilderAbility(),
         () => new LiftWeightsMinigameAbility(),
-        () => new CustomTaskTypeAbility(TaskTypes.LiftWeights, BodyBuilderChangeAllTaskLiftWeights, MapNames.Fungle),
+        () => new CustomTaskTypeAbility(
+            TaskTypes.LiftWeights,
+            BodyBuilderChangeAllTaskLiftWeights,
+            MapNames.Fungle
+        ),
         () => new CustomTaskAbility(
             () => (true, BodyBuilderTaskOptionAvailable, BodyBuilderTaskOptionAvailable ? BodyBuilderTaskOption.Total : null),
-            BodyBuilderTaskOptionAvailable ? BodyBuilderTaskOption : null
+            BodyBuilderTaskOptionAvailable ? BodyBuilderTaskOption : null,
+            CreateTaskSelectionExclusion()
         )
     ];
+
+    internal static TaskSelectionExclusionConfig CreateTaskSelectionExclusion() => new(
+        () => BodyBuilderExcludeSpecificTasksFromPrefabReplacement,
+        (TaskTypes.ResetBreakers, () => BodyBuilderExcludeResetBreakersTaskFromPrefabReplacement),
+        (TaskTypes.ClearAsteroids, () => BodyBuilderExcludeClearAsteroidsTaskFromPrefabReplacement));
 
     public override QuoteMod QuoteMod { get; } = QuoteMod.SuperNewRoles;
     public override RoleTypes IntroSoundType { get; } = RoleTypes.Crewmate;
@@ -34,6 +44,15 @@ class BodyBuilder : RoleBase<BodyBuilder>
 
     [CustomOptionBool("BodyBuilderChangeAllTaskLiftWeights", false)]
     public static bool BodyBuilderChangeAllTaskLiftWeights;
+
+    [CustomOptionBool("BodyBuilderExcludeSpecificTasksFromPrefabReplacement", false, translationName: "ExcludeSpecificTasksFromPrefabReplacement")]
+    public static bool BodyBuilderExcludeSpecificTasksFromPrefabReplacement;
+
+    [CustomOptionBool("BodyBuilderExcludeResetBreakersTaskFromPrefabReplacement", false, translationName: "ExcludeResetBreakersTaskFromPrefabReplacement", parentFieldName: nameof(BodyBuilderExcludeSpecificTasksFromPrefabReplacement))]
+    public static bool BodyBuilderExcludeResetBreakersTaskFromPrefabReplacement;
+
+    [CustomOptionBool("BodyBuilderExcludeClearAsteroidsTaskFromPrefabReplacement", false, translationName: "ExcludeClearAsteroidsTaskFromPrefabReplacement", parentFieldName: nameof(BodyBuilderExcludeSpecificTasksFromPrefabReplacement))]
+    public static bool BodyBuilderExcludeClearAsteroidsTaskFromPrefabReplacement;
 
     [CustomOptionBool("BodyBuilderTaskOptionAvailable", false)]
     public static bool BodyBuilderTaskOptionAvailable;

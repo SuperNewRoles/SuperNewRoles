@@ -29,6 +29,7 @@ public class SafecrackerAbility : AbilityBase
     private int _killGuardCount;
     private int _exiledGuardCount;
     private Dictionary<CheckTasks, bool> _unlockedAbilities;
+    private readonly TaskSelectionExclusionConfig _taskSelectionExclusionConfig;
 
     private EventListener<TryKillEventData> _onTryKillListener;
     private EventListener<ExileEventData> _exileListener;
@@ -56,6 +57,7 @@ public class SafecrackerAbility : AbilityBase
         float impostorLightTaskRate,
         float checkImpostorTaskRate,
         bool changeTaskPrefab,
+        TaskSelectionExclusionConfig taskSelectionExclusion,
         TaskOptionData task)
     {
         KillGuardTaskRate = killGuardTaskRate;
@@ -67,6 +69,7 @@ public class SafecrackerAbility : AbilityBase
         ImpostorLightTaskRate = impostorLightTaskRate;
         CheckImpostorTaskRate = checkImpostorTaskRate;
         ChangeTaskPrefab = changeTaskPrefab;
+        _taskSelectionExclusionConfig = taskSelectionExclusion;
 
         _unlockedAbilities = new();
         _killGuardCount = 0;
@@ -86,7 +89,7 @@ public class SafecrackerAbility : AbilityBase
         _onTryKillListener = TryKillEvent.Instance.AddListener(OnTryKill);
         _exileListener = ExileEvent.Instance.AddListener(OnExile);
         _taskCompleteListener = TaskCompleteEvent.Instance.AddListener(OnTaskComplete);
-        Player.AttachAbility(new CustomTaskAbility(() => (true, false, null), _task), new AbilityParentAbility(this));
+        Player.AttachAbility(new CustomTaskAbility(() => (true, false, null), _task, _taskSelectionExclusionConfig), new AbilityParentAbility(this));
         Player.AttachAbility(new CustomTaskTypeAbility(TaskTypes.UnlockSafe, ChangeTaskPrefab, MapNames.Airship), new AbilityParentAbility(this));
         CheckAllAbilities();
     }

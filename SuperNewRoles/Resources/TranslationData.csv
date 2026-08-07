@@ -134,6 +134,9 @@ FixSpawnPacketSize,ホストが切断されにくくする(推奨:オン),Stabil
 WaitingSpawnText,ロドー中... 残り:{0}/{1}クルー,Waiting... {0}/{1} Crewmates,等待中... {0}/{1} 船员,等待中... {0}/{1} 船員
 
 # GameSettings
+ExcludeSpecificTasksFromPrefabReplacement,prefab置き換え時に特定のタスクを選出しない,Exclude specific tasks during prefab replacement,在 prefab 替换时不选择特定任务,在 prefab 替換時不選擇特定任務
+ExcludeResetBreakersTaskFromPrefabReplacement,prefab置き換え時にレバータスクを選出しない,Exclude lever task during prefab replacement,在 prefab 替换时不选择拉杆任务,在 prefab 替換時不選擇拉桿任務
+ExcludeClearAsteroidsTaskFromPrefabReplacement,prefab置き換え時にシューティングタスクを選出しない,Exclude shooting task during prefab replacement,在 prefab 替换时不选择射击任务,在 prefab 替換時不選擇射擊任務
 CannotTaskTrigger,タスクに関係ない役職の場合、タスクをできなくする,Disable tasks for non-task-related roles,如果职业与任务无关，则无法完成任务,如果职业與任務無關，則無法完成任務
 CursedTaskOption,呪いタスク,Cursed Tasks,诅咒任务,詛咒任務
 ExcludeSpecificTasksFromSelection,特定のタスクを選出しない,Exclude specific tasks from selection,不选择特定任务,不選擇特定任務
