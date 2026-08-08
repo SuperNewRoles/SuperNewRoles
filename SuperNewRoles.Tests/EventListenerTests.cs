@@ -1,4 +1,5 @@
 using System;
+using System.IO;
 using System.Reflection;
 using BepInEx.Logging;
 using FluentAssertions;
@@ -25,17 +26,28 @@ public class EventListenerTests
     private class ListenerOwningAbility : AbilityBase
     {
         private readonly Action _action;
+        private readonly bool _throwOnAttachToAlls;
         private readonly bool _throwOnDetachToAlls;
 
-        public ListenerOwningAbility(Action action, bool throwOnDetachToAlls = false)
+        public ListenerOwningAbility(
+            Action action,
+            bool throwOnAttachToAlls = false,
+            bool throwOnDetachToAlls = false)
         {
             _action = action;
+            _throwOnAttachToAlls = throwOnAttachToAlls;
             _throwOnDetachToAlls = throwOnDetachToAlls;
         }
 
         protected override bool IsLocalPlayer(PlayerControl player) => true;
 
-        public override void AttachToAlls() => SubscribeWithAbility(NoArgEvent.Instance, _action);
+        public override void AttachToAlls()
+        {
+            if (_throwOnAttachToAlls)
+                throw new InvalidOperationException("attach failed");
+
+            SubscribeWithAbility(NoArgEvent.Instance, _action);
+        }
 
         public override void DetachToAlls()
         {
@@ -140,6 +152,34 @@ public class EventListenerTests
         NoArgEvent.Instance.Awake();
 
         called.Should().Be(1);
+    }
+
+    [Fact]
+    public void Attach_WhenLifecycleHookThrows_DoesNotThrowAndLogsContext()
+    {
+        EnsurePluginLogger();
+        ResetEvents();
+        var ability = new ListenerOwningAbility(() => { }, throwOnAttachToAlls: true);
+        var originalError = System.Console.Error;
+        using var errorOutput = new StringWriter();
+
+        System.Console.SetError(errorOutput);
+        try
+        {
+            Action act = () => ability.Attach(null, 42, new AbilityParentPlayer(null));
+            act.Should().NotThrow();
+        }
+        finally
+        {
+            System.Console.SetError(originalError);
+        }
+
+        errorOutput.ToString().Should()
+            .Contain("Ability lifecycle failure during Attach")
+            .And.Contain($"ability={typeof(ListenerOwningAbility).FullName}")
+            .And.Contain("abilityId=42")
+            .And.Contain("System.InvalidOperationException: attach failed")
+            .And.Contain(nameof(ListenerOwningAbility.AttachToAlls));
     }
 
     [Fact]
