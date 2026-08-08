@@ -99,7 +99,9 @@ public class ExPlayerControlTests
     {
         var abilities = ex.PlayerAbilities;
         var dict = ex.PlayerAbilitiesDictionary;
-        var abilityId = ExPlayerControlExtensions.GenerateDeterministicAbilityId(ex.PlayerId, new AbilityParentPlayer(ex), ability.GetType());
+        var parent = new AbilityParentPlayer(ex);
+        typeof(AbilityBase).GetProperty(nameof(AbilityBase.Parent))!.SetValue(ability, parent);
+        var abilityId = ExPlayerControlExtensions.GenerateDeterministicAbilityId(ex.PlayerId, parent, ability.GetType());
         typeof(ExPlayerControl).GetProperty(nameof(ExPlayerControl.lastAbilityId))!.SetValue(ex, ex.lastAbilityId + 1);
 
         abilities.Add(ability);
@@ -220,18 +222,139 @@ public class ExPlayerControlTests
         ShallowAttach(ex, high);
 
         ex.CanUseVent().Should().BeTrue();
+        ex.ShouldShowVentAbility(low).Should().BeTrue();
+        ex.ShouldShowVentAbility(high).Should().BeFalse();
 
         highDecision = false;
         ex.CanUseVent().Should().BeFalse();
+        ex.ShouldShowVentAbility(low).Should().BeFalse();
+        ex.ShouldShowVentAbility(high).Should().BeFalse();
+        // ShowVanillaVentButton uses the inverse of this guard, so a custom false decision suppresses vanilla too.
+        var decisionArgs = new object[] { null!, false };
+        InvokePrivate<bool>(ex, "TryGetVentDecision", decisionArgs).Should().BeTrue();
+        decisionArgs[0].Should().BeSameAs(high);
+        decisionArgs[1].Should().Be(false);
 
         // Derived abilities are grouped with CustomVentAbility automatically.
         var latestAtSamePriority = new DerivedVentAbility(() => true, priority: 10);
         ShallowAttach(ex, latestAtSamePriority);
         ex.CanUseVent().Should().BeTrue();
+        ex.ShouldShowVentAbility(latestAtSamePriority).Should().BeTrue();
+        ex.ShouldShowVentAbility(high).Should().BeFalse();
+        ex.ShouldShowVentAbility(low).Should().BeFalse();
         var priorityGroups = GetField<Dictionary<int, List<AbilityBase>>>(ex, "_prioritizedAbilities");
         priorityGroups.Should().ContainSingle();
         foreach (var abilities in priorityGroups.Values)
             abilities[0].Should().BeSameAs(latestAtSamePriority);
+
+        ShallowDetach(ex, latestAtSamePriority);
+        ex.CanUseVent().Should().BeFalse();
+
+        ShallowDetach(ex, high);
+        ex.CanUseVent().Should().BeTrue();
+        ex.ShouldShowVentAbility(low).Should().BeTrue();
+
+        ShallowDetach(ex, low);
+        decisionArgs = new object[] { null!, false };
+        InvokePrivate<bool>(ex, "TryGetVentDecision", decisionArgs).Should().BeFalse();
+    }
+
+    [Fact]
+    public void SabotageDecision_UsesPriority_NullDelegation_LatestTieBreaker_AndButtonSelection()
+    {
+        var ex = CreateBareEx(playerId: 15, role: RoleId.Crewmate);
+        bool? highDecision = null;
+        var low = new CustomSaboAbility(() => true, priority: 0);
+        var high = new CustomSaboAbility(() => highDecision, priority: 10);
+        ShallowAttach(ex, low);
+        ShallowAttach(ex, high);
+
+        ex.CanSabotage().Should().BeTrue();
+        ex.ShouldShowSabotageAbility(low).Should().BeTrue();
+        ex.ShouldShowSabotageAbility(high).Should().BeFalse();
+
+        highDecision = false;
+        ex.CanSabotage().Should().BeFalse();
+        ex.ShouldShowSabotageAbility(low).Should().BeFalse();
+        ex.ShouldShowSabotageAbility(high).Should().BeFalse();
+        // ShowVanillaSabotageButton uses the inverse of this guard, so a custom false decision suppresses vanilla too.
+        var decisionArgs = new object[] { null!, false };
+        InvokePrivate<bool>(ex, "TryGetSabotageDecision", decisionArgs).Should().BeTrue();
+        decisionArgs[0].Should().BeSameAs(high);
+        decisionArgs[1].Should().Be(false);
+
+        var latestAtSamePriority = new CustomSaboAbility(() => true, priority: 10);
+        ShallowAttach(ex, latestAtSamePriority);
+        ex.CanSabotage().Should().BeTrue();
+        ex.ShouldShowSabotageAbility(latestAtSamePriority).Should().BeTrue();
+        ex.ShouldShowSabotageAbility(high).Should().BeFalse();
+        ex.ShouldShowSabotageAbility(low).Should().BeFalse();
+
+        ShallowDetach(ex, latestAtSamePriority);
+        ex.CanSabotage().Should().BeFalse();
+
+        ShallowDetach(ex, high);
+        ex.CanSabotage().Should().BeTrue();
+        ex.ShouldShowSabotageAbility(low).Should().BeTrue();
+
+        ShallowDetach(ex, low);
+        decisionArgs = new object[] { null!, false };
+        InvokePrivate<bool>(ex, "TryGetSabotageDecision", decisionArgs).Should().BeFalse();
+    }
+
+    [Fact]
+    public void KillableDecision_UsesPriority_NullDelegation_LatestTieBreaker_AndDetachFallback()
+    {
+        var ex = CreateBareEx(playerId: 16, role: RoleId.Crewmate);
+        bool? highDecision = null;
+        var low = new KillableAbility(() => true, priority: 0);
+        var high = new KillableAbility(() => highDecision, priority: 10);
+        ShallowAttach(ex, low);
+        ShallowAttach(ex, high);
+
+        InvokePrivate<bool>(ex, "ResolveCanKill").Should().BeTrue();
+
+        highDecision = false;
+        InvokePrivate<bool>(ex, "ResolveCanKill").Should().BeFalse();
+
+        var latestAtSamePriority = new KillableAbility(() => true, priority: 10);
+        ShallowAttach(ex, latestAtSamePriority);
+        InvokePrivate<bool>(ex, "ResolveCanKill").Should().BeTrue();
+
+        ShallowDetach(ex, latestAtSamePriority);
+        InvokePrivate<bool>(ex, "ResolveCanKill").Should().BeFalse();
+
+        ShallowDetach(ex, high);
+        InvokePrivate<bool>(ex, "ResolveCanKill").Should().BeTrue();
+
+        ShallowDetach(ex, low);
+        InvokePrivate<bool>(ex, "ResolveCanKill").Should().BeTrue();
+    }
+
+    [Fact]
+    public void ImpostorVisionDecision_UsesPriority_NullDelegation_LatestTieBreaker_AndDetachFallback()
+    {
+        var ex = CreateBareEx(playerId: 17, role: RoleId.Crewmate);
+        bool? highDecision = null;
+        var low = new ImpostorVisionAbility(() => true, priority: 0);
+        var high = new ImpostorVisionAbility(() => highDecision, priority: 10);
+        ShallowAttach(ex, low);
+        ShallowAttach(ex, high);
+
+        ex.HasImpostorVision().Should().BeTrue();
+
+        highDecision = false;
+        ex.HasImpostorVision().Should().BeFalse();
+
+        var latestAtSamePriority = new ImpostorVisionAbility(() => true, priority: 10);
+        ShallowAttach(ex, latestAtSamePriority);
+        ex.HasImpostorVision().Should().BeTrue();
+
+        ShallowDetach(ex, latestAtSamePriority);
+        ex.HasImpostorVision().Should().BeFalse();
+
+        ShallowDetach(ex, high);
+        ex.HasImpostorVision().Should().BeTrue();
     }
 
     // 目的: 拡張メソッドとインターフェース実装の GenerateAbilityId が一致することを検証

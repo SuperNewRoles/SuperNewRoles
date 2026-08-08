@@ -344,6 +344,12 @@ public class ExPlayerControl
     }
     public bool showKillButtonVanilla()
     {
+        var canKill = ResolveCanKill();
+        return IsImpostor() && IsAlive() && canKill;
+    }
+
+    private bool ResolveCanKill()
+    {
         var canKill = true;
         var killableAbilities = GetPrioritizedAbilities<KillableAbility>();
         if (killableAbilities != null)
@@ -356,7 +362,7 @@ public class ExPlayerControl
                 break;
             }
         }
-        return IsImpostor() && IsAlive() && canKill;
+        return canKill;
     }
     private void DetachOldRole(RoleId roleId)
     {
