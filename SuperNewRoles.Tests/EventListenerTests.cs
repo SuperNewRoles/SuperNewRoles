@@ -183,19 +183,36 @@ public class EventListenerTests
     }
 
     [Fact]
-    public void Detach_WhenLifecycleHookThrows_StillRemovesAbilityOwnedListeners()
+    public void Detach_WhenLifecycleHookThrows_StillRemovesListenersAndLogsContext()
     {
         EnsurePluginLogger();
         ResetEvents();
         var called = 0;
         var ability = new ListenerOwningAbility(() => called++, throwOnDetachToAlls: true);
-        ability.Attach(null, 1, new AbilityParentPlayer(null));
+        ability.Attach(null, 43, new AbilityParentPlayer(null));
+        var originalError = System.Console.Error;
+        using var errorOutput = new StringWriter();
 
-        Action act = ability.Detach;
-        act.Should().NotThrow();
+        System.Console.SetError(errorOutput);
+        try
+        {
+            Action act = ability.Detach;
+            act.Should().NotThrow();
+        }
+        finally
+        {
+            System.Console.SetError(originalError);
+        }
+
         NoArgEvent.Instance.Awake();
 
         called.Should().Be(0);
+        errorOutput.ToString().Should()
+            .Contain("Ability lifecycle failure during Detach")
+            .And.Contain($"ability={typeof(ListenerOwningAbility).FullName}")
+            .And.Contain("abilityId=43")
+            .And.Contain("System.InvalidOperationException: detach failed")
+            .And.Contain(nameof(ListenerOwningAbility.DetachToAlls));
     }
 
     // 目的: 1つのリスナーが例外を投げても他のリスナー実行は継続されることを検証
