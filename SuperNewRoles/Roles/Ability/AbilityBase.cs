@@ -7,7 +7,24 @@ namespace SuperNewRoles.Roles.Ability;
 
 public abstract class AbilityBase
 {
+    private enum LifecycleState
+    {
+        Detached,
+        Attaching,
+        Attached,
+        Detaching
+    }
+
+    private enum AttachmentTarget
+    {
+        Unknown,
+        LocalPlayer,
+        Others
+    }
+
     private readonly List<IEventListener> _eventListeners = new();
+    private LifecycleState _lifecycleState;
+    private AttachmentTarget _attachmentTarget;
 
     public ulong AbilityId { get; protected set; }
     public ExPlayerControl Player => Parent.Player;
@@ -48,22 +65,47 @@ public abstract class AbilityBase
     protected void RemoveEventListeners()
     {
         for (var i = _eventListeners.Count - 1; i >= 0; i--)
-            _eventListeners[i]?.RemoveListener();
+        {
+            try
+            {
+                _eventListeners[i]?.RemoveListener();
+            }
+            catch (Exception ex)
+            {
+                LogLifecycleError("RemoveEventListener", ex);
+            }
+        }
         _eventListeners.Clear();
     }
 
     protected virtual bool IsLocalPlayer(PlayerControl player) => player == PlayerControl.LocalPlayer;
 
-    public virtual void Attach(PlayerControl player, ulong abilityId, AbilityParentBase parent)
+    public void Attach(PlayerControl player, ulong abilityId, AbilityParentBase parent)
     {
+        if (_lifecycleState != LifecycleState.Detached)
+        {
+            Logger.Warning($"Ability lifecycle ignored duplicate Attach: {GetLifecycleContext()}", "SNR.Ability");
+            return;
+        }
+
         Parent = parent;
         AbilityId = abilityId;
-        if (IsLocalPlayer(player))
-            AttachToLocalPlayer();
-        else
-            AttachToOthers();
-        AttachToAlls();
+        _lifecycleState = LifecycleState.Attaching;
+        _attachmentTarget = ResolveAttachmentTarget(player);
+
+        if (_attachmentTarget == AttachmentTarget.LocalPlayer)
+            RunLifecycleHook(nameof(AttachToLocalPlayer), AttachToLocalPlayer);
+        else if (_attachmentTarget == AttachmentTarget.Others)
+            RunLifecycleHook(nameof(AttachToOthers), AttachToOthers);
+
+        RunLifecycleHook(nameof(AttachToAlls), AttachToAlls);
+        RunLifecycleHook(nameof(OnAttached), () => OnAttached(player));
+
+        if (_lifecycleState == LifecycleState.Attaching)
+            _lifecycleState = LifecycleState.Attached;
     }
+
+    protected virtual void OnAttached(PlayerControl player) { }
 
     public virtual void AttachToLocalPlayer() { }
 
@@ -73,19 +115,66 @@ public abstract class AbilityBase
 
     public void Detach()
     {
+        if (_lifecycleState is LifecycleState.Detached or LifecycleState.Detaching)
+            return;
+
+        _lifecycleState = LifecycleState.Detaching;
+
+        if (_attachmentTarget == AttachmentTarget.LocalPlayer)
+            RunLifecycleHook(nameof(DetachToLocalPlayer), DetachToLocalPlayer);
+        else if (_attachmentTarget == AttachmentTarget.Others)
+            RunLifecycleHook(nameof(DetachToOthers), DetachToOthers);
+
+        RunLifecycleHook(nameof(DetachToAlls), DetachToAlls);
+        RemoveEventListeners();
+
+        _attachmentTarget = AttachmentTarget.Unknown;
+        _lifecycleState = LifecycleState.Detached;
+    }
+
+    private AttachmentTarget ResolveAttachmentTarget(PlayerControl player)
+    {
         try
         {
-            if (IsLocalPlayer(Player))
-                DetachToLocalPlayer();
-            else
-                DetachToOthers();
-            DetachToAlls();
+            return IsLocalPlayer(player) ? AttachmentTarget.LocalPlayer : AttachmentTarget.Others;
         }
-        finally
+        catch (Exception ex)
         {
-            RemoveEventListeners();
+            LogLifecycleError(nameof(IsLocalPlayer), ex);
+            return AttachmentTarget.Unknown;
         }
     }
+
+    private void RunLifecycleHook(string hookName, Action hook)
+    {
+        try
+        {
+            hook();
+        }
+        catch (Exception ex)
+        {
+            LogLifecycleError(hookName, ex);
+        }
+    }
+
+    private void LogLifecycleError(string operation, Exception ex)
+        => Logger.Error($"Ability lifecycle failure during {operation}: {GetLifecycleContext()}\n{ex}", "SNR.Ability");
+
+    private string GetLifecycleContext()
+    {
+        string playerId;
+        try
+        {
+            playerId = Parent?.Player?.PlayerId.ToString() ?? "null";
+        }
+        catch
+        {
+            playerId = "unavailable";
+        }
+
+        return $"ability={GetType().FullName}, abilityId={AbilityId}, playerId={playerId}, state={_lifecycleState}";
+    }
+
     public virtual void DetachToLocalPlayer() { }
     public virtual void DetachToOthers() { }
     public virtual void DetachToAlls() { }

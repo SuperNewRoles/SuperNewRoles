@@ -232,9 +232,8 @@ class BalancerAbility : AbilityBase, IAbilityCount
         updateEventListener = SubscribeWithAbility(FixedUpdateEvent.Instance, Update);
     }
 
-    public override void Attach(PlayerControl player, ulong abilityId, AbilityParentBase parent)
+    protected override void OnAttached(PlayerControl player)
     {
-        base.Attach(player, abilityId, parent);
         meetingStartEventListener = SubscribeWithAbility(MeetingStartEvent.Instance, x => OnMeetingStart());
         meetingCloseEventListener = SubscribeWithAbility(MeetingCloseEvent.Instance, x => OnMeetingClosed());
         fixedUpdateEventListener = SubscribeWithAbility(FixedUpdateEvent.Instance, FixedUpdateAnimation);

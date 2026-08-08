@@ -371,9 +371,8 @@ public class PusherAbility : TargetCustomButtonBase
         }
     }
 
-    public override void Attach(PlayerControl player, ulong abilityId, AbilityParentBase parent)
+    protected override void OnAttached(PlayerControl player)
     {
-        base.Attach(player, abilityId, parent);
         SyncKillCoolTimeAbility.CreateAndAttach(this);
         SubscribeWithAbility(FixedUpdateEvent.Instance, OnFixedUpdate);
         SubscribeWithAbility(WrapUpEvent.Instance, _ => OnWrapup());

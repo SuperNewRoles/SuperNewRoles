@@ -36,9 +36,8 @@ public class PavlovsDogAbility : AbilityBase
         _timer = 0f;
     }
 
-    public override void Attach(PlayerControl player, ulong abilityId, AbilityParentBase parent)
+    protected override void OnAttached(PlayerControl player)
     {
-        base.Attach(player, abilityId, parent);
         _ventAbility = new CustomVentAbility(() => _data.canUseVent);
         _visionAbility = new ImpostorVisionAbility(() => _data.isImpostorVision);
         _killAbility = new CustomKillButtonAbility(

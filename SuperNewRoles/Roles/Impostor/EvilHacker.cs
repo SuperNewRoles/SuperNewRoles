@@ -105,10 +105,8 @@ public class EvilHackerAbility : AbilityBase
         Data = hackerData;
     }
 
-    public override void Attach(PlayerControl player, ulong abilityId, AbilityParentBase parent)
+    protected override void OnAttached(PlayerControl player)
     {
-        base.Attach(player, abilityId, parent);
-
         _portableAdminAbility = new PortableAdminAbility(new PortableAdminData(
             CanUseAdmin: () => true,
             canUseAdminDuringComms: () => Data.canUseAdminDuringComms,
