@@ -312,6 +312,92 @@ public class EventListenerTests
 
     // 目的: 1つのリスナーが例外を投げても他のリスナー実行は継続されることを検証
     [Fact]
+    public void NoArgEvent_RemoveListenerDuringNestedAwake_SkipsItInOuterAwake()
+    {
+        EnsurePluginLogger();
+        ResetEvents();
+        var nested = false;
+        var called = 0;
+        EventListener? secondListener = null;
+
+        NoArgEvent.Instance.AddListener(() =>
+        {
+            if (!nested)
+            {
+                nested = true;
+                NoArgEvent.Instance.Awake();
+                nested = false;
+                return;
+            }
+
+            secondListener!.RemoveListener();
+        });
+        secondListener = NoArgEvent.Instance.AddListener(() => called++);
+
+        NoArgEvent.Instance.Awake();
+
+        called.Should().Be(0);
+    }
+
+    [Fact]
+    public void GenericEvent_RemoveListenerDuringNestedAwake_SkipsItInOuterAwake()
+    {
+        EnsurePluginLogger();
+        ResetEvents();
+        var nested = false;
+        var called = 0;
+        EventListener<DummyData>? secondListener = null;
+
+        DataEvent.Instance.AddListener(data =>
+        {
+            if (!nested)
+            {
+                nested = true;
+                DataEvent.Instance.Awake(data);
+                nested = false;
+                return;
+            }
+
+            secondListener!.RemoveListener();
+        });
+        secondListener = DataEvent.Instance.AddListener(_ => called++);
+
+        DataEvent.Instance.Awake(new DummyData { Value = 1 });
+
+        called.Should().Be(0);
+    }
+
+    [Fact]
+    public void NoArgEvent_RemoveListenerAllDuringAwake_SkipsRemainingListeners()
+    {
+        EnsurePluginLogger();
+        ResetEvents();
+        var called = 0;
+        NoArgEvent.Instance.AddListener(NoArgEvent.Instance.RemoveListenerAll);
+        NoArgEvent.Instance.AddListener(() => called++);
+
+        NoArgEvent.Instance.Awake();
+        NoArgEvent.Instance.Awake();
+
+        called.Should().Be(0);
+    }
+
+    [Fact]
+    public void GenericEvent_RemoveListenerAllDuringAwake_SkipsRemainingListeners()
+    {
+        EnsurePluginLogger();
+        ResetEvents();
+        var called = 0;
+        DataEvent.Instance.AddListener(_ => DataEvent.Instance.RemoveListenerAll());
+        DataEvent.Instance.AddListener(_ => called++);
+
+        DataEvent.Instance.Awake(new DummyData { Value = 1 });
+        DataEvent.Instance.Awake(new DummyData { Value = 2 });
+
+        called.Should().Be(0);
+    }
+
+    [Fact]
     public void NoArgEvent_Exception_In_Listener_Does_Not_Stop_Others()
     {
         EnsurePluginLogger();
@@ -342,4 +428,3 @@ public class EventListenerTests
         called.Should().Be(1);
     }
 }
-
