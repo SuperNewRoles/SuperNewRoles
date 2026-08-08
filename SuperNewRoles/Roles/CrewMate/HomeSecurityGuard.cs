@@ -5,7 +5,6 @@ using AmongUs.GameOptions;
 using SuperNewRoles.CustomOptions;
 using SuperNewRoles.Events;
 using SuperNewRoles.Modules;
-using SuperNewRoles.Modules.Events.Bases;
 using SuperNewRoles.Roles.Ability;
 
 namespace SuperNewRoles.Roles.CrewMate;
@@ -41,13 +40,12 @@ public class HomeSecurityGuardAbility : AbilityBase
     // タスク一覧に表示するランダムテキストの最大番号
     public const int TaskTextMax = 12;
     private ImportantTextTask _task;
-    private EventListener _introCutsceneInitializeListener;
     private int _currentIndex = -1;
 
     public override void AttachToLocalPlayer()
     {
         SubscribeWithAbility(MeetingCloseEvent.Instance, OnMeetingClose);
-        _introCutsceneInitializeListener = SubscribeWithAbility(IntroCutsceneInitializeEvent.Instance, OnIntroCutsceneInitialize);
+        SubscribeWithAbility(IntroCutsceneInitializeEvent.Instance, OnIntroCutsceneInitialize);
         EnsureTask();
         UpdateIndexAndTaskText();
     }
@@ -61,8 +59,6 @@ public class HomeSecurityGuardAbility : AbilityBase
     {
         if (!Player.AmOwner) return;
         UpdateIndexAndTaskText();
-        _introCutsceneInitializeListener?.RemoveListener();
-        _introCutsceneInitializeListener = null;
     }
 
     private void OnMeetingClose(MeetingCloseEventData data)
