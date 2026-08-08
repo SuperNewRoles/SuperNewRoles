@@ -31,15 +31,18 @@ public class PavlovsOwnerAbility : AbilityBase
         _sidekickCount = 0;
     }
 
-    protected override void OnAttached(PlayerControl player)
+    public override void AttachToAlls()
     {
+        base.AttachToAlls();
+        var player = Player.Player;
+
         _sidekickAbility = CreateSidekickAbility(player);
         _knowOtherAbility = new KnowOtherAbility(
             p => p.IsPavlovsTeam(),
             () => true
         );
 
-        ExPlayerControl exPlayer = (ExPlayerControl)player;
+        ExPlayerControl exPlayer = Player;
         AbilityParentAbility parentAbility = new(this);
         exPlayer.AttachAbility(_sidekickAbility, parentAbility);
         exPlayer.AttachAbility(_knowOtherAbility, parentAbility);
