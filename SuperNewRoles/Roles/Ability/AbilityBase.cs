@@ -65,15 +65,12 @@ public abstract class AbilityBase
             else
                 AttachToOthers();
             AttachToAlls();
-            OnAttached(player);
         }
         catch (Exception ex)
         {
             LogLifecycleError(nameof(Attach), ex);
         }
     }
-
-    protected virtual void OnAttached(PlayerControl player) { }
 
     public virtual void AttachToLocalPlayer() { }
 

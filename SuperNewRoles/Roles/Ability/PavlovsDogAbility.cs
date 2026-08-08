@@ -36,8 +36,10 @@ public class PavlovsDogAbility : AbilityBase
         _timer = 0f;
     }
 
-    protected override void OnAttached(PlayerControl player)
+    public override void AttachToAlls()
     {
+        base.AttachToAlls();
+        var player = Player.Player;
         _ventAbility = new CustomVentAbility(() => _data.canUseVent);
         _visionAbility = new ImpostorVisionAbility(() => _data.isImpostorVision);
         _killAbility = new CustomKillButtonAbility(
@@ -56,7 +58,7 @@ public class PavlovsDogAbility : AbilityBase
             () => true
         );
 
-        ExPlayerControl exPlayer = (ExPlayerControl)player;
+        ExPlayerControl exPlayer = Player;
         AbilityParentAbility parentAbility = new(this);
         exPlayer.AttachAbility(_ventAbility, parentAbility);
         exPlayer.AttachAbility(_visionAbility, parentAbility);

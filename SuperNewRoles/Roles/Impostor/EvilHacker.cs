@@ -105,8 +105,10 @@ public class EvilHackerAbility : AbilityBase
         Data = hackerData;
     }
 
-    protected override void OnAttached(PlayerControl player)
+    public override void AttachToAlls()
     {
+        base.AttachToAlls();
+
         _portableAdminAbility = new PortableAdminAbility(new PortableAdminData(
             CanUseAdmin: () => true,
             canUseAdminDuringComms: () => Data.canUseAdminDuringComms,
@@ -135,9 +137,9 @@ public class EvilHackerAbility : AbilityBase
             isSubButton: true
         ));
 
-        ((ExPlayerControl)player).AttachAbility(_portableAdminAbility, new AbilityParentAbility(this));
-        ((ExPlayerControl)player).AttachAbility(_advancedAdminAbility, new AbilityParentAbility(this));
-        ((ExPlayerControl)player).AttachAbility(_sidekickButtonAbility, new AbilityParentAbility(this));
+        Player.AttachAbility(_portableAdminAbility, new AbilityParentAbility(this));
+        Player.AttachAbility(_advancedAdminAbility, new AbilityParentAbility(this));
+        Player.AttachAbility(_sidekickButtonAbility, new AbilityParentAbility(this));
     }
     public override void AttachToLocalPlayer()
     {

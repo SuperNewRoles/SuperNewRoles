@@ -232,8 +232,9 @@ class BalancerAbility : AbilityBase, IAbilityCount
         updateEventListener = SubscribeWithAbility(FixedUpdateEvent.Instance, Update);
     }
 
-    protected override void OnAttached(PlayerControl player)
+    public override void AttachToAlls()
     {
+        base.AttachToAlls();
         meetingStartEventListener = SubscribeWithAbility(MeetingStartEvent.Instance, x => OnMeetingStart());
         meetingCloseEventListener = SubscribeWithAbility(MeetingCloseEvent.Instance, x => OnMeetingClosed());
         fixedUpdateEventListener = SubscribeWithAbility(FixedUpdateEvent.Instance, FixedUpdateAnimation);
@@ -241,7 +242,7 @@ class BalancerAbility : AbilityBase, IAbilityCount
         wrapUpEventListener = SubscribeWithAbility(WrapUpEvent.Instance, OnWrapUp);
 
         balancerButton = new BalancerMeetingButton(this);
-        ExPlayerControl exPlayer = (ExPlayerControl)player;
+        ExPlayerControl exPlayer = Player;
         exPlayer.AddAbility(balancerButton, new AbilityParentAbility(this));
     }
 
