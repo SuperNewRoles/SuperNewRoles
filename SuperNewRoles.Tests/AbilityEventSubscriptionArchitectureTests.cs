@@ -35,7 +35,7 @@ public class AbilityEventSubscriptionArchitectureTests
     public void ProductionAbilities_UseSubscribeWithAbilityInsteadOfAddListener()
     {
         var abilityAssembly = typeof(AbilityBase).Assembly;
-        var abilityOwnedTypes = GetLoadableTypes(abilityAssembly).Where(IsAbilityOwnedType);
+        var abilityOwnedTypes = GetTypesOrThrow(abilityAssembly).Where(IsAbilityOwnedType);
         var violations = FindDirectEventSubscriptions(abilityOwnedTypes);
 
         Assert.True(
@@ -56,7 +56,7 @@ public class AbilityEventSubscriptionArchitectureTests
                 {
                     if (!IsEventTargetAddListener(calledMethod))
                         continue;
-                    if (IsAllowedSharedSubscription(type, method))
+                    if (IsAllowedDirectSubscription(type, method))
                         continue;
 
                     violations.Add($"{type.FullName}.{method.Name} -> {calledMethod.DeclaringType?.FullName}.{calledMethod.Name}");
@@ -90,7 +90,7 @@ public class AbilityEventSubscriptionArchitectureTests
     {
         for (var current = type; current != null; current = current.DeclaringType)
         {
-            if (current != typeof(AbilityBase) && typeof(AbilityBase).IsAssignableFrom(current))
+            if (typeof(AbilityBase).IsAssignableFrom(current))
                 return true;
         }
         return false;
@@ -113,12 +113,21 @@ public class AbilityEventSubscriptionArchitectureTests
         return false;
     }
 
-    private static bool IsAllowedSharedSubscription(Type type, MethodBase method)
+    private static bool IsAllowedDirectSubscription(Type type, MethodBase method)
     {
+        if (type == typeof(AbilityBase))
+        {
+            return IsSameMethod(method, SubscribeWithAbilityMethod) ||
+                   IsSameMethod(method, SubscribeWithAbilityWithDataMethod);
+        }
+
         // オルフェウスのリスナーは複数の Ability で共有し、最後の1つが Detach するまで残す必要がある。
         // 単一 Ability のライフサイクルに結び付く SubscribeWithAbility では、その寿命を表現できない。
-        return type == typeof(OrpheusMainAbility) && method.Name == "RegisterSharedListeners";
+        return type == typeof(OrpheusMainAbility) && IsSameMethod(method, OrpheusSharedSubscriptionMethod);
     }
+
+    private static bool IsSameMethod(MethodBase method, MethodInfo expectedMethod)
+        => method.Module == expectedMethod.Module && method.MetadataToken == expectedMethod.MetadataToken;
 
     private static IEnumerable<MethodBase> ReadCalledMethods(MethodBase sourceMethod)
     {
@@ -181,7 +190,7 @@ public class AbilityEventSubscriptionArchitectureTests
         };
     }
 
-    private static Type[] GetLoadableTypes(Assembly assembly)
+    private static Type[] GetTypesOrThrow(Assembly assembly)
     {
         try
         {
@@ -189,9 +198,47 @@ public class AbilityEventSubscriptionArchitectureTests
         }
         catch (ReflectionTypeLoadException ex)
         {
-            return ex.Types.Where(type => type != null).Cast<Type>().ToArray();
+            var loaderExceptionDetails = string.Join(
+                Environment.NewLine,
+                ex.LoaderExceptions
+                    .Where(loaderException => loaderException != null)
+                    .Select((loaderException, index) => $"[{index}] {loaderException}"));
+
+            if (string.IsNullOrEmpty(loaderExceptionDetails))
+                loaderExceptionDetails = "(no LoaderExceptions were provided)";
+
+            throw new InvalidOperationException(
+                $"Assembly '{assembly.FullName}' could not be fully loaded. " +
+                $"Ability subscription validation cannot continue safely.{Environment.NewLine}" +
+                loaderExceptionDetails,
+                ex);
         }
     }
+
+    private static MethodInfo GetAbilityBaseSubscriptionMethod(int genericArgumentCount)
+    {
+        const BindingFlags flags = BindingFlags.DeclaredOnly |
+                                   BindingFlags.Instance |
+                                   BindingFlags.NonPublic;
+
+        return typeof(AbilityBase)
+            .GetMethods(flags)
+            .Single(method =>
+                method.Name == "SubscribeWithAbility" &&
+                method.IsGenericMethodDefinition &&
+                method.GetGenericArguments().Length == genericArgumentCount);
+    }
+
+    private static readonly MethodInfo SubscribeWithAbilityMethod = GetAbilityBaseSubscriptionMethod(1);
+    private static readonly MethodInfo SubscribeWithAbilityWithDataMethod = GetAbilityBaseSubscriptionMethod(2);
+    private static readonly MethodInfo OrpheusSharedSubscriptionMethod =
+        typeof(OrpheusMainAbility).GetMethod(
+            "RegisterSharedListeners",
+            BindingFlags.Static | BindingFlags.NonPublic,
+            binder: null,
+            types: Type.EmptyTypes,
+            modifiers: null)
+        ?? throw new InvalidOperationException("Orpheus shared subscription method was not found.");
 
     private static readonly OpCode[] OneByteOpCodes = BuildOpcodeLookup(twoByte: false);
     private static readonly OpCode[] TwoByteOpCodes = BuildOpcodeLookup(twoByte: true);
