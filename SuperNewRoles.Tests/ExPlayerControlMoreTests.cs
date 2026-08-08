@@ -108,7 +108,7 @@ public class ExPlayerControlMoreTests
         // Generate deterministic ability id using current player as parent for stable tests
         var parent = new AbilityParentPlayer(ex);
         var id = ExPlayerControlExtensions.GenerateDeterministicAbilityId(ex.PlayerId, parent, ability.GetType());
-        ability.Attach(null, id, parent);
+        SetAbilityParent(ability, parent);
         typeof(ExPlayerControl).GetProperty(nameof(ExPlayerControl.lastAbilityId))!.SetValue(ex, ex.lastAbilityId + 1);
         ex.PlayerAbilities.Add(ability);
         ex.PlayerAbilitiesDictionary[id] = ability;
