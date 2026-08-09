@@ -533,7 +533,8 @@ internal sealed class RemoteControllerKillButton : CustomKillButtonAbility
             if (!ability.UnderOperation || ability.TargetPlayerId == byte.MaxValue) return false;
             var operatorTarget = ability.TargetPlayer;
             if (operatorTarget == null) return false;
-            operatorTarget.Player.RpcCustomMurderPlayer(target, true);
+            // 直接MurderPlayerを呼ばず、TryKillEventを経由して賢者などの防御判定を実行する。
+            operatorTarget.RpcCustomDeath(target, CustomDeathType.Kill);
             ability.CancelAndClearTarget();
             return true;
         }
