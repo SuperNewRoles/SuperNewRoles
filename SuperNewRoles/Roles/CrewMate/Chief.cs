@@ -6,7 +6,6 @@ using SuperNewRoles.Roles.Ability;
 using SuperNewRoles.Roles.Ability.CustomButton;
 using SuperNewRoles.CustomOptions;
 using SuperNewRoles.Modules;
-using System.Linq;
 using SuperNewRoles.Events;
 using UnityEngine.AddressableAssets;
 using System.Runtime.CompilerServices;
@@ -165,8 +164,7 @@ public class ChiefAbility : AbilityBase
         }
         else // 任命判定が成功しているなら 任命 (補助処理 (基本的にSKButton側で 既に任命処理が終わっている))
         {
-            SheriffAbility sheriffAbility = target.PlayerAbilities.FirstOrDefault(ability => ability is SheriffAbility) as SheriffAbility;
-            if (sheriffAbility == null)
+            if (!target.TryGetAbility<SheriffAbility>(out var sheriffAbility))
                 throw new Exception("SheriffAbilityが見つかりません");
             _createdSheriff = sheriffAbility;
             RpcChiefAppointSheriff(target, sheriffAbility, _sheriffAbilityData.KillCooldown, _sheriffAbilityData.KillCount, _sheriffAbilityData.Mode, _sheriffAbilityData.CanKillNeutral, _sheriffAbilityData.CanKillImpostor, _sheriffAbilityData.CanKillMadRoles, _sheriffAbilityData.CanKillFriendRoles, _sheriffAbilityData.CanKillLovers, _hasOldTask);

@@ -1,7 +1,6 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
-using System.Linq;
 using AmongUs.GameOptions;
 using BepInEx.Unity.IL2CPP.Utils.Collections;
 using Hazel;
@@ -181,8 +180,7 @@ public class BaitKillerExiledTrophy : SuperTrophyAbility<BaitKillerExiledTrophy>
 
     public override void OnRegister()
     {
-        _baitAbility = ExPlayerControl.LocalPlayer.PlayerAbilities
-            .FirstOrDefault(x => x is BaitAbility) as BaitAbility;
+        _baitAbility = ExPlayerControl.LocalPlayer.GetAbility<BaitAbility>();
         _onMurderEvent = MurderEvent.Instance.AddListener(HandleMurderEvent);
         _onWrapUpEvent = WrapUpEvent.Instance.AddListener(HandleWrapUpEvent);
         _killerPlayerId = byte.MaxValue;

@@ -17,10 +17,48 @@ public class ExPlayerControlTests
     // Minimal ability types for testing
     private class AlphaAbility : AbilityBase { }
     private class BetaAbility : AbilityBase { }
-    private class DerivedVentAbility : CustomVentAbility
+    private class TestVentAbility : CustomVentAbility
+    {
+        public TestVentAbility(Func<bool?> canUseVent, int priority)
+            : base(canUseVent, priority: priority) { }
+
+        protected override bool IsLocalPlayer(PlayerControl player) => false;
+    }
+    private class DerivedVentAbility : TestVentAbility
     {
         public DerivedVentAbility(Func<bool?> canUseVent, int priority)
             : base(canUseVent, priority: priority) { }
+    }
+    private class TestSaboAbility : CustomSaboAbility
+    {
+        public TestSaboAbility(Func<bool?> canSabotage, int priority)
+            : base(canSabotage, priority: priority) { }
+
+        protected override bool IsLocalPlayer(PlayerControl player) => false;
+    }
+    private class AttachObservingAbility : AbilityBase
+    {
+        public bool FoundSelfDuringAttach { get; private set; }
+
+        protected override bool IsLocalPlayer(PlayerControl player) => false;
+
+        public override void AttachToAlls()
+        {
+            FoundSelfDuringAttach = Player.TryGetAbility<AttachObservingAbility>(out var ability) &&
+                ReferenceEquals(ability, this);
+        }
+    }
+    private class ChildAttachingAbility : AbilityBase
+    {
+        public BetaAbility Child { get; private set; } = null!;
+
+        protected override bool IsLocalPlayer(PlayerControl player) => false;
+
+        public override void AttachToAlls()
+        {
+            Child = new BetaAbility();
+            Player.AttachAbility(Child, new AbilityParentAbility(this));
+        }
     }
 
     // テスト用: コンストラクタを通さずに必要最小のフィールド/プロパティを初期化して生成する
@@ -37,21 +75,14 @@ public class ExPlayerControlTests
         SetAutoProp(ex, nameof(ExPlayerControl.ModifierRole), ModifierRoleId.None);
 
         // Initialize lists/dicts used by core logic
-        SetField(ex, "_abilityCache", new Dictionary<string, AbilityBase>());
-        SetAutoProp(ex, nameof(ExPlayerControl.PlayerAbilities), new List<AbilityBase>());
-        SetAutoProp(ex, nameof(ExPlayerControl.PlayerAbilitiesDictionary), new Dictionary<ulong, AbilityBase>());
-        SetField(ex, "_hasAbilityCache", new Dictionary<string, bool>());
+        SetField(ex, "_playerAbilities", new List<AbilityBase>());
+        SetField(ex, "_abilitiesById", new Dictionary<ulong, AbilityBase>());
+        SetField(ex, "_issuedAbilityIds", new HashSet<ulong>());
 
         // Initialize optimized caches
         SetField(ex, "_typeIdAbilityCache", new Dictionary<int, AbilityBase>());
-        SetField(ex, "_typeIdAbilitiesCache", new Dictionary<int, List<AbilityBase>>());
         SetField(ex, "_typeIdReadOnlyCache", new Dictionary<int, IReadOnlyList<object>>());
         SetField(ex, "_prioritizedAbilities", new Dictionary<int, List<AbilityBase>>());
-        SetField(ex, "_hasAbilityByTypeId", new bool[1024]);
-        SetField(ex, "_hasAbilityByTypeIdCached", new bool[1024]);
-
-        // Public auto-property
-        typeof(ExPlayerControl).GetProperty(nameof(ExPlayerControl.lastAbilityId))!.SetValue(ex, 0);
 
         return ex;
     }
@@ -94,51 +125,16 @@ public class ExPlayerControlTests
         catch { }
     }
 
-    // 簡易 Attach: 内部状態の更新とキャッシュ無効化までを再現
-    private static void ShallowAttach(ExPlayerControl ex, AbilityBase ability)
+    // 本番の AttachAbility 経路を通して登録する。
+    private static ulong Attach(ExPlayerControl ex, AbilityBase ability)
     {
-        var abilities = ex.PlayerAbilities;
-        var dict = ex.PlayerAbilitiesDictionary;
-        var parent = new AbilityParentPlayer(ex);
-        typeof(AbilityBase).GetProperty(nameof(AbilityBase.Parent))!.SetValue(ability, parent);
-        var abilityId = ExPlayerControlExtensions.GenerateDeterministicAbilityId(ex.PlayerId, parent, ability.GetType());
-        typeof(ExPlayerControl).GetProperty(nameof(ExPlayerControl.lastAbilityId))!.SetValue(ex, ex.lastAbilityId + 1);
-
-        abilities.Add(ability);
-        dict[abilityId] = ability;
-        typeof(ExPlayerControl).GetMethod("AddPrioritizedAbility", BindingFlags.Instance | BindingFlags.NonPublic)!
-            .Invoke(ex, new object[] { ability });
-
-        // Reset caches (equivalent to internal attach invalidation)
-        GetField<Dictionary<string, bool>>(ex, "_hasAbilityCache").Clear();
-        GetField<Dictionary<int, AbilityBase>>(ex, "_typeIdAbilityCache").Clear();
-        GetField<Dictionary<int, List<AbilityBase>>>(ex, "_typeIdAbilitiesCache").Clear();
-        GetField<Dictionary<int, IReadOnlyList<object>>>(ex, "_typeIdReadOnlyCache").Clear();
-        Array.Clear(GetField<bool[]>(ex, "_hasAbilityByTypeIdCached"), 0, 1024);
+        ex.AttachAbility(ability, new AbilityParentPlayer(ex));
+        return ability.AbilityId;
     }
 
-    // 簡易 Detach: 能力削除と関連キャッシュの無効化を再現
-    private static void ShallowDetach(ExPlayerControl ex, AbilityBase ability)
-    {
-        var dict = ex.PlayerAbilitiesDictionary;
-        // Find by value since we generated ids locally
-        ulong key = 0;
-        foreach (var kv in dict)
-        {
-            if (ReferenceEquals(kv.Value, ability)) { key = kv.Key; break; }
-        }
-        ex.PlayerAbilities.Remove(ability);
-        if (key != 0) dict.Remove(key);
-        typeof(ExPlayerControl).GetMethod("RemovePrioritizedAbility", BindingFlags.Instance | BindingFlags.NonPublic)!
-            .Invoke(ex, new object[] { ability });
-
-        // Reset caches
-        GetField<Dictionary<string, bool>>(ex, "_hasAbilityCache").Clear();
-        GetField<Dictionary<int, AbilityBase>>(ex, "_typeIdAbilityCache").Clear();
-        GetField<Dictionary<int, List<AbilityBase>>>(ex, "_typeIdAbilitiesCache").Clear();
-        GetField<Dictionary<int, IReadOnlyList<object>>>(ex, "_typeIdReadOnlyCache").Clear();
-        Array.Clear(GetField<bool[]>(ex, "_hasAbilityByTypeIdCached"), 0, 1024);
-    }
+    // 本番の DetachAbility 経路を通して解除する。
+    private static void Detach(ExPlayerControl ex, AbilityBase ability)
+        => ex.DetachAbility(ability.AbilityId);
 
     // 自動実装プロパティのバックフィールドから値を取得
     private static TProp GetAutoProp<TProp>(object obj, string propName)
@@ -147,35 +143,210 @@ public class ExPlayerControlTests
         return (TProp)f.GetValue(obj)!;
     }
 
-    // 目的: HasAbility(name/generic) が Attach/Detach に連動して正しく反映されることを検証
+    // 目的: HasAbility<T> が Attach/Detach に連動して正しく反映されることを検証
     [Fact]
-    public void HasAbility_ByName_And_Generic_ReflectsAttachDetach()
+    public void HasAbility_Generic_ReflectsAttachDetach()
     {
         Log("Start HasAbility test");
         var ex = CreateBareEx(playerId: 3, role: RoleId.Crewmate);
 
-        // 目的: 未 Attach 状態では name 指定の HasAbility が false
-        ex.HasAbility("AlphaAbility").Should().BeFalse();
         // 目的: 未 Attach 状態では generic 指定の HasAbility も false
         ex.HasAbility<AlphaAbility>().Should().BeFalse();
 
         var alpha = new AlphaAbility();
-        Log($"Before attach: Count={ex.PlayerAbilities.Count}");
-        ShallowAttach(ex, alpha);
-        Log($"After attach: Count={ex.PlayerAbilities.Count}");
+        Log($"Before attach: Count={ex.AbilityCount}");
+        Attach(ex, alpha);
+        Log($"After attach: Count={ex.AbilityCount}");
 
-        // 目的: Attach 後は name 指定で true
-        ex.HasAbility("AlphaAbility").Should().BeTrue();
         // 目的: Attach 後は generic 指定で true
         ex.HasAbility<AlphaAbility>().Should().BeTrue();
 
         // Detach and verify caches are cleared and state updates
-        ShallowDetach(ex, alpha);
-        Log($"After detach: Count={ex.PlayerAbilities.Count}");
-        // 目的: Detach 後に name 指定で false
-        ex.HasAbility("AlphaAbility").Should().BeFalse();
+        Detach(ex, alpha);
+        Log($"After detach: Count={ex.AbilityCount}");
         // 目的: Detach 後に generic 指定で false
         ex.HasAbility<AlphaAbility>().Should().BeFalse();
+    }
+
+    [Fact]
+    public void Attach_RegistersBeforeLifecycleHooks_AndInvalidatesNegativeCaches()
+    {
+        var ex = CreateBareEx(playerId: 4, role: RoleId.Crewmate);
+        ex.HasAbility<AttachObservingAbility>().Should().BeFalse();
+        ex.GetAbility<AttachObservingAbility>().Should().BeNull();
+
+        var ability = new AttachObservingAbility();
+        var id = Attach(ex, ability);
+
+        ability.FoundSelfDuringAttach.Should().BeTrue();
+        ex.AbilityCount.Should().Be(1);
+        ex.TryGetAbility<AttachObservingAbility>(out var found).Should().BeTrue();
+        found.Should().BeSameAs(ability);
+        ex.GetAbility(id).Should().BeSameAs(ability);
+        ex.GetAbilities<AttachObservingAbility>().Should().ContainSingle().Which.Should().BeSameAs(ability);
+
+        Detach(ex, ability);
+
+        ex.AbilityCount.Should().Be(0);
+        ex.TryGetAbility<AttachObservingAbility>(out _).Should().BeFalse();
+        ex.GetAbility(id).Should().BeNull();
+        ex.GetAbilities<AttachObservingAbility>().Should().BeEmpty();
+    }
+
+    [Fact]
+    public void Attach_RejectsSameInstanceWithoutPartiallyChangingState()
+    {
+        var ex = CreateBareEx(playerId: 5, role: RoleId.Crewmate);
+        var ability = new AlphaAbility();
+        var originalId = Attach(ex, ability);
+
+        Action attachAgain = () => Attach(ex, ability);
+
+        attachAgain.Should().Throw<InvalidOperationException>();
+        ex.AbilityCount.Should().Be(1);
+        ex.GetAbility(originalId).Should().BeSameAs(ability);
+        ex.GetAbilities<AlphaAbility>().Should().ContainSingle().Which.Should().BeSameAs(ability);
+    }
+
+    [Fact]
+    public void Attach_RejectsParentOwnedByAnotherPlayerWithoutChangingState()
+    {
+        var target = CreateBareEx(playerId: 6, role: RoleId.Crewmate);
+        var anotherPlayer = CreateBareEx(playerId: 7, role: RoleId.Crewmate);
+
+        Action attach = () => target.AttachAbility(
+            new AlphaAbility(),
+            new AbilityParentPlayer(anotherPlayer));
+
+        attach.Should().Throw<InvalidOperationException>();
+        target.AbilityCount.Should().Be(0);
+        target.GetAbilities<AlphaAbility>().Should().BeEmpty();
+    }
+
+    [Fact]
+    public void Attach_RejectsInstanceAlreadyRegisteredToAnotherPlayer()
+    {
+        var firstPlayer = CreateBareEx(playerId: 6, role: RoleId.Crewmate);
+        var secondPlayer = CreateBareEx(playerId: 7, role: RoleId.Crewmate);
+        var ability = new AlphaAbility();
+        var originalId = Attach(firstPlayer, ability);
+
+        Action attachToSecondPlayer = () => secondPlayer.AttachAbility(
+            ability,
+            new AbilityParentPlayer(secondPlayer));
+
+        attachToSecondPlayer.Should().Throw<InvalidOperationException>();
+        firstPlayer.GetAbility(originalId).Should().BeSameAs(ability);
+        ability.Player.Should().BeSameAs(firstPlayer);
+        secondPlayer.AbilityCount.Should().Be(0);
+    }
+
+    [Fact]
+    public void Attach_RejectsChildWhoseParentAbilityIsDetached()
+    {
+        var ex = CreateBareEx(playerId: 6, role: RoleId.Crewmate);
+        var parent = new AlphaAbility();
+        Attach(ex, parent);
+        Detach(ex, parent);
+
+        Action attachChild = () => ex.AttachAbility(
+            new BetaAbility(),
+            new AbilityParentAbility(parent));
+
+        attachChild.Should().Throw<InvalidOperationException>();
+        ex.AbilityCount.Should().Be(0);
+        ex.GetAbilities<BetaAbility>().Should().BeEmpty();
+    }
+
+    [Fact]
+    public void Attach_DoesNotCollide_WhenEarlierSameTypeAbilityWasDetached()
+    {
+        var ex = CreateBareEx(playerId: 6, role: RoleId.Crewmate);
+        var first = new AlphaAbility();
+        var second = new AlphaAbility();
+        var firstId = Attach(ex, first);
+        var secondId = Attach(ex, second);
+
+        Detach(ex, first);
+        var replacement = new AlphaAbility();
+        var replacementId = Attach(ex, replacement);
+
+        firstId.Should().NotBe(secondId);
+        replacementId.Should().NotBe(secondId);
+        ex.GetAbility(secondId).Should().BeSameAs(second);
+        ex.GetAbility(replacementId).Should().BeSameAs(replacement);
+        ex.GetAbilities<AlphaAbility>().Should().Equal(second, replacement);
+    }
+
+    [Fact]
+    public void Attach_DoesNotReuseId_AfterOnlyAbilityWasDetached()
+    {
+        var ex = CreateBareEx(playerId: 7, role: RoleId.Crewmate);
+        var first = new AlphaAbility();
+        var oldId = Attach(ex, first);
+
+        Detach(ex, first);
+        var replacement = new AlphaAbility();
+        var newId = Attach(ex, replacement);
+
+        newId.Should().NotBe(oldId);
+        ex.GetAbility(oldId).Should().BeNull();
+        ex.GetAbility(newId).Should().BeSameAs(replacement);
+    }
+
+    [Fact]
+    public void NestedAttach_RegistersParentBeforeChild_AndResolvesBoth()
+    {
+        var hostState = CreateBareEx(playerId: 7, role: RoleId.Crewmate);
+        var clientState = CreateBareEx(playerId: 7, role: RoleId.Crewmate);
+        var hostParent = new ChildAttachingAbility();
+        var clientParent = new ChildAttachingAbility();
+
+        var hostParentId = Attach(hostState, hostParent);
+        var clientParentId = Attach(clientState, clientParent);
+        var child = hostParent.Child;
+
+        child.Should().NotBeNull();
+        hostParentId.Should().Be(clientParentId);
+        child.AbilityId.Should().Be(clientParent.Child.AbilityId);
+        hostState.AbilityCount.Should().Be(2);
+        hostState.GetAbility(hostParentId).Should().BeSameAs(hostParent);
+        hostState.GetAbility(child.AbilityId).Should().BeSameAs(child);
+        child.Parent.Should().BeOfType<AbilityParentAbility>()
+            .Which.ParentAbility.Should().BeSameAs(hostParent);
+    }
+
+    [Fact]
+    public void AbilityIds_MatchAcrossEquivalentPlayerStates_AfterDetachAndReattach()
+    {
+        var hostState = CreateBareEx(playerId: 8, role: RoleId.Crewmate);
+        var clientState = CreateBareEx(playerId: 8, role: RoleId.Crewmate);
+        var hostFirst = new AlphaAbility();
+        var clientFirst = new AlphaAbility();
+        var hostSecond = new AlphaAbility();
+        var clientSecond = new AlphaAbility();
+
+        Attach(hostState, hostFirst).Should().Be(Attach(clientState, clientFirst));
+        Attach(hostState, hostSecond).Should().Be(Attach(clientState, clientSecond));
+
+        Detach(hostState, hostFirst);
+        Detach(clientState, clientFirst);
+
+        Attach(hostState, new AlphaAbility()).Should().Be(Attach(clientState, new AlphaAbility()));
+    }
+
+    [Fact]
+    public void AbilityIds_MatchWhenActiveSetsDifferButIssuedHistoryMatches()
+    {
+        var hostState = CreateBareEx(playerId: 9, role: RoleId.Crewmate);
+        var clientState = CreateBareEx(playerId: 9, role: RoleId.Crewmate);
+        var hostFirst = new AlphaAbility();
+        var clientFirst = new AlphaAbility();
+
+        Attach(hostState, hostFirst).Should().Be(Attach(clientState, clientFirst));
+        Detach(hostState, hostFirst);
+
+        Attach(hostState, new AlphaAbility()).Should().Be(Attach(clientState, new AlphaAbility()));
     }
 
     // Intentionally focusing on HasAbility/ToString/HasImpostorVision to avoid Unity runtime side-effects
@@ -186,8 +357,8 @@ public class ExPlayerControlTests
     {
         var ex = CreateBareEx(playerId: 9, role: RoleId.None);
         // Add two abilities so count reflects
-        ShallowAttach(ex, new AlphaAbility());
-        ShallowAttach(ex, new BetaAbility());
+        Attach(ex, new AlphaAbility());
+        Attach(ex, new BetaAbility());
 
         // 目的: ToString が PlayerId/Role/AbilityCount を反映
         ex.ToString().Should().Be("(9): None 2");
@@ -201,12 +372,12 @@ public class ExPlayerControlTests
     {
         var ex = CreateBareEx(playerId: 12, role: RoleId.Crewmate);
         var vision = new ImpostorVisionAbility(() => true);
-        ShallowAttach(ex, vision);
+        Attach(ex, vision);
         // 目的: true デリゲートで視界あり
         ex.HasImpostorVision().Should().BeTrue();
 
-        ShallowDetach(ex, vision);
-        ShallowAttach(ex, new ImpostorVisionAbility(() => false));
+        Detach(ex, vision);
+        Attach(ex, new ImpostorVisionAbility(() => false));
         // 目的: false デリゲートで視界なし
         ex.HasImpostorVision().Should().BeFalse();
     }
@@ -216,10 +387,10 @@ public class ExPlayerControlTests
     {
         var ex = CreateBareEx(playerId: 13, role: RoleId.Crewmate);
         bool? highDecision = null;
-        var low = new CustomVentAbility(() => true, priority: 0);
-        var high = new CustomVentAbility(() => highDecision, priority: 10);
-        ShallowAttach(ex, low);
-        ShallowAttach(ex, high);
+        var low = new TestVentAbility(() => true, priority: 0);
+        var high = new TestVentAbility(() => highDecision, priority: 10);
+        Attach(ex, low);
+        Attach(ex, high);
 
         ex.CanUseVent().Should().BeTrue();
         ex.ShouldShowVentAbility(low).Should().BeTrue();
@@ -237,7 +408,7 @@ public class ExPlayerControlTests
 
         // Derived abilities are grouped with CustomVentAbility automatically.
         var latestAtSamePriority = new DerivedVentAbility(() => true, priority: 10);
-        ShallowAttach(ex, latestAtSamePriority);
+        Attach(ex, latestAtSamePriority);
         ex.CanUseVent().Should().BeTrue();
         ex.ShouldShowVentAbility(latestAtSamePriority).Should().BeTrue();
         ex.ShouldShowVentAbility(high).Should().BeFalse();
@@ -247,14 +418,14 @@ public class ExPlayerControlTests
         foreach (var abilities in priorityGroups.Values)
             abilities[0].Should().BeSameAs(latestAtSamePriority);
 
-        ShallowDetach(ex, latestAtSamePriority);
+        Detach(ex, latestAtSamePriority);
         ex.CanUseVent().Should().BeFalse();
 
-        ShallowDetach(ex, high);
+        Detach(ex, high);
         ex.CanUseVent().Should().BeTrue();
         ex.ShouldShowVentAbility(low).Should().BeTrue();
 
-        ShallowDetach(ex, low);
+        Detach(ex, low);
         decisionArgs = new object[] { null!, false };
         InvokePrivate<bool>(ex, "TryGetVentDecision", decisionArgs).Should().BeFalse();
     }
@@ -264,10 +435,10 @@ public class ExPlayerControlTests
     {
         var ex = CreateBareEx(playerId: 15, role: RoleId.Crewmate);
         bool? highDecision = null;
-        var low = new CustomSaboAbility(() => true, priority: 0);
-        var high = new CustomSaboAbility(() => highDecision, priority: 10);
-        ShallowAttach(ex, low);
-        ShallowAttach(ex, high);
+        var low = new TestSaboAbility(() => true, priority: 0);
+        var high = new TestSaboAbility(() => highDecision, priority: 10);
+        Attach(ex, low);
+        Attach(ex, high);
 
         ex.CanSabotage().Should().BeTrue();
         ex.ShouldShowSabotageAbility(low).Should().BeTrue();
@@ -283,21 +454,21 @@ public class ExPlayerControlTests
         decisionArgs[0].Should().BeSameAs(high);
         decisionArgs[1].Should().Be(false);
 
-        var latestAtSamePriority = new CustomSaboAbility(() => true, priority: 10);
-        ShallowAttach(ex, latestAtSamePriority);
+        var latestAtSamePriority = new TestSaboAbility(() => true, priority: 10);
+        Attach(ex, latestAtSamePriority);
         ex.CanSabotage().Should().BeTrue();
         ex.ShouldShowSabotageAbility(latestAtSamePriority).Should().BeTrue();
         ex.ShouldShowSabotageAbility(high).Should().BeFalse();
         ex.ShouldShowSabotageAbility(low).Should().BeFalse();
 
-        ShallowDetach(ex, latestAtSamePriority);
+        Detach(ex, latestAtSamePriority);
         ex.CanSabotage().Should().BeFalse();
 
-        ShallowDetach(ex, high);
+        Detach(ex, high);
         ex.CanSabotage().Should().BeTrue();
         ex.ShouldShowSabotageAbility(low).Should().BeTrue();
 
-        ShallowDetach(ex, low);
+        Detach(ex, low);
         decisionArgs = new object[] { null!, false };
         InvokePrivate<bool>(ex, "TryGetSabotageDecision", decisionArgs).Should().BeFalse();
     }
@@ -309,8 +480,8 @@ public class ExPlayerControlTests
         bool? highDecision = null;
         var low = new KillableAbility(() => true, priority: 0);
         var high = new KillableAbility(() => highDecision, priority: 10);
-        ShallowAttach(ex, low);
-        ShallowAttach(ex, high);
+        Attach(ex, low);
+        Attach(ex, high);
 
         InvokePrivate<bool>(ex, "ResolveCanKill").Should().BeTrue();
 
@@ -318,16 +489,16 @@ public class ExPlayerControlTests
         InvokePrivate<bool>(ex, "ResolveCanKill").Should().BeFalse();
 
         var latestAtSamePriority = new KillableAbility(() => true, priority: 10);
-        ShallowAttach(ex, latestAtSamePriority);
+        Attach(ex, latestAtSamePriority);
         InvokePrivate<bool>(ex, "ResolveCanKill").Should().BeTrue();
 
-        ShallowDetach(ex, latestAtSamePriority);
+        Detach(ex, latestAtSamePriority);
         InvokePrivate<bool>(ex, "ResolveCanKill").Should().BeFalse();
 
-        ShallowDetach(ex, high);
+        Detach(ex, high);
         InvokePrivate<bool>(ex, "ResolveCanKill").Should().BeTrue();
 
-        ShallowDetach(ex, low);
+        Detach(ex, low);
         InvokePrivate<bool>(ex, "ResolveCanKill").Should().BeTrue();
     }
 
@@ -338,8 +509,8 @@ public class ExPlayerControlTests
         bool? highDecision = null;
         var low = new ImpostorVisionAbility(() => true, priority: 0);
         var high = new ImpostorVisionAbility(() => highDecision, priority: 10);
-        ShallowAttach(ex, low);
-        ShallowAttach(ex, high);
+        Attach(ex, low);
+        Attach(ex, high);
 
         ex.HasImpostorVision().Should().BeTrue();
 
@@ -347,13 +518,13 @@ public class ExPlayerControlTests
         ex.HasImpostorVision().Should().BeFalse();
 
         var latestAtSamePriority = new ImpostorVisionAbility(() => true, priority: 10);
-        ShallowAttach(ex, latestAtSamePriority);
+        Attach(ex, latestAtSamePriority);
         ex.HasImpostorVision().Should().BeTrue();
 
-        ShallowDetach(ex, latestAtSamePriority);
+        Detach(ex, latestAtSamePriority);
         ex.HasImpostorVision().Should().BeFalse();
 
-        ShallowDetach(ex, high);
+        Detach(ex, high);
         ex.HasImpostorVision().Should().BeTrue();
     }
 
@@ -380,9 +551,9 @@ public class ExPlayerControlTests
             isTaskTrigger: () => highTrigger,
             priority: AbilityPriority.GhostRole);
 
-        ShallowAttach(ex, low);
-        ShallowAttach(ex, middle);
-        ShallowAttach(ex, high);
+        Attach(ex, low);
+        Attach(ex, middle);
+        Attach(ex, high);
 
         ex.IsTaskTriggerRole().Should().BeFalse();
         ex.IsCountTask().Should().BeTrue();
@@ -404,8 +575,8 @@ public class ExPlayerControlTests
     {
         byte playerId = 2;
         // Using AbilityParentPlayer with null ExPlayerControl to get a deterministic signature independent of any role/ability ordinal
-        var id1 = ExPlayerControlExtensions.GenerateDeterministicAbilityId(playerId, new AbilityParentPlayer(null), typeof(AlphaAbility));
-        var id2 = ExPlayerControlExtensions.GenerateDeterministicAbilityId(playerId, new AbilityParentPlayer(null), typeof(AlphaAbility));
+        var id1 = ExPlayerControlExtensions.GenerateDeterministicAbilityId(playerId, new AbilityParentPlayer(null), typeof(AlphaAbility), 0);
+        var id2 = ExPlayerControlExtensions.GenerateDeterministicAbilityId(playerId, new AbilityParentPlayer(null), typeof(AlphaAbility), 0);
         // 目的: 同じ入力に対して決定論的に同じ ID が生成されること
         id1.Should().Be(id2);
     }
@@ -418,8 +589,8 @@ public class ExPlayerControlTests
         // 目的: 生成物が null でない
         ex.Should().NotBeNull();
         // 目的: 能力リストが初期化される
-        ex.PlayerAbilities.Should().NotBeNull();
+        ex.AbilityCount.Should().Be(0);
         // 目的: 能力辞書が初期化される
-        ex.PlayerAbilitiesDictionary.Should().NotBeNull();
+        ex.GetAbility(0).Should().BeNull();
     }
 }

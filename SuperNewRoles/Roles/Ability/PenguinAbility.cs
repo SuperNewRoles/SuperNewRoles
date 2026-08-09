@@ -10,7 +10,6 @@ using AmongUs.GameOptions;
 using SuperNewRoles.Roles.Impostor;
 using SuperNewRoles.Ability;
 using SuperNewRoles.SuperTrophies;
-using System.Linq;
 
 namespace SuperNewRoles.Roles.Ability;
 
@@ -183,8 +182,7 @@ public class PenguinKillTrophy : SuperTrophyAbility<PenguinKillTrophy>
     public override void OnRegister()
     {
         // ペンギン能力の取得
-        _penguinAbility = ExPlayerControl.LocalPlayer.PlayerAbilities
-            .FirstOrDefault(x => x is PenguinAbility) as PenguinAbility;
+        _penguinAbility = ExPlayerControl.LocalPlayer.GetAbility<PenguinAbility>();
 
         // 殺害イベントのリスナーを登録
         _onMurderEvent = MurderEvent.Instance.AddListener(HandleMurderEvent);
@@ -231,8 +229,7 @@ public class PenguinHundredKillTrophy : SuperTrophyAbility<PenguinHundredKillTro
     public override void OnRegister()
     {
         // ペンギン能力の取得
-        _penguinAbility = ExPlayerControl.LocalPlayer.PlayerAbilities
-            .FirstOrDefault(x => x is PenguinAbility) as PenguinAbility;
+        _penguinAbility = ExPlayerControl.LocalPlayer.GetAbility<PenguinAbility>();
 
         // 殺害イベントのリスナーを登録
         _onMurderEvent = MurderEvent.Instance.AddListener(HandleMurderEvent);

@@ -61,27 +61,21 @@ public class ExPlayerControl
     public IRoleBase roleBase { get; private set; }
     public List<IModifierBase> ModifierRoleBases { get; private set; } = new();
     public IGhostRoleBase GhostRoleBase { get; private set; }
-    public List<AbilityBase> PlayerAbilities { get; private set; } = new();
-    public Dictionary<ulong, AbilityBase> PlayerAbilitiesDictionary { get; private set; } = new();
-    private Dictionary<string, AbilityBase> _abilityCache = new();
+    private readonly List<AbilityBase> _playerAbilities = new();
+    private readonly Dictionary<ulong, AbilityBase> _abilitiesById = new();
+    // Detach 後に同じIDを再発行すると、遅れて届いたRPCが別Abilityへ誤配信されるため、接続中に発行したIDは保持する。
+    private readonly HashSet<ulong> _issuedAbilityIds = new();
+    internal int AbilityCount => _playerAbilities.Count;
     public TextMeshPro PlayerInfoText { get; set; }
     public TextMeshPro MeetingInfoText { get; set; }
     public PlayerVoteArea VoteArea { get; set; }
-    public int lastAbilityId { get; set; }
     private FinalStatus? _finalStatus;
     public FinalStatus FinalStatus { get { return _finalStatus ?? FinalStatus.Alive; } set { _finalStatus = value; } }
 
-    private Dictionary<string, bool> _hasAbilityCache = new();
-
     // パフォーマンス最適化用キャッシュ
     private readonly Dictionary<int, AbilityBase> _typeIdAbilityCache = new();
-    private readonly Dictionary<int, List<AbilityBase>> _typeIdAbilitiesCache = new();
     private readonly Dictionary<int, IReadOnlyList<object>> _typeIdReadOnlyCache = new();
     private readonly Dictionary<int, List<AbilityBase>> _prioritizedAbilities = new();
-
-    // 型IDキャッシュ用配列。1024種類を超える型はキャッシュされないが、動作は継続する
-    private readonly bool[] _hasAbilityByTypeId = new bool[1024]; // 最大1024種類のアビリティタイプを想定
-    private readonly bool[] _hasAbilityByTypeIdCached = new bool[1024];
 
     [System.Runtime.CompilerServices.MethodImpl(System.Runtime.CompilerServices.MethodImplOptions.AggressiveInlining)]
     public override int GetHashCode()
@@ -101,7 +95,6 @@ public class ExPlayerControl
         this.Player = player;
         this.PlayerId = player.PlayerId;
         this.Data = player.CachedPlayerData;
-        this.lastAbilityId = 0;
         this.AmOwner = player.AmOwner;
     }
     [System.Runtime.CompilerServices.MethodImpl(System.Runtime.CompilerServices.MethodImplOptions.AggressiveInlining)]
@@ -145,44 +138,8 @@ public class ExPlayerControl
             }
         }
     }
-    public bool HasAbility(string abilityName)
-    {
-        if (_hasAbilityCache.TryGetValue(abilityName, out bool hasAbility))
-        {
-            return hasAbility;
-        }
-
-        hasAbility = PlayerAbilities.Any(x => x.GetType().Name == abilityName);
-        _hasAbilityCache[abilityName] = hasAbility;
-        return hasAbility;
-    }
     public bool HasAbility<T>() where T : AbilityBase
-    {
-        var typeId = TypeCache<T>.TypeId;
-        if (typeId < 1024 && _hasAbilityByTypeIdCached[typeId])
-            return _hasAbilityByTypeId[typeId];
-
-        var count = PlayerAbilities.Count;
-        for (var i = 0; i < count; i++)
-        {
-            if (PlayerAbilities[i] is T)
-            {
-                if (typeId < 1024)
-                {
-                    _hasAbilityByTypeId[typeId] = true;
-                    _hasAbilityByTypeIdCached[typeId] = true;
-                }
-                return true;
-            }
-        }
-
-        if (typeId < 1024)
-        {
-            _hasAbilityByTypeId[typeId] = false;
-            _hasAbilityByTypeIdCached[typeId] = true;
-        }
-        return false;
-    }
+        => TryGetAbility<T>(out _);
     public bool IsTaskComplete()
     {
         (int completed, int total) = ModHelpers.TaskCompletedData(Data);
@@ -283,7 +240,7 @@ public class ExPlayerControl
         {
             Logger.Info($"[SetRole] Calling OnSetRole for player {Player?.name} ({PlayerId})");
             role.OnSetRole(Player);
-            Logger.Info($"[SetRole] OnSetRole completed, PlayerAbilities count: {PlayerAbilities.Count}");
+            Logger.Info($"[SetRole] OnSetRole completed, Ability count: {AbilityCount}");
             if (AmOwner)
                 SuperTrophyManager.RegisterTrophy(Role);
             roleBase = role;
@@ -368,7 +325,7 @@ public class ExPlayerControl
     {
         List<AbilityBase> abilitiesToDetach = new();
         List<AbilityParentRole> abilitiesToDetachParentRole = new();
-        foreach (var ability in PlayerAbilities)
+        foreach (var ability in _playerAbilities)
         {
             if (ability.Parent == null) continue;
             var parent = ability.Parent;
@@ -400,7 +357,7 @@ public class ExPlayerControl
     private void DetachOldGhostRole(GhostRoleId ghostRoleId)
     {
         List<AbilityBase> abilitiesToDetach = new();
-        foreach (var ability in PlayerAbilities)
+        foreach (var ability in _playerAbilities)
         {
             if (ability.Parent == null) continue;
             var parent = ability.Parent;
@@ -431,7 +388,7 @@ public class ExPlayerControl
     private void DetachOldModifierRole(ModifierRoleId modifierRoleId)
     {
         List<AbilityBase> abilitiesToDetach = new();
-        foreach (var ability in PlayerAbilities)
+        foreach (var ability in _playerAbilities)
         {
             if (ability.Parent == null) continue;
             var parent = ability.Parent;
@@ -524,7 +481,7 @@ public class ExPlayerControl
         List<(AbilityBase ability, ulong abilityId)> targetAbilities = new();
 
         // ToArray()を使わずに直接リストから収集
-        foreach (var ability in PlayerAbilities)
+        foreach (var ability in _playerAbilities)
         {
             if (ability != null && IsRoleAbility(ability.Parent))
             {
@@ -532,7 +489,7 @@ public class ExPlayerControl
             }
         }
 
-        foreach (var ability in target.PlayerAbilities)
+        foreach (var ability in target._playerAbilities)
         {
             if (ability != null && IsRoleAbility(ability.Parent))
             {
@@ -629,19 +586,11 @@ public class ExPlayerControl
     {
         _exPlayerControls.Remove(this);
         _exPlayerControlsArray[PlayerId] = null;
-        foreach (var ability in PlayerAbilities)
+        foreach (var ability in _playerAbilities.ToArray())
         {
             ability.Detach();
         }
-        PlayerAbilities.Clear();
-        PlayerAbilitiesDictionary.Clear();
-        _hasAbilityCache.Clear();
-        _typeIdAbilityCache.Clear();
-        _typeIdAbilitiesCache.Clear();
-        _typeIdReadOnlyCache.Clear();
-        _prioritizedAbilities.Clear();
-        System.Array.Clear(_hasAbilityByTypeIdCached, 0, _hasAbilityByTypeIdCached.Length);
-        System.Array.Clear(_hasAbilityByTypeId, 0, _hasAbilityByTypeId.Length);
+        ClearAbilityState();
     }
     public static void SetUpExPlayers()
     {
@@ -711,17 +660,17 @@ public class ExPlayerControl
     public bool IsPavlovsDog()
         => Role == RoleId.PavlovsDog || GetAbility<SchrodingersCatAbility>()?.CurrentTeam == SchrodingersCatTeam.Pavlovs;
     public bool IsMadRoles()
-        => HasAbility(nameof(MadmateAbility))
+        => HasAbility<MadmateAbility>()
            || GhostRole == GhostRoleId.Revenant
            || (Role == RoleId.SatsumaAndImo && GetAbility<SatsumaAndImoAbility>()?.IsMadTeam == true)
            || (Role == RoleId.VampireDependent)
            || (Role == RoleId.MadKiller && !IsImpostor());
     public bool IsFriendRoles()
-        => HasAbility(nameof(JFriendAbility)) || (Role == RoleId.Bullet && !WaveCannonJackal.WaveCannonJackalCreateBulletToJackal);
+        => HasAbility<JFriendAbility>() || (Role == RoleId.Bullet && !WaveCannonJackal.WaveCannonJackalCreateBulletToJackal);
     public bool IsJackal()
-        => HasAbility(nameof(JackalAbility)) || GetAbility<SchrodingersCatAbility>()?.CurrentTeam == SchrodingersCatTeam.Jackal;
+        => HasAbility<JackalAbility>() || GetAbility<SchrodingersCatAbility>()?.CurrentTeam == SchrodingersCatTeam.Jackal;
     public bool IsSidekick()
-        => HasAbility(nameof(JSidekickAbility)) || (Role == RoleId.Bullet && WaveCannonJackal.WaveCannonJackalCreateBulletToJackal);
+        => HasAbility<JSidekickAbility>() || (Role == RoleId.Bullet && WaveCannonJackal.WaveCannonJackalCreateBulletToJackal);
     public bool IsJackalTeam()
         => IsJackal() || IsSidekick();
     public bool IsJackalTeamWins()
@@ -918,7 +867,7 @@ public class ExPlayerControl
         => IsImpostor() && !ModHelpers.IsHnS();
     public AbilityBase GetAbility(ulong abilityId)
     {
-        return PlayerAbilitiesDictionary.TryGetValue(abilityId, out var ability) ? ability : null;
+        return _abilitiesById.TryGetValue(abilityId, out var ability) ? ability : null;
     }
     [System.Runtime.CompilerServices.MethodImpl(System.Runtime.CompilerServices.MethodImplOptions.AggressiveInlining)]
     public bool TryGetAbility<T>(out T result) where T : AbilityBase
@@ -930,10 +879,10 @@ public class ExPlayerControl
             return result != null;
         }
 
-        var count = PlayerAbilities.Count;
+        var count = _playerAbilities.Count;
         for (var i = 0; i < count; i++)
         {
-            if (PlayerAbilities[i] is T ability)
+            if (_playerAbilities[i] is T ability)
             {
                 _typeIdAbilityCache[typeId] = ability;
                 result = ability;
@@ -952,25 +901,53 @@ public class ExPlayerControl
     private void AttachAbility(AbilityBase ability, ulong abilityId, AbilityParentBase parent)
     {
         Logger.Info("AttachAbility: " + ability.GetType().Name + " to player: " + PlayerId);
-        PlayerAbilities.Add(ability);
-        PlayerAbilitiesDictionary.Add(abilityId, ability);
-        _abilityCache[ability.GetType().Name] = ability;
+        RegisterAbilityState(abilityId, ability);
         SuperTrophyManager.RegisterTrophy(ability);
-        AddPrioritizedAbility(ability);
         ability.Attach(Player, abilityId, parent);
-        ClearAbilityCaches();
     }
     /// <summary>
     /// アビリティをプレイヤーにアタッチします。
     /// AbilityId は「プレイヤーID/親コンテキスト/アビリティ型/序数」に基づく決定的IDで生成されます。
-    /// これにより、環境差や付与順の差異があっても送受信で同一の AbilityId が保証されます。
+    /// 同じ親ツリーとライフサイクル順序を再現したクライアント間では、同一の AbilityId になります。
     /// </summary>
     /// <param name="ability">アタッチするアビリティ</param>
     /// <param name="parent">親コンテキスト(Role/Modifier/Ghost/Ability/Player)</param>
     public void AttachAbility(AbilityBase ability, AbilityParentBase parent)
     {
-        // 決定的な AbilityId を生成してからアタッチ
-        AttachAbility(ability, ExPlayerControlExtensions.GenerateDeterministicAbilityId(PlayerId, parent, ability.GetType()), parent);
+        if (ability == null)
+            throw new ArgumentNullException(nameof(ability));
+        if (parent == null)
+            throw new ArgumentNullException(nameof(parent));
+
+        if (ability.Parent != null)
+        {
+            var currentOwner = ability.Parent.Player;
+            if (currentOwner != null &&
+                ReferenceEquals(currentOwner.GetAbility(ability.AbilityId), ability))
+            {
+                throw new InvalidOperationException(
+                    $"Ability {ability.GetType().FullName} is already registered for player {currentOwner.PlayerId}.");
+            }
+        }
+
+        if (parent is AbilityParentAbility abilityParent &&
+            (abilityParent.ParentAbility == null ||
+             !ReferenceEquals(GetAbility(abilityParent.ParentAbility.AbilityId), abilityParent.ParentAbility)))
+        {
+            throw new InvalidOperationException("Parent ability is not registered for this player.");
+        }
+        if (!ReferenceEquals(parent.Player, this))
+            throw new InvalidOperationException(
+                $"Ability parent belongs to a different player than {PlayerId}.");
+
+        var abilityType = ability.GetType();
+        var ordinal = GetNextAvailableAbilityOrdinal(parent, abilityType);
+        var abilityId = ExPlayerControlExtensions.GenerateDeterministicAbilityId(
+            PlayerId,
+            parent,
+            abilityType,
+            ordinal);
+        AttachAbility(ability, abilityId, parent);
     }
     public bool HasImpostorVision()
     {
@@ -995,35 +972,14 @@ public class ExPlayerControl
 
     public void DetachAbility(ulong abilityId)
     {
-        if (!PlayerAbilitiesDictionary.TryGetValue(abilityId, out var ability))
+        if (!_abilitiesById.TryGetValue(abilityId, out var ability))
             return;
         ability.Detach();
         SuperTrophyManager.DetachTrophy(ability);
-        RemovePrioritizedAbility(ability);
-        PlayerAbilities.Remove(ability);
-        PlayerAbilitiesDictionary.Remove(abilityId);
-        _abilityCache.Remove(ability.GetType().Name);
-        ClearAbilityCaches();
+        UnregisterAbilityState(abilityId, ability);
     }
     public T GetAbility<T>() where T : AbilityBase
-    {
-        var typeId = TypeCache<T>.TypeId;
-        if (_typeIdAbilityCache.TryGetValue(typeId, out var cachedAbility))
-            return cachedAbility as T;
-
-        var count = PlayerAbilities.Count;
-        for (var i = 0; i < count; i++)
-        {
-            if (PlayerAbilities[i] is T ability)
-            {
-                _typeIdAbilityCache[typeId] = ability;
-                return ability;
-            }
-        }
-
-        _typeIdAbilityCache[typeId] = null;
-        return null;
-    }
+        => TryGetAbility<T>(out var ability) ? ability : null;
     public IReadOnlyList<T> GetAbilities<T>() where T : AbilityBase
     {
         var typeId = TypeCache<T>.TypeId;
@@ -1034,33 +990,18 @@ public class ExPlayerControl
             return (IReadOnlyList<T>)cachedReadOnly;
         }
 
-        // 既存のキャッシュをチェック
-        if (_typeIdAbilitiesCache.TryGetValue(typeId, out var cachedList))
-        {
-            var typedList = new List<T>(cachedList.Count);
-            for (var i = 0; i < cachedList.Count; i++)
-                typedList.Add((T)cachedList[i]);
-
-            var readOnlyResult = typedList.AsReadOnly();
-            _typeIdReadOnlyCache[typeId] = readOnlyResult;
-            return readOnlyResult;
-        }
-
         // 新規作成
         var result = new List<T>();
-        var cacheList = new List<AbilityBase>();
-        var count = PlayerAbilities.Count;
+        var count = _playerAbilities.Count;
 
         for (var i = 0; i < count; i++)
         {
-            if (PlayerAbilities[i] is T ability)
+            if (_playerAbilities[i] is T ability)
             {
                 result.Add(ability);
-                cacheList.Add(ability);
             }
         }
 
-        _typeIdAbilitiesCache[typeId] = cacheList;
         var readOnlyCollection = result.AsReadOnly();
         _typeIdReadOnlyCache[typeId] = readOnlyCollection;
         return readOnlyCollection;
@@ -1098,18 +1039,67 @@ public class ExPlayerControl
             _prioritizedAbilities.Remove(groupId);
     }
 
-    private void ClearAbilityCaches()
+    private void RegisterAbilityState(ulong abilityId, AbilityBase ability)
     {
-        _hasAbilityCache.Clear();
+        if (_playerAbilities.Contains(ability))
+            throw new InvalidOperationException($"Ability {ability.GetType().FullName} is already registered for player {PlayerId}.");
+        if (_abilitiesById.ContainsKey(abilityId))
+            throw new InvalidOperationException($"AbilityId {abilityId} is already registered for player {PlayerId}.");
+        if (_issuedAbilityIds.Contains(abilityId))
+            throw new InvalidOperationException($"AbilityId {abilityId} was already issued for player {PlayerId}.");
+
+        _playerAbilities.Add(ability);
+        _abilitiesById.Add(abilityId, ability);
+        _issuedAbilityIds.Add(abilityId);
+        AddPrioritizedAbility(ability);
+        InvalidateAbilityCaches();
+    }
+
+    private void UnregisterAbilityState(ulong abilityId, AbilityBase ability)
+    {
+        RemovePrioritizedAbility(ability);
+        _playerAbilities.Remove(ability);
+        _abilitiesById.Remove(abilityId);
+        InvalidateAbilityCaches();
+    }
+
+    private void ClearAbilityState()
+    {
+        _playerAbilities.Clear();
+        _abilitiesById.Clear();
+        _issuedAbilityIds.Clear();
+        _prioritizedAbilities.Clear();
+        InvalidateAbilityCaches();
+    }
+
+    private void InvalidateAbilityCaches()
+    {
         _typeIdAbilityCache.Clear();
-        _typeIdAbilitiesCache.Clear();
         _typeIdReadOnlyCache.Clear();
-        System.Array.Clear(_hasAbilityByTypeIdCached, 0, _hasAbilityByTypeIdCached.Length);
+    }
+
+    private int GetNextAvailableAbilityOrdinal(
+        AbilityParentBase parent,
+        Type abilityType)
+    {
+        for (var ordinal = 0; ordinal <= 0xFFF; ordinal++)
+        {
+            var abilityId = ExPlayerControlExtensions.GenerateDeterministicAbilityId(
+                PlayerId,
+                parent,
+                abilityType,
+                ordinal);
+            if (!_issuedAbilityIds.Contains(abilityId))
+                return ordinal;
+        }
+
+        throw new InvalidOperationException(
+            $"Ability ordinal exhausted for player {PlayerId}, parent {ExPlayerControlExtensions.GetParentSignature(parent)}, type {abilityType.FullName}.");
     }
 
     public override string ToString()
     {
-        return $"{Data?.PlayerName}({PlayerId}): {Role} {PlayerAbilities.Count}";
+        return $"{Data?.PlayerName}({PlayerId}): {Role} {AbilityCount}";
     }
 }
 public static class ExPlayerControlExtensions
@@ -1126,9 +1116,17 @@ public static class ExPlayerControlExtensions
     /// <param name="playerId">プレイヤーID</param>
     /// <param name="parent">親コンテキスト(ロール/モディファイア/ゴースト/親アビリティ/プレイヤー)</param>
     /// <param name="abilityType">アビリティの型</param>
+    /// <param name="ordinal">同一シグネチャ内で割り当てた序数</param>
     /// <returns>決定的な AbilityId</returns>
-    public static ulong GenerateDeterministicAbilityId(byte playerId, AbilityParentBase parent, Type abilityType)
+    internal static ulong GenerateDeterministicAbilityId(
+        byte playerId,
+        AbilityParentBase parent,
+        Type abilityType,
+        int ordinal)
     {
+        if (ordinal is < 0 or > 0xFFF)
+            throw new ArgumentOutOfRangeException(nameof(ordinal));
+
         ulong pid = playerId;
         ulong roleCode = 0;
         string parentSig = GetParentSignature(parent);
@@ -1145,32 +1143,12 @@ public static class ExPlayerControlExtensions
             roleCode = (ulong)(int)apg.ParentGhostRole.Role & 0xFFFFUL;
         }
 
-        // 同一親コンテキスト内の同一型アビリティ数(既存数)を数えて序数に反映
-        int ordinal = 0;
-        var exPlayer = parent.Player;
-        if (exPlayer != null)
-        {
-            var abilities = exPlayer.PlayerAbilities;
-            for (int i = 0; i < abilities.Count; i++)
-            {
-                var a = abilities[i];
-                if (a != null && a.GetType() == abilityType)
-                {
-                    if (GetParentSignature(a.Parent) == parentSig)
-                    {
-                        ordinal++;
-                    }
-                }
-            }
-        }
-
         // 親シグネチャと型名からシグネチャ文字列を生成
         string signature = parentSig + "|" + (abilityType.FullName ?? abilityType.Name);
         ulong sigHash = Fnv1a64(signature) & 0x0FFFFFFFUL; // 28-bit
-        ulong ord = (ulong)(ordinal & 0xFFF); // 12-bit
+        ulong ord = (ulong)ordinal; // 12-bit
         ulong lower40 = (sigHash << 12) | ord;
-        ulong id = (pid << 56) | (roleCode << 40) | lower40;
-        return id;
+        return (pid << 56) | (roleCode << 40) | lower40;
     }
 
     /// <summary>
@@ -1200,7 +1178,7 @@ public static class ExPlayerControlExtensions
     /// </summary>
     /// <param name="parent">親コンテキスト</param>
     /// <returns>親シグネチャ</returns>
-    private static string GetParentSignature(AbilityParentBase parent)
+    internal static string GetParentSignature(AbilityParentBase parent)
     {
         switch (parent)
         {

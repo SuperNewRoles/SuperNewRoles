@@ -6,7 +6,6 @@ using SuperNewRoles.WaveCannonObj;
 using SuperNewRoles.Events.PCEvents;
 using SuperNewRoles.Modules.Events.Bases;
 using SuperNewRoles.SuperTrophies;
-using System.Linq;
 
 namespace SuperNewRoles.Roles.Ability;
 
@@ -133,8 +132,7 @@ public class WaveCannonFiveShotTrophy : SuperTrophyAbility<WaveCannonFiveShotTro
     public override void OnRegister()
     {
         // WaveCannonAbility の取得とカウンターの初期化
-        _waveCannonAbility = ExPlayerControl.LocalPlayer.PlayerAbilities
-            .FirstOrDefault(x => x is WaveCannonAbility) as WaveCannonAbility;
+        _waveCannonAbility = ExPlayerControl.LocalPlayer.GetAbility<WaveCannonAbility>();
         _killedCounter = 0;
 
         // 殺害イベントのリスナーを登録
@@ -191,8 +189,7 @@ public class WaveCannonOneThousandShotTrophy : SuperTrophyAbility<WaveCannonOneT
 
     public override void OnRegister()
     {
-        _waveCannonAbility = ExPlayerControl.LocalPlayer.PlayerAbilities
-            .FirstOrDefault(x => x is WaveCannonAbility) as WaveCannonAbility;
+        _waveCannonAbility = ExPlayerControl.LocalPlayer.GetAbility<WaveCannonAbility>();
         _onMurderEvent = MurderEvent.Instance.AddListener(HandleMurderEvent);
     }
     private void HandleMurderEvent(MurderEventData data)

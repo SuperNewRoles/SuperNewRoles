@@ -381,9 +381,9 @@ public static class IntroCutscenePatch
         }
         if (GameSettingOptions.InitialCooldown != InitialCooldownType.Immediate)
         {
-            foreach (var ability in ExPlayerControl.LocalPlayer.PlayerAbilities)
+            foreach (var customButtonBase in ExPlayerControl.LocalPlayer.GetAbilities<CustomButtonBase>())
             {
-                if (ability is CustomButtonBase customButtonBase && customButtonBase.IsFirstCooldownTenSeconds)
+                if (customButtonBase.IsFirstCooldownTenSeconds)
                 {
                     customButtonBase.SetInitialCooldown();
                 }
