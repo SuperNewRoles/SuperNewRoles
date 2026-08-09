@@ -143,7 +143,10 @@ public class SchrodingersCatAbility : AbilityBase
                 NameText.UpdateNameInfo(data.RefTarget);
             data.RefSuccess = false;
             if (showKillAnimation && data.RefTarget.AmOwner)
+            {
+                data.RefTarget.MyPhysics.body.velocity = Vector2.zero;
                 DestroyableSingleton<HudManager>.Instance.KillOverlay.ShowKillAnimation(data.Killer.Data, data.RefTarget.Data);
+            }
         }
     }
     /// <summary>
