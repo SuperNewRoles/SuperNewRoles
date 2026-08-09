@@ -574,6 +574,8 @@ public class ExPlayerControl
         foreach (var ability in myAbilities)
         {
             var currentParent = ability.ability.Parent;
+            if (currentParent is AbilityParentAbility)
+                continue;
             if (!TryMoveRoleParent(currentParent, target))
                 continue;
             target.AttachAbility(ability.ability, currentParent);
@@ -581,6 +583,8 @@ public class ExPlayerControl
         foreach (var ability in targetAbilities)
         {
             var currentParent = ability.ability.Parent;
+            if (currentParent is AbilityParentAbility)
+                continue;
             if (!TryMoveRoleParent(currentParent, this))
                 continue;
             AttachAbility(ability.ability, currentParent);

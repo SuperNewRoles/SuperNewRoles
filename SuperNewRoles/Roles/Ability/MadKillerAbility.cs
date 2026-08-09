@@ -84,8 +84,7 @@ public class MadKillerAbility : AbilityBase
     {
         if (_isAwakened || Player.IsDead()) return;
         // 忘却者引き継ぎ直後などオーナー情報がまだ存在しない場合は覚醒しない
-        if (ownerAbility == null) return;
-        var ownerPlayer = ownerAbility.Player;
+        if (!TryGetOwnerPlayer(out var ownerPlayer)) return;
 
         // プレイヤーデータが消えた、死亡した、または役職がサイドキラーでなくなった場合
         if (ownerPlayer == null || ownerPlayer.IsDead() || ownerPlayer.Role != RoleId.SideKiller)
@@ -95,6 +94,30 @@ public class MadKillerAbility : AbilityBase
         }
     }
 
+
+    public bool TryGetOwnerPlayer(out ExPlayerControl ownerPlayer)
+    {
+        if (ownerAbility != null)
+        {
+            ownerPlayer = ownerAbility.Player;
+            return true;
+        }
+
+        // RpcSetMadKillerAbility が欠落しても、サイドキック作成時に全クライアントへ
+        // 付与される昇格 Ability が保持している親情報から復元する。
+        foreach (var promoteAbility in Player.GetAbilities<PromoteOnParentDeathAbility>())
+        {
+            if (promoteAbility.Parent is AbilityParentRole parentRole &&
+                ReferenceEquals(parentRole.ParentRole, Player.roleBase))
+            {
+                ownerPlayer = promoteAbility.Owner?.Player;
+                return true;
+            }
+        }
+
+        ownerPlayer = null;
+        return false;
+    }
 
     private void Awaken()
     {

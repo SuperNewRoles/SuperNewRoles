@@ -28,17 +28,6 @@ DurationTimerText,残り{0}秒,Remaining {0} seconds,剩余 {0} 秒,剩餘 {0} �
 AdditionalWin,追加勝利,Additional Win,额外胜利,額外勝利
 Seconds,秒,Seconds,秒,秒
 
-# TheThreeLittlePigs
-TheThreeLittlePigsUseCustomTaskSetting,三匹の仔豚のタスクを個別設定,Set tasks for The Three Little Pigs,为三只小猪单独设置任务,為三隻小豬單獨設置任務
-TheThreeLittlePigsTask,三匹の仔豚のタスク,The Three Little Pigs Tasks,三只小猪任务,三隻小豬任務
-TheFirstLittlePigClearTaskPercent,一番目の仔豚 タスク達成率,First Little Pig Task %,第一只小猪任务百分比,第一隻小豬任務百分比
-TheFirstLittlePigUseCustomTimer,一番目の仔豚 タイマーをカスタム,First Little Pig Custom Timer,第一只小猪自定义计时器,第一隻小豬自訂計時器
-TheFirstLittlePigFlashTimer,一番目の仔豚 フラッシュ間隔,First Little Pig Flash Interval,第一只小猪闪光间隔,第一隻小豬閃光間隔
-TheSecondLittlePigClearTaskPercent,二番目の仔豚 タスク達成率,Second Little Pig Task %,第二只小猪任务百分比,第二隻小豬任務百分比
-TheSecondLittlePigMaxGuardCount,二番目の仔豚 ガード回数,Second Little Pig Guards,第二只小猪守护次数,第二隻小豬守護次數
-TheThirdLittlePigClearTaskPercent,三番目の仔豚 タスク達成率,Third Little Pig Task %,第三只小猪任务百分比,第三隻小豬任務百分比
-TheThirdLittlePigMaxCounterCount,三番目の仔豚 カウンター回数,Third Little Pig Counters,第三只小猪反击次数,第三隻小豬反擊次數
-
 # CustomColors
 colorSalmon,サーモン,Salmon,鲑鱼红,鮭魚紅
 colorBordeaux,ボルドー,Bordeaux,枣红,波爾多紅
@@ -326,19 +315,6 @@ RequestInGameCurrentJapanTime,現在の日本時間: {0},Current Japan Time: {0}
 RoleOptionMenuType.Impostor,インポスター,Impostor,伪装者,偽裝者
 RoleOptionMenuType.Crewmate,クルーメイト,Crewmate,船员,船員
 RoleOptionMenuType.Neutral,第三陣営,Neutral,中立阵营,第三陣營
-
-# Scientist Roles
-ScientistButtonName,透明化,Invisible,隐身,隱身
-
-# NiceScientist
-NiceScientistCoolTime,クールタイム,Cooldown,冷却时间,冷卻時間
-NiceScientistDurationTime,効果時間,Duration,持续时间,持續時間
-NiceScientistCanTheLighterSeeTheScientist,ライターが透明化を見破れる,Lighter can see invisible,执灯人可以看见隐身,燈光師可以看見隱身
-
-# EvilScientist
-EvilScientistCoolTime,クールタイム,Cooldown,冷却时间,冷卻時間
-EvilScientistDurationTime,効果時間,Duration,持续时间,持續時間
-EvilScientistCanTheLighterSeeTheScientist,ライターが透明化を見破れる,Lighter can see invisible,执灯人可以看见隐身,燈光師可以看見隱身
 RoleOptionMenuType.Ghost,幽霊役職,Ghost Role,幽灵职业,幽靈职业
 RoleOptionMenuType.Modifier,モディファイア,Modifier,附加职业,修飾符
 
@@ -541,6 +517,7 @@ Amnesiac,忘却者,Amnesiac,失忆者,失憶者
 Conjurer,魔術師,Conjurer,魔术师,魔術師
 Doppelganger,ドッペルゲンガー,Doppelganger,分身,分身
 FalseCharges,冤罪師,False Charges,冤罪师,冤罪師
+Pteranodon,プテラノドン,Pteranodon,翼龙,翼龍
 Hitman,殺し屋,Hitman,杀手,殺手
 NiceButtoner,ナイスボタナー,Nice Buttoner,正义的执钮人,正義的執鈕人
 EvilButtoner,イビルボタナー,Evil Buttoner,邪恶的执钮人,邪惡的執鈕人
@@ -562,6 +539,7 @@ God,神,God,神,神
 Lovers,ラバーズ,Lovers,恋人,戀愛
 LoversBreaker,爆ぜ師,LoversBreaker,爆破师,爆破師
 Owl,フクロウ,Owl,猫头鹰,貓頭鷹
+SchrodingersCat,シュレディンガーの猫,Schrödinger's Cat,薛定谔的猫,薛丁格的貓
 Truelover,純愛者,Truelover,真爱,真愛
 Cupid,キューピット,Cupid,丘比特,丘比特
 Crab,カニ,Crab,螃蟹,螃蟹
@@ -581,11 +559,15 @@ Vampire,ヴァンパイア,Vampire,吸血鬼,吸血鬼
 VampireDependent,眷属,Dependent,眷属,眷屬
 Spelunker,スペランカー,Spelunker,倒霉蛋,倒霉蛋
 ModifierSpelunker,モディファイアスペランカー,Modifier Spelunker,附加倒霉蛋,附加倒霉蛋
+BlackHatHacker,ブラックハットハッカー,Black Hat Hacker,黑帽客,黑帽駭客
 PartTimer,フリーター,Part Timer,临时工,臨時工
+NiceMechanic,ナイスメカニック,Nice Mechanic,正义的机械师,好人機械師
+EvilMechanic,イビルメカニック,Evil Mechanic,邪恶的机械师,邪惡機械師
 HamburgerShop,ハンバーガー屋,Hamburger Shop,汉堡店店长,漢堡店
 BodyBuilder,ボディービルダー,Body Builder,健美达人,健美達人
 NiceHawk,ナイスホーク,Nice Hawk,正义的鹰眼,正義的鷹眼
 MadHawk,マッドホーク,Mad Hawk,背叛的鹰眼,背叛的鷹眼
+WiseMan,賢者,Wise Man,贤者,賢者
 Clergy,聖職者,Clergy,牧师,牧師
 EvilHawk,イビルホーク,Evil Hawk,邪恶的鹰眼,邪惡的鷹眼
 ModifierHawk,モディファイアホーク,Modifier Hawk,附加鹰眼,附加鷹眼
@@ -595,6 +577,7 @@ EvilScientist,イビルサイエンティスト,Evil Scientist,邪恶的科学�
 Lighter,ライター,Lighter,执灯人,執燈人
 Technician,技術者,Technician,技术员,技術員
 Medium,ミーディアム,Medium,通灵师,靈媒師
+NiceRedRidingHood,ナイス赤ずきん,NiceRedRidingHood,小红帽,小紅帽
 Psychometrist,サイコメトラー,Psychometrist,心理学家,心靈測量師
 DoubleKiller,ダブルキラー,DoubleKiller,双重杀手,雙重殺手
 Finder,ファインダー,Finder,寻觅者,尋覓者
@@ -947,6 +930,7 @@ TechnicianIntro1,通気口から参ります,I’ll come through the vent,我会
 NiceScientistIntro1,不可視の観察者,Invisible observer,不可见的观察者,不可見的觀察者
 MeetingSheriffIntro1,正義の断罪は会議室で,Deliver righteous judgment in the conference room,在会议室宣判正义,在會議室宣判正義
 MediumIntro1,鳴らぬ声を聴く,Hear the silent voice,倾听无声之声,傾聽無聲之聲
+NiceRedRidingHoodIntro1,生き返ろう,Come back to life,杀死你的凶手死亡后你将会复活,殺死你的凶手死亡後你將會復活
 PhosphorusIntro1,闇を払う仄かな灯火,A faint light that dispels the darkness,驱散黑暗的微光,驅散黑暗的微光
 StuntmanIntro1,無意識の攻防、,Unconscious offense and defense,无意识的攻防,無意識的攻防
 UbiquitousIntro1,偏在する監視眼,Ubiquitous watchful eye,无处不在的监视之眼,無處不在的監視之眼
@@ -1400,9 +1384,12 @@ MatryoshkaWearReport,まとい中でも通報可能,Can report while wearing a b
 MatryoshkaWearTime,まとえる時間,Wear Duration,恐怖套娃套娃持续时间,恐怖套娃套娃持續時間
 MatryoshkaPutOnButtonName,着る,Put On,套娃,套娃
 MatryoshkaTakeOffButtonName,脱ぐ,Take Off,解除,解除
+Matryoshka.Report,死体を着用中に報告可能にする,Allow reporting while wearing a dead body,允许在穿戴尸体时举报,允許在穿戴屍體時舉報
+MatryoshkaButtonText,死体を着る/脱ぐ,Wear/Remove Body,穿戴/脱下尸体,穿戴/脫下屍體
 
 # Amnesiac
 AmnesiacShowDeadBodyArrows,死体の矢印を表示する,Show Dead Body Arrows,显示尸体箭头,顯示屍體箭頭
+Amnesiac.RoleChangeNotification,あなたは次の役職になりました: ,You have become the following role: ,你现在的职业变为: ,你現在的職業變為:
 
 # Conjurer
 ConjurerBeaconName,ビーコン設置,Beacon,放置信标,設置信標
@@ -1424,10 +1411,10 @@ FalseChargesExileTurn,冤罪の範囲のターン,Turn of the false accusation r
 FalseCharges.ButtonTitle,冤罪,False Charge,栽赃,栽贓
 
 # プテラノドン
-Pteranodon,プテラノドン,Pteranodon,翼龙,翼龍
 Pteranodon.ButtonTitle,飛行,Fly,飞行,飛行
 
 # Hitman
+HitmanResetTargetOnMeeting,会議終了時にターゲットをリセットする,Reset target after meeting,会议结束时重置目标,會議結束時重置目標
 HitmanChangeTargetTime,ターゲットがリセットされる時間,Target reset time,目标重置时间,目標重置時間
 HitmanWinKillCount,勝利に必要な成功数,Required kill count for victory,胜利所需的杀人成功数,勝利所需的殺人成功數
 HitmanIsOutMission,任務が遂行できないと自爆する,Self-destruct if mission fails,任务失败时自爆,任務失敗時自爆
@@ -1447,6 +1434,8 @@ MayorVoteAdditionalVote,所持票数,Number of votes held,持有票数,持有票
 
 # Worshiper
 SuicideButtonText,自滅,Suicide,自杀,自殺
+WorshiperCanKnowImpostors,インポスターが分かる,Can Know Impostors,可以知道伪装者,可以知道內鬼
+WorshiperAbilitySuicideCoolTime,自殺クールタイム,Suicide Cooldown,自杀冷却时间,自殺冷卻時間
 
 # Necromancer
 NecromancerCurseCooldown,「呪縛」クールタイム,Curse Cooldown,诅咒冷却时间,詛咒冷卻時間
@@ -1487,6 +1476,7 @@ CanteraButtonText,灯火,Light,灯火,燈火
 # Mirage
 MirageLimitUse,使用回数制限を有効にする,Enable Limit Uses,启用使用次数限制,啟用使用次數限制
 MirageLimitCount,使用可能回数,Max Uses,最大使用次数,最大使用次數
+MirageButtonText,複製,Copy,复制,複製
 
 # Bakery
 BakeryExileText,パン屋がパンを焼いたようだ...,Bakery baked bread,面包屋烤了面包,麵包屋烤了麵包
@@ -1495,10 +1485,6 @@ BakeryExileText2,パン屋ｧｧﾉｫｫﾖｯｷﾝｸﾞﾍﾞｯﾋﾟﾝｲ
 # MadRaccoon
 MadRaccoonShapeshiftCooldown,シェイプシフトクールダウン,MadRaccoon Shapeshift Cooldown,变身冷却时间,變身冷卻時間
 MadRaccoonShapeshiftDuration,シェイプシフト持続時間,MadRaccoon Shapeshift Duration,变身持续时间,變身持續時間
-
-# Worshiper Options
-WorshiperCanKnowImpostors,インポスターが分かる,Can Know Impostors,可以知道伪装者,可以知道內鬼
-WorshiperAbilitySuicideCoolTime,自殺クールタイム,Suicide Cooldown,自杀冷却时间,自殺冷卻時間
 
 # God
 GodNeededTask,勝利にタスクが必要,Required Tasks for Victory,胜利需要任务,勝利需要任務
@@ -1549,7 +1535,6 @@ OwlHideDeadBodyButton,隠す,Hide,藏匿,隱藏
 OwlSpecialBlackoutButton,特殊停電,Special Blackout,紧急停电,緊急停電
 
 # SchrodingersCat Role and Options
-SchrodingersCat,シュレディンガーの猫,Schrödinger's Cat,薛定谔的猫,薛丁格的貓
 SchrodingersCatHasKillAbility,キル能力を有する,Has kill ability,具有击杀能力,具有擊殺能力
 SchrodingersCatKillCooldown,キルクールタイム,Kill Cooldown,击杀冷却时间,擊殺冷卻時間
 SchrodingersCatKillVictimSuicide,キル者が自殺する,Killer suicides,杀害你的凶手会自杀,擊殺者自殺
@@ -1669,17 +1654,6 @@ FungleZiplineDirectionOptions.TheFungleZiplineAlways,常時使用可能,Always A
 FungleZiplineDirectionOptions.TheFungleZiplineOnlyUp,上りのみ使用可能,Up Only,仅上行可用,僅上行可用
 FungleZiplineDirectionOptions.TheFungleZiplineOnlyDown,下りのみ使用可能,Down Only,仅下行可用,僅下行可用
 
-# Mirage
-MirageButtonText,複製,Copy,复制,複製
-
-
-# マトリョーシカ関連
-Matryoshka.Report,死体を着用中に報告可能にする,Allow reporting while wearing a dead body,允许在穿戴尸体时举报,允許在穿戴屍體時舉報
-MatryoshkaButtonText,死体を着る/脱ぐ,Wear/Remove Body,穿戴/脱下尸体,穿戴/脫下屍體
-
-# 忘却者関連
-Amnesiac.RoleChangeNotification,あなたは次の役職になりました: ,You have become the following role: ,你现在的职业变为: ,你現在的職業變為: 
-
 # Spelunker関連
 SpelunkerVentDeathChance,ベント死の確率,Probability of vent death,倒霉蛋在管道口跌倒而死的概率,倒霉鬼在管道口跌倒而死的機率
 LadderDeadChance,転落死する確率,Ladder Death Chance,摔死的概率,摔死的機率
@@ -1690,8 +1664,6 @@ SpelunkerLiftDeathChance,昇降機死の確率,Elevator Death Chance,电梯死�
 SpelunkerDoorOpenChance,ドア開放死の確率,Door Opening Death Chance,开门死亡概率,開門死亡機率
 
 # BlackHatHacker
-BlackHatHacker,ブラックハットハッカー,Black Hat Hacker,黑帽客,黑帽駭客
-BlackHatHackerDescription,ウイルスを使って全員を感染させろ！,Use viruses to infect everyone!,使用病毒感染所有人,使用病毒感染所有人
 BlackHatHackerHackCoolTime,ハックのクールタイム,Hack Cooldown,植入病毒冷却,駭入的冷卻時間
 BlackHatHackerHackCountable,ハック可能回数,Number of hacks possible,最大植入病毒次数,駭入的使用次數
 BlackHatHackerIsNotInfectionIncrease,感染者が居なくなったらハック回数を増やす,Increase the number of hacks once the infected are gone,不存在感染者时增加一次感染次数,當感染者消失後，增加駭入的使用次數
@@ -1720,7 +1692,7 @@ BlackHatHackerPageChange,ページ変更,Page Change,翻页,翻頁
 BlackHatHackerWin,ブラックハットハッカーの勝利,Black Hat Hacker Win,黑帽客获胜,黑帽駭客獲勝
 
 
-# PartTimerPartTimer,フリーター,PartTimer,打工仔,打工仔
+# PartTimer
 PartTimerDeathTurn,無職で死亡までのターン数,Turns until death when unemployed,无工作时死亡倒计时回合,無工作時死亡倒計時回合
 PartTimerInitialCooldown,初期クールタイム,Initial Cooldown,初期冷却时间,初期冷卻時間
 PartTimerFinalCooldown,最終クールタイム,Final Cooldown,最终冷却时间,最終冷卻時間
@@ -1730,14 +1702,12 @@ PartTimerNeedAliveToWin,勝利に生存が必要,Need alive to win,胜利需要�
 PartTimerButtonName,バイト,PartTime,打工,打工
 
 # NiceMechanic
-NiceMechanic,ナイスメカニック,Nice Mechanic,正义的机械师,好人機械師
 MechanicButtonText,移設,Relocate,移設,移設
 NiceMechanicCoolTime,移設クールタイム,Relocate Cooldown,移設冷卻時間,移設冷卻時間
 NiceMechanicDurationTime,効果持続時間,Effect Duration,效果持续时间,效果持續時間
 NiceMechanicUseVent,ベントを使用できる,Can Use Vent,可以使用通风口,可以使用通風口
 
 # EvilMechanic
-EvilMechanic,イビルメカニック,Evil Mechanic,邪恶的机械师,邪惡機械師
 EvilMechanicCoolTime,移設クールタイム,Relocate Cooldown,移設冷卻時間,移設冷卻時間
 EvilMechanicDurationTime,効果持続時間,Effect Duration,效果持续时间,效果持續時間
 
@@ -1764,8 +1734,6 @@ HawkZoomMagnification,ホークアイのズーム倍率,Hawk Eye Zoom Magnificat
 HawkCannotWalkInEffect,ホークアイの効果中は移動できない,Cannot move while Hawk Eye is active,鹰眼效果中无法移动,鷹眼效果中無法移動
 
 # WiseMan
-WiseMan,賢者,Wise Man,贤者,賢者
-WiseManDescription,<color=#55b4ec>賢者</color>は透視能力で壁の向こうを見ることができるクルーメイトです。\n能力使用中はカメラがロックされ、特定の角度で壁を透視できます。\n移動制限を有効にすることで、より集中した観察が可能になります。,<color=#55b4ec>Wise Man</color> is a crewmate who can see through walls with clairvoyance.\nWhile using the ability，the camera is locked and can see through walls at specific angles.\nEnabling movement restrictions allows for more focused observation.,<color=#55b4ec>贤者</color>是一个可以透视墙壁的船员。\n使用能力时摄像头被锁定，可以从特定角度透视墙壁。\n启用移动限制可以进行更专注的观察。,<color=#55b4ec>賢者</color>是一個可以透視牆壁的船員。\n使用能力時攝影機被鎖定，可以從特定角度透視牆壁。\n啟用移動限制可以進行更專注的觀察。
 WiseManButtonText,聖なる盾,Holy Shield,神圣盾,神聖盾
 WiseManEnableWiseManWalk,賢者ステップを有効にする,Enable Wise Man Step,启用贤者步,啟用賢者步
 
@@ -1802,8 +1770,19 @@ ClergyVisionMultiplier,視界倍率,Vision Multiplier,视野倍率,視野倍率
 ClergyActiveForNeutralKiller,第三キラーも影響を受ける,The third killer is also affected.,中立杀手也会受到影响,中立殺手也會受到影響
 ClergyEffectMessage,聖職者に視界を妨害されている,My view is being obstructed by a Clergy,我的眼中皆是圣贤庇护,我的視野被聖職者妨礙
 
-# Scientist
+# Scientist Roles
+ScientistButtonName,透明化,Invisible,隐身,隱身
 ScientistCanTheLighterSeeTheScientist,ライターからは見える,Lighter can see scientist.,科技改变生活,科技改變生活
+
+# NiceScientist
+NiceScientistCoolTime,クールタイム,Cooldown,冷却时间,冷卻時間
+NiceScientistDurationTime,効果時間,Duration,持续时间,持續時間
+NiceScientistCanTheLighterSeeTheScientist,ライターが透明化を見破れる,Lighter can see invisible,执灯人可以看见隐身,燈光師可以看見隱身
+
+# EvilScientist
+EvilScientistCoolTime,クールタイム,Cooldown,冷却时间,冷卻時間
+EvilScientistDurationTime,効果時間,Duration,持续时间,持續時間
+EvilScientistCanTheLighterSeeTheScientist,ライターが透明化を見破れる,Lighter can see invisible,执灯人可以看见隐身,燈光師可以看見隱身
 
 # Lighter
 LighterButtonText,点灯,Light On,点亮,點亮
@@ -1830,8 +1809,6 @@ Corridor,通路,Corridor,通道,通道
 Unknown,不明,Unknown,未知,未知
 
 # NiceRedRidingHood
-NiceRedRidingHood,ナイス赤ずきん,NiceRedRidingHood,小红帽,小紅帽
-NiceRedRidingHoodIntro1,生き返ろう,Come back to life,杀死你的凶手死亡后你将会复活,殺死你的凶手死亡後你將會復活
 NiceRedRidingHoodCount,最大生き返り回数,Maximum number of revives,小红帽最大可复活次数,小紅帽最大可復活次數
 NiceRedRidingHoodIsKillerDeathRevive,キル者がタスクターンに死亡した場合でも復活する,Resurrects even if the killers die in the task turn,若凶手在行动阶段死亡小红帽依然可以复活,若凶手在行動階段死亡小紅帽依然可以復活
 
@@ -2066,6 +2043,17 @@ SaunerWinText,が ととのった！,is Feeling refreshed!,桑拿者胜利！,�
 MoiraAbilityLimit,運命改変できる回数,Number of destiny swaps,命运改变次数,可改寫命運的次數
 MoiraSwapVoteCount,投票数を入れ替える,Swap vote counts,交换票数,交換票數
 MoiraWinText,勝利を横取りした！,Hijacked the victory!,抢夺了胜利！,搶奪了勝利！
+
+# TheThreeLittlePigs
+TheThreeLittlePigsUseCustomTaskSetting,三匹の仔豚のタスクを個別設定,Set tasks for The Three Little Pigs,为三只小猪单独设置任务,為三隻小豬單獨設置任務
+TheThreeLittlePigsTask,三匹の仔豚のタスク,The Three Little Pigs Tasks,三只小猪任务,三隻小豬任務
+TheFirstLittlePigClearTaskPercent,一番目の仔豚 タスク達成率,First Little Pig Task %,第一只小猪任务百分比,第一隻小豬任務百分比
+TheFirstLittlePigUseCustomTimer,一番目の仔豚 タイマーをカスタム,First Little Pig Custom Timer,第一只小猪自定义计时器,第一隻小豬自訂計時器
+TheFirstLittlePigFlashTimer,一番目の仔豚 フラッシュ間隔,First Little Pig Flash Interval,第一只小猪闪光间隔,第一隻小豬閃光間隔
+TheSecondLittlePigClearTaskPercent,二番目の仔豚 タスク達成率,Second Little Pig Task %,第二只小猪任务百分比,第二隻小豬任務百分比
+TheSecondLittlePigMaxGuardCount,二番目の仔豚 ガード回数,Second Little Pig Guards,第二只小猪守护次数,第二隻小豬守護次數
+TheThirdLittlePigClearTaskPercent,三番目の仔豚 タスク達成率,Third Little Pig Task %,第三只小猪任务百分比,第三隻小豬任務百分比
+TheThirdLittlePigMaxCounterCount,三番目の仔豚 カウンター回数,Third Little Pig Counters,第三只小猪反击次数,第三隻小豬反擊次數
 
 # BattleRoyalMode (Standard)
 ModeId.BattleRoyal,バトルロイヤル,Battle Royale,大逃杀,大逃殺
