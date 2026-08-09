@@ -206,10 +206,13 @@ public class ExPlayerControlMoreTests
         var ghostAbility = new ParentAwareAbility();
         SetAbilityParent(ghostAbility, ghostParent);
 
+        var modifierParent = new AbilityParentModifier(ex, null!);
+
         InvokeIsRoleAbility(roleParent).Should().BeTrue();
         InvokeIsRoleAbility(new AbilityParentAbility(roleAbility)).Should().BeTrue();
         InvokeIsRoleAbility(ghostParent).Should().BeFalse();
         InvokeIsRoleAbility(new AbilityParentAbility(ghostAbility)).Should().BeFalse();
+        InvokeIsRoleAbility(modifierParent).Should().BeFalse();
         InvokeIsRoleAbility(new AbilityParentPlayer(ex)).Should().BeFalse();
     }
 
