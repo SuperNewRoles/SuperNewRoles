@@ -137,7 +137,6 @@ public sealed class FrankensteinAbility : AbilityBase
         {
             if (Constants.ShouldPlaySfx())
                 SoundManager.Instance.PlaySound(data.Killer.Player.KillSfx, false, 0.8f);
-            data.Killer.Player.NetTransform.RpcSnapTo(data.RefTarget.Player.transform.position);
         }
 
         if (Player.AmOwner)
