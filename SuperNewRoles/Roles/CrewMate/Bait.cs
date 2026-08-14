@@ -1,9 +1,7 @@
 using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using AmongUs.GameOptions;
-using BepInEx.Unity.IL2CPP.Utils.Collections;
 using Hazel;
 using SuperNewRoles.CustomOptions;
 using SuperNewRoles.Events;
@@ -81,43 +79,70 @@ class BaitAbility : AbilityBase
 
     public void OnKilled(MurderEventData data)
     {
-        if (data.target == PlayerControl.LocalPlayer)
-        {
-            // キラーに警告する（画面を青く光らせる）
-            if (Bait.BaitWarnKiller)
-            {
-                FlashHandler.RpcShowFlash(data.killer, Color.cyan, 0.2f);
-            }
+        if (!ShouldAutoReport(data.target, data.killer, data.resultFlags, Player))
+            return;
 
-            //Reportの遅延呼び出しを行う(多分Coroutineがよいのでは？)
-            PlayerControl.LocalPlayer.StartCoroutine(DelayedReport(data).WrapToIl2Cpp());
+        // キラーに警告する（画面を青く光らせる）
+        if (Bait.BaitWarnKiller)
+        {
+            FlashHandler.RpcShowFlash(data.killer, Color.cyan, 0.2f);
         }
+
+        ExPlayerControl killer = data.killer;
+        ExPlayerControl target = data.target;
+        float delay = CalculateReportDelay(Bait.BaitReportTime, Bait.BaitRandomDelay, Bait.BaitDelayVariation);
+        Logger.Info($"Bait auto-report scheduled in {delay}s (killer={killer.PlayerId}, target={target.PlayerId})", "Bait");
+        new LateTask(() => TryReport(killer, target), delay, "BaitReport");
     }
 
-    IEnumerator DelayedReport(MurderEventData data)
+    internal static bool ShouldAutoReport(ExPlayerControl target, ExPlayerControl killer, MurderResultFlags resultFlags, ExPlayerControl self)
+    {
+        if (target == null || killer == null || self == null)
+            return false;
+        if (target.PlayerId != self.PlayerId)
+            return false;
+        if (!resultFlags.HasFlag(MurderResultFlags.Succeeded))
+            return false;
+        // 自殺扱いの MurderEvent（波動砲など）では reporter が死者になり、
+        // PlayerControl.ReportDeadBody が Data.IsDead で即 return する
+        if (killer.PlayerId == target.PlayerId)
+            return false;
+        return true;
+    }
+
+    internal static float CalculateReportDelay(float reportTime, bool randomDelay, int delayVariation, Func<int, int, int> randomRange = null)
     {
         // 最低限の遅延（キラーへの警告が見えるように）
-        yield return new WaitForSeconds(0.5f);
+        const float minimumFlashDelay = 0.5f;
+        float extraDelay = 0f;
 
-        float delay = 0f;
-
-        // ランダム遅延が有効な場合
-        if (Bait.BaitRandomDelay)
+        if (randomDelay)
         {
-            int minDelay = Math.Max(0, (int)Bait.BaitReportTime - Bait.BaitDelayVariation);
-            int maxDelay = (int)Bait.BaitReportTime + Bait.BaitDelayVariation;
-            delay = UnityEngine.Random.Range(minDelay, maxDelay + 1);
-
-            if (delay > 0)
-                yield return new WaitForSeconds(delay);
+            int minDelay = Math.Max(0, (int)reportTime - delayVariation);
+            int maxDelay = (int)reportTime + delayVariation;
+            extraDelay = randomRange != null
+                ? randomRange(minDelay, maxDelay + 1)
+                : UnityEngine.Random.Range(minDelay, maxDelay + 1);
         }
-        // 固定遅延の場合
-        else if (Bait.BaitReportTime > 0)
+        else if (reportTime > 0)
         {
-            yield return new WaitForSeconds(Bait.BaitReportTime);
+            extraDelay = reportTime;
         }
 
-        data.killer.RpcCustomReportDeadBody(data.target.Data);
+        return minimumFlashDelay + extraDelay;
+    }
+
+    private static void TryReport(ExPlayerControl killer, ExPlayerControl target)
+    {
+        if (AmongUsClient.Instance == null || AmongUsClient.Instance.IsGameOver)
+            return;
+        if (MeetingHud.Instance != null)
+            return;
+        if (killer?.Player == null || target?.Data == null)
+            return;
+
+        Logger.Info($"Bait auto-report sending RpcCustomReportDeadBody (killer={killer.PlayerId}, target={target.PlayerId})", "Bait");
+        killer.RpcCustomReportDeadBody(target.Data);
     }
 }
 
@@ -145,7 +170,7 @@ public class BaitAutoReportTrophy : SuperTrophyAbility<BaitAutoReportTrophy>
     private void HandleMurderEvent(MurderEventData data)
     {
         Logger.Info("BaitAutoReportTrophy HandleMurderEvent: " + data.target.Player.name + " " + data.killer.Player.name);
-        if (data.target != PlayerControl.LocalPlayer)
+        if (data.target == null || data.target.PlayerId != PlayerControl.LocalPlayer.PlayerId)
         {
             return;
         }
@@ -205,7 +230,7 @@ public class BaitKillerExiledTrophy : SuperTrophyAbility<BaitKillerExiledTrophy>
 
     private void HandleMurderEvent(MurderEventData data)
     {
-        if (data.target != PlayerControl.LocalPlayer)
+        if (data.target != ExPlayerControl.LocalPlayer)
         {
             return;
         }
