@@ -40,4 +40,7 @@ class BodyBuilder : RoleBase<BodyBuilder>
 
     [CustomOptionTask("BodyBuilderTaskOption", 2, 3, 1, parentFieldName: nameof(BodyBuilderTaskOptionAvailable), parentActiveValue: true)]
     public static TaskOptionData BodyBuilderTaskOption;
+
+    [CustomOptionBool("BodyBuilderMoreMuscular", false)]
+    public static bool BodyBuilderMoreMuscular;
 }
