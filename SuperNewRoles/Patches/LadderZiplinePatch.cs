@@ -1,6 +1,7 @@
 using HarmonyLib;
 using SuperNewRoles.CustomOptions.Categories;
 using SuperNewRoles.Modules;
+using SuperNewRoles.Modules.Compatibility;
 using UnityEngine;
 using InnerNet; // ShipStatus を使うため
 using static SuperNewRoles.CustomOptions.Categories.MapEditSettingsOptions;
@@ -9,6 +10,7 @@ using static SuperNewRoles.CustomOptions.Categories.MapSettingOptions; // Ziplin
 namespace SuperNewRoles.Patches;
 
 [HarmonyPatch(typeof(Ladder))]
+[HarmonyAfter(LevelImposterSupport.PluginGuid)]
 public static class LadderPatch
 {
     [HarmonyPatch(nameof(Ladder.MaxCoolDown), MethodType.Getter), HarmonyPrefix]

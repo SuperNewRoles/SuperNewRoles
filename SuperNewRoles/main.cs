@@ -16,6 +16,7 @@ using TMPro;
 using UnityEngine;
 using BepInEx.Logging;
 using SuperNewRoles.Modules;
+using SuperNewRoles.Modules.Compatibility;
 using SuperNewRoles.Patches;
 using SuperNewRoles.Roles;
 using SuperNewRoles.CustomOptions;
@@ -43,6 +44,8 @@ namespace SuperNewRoles;
 
 [BepInAutoPlugin(PluginConfig.Id, PluginConfig.Name)]
 [BepInProcess(PluginConfig.ProcessName)]
+[BepInDependency(LevelImposterSupport.ReactorPluginGuid, BepInDependency.DependencyFlags.SoftDependency)]
+[BepInDependency(LevelImposterSupport.PluginGuid, BepInDependency.DependencyFlags.SoftDependency)]
 [BepInIncompatibility("com.emptybottle.townofhost")]
 [BepInIncompatibility("me.eisbison.theotherroles")]
 [BepInIncompatibility("me.yukieiji.extremeroles")]
@@ -100,6 +103,7 @@ public partial class SuperNewRolesPlugin : BasePlugin
         Instance = this;
 
         LoadAnnouncementImageDecoder();
+        LevelImposterSupport.Initialize();
 
         Encryption.SetEncryptKey();
 
@@ -460,7 +464,7 @@ public partial class SuperNewRolesPlugin : BasePlugin
         public static void Postfix(ref int __result)
         {
             if (AmongUsClient.Instance.NetworkMode is NetworkModes.LocalGame or NetworkModes.FreePlay) return;
-            __result += 25;
+            __result = Statics.ApplyDisableServerAuthorityFlag(__result);
         }
     }
     [HarmonyPatch(typeof(Constants), nameof(Constants.IsVersionModded))]

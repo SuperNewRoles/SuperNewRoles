@@ -20,7 +20,7 @@ public abstract class MapDatabase
     protected virtual float PlayerSpawnExclusionRadius => 3f;
 
     public SystemTypes[] GetSabotageSystemTypes() => SabotageTypes;
-    public bool CheckMapArea(Vector2 position)
+    public virtual bool CheckMapArea(Vector2 position)
     {
         int num = Physics2D.OverlapCircleNonAlloc(position, 0.1f, PhysicsHelpers.colliderHits, Constants.ShipAndAllObjectsMask);
         if (num > 0 && num <= PhysicsHelpers.colliderHits.Length)
@@ -157,7 +157,7 @@ public abstract class MapDatabase
     /// <summary>
     /// マップ参照点（MapArea / NonMapArea）を包む AABB＋余白。オルフェウス等のランダムスポーン探索に使用。
     /// </summary>
-    public bool TryGetSpawnScanBounds(out Vector2 min, out Vector2 max)
+    public virtual bool TryGetSpawnScanBounds(out Vector2 min, out Vector2 max)
     {
         min = max = Vector2.zero;
         if (MapArea == null || MapArea.Length == 0)
@@ -238,7 +238,14 @@ public abstract class MapDatabase
         return data.TryGetRandomDeadBodySpawnPosition(out position);
     }
 
-    static private MapDatabase[] AllMapData = new MapDatabase[] { new SkeldData(), new MiraData(), new PolusData(), null!, new AirshipData(), new FungleData() };
-    static public MapDatabase GetCurrentMapData() => AllMapData.Length > currentMapId ? AllMapData[currentMapId] : null!;
+    static private readonly MapDatabase[] AllMapData = [new SkeldData(), new MiraData(), new PolusData(), null!, new AirshipData(), new FungleData()];
+    static private readonly PhysicsMapDatabase PhysicsFallback = new();
+    static public MapDatabase GetCurrentMapData()
+    {
+        int id = currentMapId;
+        if (id >= 0 && id < AllMapData.Length && AllMapData[id] != null)
+            return AllMapData[id];
+        return PhysicsFallback;
+    }
     static int currentMapId => GameOptionsManager.Instance.CurrentGameOptions.GetByte(ByteOptionNames.MapId);
 }

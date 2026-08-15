@@ -190,6 +190,9 @@ public static class DevicesPatch
 
         private static void CreateAdmins(MapCountOverlay __instance)
         {
+            if (__instance.CountAreas == null || __instance.CountAreas.Length == 0)
+                return;
+
             AdvancedAdminAbility advancedAdminAbility = ExPlayerControl.LocalPlayer.GetAbility<AdvancedAdminAbility>();
             bool commsActive = !(advancedAdminAbility?.Data.canUseAdminDuringComms ?? false) && ModHelpers.IsComms();
 
@@ -214,19 +217,27 @@ public static class DevicesPatch
             for (int i = 0; i < __instance.CountAreas.Length; i++)
             {
                 CounterArea counterArea = __instance.CountAreas[i];
+                if (counterArea == null)
+                    continue;
 
-                if (!commsActive && counterArea.RoomType > SystemTypes.Hallway)
+                if (commsActive)
                 {
-                    PlainShipRoom plainShipRoom = ShipStatus.Instance.FastRooms.TryGetValue(counterArea.RoomType, out var room) ? room : null;
+                    counterArea.UpdateCount(0);
+                    continue;
+                }
 
-                    if (plainShipRoom != null && plainShipRoom.roomArea)
-                    {
-                        HashSet<int> hashSet = new();
-                        int num = plainShipRoom.roomArea.OverlapCollider(__instance.filter, __instance.buffer);
-                        int count = 0;
-                        List<int> colors = new();
-                        int numDeadIcons = 0;
-                        int numImpostorIcons = 0;
+                if (ShipStatus.Instance?.FastRooms == null ||
+                    !ShipStatus.Instance.FastRooms.TryGetValue(counterArea.RoomType, out PlainShipRoom plainShipRoom) ||
+                    plainShipRoom == null ||
+                    !plainShipRoom.roomArea)
+                    continue;
+
+                HashSet<int> hashSet = new();
+                int num = plainShipRoom.roomArea.OverlapCollider(__instance.filter, __instance.buffer);
+                int count = 0;
+                List<int> colors = new();
+                int numDeadIcons = 0;
+                int numImpostorIcons = 0;
 
                         for (int j = 0; j < num; j++)
                         {
@@ -293,10 +304,6 @@ public static class DevicesPatch
                                 colors.RemoveAt(0);
                             }
                         }
-                    }
-                    else Debug.LogWarning($"Couldn't find counter for:{counterArea.RoomType}");
-                }
-                else counterArea.UpdateCount(0);
             }
         }
 

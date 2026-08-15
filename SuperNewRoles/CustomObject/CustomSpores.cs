@@ -1,8 +1,10 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using UnityEngine;
+using HarmonyLib;
 using SuperNewRoles.Modules;
+using SuperNewRoles.Modules.Compatibility;
+using UnityEngine;
 
 namespace SuperNewRoles.CustomObject;
 
@@ -13,6 +15,19 @@ public static class CustomSpores
     public static void ClearAndReloads()
     {
         mushRooms = new();
+    }
+
+    public static bool IsManagedMushroom(Mushroom mushroom)
+    {
+        if (mushroom == null || mushRooms == null)
+            return false;
+        return mushRooms.TryGetValue(mushroom.id, out Mushroom mapped) && mapped == mushroom;
+    }
+
+    [CustomRPC]
+    public static void RpcTriggerManagedSpore(int id)
+    {
+        TriggerSporesFromMushroom(id);
     }
 
     public static void AddMushroom(Vector2 position, Action<Mushroom> callback, int id = -1)
@@ -115,5 +130,22 @@ public static class CustomSpores
             value.TriggerSpores();
         else
             Logger.Error($"Failed to trigger spore mushroom {id} - no mushroom exists");
+    }
+
+    /// <summary>
+    /// LI マップではバニラ胞子 RPC を送るとマップ側 ID と衝突するため、SNR 管理キノコは CustomRPC で踏んだ処理をする。
+    /// </summary>
+    [HarmonyPatch(typeof(PlayerControl), nameof(PlayerControl.CheckSporeTrigger))]
+    public static class CheckSporeManagedMushroomPatch
+    {
+        public static bool Prefix(PlayerControl __instance, [HarmonyArgument(0)] Mushroom mushroom)
+        {
+            if (!LevelImposterSupport.IsCustomMap)
+                return true;
+            if (!IsManagedMushroom(mushroom))
+                return true;
+            RpcTriggerManagedSpore(mushroom.id);
+            return false;
+        }
     }
 }
