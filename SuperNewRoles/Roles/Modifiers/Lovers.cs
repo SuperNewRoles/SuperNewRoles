@@ -19,11 +19,24 @@ class Lovers : ModifierBase<Lovers>
 
     public override List<Func<AbilityBase>> Abilities => [
         () => new LoversAbility(LoversKnowPartnerRole, LoversKnowPartnerPosition),
+        // クルー勝利カウントは常に Modifier で上書きし、ラバーズのタスクを含めない。
+        () => new CustomTaskAbility(
+            countsForCrewWin: () => false,
+            priority: AbilityPriority.Modifier),
+        // isTaskTrigger は別 Ability。非単独では役職側 Default より低くし、仕事人等を優先する。
         () => new CustomTaskAbility(
             isTaskTrigger: () => false,
-            countsForCrewWin: () => false,
-            priority: AbilityPriority.Modifier)
+            priority: GetTaskTriggerPriority(LoversWinType))
     ];
+
+    /// <summary>
+    /// 完全単独以外では役職の CustomTaskAbility（Default）より低くし、
+    /// 仕事人/タスカー/神などの isTaskTrigger を優先する。
+    /// </summary>
+    internal static int GetTaskTriggerPriority(LoversWinType winType)
+        => winType == LoversWinType.Single
+            ? AbilityPriority.Modifier
+            : AbilityPriority.Default - 1;
 
     public override QuoteMod QuoteMod => QuoteMod.TheOtherRoles;
 

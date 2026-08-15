@@ -76,8 +76,8 @@ public class BodyBuilderAbility : CustomButtonBase
 
     public override bool CheckHasButton()
     {
-        // 全タスク完了時のみ使用可能
-        return Player == ExPlayerControl.LocalPlayer && Player.IsTaskComplete();
+        // 全タスク完了時のみ使用可能（Lovers の isTaskTrigger は見ない）
+        return Player == ExPlayerControl.LocalPlayer && Player.IsAllTasksCompleted();
     }
 
     private void UpdatePhysics(PlayerPhysicsFixedUpdateEventData data)

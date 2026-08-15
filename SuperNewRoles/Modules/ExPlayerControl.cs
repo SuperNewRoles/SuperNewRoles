@@ -155,6 +155,12 @@ public class ExPlayerControl
         }
         return completed >= ResolveRequiredTaskCount(total);
     }
+    /// <summary>
+    /// 割り当て済みバニラタスクがすべて完了しているか。
+    /// CustomTaskAbility の isTaskTrigger / RequiredTaskCount は見ない。
+    /// </summary>
+    public bool IsAllTasksCompleted()
+        => Player is not null && Player.AllTasksCompleted();
     public void ResetKillCooldown()
     {
         if (!AmOwner) return;
@@ -476,45 +482,17 @@ public class ExPlayerControl
     {
         if (target == null || target.Player == null) return;
 
-        // 自分と相手のAbilitiesとRoleを保存
-        List<(AbilityBase ability, ulong abilityId)> myAbilities = new();
-        List<(AbilityBase ability, ulong abilityId)> targetAbilities = new();
+        CollectRoleAbilitiesForSwap(this, out var myParents, out var myToDetach);
+        CollectRoleAbilitiesForSwap(target, out var targetParents, out var targetToDetach);
 
-        // ToArray()を使わずに直接リストから収集
-        foreach (var ability in _playerAbilities)
-        {
-            if (ability != null && IsRoleAbility(ability.Parent))
-            {
-                myAbilities.Add((ability, ability.AbilityId));
-            }
-        }
-
-        foreach (var ability in target._playerAbilities)
-        {
-            if (ability != null && IsRoleAbility(ability.Parent))
-            {
-                targetAbilities.Add((ability, ability.AbilityId));
-            }
-        }
-
-        // 両方のプレイヤーのRoleを保存
         RoleId myRole = Role;
         RoleId targetRole = target.Role;
         IRoleBase myRoleBase = roleBase;
         IRoleBase targetRoleBase = target.roleBase;
 
-        // 両方のプレイヤーからAbilitiesをすべてDetach
-        foreach (var abilityData in myAbilities)
-        {
-            DetachAbility(abilityData.abilityId);
-        }
-
-        foreach (var abilityData in targetAbilities)
-        {
-            target.DetachAbility(abilityData.abilityId);
-        }
-
-        // お互いのRoleを入れ替え
+        // 子を先に外し、親の AttachToAlls が古い子インスタンスを付け直さないようにする。
+        DetachRoleAbilitiesForSwap(this, myToDetach);
+        DetachRoleAbilitiesForSwap(target, targetToDetach);
 
         if (Player.AmOwner)
             SuperTrophyManager.DetachTrophy(Role);
@@ -527,27 +505,45 @@ public class ExPlayerControl
         target.Role = myRole;
         target.roleBase = myRoleBase;
 
-        // アタッチする
-        foreach (var ability in myAbilities)
-        {
-            var currentParent = ability.ability.Parent;
-            if (currentParent is AbilityParentAbility)
-                continue;
-            if (!TryMoveRoleParent(currentParent, target))
-                continue;
-            target.AttachAbility(ability.ability, currentParent);
-        }
-        foreach (var ability in targetAbilities)
-        {
-            var currentParent = ability.ability.Parent;
-            if (currentParent is AbilityParentAbility)
-                continue;
-            if (!TryMoveRoleParent(currentParent, this))
-                continue;
-            AttachAbility(ability.ability, currentParent);
-        }
-        // 名前情報を更新
+        // 親だけ付け直す。子は親の AttachToAlls などで再生成する。
+        ReattachRoleParentsForSwap(myParents, target);
+        ReattachRoleParentsForSwap(targetParents, this);
         NameText.UpdateAllNameInfo();
+    }
+
+    private static void CollectRoleAbilitiesForSwap(
+        ExPlayerControl player,
+        out List<AbilityBase> parentsToAttach,
+        out List<AbilityBase> abilitiesToDetach)
+    {
+        parentsToAttach = new();
+        abilitiesToDetach = new();
+        foreach (var ability in player._playerAbilities)
+        {
+            if (ability == null || !IsRoleAbility(ability.Parent))
+                continue;
+
+            abilitiesToDetach.Add(ability);
+            if (ability.Parent is not AbilityParentAbility)
+                parentsToAttach.Add(ability);
+        }
+    }
+
+    private static void DetachRoleAbilitiesForSwap(ExPlayerControl player, List<AbilityBase> abilitiesToDetach)
+    {
+        for (var i = abilitiesToDetach.Count - 1; i >= 0; i--)
+            player.DetachAbility(abilitiesToDetach[i].AbilityId);
+    }
+
+    private static void ReattachRoleParentsForSwap(List<AbilityBase> parentsToAttach, ExPlayerControl destination)
+    {
+        foreach (var ability in parentsToAttach)
+        {
+            var currentParent = ability.Parent;
+            if (!TryMoveRoleParent(currentParent, destination))
+                continue;
+            destination.AttachAbility(ability, currentParent);
+        }
     }
 
     private static bool IsRoleAbility(AbilityParentBase parent)
@@ -779,7 +775,7 @@ public class ExPlayerControl
     public bool CanUseVent()
         => TryGetVentDecision(out _, out var decision) ? decision : CanUseVentVanilla();
     public bool ShowVanillaVentButton()
-        => CanUseVentVanilla() && IsAlive() && !TryGetVentDecision(out _, out _);
+        => CanShowImpostorVentButtonVanilla() && IsAlive() && !TryGetVentDecision(out _, out _);
     internal bool ShouldShowVentAbility(CustomVentAbility ability)
         => TryGetVentDecision(out var selected, out var decision) &&
            ReferenceEquals(selected, ability) && decision;
@@ -865,7 +861,11 @@ public class ExPlayerControl
     }
 
     private bool CanUseVentVanilla()
-        => (IsImpostor() && !ModHelpers.IsHnS()) || Data.Role.Role == RoleTypes.Engineer;
+        => CanShowImpostorVentButtonVanilla() || Data.Role.Role == RoleTypes.Engineer;
+
+    // ImpostorVentButton の表示専用。ベント可否とは分け、エンジニアのバニラベントと混ぜない。
+    private bool CanShowImpostorVentButtonVanilla()
+        => IsImpostor() && !ModHelpers.IsHnS();
 
     private bool CanSabotageVanilla()
         => IsImpostor() && !ModHelpers.IsHnS();

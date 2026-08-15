@@ -143,7 +143,7 @@ class RevenantAbility : TargetCustomButtonBase
     private void OnTaskComplete(TaskCompleteEventData data)
     {
         if (!data.player.AmOwner) return;
-        if (data.player.AllTasksCompleted())
+        if (((ExPlayerControl)data.player).IsAllTasksCompleted())
         {
             ReassignTasks();
             Count++;

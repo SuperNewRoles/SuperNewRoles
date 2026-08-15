@@ -7,6 +7,7 @@ using SuperNewRoles.Ability;
 using SuperNewRoles.Modules;
 using SuperNewRoles.Roles;
 using SuperNewRoles.Roles.Ability;
+using SuperNewRoles.Roles.Modifiers;
 using Xunit;
 
 namespace SuperNewRoles.Tests;
@@ -562,6 +563,73 @@ public class ExPlayerControlTests
 
         highTrigger = null;
         ex.IsTaskTriggerRole().Should().BeTrue();
+    }
+
+    [Theory]
+    [InlineData(LoversWinType.Normal)]
+    [InlineData(LoversWinType.Shared)]
+    public void LoversTaskAbilities_NonSingle_PrefersRoleTrigger_AndNeverCountsForCrewWin(LoversWinType winType)
+    {
+        var ex = CreateBareEx(playerId: 18, role: RoleId.Workperson);
+        var role = new CustomTaskAbility(
+            isTaskTrigger: () => true,
+            countsForCrewWin: () => true,
+            priority: AbilityPriority.Default);
+        var loversCount = new CustomTaskAbility(
+            countsForCrewWin: () => false,
+            priority: AbilityPriority.Modifier);
+        var loversTrigger = new CustomTaskAbility(
+            isTaskTrigger: () => false,
+            priority: Lovers.GetTaskTriggerPriority(winType));
+
+        Attach(ex, role);
+        Attach(ex, loversCount);
+        Attach(ex, loversTrigger);
+
+        Lovers.GetTaskTriggerPriority(winType).Should().BeLessThan(AbilityPriority.Default);
+        ex.IsTaskTriggerRole().Should().BeTrue();
+        ex.IsCountTask().Should().BeFalse();
+    }
+
+    [Fact]
+    public void LoversTaskAbilities_Single_BlocksRoleTaskTrigger_AndNeverCountsForCrewWin()
+    {
+        var ex = CreateBareEx(playerId: 19, role: RoleId.Workperson);
+        var role = new CustomTaskAbility(
+            isTaskTrigger: () => true,
+            countsForCrewWin: () => true,
+            priority: AbilityPriority.Default);
+        var loversCount = new CustomTaskAbility(
+            countsForCrewWin: () => false,
+            priority: AbilityPriority.Modifier);
+        var loversTrigger = new CustomTaskAbility(
+            isTaskTrigger: () => false,
+            priority: Lovers.GetTaskTriggerPriority(LoversWinType.Single));
+
+        Attach(ex, role);
+        Attach(ex, loversCount);
+        Attach(ex, loversTrigger);
+
+        Lovers.GetTaskTriggerPriority(LoversWinType.Single).Should().Be(AbilityPriority.Modifier);
+        ex.IsTaskTriggerRole().Should().BeFalse();
+        ex.IsCountTask().Should().BeFalse();
+    }
+
+    [Fact]
+    public void IsTaskComplete_UsesLoversTaskTrigger_WhileAllTasksCompletedDoesNot()
+    {
+        var ex = CreateBareEx(playerId: 20, role: RoleId.BodyBuilder);
+        // Data が null のため TaskCompletedData は (-1,-1)。トリガー未設定なら completed>=total で true。
+        ex.IsTaskComplete().Should().BeTrue();
+        // Player が null のため、バニラ完了判定は CustomTaskAbility を見ずに false。
+        ex.IsAllTasksCompleted().Should().BeFalse();
+
+        Attach(ex, new CustomTaskAbility(
+            isTaskTrigger: () => false,
+            priority: AbilityPriority.Modifier));
+
+        ex.IsTaskComplete().Should().BeFalse();
+        ex.IsAllTasksCompleted().Should().BeFalse();
     }
 
     private static TResult InvokePrivate<TResult>(object target, string methodName, params object[] args)
