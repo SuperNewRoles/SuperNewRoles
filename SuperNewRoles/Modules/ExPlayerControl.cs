@@ -559,6 +559,8 @@ public class ExPlayerControl
         foreach (var ability in myAbilities)
         {
             var currentParent = ability.ability.Parent;
+            if (currentParent is AbilityParentAbility)
+                continue;
             if (!TryMoveRoleParent(currentParent, target))
                 continue;
             target.AttachAbility(ability.ability, currentParent);
@@ -566,6 +568,8 @@ public class ExPlayerControl
         foreach (var ability in targetAbilities)
         {
             var currentParent = ability.ability.Parent;
+            if (currentParent is AbilityParentAbility)
+                continue;
             if (!TryMoveRoleParent(currentParent, this))
                 continue;
             AttachAbility(ability.ability, currentParent);
@@ -679,7 +683,7 @@ public class ExPlayerControl
         => roleBase != null ? (Role == RoleId.SchrodingersCat && GetAbility<SchrodingersCatAbility>()?.CurrentTeam == SchrodingersCatTeam.Crewmate) || (roleBase.AssignedTeam == AssignedTeamType.Crewmate && !IsMadRoles() && !IsFriendRoles()) : !Data.Role.IsImpostor;
 
     public bool IsCrewmateWin()
-        => IsCrewmate() && (roleBase == null || roleBase.WinnerTeam == WinnerTeamType.Crewmate);
+        => IsCrewmate() && (roleBase == null || roleBase.WinnerTeam == WinnerTeamType.Crewmate || (Role == RoleId.SchrodingersCat && GetAbility<SchrodingersCatAbility>()?.CurrentTeam == SchrodingersCatTeam.Crewmate));
 
     public bool IsCrewmateOrMadRoles()
         => IsCrewmate() || IsMadRoles() || IsFriendRoles();

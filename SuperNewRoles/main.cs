@@ -59,6 +59,7 @@ public partial class SuperNewRolesPlugin : BasePlugin
     private readonly object _mainThreadActionsLock = new();
 
     public static Assembly Assembly { get; private set; } = Assembly.GetExecutingAssembly();
+    private static Assembly _announcementImageDecoderAssembly;
 
     private static string _currentSceneName;
 
@@ -97,6 +98,8 @@ public partial class SuperNewRolesPlugin : BasePlugin
         Logger = Log;
 
         Instance = this;
+
+        LoadAnnouncementImageDecoder();
 
         Encryption.SetEncryptKey();
 
@@ -155,6 +158,35 @@ public partial class SuperNewRolesPlugin : BasePlugin
         Logger.LogInfo("--------------------------------");
         Logger.LogInfo(ModTranslation.GetString("WelcomeNextSuperNewRoles"));
         Logger.LogInfo("--------------------------------");
+    }
+
+    private static void LoadAnnouncementImageDecoder()
+    {
+        const string assemblyName = "SixLabors.ImageSharp";
+        const string resourceName = "SuperNewRoles.Dependencies.SixLabors.ImageSharp.dll";
+
+        try
+        {
+            _announcementImageDecoderAssembly = AppDomain.CurrentDomain.GetAssemblies()
+                .FirstOrDefault(assembly => string.Equals(assembly.GetName().Name, assemblyName, StringComparison.Ordinal));
+            if (_announcementImageDecoderAssembly != null)
+                return;
+
+            using var stream = Assembly.GetManifestResourceStream(resourceName);
+            if (stream == null)
+            {
+                Logger.LogWarning($"Embedded announcement image decoder was not found: {resourceName}");
+                return;
+            }
+
+            using var buffer = new MemoryStream();
+            stream.CopyTo(buffer);
+            _announcementImageDecoderAssembly = Assembly.Load(buffer.ToArray());
+        }
+        catch (Exception ex)
+        {
+            Logger.LogWarning($"Failed to load announcement image decoder: {ex}");
+        }
     }
     public void PatchAll(Harmony harmony)
     {
@@ -326,11 +358,13 @@ public partial class SuperNewRolesPlugin : BasePlugin
                 if (isAndroid)
                 {
                     ClassInjector.RegisterTypeInIl2Cpp<AnnouncementImageRendererAndroid>();
+                    ClassInjector.RegisterTypeInIl2Cpp<AnnouncementImageViewerController>();
                 }
                 else
                 {
                     ClassInjector.RegisterTypeInIl2Cpp<AnnouncementImageRenderer>();
                     ClassInjector.RegisterTypeInIl2Cpp<AnnouncementImageSpinner>();
+                    ClassInjector.RegisterTypeInIl2Cpp<AnnouncementImageViewerController>();
                 }
             }
         }

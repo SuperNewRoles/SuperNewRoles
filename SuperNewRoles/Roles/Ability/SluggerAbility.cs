@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using AmongUs.GameOptions;
 using SuperNewRoles.Ability;
 using SuperNewRoles.Events;
 using SuperNewRoles.Events.PCEvents;
@@ -215,7 +216,11 @@ public class SluggerAbility : CustomButtonBase, IButtonEffect
         // キルクール同期は「ハリセンを振り終わった瞬間」に合わせる
         if (isSyncKillCoolTime && localPlayer != null && localPlayer.AmOwner)
         {
-            ExPlayerControl.LocalPlayer?.ResetKillCooldown();
+            // チャージ中キル不可の場合、この時点では通常キルボタンがまだ非表示のため、
+            // 表示状態を確認する ResetKillCooldown ではなく通常キルタイマーを直接更新する。
+            var options = GameOptionsManager.Instance.CurrentGameOptions;
+            var killCoolTime = options.GetFloat(FloatOptionNames.KillCooldown);
+            localPlayer.SetKillTimerUnchecked(killCoolTime, killCoolTime);
         }
 
         ResetTimer();

@@ -54,6 +54,36 @@ class Taskmaster : RoleBase<Taskmaster>
 
     [CustomOptionBool("TaskmasterEnableCommsFix", true, parentFieldName: nameof(TaskmasterCanFixSabotageInstantly), parentActiveValue: true)]
     public static bool TaskmasterEnableCommsFix;
+
+    internal static bool CanFixSabotageInstantly(TaskTypes taskType) =>
+        CanFixSabotageInstantly(
+            taskType,
+            TaskmasterCanFixSabotageInstantly,
+            TaskmasterEnableReactorOxygenElevatorFix,
+            TaskmasterEnableLightsFix,
+            TaskmasterEnableCommsFix
+        );
+
+    internal static bool CanFixSabotageInstantly(
+        TaskTypes taskType,
+        bool enabled,
+        bool reactorOxygenElevator,
+        bool lights,
+        bool comms)
+    {
+        if (!enabled || !ModHelpers.IsSabotage(taskType))
+            return false;
+
+        return taskType switch
+        {
+            TaskTypes.RestoreOxy or TaskTypes.ResetReactor or TaskTypes.ResetSeismic or TaskTypes.StopCharles => reactorOxygenElevator,
+            TaskTypes.FixLights => lights,
+            TaskTypes.FixComms => comms,
+            // キノコカオスには個別設定がないため、親設定に従う。
+            TaskTypes.MushroomMixupSabotage => true,
+            _ => false,
+        };
+    }
 }
 
 [HarmonyPatch(typeof(Console), nameof(Console.Use))]
@@ -66,7 +96,7 @@ public static class TaskmasterPatch
         if (ExPlayerControl.LocalPlayer.Role != RoleId.Taskmaster) return;
         if (ModHelpers.IsSabotage(__instance.TaskTypes.FirstOrDefault()))
         {
-            if (!Taskmaster.TaskmasterCanFixSabotageInstantly) return;
+            if (!Taskmaster.CanFixSabotageInstantly(__instance.TaskTypes.FirstOrDefault())) return;
             UseConsoleInstantly(() => ModHelpers.RpcFixingSabotage(__instance.TaskTypes.FirstOrDefault()));
         }
         else

@@ -28,6 +28,11 @@ internal static class EmergencyMeetingLimit
 {
     internal static int EmergencyCount { get; private set; }
     internal static bool IsLimited => GameSettingOptions.IsLimitEmergencyMeeting;
+    internal static bool IsUnlimited =>
+        GameSettingOptions.UnlimitedEmergencyMeetings
+        || (CustomOptionManager.DebugMode
+            && CustomOptionManager.DebugModeNoGameEnd
+            && CustomOptionManager.NoGameEndUnlimitedEmergencyMeetings);
     internal static int MaxCount => Math.Max(0, GameSettingOptions.EmergencyMeetingLimitCount);
     internal static int RemainingCount => Math.Max(0, MaxCount - EmergencyCount);
     internal static bool IsLimitReached => IsLimited && RemainingCount <= 0;
@@ -52,7 +57,7 @@ internal static class EmergencyMeetingLimit
         List<string> emergencyTexts,
         List<string> numberTexts)
     {
-        if (!enabledEmergency || !IsLimited)
+        if (!enabledEmergency)
             return;
 
         if (IsLimitReached)
@@ -64,8 +69,26 @@ internal static class EmergencyMeetingLimit
             return;
         }
 
+        if (!IsLimited && !IsUnlimited)
+            return;
+
         if (!CanShowRemainingCount())
             return;
+
+        if (IsUnlimited)
+        {
+            useVanilla = false;
+            enabledEmergency = true;
+            emergencyTexts.Add(ModTranslation.GetString("MeetingStatusUnlimitedEmergencyMeetings"));
+            if (IsLimited)
+            {
+                string unlimitedModeAllCount = $"<color=#fe1919>{RemainingCount}</color>";
+                emergencyTexts.Add("");
+                emergencyTexts.Add(ModTranslation.GetString("MeetingStatusAllEmergencyCount", unlimitedModeAllCount));
+            }
+            numberTexts.Clear();
+            return;
+        }
 
         useVanilla = false;
         enabledEmergency = PlayerControl.LocalPlayer != null && PlayerControl.LocalPlayer.RemainingEmergencies > 0;
@@ -87,5 +110,24 @@ internal static class EmergencyMeetingLimit
             return false;
 
         return !ModHelpers.IsSabotageAvailable();
+    }
+}
+
+[HarmonyPatch(typeof(EmergencyMinigame), nameof(EmergencyMinigame.CallMeeting))]
+public static class UnlimitedEmergencyMeetingCallPatch
+{
+    public static void Prefix(EmergencyMinigame __instance)
+    {
+        if (!EmergencyMeetingLimit.IsUnlimited
+            || EmergencyMeetingLimit.IsLimitReached
+            || __instance == null
+            || !__instance.ButtonActive
+            || PlayerControl.LocalPlayer == null)
+            return;
+
+        // バニラのCallMeetingはRemainingEmergencies > 0を直接確認するため、
+        // 1回分だけ補充してから実行させる。会議開始後にバニラが消費する。
+        if (PlayerControl.LocalPlayer.RemainingEmergencies <= 0)
+            PlayerControl.LocalPlayer.RemainingEmergencies = 1;
     }
 }

@@ -46,6 +46,20 @@ public static class CoStartGamePatch
     }
 }
 
+// バニラの会議開始処理もタスク勝利を確認するため、デバッグのゲーム終了無効化を適用する。
+[HarmonyPatch(typeof(GameManager), nameof(GameManager.CheckTaskCompletion))]
+public static class CheckTaskCompletionPatch
+{
+    public static bool Prefix(ref bool __result)
+    {
+        if (!CustomOptionManager.DebugMode || !CustomOptionManager.DebugModeNoGameEnd)
+            return true;
+
+        __result = false;
+        return false;
+    }
+}
+
 [HarmonyPatch(typeof(LogicGameFlowHnS), nameof(LogicGameFlowHnS.CheckEndCriteria))]
 public static class CheckGameEndPatchHnS
 {
@@ -395,9 +409,8 @@ public class PlayerStatistics
             if (!isHnS && player.Role == RoleId.MadKiller && !player.IsImpostor())
             {
                 var mkAbility = player.GetAbility<MadKillerAbility>();
-                if (mkAbility != null && !mkAbility.IsAwakened && mkAbility.ownerAbility != null)
+                if (mkAbility != null && !mkAbility.IsAwakened && mkAbility.TryGetOwnerPlayer(out var ownerPlayer))
                 {
-                    var ownerPlayer = mkAbility.ownerAbility.Player;
                     if (ownerPlayer == null || ownerPlayer.IsDead() || ownerPlayer.Role != RoleId.SideKiller)
                     {
                         teamImpostorsAlive++;

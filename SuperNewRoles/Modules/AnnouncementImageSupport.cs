@@ -7,6 +7,8 @@ using System.Text.RegularExpressions;
 using AmongUs.Data;
 using BepInEx.Unity.IL2CPP.Utils.Collections;
 using Il2CppInterop.Runtime.Attributes;
+using SixLabors.ImageSharp.Formats.Png;
+using ImageSharpImage = SixLabors.ImageSharp.Image;
 using TMPro;
 using SuperNewRoles;
 using UnityEngine;
@@ -171,8 +173,7 @@ internal static class AnnouncementImageCache
 
         if (TryLoadCachedBytes(url, out var cachedBytes))
         {
-            var cachedTexture = new Texture2D(2, 2, TextureFormat.RGBA32, false);
-            if (ImageConversion.LoadImage(cachedTexture, cachedBytes, false))
+            if (TryLoadTexture(cachedBytes, url, out var cachedTexture))
             {
                 var cachedSprite = Sprite.Create(cachedTexture, new Rect(0f, 0f, cachedTexture.width, cachedTexture.height), new Vector2(0.5f, 0.5f), SpritePixelsPerUnit);
                 SpriteCache[url] = cachedSprite;
@@ -203,8 +204,7 @@ internal static class AnnouncementImageCache
             yield break;
         }
 
-        var texture = new Texture2D(2, 2, TextureFormat.RGBA32, false);
-        if (!ImageConversion.LoadImage(texture, data, false))
+        if (!TryLoadTexture(data, url, out var texture))
         {
             callback?.Invoke(null);
             yield break;
@@ -214,6 +214,75 @@ internal static class AnnouncementImageCache
         var sprite = Sprite.Create(texture, new Rect(0f, 0f, texture.width, texture.height), new Vector2(0.5f, 0.5f), SpritePixelsPerUnit);
         SpriteCache[url] = sprite;
         callback?.Invoke(sprite);
+    }
+
+    private static bool TryLoadTexture(byte[] data, string source, out Texture2D texture)
+    {
+        texture = null;
+        if (data == null || data.Length == 0)
+            return false;
+
+        byte[] unityImageBytes = data;
+        if (IsWebP(data) && !TryConvertWebPToPng(data, out unityImageBytes))
+        {
+            SuperNewRoles.Logger.Warning($"Failed to decode WebP announcement image: {source}");
+            return false;
+        }
+
+        var candidate = new Texture2D(2, 2, TextureFormat.RGBA32, false);
+        if (!ImageConversion.LoadImage(candidate, unityImageBytes, false))
+        {
+            DestroyTexture(candidate);
+            SuperNewRoles.Logger.Warning($"Failed to load announcement image: {source}");
+            return false;
+        }
+
+        texture = candidate;
+        return true;
+    }
+
+    internal static bool IsWebP(byte[] data)
+    {
+        return data != null
+            && data.Length >= 12
+            && data[0] == (byte)'R'
+            && data[1] == (byte)'I'
+            && data[2] == (byte)'F'
+            && data[3] == (byte)'F'
+            && data[8] == (byte)'W'
+            && data[9] == (byte)'E'
+            && data[10] == (byte)'B'
+            && data[11] == (byte)'P';
+    }
+
+    internal static bool TryConvertWebPToPng(byte[] webpBytes, out byte[] pngBytes)
+    {
+        pngBytes = null;
+        if (!IsWebP(webpBytes))
+            return false;
+
+        try
+        {
+            using var image = ImageSharpImage.Load(webpBytes);
+            while (image.Frames.Count > 1)
+                image.Frames.RemoveFrame(image.Frames.Count - 1);
+
+            using var stream = new MemoryStream();
+            image.Save(stream, new PngEncoder());
+            pngBytes = stream.ToArray();
+            return pngBytes.Length > 0;
+        }
+        catch (Exception ex)
+        {
+            SuperNewRoles.Logger.Warning($"WebP conversion failed: {ex.Message}");
+            return false;
+        }
+    }
+
+    private static void DestroyTexture(Texture2D texture)
+    {
+        if (texture != null)
+            UnityEngine.Object.Destroy(texture);
     }
 
     public static IEnumerator LoadVideo(string url, Action<string> callback)
@@ -409,6 +478,386 @@ internal static class AnnouncementImageCache
     }
 }
 
+internal static class AnnouncementImageViewer
+{
+    private const float BackdropAlpha = 0.88f;
+    private const float ImageWidthRatio = 0.92f;
+    private const float ImageHeightRatio = 0.86f;
+    private const float OverlayWorldZ = -500f;
+    private const int SortingOrderOffset = 100;
+    private static Sprite _whiteSprite;
+
+    public static void ConfigureThumbnail(GameObject target, Sprite sprite, Action onClick)
+    {
+        if (target == null || sprite == null)
+            return;
+
+        var collider = target.AddComponent<BoxCollider2D>();
+        collider.size = sprite.bounds.size;
+        collider.offset = Vector2.zero;
+
+        var button = target.AddComponent<PassiveButton>();
+        button.Colliders = new Collider2D[] { collider };
+        button.OnClick = new();
+        button.OnMouseOver = new();
+        button.OnMouseOut = new();
+        if (onClick != null)
+            button.OnClick.AddListener(onClick);
+    }
+
+    public static GameObject Open(Sprite sprite, TextMeshPro bodyText, Action onClose)
+    {
+        if (sprite == null || bodyText == null || Camera.main == null)
+            return null;
+
+        GameObject root = null;
+        try
+        {
+            var camera = Camera.main;
+            float screenHeight = camera.orthographic ? camera.orthographicSize * 2f : 6f;
+            float screenWidth = screenHeight * Mathf.Max(camera.aspect, 1f);
+            float distance = Mathf.Abs(bodyText.transform.position.z - camera.transform.position.z);
+            var center = camera.ViewportToWorldPoint(new Vector3(0.5f, 0.5f, distance));
+            center.z = OverlayWorldZ;
+
+            root = new GameObject("AnnouncementImageViewer");
+            root.transform.position = center;
+
+            var bodyRenderer = bodyText.GetComponent<MeshRenderer>();
+            int sortingLayerId = bodyRenderer != null ? bodyRenderer.sortingLayerID : 0;
+            int sortingOrder = bodyRenderer != null ? bodyRenderer.sortingOrder + SortingOrderOffset : SortingOrderOffset;
+
+            var backdrop = new GameObject("Backdrop");
+            backdrop.transform.SetParent(root.transform, false);
+            var backdropRenderer = backdrop.AddComponent<SpriteRenderer>();
+            backdropRenderer.sprite = GetWhiteSprite();
+            backdropRenderer.color = new Color(0f, 0f, 0f, BackdropAlpha);
+            backdropRenderer.sortingLayerID = sortingLayerId;
+            backdropRenderer.sortingOrder = sortingOrder;
+            backdropRenderer.maskInteraction = SpriteMaskInteraction.None;
+            backdrop.transform.localScale = new Vector3(screenWidth * 1.1f, screenHeight * 1.1f, 1f);
+            // Keep a PassiveButton on the backdrop so input cannot leak through to the announcement list.
+            // Closing is handled by AnnouncementImageViewerController to distinguish a tap from a drag.
+            ConfigureCloseButton(backdrop, Vector2.one, null);
+
+            var imageObject = new GameObject("ExpandedImage");
+            imageObject.transform.SetParent(root.transform, false);
+            imageObject.transform.localPosition = new Vector3(0f, 0f, -0.1f);
+            var imageRenderer = imageObject.AddComponent<SpriteRenderer>();
+            imageRenderer.sprite = sprite;
+            imageRenderer.sortingLayerID = sortingLayerId;
+            imageRenderer.sortingOrder = sortingOrder + 1;
+            imageRenderer.maskInteraction = SpriteMaskInteraction.None;
+
+            float spriteWidth = sprite.bounds.size.x;
+            float spriteHeight = sprite.bounds.size.y;
+            if (spriteWidth <= 0f || spriteHeight <= 0f)
+                throw new InvalidOperationException("Announcement image has invalid dimensions.");
+
+            float scale = Mathf.Min(
+                screenWidth * ImageWidthRatio / spriteWidth,
+                screenHeight * ImageHeightRatio / spriteHeight);
+            imageObject.transform.localScale = new Vector3(scale, scale, 1f);
+
+            CreateCloseMark(root.transform, screenWidth, screenHeight, sortingLayerId, sortingOrder + 2, bodyText, onClose);
+            var controller = root.AddComponent<AnnouncementImageViewerController>();
+            controller.Initialize(imageRenderer, screenWidth, screenHeight);
+            return root;
+        }
+        catch (Exception ex)
+        {
+            if (root != null)
+                UnityEngine.Object.Destroy(root);
+            SuperNewRoles.Logger.Warning($"Failed to open announcement image viewer: {ex.Message}");
+            return null;
+        }
+    }
+
+    private static void CreateCloseMark(Transform parent, float screenWidth, float screenHeight, int sortingLayerId, int sortingOrder,
+        TextMeshPro bodyText, Action onClose)
+    {
+        var closeObject = new GameObject("CloseButton");
+        closeObject.transform.SetParent(parent, false);
+        closeObject.transform.localPosition = new Vector3(screenWidth * 0.43f, screenHeight * 0.41f, -0.2f);
+
+        var closeText = closeObject.AddComponent<TextMeshPro>();
+        closeText.text = "×";
+        closeText.alignment = TextAlignmentOptions.Center;
+        closeText.color = Color.white;
+        closeText.fontSize = Mathf.Max(bodyText.fontSize * 1.5f, 4f);
+        closeText.enableWordWrapping = false;
+        closeText.richText = false;
+        var closeRenderer = closeText.GetComponent<MeshRenderer>();
+        if (closeRenderer != null)
+        {
+            closeRenderer.sortingLayerID = sortingLayerId;
+            closeRenderer.sortingOrder = sortingOrder;
+        }
+
+        ConfigureCloseButton(closeObject, new Vector2(0.9f, 0.9f), onClose);
+    }
+
+    private static void ConfigureCloseButton(GameObject target, Vector2 colliderSize, Action onClose)
+    {
+        var collider = target.AddComponent<BoxCollider2D>();
+        collider.size = colliderSize;
+        collider.offset = Vector2.zero;
+        var button = target.AddComponent<PassiveButton>();
+        button.Colliders = new Collider2D[] { collider };
+        button.OnClick = new();
+        button.OnMouseOver = new();
+        button.OnMouseOut = new();
+        if (onClose != null)
+            button.OnClick.AddListener(onClose);
+    }
+
+    private static Sprite GetWhiteSprite()
+    {
+        if (_whiteSprite == null)
+            _whiteSprite = Sprite.Create(Texture2D.whiteTexture, new Rect(0f, 0f, 1f, 1f), new Vector2(0.5f, 0.5f), 1f);
+        return _whiteSprite;
+    }
+}
+
+public class AnnouncementImageViewerController : MonoBehaviour
+{
+    private const float MinZoom = 1f;
+    private const float MaxZoom = 6f;
+    private const float MouseWheelZoomStep = 1.18f;
+    private const float TouchMoveThreshold = 12f;
+
+    private SpriteRenderer _imageRenderer;
+    private Camera _camera;
+    private float _screenWidth;
+    private float _screenHeight;
+    private float _baseScale;
+    private float _zoom = MinZoom;
+
+    private bool _mouseDragging;
+    private int _mouseDragButton = -1;
+    private Vector2 _lastMousePosition;
+
+    private bool _touchDragging;
+    private int _touchFingerId = -1;
+    private bool _touchStartedOnImage;
+    private bool _touchMoved;
+    private Vector2 _touchStartPosition;
+    private Vector2 _lastTouchPosition;
+
+    private bool _pinching;
+    private float _lastPinchDistance;
+    private Vector2 _lastPinchMidpoint;
+
+    [HideFromIl2Cpp]
+    public void Initialize(SpriteRenderer imageRenderer, float screenWidth, float screenHeight)
+    {
+        _imageRenderer = imageRenderer;
+        _camera = Camera.main;
+        _screenWidth = screenWidth;
+        _screenHeight = screenHeight;
+        _baseScale = imageRenderer != null ? imageRenderer.transform.localScale.x : 1f;
+    }
+
+    private void Update()
+    {
+        if (_imageRenderer == null || _camera == null)
+            return;
+
+        if (Input.GetKeyDown(KeyCode.Escape))
+        {
+            Close();
+            return;
+        }
+
+        if (Input.touchCount >= 2)
+        {
+            HandlePinch();
+            return;
+        }
+
+        if (_pinching)
+        {
+            _pinching = false;
+            _touchDragging = false;
+            _touchFingerId = -1;
+        }
+
+        if (Input.touchCount == 1)
+        {
+            HandleSingleTouch(Input.GetTouch(0));
+            return;
+        }
+
+        _touchDragging = false;
+        _touchFingerId = -1;
+        HandleMouse();
+    }
+
+    [HideFromIl2Cpp]
+    private void HandleMouse()
+    {
+        Vector2 mousePosition = Input.mousePosition;
+        float wheel = Input.mouseScrollDelta.y;
+        if (Mathf.Abs(wheel) > 0.001f)
+            ZoomAt(mousePosition, Mathf.Pow(MouseWheelZoomStep, wheel));
+
+        if (Input.GetMouseButtonDown(0) || Input.GetMouseButtonDown(2))
+        {
+            int button = Input.GetMouseButtonDown(2) ? 2 : 0;
+            if (IsScreenPointOverImage(mousePosition))
+            {
+                _mouseDragging = true;
+                _mouseDragButton = button;
+                _lastMousePosition = mousePosition;
+            }
+            else if (button == 0)
+            {
+                Close();
+            }
+        }
+
+        if (!_mouseDragging)
+            return;
+
+        if (Input.GetMouseButton(_mouseDragButton))
+        {
+            PanByScreenDelta(_lastMousePosition, mousePosition);
+            _lastMousePosition = mousePosition;
+        }
+
+        if (Input.GetMouseButtonUp(_mouseDragButton))
+        {
+            _mouseDragging = false;
+            _mouseDragButton = -1;
+        }
+    }
+
+    [HideFromIl2Cpp]
+    private void HandlePinch()
+    {
+        var first = Input.GetTouch(0);
+        var second = Input.GetTouch(1);
+        Vector2 midpoint = (first.position + second.position) * 0.5f;
+        float distance = Vector2.Distance(first.position, second.position);
+
+        if (_pinching && _lastPinchDistance > 0.001f)
+        {
+            PanByScreenDelta(_lastPinchMidpoint, midpoint);
+            ZoomAt(midpoint, distance / _lastPinchDistance);
+        }
+
+        _pinching = true;
+        _touchDragging = false;
+        _touchFingerId = -1;
+        _lastPinchDistance = distance;
+        _lastPinchMidpoint = midpoint;
+    }
+
+    [HideFromIl2Cpp]
+    private void HandleSingleTouch(Touch touch)
+    {
+        if (!_touchDragging || _touchFingerId != touch.fingerId)
+        {
+            _touchDragging = true;
+            _touchFingerId = touch.fingerId;
+            _touchStartPosition = touch.position;
+            _lastTouchPosition = touch.position;
+            _touchStartedOnImage = IsScreenPointOverImage(touch.position);
+            _touchMoved = false;
+            return;
+        }
+
+        if (touch.phase == TouchPhase.Moved || touch.phase == TouchPhase.Stationary)
+        {
+            if ((touch.position - _touchStartPosition).sqrMagnitude >= TouchMoveThreshold * TouchMoveThreshold)
+                _touchMoved = true;
+
+            if (_touchStartedOnImage)
+                PanByScreenDelta(_lastTouchPosition, touch.position);
+            _lastTouchPosition = touch.position;
+        }
+
+        if (touch.phase != TouchPhase.Ended && touch.phase != TouchPhase.Canceled)
+            return;
+
+        bool closeFromBackdropTap = !_touchStartedOnImage && !_touchMoved && touch.phase == TouchPhase.Ended;
+        _touchDragging = false;
+        _touchFingerId = -1;
+        if (closeFromBackdropTap)
+            Close();
+    }
+
+    [HideFromIl2Cpp]
+    private void ZoomAt(Vector2 screenPoint, float zoomFactor)
+    {
+        if (zoomFactor <= 0f || float.IsNaN(zoomFactor) || float.IsInfinity(zoomFactor))
+            return;
+
+        float nextZoom = Mathf.Clamp(_zoom * zoomFactor, MinZoom, MaxZoom);
+        if (Mathf.Abs(nextZoom - _zoom) < 0.0001f)
+            return;
+
+        Vector3 pivotWorld = ScreenToImagePlane(screenPoint);
+        Vector3 pivotInImage = _imageRenderer.transform.InverseTransformPoint(pivotWorld);
+        _zoom = nextZoom;
+        float scale = _baseScale * _zoom;
+        _imageRenderer.transform.localScale = new Vector3(scale, scale, 1f);
+
+        Vector3 pivotAfterZoom = _imageRenderer.transform.TransformPoint(pivotInImage);
+        _imageRenderer.transform.position += pivotWorld - pivotAfterZoom;
+        ClampImagePosition();
+    }
+
+    [HideFromIl2Cpp]
+    private void PanByScreenDelta(Vector2 previousScreenPoint, Vector2 currentScreenPoint)
+    {
+        Vector3 previousWorld = ScreenToImagePlane(previousScreenPoint);
+        Vector3 currentWorld = ScreenToImagePlane(currentScreenPoint);
+        Vector3 delta = currentWorld - previousWorld;
+        delta.z = 0f;
+        _imageRenderer.transform.position += delta;
+        ClampImagePosition();
+    }
+
+    [HideFromIl2Cpp]
+    private Vector3 ScreenToImagePlane(Vector2 screenPoint)
+    {
+        float distance = Mathf.Abs(_imageRenderer.transform.position.z - _camera.transform.position.z);
+        return _camera.ScreenToWorldPoint(new Vector3(screenPoint.x, screenPoint.y, distance));
+    }
+
+    [HideFromIl2Cpp]
+    private bool IsScreenPointOverImage(Vector2 screenPoint)
+    {
+        Vector3 worldPoint = ScreenToImagePlane(screenPoint);
+        var bounds = _imageRenderer.bounds;
+        return worldPoint.x >= bounds.min.x && worldPoint.x <= bounds.max.x
+            && worldPoint.y >= bounds.min.y && worldPoint.y <= bounds.max.y;
+    }
+
+    [HideFromIl2Cpp]
+    private void ClampImagePosition()
+    {
+        if (_imageRenderer.sprite == null)
+            return;
+
+        float imageWidth = _imageRenderer.sprite.bounds.size.x * Mathf.Abs(_imageRenderer.transform.localScale.x);
+        float imageHeight = _imageRenderer.sprite.bounds.size.y * Mathf.Abs(_imageRenderer.transform.localScale.y);
+        float maxX = Mathf.Max(0f, (imageWidth - _screenWidth) * 0.5f);
+        float maxY = Mathf.Max(0f, (imageHeight - _screenHeight) * 0.5f);
+        Vector3 localPosition = _imageRenderer.transform.localPosition;
+        localPosition.x = Mathf.Clamp(localPosition.x, -maxX, maxX);
+        localPosition.y = Mathf.Clamp(localPosition.y, -maxY, maxY);
+        _imageRenderer.transform.localPosition = localPosition;
+    }
+
+    [HideFromIl2Cpp]
+    private void Close()
+    {
+        Destroy(gameObject);
+    }
+}
+
 public class AnnouncementImageRenderer : MonoBehaviour
 {
     private const float MaxImageWidth = 9.88f;
@@ -437,6 +886,7 @@ public class AnnouncementImageRenderer : MonoBehaviour
     private Vector3? defaultBodyTextPos;
     private int requestToken;
     private float extraHeight;
+    private GameObject expandedImageViewer;
     private static Sprite WhiteSprite;
 
     public bool HasImages => imageRenderers.Count > 0 || videoEntries.Count > 0;
@@ -667,6 +1117,7 @@ public class AnnouncementImageRenderer : MonoBehaviour
 
     private void ClearImagesInternal()
     {
+        CloseExpandedImage();
         extraHeight = 0f;
         foreach (var renderer in imageRenderers.Values)
         {
@@ -715,7 +1166,23 @@ public class AnnouncementImageRenderer : MonoBehaviour
         renderer.sprite = sprite;
         SyncSorting(renderer);
         ApplyMask(renderer);
+        AnnouncementImageViewer.ConfigureThumbnail(go, sprite, () => OpenExpandedImage(sprite));
         return renderer;
+    }
+
+    [HideFromIl2Cpp]
+    private void OpenExpandedImage(Sprite sprite)
+    {
+        CloseExpandedImage();
+        expandedImageViewer = AnnouncementImageViewer.Open(sprite, bodyText, CloseExpandedImage);
+    }
+
+    [HideFromIl2Cpp]
+    private void CloseExpandedImage()
+    {
+        if (expandedImageViewer != null)
+            Destroy(expandedImageViewer);
+        expandedImageViewer = null;
     }
 
     [HideFromIl2Cpp]

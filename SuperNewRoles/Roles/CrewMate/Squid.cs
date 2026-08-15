@@ -129,6 +129,18 @@ public sealed class SquidVigilanceAbility : CustomButtonBase, IButtonEffect
         RpcSetVigilance(this, true);
     }
 
+    public override void OnMeetingEnds()
+    {
+        // 会議で効果が中断された場合、全クライアントのisEffectActiveを同期する
+        // ResetTimerはローカルプレイヤーのクライアントでしか呼ばれないため、
+        // RPCを送信して他クライアントの状態もリセットする
+        if (isEffectActive)
+        {
+            RpcSetVigilance(this, false);
+        }
+        base.OnMeetingEnds();
+    }
+
     private void OnPhysicsFixedUpdate(PlayerPhysicsFixedUpdateEventData data)
     {
         if (!data.Instance.AmOwner) return;
