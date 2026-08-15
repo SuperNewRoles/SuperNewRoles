@@ -102,6 +102,7 @@ public class WormHole : MonoBehaviour
         var allVents = ShipStatus.Instance.AllVents.ToList();
         allVents.Add(vent);
         ShipStatus.Instance.AllVents = allVents.ToArray();
+        VentCache.Add(vent);
     }
 
     private static void RemoveVent(Vent vent)
@@ -109,6 +110,7 @@ public class WormHole : MonoBehaviour
         var allVents = ShipStatus.Instance.AllVents.ToList();
         allVents.Remove(vent);
         ShipStatus.Instance.AllVents = allVents.ToArray();
+        VentCache.Remove(vent);
     }
 
     private void LoadAnimationSprites()
