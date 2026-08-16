@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using UnityEngine;
 using SuperNewRoles.Roles.CrewMate;
 using SuperNewRoles.Modules;
-using SuperNewRoles.Modules.Events.Bases;
 using SuperNewRoles.Events.PCEvents;
 using SuperNewRoles.Events;
 
@@ -25,8 +24,6 @@ public record SeerData
 public class SeerAbility : AbilityBase
 {
     private List<(Vector3, int)> deadBodyPositions = new();
-    private EventListener<DieEventData> dieEventListener;
-    private EventListener<WrapUpEventData> wrapUpEventListener;
     public SeerData Data;
 
     // 通常霊魂カラーID
@@ -42,8 +39,8 @@ public class SeerAbility : AbilityBase
     }
     public override void AttachToLocalPlayer()
     {
-        dieEventListener = DieEvent.Instance.AddListener(OnPlayerDead);
-        wrapUpEventListener = WrapUpEvent.Instance.AddListener(OnWrapUp);
+        SubscribeWithAbility(DieEvent.Instance, OnPlayerDead);
+        SubscribeWithAbility(WrapUpEvent.Instance, OnWrapUp);
     }
 
     private void OnPlayerDead(DieEventData data)
@@ -199,9 +196,4 @@ public class SeerAbility : AbilityBase
         return soulSprite;
     }
 
-    public override void DetachToLocalPlayer()
-    {
-        DieEvent.Instance.RemoveListener(dieEventListener);
-        WrapUpEvent.Instance.RemoveListener(wrapUpEventListener);
-    }
 }

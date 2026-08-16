@@ -7,7 +7,6 @@ using SuperNewRoles.Roles.Ability;
 using SuperNewRoles.Roles.Ability.CustomButton;
 using SuperNewRoles.Modules;
 using SuperNewRoles.Events.PCEvents;
-using SuperNewRoles.Modules.Events.Bases;
 using SuperNewRoles.Ability;
 using System.Linq;
 
@@ -46,7 +45,6 @@ class OverKiller : RoleBase<OverKiller>
 
 public class OverKillerAbility : AbilityBase
 {
-    private EventListener<MurderEventData> _onMurderEvent;
 
     public override void AttachToAlls()
     {
@@ -62,13 +60,7 @@ public class OverKillerAbility : AbilityBase
     public override void AttachToLocalPlayer()
     {
         base.AttachToLocalPlayer();
-        _onMurderEvent = MurderEvent.Instance.AddListener(HandleMurderEvent);
-    }
-
-    public override void DetachToLocalPlayer()
-    {
-        base.DetachToLocalPlayer();
-        _onMurderEvent?.RemoveListener();
+        SubscribeWithAbility(MurderEvent.Instance, HandleMurderEvent);
     }
 
     private void HandleMurderEvent(MurderEventData data)

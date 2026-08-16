@@ -7,7 +7,6 @@ using SuperNewRoles.Events;
 using SuperNewRoles.Events.PCEvents;
 using SuperNewRoles.Roles.Ability;
 using UnityEngine;
-using SuperNewRoles.Modules.Events.Bases;
 using SuperNewRoles.Roles.Ability.CustomButton;
 using SuperNewRoles.Patches;
 using System.Linq;
@@ -52,9 +51,6 @@ public class LoversBreakerAbility : TargetCustomButtonBase
 {
     public LoversBreakerData Data { get; set; }
 
-    private EventListener<NameTextUpdateEventData> _nameTextUpdateListener;
-    private EventListener _fixedUpdateListener;
-    private EventListener<DieEventData> _dieListener;
 
     private int _successCount;
 
@@ -66,17 +62,9 @@ public class LoversBreakerAbility : TargetCustomButtonBase
     public override void AttachToAlls()
     {
         base.AttachToAlls();
-        _nameTextUpdateListener = NameTextUpdateEvent.Instance.AddListener(OnNameTextUpdate);
-        _fixedUpdateListener = FixedUpdateEvent.Instance.AddListener(OnFixedUpdate);
-        _dieListener = DieEvent.Instance.AddListener(OnDie);
-    }
-
-    public override void DetachToAlls()
-    {
-        base.DetachToAlls();
-        _nameTextUpdateListener?.RemoveListener();
-        _fixedUpdateListener?.RemoveListener();
-        _dieListener?.RemoveListener();
+        SubscribeWithAbility(NameTextUpdateEvent.Instance, OnNameTextUpdate);
+        SubscribeWithAbility(FixedUpdateEvent.Instance, OnFixedUpdate);
+        SubscribeWithAbility(DieEvent.Instance, OnDie);
     }
 
     public override Color32 OutlineColor => LoversBreaker.Instance.RoleColor;

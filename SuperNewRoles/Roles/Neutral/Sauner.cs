@@ -4,7 +4,6 @@ using AmongUs.GameOptions;
 using SuperNewRoles.CustomOptions;
 using SuperNewRoles.Events;
 using SuperNewRoles.Modules;
-using SuperNewRoles.Modules.Events.Bases;
 using SuperNewRoles.Patches;
 using SuperNewRoles.Roles.Ability;
 using UnityEngine;
@@ -64,7 +63,6 @@ public class SaunerAbility : AbilityBase
     private Coroutine _audioFadeCoroutine;
     private FlashHandler.FlashHandle _flashHandle;
     private readonly HashSet<Sauner.SaunerState> _missingAudioStates = new();
-    private EventListener _fixedUpdateListener;
     private ImportantTextTask _task;
     private Arrow _arrow;
 
@@ -77,14 +75,13 @@ public class SaunerAbility : AbilityBase
 
     public override void AttachToLocalPlayer()
     {
-        _fixedUpdateListener = FixedUpdateEvent.Instance.AddListener(OnFixedUpdate);
+        SubscribeWithAbility(FixedUpdateEvent.Instance, OnFixedUpdate);
         EnsureArrow();
     }
 
     public override void DetachToLocalPlayer()
     {
         // 全クライアント共通のリスナー/演出を片付ける
-        _fixedUpdateListener?.RemoveListener();
         StopEffects(false, true);
         DestroyTask();
         DestroyArrow();

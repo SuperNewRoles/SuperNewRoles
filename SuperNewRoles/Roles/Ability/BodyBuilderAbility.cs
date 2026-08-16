@@ -7,7 +7,6 @@ using HarmonyLib;
 using SuperNewRoles.Events;
 using SuperNewRoles.Events.PCEvents;
 using SuperNewRoles.Modules;
-using SuperNewRoles.Modules.Events.Bases;
 using SuperNewRoles.Roles.Ability.CustomButton;
 using SuperNewRoles.CustomOptions;
 using UnityEngine;
@@ -36,40 +35,33 @@ public class BodyBuilderAbility : CustomButtonBase
     // ポーズID範囲
     private static readonly IntRange PosingIdRange = new(1, 5);
 
-    // アセットバンドル
-    private EventListener<MurderEventData> _murderEvent;
-    private EventListener<MeetingStartEventData> _meetingStartEvent;
-    private EventListener<ExileEventData> _exileEvent;
-    private EventListener<ExileControllerEventData> _exileControllerEvent;
-    private EventListener<MeetingCalledAnimationInitializeEventData> _meetingCalledAnimationInitializeEvent;
-    private EventListener<PlayerPhysicsFixedUpdateEventData> _onPlayerPhysicsFixedUpdateEvent;
     public override void AttachToLocalPlayer()
     {
         base.AttachToLocalPlayer();
-        _onPlayerPhysicsFixedUpdateEvent = PlayerPhysicsFixedUpdateEvent.Instance.AddListener(x => UpdatePhysics(x));
+        SubscribeWithAbility(PlayerPhysicsFixedUpdateEvent.Instance, x => UpdatePhysics(x));
     }
 
     public override void AttachToAlls()
     {
         base.AttachToAlls();
-        _murderEvent = MurderEvent.Instance.AddListener(x =>
+        SubscribeWithAbility(MurderEvent.Instance, x =>
         {
             if (x.target == Player)
                 CancelPosing();
         });
-        _meetingStartEvent = MeetingStartEvent.Instance.AddListener(x =>
+        SubscribeWithAbility(MeetingStartEvent.Instance, x =>
         {
             CancelPosing();
             BodyBuilderMuscleDisplay.RefreshNamePlate(Player.VoteArea, Player.Data);
         });
-        _exileEvent = ExileEvent.Instance.AddListener(x => CancelPosing());
-        _exileControllerEvent = ExileControllerEvent.Instance.AddListener(x =>
+        SubscribeWithAbility(ExileEvent.Instance, x => CancelPosing());
+        SubscribeWithAbility(ExileControllerEvent.Instance, x =>
         {
             if (x.instance.initData.networkedPlayer?.PlayerId != Player.PlayerId)
                 return;
             BodyBuilderMuscleDisplay.Refresh(x.instance.Player, Player.Data, BodyBuilderMuscleDisplayContext.Exile);
         });
-        _meetingCalledAnimationInitializeEvent = MeetingCalledAnimationInitializeEvent.Instance.AddListener(x =>
+        SubscribeWithAbility(MeetingCalledAnimationInitializeEvent.Instance, x =>
         {
             if (x.outfit.PlayerName != Player.Data.DefaultOutfit.PlayerName)
                 return;
@@ -89,12 +81,6 @@ public class BodyBuilderAbility : CustomButtonBase
         });
     }
 
-    public override void DetachToLocalPlayer()
-    {
-        base.DetachToLocalPlayer();
-        _onPlayerPhysicsFixedUpdateEvent?.RemoveListener();
-    }
-
     public override void DetachToAlls()
     {
         base.DetachToAlls();
@@ -102,11 +88,6 @@ public class BodyBuilderAbility : CustomButtonBase
         {
             CancelPosing();
         }
-        _murderEvent?.RemoveListener();
-        _meetingStartEvent?.RemoveListener();
-        _exileEvent?.RemoveListener();
-        _exileControllerEvent?.RemoveListener();
-        _meetingCalledAnimationInitializeEvent?.RemoveListener();
     }
 
     public override void OnClick()
@@ -124,8 +105,8 @@ public class BodyBuilderAbility : CustomButtonBase
 
     public override bool CheckHasButton()
     {
-        // 全タスク完了時のみ使用可能
-        return Player == ExPlayerControl.LocalPlayer && Player.IsTaskComplete();
+        // 全タスク完了時のみ使用可能（Lovers の isTaskTrigger は見ない）
+        return Player == ExPlayerControl.LocalPlayer && Player.IsAllTasksCompleted();
     }
 
     private void UpdatePhysics(PlayerPhysicsFixedUpdateEventData data)

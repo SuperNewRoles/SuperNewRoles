@@ -4,7 +4,6 @@ using SuperNewRoles.Modules;
 using SuperNewRoles.Roles.Ability.CustomButton;
 using SuperNewRoles.CustomObject;
 using SuperNewRoles.Events;
-using SuperNewRoles.Modules.Events.Bases;
 
 namespace SuperNewRoles.Roles.Ability;
 
@@ -16,7 +15,6 @@ public class PhosphorusPutAbility : CustomButtonBase, IAbilityCount
     public override float DefaultTimer => coolTime;
     private float coolTime;
 
-    private EventListener<WrapUpEventData> _wrapUpEvent;
 
     public override ShowTextType showTextType => ShowTextType.ShowWithCount;
 
@@ -29,13 +27,7 @@ public class PhosphorusPutAbility : CustomButtonBase, IAbilityCount
     public override void AttachToLocalPlayer()
     {
         base.AttachToLocalPlayer();
-        _wrapUpEvent = WrapUpEvent.Instance.AddListener(OnWrapUp);
-    }
-
-    public override void DetachToLocalPlayer()
-    {
-        base.DetachToLocalPlayer();
-        _wrapUpEvent?.RemoveListener();
+        SubscribeWithAbility(WrapUpEvent.Instance, OnWrapUp);
     }
 
     private void OnWrapUp(WrapUpEventData data)

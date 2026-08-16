@@ -3,7 +3,6 @@ using AmongUs.GameOptions;
 using SuperNewRoles.Events;
 using SuperNewRoles.Events.PCEvents;
 using SuperNewRoles.Modules;
-using SuperNewRoles.Modules.Events.Bases;
 using SuperNewRoles.Roles.CrewMate;
 using SuperNewRoles.Roles.Neutral;
 using TMPro;
@@ -38,10 +37,6 @@ public class SchrodingersCatAbility : AbilityBase
     private CustomVentAbility _customVentAbility;
     private CustomSaboAbility _customSaboAbility;
     private ImpostorVisionAbility _impostorVisionAbility;
-    private EventListener<TryKillEventData> _murderListener;
-    private EventListener<NameTextUpdateEventData> _nameTextUpdateListener;
-    private EventListener<WrapUpEventData> _wrapUpListener;
-    private EventListener _fixedUpdateListener;
 
     private float suicideTimer;
     private ExPlayerControl _suicideTarget;
@@ -74,17 +69,10 @@ public class SchrodingersCatAbility : AbilityBase
         Player.AttachAbility(_customSaboAbility, new AbilityParentAbility(this));
         Player.AttachAbility(_impostorVisionAbility, new AbilityParentAbility(this));
 
-        _murderListener = TryKillEvent.Instance.AddListener(TryMurder);
-        _nameTextUpdateListener = NameTextUpdateEvent.Instance.AddListener(OnNameTextUpdate);
-        _wrapUpListener = WrapUpEvent.Instance.AddListener(OnWrapUp);
-        _fixedUpdateListener = FixedUpdateEvent.Instance.AddListener(OnFixedUpdate);
-    }
-    public override void DetachToAlls()
-    {
-        _murderListener?.RemoveListener();
-        _nameTextUpdateListener?.RemoveListener();
-        _wrapUpListener?.RemoveListener();
-        _fixedUpdateListener?.RemoveListener();
+        SubscribeWithAbility(TryKillEvent.Instance, TryMurder);
+        SubscribeWithAbility(NameTextUpdateEvent.Instance, OnNameTextUpdate);
+        SubscribeWithAbility(WrapUpEvent.Instance, OnWrapUp);
+        SubscribeWithAbility(FixedUpdateEvent.Instance, OnFixedUpdate);
     }
     private void OnFixedUpdate()
     {
@@ -330,7 +318,7 @@ public class SchrodingersCatAbility : AbilityBase
                     couldKnowImpostors: Madmate.MadmateCanKnowImpostors,
                     taskNeeded: Madmate.MadmateNeededTaskCount,
                     specialTasks: Madmate.MadmateSpecialTasks
-                ));
+                ), AbilityPriority.RuntimeOverride);
                 Player.AttachAbility(madmateAbility, new AbilityParentAbility(this));
                 if (Player.AmOwner)
                     madmateAbility.CustomTaskAbility.AssignTasks();
@@ -346,7 +334,7 @@ public class SchrodingersCatAbility : AbilityBase
                     CouldKnowJackals: JackalFriends.JackalFriendsCouldKnowJackals,
                     TaskNeeded: JackalFriends.JackalFriendsTaskNeed,
                     SpecialTasks: JackalFriends.JackalFriendsTaskOption
-                ));
+                ), AbilityPriority.RuntimeOverride);
                 Player.AttachAbility(jackalFriendsAbility, new AbilityParentAbility(this));
                 if (Player.AmOwner)
                     jackalFriendsAbility.CustomTaskAbility.AssignTasks();

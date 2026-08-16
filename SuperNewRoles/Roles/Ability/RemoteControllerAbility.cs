@@ -8,7 +8,6 @@ using SuperNewRoles.CustomOptions.Categories;
 using SuperNewRoles.Events;
 using SuperNewRoles.Events.PCEvents;
 using SuperNewRoles.Modules;
-using SuperNewRoles.Modules.Events.Bases;
 using SuperNewRoles.Patches;
 using SuperNewRoles.Roles.Ability.CustomButton;
 using SuperNewRoles.Roles.Impostor;
@@ -22,10 +21,6 @@ public sealed class RemoteControllerAbility : AbilityBase
     private RemoteControllerOperationButton _operationButton;
     private CustomKillButtonAbility _killButton;
 
-    private EventListener<MeetingStartEventData> _meetingStartListener;
-    private EventListener<MeetingCloseEventData> _meetingCloseListener;
-    private EventListener<DieEventData> _dieListener;
-    private EventListener _fixedUpdateListener;
 
     private GameObject _targetUiContainer;
     private PoolablePlayer _targetIcon;
@@ -68,10 +63,10 @@ public sealed class RemoteControllerAbility : AbilityBase
     public override void AttachToLocalPlayer()
     {
         base.AttachToLocalPlayer();
-        _meetingStartListener = MeetingStartEvent.Instance.AddListener(OnMeetingStart);
-        _meetingCloseListener = MeetingCloseEvent.Instance.AddListener(OnMeetingClose);
-        _dieListener = DieEvent.Instance.AddListener(OnDie);
-        _fixedUpdateListener = FixedUpdateEvent.Instance.AddListener(OnFixedUpdate);
+        SubscribeWithAbility(MeetingStartEvent.Instance, OnMeetingStart);
+        SubscribeWithAbility(MeetingCloseEvent.Instance, OnMeetingClose);
+        SubscribeWithAbility(DieEvent.Instance, OnDie);
+        SubscribeWithAbility(FixedUpdateEvent.Instance, OnFixedUpdate);
 
         CreateTargetUi();
         CreateLightChild();
@@ -80,10 +75,6 @@ public sealed class RemoteControllerAbility : AbilityBase
     public override void DetachToLocalPlayer()
     {
         base.DetachToLocalPlayer();
-        _meetingStartListener?.RemoveListener();
-        _meetingCloseListener?.RemoveListener();
-        _dieListener?.RemoveListener();
-        _fixedUpdateListener?.RemoveListener();
 
         StopOperationLocalOnly();
 

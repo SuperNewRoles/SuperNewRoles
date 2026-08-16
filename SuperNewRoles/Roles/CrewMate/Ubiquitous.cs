@@ -9,7 +9,6 @@ using SuperNewRoles.Roles.Ability.CustomButton;
 using SuperNewRoles.Modules;
 using SuperNewRoles.Events;
 using SuperNewRoles.Events.PCEvents;
-using SuperNewRoles.Modules.Events.Bases;
 using Hazel;
 using HarmonyLib;
 using Object = UnityEngine.Object;
@@ -67,12 +66,7 @@ class UbiquitousAbility : AbilityBase
     public bool UnderOperation => MyDrone?.UnderOperation ?? false;
     public SpriteRenderer[] MapHerePoints;
 
-    private EventListener<MeetingStartEventData> _meetingStartListener;
-    private EventListener<MeetingCloseEventData> _meetingCloseListener;
-    private EventListener<DieEventData> _dieListener;
 
-    private EventListener<MapBehaviourAwakePostfixEventData> _mapBehaviourAwakeListener;
-    private EventListener<MapBehaviourFixedUpdatePostfixEventData> _mapBehaviourFixedUpdateListener;
 
     public UbiquitousAbility()
     {
@@ -97,21 +91,16 @@ class UbiquitousAbility : AbilityBase
     public override void AttachToLocalPlayer()
     {
         base.AttachToLocalPlayer();
-        _meetingStartListener = MeetingStartEvent.Instance.AddListener(OnMeetingStart);
-        _meetingCloseListener = MeetingCloseEvent.Instance.AddListener(OnMeetingClose);
-        _dieListener = DieEvent.Instance.AddListener(OnPlayerDie);
-        _mapBehaviourAwakeListener = MapBehaviourAwakePostfixEvent.Instance.AddListener(OnMapAwake);
-        _mapBehaviourFixedUpdateListener = MapBehaviourFixedUpdatePostfixEvent.Instance.AddListener(OnMapFixedUpdate);
+        SubscribeWithAbility(MeetingStartEvent.Instance, OnMeetingStart);
+        SubscribeWithAbility(MeetingCloseEvent.Instance, OnMeetingClose);
+        SubscribeWithAbility(DieEvent.Instance, OnPlayerDie);
+        SubscribeWithAbility(MapBehaviourAwakePostfixEvent.Instance, OnMapAwake);
+        SubscribeWithAbility(MapBehaviourFixedUpdatePostfixEvent.Instance, OnMapFixedUpdate);
     }
 
     public override void DetachToLocalPlayer()
     {
         base.DetachToLocalPlayer();
-        _meetingStartListener?.RemoveListener();
-        _meetingCloseListener?.RemoveListener();
-        _dieListener?.RemoveListener();
-        _mapBehaviourAwakeListener?.RemoveListener();
-        _mapBehaviourFixedUpdateListener?.RemoveListener();
 
         if (!MyDrone) return;
         // 視界を戻す

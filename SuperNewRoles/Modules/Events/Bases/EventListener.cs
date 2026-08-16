@@ -10,6 +10,7 @@ public class EventListener<T> : IEventListener where T : IEventData
 {
     protected Action<T> action;
     protected Action remover;
+    private bool _removed;
 
     public EventListener(Action<T> action, Action remover)
     {
@@ -19,6 +20,8 @@ public class EventListener<T> : IEventListener where T : IEventData
 
     public void RemoveListener()
     {
+        if (_removed) return;
+        _removed = true;
         remover.Invoke();
     }
 
@@ -39,6 +42,7 @@ public class EventListener : IEventListener
 {
     protected Action action;
     protected Action remover;
+    private bool _removed;
     public EventListener(Action action, Action remover)
     {
         this.action = action;
@@ -47,6 +51,8 @@ public class EventListener : IEventListener
 
     public void RemoveListener()
     {
+        if (_removed) return;
+        _removed = true;
         remover.Invoke();
     }
 
@@ -65,4 +71,5 @@ public class EventListener : IEventListener
 
 public interface IEventListener
 {
+    void RemoveListener();
 }

@@ -4,7 +4,6 @@ using UnityEngine;
 using SuperNewRoles.Modules;
 using SuperNewRoles.Roles.Ability.CustomButton;
 using SuperNewRoles.Events.PCEvents;
-using SuperNewRoles.Modules.Events.Bases;
 using SuperNewRoles.CustomObject;
 using static SuperNewRoles.CustomObject.CustomPlayerAnimationSimple;
 using SuperNewRoles.Events;
@@ -23,7 +22,6 @@ public class TriggerHappyAbility : CustomButtonBase, IAbilityCount, IButtonEffec
     private SyncKillCoolTimeAbility _syncKillCoolTimeAbility;
     private TriggerHappyBullet _lastBullet;
     private Vector2 _lastFirePosition;
-    private EventListener _hudUpdateEventListener;
     private bool _androidAimVisible;
 
     public TriggerHappyAbility(TriggerHappyData data)
@@ -53,7 +51,6 @@ public class TriggerHappyAbility : CustomButtonBase, IAbilityCount, IButtonEffec
     private bool ActiveGatlingGun = false;
     private TriggerHappyGatlingGun GatlingGunAnimation = null;
 
-    private EventListener<MeetingStartEventData> _meetingStartEventListener;
 
     private void onFinishHappy()
     {
@@ -74,14 +71,13 @@ public class TriggerHappyAbility : CustomButtonBase, IAbilityCount, IButtonEffec
     public override void AttachToLocalPlayer()
     {
         base.AttachToLocalPlayer();
-        _hudUpdateEventListener = HudUpdateEvent.Instance.AddListener(UpdateAndroidAimVisibility);
+        SubscribeWithAbility(HudUpdateEvent.Instance, UpdateAndroidAimVisibility);
         UpdateAndroidAimVisibility();
     }
 
     public override void DetachToLocalPlayer()
     {
         SetAndroidAimVisible(false);
-        _hudUpdateEventListener?.RemoveListener();
         base.DetachToLocalPlayer();
     }
 
@@ -94,7 +90,7 @@ public class TriggerHappyAbility : CustomButtonBase, IAbilityCount, IButtonEffec
     {
         base.AttachToAlls();
         ActiveGatlingGun = false;
-        _meetingStartEventListener = MeetingStartEvent.Instance.AddListener(OnMeetingStart);
+        SubscribeWithAbility(MeetingStartEvent.Instance, OnMeetingStart);
         if (_data.SyncKillCoolTime && _syncKillCoolTimeAbility == null)
         {
             _syncKillCoolTimeAbility = SyncKillCoolTimeAbility.CreateAndAttach(this);
@@ -104,7 +100,6 @@ public class TriggerHappyAbility : CustomButtonBase, IAbilityCount, IButtonEffec
     {
         base.DetachToAlls();
         ResetState();
-        _meetingStartEventListener?.RemoveListener();
     }
     private void OnMeetingStart(MeetingStartEventData data)
     {
