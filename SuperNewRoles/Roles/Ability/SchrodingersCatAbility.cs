@@ -105,7 +105,7 @@ public class SchrodingersCatAbility : AbilityBase
         if (data.RefTarget != Player) return;
         if (data.Killer == Player) return;
         if (CurrentTeam != SchrodingersCatTeam.SchrodingersCat) return;
-        bool showKillAnimation = true;
+        bool cancelKill = true;
         if (data.Killer.IsImpostor())
             CurrentTeam = Data.HasKillAbility ? SchrodingersCatTeam.Impostor : SchrodingersCatTeam.Madmate;
         else if (data.Killer.IsJackal())
@@ -114,11 +114,11 @@ public class SchrodingersCatAbility : AbilityBase
             CurrentTeam = Data.HasKillAbility ? SchrodingersCatTeam.Pavlovs : SchrodingersCatTeam.PavlovFriends;
         else if (data.Killer.IsCrewmate())
             CurrentTeam = SchrodingersCatTeam.Crewmate;
-        else if (Data.CrewOnKillByNonSpecific)
+        else
         {
-            CurrentTeam = SchrodingersCatTeam.Crewmate;
-            Player.CustomDeath(CustomDeathType.Suicide);
-            showKillAnimation = false;
+            cancelKill = false;
+            if (Data.CrewOnKillByNonSpecific)
+                CurrentTeam = SchrodingersCatTeam.Crewmate;
         }
 
         if (CurrentTeam != SchrodingersCatTeam.SchrodingersCat)
@@ -141,8 +141,13 @@ public class SchrodingersCatAbility : AbilityBase
                 NameText.UpdateAllNameInfo();
             else
                 NameText.UpdateNameInfo(data.RefTarget);
+
+            if (!cancelKill) return;
+
             data.RefSuccess = false;
-            if (showKillAnimation && data.RefTarget.AmOwner)
+            if (data.Killer.AmOwner)
+                data.Killer.Player.NetTransform.RpcSnapTo(data.RefTarget.Player.transform.position);
+            if (data.RefTarget.AmOwner)
             {
                 data.RefTarget.MyPhysics.body.velocity = Vector2.zero;
                 DestroyableSingleton<HudManager>.Instance.KillOverlay.ShowKillAnimation(data.Killer.Data, data.RefTarget.Data);
