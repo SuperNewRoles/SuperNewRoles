@@ -19,7 +19,7 @@ class God : RoleBase<God>
         () => new CustomTaskAbility(
             isTaskTrigger: () => GodNeededTask,
             countsForCrewWin: () => false,
-            requiredTaskCount: () => GodTaskOption.Total,
+            requiredTaskCount: () => GodNeededTask ? GodTaskOption.Total : null,
             taskOptions: () => GodNeededTask ? GodTaskOption : null),
         () => new SabotageCanUseAbility(() => sabotageCantUse()),
         () => new CanUseReportButtonAbility(() => !GodCannotUseReportButton),
