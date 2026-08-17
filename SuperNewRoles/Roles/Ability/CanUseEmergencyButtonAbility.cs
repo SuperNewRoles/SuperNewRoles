@@ -1,13 +1,11 @@
 using System;
 using SuperNewRoles.Events;
-using SuperNewRoles.Modules.Events.Bases;
 
 namespace SuperNewRoles.Roles.Ability;
 
 public class CanUseEmergencyButtonAbility : AbilityBase
 {
     private Func<bool> _canUseMeetingButton;
-    private EventListener<EmergencyCheckEventData> _meetingMinigameEvent;
     private Func<string> _cannotUseReason;
     public CanUseEmergencyButtonAbility(Func<bool> canUseMeetingButton, Func<string> cannotUseReason)
     {
@@ -18,14 +16,7 @@ public class CanUseEmergencyButtonAbility : AbilityBase
     public override void AttachToLocalPlayer()
     {
         base.AttachToLocalPlayer();
-        _meetingMinigameEvent = EmergencyCheckEvent.Instance.AddListener(OnEmergencyCheck);
-    }
-
-    public override void DetachToLocalPlayer()
-    {
-        _meetingMinigameEvent?.RemoveListener();
-        _meetingMinigameEvent = null;
-        base.DetachToLocalPlayer();
+        SubscribeWithAbility(EmergencyCheckEvent.Instance, OnEmergencyCheck);
     }
 
     private void OnEmergencyCheck(EmergencyCheckEventData data)

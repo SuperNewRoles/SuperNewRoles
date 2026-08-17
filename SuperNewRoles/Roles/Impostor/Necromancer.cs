@@ -5,7 +5,6 @@ using AmongUs.GameOptions;
 using SuperNewRoles.CustomOptions;
 using SuperNewRoles.Events;
 using SuperNewRoles.Modules;
-using SuperNewRoles.Modules.Events.Bases;
 using SuperNewRoles.Roles.Ability;
 using SuperNewRoles.Roles.Ability.CustomButton;
 using UnityEngine;
@@ -104,14 +103,12 @@ public class NecromancerCurseButtonAbility : TargetCustomButtonBase, IAbilityCou
 
 public class NecromancerRevenantArrowAbility : AbilityBase
 {
-    private EventListener _fixedUpdateListener;
-    private EventListener<MeetingCloseEventData> _meetingCloseListener;
     private List<(ExPlayerControl player, Arrow arrow)> _arrows = [];
     public override void AttachToLocalPlayer()
     {
         base.AttachToLocalPlayer();
-        _fixedUpdateListener = FixedUpdateEvent.Instance.AddListener(OnFixedUpdate);
-        _meetingCloseListener = MeetingCloseEvent.Instance.AddListener(OnMeetingClose);
+        SubscribeWithAbility(FixedUpdateEvent.Instance, OnFixedUpdate);
+        SubscribeWithAbility(MeetingCloseEvent.Instance, OnMeetingClose);
         _arrows = [];
     }
 
@@ -148,11 +145,7 @@ public class NecromancerRevenantArrowAbility : AbilityBase
                 GameObject.Destroy(data.arrow.arrow);
         }
         _arrows.Clear();
-        _meetingCloseListener?.RemoveListener();
-        _meetingCloseListener = null;
         base.DetachToLocalPlayer();
-        _fixedUpdateListener?.RemoveListener();
-        _fixedUpdateListener = null;
     }
 
     public void OnFixedUpdate()

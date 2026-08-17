@@ -70,7 +70,6 @@ public class IndependentKillButtonAbility : TargetCustomButtonBase
     public Func<string> ShowTextValue { get; }
     private Func<ExPlayerControl, bool> _customKillHandler { get; }
     private readonly KeyType _keyType;
-    private EventListener<MurderEventData> _murderEventListener;
     private byte _pendingTargetId = byte.MaxValue;
 
     public override Color32 OutlineColor => ExPlayerControl.LocalPlayer.roleBase.RoleColor;
@@ -111,13 +110,11 @@ public class IndependentKillButtonAbility : TargetCustomButtonBase
     public override void AttachToAlls()
     {
         base.AttachToAlls();
-        _murderEventListener = MurderEvent.Instance.AddListener(OnMurder);
+        SubscribeWithAbility(MurderEvent.Instance, OnMurder);
     }
 
     public override void DetachToAlls()
     {
-        _murderEventListener?.RemoveListener();
-        _murderEventListener = null;
         _pendingTargetId = byte.MaxValue;
         base.DetachToAlls();
     }

@@ -8,7 +8,6 @@ using SuperNewRoles.CustomOptions;
 using SuperNewRoles.Modules;
 using SuperNewRoles.Events;
 using Hazel;
-using SuperNewRoles.Modules.Events.Bases;
 using SuperNewRoles.CustomObject;
 using SuperNewRoles.Ability;
 
@@ -52,7 +51,6 @@ public class ConjurerAbility : AbilityBase
     public Vector2[] Positions { get; }
     private ConjurerBeaconButton beaconButton;
     private ConjurerStartButton startButton;
-    private EventListener<WrapUpEventData> wrapUpListener;
 
     public ConjurerAbility(ConjurerAbilityData data)
     {
@@ -69,14 +67,7 @@ public class ConjurerAbility : AbilityBase
         Player.AttachAbility(beaconButton, new AbilityParentAbility(this));
         Player.AttachAbility(startButton, new AbilityParentAbility(this));
 
-        wrapUpListener = WrapUpEvent.Instance.AddListener(OnWrapUp);
-    }
-
-    public override void DetachToAlls()
-    {
-        wrapUpListener?.RemoveListener();
-        wrapUpListener = null;
-        base.DetachToAlls();
+        SubscribeWithAbility(WrapUpEvent.Instance, OnWrapUp);
     }
 
     private void OnWrapUp(WrapUpEventData data)

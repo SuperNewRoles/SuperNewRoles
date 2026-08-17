@@ -5,7 +5,6 @@ using UnityEngine;
 using SuperNewRoles.CustomOptions;
 using SuperNewRoles.Modules;
 using SuperNewRoles.Roles.Ability.CustomButton;
-using SuperNewRoles.Modules.Events.Bases;
 using SuperNewRoles.Events;
 
 namespace SuperNewRoles.Roles.Ghost;
@@ -88,8 +87,6 @@ public class CanteraAbility : TargetCustomButtonBase, IButtonEffect
     public CustomHauntToAbility customHauntToAbility;
     public DisibleHauntAbility disibleHauntAbility;
 
-    private EventListener<ShipStatusLightEventData> _shipStatusLightEvent;
-    private EventListener<WrapUpEventData> _wrapUpEvent;
 
     public CanteraAbility(CanteraAbilityOption data)
     {
@@ -108,16 +105,10 @@ public class CanteraAbility : TargetCustomButtonBase, IButtonEffect
         Player.AttachAbility(customHauntToAbility, new AbilityParentAbility(this));
         Player.AttachAbility(disibleHauntAbility, new AbilityParentAbility(this));
 
-        _shipStatusLightEvent = ShipStatusLightEvent.Instance.AddListener(OnShipStatusLight);
-        _wrapUpEvent = WrapUpEvent.Instance.AddListener((_) => WrapUp());
+        SubscribeWithAbility(ShipStatusLightEvent.Instance, OnShipStatusLight);
+        SubscribeWithAbility(WrapUpEvent.Instance, (_) => WrapUp());
     }
 
-    public override void DetachToAlls()
-    {
-        base.DetachToAlls();
-        _shipStatusLightEvent?.RemoveListener();
-        _wrapUpEvent?.RemoveListener();
-    }
     public override bool CheckHasButton()
     {
         return Player.AmOwner && HasCount;

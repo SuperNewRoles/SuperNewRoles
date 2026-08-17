@@ -5,7 +5,6 @@ using AmongUs.GameOptions;
 using SuperNewRoles.CustomOptions;
 using SuperNewRoles.Modules;
 using SuperNewRoles.Roles.Ability;
-using SuperNewRoles.Modules.Events.Bases;
 using SuperNewRoles.Events.PCEvents;
 using SuperNewRoles.Events;
 using SuperNewRoles.CustomOptions.Categories;
@@ -50,9 +49,6 @@ public class VampireDependentAbility : AbilityBase
     public CustomVentAbility ventAbility;
     private CustomKillButtonAbility killButtonAbility;
     public VampireDependentData Data { get; }
-    private EventListener<MurderEventData> _murderListener;
-    private EventListener<ExileEventData> _exileListener;
-    private EventListener<NameTextUpdateEventData> _nameTextUpdateListener;
     private SabotageCanUseAbility sabotageCanUseAbility;
     private DeviceCanUseAbility deviceCanUseAbility;
     private HideInAdminAbility hideInAdminAbility;
@@ -97,25 +93,12 @@ public class VampireDependentAbility : AbilityBase
         Player.AttachAbility(new KnowOtherAbility((player) => player.Player == vampire?.Player, () => true), new AbilityParentAbility(this));
     }
 
-    public override void DetachToAlls()
-    {
-        base.DetachToAlls();
-    }
-
     public override void AttachToLocalPlayer()
     {
         base.AttachToLocalPlayer();
-        _murderListener = MurderEvent.Instance.AddListener(OnMurder);
-        _exileListener = ExileEvent.Instance.AddListener(OnExile);
-        _nameTextUpdateListener = NameTextUpdateEvent.Instance.AddListener(OnNameTextUpdate);
-    }
-
-    public override void DetachToLocalPlayer()
-    {
-        base.DetachToLocalPlayer();
-        _murderListener?.RemoveListener();
-        _exileListener?.RemoveListener();
-        _nameTextUpdateListener?.RemoveListener();
+        SubscribeWithAbility(MurderEvent.Instance, OnMurder);
+        SubscribeWithAbility(ExileEvent.Instance, OnExile);
+        SubscribeWithAbility(NameTextUpdateEvent.Instance, OnNameTextUpdate);
     }
 
     private void OnNameTextUpdate(NameTextUpdateEventData data)

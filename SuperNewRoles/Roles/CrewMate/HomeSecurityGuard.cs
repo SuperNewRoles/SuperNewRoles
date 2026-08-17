@@ -5,7 +5,6 @@ using AmongUs.GameOptions;
 using SuperNewRoles.CustomOptions;
 using SuperNewRoles.Events;
 using SuperNewRoles.Modules;
-using SuperNewRoles.Modules.Events.Bases;
 using SuperNewRoles.Roles.Ability;
 
 namespace SuperNewRoles.Roles.CrewMate;
@@ -17,8 +16,10 @@ class HomeSecurityGuard : RoleBase<HomeSecurityGuard>
     public override List<Func<AbilityBase>> Abilities { get; } =
     [
         () => new CustomTaskAbility(
-            () => (false, false, 0),
-            new TaskOptionData(0, 0, 0)
+            isTaskTrigger: () => false,
+            countsForCrewWin: () => false,
+            requiredTaskCount: () => 0,
+            taskOptions: () => new TaskOptionData(0, 0, 0)
         ),
         () => new HomeSecurityGuardAbility(),
     ];
@@ -39,22 +40,18 @@ public class HomeSecurityGuardAbility : AbilityBase
     // タスク一覧に表示するランダムテキストの最大番号
     public const int TaskTextMax = 12;
     private ImportantTextTask _task;
-    private EventListener<MeetingCloseEventData> _meetingCloseListener;
-    private EventListener _introCutsceneInitializeListener;
     private int _currentIndex = -1;
 
     public override void AttachToLocalPlayer()
     {
-        _meetingCloseListener = MeetingCloseEvent.Instance.AddListener(OnMeetingClose);
-        _introCutsceneInitializeListener = IntroCutsceneInitializeEvent.Instance.AddListener(OnIntroCutsceneInitialize);
+        SubscribeWithAbility(MeetingCloseEvent.Instance, OnMeetingClose);
+        SubscribeWithAbility(IntroCutsceneInitializeEvent.Instance, OnIntroCutsceneInitialize);
         EnsureTask();
         UpdateIndexAndTaskText();
     }
 
     public override void DetachToLocalPlayer()
     {
-        _meetingCloseListener?.RemoveListener();
-        _introCutsceneInitializeListener?.RemoveListener();
         DestroyTask();
     }
 
@@ -62,8 +59,6 @@ public class HomeSecurityGuardAbility : AbilityBase
     {
         if (!Player.AmOwner) return;
         UpdateIndexAndTaskText();
-        _introCutsceneInitializeListener?.RemoveListener();
-        _introCutsceneInitializeListener = null;
     }
 
     private void OnMeetingClose(MeetingCloseEventData data)

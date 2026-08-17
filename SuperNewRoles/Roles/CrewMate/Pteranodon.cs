@@ -6,7 +6,6 @@ using SuperNewRoles.CustomOptions;
 using SuperNewRoles.Roles.Ability;
 using SuperNewRoles.Modules;
 using SuperNewRoles.Roles.Ability.CustomButton;
-using SuperNewRoles.Modules.Events.Bases;
 using SuperNewRoles.Events;
 
 namespace SuperNewRoles.Roles.CrewMate;
@@ -40,9 +39,6 @@ class Pteranodon : RoleBase<Pteranodon>
 public class PteranodonAbility : CustomButtonBase
 {
     private readonly PteranodonData _data;
-    private EventListener<WrapUpEventData> _wrapUpListener;
-    private EventListener<MeetingStartEventData> _meetingStartListener;
-    private EventListener _fixedUpdateListener;
 
     // 飛行状態の管理
     private bool _isFlyingNow;
@@ -66,8 +62,8 @@ public class PteranodonAbility : CustomButtonBase
     public override void AttachToLocalPlayer()
     {
         base.AttachToLocalPlayer();
-        _wrapUpListener = WrapUpEvent.Instance.AddListener(OnWrapUp);
-        _meetingStartListener = MeetingStartEvent.Instance.AddListener(OnMeetingStart);
+        SubscribeWithAbility(WrapUpEvent.Instance, OnWrapUp);
+        SubscribeWithAbility(MeetingStartEvent.Instance, OnMeetingStart);
         _isFlyingNow = false;
         _startPosition = new Vector2();
         _targetPosition = new Vector2();
@@ -78,7 +74,7 @@ public class PteranodonAbility : CustomButtonBase
     public override void AttachToAlls()
     {
         base.AttachToAlls();
-        _fixedUpdateListener = FixedUpdateEvent.Instance.AddListener(OnFixedUpdate);
+        SubscribeWithAbility(FixedUpdateEvent.Instance, OnFixedUpdate);
     }
 
     private void OnWrapUp(WrapUpEventData data)
@@ -102,20 +98,13 @@ public class PteranodonAbility : CustomButtonBase
         if (_isFlyingNow && Player?.AmOwner == true)
             SetStatusRPC(this, false, _startPosition, _startPosition, 0f);
 
-        // イベントリスナーを削除
         base.DetachToLocalPlayer();
-        _wrapUpListener?.RemoveListener();
-        _wrapUpListener = null;
-        _meetingStartListener?.RemoveListener();
-        _meetingStartListener = null;
     }
 
     public override void DetachToAlls()
     {
         RestoreFlyingStateLocally();
         base.DetachToAlls();
-        _fixedUpdateListener?.RemoveListener();
-        _fixedUpdateListener = null;
     }
 
     public override void OnClick()

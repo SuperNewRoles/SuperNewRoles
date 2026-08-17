@@ -6,7 +6,6 @@ using SuperNewRoles.CustomOptions;
 using SuperNewRoles.Modules;
 using SuperNewRoles.Roles.Ability;
 using SuperNewRoles.Roles.Ability.CustomButton;
-using SuperNewRoles.Modules.Events.Bases;
 using System.Linq;
 using SuperNewRoles.Events;
 using SuperNewRoles.Modules.Events;
@@ -64,7 +63,6 @@ public class VentTrapperAbility : CustomButtonBase, IButtonEffect, IAbilityCount
     private readonly VentTrapperData _data;
     private Vent _targetVent;
 
-    private EventListener<PlayerPhysicsRpcEnterVentPrefixEventData> _ventUsePrefixEvent;
     // IButtonEffect implementation for planting stun
     public bool isEffectActive { get; set; }
     public float EffectTimer { get; set; }
@@ -83,8 +81,6 @@ public class VentTrapperAbility : CustomButtonBase, IButtonEffect, IAbilityCount
     public override float DefaultTimer => _data.coolTime;
     public override ShowTextType showTextType => ShowTextType.ShowWithCount;
     public override bool CheckHasButton() => base.CheckHasButton() && Count > 0;
-    private EventListener<PlayerPhysicsFixedUpdateEventData> _fixedUpdateEvent;
-    private EventListener<MeetingStartEventData> _meetingStartEvent;
     private Vector3 _lastPosition;
     public override bool CheckIsAvailable()
     {
@@ -97,27 +93,14 @@ public class VentTrapperAbility : CustomButtonBase, IButtonEffect, IAbilityCount
     public override void AttachToAlls()
     {
         base.AttachToAlls();
-        _ventUsePrefixEvent = PlayerPhysicsRpcEnterVentPrefixEvent.Instance.AddListener(OnVentUsePrefix);
-    }
-
-    public override void DetachToAlls()
-    {
-        base.DetachToAlls();
-        _ventUsePrefixEvent?.RemoveListener();
+        SubscribeWithAbility(PlayerPhysicsRpcEnterVentPrefixEvent.Instance, OnVentUsePrefix);
     }
 
     public override void AttachToLocalPlayer()
     {
         base.AttachToLocalPlayer();
-        _fixedUpdateEvent = PlayerPhysicsFixedUpdateEvent.Instance.AddListener(OnFixedUpdate);
-        _meetingStartEvent = MeetingStartEvent.Instance.AddListener(OnMeetingStart);
-    }
-
-    public override void DetachToLocalPlayer()
-    {
-        base.DetachToLocalPlayer();
-        _fixedUpdateEvent?.RemoveListener();
-        _meetingStartEvent?.RemoveListener();
+        SubscribeWithAbility(PlayerPhysicsFixedUpdateEvent.Instance, OnFixedUpdate);
+        SubscribeWithAbility(MeetingStartEvent.Instance, OnMeetingStart);
     }
 
     private void OnFixedUpdate(PlayerPhysicsFixedUpdateEventData data)

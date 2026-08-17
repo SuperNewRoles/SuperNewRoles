@@ -5,7 +5,6 @@ using Hazel;
 using SuperNewRoles.Events;
 using SuperNewRoles.Events.PCEvents;
 using SuperNewRoles.Modules;
-using SuperNewRoles.Modules.Events.Bases;
 using SuperNewRoles.Patches;
 using SuperNewRoles.Roles.Ability.CustomButton;
 using SuperNewRoles.Roles.Impostor;
@@ -38,9 +37,6 @@ public class MatryoshkaAbility : CustomButtonBase, IButtonEffect, IAbilityCount
 
     private CustomKillButtonAbility customKillButtonAbility;
 
-    private EventListener _fixedUpdateListener;
-    private EventListener<DieEventData> _dieEventListener;
-    private EventListener<CalledMeetingEventData> _calledMeetingEventListener;
 
     public override ShowTextType showTextType => ShowTextType.ShowWithCount;
 
@@ -71,18 +67,15 @@ public class MatryoshkaAbility : CustomButtonBase, IButtonEffect, IAbilityCount
 
         Player.AttachAbility(customKillButtonAbility, new AbilityParentAbility(this));
 
-        _fixedUpdateListener = FixedUpdateEvent.Instance.AddListener(OnFixedUpdate);
-        _dieEventListener = DieEvent.Instance.AddListener(OnDie);
-        _calledMeetingEventListener = CalledMeetingEvent.Instance.AddListener(OnCalledMeeting);
+        SubscribeWithAbility(FixedUpdateEvent.Instance, OnFixedUpdate);
+        SubscribeWithAbility(DieEvent.Instance, OnDie);
+        SubscribeWithAbility(CalledMeetingEvent.Instance, OnCalledMeeting);
     }
 
     public override void DetachToAlls()
     {
         UnlockMatryoshka(this, Player.transform.position);
         base.DetachToAlls();
-        _fixedUpdateListener?.RemoveListener();
-        _dieEventListener?.RemoveListener();
-        _calledMeetingEventListener?.RemoveListener();
     }
 
     private void OnFixedUpdate()

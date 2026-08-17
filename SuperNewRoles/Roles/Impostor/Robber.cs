@@ -5,7 +5,6 @@ using AmongUs.GameOptions;
 using SuperNewRoles.CustomOptions;
 using SuperNewRoles.Events.PCEvents;
 using SuperNewRoles.Modules;
-using SuperNewRoles.Modules.Events.Bases;
 using SuperNewRoles.Roles.Ability;
 using UnityEngine;
 
@@ -40,7 +39,6 @@ internal class Robber : RoleBase<Robber>
 public class RobberAbility : AbilityBase
 {
     private int _rewindTaskCount;
-    private EventListener<MurderEventData> _murderListener;
 
     public RobberAbility(int rewindTaskCount)
     {
@@ -50,13 +48,7 @@ public class RobberAbility : AbilityBase
     public override void AttachToAlls()
     {
         base.AttachToAlls();
-        _murderListener = MurderEvent.Instance.AddListener(OnMurder);
-    }
-
-    public override void DetachToAlls()
-    {
-        base.DetachToAlls();
-        _murderListener?.RemoveListener();
+        SubscribeWithAbility(MurderEvent.Instance, OnMurder);
     }
 
     private void OnMurder(MurderEventData data)

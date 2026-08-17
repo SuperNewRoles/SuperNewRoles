@@ -4,7 +4,6 @@ using System.Linq;
 using UnityEngine;
 using SuperNewRoles.Modules;
 using SuperNewRoles.Roles.Impostor;
-using SuperNewRoles.Modules.Events.Bases;
 using SuperNewRoles.Events;
 using SuperNewRoles.Events.PCEvents;
 using SuperNewRoles.Roles.Ability.CustomButton;
@@ -24,8 +23,6 @@ public class CamouflagerAbility : AbilityBase
     private Dictionary<byte, PlayerOutfitData> _originalOutfits = new();
     public bool _isCamouflaged { get; private set; }
 
-    private EventListener<MeetingStartEventData> _meetingStartListener;
-    private EventListener<DieEventData> _dieListener;
 
     public CamouflagerAbility(CamouflagerAbilityOption option)
     {
@@ -40,8 +37,8 @@ public class CamouflagerAbility : AbilityBase
         base.AttachToAlls();
 
         _camouflageButtonAbility = new CamouflageButtonAbility(CoolTime, DurationTime, this);
-        _meetingStartListener = MeetingStartEvent.Instance.AddListener(OnMeetingStart);
-        _dieListener = DieEvent.Instance.AddListener(OnDie);
+        SubscribeWithAbility(MeetingStartEvent.Instance, OnMeetingStart);
+        SubscribeWithAbility(DieEvent.Instance, OnDie);
         Player.AttachAbility(_camouflageButtonAbility, new AbilityParentAbility(this));
     }
 
@@ -62,8 +59,6 @@ public class CamouflagerAbility : AbilityBase
     {
         EndCamouflage();
         base.DetachToAlls();
-        _meetingStartListener?.RemoveListener();
-        _dieListener?.RemoveListener();
     }
 
     [CustomRPC]

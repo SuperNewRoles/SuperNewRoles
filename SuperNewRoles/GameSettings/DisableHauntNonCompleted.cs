@@ -14,7 +14,7 @@ public static class HudManagerUpdatePatch
         if (!GameSettingOptions.DisableHauntNonCompleted) return;
         if (ExPlayerControl.LocalPlayer.IsAlive()) return;
         if (!ExPlayerControl.LocalPlayer.IsTaskTriggerRole()) return;
-        if (ExPlayerControl.LocalPlayer.IsTaskComplete()) return;
+        if (ExPlayerControl.LocalPlayer.IsAllTasksCompleted()) return;
         if (ExPlayerControl.LocalPlayer.Data.Role.Role == RoleTypes.GuardianAngel) return;
         if (__instance.AbilityButton != null)
             __instance.AbilityButton.gameObject.SetActive(false);
@@ -31,7 +31,7 @@ public static class PlayerControlCompleteTask
         if (!__instance.AmOwner) return;
         if (ExPlayerControl.LocalPlayer.IsAlive()) return;
         if (!ExPlayerControl.LocalPlayer.IsTaskTriggerRole()) return;
-        if (!ExPlayerControl.LocalPlayer.IsTaskComplete()) return;
+        if (!ExPlayerControl.LocalPlayer.IsAllTasksCompleted()) return;
         if (HudManager.Instance.AbilityButton != null)
             HudManager.Instance.AbilityButton.gameObject.SetActive(true);
     }

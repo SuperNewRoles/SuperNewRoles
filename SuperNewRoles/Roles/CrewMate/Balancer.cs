@@ -8,7 +8,6 @@ using Hazel;
 using SuperNewRoles.CustomOptions;
 using SuperNewRoles.Events;
 using SuperNewRoles.Modules;
-using SuperNewRoles.Modules.Events.Bases;
 using SuperNewRoles.Patches;
 using SuperNewRoles.Roles.Ability;
 using SuperNewRoles.Roles.Ability.CustomButton;
@@ -82,13 +81,6 @@ class BalancerAbility : AbilityBase, IAbilityCount
     #endregion
 
     #region Fields
-    private EventListener<MeetingStartEventData> meetingStartEventListener;
-    private EventListener<MeetingCloseEventData> meetingCloseEventListener;
-    private EventListener fixedUpdateEventListener;
-    private EventListener updateEventListener;
-    private EventListener<VotingCompleteEventData> votingCompleteEventListener;
-    private EventListener<WrapUpEventData> wrapUpEventListener;
-
     private List<PlayerControl> targetPlayers = new();
     public bool isAbilityUsed = false;
     private PlayerControl targetPlayerLeft;
@@ -234,54 +226,26 @@ class BalancerAbility : AbilityBase, IAbilityCount
     #region Lifecycle
     public override void AttachToLocalPlayer()
     {
-        updateEventListener = FixedUpdateEvent.Instance.AddListener(Update);
+        SubscribeWithAbility(FixedUpdateEvent.Instance, Update);
     }
 
-    public override void Attach(PlayerControl player, ulong abilityId, AbilityParentBase parent)
+    public override void AttachToAlls()
     {
-        base.Attach(player, abilityId, parent);
-        meetingStartEventListener = MeetingStartEvent.Instance.AddListener(x => OnMeetingStart());
-        meetingCloseEventListener = MeetingCloseEvent.Instance.AddListener(x => OnMeetingClosed());
-        fixedUpdateEventListener = FixedUpdateEvent.Instance.AddListener(FixedUpdateAnimation);
-        votingCompleteEventListener = VotingCompleteEvent.Instance.AddListener(OnVotingComplete);
-        wrapUpEventListener = WrapUpEvent.Instance.AddListener(OnWrapUp);
+        base.AttachToAlls();
+        SubscribeWithAbility(MeetingStartEvent.Instance, x => OnMeetingStart());
+        SubscribeWithAbility(MeetingCloseEvent.Instance, x => OnMeetingClosed());
+        SubscribeWithAbility(FixedUpdateEvent.Instance, FixedUpdateAnimation);
+        SubscribeWithAbility(VotingCompleteEvent.Instance, OnVotingComplete);
+        SubscribeWithAbility(WrapUpEvent.Instance, OnWrapUp);
 
         balancerButton = new BalancerMeetingButton(this);
-        ExPlayerControl exPlayer = (ExPlayerControl)player;
+        ExPlayerControl exPlayer = Player;
         exPlayer.AddAbility(balancerButton, new AbilityParentAbility(this));
     }
 
-    public override void Detach()
+    public override void DetachToAlls()
     {
-        base.Detach();
-
-        // イベントリスナーを安全に解除
-        if (meetingStartEventListener != null)
-        {
-            MeetingStartEvent.Instance.RemoveListener(meetingStartEventListener);
-            meetingStartEventListener = null;
-        }
-        if (meetingCloseEventListener != null)
-        {
-            MeetingCloseEvent.Instance.RemoveListener(meetingCloseEventListener);
-            meetingCloseEventListener = null;
-        }
-        if (fixedUpdateEventListener != null)
-        {
-            FixedUpdateEvent.Instance.RemoveListener(fixedUpdateEventListener);
-            fixedUpdateEventListener = null;
-        }
-        if (updateEventListener != null)
-        {
-            FixedUpdateEvent.Instance.RemoveListener(updateEventListener);
-            updateEventListener = null;
-        }
-        if (votingCompleteEventListener != null)
-        {
-            VotingCompleteEvent.Instance.RemoveListener(votingCompleteEventListener);
-            votingCompleteEventListener = null;
-        }
-        wrapUpEventListener?.RemoveListener();
+        base.DetachToAlls();
 
         if (BalancingAbility == this && AmongUsClient.Instance.AmHost)
         {

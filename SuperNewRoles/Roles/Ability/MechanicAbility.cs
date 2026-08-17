@@ -5,7 +5,6 @@ using UnityEngine;
 using SuperNewRoles.Modules;
 using SuperNewRoles.Roles.Ability.CustomButton;
 using SuperNewRoles.Events;
-using SuperNewRoles.Modules.Events.Bases;
 using SuperNewRoles.Modules.Events;
 using SuperNewRoles.Events.PCEvents;
 
@@ -24,10 +23,6 @@ public class MechanicAbility : VentTargetCustomButtonBase, IAbilityCount, IButto
     private float coolTime;
     private float durationTime;
     private Vent currentVent;
-    private EventListener<MeetingStartEventData> _onMeetingStartEvent;
-    private EventListener<PlayerPhysicsFixedUpdateEventData> _onPlayerPhysicsFixedUpdateEvent;
-    private EventListener<PlayerPhysicsRpcEnterVentPrefixEventData> _onEnterVentPrefixEvent;
-    private EventListener<DieEventData> _onDie;
 
     public string SpriteName { get; }
     public bool isEffectActive { get; set; }
@@ -72,29 +67,20 @@ public class MechanicAbility : VentTargetCustomButtonBase, IAbilityCount, IButto
     public override void AttachToLocalPlayer()
     {
         base.AttachToLocalPlayer();
-        _onMeetingStartEvent = MeetingStartEvent.Instance.AddListener(OnMeetingStart);
-        _onDie = DieEvent.Instance.AddListener(OnDie);
-    }
-
-    public override void DetachToLocalPlayer()
-    {
-        base.DetachToLocalPlayer();
-        _onMeetingStartEvent?.RemoveListener();
-        _onDie?.RemoveListener();
+        SubscribeWithAbility(MeetingStartEvent.Instance, OnMeetingStart);
+        SubscribeWithAbility(DieEvent.Instance, OnDie);
     }
 
     public override void AttachToAlls()
     {
         base.AttachToAlls();
-        _onPlayerPhysicsFixedUpdateEvent = PlayerPhysicsFixedUpdateEvent.Instance.AddListener(OnPlayerPhysicsFixedUpdate);
-        _onEnterVentPrefixEvent = PlayerPhysicsRpcEnterVentPrefixEvent.Instance.AddListener(OnEnterVentPrefix);
+        SubscribeWithAbility(PlayerPhysicsFixedUpdateEvent.Instance, OnPlayerPhysicsFixedUpdate);
+        SubscribeWithAbility(PlayerPhysicsRpcEnterVentPrefixEvent.Instance, OnEnterVentPrefix);
     }
 
     public override void DetachToAlls()
     {
         base.DetachToAlls();
-        _onPlayerPhysicsFixedUpdateEvent?.RemoveListener();
-        _onEnterVentPrefixEvent?.RemoveListener();
         if (currentVent != null)
             SetVentStatus(Player, currentVent, false, moveableVentPosition);
         ModHelpers.SetOpacity(Player, 1f);

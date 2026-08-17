@@ -6,7 +6,6 @@ using SuperNewRoles.CustomOptions;
 using SuperNewRoles.Events;
 using SuperNewRoles.Events.PCEvents;
 using SuperNewRoles.Modules;
-using SuperNewRoles.Modules.Events.Bases;
 using SuperNewRoles.Roles.Ability;
 using SuperNewRoles.Roles.Ability.CustomButton;
 using UnityEngine;
@@ -63,12 +62,6 @@ class RevenantAbility : TargetCustomButtonBase
     private CustomTaskAbility customTaskAbility;
     private TaskOptionData taskOptionData;
 
-    private EventListener _fixedUpdateListener;
-    private EventListener<TaskCompleteEventData> _taskCompleteListener;
-    private EventListener<ShipStatusLightEventData> _shipStatusLightListener;
-    private EventListener<EmergencyCheckEventData> _emergencyCheckListener;
-    private EventListener<WrapUpEventData> _wrapUpListener;
-    private EventListener _hudManagerUpdateListener;
 
     public List<(float time, ExPlayerControl player)> HauntedPlayers { get; } = [];
     public bool AmHaunted { get; private set; } = false;
@@ -92,8 +85,11 @@ class RevenantAbility : TargetCustomButtonBase
         base.AttachToAlls();
 
         customTaskAbility = new CustomTaskAbility(
-            () => (true, false, Data.RequiredTasks),
-            taskOptionData
+            isTaskTrigger: () => true,
+            countsForCrewWin: () => false,
+            requiredTaskCount: () => Data.RequiredTasks,
+            taskOptions: () => taskOptionData,
+            priority: AbilityPriority.GhostRole
         );
         customHauntToAbility = new CustomHauntToAbility(() => HauntedPlayers?.FirstOrDefault().player);
         Player.AttachAbility(customTaskAbility, new AbilityParentAbility(this));
@@ -103,21 +99,17 @@ class RevenantAbility : TargetCustomButtonBase
         if (Player.AmOwner)
             ReassignTasks();
 
-        _shipStatusLightListener = ShipStatusLightEvent.Instance.AddListener(OnShipStatusLight);
-        _emergencyCheckListener = EmergencyCheckEvent.Instance.AddListener(OnEmergencyCheck);
-        _hudManagerUpdateListener = HudUpdateEvent.Instance.AddListener(OnHudManagerUpdate);
-        _wrapUpListener = WrapUpEvent.Instance.AddListener(OnWrapUp);
+        SubscribeWithAbility(ShipStatusLightEvent.Instance, OnShipStatusLight);
+        SubscribeWithAbility(EmergencyCheckEvent.Instance, OnEmergencyCheck);
+        SubscribeWithAbility(HudUpdateEvent.Instance, OnHudManagerUpdate);
+        SubscribeWithAbility(WrapUpEvent.Instance, OnWrapUp);
         NecromancerHitodamas = new();
     }
     public override void DetachToAlls()
     {
         base.DetachToAlls();
-        _shipStatusLightListener?.RemoveListener();
-        _emergencyCheckListener?.RemoveListener();
-        _hudManagerUpdateListener?.RemoveListener();
         HauntedPlayers.Clear();
         AmHaunted = false;
-        _wrapUpListener?.RemoveListener();
         foreach (var hitodama in NecromancerHitodamas.Values)
         {
             if (hitodama != null)
@@ -131,15 +123,13 @@ class RevenantAbility : TargetCustomButtonBase
         Arrows.Clear();
         RecheckArrows();
         UpdateArrows();
-        _fixedUpdateListener = FixedUpdateEvent.Instance.AddListener(FixedUpdate);
-        _taskCompleteListener = TaskCompleteEvent.Instance.AddListener(OnTaskComplete);
+        SubscribeWithAbility(FixedUpdateEvent.Instance, FixedUpdate);
+        SubscribeWithAbility(TaskCompleteEvent.Instance, OnTaskComplete);
         Count = 0;
     }
     public override void DetachToLocalPlayer()
     {
         base.DetachToLocalPlayer();
-        _fixedUpdateListener?.RemoveListener();
-        _taskCompleteListener?.RemoveListener();
         foreach (var arrow in Arrows)
         {
             if (arrow.arrow != null)
@@ -160,7 +150,7 @@ class RevenantAbility : TargetCustomButtonBase
     private void OnTaskComplete(TaskCompleteEventData data)
     {
         if (!data.player.AmOwner) return;
-        if (data.player.AllTasksCompleted())
+        if (((ExPlayerControl)data.player).IsAllTasksCompleted())
         {
             ReassignTasks();
             Count++;

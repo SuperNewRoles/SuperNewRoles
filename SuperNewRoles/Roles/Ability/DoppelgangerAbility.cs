@@ -4,7 +4,6 @@ using UnityEngine;
 using SuperNewRoles.Modules;
 using SuperNewRoles.Roles.Impostor;
 using AmongUs.GameOptions;
-using SuperNewRoles.Modules.Events.Bases;
 using SuperNewRoles.Events.PCEvents;
 using SuperNewRoles.Events;
 using SuperNewRoles.Roles.Ability.CustomButton;
@@ -47,17 +46,10 @@ public class DoppelgangerAbility : AbilityBase
         new LateTask(() => ExPlayerControl.LocalPlayer.SetKillTimerUnchecked(timer, timer), 0.02f, "DoppelgangerAbility");
     }
 
-    private EventListener<MurderEventData> _murderEvent;
 
     public override void AttachToLocalPlayer()
     {
-        _murderEvent = MurderEvent.Instance.AddListener(OnMurderPlayer);
-    }
-
-    public override void DetachToLocalPlayer()
-    {
-        _murderEvent?.RemoveListener();
-        _murderEvent = null;
+        SubscribeWithAbility(MurderEvent.Instance, OnMurderPlayer);
     }
 
     public override void AttachToAlls()

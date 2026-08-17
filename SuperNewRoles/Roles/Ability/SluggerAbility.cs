@@ -6,7 +6,6 @@ using SuperNewRoles.Ability;
 using SuperNewRoles.Events;
 using SuperNewRoles.Events.PCEvents;
 using SuperNewRoles.Modules;
-using SuperNewRoles.Modules.Events.Bases;
 using SuperNewRoles.Roles.Ability.CustomButton;
 using UnityEngine;
 using SuperNewRoles.CustomObject;
@@ -31,9 +30,6 @@ public class SluggerAbility : CustomButtonBase, IButtonEffect
     private AudioSource _chargeAudio;
     private const float AudioMaxDistance = 5f;
     private const float AudioMinDistance = 1f;
-    private EventListener<MeetingStartEventData> _onMeetingStartEvent;
-    private EventListener<MurderEventData> _murderEvent;
-    private EventListener<DieEventData> _dieEvent;
 
     public SluggerAbility(float coolTime, float chargeTime, bool isMultiKill, bool isSyncKillCoolTime, bool canKillWhileCharging)
     {
@@ -47,20 +43,14 @@ public class SluggerAbility : CustomButtonBase, IButtonEffect
     public override void AttachToLocalPlayer()
     {
         base.AttachToLocalPlayer();
-        _murderEvent = MurderEvent.Instance.AddListener(OnMurder);
-    }
-
-    public override void DetachToLocalPlayer()
-    {
-        base.DetachToLocalPlayer();
-        _murderEvent?.RemoveListener();
+        SubscribeWithAbility(MurderEvent.Instance, OnMurder);
     }
 
     public override void AttachToAlls()
     {
         base.AttachToAlls();
-        _onMeetingStartEvent = MeetingStartEvent.Instance.AddListener(OnMeetingStart);
-        _dieEvent = DieEvent.Instance.AddListener(OnDie);
+        SubscribeWithAbility(MeetingStartEvent.Instance, OnMeetingStart);
+        SubscribeWithAbility(DieEvent.Instance, OnDie);
         if (!canKillWhileCharging)
         {
             _killableAbility = new KillableAbility(() => !isEffectActive);
@@ -71,8 +61,6 @@ public class SluggerAbility : CustomButtonBase, IButtonEffect
     public override void DetachToAlls()
     {
         base.DetachToAlls();
-        _onMeetingStartEvent?.RemoveListener();
-        _dieEvent?.RemoveListener();
         CleanupChargeEffects(cancelEffect: true);
     }
     public override void OnClick()
