@@ -170,6 +170,9 @@ public class DatahackerAbility : AbilityBase
 
     private void UpdateNameVisible(NameTextUpdateVisiableEventData data)
     {
+        if (MeetingHud.Instance != null && !hackingData.CanSeeDuringMeeting)
+            return;
+
         if (Player.AmOwner && hackingCompleted && hackingData.CanSeeRoleNames)
         {
             if (CanSeeRole(data.Player, out _))
@@ -285,19 +288,21 @@ public class DatahackerAbility : AbilityBase
         {
             if (!hackingData.CanSeeCrew)
                 return false;
-            Logger.Info("Crewmate");
-            if ((target.IsMadRoles() || target.IsFriendRoles()) && hackingData.CanSeeMadmates)
+
+            bool isMadRole = target.IsMadRoles() || target.IsFriendRoles();
+            if (isMadRole)
             {
+                if (!hackingData.CanSeeMadmates)
+                    return false;
+
                 Logger.Info("Madmates");
                 color = Palette.ImpostorRed;
                 return true;
             }
-            else
-            {
-                Logger.Info("Crewmate (Mad as Crew)");
-                color = target.Data.Role.TeamColor;
-                return true;
-            }
+
+            Logger.Info("Crewmate");
+            color = target.Data.Role.TeamColor;
+            return true;
         }
     }
 }

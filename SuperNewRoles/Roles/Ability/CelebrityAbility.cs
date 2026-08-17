@@ -33,13 +33,14 @@ public class CelebrityAbility : AbilityBase
         SubscribeWithAbility(NameTextUpdateEvent.Instance, OnNameTextUpdate);
         SubscribeWithAbility(NameTextUpdateVisiableEvent.Instance, OnNameTextUpdateVisiable);
         SubscribeWithAbility(MeetingStartEvent.Instance, OnMeetingStart);
-        _isAlive = ExPlayerControl.LocalPlayer.IsAlive();
+        _isAlive = Player?.IsAlive() == true;
         if (Data.YellowChangedRole)
             Player.AttachAbility(new AlwaysCelebrityAbility(), new AbilityParentPlayer(Player));
     }
     private void OnMeetingStart(MeetingStartEventData data)
     {
         _glowTimer = 0f;
+        // 会議でのみ更新する
         _isAlive = Player.IsAlive();
     }
     // 名前の色を更新するイベントハンドラ

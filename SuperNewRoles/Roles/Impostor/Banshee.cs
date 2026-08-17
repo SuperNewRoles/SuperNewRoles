@@ -151,6 +151,13 @@ public class BansheeAbility : AbilityBase
 
     private void OnFixedUpdate()
     {
+        // 役職者が死亡・切断した後は、残留したイベントリスナーから囁きキルを発生させない。
+        if (Player == null || Player.IsDead())
+        {
+            ResetStatus();
+            return;
+        }
+
         if (currentFairyPlayer == null) return;
 
         // 妖精がついたプレイヤーが死んだらリセット

@@ -113,9 +113,7 @@ public class ChiefAbility : AbilityBase
 
         SubscribeWithAbility(NameTextUpdateEvent.Instance, OnNameTextUpdate);
     }
-    public override void AttachToLocalPlayer()
-    {
-    }
+
     // 対象を任命可能かどうかの判定
     private bool IsTargetable(ExPlayerControl target)
     {

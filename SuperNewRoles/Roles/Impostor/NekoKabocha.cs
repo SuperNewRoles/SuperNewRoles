@@ -70,6 +70,7 @@ public class NekoKabochaRevenge : AbilityBase
     {
         if (data.target == null || data.killer == null) return;
         if (data.target != ExPlayerControl.LocalPlayer) return;
+        if (!data.resultFlags.HasFlag(MurderResultFlags.Succeeded)) return;
         // 無限ループ防止
         if (data.killer == data.target) return;
 

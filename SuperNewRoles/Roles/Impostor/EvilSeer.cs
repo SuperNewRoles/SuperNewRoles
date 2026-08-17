@@ -25,7 +25,7 @@ class EvilSeer : RoleBase<EvilSeer>
         () => new DeadBodyArrowsAbility(() => EvilSeerShowArrows, colorMode : EvilSeerAbilityColorModeSelect is EvilSeerAbility.All or EvilSeerAbility.ArrowOnly ? EvilSeerColorMode : DeadBodyColorMode.None),
         () => new EvilSeerHauntAbility(EvilSeerHauntMode is EvilSeerHauntMode.Both or EvilSeerHauntMode.OnlyEvilSeerHaunt),
         () => new CustomModifierGrantedButtonAbility(new(
-        canGrantModifier: (granted) => !granted && EvilSeerHauntMode is EvilSeerHauntMode.Both or EvilSeerHauntMode.OnlyOthersHaunt,
+        canGrantModifier: (granted) => !granted && (EvilSeerHauntMode is EvilSeerHauntMode.Both or EvilSeerHauntMode.OnlyOthersHaunt),
         cooldown: () => EvilSeerCreateAbilityCooldown,
         modifierRole: () => ModifierRoleId.ModifierHauntedWolf,
         buttonSprite: AssetManager.GetAsset<Sprite>("EvilSeerHauntButton.png"),

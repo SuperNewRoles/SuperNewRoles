@@ -51,6 +51,7 @@ public class LoversBreakerAbility : TargetCustomButtonBase
 {
     public LoversBreakerData Data { get; set; }
 
+    private byte _pendingCountTargetId = byte.MaxValue;
 
     private int _successCount;
 
@@ -65,6 +66,13 @@ public class LoversBreakerAbility : TargetCustomButtonBase
         SubscribeWithAbility(NameTextUpdateEvent.Instance, OnNameTextUpdate);
         SubscribeWithAbility(FixedUpdateEvent.Instance, OnFixedUpdate);
         SubscribeWithAbility(DieEvent.Instance, OnDie);
+        SubscribeWithAbility(MurderEvent.Instance, OnMurder);
+    }
+
+    public override void DetachToAlls()
+    {
+        _pendingCountTargetId = byte.MaxValue;
+        base.DetachToAlls();
     }
 
     public override Color32 OutlineColor => LoversBreaker.Instance.RoleColor;
@@ -112,18 +120,34 @@ public class LoversBreakerAbility : TargetCustomButtonBase
         if (Target == null) return;
         if (Target.IsLovers() || Target.Role is RoleId.Cupid or RoleId.Truelover)
         {
-            ExPlayerControl.LocalPlayer.RpcCustomDeath(Target, CustomDeathType.Kill);
-            if (Target.Role != RoleId.Cupid)
-            {
-                _successCount++;
-                RpcSyncCount(_successCount);
-            }
+            ExPlayerControl target = Target;
+            byte targetId = target.Role == RoleId.Cupid ? byte.MaxValue : target.PlayerId;
+            _pendingCountTargetId = targetId;
+            ExPlayerControl.LocalPlayer.RpcCustomDeath(target, CustomDeathType.Kill);
+            if (_pendingCountTargetId == targetId)
+                _pendingCountTargetId = byte.MaxValue;
             CheckWin();
         }
         else
         {
             ExPlayerControl.LocalPlayer.RpcCustomDeath(CustomDeathType.Suicide);
         }
+    }
+
+    private void OnMurder(MurderEventData data)
+    {
+        if (!Player.AmOwner || _pendingCountTargetId == byte.MaxValue)
+            return;
+        if (data.killer?.PlayerId != Player.PlayerId || data.target?.PlayerId != _pendingCountTargetId)
+            return;
+
+        _pendingCountTargetId = byte.MaxValue;
+        if (!data.resultFlags.HasFlag(MurderResultFlags.Succeeded))
+            return;
+
+        _successCount++;
+        RpcSyncCount(_successCount);
+        CheckWin();
     }
 
     private void OnNameTextUpdate(NameTextUpdateEventData data)

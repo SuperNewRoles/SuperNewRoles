@@ -17,8 +17,8 @@ class Workperson : RoleBase<Workperson>
     public override List<Func<AbilityBase>> Abilities { get; } = [() => new CustomTaskAbility(
         isTaskTrigger: () => true,
         countsForCrewWin: () => false,
-        requiredTaskCount: () => WorkpersonTaskData.Total,
-        taskOptions: () => WorkpersonTaskData
+        requiredTaskCount: () => WorkpersonUseCustomTaskSetting ? WorkpersonTaskData.Total : null,
+        taskOptions: () => WorkpersonUseCustomTaskSetting ? WorkpersonTaskData : null
     ),
     () => new WorkpersonAbility(WorkpersonNeedAliveToWin),
     () => new CustomVentAbility(

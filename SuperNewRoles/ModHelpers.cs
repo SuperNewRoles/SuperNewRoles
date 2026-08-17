@@ -74,7 +74,7 @@ public static class ModHelpers
     {
         if (percentage <= 0) return false;
         if (percentage >= 100) return true;
-        return GetRandomInt(100) < percentage;
+        return GetRandomInt(99) < percentage;
     }
     public static string HashMD5(string str)
     {

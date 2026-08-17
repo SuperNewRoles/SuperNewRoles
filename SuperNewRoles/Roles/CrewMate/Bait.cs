@@ -59,19 +59,39 @@ class Bait : RoleBase<Bait>
 
 class BaitAbility : AbilityBase
 {
+    private bool _isDetached;
+
+    internal static bool ShouldSkipEventProcessing()
+    {
+        return ExPlayerControl.LocalPlayer == null
+            || ExPlayerControl.LocalPlayer.IsAlive()
+            || MeetingHud.Instance != null
+            || ExileController.Instance != null;
+    }
+
     public override void AttachToLocalPlayer()
     {
+        _isDetached = false;
         SubscribeWithAbility(MurderEvent.Instance, OnKilled);
+    }
+
+    public override void DetachToLocalPlayer()
+    {
+        _isDetached = true;
+        base.DetachToLocalPlayer();
     }
 
     public void OnKilled(MurderEventData data)
     {
-        if (data.target == PlayerControl.LocalPlayer)
+        if (_isDetached || ShouldSkipEventProcessing() || data == null || data.target == null || PlayerControl.LocalPlayer == null)
+            return;
+
+        if (data.target.PlayerId == PlayerControl.LocalPlayer.PlayerId)
         {
             // キラーに警告する（画面を青く光らせる）
-            if (Bait.BaitWarnKiller)
+            if (Bait.BaitWarnKiller && data.killer?.Player != null)
             {
-                FlashHandler.RpcShowFlash(data.killer, Color.cyan, 0.2f);
+                FlashHandler.RpcShowFlash(data.killer.Player, Color.cyan, 0.2f);
             }
 
             //Reportの遅延呼び出しを行う(多分Coroutineがよいのでは？)
@@ -81,19 +101,23 @@ class BaitAbility : AbilityBase
 
     IEnumerator DelayedReport(MurderEventData data)
     {
+        if (data == null)
+            yield break;
+
         // 最低限の遅延（キラーへの警告が見えるように）
         yield return new WaitForSeconds(0.5f);
 
-        float delay = 0f;
+        if (_isDetached || ShouldSkipEventProcessing())
+            yield break;
 
         // ランダム遅延が有効な場合
         if (Bait.BaitRandomDelay)
         {
-            int minDelay = Math.Max(0, (int)Bait.BaitReportTime - Bait.BaitDelayVariation);
-            int maxDelay = (int)Bait.BaitReportTime + Bait.BaitDelayVariation;
-            delay = UnityEngine.Random.Range(minDelay, maxDelay + 1);
+            float minDelay = Mathf.Max(0f, Bait.BaitReportTime - Bait.BaitDelayVariation);
+            float maxDelay = Bait.BaitReportTime + Bait.BaitDelayVariation;
+            float delay = UnityEngine.Random.Range(minDelay, maxDelay);
 
-            if (delay > 0)
+            if (delay > 0f)
                 yield return new WaitForSeconds(delay);
         }
         // 固定遅延の場合
@@ -101,6 +125,13 @@ class BaitAbility : AbilityBase
         {
             yield return new WaitForSeconds(Bait.BaitReportTime);
         }
+
+        if (_isDetached
+            || ShouldSkipEventProcessing()
+            || data.killer?.Player == null
+            || data.target == null
+            || data.target.Data == null)
+            yield break;
 
         data.killer.RpcCustomReportDeadBody(data.target.Data);
     }

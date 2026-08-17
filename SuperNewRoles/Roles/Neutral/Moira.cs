@@ -80,6 +80,7 @@ public class MoiraMeetingAbility : CustomMeetingButtonBase, IAbilityCount
         SubscribeWithAbility(VotingCompleteEvent.Instance, OnVotingComplete);
         SubscribeWithAbility(NameTextUpdateEvent.Instance, OnNameTextUpdate);
         SubscribeWithAbility(MeetingStartEvent.Instance, OnMeetingStartAll);
+        SubscribeWithAbility(DisconnectEvent.Instance, OnDisconnect);
     }
 
     private void OnNameTextUpdate(NameTextUpdateEventData data)
@@ -123,6 +124,17 @@ public class MoiraMeetingAbility : CustomMeetingButtonBase, IAbilityCount
         ClearSelection();
     }
 
+    private void OnDisconnect(DisconnectEventData data)
+    {
+        if (data.disconnectedPlayer == null) return;
+
+        byte disconnectedPlayerId = data.disconnectedPlayer.PlayerId;
+        if (firstTarget?.PlayerId == disconnectedPlayerId)
+            ClearSelection();
+
+        swapData.RemoveAll(pair => pair.Item1 == disconnectedPlayerId || pair.Item2 == disconnectedPlayerId);
+    }
+
     public override void OnMeetingUpdate()
     {
         if (ExPlayerControl.LocalPlayer.IsDead())
@@ -159,6 +171,8 @@ public class MoiraMeetingAbility : CustomMeetingButtonBase, IAbilityCount
             var data = swapData[i];
             var player1 = ExPlayerControl.ById(data.Item1);
             var player2 = ExPlayerControl.ById(data.Item2);
+            if (player1 == null || player2 == null) continue;
+
             player1.ReverseRole(player2);
 
             RoleTypes player1Role = player1.Data.Role.Role;
@@ -177,10 +191,17 @@ public class MoiraMeetingAbility : CustomMeetingButtonBase, IAbilityCount
     [CustomRPC]
     public void RpcSwapMoira()
     {
+        if (swapData.Count == 0) return;
+
         var data = swapData.Last();
 
         var player1 = ExPlayerControl.ById(data.Item1);
         var player2 = ExPlayerControl.ById(data.Item2);
+        if (player1 == null || player2 == null)
+        {
+            swapData.RemoveAt(swapData.Count - 1);
+            return;
+        }
 
         player1.ReverseRole(player2);
 

@@ -109,6 +109,13 @@ class RevenantAbility : TargetCustomButtonBase
     {
         base.DetachToAlls();
         HauntedPlayers.Clear();
+        AmHaunted = false;
+        foreach (var hitodama in NecromancerHitodamas.Values)
+        {
+            if (hitodama != null)
+                GameObject.Destroy(hitodama);
+        }
+        NecromancerHitodamas.Clear();
     }
     public override void AttachToLocalPlayer()
     {
@@ -135,7 +142,7 @@ class RevenantAbility : TargetCustomButtonBase
     private void OnWrapUp(WrapUpEventData data)
     {
         if (!Player.AmOwner) return;
-        foreach (var haunted in HauntedPlayers)
+        foreach (var haunted in HauntedPlayers.ToArray())
         {
             RpcSetRevenantStatus(this, haunted.player, false);
         }

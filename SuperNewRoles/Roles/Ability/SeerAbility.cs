@@ -1,5 +1,4 @@
 using System;
-using System.Collections.Generic;
 using UnityEngine;
 using SuperNewRoles.Roles.CrewMate;
 using SuperNewRoles.Modules;
@@ -23,7 +22,6 @@ public record SeerData
 /// </summary>
 public class SeerAbility : AbilityBase
 {
-    private List<(Vector3, int)> deadBodyPositions = new();
     public SeerData Data;
 
     // 通常霊魂カラーID
@@ -40,12 +38,12 @@ public class SeerAbility : AbilityBase
     public override void AttachToLocalPlayer()
     {
         SubscribeWithAbility(DieEvent.Instance, OnPlayerDead);
-        SubscribeWithAbility(WrapUpEvent.Instance, OnWrapUp);
     }
 
     private void OnPlayerDead(DieEventData data)
     {
-        if (ExileController.Instance != null) return;
+        // Exiled players intentionally do not create souls or death flashes.
+        if (IsExiledPlayer(data.player)) return;
         // モードが「霊魂が見える」または「両方」の場合
         var mode = Data.Mode;
         if (mode is SeerMode.Both or SeerMode.SoulOnly)
@@ -62,7 +60,6 @@ public class SeerAbility : AbilityBase
                 DeadBodyColorMode.Adaptive => data.player.Data.DefaultOutfit.ColorId, // イビルシーアで設定が有効な場合は、プレイヤーの色を使用
                 _ => DefaultSoulColorId, // その他
             };
-            deadBodyPositions.Add((data.player.transform.position, colorId));
 
             // 霊魂を即表示（会議を待たずに表示）
             CreateSoul(data.player.transform.position, colorId);
@@ -82,21 +79,16 @@ public class SeerAbility : AbilityBase
         }
     }
 
-    private void OnWrapUp(WrapUpEventData data)
+    private static bool IsExiledPlayer(ExPlayerControl player)
     {
-        // モードが「霊魂が見える」または「両方」の場合のみ処理
-        var mode = Data.Mode;
-        if (mode != SeerMode.Both && mode != SeerMode.SoulOnly) return;
+        if (player == null) return false;
 
-        // 霊魂を表示
-        foreach ((Vector3, int) posAndColor in deadBodyPositions)
+        foreach (ExileController controller in UnityEngine.Object.FindObjectsOfType<ExileController>())
         {
-            (Vector3 pos, int soulColorId) = posAndColor;
-            CreateSoul(pos, soulColorId);
+            if (controller?.initData?.networkedPlayer?.PlayerId == player.PlayerId)
+                return true;
         }
-
-        // 霊魂の位置をリセット
-        deadBodyPositions = new();
+        return false;
     }
 
     // 霊魂を作成する共通メソッド

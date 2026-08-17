@@ -76,6 +76,13 @@ public class CustomVentAbility : CustomButtonBase, IButtonEffect, IPrioritizedAb
             CurrentVent.SetButtons(true);
         }
     }
+
+    public override void OnUpdate()
+    {
+        if (PlayerControl.LocalPlayer?.Data == null || MeetingHud.Instance != null || ExileController.Instance != null)
+            ClearCurrentVentOutline();
+        base.OnUpdate();
+    }
     private static void SetVentOutline(Vent vent, bool show, Color32 color)
     {
         var rend = vent.myRend;
@@ -206,13 +213,28 @@ public class CustomVentAbility : CustomButtonBase, IButtonEffect, IPrioritizedAb
     }
     public override bool CheckHasButton()
     {
-        if (!ExPlayerControl.LocalPlayer.IsAlive()) return false;
-        return Player.ShouldShowVentAbility(this);
+        bool canUse = ExPlayerControl.LocalPlayer != null && ExPlayerControl.LocalPlayer.IsAlive() && Player.ShouldShowVentAbility(this);
+        if (!canUse)
+            ClearCurrentVentOutline();
+        return canUse;
     }
 
     public override void AttachToLocalPlayer()
     {
         base.AttachToLocalPlayer();
+    }
+
+    public override void DetachToLocalPlayer()
+    {
+        ClearCurrentVentOutline();
+        base.DetachToLocalPlayer();
+    }
+
+    private void ClearCurrentVentOutline()
+    {
+        if (CurrentVent == null) return;
+        SetVentOutline(CurrentVent, false, Palette.White);
+        CurrentVent = null;
     }
 
     public bool CheckCanUseVent() => CanUseVent?.Invoke() ?? false;

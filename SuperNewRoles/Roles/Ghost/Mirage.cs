@@ -72,8 +72,6 @@ public class MirageAbility : CustomButtonBase, IAbilityCount
 
     public override void OnClick()
     {
-        if (LimitUse)
-            this.UseAbilityCount();
         HashSet<byte> deadPlayers = new();
         foreach (var deadBody in GameObject.FindObjectsOfType<DeadBody>())
             deadPlayers.Add(deadBody.ParentId);
@@ -86,6 +84,9 @@ public class MirageAbility : CustomButtonBase, IAbilityCount
         }
         if (players.Count == 0)
             return;
+
+        if (LimitUse)
+            this.UseAbilityCount();
         RpcSpawnDeadbody(players.GetRandom(), ExPlayerControl.LocalPlayer.transform.position);
     }
 

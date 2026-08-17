@@ -68,6 +68,7 @@ public sealed class FrankensteinAbility : AbilityBase
     private CustomVentAbility _ventAbility;
     private ImpostorVisionAbility _impostorVisionAbility;
 
+    private byte _pendingKillTargetId = byte.MaxValue;
 
     private DeadBody _monsterBody;
     private byte _monsterBodyPlayerId = byte.MaxValue;
@@ -95,10 +96,11 @@ public sealed class FrankensteinAbility : AbilityBase
                 if (!IsMonster) return true;
                 if (target == null) return true;
 
+                byte targetId = target.PlayerId;
+                _pendingKillTargetId = targetId;
                 ExPlayerControl.LocalPlayer.RpcCustomDeath(target, CustomDeathType.Kill);
-
-                Vector2 dropPos = Player.Player.GetTruePosition();
-                RpcEndMonster(this, dropPos, decrementKill: true);
+                if (_pendingKillTargetId == targetId)
+                    _pendingKillTargetId = byte.MaxValue;
                 return true;
             }
         );
@@ -111,6 +113,7 @@ public sealed class FrankensteinAbility : AbilityBase
         Player.AddAbility(_impostorVisionAbility, new AbilityParentAbility(this));
 
         SubscribeWithAbility(TryKillEvent.Instance, OnTryKill);
+        SubscribeWithAbility(MurderEvent.Instance, OnMurder);
         SubscribeWithAbility(MeetingStartEvent.Instance, OnMeetingStart);
         SubscribeWithAbility(DieEvent.Instance, OnDie);
     }
@@ -122,6 +125,7 @@ public sealed class FrankensteinAbility : AbilityBase
             RpcEndMonster(this, _bodyOriginalPosition, decrementKill: false);
         }
 
+        _pendingKillTargetId = byte.MaxValue;
 
         base.DetachToAlls();
     }
@@ -144,6 +148,18 @@ public sealed class FrankensteinAbility : AbilityBase
             Vector2 dropPos = Player.Player.GetTruePosition();
             RpcEndMonster(this, dropPos, decrementKill: false);
         }
+    }
+
+    private void OnMurder(MurderEventData data)
+    {
+        if (!Player.AmOwner || _pendingKillTargetId == byte.MaxValue)
+            return;
+        if (data.killer?.PlayerId != Player.PlayerId || data.target?.PlayerId != _pendingKillTargetId)
+            return;
+
+        _pendingKillTargetId = byte.MaxValue;
+        if (data.resultFlags.HasFlag(MurderResultFlags.Succeeded) && IsMonster)
+            RpcEndMonster(this, Player.Player.GetTruePosition(), decrementKill: true);
     }
 
     private void OnMeetingStart(MeetingStartEventData data)

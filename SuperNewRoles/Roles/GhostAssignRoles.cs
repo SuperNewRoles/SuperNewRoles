@@ -50,7 +50,7 @@ public class GhostAssignRole
                 else if (num <= roleOptions.GetNumPerGame(roleTypes))
                 {
                     int chancePerGame = roleOptions.GetChancePerGame(roleTypes);
-                    if (HashRandom.Next(101) < chancePerGame)
+                    if (ModHelpers.IsSuccessChance(chancePerGame))
                     {
                         player.RpcSetRole(roleTypes, true);
                     }
@@ -175,7 +175,7 @@ public class GhostAssignRole
             if (selection != 0 && count > GhostRolePlayerNum.GetOrDefault(data.RoleId, 0))
             {
                 //100%なら100%アサインListに入れる
-                if (selection == 10)
+                if (selection >= 100)
                 {
                     Assigns.Add(data.RoleId);
                     //100%アサインリストの中身が0だったら処理しない(100%アサインリストのほうがアサインされるため)
