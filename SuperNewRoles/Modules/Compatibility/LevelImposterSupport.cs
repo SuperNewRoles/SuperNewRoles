@@ -97,4 +97,18 @@ public static class LevelImposterSupport
             ClearShipState();
         }
     }
+
+    /// <summary>
+    /// LI はマップを非同期構築するため、Intro 開始時点で境界キャッシュを取り直す。
+    /// </summary>
+    [HarmonyPatch(typeof(IntroCutscene), nameof(IntroCutscene.CoBegin))]
+    public static class IntroCutsceneCoBeginPatch
+    {
+        public static void Postfix()
+        {
+            if (!IsCustomMap)
+                return;
+            PhysicsMapDatabase.InvalidateBoundsCache();
+        }
+    }
 }

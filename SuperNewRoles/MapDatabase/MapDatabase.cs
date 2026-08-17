@@ -242,10 +242,20 @@ public abstract class MapDatabase
     static private readonly PhysicsMapDatabase PhysicsFallback = new();
     static public MapDatabase GetCurrentMapData()
     {
-        int id = currentMapId;
+        if (!TryGetCurrentMapId(out int id))
+            return PhysicsFallback;
         if (id >= 0 && id < AllMapData.Length && AllMapData[id] != null)
             return AllMapData[id];
         return PhysicsFallback;
     }
-    static int currentMapId => GameOptionsManager.Instance.CurrentGameOptions.GetByte(ByteOptionNames.MapId);
+
+    static private bool TryGetCurrentMapId(out int id)
+    {
+        id = -1;
+        IGameOptions options = GameOptionsManager.Instance?.CurrentGameOptions;
+        if (options == null)
+            return false;
+        id = options.GetByte(ByteOptionNames.MapId);
+        return true;
+    }
 }

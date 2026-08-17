@@ -230,7 +230,10 @@ public static class DevicesPatch
                     !ShipStatus.Instance.FastRooms.TryGetValue(counterArea.RoomType, out PlainShipRoom plainShipRoom) ||
                     plainShipRoom == null ||
                     !plainShipRoom.roomArea)
+                {
+                    counterArea.UpdateCount(0);
                     continue;
+                }
 
                 HashSet<int> hashSet = new();
                 int num = plainShipRoom.roomArea.OverlapCollider(__instance.filter, __instance.buffer);

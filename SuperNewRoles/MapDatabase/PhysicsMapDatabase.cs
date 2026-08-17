@@ -3,7 +3,7 @@ using UnityEngine;
 namespace SuperNewRoles.MapDatabase;
 
 /// <summary>
-/// バニラ参照点を持たないマップ（LevelImposter 等）向け。壁判定は物理、部屋トリガー内なら歩行可能とみなす。
+/// バニラ参照点を持たないマップ（LevelImposter 等）向け。固体コライダー上だけ歩行不可とみなす。
 /// </summary>
 public sealed class PhysicsMapDatabase : MapDatabase
 {
@@ -34,24 +34,16 @@ public sealed class PhysicsMapDatabase : MapDatabase
     {
         int num = Physics2D.OverlapCircleNonAlloc(position, 0.1f, PhysicsHelpers.colliderHits, Constants.ShipAndAllObjectsMask);
         if (num <= 0 || num > PhysicsHelpers.colliderHits.Length)
-            return false;
+            return true;
 
-        bool inSolid = false;
-        bool inTrigger = false;
         for (int i = 0; i < num; i++)
         {
             Collider2D hit = PhysicsHelpers.colliderHits[i];
-            if (hit == null)
-                continue;
-            if (hit.isTrigger)
-                inTrigger = true;
-            else
-                inSolid = true;
+            if (hit != null && !hit.isTrigger)
+                return false;
         }
 
-        if (inSolid)
-            return false;
-        return inTrigger;
+        return true;
     }
 
     public override bool TryGetSpawnScanBounds(out Vector2 min, out Vector2 max)

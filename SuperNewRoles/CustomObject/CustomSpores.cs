@@ -24,7 +24,7 @@ public static class CustomSpores
         return mushRooms.TryGetValue(mushroom.id, out Mushroom mapped) && mapped == mushroom;
     }
 
-    [CustomRPC]
+    [CustomRPC(onlyOtherPlayer: true)]
     public static void RpcTriggerManagedSpore(int id)
     {
         TriggerSporesFromMushroom(id);
@@ -144,6 +144,9 @@ public static class CustomSpores
                 return true;
             if (!IsManagedMushroom(mushroom))
                 return true;
+            if (!__instance.AmOwner)
+                return false;
+            TriggerSporesFromMushroom(mushroom.id);
             RpcTriggerManagedSpore(mushroom.id);
             return false;
         }
