@@ -22,7 +22,7 @@ public static class VersionInfo
     public static string VersionString => Current.ToString() + (SnapShotVersion?.ToString() ?? string.Empty);
 
     public static bool IsSnapShot => SnapShotVersion != null;
-    public static char? SnapShotVersion = 'b';
+    public static char? SnapShotVersion = null;
 
     public static string NewVersion = "";
     public static bool IsUpdate = false;
@@ -112,6 +112,20 @@ public static class Statics
     public static int ComputeAmongUsBroadcastVersion(int year, int month, int day, int revision = 0)
     {
         return year * 25000 + month * 1800 + day * 50 + revision;
+    }
+
+    /// <summary>
+    /// オンライン用の DisableServerAuthority フラグ（+25）。revision が既に 25 以上なら加算しない（Reactor 共存時の +50 防止）。
+    /// </summary>
+    public static int ApplyDisableServerAuthorityFlag(int broadcastVersion)
+    {
+        const int flag = 25;
+        int revision = broadcastVersion % 50;
+        if (revision < 0)
+            revision += 50;
+        if (revision < flag)
+            return broadcastVersion + flag;
+        return broadcastVersion;
     }
 
     /// <summary>

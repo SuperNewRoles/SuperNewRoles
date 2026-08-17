@@ -90,7 +90,7 @@ public class SerialKillerNearSuicideWinTrophy : SuperTrophyRole<SerialKillerNear
 
         if (localPlayer?.roleBase?.Role == RoleId.SerialKiller && isImpostorWin && !localPlayer.IsDead())
         {
-            var suicideAbility = localPlayer.PlayerAbilities.FirstOrDefault(a => a is SuicideTimerAbility) as SuicideTimerAbility;
+            var suicideAbility = localPlayer.GetAbility<SuicideTimerAbility>();
 
             if (suicideAbility != null && suicideAbility.CurrentTimer > 0 && suicideAbility.CurrentTimer <= NearSuicideThreshold)
             {

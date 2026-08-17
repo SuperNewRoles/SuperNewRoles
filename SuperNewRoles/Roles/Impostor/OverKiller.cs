@@ -7,7 +7,6 @@ using SuperNewRoles.Roles.Ability;
 using SuperNewRoles.Roles.Ability.CustomButton;
 using SuperNewRoles.Modules;
 using SuperNewRoles.Events.PCEvents;
-using SuperNewRoles.Modules.Events.Bases;
 using SuperNewRoles.Ability;
 using System.Linq;
 
@@ -46,7 +45,6 @@ class OverKiller : RoleBase<OverKiller>
 
 public class OverKillerAbility : AbilityBase
 {
-    private EventListener<MurderEventData> _onMurderEvent;
 
     public override void AttachToAlls()
     {
@@ -62,13 +60,7 @@ public class OverKillerAbility : AbilityBase
     public override void AttachToLocalPlayer()
     {
         base.AttachToLocalPlayer();
-        _onMurderEvent = MurderEvent.Instance.AddListener(HandleMurderEvent);
-    }
-
-    public override void DetachToLocalPlayer()
-    {
-        base.DetachToLocalPlayer();
-        _onMurderEvent?.RemoveListener();
+        SubscribeWithAbility(MurderEvent.Instance, HandleMurderEvent);
     }
 
     private void HandleMurderEvent(MurderEventData data)
@@ -76,8 +68,9 @@ public class OverKillerAbility : AbilityBase
         if (data.killer?.PlayerId != Player.PlayerId) return;
         if (data.resultFlags.HasFlag(MurderResultFlags.FailedError) || data.resultFlags.HasFlag(MurderResultFlags.FailedProtected)) return;
 
-        // 複数の死体を生成する
-        CreateMultipleBodies(data.target, OverKiller.OverKillerKillCount);
+        // 通常のキルで生成される死体を含めて設定値の数になるよう、追加分だけ生成する。
+        int additionalBodyCount = Math.Max(0, OverKiller.OverKillerKillCount - 1);
+        CreateMultipleBodies(data.target, additionalBodyCount);
     }
 
     private void CreateMultipleBodies(ExPlayerControl target, int bodyCount)

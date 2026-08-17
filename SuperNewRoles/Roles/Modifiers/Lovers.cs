@@ -4,7 +4,6 @@ using System.Linq;
 using SuperNewRoles.Events;
 using SuperNewRoles.Events.PCEvents;
 using SuperNewRoles.Modules;
-using SuperNewRoles.Modules.Events.Bases;
 using SuperNewRoles.Roles.Ability;
 using UnityEngine;
 
@@ -18,7 +17,26 @@ class Lovers : ModifierBase<Lovers>
 
     public override Color32 RoleColor => new(255, 105, 180, byte.MaxValue);
 
-    public override List<Func<AbilityBase>> Abilities => [() => new LoversAbility(LoversKnowPartnerRole, LoversKnowPartnerPosition), () => new CustomTaskAbility(() => (false, false, null), null)];
+    public override List<Func<AbilityBase>> Abilities => [
+        () => new LoversAbility(LoversKnowPartnerRole, LoversKnowPartnerPosition),
+        // クルー勝利カウントは常に Modifier で上書きし、ラバーズのタスクを含めない。
+        () => new CustomTaskAbility(
+            countsForCrewWin: () => false,
+            priority: AbilityPriority.Modifier),
+        // isTaskTrigger は別 Ability。非単独では役職側 Default より低くし、仕事人等を優先する。
+        () => new CustomTaskAbility(
+            isTaskTrigger: () => false,
+            priority: GetTaskTriggerPriority(LoversWinType))
+    ];
+
+    /// <summary>
+    /// 完全単独以外では役職の CustomTaskAbility（Default）より低くし、
+    /// 仕事人/タスカー/神などの isTaskTrigger を優先する。
+    /// </summary>
+    internal static int GetTaskTriggerPriority(LoversWinType winType)
+        => winType == LoversWinType.Single
+            ? AbilityPriority.Modifier
+            : AbilityPriority.Default - 1;
 
     public override QuoteMod QuoteMod => QuoteMod.TheOtherRoles;
 
@@ -80,8 +98,6 @@ public class LoversAbility : AbilityBase
 {
     public Color32 HeartColor => couple.HeartColor;
     public LoversCouple couple { get; private set; }
-    private EventListener<DieEventData> _dieListener;
-    private EventListener<NameTextUpdateEventData> _nameTextUpdateListener;
     private PlayerArrowsAbility _playerArrowsAbility;
     private KnowOtherAbility _knowOtherAbility;
     private bool knowPartnerRole;
@@ -97,8 +113,8 @@ public class LoversAbility : AbilityBase
     }
     public override void AttachToAlls()
     {
-        _dieListener = DieEvent.Instance.AddListener(OnDie);
-        _nameTextUpdateListener = NameTextUpdateEvent.Instance.AddListener(OnNameTextUpdate);
+        SubscribeWithAbility(DieEvent.Instance, OnDie);
+        SubscribeWithAbility(NameTextUpdateEvent.Instance, OnNameTextUpdate);
         _playerArrowsAbility = new PlayerArrowsAbility(
             () => !knowPartnerPosition ? Array.Empty<ExPlayerControl>() : couple.lovers.Where(ability => !ability.Player.AmOwner && (ExPlayerControl.LocalPlayer.IsDead() || ability.Player.IsAlive())).Select(ability => ability.Player),
             (player) => Lovers.Instance.RoleColor
@@ -108,11 +124,6 @@ public class LoversAbility : AbilityBase
         );
         Player.AttachAbility(_playerArrowsAbility, new AbilityParentAbility(this));
         Player.AttachAbility(_knowOtherAbility, new AbilityParentAbility(this));
-    }
-    public override void DetachToAlls()
-    {
-        _dieListener?.RemoveListener();
-        _nameTextUpdateListener?.RemoveListener();
     }
     private void OnNameTextUpdate(NameTextUpdateEventData data)
     {

@@ -5,7 +5,6 @@ using AmongUs.GameOptions;
 using SuperNewRoles.CustomOptions;
 using SuperNewRoles.Events;
 using SuperNewRoles.Modules;
-using SuperNewRoles.Modules.Events.Bases;
 using SuperNewRoles.Roles.Ability;
 using SuperNewRoles.Roles.Ability.CustomButton;
 using UnityEngine;
@@ -57,11 +56,6 @@ public class MoiraMeetingAbility : CustomMeetingButtonBase, IAbilityCount
 
     public override Sprite Sprite => AssetManager.GetAsset<Sprite>("MoiraButton.png");
     public override bool HasButtonLocalPlayer => false;
-    private EventListener<WrapUpEventData> wrapUpEvent;
-    private EventListener<MeetingHudCalculateVotesOnPlayerOnlyHostEventData> calculateVotesEvent;
-    private EventListener<VotingCompleteEventData> votingCompleteEvent;
-    private EventListener<NameTextUpdateEventData> nameTextUpdateEvent;
-    private EventListener<MeetingStartEventData> meetingStartEvent;
 
     public override bool CheckHasButton(ExPlayerControl player)
     {
@@ -76,31 +70,17 @@ public class MoiraMeetingAbility : CustomMeetingButtonBase, IAbilityCount
     {
         base.AttachToLocalPlayer();
         lastMeetingDead = ExPlayerControl.LocalPlayer.IsDead();
-        wrapUpEvent = WrapUpEvent.Instance.AddListener(OnWrapUp);
-        calculateVotesEvent = MeetingHudCalculateVotesOnPlayerOnlyHostEvent.Instance.AddListener(OnCalculateVotes);
+        SubscribeWithAbility(WrapUpEvent.Instance, OnWrapUp);
+        SubscribeWithAbility(MeetingHudCalculateVotesOnPlayerOnlyHostEvent.Instance, OnCalculateVotes);
     }
 
     public override void AttachToAlls()
     {
         base.AttachToAlls();
-        votingCompleteEvent = VotingCompleteEvent.Instance.AddListener(OnVotingComplete);
-        nameTextUpdateEvent = NameTextUpdateEvent.Instance.AddListener(OnNameTextUpdate);
-        meetingStartEvent = MeetingStartEvent.Instance.AddListener(OnMeetingStartAll);
-    }
-
-    public override void DetachToLocalPlayer()
-    {
-        base.DetachToLocalPlayer();
-        wrapUpEvent?.RemoveListener();
-        calculateVotesEvent?.RemoveListener();
-    }
-
-    public override void DetachToAlls()
-    {
-        base.DetachToAlls();
-        votingCompleteEvent?.RemoveListener();
-        nameTextUpdateEvent?.RemoveListener();
-        meetingStartEvent?.RemoveListener();
+        SubscribeWithAbility(VotingCompleteEvent.Instance, OnVotingComplete);
+        SubscribeWithAbility(NameTextUpdateEvent.Instance, OnNameTextUpdate);
+        SubscribeWithAbility(MeetingStartEvent.Instance, OnMeetingStartAll);
+        SubscribeWithAbility(DisconnectEvent.Instance, OnDisconnect);
     }
 
     private void OnNameTextUpdate(NameTextUpdateEventData data)
@@ -144,6 +124,17 @@ public class MoiraMeetingAbility : CustomMeetingButtonBase, IAbilityCount
         ClearSelection();
     }
 
+    private void OnDisconnect(DisconnectEventData data)
+    {
+        if (data.disconnectedPlayer == null) return;
+
+        byte disconnectedPlayerId = data.disconnectedPlayer.PlayerId;
+        if (firstTarget?.PlayerId == disconnectedPlayerId)
+            ClearSelection();
+
+        swapData.RemoveAll(pair => pair.Item1 == disconnectedPlayerId || pair.Item2 == disconnectedPlayerId);
+    }
+
     public override void OnMeetingUpdate()
     {
         if (ExPlayerControl.LocalPlayer.IsDead())
@@ -180,6 +171,8 @@ public class MoiraMeetingAbility : CustomMeetingButtonBase, IAbilityCount
             var data = swapData[i];
             var player1 = ExPlayerControl.ById(data.Item1);
             var player2 = ExPlayerControl.ById(data.Item2);
+            if (player1 == null || player2 == null) continue;
+
             player1.ReverseRole(player2);
 
             RoleTypes player1Role = player1.Data.Role.Role;
@@ -198,10 +191,17 @@ public class MoiraMeetingAbility : CustomMeetingButtonBase, IAbilityCount
     [CustomRPC]
     public void RpcSwapMoira()
     {
+        if (swapData.Count == 0) return;
+
         var data = swapData.Last();
 
         var player1 = ExPlayerControl.ById(data.Item1);
         var player2 = ExPlayerControl.ById(data.Item2);
+        if (player1 == null || player2 == null)
+        {
+            swapData.RemoveAt(swapData.Count - 1);
+            return;
+        }
 
         player1.ReverseRole(player2);
 

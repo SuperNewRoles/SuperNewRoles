@@ -49,7 +49,10 @@ public static class CustomDeathExtensions
                     throw new Exception("Source is null");
                 if (!TryKillEvent.Invoke(source, ref player).RefSuccess)
                     break;
-                source.Player.MurderPlayer(player.Player, MurderResultFlags.Succeeded);
+                MurderResultFlags resultFlags = GetNormalKillResultFlags(source, player);
+                source.Player.MurderPlayer(player.Player, resultFlags);
+                if (!resultFlags.HasFlag(MurderResultFlags.Succeeded))
+                    break;
                 FinalStatusManager.SetFinalStatus(player, FinalStatus.Kill);
                 MurderDataManager.AddMurderData(source, player);
                 break;
@@ -261,6 +264,18 @@ public static class CustomDeathExtensions
             default:
                 throw new Exception($"Invalid death type: {deathType}");
         }
+    }
+
+    private static MurderResultFlags GetNormalKillResultFlags(ExPlayerControl source, ExPlayerControl target)
+    {
+        if (source?.Player == null || target?.Player == null)
+            return MurderResultFlags.FailedError;
+
+        // Preserve the protection state already synchronized by the vanilla game.
+        // Clearing it here would make a protected target look unprotected on every client.
+        return target.Player.protectedByGuardianThisRound
+            ? MurderResultFlags.FailedProtected
+            : MurderResultFlags.Succeeded;
     }
 
     private static void SpawnDeadBody(ExPlayerControl source, ExPlayerControl target)

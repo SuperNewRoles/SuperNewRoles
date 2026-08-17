@@ -5,7 +5,6 @@ using SuperNewRoles.CustomOptions;
 using SuperNewRoles.Events;
 using SuperNewRoles.Events.PCEvents;
 using SuperNewRoles.Modules;
-using SuperNewRoles.Modules.Events.Bases;
 using SuperNewRoles.Roles.Ability;
 using SuperNewRoles.Roles.Ability.CustomButton;
 using SuperNewRoles.Roles.Impostor;
@@ -69,10 +68,6 @@ public sealed class FrankensteinAbility : AbilityBase
     private CustomVentAbility _ventAbility;
     private ImpostorVisionAbility _impostorVisionAbility;
 
-    private EventListener<TryKillEventData> _tryKillListener;
-    private EventListener<MeetingStartEventData> _meetingStartListener;
-    private EventListener<DieEventData> _dieListener;
-
     private DeadBody _monsterBody;
     private byte _monsterBodyPlayerId = byte.MaxValue;
     private bool _isMonsterKillInProgress;
@@ -122,9 +117,9 @@ public sealed class FrankensteinAbility : AbilityBase
         Player.AddAbility(_ventAbility, new AbilityParentAbility(this));
         Player.AddAbility(_impostorVisionAbility, new AbilityParentAbility(this));
 
-        _tryKillListener = TryKillEvent.Instance.AddListener(OnTryKill);
-        _meetingStartListener = MeetingStartEvent.Instance.AddListener(OnMeetingStart);
-        _dieListener = DieEvent.Instance.AddListener(OnDie);
+        SubscribeWithAbility(TryKillEvent.Instance, OnTryKill);
+        SubscribeWithAbility(MeetingStartEvent.Instance, OnMeetingStart);
+        SubscribeWithAbility(DieEvent.Instance, OnDie);
     }
 
     public override void DetachToAlls()
@@ -133,10 +128,6 @@ public sealed class FrankensteinAbility : AbilityBase
         {
             RpcEndMonster(this, _bodyOriginalPosition, decrementKill: false);
         }
-
-        _tryKillListener?.RemoveListener();
-        _meetingStartListener?.RemoveListener();
-        _dieListener?.RemoveListener();
 
         base.DetachToAlls();
     }
@@ -152,7 +143,6 @@ public sealed class FrankensteinAbility : AbilityBase
         {
             if (Constants.ShouldPlaySfx())
                 SoundManager.Instance.PlaySound(data.Killer.Player.KillSfx, false, 0.8f);
-            data.Killer.Player.NetTransform.RpcSnapTo(data.RefTarget.Player.transform.position);
         }
 
         if (Player.AmOwner)

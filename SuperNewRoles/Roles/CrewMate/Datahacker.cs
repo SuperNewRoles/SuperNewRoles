@@ -7,7 +7,6 @@ using SuperNewRoles.CustomOptions;
 using SuperNewRoles.Roles.Ability;
 using SuperNewRoles.Modules;
 using SuperNewRoles.Events;
-using SuperNewRoles.Modules.Events.Bases;
 using SuperNewRoles.Events.PCEvents;
 using SuperNewRoles.Roles.Neutral;
 
@@ -113,10 +112,6 @@ public class DatahackerAbility : AbilityBase
 {
     // 矢印関連
     private Arrow arrow;
-    private EventListener fixedUpdateListener;
-    private EventListener<TaskCompleteEventData> taskCompleteListener;
-    private EventListener<NameTextUpdateEventData> nameTextUpdateListener;
-    private EventListener<NameTextUpdateVisiableEventData> nameTextUpdateVisiableListener;
     private CustomTaskAbility customTaskAbility;
 
     private bool exposedToImpostors = false;
@@ -131,24 +126,22 @@ public class DatahackerAbility : AbilityBase
 
     public override void AttachToLocalPlayer()
     {
-        nameTextUpdateVisiableListener = NameTextUpdateVisiableEvent.Instance.AddListener((data) => UpdateNameVisible(data));
-    }
-
-    public override void DetachToLocalPlayer()
-    {
-        nameTextUpdateVisiableListener?.RemoveListener();
+        SubscribeWithAbility(NameTextUpdateVisiableEvent.Instance, (data) => UpdateNameVisible(data));
     }
 
     public override void AttachToAlls()
     {
         base.AttachToAlls();
 
-        customTaskAbility = new CustomTaskAbility(() => (true, true, null), hackingData.UseIndividualTaskSetting ? hackingData.IndividualTasks : null);
+        customTaskAbility = new CustomTaskAbility(
+            isTaskTrigger: () => true,
+            countsForCrewWin: () => true,
+            taskOptions: () => hackingData.UseIndividualTaskSetting ? hackingData.IndividualTasks : null);
         Player.AttachAbility(customTaskAbility, new AbilityParentAbility(this));
 
-        taskCompleteListener = TaskCompleteEvent.Instance.AddListener((data) => TaskCompleted(data));
-        fixedUpdateListener = FixedUpdateEvent.Instance.AddListener(() => UpdateArrow());
-        nameTextUpdateListener = NameTextUpdateEvent.Instance.AddListener((data) => UpdateNameText(data));
+        SubscribeWithAbility(TaskCompleteEvent.Instance, (data) => TaskCompleted(data));
+        SubscribeWithAbility(FixedUpdateEvent.Instance, () => UpdateArrow());
+        SubscribeWithAbility(NameTextUpdateEvent.Instance, (data) => UpdateNameText(data));
 
         RefreshTaskProgress(forceNameUpdate: true);
     }
@@ -156,10 +149,6 @@ public class DatahackerAbility : AbilityBase
     public override void DetachToAlls()
     {
         base.DetachToAlls();
-        fixedUpdateListener?.RemoveListener();
-        taskCompleteListener?.RemoveListener();
-        nameTextUpdateListener?.RemoveListener();
-        nameTextUpdateVisiableListener?.RemoveListener();
         DestroyArrow();
         arrow = null;
         customTaskAbility = null;
@@ -181,6 +170,9 @@ public class DatahackerAbility : AbilityBase
 
     private void UpdateNameVisible(NameTextUpdateVisiableEventData data)
     {
+        if (MeetingHud.Instance != null && !hackingData.CanSeeDuringMeeting)
+            return;
+
         if (Player.AmOwner && hackingCompleted && hackingData.CanSeeRoleNames)
         {
             if (CanSeeRole(data.Player, out _))
@@ -296,19 +288,21 @@ public class DatahackerAbility : AbilityBase
         {
             if (!hackingData.CanSeeCrew)
                 return false;
-            Logger.Info("Crewmate");
-            if ((target.IsMadRoles() || target.IsFriendRoles()) && hackingData.CanSeeMadmates)
+
+            bool isMadRole = target.IsMadRoles() || target.IsFriendRoles();
+            if (isMadRole)
             {
+                if (!hackingData.CanSeeMadmates)
+                    return false;
+
                 Logger.Info("Madmates");
                 color = Palette.ImpostorRed;
                 return true;
             }
-            else
-            {
-                Logger.Info("Crewmate (Mad as Crew)");
-                color = target.Data.Role.TeamColor;
-                return true;
-            }
+
+            Logger.Info("Crewmate");
+            color = target.Data.Role.TeamColor;
+            return true;
         }
     }
 }
