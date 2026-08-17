@@ -1,8 +1,6 @@
 using System;
-using System.Collections;
 using System.Collections.Generic;
 using AmongUs.GameOptions;
-using BepInEx.Unity.IL2CPP.Utils.Collections;
 using Hazel;
 using SuperNewRoles.CustomOptions;
 using SuperNewRoles.Events;
@@ -83,57 +81,72 @@ class BaitAbility : AbilityBase
 
     public void OnKilled(MurderEventData data)
     {
-        if (_isDetached || ShouldSkipEventProcessing() || data == null || data.target == null || PlayerControl.LocalPlayer == null)
+        if (_isDetached || data == null)
+            return;
+        if (!ShouldAutoReport(data.target, data.killer, data.resultFlags, Player))
             return;
 
-        if (data.target.PlayerId == PlayerControl.LocalPlayer.PlayerId)
+        // キラーに警告する（画面を青く光らせる）
+        if (Bait.BaitWarnKiller && data.killer?.Player != null)
         {
-            // キラーに警告する（画面を青く光らせる）
-            if (Bait.BaitWarnKiller && data.killer?.Player != null)
-            {
-                FlashHandler.RpcShowFlash(data.killer.Player, Color.cyan, 0.2f);
-            }
-
-            //Reportの遅延呼び出しを行う(多分Coroutineがよいのでは？)
-            PlayerControl.LocalPlayer.StartCoroutine(DelayedReport(data).WrapToIl2Cpp());
+            FlashHandler.RpcShowFlash(data.killer.Player, Color.cyan, 0.2f);
         }
+
+        ExPlayerControl killer = data.killer;
+        ExPlayerControl target = data.target;
+        float delay = CalculateReportDelay(Bait.BaitReportTime, Bait.BaitRandomDelay, Bait.BaitDelayVariation);
+        Logger.Info($"Bait auto-report scheduled in {delay}s (killer={killer.PlayerId}, target={target.PlayerId})", "Bait");
+        new LateTask(() => TryReport(killer, target), delay, "BaitReport");
     }
 
-    IEnumerator DelayedReport(MurderEventData data)
+    internal static bool ShouldAutoReport(ExPlayerControl target, ExPlayerControl killer, MurderResultFlags resultFlags, ExPlayerControl self)
     {
-        if (data == null)
-            yield break;
+        if (target == null || killer == null || self == null)
+            return false;
+        if (target.PlayerId != self.PlayerId)
+            return false;
+        if (!resultFlags.HasFlag(MurderResultFlags.Succeeded))
+            return false;
+        // 自殺扱いの MurderEvent（波動砲など）では reporter が死者になり、
+        // PlayerControl.ReportDeadBody が Data.IsDead で即 return する
+        if (killer.PlayerId == target.PlayerId)
+            return false;
+        return true;
+    }
 
+    internal static float CalculateReportDelay(float reportTime, bool randomDelay, int delayVariation, Func<int, int, int> randomRange = null)
+    {
         // 最低限の遅延（キラーへの警告が見えるように）
-        yield return new WaitForSeconds(0.5f);
+        const float minimumFlashDelay = 0.5f;
+        float extraDelay = 0f;
 
+        if (randomDelay)
+        {
+            int minDelay = Math.Max(0, (int)reportTime - delayVariation);
+            int maxDelay = (int)reportTime + delayVariation;
+            extraDelay = randomRange != null
+                ? randomRange(minDelay, maxDelay + 1)
+                : UnityEngine.Random.Range(minDelay, maxDelay + 1);
+        }
+        else if (reportTime > 0)
+        {
+            extraDelay = reportTime;
+        }
+
+        return minimumFlashDelay + extraDelay;
+    }
+
+    private void TryReport(ExPlayerControl killer, ExPlayerControl target)
+    {
         if (_isDetached || ShouldSkipEventProcessing())
-            yield break;
+            return;
+        if (AmongUsClient.Instance == null || AmongUsClient.Instance.IsGameOver)
+            return;
+        if (killer?.Player == null || target?.Data == null)
+            return;
 
-        // ランダム遅延が有効な場合
-        if (Bait.BaitRandomDelay)
-        {
-            float minDelay = Mathf.Max(0f, Bait.BaitReportTime - Bait.BaitDelayVariation);
-            float maxDelay = Bait.BaitReportTime + Bait.BaitDelayVariation;
-            float delay = UnityEngine.Random.Range(minDelay, maxDelay);
-
-            if (delay > 0f)
-                yield return new WaitForSeconds(delay);
-        }
-        // 固定遅延の場合
-        else if (Bait.BaitReportTime > 0)
-        {
-            yield return new WaitForSeconds(Bait.BaitReportTime);
-        }
-
-        if (_isDetached
-            || ShouldSkipEventProcessing()
-            || data.killer?.Player == null
-            || data.target == null
-            || data.target.Data == null)
-            yield break;
-
-        data.killer.RpcCustomReportDeadBody(data.target.Data);
+        Logger.Info($"Bait auto-report sending RpcCustomReportDeadBody (killer={killer.PlayerId}, target={target.PlayerId})", "Bait");
+        killer.RpcCustomReportDeadBody(target.Data);
     }
 }
 
@@ -161,7 +174,7 @@ public class BaitAutoReportTrophy : SuperTrophyAbility<BaitAutoReportTrophy>
     private void HandleMurderEvent(MurderEventData data)
     {
         Logger.Info("BaitAutoReportTrophy HandleMurderEvent: " + data.target.Player.name + " " + data.killer.Player.name);
-        if (data.target != PlayerControl.LocalPlayer)
+        if (data.target == null || data.target.PlayerId != PlayerControl.LocalPlayer.PlayerId)
         {
             return;
         }
@@ -220,7 +233,7 @@ public class BaitKillerExiledTrophy : SuperTrophyAbility<BaitKillerExiledTrophy>
 
     private void HandleMurderEvent(MurderEventData data)
     {
-        if (data.target != PlayerControl.LocalPlayer)
+        if (data.target != ExPlayerControl.LocalPlayer)
         {
             return;
         }
