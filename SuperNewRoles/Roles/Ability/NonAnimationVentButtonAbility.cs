@@ -6,7 +6,8 @@ namespace SuperNewRoles.Roles.Ability;
 
 public class NonAnimationVentButtonAbility : CustomVentAbility
 {
-    public NonAnimationVentButtonAbility(Func<bool> canUseVent, Func<float?> ventCooldown = null, Func<float?> ventDuration = null) : base(canUseVent, ventCooldown, ventDuration)
+    public NonAnimationVentButtonAbility(Func<bool?> canUseVent, Func<float?> ventCooldown = null, Func<float?> ventDuration = null, int priority = 0)
+        : base(canUseVent, ventCooldown, ventDuration, priority)
     {
     }
 

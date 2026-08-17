@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Linq;
 using SuperNewRoles.Events;
 using SuperNewRoles.Modules;
-using SuperNewRoles.Modules.Events.Bases;
 using UnityEngine;
 
 namespace SuperNewRoles.Roles.Ability;
@@ -20,7 +19,6 @@ class PlayerArrowsAbility : AbilityBase
     private readonly List<ExPlayerControl> playersToRemoveCache = new();
     private readonly HashSet<ExPlayerControl> targetPlayersSetCache = new();
 
-    private EventListener _fixedUpdateListener;
 
     public PlayerArrowsAbility(Func<IEnumerable<ExPlayerControl>> getPlayers, Func<ExPlayerControl, Color32> getColor)
     {
@@ -35,17 +33,12 @@ class PlayerArrowsAbility : AbilityBase
         activeArrows.Clear();
         inactiveArrows.Clear();
         allCreatedArrows.Clear();
-        _fixedUpdateListener = FixedUpdateEvent.Instance.AddListener(OnFixedUpdate);
+        SubscribeWithAbility(FixedUpdateEvent.Instance, OnFixedUpdate);
     }
 
     public override void DetachToLocalPlayer()
     {
         base.DetachToLocalPlayer();
-        if (_fixedUpdateListener != null)
-        {
-            FixedUpdateEvent.Instance.RemoveListener(_fixedUpdateListener);
-            _fixedUpdateListener = null;
-        }
 
         foreach (var arrow in allCreatedArrows)
         {

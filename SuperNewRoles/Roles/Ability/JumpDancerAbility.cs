@@ -4,7 +4,6 @@ using System.Linq;
 using Hazel;
 using SuperNewRoles.Events;
 using SuperNewRoles.Modules;
-using SuperNewRoles.Modules.Events.Bases;
 using SuperNewRoles.Roles.Ability.CustomButton;
 using UnityEngine;
 
@@ -173,15 +172,10 @@ public class JumpDancerAbility : CustomButtonBase, IAbilityCount
         return player.GetAbilities<HawkAbility>().Any(ability => ability.BlocksMovement);
     }
 
-    private EventListener fixedUpdateEventListener;
 
     public override void AttachToAlls()
     {
-        fixedUpdateEventListener = FixedUpdateEvent.Instance.AddListener(FixedUpdate);
+        SubscribeWithAbility(FixedUpdateEvent.Instance, FixedUpdate);
     }
 
-    public override void DetachToAlls()
-    {
-        fixedUpdateEventListener?.RemoveListener();
-    }
 }

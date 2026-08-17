@@ -4,7 +4,6 @@ using AmongUs.GameOptions;
 using SuperNewRoles.CustomOptions;
 using SuperNewRoles.Events;
 using SuperNewRoles.Modules;
-using SuperNewRoles.Modules.Events.Bases;
 using SuperNewRoles.Roles.Ability;
 using UnityEngine;
 
@@ -45,8 +44,6 @@ class Tuna : RoleBase<Tuna>
         private float _stopTimer = 0f;
         private Vector2 _lastPosition;
         private bool _isMoving = true;
-        private EventListener _updateListener;
-        private EventListener<WrapUpEventData> _wrapUpListener;
         private bool isMeeting = false;
         private bool isMoveStarted = false;
 
@@ -62,8 +59,8 @@ class Tuna : RoleBase<Tuna>
             _lastPosition = Player.transform.position;
 
             // イベントリスナーを設定
-            _updateListener = HudUpdateEvent.Instance.AddListener(OnUpdate);
-            _wrapUpListener = WrapUpEvent.Instance.AddListener(OnWrapUp);
+            SubscribeWithAbility(HudUpdateEvent.Instance, OnUpdate);
+            SubscribeWithAbility(WrapUpEvent.Instance, OnWrapUp);
         }
 
         private void OnUpdate()
@@ -156,12 +153,6 @@ class Tuna : RoleBase<Tuna>
             }
         }
 
-        public override void DetachToLocalPlayer()
-        {
-            // イベントリスナーを削除
-            HudUpdateEvent.Instance.RemoveListener(_updateListener);
-            WrapUpEvent.Instance.RemoveListener(_wrapUpListener);
-        }
     }
 }
 

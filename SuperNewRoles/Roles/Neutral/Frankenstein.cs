@@ -5,7 +5,6 @@ using SuperNewRoles.CustomOptions;
 using SuperNewRoles.Events;
 using SuperNewRoles.Events.PCEvents;
 using SuperNewRoles.Modules;
-using SuperNewRoles.Modules.Events.Bases;
 using SuperNewRoles.Roles.Ability;
 using SuperNewRoles.Roles.Ability.CustomButton;
 using SuperNewRoles.Roles.Impostor;
@@ -69,9 +68,7 @@ public sealed class FrankensteinAbility : AbilityBase
     private CustomVentAbility _ventAbility;
     private ImpostorVisionAbility _impostorVisionAbility;
 
-    private EventListener<TryKillEventData> _tryKillListener;
-    private EventListener<MeetingStartEventData> _meetingStartListener;
-    private EventListener<DieEventData> _dieListener;
+    private byte _pendingKillTargetId = byte.MaxValue;
 
     private DeadBody _monsterBody;
     private byte _monsterBodyPlayerId = byte.MaxValue;
@@ -99,10 +96,11 @@ public sealed class FrankensteinAbility : AbilityBase
                 if (!IsMonster) return true;
                 if (target == null) return true;
 
+                byte targetId = target.PlayerId;
+                _pendingKillTargetId = targetId;
                 ExPlayerControl.LocalPlayer.RpcCustomDeath(target, CustomDeathType.Kill);
-
-                Vector2 dropPos = Player.Player.GetTruePosition();
-                RpcEndMonster(this, dropPos, decrementKill: true);
+                if (_pendingKillTargetId == targetId)
+                    _pendingKillTargetId = byte.MaxValue;
                 return true;
             }
         );
@@ -114,9 +112,10 @@ public sealed class FrankensteinAbility : AbilityBase
         Player.AddAbility(_ventAbility, new AbilityParentAbility(this));
         Player.AddAbility(_impostorVisionAbility, new AbilityParentAbility(this));
 
-        _tryKillListener = TryKillEvent.Instance.AddListener(OnTryKill);
-        _meetingStartListener = MeetingStartEvent.Instance.AddListener(OnMeetingStart);
-        _dieListener = DieEvent.Instance.AddListener(OnDie);
+        SubscribeWithAbility(TryKillEvent.Instance, OnTryKill);
+        SubscribeWithAbility(MurderEvent.Instance, OnMurder);
+        SubscribeWithAbility(MeetingStartEvent.Instance, OnMeetingStart);
+        SubscribeWithAbility(DieEvent.Instance, OnDie);
     }
 
     public override void DetachToAlls()
@@ -126,9 +125,7 @@ public sealed class FrankensteinAbility : AbilityBase
             RpcEndMonster(this, _bodyOriginalPosition, decrementKill: false);
         }
 
-        _tryKillListener?.RemoveListener();
-        _meetingStartListener?.RemoveListener();
-        _dieListener?.RemoveListener();
+        _pendingKillTargetId = byte.MaxValue;
 
         base.DetachToAlls();
     }
@@ -151,6 +148,18 @@ public sealed class FrankensteinAbility : AbilityBase
             Vector2 dropPos = Player.Player.GetTruePosition();
             RpcEndMonster(this, dropPos, decrementKill: false);
         }
+    }
+
+    private void OnMurder(MurderEventData data)
+    {
+        if (!Player.AmOwner || _pendingKillTargetId == byte.MaxValue)
+            return;
+        if (data.killer?.PlayerId != Player.PlayerId || data.target?.PlayerId != _pendingKillTargetId)
+            return;
+
+        _pendingKillTargetId = byte.MaxValue;
+        if (data.resultFlags.HasFlag(MurderResultFlags.Succeeded) && IsMonster)
+            RpcEndMonster(this, Player.Player.GetTruePosition(), decrementKill: true);
     }
 
     private void OnMeetingStart(MeetingStartEventData data)

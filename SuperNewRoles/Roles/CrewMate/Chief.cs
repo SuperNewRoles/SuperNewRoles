@@ -6,9 +6,7 @@ using SuperNewRoles.Roles.Ability;
 using SuperNewRoles.Roles.Ability.CustomButton;
 using SuperNewRoles.CustomOptions;
 using SuperNewRoles.Modules;
-using System.Linq;
 using SuperNewRoles.Events;
-using SuperNewRoles.Modules.Events.Bases;
 using UnityEngine.AddressableAssets;
 using System.Runtime.CompilerServices;
 
@@ -79,7 +77,6 @@ public class ChiefAbility : AbilityBase
     private bool _isAppointFailure = true; // 未判定時も 失敗判定 として扱う
     private SheriffAbilityData _sheriffAbilityData;
     private SheriffAbility _createdSheriff = null;
-    private EventListener<NameTextUpdateEventData> _nameTextUpdateEventListener;
     private bool _canSeeCreatedSheriff;
     public ChiefAbility(SheriffAbilityData sheriffAbilityData, bool canSeeCreatedSheriff)
     {
@@ -114,14 +111,7 @@ public class ChiefAbility : AbilityBase
         AbilityParentAbility abilityParentAbility = new(this);
         exPlayer.AttachAbility(_sidekickButton, abilityParentAbility);
 
-        _nameTextUpdateEventListener = NameTextUpdateEvent.Instance.AddListener(OnNameTextUpdate);
-    }
-    public override void AttachToLocalPlayer()
-    {
-    }
-    public override void DetachToLocalPlayer()
-    {
-        NameTextUpdateEvent.Instance.RemoveListener(_nameTextUpdateEventListener);
+        SubscribeWithAbility(NameTextUpdateEvent.Instance, OnNameTextUpdate);
     }
 
     // 対象を任命可能かどうかの判定
@@ -172,8 +162,7 @@ public class ChiefAbility : AbilityBase
         }
         else // 任命判定が成功しているなら 任命 (補助処理 (基本的にSKButton側で 既に任命処理が終わっている))
         {
-            SheriffAbility sheriffAbility = target.PlayerAbilities.FirstOrDefault(ability => ability is SheriffAbility) as SheriffAbility;
-            if (sheriffAbility == null)
+            if (!target.TryGetAbility<SheriffAbility>(out var sheriffAbility))
                 throw new Exception("SheriffAbilityが見つかりません");
             _createdSheriff = sheriffAbility;
             RpcChiefAppointSheriff(target, sheriffAbility, _sheriffAbilityData.KillCooldown, _sheriffAbilityData.KillCount, _sheriffAbilityData.Mode, _sheriffAbilityData.CanKillNeutral, _sheriffAbilityData.CanKillImpostor, _sheriffAbilityData.CanKillMadRoles, _sheriffAbilityData.CanKillFriendRoles, _sheriffAbilityData.CanKillLovers, _hasOldTask);
@@ -188,7 +177,11 @@ public class ChiefAbility : AbilityBase
         sheriffAbility.Count = maxKillCount;
         if (!isOldHasTak)
         {
-            CustomTaskAbility customTaskAbility = new(() => (false, false, 0));
+            CustomTaskAbility customTaskAbility = new(
+                isTaskTrigger: () => false,
+                countsForCrewWin: () => false,
+                requiredTaskCount: () => 0,
+                priority: AbilityPriority.RuntimeOverride);
             target.AttachAbility(customTaskAbility, new AbilityParentAbility(sheriffAbility));
         }
         NameText.UpdateAllNameInfo();

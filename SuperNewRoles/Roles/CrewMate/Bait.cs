@@ -1,6 +1,5 @@
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using AmongUs.GameOptions;
 using Hazel;
 using SuperNewRoles.CustomOptions;
@@ -58,34 +57,39 @@ class Bait : RoleBase<Bait>
 
 class BaitAbility : AbilityBase
 {
-    //何らかの要因で能力を失う時に使うのでListenerは保持しておく
-    public EventListener<MurderEventData> killedEventListener;
+    private bool _isDetached;
+
+    internal static bool ShouldSkipEventProcessing()
+    {
+        return ExPlayerControl.LocalPlayer == null
+            || ExPlayerControl.LocalPlayer.IsAlive()
+            || MeetingHud.Instance != null
+            || ExileController.Instance != null;
+    }
 
     public override void AttachToLocalPlayer()
     {
-        //ここでEventListenerと紐付ける
-        killedEventListener = MurderEvent.Instance.AddListener(OnKilled);
+        _isDetached = false;
+        SubscribeWithAbility(MurderEvent.Instance, OnKilled);
     }
 
     public override void DetachToLocalPlayer()
     {
+        _isDetached = true;
         base.DetachToLocalPlayer();
-        if (killedEventListener != null)
-        {
-            MurderEvent.Instance.RemoveListener(killedEventListener);
-            killedEventListener = null;
-        }
     }
 
     public void OnKilled(MurderEventData data)
     {
+        if (_isDetached || data == null)
+            return;
         if (!ShouldAutoReport(data.target, data.killer, data.resultFlags, Player))
             return;
 
         // キラーに警告する（画面を青く光らせる）
-        if (Bait.BaitWarnKiller)
+        if (Bait.BaitWarnKiller && data.killer?.Player != null)
         {
-            FlashHandler.RpcShowFlash(data.killer, Color.cyan, 0.2f);
+            FlashHandler.RpcShowFlash(data.killer.Player, Color.cyan, 0.2f);
         }
 
         ExPlayerControl killer = data.killer;
@@ -132,11 +136,11 @@ class BaitAbility : AbilityBase
         return minimumFlashDelay + extraDelay;
     }
 
-    private static void TryReport(ExPlayerControl killer, ExPlayerControl target)
+    private void TryReport(ExPlayerControl killer, ExPlayerControl target)
     {
-        if (AmongUsClient.Instance == null || AmongUsClient.Instance.IsGameOver)
+        if (_isDetached || ShouldSkipEventProcessing())
             return;
-        if (MeetingHud.Instance != null)
+        if (AmongUsClient.Instance == null || AmongUsClient.Instance.IsGameOver)
             return;
         if (killer?.Player == null || target?.Data == null)
             return;
@@ -220,8 +224,7 @@ public class BaitKillerExiledTrophy : SuperTrophyAbility<BaitKillerExiledTrophy>
 
     public override void OnRegister()
     {
-        _baitAbility = ExPlayerControl.LocalPlayer.PlayerAbilities
-            .FirstOrDefault(x => x is BaitAbility) as BaitAbility;
+        _baitAbility = ExPlayerControl.LocalPlayer.GetAbility<BaitAbility>();
         _onMurderEvent = MurderEvent.Instance.AddListener(HandleMurderEvent);
         _onWrapUpEvent = WrapUpEvent.Instance.AddListener(HandleWrapUpEvent);
         _killerPlayerId = byte.MaxValue;

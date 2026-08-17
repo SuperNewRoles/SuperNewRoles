@@ -8,7 +8,6 @@ using SuperNewRoles.Roles.Crewmate;
 using System.Linq;
 using System.Collections;
 using BepInEx.Unity.IL2CPP.Utils.Collections;
-using SuperNewRoles.Modules.Events.Bases;
 using AmongUs.GameOptions;
 using SuperNewRoles.MapDatabase;
 
@@ -179,24 +178,15 @@ public class BuskerPseudocideAbility : CustomButtonBase, IButtonEffect
         base.OnMeetingEnds();
     }
 
-    private EventListener fixedUpdateEvent;
-    private EventListener<MeetingStartEventData> _meetingStartListener;
 
     public override void AttachToLocalPlayer()
     {
         base.AttachToLocalPlayer();
 
         // 会議開始イベントをリッスン
-        _meetingStartListener = MeetingStartEvent.Instance.AddListener(OnMeetingStart);
-        fixedUpdateEvent = FixedUpdateEvent.Instance.AddListener(OnFixedUpdate);
+        SubscribeWithAbility(MeetingStartEvent.Instance, OnMeetingStart);
+        SubscribeWithAbility(FixedUpdateEvent.Instance, OnFixedUpdate);
     }
-    public override void DetachToLocalPlayer()
-    {
-        base.DetachToLocalPlayer();
-        _meetingStartListener?.RemoveListener();
-        fixedUpdateEvent?.RemoveListener();
-    }
-
     private void OnFixedUpdate()
     {
         if (CurrentDeadbody == null && isEffectActive && EffectTimer > 0.1f)
