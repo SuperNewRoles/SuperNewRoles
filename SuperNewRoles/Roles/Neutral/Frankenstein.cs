@@ -68,10 +68,9 @@ public sealed class FrankensteinAbility : AbilityBase
     private CustomVentAbility _ventAbility;
     private ImpostorVisionAbility _impostorVisionAbility;
 
-    private byte _pendingKillTargetId = byte.MaxValue;
-
     private DeadBody _monsterBody;
     private byte _monsterBodyPlayerId = byte.MaxValue;
+    private bool _isMonsterKillInProgress;
     private Vector2 _playerOriginalPosition;
     private Vector2 _bodyOriginalPosition;
 
@@ -96,11 +95,17 @@ public sealed class FrankensteinAbility : AbilityBase
                 if (!IsMonster) return true;
                 if (target == null) return true;
 
-                byte targetId = target.PlayerId;
-                _pendingKillTargetId = targetId;
-                ExPlayerControl.LocalPlayer.RpcCustomDeath(target, CustomDeathType.Kill);
-                if (_pendingKillTargetId == targetId)
-                    _pendingKillTargetId = byte.MaxValue;
+                Vector2 dropPos = Player.Player.GetTruePosition();
+                // Synchronize this state before the target death can trigger a counterattack RPC.
+                RpcBeginMonsterKill(this);
+                try
+                {
+                    ExPlayerControl.LocalPlayer.RpcCustomDeath(target, CustomDeathType.Kill);
+                }
+                finally
+                {
+                    RpcEndMonster(this, dropPos, decrementKill: true);
+                }
                 return true;
             }
         );
@@ -113,7 +118,6 @@ public sealed class FrankensteinAbility : AbilityBase
         Player.AddAbility(_impostorVisionAbility, new AbilityParentAbility(this));
 
         SubscribeWithAbility(TryKillEvent.Instance, OnTryKill);
-        SubscribeWithAbility(MurderEvent.Instance, OnMurder);
         SubscribeWithAbility(MeetingStartEvent.Instance, OnMeetingStart);
         SubscribeWithAbility(DieEvent.Instance, OnDie);
     }
@@ -125,14 +129,12 @@ public sealed class FrankensteinAbility : AbilityBase
             RpcEndMonster(this, _bodyOriginalPosition, decrementKill: false);
         }
 
-        _pendingKillTargetId = byte.MaxValue;
-
         base.DetachToAlls();
     }
 
     private void OnTryKill(TryKillEventData data)
     {
-        if (!IsMonster) return;
+        if (!ShouldBlockIncomingKill(IsMonster, _isMonsterKillInProgress)) return;
         if (data.RefTarget != Player) return;
 
         data.RefSuccess = false;
@@ -150,16 +152,9 @@ public sealed class FrankensteinAbility : AbilityBase
         }
     }
 
-    private void OnMurder(MurderEventData data)
+    internal static bool ShouldBlockIncomingKill(bool isMonster, bool isMonsterKillInProgress)
     {
-        if (!Player.AmOwner || _pendingKillTargetId == byte.MaxValue)
-            return;
-        if (data.killer?.PlayerId != Player.PlayerId || data.target?.PlayerId != _pendingKillTargetId)
-            return;
-
-        _pendingKillTargetId = byte.MaxValue;
-        if (data.resultFlags.HasFlag(MurderResultFlags.Succeeded) && IsMonster)
-            RpcEndMonster(this, Player.Player.GetTruePosition(), decrementKill: true);
+        return isMonster && !isMonsterKillInProgress;
     }
 
     private void OnMeetingStart(MeetingStartEventData data)
@@ -267,12 +262,22 @@ public sealed class FrankensteinAbility : AbilityBase
         ability._bodyOriginalPosition = bodyOriginalPosition;
         ability._monsterBody = body;
         ability._monsterBodyPlayerId = bodyPlayerId;
+        ability._isMonsterKillInProgress = false;
 
         NetworkedPlayerInfo info = GameData.Instance?.GetPlayerById(bodyPlayerId);
         if (info != null)
             ability.Player.Player.setOutfit(info.DefaultOutfit);
 
         SetDeadBodyActive(body, active: false);
+    }
+
+    [CustomRPC]
+    public static void RpcBeginMonsterKill(FrankensteinAbility ability)
+    {
+        if (ability == null) return;
+        if (!ability.IsMonster) return;
+
+        ability._isMonsterKillInProgress = true;
     }
 
     [CustomRPC]
@@ -300,6 +305,7 @@ public sealed class FrankensteinAbility : AbilityBase
 
         ability._monsterBody = null;
         ability._monsterBodyPlayerId = byte.MaxValue;
+        ability._isMonsterKillInProgress = false;
 
         if (ability.Player.AmOwner)
         {
