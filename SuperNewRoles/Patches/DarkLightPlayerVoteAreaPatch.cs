@@ -26,7 +26,7 @@ public static class DarkLightPlayerVoteAreaPatch
             if (voteArea == null)
                 continue;
 
-            NetworkedPlayerInfo playerInfo = GameData.Instance?.GetPlayerById(voteArea.TargetPlayerId);
+            NetworkedPlayerInfo playerInfo = GameData.Instance?.GetPlayerById(voteArea.PlayerId);
             ApplyToVoteArea(voteArea, playerInfo);
         }
     }

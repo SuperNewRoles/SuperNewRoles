@@ -91,7 +91,7 @@ public abstract class CustomMeetingButtonBase : AbilityBase
 
     public virtual void OnMeetingUpdate()
     {
-        if (PlayerControl.LocalPlayer?.Data == null || ExileController.Instance || !MeetingHud.Instance || MeetingHud.Instance.state == MeetingHud.VoteStates.Results)
+        if (PlayerControl.LocalPlayer?.Data == null || ExileController.Instance || !MeetingHud.Instance || MeetingHud.Instance.state == MeetingHud.MeetingStates.Results)
         {
             SetActiveAll(false);
             return;
