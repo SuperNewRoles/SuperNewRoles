@@ -78,6 +78,8 @@ public static class CustomDeathExtensions
                 Vector2 pos = source.Player.GetTruePosition();
                 MurderResultFlags teleportKillFlags = GetNormalKillResultFlags(source, player);
                 source.Player.MurderPlayer(player.Player, teleportKillFlags);
+                if (!teleportKillFlags.HasFlag(MurderResultFlags.Succeeded))
+                    break;
                 new LateTask(() =>
                 {
                     DeadBody deadBody = GameObject.FindObjectsOfType<DeadBody>().FirstOrDefault(x => x.ParentId == player.PlayerId);
@@ -86,8 +88,6 @@ public static class CustomDeathExtensions
                     source.Player.NetTransform.SnapTo(pos);
                     source.Player.MyPhysics.body.velocity = Vector2.zero;
                 }, 0.1f);
-                if (!teleportKillFlags.HasFlag(MurderResultFlags.Succeeded))
-                    break;
                 FinalStatusManager.SetFinalStatus(player, FinalStatus.Kill);
                 MurderDataManager.AddMurderData(source, player);
                 break;
