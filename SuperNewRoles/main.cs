@@ -102,6 +102,8 @@ public partial class SuperNewRolesPlugin : BasePlugin
 
         Instance = this;
 
+        if (!ModHelpers.IsAndroid())
+            EnsureBepInExInteropCompatibility();
         LoadAnnouncementImageDecoder();
         LevelImposterSupport.Initialize();
 
@@ -164,6 +166,27 @@ public partial class SuperNewRolesPlugin : BasePlugin
         Logger.LogInfo("--------------------------------");
     }
 
+    private static void EnsureBepInExInteropCompatibility()
+    {
+        try
+        {
+            string interopDirectory = Path.Combine(BepInEx.Paths.BepInExRootPath, "interop");
+            BepInExInteropCompatibilityResult result = BepInExInteropCompatibility.EnsureCompatible(
+                BepInEx.Configuration.ConfigFile.CoreConfig,
+                interopDirectory);
+
+            if (result.ScanMethodRefsChanged)
+                Logger.LogWarning("BepInEx [IL2CPP] ScanMethodRefs was false and has been changed to true.");
+
+            if (result.RegenerationScheduled)
+                Logger.LogWarning("BepInEx interop assemblies will be regenerated with method references on the next launch.");
+        }
+        catch (Exception exception)
+        {
+            Logger.LogError($"Failed to ensure BepInEx interop compatibility: {exception}");
+        }
+    }
+
     private static void LoadAnnouncementImageDecoder()
     {
         const string assemblyName = "SixLabors.ImageSharp";
@@ -192,6 +215,7 @@ public partial class SuperNewRolesPlugin : BasePlugin
             Logger.LogWarning($"Failed to load announcement image decoder: {ex}");
         }
     }
+
     public void PatchAll(Harmony harmony)
     {
         var assembly = Assembly;
