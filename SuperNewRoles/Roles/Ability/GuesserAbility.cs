@@ -8,7 +8,6 @@ using System.Collections.Generic;
 using HarmonyLib;
 using SuperNewRoles.Events;
 using SuperNewRoles.Events.PCEvents;
-using SuperNewRoles.Modules.Events.Bases;
 using SuperNewRoles.Roles;
 
 namespace SuperNewRoles.Roles.Ability;
@@ -32,7 +31,6 @@ public class GuesserAbility : CustomMeetingButtonBase, IAbilityCount
     private int MeetingCount = -1;
     private TMPro.TextMeshPro limitText;
     public override Sprite Sprite => AssetManager.GetAsset<Sprite>("TargetIcon.png");
-    private EventListener<DieEventData> dieEventListener;
     private bool anyoneDied = false;
 
     public GuesserAbility(int maxShots, int shotsPerMeeting, bool cannotShootCrewmate, bool cannotShootCelebrity, bool celebrityLimitedTurns = false, int celebrityLimitedTurnsCount = 3, bool madmateSuicide = false, bool cannotShootFirstTurn = false, bool cannotShootNoDead = false)
@@ -52,12 +50,7 @@ public class GuesserAbility : CustomMeetingButtonBase, IAbilityCount
     public override void AttachToLocalPlayer()
     {
         base.AttachToLocalPlayer();
-        dieEventListener = DieEvent.Instance.AddListener(OnPlayerDie);
-    }
-    public override void DetachToLocalPlayer()
-    {
-        base.DetachToLocalPlayer();
-        dieEventListener?.RemoveListener();
+        SubscribeWithAbility(DieEvent.Instance, OnPlayerDie);
     }
     private void OnPlayerDie(DieEventData data)
     {

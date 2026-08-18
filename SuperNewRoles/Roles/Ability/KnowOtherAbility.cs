@@ -1,7 +1,6 @@
 using System;
 using UnityEngine;
 using SuperNewRoles.Modules;
-using SuperNewRoles.Modules.Events.Bases;
 using SuperNewRoles.Events;
 
 namespace SuperNewRoles.Roles.Ability;
@@ -11,8 +10,6 @@ public class KnowOtherAbility : AbilityBase
     public Func<ExPlayerControl, bool> CanKnowOther { get; }
     public Func<bool> IsShowRole { get; }
     public Func<ExPlayerControl, Color32>? Color { get; }
-    private EventListener<NameTextUpdateEventData> _nameTextUpdateEvent;
-    private EventListener<NameTextUpdateVisiableEventData> _nameTextUpdateVisiableEvent;
 
     public KnowOtherAbility(Func<ExPlayerControl, bool> canKnowOther, Func<bool> isShowRole, Func<ExPlayerControl, Color32>? color = null)
     {
@@ -23,8 +20,8 @@ public class KnowOtherAbility : AbilityBase
 
     public override void AttachToLocalPlayer()
     {
-        _nameTextUpdateEvent = NameTextUpdateEvent.Instance.AddListener(OnNameTextUpdate);
-        _nameTextUpdateVisiableEvent = NameTextUpdateVisiableEvent.Instance.AddListener(OnNameTextUpdateVisiable);
+        SubscribeWithAbility(NameTextUpdateEvent.Instance, OnNameTextUpdate);
+        SubscribeWithAbility(NameTextUpdateVisiableEvent.Instance, OnNameTextUpdateVisiable);
     }
 
     private void OnNameTextUpdate(NameTextUpdateEventData data)
@@ -41,10 +38,4 @@ public class KnowOtherAbility : AbilityBase
             NameText.UpdateVisible(data.Player, data.Visiable);
     }
 
-    public override void DetachToLocalPlayer()
-    {
-        base.DetachToLocalPlayer();
-        _nameTextUpdateEvent?.RemoveListener();
-        _nameTextUpdateVisiableEvent?.RemoveListener();
-    }
 }

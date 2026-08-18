@@ -9,6 +9,7 @@ using HarmonyLib;
 using Hazel;
 using InnerNet;
 using SuperNewRoles.Modules;
+using SuperNewRoles.Modules.Compatibility;
 using TMPro;
 using UnityEngine;
 using UnityEngine.Events;
@@ -357,7 +358,7 @@ public static class SyncVersion
     /// HelpMenu 等の Postfix の後でも、バージョン不一致なら開始ボタンを必ず無効化する。
     /// </summary>
     [HarmonyPatch(typeof(GameStartManager), nameof(GameStartManager.Update))]
-    [HarmonyAfter("SuperNewRoles.HelpMenus.HelpMenuObjectManager+GameStartManagerUpdatePatch")]
+    [HarmonyAfter("SuperNewRoles.HelpMenus.HelpMenuObjectManager+GameStartManagerUpdatePatch", LevelImposterSupport.PluginGuid)]
     public static class GameStartManagerUpdateSyncVersionEnforcePatch
     {
         public static void Postfix(GameStartManager __instance)

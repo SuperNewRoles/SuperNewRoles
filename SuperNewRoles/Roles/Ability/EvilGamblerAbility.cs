@@ -2,7 +2,6 @@ using System;
 using SuperNewRoles.Events;
 using SuperNewRoles.Events.PCEvents;
 using SuperNewRoles.Modules;
-using SuperNewRoles.Modules.Events.Bases;
 using UnityEngine;
 using AmongUs.GameOptions;
 
@@ -17,8 +16,6 @@ public record EvilGamblerData(
 public class EvilGamblerAbility : AbilityBase
 {
     private readonly EvilGamblerData _data;
-    private EventListener<MurderEventData> _murderEventListener;
-    private EventListener<WrapUpEventData> _wrapUpEventListener;
 
     public EvilGamblerAbility(EvilGamblerData data)
     {
@@ -27,15 +24,8 @@ public class EvilGamblerAbility : AbilityBase
 
     public override void AttachToLocalPlayer()
     {
-        _murderEventListener = MurderEvent.Instance.AddListener(OnMurder);
-        _wrapUpEventListener = WrapUpEvent.Instance.AddListener(OnWrapUp);
-    }
-
-    public override void DetachToLocalPlayer()
-    {
-        base.DetachToLocalPlayer();
-        MurderEvent.Instance.RemoveListener(_murderEventListener);
-        WrapUpEvent.Instance.RemoveListener(_wrapUpEventListener);
+        SubscribeWithAbility(MurderEvent.Instance, OnMurder);
+        SubscribeWithAbility(WrapUpEvent.Instance, OnWrapUp);
     }
 
     private void OnMurder(MurderEventData data)

@@ -7,7 +7,6 @@ using SuperNewRoles.Roles.Ability;
 using SuperNewRoles.Modules;
 using System.Diagnostics.Tracing;
 using SuperNewRoles.Events;
-using SuperNewRoles.Modules.Events.Bases;
 using System.Linq;
 
 namespace SuperNewRoles.Roles.Madmates;
@@ -55,7 +54,6 @@ class BlackCat : RoleBase<BlackCat>
 public class RevengeExileAbility : AbilityBase
 {
     private bool IsNotImpostor { get; }
-    private EventListener<ExileEventData> exileEvent;
     public RevengeExileAbility(bool isNotImpostor)
     {
         IsNotImpostor = isNotImpostor;
@@ -63,17 +61,10 @@ public class RevengeExileAbility : AbilityBase
 
     public override void AttachToLocalPlayer()
     {
-        exileEvent = ExileEvent.Instance.AddListener(data =>
+        SubscribeWithAbility(ExileEvent.Instance, data =>
         {
             if (data.exiled?.PlayerId == PlayerControl.LocalPlayer.Data.PlayerId) RandomExile();
         });
-    }
-
-    public override void DetachToLocalPlayer()
-    {
-        base.DetachToLocalPlayer();
-        exileEvent?.RemoveListener();
-        exileEvent = null;
     }
 
     public void RandomExile()
