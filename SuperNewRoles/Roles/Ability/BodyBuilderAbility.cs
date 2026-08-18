@@ -139,7 +139,7 @@ public class BodyBuilderAbility : CustomButtonBase
 
         // 音を再生
         var distance = Vector2.Distance(PlayerControl.LocalPlayer.transform.position, Player.transform.position);
-        var volume = 1 / distance <= 0.25f ? 0f : 1 / distance;
+        var volume = CalculatePosingVolume(distance);
         // 最悪音ならなくてもいいので遅延
         MapLoader.LoadMap(MapNames.Fungle, (ship) =>
         {
@@ -184,7 +184,7 @@ public class BodyBuilderAbility : CustomButtonBase
         {
             foreach (SpriteRenderer renderer in Player.Player.gameObject.GetComponentsInChildren<SpriteRenderer>())
             {
-                renderer.color = new(1f, 1f, 1f, 1f);
+                renderer.color = new(1f, 1f, 1f, GetRestoredSpriteAlpha(Player.IsDead()));
             }
         }
 
@@ -194,6 +194,15 @@ public class BodyBuilderAbility : CustomButtonBase
             posingObject = null;
         }
     }
+
+    internal static float CalculatePosingVolume(float distance)
+    {
+        if (distance <= 0.01f)
+            return 1f;
+        return 1 / distance <= 0.25f ? 0f : 1 / distance;
+    }
+
+    internal static float GetRestoredSpriteAlpha(bool isDead) => isDead ? 0.5f : 1f;
 
     internal static GameObject GetPrefab(byte id)
     {

@@ -43,6 +43,18 @@ public class SchrodingersCatAbility : AbilityBase
     private TextMeshPro _suicideText;
 
     public SchrodingersCatTeam CurrentTeam { get; private set; } = SchrodingersCatTeam.SchrodingersCat;
+
+    // 近接キル相当の距離だけキラーを猫へスナップする。WaveCannon/Rocket/Slugger/Remote などの遠距離キルではテレポートさせない。
+    internal const float MaxMeleeKillSnapDistance = 3.5f;
+    internal static bool ShouldSnapKillerToTarget(Vector2 killerPos, Vector2 targetPos)
+        => ShouldSnapKillerToTarget(killerPos.x, killerPos.y, targetPos.x, targetPos.y);
+    internal static bool ShouldSnapKillerToTarget(float killerX, float killerY, float targetX, float targetY)
+    {
+        float dx = killerX - targetX;
+        float dy = killerY - targetY;
+        return (dx * dx) + (dy * dy) <= MaxMeleeKillSnapDistance * MaxMeleeKillSnapDistance;
+    }
+
     public SchrodingersCatAbility(SchrodingersCatData data)
     {
         Data = data;
@@ -145,8 +157,13 @@ public class SchrodingersCatAbility : AbilityBase
             if (!cancelKill) return;
 
             data.RefSuccess = false;
-            if (data.Killer.AmOwner)
+            if (data.Killer.AmOwner
+                && data.Killer.Player != null
+                && data.RefTarget.Player != null
+                && ShouldSnapKillerToTarget(data.Killer.GetTruePosition(), data.RefTarget.GetTruePosition()))
+            {
                 data.Killer.Player.NetTransform.RpcSnapTo(data.RefTarget.Player.transform.position);
+            }
             if (data.RefTarget.AmOwner)
             {
                 data.RefTarget.MyPhysics.body.velocity = Vector2.zero;

@@ -104,7 +104,7 @@ public sealed class FrankensteinAbility : AbilityBase
                 }
                 finally
                 {
-                    RpcEndMonster(this, dropPos, decrementKill: true);
+                    RpcEndMonster(this, dropPos, decrementKill: ShouldDecrementKillOnMonsterEnd(target != null, target != null && target.IsDead()));
                 }
                 return true;
             }
@@ -155,6 +155,11 @@ public sealed class FrankensteinAbility : AbilityBase
     internal static bool ShouldBlockIncomingKill(bool isMonster, bool isMonsterKillInProgress)
     {
         return isMonster && !isMonsterKillInProgress;
+    }
+
+    internal static bool ShouldDecrementKillOnMonsterEnd(bool hasTarget, bool targetIsDead)
+    {
+        return hasTarget && targetIsDead;
     }
 
     private void OnMeetingStart(MeetingStartEventData data)

@@ -19,4 +19,18 @@ public class FrankensteinAbilityTests
         FrankensteinAbility.ShouldBlockIncomingKill(isMonster, isMonsterKillInProgress)
             .Should().Be(expected);
     }
+
+    [Theory]
+    [InlineData(false, false, false)]
+    [InlineData(false, true, false)]
+    [InlineData(true, false, false)]
+    [InlineData(true, true, true)]
+    public void ShouldDecrementKillOnMonsterEnd_OnlyWhenTargetDied(
+        bool hasTarget,
+        bool targetIsDead,
+        bool expected)
+    {
+        FrankensteinAbility.ShouldDecrementKillOnMonsterEnd(hasTarget, targetIsDead)
+            .Should().Be(expected);
+    }
 }
