@@ -174,6 +174,7 @@ public class MoiraMeetingAbility : CustomMeetingButtonBase, IAbilityCount
             if (player1 == null || player2 == null) continue;
 
             player1.ReverseRole(player2);
+            player1.ReverseTask(player2);
 
             RoleTypes player1Role = player1.Data.Role.Role;
             RoleTypes player2Role = player2.Data.Role.Role;
@@ -204,6 +205,7 @@ public class MoiraMeetingAbility : CustomMeetingButtonBase, IAbilityCount
         }
 
         player1.ReverseRole(player2);
+        player1.ReverseTask(player2);
 
         RoleTypes player1Role = player1.Data.Role.Role;
         RoleTypes player2Role = player2.Data.Role.Role;

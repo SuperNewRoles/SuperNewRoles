@@ -60,6 +60,10 @@ public sealed class PhysicsMapDatabase : MapDatabase
         if (ship == null)
             return false;
 
+        // スポーン中心だけでは原点付近の狭い AABB になる。ベント/部屋が揃うまでキャッシュしない。
+        if (!HasUsableMapGeometry(ship.AllVents, ship.AllRooms))
+            return false;
+
         float minX = float.MaxValue;
         float minY = float.MaxValue;
         float maxX = float.MinValue;
@@ -111,5 +115,34 @@ public sealed class PhysicsMapDatabase : MapDatabase
         min = _cachedMin;
         max = _cachedMax;
         return true;
+    }
+
+    /// <summary>
+    /// スポーン中心だけではマップ幾何とみなさない。非 null のベントか、roomArea 付き部屋が必要。
+    /// </summary>
+    internal static bool HasUsableMapGeometry(bool hasNonNullVent, bool hasRoomWithArea)
+        => hasNonNullVent || hasRoomWithArea;
+
+    internal static bool HasUsableMapGeometry(Vent[] allVents, PlainShipRoom[] allRooms)
+    {
+        if (allVents != null)
+        {
+            foreach (Vent vent in allVents)
+            {
+                if (vent != null)
+                    return true;
+            }
+        }
+
+        if (allRooms != null)
+        {
+            foreach (PlainShipRoom room in allRooms)
+            {
+                if (room?.roomArea != null)
+                    return true;
+            }
+        }
+
+        return false;
     }
 }

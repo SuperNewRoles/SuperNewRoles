@@ -61,6 +61,8 @@ public static class CustomDeathExtensions
                     throw new Exception("Source is null");
                 if (!TryKillEvent.Invoke(source, ref player).RefSuccess)
                     break;
+                if (IsProtectedByGuardianThisRound(player))
+                    break;
                 SpawnDeadBody(source, player);
                 player.Player.Die(DeathReason.Kill, assignGhostRole: true);
                 MurderEvent.Invoke(source, player, MurderResultFlags.Succeeded);
@@ -74,16 +76,19 @@ public static class CustomDeathExtensions
                 if (!TryKillEvent.Invoke(source, ref player).RefSuccess)
                     break;
                 Vector2 pos = source.Player.GetTruePosition();
-                source.Player.MurderPlayer(player.Player, MurderResultFlags.Succeeded);
-                FinalStatusManager.SetFinalStatus(source, FinalStatus.Kill);
+                MurderResultFlags teleportKillFlags = GetNormalKillResultFlags(source, player);
+                source.Player.MurderPlayer(player.Player, teleportKillFlags);
                 new LateTask(() =>
                 {
-                    DeadBody deadBody = GameObject.FindObjectsOfType<DeadBody>().FirstOrDefault(x => x.ParentId == source.PlayerId);
+                    DeadBody deadBody = GameObject.FindObjectsOfType<DeadBody>().FirstOrDefault(x => x.ParentId == player.PlayerId);
                     if (deadBody != null)
                         GameObject.Destroy(deadBody.gameObject);
                     source.Player.NetTransform.SnapTo(pos);
                     source.Player.MyPhysics.body.velocity = Vector2.zero;
                 }, 0.1f);
+                if (!teleportKillFlags.HasFlag(MurderResultFlags.Succeeded))
+                    break;
+                FinalStatusManager.SetFinalStatus(player, FinalStatus.Kill);
                 MurderDataManager.AddMurderData(source, player);
                 break;
             case CustomDeathType.Suicide:
@@ -102,12 +107,16 @@ public static class CustomDeathExtensions
             case CustomDeathType.WaveCannon:
                 if (!TryKillEvent.Invoke(source, ref player).RefSuccess)
                     break;
+                if (IsProtectedByGuardianThisRound(player))
+                    break;
                 player.Player.MurderPlayer(player.Player, MurderResultFlags.Succeeded);
                 FinalStatusManager.SetFinalStatus(player, FinalStatus.WaveCannon);
                 MurderDataManager.AddMurderData(source, player);
                 break;
             case CustomDeathType.WaveCannonSanta:
                 if (!TryKillEvent.Invoke(source, ref player).RefSuccess)
+                    break;
+                if (IsProtectedByGuardianThisRound(player))
                     break;
                 // 被害者視点でのみカスタムキルアニメーションを設定する
                 if (player != null && player.AmOwner)
@@ -126,6 +135,8 @@ public static class CustomDeathExtensions
             case CustomDeathType.Samurai:
                 if (!TryKillEvent.Invoke(source, ref player).RefSuccess)
                     break;
+                if (IsProtectedByGuardianThisRound(player))
+                    break;
                 var pos2 = player.Player.GetTruePosition();
                 player.Player.MurderPlayer(player.Player, MurderResultFlags.Succeeded);
                 player.Player.NetTransform.SnapTo(pos2);
@@ -135,6 +146,8 @@ public static class CustomDeathExtensions
                 break;
             case CustomDeathType.BombBySelfBomb:
                 if (!TryKillEvent.Invoke(source, ref player).RefSuccess)
+                    break;
+                if (IsProtectedByGuardianThisRound(player))
                     break;
                 player.Player.MurderPlayer(player.Player, MurderResultFlags.Succeeded);
                 FinalStatusManager.SetFinalStatus(player, FinalStatus.BombBySelfBomb);
@@ -162,7 +175,10 @@ public static class CustomDeathExtensions
             case CustomDeathType.FalseCharges:
                 if (!TryKillEvent.Invoke(source, ref player).RefSuccess)
                     break;
-                source.Player.MurderPlayer(player.Player, MurderResultFlags.Succeeded);
+                MurderResultFlags falseChargesFlags = GetNormalKillResultFlags(source, player);
+                source.Player.MurderPlayer(player.Player, falseChargesFlags);
+                if (!falseChargesFlags.HasFlag(MurderResultFlags.Succeeded))
+                    break;
                 FinalStatusManager.SetFinalStatus(player, FinalStatus.FalseCharges);
                 MurderDataManager.AddMurderData(source, player);
                 break;
@@ -175,6 +191,8 @@ public static class CustomDeathExtensions
                 break;
             case CustomDeathType.VampireKill:
                 if (!TryKillEvent.Invoke(source, ref player).RefSuccess)
+                    break;
+                if (IsProtectedByGuardianThisRound(player))
                     break;
                 player.Player.MurderPlayer(player.Player, MurderResultFlags.Succeeded);
                 FinalStatusManager.SetFinalStatus(player, FinalStatus.VampireKill);
@@ -207,12 +225,16 @@ public static class CustomDeathExtensions
             case CustomDeathType.BansheeWhisper:
                 if (!TryKillEvent.Invoke(source, ref player).RefSuccess)
                     break;
+                if (IsProtectedByGuardianThisRound(player))
+                    break;
                 player.Player.MurderPlayer(player.Player, MurderResultFlags.Succeeded);
                 FinalStatusManager.SetFinalStatus(player, FinalStatus.BansheeWhisper);
                 MurderDataManager.AddMurderData(source, player);
                 break;
             case CustomDeathType.HappyGatling:
                 if (!TryKillEvent.Invoke(source, ref player).RefSuccess)
+                    break;
+                if (IsProtectedByGuardianThisRound(player))
                     break;
                 // 被害者視点でのみカスタムキルアニメーションを設定する
                 if (player != null && player.AmOwner)
@@ -237,6 +259,8 @@ public static class CustomDeathExtensions
                     throw new Exception("Source is null");
                 if (!TryKillEvent.Invoke(source, ref player).RefSuccess)
                     break;
+                if (IsProtectedByGuardianThisRound(player))
+                    break;
                 player.Player.MurderPlayer(player.Player, MurderResultFlags.Succeeded);
                 FinalStatusManager.SetFinalStatus(player, FinalStatus.ConjurerMagic);
                 MurderDataManager.AddMurderData(source, player);
@@ -245,6 +269,8 @@ public static class CustomDeathExtensions
                 if (source == null)
                     throw new Exception("Source is null");
                 if (!TryKillEvent.Invoke(source, ref player).RefSuccess)
+                    break;
+                if (IsProtectedByGuardianThisRound(player))
                     break;
                 if (!suppressKillAnimation && player != null && player.AmOwner && MeetingHud.Instance == null)
                     CustomKillAnimationManager.SetCurrentCustomKillAnimation(new RocketLauncherKillAnimation());
@@ -256,6 +282,8 @@ public static class CustomDeathExtensions
                 if (source == null)
                     throw new Exception("Source is null");
                 if (!TryKillEvent.Invoke(source, ref player).RefSuccess)
+                    break;
+                if (IsProtectedByGuardianThisRound(player))
                     break;
                 player.Player.MurderPlayer(player.Player, MurderResultFlags.Succeeded);
                 FinalStatusManager.SetFinalStatus(player, FinalStatus.Kill);
@@ -273,9 +301,14 @@ public static class CustomDeathExtensions
 
         // Preserve the protection state already synchronized by the vanilla game.
         // Clearing it here would make a protected target look unprotected on every client.
-        return target.Player.protectedByGuardianThisRound
+        return IsProtectedByGuardianThisRound(target)
             ? MurderResultFlags.FailedProtected
             : MurderResultFlags.Succeeded;
+    }
+
+    private static bool IsProtectedByGuardianThisRound(ExPlayerControl target)
+    {
+        return target?.Player != null && target.Player.protectedByGuardianThisRound;
     }
 
     private static void SpawnDeadBody(ExPlayerControl source, ExPlayerControl target)
