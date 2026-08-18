@@ -101,11 +101,10 @@ public partial class SuperNewRolesPlugin : BasePlugin
         Logger = Log;
 
         Instance = this;
+        Encryption.SetEncryptKey();
 
         LoadAnnouncementImageDecoder();
         LevelImposterSupport.Initialize();
-
-        Encryption.SetEncryptKey();
 
         SuperNewRoles.Logger.Info($"BaseDirectory: {BaseDirectory}");
         SuperNewRoles.Logger.Info($"SecretDirectory: {SecretDirectory}");
