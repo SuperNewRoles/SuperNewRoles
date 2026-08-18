@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Linq;
 using SuperNewRoles.Events.PCEvents;
 using SuperNewRoles.Modules;
-using SuperNewRoles.Modules.Events.Bases;
 using SuperNewRoles.Roles.Ability;
 using SuperNewRoles.Roles.Ability.CustomButton;
 using UnityEngine;
@@ -52,21 +51,15 @@ public class MirageAbility : CustomButtonBase, IAbilityCount
     public override string buttonText => ModTranslation.GetString("MirageButtonText");
     public override Sprite Sprite => AssetManager.GetAsset<Sprite>("MirageButton.png");
     protected override KeyType keytype => KeyType.Ability1;
-    private EventListener<DieEventData> dieEventListener;
 
     public override ShowTextType showTextType => LimitUse && HasCount ? ShowTextType.ShowWithCount : ShowTextType.Hidden;
 
     public override void AttachToLocalPlayer()
     {
         base.AttachToLocalPlayer();
-        dieEventListener = DieEvent.Instance.AddListener(OnPlayerDead);
+        SubscribeWithAbility(DieEvent.Instance, OnPlayerDead);
     }
 
-    public override void DetachToLocalPlayer()
-    {
-        base.DetachToLocalPlayer();
-        dieEventListener?.RemoveListener();
-    }
     public override bool CheckIsAvailable()
     {
         return GameObject.FindObjectsOfType<DeadBody>().Length > 0;
@@ -79,8 +72,6 @@ public class MirageAbility : CustomButtonBase, IAbilityCount
 
     public override void OnClick()
     {
-        if (LimitUse)
-            this.UseAbilityCount();
         HashSet<byte> deadPlayers = new();
         foreach (var deadBody in GameObject.FindObjectsOfType<DeadBody>())
             deadPlayers.Add(deadBody.ParentId);
@@ -93,6 +84,9 @@ public class MirageAbility : CustomButtonBase, IAbilityCount
         }
         if (players.Count == 0)
             return;
+
+        if (LimitUse)
+            this.UseAbilityCount();
         RpcSpawnDeadbody(players.GetRandom(), ExPlayerControl.LocalPlayer.transform.position);
     }
 

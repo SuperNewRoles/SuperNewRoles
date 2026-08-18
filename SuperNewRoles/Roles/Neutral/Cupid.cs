@@ -5,7 +5,6 @@ using AmongUs.GameOptions;
 using SuperNewRoles.CustomOptions;
 using SuperNewRoles.Events;
 using SuperNewRoles.Modules;
-using SuperNewRoles.Modules.Events.Bases;
 using SuperNewRoles.Roles.Ability;
 using SuperNewRoles.Roles.Modifiers;
 using UnityEngine;
@@ -51,8 +50,6 @@ class Cupid : RoleBase<Cupid>
 public class CupidAbility : AbilityBase
 {
     public float CoolTime { get; }
-    private EventListener<NameTextUpdateEventData> _nameTextUpdateEvent;
-    private EventListener<NameTextUpdateVisiableEventData> _nameTextUpdateVisiableEvent;
     public byte Lovers1 { get; private set; }
     public byte Lovers2 { get; private set; }
 
@@ -94,24 +91,13 @@ public class CupidAbility : AbilityBase
             TimeLimit
         );
         Player.AttachAbility(createLoversAbility, new AbilityParentAbility(this));
-        _nameTextUpdateVisiableEvent = NameTextUpdateVisiableEvent.Instance.AddListener(OnNameTextUpdateVisiable);
-    }
-    public override void DetachToAlls()
-    {
-        base.DetachToAlls();
-        _nameTextUpdateVisiableEvent?.RemoveListener();
+        SubscribeWithAbility(NameTextUpdateVisiableEvent.Instance, OnNameTextUpdateVisiable);
     }
     public override void AttachToLocalPlayer()
     {
         base.AttachToLocalPlayer();
-        _nameTextUpdateEvent = NameTextUpdateEvent.Instance.AddListener(OnNameTextUpdate);
+        SubscribeWithAbility(NameTextUpdateEvent.Instance, OnNameTextUpdate);
     }
-    public override void DetachToLocalPlayer()
-    {
-        base.DetachToLocalPlayer();
-        _nameTextUpdateEvent?.RemoveListener();
-    }
-
     private void OnNameTextUpdate(NameTextUpdateEventData data)
     {
         if (!Player.AmOwner) return;

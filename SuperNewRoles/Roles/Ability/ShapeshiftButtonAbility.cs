@@ -4,7 +4,6 @@ using SuperNewRoles.Modules;
 using SuperNewRoles.Roles.Ability.CustomButton;
 using SuperNewRoles.Events;
 using SuperNewRoles.Events.PCEvents;
-using SuperNewRoles.Modules.Events.Bases;
 using System;
 using SuperNewRoles.Roles.Impostor;
 
@@ -109,21 +108,17 @@ public class ShapeshiftButtonAbility : CustomButtonBase, IButtonEffect
         ResetTimer(); // Reset cooldown for next round
     }
 
-    private EventListener<ShapeshiftEventData> _shapeshiftEvent;
-    private EventListener<WrapUpEventData> _wrapUpEvent;
 
     public override void AttachToLocalPlayer()
     {
         base.AttachToLocalPlayer();
-        _shapeshiftEvent = ShapeshiftEvent.Instance.AddListener(OnShapeshift);
-        _wrapUpEvent = WrapUpEvent.Instance.AddListener(OnWrapUp);
+        SubscribeWithAbility(ShapeshiftEvent.Instance, OnShapeshift);
+        SubscribeWithAbility(WrapUpEvent.Instance, OnWrapUp);
     }
 
     public override void DetachToLocalPlayer()
     {
         base.DetachToLocalPlayer();
-        _shapeshiftEvent?.RemoveListener();
-        _wrapUpEvent?.RemoveListener();
 
         // Ensure player reverts shape if the ability is detached while active
         if (isEffectActive)

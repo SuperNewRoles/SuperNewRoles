@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Reflection;
@@ -8,6 +9,7 @@ using HarmonyLib;
 using Hazel;
 using InnerNet;
 using SuperNewRoles.Modules;
+using SuperNewRoles.Modules.Compatibility;
 using TMPro;
 using UnityEngine;
 using UnityEngine.Events;
@@ -98,7 +100,7 @@ public static class SyncVersion
     }
     private static void AppendMethodInfo(StringBuilder builder, KeyValuePair<int, MethodInfo> method)
     {
-        builder.Append(method.Key)
+        builder.Append(method.Key.ToString(CultureInfo.InvariantCulture))
                .Append(':')
                .Append(CustomRPCManager.GetStableMethodSignature(method.Value))
                .Append(';');
@@ -356,7 +358,7 @@ public static class SyncVersion
     /// HelpMenu 等の Postfix の後でも、バージョン不一致なら開始ボタンを必ず無効化する。
     /// </summary>
     [HarmonyPatch(typeof(GameStartManager), nameof(GameStartManager.Update))]
-    [HarmonyAfter("SuperNewRoles.HelpMenus.HelpMenuObjectManager+GameStartManagerUpdatePatch")]
+    [HarmonyAfter("SuperNewRoles.HelpMenus.HelpMenuObjectManager+GameStartManagerUpdatePatch", LevelImposterSupport.PluginGuid)]
     public static class GameStartManagerUpdateSyncVersionEnforcePatch
     {
         public static void Postfix(GameStartManager __instance)

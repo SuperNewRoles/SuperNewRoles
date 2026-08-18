@@ -50,8 +50,6 @@ public abstract class CustomButtonBase : AbilityBase
 {
     //エフェクトがある(≒押したらカウントダウンが始まる？)ボタンの場合は追加でIButtonEffectを継承すること
     //奪える能力の場合はIRobableを継承し、Serializer/DeSerializerを実装
-    private EventListener hudUpdateEvent;
-    private EventListener<WrapUpEventData> wrapUpEvent;
     public ActionButton actionButton { get; private set; }
     private IButtonEffect buttonEffect;
     public virtual float Timer { get; set; }
@@ -170,8 +168,8 @@ public abstract class CustomButtonBase : AbilityBase
             actionButton.buttonLabelText.transform.localPosition = new(0, -0.56f, -10);
         }
         SetActive(false);
-        hudUpdateEvent = HudUpdateEvent.Instance.AddListener(OnUpdate);
-        wrapUpEvent = WrapUpEvent.Instance.AddListener(x => OnMeetingEnds());
+        SubscribeWithAbility(HudUpdateEvent.Instance, OnUpdate);
+        SubscribeWithAbility(WrapUpEvent.Instance, _ => OnMeetingEnds());
         ResetTimer();
     }
 
@@ -376,8 +374,6 @@ public abstract class CustomButtonBase : AbilityBase
     public override void DetachToLocalPlayer()
     {
         base.DetachToLocalPlayer();
-        HudUpdateEvent.Instance.RemoveListener(hudUpdateEvent);
-        WrapUpEvent.Instance.RemoveListener(wrapUpEvent);
         GameObject.Destroy(actionButton.gameObject);
     }
     public void SetInitialCooldown()

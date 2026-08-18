@@ -7,7 +7,6 @@ using SuperNewRoles.CustomOptions;
 using SuperNewRoles.Events;
 using SuperNewRoles.Events.PCEvents;
 using SuperNewRoles.Modules;
-using SuperNewRoles.Modules.Events.Bases;
 using SuperNewRoles.Patches;
 using SuperNewRoles.Roles.Ability;
 using SuperNewRoles.Roles.Ability.CustomButton;
@@ -28,7 +27,8 @@ class Hitman : RoleBase<Hitman>
             IsOutMission: HitmanIsOutMission,
             OutMissionLimit: HitmanOutMissionLimit,
             CanUseVent: HitmanCanUseVent,
-            HasImpostorVision: HitmanHasImpostorVision
+            HasImpostorVision: HitmanHasImpostorVision,
+            ResetTargetOnMeeting: HitmanResetTargetOnMeeting
         ))
     ];
 
@@ -63,6 +63,8 @@ class Hitman : RoleBase<Hitman>
     public static bool HitmanCanUseVent;
     [CustomOptionBool("HitmanHasImpostorVision", false, translationName: "HasImpostorVision")]
     public static bool HitmanHasImpostorVision;
+    [CustomOptionBool("HitmanResetTargetOnMeeting", true)]
+    public static bool HitmanResetTargetOnMeeting;
 
 }
 
@@ -73,7 +75,8 @@ public record HitmanData(
     int OutMissionLimit,
     bool CanUseVent,
     bool IsOutMission,
-    bool HasImpostorVision
+    bool HasImpostorVision,
+    bool ResetTargetOnMeeting
 );
 
 public class HitmanAbility : AbilityBase
@@ -90,10 +93,6 @@ public class HitmanAbility : AbilityBase
     private int _failedCount;
     private int _successCount;
     private float _timer;
-
-    private EventListener _fixedUpdateListener;
-    private EventListener<MurderEventData> _murderListener;
-    private EventListener<NameTextUpdateEventData> _nameTextUpdateListener;
 
     private Arrow ArrowToTarget;
 
@@ -126,27 +125,21 @@ public class HitmanAbility : AbilityBase
         Player.AttachAbility(_showPlayerUIAbility, new AbilityParentAbility(this));
         Player.AttachAbility(_impostorVisionAbility, new AbilityParentAbility(this));
 
-        _nameTextUpdateListener = NameTextUpdateEvent.Instance.AddListener(OnNameTextUpdate);
+        SubscribeWithAbility(NameTextUpdateEvent.Instance, OnNameTextUpdate);
     }
     public override void AttachToLocalPlayer()
     {
         base.AttachToLocalPlayer();
-        _fixedUpdateListener = FixedUpdateEvent.Instance.AddListener(OnFixedUpdate);
-        _murderListener = MurderEvent.Instance.AddListener(OnMurder);
+        SubscribeWithAbility(FixedUpdateEvent.Instance, OnFixedUpdate);
+        SubscribeWithAbility(MurderEvent.Instance, OnMurder);
+        SubscribeWithAbility(MeetingCloseEvent.Instance, OnMeetingClose);
         reSelect();
         ArrowToTarget = new Arrow(Color.red);
     }
     public override void DetachToLocalPlayer()
     {
-        _fixedUpdateListener?.RemoveListener();
-        _murderListener?.RemoveListener();
         GameObject.Destroy(ArrowToTarget?.arrow.gameObject);
         ArrowToTarget = null;
-    }
-    public override void DetachToAlls()
-    {
-        base.DetachToAlls();
-        _nameTextUpdateListener?.RemoveListener();
     }
     private void OnNameTextUpdate(NameTextUpdateEventData data)
     {
@@ -177,6 +170,14 @@ public class HitmanAbility : AbilityBase
             reSelect();
         }
     }
+    private void OnMeetingClose(MeetingCloseEventData _)
+    {
+        if (!Data.ResetTargetOnMeeting || Player.IsDead()) return;
+
+        // 会議でのターゲット変更は成功・失敗のどちらにも数えない。
+        reSelect();
+        _timer = Data.ChangeTargetTime;
+    }
     private void reSelect()
     {
         _currentTarget = ModHelpers.GetRandom(ExPlayerControl.ExPlayerControls.Where(p => !p.AmOwner && p.IsAlive()).ToList());
@@ -193,6 +194,7 @@ public class HitmanAbility : AbilityBase
     {
         if (ExPlayerControl.LocalPlayer.IsDead()) return;
         if (data.killer != Player) return;
+        if (!data.resultFlags.HasFlag(MurderResultFlags.Succeeded)) return;
         if (_currentTarget == data.target)
             SuccessfulKill();
         else

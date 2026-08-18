@@ -160,14 +160,18 @@ public class EatDeadBodyAbility : CustomButtonBase
     public static void RpcEatDeadBody(int parentId, EatDeadBodyAbility ability)
     {
         bool ateOrpheusRitualCorpse = false;
+        bool ateDeadBody = false;
         foreach (DeadBody deadBody in UnityEngine.Object.FindObjectsOfType<DeadBody>())
         {
             if (deadBody.ParentId == parentId)
             {
+                ateDeadBody = true;
                 ateOrpheusRitualCorpse |= OrpheusMainAbility.IsManagedCorpseBody(deadBody);
                 GameObject.Destroy(deadBody.gameObject);
             }
         }
+        if (!ateDeadBody)
+            return;
         if (ateOrpheusRitualCorpse)
             OrpheusMainAbility.MarkCorpseUnavailableFromExternalUse((byte)parentId);
         ability._eatenBodies++;

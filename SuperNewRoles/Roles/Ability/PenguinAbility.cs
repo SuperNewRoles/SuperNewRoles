@@ -10,7 +10,6 @@ using AmongUs.GameOptions;
 using SuperNewRoles.Roles.Impostor;
 using SuperNewRoles.Ability;
 using SuperNewRoles.SuperTrophies;
-using System.Linq;
 
 namespace SuperNewRoles.Roles.Ability;
 
@@ -33,7 +32,6 @@ public class PenguinAbility : TargetCustomButtonBase, IButtonEffect
     public float EffectTimer { get; set; }
     public bool effectCancellable => false;
     private bool meetingKill;
-    private EventListener<CalledMeetingEventData> _preCalledMeeting;
     public override Sprite Sprite => _sprite;
     public override string buttonText => ModTranslation.GetString("PenguinButtonText");
     protected override KeyType keytype => KeyType.Ability1;
@@ -44,9 +42,6 @@ public class PenguinAbility : TargetCustomButtonBase, IButtonEffect
 
     private ExPlayerControl targetPlayer;
 
-    private EventListener fixedUpdateEvent;
-    private EventListener<WrapUpEventData> wrapUpEvent;
-    private EventListener<DieEventData> dieEvent;
     private KillableAbility customKillButtonAbility;
     private bool CanDefaultKill;
     private Sprite _sprite;
@@ -68,21 +63,13 @@ public class PenguinAbility : TargetCustomButtonBase, IButtonEffect
         new LateTask(() => ExPlayerControl.LocalPlayer.SetKillTimerUnchecked(0.00001f, 0.00001f), 0f);
         ResetTimer();
     }
-    public override void DetachToAlls()
-    {
-        base.DetachToAlls();
-        fixedUpdateEvent?.RemoveListener();
-        _preCalledMeeting?.RemoveListener();
-        wrapUpEvent?.RemoveListener();
-        dieEvent?.RemoveListener();
-    }
     private void OnFixedUpdate()
     {
         if (targetPlayer == null) return;
         // 死亡しても掴んでいる問題の対策
         if (targetPlayer.IsDead() || Player.IsDead())
         {
-            targetPlayer = null;
+            EndPenguin();
             return;
         }
         // ここに来た時点で誰か掴んでる
@@ -96,12 +83,19 @@ public class PenguinAbility : TargetCustomButtonBase, IButtonEffect
     {
         base.AttachToAlls();
         SyncKillCoolTimeAbility.CreateAndAttach(this);
-        _preCalledMeeting = PreCalledMeetingEvent.Instance.AddListener(OnPreCalledMeeting);
+        SubscribeWithAbility(PreCalledMeetingEvent.Instance, OnPreCalledMeeting);
         customKillButtonAbility = new KillableAbility(() => CanDefaultKill || (targetPlayer != null && targetPlayer.IsAlive()));
         Player.AttachAbility(customKillButtonAbility, new AbilityParentAbility(this));
-        fixedUpdateEvent = FixedUpdateEvent.Instance.AddListener(OnFixedUpdate);
-        wrapUpEvent = WrapUpEvent.Instance.AddListener(OnWrapUp);
-        dieEvent = DieEvent.Instance.AddListener(OnDie);
+        SubscribeWithAbility(FixedUpdateEvent.Instance, OnFixedUpdate);
+        SubscribeWithAbility(WrapUpEvent.Instance, OnWrapUp);
+        SubscribeWithAbility(DieEvent.Instance, OnDie);
+        SubscribeWithAbility(TryKillEvent.Instance, OnTryKill);
+    }
+
+    private void OnTryKill(TryKillEventData data)
+    {
+        if (data.Killer != Player || data.RefTarget != targetPlayer) return;
+        EndPenguin();
     }
 
     private void OnDie(DieEventData data)
@@ -125,7 +119,7 @@ public class PenguinAbility : TargetCustomButtonBase, IButtonEffect
     {
         if (targetPlayer == null) return;
         if (data.exiled?.PlayerId == Player.PlayerId || Player.IsDead())
-            targetPlayer = null;
+            EndPenguin();
         else if (Player.AmOwner)
         {
             RpcKillPenguinTarget(Player, this, targetPlayer, true);
@@ -140,7 +134,14 @@ public class PenguinAbility : TargetCustomButtonBase, IButtonEffect
     [CustomRPC]
     public void RpcEndPenguin()
     {
+        EndPenguin();
+    }
+
+    private void EndPenguin()
+    {
         targetPlayer = null;
+        isEffectActive = false;
+        EffectTimer = EffectDuration;
     }
 
     [CustomRPC]
@@ -151,8 +152,7 @@ public class PenguinAbility : TargetCustomButtonBase, IButtonEffect
             // 会議開始時の死体集計に間に合わせるため、通常キルアニメーションを経由せず死体を生成する
             target.CustomDeath(CustomDeathType.KillWithoutKillAnimation, source: source);
         }
-        if (ability != null)
-            ability.targetPlayer = null;
+        ability?.EndPenguin();
     }
 
     [CustomRPC]
@@ -165,7 +165,7 @@ public class PenguinAbility : TargetCustomButtonBase, IButtonEffect
             else
                 target.CustomDeath(CustomDeathType.Kill, source: source);
         }
-        ability.targetPlayer = null;
+        ability?.EndPenguin();
     }
 }
 
@@ -182,8 +182,7 @@ public class PenguinKillTrophy : SuperTrophyAbility<PenguinKillTrophy>
     public override void OnRegister()
     {
         // ペンギン能力の取得
-        _penguinAbility = ExPlayerControl.LocalPlayer.PlayerAbilities
-            .FirstOrDefault(x => x is PenguinAbility) as PenguinAbility;
+        _penguinAbility = ExPlayerControl.LocalPlayer.GetAbility<PenguinAbility>();
 
         // 殺害イベントのリスナーを登録
         _onMurderEvent = MurderEvent.Instance.AddListener(HandleMurderEvent);
@@ -230,8 +229,7 @@ public class PenguinHundredKillTrophy : SuperTrophyAbility<PenguinHundredKillTro
     public override void OnRegister()
     {
         // ペンギン能力の取得
-        _penguinAbility = ExPlayerControl.LocalPlayer.PlayerAbilities
-            .FirstOrDefault(x => x is PenguinAbility) as PenguinAbility;
+        _penguinAbility = ExPlayerControl.LocalPlayer.GetAbility<PenguinAbility>();
 
         // 殺害イベントのリスナーを登録
         _onMurderEvent = MurderEvent.Instance.AddListener(HandleMurderEvent);

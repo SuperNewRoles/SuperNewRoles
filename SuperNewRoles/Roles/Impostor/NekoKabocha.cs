@@ -5,7 +5,6 @@ using SuperNewRoles.CustomOptions;
 using SuperNewRoles.Modules;
 using SuperNewRoles.Events;
 using SuperNewRoles.Events.PCEvents;
-using SuperNewRoles.Modules.Events.Bases;
 using UnityEngine;
 using SuperNewRoles.Roles.Ability;
 using System.Linq;
@@ -50,8 +49,6 @@ public record NekoKabochaData(bool CanRevengeCrewmate, bool CanRevengeNeutral, b
 
 public class NekoKabochaRevenge : AbilityBase
 {
-    private EventListener<MurderEventData> _onMurderEvent;
-    private EventListener<WrapUpEventData> _onWrapUpEvent;
 
     public NekoKabochaData Data { get; }
 
@@ -63,16 +60,17 @@ public class NekoKabochaRevenge : AbilityBase
     public override void AttachToLocalPlayer()
     {
         // 殺害イベントリスナーの登録
-        _onMurderEvent = MurderEvent.Instance.AddListener(OnMurder);
+        SubscribeWithAbility(MurderEvent.Instance, OnMurder);
 
         // 会議終了/追放イベントリスナーの登録
-        _onWrapUpEvent = WrapUpEvent.Instance.AddListener(OnWrapUp);
+        SubscribeWithAbility(WrapUpEvent.Instance, OnWrapUp);
     }
 
     private void OnMurder(MurderEventData data)
     {
         if (data.target == null || data.killer == null) return;
         if (data.target != ExPlayerControl.LocalPlayer) return;
+        if (!data.resultFlags.HasFlag(MurderResultFlags.Succeeded)) return;
         // 無限ループ防止
         if (data.killer == data.target) return;
 
@@ -107,20 +105,4 @@ public class NekoKabochaRevenge : AbilityBase
         }
     }
 
-    public override void DetachToLocalPlayer()
-    {
-        base.DetachToLocalPlayer();
-
-        if (_onMurderEvent != null)
-        {
-            MurderEvent.Instance.RemoveListener(_onMurderEvent);
-            _onMurderEvent = null;
-        }
-
-        if (_onWrapUpEvent != null)
-        {
-            WrapUpEvent.Instance.RemoveListener(_onWrapUpEvent);
-            _onWrapUpEvent = null;
-        }
-    }
 }

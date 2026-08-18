@@ -19,18 +19,57 @@ public abstract class VentTargetCustomButtonBase : CustomButtonBase
 
     public override void OnUpdate()
     {
-        base.OnUpdate();
-        Target = SetTarget(untargetableVents: UntargetableVents, targetingPlayer: TargetingPlayer, isTargetable: IsTargetable, ignoreWalls: IgnoreWalls);
-        if (ShowOutline && _lastShowTarget != Target)
+        bool canUpdateTarget = PlayerControl.LocalPlayer?.Data != null &&
+            MeetingHud.Instance == null &&
+            ExileController.Instance == null &&
+            CheckHasButton();
+        if (!canUpdateTarget)
         {
-            if (_lastShowTarget != null) SetOutline(_lastShowTarget, false, OutlineColor);
-            if (Target != null) SetOutline(Target, true, OutlineColor);
-            _lastShowTarget = Target;
+            ClearTarget();
+            base.OnUpdate();
+            return;
         }
+
+        Target = SetTarget(untargetableVents: UntargetableVents, targetingPlayer: TargetingPlayer, isTargetable: IsTargetable, ignoreWalls: IgnoreWalls);
+        UpdateTargetOutline();
+        base.OnUpdate();
+    }
+
+    public override void DetachToLocalPlayer()
+    {
+        ClearTarget();
+        base.DetachToLocalPlayer();
+    }
+
+    private void UpdateTargetOutline()
+    {
+        if (!ShowOutline)
+        {
+            ClearTargetOutline();
+            return;
+        }
+
+        if (_lastShowTarget == Target) return;
+        ClearTargetOutline();
+        if (Target != null) SetOutline(Target, true, OutlineColor);
+        _lastShowTarget = Target;
+    }
+
+    private void ClearTarget()
+    {
+        ClearTargetOutline();
+        Target = null;
+    }
+
+    private void ClearTargetOutline()
+    {
+        if (_lastShowTarget != null) SetOutline(_lastShowTarget, false, default);
+        _lastShowTarget = null;
     }
     
     private static void SetOutline(Vent vent, bool show, Color32 color)
     {
+        if (vent == null) return;
         var rend = vent.myRend;
         if (rend == null) return;
         rend.material.SetFloat("_Outline", show ? 1f : 0f);

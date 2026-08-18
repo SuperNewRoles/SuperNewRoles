@@ -16,6 +16,7 @@ using TMPro;
 using UnityEngine;
 using BepInEx.Logging;
 using SuperNewRoles.Modules;
+using SuperNewRoles.Modules.Compatibility;
 using SuperNewRoles.Patches;
 using SuperNewRoles.Roles;
 using SuperNewRoles.CustomOptions;
@@ -43,6 +44,8 @@ namespace SuperNewRoles;
 
 [BepInAutoPlugin(PluginConfig.Id, PluginConfig.Name)]
 [BepInProcess(PluginConfig.ProcessName)]
+[BepInDependency(LevelImposterSupport.ReactorPluginGuid, BepInDependency.DependencyFlags.SoftDependency)]
+[BepInDependency(LevelImposterSupport.PluginGuid, BepInDependency.DependencyFlags.SoftDependency)]
 [BepInIncompatibility("com.emptybottle.townofhost")]
 [BepInIncompatibility("me.eisbison.theotherroles")]
 [BepInIncompatibility("me.yukieiji.extremeroles")]
@@ -59,6 +62,7 @@ public partial class SuperNewRolesPlugin : BasePlugin
     private readonly object _mainThreadActionsLock = new();
 
     public static Assembly Assembly { get; private set; } = Assembly.GetExecutingAssembly();
+    private static Assembly _announcementImageDecoderAssembly;
 
     private static string _currentSceneName;
 
@@ -100,6 +104,8 @@ public partial class SuperNewRolesPlugin : BasePlugin
 
         if (!ModHelpers.IsAndroid())
             EnsureBepInExInteropCompatibility();
+        LoadAnnouncementImageDecoder();
+        LevelImposterSupport.Initialize();
 
         Encryption.SetEncryptKey();
 
@@ -178,6 +184,35 @@ public partial class SuperNewRolesPlugin : BasePlugin
         catch (Exception exception)
         {
             Logger.LogError($"Failed to ensure BepInEx interop compatibility: {exception}");
+        }
+    }
+
+    private static void LoadAnnouncementImageDecoder()
+    {
+        const string assemblyName = "SixLabors.ImageSharp";
+        const string resourceName = "SuperNewRoles.Dependencies.SixLabors.ImageSharp.dll";
+
+        try
+        {
+            _announcementImageDecoderAssembly = AppDomain.CurrentDomain.GetAssemblies()
+                .FirstOrDefault(assembly => string.Equals(assembly.GetName().Name, assemblyName, StringComparison.Ordinal));
+            if (_announcementImageDecoderAssembly != null)
+                return;
+
+            using var stream = Assembly.GetManifestResourceStream(resourceName);
+            if (stream == null)
+            {
+                Logger.LogWarning($"Embedded announcement image decoder was not found: {resourceName}");
+                return;
+            }
+
+            using var buffer = new MemoryStream();
+            stream.CopyTo(buffer);
+            _announcementImageDecoderAssembly = Assembly.Load(buffer.ToArray());
+        }
+        catch (Exception ex)
+        {
+            Logger.LogWarning($"Failed to load announcement image decoder: {ex}");
         }
     }
 
@@ -351,11 +386,13 @@ public partial class SuperNewRolesPlugin : BasePlugin
                 if (isAndroid)
                 {
                     ClassInjector.RegisterTypeInIl2Cpp<AnnouncementImageRendererAndroid>();
+                    ClassInjector.RegisterTypeInIl2Cpp<AnnouncementImageViewerController>();
                 }
                 else
                 {
                     ClassInjector.RegisterTypeInIl2Cpp<AnnouncementImageRenderer>();
                     ClassInjector.RegisterTypeInIl2Cpp<AnnouncementImageSpinner>();
+                    ClassInjector.RegisterTypeInIl2Cpp<AnnouncementImageViewerController>();
                 }
             }
         }
@@ -451,7 +488,7 @@ public partial class SuperNewRolesPlugin : BasePlugin
         public static void Postfix(ref int __result)
         {
             if (AmongUsClient.Instance.NetworkMode is NetworkModes.LocalGame or NetworkModes.FreePlay) return;
-            __result += 25;
+            __result = Statics.ApplyDisableServerAuthorityFlag(__result);
         }
     }
     [HarmonyPatch(typeof(Constants), nameof(Constants.IsVersionModded))]

@@ -381,9 +381,9 @@ public static class IntroCutscenePatch
         }
         if (GameSettingOptions.InitialCooldown != InitialCooldownType.Immediate)
         {
-            foreach (var ability in ExPlayerControl.LocalPlayer.PlayerAbilities)
+            foreach (var customButtonBase in ExPlayerControl.LocalPlayer.GetAbilities<CustomButtonBase>())
             {
-                if (ability is CustomButtonBase customButtonBase && customButtonBase.IsFirstCooldownTenSeconds)
+                if (customButtonBase.IsFirstCooldownTenSeconds)
                 {
                     customButtonBase.SetInitialCooldown();
                 }
@@ -395,16 +395,6 @@ public static class IntroCutscenePatch
     private static void ReAssignTasks()
     {
         // ローカルプレイヤーのみがタスクを再割り当てする
-        CustomTaskAbility customTaskAbility = null;
-        foreach (var taskAbility in ExPlayerControl.LocalPlayer.GetAbilities<CustomTaskAbility>())
-        {
-            customTaskAbility = taskAbility;
-            if (taskAbility.assignTaskData != null)
-            {
-                taskAbility.AssignTasks();
-                return;
-            }
-        }
-        customTaskAbility?.AssignTasks();
+        ExPlayerControl.LocalPlayer.AssignCustomTasks();
     }
 }

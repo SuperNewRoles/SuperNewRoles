@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Linq;
 using SuperNewRoles.Events;
 using SuperNewRoles.Modules;
-using SuperNewRoles.Modules.Events.Bases;
 using SuperNewRoles.Roles.Ability;
 using SuperNewRoles.Roles.Impostor;
 using SuperNewRoles.Roles.Neutral;
@@ -17,8 +16,6 @@ public class DeadBodyArrowsAbility : AbilityBase
     /// <summary>死体矢印に反映させるボディカラーのモード</summary>
     private readonly DeadBodyColorMode _deadBodyColorMode;
     private Dictionary<DeadBody, (Arrow arrow, Color color)> _deadBodyArrows = new();
-    private EventListener _fixedUpdateEvent;
-    private EventListener<WrapUpEventData> _wrapUpEvent;
 
     /// <param name="showArrows">矢印のを表示できるか</param>
     /// <param name="arrowColor">矢印の色(指定無しの場合Vultureのロールカラー)</param>
@@ -32,8 +29,8 @@ public class DeadBodyArrowsAbility : AbilityBase
     public override void AttachToLocalPlayer()
     {
         // 矢印表示のイベントリスナーを設定
-        _fixedUpdateEvent = FixedUpdateEvent.Instance.AddListener(OnFixedUpdate);
-        _wrapUpEvent = WrapUpEvent.Instance.AddListener(OnWrapUp);
+        SubscribeWithAbility(FixedUpdateEvent.Instance, OnFixedUpdate);
+        SubscribeWithAbility(WrapUpEvent.Instance, OnWrapUp);
     }
 
     private void OnWrapUp(WrapUpEventData data)
@@ -136,10 +133,6 @@ public class DeadBodyArrowsAbility : AbilityBase
     public override void DetachToLocalPlayer()
     {
         base.DetachToLocalPlayer();
-
-        // イベントリスナーを削除
-        _fixedUpdateEvent?.RemoveListener();
-        _wrapUpEvent?.RemoveListener();
 
         // 矢印を削除
         foreach (var (arrow, color) in _deadBodyArrows.Values)

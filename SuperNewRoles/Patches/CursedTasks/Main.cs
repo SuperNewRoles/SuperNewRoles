@@ -3,6 +3,7 @@ using SuperNewRoles;
 using SuperNewRoles.CustomOptions.Categories;
 using SuperNewRoles.Mode;
 using SuperNewRoles.Modules;
+using SuperNewRoles.Modules.Compatibility;
 using SuperNewRoles.Patches;
 using SuperNewRoles.Roles;
 using UnityEngine;
@@ -13,7 +14,8 @@ namespace SuperNewRoles.Patches.CursedTasks;
 public static class Main
 {
     public static bool IsCursed => GameSettingOptions.CursedTaskOption
-        && ModeManager.IsMode(ModeId.Default);
+        && ModeManager.IsMode(ModeId.Default)
+        && !LevelImposterSupport.IsCustomMap;
 
     private static GameObject _cursedLogoObject;
 
