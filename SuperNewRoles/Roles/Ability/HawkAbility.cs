@@ -3,7 +3,6 @@ using SuperNewRoles.Modules;
 using SuperNewRoles.Roles.Ability.CustomButton;
 using SuperNewRoles.Events;
 using System;
-using SuperNewRoles.Modules.Events.Bases;
 using SuperNewRoles.Events.PCEvents;
 
 namespace SuperNewRoles.Roles.Ability;
@@ -31,9 +30,6 @@ public class HawkAbility : CustomButtonBase, IButtonEffect
     private readonly bool _cannotWalkInEffect;
     public bool BlocksMovement => isEffectActive && _cannotWalkInEffect;
 
-    private EventListener<HawkEventData> hawkEventListener;
-    private EventListener<MeetingStartEventData> meetingStartEventListener;
-    private EventListener<DieEventData> dieEventListener;
 
     public HawkAbility(float coolDown, float duration, float zoomMagnification, bool cannotWalkInEffect)
     {
@@ -46,15 +42,15 @@ public class HawkAbility : CustomButtonBase, IButtonEffect
     public override void AttachToLocalPlayer()
     {
         base.AttachToLocalPlayer();
-        hawkEventListener = HawkEvent.Instance.AddListener((data) =>
+        SubscribeWithAbility(HawkEvent.Instance, (data) =>
         {
             OnHawk(data);
         });
-        meetingStartEventListener = MeetingStartEvent.Instance.AddListener((data) =>
+        SubscribeWithAbility(MeetingStartEvent.Instance, (data) =>
         {
             OnStartMeeting();
         });
-        dieEventListener = DieEvent.Instance.AddListener((data) =>
+        SubscribeWithAbility(DieEvent.Instance, (data) =>
         {
             if (data.player == Player && Player.AmOwner)
                 OnDie();
@@ -64,9 +60,6 @@ public class HawkAbility : CustomButtonBase, IButtonEffect
     public override void DetachToLocalPlayer()
     {
         base.DetachToLocalPlayer();
-        hawkEventListener?.RemoveListener();
-        meetingStartEventListener?.RemoveListener();
-        dieEventListener?.RemoveListener();
         if (isEffectActive)
         {
             OnEffectEnds();

@@ -10,7 +10,6 @@ namespace SuperNewRoles.Roles.Ability;
 public class MadJesterAbility : AbilityBase
 {
     private readonly MadJesterData _data;
-    private EventListener<ExileEventData> _playerExiledListener;
     private EventListener<TaskCompleteEventData> _taskCompleteListener;
     private MadmateAbility _madmateAbility;
 
@@ -32,10 +31,10 @@ public class MadJesterAbility : AbilityBase
 
         Player.AttachAbility(_madmateAbility, new AbilityParentAbility(this));
 
-        _playerExiledListener = ExileEvent.Instance.AddListener(OnPlayerExiled);
+        SubscribeWithAbility(ExileEvent.Instance, OnPlayerExiled);
         if (_data.WinOnTaskComplete)
         {
-            _taskCompleteListener = TaskCompleteEvent.Instance.AddListener(OnTaskComplete);
+            _taskCompleteListener = SubscribeWithAbility(TaskCompleteEvent.Instance, OnTaskComplete);
         }
     }
 
@@ -71,11 +70,6 @@ public class MadJesterAbility : AbilityBase
         }
     }
 
-    public override void DetachToAlls()
-    {
-        _playerExiledListener?.RemoveListener();
-        _taskCompleteListener?.RemoveListener();
-    }
 }
 
 public class MadJesterData

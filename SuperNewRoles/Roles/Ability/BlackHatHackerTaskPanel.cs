@@ -165,7 +165,7 @@ public static class BlackHatHackerHudManagerPatch
                 double percentage = Math.Floor(data.Value / ability.Data.HackInfectiousTime * 1000) / 1000;
                 var playerInfo = GameData.Instance.GetPlayerById(data.Key);
                 string statusText = ability.DeadPlayers.Contains(data.Key) ?
-                    ModTranslation.GetString("FinalStatusDead") :
+                    ModTranslation.GetString("FinalStatus.Dead") :
                     (percentage < 1 ? percentage.ToString("P1") : ModTranslation.GetString("BlackHatHackerInfected"));
 
                 text.AppendLine($"{playerInfo?.PlayerName}<pos=125%>{statusText}");
@@ -196,7 +196,7 @@ public static class BlackHatHackerHudManagerPatch
                     double percentage = Math.Floor(data.Value / ability.Data.HackInfectiousTime * 1000) / 1000;
                     var playerInfo = GameData.Instance.GetPlayerById(data.Key);
                     string statusText = playerInfo?.IsDead == true ?
-                        ModTranslation.GetString("FinalStatusDead") :
+                        ModTranslation.GetString("FinalStatus.Dead") :
                         (percentage < 1 ? percentage.ToString("P1") : ModTranslation.GetString("BlackHatHackerInfected"));
 
                     text.AppendLine($"{playerInfo?.PlayerName}<pos=125%>{statusText}");

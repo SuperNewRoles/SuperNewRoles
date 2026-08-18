@@ -7,7 +7,6 @@ using SuperNewRoles.Roles.Ability;
 using SuperNewRoles.Modules;
 using SuperNewRoles.Events;
 using SuperNewRoles.Events.PCEvents;
-using SuperNewRoles.Modules.Events.Bases;
 
 namespace SuperNewRoles.Roles.Impostor;
 
@@ -26,7 +25,7 @@ class EvilSeer : RoleBase<EvilSeer>
         () => new DeadBodyArrowsAbility(() => EvilSeerShowArrows, colorMode : EvilSeerAbilityColorModeSelect is EvilSeerAbility.All or EvilSeerAbility.ArrowOnly ? EvilSeerColorMode : DeadBodyColorMode.None),
         () => new EvilSeerHauntAbility(EvilSeerHauntMode is EvilSeerHauntMode.Both or EvilSeerHauntMode.OnlyEvilSeerHaunt),
         () => new CustomModifierGrantedButtonAbility(new(
-        canGrantModifier: (granted) => !granted && EvilSeerHauntMode is EvilSeerHauntMode.Both or EvilSeerHauntMode.OnlyOthersHaunt,
+        canGrantModifier: (granted) => !granted && (EvilSeerHauntMode is EvilSeerHauntMode.Both or EvilSeerHauntMode.OnlyOthersHaunt),
         cooldown: () => EvilSeerCreateAbilityCooldown,
         modifierRole: () => ModifierRoleId.ModifierHauntedWolf,
         buttonSprite: AssetManager.GetAsset<Sprite>("EvilSeerHauntButton.png"),
@@ -90,18 +89,11 @@ public enum EvilSeerHauntMode
 
 public class EvilSeerHauntAbility(bool canHaunt) : AbilityBase
 {
-    private EventListener<DieEventData> dieEventListener;
 
     private readonly bool CanHaunt = canHaunt;
 
     public override void AttachToLocalPlayer() =>
-        dieEventListener = DieEvent.Instance.AddListener(OnPlayerDead);
-    public override void DetachToLocalPlayer()
-    {
-        dieEventListener?.RemoveListener();
-        base.DetachToLocalPlayer();
-    }
-
+        SubscribeWithAbility(DieEvent.Instance, OnPlayerDead);
     private void OnPlayerDead(DieEventData data)
     {
         if (!CanHaunt) return;

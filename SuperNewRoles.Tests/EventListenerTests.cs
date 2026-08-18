@@ -1,8 +1,11 @@
 using System;
+using System.IO;
 using System.Reflection;
 using BepInEx.Logging;
 using FluentAssertions;
+using SuperNewRoles.Modules;
 using SuperNewRoles.Modules.Events.Bases;
+using SuperNewRoles.Roles.Ability;
 using Xunit;
 
 namespace SuperNewRoles.Tests;
@@ -20,6 +23,38 @@ public class EventListenerTests
         public int Value { get; set; }
     }
     private class DataEvent : EventTargetBase<DataEvent, DummyData> { }
+    private class ListenerOwningAbility : AbilityBase
+    {
+        private readonly Action _action;
+        private readonly bool _throwOnAttachToAlls;
+        private readonly bool _throwOnDetachToAlls;
+
+        public ListenerOwningAbility(
+            Action action,
+            bool throwOnAttachToAlls = false,
+            bool throwOnDetachToAlls = false)
+        {
+            _action = action;
+            _throwOnAttachToAlls = throwOnAttachToAlls;
+            _throwOnDetachToAlls = throwOnDetachToAlls;
+        }
+
+        protected override bool IsLocalPlayer(PlayerControl player) => true;
+
+        public override void AttachToAlls()
+        {
+            if (_throwOnAttachToAlls)
+                throw new InvalidOperationException("attach failed");
+
+            SubscribeWithAbility(NoArgEvent.Instance, _action);
+        }
+
+        public override void DetachToAlls()
+        {
+            if (_throwOnDetachToAlls)
+                throw new InvalidOperationException("detach failed");
+        }
+    }
 
     private static void ResetEvents()
     {
@@ -103,7 +138,170 @@ public class EventListenerTests
         observed.Should().Be(42);
     }
 
+    [Fact]
+    public void Detach_RemovesAbilityOwnedListeners()
+    {
+        EnsurePluginLogger();
+        ResetEvents();
+        var called = 0;
+        var ability = new ListenerOwningAbility(() => called++);
+        ability.Attach(null, 1, new AbilityParentPlayer(null));
+
+        NoArgEvent.Instance.Awake();
+        ability.Detach();
+        NoArgEvent.Instance.Awake();
+
+        called.Should().Be(1);
+    }
+
+    [Fact]
+    public void Attach_WhenLifecycleHookThrows_DoesNotThrowAndLogsContext()
+    {
+        EnsurePluginLogger();
+        ResetEvents();
+        var ability = new ListenerOwningAbility(() => { }, throwOnAttachToAlls: true);
+        var originalError = System.Console.Error;
+        using var errorOutput = new StringWriter();
+
+        System.Console.SetError(errorOutput);
+        try
+        {
+            Action act = () => ability.Attach(null, 42, new AbilityParentPlayer(null));
+            act.Should().NotThrow();
+        }
+        finally
+        {
+            System.Console.SetError(originalError);
+        }
+
+        errorOutput.ToString().Should()
+            .Contain("Ability lifecycle failure during Attach")
+            .And.Contain($"ability={typeof(ListenerOwningAbility).FullName}")
+            .And.Contain("abilityId=42")
+            .And.Contain("System.InvalidOperationException: attach failed")
+            .And.Contain(nameof(ListenerOwningAbility.AttachToAlls));
+    }
+
+    [Fact]
+    public void Detach_WhenLifecycleHookThrows_StillRemovesListenersAndLogsContext()
+    {
+        EnsurePluginLogger();
+        ResetEvents();
+        var called = 0;
+        var ability = new ListenerOwningAbility(() => called++, throwOnDetachToAlls: true);
+        ability.Attach(null, 43, new AbilityParentPlayer(null));
+        var originalError = System.Console.Error;
+        using var errorOutput = new StringWriter();
+
+        System.Console.SetError(errorOutput);
+        try
+        {
+            Action act = ability.Detach;
+            act.Should().NotThrow();
+        }
+        finally
+        {
+            System.Console.SetError(originalError);
+        }
+
+        NoArgEvent.Instance.Awake();
+
+        called.Should().Be(0);
+        errorOutput.ToString().Should()
+            .Contain("Ability lifecycle failure during Detach")
+            .And.Contain($"ability={typeof(ListenerOwningAbility).FullName}")
+            .And.Contain("abilityId=43")
+            .And.Contain("System.InvalidOperationException: detach failed")
+            .And.Contain(nameof(ListenerOwningAbility.DetachToAlls));
+    }
+
     // 目的: 1つのリスナーが例外を投げても他のリスナー実行は継続されることを検証
+    [Fact]
+    public void NoArgEvent_RemoveListenerDuringNestedAwake_SkipsItInOuterAwake()
+    {
+        EnsurePluginLogger();
+        ResetEvents();
+        var nested = false;
+        var called = 0;
+        EventListener? secondListener = null;
+
+        NoArgEvent.Instance.AddListener(() =>
+        {
+            if (!nested)
+            {
+                nested = true;
+                NoArgEvent.Instance.Awake();
+                nested = false;
+                return;
+            }
+
+            secondListener!.RemoveListener();
+        });
+        secondListener = NoArgEvent.Instance.AddListener(() => called++);
+
+        NoArgEvent.Instance.Awake();
+
+        called.Should().Be(0);
+    }
+
+    [Fact]
+    public void GenericEvent_RemoveListenerDuringNestedAwake_SkipsItInOuterAwake()
+    {
+        EnsurePluginLogger();
+        ResetEvents();
+        var nested = false;
+        var called = 0;
+        EventListener<DummyData>? secondListener = null;
+
+        DataEvent.Instance.AddListener(data =>
+        {
+            if (!nested)
+            {
+                nested = true;
+                DataEvent.Instance.Awake(data);
+                nested = false;
+                return;
+            }
+
+            secondListener!.RemoveListener();
+        });
+        secondListener = DataEvent.Instance.AddListener(_ => called++);
+
+        DataEvent.Instance.Awake(new DummyData { Value = 1 });
+
+        called.Should().Be(0);
+    }
+
+    [Fact]
+    public void NoArgEvent_RemoveListenerAllDuringAwake_SkipsRemainingListeners()
+    {
+        EnsurePluginLogger();
+        ResetEvents();
+        var called = 0;
+        NoArgEvent.Instance.AddListener(NoArgEvent.Instance.RemoveListenerAll);
+        NoArgEvent.Instance.AddListener(() => called++);
+
+        NoArgEvent.Instance.Awake();
+        NoArgEvent.Instance.Awake();
+
+        called.Should().Be(0);
+    }
+
+    [Fact]
+    public void GenericEvent_RemoveListenerAllDuringAwake_SkipsRemainingListeners()
+    {
+        EnsurePluginLogger();
+        ResetEvents();
+        var called = 0;
+        DataEvent.Instance.AddListener(_ => DataEvent.Instance.RemoveListenerAll());
+        DataEvent.Instance.AddListener(_ => called++);
+
+        DataEvent.Instance.Awake(new DummyData { Value = 1 });
+        DataEvent.Instance.Awake(new DummyData { Value = 2 });
+
+        called.Should().Be(0);
+    }
+
     [Fact]
     public void NoArgEvent_Exception_In_Listener_Does_Not_Stop_Others()
     {
@@ -135,4 +333,3 @@ public class EventListenerTests
         called.Should().Be(1);
     }
 }
-

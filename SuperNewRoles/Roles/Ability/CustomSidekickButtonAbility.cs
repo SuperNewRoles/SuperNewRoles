@@ -87,6 +87,7 @@ public class CustomSidekickButtonAbility : TargetCustomButtonBase
         if (Target == null) return;
         if (!_options.CanCreateSidekick(_sidekickCreated)) return;
         ExPlayerControl target = Target;
+        if (target.IsDead()) return;
         if (_options.SidekickSuccess == null || _options.SidekickSuccess(target))
         {
             var vanillaRole = _options.SidekickRoleVanilla?.Invoke();
@@ -121,6 +122,7 @@ public class CustomSidekickButtonAbility : TargetCustomButtonBase
     [CustomRPC]
     public void RpcSidekicked(ExPlayerControl player, SidekickData data)
     {
+        if (player == null || data == null) return;
         Logger.Info($"RpcSidekicked: {player.PlayerId}, {data.RoleId}, {data.IsVanilla}, {data.IsPromote}, {data.PromoteToRole}, {data.PromoteToRoleVanilla}");
 
         player.SetRole(data.RoleId);

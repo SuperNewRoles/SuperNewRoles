@@ -4,7 +4,6 @@ using HarmonyLib;
 using SuperNewRoles.Events;
 using SuperNewRoles.Events.PCEvents;
 using SuperNewRoles.Modules;
-using SuperNewRoles.Modules.Events.Bases;
 using SuperNewRoles.Roles.Neutral;
 using UnityEngine;
 
@@ -14,8 +13,6 @@ public class LadderDeathAbility : AbilityBase
 {
     public int DeathChance { get; private set; }
     private Dictionary<byte, Vector3> _targetLadderData = new();
-    private EventListener _fixedUpdateListener;
-    private EventListener<ClimbLadderEventData> _climbLadderListener;
 
     public LadderDeathAbility(int deathChance)
     {
@@ -25,14 +22,8 @@ public class LadderDeathAbility : AbilityBase
     public override void AttachToLocalPlayer()
     {
         base.AttachToLocalPlayer();
-        _fixedUpdateListener = FixedUpdateEvent.Instance.AddListener(OnFixedUpdate);
-        _climbLadderListener = ClimbLadderEvent.Instance.AddListener(OnClimbLadder);
-    }
-
-    public override void DetachToLocalPlayer()
-    {
-        _fixedUpdateListener?.RemoveListener();
-        _climbLadderListener?.RemoveListener();
+        SubscribeWithAbility(FixedUpdateEvent.Instance, OnFixedUpdate);
+        SubscribeWithAbility(ClimbLadderEvent.Instance, OnClimbLadder);
     }
 
     private void OnFixedUpdate()

@@ -10,9 +10,10 @@ using SuperNewRoles.CustomObject;
 
 namespace SuperNewRoles.Roles.Ability;
 
-public class CustomVentAbility : CustomButtonBase, IButtonEffect
+public class CustomVentAbility : CustomButtonBase, IButtonEffect, IPrioritizedAbility
 {
-    public Func<bool> CanUseVent { get; }
+    public int Priority { get; }
+    public Func<bool?> CanUseVent { get; }
     public Func<float?> VentCooldown { get; }
     public Func<float?> VentDuration { get; }
 
@@ -38,11 +39,12 @@ public class CustomVentAbility : CustomButtonBase, IButtonEffect
 
     //public bool IsEffectDurationInfinity => VentDuration?.Invoke() == null;
 
-    public CustomVentAbility(Func<bool> canUseVent, Func<float?> ventCooldown = null, Func<float?> ventDuration = null)
+    public CustomVentAbility(Func<bool?> canUseVent, Func<float?> ventCooldown = null, Func<float?> ventDuration = null, int priority = AbilityPriority.Default)
     {
         CanUseVent = canUseVent;
         VentCooldown = ventCooldown;
         VentDuration = ventDuration;
+        Priority = priority;
     }
 
     protected virtual void ExitVent()
@@ -73,6 +75,13 @@ public class CustomVentAbility : CustomButtonBase, IButtonEffect
             PlayerControl.LocalPlayer.MyPhysics?.RpcEnterVent(CurrentVent.Id);
             CurrentVent.SetButtons(true);
         }
+    }
+
+    public override void OnUpdate()
+    {
+        if (PlayerControl.LocalPlayer?.Data == null || MeetingHud.Instance != null || ExileController.Instance != null)
+            ClearCurrentVentOutline();
+        base.OnUpdate();
     }
     private static void SetVentOutline(Vent vent, bool show, Color32 color)
     {
@@ -204,7 +213,10 @@ public class CustomVentAbility : CustomButtonBase, IButtonEffect
     }
     public override bool CheckHasButton()
     {
-        return ExPlayerControl.LocalPlayer.IsAlive() && CheckCanUseVent();
+        bool canUse = ExPlayerControl.LocalPlayer != null && ExPlayerControl.LocalPlayer.IsAlive() && Player.ShouldShowVentAbility(this);
+        if (!canUse)
+            ClearCurrentVentOutline();
+        return canUse;
     }
 
     public override void AttachToLocalPlayer()
@@ -212,10 +224,20 @@ public class CustomVentAbility : CustomButtonBase, IButtonEffect
         base.AttachToLocalPlayer();
     }
 
-    public bool CheckCanUseVent()
+    public override void DetachToLocalPlayer()
     {
-        return CanUseVent();
+        ClearCurrentVentOutline();
+        base.DetachToLocalPlayer();
     }
+
+    private void ClearCurrentVentOutline()
+    {
+        if (CurrentVent == null) return;
+        SetVentOutline(CurrentVent, false, Palette.White);
+        CurrentVent = null;
+    }
+
+    public bool CheckCanUseVent() => CanUseVent?.Invoke() ?? false;
 }
 [HarmonyPatch(typeof(Vent), nameof(Vent.CanUse))]
 public class VentSetButtonsPatch

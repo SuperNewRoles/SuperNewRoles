@@ -5,7 +5,6 @@ using SuperNewRoles.Ability;
 using SuperNewRoles.Events;
 using SuperNewRoles.Modules;
 using SuperNewRoles.Modules.Events;
-using SuperNewRoles.Modules.Events.Bases;
 using SuperNewRoles.Events.PCEvents;
 using SuperNewRoles.Roles.Ability.CustomButton;
 using TMPro;
@@ -83,9 +82,6 @@ public class KunoichiKunaiAbility : CustomButtonBase
     private readonly Func<bool> _isInvisible;
     private readonly bool _allowWhileInvisible;
 
-    private EventListener<WrapUpEventData> _wrapUpEvent;
-    private EventListener<MeetingStartEventData> _meetingStartEvent;
-    private EventListener _fixedUpdateEvent;
 
     private Dictionary<byte, Dictionary<byte, int>> HitCounts = new();
     public int KillThreshold => _killThreshold;
@@ -117,14 +113,14 @@ public class KunoichiKunaiAbility : CustomButtonBase
     public override void AttachToAlls()
     {
         base.AttachToAlls();
-        _wrapUpEvent = WrapUpEvent.Instance.AddListener(_ => ClearDeadHits());
-        _meetingStartEvent = MeetingStartEvent.Instance.AddListener(_ =>
+        SubscribeWithAbility(WrapUpEvent.Instance, _ => ClearDeadHits());
+        SubscribeWithAbility(MeetingStartEvent.Instance, _ =>
         {
             ClearDeadHits();
             DestroyProjectiles();
             SetAndroidAimVisible(false);
         });
-        _fixedUpdateEvent = FixedUpdateEvent.Instance.AddListener(OnFixedUpdate);
+        SubscribeWithAbility(FixedUpdateEvent.Instance, OnFixedUpdate);
         UpdateAndroidAimVisibility();
     }
 
@@ -132,9 +128,6 @@ public class KunoichiKunaiAbility : CustomButtonBase
     public override void DetachToAlls()
     {
         base.DetachToAlls();
-        _wrapUpEvent?.RemoveListener();
-        _meetingStartEvent?.RemoveListener();
-        _fixedUpdateEvent?.RemoveListener();
         DestroyProjectiles();
         ClearLocalHits();
         SetAndroidAimVisible(false);
@@ -370,7 +363,6 @@ public class KunoichiKunaiHitUIAbility : AbilityBase
     private GameObject _container;
     private readonly List<(byte playerId, int count)> _lastHits = new();
     private readonly List<PoolablePlayer> _uiObjects = new();
-    private EventListener _fixedUpdateListener;
 
     public KunoichiKunaiHitUIAbility(
         Func<IEnumerable<(ExPlayerControl target, int count)>> getHits,
@@ -382,7 +374,7 @@ public class KunoichiKunaiHitUIAbility : AbilityBase
 
     public override void AttachToLocalPlayer()
     {
-        _fixedUpdateListener = FixedUpdateEvent.Instance.AddListener(OnFixedUpdate);
+        SubscribeWithAbility(FixedUpdateEvent.Instance, OnFixedUpdate);
         _container = new GameObject("KunoichiHitUIContainer");
         _container.transform.SetParent(FastDestroyableSingleton<HudManager>.Instance.transform);
         _container.transform.localPosition = new(-4.19f, -2.4f, 0f);
@@ -395,7 +387,6 @@ public class KunoichiKunaiHitUIAbility : AbilityBase
 
     public override void DetachToLocalPlayer()
     {
-        _fixedUpdateListener?.RemoveListener();
         if (_container != null)
         {
             GameObject.Destroy(_container);
@@ -507,8 +498,6 @@ public class KunoichiHideAbility : CustomButtonBase, IButtonEffect
     private float _stopTimer;
     private Vector2 _lastPosition;
 
-    private EventListener _fixedUpdateEvent;
-    private EventListener<MeetingStartEventData> _meetingStartEvent;
     private readonly OpacityFadeController _opacityFader = new();
 
     public bool IsInvisible { get; private set; }
@@ -535,15 +524,13 @@ public class KunoichiHideAbility : CustomButtonBase, IButtonEffect
     public override void AttachToAlls()
     {
         base.AttachToAlls();
-        _fixedUpdateEvent = FixedUpdateEvent.Instance.AddListener(OnFixedUpdate);
-        _meetingStartEvent = MeetingStartEvent.Instance.AddListener(_ => ExitInvisibility());
+        SubscribeWithAbility(FixedUpdateEvent.Instance, OnFixedUpdate);
+        SubscribeWithAbility(MeetingStartEvent.Instance, _ => ExitInvisibility());
     }
 
     public override void DetachToAlls()
     {
         base.DetachToAlls();
-        _fixedUpdateEvent?.RemoveListener();
-        _meetingStartEvent?.RemoveListener();
         _opacityFader.StopAll();
         ExitInvisibility();
     }
@@ -633,7 +620,6 @@ public class KunoichiKunaiDisplayAbility : CustomButtonBase
     private readonly bool _canThrowWhileInvisible;
     private readonly Func<bool> _isInvisible;
     private GameObject _displayKunai;
-    private EventListener _fixedUpdateEvent;
     private bool _isShown;
     private bool _hasInitialPosition;
     private Vector3 _followVelocity;
@@ -653,13 +639,12 @@ public class KunoichiKunaiDisplayAbility : CustomButtonBase
     public override void AttachToAlls()
     {
         base.AttachToAlls();
-        _fixedUpdateEvent = FixedUpdateEvent.Instance.AddListener(OnFixedUpdate);
+        SubscribeWithAbility(FixedUpdateEvent.Instance, OnFixedUpdate);
     }
 
     public override void DetachToAlls()
     {
         base.DetachToAlls();
-        _fixedUpdateEvent?.RemoveListener();
         if (_displayKunai != null) UnityEngine.Object.Destroy(_displayKunai);
     }
 

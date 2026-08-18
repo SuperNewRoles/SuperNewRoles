@@ -4,7 +4,6 @@ using System.Linq;
 using SuperNewRoles.Events;
 using SuperNewRoles.Events.PCEvents;
 using SuperNewRoles.Modules;
-using SuperNewRoles.Modules.Events.Bases;
 using SuperNewRoles.Roles.Ability.CustomButton;
 using SuperNewRoles.Roles.Neutral;
 using UnityEngine;
@@ -19,9 +18,6 @@ public class PartTimerAbility : TargetCustomButtonBase
     public ExPlayerControl Employer { get { return _employer != null && _employer != Player ? _employer : null; } set { _employer = value; } }
     private bool _isEmployed => Employer != null;
 
-    private EventListener<WrapUpEventData> _wrapUpListener;
-    private EventListener<NameTextUpdateEventData> _nameTextUpdateListener;
-    private EventListener<NameTextUpdateVisiableEventData> _nameTextUpdateVisiableListener;
 
     public override Sprite Sprite => AssetManager.GetAsset<Sprite>("PartTimerButton.png");
     public override string buttonText => ModTranslation.GetString("PartTimerButtonName");
@@ -39,27 +35,14 @@ public class PartTimerAbility : TargetCustomButtonBase
     public override void AttachToLocalPlayer()
     {
         base.AttachToLocalPlayer();
-        _wrapUpListener = WrapUpEvent.Instance.AddListener(OnWrapUp);
-        _nameTextUpdateVisiableListener = NameTextUpdateVisiableEvent.Instance.AddListener(OnNameTextUpdateVisiable);
-    }
-
-    public override void DetachToLocalPlayer()
-    {
-        base.DetachToLocalPlayer();
-        _wrapUpListener?.RemoveListener();
-        _nameTextUpdateVisiableListener?.RemoveListener();
+        SubscribeWithAbility(WrapUpEvent.Instance, OnWrapUp);
+        SubscribeWithAbility(NameTextUpdateVisiableEvent.Instance, OnNameTextUpdateVisiable);
     }
 
     public override void AttachToAlls()
     {
         base.AttachToAlls();
-        _nameTextUpdateListener = NameTextUpdateEvent.Instance.AddListener(OnNameTextUpdate);
-    }
-
-    public override void DetachToAlls()
-    {
-        base.DetachToAlls();
-        _nameTextUpdateListener?.RemoveListener();
+        SubscribeWithAbility(NameTextUpdateEvent.Instance, OnNameTextUpdate);
     }
 
     private void OnNameTextUpdateVisiable(NameTextUpdateVisiableEventData data)

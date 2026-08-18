@@ -4,7 +4,6 @@ using AmongUs.GameOptions;
 using SuperNewRoles.CustomOptions;
 using SuperNewRoles.Events.PCEvents;
 using SuperNewRoles.Modules;
-using SuperNewRoles.Modules.Events.Bases;
 using SuperNewRoles.Roles.Ability;
 using UnityEngine;
 
@@ -43,7 +42,6 @@ public class FinderAbility : AbilityBase
     private int _killCount;
     private bool _revealed;
     private KnowOtherAbility _knowMadmateAbility;
-    private EventListener<MurderEventData> _murderListener;
 
     public FinderAbility(int neededKills)
     {
@@ -62,13 +60,7 @@ public class FinderAbility : AbilityBase
     public override void AttachToLocalPlayer()
     {
         base.AttachToLocalPlayer();
-        _murderListener = MurderEvent.Instance.AddListener(OnMurder);
-    }
-
-    public override void DetachToLocalPlayer()
-    {
-        base.DetachToLocalPlayer();
-        _murderListener?.RemoveListener();
+        SubscribeWithAbility(MurderEvent.Instance, OnMurder);
     }
 
     private void OnMurder(MurderEventData data)

@@ -275,6 +275,8 @@ public sealed class OrpheusMainAbility : AbilityBase
 
     private static void RegisterSharedListeners()
     {
+        // 複数のオルフェウスで共有し、最後の1つが Detach するまで残すリスナーなので手動管理する。
+        // SubscribeWithAbility にすると、購読元の Ability が先に Detach した時に全員分が解除されてしまう。
         UnregisterSharedListeners();
         _dieListener = DieEvent.Instance.AddListener(OnDie);
         _wrapListener = WrapUpEvent.Instance.AddListener(OnWrapUp);

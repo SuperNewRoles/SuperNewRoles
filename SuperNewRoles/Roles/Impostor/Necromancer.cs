@@ -5,7 +5,6 @@ using AmongUs.GameOptions;
 using SuperNewRoles.CustomOptions;
 using SuperNewRoles.Events;
 using SuperNewRoles.Modules;
-using SuperNewRoles.Modules.Events.Bases;
 using SuperNewRoles.Roles.Ability;
 using SuperNewRoles.Roles.Ability.CustomButton;
 using UnityEngine;
@@ -104,38 +103,54 @@ public class NecromancerCurseButtonAbility : TargetCustomButtonBase, IAbilityCou
 
 public class NecromancerRevenantArrowAbility : AbilityBase
 {
-    private EventListener _fixedUpdateListener;
-    private EventListener<MeetingCloseEventData> _meetingCloseListener;
     private List<(ExPlayerControl player, Arrow arrow)> _arrows = [];
     public override void AttachToLocalPlayer()
     {
         base.AttachToLocalPlayer();
-        _fixedUpdateListener = FixedUpdateEvent.Instance.AddListener(OnFixedUpdate);
-        _meetingCloseListener = MeetingCloseEvent.Instance.AddListener(OnMeetingClose);
+        SubscribeWithAbility(FixedUpdateEvent.Instance, OnFixedUpdate);
+        SubscribeWithAbility(MeetingCloseEvent.Instance, OnMeetingClose);
         _arrows = [];
     }
 
     public void OnMeetingClose(MeetingCloseEventData _)
     {
+        RemoveInvalidArrows();
+    }
+
+    private void RemoveInvalidArrows()
+    {
         for (int i = _arrows.Count - 1; i >= 0; i--)
         {
             var data = _arrows[i];
-            if (data.player?.GhostRole != GhostRoleId.Revenant)
-            {
+            if (IsActiveRevenant(data.player)) continue;
+
+            if (data.arrow?.arrow != null)
                 GameObject.Destroy(data.arrow.arrow);
-                _arrows.RemoveAt(i);
-            }
+            _arrows.RemoveAt(i);
         }
     }
 
+    private static bool IsActiveRevenant(ExPlayerControl player)
+        => player != null &&
+           player.Data != null &&
+           !player.Data.Disconnected &&
+           ExPlayerControl.ById(player.PlayerId) == player &&
+           player.GhostRole == GhostRoleId.Revenant;
+
     public override void DetachToLocalPlayer()
     {
+        foreach (var data in _arrows)
+        {
+            if (data.arrow?.arrow != null)
+                GameObject.Destroy(data.arrow.arrow);
+        }
+        _arrows.Clear();
         base.DetachToLocalPlayer();
-        _fixedUpdateListener?.RemoveListener();
     }
 
     public void OnFixedUpdate()
     {
+        RemoveInvalidArrows();
         if (ExPlayerControl.LocalPlayer.IsDead()) return;
         foreach (ExPlayerControl player in ExPlayerControl.ExPlayerControls)
         {

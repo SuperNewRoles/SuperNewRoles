@@ -529,9 +529,9 @@ public static class AssignRoles
                 for (int i = 0; i < modifierRoleOption.NumberOfCrews; i++)
                 {
                     Logger.Info($"AssignModifiers: ModifierRole {modifierRoleId} - ループ {i + 1}/{modifierRoleOption.NumberOfCrews} 開始");
-                    int randomRoll = ModHelpers.GetRandomInt(0, 100);
-                    Logger.Info($"AssignModifiers: ModifierRole {modifierRoleId} - ループ {i + 1} のランダム値 = {randomRoll} (閾値: {modifierRoleOption.Percentage})");
-                    if (randomRoll > modifierRoleOption.Percentage)
+                    bool shouldAssign = ModHelpers.IsSuccessChance(modifierRoleOption.Percentage);
+                    Logger.Info($"AssignModifiers: ModifierRole {modifierRoleId} - ループ {i + 1} の割り当て判定 = {shouldAssign} (確率: {modifierRoleOption.Percentage}%)");
+                    if (!shouldAssign)
                     {
                         Logger.Info($"AssignModifiers: ModifierRole {modifierRoleId} - ループ {i + 1} はランダム判定により割り当てをスキップします。");
                         continue;
@@ -570,8 +570,7 @@ public static class AssignRoles
                                 .ToList();
         for (int i = 0; i < modifierRoleOption.MaxImpostors; i++)
         {
-            int roll = ModHelpers.GetRandomInt(0, 100);
-            if (roll <= modifierRoleOption.ImpostorChance && impostors.Count > 0)
+            if (ModHelpers.IsSuccessChance(modifierRoleOption.ImpostorChance) && impostors.Count > 0)
             {
                 var exPlayer = impostors[impostors.GetRandomIndex()];
                 impostors.Remove(exPlayer);
@@ -586,8 +585,7 @@ public static class AssignRoles
                                .ToList();
         for (int i = 0; i < modifierRoleOption.MaxNeutrals; i++)
         {
-            int roll = ModHelpers.GetRandomInt(0, 100);
-            if (roll <= modifierRoleOption.NeutralChance && neutrals.Count > 0)
+            if (ModHelpers.IsSuccessChance(modifierRoleOption.NeutralChance) && neutrals.Count > 0)
             {
                 var exPlayer = neutrals[neutrals.GetRandomIndex()];
                 neutrals.Remove(exPlayer);
@@ -602,8 +600,7 @@ public static class AssignRoles
                                 .ToList();
         for (int i = 0; i < modifierRoleOption.MaxCrewmates; i++)
         {
-            int roll = ModHelpers.GetRandomInt(0, 100);
-            if (roll <= modifierRoleOption.CrewmateChance && crewmates.Count > 0)
+            if (ModHelpers.IsSuccessChance(modifierRoleOption.CrewmateChance) && crewmates.Count > 0)
             {
                 var exPlayer = crewmates[crewmates.GetRandomIndex()];
                 crewmates.Remove(exPlayer);
@@ -669,9 +666,9 @@ public static class AssignRoles
         // カップル作成ループ
         for (int i = 0; i < coupleCount; i++)
         {
-            int roll = ModHelpers.GetRandomInt(0, 100);
-            Logger.Info($"AssignLovers: カップル {i + 1}/{coupleCount} 判定 = {roll} (閾値: {Lovers.LoversSpawnChance})");
-            if (roll >= Lovers.LoversSpawnChance)
+            bool shouldAssign = ModHelpers.IsSuccessChance(Lovers.LoversSpawnChance);
+            Logger.Info($"AssignLovers: カップル {i + 1}/{coupleCount} 判定 = {shouldAssign} (確率: {Lovers.LoversSpawnChance}%)");
+            if (!shouldAssign)
             {
                 Logger.Info($"AssignLovers: カップル {i + 1} はスキップ");
                 continue;

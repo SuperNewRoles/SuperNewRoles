@@ -18,6 +18,7 @@ public class CustomKillButtonAbility : TargetCustomButtonBase
     public Func<ExPlayerControl, bool> IsTargetableValue { get; }
     public Action<ExPlayerControl> KilledCallback { get; }
     public Action<float> OnCooldownStarted;
+    private byte _pendingTargetId = byte.MaxValue;
 
     public override Color32 OutlineColor => ExPlayerControl.LocalPlayer.roleBase.RoleColor;
     public override Sprite Sprite => HudManager.Instance?.KillButton?.graphic?.sprite;
@@ -35,7 +36,6 @@ public class CustomKillButtonAbility : TargetCustomButtonBase
     // キルボタンの処理をカスタムできる。
     private Func<ExPlayerControl, bool> _customKillHandler { get; } = null;
 
-    private EventListener<MurderEventData> _murderListener;
     public CustomKillButtonAbility(
         Func<bool> canKill,
         Func<float?> killCooldown,
@@ -61,19 +61,27 @@ public class CustomKillButtonAbility : TargetCustomButtonBase
     public override void AttachToLocalPlayer()
     {
         base.AttachToLocalPlayer();
-        _murderListener = MurderEvent.Instance.AddListener(OnMurder);
+        SubscribeWithAbility(MurderEvent.Instance, OnMurder);
     }
 
     public override void DetachToLocalPlayer()
     {
+        _pendingTargetId = byte.MaxValue;
         base.DetachToLocalPlayer();
-        _murderListener?.RemoveListener();
     }
 
     private void OnMurder(MurderEventData data)
     {
-        if (data.killer == ExPlayerControl.LocalPlayer && data.killer.AmOwner)
-            ResetTimer();
+        if (data.killer != ExPlayerControl.LocalPlayer || !data.killer.AmOwner)
+            return;
+
+        ResetTimer();
+        if (_pendingTargetId == byte.MaxValue || data.target?.PlayerId != _pendingTargetId)
+            return;
+
+        _pendingTargetId = byte.MaxValue;
+        if (data.resultFlags.HasFlag(MurderResultFlags.Succeeded))
+            KilledCallback?.Invoke(data.target);
     }
 
     public override void OnClick()
@@ -83,9 +91,16 @@ public class CustomKillButtonAbility : TargetCustomButtonBase
         PlayerControl target = Target;
         bool customKilled = _customKillHandler?.Invoke(target) ?? false;
         if (!customKilled)
+        {
+            byte targetId = ((ExPlayerControl)target).PlayerId;
+            _pendingTargetId = targetId;
             ExPlayerControl.LocalPlayer.RpcCustomDeath(target, CustomDeathType.Kill);
+            // RpcCustomDeath executes locally before returning. If TryKillEvent cancelled
+            // the action, no MurderEvent is raised and there must be no stale callback target.
+            if (_pendingTargetId == targetId)
+                _pendingTargetId = byte.MaxValue;
+        }
         ResetTimer();
-        KilledCallback?.Invoke(target);
         OnCooldownStarted?.Invoke(DefaultTimer);
     }
 

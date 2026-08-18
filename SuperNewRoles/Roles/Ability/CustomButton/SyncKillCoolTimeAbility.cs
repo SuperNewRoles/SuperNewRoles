@@ -1,7 +1,6 @@
 using AmongUs.GameOptions;
 using SuperNewRoles.Events.PCEvents;
 using SuperNewRoles.Modules;
-using SuperNewRoles.Modules.Events.Bases;
 
 namespace SuperNewRoles.Roles.Ability.CustomButton;
 
@@ -12,7 +11,6 @@ public class SyncKillCoolTimeAbility : AbilityBase
     {
         Button = button;
     }
-    private EventListener<MurderEventData> murderEvent;
     public override void AttachToLocalPlayer()
     {
         base.AttachToLocalPlayer();
@@ -20,13 +18,12 @@ public class SyncKillCoolTimeAbility : AbilityBase
         {
             Player.ResetKillCooldown();
         };
-        murderEvent = MurderEvent.Instance.AddListener(OnMurder);
+        SubscribeWithAbility(MurderEvent.Instance, OnMurder);
     }
     public override void DetachToLocalPlayer()
     {
         base.DetachToLocalPlayer();
         Button.OnClickEventAction = null;
-        murderEvent?.RemoveListener();
     }
     private void OnMurder(MurderEventData data)
     {

@@ -84,8 +84,6 @@ public sealed class SquidVigilanceAbility : CustomButtonBase, IButtonEffect
     public float EffectDuration => Data.Duration;
     public float EffectTimer { get; set; }
 
-    private EventListener<PlayerPhysicsFixedUpdateEventData> _physicsUpdateListener;
-    private EventListener<TryKillEventData> _tryKillListener;
 
     private bool _boostActive;
     private float _boostRemaining;
@@ -98,25 +96,13 @@ public sealed class SquidVigilanceAbility : CustomButtonBase, IButtonEffect
     public override void AttachToAlls()
     {
         base.AttachToAlls();
-        _tryKillListener = TryKillEvent.Instance.AddListener(OnTryKill);
+        SubscribeWithAbility(TryKillEvent.Instance, OnTryKill);
     }
 
     public override void AttachToLocalPlayer()
     {
         base.AttachToLocalPlayer();
-        _physicsUpdateListener = PlayerPhysicsFixedUpdateEvent.Instance.AddListener(OnPhysicsFixedUpdate);
-    }
-
-    public override void DetachToAlls()
-    {
-        base.DetachToAlls();
-        _tryKillListener?.RemoveListener();
-    }
-
-    public override void DetachToLocalPlayer()
-    {
-        base.DetachToLocalPlayer();
-        _physicsUpdateListener?.RemoveListener();
+        SubscribeWithAbility(PlayerPhysicsFixedUpdateEvent.Instance, OnPhysicsFixedUpdate);
     }
 
     public override bool CheckIsAvailable()

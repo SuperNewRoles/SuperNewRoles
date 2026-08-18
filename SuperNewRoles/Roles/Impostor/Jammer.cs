@@ -7,7 +7,6 @@ using SuperNewRoles.Modules;
 using SuperNewRoles.Roles.Ability;
 using SuperNewRoles.Roles.Ability.CustomButton;
 using SuperNewRoles.Events;
-using SuperNewRoles.Modules.Events.Bases;
 
 namespace SuperNewRoles.Roles.Impostor;
 
@@ -54,8 +53,6 @@ public class JammerAbility : TargetCustomButtonBase, IButtonEffect
     private bool _canUseAgainstImpostors;
     private int _usedCount;
     private ExPlayerControl _invisibleTarget;
-    private EventListener<MeetingStartEventData> _onMeetingStart;
-    private EventListener _onFixedUpdate;
     private readonly OpacityFadeController _opacityFader = new();
 
     public bool isEffectActive { get; set; }
@@ -115,20 +112,19 @@ public class JammerAbility : TargetCustomButtonBase, IButtonEffect
     public override void AttachToAlls()
     {
         base.AttachToAlls();
-        _onFixedUpdate = FixedUpdateEvent.Instance.AddListener(() => OnFixedUpdate());
+        SubscribeWithAbility(FixedUpdateEvent.Instance, () => OnFixedUpdate());
     }
 
     public override void DetachToAlls()
     {
         base.DetachToAlls();
-        _onFixedUpdate?.RemoveListener();
         _opacityFader.StopAll();
     }
 
     public override void AttachToLocalPlayer()
     {
         base.AttachToLocalPlayer();
-        _onMeetingStart = MeetingStartEvent.Instance.AddListener(OnMeetingStart);
+        SubscribeWithAbility(MeetingStartEvent.Instance, OnMeetingStart);
     }
 
     public override void DetachToLocalPlayer()
@@ -140,7 +136,6 @@ public class JammerAbility : TargetCustomButtonBase, IButtonEffect
             RpcSetInvisible(_invisibleTarget, false);
             _invisibleTarget = null;
         }
-        _onMeetingStart?.RemoveListener();
     }
 
     private void OnMeetingStart(MeetingStartEventData data)

@@ -7,7 +7,6 @@ using SuperNewRoles.Modules;
 using SuperNewRoles.Roles.Ability;
 using SuperNewRoles.Events;
 using SuperNewRoles.Events.PCEvents;
-using SuperNewRoles.Modules.Events.Bases;
 using UnityEngine;
 using HarmonyLib;
 
@@ -77,10 +76,6 @@ public class SpelunkerAbility : AbilityBase
 {
     public SpelunkerData Data { get; set; }
 
-    private EventListener _fixedUpdateListener;
-    private EventListener<ExileEventData> _exileListener;
-    private EventListener<UsePlatformEventData> _usePlatformListener;
-    private EventListener<DoorConsoleUseEventData> _doorConsoleUseListener;
 
     // Spelunker specific variables
     private bool _isVentChecked;
@@ -98,18 +93,10 @@ public class SpelunkerAbility : AbilityBase
     public override void AttachToLocalPlayer()
     {
         base.AttachToLocalPlayer();
-        _fixedUpdateListener = FixedUpdateEvent.Instance.AddListener(OnFixedUpdate);
-        _exileListener = ExileEvent.Instance.AddListener(OnExile);
-        _usePlatformListener = UsePlatformEvent.Instance.AddListener(OnUsePlatform);
-        _doorConsoleUseListener = DoorConsoleUseEvent.Instance.AddListener(OnDoorConsoleUse);
-    }
-
-    public override void DetachToLocalPlayer()
-    {
-        _fixedUpdateListener?.RemoveListener();
-        _exileListener?.RemoveListener();
-        _usePlatformListener?.RemoveListener();
-        _doorConsoleUseListener?.RemoveListener();
+        SubscribeWithAbility(FixedUpdateEvent.Instance, OnFixedUpdate);
+        SubscribeWithAbility(ExileEvent.Instance, OnExile);
+        SubscribeWithAbility(UsePlatformEvent.Instance, OnUsePlatform);
+        SubscribeWithAbility(DoorConsoleUseEvent.Instance, OnDoorConsoleUse);
     }
 
     private void OnFixedUpdate()

@@ -6,7 +6,6 @@ using SuperNewRoles.CustomObject;
 using SuperNewRoles.Events;
 using SuperNewRoles.Events.PCEvents;
 using SuperNewRoles.Modules;
-using SuperNewRoles.Modules.Events.Bases;
 using SuperNewRoles.Roles.Ability.CustomButton;
 using SuperNewRoles.Roles.Impostor;
 using UnityEngine;
@@ -64,12 +63,6 @@ public class RocketLauncherButtonAbility : TargetCustomButtonBase, IButtonEffect
     private bool _isHoldingGuardedWiseMan;
     private Vector2 _guardedWiseManHoldPosition;
     private Vector2 _guardedWiseManLauncherPosition;
-    private EventListener<MeetingStartEventData> _meetingStartListener;
-    private EventListener _fixedUpdateListener;
-    private EventListener _hudUpdateListener;
-    private EventListener<DieEventData> _dieListener;
-    private EventListener<DisconnectEventData> _disconnectListener;
-    private EventListener<MurderEventData> _murderListener;
 
     private bool HasHeldTarget => _heldTarget != null && _heldTarget.IsAlive();
     private bool HasActiveProjectile => _activeProjectile != null && _activeProjectile.IsActive;
@@ -99,33 +92,22 @@ public class RocketLauncherButtonAbility : TargetCustomButtonBase, IButtonEffect
     public override void AttachToAlls()
     {
         base.AttachToAlls();
-        _meetingStartListener = MeetingStartEvent.Instance.AddListener(OnMeetingStart);
-        _fixedUpdateListener = FixedUpdateEvent.Instance.AddListener(OnFixedUpdate);
-        _hudUpdateListener = HudUpdateEvent.Instance.AddListener(OnHudUpdate);
-        _dieListener = DieEvent.Instance.AddListener(OnDie);
-        _disconnectListener = DisconnectEvent.Instance.AddListener(OnDisconnect);
+        SubscribeWithAbility(MeetingStartEvent.Instance, OnMeetingStart);
+        SubscribeWithAbility(FixedUpdateEvent.Instance, OnFixedUpdate);
+        SubscribeWithAbility(HudUpdateEvent.Instance, OnHudUpdate);
+        SubscribeWithAbility(DieEvent.Instance, OnDie);
+        SubscribeWithAbility(DisconnectEvent.Instance, OnDisconnect);
     }
 
     public override void AttachToLocalPlayer()
     {
         base.AttachToLocalPlayer();
-        _murderListener = MurderEvent.Instance.AddListener(OnMurder);
-    }
-
-    public override void DetachToLocalPlayer()
-    {
-        base.DetachToLocalPlayer();
-        _murderListener?.RemoveListener();
+        SubscribeWithAbility(MurderEvent.Instance, OnMurder);
     }
 
     public override void DetachToAlls()
     {
         base.DetachToAlls();
-        _meetingStartListener?.RemoveListener();
-        _fixedUpdateListener?.RemoveListener();
-        _hudUpdateListener?.RemoveListener();
-        _dieListener?.RemoveListener();
-        _disconnectListener?.RemoveListener();
         ClearHeldTargetLocally(restoreMoveable: true);
         DetachProjectileLocally(restoreTarget: true);
     }

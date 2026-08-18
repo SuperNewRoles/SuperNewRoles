@@ -8,6 +8,7 @@ using SuperNewRoles.Events;
 using SuperNewRoles.Extensions;
 using SuperNewRoles.Roles;
 using SuperNewRoles.Roles.Ability;
+using SuperNewRoles.Roles.Ability.CustomButton;
 using SuperNewRoles.Roles.Neutral;
 using SuperNewRoles.SuperTrophies;
 using TMPro;
@@ -61,33 +62,21 @@ public class ExPlayerControl
     public IRoleBase roleBase { get; private set; }
     public List<IModifierBase> ModifierRoleBases { get; private set; } = new();
     public IGhostRoleBase GhostRoleBase { get; private set; }
-    public List<AbilityBase> PlayerAbilities { get; private set; } = new();
-    public Dictionary<ulong, AbilityBase> PlayerAbilitiesDictionary { get; private set; } = new();
-    private Dictionary<string, AbilityBase> _abilityCache = new();
+    private readonly List<AbilityBase> _playerAbilities = new();
+    private readonly Dictionary<ulong, AbilityBase> _abilitiesById = new();
+    // Detach 後に同じIDを再発行すると、遅れて届いたRPCが別Abilityへ誤配信されるため、接続中に発行したIDは保持する。
+    private readonly HashSet<ulong> _issuedAbilityIds = new();
+    internal int AbilityCount => _playerAbilities.Count;
     public TextMeshPro PlayerInfoText { get; set; }
     public TextMeshPro MeetingInfoText { get; set; }
     public PlayerVoteArea VoteArea { get; set; }
-    public int lastAbilityId { get; set; }
     private FinalStatus? _finalStatus;
     public FinalStatus FinalStatus { get { return _finalStatus ?? FinalStatus.Alive; } set { _finalStatus = value; } }
 
-    private CustomVentAbility _customVentAbility;
-    private CustomSaboAbility _customSaboAbility;
-    private CustomTaskAbility _customTaskAbility;
-    private CustomKillButtonAbility _customKillButtonAbility;
-    private KillableAbility _killableAbility;
-    public CustomTaskAbility CustomTaskAbility => _customTaskAbility;
-    private List<ImpostorVisionAbility> _impostorVisionAbilities = new();
-    private Dictionary<string, bool> _hasAbilityCache = new();
-
     // パフォーマンス最適化用キャッシュ
     private readonly Dictionary<int, AbilityBase> _typeIdAbilityCache = new();
-    private readonly Dictionary<int, List<AbilityBase>> _typeIdAbilitiesCache = new();
     private readonly Dictionary<int, IReadOnlyList<object>> _typeIdReadOnlyCache = new();
-
-    // 型IDキャッシュ用配列。1024種類を超える型はキャッシュされないが、動作は継続する
-    private readonly bool[] _hasAbilityByTypeId = new bool[1024]; // 最大1024種類のアビリティタイプを想定
-    private readonly bool[] _hasAbilityByTypeIdCached = new bool[1024];
+    private readonly Dictionary<int, List<AbilityBase>> _prioritizedAbilities = new();
 
     [System.Runtime.CompilerServices.MethodImpl(System.Runtime.CompilerServices.MethodImplOptions.AggressiveInlining)]
     public override int GetHashCode()
@@ -107,7 +96,6 @@ public class ExPlayerControl
         this.Player = player;
         this.PlayerId = player.PlayerId;
         this.Data = player.CachedPlayerData;
-        this.lastAbilityId = 0;
         this.AmOwner = player.AmOwner;
     }
     [System.Runtime.CompilerServices.MethodImpl(System.Runtime.CompilerServices.MethodImplOptions.AggressiveInlining)]
@@ -151,51 +139,29 @@ public class ExPlayerControl
             }
         }
     }
-    public bool HasAbility(string abilityName)
-    {
-        if (_hasAbilityCache.TryGetValue(abilityName, out bool hasAbility))
-        {
-            return hasAbility;
-        }
-
-        hasAbility = PlayerAbilities.Any(x => x.GetType().Name == abilityName);
-        _hasAbilityCache[abilityName] = hasAbility;
-        return hasAbility;
-    }
     public bool HasAbility<T>() where T : AbilityBase
-    {
-        var typeId = TypeCache<T>.TypeId;
-        if (typeId < 1024 && _hasAbilityByTypeIdCached[typeId])
-            return _hasAbilityByTypeId[typeId];
-
-        var count = PlayerAbilities.Count;
-        for (var i = 0; i < count; i++)
-        {
-            if (PlayerAbilities[i] is T)
-            {
-                if (typeId < 1024)
-                {
-                    _hasAbilityByTypeId[typeId] = true;
-                    _hasAbilityByTypeIdCached[typeId] = true;
-                }
-                return true;
-            }
-        }
-
-        if (typeId < 1024)
-        {
-            _hasAbilityByTypeId[typeId] = false;
-            _hasAbilityByTypeIdCached[typeId] = true;
-        }
-        return false;
-    }
+        => TryGetAbility<T>(out _);
     public bool IsTaskComplete()
     {
         (int completed, int total) = ModHelpers.TaskCompletedData(Data);
-        if (_customTaskAbility == null) return completed >= total;
-        var (isTaskTrigger, countTask, all) = _customTaskAbility.CheckIsTaskTrigger() ?? (false, false, total);
-        return isTaskTrigger && completed >= (all ?? total);
+        var taskAbilities = GetPrioritizedAbilities<CustomTaskAbility>();
+        if (taskAbilities != null)
+        {
+            for (var i = 0; i < taskAbilities.Count; i++)
+            {
+                var isTaskTrigger = ((CustomTaskAbility)taskAbilities[i]).IsTaskTrigger?.Invoke();
+                if (isTaskTrigger.HasValue)
+                    return isTaskTrigger.Value && completed >= ResolveRequiredTaskCount(total);
+            }
+        }
+        return completed >= ResolveRequiredTaskCount(total);
     }
+    /// <summary>
+    /// 割り当て済みバニラタスクがすべて完了しているか。
+    /// CustomTaskAbility の isTaskTrigger / RequiredTaskCount は見ない。
+    /// </summary>
+    public bool IsAllTasksCompleted()
+        => Player is not null && Player.AllTasksCompleted();
     public void ResetKillCooldown()
     {
         if (!AmOwner) return;
@@ -281,7 +247,7 @@ public class ExPlayerControl
         {
             Logger.Info($"[SetRole] Calling OnSetRole for player {Player?.name} ({PlayerId})");
             role.OnSetRole(Player);
-            Logger.Info($"[SetRole] OnSetRole completed, PlayerAbilities count: {PlayerAbilities.Count}");
+            Logger.Info($"[SetRole] OnSetRole completed, Ability count: {AbilityCount}");
             if (AmOwner)
                 SuperTrophyManager.RegisterTrophy(Role);
             roleBase = role;
@@ -319,12 +285,7 @@ public class ExPlayerControl
         }
         if (AmOwner)
         {
-            foreach (var taskAbility in GetAbilities<CustomTaskAbility>())
-            {
-                if (taskAbility.assignTaskData == null) continue;
-                taskAbility.AssignTasks();
-                break;
-            }
+            AssignCustomTasks();
         }
     }
 
@@ -343,17 +304,35 @@ public class ExPlayerControl
 
     public bool HasCustomKillButton()
     {
-        return _customKillButtonAbility != null;
+        return HasAbility<CustomKillButtonAbility>();
     }
     public bool showKillButtonVanilla()
     {
-        return IsImpostor() && IsAlive() && (_killableAbility == null || _killableAbility.CanKill);
+        var canKill = ResolveCanKill();
+        return IsImpostor() && IsAlive() && canKill;
+    }
+
+    private bool ResolveCanKill()
+    {
+        var canKill = true;
+        var killableAbilities = GetPrioritizedAbilities<KillableAbility>();
+        if (killableAbilities != null)
+        {
+            for (var i = 0; i < killableAbilities.Count; i++)
+            {
+                var decision = ((KillableAbility)killableAbilities[i]).CanKill;
+                if (!decision.HasValue) continue;
+                canKill = decision.Value;
+                break;
+            }
+        }
+        return canKill;
     }
     private void DetachOldRole(RoleId roleId)
     {
         List<AbilityBase> abilitiesToDetach = new();
         List<AbilityParentRole> abilitiesToDetachParentRole = new();
-        foreach (var ability in PlayerAbilities)
+        foreach (var ability in _playerAbilities)
         {
             if (ability.Parent == null) continue;
             var parent = ability.Parent;
@@ -385,7 +364,7 @@ public class ExPlayerControl
     private void DetachOldGhostRole(GhostRoleId ghostRoleId)
     {
         List<AbilityBase> abilitiesToDetach = new();
-        foreach (var ability in PlayerAbilities)
+        foreach (var ability in _playerAbilities)
         {
             if (ability.Parent == null) continue;
             var parent = ability.Parent;
@@ -416,7 +395,7 @@ public class ExPlayerControl
     private void DetachOldModifierRole(ModifierRoleId modifierRoleId)
     {
         List<AbilityBase> abilitiesToDetach = new();
-        foreach (var ability in PlayerAbilities)
+        foreach (var ability in _playerAbilities)
         {
             if (ability.Parent == null) continue;
             var parent = ability.Parent;
@@ -504,45 +483,17 @@ public class ExPlayerControl
     {
         if (target == null || target.Player == null) return;
 
-        // 自分と相手のAbilitiesとRoleを保存
-        List<(AbilityBase ability, ulong abilityId)> myAbilities = new();
-        List<(AbilityBase ability, ulong abilityId)> targetAbilities = new();
+        CollectRoleAbilitiesForSwap(this, out var myParents, out var myToDetach);
+        CollectRoleAbilitiesForSwap(target, out var targetParents, out var targetToDetach);
 
-        // ToArray()を使わずに直接リストから収集
-        foreach (var ability in PlayerAbilities)
-        {
-            if (ability != null && IsRoleAbility(ability.Parent))
-            {
-                myAbilities.Add((ability, ability.AbilityId));
-            }
-        }
-
-        foreach (var ability in target.PlayerAbilities)
-        {
-            if (ability != null && IsRoleAbility(ability.Parent))
-            {
-                targetAbilities.Add((ability, ability.AbilityId));
-            }
-        }
-
-        // 両方のプレイヤーのRoleを保存
         RoleId myRole = Role;
         RoleId targetRole = target.Role;
         IRoleBase myRoleBase = roleBase;
         IRoleBase targetRoleBase = target.roleBase;
 
-        // 両方のプレイヤーからAbilitiesをすべてDetach
-        foreach (var abilityData in myAbilities)
-        {
-            DetachAbility(abilityData.abilityId);
-        }
-
-        foreach (var abilityData in targetAbilities)
-        {
-            target.DetachAbility(abilityData.abilityId);
-        }
-
-        // お互いのRoleを入れ替え
+        // 子を先に外し、親の AttachToAlls が古い子インスタンスを付け直さないようにする。
+        DetachRoleAbilitiesForSwap(this, myToDetach);
+        DetachRoleAbilitiesForSwap(target, targetToDetach);
 
         if (Player.AmOwner)
             SuperTrophyManager.DetachTrophy(Role);
@@ -555,27 +506,45 @@ public class ExPlayerControl
         target.Role = myRole;
         target.roleBase = myRoleBase;
 
-        // アタッチする
-        foreach (var ability in myAbilities)
-        {
-            var currentParent = ability.ability.Parent;
-            if (currentParent is AbilityParentAbility)
-                continue;
-            if (!TryMoveRoleParent(currentParent, target))
-                continue;
-            target.AttachAbility(ability.ability, currentParent);
-        }
-        foreach (var ability in targetAbilities)
-        {
-            var currentParent = ability.ability.Parent;
-            if (currentParent is AbilityParentAbility)
-                continue;
-            if (!TryMoveRoleParent(currentParent, this))
-                continue;
-            AttachAbility(ability.ability, currentParent);
-        }
-        // 名前情報を更新
+        // 親だけ付け直す。子は親の AttachToAlls などで再生成する。
+        ReattachRoleParentsForSwap(myParents, target);
+        ReattachRoleParentsForSwap(targetParents, this);
         NameText.UpdateAllNameInfo();
+    }
+
+    private static void CollectRoleAbilitiesForSwap(
+        ExPlayerControl player,
+        out List<AbilityBase> parentsToAttach,
+        out List<AbilityBase> abilitiesToDetach)
+    {
+        parentsToAttach = new();
+        abilitiesToDetach = new();
+        foreach (var ability in player._playerAbilities)
+        {
+            if (ability == null || !IsRoleAbility(ability.Parent))
+                continue;
+
+            abilitiesToDetach.Add(ability);
+            if (ability.Parent is not AbilityParentAbility)
+                parentsToAttach.Add(ability);
+        }
+    }
+
+    private static void DetachRoleAbilitiesForSwap(ExPlayerControl player, List<AbilityBase> abilitiesToDetach)
+    {
+        for (var i = abilitiesToDetach.Count - 1; i >= 0; i--)
+            player.DetachAbility(abilitiesToDetach[i].AbilityId);
+    }
+
+    private static void ReattachRoleParentsForSwap(List<AbilityBase> parentsToAttach, ExPlayerControl destination)
+    {
+        foreach (var ability in parentsToAttach)
+        {
+            var currentParent = ability.Parent;
+            if (!TryMoveRoleParent(currentParent, destination))
+                continue;
+            destination.AttachAbility(ability, currentParent);
+        }
     }
 
     private static bool IsRoleAbility(AbilityParentBase parent)
@@ -618,21 +587,15 @@ public class ExPlayerControl
     {
         _exPlayerControls.Remove(this);
         _exPlayerControlsArray[PlayerId] = null;
-        foreach (var ability in PlayerAbilities)
+        foreach (var ability in _playerAbilities.ToArray())
         {
             ability.Detach();
         }
-        PlayerAbilities.Clear();
-        PlayerAbilitiesDictionary.Clear();
-        _hasAbilityCache.Clear();
-        _typeIdAbilityCache.Clear();
-        _typeIdAbilitiesCache.Clear();
-        _typeIdReadOnlyCache.Clear();
-        System.Array.Clear(_hasAbilityByTypeIdCached, 0, _hasAbilityByTypeIdCached.Length);
-        System.Array.Clear(_hasAbilityByTypeId, 0, _hasAbilityByTypeId.Length);
+        ClearAbilityState();
     }
     public static void SetUpExPlayers()
     {
+        TargetCustomButtonBase.ClearOutlineOwners();
         _exPlayerControlsArray = new ExPlayerControl[256];
         _exPlayerControls.Clear();
         foreach (PlayerControl player in PlayerControl.AllPlayerControls)
@@ -699,17 +662,17 @@ public class ExPlayerControl
     public bool IsPavlovsDog()
         => Role == RoleId.PavlovsDog || GetAbility<SchrodingersCatAbility>()?.CurrentTeam == SchrodingersCatTeam.Pavlovs;
     public bool IsMadRoles()
-        => HasAbility(nameof(MadmateAbility))
+        => HasAbility<MadmateAbility>()
            || GhostRole == GhostRoleId.Revenant
            || (Role == RoleId.SatsumaAndImo && GetAbility<SatsumaAndImoAbility>()?.IsMadTeam == true)
            || (Role == RoleId.VampireDependent)
            || (Role == RoleId.MadKiller && !IsImpostor());
     public bool IsFriendRoles()
-        => HasAbility(nameof(JFriendAbility)) || (Role == RoleId.Bullet && !WaveCannonJackal.WaveCannonJackalCreateBulletToJackal);
+        => HasAbility<JFriendAbility>() || (Role == RoleId.Bullet && !WaveCannonJackal.WaveCannonJackalCreateBulletToJackal);
     public bool IsJackal()
-        => HasAbility(nameof(JackalAbility)) || GetAbility<SchrodingersCatAbility>()?.CurrentTeam == SchrodingersCatTeam.Jackal;
+        => HasAbility<JackalAbility>() || GetAbility<SchrodingersCatAbility>()?.CurrentTeam == SchrodingersCatTeam.Jackal;
     public bool IsSidekick()
-        => HasAbility(nameof(JSidekickAbility)) || (Role == RoleId.Bullet && WaveCannonJackal.WaveCannonJackalCreateBulletToJackal);
+        => HasAbility<JSidekickAbility>() || (Role == RoleId.Bullet && WaveCannonJackal.WaveCannonJackalCreateBulletToJackal);
     public bool IsJackalTeam()
         => IsJackal() || IsSidekick();
     public bool IsJackalTeamWins()
@@ -724,28 +687,30 @@ public class ExPlayerControl
         => !IsDead();
     public bool IsTaskTriggerRole()
     {
-        bool hasDefinitiveFalseFromCustom = false;
-        foreach (var cta in PlayerAbilities.OfType<CustomTaskAbility>())
+        var taskAbilities = GetPrioritizedAbilities<CustomTaskAbility>();
+        if (taskAbilities != null)
         {
-            var triggerCheck = cta.CheckIsTaskTrigger();
-            if (triggerCheck != null)
+            for (var i = 0; i < taskAbilities.Count; i++)
             {
-                if (triggerCheck.Value.isTaskTrigger)
-                {
-                    return true;
-                }
-                hasDefinitiveFalseFromCustom = true;
+                var candidate = ((CustomTaskAbility)taskAbilities[i]).IsTaskTrigger?.Invoke();
+                if (candidate.HasValue) return candidate.Value;
             }
-        }
-
-        if (hasDefinitiveFalseFromCustom)
-        {
-            return false;
         }
         return IsCrewmate();
     }
     public bool IsCountTask()
-        => _customTaskAbility != null ? _customTaskAbility.CheckIsTaskTrigger()?.countTask ?? IsCrewmate() : IsCrewmate();
+    {
+        var taskAbilities = GetPrioritizedAbilities<CustomTaskAbility>();
+        if (taskAbilities != null)
+        {
+            for (var i = 0; i < taskAbilities.Count; i++)
+            {
+                var candidate = ((CustomTaskAbility)taskAbilities[i]).CountsForCrewWin?.Invoke();
+                if (candidate.HasValue) return candidate.Value;
+            }
+        }
+        return IsCrewmate();
+    }
 
     /// <summary>
     /// このプレイヤーの役職をローカルプレイヤーが見えるかどうかを判定します
@@ -807,24 +772,108 @@ public class ExPlayerControl
     public (int complete, int all) GetAllTaskForShowProgress()
     {
         (int complete, int all) result = ModHelpers.TaskCompletedData(Data);
-        if (_customTaskAbility == null)
-        {
-            return result;
-        }
-        var (isTaskTrigger, countTask, all) = _customTaskAbility.CheckIsTaskTrigger() ?? (false, false, result.all);
-        return (result.complete, all ?? result.all);
+        return (result.complete, ResolveRequiredTaskCount(result.all));
     }
     public bool CanUseVent()
-        => _customVentAbility != null ? _customVentAbility.CheckCanUseVent() : (IsImpostor() && !ModHelpers.IsHnS()) || Data.Role.Role == RoleTypes.Engineer;
+        => TryGetVentDecision(out _, out var decision) ? decision : CanUseVentVanilla();
     public bool ShowVanillaVentButton()
-        => (IsImpostor() && !ModHelpers.IsHnS()) && IsAlive() && _customVentAbility == null;
+        => CanShowImpostorVentButtonVanilla() && IsAlive() && !TryGetVentDecision(out _, out _);
+    internal bool ShouldShowVentAbility(CustomVentAbility ability)
+        => TryGetVentDecision(out var selected, out var decision) &&
+           ReferenceEquals(selected, ability) && decision;
     public bool CanSabotage()
-        => _customSaboAbility != null ? _customSaboAbility.CheckCanSabotage() : (IsImpostor() && !ModHelpers.IsHnS());
+        => TryGetSabotageDecision(out _, out var decision) ? decision : CanSabotageVanilla();
     public bool ShowVanillaSabotageButton()
-        => (IsImpostor() && !ModHelpers.IsHnS()) && _customSaboAbility == null;
+        => CanSabotageVanilla() && !TryGetSabotageDecision(out _, out _);
+    internal bool ShouldShowSabotageAbility(CustomSaboAbility ability)
+        => TryGetSabotageDecision(out var selected, out var decision) &&
+           ReferenceEquals(selected, ability) && decision;
+
+    private bool TryGetVentDecision(out CustomVentAbility source, out bool decision)
+    {
+        var abilities = GetPrioritizedAbilities<CustomVentAbility>();
+        if (abilities != null)
+        {
+            for (var i = 0; i < abilities.Count; i++)
+            {
+                var ability = (CustomVentAbility)abilities[i];
+                var candidate = ability.CanUseVent?.Invoke();
+                if (!candidate.HasValue) continue;
+                source = ability;
+                decision = candidate.Value;
+                return true;
+            }
+        }
+        source = null;
+        decision = default;
+        return false;
+    }
+
+    private bool TryGetSabotageDecision(out CustomSaboAbility source, out bool decision)
+    {
+        var abilities = GetPrioritizedAbilities<CustomSaboAbility>();
+        if (abilities != null)
+        {
+            for (var i = 0; i < abilities.Count; i++)
+            {
+                var ability = (CustomSaboAbility)abilities[i];
+                var candidate = ability.CanSabotage?.Invoke();
+                if (!candidate.HasValue) continue;
+                source = ability;
+                decision = candidate.Value;
+                return true;
+            }
+        }
+        source = null;
+        decision = default;
+        return false;
+    }
+
+    private int ResolveRequiredTaskCount(int vanillaTaskCount)
+    {
+        var abilities = GetPrioritizedAbilities<CustomTaskAbility>();
+        if (abilities != null)
+        {
+            for (var i = 0; i < abilities.Count; i++)
+            {
+                var candidate = ((CustomTaskAbility)abilities[i]).RequiredTaskCount?.Invoke();
+                if (candidate.HasValue) return candidate.Value;
+            }
+        }
+        return vanillaTaskCount;
+    }
+
+    public void AssignCustomTasks()
+    {
+        CustomTaskAbility.AssignTasks(this, ResolveTaskOptions(), GetAbility<CustomTaskTypeAbility>());
+    }
+
+    private TaskOptionData ResolveTaskOptions()
+    {
+        var abilities = GetPrioritizedAbilities<CustomTaskAbility>();
+        if (abilities != null)
+        {
+            for (var i = 0; i < abilities.Count; i++)
+            {
+                var taskOptions = ((CustomTaskAbility)abilities[i]).TaskOptions?.Invoke();
+                if (taskOptions != null) return taskOptions;
+            }
+        }
+        return null;
+    }
+
+    private bool CanUseVentVanilla()
+        => CanShowImpostorVentButtonVanilla() || Data.Role.Role == RoleTypes.Engineer;
+
+    // ImpostorVentButton の表示専用。ベント可否とは分け、エンジニアのバニラベントと混ぜない。
+    private bool CanShowImpostorVentButtonVanilla()
+        => IsImpostor() && !ModHelpers.IsHnS();
+
+    private bool CanSabotageVanilla()
+        => IsImpostor() && !ModHelpers.IsHnS();
     public AbilityBase GetAbility(ulong abilityId)
     {
-        return PlayerAbilitiesDictionary.TryGetValue(abilityId, out var ability) ? ability : null;
+        return _abilitiesById.TryGetValue(abilityId, out var ability) ? ability : null;
     }
     [System.Runtime.CompilerServices.MethodImpl(System.Runtime.CompilerServices.MethodImplOptions.AggressiveInlining)]
     public bool TryGetAbility<T>(out T result) where T : AbilityBase
@@ -836,10 +885,10 @@ public class ExPlayerControl
             return result != null;
         }
 
-        var count = PlayerAbilities.Count;
+        var count = _playerAbilities.Count;
         for (var i = 0; i < count; i++)
         {
-            if (PlayerAbilities[i] is T ability)
+            if (_playerAbilities[i] is T ability)
             {
                 _typeIdAbilityCache[typeId] = ability;
                 result = ability;
@@ -858,114 +907,85 @@ public class ExPlayerControl
     private void AttachAbility(AbilityBase ability, ulong abilityId, AbilityParentBase parent)
     {
         Logger.Info("AttachAbility: " + ability.GetType().Name + " to player: " + PlayerId);
-        PlayerAbilities.Add(ability);
-        PlayerAbilitiesDictionary.Add(abilityId, ability);
-        _abilityCache[ability.GetType().Name] = ability;
+        RegisterAbilityState(abilityId, ability);
         SuperTrophyManager.RegisterTrophy(ability);
-        switch (ability)
-        {
-            case CustomVentAbility customVentAbility:
-                _customVentAbility = customVentAbility;
-                break;
-            case ImpostorVisionAbility impostorVisionAbility:
-                _impostorVisionAbilities.Add(impostorVisionAbility);
-                break;
-            case CustomSaboAbility customSaboAbility:
-                _customSaboAbility = customSaboAbility;
-                break;
-            case CustomTaskAbility customTaskAbility:
-                _customTaskAbility = customTaskAbility;
-                break;
-            case CustomKillButtonAbility customKillButtonAbility:
-                _customKillButtonAbility = customKillButtonAbility;
-                break;
-            case KillableAbility killableAbility:
-                _killableAbility = killableAbility;
-                break;
-        }
         ability.Attach(Player, abilityId, parent);
-        _hasAbilityCache.Clear();
-
-        // 新しいキャッシュシステムのクリア（最適化版）
-        _typeIdAbilityCache.Clear();
-        _typeIdAbilitiesCache.Clear();
-        _typeIdReadOnlyCache.Clear();
-        System.Array.Clear(_hasAbilityByTypeIdCached, 0, _hasAbilityByTypeIdCached.Length);
     }
     /// <summary>
     /// アビリティをプレイヤーにアタッチします。
     /// AbilityId は「プレイヤーID/親コンテキスト/アビリティ型/序数」に基づく決定的IDで生成されます。
-    /// これにより、環境差や付与順の差異があっても送受信で同一の AbilityId が保証されます。
+    /// 同じ親ツリーとライフサイクル順序を再現したクライアント間では、同一の AbilityId になります。
     /// </summary>
     /// <param name="ability">アタッチするアビリティ</param>
     /// <param name="parent">親コンテキスト(Role/Modifier/Ghost/Ability/Player)</param>
     public void AttachAbility(AbilityBase ability, AbilityParentBase parent)
     {
-        // 決定的な AbilityId を生成してからアタッチ
-        AttachAbility(ability, ExPlayerControlExtensions.GenerateDeterministicAbilityId(PlayerId, parent, ability.GetType()), parent);
-    }
-    public bool HasImpostorVision()
-    {
-        if (_impostorVisionAbilities.Count == 0) return IsImpostor();
-        return _impostorVisionAbilities.FirstOrDefault(x => x.HasImpostorVision?.Invoke() == true) != null;
-    }
-    public void DetachAbility(ulong abilityId)
-    {
-        if (!PlayerAbilitiesDictionary.TryGetValue(abilityId, out var ability))
-            return;
-        ability.Detach();
-        SuperTrophyManager.DetachTrophy(ability);
-        switch (ability)
-        {
-            case CustomVentAbility customVentAbility:
-                _customVentAbility = null;
-                break;
-            case ImpostorVisionAbility impostorVisionAbility:
-                _impostorVisionAbilities.Remove(impostorVisionAbility);
-                break;
-            case CustomSaboAbility customSaboAbility:
-                _customSaboAbility = null;
-                break;
-            case CustomTaskAbility customTaskAbility:
-                _customTaskAbility = null;
-                break;
-            case CustomKillButtonAbility customKillButtonAbility:
-                _customKillButtonAbility = null;
-                break;
-            case KillableAbility killableAbility:
-                _killableAbility = null;
-                break;
-        }
-        PlayerAbilities.Remove(ability);
-        PlayerAbilitiesDictionary.Remove(abilityId);
-        _abilityCache.Remove(ability.GetType().Name);
-        _hasAbilityCache.Clear();
+        if (ability == null)
+            throw new ArgumentNullException(nameof(ability));
+        if (parent == null)
+            throw new ArgumentNullException(nameof(parent));
 
-        // 新しいキャッシュシステムのクリア（最適化版）
-        _typeIdAbilityCache.Clear();
-        _typeIdAbilitiesCache.Clear();
-        _typeIdReadOnlyCache.Clear();
-        System.Array.Clear(_hasAbilityByTypeIdCached, 0, _hasAbilityByTypeIdCached.Length);
-    }
-    public T GetAbility<T>() where T : AbilityBase
-    {
-        var typeId = TypeCache<T>.TypeId;
-        if (_typeIdAbilityCache.TryGetValue(typeId, out var cachedAbility))
-            return cachedAbility as T;
-
-        var count = PlayerAbilities.Count;
-        for (var i = 0; i < count; i++)
+        if (ability.Parent != null)
         {
-            if (PlayerAbilities[i] is T ability)
+            var currentOwner = ability.Parent.Player;
+            if (currentOwner != null &&
+                ReferenceEquals(currentOwner.GetAbility(ability.AbilityId), ability))
             {
-                _typeIdAbilityCache[typeId] = ability;
-                return ability;
+                throw new InvalidOperationException(
+                    $"Ability {ability.GetType().FullName} is already registered for player {currentOwner.PlayerId}.");
             }
         }
 
-        _typeIdAbilityCache[typeId] = null;
-        return null;
+        if (parent is AbilityParentAbility abilityParent &&
+            (abilityParent.ParentAbility == null ||
+             !ReferenceEquals(GetAbility(abilityParent.ParentAbility.AbilityId), abilityParent.ParentAbility)))
+        {
+            throw new InvalidOperationException("Parent ability is not registered for this player.");
+        }
+        if (!ReferenceEquals(parent.Player, this))
+            throw new InvalidOperationException(
+                $"Ability parent belongs to a different player than {PlayerId}.");
+
+        var abilityType = ability.GetType();
+        var ordinal = GetNextAvailableAbilityOrdinal(parent, abilityType);
+        var abilityId = ExPlayerControlExtensions.GenerateDeterministicAbilityId(
+            PlayerId,
+            parent,
+            abilityType,
+            ordinal);
+        AttachAbility(ability, abilityId, parent);
     }
+    public bool HasImpostorVision()
+    {
+        var abilities = GetPrioritizedAbilities<ImpostorVisionAbility>();
+        if (abilities != null)
+        {
+            for (var i = 0; i < abilities.Count; i++)
+            {
+                var decision = ((ImpostorVisionAbility)abilities[i]).HasImpostorVision?.Invoke();
+                if (decision.HasValue) return decision.Value;
+            }
+        }
+        return IsImpostor();
+    }
+
+    [System.Runtime.CompilerServices.MethodImpl(System.Runtime.CompilerServices.MethodImplOptions.AggressiveInlining)]
+    private List<AbilityBase> GetPrioritizedAbilities<T>() where T : AbilityBase, IPrioritizedAbility
+    {
+        _prioritizedAbilities.TryGetValue(AbilityPriorityGroup<T>.Id, out var abilities);
+        return abilities;
+    }
+
+    public void DetachAbility(ulong abilityId)
+    {
+        if (!_abilitiesById.TryGetValue(abilityId, out var ability))
+            return;
+        ability.Detach();
+        SuperTrophyManager.DetachTrophy(ability);
+        UnregisterAbilityState(abilityId, ability);
+    }
+    public T GetAbility<T>() where T : AbilityBase
+        => TryGetAbility<T>(out var ability) ? ability : null;
     public IReadOnlyList<T> GetAbilities<T>() where T : AbilityBase
     {
         var typeId = TypeCache<T>.TypeId;
@@ -976,40 +996,116 @@ public class ExPlayerControl
             return (IReadOnlyList<T>)cachedReadOnly;
         }
 
-        // 既存のキャッシュをチェック
-        if (_typeIdAbilitiesCache.TryGetValue(typeId, out var cachedList))
-        {
-            var typedList = new List<T>(cachedList.Count);
-            for (var i = 0; i < cachedList.Count; i++)
-                typedList.Add((T)cachedList[i]);
-
-            var readOnlyResult = typedList.AsReadOnly();
-            _typeIdReadOnlyCache[typeId] = readOnlyResult;
-            return readOnlyResult;
-        }
-
         // 新規作成
         var result = new List<T>();
-        var cacheList = new List<AbilityBase>();
-        var count = PlayerAbilities.Count;
+        var count = _playerAbilities.Count;
 
         for (var i = 0; i < count; i++)
         {
-            if (PlayerAbilities[i] is T ability)
+            if (_playerAbilities[i] is T ability)
             {
                 result.Add(ability);
-                cacheList.Add(ability);
             }
         }
 
-        _typeIdAbilitiesCache[typeId] = cacheList;
         var readOnlyCollection = result.AsReadOnly();
         _typeIdReadOnlyCache[typeId] = readOnlyCollection;
         return readOnlyCollection;
     }
+
+    /// <summary>優先度を持つ Ability を、自動判定した系統別リストへ登録します。</summary>
+    private void AddPrioritizedAbility(AbilityBase ability)
+    {
+        if (ability is not IPrioritizedAbility prioritizedAbility) return;
+
+        var groupId = AbilityPriorityGroupRegistry.GetGroupId(ability.GetType());
+        if (!_prioritizedAbilities.TryGetValue(groupId, out var abilities))
+        {
+            abilities = new List<AbilityBase>();
+            _prioritizedAbilities.Add(groupId, abilities);
+        }
+
+        var index = 0;
+        while (index < abilities.Count &&
+               ((IPrioritizedAbility)abilities[index]).Priority > prioritizedAbility.Priority)
+            index++;
+        abilities.Insert(index, ability);
+    }
+
+    /// <summary>優先度を持つ Ability を、自動判定した系統別リストから解除します。</summary>
+    private void RemovePrioritizedAbility(AbilityBase ability)
+    {
+        if (ability is not IPrioritizedAbility) return;
+
+        var groupId = AbilityPriorityGroupRegistry.GetGroupId(ability.GetType());
+        if (!_prioritizedAbilities.TryGetValue(groupId, out var abilities)) return;
+
+        abilities.Remove(ability);
+        if (abilities.Count == 0)
+            _prioritizedAbilities.Remove(groupId);
+    }
+
+    private void RegisterAbilityState(ulong abilityId, AbilityBase ability)
+    {
+        if (_playerAbilities.Contains(ability))
+            throw new InvalidOperationException($"Ability {ability.GetType().FullName} is already registered for player {PlayerId}.");
+        if (_abilitiesById.ContainsKey(abilityId))
+            throw new InvalidOperationException($"AbilityId {abilityId} is already registered for player {PlayerId}.");
+        if (_issuedAbilityIds.Contains(abilityId))
+            throw new InvalidOperationException($"AbilityId {abilityId} was already issued for player {PlayerId}.");
+
+        _playerAbilities.Add(ability);
+        _abilitiesById.Add(abilityId, ability);
+        _issuedAbilityIds.Add(abilityId);
+        AddPrioritizedAbility(ability);
+        InvalidateAbilityCaches();
+    }
+
+    private void UnregisterAbilityState(ulong abilityId, AbilityBase ability)
+    {
+        RemovePrioritizedAbility(ability);
+        _playerAbilities.Remove(ability);
+        _abilitiesById.Remove(abilityId);
+        InvalidateAbilityCaches();
+    }
+
+    private void ClearAbilityState()
+    {
+        _playerAbilities.Clear();
+        _abilitiesById.Clear();
+        _issuedAbilityIds.Clear();
+        _prioritizedAbilities.Clear();
+        InvalidateAbilityCaches();
+    }
+
+    private void InvalidateAbilityCaches()
+    {
+        _typeIdAbilityCache.Clear();
+        _typeIdReadOnlyCache.Clear();
+    }
+
+    private int GetNextAvailableAbilityOrdinal(
+        AbilityParentBase parent,
+        Type abilityType)
+    {
+        for (var ordinal = 0; ordinal <= 0xFFF; ordinal++)
+        {
+            var abilityId = ExPlayerControlExtensions.GenerateDeterministicAbilityId(
+                PlayerId,
+                parent,
+                abilityType,
+                ordinal);
+            if (!_issuedAbilityIds.Contains(abilityId))
+                return ordinal;
+        }
+
+        throw new InvalidOperationException(
+            $"Ability ordinal exhausted for player {PlayerId}, parent {ExPlayerControlExtensions.GetParentSignature(parent)}, type {abilityType.FullName}.");
+    }
+
     public override string ToString()
     {
-        return $"{Data?.PlayerName}({PlayerId}): {Role} {PlayerAbilities.Count}";
+        return $"{Data?.PlayerName}({PlayerId}): {Role} {AbilityCount}";
     }
 }
 public static class ExPlayerControlExtensions
@@ -1026,9 +1122,17 @@ public static class ExPlayerControlExtensions
     /// <param name="playerId">プレイヤーID</param>
     /// <param name="parent">親コンテキスト(ロール/モディファイア/ゴースト/親アビリティ/プレイヤー)</param>
     /// <param name="abilityType">アビリティの型</param>
+    /// <param name="ordinal">同一シグネチャ内で割り当てた序数</param>
     /// <returns>決定的な AbilityId</returns>
-    public static ulong GenerateDeterministicAbilityId(byte playerId, AbilityParentBase parent, Type abilityType)
+    internal static ulong GenerateDeterministicAbilityId(
+        byte playerId,
+        AbilityParentBase parent,
+        Type abilityType,
+        int ordinal)
     {
+        if (ordinal is < 0 or > 0xFFF)
+            throw new ArgumentOutOfRangeException(nameof(ordinal));
+
         ulong pid = playerId;
         ulong roleCode = 0;
         string parentSig = GetParentSignature(parent);
@@ -1045,32 +1149,12 @@ public static class ExPlayerControlExtensions
             roleCode = (ulong)(int)apg.ParentGhostRole.Role & 0xFFFFUL;
         }
 
-        // 同一親コンテキスト内の同一型アビリティ数(既存数)を数えて序数に反映
-        int ordinal = 0;
-        var exPlayer = parent.Player;
-        if (exPlayer != null)
-        {
-            var abilities = exPlayer.PlayerAbilities;
-            for (int i = 0; i < abilities.Count; i++)
-            {
-                var a = abilities[i];
-                if (a != null && a.GetType() == abilityType)
-                {
-                    if (GetParentSignature(a.Parent) == parentSig)
-                    {
-                        ordinal++;
-                    }
-                }
-            }
-        }
-
         // 親シグネチャと型名からシグネチャ文字列を生成
         string signature = parentSig + "|" + (abilityType.FullName ?? abilityType.Name);
         ulong sigHash = Fnv1a64(signature) & 0x0FFFFFFFUL; // 28-bit
-        ulong ord = (ulong)(ordinal & 0xFFF); // 12-bit
+        ulong ord = (ulong)ordinal; // 12-bit
         ulong lower40 = (sigHash << 12) | ord;
-        ulong id = (pid << 56) | (roleCode << 40) | lower40;
-        return id;
+        return (pid << 56) | (roleCode << 40) | lower40;
     }
 
     /// <summary>
@@ -1100,7 +1184,7 @@ public static class ExPlayerControlExtensions
     /// </summary>
     /// <param name="parent">親コンテキスト</param>
     /// <returns>親シグネチャ</returns>
-    private static string GetParentSignature(AbilityParentBase parent)
+    internal static string GetParentSignature(AbilityParentBase parent)
     {
         switch (parent)
         {

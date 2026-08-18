@@ -1,6 +1,5 @@
 using SuperNewRoles.Events.PCEvents;
 using SuperNewRoles.Modules;
-using SuperNewRoles.Modules.Events.Bases;
 
 namespace SuperNewRoles.Roles.Ability;
 
@@ -11,19 +10,12 @@ public class StuntmanAbility : AbilityBase, IAbilityCount
         Count = count;
     }
 
-    private EventListener<TryKillEventData> _tryKillEvent;
 
     public override void AttachToAlls()
     {
         base.AttachToAlls();
-        _tryKillEvent = TryKillEvent.Instance.AddListener(OnTryKill);
+        SubscribeWithAbility(TryKillEvent.Instance, OnTryKill);
     }
-    public override void DetachToAlls()
-    {
-        base.DetachToAlls();
-        _tryKillEvent?.RemoveListener();
-    }
-
     private void OnTryKill(TryKillEventData data)
     {
         if (data.RefTarget != Player) return;

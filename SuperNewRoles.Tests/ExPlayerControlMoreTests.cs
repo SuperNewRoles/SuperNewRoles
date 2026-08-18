@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Reflection;
 using System.Runtime.Serialization;
 using FluentAssertions;
+using SuperNewRoles.Ability;
 using SuperNewRoles.Modules;
 using SuperNewRoles.Roles;
 using SuperNewRoles.Roles.Ability;
@@ -20,11 +21,13 @@ public class ExPlayerControlMoreTests
 
     private class TrackableAbility : AbilityBase
     {
-        public bool Detached { get; private set; }
-        public override void Detach()
+        public int DetachCount { get; private set; }
+
+        protected override bool IsLocalPlayer(PlayerControl player) => false;
+
+        public override void DetachToAlls()
         {
-            Detached = true;
-            // Avoid base which expects a valid Parent/Player in test context
+            DetachCount++;
         }
     }
 
@@ -44,20 +47,15 @@ public class ExPlayerControlMoreTests
         SetAutoProp(ex, nameof(ExPlayerControl.GhostRoleHistory), new List<GhostRoleId>());
         SetAutoProp(ex, nameof(ExPlayerControl.ModifierRoleHistory), new List<ModifierRoleId>());
 
-        SetField(ex, "_abilityCache", new Dictionary<string, AbilityBase>());
-        SetAutoProp(ex, nameof(ExPlayerControl.PlayerAbilities), new List<AbilityBase>());
-        SetAutoProp(ex, nameof(ExPlayerControl.PlayerAbilitiesDictionary), new Dictionary<ulong, AbilityBase>());
+        SetField(ex, "_playerAbilities", new List<AbilityBase>());
+        SetField(ex, "_abilitiesById", new Dictionary<ulong, AbilityBase>());
+        SetField(ex, "_issuedAbilityIds", new HashSet<ulong>());
         SetAutoProp(ex, nameof(ExPlayerControl.ModifierRoleBases), new List<IModifierBase>());
-        SetField(ex, "_impostorVisionAbilities", new List<ImpostorVisionAbility>());
-        SetField(ex, "_hasAbilityCache", new Dictionary<string, bool>());
 
         SetField(ex, "_typeIdAbilityCache", new Dictionary<int, AbilityBase>());
-        SetField(ex, "_typeIdAbilitiesCache", new Dictionary<int, List<AbilityBase>>());
         SetField(ex, "_typeIdReadOnlyCache", new Dictionary<int, IReadOnlyList<object>>());
-        SetField(ex, "_hasAbilityByTypeId", new bool[1024]);
-        SetField(ex, "_hasAbilityByTypeIdCached", new bool[1024]);
+        SetField(ex, "_prioritizedAbilities", new Dictionary<int, List<AbilityBase>>());
 
-        typeof(ExPlayerControl).GetProperty(nameof(ExPlayerControl.lastAbilityId))!.SetValue(ex, 0);
         return ex;
     }
 
@@ -99,38 +97,15 @@ public class ExPlayerControlMoreTests
         return (bool)method.Invoke(null, new object[] { parent, player })!;
     }
 
-    // 簡易 Attach: 内部キャッシュの無効化まで含め、Attach 相当の状態遷移を再現する
-    private static ulong ShallowAttach(ExPlayerControl ex, AbilityBase ability)
+    // 本番の AttachAbility 経路を通して登録する。
+    private static ulong Attach(ExPlayerControl ex, AbilityBase ability)
     {
-        // Generate deterministic ability id using current player as parent for stable tests
-        var id = ExPlayerControlExtensions.GenerateDeterministicAbilityId(ex.PlayerId, new AbilityParentPlayer(ex), ability.GetType());
-        typeof(ExPlayerControl).GetProperty(nameof(ExPlayerControl.lastAbilityId))!.SetValue(ex, ex.lastAbilityId + 1);
-        ex.PlayerAbilities.Add(ability);
-        ex.PlayerAbilitiesDictionary[id] = ability;
-        // invalidate caches equivalent to attach
-        GetField<Dictionary<string, bool>>(ex, "_hasAbilityCache").Clear();
-        GetField<Dictionary<int, AbilityBase>>(ex, "_typeIdAbilityCache").Clear();
-        GetField<Dictionary<int, List<AbilityBase>>>(ex, "_typeIdAbilitiesCache").Clear();
-        GetField<Dictionary<int, IReadOnlyList<object>>>(ex, "_typeIdReadOnlyCache").Clear();
-        Array.Clear(GetField<bool[]>(ex, "_hasAbilityByTypeIdCached"), 0, 1024);
-        return id;
+        ex.AttachAbility(ability, new AbilityParentPlayer(ex));
+        return ability.AbilityId;
     }
-    // 簡易 Detach: 能力の削除と関連キャッシュの無効化を行う
-    private static void ShallowDetach(ExPlayerControl ex, AbilityBase ability)
-    {
-        ulong id = 0;
-        foreach (var kv in ex.PlayerAbilitiesDictionary)
-        {
-            if (ReferenceEquals(kv.Value, ability)) { id = kv.Key; break; }
-        }
-        ex.PlayerAbilities.Remove(ability);
-        if (id != 0) ex.PlayerAbilitiesDictionary.Remove(id);
-        GetField<Dictionary<string, bool>>(ex, "_hasAbilityCache").Clear();
-        GetField<Dictionary<int, AbilityBase>>(ex, "_typeIdAbilityCache").Clear();
-        GetField<Dictionary<int, List<AbilityBase>>>(ex, "_typeIdAbilitiesCache").Clear();
-        GetField<Dictionary<int, IReadOnlyList<object>>>(ex, "_typeIdReadOnlyCache").Clear();
-        Array.Clear(GetField<bool[]>(ex, "_hasAbilityByTypeIdCached"), 0, 1024);
-    }
+    // 本番の DetachAbility 経路を通して解除する。
+    private static void Detach(ExPlayerControl ex, AbilityBase ability)
+        => ex.DetachAbility(ability.AbilityId);
     // 自動実装プロパティのバックフィールドから値を取得する
     private static TProp GetAutoProp<TProp>(object obj, string propName)
     {
@@ -232,7 +207,7 @@ public class ExPlayerControlMoreTests
     {
         var ex = CreateBareEx(playerId: 5, role: RoleId.Sheriff);
         var alpha = new AlphaAbility();
-        var id = ShallowAttach(ex, alpha);
+        var id = Attach(ex, alpha);
 
         // 目的: 最初の取得が成功すること
         ex.TryGetAbility<AlphaAbility>(out var first).Should().BeTrue();
@@ -245,8 +220,8 @@ public class ExPlayerControlMoreTests
         // 目的: キャッシュ経由でも同一参照が返ること
         second.Should().BeSameAs(alpha);
 
-        // Detach and ensure cache invalidated via ShallowDetach
-        ShallowDetach(ex, alpha);
+        // Detach and ensure the production path invalidates the cache.
+        Detach(ex, alpha);
         // 目的: Detach 後は取得に失敗すること
         ex.TryGetAbility<AlphaAbility>(out var after).Should().BeFalse();
         // 目的: 取得結果が null であること
@@ -264,7 +239,7 @@ public class ExPlayerControlMoreTests
         var ex = CreateBareEx(playerId: 6, role: RoleId.Crewmate);
         var a1 = new AlphaAbility();
         var a2 = new AlphaAbility();
-        ShallowAttach(ex, a1);
+        Attach(ex, a1);
 
         var list1 = ex.GetAbilities<AlphaAbility>();
         // 目的: 初回は1件のみであること
@@ -275,8 +250,8 @@ public class ExPlayerControlMoreTests
         // 目的: ReadOnly キャッシュにより同一参照が返ること
         ReferenceEquals(list1, list2).Should().BeTrue();
 
-        // Now attach another AlphaAbility and ensure cache is cleared by our helper
-        ShallowAttach(ex, a2);
+        // Now attach another AlphaAbility and ensure the production path clears the cache.
+        Attach(ex, a2);
         var list3 = ex.GetAbilities<AlphaAbility>();
         // 目的: 追加後は2件に増えること
         list3.Count.Should().Be(2);
@@ -284,7 +259,7 @@ public class ExPlayerControlMoreTests
         ReferenceEquals(list1, list3).Should().BeFalse();
 
         // Detach and check refresh again
-        ShallowDetach(ex, a1);
+        Detach(ex, a1);
         var list4 = ex.GetAbilities<AlphaAbility>();
         // 目的: Detach 後は1件へ減ること
         list4.Count.Should().Be(1);
@@ -296,7 +271,7 @@ public class ExPlayerControlMoreTests
     {
         var ex = CreateBareEx(playerId: 7, role: RoleId.None);
         var beta = new BetaAbility();
-        var id = ShallowAttach(ex, beta);
+        var id = Attach(ex, beta);
 
         // 目的: ジェネリック版取得で同一参照が得られること
         ex.GetAbility<BetaAbility>().Should().BeSameAs(beta);
@@ -350,8 +325,14 @@ public class ExPlayerControlMoreTests
     public void Disconnected_Clears_Collections_And_Statics()
     {
         var ex = CreateBareEx(playerId: 12);
-        var t = new TrackableAbility();
-        var id = ShallowAttach(ex, t);
+        var first = new TrackableAbility();
+        var second = new TrackableAbility();
+        var firstId = Attach(ex, first);
+        var secondId = Attach(ex, second);
+
+        ex.HasAbility<TrackableAbility>().Should().BeTrue();
+        ex.GetAbility<TrackableAbility>().Should().BeSameAs(first);
+        ex.GetAbilities<TrackableAbility>().Should().Equal(first, second);
 
         // Prepare statics
         var field = typeof(ExPlayerControl).GetField("_exPlayerControlsArray", BindingFlags.Static | BindingFlags.NonPublic)!;
@@ -361,31 +342,31 @@ public class ExPlayerControlMoreTests
         field.SetValue(null, arr);
         ExPlayerControl.ExPlayerControls.Add(ex);
 
-        ex.Disconnected();
+        try
+        {
+            ex.Disconnected();
 
-        // ability.Detach invoked and cleared
-        // 目的: Disconnected により Ability.Detach が呼ばれること
-        t.Detached.Should().BeTrue();
-        // 目的: 能力リストがクリアされること
-        ex.PlayerAbilities.Should().BeEmpty();
-        // 目的: 能力辞書がクリアされること
-        ex.PlayerAbilitiesDictionary.Should().BeEmpty();
-        // 目的: 静的コレクションから自身が取り除かれること
-        ExPlayerControl.ExPlayerControls.Should().NotContain(ex);
-        // 目的: 静的配列の該当要素が null にされること
-        ((ExPlayerControl[])field.GetValue(null)!)[12].Should().BeNull();
+            first.DetachCount.Should().Be(1);
+            second.DetachCount.Should().Be(1);
+            ex.AbilityCount.Should().Be(0);
+            ex.GetAbility(firstId).Should().BeNull();
+            ex.GetAbility(secondId).Should().BeNull();
+            ExPlayerControl.ExPlayerControls.Should().NotContain(ex);
+            ((ExPlayerControl[])field.GetValue(null)!)[12].Should().BeNull();
 
-        // caches cleared
-        // 目的: hasAbility キャッシュが空であること
-        GetField<Dictionary<string, bool>>(ex, "_hasAbilityCache").Count.Should().Be(0);
-        // 目的: typeId→Ability キャッシュが空であること
-        GetField<Dictionary<int, AbilityBase>>(ex, "_typeIdAbilityCache").Count.Should().Be(0);
-        // 目的: typeId→Abilities キャッシュが空であること
-        GetField<Dictionary<int, List<AbilityBase>>>(ex, "_typeIdAbilitiesCache").Count.Should().Be(0);
-        // 目的: typeId→ReadOnlyList キャッシュが空であること
-        GetField<Dictionary<int, IReadOnlyList<object>>>(ex, "_typeIdReadOnlyCache").Count.Should().Be(0);
+            GetField<Dictionary<int, AbilityBase>>(ex, "_typeIdAbilityCache").Should().BeEmpty();
+            GetField<Dictionary<int, IReadOnlyList<object>>>(ex, "_typeIdReadOnlyCache").Should().BeEmpty();
+            GetField<Dictionary<int, List<AbilityBase>>>(ex, "_prioritizedAbilities").Should().BeEmpty();
+            GetField<HashSet<ulong>>(ex, "_issuedAbilityIds").Should().BeEmpty();
 
-        // restore statics
-        field.SetValue(null, original);
+            ex.HasAbility<TrackableAbility>().Should().BeFalse();
+            ex.GetAbility<TrackableAbility>().Should().BeNull();
+            ex.GetAbilities<TrackableAbility>().Should().BeEmpty();
+        }
+        finally
+        {
+            ExPlayerControl.ExPlayerControls.RemoveAll(player => ReferenceEquals(player, ex));
+            field.SetValue(null, original);
+        }
     }
 }

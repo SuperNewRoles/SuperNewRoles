@@ -6,9 +6,10 @@ using System.Collections.Generic;
 
 namespace SuperNewRoles.Roles.Ability;
 
-public class CustomSaboAbility : CustomButtonBase
+public class CustomSaboAbility : CustomButtonBase, IPrioritizedAbility
 {
-    public Func<bool> CanSabotage { get; }
+    public int Priority { get; }
+    public Func<bool?> CanSabotage { get; }
     public Action SabotageCallback { get; }
 
     public override Sprite Sprite => HudManager.Instance?.SabotageButton?.graphic?.sprite;
@@ -17,18 +18,16 @@ public class CustomSaboAbility : CustomButtonBase
     public override float DefaultTimer => 0f;
     public override bool IsFirstCooldownTenSeconds => false;
 
-    public CustomSaboAbility(Func<bool> canSabotage, Action sabotageCallback = null)
+    public CustomSaboAbility(Func<bool?> canSabotage, Action sabotageCallback = null, int priority = AbilityPriority.Default)
     {
         CanSabotage = canSabotage;
         SabotageCallback = sabotageCallback;
+        Priority = priority;
     }
-    public bool CheckCanSabotage()
-    {
-        return CanSabotage();
-    }
+    public bool CheckCanSabotage() => CanSabotage?.Invoke() ?? false;
     public override void OnClick()
     {
-        if (!CanSabotage()) return;
+        if (!CheckCanSabotage()) return;
 
         // サボタージュマップを開く
         if (!PlayerControl.LocalPlayer.inVent && GameManager.Instance.SabotagesEnabled())
@@ -46,7 +45,7 @@ public class CustomSaboAbility : CustomButtonBase
     public override bool CheckIsAvailable()
     {
         // サボタージュが使用可能かどうか
-        if (!CanSabotage())
+        if (!CheckCanSabotage())
             return false;
 
         // 会議中やサボタージュ中は使用不可
@@ -57,7 +56,7 @@ public class CustomSaboAbility : CustomButtonBase
 
     public override bool CheckHasButton()
     {
-        return CanSabotage();
+        return Player.ShouldShowSabotageAbility(this);
     }
 
     public override void AttachToLocalPlayer()

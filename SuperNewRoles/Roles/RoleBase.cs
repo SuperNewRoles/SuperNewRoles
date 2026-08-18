@@ -105,7 +105,7 @@ public interface IRoleBase : IRoleInformation
             Logger.Info($"[OnSetRole] Adding ability {ability.GetType().Name} to player {player?.name}");
             exPlayer.AddAbility(ability, parent);
         }
-        Logger.Info($"[OnSetRole] Completed setting abilities for player {player?.name}, Total abilities: {exPlayer.PlayerAbilities.Count}");
+        Logger.Info($"[OnSetRole] Completed setting abilities for player {player?.name}, Total abilities: {exPlayer.AbilityCount}");
     }
 }
 

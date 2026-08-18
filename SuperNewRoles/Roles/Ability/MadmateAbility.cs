@@ -8,24 +8,31 @@ namespace SuperNewRoles.Roles.Ability;
 
 public class MadmateAbility : AbilityBase
 {
+    private readonly int _priority;
     public MadmateData MadData { get; private set; }
     public CustomVentAbility VentAbility { get; private set; }
     public KnowImpostorAbility KnowImpostorAbility { get; private set; }
     public ImpostorVisionAbility ImpostorVisionAbility { get; private set; }
     public CustomTaskAbility CustomTaskAbility { get; private set; }
     public SabotageCanUseAbility SabotageCanUseAbility { get; private set; }
-    public MadmateAbility(MadmateData madData)
+    public MadmateAbility(MadmateData madData, int priority = AbilityPriority.Default)
     {
         MadData = madData;
+        _priority = priority;
     }
     public override void AttachToAlls()
     {
         MadData.ResetTaskCheck();
 
-        VentAbility = new CustomVentAbility(() => MadData.CouldUseVent);
+        VentAbility = new CustomVentAbility(() => MadData.CouldUseVent, priority: _priority);
         KnowImpostorAbility = new KnowImpostorAbility(MadData.CouldKnowImpostors);
-        ImpostorVisionAbility = new ImpostorVisionAbility(() => MadData.HasImpostorVision);
-        CustomTaskAbility = new CustomTaskAbility(() => (true, false, MadData.TaskNeeded), MadData.SpecialTasks);
+        ImpostorVisionAbility = new ImpostorVisionAbility(() => MadData.HasImpostorVision, priority: _priority);
+        CustomTaskAbility = new CustomTaskAbility(
+            isTaskTrigger: () => true,
+            countsForCrewWin: () => false,
+            requiredTaskCount: () => MadData.TaskNeeded,
+            taskOptions: () => MadData.SpecialTasks,
+            priority: _priority);
         SabotageCanUseAbility = new SabotageCanUseAbility(() => getCannotSabotageType());
 
         Player.AttachAbility(VentAbility, new AbilityParentAbility(this));

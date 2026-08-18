@@ -4,7 +4,6 @@ using SuperNewRoles.CustomCosmetics;
 using SuperNewRoles.CustomOptions;
 using SuperNewRoles.Events.PCEvents;
 using SuperNewRoles.Modules;
-using SuperNewRoles.Modules.Events.Bases;
 using SuperNewRoles.Roles.Ability;
 using UnityEngine;
 
@@ -39,7 +38,6 @@ class DyingMessenger : RoleBase<DyingMessenger>
 
 public sealed class DyingMessengerReportAbility : AbilityBase
 {
-    private EventListener<ReportDeadBodyHostEventData> _reportListener;
 
     public int GetRoleTime { get; }
     public int GetLightAndDarkerTime { get; }
@@ -53,13 +51,7 @@ public sealed class DyingMessengerReportAbility : AbilityBase
     public override void AttachToAlls()
     {
         base.AttachToAlls();
-        _reportListener = ReportDeadBodyHostEvent.Instance.AddListener(OnReportHost);
-    }
-
-    public override void DetachToAlls()
-    {
-        base.DetachToAlls();
-        _reportListener?.RemoveListener();
+        SubscribeWithAbility(ReportDeadBodyHostEvent.Instance, OnReportHost);
     }
 
     // ホストが実行する

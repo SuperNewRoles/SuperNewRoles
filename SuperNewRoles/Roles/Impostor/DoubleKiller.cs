@@ -69,11 +69,13 @@ public class IndependentKillButtonAbility : TargetCustomButtonBase
     public Func<ShowTextType> ShowTextTypeValue { get; }
     public Func<string> ShowTextValue { get; }
     private Func<ExPlayerControl, bool> _customKillHandler { get; }
+    private readonly KeyType _keyType;
+    private byte _pendingTargetId = byte.MaxValue;
 
     public override Color32 OutlineColor => ExPlayerControl.LocalPlayer.roleBase.RoleColor;
     public override Sprite Sprite => HudManager.Instance?.KillButton?.graphic?.sprite;
     public override string buttonText => FastDestroyableSingleton<TranslationController>.Instance.GetString(StringNames.KillLabel);
-    protected override KeyType keytype => KeyType.Kill;
+    protected override KeyType keytype => _keyType;
     public override float DefaultTimer => KillCooldown?.Invoke() ?? 0;
     public override bool OnlyCrewmates => OnlyCrewmatesValue?.Invoke() ?? false;
     public override bool TargetPlayersInVents => TargetPlayersInVentsValue?.Invoke() ?? false;
@@ -90,7 +92,8 @@ public class IndependentKillButtonAbility : TargetCustomButtonBase
         Action<ExPlayerControl> killedCallback = null,
         Func<ShowTextType> showTextType = null,
         Func<string> showText = null,
-        Func<ExPlayerControl, bool> customKillHandler = null)
+        Func<ExPlayerControl, bool> customKillHandler = null,
+        KeyType keyType = KeyType.Kill)
     {
         CanKill = canKill;
         KillCooldown = killCooldown;
@@ -101,6 +104,31 @@ public class IndependentKillButtonAbility : TargetCustomButtonBase
         ShowTextTypeValue = showTextType;
         ShowTextValue = showText;
         _customKillHandler = customKillHandler;
+        _keyType = keyType;
+    }
+
+    public override void AttachToAlls()
+    {
+        base.AttachToAlls();
+        SubscribeWithAbility(MurderEvent.Instance, OnMurder);
+    }
+
+    public override void DetachToAlls()
+    {
+        _pendingTargetId = byte.MaxValue;
+        base.DetachToAlls();
+    }
+
+    private void OnMurder(MurderEventData data)
+    {
+        if (Player == null || !Player.AmOwner || _pendingTargetId == byte.MaxValue)
+            return;
+        if (data.killer?.PlayerId != Player.PlayerId || data.target?.PlayerId != _pendingTargetId)
+            return;
+
+        _pendingTargetId = byte.MaxValue;
+        if (data.resultFlags.HasFlag(MurderResultFlags.Succeeded))
+            KilledCallback?.Invoke(data.target);
     }
 
     public override void OnClick()
@@ -110,9 +138,14 @@ public class IndependentKillButtonAbility : TargetCustomButtonBase
         PlayerControl target = Target;
         bool customKilled = _customKillHandler?.Invoke(target) ?? false;
         if (!customKilled)
+        {
+            byte targetId = ((ExPlayerControl)target).PlayerId;
+            _pendingTargetId = targetId;
             ExPlayerControl.LocalPlayer.RpcCustomDeath(target, CustomDeathType.Kill);
+            if (_pendingTargetId == targetId)
+                _pendingTargetId = byte.MaxValue;
+        }
         ResetTimer();
-        KilledCallback?.Invoke(Target);
         OnCooldownStarted?.Invoke(DefaultTimer);
     }
 
@@ -171,6 +204,7 @@ public class DoubleKillerAbility : AbilityBase, IAbilityCount
                 return HasCount;
             },
             () => DoubleKiller.DoubleKillerSubKillCooldown,
+            keyType: KeyType.Ability1,
             onlyCrewmates: () => true,
             killedCallback: x => {
                 // 安全性を確保するためのnull参照チェック

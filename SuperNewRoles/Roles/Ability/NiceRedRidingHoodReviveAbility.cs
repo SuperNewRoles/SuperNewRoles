@@ -5,7 +5,6 @@ using UnityEngine;
 using SuperNewRoles.Events;
 using SuperNewRoles.Events.PCEvents;
 using SuperNewRoles.Modules;
-using SuperNewRoles.Modules.Events.Bases;
 using SuperNewRoles.CustomOptions;
 using SuperNewRoles.Roles.Crewmate;
 using AmongUs.GameOptions;
@@ -14,10 +13,6 @@ namespace SuperNewRoles.Roles.Ability;
 
 public class NiceRedRidingHoodReviveAbility : AbilityBase, IAbilityCount
 {
-    // イベントリスナー
-    private EventListener<MurderEventData> _murderEventListener;
-    private EventListener<WrapUpEventData> _wrapUpEventListener;
-
     // 内部状態
     public ExPlayerControl Killer { get; set; }
     public bool IsRevivable { get; set; }
@@ -40,15 +35,8 @@ public class NiceRedRidingHoodReviveAbility : AbilityBase, IAbilityCount
         RemainingReviveCount = NiceRedRidingHoodCount;
 
         // イベントリスナーの登録
-        _murderEventListener = MurderEvent.Instance.AddListener(OnMurderEvent);
-        _wrapUpEventListener = WrapUpEvent.Instance.AddListener(OnWrapUpEvent);
-    }
-
-    public override void DetachToAlls()
-    {
-        _murderEventListener?.RemoveListener();
-        _wrapUpEventListener?.RemoveListener();
-        base.DetachToAlls();
+        SubscribeWithAbility(MurderEvent.Instance, OnMurderEvent);
+        SubscribeWithAbility(WrapUpEvent.Instance, OnWrapUpEvent);
     }
 
     private void OnMurderEvent(MurderEventData data)

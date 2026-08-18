@@ -1,22 +1,14 @@
 using SuperNewRoles.Events;
-using SuperNewRoles.Modules.Events.Bases;
 
 namespace SuperNewRoles.Roles.Ability;
 
 public class ExitVentOnFixSabotageAbility : AbilityBase
 {
-    private EventListener<SaboEndEventData> saboEndEventListener;
     public override void AttachToLocalPlayer()
     {
         base.AttachToLocalPlayer();
-        saboEndEventListener = SaboEndEvent.Instance.AddListener(OnSaboEnd);
+        SubscribeWithAbility(SaboEndEvent.Instance, OnSaboEnd);
     }
-    public override void DetachToLocalPlayer()
-    {
-        base.DetachToLocalPlayer();
-        saboEndEventListener?.RemoveListener();
-    }
-
     private void OnSaboEnd(SaboEndEventData data)
     {
         Logger.Info("Sabo end");

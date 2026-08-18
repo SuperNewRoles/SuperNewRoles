@@ -16,6 +16,7 @@ using TMPro;
 using UnityEngine;
 using BepInEx.Logging;
 using SuperNewRoles.Modules;
+using SuperNewRoles.Modules.Compatibility;
 using SuperNewRoles.Patches;
 using SuperNewRoles.Roles;
 using SuperNewRoles.CustomOptions;
@@ -43,6 +44,8 @@ namespace SuperNewRoles;
 
 [BepInAutoPlugin(PluginConfig.Id, PluginConfig.Name)]
 [BepInProcess(PluginConfig.ProcessName)]
+[BepInDependency(LevelImposterSupport.ReactorPluginGuid, BepInDependency.DependencyFlags.SoftDependency)]
+[BepInDependency(LevelImposterSupport.PluginGuid, BepInDependency.DependencyFlags.SoftDependency)]
 [BepInIncompatibility("com.emptybottle.townofhost")]
 [BepInIncompatibility("me.eisbison.theotherroles")]
 [BepInIncompatibility("me.yukieiji.extremeroles")]
@@ -99,7 +102,10 @@ public partial class SuperNewRolesPlugin : BasePlugin
 
         Instance = this;
 
+        if (!ModHelpers.IsAndroid())
+            EnsureBepInExInteropCompatibility();
         LoadAnnouncementImageDecoder();
+        LevelImposterSupport.Initialize();
 
         Encryption.SetEncryptKey();
 
@@ -160,6 +166,27 @@ public partial class SuperNewRolesPlugin : BasePlugin
         Logger.LogInfo("--------------------------------");
     }
 
+    private static void EnsureBepInExInteropCompatibility()
+    {
+        try
+        {
+            string interopDirectory = Path.Combine(BepInEx.Paths.BepInExRootPath, "interop");
+            BepInExInteropCompatibilityResult result = BepInExInteropCompatibility.EnsureCompatible(
+                BepInEx.Configuration.ConfigFile.CoreConfig,
+                interopDirectory);
+
+            if (result.ScanMethodRefsChanged)
+                Logger.LogWarning("BepInEx [IL2CPP] ScanMethodRefs was false and has been changed to true.");
+
+            if (result.RegenerationScheduled)
+                Logger.LogWarning("BepInEx interop assemblies will be regenerated with method references on the next launch.");
+        }
+        catch (Exception exception)
+        {
+            Logger.LogError($"Failed to ensure BepInEx interop compatibility: {exception}");
+        }
+    }
+
     private static void LoadAnnouncementImageDecoder()
     {
         const string assemblyName = "SixLabors.ImageSharp";
@@ -188,6 +215,7 @@ public partial class SuperNewRolesPlugin : BasePlugin
             Logger.LogWarning($"Failed to load announcement image decoder: {ex}");
         }
     }
+
     public void PatchAll(Harmony harmony)
     {
         var assembly = Assembly;
@@ -460,7 +488,7 @@ public partial class SuperNewRolesPlugin : BasePlugin
         public static void Postfix(ref int __result)
         {
             if (AmongUsClient.Instance.NetworkMode is NetworkModes.LocalGame or NetworkModes.FreePlay) return;
-            __result += 25;
+            __result = Statics.ApplyDisableServerAuthorityFlag(__result);
         }
     }
     [HarmonyPatch(typeof(Constants), nameof(Constants.IsVersionModded))]

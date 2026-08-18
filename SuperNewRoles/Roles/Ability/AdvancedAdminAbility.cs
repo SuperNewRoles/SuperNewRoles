@@ -1,7 +1,6 @@
 using System;
 using SuperNewRoles.Events;
 using SuperNewRoles.Modules;
-using SuperNewRoles.Modules.Events.Bases;
 using SuperNewRoles.Patches;
 using UnityEngine;
 
@@ -28,11 +27,6 @@ public record AdvancedAdminData(
 public class AdvancedAdminAbility : AbilityBase
 {
     public readonly AdvancedAdminData Data;
-    private EventListener<MapBehaviourShowPrefixEventData> MapBehaviourShowPrefixEventListener;
-    private EventListener<MapBehaviourShowPostfixEventData> MapBehaviourShowPostfixEventListener;
-    private EventListener<MapBehaviourAwakePostfixEventData> MapBehaviourAwakePostfixEventListener;
-    private EventListener<MapBehaviourFixedUpdatePostfixEventData> MapBehaviourFixedUpdatePostfixEventListener;
-    private EventListener<MapBehaviourClosePostfixEventData> MapBehaviourClosePostfixEventListener;
 
     public AdvancedAdminAbility(AdvancedAdminData data)
     {
@@ -40,25 +34,11 @@ public class AdvancedAdminAbility : AbilityBase
     }
     public override void AttachToLocalPlayer()
     {
-        MapBehaviourShowPrefixEventListener = MapBehaviourShowPrefixEvent.Instance.AddListener(OnMapBehaviourShowPrefix);
-        MapBehaviourShowPostfixEventListener = MapBehaviourShowPostfixEvent.Instance.AddListener(OnMapBehaviourShowPostfix);
-        MapBehaviourAwakePostfixEventListener = MapBehaviourAwakePostfixEvent.Instance.AddListener(OnMapBehaviourAwakePostfix);
-        MapBehaviourFixedUpdatePostfixEventListener = MapBehaviourFixedUpdatePostfixEvent.Instance.AddListener(OnMapBehaviourFixedUpdatePostfix);
-        MapBehaviourClosePostfixEventListener = MapBehaviourClosePostfixEvent.Instance.AddListener(OnMapBehaviourClosePostfix);
-    }
-    public override void DetachToLocalPlayer()
-    {
-        base.DetachToLocalPlayer();
-        if (MapBehaviourShowPrefixEventListener != null)
-            MapBehaviourShowPrefixEvent.Instance.RemoveListener(MapBehaviourShowPrefixEventListener);
-        if (MapBehaviourShowPostfixEventListener != null)
-            MapBehaviourShowPostfixEvent.Instance.RemoveListener(MapBehaviourShowPostfixEventListener);
-        if (MapBehaviourAwakePostfixEventListener != null)
-            MapBehaviourAwakePostfixEvent.Instance.RemoveListener(MapBehaviourAwakePostfixEventListener);
-        if (MapBehaviourFixedUpdatePostfixEventListener != null)
-            MapBehaviourFixedUpdatePostfixEvent.Instance.RemoveListener(MapBehaviourFixedUpdatePostfixEventListener);
-        if (MapBehaviourClosePostfixEventListener != null)
-            MapBehaviourClosePostfixEvent.Instance.RemoveListener(MapBehaviourClosePostfixEventListener);
+        SubscribeWithAbility(MapBehaviourShowPrefixEvent.Instance, OnMapBehaviourShowPrefix);
+        SubscribeWithAbility(MapBehaviourShowPostfixEvent.Instance, OnMapBehaviourShowPostfix);
+        SubscribeWithAbility(MapBehaviourAwakePostfixEvent.Instance, OnMapBehaviourAwakePostfix);
+        SubscribeWithAbility(MapBehaviourFixedUpdatePostfixEvent.Instance, OnMapBehaviourFixedUpdatePostfix);
+        SubscribeWithAbility(MapBehaviourClosePostfixEvent.Instance, OnMapBehaviourClosePostfix);
     }
     private void OnMapBehaviourShowPrefix(MapBehaviourShowPrefixEventData data)
     {

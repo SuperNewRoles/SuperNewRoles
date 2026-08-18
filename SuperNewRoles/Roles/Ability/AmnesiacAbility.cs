@@ -3,7 +3,6 @@ using AmongUs.GameOptions;
 using SuperNewRoles.Events;
 using SuperNewRoles.Events.PCEvents;
 using SuperNewRoles.Modules;
-using SuperNewRoles.Modules.Events.Bases;
 using SuperNewRoles.Roles.Impostor;
 using SuperNewRoles.Roles.Neutral;
 using UnityEngine;
@@ -12,8 +11,6 @@ namespace SuperNewRoles.Roles.Ability;
 
 public class AmnesiacAbility : AbilityBase
 {
-    private EventListener<CalledMeetingEventData> _calledMeetingListener;
-    private EventListener<MeetingCloseEventData> _meetingCloseListener;
     private ExPlayerControl _willChangeRole;
 
     public AmnesiacAbility()
@@ -22,8 +19,8 @@ public class AmnesiacAbility : AbilityBase
 
     public override void AttachToLocalPlayer()
     {
-        _calledMeetingListener = CalledMeetingEvent.Instance.AddListener(OnCalledMeeting);
-        _meetingCloseListener = MeetingCloseEvent.Instance.AddListener(OnMeetingClose);
+        SubscribeWithAbility(CalledMeetingEvent.Instance, OnCalledMeeting);
+        SubscribeWithAbility(MeetingCloseEvent.Instance, OnMeetingClose);
     }
 
     private void OnCalledMeeting(CalledMeetingEventData data)
@@ -88,10 +85,4 @@ public class AmnesiacAbility : AbilityBase
         }, 0.1f);
     }
 
-    public override void DetachToLocalPlayer()
-    {
-        base.DetachToLocalPlayer();
-        _calledMeetingListener?.RemoveListener();
-        _meetingCloseListener?.RemoveListener();
-    }
 }

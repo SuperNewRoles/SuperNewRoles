@@ -2,7 +2,6 @@ using System;
 using System.Collections.Generic;
 using SuperNewRoles.Events;
 using SuperNewRoles.Modules;
-using SuperNewRoles.Modules.Events.Bases;
 using UnityEngine;
 
 namespace SuperNewRoles.Roles.Ability;
@@ -17,10 +16,9 @@ public class ShowPlayerUIAbility : AbilityBase
     {
         _getPlayerList = getPlayerList;
     }
-    private EventListener _fixedUpdateListener;
     public override void AttachToLocalPlayer()
     {
-        _fixedUpdateListener = FixedUpdateEvent.Instance.AddListener(OnFixedUpdate);
+        SubscribeWithAbility(FixedUpdateEvent.Instance, OnFixedUpdate);
         _lastPlayerList = new();
 
         _playerUIContainer = new GameObject("PlayerUIContainer");
@@ -34,7 +32,6 @@ public class ShowPlayerUIAbility : AbilityBase
     }
     public override void DetachToLocalPlayer()
     {
-        _fixedUpdateListener?.RemoveListener();
         if (_playerUIContainer != null)
         {
             GameObject.Destroy(_playerUIContainer);

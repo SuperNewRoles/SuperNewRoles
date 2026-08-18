@@ -17,8 +17,10 @@ class BodyBuilder : RoleBase<BodyBuilder>
         () => new LiftWeightsMinigameAbility(),
         () => new CustomTaskTypeAbility(TaskTypes.LiftWeights, BodyBuilderChangeAllTaskLiftWeights, MapNames.Fungle),
         () => new CustomTaskAbility(
-            () => (true, BodyBuilderTaskOptionAvailable, BodyBuilderTaskOptionAvailable ? BodyBuilderTaskOption.Total : null),
-            BodyBuilderTaskOptionAvailable ? BodyBuilderTaskOption : null
+            isTaskTrigger: () => true,
+            countsForCrewWin: () => BodyBuilderTaskOptionAvailable,
+            requiredTaskCount: () => BodyBuilderTaskOptionAvailable ? BodyBuilderTaskOption.Total : null,
+            taskOptions: () => BodyBuilderTaskOptionAvailable ? BodyBuilderTaskOption : null
         )
     ];
 
@@ -40,4 +42,7 @@ class BodyBuilder : RoleBase<BodyBuilder>
 
     [CustomOptionTask("BodyBuilderTaskOption", 2, 3, 1, parentFieldName: nameof(BodyBuilderTaskOptionAvailable), parentActiveValue: true)]
     public static TaskOptionData BodyBuilderTaskOption;
+
+    [CustomOptionBool("BodyBuilderMoreMuscular", false)]
+    public static bool BodyBuilderMoreMuscular;
 }

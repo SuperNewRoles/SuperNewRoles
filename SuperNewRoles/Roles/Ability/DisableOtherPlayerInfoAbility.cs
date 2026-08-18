@@ -1,14 +1,12 @@
 using System;
 using SuperNewRoles.Events;
 using SuperNewRoles.Modules;
-using SuperNewRoles.Modules.Events.Bases;
 using UnityEngine;
 
 namespace SuperNewRoles.Roles.Ability;
 
 public class DisableOtherPlayerInfoAbility : AbilityBase
 {
-    private EventListener<NameTextUpdateEventData> _nameTextUpdateEvent;
     private Func<bool> _isAvailable;
     public DisableOtherPlayerInfoAbility(Func<bool> isAvailable)
     {
@@ -18,13 +16,7 @@ public class DisableOtherPlayerInfoAbility : AbilityBase
     public override void AttachToLocalPlayer()
     {
         base.AttachToLocalPlayer();
-        _nameTextUpdateEvent = NameTextUpdateEvent.Instance.AddListener(OnNameTextUpdate);
-    }
-
-    public override void DetachToLocalPlayer()
-    {
-        base.DetachToLocalPlayer();
-        _nameTextUpdateEvent?.RemoveListener();
+        SubscribeWithAbility(NameTextUpdateEvent.Instance, OnNameTextUpdate);
     }
 
     private void OnNameTextUpdate(NameTextUpdateEventData data)

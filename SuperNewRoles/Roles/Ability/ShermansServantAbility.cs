@@ -4,7 +4,6 @@ using SuperNewRoles.Roles.Ability.CustomButton;
 using SuperNewRoles.Roles.Neutral;
 using SuperNewRoles.Events;
 using SuperNewRoles.Events.PCEvents;
-using SuperNewRoles.Modules.Events.Bases;
 using UnityEngine;
 using Hazel;
 
@@ -18,8 +17,6 @@ public class ShermansServantAbility : AbilityBase
     private SuicideServantButton _suicideButton;
     private DeadBodyArrowsAbility _deadBodyArrowsAbility;
     private PlayerArrowsAbility _playerArrowsAbility;
-    private EventListener _fixedUpdateListener;
-    private EventListener<WrapUpEventData> _wrapUpListener;
     private KnowOtherAbility _knowOtherAbility;
 
     // ShermansServant specific variables
@@ -34,7 +31,7 @@ public class ShermansServantAbility : AbilityBase
     public override void AttachToLocalPlayer()
     {
         base.AttachToLocalPlayer();
-        _fixedUpdateListener = FixedUpdateEvent.Instance.AddListener(OnFixedUpdate);
+        SubscribeWithAbility(FixedUpdateEvent.Instance, OnFixedUpdate);
     }
 
     public override void AttachToAlls()
@@ -57,13 +54,7 @@ public class ShermansServantAbility : AbilityBase
         Player.AttachAbility(_playerArrowsAbility, new AbilityParentAbility(this));
         Player.AttachAbility(_knowOtherAbility, new AbilityParentAbility(this));
 
-        _wrapUpListener = WrapUpEvent.Instance.AddListener(OnWrapUp);
-    }
-
-    public override void DetachToAlls()
-    {
-        base.DetachToAlls();
-        _wrapUpListener?.RemoveListener();
+        SubscribeWithAbility(WrapUpEvent.Instance, OnWrapUp);
     }
 
     private void OnWrapUp(WrapUpEventData data)
@@ -71,11 +62,6 @@ public class ShermansServantAbility : AbilityBase
         if (_isTransformed)
             EndTransform();
     }
-    public override void DetachToLocalPlayer()
-    {
-        _fixedUpdateListener?.RemoveListener();
-    }
-
     public void SetParent(OrientalShamanAbility orientalShamanAbility)
     {
         _orientalShamanAbility = orientalShamanAbility;

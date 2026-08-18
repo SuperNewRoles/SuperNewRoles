@@ -9,7 +9,6 @@ using SuperNewRoles.Modules;
 using SuperNewRoles.Roles.Ability;
 using SuperNewRoles.Roles.Crewmate;
 using SuperNewRoles.CustomOptions;
-using SuperNewRoles.Modules.Events.Bases;
 using SuperNewRoles.Events;
 using System.Linq;
 
@@ -33,7 +32,6 @@ class Bakery : RoleBase<Bakery>
 public class BakeryAbility : AbilityBase
 {
     private static TextMeshPro confirmImpostorSecondText;
-    private EventListener<ExileControllerEventData> _exileControllerEventListener;
     private string ExileText
     {
         get
@@ -46,14 +44,8 @@ public class BakeryAbility : AbilityBase
     public override void AttachToAlls()
     {
         base.AttachToAlls();
-        _exileControllerEventListener = ExileControllerEvent.Instance.AddListener(OnExileControllerEvent);
+        SubscribeWithAbility(ExileControllerEvent.Instance, OnExileControllerEvent);
     }
-    public override void DetachToAlls()
-    {
-        _exileControllerEventListener.RemoveListener();
-        base.DetachToAlls();
-    }
-
     private void OnExileControllerEvent(ExileControllerEventData data)
     {
         if (confirmImpostorSecondText != null)

@@ -1,6 +1,5 @@
 using SuperNewRoles.Events;
 using SuperNewRoles.Modules;
-using SuperNewRoles.Modules.Events.Bases;
 using SuperNewRoles.Roles.CrewMate;
 using SuperNewRoles.Roles.Ability;
 
@@ -11,21 +10,15 @@ public class SatsumaAndImoAbility : AbilityBase
     private enum SatsumaTeam { Crewmate, Madmate }
     private SatsumaTeam _teamState = SatsumaTeam.Crewmate;
     public bool IsMadTeam => _teamState == SatsumaTeam.Madmate;
-    private EventListener<WrapUpEventData> _wrapUpListener;
-    private EventListener<NameTextUpdateEventData> _nameTextListener;
 
     public override void AttachToAlls()
     {
-        var customTaskAbility = new CustomTaskAbility(() => (true, false, null));
+        var customTaskAbility = new CustomTaskAbility(
+            isTaskTrigger: () => true,
+            countsForCrewWin: () => false);
         Player.AttachAbility(customTaskAbility, new AbilityParentAbility(this));
-        _nameTextListener = NameTextUpdateEvent.Instance.AddListener(OnNameTextUpdate);
-        _wrapUpListener = WrapUpEvent.Instance.AddListener(OnWrapUp);
-    }
-
-    public override void DetachToAlls()
-    {
-        _nameTextListener?.RemoveListener();
-        _wrapUpListener?.RemoveListener();
+        SubscribeWithAbility(NameTextUpdateEvent.Instance, OnNameTextUpdate);
+        SubscribeWithAbility(WrapUpEvent.Instance, OnWrapUp);
     }
 
     private void OnWrapUp(WrapUpEventData data)

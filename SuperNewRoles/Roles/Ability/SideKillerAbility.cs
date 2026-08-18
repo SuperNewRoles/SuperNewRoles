@@ -1,5 +1,4 @@
 using System;
-using System.Linq;
 using AmongUs.GameOptions;
 using SuperNewRoles.Events.PCEvents;
 using SuperNewRoles.Modules;
@@ -54,7 +53,7 @@ public class SideKillerAbility : AbilityBase
             sidekickedPromoteData: new(RoleId.MadKiller, RoleTypes.Impostor),
             onSidekickCreated: (player) =>
             {
-                madKillerAbility = player.PlayerAbilities.FirstOrDefault(x => x is MadKillerAbility) as MadKillerAbility;
+                madKillerAbility = player.GetAbility<MadKillerAbility>();
                 if (madKillerAbility != null)
                 {
                     RpcSetMadKillerAbility(this, madKillerAbility);

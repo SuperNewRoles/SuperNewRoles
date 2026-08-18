@@ -6,7 +6,6 @@ using SuperNewRoles.Roles.Ability.CustomButton;
 using SuperNewRoles.CustomObject;
 using SuperNewRoles.Modules;
 using SuperNewRoles.Events;
-using SuperNewRoles.Modules.Events.Bases;
 using HarmonyLib;
 
 namespace SuperNewRoles.Roles.Ability;
@@ -29,7 +28,6 @@ public class MushroomerAbility : AbilityBase
 
     private PlantButton plantButton;
     private ExplosionButton explosionButton;
-    private EventListener<WrapUpEventData> wrapUpEvent;
 
     public MushroomerAbility(float plantCoolTime, int plantCount, float explosionCoolTime, int explosionCount,
                              float explosionRange, float explosionDurationTime, bool hasGasMask, bool activeUsedMushroom)
@@ -54,13 +52,7 @@ public class MushroomerAbility : AbilityBase
         // 事前読み込み
         if (!ModHelpers.IsMap(MapNames.Fungle))
             MapLoader.LoadMap(MapNames.Fungle, (map) => { });
-        wrapUpEvent = WrapUpEvent.Instance.AddListener(OnWrapUp);
-    }
-
-    public override void DetachToAlls()
-    {
-        base.DetachToAlls();
-        WrapUpEvent.Instance.RemoveListener(wrapUpEvent);
+        SubscribeWithAbility(WrapUpEvent.Instance, OnWrapUp);
     }
 
     private void OnWrapUp(WrapUpEventData data)

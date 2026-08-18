@@ -8,7 +8,6 @@ using SuperNewRoles.Roles.Ability;
 using SuperNewRoles.Roles.Ability.CustomButton;
 using SuperNewRoles.Modules;
 using SuperNewRoles.Events;
-using SuperNewRoles.Modules.Events.Bases;
 using SuperNewRoles.CustomCosmetics;
 
 namespace SuperNewRoles.Roles.Crewmate;
@@ -64,7 +63,6 @@ public class MediumSpiritVisionAbility : CustomButtonBase, IButtonEffect
     public float EffectDuration => Data.Duration;
     public float EffectTimer { get; set; }
 
-    private EventListener<MeetingStartEventData> _meetingStartListener;
     private VisibleGhostAbility _visibleGhostAbility;
 
     private CustomMessage message;
@@ -77,15 +75,9 @@ public class MediumSpiritVisionAbility : CustomButtonBase, IButtonEffect
     public override void AttachToLocalPlayer()
     {
         base.AttachToLocalPlayer();
-        _meetingStartListener = MeetingStartEvent.Instance.AddListener(OnMeetingStart);
+        SubscribeWithAbility(MeetingStartEvent.Instance, OnMeetingStart);
         _visibleGhostAbility = new VisibleGhostAbility(() => isEffectActive);
         Player.AttachAbility(_visibleGhostAbility, new AbilityParentAbility(this));
-    }
-
-    public override void DetachToLocalPlayer()
-    {
-        base.DetachToLocalPlayer();
-        _meetingStartListener?.RemoveListener();
     }
 
     public override bool CheckIsAvailable()
@@ -122,7 +114,6 @@ public class MediumSpiritTalkAbility : TargetCustomButtonBase, IAbilityCount
 {
     public MediumSpiritTalkData Data { get; }
     private readonly List<string> _pendingMeetingMessages = new();
-    private EventListener<MeetingStartEventData> _meetingStartListener;
 
     public override Color32 OutlineColor => Medium.Instance.RoleColor;
     public override bool OnlyCrewmates => false;
@@ -147,13 +138,12 @@ public class MediumSpiritTalkAbility : TargetCustomButtonBase, IAbilityCount
     public override void AttachToLocalPlayer()
     {
         base.AttachToLocalPlayer();
-        _meetingStartListener = MeetingStartEvent.Instance.AddListener(OnMeetingStart);
+        SubscribeWithAbility(MeetingStartEvent.Instance, OnMeetingStart);
     }
 
     public override void DetachToLocalPlayer()
     {
         base.DetachToLocalPlayer();
-        _meetingStartListener?.RemoveListener();
         _pendingMeetingMessages.Clear();
     }
 

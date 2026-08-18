@@ -4,7 +4,6 @@ using AmongUs.GameOptions;
 using SuperNewRoles.CustomOptions;
 using SuperNewRoles.Events;
 using SuperNewRoles.Modules;
-using SuperNewRoles.Modules.Events.Bases;
 using SuperNewRoles.Patches;
 using SuperNewRoles.Roles.Ability;
 using UnityEngine;
@@ -55,7 +54,6 @@ class Teruteru : RoleBase<Teruteru>
 public class TeruteruAbility : AbilityBase
 {
     private readonly TeruteruData _data;
-    private EventListener<ExileEventData> _playerExiledListener;
     private CustomVentAbility _ventAbility;
     private CustomTaskAbility _customTaskAbility;
 
@@ -68,14 +66,18 @@ public class TeruteruAbility : AbilityBase
     {
         // ベント使用可能設定
         _ventAbility = new CustomVentAbility(() => _data.CanUseVent);
-        _customTaskAbility = new CustomTaskAbility(() => (_data.RequireTaskCompletion, false, _data.RequiredTaskCount), _data.CustomTaskCount ? _data.TeruteruTaskOption : null);
+        _customTaskAbility = new CustomTaskAbility(
+            isTaskTrigger: () => _data.RequireTaskCompletion,
+            countsForCrewWin: () => false,
+            requiredTaskCount: () => _data.RequiredTaskCount,
+            taskOptions: () => _data.CustomTaskCount ? _data.TeruteruTaskOption : null);
 
         ExPlayerControl exPlayer = Player;
         exPlayer.AttachAbility(_ventAbility, new AbilityParentAbility(this));
         exPlayer.AttachAbility(_customTaskAbility, new AbilityParentAbility(this));
 
         // イベントリスナーを設定
-        _playerExiledListener = ExileEvent.Instance.AddListener(OnPlayerExiled);
+        SubscribeWithAbility(ExileEvent.Instance, OnPlayerExiled);
     }
 
     private void OnPlayerExiled(ExileEventData data)
@@ -104,11 +106,6 @@ public class TeruteruAbility : AbilityBase
 
     }
 
-    public override void DetachToAlls()
-    {
-        // イベントリスナーを削除
-        _playerExiledListener?.RemoveListener();
-    }
 }
 
 public class TeruteruData

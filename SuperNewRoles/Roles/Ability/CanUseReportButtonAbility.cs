@@ -1,7 +1,6 @@
 using System;
 using SuperNewRoles.Events;
 using SuperNewRoles.Events.PCEvents;
-using SuperNewRoles.Modules.Events.Bases;
 using UnityEngine;
 
 namespace SuperNewRoles.Roles.Ability;
@@ -9,9 +8,6 @@ namespace SuperNewRoles.Roles.Ability;
 public class CanUseReportButtonAbility : AbilityBase
 {
     private Func<bool> _canUseReportButton;
-    private EventListener _fixedUpdateListener;
-    private EventListener _hudUpdateListener;
-    private EventListener<DieEventData> _dieListener;
     private bool _lastCanUseReportButton;
     public CanUseReportButtonAbility(Func<bool> canUseReportButton)
     {
@@ -21,17 +17,9 @@ public class CanUseReportButtonAbility : AbilityBase
     public override void AttachToLocalPlayer()
     {
         base.AttachToLocalPlayer();
-        _fixedUpdateListener = FixedUpdateEvent.Instance.AddListener(OnUpdate);
-        _hudUpdateListener = HudUpdateEvent.Instance.AddListener(OnUpdate);
-        _dieListener = DieEvent.Instance.AddListener(OnDie);
-    }
-
-    public override void DetachToLocalPlayer()
-    {
-        base.DetachToLocalPlayer();
-        _fixedUpdateListener?.RemoveListener();
-        _hudUpdateListener?.RemoveListener();
-        _dieListener?.RemoveListener();
+        SubscribeWithAbility(FixedUpdateEvent.Instance, OnUpdate);
+        SubscribeWithAbility(HudUpdateEvent.Instance, OnUpdate);
+        SubscribeWithAbility(DieEvent.Instance, OnDie);
     }
 
     private void OnUpdate()

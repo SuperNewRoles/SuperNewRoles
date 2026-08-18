@@ -4,7 +4,6 @@ using SuperNewRoles.Modules;
 using SuperNewRoles.Roles.Ability.CustomButton;
 using SuperNewRoles.Events;
 using SuperNewRoles.Events.PCEvents;
-using SuperNewRoles.Modules.Events.Bases;
 using System;
 using SuperNewRoles.Roles.Impostor;
 using HarmonyLib;
@@ -71,16 +70,8 @@ public class ShiftActorAbility : ShapeshiftButtonAbility
     public override void AttachToLocalPlayer()
     {
         base.AttachToLocalPlayer();
-        _shiftActorShapeshiftEvent = ShapeshiftEvent.Instance.AddListener(OnShiftActorShapeshift);
+        SubscribeWithAbility(ShapeshiftEvent.Instance, OnShiftActorShapeshift);
     }
-
-    public override void DetachToLocalPlayer()
-    {
-        base.DetachToLocalPlayer();
-        _shiftActorShapeshiftEvent?.RemoveListener();
-    }
-
-    private EventListener<ShapeshiftEventData> _shiftActorShapeshiftEvent;
 
     private void OnShiftActorShapeshift(ShapeshiftEventData data)
     {

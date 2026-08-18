@@ -1,13 +1,11 @@
 using System;
 using SuperNewRoles.Events;
 using SuperNewRoles.Modules;
-using SuperNewRoles.Modules.Events.Bases;
 
 namespace SuperNewRoles.Roles.Ability;
 
 class VisibleGhostAbility : AbilityBase
 {
-    public EventListener<FixedUpdateWithInstanceEventData> _fixedUpdateListener;
     public Func<bool> _isVisible;
     public VisibleGhostAbility(Func<bool> isVisible)
     {
@@ -16,13 +14,7 @@ class VisibleGhostAbility : AbilityBase
     public override void AttachToLocalPlayer()
     {
         base.AttachToLocalPlayer();
-        _fixedUpdateListener = FixedUpdateWithInstanceEvent.Instance.AddListener(OnFixedUpdate);
-    }
-
-    public override void DetachToLocalPlayer()
-    {
-        base.DetachToLocalPlayer();
-        _fixedUpdateListener?.RemoveListener();
+        SubscribeWithAbility(FixedUpdateWithInstanceEvent.Instance, OnFixedUpdate);
     }
 
     public void OnFixedUpdate(FixedUpdateWithInstanceEventData data)

@@ -124,6 +124,13 @@ public class SheriffAbilityData
             return true;
         }
 
+        // AlwaysKill は誤射時も対象を殺すモードなので、自分は自決しない。
+        if (Mode == SheriffSuicideMode.AlwaysKill)
+        {
+            suicideReason = FinalStatus.Alive;
+            return false;
+        }
+
         // 自決判定は通常の場合 ("通常" & "誤射時も対象をキルする")
         suicideReason = canKill ? FinalStatus.Alive : FinalStatus.SheriffMisFire;
         return !canKill;

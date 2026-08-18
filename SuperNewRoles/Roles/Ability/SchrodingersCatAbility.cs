@@ -3,7 +3,6 @@ using AmongUs.GameOptions;
 using SuperNewRoles.Events;
 using SuperNewRoles.Events.PCEvents;
 using SuperNewRoles.Modules;
-using SuperNewRoles.Modules.Events.Bases;
 using SuperNewRoles.Roles.CrewMate;
 using SuperNewRoles.Roles.Neutral;
 using TMPro;
@@ -38,16 +37,24 @@ public class SchrodingersCatAbility : AbilityBase
     private CustomVentAbility _customVentAbility;
     private CustomSaboAbility _customSaboAbility;
     private ImpostorVisionAbility _impostorVisionAbility;
-    private EventListener<TryKillEventData> _murderListener;
-    private EventListener<NameTextUpdateEventData> _nameTextUpdateListener;
-    private EventListener<WrapUpEventData> _wrapUpListener;
-    private EventListener _fixedUpdateListener;
 
     private float suicideTimer;
     private ExPlayerControl _suicideTarget;
     private TextMeshPro _suicideText;
 
     public SchrodingersCatTeam CurrentTeam { get; private set; } = SchrodingersCatTeam.SchrodingersCat;
+
+    // 近接キル相当の距離だけキラーを猫へスナップする。WaveCannon/Rocket/Slugger/Remote などの遠距離キルではテレポートさせない。
+    internal const float MaxMeleeKillSnapDistance = 3.5f;
+    internal static bool ShouldSnapKillerToTarget(Vector2 killerPos, Vector2 targetPos)
+        => ShouldSnapKillerToTarget(killerPos.x, killerPos.y, targetPos.x, targetPos.y);
+    internal static bool ShouldSnapKillerToTarget(float killerX, float killerY, float targetX, float targetY)
+    {
+        float dx = killerX - targetX;
+        float dy = killerY - targetY;
+        return (dx * dx) + (dy * dy) <= MaxMeleeKillSnapDistance * MaxMeleeKillSnapDistance;
+    }
+
     public SchrodingersCatAbility(SchrodingersCatData data)
     {
         Data = data;
@@ -74,17 +81,10 @@ public class SchrodingersCatAbility : AbilityBase
         Player.AttachAbility(_customSaboAbility, new AbilityParentAbility(this));
         Player.AttachAbility(_impostorVisionAbility, new AbilityParentAbility(this));
 
-        _murderListener = TryKillEvent.Instance.AddListener(TryMurder);
-        _nameTextUpdateListener = NameTextUpdateEvent.Instance.AddListener(OnNameTextUpdate);
-        _wrapUpListener = WrapUpEvent.Instance.AddListener(OnWrapUp);
-        _fixedUpdateListener = FixedUpdateEvent.Instance.AddListener(OnFixedUpdate);
-    }
-    public override void DetachToAlls()
-    {
-        _murderListener?.RemoveListener();
-        _nameTextUpdateListener?.RemoveListener();
-        _wrapUpListener?.RemoveListener();
-        _fixedUpdateListener?.RemoveListener();
+        SubscribeWithAbility(TryKillEvent.Instance, TryMurder);
+        SubscribeWithAbility(NameTextUpdateEvent.Instance, OnNameTextUpdate);
+        SubscribeWithAbility(WrapUpEvent.Instance, OnWrapUp);
+        SubscribeWithAbility(FixedUpdateEvent.Instance, OnFixedUpdate);
     }
     private void OnFixedUpdate()
     {
@@ -117,7 +117,7 @@ public class SchrodingersCatAbility : AbilityBase
         if (data.RefTarget != Player) return;
         if (data.Killer == Player) return;
         if (CurrentTeam != SchrodingersCatTeam.SchrodingersCat) return;
-        bool showKillAnimation = true;
+        bool cancelKill = true;
         if (data.Killer.IsImpostor())
             CurrentTeam = Data.HasKillAbility ? SchrodingersCatTeam.Impostor : SchrodingersCatTeam.Madmate;
         else if (data.Killer.IsJackal())
@@ -126,11 +126,11 @@ public class SchrodingersCatAbility : AbilityBase
             CurrentTeam = Data.HasKillAbility ? SchrodingersCatTeam.Pavlovs : SchrodingersCatTeam.PavlovFriends;
         else if (data.Killer.IsCrewmate())
             CurrentTeam = SchrodingersCatTeam.Crewmate;
-        else if (Data.CrewOnKillByNonSpecific)
+        else
         {
-            CurrentTeam = SchrodingersCatTeam.Crewmate;
-            Player.CustomDeath(CustomDeathType.Suicide);
-            showKillAnimation = false;
+            cancelKill = false;
+            if (Data.CrewOnKillByNonSpecific)
+                CurrentTeam = SchrodingersCatTeam.Crewmate;
         }
 
         if (CurrentTeam != SchrodingersCatTeam.SchrodingersCat)
@@ -153,8 +153,18 @@ public class SchrodingersCatAbility : AbilityBase
                 NameText.UpdateAllNameInfo();
             else
                 NameText.UpdateNameInfo(data.RefTarget);
+
+            if (!cancelKill) return;
+
             data.RefSuccess = false;
-            if (showKillAnimation && data.RefTarget.AmOwner)
+            if (data.Killer.AmOwner
+                && data.Killer.Player != null
+                && data.RefTarget.Player != null
+                && ShouldSnapKillerToTarget(data.Killer.GetTruePosition(), data.RefTarget.GetTruePosition()))
+            {
+                data.Killer.Player.NetTransform.RpcSnapTo(data.RefTarget.Player.transform.position);
+            }
+            if (data.RefTarget.AmOwner)
             {
                 data.RefTarget.MyPhysics.body.velocity = Vector2.zero;
                 DestroyableSingleton<HudManager>.Instance.KillOverlay.ShowKillAnimation(data.Killer.Data, data.RefTarget.Data);
@@ -325,7 +335,7 @@ public class SchrodingersCatAbility : AbilityBase
                     couldKnowImpostors: Madmate.MadmateCanKnowImpostors,
                     taskNeeded: Madmate.MadmateNeededTaskCount,
                     specialTasks: Madmate.MadmateSpecialTasks
-                ));
+                ), AbilityPriority.RuntimeOverride);
                 Player.AttachAbility(madmateAbility, new AbilityParentAbility(this));
                 if (Player.AmOwner)
                     madmateAbility.CustomTaskAbility.AssignTasks();
@@ -341,7 +351,7 @@ public class SchrodingersCatAbility : AbilityBase
                     CouldKnowJackals: JackalFriends.JackalFriendsCouldKnowJackals,
                     TaskNeeded: JackalFriends.JackalFriendsTaskNeed,
                     SpecialTasks: JackalFriends.JackalFriendsTaskOption
-                ));
+                ), AbilityPriority.RuntimeOverride);
                 Player.AttachAbility(jackalFriendsAbility, new AbilityParentAbility(this));
                 if (Player.AmOwner)
                     jackalFriendsAbility.CustomTaskAbility.AssignTasks();

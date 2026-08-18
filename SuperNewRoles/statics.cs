@@ -115,6 +115,20 @@ public static class Statics
     }
 
     /// <summary>
+    /// オンライン用の DisableServerAuthority フラグ（+25）。revision が既に 25 以上なら加算しない（Reactor 共存時の +50 防止）。
+    /// </summary>
+    public static int ApplyDisableServerAuthorityFlag(int broadcastVersion)
+    {
+        const int flag = 25;
+        int revision = broadcastVersion % 50;
+        if (revision < 0)
+            revision += 50;
+        if (revision < flag)
+            return broadcastVersion + flag;
+        return broadcastVersion;
+    }
+
+    /// <summary>
     /// 互換とみなす Among Us の <c>GetBroadcastVersion()</c> 値。
     /// オンラインでは <c>main.cs</c> の Postfix で +25 されるため、その値も列挙する。
     /// 空の場合は同一数値のみ一致とみなす。

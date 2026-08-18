@@ -31,25 +31,15 @@ class BestFalseCharge : RoleBase<BestFalseCharge>
 
 public class AutoExileAfterMeeting : AbilityBase
 {
-    public EventListener<WrapUpEventData> wrapUpEventListener;
     public override void AttachToLocalPlayer()
     {
-        wrapUpEventListener = WrapUpEvent.Instance.AddListener(OnWrapUp);
+        SubscribeWithAbility(WrapUpEvent.Instance, OnWrapUp);
     }
     private void OnWrapUp(WrapUpEventData data)
     {
         if (ExPlayerControl.LocalPlayer.IsDead())
             return;
         ExPlayerControl.LocalPlayer.RpcCustomDeath(CustomDeathType.FalseCharge);
-    }
-    public override void DetachToLocalPlayer()
-    {
-        base.DetachToLocalPlayer();
-        if (wrapUpEventListener != null)
-        {
-            WrapUpEvent.Instance.RemoveListener(wrapUpEventListener);
-            wrapUpEventListener = null;
-        }
     }
 }
 

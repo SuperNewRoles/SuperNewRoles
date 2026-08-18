@@ -1,15 +1,12 @@
 using System;
 using SuperNewRoles.Events;
 using SuperNewRoles.Modules;
-using SuperNewRoles.Modules.Events.Bases;
 using UnityEngine;
 
 namespace SuperNewRoles.Roles.Ability;
 
 public class CustomHauntToAbility : AbilityBase
 {
-    private EventListener _fixedUpdateEvent;
-    private EventListener<MeetingStartEventData> _meetingStartEvent;
     private Func<ExPlayerControl> _target;
     private Vector2 Offset;
     private bool lastEnabled = false;
@@ -31,15 +28,13 @@ public class CustomHauntToAbility : AbilityBase
     public override void AttachToLocalPlayer()
     {
         base.AttachToLocalPlayer();
-        _fixedUpdateEvent = FixedUpdateEvent.Instance.AddListener(OnFixedUpdate);
-        _meetingStartEvent = MeetingStartEvent.Instance.AddListener(OnMeetingStart);
+        SubscribeWithAbility(FixedUpdateEvent.Instance, OnFixedUpdate);
+        SubscribeWithAbility(MeetingStartEvent.Instance, OnMeetingStart);
     }
 
     public override void DetachToLocalPlayer()
     {
         base.DetachToLocalPlayer();
-        _fixedUpdateEvent?.RemoveListener();
-        _meetingStartEvent?.RemoveListener();
         ClearLocalHauntMove();
     }
 

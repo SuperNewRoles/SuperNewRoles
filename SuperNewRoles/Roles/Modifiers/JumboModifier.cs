@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using SuperNewRoles.Events;
 using SuperNewRoles.Events.PCEvents;
 using SuperNewRoles.Modules;
-using SuperNewRoles.Modules.Events.Bases;
 using SuperNewRoles.Roles.Ability;
 using UnityEngine;
 
@@ -68,11 +67,6 @@ public record JumboData(float MaxSize, float SizeUpSpeed, float WalkSoundSize, b
 public class JumboAbility : AbilityBase
 {
     private JumboData Data { get; }
-    private EventListener _fixedUpdateListener;
-    private EventListener<NameTextUpdateEventData> _nameTextUpdateListener;
-    private EventListener<MurderEventData> _murderListener;
-    private EventListener<ExileControllerEventData> _exileControllerListener;
-    private EventListener<MeetingCalledAnimationInitializeEventData> _meetingCalledAnimationInitializeListener;
     public float _currentSize { get; private set; } = 0f;
     private Vector2 _oldPosition;
     private bool _hasOldPosition = false;
@@ -86,20 +80,11 @@ public class JumboAbility : AbilityBase
     public override void AttachToAlls()
     {
         base.AttachToAlls();
-        _fixedUpdateListener = FixedUpdateEvent.Instance.AddListener(OnFixedUpdate);
-        _nameTextUpdateListener = NameTextUpdateEvent.Instance.AddListener(OnNameTextUpdate);
-        _murderListener = MurderEvent.Instance.AddListener(OnMurder);
-        _exileControllerListener = ExileControllerEvent.Instance.AddListener(OnExileController);
-        _meetingCalledAnimationInitializeListener = MeetingCalledAnimationInitializeEvent.Instance.AddListener(OnMeetingCalledAnimationInitialize);
-    }
-    public override void DetachToAlls()
-    {
-        base.DetachToAlls();
-        _fixedUpdateListener?.RemoveListener();
-        _nameTextUpdateListener?.RemoveListener();
-        _murderListener?.RemoveListener();
-        _exileControllerListener?.RemoveListener();
-        _meetingCalledAnimationInitializeListener?.RemoveListener();
+        SubscribeWithAbility(FixedUpdateEvent.Instance, OnFixedUpdate);
+        SubscribeWithAbility(NameTextUpdateEvent.Instance, OnNameTextUpdate);
+        SubscribeWithAbility(MurderEvent.Instance, OnMurder);
+        SubscribeWithAbility(ExileControllerEvent.Instance, OnExileController);
+        SubscribeWithAbility(MeetingCalledAnimationInitializeEvent.Instance, OnMeetingCalledAnimationInitialize);
     }
     private void OnMurder(MurderEventData data)
     {

@@ -7,6 +7,7 @@ using HarmonyLib;
 using Hazel;
 using InnerNet;
 using SuperNewRoles.CustomObject;
+using SuperNewRoles.Modules.Compatibility;
 using SuperNewRoles.Patches;
 using SuperNewRoles.Roles;
 using SuperNewRoles.Roles.Ability;
@@ -322,6 +323,8 @@ public static class CustomRPCManager
             switch (callId)
             {
                 case (byte)RpcCalls.CheckSpore:
+                    if (LevelImposterSupport.IsCustomMap)
+                        return true;
                     FungleShipStatus fungleShipStatus = ShipStatus.Instance.TryCast<FungleShipStatus>();
                     if (fungleShipStatus != null)
                         break;
@@ -330,6 +333,8 @@ public static class CustomRPCManager
                     __instance.CheckSporeTrigger(mushroomFromId);
                     return false;
                 case (byte)RpcCalls.TriggerSpores:
+                    if (LevelImposterSupport.IsCustomMap)
+                        return true;
                     FungleShipStatus fungleShipStatus2 = ShipStatus.Instance.TryCast<FungleShipStatus>();
                     if (fungleShipStatus2 != null)
                         break;

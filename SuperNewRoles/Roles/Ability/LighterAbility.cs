@@ -3,7 +3,6 @@ using UnityEngine;
 using SuperNewRoles.Modules;
 using SuperNewRoles.Roles.Ability.CustomButton;
 using SuperNewRoles.Events;
-using SuperNewRoles.Modules.Events.Bases;
 using SuperNewRoles.Events.PCEvents;
 using AmongUs.GameOptions;
 
@@ -17,7 +16,6 @@ public class LighterAbility : CustomButtonBase, IButtonEffect
     public override float DefaultTimer => coolTime;
     private float coolTime;
     private float durationTime;
-    private EventListener<ShipStatusLightEventData> _onLightEvent;
     private static bool isLightOn = false;
 
     private float radius;
@@ -51,13 +49,7 @@ public class LighterAbility : CustomButtonBase, IButtonEffect
     public override void AttachToLocalPlayer()
     {
         base.AttachToLocalPlayer();
-        _onLightEvent = ShipStatusLightEvent.Instance.AddListener(OnLightEvent);
-    }
-
-    public override void DetachToLocalPlayer()
-    {
-        base.DetachToLocalPlayer();
-        _onLightEvent?.RemoveListener();
+        SubscribeWithAbility(ShipStatusLightEvent.Instance, OnLightEvent);
     }
 
     private void OnLightEvent(ShipStatusLightEventData data)

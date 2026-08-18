@@ -15,11 +15,11 @@ public class RoleBaseTests
     {
         byte playerId = 1;
         // Using a player parent to ensure playerId is encoded in top 8 bits.
-        var id = ExPlayerControlExtensions.GenerateDeterministicAbilityId(playerId, new AbilityParentPlayer(null), typeof(object));
+        var id = ExPlayerControlExtensions.GenerateDeterministicAbilityId(playerId, new AbilityParentPlayer(null), typeof(object), 0);
         // top 8 bits should equal the playerId
         ((id >> 56) & 0xFF).Should().Be(playerId);
         // Deterministic across multiple calls
-        var id2 = ExPlayerControlExtensions.GenerateDeterministicAbilityId(playerId, new AbilityParentPlayer(null), typeof(object));
+        var id2 = ExPlayerControlExtensions.GenerateDeterministicAbilityId(playerId, new AbilityParentPlayer(null), typeof(object), 0);
         id2.Should().Be(id);
     }
 }

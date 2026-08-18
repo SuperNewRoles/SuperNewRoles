@@ -3,12 +3,14 @@ using SuperNewRoles.Roles.Ability;
 
 namespace SuperNewRoles.Ability;
 
-public class KillableAbility : AbilityBase
+public class KillableAbility : AbilityBase, IPrioritizedAbility
 {
-    private Func<bool> canKill;
-    public bool CanKill => canKill?.Invoke() ?? false;
-    public KillableAbility(Func<bool> canKill)
+    public int Priority { get; }
+    private readonly Func<bool?> canKill;
+    public bool? CanKill => canKill?.Invoke();
+    public KillableAbility(Func<bool?> canKill, int priority = AbilityPriority.Default)
     {
         this.canKill = canKill;
+        Priority = priority;
     }
 }
