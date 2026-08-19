@@ -17,7 +17,7 @@ public static class HelpMenusHudManagerStartPatch
         // ヘルプメニュー自体と被らないように-25
         var aspectPosition = helpMenuButton.AddComponent<AspectPosition>();
         aspectPosition.Alignment = AspectPosition.EdgeAlignments.RightTop;
-        aspectPosition.DistanceFromEdge = new(2.72f, 0.48f, -25f);
+        aspectPosition.DistanceFromEdge = new(3.45f, 0.48f, -25f);
         aspectPosition.OnEnable();
         PassiveButton passiveButton = helpMenuButton.AddComponent<PassiveButton>();
         passiveButton.Colliders = new Collider2D[] { helpMenuButton.GetComponent<Collider2D>() };
