@@ -435,7 +435,7 @@ public static class MeetingHud_PopulateButtons
         {
             if (playerState?.PlayerIcon?.cosmetics == null) continue;
 
-            ExPlayerControl player = ExPlayerControl.ById(playerState.TargetPlayerId);
+            ExPlayerControl player = ExPlayerControl.ById(playerState.PlayerId);
             if (player?.Player == null || player.Data == null || player.cosmetics == null) continue;
 
             CustomCosmeticsLayer iconLayer = CustomCosmeticsLayers.ExistsOrInitialize(playerState.PlayerIcon.cosmetics);

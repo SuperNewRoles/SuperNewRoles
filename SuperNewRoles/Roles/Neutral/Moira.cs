@@ -249,8 +249,8 @@ public class MoiraMeetingAbility : CustomMeetingButtonBase, IAbilityCount
         PlayerVoteArea swapped2 = null;
         foreach (PlayerVoteArea playerVoteArea in MeetingHud.Instance.playerStates)
         {
-            if (playerVoteArea.TargetPlayerId == last.Item1) swapped1 = playerVoteArea;
-            if (playerVoteArea.TargetPlayerId == last.Item2) swapped2 = playerVoteArea;
+            if (playerVoteArea.PlayerId == last.Item1) swapped1 = playerVoteArea;
+            if (playerVoteArea.PlayerId == last.Item2) swapped2 = playerVoteArea;
         }
         if (swapped1 != null && swapped2 != null)
         {
@@ -263,9 +263,9 @@ public class MoiraMeetingAbility : CustomMeetingButtonBase, IAbilityCount
     {
         var meetingHud = MeetingHud.Instance;
         if (meetingHud == null) return;
-        if (!(meetingHud.state == MeetingHud.VoteStates.Voted ||
-              meetingHud.state == MeetingHud.VoteStates.NotVoted ||
-              meetingHud.state == MeetingHud.VoteStates.Discussion))
+        if (!(meetingHud.state == MeetingHud.MeetingStates.Voted ||
+              meetingHud.state == MeetingHud.MeetingStates.NotVoted ||
+              meetingHud.state == MeetingHud.MeetingStates.Discussion))
         {
             return;
         }

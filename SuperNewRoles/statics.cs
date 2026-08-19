@@ -13,6 +13,7 @@ public static class PluginConfig
     public const string Id = "jp.ykundesu.supernewrolesnext";
     public const string Name = "SuperNewRoles";
     public const string ProcessName = "Among Us.exe";
+    public const string ModGuid = "9f21dfdc-1224-4322-af7b-63db54cea706";
 }
 
 public static class VersionInfo
@@ -22,7 +23,7 @@ public static class VersionInfo
     public static string VersionString => Current.ToString() + (SnapShotVersion?.ToString() ?? string.Empty);
 
     public static bool IsSnapShot => SnapShotVersion != null;
-    public static char? SnapShotVersion = 'b';
+    public static char? SnapShotVersion = null;
 
     public static string NewVersion = "";
     public static bool IsUpdate = false;

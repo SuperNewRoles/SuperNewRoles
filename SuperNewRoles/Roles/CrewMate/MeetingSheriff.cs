@@ -205,9 +205,9 @@ public class MeetingSheriffAbility : CustomMeetingButtonBase, IAbilityCount
         // ミーティングHUDの取得と状態チェック
         MeetingHud meetingHud = MeetingHud.Instance;
         if (meetingHud == null) return;
-        if (!(meetingHud.state == MeetingHud.VoteStates.Voted ||
-              meetingHud.state == MeetingHud.VoteStates.NotVoted ||
-              meetingHud.state == MeetingHud.VoteStates.Discussion))
+        if (!(meetingHud.state == MeetingHud.MeetingStates.Voted ||
+              meetingHud.state == MeetingHud.MeetingStates.NotVoted ||
+              meetingHud.state == MeetingHud.MeetingStates.Discussion))
             return;
 
         if (exPlayer.IsDead()) return;
@@ -269,17 +269,17 @@ public class MeetingSheriffAbility : CustomMeetingButtonBase, IAbilityCount
         {
             foreach (PlayerVoteArea pva in MeetingHud.Instance.playerStates)
             {
-                var isTargetPlayer = isMurdering && pva.TargetPlayerId == target.PlayerId;
-                var isSuicidePlayer = isSuicide && pva.TargetPlayerId == expKiller.PlayerId;
+                var isTargetPlayer = isMurdering && pva.PlayerId == target.PlayerId;
+                var isSuicidePlayer = isSuicide && pva.PlayerId == expKiller.PlayerId;
 
                 if (isTargetPlayer || isSuicidePlayer)
                 {
-                    pva.SetDead(pva.DidReport, true);
+                    pva.SetDead(true);
                     pva.Overlay.gameObject.SetActive(true);
                 }
                 pva.UnsetVote();
             }
-            MeetingHud.Instance.ClearVote();
+            MeetingHud.Instance.ClearVote(PlayerControl.LocalPlayer.PlayerId, true);
             if (AmongUsClient.Instance.AmHost)
                 MeetingHud.Instance.CheckForEndVoting();
         }

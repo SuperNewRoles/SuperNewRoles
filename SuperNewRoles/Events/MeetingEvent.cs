@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using AmongUs.GameOptions;
 using HarmonyLib;
 using Il2CppInterop.Runtime.InteropTypes.Arrays;
 using SuperNewRoles.Modules;
@@ -95,20 +96,34 @@ public class VotingCompleteEventData : IEventData
     public Il2CppStructArray<MeetingHud.VoterState> States { get; }
     public NetworkedPlayerInfo Exiled { get; }
     public bool IsTie { get; }
+    public bool WasOverruled { get; }
+    public ushort OverruleNonce { get; }
 
-    public VotingCompleteEventData(Il2CppStructArray<MeetingHud.VoterState> states, NetworkedPlayerInfo exiled, bool isTie)
+    public VotingCompleteEventData(
+        Il2CppStructArray<MeetingHud.VoterState> states,
+        NetworkedPlayerInfo exiled,
+        bool isTie,
+        bool wasOverruled,
+        ushort overruleNonce)
     {
         States = states;
         Exiled = exiled;
         IsTie = isTie;
+        WasOverruled = wasOverruled;
+        OverruleNonce = overruleNonce;
     }
 }
 
 public class VotingCompleteEvent : EventTargetBase<VotingCompleteEvent, VotingCompleteEventData>
 {
-    public static void Invoke(Il2CppStructArray<MeetingHud.VoterState> states, NetworkedPlayerInfo exiled, bool tie)
+    public static void Invoke(
+        Il2CppStructArray<MeetingHud.VoterState> states,
+        NetworkedPlayerInfo exiled,
+        bool tie,
+        bool wasOverruled,
+        ushort overruleNonce)
     {
-        var data = new VotingCompleteEventData(states, exiled, tie);
+        var data = new VotingCompleteEventData(states, exiled, tie, wasOverruled, overruleNonce);
         Instance.Awake(data);
     }
 }
@@ -161,7 +176,7 @@ public static class MeetingStartPatch
         // 全てのExPlayerControlにPlayerVoteAreaを設定
         foreach (var playerState in __instance.playerStates)
         {
-            var exPlayer = Modules.ExPlayerControl.ById(playerState.TargetPlayerId);
+            var exPlayer = Modules.ExPlayerControl.ById(playerState.PlayerId);
             if (exPlayer != null)
             {
                 exPlayer.VoteArea = playerState;
@@ -191,9 +206,14 @@ public static class MeetingUpdatePatch
 [HarmonyPatch(typeof(MeetingHud), nameof(MeetingHud.VotingComplete))]
 public static class VotingCompletePatch
 {
-    public static void Postfix(Il2CppStructArray<MeetingHud.VoterState> states, ref NetworkedPlayerInfo exiled, bool tie)
+    public static void Postfix(
+        Il2CppStructArray<MeetingHud.VoterState> states,
+        ref NetworkedPlayerInfo exiled,
+        bool tie,
+        bool wasOverruled,
+        ushort overruleNonce)
     {
-        VotingCompleteEvent.Invoke(states, exiled, tie);
+        VotingCompleteEvent.Invoke(states, exiled, tie, wasOverruled, overruleNonce);
     }
 }
 [HarmonyPatch(typeof(MeetingHud), nameof(MeetingHud.OnDestroy))]
@@ -230,13 +250,14 @@ public static class MeetingHudCheckForEndVotingPatch
             bool tie;
             KeyValuePair<byte, int> max = self.MaxPair(out tie);
             NetworkedPlayerInfo exiled = GameData.Instance.AllPlayers.ToSystemList().FirstOrDefault((NetworkedPlayerInfo v) => !tie && v.PlayerId == max.Key);
+            bool wasOverruled = TryApplyJudgeOverrule(__instance, ref exiled, out ushort overruleNonce);
             List<MeetingHud.VoterState> array = new();
             for (int i = 0; i < __instance.playerStates.Length; i++)
             {
                 PlayerVoteArea playerVoteArea = __instance.playerStates[i];
                 MeetingHud.VoterState voterState = default;
-                voterState.VoterId = playerVoteArea.TargetPlayerId;
-                voterState.VotedForId = playerVoteArea.VotedFor;
+                voterState.VoterId = playerVoteArea.PlayerId;
+                voterState.VotedForId = playerVoteArea.VotedForId;
                 array.Add(voterState);
             }
             foreach (var addOnly in additionalOnly)
@@ -250,16 +271,34 @@ public static class MeetingHudCheckForEndVotingPatch
                     {
                         MeetingHud.VoterState voterState = default;
                         voterState.VoterId = addOnly.Key;
-                        var playerVoteArea = __instance.playerStates.FirstOrDefault(x => x.TargetPlayerId == addOnly.Key);
-                        voterState.VotedForId = playerVoteArea?.VotedFor ?? byte.MaxValue;
+                        var playerVoteArea = __instance.playerStates.FirstOrDefault(x => x.PlayerId == addOnly.Key);
+                        voterState.VotedForId = playerVoteArea == null ? byte.MaxValue : playerVoteArea.VotedForId;
                         array.Add(voterState);
                         count--;
                     }
                 }
             }
-            __instance.RpcVotingComplete(array.ToArray(), exiled, tie);
+            __instance.RpcVotingComplete(array.ToArray(), exiled, tie, wasOverruled, overruleNonce);
         }
         return false;
+    }
+
+    /// <summary>
+    /// MeetingHud.CheckForEndVotingと同じJudge上書き決定を、
+    /// SNRの独自投票集計結果にも適用する。
+    /// </summary>
+    public static bool TryApplyJudgeOverrule(MeetingHud meetingHud, ref NetworkedPlayerInfo exiled, out ushort overruleNonce)
+    {
+        overruleNonce = 0;
+        if (!meetingHud.TryGetWinningOverrule(out JudgeOverrule winningOverrule,
+                out NetworkedPlayerInfo judgePlayerInfo, out NetworkedPlayerInfo overruledPlayerInfo))
+            return false;
+
+        overruleNonce = winningOverrule.OverruleNonce;
+        exiled = overruledPlayerInfo.Role.TeamType != RoleTeamTypes.Impostor
+            ? judgePlayerInfo
+            : GameData.Instance.GetPlayerById(winningOverrule.OverruledPlayerId);
+        return true;
     }
     public static (Dictionary<byte, int> self, Dictionary<byte, int> additionalOnly) CalculateVotesCustom(MeetingHud __instance)
     {
@@ -268,19 +307,19 @@ public static class MeetingHudCheckForEndVotingPatch
         for (int i = 0; i < __instance.playerStates.Length; i++)
         {
             PlayerVoteArea playerVoteArea = __instance.playerStates[i];
-            MeetingHudCalculateVotesOnPlayerOnlyHostEventData data = MeetingHudCalculateVotesOnPlayerOnlyHostEvent.Invoke(ExPlayerControl.ById(playerVoteArea.TargetPlayerId), playerVoteArea.TargetPlayerId, playerVoteArea.VotedFor, 1);
-            playerVoteArea.VotedFor = data.Target;
-            Logger.Info($"playerVoteArea.VotedFor: {playerVoteArea.VotedFor} data.VoteCount: {data.VoteCount} data.SourceId: {data.SourceId} data.Target: {data.Target}");
+            MeetingHudCalculateVotesOnPlayerOnlyHostEventData data = MeetingHudCalculateVotesOnPlayerOnlyHostEvent.Invoke(ExPlayerControl.ById(playerVoteArea.PlayerId), playerVoteArea.PlayerId, playerVoteArea.VotedForId, 1);
+            playerVoteArea.SetVote(data.Target);
+            Logger.Info($"playerVoteArea.VotedForId: {playerVoteArea.VotedForId} data.VoteCount: {data.VoteCount} data.SourceId: {data.SourceId} data.Target: {data.Target}");
             if (data.VoteCount <= 0)
-                playerVoteArea.VotedFor = byte.MaxValue;
-            if (playerVoteArea.VotedFor != 252 && playerVoteArea.VotedFor != byte.MaxValue && playerVoteArea.VotedFor != 254)
+                playerVoteArea.SetVote(byte.MaxValue);
+            if (playerVoteArea.VotedForId != 252 && playerVoteArea.VotedForId != byte.MaxValue && playerVoteArea.VotedForId != 254)
             {
-                if (dictionary.TryGetValue(playerVoteArea.VotedFor, out var value))
-                    dictionary[playerVoteArea.VotedFor] = value + data.VoteCount;
+                if (dictionary.TryGetValue(playerVoteArea.VotedForId, out var value))
+                    dictionary[playerVoteArea.VotedForId] = value + data.VoteCount;
                 else
-                    dictionary[playerVoteArea.VotedFor] = data.VoteCount;
+                    dictionary[playerVoteArea.VotedForId] = data.VoteCount;
                 if (data.VoteCount > 1)
-                    additionalOnly[playerVoteArea.TargetPlayerId] = data.VoteCount;
+                    additionalOnly[playerVoteArea.PlayerId] = data.VoteCount;
             }
         }
         return (dictionary, additionalOnly);
