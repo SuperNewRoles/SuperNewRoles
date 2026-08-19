@@ -25,9 +25,9 @@ public static class MeetingHud_Update
         foreach (PlayerVoteArea pva in MeetingHud.Instance.playerStates)
         {
             if (pva.AmDead) continue;
-            if (deadPlayers.Contains(pva.TargetPlayerId))
+            if (deadPlayers.Contains(pva.PlayerId))
             {
-                pva.SetDead(pva.DidReport, true);
+                pva.SetDead(true);
                 pva.Overlay.gameObject.SetActive(true);
                 dead = true;
             }
@@ -36,7 +36,7 @@ public static class MeetingHud_Update
         if (Constants.ShouldPlaySfx()) SoundManager.Instance.PlaySound(ExPlayerControl.LocalPlayer.Player.KillSfx, false, 0.8f);
         foreach (PlayerVoteArea pva in MeetingHud.Instance.playerStates)
             pva.UnsetVote();
-        MeetingHud.Instance.ClearVote();
+        MeetingHud.Instance.ClearVote(PlayerControl.LocalPlayer.PlayerId, true);
         if (AmongUsClient.Instance.AmHost)
             MeetingHud.Instance.CheckForEndVoting();
     }
