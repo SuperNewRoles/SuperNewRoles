@@ -56,10 +56,35 @@ public static class CustomOptionManager
     [HarmonyPatch(typeof(AmongUsClient), nameof(AmongUsClient.StartGame))]
     public static class AmongUsClientStartGamePatch
     {
+        private const int MaxStartGameSyncAttempts = 20;
+
         public static void Postfix()
         {
             // ゲーム開始時に一度だけ同期する(AmongUsClient.StartGameが呼ばれるのはホストのみ)
-            if (!AmongUsClient.Instance.AmHost) return;
+            if (AmongUsClient.Instance == null || !AmongUsClient.Instance.AmHost) return;
+            SyncOptionsWhenLocalPlayerReady();
+        }
+
+        private static void SyncOptionsWhenLocalPlayerReady(int attempt = 0)
+        {
+            if (AmongUsClient.Instance == null || !AmongUsClient.Instance.AmHost)
+                return;
+
+            // Custom RPC送信元のNetIdが使えるフレームまで待機してから同期する。
+            if (PlayerControl.LocalPlayer == null)
+            {
+                if (attempt < MaxStartGameSyncAttempts)
+                {
+                    new LateTask(() => SyncOptionsWhenLocalPlayerReady(attempt + 1), 0.25f,
+                        "CustomOptionManager.StartGameSync");
+                }
+                else
+                {
+                    Logger.Warning("ゲーム開始後にLocalPlayerが生成されず、カスタム設定の同期を中止しました。");
+                }
+                return;
+            }
+
             RpcSyncOptionsAll();
             RoleOptionManager.RpcSyncRoleOptionsAll();
         }

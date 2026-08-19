@@ -123,7 +123,7 @@ public class ExPlayerControl
         {
             fixed (ExPlayerControl* ptr = _exPlayerControlsArray)
             {
-                return *(ptr + player.TargetPlayerId);
+                return *(ptr + (byte)player.PlayerId);
             }
         }
     }

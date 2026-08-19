@@ -301,9 +301,9 @@ class BalancerAbility : AbilityBase, IAbilityCount
     private bool IsValidMeetingState()
     {
         if (MeetingHud.Instance == null) return false;
-        return MeetingHud.Instance.state is MeetingHud.VoteStates.Discussion
-            or MeetingHud.VoteStates.Voted
-            or MeetingHud.VoteStates.NotVoted;
+        return MeetingHud.Instance.state is MeetingHud.MeetingStates.Discussion
+            or MeetingHud.MeetingStates.Voted
+            or MeetingHud.MeetingStates.NotVoted;
     }
 
     private bool CheckPlayerStatus()
@@ -322,7 +322,9 @@ class BalancerAbility : AbilityBase, IAbilityCount
 
             if (AmongUsClient.Instance.AmHost && MeetingHud.Instance != null)
             {
-                MeetingHud.Instance.RpcVotingComplete(new List<MeetingHud.VoterState>().ToArray(), target?.Data, false);
+                NetworkedPlayerInfo exiled = target?.Data;
+                bool wasOverruled = MeetingHudCheckForEndVotingPatch.TryApplyJudgeOverrule(MeetingHud.Instance, ref exiled, out ushort overruleNonce);
+                MeetingHud.Instance.RpcVotingComplete(new List<MeetingHud.VoterState>().ToArray(), exiled, false, wasOverruled, overruleNonce);
             }
             return true;
         }
@@ -440,8 +442,8 @@ class BalancerAbility : AbilityBase, IAbilityCount
         // プレイヤー以外のエリアを非表示に保つ
         foreach (var area in MeetingHud.Instance.playerStates)
         {
-            if (area.TargetPlayerId != targetPlayerLeft.PlayerId &&
-                area.TargetPlayerId != targetPlayerRight.PlayerId &&
+            if (area.PlayerId != targetPlayerLeft.PlayerId &&
+                area.PlayerId != targetPlayerRight.PlayerId &&
                 area.gameObject.activeSelf)
             {
                 area.gameObject.SetActive(false);
@@ -546,10 +548,10 @@ class BalancerAbility : AbilityBase, IAbilityCount
 
         // 天秤会議の開始処理
         CurrentState = BalancerState.Animation_Chain;
-        MeetingHud.Instance.ClearVote();
+        MeetingHud.Instance.ClearVote(PlayerControl.LocalPlayer.PlayerId, true);
         foreach (PlayerVoteArea area in MeetingHud.Instance.playerStates)
         {
-            area.VotedFor = byte.MaxValue;
+            area.UnsetVote();
         }
 
         // プレイヤー配置の設定
@@ -569,12 +571,12 @@ class BalancerAbility : AbilityBase, IAbilityCount
     {
         foreach (PlayerVoteArea area in MeetingHud.Instance.playerStates)
         {
-            if (area.TargetPlayerId == targetPlayerLeft.PlayerId)
+            if (area.PlayerId == targetPlayerLeft.PlayerId)
             {
                 area.transform.localPosition = new(999, 999, 999);
                 leftPlayerArea = area;
             }
-            else if (area.TargetPlayerId == targetPlayerRight.PlayerId)
+            else if (area.PlayerId == targetPlayerRight.PlayerId)
             {
                 area.transform.localPosition = new(999, 999, 999);
                 rightPlayerArea = area;
@@ -875,9 +877,9 @@ class BalancerAbility : AbilityBase, IAbilityCount
             foreach (PlayerVoteArea area in MeetingHud.Instance.playerStates)
             {
                 if (area.AmDead) continue;
-                if (area.VotedFor == noVoteId || area.VotedFor == byte.MaxValue || !targetIds.Contains(area.VotedFor))
+                if (area.VotedForId == noVoteId || area.VotedForId == byte.MaxValue || !targetIds.Contains(area.VotedForId))
                 {
-                    area.VotedFor = targetIds[UnityEngine.Random.Range(0, targetIds.Count)];
+                    area.SetVote(targetIds[UnityEngine.Random.Range(0, targetIds.Count)]);
                 }
             }
         }
@@ -887,9 +889,9 @@ class BalancerAbility : AbilityBase, IAbilityCount
             foreach (PlayerVoteArea area in MeetingHud.Instance.playerStates)
             {
                 if (area.AmDead) continue;
-                if (!targetIds.Contains(area.VotedFor))
+                if (!targetIds.Contains(area.VotedForId))
                 {
-                    area.VotedFor = noVoteId;
+                    area.SetVoteMissed();
                 }
             }
         }
@@ -905,11 +907,13 @@ class BalancerAbility : AbilityBase, IAbilityCount
         {
             PlayerVoteArea playerVoteArea = MeetingHud.Instance.playerStates[i];
             MeetingHud.VoterState voterState = default;
-            voterState.VoterId = playerVoteArea.TargetPlayerId;
-            voterState.VotedForId = playerVoteArea.VotedFor;
+            voterState.VoterId = playerVoteArea.PlayerId;
+            voterState.VotedForId = playerVoteArea.VotedForId;
             array[i] = voterState;
         }
-        MeetingHud.Instance.RpcVotingComplete(array, exiled?.Data, tie);
+        NetworkedPlayerInfo exiledInfo = exiled?.Data;
+        bool wasOverruled = MeetingHudCheckForEndVotingPatch.TryApplyJudgeOverrule(MeetingHud.Instance, ref exiledInfo, out ushort overruleNonce);
+        MeetingHud.Instance.RpcVotingComplete(array, exiledInfo, tie, wasOverruled, overruleNonce);
     }
 
     [HarmonyPatch(typeof(ExileController), nameof(ExileController.Begin))]

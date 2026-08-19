@@ -13,6 +13,7 @@ public static class PluginConfig
     public const string Id = "jp.ykundesu.supernewrolesnext";
     public const string Name = "SuperNewRoles";
     public const string ProcessName = "Among Us.exe";
+    public const string ModGuid = "9f21dfdc-1224-4322-af7b-63db54cea706";
 }
 
 public static class VersionInfo
