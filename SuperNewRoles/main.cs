@@ -101,7 +101,7 @@ public partial class SuperNewRolesPlugin : BasePlugin
         Logger = Log;
 
         Instance = this;
-        // CurrentModRegistration.ModRegistrationGuidString = PluginConfig.ModGuid;
+        CurrentModRegistration.ModRegistrationGuidString = PluginConfig.ModGuid;
         Encryption.SetEncryptKey();
 
         LoadAnnouncementImageDecoder();
