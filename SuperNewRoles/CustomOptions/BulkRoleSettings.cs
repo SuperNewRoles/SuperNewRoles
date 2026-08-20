@@ -265,7 +265,7 @@ public static class BulkRoleSettings
             else
                 RoleOptionMenu.RoleOptionMenuObjectData.BulkRoleSettingsMenu.SetActive(true);
             if (RoleOptionMenu.RoleOptionMenuObjectData.CurrentBulkSettingsParent != null)
-                GameObject.Destroy(RoleOptionMenu.RoleOptionMenuObjectData.CurrentBulkSettingsParent);
+                UIHelper.DestroyUiObject(RoleOptionMenu.RoleOptionMenuObjectData.CurrentBulkSettingsParent);
             UpdateSettingsMenuColor();
             RoleOptionMenu.RoleOptionMenuObjectData.CurrentBulkSettingsParent = new GameObject("BulkSettingsParent");
             RoleOptionMenu.RoleOptionMenuObjectData.CurrentBulkSettingsParent.transform.SetParent(RoleOptionMenu.RoleOptionMenuObjectData.BulkSettingsInner);
