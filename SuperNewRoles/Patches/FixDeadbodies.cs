@@ -124,7 +124,7 @@ public static class FixDeadbodies
 
                 _nextIds[target.PlayerId] = nextId;
                 WillMoves.Clear();
-            }, 0.1f);
+            }, 0.1f, "FixDeadbodiesRegisterDeadBody");
         }
     }
     [CustomRPC]

@@ -31,7 +31,7 @@ public class ChangeKillTimerAbility : AbilityBase
             new LateTask(() =>
             {
                 ((ExPlayerControl)Player).SetKillTimerUnchecked(killTime, killTime);
-            }, 0.05f);
+            }, 0.05f, "ChangeKillTimerOnMurder");
         }
     }
 
@@ -42,6 +42,6 @@ public class ChangeKillTimerAbility : AbilityBase
         {
             float killTime = KillTimerGetter();
             ((ExPlayerControl)Player).SetKillTimerUnchecked(killTime, killTime);
-        }, 0.5f);
+        }, 0.5f, "ChangeKillTimerOnWrapUp");
     }
 }

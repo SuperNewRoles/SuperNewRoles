@@ -381,7 +381,7 @@ public class PusherAbility : TargetCustomButtonBase
 
     private void OnWrapup()
     {
-        new LateTask(() => Timer = 0.001f, 0.1f);
+        new LateTask(() => Timer = 0.001f, 0.1f, "PusherResetTimerOnWrapUp");
     }
 
     private void OnFixedUpdate()

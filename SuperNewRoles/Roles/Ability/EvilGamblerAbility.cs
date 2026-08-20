@@ -42,7 +42,7 @@ public class EvilGamblerAbility : AbilityBase
             new LateTask(() =>
             {
                 ((ExPlayerControl)Player).SetKillTimerUnchecked(killTime, killTime);
-            }, 0.05f);
+            }, 0.05f, "EvilGamblerSetKillTimerOnMurder");
         }
     }
 
@@ -54,6 +54,6 @@ public class EvilGamblerAbility : AbilityBase
         {
             float killTime = GameOptionsManager.Instance.CurrentGameOptions.GetFloat(FloatOptionNames.KillCooldown);
             ((ExPlayerControl)Player).SetKillTimerUnchecked(killTime, killTime);
-        }, 0.5f);
+        }, 0.5f, "EvilGamblerResetKillTimerOnWrapUp");
     }
 }

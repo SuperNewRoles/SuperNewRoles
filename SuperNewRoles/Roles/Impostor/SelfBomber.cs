@@ -56,7 +56,7 @@ class SelfBomber : RoleBase<SelfBomber>
         player.CustomDeath(CustomDeathType.SelfBomb, source: player);
         if (player.AmOwner && Minigame.Instance != null)
         {
-            new LateTask(() => Minigame.Instance.Close(), 0.1f);
+            new LateTask(() => Minigame.Instance.Close(), 0.1f, "SelfBomberCloseMinigame");
         }
     }
 
