@@ -321,7 +321,7 @@ public sealed class FrankensteinAbility : AbilityBase
                 ability.Player.Player.transform.position = ability._playerOriginalPosition;
                 ability.Player.Player.NetTransform.RpcSnapTo(ability._playerOriginalPosition);
                 ability.Player.Player.MyPhysics.body.velocity = Vector2.zero;
-            }, 0.1f);
+            }, 0.1f, "FrankensteinRestorePlayerPosition");
         }
 
         ability._createButton?.ResetTimer();

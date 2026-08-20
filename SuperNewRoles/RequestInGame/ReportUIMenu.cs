@@ -375,7 +375,7 @@ public class ReportUIMenu
                                 {
                                     CreateSuccessUI(parent.parent);
                                     GameObject.Destroy(parent.gameObject);
-                                }, 0f);
+                                }, 0f, "ReportUIMenuShowSuccess");
                             }
                         }, progress =>
                         {
@@ -411,7 +411,7 @@ public class ReportUIMenu
                                 {
                                     CreateSuccessUI(parent.parent);
                                     GameObject.Destroy(parent.gameObject);
-                                }, 0f);
+                                }, 0f, "ReportUIMenuShowSuccess");
                             }
                         }, progress =>
                         {

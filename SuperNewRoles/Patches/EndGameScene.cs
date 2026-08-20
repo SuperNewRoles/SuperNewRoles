@@ -214,7 +214,7 @@ public class EndGameManagerSetUpPatch
         }).WrapToIl2Cpp());
 
         if (AmongUsClient.Instance.AmHost)
-            new LateTask(() => GameManager.Instance.RpcEndGame(newCond.reason, false), 0.3f);
+            new LateTask(() => GameManager.Instance.RpcEndGame(newCond.reason, false), 0.3f, "EndGameSceneRpcEndGame");
     }
 
     // Imageのアルファ値を変更するコルーチン

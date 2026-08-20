@@ -158,7 +158,7 @@ public class ChiefAbility : AbilityBase
             new LateTask(() =>
             {
                 ExPlayerControl.LocalPlayer.RpcCustomDeath(CustomDeathType.Suicide);
-            }, 0f);
+            }, 0f, "ChiefSelfDeathOnAppointFailure");
         }
         else // 任命判定が成功しているなら 任命 (補助処理 (基本的にSKButton側で 既に任命処理が終わっている))
         {
