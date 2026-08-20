@@ -320,7 +320,7 @@ public static class VersionTextHandler
         public static void Postfix()
         {
             ShowInGameLogosPatch._aspectPosition.Alignment = AspectPosition.EdgeAlignments.RightTop;
-            ShowInGameLogosPatch._aspectPosition.DistanceFromEdge = new(-0.13f, 0.5f);
+            ShowInGameLogosPatch._aspectPosition.DistanceFromEdge = new(4.98f, 0.5f);
             ShowInGameLogosPatch._aspectPosition.OnEnable();
         }
     }
