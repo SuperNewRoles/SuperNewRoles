@@ -101,6 +101,7 @@ public partial class SuperNewRolesPlugin : BasePlugin
         Logger = Log;
 
         Instance = this;
+        CurrentModRegistration.ModRegistrationGuidString = PluginConfig.ModGuid;
         Encryption.SetEncryptKey();
 
         LoadAnnouncementImageDecoder();
@@ -225,6 +226,7 @@ public partial class SuperNewRolesPlugin : BasePlugin
         NormalGameOptionsV08.MaxImpostors = ints;
         NormalGameOptionsV09.MaxImpostors = ints;
         NormalGameOptionsV10.MaxImpostors = ints;
+        NormalGameOptionsV11.MaxImpostors = ints;
     }
 
     // CPUのコア割当を変更してパフォーマンスを改善する

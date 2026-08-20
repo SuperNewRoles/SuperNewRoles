@@ -199,7 +199,7 @@ namespace SuperNewRoles.Patches
             var sorted = playerStates
                 .OrderBy(x =>
                 {
-                    var exPlayer = ExPlayerControl.ById(x.TargetPlayerId);
+                    var exPlayer = ExPlayerControl.ById(x.PlayerId);
                     return exPlayer == null ? 1 : (exPlayer.IsDead() ? 1 : 0);
                 })
                 .ToList();
