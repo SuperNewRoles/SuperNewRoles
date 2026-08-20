@@ -23,6 +23,7 @@ public static class SnrSettingChangeNotifier
     private const int NotificationKeyMask = 0x0fffffff;
     public const int NotificationKeyBase = 100000;
     public const int NotificationKeyMax = NotificationKeyBase + NotificationKeyMask;
+    private static long NotificationSequence;
     private static readonly Dictionary<StringNames, string> PendingNotificationStrings = new();
 
     public static void NotifyOptionChanged(CustomOption option, bool playSound = false)
@@ -203,7 +204,7 @@ public static class SnrSettingChangeNotifier
         // TranslationController.GetString が巨大な偽 StringNames を配列参照すると
         // Among Us 更新後にネイティブクラッシュするため、先に空文字へ解決させる。
         PendingNotificationStrings[stringName] = string.Empty;
-        string placeholder = $"{Source}:{notificationKey}:{Environment.TickCount}";
+        string placeholder = $"{Source}:{notificationKey}:{System.Threading.Interlocked.Increment(ref NotificationSequence)}";
         notifier.AddSettingsChangeMessage(stringName, placeholder, playSound);
         ReplaceGeneratedMessage(notifier, placeholder, message);
     }

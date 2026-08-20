@@ -28,6 +28,9 @@ public static class RoleDetailHelper
         System.Action onCloseCallback,
         bool useDirectRoleDetailLayout = false)
     {
+        var menuWasActive = menuObjectToHide != null && menuObjectToHide.activeSelf;
+        var leftButtonsObject = GameObject.Find("HelpMenuObject/LeftButtons");
+        var leftButtonsWereActive = leftButtonsObject != null && leftButtonsObject.activeSelf;
         GameObject roleDetailObject = null;
         try
         {
@@ -44,6 +47,10 @@ public static class RoleDetailHelper
             // 呼び出し元へ参照を返す前に失敗した場合も、生成済みオブジェクトを破棄する。
             if (roleDetailObject != null)
                 UIHelper.DestroyUiObject(roleDetailObject);
+            if (menuWasActive && menuObjectToHide != null)
+                menuObjectToHide.SetActive(true);
+            if (leftButtonsWereActive && leftButtonsObject != null)
+                leftButtonsObject.SetActive(true);
             throw;
         }
     }
