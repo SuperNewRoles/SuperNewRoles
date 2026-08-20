@@ -376,6 +376,42 @@ public static class SyncVersion
         }
     }
 
+    internal static void CancelPendingSyncTasks()
+    {
+        RetryManager.CancelAll();
+        foreach (var task in PendingSyncTasks)
+            task.Cancel();
+        PendingSyncTasks.Clear();
+    }
+
+    private static readonly List<LateTask> PendingSyncTasks = new();
+
+    private static void QueueSyncTask(Action action, float delay, string name)
+    {
+        LateTask task = null;
+        task = new LateTask(() =>
+        {
+            PendingSyncTasks.Remove(task);
+            action();
+        }, delay, name);
+        PendingSyncTasks.Add(task);
+    }
+
+    private static bool IsConnectedGameSession()
+    {
+        var client = AmongUsClient.Instance;
+        return client != null && client.GameState != InnerNetClient.GameStates.NotJoined;
+    }
+
+    [HarmonyPatch(typeof(InnerNetClient), nameof(InnerNetClient.HandleDisconnect))]
+    public static class SyncVersionHandleDisconnectPatch
+    {
+        public static void Postfix()
+        {
+            CancelPendingSyncTasks();
+        }
+    }
+
     [HarmonyPatch(typeof(GameStartManager), nameof(GameStartManager.Start))]
     public static class GameStartManagerStartPatch
     {
@@ -383,12 +419,13 @@ public static class SyncVersion
         {
             VersionData.ClearTrackedState();
             RetryManager.CreateRetryTask(
-                () => PlayerControl.LocalPlayer != null,
+                () => IsConnectedGameSession() && PlayerControl.LocalPlayer != null,
                 SendSyncVersion,
                 MAX_RETRY_COUNT,
-                SYNC_RETRY_DELAY
+                SYNC_RETRY_DELAY,
+                "SyncVersion.WaitLocalPlayer"
             );
-            new LateTask(() => SendSyncVersion(), 5f);
+            QueueSyncTask(SendSyncVersion, 5f, "SyncVersion.SendSyncVersion.Delay5");
             RoleOptionManager.DelayedSyncTasks.Clear();
 
         }
@@ -400,7 +437,7 @@ public static class SyncVersion
         {
             if (PlayerControl.LocalPlayer != null)
             {
-                new LateTask(() => SendSyncVersion(), PLAYER_JOIN_SYNC_DELAY);
+                QueueSyncTask(SendSyncVersion, PLAYER_JOIN_SYNC_DELAY, "SyncVersion.SendOnPlayerJoined");
             }
 
             HandleNewPlayer(data);
@@ -410,10 +447,11 @@ public static class SyncVersion
         {
             int clientId = data.Id;
             RetryManager.CreateRetryTask(
-                () => data.Character != null,
+                () => IsConnectedGameSession() && data.Character != null,
                 () => InitializePlayerVersion(data, clientId),
                 MAX_RETRY_COUNT,
-                SYNC_RETRY_DELAY
+                SYNC_RETRY_DELAY,
+                "SyncVersion.WaitCharacter"
             );
         }
 
@@ -425,7 +463,7 @@ public static class SyncVersion
             VersionData.IsError[playerId] = SyncErrorType.NotMismatch;
             VersionData.VersionMap[playerId] = "";
 
-            new LateTask(() => CheckPlayerVersion(data, clientId, playerId), SYNC_SHOWERROR_DELAY);
+            QueueSyncTask(() => CheckPlayerVersion(data, clientId, playerId), SYNC_SHOWERROR_DELAY, "SyncVersion.CheckPlayerVersion");
         }
 
         private static void CheckPlayerVersion(InnerNet.ClientData data, int clientId, byte playerId)
@@ -460,13 +498,29 @@ public static class SyncVersion
 
 internal static class RetryManager
 {
-    public static void CreateRetryTask(Func<bool> condition, Action action, int maxRetries, float delay)
+    private static readonly List<LateTask> PendingTasks = new();
+    private static int SessionId;
+
+    public static void CancelAll()
     {
+        SessionId++;
+        foreach (var task in PendingTasks)
+            task.Cancel();
+        PendingTasks.Clear();
+    }
+
+    public static void CreateRetryTask(Func<bool> condition, Action action, int maxRetries, float delay, string taskName = "No Name Task")
+    {
+        int session = SessionId;
         int retryCount = maxRetries;
         void TryAction()
         {
-            new LateTask(() =>
+            if (session != SessionId) return;
+            LateTask task = null;
+            task = new LateTask(() =>
             {
+                PendingTasks.Remove(task);
+                if (session != SessionId) return;
                 if (!condition())
                 {
                     if (retryCount > 0)
@@ -477,7 +531,8 @@ internal static class RetryManager
                     }
                 }
                 action();
-            }, delay);
+            }, delay, taskName);
+            PendingTasks.Add(task);
         }
         TryAction();
     }

@@ -87,7 +87,7 @@ public static class CustomDeathExtensions
                         GameObject.Destroy(deadBody.gameObject);
                     source.Player.NetTransform.SnapTo(pos);
                     source.Player.MyPhysics.body.velocity = Vector2.zero;
-                }, 0.1f);
+                }, 0.1f, "CustomDeathTeleportKillCleanup");
                 FinalStatusManager.SetFinalStatus(player, FinalStatus.Kill);
                 MurderDataManager.AddMurderData(source, player);
                 break;

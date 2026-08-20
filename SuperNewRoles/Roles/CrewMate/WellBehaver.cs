@@ -110,7 +110,7 @@ public class WellBehaverAbility : AbilityBase
         Player.AttachAbility(button, new AbilityParentAbility(this));
         Player.AttachAbility(customTaskAbility, new AbilityParentAbility(this));
 
-        new LateTask(() => _limitTrashCount = Data.LimitTrashCount * ExPlayerControl.ExPlayerControls.Count(x => x.Role == RoleId.WellBehaver), 1f);
+        new LateTask(() => _limitTrashCount = Data.LimitTrashCount * ExPlayerControl.ExPlayerControls.Count(x => x.Role == RoleId.WellBehaver), 1f, "WellBehaverInitializeLimitTrashCount");
         ReAssignGarbager();
         SubscribeWithAbility(NameTextUpdateEvent.Instance, OnNameTextUpdate);
     }

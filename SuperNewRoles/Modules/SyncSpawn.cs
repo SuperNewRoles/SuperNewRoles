@@ -155,7 +155,7 @@ public static class SyncSpawn
             if (SpawnedPlayers.Count >= aliveCount && __instance != null && AmongUsClient.Instance.AmHost)
             {
                 Logger.Info("WaitForSpawn4");
-                new LateTask(() => RpcAllSelectedFromHost(), 0.5f);
+                new LateTask(() => RpcAllSelectedFromHost(), 0.5f, "SyncSpawnRpcAllSelectedFromHost");
                 yield break;
             }
             __instance.Text.text = ModTranslation.GetString("WaitingSpawnText",

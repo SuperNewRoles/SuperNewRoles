@@ -1,3 +1,4 @@
+using SuperNewRoles.CustomOptions;
 using SuperNewRoles.Modules;
 using SuperNewRoles.Roles;
 using TMPro;
@@ -27,6 +28,41 @@ public static class RoleDetailHelper
         System.Action onCloseCallback,
         bool useDirectRoleDetailLayout = false)
     {
+        var menuWasActive = menuObjectToHide != null && menuObjectToHide.activeSelf;
+        var leftButtonsObject = GameObject.Find("HelpMenuObject/LeftButtons");
+        var leftButtonsWereActive = leftButtonsObject != null && leftButtonsObject.activeSelf;
+        GameObject roleDetailObject = null;
+        try
+        {
+            return ShowRoleDetailCore(
+                roleId,
+                container,
+                menuObjectToHide,
+                onCloseCallback,
+                useDirectRoleDetailLayout,
+                createdObject => roleDetailObject = createdObject);
+        }
+        catch
+        {
+            // 呼び出し元へ参照を返す前に失敗した場合も、生成済みオブジェクトを破棄する。
+            if (roleDetailObject != null)
+                UIHelper.DestroyUiObject(roleDetailObject);
+            if (menuWasActive && menuObjectToHide != null)
+                menuObjectToHide.SetActive(true);
+            if (leftButtonsWereActive && leftButtonsObject != null)
+                leftButtonsObject.SetActive(true);
+            throw;
+        }
+    }
+
+    private static GameObject ShowRoleDetailCore(
+        RoleId roleId,
+        GameObject container,
+        GameObject menuObjectToHide,
+        System.Action onCloseCallback,
+        bool useDirectRoleDetailLayout,
+        System.Action<GameObject> onCreated)
+    {
         // メニューを非表示にする
         if (menuObjectToHide != null)
             menuObjectToHide.SetActive(false);
@@ -38,6 +74,7 @@ public static class RoleDetailHelper
 
         // MyRoleInfomationHelpMenuをAssetManagerから取得
         var roleDetailObject = GameObject.Instantiate(AssetManager.GetAsset<GameObject>("MyRoleInfomationHelpMenu"), container.transform);
+        onCreated(roleDetailObject);
         roleDetailObject.transform.localPosition = Vector3.zero;
         roleDetailObject.transform.localScale = Vector3.one;
         roleDetailObject.transform.localRotation = Quaternion.identity;
@@ -71,11 +108,11 @@ public static class RoleDetailHelper
         var roleButtonsContainer = roleDetailObject.transform.Find("RoleButtons")?.gameObject;
         if (roleButtonsContainer != null)
         {
-            // roleButtonsContainerの子ボタン削除
-            foreach (var child in roleButtonsContainer.GetChildren())
+            for (int i = roleButtonsContainer.transform.childCount - 1; i >= 0; i--)
             {
+                var child = roleButtonsContainer.transform.GetChild(i);
                 if (child.name.StartsWith("RoleButton_"))
-                    GameObject.Destroy(child);
+                    UIHelper.DestroyUiObject(child.gameObject);
             }
 
             // 選択された役職のIRoleBaseを取得
@@ -122,16 +159,21 @@ public static class RoleDetailHelper
             textComponent.text = ModHelpers.CsWithTranslation(role.RoleColor, role.Role.ToString());
         }
 
-        // ボタンイベント設定
-        var passiveButton = bulkRoleButton.AddComponent<PassiveButton>();
-        passiveButton.Colliders = new Collider2D[] { bulkRoleButton.GetComponent<BoxCollider2D>() };
-        passiveButton.OnClick = new();
-        passiveButton.OnClick.AddListener((UnityAction)(() =>
+        UIHelper.ConfigureWhileInactive(bulkRoleButton, () =>
         {
-            RoleDetailMenu.OnRoleButtonClicked(role, bulkRoleButton);
-        }));
-        passiveButton.OnMouseOver = new();
-        passiveButton.OnMouseOut = new();
+            // ボタンイベント設定
+            var passiveButton = bulkRoleButton.GetComponent<PassiveButton>()
+                ?? bulkRoleButton.AddComponent<PassiveButton>();
+            var collider = bulkRoleButton.GetComponent<BoxCollider2D>();
+            passiveButton.Colliders = collider != null ? new Collider2D[] { collider } : System.Array.Empty<Collider2D>();
+            passiveButton.OnClick = new();
+            passiveButton.OnClick.AddListener((UnityAction)(() =>
+            {
+                RoleDetailMenu.OnRoleButtonClicked(role, bulkRoleButton);
+            }));
+            passiveButton.OnMouseOver = new();
+            passiveButton.OnMouseOut = new();
+        });
 
         return bulkRoleButton;
     }
@@ -146,7 +188,7 @@ public static class RoleDetailHelper
         // 役職詳細を削除
         if (roleDetailObject != null)
         {
-            GameObject.Destroy(roleDetailObject);
+            UIHelper.DestroyUiObject(roleDetailObject);
         }
 
         // メニューを再表示
