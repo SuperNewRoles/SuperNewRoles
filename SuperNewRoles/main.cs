@@ -18,6 +18,7 @@ using BepInEx.Logging;
 using SuperNewRoles.Modules;
 using SuperNewRoles.Modules.Compatibility;
 using SuperNewRoles.Patches;
+using SuperNewRoles.Safety.Identity;
 using SuperNewRoles.Roles;
 using SuperNewRoles.CustomOptions;
 using UnityEngine.EventSystems;
@@ -138,6 +139,7 @@ public partial class SuperNewRolesPlugin : BasePlugin
         CustomColors.Load();
         ApiServerManager.Initialize();
         RequestInGameManager.Load();
+        PlayerIdentityStore.GetOrCreate();
         FixOver15();
         StartGameHandlerManager.Load();
 

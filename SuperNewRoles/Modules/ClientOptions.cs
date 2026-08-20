@@ -7,6 +7,7 @@ using SuperNewRoles.CustomCosmetics;
 using SuperNewRoles.CustomObject;
 using SuperNewRoles.CustomOptions;
 using SuperNewRoles.Patches;
+using SuperNewRoles.Safety;
 using TMPro;
 using UnityEngine;
 using UnityEngine.Events;
@@ -130,9 +131,17 @@ public static class ClientOptions
             "ClientOptions.Category.Network",
             [
                 ClientOptionEntry.Toggle(
-                    () => "ClientOptions.CanUseDataConnection",
-                    () => ConfigRoles.CanUseDataConnection.Value,
-                    value => ConfigRoles.CanUseDataConnection.Value = value),
+                    () => "ClientOptions.NotifyHostWhenBlockedJoin",
+                    () => ConfigRoles.NotifyHostWhenBlockedJoin.Value,
+                    value => ConfigRoles.NotifyHostWhenBlockedJoin.Value = value),
+                ClientOptionEntry.Button(
+                    () => "ClientOptions.OpenBlockList",
+                    () => BlockListPopup.Open(_animationOwner != null ? _animationOwner : HudManager.Instance),
+                    () => true),
+                ClientOptionEntry.Button(
+                    () => "ClientOptions.OpenPublicGames",
+                    () => PublicGamesPopup.Open(_animationOwner != null ? _animationOwner : HudManager.Instance),
+                    () => true),
             ]),
         new(
             "ClientOptions.Category.Performance",

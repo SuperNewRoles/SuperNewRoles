@@ -2222,3 +2222,24 @@ HomeSecurityGuardTask9,居眠りする,Doze off,打瞌睡,打瞌睡
 HomeSecurityGuardTask10,スマホをいじる,Fiddle with phone,玩手机,滑手機
 HomeSecurityGuardTask11,ネット巡回をする,Browse the internet,网上冲浪,網路巡邏
 HomeSecurityGuardTask12,配達物を確認する,Check deliveries,检查快递,確認包裹
+
+# Public room safety
+SafetyConductTitle,公開ルーム行動規範,Public room code of conduct,公开房间行为规范,公開房間行為規範
+SafetyBlockListTitle,ブロック一覧,Block list,屏蔽列表,封鎖清單
+SafetyBlockListEmpty,ブロックしているプレイヤーはいません,You have not blocked anyone,尚未屏蔽任何玩家,尚未封鎖任何玩家
+SafetyPublicGamesTitle,公開ルーム,Public rooms,公开房间,公開房間
+SafetyPublicGamesEmpty,表示できる公開ルームがありません,No public rooms to show,没有可显示的公开房间,沒有可顯示的公開房間
+SafetyHasBlockedPlayer,（ブロック中のプレイヤーがいます）, (contains a blocked player),（房间内有已屏蔽的玩家）,（房間內有已封鎖的玩家）
+SafetyHostBlockRejected,{0} はホストのブロックにより入室できませんでした,{0} could not join because the host blocked them,{0} 因房主屏蔽无法加入,{0} 因房主封鎖無法加入
+SafetyPlayerNotFound,その名前のプレイヤーが見つかりません,Player not found,找不到该玩家,找不到該玩家
+SafetyBlocked,{0} をブロックしました,Blocked {0},已屏蔽 {0},已封鎖 {0}
+SafetyReported,通報を送信しました,Report sent,已发送举报,已送出檢舉
+SafetyReportFailed,通報を送信できませんでした,Could not send the report,无法发送举报,無法送出檢舉
+SafetyUnblocked,ブロックを解除しました,Block removed,已取消屏蔽,已解除封鎖
+SafetyNoteSaved,ノートを保存しました,Note saved,已保存备注,已儲存備註
+SafetyBlockNoteHint,ノート,note,备注,備註
+SafetyPlayerDetailBody,ブロックまたは通報できます。プレイヤーIDは表示しません。Agree でブロック、もう一方で通報します。,You can block or report this player. Player IDs are not shown. Agree blocks; the other button reports.,可屏蔽或举报该玩家。不显示玩家ID。同意为屏蔽，另一按钮为举报。,可封鎖或檢舉該玩家。不顯示玩家ID。同意為封鎖，另一按鈕為檢舉。
+ClientOptions.NotifyHostWhenBlockedJoin,ブロック入室拒否を通知,Notify when a blocked player is denied,屏蔽玩家被拒绝时通知,封鎖玩家被拒絕時通知
+ClientOptions.OpenBlockList,ブロック一覧を開く,Open block list,打开屏蔽列表,開啟封鎖清單
+ClientOptions.OpenPublicGames,公開ルーム一覧,Open public rooms,打开公开房间列表,開啟公開房間清單
+
