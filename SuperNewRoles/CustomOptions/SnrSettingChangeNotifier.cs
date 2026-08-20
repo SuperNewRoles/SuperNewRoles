@@ -20,7 +20,9 @@ public static class SnrSettingChangeNotifier
     private const string RoleAssignmentSettingKey = "SettingNotificationRoleAssignment";
     private const string UpdatedValueKey = "SettingNotificationUpdatedValue";
     private const string PathSeparator = " / ";
+    private const int NotificationKeyMask = 0x0fffffff;
     public const int NotificationKeyBase = 100000;
+    public const int NotificationKeyMax = NotificationKeyBase + NotificationKeyMask;
     private static readonly Dictionary<StringNames, string> PendingNotificationStrings = new();
 
     public static void NotifyOptionChanged(CustomOption option, bool playSound = false)
@@ -218,12 +220,12 @@ public static class SnrSettingChangeNotifier
                 hash *= 16777619;
             }
 
-            return (StringNames)(NotificationKeyBase + (hash & 0x0fffffff));
+            return (StringNames)(NotificationKeyBase + (hash & NotificationKeyMask));
         }
     }
 
     public static bool IsSnrNotificationStringName(StringNames id)
-        => (int)id >= NotificationKeyBase;
+        => (int)id >= NotificationKeyBase && (int)id <= NotificationKeyMax;
 
     public static bool TryResolveNotificationString(StringNames id, out string result)
     {

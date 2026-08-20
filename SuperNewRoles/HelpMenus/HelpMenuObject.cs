@@ -197,6 +197,15 @@ public static class HelpMenuObjectManager
         }
         catch (Exception ex)
         {
+            try
+            {
+                RestoreCategoryMenu();
+            }
+            catch (Exception restoreException)
+            {
+                Logger.Error($"Failed to restore role detail menu: {restoreException}");
+            }
+
             Logger.Error($"Failed to show role detail: {ex}");
         }
     }

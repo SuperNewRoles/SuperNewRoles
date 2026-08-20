@@ -38,6 +38,24 @@ public class SnrSettingChangeNotifierTests
         ((int)generated).Should().BeGreaterThanOrEqualTo(SnrSettingChangeNotifier.NotificationKeyBase);
     }
 
+    // 目的: 通知キーの識別範囲が生成処理の境界内に限定される
+    [Theory]
+    [InlineData(SnrSettingChangeNotifier.NotificationKeyBase - 1, false)]
+    [InlineData(SnrSettingChangeNotifier.NotificationKeyBase, true)]
+    [InlineData(SnrSettingChangeNotifier.NotificationKeyMax, true)]
+    [InlineData(SnrSettingChangeNotifier.NotificationKeyMax + 1, false)]
+    public void NotificationStringName_IsIdentifiedOnlyWithinGeneratedRange(int value, bool expected)
+    {
+        var id = (StringNames)value;
+
+        SnrSettingChangeNotifier.IsSnrNotificationStringName(id).Should().Be(expected);
+        SnrSettingChangeNotifier.TryResolveNotificationString(id, out var result).Should().Be(expected);
+        if (expected)
+            result.Should().BeEmpty();
+        else
+            result.Should().BeNull();
+    }
+
     // 目的: バニラの StringNames は SNR 通知キーとして誤検出しない
     [Theory]
     [InlineData(StringNames.None)]

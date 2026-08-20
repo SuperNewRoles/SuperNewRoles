@@ -47,8 +47,15 @@ namespace SuperNewRoles.CustomOptions
 
             bool wasActive = obj.activeSelf;
             obj.SetActive(false);
-            configure();
-            obj.SetActive(wasActive);
+            try
+            {
+                configure();
+            }
+            finally
+            {
+                if (obj != null)
+                    obj.SetActive(wasActive);
+            }
         }
 
         public static void ConfigurePassiveButton(PassiveButton button, UnityAction onClick, SpriteRenderer spriteRenderer = null, Color32? hoverColor = null, GameObject selectedObject = null)

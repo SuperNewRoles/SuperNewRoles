@@ -28,6 +28,34 @@ public static class RoleDetailHelper
         System.Action onCloseCallback,
         bool useDirectRoleDetailLayout = false)
     {
+        GameObject roleDetailObject = null;
+        try
+        {
+            return ShowRoleDetailCore(
+                roleId,
+                container,
+                menuObjectToHide,
+                onCloseCallback,
+                useDirectRoleDetailLayout,
+                createdObject => roleDetailObject = createdObject);
+        }
+        catch
+        {
+            // 呼び出し元へ参照を返す前に失敗した場合も、生成済みオブジェクトを破棄する。
+            if (roleDetailObject != null)
+                UIHelper.DestroyUiObject(roleDetailObject);
+            throw;
+        }
+    }
+
+    private static GameObject ShowRoleDetailCore(
+        RoleId roleId,
+        GameObject container,
+        GameObject menuObjectToHide,
+        System.Action onCloseCallback,
+        bool useDirectRoleDetailLayout,
+        System.Action<GameObject> onCreated)
+    {
         // メニューを非表示にする
         if (menuObjectToHide != null)
             menuObjectToHide.SetActive(false);
@@ -39,6 +67,7 @@ public static class RoleDetailHelper
 
         // MyRoleInfomationHelpMenuをAssetManagerから取得
         var roleDetailObject = GameObject.Instantiate(AssetManager.GetAsset<GameObject>("MyRoleInfomationHelpMenu"), container.transform);
+        onCreated(roleDetailObject);
         roleDetailObject.transform.localPosition = Vector3.zero;
         roleDetailObject.transform.localScale = Vector3.one;
         roleDetailObject.transform.localRotation = Quaternion.identity;
