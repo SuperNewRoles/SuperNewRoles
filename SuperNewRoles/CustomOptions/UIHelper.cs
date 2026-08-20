@@ -23,6 +23,34 @@ namespace SuperNewRoles.CustomOptions
             return obj;
         }
 
+        /// <summary>
+        /// 有効な PassiveButton を破棄すると IL2CPP 側の UnityEvent 参照が残って
+        /// ネイティブクラッシュすることがあるため、先に無効化してから破棄する。
+        /// </summary>
+        public static void DestroyUiObject(GameObject obj)
+        {
+            if (obj == null)
+                return;
+
+            obj.SetActive(false);
+            UnityEngine.Object.DestroyImmediate(obj);
+        }
+
+        /// <summary>
+        /// 有効な PassiveButton 上で UnityEvent を差し替えるとネイティブクラッシュするため、
+        /// 設定中だけ対象を無効化する。
+        /// </summary>
+        public static void ConfigureWhileInactive(GameObject obj, Action configure)
+        {
+            if (obj == null || configure == null)
+                return;
+
+            bool wasActive = obj.activeSelf;
+            obj.SetActive(false);
+            configure();
+            obj.SetActive(wasActive);
+        }
+
         public static void ConfigurePassiveButton(PassiveButton button, UnityAction onClick, SpriteRenderer spriteRenderer = null, Color32? hoverColor = null, GameObject selectedObject = null)
         {
             button.OnClick = new();

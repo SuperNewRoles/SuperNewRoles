@@ -62,12 +62,16 @@ public static class HelpMenuObjectManager
 
         // AirColliderにPassiveButtonを設定して後ろの判定をクリックできないようにする。
         var airCollider = helpMenuObject.transform.Find("AirCollider").gameObject;
-        var airPassiveButton = airCollider.AddComponent<PassiveButton>();
-        airPassiveButton.Colliders = new Collider2D[1];
-        airPassiveButton.Colliders[0] = airCollider.GetComponent<BoxCollider2D>();
-        airPassiveButton.OnClick = new();
-        airPassiveButton.OnMouseOver = new();
-        airPassiveButton.OnMouseOut = new();
+        UIHelper.ConfigureWhileInactive(airCollider, () =>
+        {
+            var airPassiveButton = airCollider.GetComponent<PassiveButton>()
+                ?? airCollider.AddComponent<PassiveButton>();
+            airPassiveButton.Colliders = new Collider2D[1];
+            airPassiveButton.Colliders[0] = airCollider.GetComponent<BoxCollider2D>();
+            airPassiveButton.OnClick = new();
+            airPassiveButton.OnMouseOver = new();
+            airPassiveButton.OnMouseOut = new();
+        });
 
         // 外側クリックで閉じられる透明オーバーレイを置く。
         // 通常ヘルプでは見た目だけ出さず、役職説明時のみ暗転する。
@@ -187,6 +191,18 @@ public static class HelpMenuObjectManager
     /// </summary>
     public static void ShowRoleDetail(RoleId roleId)
     {
+        try
+        {
+            ShowRoleDetailInternal(roleId);
+        }
+        catch (Exception ex)
+        {
+            Logger.Error($"Failed to show role detail: {ex}");
+        }
+    }
+
+    private static void ShowRoleDetailInternal(RoleId roleId)
+    {
         if (!IsHelpMenuActive && !CanToggleHelpMenu())
             return;
 
@@ -202,7 +218,7 @@ public static class HelpMenuObjectManager
         }
 
         if (isDirectRoleDetailMode && directRoleDetailObject != null)
-            GameObject.Destroy(directRoleDetailObject);
+            UIHelper.DestroyUiObject(directRoleDetailObject);
         else
             CurrentCategory?.Hide(rightContainer);
 
@@ -264,18 +280,21 @@ public static class HelpMenuObjectManager
             renderer.maskInteraction = SpriteMaskInteraction.None;
         }
 
-        var collider = helpMenuBackdropObject.GetComponent<BoxCollider2D>()
-            ?? helpMenuBackdropObject.AddComponent<BoxCollider2D>();
-        collider.size = Vector2.one;
-        collider.enabled = true;
+        UIHelper.ConfigureWhileInactive(helpMenuBackdropObject, () =>
+        {
+            var collider = helpMenuBackdropObject.GetComponent<BoxCollider2D>()
+                ?? helpMenuBackdropObject.AddComponent<BoxCollider2D>();
+            collider.size = Vector2.one;
+            collider.enabled = true;
 
-        var passiveButton = helpMenuBackdropObject.GetComponent<PassiveButton>()
-            ?? helpMenuBackdropObject.AddComponent<PassiveButton>();
-        passiveButton.Colliders = new Collider2D[] { collider };
-        passiveButton.OnClick = new();
-        passiveButton.OnClick.AddListener((UnityAction)HideHelpMenu);
-        passiveButton.OnMouseOver = new();
-        passiveButton.OnMouseOut = new();
+            var passiveButton = helpMenuBackdropObject.GetComponent<PassiveButton>()
+                ?? helpMenuBackdropObject.AddComponent<PassiveButton>();
+            passiveButton.Colliders = new Collider2D[] { collider };
+            passiveButton.OnClick = new();
+            passiveButton.OnClick.AddListener((UnityAction)HideHelpMenu);
+            passiveButton.OnMouseOver = new();
+            passiveButton.OnMouseOut = new();
+        });
     }
 
     /// <summary>
@@ -311,7 +330,7 @@ public static class HelpMenuObjectManager
             return;
 
         if (directRoleDetailObject != null)
-            GameObject.Destroy(directRoleDetailObject);
+            UIHelper.DestroyUiObject(directRoleDetailObject);
         directRoleDetailObject = null;
         isDirectRoleDetailMode = false;
         SetCategoryNavigationActive(true);
