@@ -388,7 +388,7 @@ public static class SyncVersion
                 MAX_RETRY_COUNT,
                 SYNC_RETRY_DELAY
             );
-            new LateTask(() => SendSyncVersion(), 5f);
+            new LateTask(() => SendSyncVersion(), 5f, "SyncVersionSendOnGameStart");
             RoleOptionManager.DelayedSyncTasks.Clear();
 
         }
@@ -400,7 +400,7 @@ public static class SyncVersion
         {
             if (PlayerControl.LocalPlayer != null)
             {
-                new LateTask(() => SendSyncVersion(), PLAYER_JOIN_SYNC_DELAY);
+                new LateTask(() => SendSyncVersion(), PLAYER_JOIN_SYNC_DELAY, "SyncVersionSendOnPlayerJoin");
             }
 
             HandleNewPlayer(data);
@@ -425,7 +425,7 @@ public static class SyncVersion
             VersionData.IsError[playerId] = SyncErrorType.NotMismatch;
             VersionData.VersionMap[playerId] = "";
 
-            new LateTask(() => CheckPlayerVersion(data, clientId, playerId), SYNC_SHOWERROR_DELAY);
+            new LateTask(() => CheckPlayerVersion(data, clientId, playerId), SYNC_SHOWERROR_DELAY, "SyncVersionCheckPlayerVersion");
         }
 
         private static void CheckPlayerVersion(InnerNet.ClientData data, int clientId, byte playerId)
@@ -477,7 +477,7 @@ internal static class RetryManager
                     }
                 }
                 action();
-            }, delay);
+            }, delay, "RetryManager");
         }
         TryAction();
     }

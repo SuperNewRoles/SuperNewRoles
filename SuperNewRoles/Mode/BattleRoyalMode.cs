@@ -366,7 +366,7 @@ public class BattleRoyalMode : ModeBase<BattleRoyalMode>, IModeBase
                 // 個人戦: Old同様、自分=Shapeshifter、他人視点=Scientistのデシンク表現
                 SetupTeamModeRoles(allPlayers);
             }
-        }, 3f);
+        }, 3f, "BattleRoyalSetupPlayerRoles");
     }
 
     private void SetupTeamModeRoles(List<PlayerControl> allPlayers)
