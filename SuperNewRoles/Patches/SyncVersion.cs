@@ -388,7 +388,13 @@ public static class SyncVersion
 
     private static void QueueSyncTask(Action action, float delay, string name)
     {
-        PendingSyncTasks.Add(new LateTask(action, delay, name));
+        LateTask task = null;
+        task = new LateTask(() =>
+        {
+            PendingSyncTasks.Remove(task);
+            action();
+        }, delay, name);
+        PendingSyncTasks.Add(task);
     }
 
     private static bool IsConnectedGameSession()
@@ -510,8 +516,10 @@ internal static class RetryManager
         void TryAction()
         {
             if (session != SessionId) return;
-            var task = new LateTask(() =>
+            LateTask task = null;
+            task = new LateTask(() =>
             {
+                PendingTasks.Remove(task);
                 if (session != SessionId) return;
                 if (!condition())
                 {
