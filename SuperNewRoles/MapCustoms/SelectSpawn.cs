@@ -135,7 +135,7 @@ public static class SelectSpawn
         {
             FastDestroyableSingleton<HudManager>.Instance.FullScreen.gameObject.SetActive(true);
             FastDestroyableSingleton<HudManager>.Instance.FullScreen.color = Color.black;
-        }, 0.02f);
+        }, 0.02f, "SelectSpawnShowFullScreen");
         while (!loaded) yield return null;
         yield return spawnInMinigame.WaitForFinish();
         yield return DestroyableSingleton<HudManager>.Instance.CoFadeFullScreen(Color.black, Color.clear);

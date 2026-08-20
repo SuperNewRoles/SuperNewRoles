@@ -71,7 +71,7 @@ public class BulletAbility : TargetCustomButtonBase
         {
             _parent = Player.GetAbility<PromoteOnParentDeathAbility>()?.Owner;
             _waveCannonAbility = _parent.Player.GetAbility<WaveCannonAbility>();
-        }, 0f);
+        }, 0f, "BulletAbilityAttachParent");
         SubscribeWithAbility(PlayerPhysicsFixedUpdateEvent.Instance, OnPlayerPhysicsFixedUpdate);
         SubscribeWithAbility(NameTextUpdateEvent.Instance, OnNameTextUpdate);
         SubscribeWithAbility(MeetingStartEvent.Instance, OnMeetingStart);

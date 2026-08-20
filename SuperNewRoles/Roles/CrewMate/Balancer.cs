@@ -957,14 +957,14 @@ class BalancerAbility : AbilityBase, IAbilityCount
                     controller.EjectSound = null;
                     void createlate(int index)
                     {
-                        new LateTask(() => { controller.StopAllCoroutines(); controller.StartCoroutine(controller.Animate()); }, 0.025f + index * 0.025f);
+                        new LateTask(() => { controller.StopAllCoroutines(); controller.StartCoroutine(controller.Animate()); }, 0.025f + index * 0.025f, $"BalancerEjectAnimate_{index}");
                     }
-                    new LateTask(() => controller.StartCoroutine(controller.Animate()), 0f);
+                    new LateTask(() => controller.StartCoroutine(controller.Animate()), 0f, "BalancerEjectAnimateStart");
                     for (int i = 0; i < 23; i++)
                     {
                         createlate(i);
                     }
-                    new LateTask(() => { controller.StopAllCoroutines(); controller.EjectSound = sound; controller.StartCoroutine(controller.Animate()); }, 0.6f);
+                    new LateTask(() => { controller.StopAllCoroutines(); controller.EjectSound = sound; controller.StartCoroutine(controller.Animate()); }, 0.6f, "BalancerEjectAnimateFinish");
                     ExileController.Instance = __instance;
                     init = ModHelpers.GenerateExileInitProperties(BalancingAbility.targetPlayerLeft.Data, false);
                     if (ModHelpers.IsMap(MapNames.Fungle))

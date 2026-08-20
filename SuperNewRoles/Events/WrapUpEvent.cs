@@ -36,7 +36,7 @@ public static class WrapUpPatch
         new LateTask(() =>
         {
             CheckGameEndPatch.CouldCheckEndGame = true;
-        }, 0.5f);
+        }, 0.5f, "WrapUpEnableCouldCheckEndGame");
     }
 }
 
@@ -69,6 +69,6 @@ public static class AirshipWrapUpPatch
         new LateTask(() =>
         {
             CheckGameEndPatch.CouldCheckEndGame = true;
-        }, 0.5f);
+        }, 0.5f, "AirshipWrapUpEnableCouldCheckEndGame");
     }
 }

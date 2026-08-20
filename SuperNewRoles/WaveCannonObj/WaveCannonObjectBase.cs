@@ -52,7 +52,7 @@ public abstract class WaveCannonObjectBase
     {
         this.ability = ability;
         murderEventListener = MurderEvent.Instance.AddListener(OnMurder);
-        new LateTask(() => this.fixedUpdateEvent = FixedUpdateEvent.Instance.AddListener(OnFixedUpdate), 0f);
+        new LateTask(() => this.fixedUpdateEvent = FixedUpdateEvent.Instance.AddListener(OnFixedUpdate), 0f, "WaveCannonObjectAddFixedUpdateListener");
         isShooting = false;
         this.startPosition = startPosition;
         ability.Player.NetTransform.RpcSnapTo(startPosition);
@@ -286,7 +286,7 @@ public abstract class WaveCannonObjectBase
         }
         if (ability?.Player?.AmOwner == true)
             RpcDetach(ability.Player);
-        new LateTask(() => FixedUpdateEvent.Instance.RemoveListener(fixedUpdateEvent), 0f);
+        new LateTask(() => FixedUpdateEvent.Instance.RemoveListener(fixedUpdateEvent), 0f, "WaveCannonObjectRemoveFixedUpdateListener");
         detached = true;
         if (WaveCannonObject != null)
             GameObject.Destroy(WaveCannonObject);

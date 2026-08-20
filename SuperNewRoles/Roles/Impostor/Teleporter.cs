@@ -164,7 +164,7 @@ internal class TeleporterAbility : CustomButtonBase, IButtonEffect
             new LateTask(() =>
             {
                 ShowTeleportWaitingEffect(player, waitingTime - 1f);
-            }, 1f);
+            }, 1f, "TeleporterWaitingEffect");
         }
     }
 

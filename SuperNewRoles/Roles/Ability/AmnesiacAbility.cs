@@ -82,7 +82,7 @@ public class AmnesiacAbility : AbilityBase
         {
             // エクスプレイヤーコントロールの名前テキストを更新
             NameText.UpdateAllNameInfo();
-        }, 0.1f);
+        }, 0.1f, "AmnesiacAbilityUpdateNameInfo");
     }
 
 }

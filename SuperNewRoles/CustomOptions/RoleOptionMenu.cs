@@ -88,6 +88,7 @@ public class RoleOptionMenuObjectData : OptionMenuBase
     /// </summary>
     public Scroller SettingsScroller { get; set; }
     public Transform SettingsInner { get; set; }
+    public Transform SettingsOptionsParent { get; set; }
     public GameObject BulkRoleSettingsMenu { get; set; }
 
     /// <summary>
@@ -647,7 +648,9 @@ public static class RoleOptionMenu
     }
     public static void UpdateHostInfoMaskArea(bool active)
     {
-        if (AmongUsClient.Instance.GameState != InnerNet.InnerNetClient.GameStates.Joined)
+        if (AmongUsClient.Instance == null || AmongUsClient.Instance.GameState != InnerNet.InnerNetClient.GameStates.Joined)
+            return;
+        if (GameStartManager.Instance == null)
             return;
         var maskArea = GameStartManager.Instance.transform.FindChild("StartGameArea/Host Info/Content/Player Area/MaskArea");
         if (maskArea != null)
@@ -673,48 +676,69 @@ public static class RoleOptionMenu
 
         private static void Postfix()
         {
+            try
+            {
+                UpdateRoleButtonVisibility();
+            }
+            catch (Exception ex)
+            {
+                Logger.Error($"RoleOptionMenu LateUpdate failed: {ex}");
+            }
+        }
+
+        private static void UpdateRoleButtonVisibility()
+        {
             // RoleOptionMenuObjectDataが存在し、InnerScrollが設定されている場合のみ処理を行う
             var data = RoleOptionMenuObjectData;
-            if (data != null && data.InnerScroll != null && cachedGameSettingMenu != null)
+            if (data?.MenuObject == null || !data.MenuObject.activeSelf)
+                return;
+            if (data.InnerScroll == null || data.Scroller == null || data.CurrentScrollParent == null)
+                return;
+            if (cachedGameSettingMenu == null)
+                return;
+
+            Transform currentScrollParent = data.CurrentScrollParent;
+            Transform scrollerTransform = data.Scroller.transform;
+            int childCount = currentScrollParent.childCount;
+            for (int i = 0; i < childCount; i++)
             {
-                Transform currentScrollParent = data.CurrentScrollParent;
-                Transform scrollerTransform = data.Scroller.transform;
-                int childCount = currentScrollParent.childCount;
-                for (int i = 0; i < childCount; i++)
+                Transform child = currentScrollParent.GetChild(i);
+                if (child == null)
+                    continue;
+                // Scrollerの座標空間におけるchildの相対位置を取得（Transformのキャッシュによる最適化）
+                Vector3 relativePos = scrollerTransform.InverseTransformPoint(child.position);
+                // Scrollerの表示範囲に基づいて表示/非表示を決定
+                bool shouldDisplay = (relativePos.y < DISPLAY_UPPER_LIMIT && relativePos.y > DISPLAY_LOWER_LIMIT);
+                // 現在の状態と比較して変更が必要な場合のみSetActiveを呼び出す
+                if (child.gameObject.activeSelf != shouldDisplay)
                 {
-                    Transform child = currentScrollParent.GetChild(i);
-                    // Scrollerの座標空間におけるchildの相対位置を取得（Transformのキャッシュによる最適化）
-                    Vector3 relativePos = scrollerTransform.InverseTransformPoint(child.position);
-                    // Scrollerの表示範囲に基づいて表示/非表示を決定
-                    bool shouldDisplay = (relativePos.y < DISPLAY_UPPER_LIMIT && relativePos.y > DISPLAY_LOWER_LIMIT);
-                    // 現在の状態と比較して変更が必要な場合のみSetActiveを呼び出す
-                    if (child.gameObject.activeSelf != shouldDisplay)
-                    {
-                        child.gameObject.SetActive(shouldDisplay);
-                    }
+                    child.gameObject.SetActive(shouldDisplay);
                 }
-                // InnerScrollのTransformもキャッシュして辞書を更新
-                Transform innerScrollTransform = data.InnerScroll.transform;
-                data.ScrollPositionDictionary[data.CurrentRoleType] = innerScrollTransform.localPosition.y;
-                Vector2 mousePos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
-                // キャッシュしたColliderを使用
-                if (data.MenuObjectCollider != null && data.MenuObjectCollider.OverlapPoint(mousePos))
+            }
+            // InnerScrollのTransformもキャッシュして辞書を更新
+            Transform innerScrollTransform = data.InnerScroll.transform;
+            data.ScrollPositionDictionary[data.CurrentRoleType] = innerScrollTransform.localPosition.y;
+            var mainCamera = Camera.main;
+            if (mainCamera == null)
+                return;
+            Vector2 mousePos = mainCamera.ScreenToWorldPoint(Input.mousePosition);
+            // キャッシュしたColliderを使用
+            if (data.MenuObjectCollider != null && data.MenuObjectCollider.OverlapPoint(mousePos))
+            {
+                // メニュー上にマウスがある場合、メニューのスクロールを有効化し、設定メニューのスクロールを無効化
+                data.Scroller.enabled = true;
+                if (data.SettingsScroller != null)
                 {
-                    // メニュー上にマウスがある場合、メニューのスクロールを有効化し、設定メニューのスクロールを無効化
-                    data.Scroller.enabled = true;
-                    if (data.SettingsScroller != null)
-                    {
-                        data.SettingsScroller.enabled = false;
-                    }
+                    data.SettingsScroller.enabled = false;
                 }
-                else
+            }
+            else
+            {
+                // メニュー外にマウスがある場合、メニューのスクロールを無効化し、設定メニューのスクロールを有効化
+                data.Scroller.enabled = false;
+                if (data.SettingsScroller != null)
                 {
-                    // メニュー外にマウスがある場合、メニューのスクロールを無効化し、設定メニューのスクロールを有効化
-                    data.Scroller.enabled = false;
-                    if (data.SettingsScroller != null)
-                    {
-                        data.SettingsScroller.enabled = true;
-                    }
+                    data.SettingsScroller.enabled = true;
                 }
             }
         }

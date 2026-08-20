@@ -9,6 +9,6 @@ public static class MeetingHudChatFix
     public static void Postfix(MeetingHud __instance)
     {
         DestroyableSingleton<HudManager>.Instance.Chat.SetVisible(false);
-        new LateTask(() => DestroyableSingleton<HudManager>.Instance.Chat.SetVisible(ExPlayerControl.LocalPlayer.IsDead()), 1.5f);
+        new LateTask(() => DestroyableSingleton<HudManager>.Instance.Chat.SetVisible(ExPlayerControl.LocalPlayer.IsDead()), 1.5f, "MeetingHudChatFixRestoreVisibility");
     }
 }

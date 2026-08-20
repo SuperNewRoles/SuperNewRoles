@@ -60,7 +60,7 @@ public class PenguinAbility : TargetCustomButtonBase, IButtonEffect
         if (Target == null || Target.IsDead()) return;
         targetPlayer = Target;
         RpcStartPenguin(targetPlayer);
-        new LateTask(() => ExPlayerControl.LocalPlayer.SetKillTimerUnchecked(0.00001f, 0.00001f), 0f);
+        new LateTask(() => ExPlayerControl.LocalPlayer.SetKillTimerUnchecked(0.00001f, 0.00001f), 0f, "PenguinAbilitySetKillTimer");
         ResetTimer();
     }
     private void OnFixedUpdate()

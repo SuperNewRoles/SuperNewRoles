@@ -43,6 +43,7 @@ public class LateTask
     {
         lock (_lock)
         {
+            AddTasks.Remove(this);
             RemoveTasks.Add(this);
         }
     }

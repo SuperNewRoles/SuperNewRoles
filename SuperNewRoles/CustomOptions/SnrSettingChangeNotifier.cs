@@ -1,6 +1,8 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
+using HarmonyLib;
 using InnerNet;
 using SuperNewRoles.Modules;
 using SuperNewRoles.Roles;
@@ -18,8 +20,11 @@ public static class SnrSettingChangeNotifier
     private const string RoleAssignmentSettingKey = "SettingNotificationRoleAssignment";
     private const string UpdatedValueKey = "SettingNotificationUpdatedValue";
     private const string PathSeparator = " / ";
-    private const int NotificationKeyBase = 100000;
-    private static readonly Color32 ModifierContextColor = new(255, 112, 183, 255);
+    private const int NotificationKeyMask = 0x0fffffff;
+    public const int NotificationKeyBase = 100000;
+    public const int NotificationKeyMax = NotificationKeyBase + NotificationKeyMask;
+    private static long NotificationSequence;
+    private static readonly Dictionary<StringNames, string> PendingNotificationStrings = new();
 
     public static void NotifyOptionChanged(CustomOption option, bool playSound = false)
     {
@@ -146,11 +151,18 @@ public static class SnrSettingChangeNotifier
 
     private static void NotifySettingChanged(string category, string setting, string value, string notificationKey, bool playSound)
     {
-        if (!CanShowNotification()) return;
+        try
+        {
+            if (!CanShowNotification()) return;
 
-        var notifier = DestroyableSingleton<HudManager>.Instance.Notifier;
-        string message = BuildMessage(category, setting, value);
-        ShowMessage(notifier, notificationKey, message, playSound);
+            var notifier = DestroyableSingleton<HudManager>.Instance.Notifier;
+            string message = BuildMessage(category, setting, value);
+            ShowMessage(notifier, notificationKey, message, playSound);
+        }
+        catch (Exception ex)
+        {
+            Logger.Error($"Failed to show setting change notification: {ex}");
+        }
     }
 
     private static bool CanShowNotification()
@@ -186,12 +198,18 @@ public static class SnrSettingChangeNotifier
 
     private static void ShowMessage(NotificationPopper notifier, string notificationKey, string message, bool playSound)
     {
-        string placeholder = $"{Source}:{notificationKey}:{Environment.TickCount}";
-        notifier.AddSettingsChangeMessage(GetNotificationStringName(notificationKey), placeholder, playSound);
-        ReplaceGeneratedMessage(placeholder, message);
+        if (notifier == null) return;
+
+        StringNames stringName = GetNotificationStringName(notificationKey);
+        // TranslationController.GetString が巨大な偽 StringNames を配列参照すると
+        // Among Us 更新後にネイティブクラッシュするため、先に空文字へ解決させる。
+        PendingNotificationStrings[stringName] = string.Empty;
+        string placeholder = $"{Source}:{notificationKey}:{System.Threading.Interlocked.Increment(ref NotificationSequence)}";
+        notifier.AddSettingsChangeMessage(stringName, placeholder, playSound);
+        ReplaceGeneratedMessage(notifier, placeholder, message);
     }
 
-    private static StringNames GetNotificationStringName(string notificationKey)
+    public static StringNames GetNotificationStringName(string notificationKey)
     {
         unchecked
         {
@@ -203,17 +221,35 @@ public static class SnrSettingChangeNotifier
                 hash *= 16777619;
             }
 
-            return (StringNames)(NotificationKeyBase + (hash & 0x0fffffff));
+            return (StringNames)(NotificationKeyBase + (hash & NotificationKeyMask));
         }
     }
 
-    private static void ReplaceGeneratedMessage(string placeholder, string message)
+    public static bool IsSnrNotificationStringName(StringNames id)
+        => (int)id >= NotificationKeyBase && (int)id <= NotificationKeyMax;
+
+    public static bool TryResolveNotificationString(StringNames id, out string result)
     {
-        foreach (var text in UnityEngine.Object.FindObjectsOfType<TextMeshPro>(true))
+        if (!IsSnrNotificationStringName(id))
+        {
+            result = null;
+            return false;
+        }
+
+        result = PendingNotificationStrings.TryGetValue(id, out var text) ? text : string.Empty;
+        return true;
+    }
+
+    private static void ReplaceGeneratedMessage(NotificationPopper notifier, string placeholder, string message)
+    {
+        if (notifier == null) return;
+
+        foreach (var text in notifier.GetComponentsInChildren<TextMeshPro>(true))
         {
             if (text == null || string.IsNullOrEmpty(text.text)) continue;
-            if (text.text.Contains(placeholder))
-                text.text = message;
+            if (!text.text.Contains(placeholder)) continue;
+            text.text = message;
+            return;
         }
     }
 
@@ -233,7 +269,7 @@ public static class SnrSettingChangeNotifier
 
         var category = FindOptionCategory(option);
         if (category != null && category.IsModifier)
-            return Colorize(ModifierContextColor, ModTranslation.GetString(category.Name));
+            return Colorize(new Color32(255, 112, 183, 255), ModTranslation.GetString(category.Name));
 
         return ModTranslation.GetString(StandardCategoryKey);
     }
@@ -297,7 +333,7 @@ public static class SnrSettingChangeNotifier
             return Colorize(roleBase.RoleColor, name);
         }
 
-        return Colorize(ModifierContextColor, name);
+        return Colorize(new Color32(255, 112, 183, 255), name);
     }
 
     private static string Colorize(Color color, string text)
@@ -308,5 +344,28 @@ public static class SnrSettingChangeNotifier
     private static string JoinPath(params string[] parts)
     {
         return string.Join(PathSeparator, parts.Where(part => !string.IsNullOrWhiteSpace(part)));
+    }
+}
+
+[HarmonyPatch]
+public static class TranslationControllerSnrNotificationPatch
+{
+    public static IEnumerable<MethodBase> TargetMethods()
+    {
+        foreach (var method in typeof(TranslationController).GetMethods())
+        {
+            if (method.Name != nameof(TranslationController.GetString))
+                continue;
+            var parameters = method.GetParameters();
+            if (parameters.Length == 0)
+                continue;
+            if (parameters[0].ParameterType == typeof(StringNames))
+                yield return method;
+        }
+    }
+
+    public static bool Prefix(StringNames __0, ref string __result)
+    {
+        return !SnrSettingChangeNotifier.TryResolveNotificationString(__0, out __result);
     }
 }

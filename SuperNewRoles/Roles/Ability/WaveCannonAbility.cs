@@ -84,7 +84,7 @@ public class WaveCannonAbility : CustomButtonBase, IButtonEffect
     public override void DetachToAlls()
     {
         base.DetachToAlls();
-        new LateTask(() => WaveCannonObject?.Detach(), 0f);
+        new LateTask(() => WaveCannonObject?.Detach(), 0f, "WaveCannonAbilityDetach");
     }
     public void SpawnedWaveCannonObject(WaveCannonObjectBase waveCannonObject)
     {

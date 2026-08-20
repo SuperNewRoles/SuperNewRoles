@@ -107,6 +107,6 @@ public class EvilSeerHauntAbility(bool canHaunt) : AbilityBase
                 if (murderData.Target != murderData.Killer)
                     murderData.Killer.RpcCustomSetModifierRoleInGame(ModifierRoleId.ModifierHauntedWolf);
             }
-        }, 1f);
+        }, 1f, "EvilSeerApplyHauntedWolfModifier");
     }
 }

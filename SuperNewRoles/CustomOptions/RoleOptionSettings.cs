@@ -398,10 +398,7 @@ public class RoleOptionSettings
     public static void ClickedRole(RoleOptionManager.RoleOption roleOption)
     {
         float lastY = DefaultLastY;
-        // parentを破棄
-        var parent = RoleOptionMenu.RoleOptionMenuObjectData.SettingsInner.Find("Parent");
-        if (parent != null)
-            GameObject.Destroy(parent.gameObject);
+        DestroyCurrentSettingsParent();
 
         // 表示リストをクリア
         RoleOptionMenu.RoleOptionMenuObjectData.CurrentOptionDisplays.Clear();
@@ -539,6 +536,7 @@ public class RoleOptionSettings
         parent.transform.localScale = Vector3.one;
         parent.transform.localPosition = Vector3.zero;
         parent.layer = 5;
+        RoleOptionMenu.RoleOptionMenuObjectData.SettingsOptionsParent = parent.transform;
         CreateNumberOfCrewsSelectAndPerSelect(parent.transform, roleOption, ref lastY);
         int index = 2;
         Logger.Info($"roleOption: {roleOption.RoleId}");
@@ -613,7 +611,7 @@ public class RoleOptionSettings
         }
 
         // 親オプションに基づいて子オプションの表示状態を更新
-        var parent = data.SettingsInner?.Find("Parent");
+        var parent = data.SettingsOptionsParent ?? data.SettingsInner?.Find("Parent");
         if (parent != null && roleOption != null)
         {
             UpdateOptionsActive(parent, roleOption);
@@ -623,9 +621,7 @@ public class RoleOptionSettings
 
     public static void HideRoleSettings()
     {
-        var parent = RoleOptionMenu.RoleOptionMenuObjectData?.SettingsInner?.Find("Parent");
-        if (parent != null)
-            GameObject.Destroy(parent.gameObject);
+        DestroyCurrentSettingsParent();
 
         // 表示リストをクリア
         if (RoleOptionMenu.RoleOptionMenuObjectData?.CurrentOptionDisplays != null)
@@ -637,5 +633,21 @@ public class RoleOptionSettings
         {
             roleIcon.sprite = null;
         }
+    }
+
+    private static void DestroyCurrentSettingsParent()
+    {
+        var data = RoleOptionMenu.RoleOptionMenuObjectData;
+        if (data == null)
+            return;
+
+        var parent = data.SettingsOptionsParent;
+        if (parent == null && data.SettingsInner != null)
+            parent = data.SettingsInner.Find("Parent");
+
+        if (parent != null)
+            UIHelper.DestroyUiObject(parent.gameObject);
+
+        data.SettingsOptionsParent = null;
     }
 }
