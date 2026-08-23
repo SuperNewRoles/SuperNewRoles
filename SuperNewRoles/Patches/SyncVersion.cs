@@ -10,6 +10,7 @@ using Hazel;
 using InnerNet;
 using SuperNewRoles.Modules;
 using SuperNewRoles.Modules.Compatibility;
+using SuperNewRoles.Mode;
 using TMPro;
 using UnityEngine;
 using UnityEngine.Events;
@@ -319,6 +320,9 @@ public static class SyncVersion
     /// </summary>
     public static bool CanHostStartGame()
     {
+        // Battle Royal はホストモードで、バニラクライアントとのプレイに対応している。
+        // バニラクライアントは SNR 同期情報を送信できないため、通常の同期判定を適用しない。
+        if (ModeManager.IsMode(ModeId.BattleRoyal)) return true;
         if (GameData.Instance == null) return true;
         foreach (NetworkedPlayerInfo p in GameData.Instance.AllPlayers)
         {
