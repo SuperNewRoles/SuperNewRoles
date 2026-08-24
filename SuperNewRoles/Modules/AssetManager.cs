@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Reflection;
+using BepInEx.Unity.IL2CPP.Utils.Collections;
 using HarmonyLib;
 using Il2CppInterop.Runtime;
 using UnityEngine;
@@ -649,9 +650,42 @@ public static class AssetManager
     [HarmonyPatch(typeof(AmongUsClient), nameof(AmongUsClient.OnActiveSceneChange))]
     public static class OnActiveSceneChangePatch
     {
-        public static void Postfix()
+        private static int _pendingUnloadVersion;
+
+        public static void Postfix(AmongUsClient __instance)
         {
-            UnloadAllAssets();
+            // バニラの OnActiveSceneChange は直前に Resources.UnloadUnusedAssets + GC を実行済み。
+            // 同じフレームで UnloadUnusedAssets を重ねると、新シーンが非同期初期化中に
+            // まだ参照されていないアセットまで破棄され、メインメニューが真っ暗になることがある
+            // (Reports #2002 / #1819 / #1761)。数フレーム遅らせてシーン初期化後に解放する。
+            try
+            {
+                int version = ++_pendingUnloadVersion;
+                __instance.StartCoroutine(UnloadAllAssetsDeferred(version).WrapToIl2Cpp());
+            }
+            catch (Exception e)
+            {
+                Logger.Error($"Failed to schedule deferred asset unload: {e}", "AssetManager");
+            }
+        }
+
+        private static System.Collections.IEnumerator UnloadAllAssetsDeferred(int version)
+        {
+            for (int i = 0; i < 3; i++)
+                yield return null;
+
+            // 待機中に次のシーン遷移が始まった場合は、最新の予約に任せて何もしない
+            if (version != _pendingUnloadVersion)
+                yield break;
+
+            try
+            {
+                UnloadAllAssets();
+            }
+            catch (Exception e)
+            {
+                Logger.Error($"UnloadAllAssets failed: {e}", "AssetManager");
+            }
         }
     }
 }
