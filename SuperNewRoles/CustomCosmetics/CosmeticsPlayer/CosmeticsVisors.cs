@@ -315,4 +315,9 @@ public class CustomVisorLayer : MonoBehaviour
     {
         CustomCosmeticVisor?.SetDoUnload();
     }
+
+    private void OnDestroy()
+    {
+        CustomCosmeticsLayers.Unregister(CosmeticLayer);
+    }
 }

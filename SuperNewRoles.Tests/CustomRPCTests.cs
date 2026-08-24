@@ -1,4 +1,5 @@
 using System;
+using System.Buffers.Binary;
 using System.Collections.Generic;
 using System.Globalization;
 using System.IO;
@@ -278,5 +279,116 @@ public class CustomRPCTests
         restored.PromoteToRole.Should().Be(RoleId.WaveCannonJackal);
         restored.PromoteToRoleVanilla.Should().Be(RoleTypes.Crewmate);
         restored.CanPromotedRoleCreateSidekick.Should().BeFalse();
+    }
+
+    [Fact]
+    public void ValidateRpcCollectionCount_AcceptsValuesWithinCap()
+    {
+        int max = CustomRPCManager.MaxRpcCollectionCount;
+        CustomRPCManager.ValidateRpcCollectionCount(0).Should().Be(0);
+        CustomRPCManager.ValidateRpcCollectionCount(1).Should().Be(1);
+        CustomRPCManager.ValidateRpcCollectionCount(max).Should().Be(max);
+    }
+
+    [Fact]
+    public void ValidateRpcCollectionCount_RejectsNegativeAndOversizedCounts()
+    {
+        int max = CustomRPCManager.MaxRpcCollectionCount;
+        Action overMax = () => CustomRPCManager.ValidateRpcCollectionCount(max + 1);
+        Action negative = () => CustomRPCManager.ValidateRpcCollectionCount(-1);
+        Action intMax = () => CustomRPCManager.ValidateRpcCollectionCount(int.MaxValue);
+
+        overMax.Should().Throw<InvalidOperationException>();
+        negative.Should().Throw<InvalidOperationException>();
+        intMax.Should().Throw<InvalidOperationException>();
+    }
+
+    [Fact]
+    public void Load_RegistersReceiveDelegates_ForMappedMethods()
+    {
+        EnsurePluginLogger();
+        CustomRPCManager.RpcMethods.Clear();
+        CustomRPCManager.RpcMethodIds.Clear();
+
+        CustomRPCManager.Load();
+
+        var invokersField = typeof(CustomRPCManager).GetField(
+            "RpcInvokers",
+            BindingFlags.Static | BindingFlags.NonPublic);
+        invokersField.Should().NotBeNull();
+        var invokers = (System.Collections.IDictionary)invokersField!.GetValue(null)!;
+
+        CustomRPCManager.RpcMethods.Should().NotBeEmpty();
+        foreach (var id in CustomRPCManager.RpcMethods.Keys)
+        {
+            invokers.Contains(id).Should().BeTrue($"RPC id {id} should have a receive delegate");
+            invokers[id].Should().NotBeNull();
+        }
+    }
+
+    [Fact]
+    public void FormatRpcSendLog_RoundTripsPayloadBytes()
+    {
+        int rpcId = unchecked((int)0xA1B2C3D4);
+        byte[] payload = { 0xD4, 0xC3, 0xB2, 0xA1, 0x01, 0x02, 0xFF };
+
+        string log = CustomRPCManager.FormatRpcSendLog(rpcId, payload, 0, payload.Length);
+
+        log.Should().StartWith("S" + rpcId.ToString(CultureInfo.InvariantCulture) + " ");
+        byte[] restored = Convert.FromBase64String(log.Substring(log.IndexOf(' ') + 1));
+        restored.Should().Equal(payload);
+        BinaryPrimitives.ReadInt32LittleEndian(restored).Should().Be(rpcId);
+    }
+
+    [Fact]
+    public void FormatRpcSendLog_UsesOffsetAndCount()
+    {
+        byte[] buffer = { 0xAA, 0x10, 0x20, 0x30, 0xBB };
+        string log = CustomRPCManager.FormatRpcSendLog(7, buffer, 1, 3);
+
+        log.Should().Be("S7 " + Convert.ToBase64String(new byte[] { 0x10, 0x20, 0x30 }));
+    }
+
+    [Fact]
+    public void FormatRpcSendLog_OmitsPayload_WhenBufferEmpty()
+    {
+        CustomRPCManager.FormatRpcSendLog(42, null, 0, 0).Should().Be("S42");
+        CustomRPCManager.FormatRpcSendLog(42, Array.Empty<byte>(), 0, 0).Should().Be("S42");
+        CustomRPCManager.FormatRpcSendLog(42, new byte[] { 1 }, 0, 0).Should().Be("S42");
+        CustomRPCManager.FormatRpcSendLog(42, new byte[] { 1 }, -1, 1).Should().Be("S42");
+        CustomRPCManager.FormatRpcSendLog(42, new byte[] { 1 }, 0, 2).Should().Be("S42");
+    }
+
+    [Fact]
+    public void FormatRpcLogs_AreCultureInvariant()
+    {
+        int rpcId = 1234567;
+        byte[] payload = { 9, 8, 7 };
+        string expectedSend = "S1234567 " + Convert.ToBase64String(payload);
+        CultureInfo original = CultureInfo.CurrentCulture;
+
+        try
+        {
+            foreach (string cultureName in new[] { "en-US", "ja-JP", "sv-SE", "fr-FR" })
+            {
+                CultureInfo.CurrentCulture = CultureInfo.GetCultureInfo(cultureName);
+                CustomRPCManager.FormatRpcSendLog(rpcId, payload, 0, payload.Length).Should().Be(expectedSend, cultureName);
+                CustomRPCManager.FormatRpcReceiveLog(rpcId).Should().Be("R1234567", cultureName);
+                CustomRPCManager.FormatRpcCallIdLog(254).Should().Be("C254", cultureName);
+            }
+        }
+        finally
+        {
+            CultureInfo.CurrentCulture = original;
+        }
+    }
+
+    [Fact]
+    public void FormatRpcReceiveAndCallIdLogs_AreCompact()
+    {
+        CustomRPCManager.FormatRpcReceiveLog(0).Should().Be("R0");
+        CustomRPCManager.FormatRpcReceiveLog(-1).Should().Be("R-1");
+        CustomRPCManager.FormatRpcCallIdLog(0).Should().Be("C0");
+        CustomRPCManager.FormatRpcCallIdLog(byte.MaxValue).Should().Be("C255");
     }
 }

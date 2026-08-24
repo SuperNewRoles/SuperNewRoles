@@ -209,6 +209,9 @@ public abstract class CustomButtonBase : AbilityBase
             DecreaseTimer();
         }
 
+        if (!active)
+            return;
+
         // --- UIの基本設定 ---
         actionButton.graphic.sprite = Sprite; // スプライトを設定
         actionButton.OverrideText(buttonText); // ボタン下部のテキストを設定

@@ -51,6 +51,103 @@ internal static class AnnouncementImageCache
     private static readonly Dictionary<int, List<AnnouncementImageInfo>> ImagesByNumber = new();
     private static readonly Dictionary<int, string> IdByNumber = new();
     private static readonly Dictionary<string, Sprite> SpriteCache = new(StringComparer.Ordinal);
+    private static readonly Queue<string> SpriteCacheOrder = new();
+    private static readonly HashSet<string> OwnedSpriteUrls = new(StringComparer.Ordinal);
+    private static readonly Dictionary<int, int> SpriteReferenceCounts = new();
+    private static readonly Dictionary<int, Sprite> OwnedSprites = new();
+    private const int MaxSpriteCache = 32;
+
+    private static void StoreSprite(string url, Sprite sprite, bool destroyOnEvict)
+    {
+        if (string.IsNullOrEmpty(url) || sprite == null)
+            return;
+        if (SpriteCache.TryGetValue(url, out Sprite existing))
+        {
+            bool existingOwned = existing != sprite && OwnedSpriteUrls.Remove(url);
+            SpriteCache[url] = sprite;
+            if (destroyOnEvict)
+            {
+                OwnedSpriteUrls.Add(url);
+                OwnedSprites[sprite.GetInstanceID()] = sprite;
+            }
+            else
+            {
+                OwnedSpriteUrls.Remove(url);
+                if (existing == sprite)
+                    OwnedSprites.Remove(sprite.GetInstanceID());
+            }
+
+            if (existingOwned && existing != null)
+                TryDestroyOwnedSprite(existing);
+            return;
+        }
+        while (SpriteCache.Count >= MaxSpriteCache && SpriteCacheOrder.Count > 0)
+        {
+            string oldest = SpriteCacheOrder.Dequeue();
+            if (SpriteCache.TryGetValue(oldest, out Sprite removed))
+            {
+                SpriteCache.Remove(oldest);
+                bool owned = OwnedSpriteUrls.Remove(oldest);
+                if (owned && removed != null)
+                    TryDestroyOwnedSprite(removed);
+            }
+        }
+        SpriteCache[url] = sprite;
+        SpriteCacheOrder.Enqueue(url);
+        if (destroyOnEvict)
+        {
+            OwnedSpriteUrls.Add(url);
+            OwnedSprites[sprite.GetInstanceID()] = sprite;
+        }
+    }
+
+    internal static void RetainSprite(Sprite sprite)
+    {
+        if (sprite == null)
+            return;
+
+        int id = sprite.GetInstanceID();
+        SpriteReferenceCounts.TryGetValue(id, out int count);
+        SpriteReferenceCounts[id] = count + 1;
+    }
+
+    internal static void ReleaseSprite(Sprite sprite)
+    {
+        if (sprite == null)
+            return;
+
+        int id = sprite.GetInstanceID();
+        if (!SpriteReferenceCounts.TryGetValue(id, out int count))
+            return;
+
+        if (count <= 1)
+            SpriteReferenceCounts.Remove(id);
+        else
+            SpriteReferenceCounts[id] = count - 1;
+
+        TryDestroyOwnedSprite(sprite);
+    }
+
+    private static void TryDestroyOwnedSprite(Sprite sprite)
+    {
+        if (sprite == null)
+            return;
+
+        int id = sprite.GetInstanceID();
+        if (!OwnedSprites.ContainsKey(id))
+            return;
+        if (SpriteReferenceCounts.TryGetValue(id, out int count) && count > 0)
+            return;
+
+        foreach (Sprite cached in SpriteCache.Values)
+        {
+            if (ReferenceEquals(cached, sprite))
+                return;
+        }
+
+        OwnedSprites.Remove(id);
+        UnityEngine.Object.Destroy(sprite);
+    }
     private static readonly Dictionary<string, string> MediaPathCache = new(StringComparer.Ordinal);
     private static readonly Regex MarkdownImageRegex = new Regex("!\\[(?<alt>[^\\]]*)\\]\\((?<url>[^\\)]+)\\)", RegexOptions.Compiled);
     private static readonly HashSet<string> VideoExtensions = new(StringComparer.OrdinalIgnoreCase)
@@ -166,7 +263,7 @@ internal static class AnnouncementImageCache
 
         if (TryLoadAssetSprite(url, out var assetSprite))
         {
-            SpriteCache[url] = assetSprite;
+            StoreSprite(url, assetSprite, destroyOnEvict: false);
             callback?.Invoke(assetSprite);
             yield break;
         }
@@ -176,7 +273,7 @@ internal static class AnnouncementImageCache
             if (TryLoadTexture(cachedBytes, url, out var cachedTexture))
             {
                 var cachedSprite = Sprite.Create(cachedTexture, new Rect(0f, 0f, cachedTexture.width, cachedTexture.height), new Vector2(0.5f, 0.5f), SpritePixelsPerUnit);
-                SpriteCache[url] = cachedSprite;
+                StoreSprite(url, cachedSprite, destroyOnEvict: true);
                 callback?.Invoke(cachedSprite);
                 yield break;
             }
@@ -212,7 +309,7 @@ internal static class AnnouncementImageCache
 
         SaveMediaBytes(url, data);
         var sprite = Sprite.Create(texture, new Rect(0f, 0f, texture.width, texture.height), new Vector2(0.5f, 0.5f), SpritePixelsPerUnit);
-        SpriteCache[url] = sprite;
+        StoreSprite(url, sprite, destroyOnEvict: true);
         callback?.Invoke(sprite);
     }
 
@@ -1122,7 +1219,10 @@ public class AnnouncementImageRenderer : MonoBehaviour
         foreach (var renderer in imageRenderers.Values)
         {
             if (renderer != null)
+            {
+                AnnouncementImageCache.ReleaseSprite(renderer.sprite);
                 Destroy(renderer.gameObject);
+            }
         }
         imageRenderers.Clear();
         foreach (var entry in videoEntries.Values)
@@ -1166,6 +1266,7 @@ public class AnnouncementImageRenderer : MonoBehaviour
         renderer.sprite = sprite;
         SyncSorting(renderer);
         ApplyMask(renderer);
+        AnnouncementImageCache.RetainSprite(sprite);
         AnnouncementImageViewer.ConfigureThumbnail(go, sprite, () => OpenExpandedImage(sprite));
         return renderer;
     }

@@ -1,6 +1,5 @@
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using SuperNewRoles.Events;
 using SuperNewRoles.Events.PCEvents;
 using SuperNewRoles.Modules;
@@ -43,6 +42,9 @@ public abstract class WaveCannonObjectBase
     public bool willCheckWiseman = false;
     private readonly List<ExPlayerControl> killedPlayers = new();
     private readonly HashSet<byte> countedKillTargets = new();
+    private readonly List<ExPlayerControl> _sortedTargets = new();
+    private Comparison<ExPlayerControl> _targetDistanceComparison;
+    private float _sortOriginX;
     private EventListener<MurderEventData> murderEventListener;
     private bool isExecutingKill;
     private bool killRecordedForCurrentExecution;
@@ -109,10 +111,10 @@ public abstract class WaveCannonObjectBase
             }
 
             if (!ability.Player.AmOwner) return;
-            List<ExPlayerControl> targetPlayersSorted = ExPlayerControl.ExPlayerControls.Where(x => x.IsAlive() && x.PlayerId != ability.Player.PlayerId).OrderBy(x => Mathf.Abs(ability.Player.transform.position.x - x.transform.position.x)).ToList();
+            FillSortedTargets();
             foreach (var collider in HitColliders)
             {
-                foreach (ExPlayerControl player in targetPlayersSorted)
+                foreach (ExPlayerControl player in _sortedTargets)
                 {
                     if (collider == null) continue;
                     if (player.IsDead()) continue;
@@ -240,10 +242,33 @@ public abstract class WaveCannonObjectBase
         if (obj == null) return;
         obj.Detach();
     }
+    private void FillSortedTargets()
+    {
+        _sortedTargets.Clear();
+        byte selfId = ability.Player.PlayerId;
+        foreach (var x in ExPlayerControl.ExPlayerControls)
+        {
+            if (x == null || x.IsDead() || x.PlayerId == selfId) continue;
+            _sortedTargets.Add(x);
+        }
+        if (_sortedTargets.Count <= 1) return;
+        _sortOriginX = ability.Player.transform.position.x;
+        _targetDistanceComparison ??= CompareTargetDistance;
+        _sortedTargets.Sort(_targetDistanceComparison);
+    }
+
+    private int CompareTargetDistance(ExPlayerControl a, ExPlayerControl b)
+    {
+        // 賢者より後ろのプレイヤーを防ぐためなので、ビームからの単純なx距離で比較する
+        float da = Mathf.Abs(_sortOriginX - a.transform.position.x);
+        float db = Mathf.Abs(_sortOriginX - b.transform.position.x);
+        return da.CompareTo(db);
+    }
+
+    private static readonly float[] WiseManAngles = { 135f, 90f, 270f, 225f };
     private static float GetRandomAngle()
     {
-        var angles = new List<float> { 135, 90, 270, 225 };
-        return angles[UnityEngine.Random.Range(0, angles.Count)];
+        return WiseManAngles[UnityEngine.Random.Range(0, WiseManAngles.Length)];
     }
     [CustomRPC]
     public static void RpcWaveCannonWiseMan(WaveCannonAbility ability, ExPlayerControl wiseMan, float angle)

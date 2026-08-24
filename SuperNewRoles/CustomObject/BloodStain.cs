@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using HarmonyLib;
 using UnityEngine;
 using SuperNewRoles.Modules;
 
@@ -96,6 +97,15 @@ public class BloodStain
             }
 
             bloodStain.ApplyColor();
+        }
+    }
+
+    [HarmonyPatch(typeof(AmongUsClient), nameof(AmongUsClient.CoStartGame))]
+    public static class BloodStainCoStartGamePatch
+    {
+        public static void Postfix()
+        {
+            BloodStains.Clear();
         }
     }
 }

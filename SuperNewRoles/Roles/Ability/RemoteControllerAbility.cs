@@ -197,6 +197,8 @@ public sealed class RemoteControllerAbility : AbilityBase
         {
             var prefab = FastDestroyableSingleton<HudManager>.Instance.IntroPrefab.PlayerPrefab;
             _targetIcon = UnityEngine.Object.Instantiate(prefab, _targetUiContainer.transform);
+            _lastOutfitHash = int.MinValue;
+            _lastOutfitPlayerId = byte.MaxValue;
             _targetIcon.cosmetics.showColorBlindText = false;
             _targetIcon.cosmetics.isNameVisible = true;
             _targetIcon.cosmetics.UpdateNameVisibility();
@@ -204,8 +206,37 @@ public sealed class RemoteControllerAbility : AbilityBase
             _targetIcon.transform.localPosition = new(0f, 0f, -0.3f);
         }
 
-        _targetIcon.UpdateFromEitherPlayerDataOrCache(target.Data, PlayerOutfitType.Default, PlayerMaterial.MaskType.None, false);
+        // 毎フレーム実行されているので、ターゲットのOutfitが変わった場合に更新する
+        int outfitHash = HashOutfit(target.Data);
+        if (target.PlayerId != _lastOutfitPlayerId || outfitHash != _lastOutfitHash)
+        {
+            _targetIcon.UpdateFromEitherPlayerDataOrCache(target.Data, PlayerOutfitType.Default, PlayerMaterial.MaskType.None, false);
+            _lastOutfitPlayerId = target.PlayerId;
+            _lastOutfitHash = outfitHash;
+        }
+
+        // UpdateFromEitherPlayerDataOrCache は nameText も更新するため、ラベルは最後に設定する。
         _targetIcon.cosmetics.nameText.text = $"[ {ModTranslation.GetString("RemoteControllerTargetLabel")} ]\n{target.Data.PlayerName}";
+    }
+
+    private int _lastOutfitHash = int.MinValue;
+    private byte _lastOutfitPlayerId = byte.MaxValue;
+
+    private static int HashOutfit(NetworkedPlayerInfo data)
+    {
+        if (data == null)
+            return 0;
+        var outfit = data.DefaultOutfit;
+        if (outfit == null)
+            return data.PlayerName?.GetHashCode() ?? 0;
+        int hash = 17;
+        hash = hash * 31 + outfit.ColorId;
+        hash = hash * 31 + (outfit.HatId?.GetHashCode() ?? 0);
+        hash = hash * 31 + (outfit.SkinId?.GetHashCode() ?? 0);
+        hash = hash * 31 + (outfit.VisorId?.GetHashCode() ?? 0);
+        hash = hash * 31 + (outfit.PetId?.GetHashCode() ?? 0);
+        hash = hash * 31 + (data.PlayerName?.GetHashCode() ?? 0);
+        return hash;
     }
 
     private void CreateLightChild()

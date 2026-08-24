@@ -62,13 +62,112 @@ public static class CustomCosmeticsLayers
         {
             Logger.Error("Initialize failed: " + e.Message);
             // キャッシュを残さないように削除する
-            layers.Remove(cosmeticsLayer.GetInstanceID());
+            Unregister(cosmeticsLayer);
             return null;
         }
     }
     public static (CustomVisorLayer layer1, CustomVisorLayer layer2) GetVisorLayers(VisorLayer visorLayer)
     {
         return (visorLayer1s.TryGetValue(visorLayer.GetInstanceID(), out var layer1) ? layer1 : null, visorLayer2s.TryGetValue(visorLayer.GetInstanceID(), out var layer2) ? layer2 : null);
+    }
+
+    public static void Unregister(CosmeticsLayer cosmeticsLayer)
+    {
+        if (cosmeticsLayer == null)
+            return;
+
+        layers.Remove(cosmeticsLayer.GetInstanceID());
+        if (cosmeticsLayer.visor != null)
+        {
+            int visorId = cosmeticsLayer.visor.GetInstanceID();
+            visorLayer1s.Remove(visorId);
+            visorLayer2s.Remove(visorId);
+        }
+    }
+
+    public static void RemoveDestroyedEntries()
+    {
+        RemoveLayerEntries(entry => entry.Value == null || entry.Value.cosmeticsLayer == null);
+        RemoveDestroyedVisorEntries(visorLayer1s);
+        RemoveDestroyedVisorEntries(visorLayer2s);
+    }
+
+    public static void RemoveEntriesExceptLivingPlayers()
+    {
+        var keepLayerIds = new HashSet<int>();
+        var keepVisorIds = new HashSet<int>();
+        if (PlayerControl.AllPlayerControls != null)
+        {
+            foreach (var player in PlayerControl.AllPlayerControls)
+            {
+                if (player == null || player.cosmetics == null)
+                    continue;
+                if (player.Data != null && player.Data.Disconnected)
+                    continue;
+                keepLayerIds.Add(player.cosmetics.GetInstanceID());
+                if (player.cosmetics.visor != null)
+                    keepVisorIds.Add(player.cosmetics.visor.GetInstanceID());
+            }
+        }
+
+        RemoveLayerEntries(entry => !keepLayerIds.Contains(entry.Key));
+        RemoveVisorEntriesExcept(visorLayer1s, keepVisorIds);
+        RemoveVisorEntriesExcept(visorLayer2s, keepVisorIds);
+    }
+
+    private static void RemoveLayerEntries(Func<KeyValuePair<int, CustomCosmeticsLayer>, bool> shouldRemove)
+    {
+        List<int> removeIds = null;
+        foreach (var entry in layers)
+        {
+            if (!shouldRemove(entry))
+                continue;
+            removeIds ??= new List<int>();
+            removeIds.Add(entry.Key);
+            var layer = entry.Value;
+            if (layer?.cosmeticsLayer?.visor != null)
+            {
+                int visorId = layer.cosmeticsLayer.visor.GetInstanceID();
+                visorLayer1s.Remove(visorId);
+                visorLayer2s.Remove(visorId);
+            }
+        }
+        if (removeIds == null)
+            return;
+        foreach (var id in removeIds)
+            layers.Remove(id);
+    }
+
+    private static void RemoveDestroyedVisorEntries(Dictionary<int, CustomVisorLayer> visorLayers)
+    {
+        List<int> removeIds = null;
+        foreach (var entry in visorLayers)
+        {
+            if (entry.Value != null)
+                continue;
+            removeIds ??= new List<int>();
+            removeIds.Add(entry.Key);
+        }
+        if (removeIds == null)
+            return;
+        foreach (var id in removeIds)
+            visorLayers.Remove(id);
+    }
+
+    private static void RemoveVisorEntriesExcept(Dictionary<int, CustomVisorLayer> visorLayers, HashSet<int> keepIds)
+    {
+        List<int> removeIds = null;
+        foreach (var id in visorLayers.Keys)
+        {
+            if (keepIds.Contains(id))
+                continue;
+            removeIds ??= new List<int>();
+            removeIds.Add(id);
+        }
+        if (removeIds == null)
+            return;
+        foreach (var id in removeIds)
+            visorLayers.Remove(id);
     }
 }
 public class CustomCosmeticsLayer

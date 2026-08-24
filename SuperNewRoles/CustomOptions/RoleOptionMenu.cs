@@ -673,6 +673,9 @@ public static class RoleOptionMenu
     {
         private static float DISPLAY_UPPER_LIMIT = 1.6f;
         private static float DISPLAY_LOWER_LIMIT = -2.3f;
+        private static float lastInnerScrollY = float.NaN;
+        private static int lastChildCount = -1;
+        private static int lastParentId;
 
         private static void Postfix()
         {
@@ -699,25 +702,34 @@ public static class RoleOptionMenu
 
             Transform currentScrollParent = data.CurrentScrollParent;
             Transform scrollerTransform = data.Scroller.transform;
+            Transform innerScrollTransform = data.InnerScroll.transform;
             int childCount = currentScrollParent.childCount;
-            for (int i = 0; i < childCount; i++)
+            float innerY = innerScrollTransform.localPosition.y;
+            int parentId = currentScrollParent.GetInstanceID();
+            bool scrollUnchanged = innerY == lastInnerScrollY && childCount == lastChildCount && parentId == lastParentId;
+            if (!scrollUnchanged)
             {
-                Transform child = currentScrollParent.GetChild(i);
-                if (child == null)
-                    continue;
-                // Scrollerの座標空間におけるchildの相対位置を取得（Transformのキャッシュによる最適化）
-                Vector3 relativePos = scrollerTransform.InverseTransformPoint(child.position);
-                // Scrollerの表示範囲に基づいて表示/非表示を決定
-                bool shouldDisplay = (relativePos.y < DISPLAY_UPPER_LIMIT && relativePos.y > DISPLAY_LOWER_LIMIT);
-                // 現在の状態と比較して変更が必要な場合のみSetActiveを呼び出す
-                if (child.gameObject.activeSelf != shouldDisplay)
+                lastInnerScrollY = innerY;
+                lastChildCount = childCount;
+                lastParentId = parentId;
+                for (int i = 0; i < childCount; i++)
                 {
-                    child.gameObject.SetActive(shouldDisplay);
+                    Transform child = currentScrollParent.GetChild(i);
+                    if (child == null)
+                        continue;
+                    // Scrollerの座標空間におけるchildの相対位置を取得（Transformのキャッシュによる最適化）
+                    Vector3 relativePos = scrollerTransform.InverseTransformPoint(child.position);
+                    // Scrollerの表示範囲に基づいて表示/非表示を決定
+                    bool shouldDisplay = (relativePos.y < DISPLAY_UPPER_LIMIT && relativePos.y > DISPLAY_LOWER_LIMIT);
+                    // 現在の状態と比較して変更が必要な場合のみSetActiveを呼び出す
+                    if (child.gameObject.activeSelf != shouldDisplay)
+                    {
+                        child.gameObject.SetActive(shouldDisplay);
+                    }
                 }
             }
             // InnerScrollのTransformもキャッシュして辞書を更新
-            Transform innerScrollTransform = data.InnerScroll.transform;
-            data.ScrollPositionDictionary[data.CurrentRoleType] = innerScrollTransform.localPosition.y;
+            data.ScrollPositionDictionary[data.CurrentRoleType] = innerY;
             var mainCamera = Camera.main;
             if (mainCamera == null)
                 return;

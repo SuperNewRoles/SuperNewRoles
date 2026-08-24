@@ -547,6 +547,7 @@ internal static class SyncVersionErrorHandler
     private static TextMeshPro ErrorText;
     private static readonly List<string> ErrorCache = new();
     private static GameObject ResyncButtonRoot;
+    private static HudManager _lastHudManager;
 
     public static void CreateResyncButton(HudManager hudManager)
     {
@@ -642,19 +643,82 @@ internal static class SyncVersionErrorHandler
         return false;
     }
 
+    // エラー行の収集用。毎フレーム new せず Clear して再利用する。
+    private static readonly HashSet<byte> AddedPlayers = new();
+    // エラー集合の指紋。一致なら翻訳文字列も TMP も作り直さない。
+    private static int _lastErrorSignature;
+    private static bool _hasLastErrorSignature;
+    private static bool _lastHadErrors;
+
     public static void UpdateErrorDisplay(HudManager hudManager)
     {
-        if (!ShouldDisplayErrors(hudManager)) return;
+        if (!ShouldDisplayErrors(hudManager))
+        {
+            // 非表示中に同じエラー集合で再表示されても、必ず再構築する。
+            _hasLastErrorSignature = false;
+            _lastHadErrors = false;
+            return;
+        }
+
+        int signature = ComputeErrorSignature();
+        // HudManager.Update は毎フレーム来る。集合が同じなら CollectErrors / DisplayErrors を省略する。
+        bool sameHud = ReferenceEquals(_lastHudManager, hudManager);
+        bool cachedErrorTextReady = !_lastHadErrors
+            || (ErrorText != null && ErrorText.gameObject.activeSelf);
+        if (_hasLastErrorSignature && signature == _lastErrorSignature && sameHud && cachedErrorTextReady)
+            return;
 
         CollectErrors();
-        if (ErrorCache.Count > 0)
+        _lastErrorSignature = signature;
+        _hasLastErrorSignature = true;
+        _lastHudManager = hudManager;
+        bool hasErrors = ErrorCache.Count > 0;
+        if (hasErrors)
         {
             DisplayErrors(hudManager);
         }
-        else if (ErrorText != null)
+        // エラーが消えた遷移のときだけ非表示にする。毎フレーム SetActive(false) しない。
+        else if (ErrorText != null && (_lastHadErrors || ErrorText.gameObject.activeSelf))
         {
             ErrorText.gameObject.SetActive(false);
         }
+        _lastHadErrors = hasErrors;
+    }
+
+    /// <summary>
+    /// エラー表示の入力集合の指紋。IsError のプレイヤーID・種別・SNRバージョンと、
+    /// ホスト開始ブロック用の未報告有無を混ぜる。一致すれば翻訳 TMP の再構築を省略できる。
+    /// </summary>
+    private static int ComputeErrorSignature()
+    {
+        int hash = 17;
+        foreach (var error in SyncVersion.VersionData.IsError)
+        {
+            hash = hash * 31 + error.Key;
+            hash = hash * 31 + (int)error.Value;
+            if (SyncVersion.VersionData.VersionMap.TryGetValue(error.Key, out string version) && version != null)
+                hash = hash * 31 + version.GetHashCode();
+            if (error.Value == SyncErrorType.AmongUsVersionMismatch)
+                hash = hash * 31 + GetAmongUsVersionMismatchDisplay(error.Key).GetHashCode();
+        }
+        if (GameData.Instance != null)
+        {
+            foreach (NetworkedPlayerInfo playerInfo in GameData.Instance.AllPlayers)
+            {
+                if (playerInfo == null || playerInfo.Disconnected)
+                    continue;
+                hash = hash * 31 + playerInfo.PlayerId;
+                hash = hash * 31 + (playerInfo.PlayerName?.GetHashCode() ?? 0);
+                if (AmongUsClient.Instance != null
+                    && AmongUsClient.Instance.AmHost
+                    && AmongUsClient.Instance.NetworkMode == NetworkModes.OnlineGame)
+                {
+                    bool hasVersion = SyncVersion.VersionData.VersionMap.TryGetValue(playerInfo.PlayerId, out string version) && !string.IsNullOrEmpty(version);
+                    hash = hash * 31 + (hasVersion ? 1 : 0);
+                }
+            }
+        }
+        return hash;
     }
 
     private static bool ShouldDisplayErrors(HudManager hudManager)
@@ -687,18 +751,18 @@ internal static class SyncVersionErrorHandler
     private static void CollectErrors()
     {
         ErrorCache.Clear();
-        HashSet<byte> addedPlayers = new();
+        AddedPlayers.Clear();
         foreach (var error in SyncVersion.VersionData.IsError)
         {
             var errorMessage = CreateErrorMessage(error);
             if (!string.IsNullOrEmpty(errorMessage))
             {
                 ErrorCache.Add(errorMessage);
-                addedPlayers.Add(error.Key);
+                AddedPlayers.Add(error.Key);
             }
         }
 
-        CollectHostStartBlockErrors(addedPlayers);
+        CollectHostStartBlockErrors(AddedPlayers);
     }
 
     private static void CollectHostStartBlockErrors(HashSet<byte> addedPlayers)
@@ -787,7 +851,10 @@ internal static class SyncVersionErrorHandler
 
     private static void InitializeErrorText(HudManager instance)
     {
-        if (ErrorText != null) return;
+        if (ErrorText != null && ErrorText.transform.parent == instance.transform)
+            return;
+        if (ErrorText != null)
+            GameObject.Destroy(ErrorText.gameObject);
 
         ErrorText = GameObject.Instantiate(instance.roomTracker.text);
         ErrorText.name = "SyncErrorText";

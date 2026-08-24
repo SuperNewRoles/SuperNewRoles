@@ -26,6 +26,27 @@ public static class HelpMenuClipMaterialController
     private static Shader _tmpShader;
     private static Shader _tmpMobileShader;
     private static bool _shaderLoadFailed;
+    private static GameObject _cachedRoot;
+    private static SpriteMask[] _cachedMasks = System.Array.Empty<SpriteMask>();
+    private static Scroller[] _cachedScrollers = System.Array.Empty<Scroller>();
+    private static readonly Dictionary<int, ScrollerRendererCache> ScrollerCaches = new();
+    private static int _cachedHierarchyCount = -1;
+    private static bool _dirty = true;
+
+    private sealed class ScrollerRendererCache
+    {
+        public SpriteRenderer[] SpriteRenderers = System.Array.Empty<SpriteRenderer>();
+        public TextMeshPro[] Texts = System.Array.Empty<TextMeshPro>();
+        public TMP_SubMesh[] SubMeshes = System.Array.Empty<TMP_SubMesh>();
+        public int ChildCount = -1;
+    }
+
+    public static void MarkDirty()
+    {
+        _dirty = true;
+        _cachedRoot = null;
+        ScrollerCaches.Clear();
+    }
 
     public static void Refresh(GameObject helpMenuObject, bool retryShaderLoad = false)
     {
@@ -35,11 +56,19 @@ public static class HelpMenuClipMaterialController
         if (!EnsureShadersLoaded(retryShaderLoad))
             return;
 
-        // 毎フレーム最新のマスク・スクローラーを取得する。
-        // カテゴリ切り替えで新しい SpriteMask が追加された際も確実に enabled = false を適用し、
-        // 他のマスクとの干渉を防ぐ。
-        SpriteMask[] masks = helpMenuObject.GetComponentsInChildren<SpriteMask>(false);
-        Scroller[] scrollers = helpMenuObject.GetComponentsInChildren<Scroller>(false);
+        int hierarchyCount = helpMenuObject.transform.childCount;
+        if (_dirty || _cachedRoot != helpMenuObject || hierarchyCount != _cachedHierarchyCount)
+        {
+            _cachedMasks = helpMenuObject.GetComponentsInChildren<SpriteMask>(false);
+            _cachedScrollers = helpMenuObject.GetComponentsInChildren<Scroller>(false);
+            _cachedRoot = helpMenuObject;
+            _cachedHierarchyCount = hierarchyCount;
+            ScrollerCaches.Clear();
+            _dirty = false;
+        }
+
+        SpriteMask[] masks = _cachedMasks;
+        Scroller[] scrollers = _cachedScrollers;
         foreach (Scroller scroller in scrollers)
         {
             if (scroller == null || !scroller.gameObject.activeInHierarchy)
@@ -64,6 +93,7 @@ public static class HelpMenuClipMaterialController
         }
 
         MaterialBindings.Clear();
+        MarkDirty();
     }
 
     private static bool EnsureShadersLoaded(bool retryFailedLoad)
@@ -91,7 +121,21 @@ public static class HelpMenuClipMaterialController
 
     private static void ApplyToScroller(Transform scrollerTransform, Vector4 clipRect)
     {
-        foreach (SpriteRenderer renderer in scrollerTransform.GetComponentsInChildren<SpriteRenderer>(true))
+        int id = scrollerTransform.GetInstanceID();
+        int childCount = scrollerTransform.childCount;
+        if (!ScrollerCaches.TryGetValue(id, out ScrollerRendererCache cache) || cache.ChildCount != childCount)
+        {
+            cache = new ScrollerRendererCache
+            {
+                SpriteRenderers = scrollerTransform.GetComponentsInChildren<SpriteRenderer>(true),
+                Texts = scrollerTransform.GetComponentsInChildren<TextMeshPro>(true),
+                SubMeshes = scrollerTransform.GetComponentsInChildren<TMP_SubMesh>(true),
+                ChildCount = childCount,
+            };
+            ScrollerCaches[id] = cache;
+        }
+
+        foreach (SpriteRenderer renderer in cache.SpriteRenderers)
         {
             if (renderer == null)
                 continue;
@@ -110,7 +154,7 @@ public static class HelpMenuClipMaterialController
             renderer.maskInteraction = SpriteMaskInteraction.None;
         }
 
-        foreach (TextMeshPro text in scrollerTransform.GetComponentsInChildren<TextMeshPro>(true))
+        foreach (TextMeshPro text in cache.Texts)
         {
             if (text == null || !IsSdfMaterial(text.fontSharedMaterial))
                 continue;
@@ -131,7 +175,7 @@ public static class HelpMenuClipMaterialController
             }
         }
 
-        foreach (TMP_SubMesh subMesh in scrollerTransform.GetComponentsInChildren<TMP_SubMesh>(true))
+        foreach (TMP_SubMesh subMesh in cache.SubMeshes)
         {
             if (subMesh == null || !IsSdfMaterial(subMesh.sharedMaterial))
                 continue;

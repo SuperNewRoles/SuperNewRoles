@@ -51,7 +51,6 @@ public class CustomCosmeticsLoader
     public static bool IsRuntimeEnabled => ConfigRoles.IsModCosmeticsAreNotLoaded == null || !ConfigRoles.IsModCosmeticsAreNotLoaded.Value;
     public static bool HasLoadedCosmetics => loadedPackages.Count > 0 || moddedHats.Count > 0 || moddedVisors.Count > 0 || moddedNamePlates.Count > 0;
     public static bool ShouldShowModdedCosmetics => IsRuntimeEnabled && HasLoadedCosmetics;
-    private static readonly HttpClient client = new();
     private static readonly int maxRetryAttempts = 1;
     private static readonly TimeSpan retryDelay = TimeSpan.FromSeconds(5);
     // 到達不能ホストを一定時間再試行しないためのクールダウン
@@ -67,6 +66,8 @@ public class CustomCosmeticsLoader
     private static readonly HashSet<string> reachableHosts = new(StringComparer.OrdinalIgnoreCase);
     // 到達不能と判断したホストの再試行可能時刻
     private static readonly Dictionary<string, DateTime> unreachableHostsUntilUtc = new(StringComparer.OrdinalIgnoreCase);
+    // 同一ホストへの到達確認を並列ダウンロードで共有する
+    private static readonly Dictionary<string, HostProbeState> inFlightHostProbes = new(StringComparer.OrdinalIgnoreCase);
 
     // Android版はメモリ節約のため、ダウンロードしたバイト列を保持しない
     private static readonly Dictionary<string, byte[]> downloadedSprites = null; //ModHelpers.IsAndroid() ? null : new();
@@ -83,7 +84,10 @@ public class CustomCosmeticsLoader
 
     private static string CustomCosmeticsCacheDirectory => Path.Combine(SuperNewRolesPlugin.BaseDirectory, "CustomCosmetics");
 
-    public static readonly int MAX_CONCURRENT_DOWNLOADS = ModHelpers.IsAndroid() ? 15 : 30;
+    // HTTP/2 多重化時はストリーム数。未対応 Android は TCP 15 本のまま。
+    public static readonly int MAX_CONCURRENT_DOWNLOADS = CosmeticsHttp.GetMaxConcurrentDownloads(
+        ModHelpers.IsAndroid(),
+        CosmeticsHttp.IsSocketsHttpHandlerAvailable);
     // 到達性プローブは短くし、失敗時は早めにスキップする
     private const float HostProbeTimeoutSeconds = 3f;
     // JSONメタデータは短めのタイムアウト
@@ -143,6 +147,12 @@ public class CustomCosmeticsLoader
                 finished = true;
             }
         }
+    }
+
+    private sealed class HostProbeState
+    {
+        public bool Done;
+        public bool Reachable;
     }
 
     private static string SanitizeFileName(string fileName)
@@ -300,7 +310,6 @@ public class CustomCosmeticsLoader
         runned = false;
         ResetDownloadSizeProgress();
         AssetBundlesDownloading = true;
-        client.Timeout = TimeSpan.FromSeconds(5);
         List<(string url, string content)> fetchTasks = new();
         List<Task> waitTasks = new();
         int waiting = 0;
@@ -664,6 +673,7 @@ public class CustomCosmeticsLoader
 
         if (request.result == UnityWebRequest.Result.Success)
         {
+            MarkHostReachable(url);
             onSuccess(request.downloadHandler.text);
         }
         else
@@ -1032,7 +1042,7 @@ public class CustomCosmeticsLoader
         {
             byte[] assetBundleData = null;
             bool successThisAttempt = false;
-            SNRHttpClient request = null;
+            CosmeticsHttpRequest request = null;
             DownloadSizeProgressTracker progressTracker = null;
 
             bool isLocal = assetBundleUrl.StartsWith("./", StringComparison.Ordinal) ||
@@ -1072,14 +1082,14 @@ public class CustomCosmeticsLoader
                     yield break;
                 }
 
-                request = SNRHttpClient.Get(assetBundleUrl);
+                request = CosmeticsHttpRequest.Get(assetBundleUrl);
                 // ユーザーが設定したタイムアウト値を使用
                 request.timeout = AssetBundleRequestTimeoutSeconds;
                 request.ignoreSslErrors = true;
                 progressTracker = StartDownloadSizeProgressTracker();
                 request.downloadProgressChanged = progressTracker.Report;
 
-                IEnumerator webRequestEnumerator = SendSNRHttpClientHelper(request);
+                IEnumerator webRequestEnumerator = SendCosmeticsHttpHelper(request);
                 bool moveNextSuccess = true;
                 bool webRequestFailedMidExecution = false;
 
@@ -1117,7 +1127,10 @@ public class CustomCosmeticsLoader
                     {
                         assetBundleData = request.downloadHandler.data;
                         if (assetBundleData != null)
+                        {
+                            MarkHostReachable(assetBundleUrl);
                             progressTracker?.Report(assetBundleData.Length);
+                        }
                     }
                     else if (!webRequestFailedMidExecution) // webRequestFailedMidExecution が true の場合、request.result は信頼できない可能性
                     {
@@ -1199,7 +1212,7 @@ public class CustomCosmeticsLoader
         yield break;
     }
 
-    private static IEnumerator SendSNRHttpClientHelper(SNRHttpClient request)
+    private static IEnumerator SendCosmeticsHttpHelper(CosmeticsHttpRequest request)
     {
         yield return request.SendWebRequest();
     }
@@ -1302,7 +1315,7 @@ public class CustomCosmeticsLoader
             yield break;
         }
 
-        SNRHttpClient request = SNRHttpClient.Get(spriteUrl);
+        CosmeticsHttpRequest request = CosmeticsHttpRequest.Get(spriteUrl);
         request.timeout = SpriteDownloadTimeoutSeconds;
         request.ignoreSslErrors = true;
         DownloadSizeProgressTracker progressTracker = StartDownloadSizeProgressTracker();
@@ -1330,6 +1343,7 @@ public class CustomCosmeticsLoader
 
             if (data != null)
             {
+                MarkHostReachable(spriteUrl);
                 progressTracker.Report(data.Length);
                 if (downloadedSprites != null)
                     downloadedSprites[filePath] = data;
@@ -1396,24 +1410,53 @@ public class CustomCosmeticsLoader
             yield break;
         }
 
-        SNRHttpClient probeRequest = SNRHttpClient.Get(BuildHostProbeUrl(uri));
-        probeRequest.timeout = HostProbeTimeoutSeconds;
-        probeRequest.ignoreSslErrors = true;
-        yield return probeRequest.SendWebRequest();
-
-        bool reachable = probeRequest.responseCode > 0 || string.IsNullOrEmpty(probeRequest.error);
-        if (reachable)
+        if (inFlightHostProbes.TryGetValue(host, out HostProbeState existing))
         {
-            reachableHosts.Add(host);
-            unreachableHostsUntilUtc.Remove(host);
-        }
-        else
-        {
-            unreachableHostsUntilUtc[host] = DateTime.UtcNow.Add(HostUnreachableCacheDuration);
-            Logger.Warning($"Host reachability probe failed: {host}. Skip for {HostUnreachableCacheDuration.TotalMinutes:0} min.");
+            yield return new WaitUntil((Il2CppSystem.Func<bool>)(() => existing.Done));
+            onComplete?.Invoke(existing.Reachable);
+            yield break;
         }
 
+        HostProbeState state = new();
+        inFlightHostProbes[host] = state;
+
+        bool reachable = false;
+        try
+        {
+            CosmeticsHttpRequest probeRequest = CosmeticsHttpRequest.Get(BuildHostProbeUrl(uri));
+            probeRequest.timeout = HostProbeTimeoutSeconds;
+            probeRequest.ignoreSslErrors = true;
+            yield return probeRequest.SendWebRequest();
+
+            reachable = probeRequest.responseCode > 0 || string.IsNullOrEmpty(probeRequest.error);
+            if (reachable)
+                MarkHostReachable(host);
+            else
+            {
+                unreachableHostsUntilUtc[host] = DateTime.UtcNow.Add(HostUnreachableCacheDuration);
+                Logger.Warning($"Host reachability probe failed: {host}. Skip for {HostUnreachableCacheDuration.TotalMinutes:0} min.");
+            }
+        }
+        finally
+        {
+            // スプラッシュ破棄などでコルーチンが止まっても、待機側が WaitUntil で固まらないようにする
+            state.Reachable = reachable;
+            state.Done = true;
+            inFlightHostProbes.Remove(host);
+        }
         onComplete?.Invoke(reachable);
+    }
+
+    private static void MarkHostReachable(string urlOrHost)
+    {
+        string host = urlOrHost;
+        if (TryParseRemoteUri(urlOrHost, out Uri uri) && !string.IsNullOrWhiteSpace(uri.Host))
+            host = uri.Host;
+        if (string.IsNullOrWhiteSpace(host))
+            return;
+
+        reachableHosts.Add(host);
+        unreachableHostsUntilUtc.Remove(host);
     }
 
     // パスを含めずホスト直下を叩いて到達性のみを確認

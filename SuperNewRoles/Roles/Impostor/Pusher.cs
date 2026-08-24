@@ -315,15 +315,25 @@ public class PusherAbility : TargetCustomButtonBase
         }
     }
 
+    private static Collider2D[] WallOverlapBuffer = new Collider2D[8];
+
     private static bool IsOverlappingWall(Vector2 position)
     {
-        var hits = Physics2D.OverlapCircleAll(position, 0.1f, Constants.ShipAndAllObjectsMask);
-        foreach (var hit in hits)
+        while (true)
         {
-            if (hit != null && !hit.isTrigger)
-                return true;
+            int count = Physics2D.OverlapCircleNonAlloc(position, 0.1f, WallOverlapBuffer, Constants.ShipAndAllObjectsMask);
+            for (int i = 0; i < count; i++)
+            {
+                var hit = WallOverlapBuffer[i];
+                if (hit != null && !hit.isTrigger)
+                    return true;
+            }
+
+            // NonAlloc はバッファが満杯だと結果を切り捨てるため、全件取得できるまで拡張する。
+            if (count < WallOverlapBuffer.Length)
+                return false;
+            Array.Resize(ref WallOverlapBuffer, WallOverlapBuffer.Length * 2);
         }
-        return false;
     }
 
     private Ladder GetCanUseLadder(PlayerControl player)
