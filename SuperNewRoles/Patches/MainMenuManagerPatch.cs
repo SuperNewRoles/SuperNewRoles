@@ -63,10 +63,20 @@ public static class MainMenuManagerPatch
     {
         public static void Postfix(MainMenuManager __instance)
         {
-            SetBackgroundCover(__instance, false, false);
-            __instance.freePlayButton.gameObject.SetActive(false);
-            float avg = (__instance.howToPlayButton.transform.localPosition.x + __instance.freePlayButton.transform.localPosition.x) / 2;
-            __instance.howToPlayButton.transform.localPosition = new(avg, __instance.howToPlayButton.transform.localPosition.y, __instance.howToPlayButton.transform.localPosition.z);
+            // 例外をIL2CPP側へ流すとメニュー初期化ごと壊れて無ログの真っ暗画面になるため、ここで握って記録する
+            try
+            {
+                Logger.Info("MainMenuManager.Start postfix begin");
+                SetBackgroundCover(__instance, false, false);
+                __instance.freePlayButton.gameObject.SetActive(false);
+                float avg = (__instance.howToPlayButton.transform.localPosition.x + __instance.freePlayButton.transform.localPosition.x) / 2;
+                __instance.howToPlayButton.transform.localPosition = new(avg, __instance.howToPlayButton.transform.localPosition.y, __instance.howToPlayButton.transform.localPosition.z);
+                Logger.Info("MainMenuManager.Start postfix end");
+            }
+            catch (System.Exception e)
+            {
+                Logger.Error($"MainMenuManagerStartPatch failed: {e}");
+            }
         }
     }
     [HarmonyPatch(typeof(MainMenuManager), nameof(MainMenuManager.ResetScreen))]

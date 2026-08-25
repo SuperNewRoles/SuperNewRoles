@@ -473,8 +473,15 @@ public static class MainMenuManager_Start
 {
     public static void Postfix(MainMenuManager __instance)
     {
-        // AndroidではSuperNewRolesの自動アップデートが無効化されているので、ボタンを表示しない
-        if (ModHelpers.IsAndroid()) return;
-        VersionUpdatesUI.InitializeMainMenuButton(__instance);
+        try
+        {
+            // AndroidではSuperNewRolesの自動アップデートが無効化されているので、ボタンを表示しない
+            if (ModHelpers.IsAndroid()) return;
+            VersionUpdatesUI.InitializeMainMenuButton(__instance);
+        }
+        catch (Exception e)
+        {
+            Logger.Error($"MainMenuManager_Start (VersionUpdates) failed: {e}");
+        }
     }
 }
