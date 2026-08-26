@@ -74,18 +74,21 @@ public partial class SuperNewRolesPlugin : BasePlugin
     public static string SecretDirectory => Path.GetFullPath(Path.Combine(UnityEngine.Application.persistentDataPath, "SuperNewRolesNextSecrets"));
     private static Task TaskRunIfWindows(Action action)
     {
-        bool needed = false;
-        if (needed && ModHelpers.IsAndroid())
+        // Android は UnityMain で同期実行する。バックグラウンドの Harmony パッチは
+        // SafeHook trampoline の W^X と競合して SEGV_ACCERR になる。
+        if (ModHelpers.IsAndroid())
+        {
             action();
-        else
-            return Task.Run(() =>
-            {
-                IL2CPP.il2cpp_thread_attach(IL2CPP.il2cpp_domain_get());
-                action();
-            });
-        return Task.Run(() => { });
+            return Task.CompletedTask;
+        }
 
+        return Task.Run(() =>
+        {
+            IL2CPP.il2cpp_thread_attach(IL2CPP.il2cpp_domain_get());
+            action();
+        });
     }
+
     // 複数起動中の場合に絶対に重複しない数
     private static int ProcessNumber = 0;
 
@@ -192,6 +195,7 @@ public partial class SuperNewRolesPlugin : BasePlugin
             Logger.LogWarning($"Failed to load announcement image decoder: {ex}");
         }
     }
+
     public void PatchAll(Harmony harmony)
     {
         var assembly = Assembly;
