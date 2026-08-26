@@ -72,13 +72,6 @@ public partial class SuperNewRolesPlugin : BasePlugin
             string.IsNullOrEmpty(BepInEx.Paths.BepInExRootPath) ? AppContext.BaseDirectory : BepInEx.Paths.BepInExRootPath,
             "../SuperNewRolesNext"));
     public static string SecretDirectory => Path.GetFullPath(Path.Combine(UnityEngine.Application.persistentDataPath, "SuperNewRolesNextSecrets"));
-    private const int HarmonyPatchMaxDegreeOfParallelism = 5;
-
-    private static void AttachCurrentThreadToIl2Cpp()
-    {
-        IL2CPP.il2cpp_thread_attach(IL2CPP.il2cpp_domain_get());
-    }
-
     private static Task TaskRunIfWindows(Action action)
     {
         // Android は UnityMain で同期実行する。バックグラウンドの Harmony パッチは
@@ -91,7 +84,7 @@ public partial class SuperNewRolesPlugin : BasePlugin
 
         return Task.Run(() =>
         {
-            AttachCurrentThreadToIl2Cpp();
+            IL2CPP.il2cpp_thread_attach(IL2CPP.il2cpp_domain_get());
             action();
         });
     }
@@ -202,75 +195,27 @@ public partial class SuperNewRolesPlugin : BasePlugin
         }
     }
 
-    private static int GetHarmonyPatchDegreeOfParallelism()
-    {
-        // Android では SafeHook trampoline への並列書き込みで SEGV_ACCERR になる
-        if (ModHelpers.IsAndroid())
-            return 1;
-
-        int requested = HarmonyPatchMaxDegreeOfParallelism;
-        string raw = Environment.GetEnvironmentVariable("SNR_HARMONY_PATCH_DOP");
-        if (int.TryParse(raw, out int parsed) && parsed > 0)
-            requested = parsed;
-        return Math.Clamp(requested, 1, Math.Max(1, Environment.ProcessorCount));
-    }
-
-    private static void PatchAllTypes(Harmony harmony, Type[] types, int degreeOfParallelism)
-    {
-        if (degreeOfParallelism <= 1)
-        {
-            foreach (Type type in types)
-                harmony.CreateClassProcessor(type).Patch();
-            return;
-        }
-
-        Parallel.ForEach(types, new ParallelOptions { MaxDegreeOfParallelism = degreeOfParallelism }, type =>
-        {
-            AttachCurrentThreadToIl2Cpp();
-            harmony.CreateClassProcessor(type).Patch();
-        });
-    }
-
     public void PatchAll(Harmony harmony)
     {
         var assembly = Assembly;
-        var types = AccessTools.GetTypesFromAssembly(assembly).ToArray();
-        int degreeOfParallelism = GetHarmonyPatchDegreeOfParallelism();
-        string mode = degreeOfParallelism <= 1 ? "sequential" : "parallel";
-
-        var totalWatch = Stopwatch.StartNew();
-        var classWatch = Stopwatch.StartNew();
-        PatchAllTypes(harmony, types, degreeOfParallelism);
-        classWatch.Stop();
-
-        var coroutineWatch = Stopwatch.StartNew();
-        HarmonyCoroutinePatchProcessor.ProcessCoroutinePatches(harmony, assembly);
-        coroutineWatch.Stop();
-        totalWatch.Stop();
-
-        double classMs = classWatch.Elapsed.TotalMilliseconds;
-        double coroutineMs = coroutineWatch.Elapsed.TotalMilliseconds;
-        double totalMs = totalWatch.Elapsed.TotalMilliseconds;
-        Logger.LogInfo($"[HarmonyPatchAll] mode={mode} dop={degreeOfParallelism} types={types.Length} classMs={classMs:F1} coroutineMs={coroutineMs:F1} totalMs={totalMs:F1}");
-
-        string benchFile = Environment.GetEnvironmentVariable("SNR_HARMONY_PATCH_BENCH_FILE");
-        if (!string.IsNullOrWhiteSpace(benchFile))
+        if (ModHelpers.IsAndroid())
         {
-            try
+            harmony.PatchAll(assembly);
+            // コルーチンパッチを処理
+            HarmonyCoroutinePatchProcessor.ProcessCoroutinePatches(harmony, assembly);
+        }
+        else
+        {
+            List<Task> tasks = new();
+            AccessTools.GetTypesFromAssembly(assembly).Do(delegate (Type type)
             {
-                string directory = Path.GetDirectoryName(benchFile);
-                if (!string.IsNullOrWhiteSpace(directory))
-                    Directory.CreateDirectory(directory);
-                string line = string.Format(
-                    System.Globalization.CultureInfo.InvariantCulture,
-                    "{{\"mode\":\"{0}\",\"dop\":{1},\"types\":{2},\"classMs\":{3:F1},\"coroutineMs\":{4:F1},\"totalMs\":{5:F1},\"utc\":\"{6:o}\"}}",
-                    mode, degreeOfParallelism, types.Length, classMs, coroutineMs, totalMs, DateTime.UtcNow);
-                File.AppendAllText(benchFile, line + Environment.NewLine);
-            }
-            catch (Exception ex)
-            {
-                Logger.LogWarning($"[HarmonyPatchAll] failed to write bench file: {ex.Message}");
-            }
+                //tasks.Add(Task.Run(() => ));
+                harmony.CreateClassProcessor(type).Patch();
+            });
+            Task.WhenAll(tasks.ToArray()).Wait();
+
+            // コルーチンパッチを処理
+            HarmonyCoroutinePatchProcessor.ProcessCoroutinePatches(harmony, assembly);
         }
     }
     private void FixOver15()
