@@ -39,6 +39,15 @@ public abstract class TargetCustomButtonBase : CustomButtonBase
             return;
         }
 
+        bool hudActive = HudManager.Instance != null &&
+            (HudManager.Instance.UseButton.isActiveAndEnabled || HudManager.Instance.PetButton.isActiveAndEnabled);
+        if (!hudActive)
+        {
+            ClearTarget();
+            base.OnUpdate();
+            return;
+        }
+
         Target = SetTarget(onlyCrewmates: OnlyCrewmates, targetPlayersInVents: TargetPlayersInVents, untargetablePlayers: UntargetablePlayers, targetingPlayer: TargetingPlayer, isTargetable: IsTargetable, isDeadPlayerOnly: IsDeadPlayerOnly, ignoreWalls: IgnoreWalls);
         UpdateTargetOutline();
         base.OnUpdate();
@@ -132,12 +141,12 @@ public abstract class TargetCustomButtonBase : CustomButtonBase
     }
     public static PlayerControl SetTarget(bool onlyCrewmates = false, bool targetPlayersInVents = false, IEnumerable<PlayerControl> untargetablePlayers = null, PlayerControl targetingPlayer = null, Func<ExPlayerControl, bool> isTargetable = null, Func<bool> isDeadPlayerOnly = null, bool ignoreWalls = false)
     {
+        if (!ShipStatus.Instance) return null;
+        if (targetingPlayer == null) targetingPlayer = PlayerControl.LocalPlayer;
+        if (targetingPlayer.inVent) return null;
+
         PlayerControl result = null;
         float num = GameManager.Instance.LogicOptions.GetKillDistance();
-        if (!ShipStatus.Instance) return result;
-        if (targetingPlayer == null) targetingPlayer = PlayerControl.LocalPlayer;
-        if (targetingPlayer.inVent) return result;
-
         bool IsDeadPlayerOnly = isDeadPlayerOnly != null && isDeadPlayerOnly();
 
         Vector2 truePosition = targetingPlayer.GetTruePosition();

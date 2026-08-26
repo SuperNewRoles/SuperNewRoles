@@ -1,6 +1,5 @@
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using UnityEngine;
 using AmongUs.GameOptions;
 using SuperNewRoles.CustomOptions;
@@ -150,8 +149,9 @@ public class RocketGrabAbility : TargetCustomButtonBase
                 RpcClearGrabbedPlayers();
             return;
         }
-        foreach (var grabbedPlayer in GrabbedPlayers.ToList())
+        for (int i = GrabbedPlayers.Count - 1; i >= 0; i--)
         {
+            var grabbedPlayer = GrabbedPlayers[i];
             if (grabbedPlayer == null)
             {
                 // A disconnected object can disappear before its PlayerId can be read.
@@ -182,16 +182,30 @@ public class RocketGrabAbility : TargetCustomButtonBase
         }
     }
 
+    // GrabbedPlayersの中にnullが混入している場合に、GrabbedPlayersと_grabbedOriginalPositionsを同期して削除する
     private void RemoveNullGrabbedPlayersLocally()
     {
         if (GrabbedPlayers.RemoveAll(player => player == null) == 0) return;
 
-        HashSet<byte> remainingPlayerIds = GrabbedPlayers
-            .Where(player => player != null)
-            .Select(player => player.PlayerId)
-            .ToHashSet();
-        foreach (byte playerId in _grabbedOriginalPositions.Keys.Where(id => !remainingPlayerIds.Contains(id)).ToList())
-            _grabbedOriginalPositions.Remove(playerId);
+        HashSet<byte> remainingPlayerIds = new();
+        for (int i = 0; i < GrabbedPlayers.Count; i++)
+        {
+            var player = GrabbedPlayers[i];
+            if (player != null)
+                remainingPlayerIds.Add(player.PlayerId);
+        }
+        List<byte> staleIds = null;
+        foreach (byte playerId in _grabbedOriginalPositions.Keys)
+        {
+            if (remainingPlayerIds.Contains(playerId)) continue;
+            staleIds ??= new List<byte>();
+            staleIds.Add(playerId);
+        }
+        if (staleIds != null)
+        {
+            for (int i = 0; i < staleIds.Count; i++)
+                _grabbedOriginalPositions.Remove(staleIds[i]);
+        }
 
         if (Player != null && Player.AmOwner && launchAbility != null)
             launchAbility.SetActive(launchAbility.CheckIsAvailable());

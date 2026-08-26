@@ -266,7 +266,7 @@ public class KunoichiKunaiAbility : CustomButtonBase
                 continue;
             }
 
-            foreach (var candidate in PlayerControl.AllPlayerControls.ToArray())
+            foreach (var candidate in PlayerControl.AllPlayerControls)
             {
                 if (candidate == null || candidate.PlayerId == shooter.PlayerId) continue;
                 if (candidate.Data == null || candidate.Data.IsDead) continue;
@@ -363,6 +363,8 @@ public class KunoichiKunaiHitUIAbility : AbilityBase
     private GameObject _container;
     private readonly List<(byte playerId, int count)> _lastHits = new();
     private readonly List<PoolablePlayer> _uiObjects = new();
+    private readonly List<(ExPlayerControl target, int count)> _hitsBuffer = new();
+    private Comparison<(ExPlayerControl target, int count)> _hitComparison;
 
     public KunoichiKunaiHitUIAbility(
         Func<IEnumerable<(ExPlayerControl target, int count)>> getHits,
@@ -413,28 +415,38 @@ public class KunoichiKunaiHitUIAbility : AbilityBase
             return;
         }
 
-        var hits = (_getHits?.Invoke() ?? Enumerable.Empty<(ExPlayerControl target, int count)>())
-            .Where(h => h.target != null && h.target.Data != null && h.count > 0)
-            .Select(h => (h.target, h.count))
-            .OrderByDescending(h => h.count)
-            .ThenBy(h => h.target.PlayerId)
-            .ToList();
+        _hitsBuffer.Clear();
+        var hitsSource = _getHits?.Invoke();
+        if (hitsSource != null)
+        {
+            foreach (var h in hitsSource)
+            {
+                if (h.target == null || h.target.Data == null || h.count <= 0) continue;
+                _hitsBuffer.Add((h.target, h.count));
+            }
+        }
 
-        if (hits.Count == 0)
+        if (_hitsBuffer.Count == 0)
         {
             if (_container.activeSelf) _container.SetActive(false);
             _lastHits.Clear();
             return;
         }
 
+        if (_hitsBuffer.Count > 1)
+        {
+            _hitComparison ??= CompareHits;
+            _hitsBuffer.Sort(_hitComparison);
+        }
+
         if (!_container.activeSelf) _container.SetActive(true);
 
-        bool updated = hits.Count != _lastHits.Count;
+        bool updated = _hitsBuffer.Count != _lastHits.Count;
         if (!updated)
         {
-            for (int i = 0; i < hits.Count; i++)
+            for (int i = 0; i < _hitsBuffer.Count; i++)
             {
-                if (_lastHits[i].playerId != hits[i].target.PlayerId || _lastHits[i].count != hits[i].count)
+                if (_lastHits[i].playerId != _hitsBuffer[i].target.PlayerId || _lastHits[i].count != _hitsBuffer[i].count)
                 {
                     updated = true;
                     break;
@@ -445,9 +457,9 @@ public class KunoichiKunaiHitUIAbility : AbilityBase
         if (!updated) return;
 
         var prefab = FastDestroyableSingleton<HudManager>.Instance.IntroPrefab.PlayerPrefab;
-        for (int i = 0; i < hits.Count; i++)
+        for (int i = 0; i < _hitsBuffer.Count; i++)
         {
-            var hit = hits[i];
+            var hit = _hitsBuffer[i];
             PoolablePlayer uiObj;
             if (i < _uiObjects.Count)
             {
@@ -474,16 +486,23 @@ public class KunoichiKunaiHitUIAbility : AbilityBase
             }
         }
 
-        for (int i = hits.Count; i < _uiObjects.Count; i++)
+        for (int i = _hitsBuffer.Count; i < _uiObjects.Count; i++)
         {
             _uiObjects[i].gameObject.SetActive(false);
         }
 
         _lastHits.Clear();
-        foreach (var hit in hits)
+        foreach (var hit in _hitsBuffer)
         {
             _lastHits.Add((hit.target.PlayerId, hit.count));
         }
+    }
+
+    private static int CompareHits((ExPlayerControl target, int count) a, (ExPlayerControl target, int count) b)
+    {
+        int countCompare = b.count.CompareTo(a.count);
+        if (countCompare != 0) return countCompare;
+        return a.target.PlayerId.CompareTo(b.target.PlayerId);
     }
 }
 

@@ -124,6 +124,7 @@ public partial class SuperNewRolesPlugin : BasePlugin
             Directory.CreateDirectory(SecretDirectory);
 
         ConfigRoles.Init();
+        CustomCosmeticsLoader.TryStartHttpPrefetch();
         UpdateCPUProcessorAffinity();
         CustomRoleManager.Load();
         AssetManager.Load();
@@ -323,6 +324,7 @@ public partial class SuperNewRolesPlugin : BasePlugin
         ClassInjector.RegisterTypeInIl2Cpp<HelpMenuObjectComponent>();
         ClassInjector.RegisterTypeInIl2Cpp<GotTrophyUI.SlideAnimator>();
         ClassInjector.RegisterTypeInIl2Cpp<CustomCosmeticsCostumeSlot>();
+        ClassInjector.RegisterTypeInIl2Cpp<CustomCosmeticsLayerOwner>();
         ClassInjector.RegisterTypeInIl2Cpp<CustomHatLayer>();
         ClassInjector.RegisterTypeInIl2Cpp<CustomVisorLayer>();
         ClassInjector.RegisterTypeInIl2Cpp<PushedPlayerDeadbody>();

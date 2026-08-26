@@ -77,7 +77,6 @@ public static class SyncSpawn
 
         while (true)
         {
-            Logger.Info("WaitForSpawn2");
             float elapsed = Time.time - startTime;
 
             // フェードアウト処理（即開始、0.2秒かけてフェードアウト）
@@ -134,8 +133,6 @@ public static class SyncSpawn
                 }
             }
 
-            Logger.Info("WaitForSpawn5");
-
             // アニメーション完了後、全ボタンのOnMouseOutを呼び出し、無効化する
             if (fadeFinished && moveFinished && !animationFinished)
             {
@@ -147,14 +144,10 @@ public static class SyncSpawn
                 animationFinished = true;
             }
 
-            Logger.Info("WaitForSpawn6");
-
             if (__instance == null) yield break;
-            Logger.Info("WaitForSpawn3");
             int aliveCount = ExPlayerControl.ExPlayerControls.Count(x => x.IsAlive());
             if (SpawnedPlayers.Count >= aliveCount && __instance != null && AmongUsClient.Instance.AmHost)
             {
-                Logger.Info("WaitForSpawn4");
                 new LateTask(() => RpcAllSelectedFromHost(), 0.5f, "SyncSpawnRpcAllSelectedFromHost");
                 yield break;
             }
