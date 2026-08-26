@@ -8,17 +8,13 @@ namespace SuperNewRoles.Patches;
 /// ホスト自身の分岐がなく、ホストが送った RPC を自分では処理しない。
 /// SNR は常に Mod 扱いにするため、ホストでは Check* を直接実行して解除できるようにする。
 /// </summary>
-internal static class PhantomAbilityHostFix
-{
-    internal static bool ShouldProcessCheckLocally(bool amHost) => amHost;
-}
 
 [HarmonyPatch(typeof(PlayerControl), nameof(PlayerControl.CmdCheckVanish))]
 public static class PlayerControlCmdCheckVanishPatch
 {
     public static bool Prefix(PlayerControl __instance)
     {
-        if (!PhantomAbilityHostFix.ShouldProcessCheckLocally(AmongUsClient.Instance.AmHost))
+        if (!AmongUsClient.Instance.AmHost)
             return true;
 
         __instance.CheckVanish();
@@ -31,7 +27,7 @@ public static class PlayerControlCmdCheckAppearPatch
 {
     public static bool Prefix(PlayerControl __instance, bool shouldAnimate)
     {
-        if (!PhantomAbilityHostFix.ShouldProcessCheckLocally(AmongUsClient.Instance.AmHost))
+        if (!AmongUsClient.Instance.AmHost)
             return true;
 
         __instance.CheckAppear(shouldAnimate);
