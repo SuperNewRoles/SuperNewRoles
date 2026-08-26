@@ -118,6 +118,14 @@ public static class PlayerControl_SetHatAndVisorAlpha
         CustomCosmeticsAlpha.Set(__instance.cosmetics, a);
     }
 }
+[HarmonyPatch(typeof(CosmeticsLayer), nameof(CosmeticsLayer.SetPhantomRoleAlpha))]
+public static class CosmeticsLayer_SetPhantomRoleAlpha
+{
+    public static void Postfix(CosmeticsLayer __instance, [HarmonyArgument(0)] float alpha)
+    {
+        CustomCosmeticsAlpha.Set(__instance, alpha);
+    }
+}
 [HarmonyPatch(typeof(CosmeticsLayer), nameof(CosmeticsLayer.SetFlipXWithoutPet))]
 public static class CosmeticsLayer_SetFlipXWithoutPet
 {
