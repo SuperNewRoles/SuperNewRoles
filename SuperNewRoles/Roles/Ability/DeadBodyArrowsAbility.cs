@@ -20,6 +20,7 @@ public class DeadBodyArrowsAbility : AbilityBase
     private readonly HashSet<int> _trackedParentIds = new();
     private DeadBody[] _cachedDeadBodies = System.Array.Empty<DeadBody>();
     private int _scanCounter;
+    private int _lastDeadCount = -1;
 
     /// <param name="showArrows">矢印のを表示できるか</param>
     /// <param name="arrowColor">矢印の色(指定無しの場合Vultureのロールカラー)</param>
@@ -46,6 +47,10 @@ public class DeadBodyArrowsAbility : AbilityBase
                 UnityEngine.Object.Destroy(arrow.arrow);
         }
         _deadBodyArrows.Clear();
+        _trackedParentIds.Clear();
+        _lastDeadCount = -1;
+        _scanCounter = 0;
+        _cachedDeadBodies = System.Array.Empty<DeadBody>();
     }
 
     private void OnFixedUpdate()
@@ -60,15 +65,19 @@ public class DeadBodyArrowsAbility : AbilityBase
             }
             _deadBodyArrows.Clear();
             _trackedParentIds.Clear();
+            _lastDeadCount = -1;
+            _cachedDeadBodies = System.Array.Empty<DeadBody>();
             return;
         }
         if (!ShowArrows) return;
 
-        // FindObjectsOfTypeを間引いて負荷を抑える
+        // FindObjectsOfTypeは間引くが、死者数が変わったら即スキャンする
         _scanCounter++;
-        if (_scanCounter >= 10 || _cachedDeadBodies.Length == 0)
+        int deadCount = CountDeadPlayers();
+        if (_scanCounter >= 10 || _cachedDeadBodies.Length == 0 || deadCount != _lastDeadCount)
         {
             _scanCounter = 0;
+            _lastDeadCount = deadCount;
             _cachedDeadBodies = UnityEngine.Object.FindObjectsOfType<DeadBody>();
         }
 
@@ -133,6 +142,20 @@ public class DeadBodyArrowsAbility : AbilityBase
         }
     }
 
+    private static int CountDeadPlayers()
+    {
+        int count = 0;
+        var players = PlayerControl.AllPlayerControls;
+        if (players == null)
+            return 0;
+        foreach (var player in players)
+        {
+            if (player != null && player.Data != null && player.Data.IsDead)
+                count++;
+        }
+        return count;
+    }
+
     private static bool IsTrackableDeadBody(DeadBody dead)
     {
         return dead != null
@@ -161,6 +184,10 @@ public class DeadBodyArrowsAbility : AbilityBase
                 UnityEngine.Object.Destroy(arrow.arrow);
         }
         _deadBodyArrows.Clear();
+        _trackedParentIds.Clear();
+        _lastDeadCount = -1;
+        _scanCounter = 0;
+        _cachedDeadBodies = System.Array.Empty<DeadBody>();
     }
 
     /// <summary>死体用矢印の色をモードに応じて取得する</summary>

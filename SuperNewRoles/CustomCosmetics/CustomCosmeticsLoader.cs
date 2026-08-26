@@ -5,7 +5,6 @@ using System.Threading.Tasks;
 using UnityEngine;
 using System.IO;
 using System.Net;
-using System.Security.Cryptography;
 using System.Linq;
 using HarmonyLib;
 using BepInEx.Unity.IL2CPP.Utils.Collections;
@@ -28,7 +27,7 @@ public class CustomCosmeticsData
     public Dictionary<string, string> assetbundles { get; set; }
 }
 
-public class CustomCosmeticsLoader
+public partial class CustomCosmeticsLoader
 {
     // 配信元URLの初期化（必要に応じて他のURLも追加可能）
     public static string[] CustomCosmeticsURLs = new string[]
@@ -61,7 +60,6 @@ public class CustomCosmeticsLoader
     public static readonly Dictionary<string, CustomCosmeticsHat> moddedHats = new();
     public static readonly Dictionary<string, CustomCosmeticsVisor> moddedVisors = new();
     public static readonly Dictionary<string, CustomCosmeticsNamePlate> moddedNamePlates = new();
-    private static Dictionary<string, List<(string, string)>> willDownloads = new();
     // セッション中に到達確認済みのホスト
     private static readonly HashSet<string> reachableHosts = new(StringComparer.OrdinalIgnoreCase);
     // 到達不能と判断したホストの再試行可能時刻
@@ -84,10 +82,12 @@ public class CustomCosmeticsLoader
 
     private static string CustomCosmeticsCacheDirectory => Path.Combine(SuperNewRolesPlugin.BaseDirectory, "CustomCosmetics");
 
-    // HTTP/2 多重化時はストリーム数。未対応 Android は TCP 15 本のまま。
-    public static readonly int MAX_CONCURRENT_DOWNLOADS = CosmeticsHttp.GetMaxConcurrentDownloads(
-        ModHelpers.IsAndroid(),
-        CosmeticsHttp.IsSocketsHttpHandlerAvailable);
+    // HTTP/2 のストリーム上限を尊重しつつ、レスポンス全体を保持する処理のメモリ上限も適用する。
+    public static readonly int MAX_CONCURRENT_DOWNLOADS = System.Math.Max(1, System.Math.Min(
+        CosmeticsHttp.GetMaxConcurrentDownloads(
+            ModHelpers.IsAndroid(),
+            CosmeticsHttp.IsSocketsHttpHandlerAvailable),
+        CosmeticsHttp.BufferedResponseMaxConcurrentDownloads));
     // 到達性プローブは短くし、失敗時は早めにスキップする
     private const float HostProbeTimeoutSeconds = 3f;
     // JSONメタデータは短めのタイムアウト
@@ -266,16 +266,12 @@ public class CustomCosmeticsLoader
     public static IEnumerator LoadAsync(Func<IEnumerator, Coroutine> startCoroutine, bool notifySplash = true)
     {
         if (!HasLoadedCosmetics)
-        {
             notLoadedAssetBundles.Clear();
-            willDownloads = new();
-        }
 
         if (ConfigRoles.IsModCosmeticsAreNotLoaded != null && ConfigRoles.IsModCosmeticsAreNotLoaded.Value)
         {
             Logger.Info("カスタムコスメティックを読み込まない設定です。");
             willLoad = () => { };
-            willDownloads = new();
             AssetBundlesDownloadedCount = 0;
             AssetBundlesAllCount = 0;
             AssetBundlesDownloading = false;
@@ -308,14 +304,19 @@ public class CustomCosmeticsLoader
                 break;
         }
         runned = false;
-        ResetDownloadSizeProgress();
         AssetBundlesDownloading = true;
+        if (HttpPrefetchTask != null)
+        {
+            while (!HttpPrefetchTask.IsCompleted)
+                yield return null;
+        }
+        ResetDownloadSizeProgress();
         List<(string url, string content)> fetchTasks = new();
         List<Task> waitTasks = new();
         int waiting = 0;
         foreach (var url in CustomCosmeticsURLs)
         {
-            bool isLocalFile = Path.IsPathRooted(url) || File.Exists(url);
+            bool isLocalFile = IsLocalCosmeticsPath(url);
             if (isLocalFile)
             {
                 if (File.Exists(url))
@@ -338,9 +339,10 @@ public class CustomCosmeticsLoader
         // 全タスクを待機
         yield return new WaitUntil((Il2CppSystem.Func<bool>)(() => waiting <= 0));
 
-        // 置き換え: foreach (string url in CustomCosmeticsURLs) から始まるループを以下に変更:
         int assetBundleLoadingCount = 0;
         Dictionary<string, CustomCosmeticsPackage> packageMap = loadedPackages.ToDictionary(p => p.name);
+        List<CosmeticsDownloadJob> spriteJobs = new();
+        bool isAndroid = ModHelpers.IsAndroid();
 
         foreach (var ft in fetchTasks)
         {
@@ -348,40 +350,25 @@ public class CustomCosmeticsLoader
             try
             {
                 string jsonContent = ft.content;
-                // JSONをパース
                 CustomCosmeticsJsonNode json = CustomCosmeticsJsonNode.Parse(jsonContent);
-                CustomCosmeticsJsonNode assetBundlesToken = json["assetbundles"];
-                if (assetBundlesToken != null)
+                List<CosmeticsDownloadJob> jobs = CollectDownloadJobs(url, json, isAndroid);
+                foreach (CosmeticsDownloadJob job in jobs)
                 {
-
-                    // 各assetbundle要素についてダウンロードを試行
-                    for (var assetBundle = assetBundlesToken.First; assetBundle != null; assetBundle = assetBundle.Next)
+                    if (job.IsAssetBundle)
                     {
-                        string assetBundleUrl = assetBundle["url"]?.ToString() ?? "";
-                        string assetBundleAndroidUrl = assetBundle["url_android"]?.ToString() ?? "";
-                        string expectedHash = assetBundle["hash"]?.ToString() ?? "";
-                        string expectedHashAndroid = assetBundle["hash_android"]?.ToString() ?? "";
-
-                        bool isAndroid = ModHelpers.IsAndroid();
-
-                        string currentUrl = isAndroid && !string.IsNullOrWhiteSpace(assetBundleAndroidUrl) ? assetBundleAndroidUrl : assetBundleUrl;
-                        string currentExpectedHash = isAndroid && !string.IsNullOrWhiteSpace(expectedHashAndroid) ? expectedHashAndroid : expectedHash;
-                        if (string.IsNullOrWhiteSpace(currentUrl))
-                        {
-                            Logger.Warning($"カスタムコスメティックのアセットバンドルURLが空のためスキップします: {url}");
-                            continue;
-                        }
-
                         assetBundleLoadingCount++;
                         AssetBundlesAllCount++;
-                        startCoroutine(DownloadAssetBundleWithRetryAsync(currentUrl, currentExpectedHash, () =>
+                        startCoroutine(DownloadAssetBundleWithRetryAsync(job.Url, job.ExpectedHash, () =>
                         {
                             assetBundleLoadingCount--;
                             AssetBundlesDownloadedCount++;
                         }));
                     }
+                    else
+                        spriteJobs.Add(job);
                 }
-                else
+
+                if (json["assetbundles"] == null)
                     Logger.Error($"assetbundlesが見つかりません: {url}");
 
                 CustomCosmeticsJsonNode hatsToken = json["hats"];
@@ -403,10 +390,6 @@ public class CustomCosmeticsLoader
                         }
                         bool adaptive = hat["adaptive"] != null ? (bool)hat["adaptive"] : false;
                         bool resource_bounce = hat["resource"]?.ToString().Contains("bounce") ?? false;
-                        bool flip_bounce = hat["flipresource"]?.ToString().Contains("bounce") ?? false;
-                        bool climb_bounce = hat["climbresource"]?.ToString().Contains("bounce") ?? false;
-                        bool back_bounce = hat["backresource"]?.ToString().Contains("bounce") ?? false;
-                        bool backflip_bounce = hat["backflipresource"]?.ToString().Contains("bounce") ?? false;
 
                         string hatName = hat["name"].ToString();
                         string sanitizedHatName = SanitizeFileName(hatName);
@@ -414,11 +397,9 @@ public class CustomCosmeticsLoader
                         var front = adaptive ? HatOptionType.Adaptive : HatOptionType.NoAdaptive;
                         if (resource_bounce)
                             front |= HatOptionType.Bounce;
-                        var front_left = HatOptionType.None;
                         var back = hat["backresource"] != null ? adaptive ? HatOptionType.Adaptive : HatOptionType.NoAdaptive : HatOptionType.None;
                         if (resource_bounce)
                             back |= HatOptionType.Bounce;
-                        var back_left = HatOptionType.None;
                         var backflip = hat["backflipresource"] != null ? adaptive ? HatOptionType.Adaptive : HatOptionType.NoAdaptive : HatOptionType.None;
                         if (resource_bounce)
                             backflip |= HatOptionType.Bounce;
@@ -428,7 +409,6 @@ public class CustomCosmeticsLoader
                         var climb = hat["climbresource"] != null ? adaptive ? HatOptionType.Adaptive : HatOptionType.NoAdaptive : HatOptionType.None;
                         if (resource_bounce)
                             climb |= HatOptionType.Bounce;
-
 
                         var hatOption = new CustomCosmeticsHatOptions(
                             front: front,
@@ -443,7 +423,7 @@ public class CustomCosmeticsLoader
                             hatName,
                             hat["name"]?.ToString(),
                             hatName,
-                            $"{CustomCosmeticsCacheDirectory}/{currentPackage.name}/{sanitizedHatName}_",
+                            GetSpritePathBase(currentPackage.name, sanitizedHatName),
                             hat["author"].ToString(),
                             currentPackage,
                             hatOption,
@@ -451,23 +431,6 @@ public class CustomCosmeticsLoader
                         );
                         currentPackage.hats.Add(customCosmeticsHat);
                         moddedHats[customCosmeticsHat.ProdId] = customCosmeticsHat;
-
-                        string packagenamed = currentPackage.name;
-                        if (!willDownloads.ContainsKey(packagenamed))
-                            willDownloads.Add(packagenamed, []);
-                        willDownloads[packagenamed].Add((hatName + "_front", getpath(url, "hats/" + hat["resource"]?.ToString())));
-                        if (hat["resourceleft"] != null)
-                            willDownloads[packagenamed].Add((hatName + "_front_left", getpath(url, "hats/" + hat["resourceleft"]?.ToString())));
-                        if (hat["backresource"] != null)
-                            willDownloads[packagenamed].Add((hatName + "_back", getpath(url, "hats/" + hat["backresource"]?.ToString())));
-                        if (hat["backresourceleft"] != null)
-                            willDownloads[packagenamed].Add((hatName + "_back_left", getpath(url, "hats/" + hat["backresourceleft"]?.ToString())));
-                        if (hat["backflipresource"] != null)
-                            willDownloads[packagenamed].Add((hatName + "_backflip", getpath(url, "hats/" + hat["backflipresource"]?.ToString())));
-                        if (hat["flipresource"] != null)
-                            willDownloads[packagenamed].Add((hatName + "_flip", getpath(url, "hats/" + hat["flipresource"]?.ToString())));
-                        if (hat["climbresource"] != null)
-                            willDownloads[packagenamed].Add((hatName + "_climb", getpath(url, "hats/" + hat["climbresource"]?.ToString())));
                     }
                 }
                 else
@@ -507,7 +470,7 @@ public class CustomCosmeticsLoader
                             visorName,
                             visor["name"]?.ToString(),
                             visorName,
-                            $"{CustomCosmeticsCacheDirectory}/{currentPackage.name}/{sanitizedVisorName}_",
+                            GetSpritePathBase(currentPackage.name, sanitizedVisorName),
                             visor["author"].ToString(),
                             currentPackage,
                             visorOption,
@@ -515,15 +478,6 @@ public class CustomCosmeticsLoader
                         );
                         currentPackage.visors.Add(customCosmeticsVisor);
                         moddedVisors[customCosmeticsVisor.ProdId] = customCosmeticsVisor;
-
-                        string packagenamed = currentPackage.name;
-                        if (!willDownloads.ContainsKey(packagenamed))
-                            willDownloads.Add(packagenamed, []);
-                        willDownloads[packagenamed].Add((visorName + "_idle", getpath(url, (json["visors"] != null ? "visors/" : "Visors/") + visor["resource"]?.ToString())));
-                        if (visor["flipresource"] != null)
-                            willDownloads[packagenamed].Add((visorName + "_flip", getpath(url, (json["visors"] != null ? "visors/" : "Visors/") + visor["flipresource"]?.ToString())));
-                        if (visor["climbresource"] != null)
-                            willDownloads[packagenamed].Add((visorName + "_climb", getpath(url, (json["visors"] != null ? "visors/" : "Visors/") + visor["climbresource"]?.ToString())));
                     }
                 }
                 else
@@ -555,18 +509,13 @@ public class CustomCosmeticsLoader
                             namePlateName,
                             namePlate["name"]?.ToString(),
                             namePlateName,
-                            $"{CustomCosmeticsCacheDirectory}/{currentPackage.name}/{sanitizedNamePlateName}_",
+                            GetSpritePathBase(currentPackage.name, sanitizedNamePlateName),
                             namePlate["author"].ToString(),
                             currentPackage,
                             null
                         );
                         currentPackage.namePlates.Add(customCosmeticsNamePlate);
                         moddedNamePlates[customCosmeticsNamePlate.ProdId] = customCosmeticsNamePlate;
-
-                        string packagenamed = currentPackage.name;
-                        if (!willDownloads.ContainsKey(packagenamed))
-                            willDownloads.Add(packagenamed, []);
-                        willDownloads[packagenamed].Add((namePlateName + "_nameplate", getpath(url, "nameplates/" + namePlate["resource"]?.ToString())));
                     }
                 }
             }
@@ -581,8 +530,7 @@ public class CustomCosmeticsLoader
         }
 
         Logger.Info("DownloadSpritesAsync done");
-        // Wait for asset bundles to finish loading
-        yield return DownloadSpritesAsync(startCoroutine);
+        yield return DownloadSpritesAsync(startCoroutine, spriteJobs);
         yield return new WaitUntil((Il2CppSystem.Func<bool>)(() => assetBundleLoadingCount <= 0));
         AssetBundlesDownloading = false;
         Logger.Info("assetBundleLoadingCount done");
@@ -655,6 +603,12 @@ public class CustomCosmeticsLoader
     }
     public static IEnumerator GetStringAsync(string url, Action<string> onSuccess, Action<string> onError)
     {
+        if (TryTakePrefetchedJson(url, out string prefetchedJson))
+        {
+            onSuccess(prefetchedJson);
+            yield break;
+        }
+
         // JSON取得前にホスト到達性を確認し、無駄な待機を避ける
         bool canReachHost = true;
         yield return EnsureHostReachable(url, reachable => canReachHost = reachable);
@@ -699,7 +653,7 @@ public class CustomCosmeticsLoader
         try
         {
             // ローカルファイルの場合はそのまま返す
-            if (url.StartsWith("./") || url.StartsWith("../"))
+            if (IsLocalCosmeticsPath(url))
             {
                 string baseDir = Path.GetDirectoryName(Path.GetFullPath(url)) ?? "";
                 return Path.Combine(baseDir, path);
@@ -1023,9 +977,8 @@ public class CustomCosmeticsLoader
             default:
                 break;
         }
-        string fileNameFromUrl = Path.GetFileName(assetBundleUrl);
-        string bundleStorageDir = Path.Combine(SuperNewRolesPlugin.BaseDirectory, "CustomCosmetics", fileNameFromUrl);
-        string targetPath = Path.Combine(bundleStorageDir, $"{expectedHash}.bundle");
+        string bundleStorageDir = GetAssetBundleStorageDirectory(assetBundleUrl);
+        string targetPath = GetAssetBundleTargetPath(assetBundleUrl, expectedHash);
 
         if (File.Exists(targetPath))
         {
@@ -1045,11 +998,7 @@ public class CustomCosmeticsLoader
             CosmeticsHttpRequest request = null;
             DownloadSizeProgressTracker progressTracker = null;
 
-            bool isLocal = assetBundleUrl.StartsWith("./", StringComparison.Ordinal) ||
-                           assetBundleUrl.StartsWith("../", StringComparison.Ordinal) ||
-                           (Path.IsPathRooted(assetBundleUrl) && File.Exists(assetBundleUrl));
-
-            if (isLocal)
+            if (IsLocalCosmeticsPath(assetBundleUrl))
             {
                 try
                 {
@@ -1085,7 +1034,7 @@ public class CustomCosmeticsLoader
                 request = CosmeticsHttpRequest.Get(assetBundleUrl);
                 // ユーザーが設定したタイムアウト値を使用
                 request.timeout = AssetBundleRequestTimeoutSeconds;
-                request.ignoreSslErrors = true;
+                request.ignoreSslErrors = false;
                 progressTracker = StartDownloadSizeProgressTracker();
                 request.downloadProgressChanged = progressTracker.Report;
 
@@ -1154,18 +1103,7 @@ public class CustomCosmeticsLoader
             {
                 try
                 {
-                    string actualFileHash;
-                    using (var localMd5 = MD5.Create())
-                    {
-                        actualFileHash = BitConverter.ToString(localMd5.ComputeHash(assetBundleData))
-                            .Replace("-", "")
-                            .ToLowerInvariant();
-                    }
-
-                    if (!string.IsNullOrEmpty(expectedHash) && !actualFileHash.Equals(expectedHash, StringComparison.OrdinalIgnoreCase))
-                    {
-                        Logger.Error($"ハッシュミスマッチ。URL: {assetBundleUrl}, Expected: {expectedHash}, Actual: {actualFileHash}");
-                    }
+                    LogHashMismatchIfNeeded(assetBundleUrl, expectedHash, assetBundleData);
                     Directory.CreateDirectory(bundleStorageDir);
                     foreach (string existingBundleFile in Directory.GetFiles(bundleStorageDir, "*.bundle"))
                     {
@@ -1217,7 +1155,7 @@ public class CustomCosmeticsLoader
         yield return request.SendWebRequest();
     }
 
-    public static IEnumerator DownloadSpritesAsync(Func<IEnumerator, Coroutine> startCoroutine)
+    public static IEnumerator DownloadSpritesAsync(Func<IEnumerator, Coroutine> startCoroutine, List<CosmeticsDownloadJob> spriteJobs)
     {
         switch (Application.internetReachability)
         {
@@ -1232,36 +1170,29 @@ public class CustomCosmeticsLoader
             default:
                 break;
         }
-        string basePath = $"{CustomCosmeticsCacheDirectory}/";
         int activeDownloads = 0;
-        Queue<(string spriteName, string spritePath, string packageKey, string packagePath)> downloadQueue = new();
-        SpritesAllCount = willDownloads.Sum(x => x.Value.Count);
+        Queue<CosmeticsDownloadJob> downloadQueue = new();
+        spriteJobs ??= new List<CosmeticsDownloadJob>();
+        SpritesAllCount = spriteJobs.Count;
         try // Setup phase
         {
-            if (!willDownloads.Any())
+            if (spriteJobs.Count == 0)
             {
                 Logger.Info("No sprites to download.");
                 yield break;
             }
 
-            Directory.CreateDirectory(basePath);
+            Directory.CreateDirectory(CustomCosmeticsCacheDirectory);
 
-            foreach (var packageEntry in willDownloads)
+            foreach (CosmeticsDownloadJob job in spriteJobs)
             {
-                string packageKey = packageEntry.Key;
-                string packageDir = Path.Combine(basePath, packageKey);
-                Directory.CreateDirectory(packageDir);
-                foreach (var (spriteName, spritePath) in packageEntry.Value)
+                if (string.IsNullOrEmpty(job.Url) || string.IsNullOrEmpty(job.TargetPath) || !IsCachePath(job.TargetPath))
                 {
-                    if (string.IsNullOrEmpty(spritePath))
-                    {
-                        Logger.Error($"Invalid sprite path for {spriteName} in package {packageKey}");
-                        continue;
-                    }
-                    downloadQueue.Enqueue((spriteName, spritePath, packageKey, packageDir));
+                    Logger.Error($"Invalid or unsafe sprite path for {job.TargetPath}");
+                    continue;
                 }
+                downloadQueue.Enqueue(job);
             }
-            willDownloads = null;
         }
         catch (Exception e)
         {
@@ -1275,16 +1206,19 @@ public class CustomCosmeticsLoader
         {
             while (downloadQueue.Count > 0 && activeDownloads < MAX_CONCURRENT_DOWNLOADS)
             {
-                var item = downloadQueue.Dequeue();
+                CosmeticsDownloadJob item = downloadQueue.Dequeue();
                 activeDownloads++;
-                string sanitizedSpriteName = SanitizeFileName(item.spriteName);
-                string filePath = Path.Combine(item.packagePath, $"{sanitizedSpriteName}.png").Replace("\\", "/");
+                string filePath = item.TargetPath;
+                string spriteName = Path.GetFileNameWithoutExtension(filePath);
                 if (File.Exists(filePath))
                 {
                     activeDownloads--;
                     continue;
                 }
-                Coroutine downloadCoroutine = startCoroutine(DownloadSingleSprite(item.spriteName, item.spritePath, item.packagePath, filePath, () => activeDownloads--));
+                string packagePath = Path.GetDirectoryName(filePath);
+                if (!string.IsNullOrEmpty(packagePath))
+                    Directory.CreateDirectory(packagePath);
+                Coroutine downloadCoroutine = startCoroutine(DownloadSingleSprite(spriteName, item.Url, packagePath, filePath, () => activeDownloads--));
                 SpritesDownloadingCount = downloadQueue.Count;
                 if (downloadCoroutine != null) // Check if StartCoroutine succeeded
                 {
@@ -1292,7 +1226,7 @@ public class CustomCosmeticsLoader
                 }
                 else
                 {
-                    Logger.Error($"Failed to start download coroutine for {item.spriteName}");
+                    Logger.Error($"Failed to start download coroutine for {spriteName}");
                     activeDownloads--; // Decrement since it didn't start
                 }
             }
@@ -1317,7 +1251,7 @@ public class CustomCosmeticsLoader
 
         CosmeticsHttpRequest request = CosmeticsHttpRequest.Get(spriteUrl);
         request.timeout = SpriteDownloadTimeoutSeconds;
-        request.ignoreSslErrors = true;
+        request.ignoreSslErrors = false;
         DownloadSizeProgressTracker progressTracker = StartDownloadSizeProgressTracker();
         request.downloadProgressChanged = progressTracker.Report;
 
@@ -1425,10 +1359,10 @@ public class CustomCosmeticsLoader
         {
             CosmeticsHttpRequest probeRequest = CosmeticsHttpRequest.Get(BuildHostProbeUrl(uri));
             probeRequest.timeout = HostProbeTimeoutSeconds;
-            probeRequest.ignoreSslErrors = true;
+            probeRequest.ignoreSslErrors = false;
             yield return probeRequest.SendWebRequest();
 
-            reachable = probeRequest.responseCode > 0 || string.IsNullOrEmpty(probeRequest.error);
+            reachable = CosmeticsHttpRequest.IsHostProbeReachable(probeRequest.responseCode, probeRequest.error);
             if (reachable)
                 MarkHostReachable(host);
             else
@@ -1443,8 +1377,8 @@ public class CustomCosmeticsLoader
             state.Reachable = reachable;
             state.Done = true;
             inFlightHostProbes.Remove(host);
+            onComplete?.Invoke(reachable);
         }
-        onComplete?.Invoke(reachable);
     }
 
     private static void MarkHostReachable(string urlOrHost)
@@ -1473,9 +1407,7 @@ public class CustomCosmeticsLoader
         if (string.IsNullOrWhiteSpace(url))
             return false;
 
-        bool isLocalPath = url.StartsWith("./", StringComparison.Ordinal) ||
-                           url.StartsWith("../", StringComparison.Ordinal) ||
-                           Path.IsPathRooted(url);
+        bool isLocalPath = IsLocalCosmeticsPath(url);
         if (isLocalPath)
             return false;
 

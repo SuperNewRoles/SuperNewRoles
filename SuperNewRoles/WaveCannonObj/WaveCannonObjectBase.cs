@@ -262,7 +262,11 @@ public abstract class WaveCannonObjectBase
         // 賢者より後ろのプレイヤーを防ぐためなので、ビームからの単純なx距離で比較する
         float da = Mathf.Abs(_sortOriginX - a.transform.position.x);
         float db = Mathf.Abs(_sortOriginX - b.transform.position.x);
-        return da.CompareTo(db);
+        int compared = da.CompareTo(db);
+        if (compared != 0)
+            return compared;
+        // List.Sort は安定ソートではないため、同距離は PlayerId で決定的に並べる
+        return a.PlayerId.CompareTo(b.PlayerId);
     }
 
     private static readonly float[] WiseManAngles = { 135f, 90f, 270f, 225f };

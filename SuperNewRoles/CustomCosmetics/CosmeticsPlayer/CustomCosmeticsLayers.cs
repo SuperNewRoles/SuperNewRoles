@@ -56,6 +56,11 @@ public static class CustomCosmeticsLayers
         }
         try
         {
+            CustomCosmeticsLayerOwner owner = cosmeticsLayer.gameObject.GetComponent<CustomCosmeticsLayerOwner>();
+            if (owner == null)
+                owner = cosmeticsLayer.gameObject.AddComponent<CustomCosmeticsLayerOwner>();
+            owner.CosmeticsLayer = cosmeticsLayer;
+            owner.VisorInstanceId = cosmeticsLayer.visor.GetInstanceID();
             return layers[cosmeticsLayer.GetInstanceID()] = new CustomCosmeticsLayer(cosmeticsLayer);
         }
         catch (Exception e)
@@ -73,16 +78,41 @@ public static class CustomCosmeticsLayers
 
     public static void Unregister(CosmeticsLayer cosmeticsLayer)
     {
-        if (cosmeticsLayer == null)
+        // Unity の破棄済みオブジェクトは == null だが参照は残る。OnDestroy から外せるように is null だけ見る。
+        if (cosmeticsLayer is null)
             return;
 
         layers.Remove(cosmeticsLayer.GetInstanceID());
-        if (cosmeticsLayer.visor != null)
+        TryRemoveVisorEntries(cosmeticsLayer);
+    }
+
+    internal static void Unregister(CosmeticsLayer cosmeticsLayer, int visorInstanceId)
+    {
+        // 親の OnDestroy 時点で visor が先に破棄されても、所有者が保持したIDで解除する。
+        if (cosmeticsLayer is null)
+            return;
+
+        layers.Remove(cosmeticsLayer.GetInstanceID());
+        if (visorInstanceId != 0)
         {
-            int visorId = cosmeticsLayer.visor.GetInstanceID();
-            visorLayer1s.Remove(visorId);
-            visorLayer2s.Remove(visorId);
+            visorLayer1s.Remove(visorInstanceId);
+            visorLayer2s.Remove(visorInstanceId);
         }
+        else
+            TryRemoveVisorEntries(cosmeticsLayer);
+    }
+
+    private static void TryRemoveVisorEntries(CosmeticsLayer cosmeticsLayer)
+    {
+        // 破棄済みなら visor に触れない（?. は Unity の偽 null を見ない）。
+        if (cosmeticsLayer == null)
+            return;
+        VisorLayer visor = cosmeticsLayer.visor;
+        if (visor == null)
+            return;
+        int visorId = visor.GetInstanceID();
+        visorLayer1s.Remove(visorId);
+        visorLayer2s.Remove(visorId);
     }
 
     public static void RemoveDestroyedEntries()
@@ -96,18 +126,33 @@ public static class CustomCosmeticsLayers
     {
         var keepLayerIds = new HashSet<int>();
         var keepVisorIds = new HashSet<int>();
+        var allPlayerLayerIds = new HashSet<int>();
         if (PlayerControl.AllPlayerControls != null)
         {
             foreach (var player in PlayerControl.AllPlayerControls)
             {
                 if (player == null || player.cosmetics == null)
                     continue;
+                allPlayerLayerIds.Add(player.cosmetics.GetInstanceID());
                 if (player.Data != null && player.Data.Disconnected)
                     continue;
                 keepLayerIds.Add(player.cosmetics.GetInstanceID());
                 if (player.cosmetics.visor != null)
                     keepVisorIds.Add(player.cosmetics.visor.GetInstanceID());
             }
+        }
+
+        // プレイヤーに属さない生存レイヤーはロビープレビューなので残す
+        foreach (var entry in layers)
+        {
+            if (allPlayerLayerIds.Contains(entry.Key))
+                continue;
+            var cosmeticsLayer = entry.Value != null ? entry.Value.cosmeticsLayer : null;
+            if (cosmeticsLayer == null)
+                continue;
+            keepLayerIds.Add(entry.Key);
+            if (cosmeticsLayer.visor != null)
+                keepVisorIds.Add(cosmeticsLayer.visor.GetInstanceID());
         }
 
         RemoveLayerEntries(entry => !keepLayerIds.Contains(entry.Key));
@@ -125,12 +170,9 @@ public static class CustomCosmeticsLayers
             removeIds ??= new List<int>();
             removeIds.Add(entry.Key);
             var layer = entry.Value;
-            if (layer?.cosmeticsLayer?.visor != null)
-            {
-                int visorId = layer.cosmeticsLayer.visor.GetInstanceID();
-                visorLayer1s.Remove(visorId);
-                visorLayer2s.Remove(visorId);
-            }
+            if (layer != null && layer.ModdedCosmetics != null)
+                UnityEngine.Object.Destroy(layer.ModdedCosmetics);
+            TryRemoveVisorEntries(layer != null ? layer.cosmeticsLayer : null);
         }
         if (removeIds == null)
             return;
@@ -170,6 +212,21 @@ public static class CustomCosmeticsLayers
             visorLayers.Remove(id);
     }
 }
+
+/// <summary>
+/// 親 CosmeticsLayer の破棄を監視する。子の hat/visor の破棄では登録を解除しない。
+/// </summary>
+internal sealed class CustomCosmeticsLayerOwner : MonoBehaviour
+{
+    public CosmeticsLayer CosmeticsLayer;
+    public int VisorInstanceId;
+
+    private void OnDestroy()
+    {
+        CustomCosmeticsLayers.Unregister(CosmeticsLayer, VisorInstanceId);
+    }
+}
+
 public class CustomCosmeticsLayer
 {
     public CosmeticsLayer cosmeticsLayer;

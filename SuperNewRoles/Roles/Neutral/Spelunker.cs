@@ -133,13 +133,10 @@ public class SpelunkerAbility : AbilityBase
     private void CheckVentDeath()
     {
         Vector2 playerPos = ExPlayerControl.LocalPlayer.transform.position;
-        if (_isVentChecked)
-        {
-            if (_checkedVent != null && ModHelpers.IsPositionDistance(_checkedVent.transform.position, playerPos, _checkedVent.UsableDistance))
-                return;
-            _checkedVent = null;
-            _isVentChecked = false;
-        }
+        // 同じベント圏内なら全ベント走査しない。圏を完全に出るまで再抽選しない（重なりがあっても1回）。
+        if (_isVentChecked && _checkedVent != null &&
+            ModHelpers.IsPositionDistance(_checkedVent.transform.position, playerPos, _checkedVent.UsableDistance))
+            return;
 
         Vent currentVent = null;
         bool nearVent = false;
@@ -163,13 +160,13 @@ public class SpelunkerAbility : AbilityBase
             if (!_isVentChecked)
             {
                 _isVentChecked = true;
-                _checkedVent = currentVent;
                 if (ModHelpers.IsSuccessChance(Data.VentDeathChance))
                 {
                     ExPlayerControl.LocalPlayer.RpcCustomDeath(CustomDeathType.Suicide);
                     FinalStatusManager.RpcSetFinalStatus(ExPlayerControl.LocalPlayer, FinalStatus.SpelunkerVentDeath);
                 }
             }
+            _checkedVent = currentVent;
         }
         else
         {

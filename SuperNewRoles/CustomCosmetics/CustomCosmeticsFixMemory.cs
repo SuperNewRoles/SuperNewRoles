@@ -6,11 +6,6 @@ namespace SuperNewRoles.CustomCosmetics;
 // カスタムコスメ静的辞書の掃除。生存中プレイヤーのレイヤーは残す。
 public static class CustomCosmeticsFixMemory
 {
-    public static void Remove(CosmeticsLayer cosmeticsLayer)
-    {
-        CustomCosmeticsLayers.Unregister(cosmeticsLayer);
-    }
-
     public static void CleanupDestroyed()
     {
         CustomCosmeticsLayers.RemoveDestroyedEntries();

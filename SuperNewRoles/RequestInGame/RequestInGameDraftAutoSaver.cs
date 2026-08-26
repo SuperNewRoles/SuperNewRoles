@@ -72,10 +72,11 @@ public class RequestInGameDraftAutoSaver : MonoBehaviour
 
     private void FlushToDisk()
     {
-        if (!initialized || !savingEnabled)
+        if (!initialized)
             return;
 
-        SaveIfChanged();
+        if (savingEnabled)
+            SaveIfChanged();
         RequestInGameDraftStore.Flush();
     }
 

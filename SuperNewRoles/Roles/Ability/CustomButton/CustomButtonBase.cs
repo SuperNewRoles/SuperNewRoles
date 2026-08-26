@@ -209,6 +209,10 @@ public abstract class CustomButtonBase : AbilityBase
             DecreaseTimer();
         }
 
+        bool isEffectActive = buttonEffect?.isEffectActive ?? false;
+        if (isEffectActive)
+            buttonEffect.OnFixedUpdate(actionButton);
+
         if (!active)
             return;
 
@@ -222,7 +226,6 @@ public abstract class CustomButtonBase : AbilityBase
         bool isCoolingDown = Timer > 0f;
         bool canUseByCondition = CheckIsAvailable(); // クールダウン以外の使用条件をチェック
         bool canUseNow = !isCoolingDown && canUseByCondition;
-        bool isEffectActive = buttonEffect?.isEffectActive ?? false;
 
         // --- パイチャートと数字の表示更新 ---
         // この処理は常に呼び出す。不要な場合はSetCoolDownメソッド内部で非表示になる。
@@ -299,12 +302,6 @@ public abstract class CustomButtonBase : AbilityBase
 
         // --- その他のUI更新 ---
         UpdateText(); // 残り回数などのテキストを更新
-
-        // IButtonEffectが作動中なら、その更新処理を呼び出す
-        if (isEffectActive)
-        {
-            buttonEffect.OnFixedUpdate(actionButton);
-        }
     }
 
     private void UpdateText()

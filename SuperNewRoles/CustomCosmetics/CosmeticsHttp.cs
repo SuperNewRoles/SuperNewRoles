@@ -17,6 +17,10 @@ namespace SuperNewRoles.CustomCosmetics;
 /// </summary>
 public static class CosmeticsHttp
 {
+    // HTTP/2 SETTINGS_MAX_CONCURRENT_STREAMS の一般的な上限に合わせる。TCP 本数ではない。
+    public const int Http2MaxConcurrentDownloads = 100;
+    // CosmeticsHttpRequest はレスポンス全体を byte[] に保持するため、利用側の実行数は固定上限にする。
+    public const int BufferedResponseMaxConcurrentDownloads = 8;
     public const int DefaultMaxConcurrentDownloads = 30;
     public const int AndroidTcpFallbackMaxConcurrentDownloads = 15;
     public const int AndroidHttp11MaxConnectionsPerServer = 8;
@@ -37,7 +41,7 @@ public static class CosmeticsHttp
         {
             PooledClient = CreatePooledClient(
                 ModHelpers.IsAndroid(),
-                ignoreSslErrors: true,
+                ignoreSslErrors: false,
                 out bool usedSocketsHandler,
                 out bool enableMultipleHttp2Connections);
             IsSocketsHttpHandlerAvailable = usedSocketsHandler;
@@ -57,10 +61,10 @@ public static class CosmeticsHttp
 
     public static int GetMaxConcurrentDownloads(bool isAndroid, bool socketsHttpHandlerAvailable)
     {
-        // HTTP/2 多重化時はストリーム数の上限。TCP を 30 本増やすわけではない。
+        // HTTP/2 多重化時はストリーム数の上限。TCP を増やすわけではない。
         // 未対応時の Android は従来どおり 15 本の TCP に抑える。
         if (socketsHttpHandlerAvailable)
-            return DefaultMaxConcurrentDownloads;
+            return Http2MaxConcurrentDownloads;
         return isAndroid ? AndroidTcpFallbackMaxConcurrentDownloads : DefaultMaxConcurrentDownloads;
     }
 
@@ -159,24 +163,79 @@ public sealed class CosmeticsHttpRequest
 
     public IEnumerator SendWebRequest()
     {
+        Task task = SendAsync();
+        while (!task.IsCompleted)
+            yield return null;
+    }
+
+    /// <summary>
+    /// Unity の同期コンテキスト無しでも完了できる GET。スプラッシュ前のプリフェッチ用。
+    /// </summary>
+    public async Task SendAsync()
+    {
         HttpClient client = CosmeticsHttp.GetPooledClient();
         if (client != null)
         {
-            Task task = SendWithHttpClientAsync(client);
-            while (!task.IsCompleted)
-                yield return null;
-
-            if (task.Status == TaskStatus.RanToCompletion)
-                yield break;
-
-            Exception inner = task.Exception?.InnerException ?? task.Exception;
-            string reason = task.IsCanceled
-                ? "The request was canceled or timed out."
-                : inner?.Message ?? "The request failed without an exception.";
-            Logger.Warning($"Cosmetics HTTP: HttpClient failed, SNRHttpClient fallback. {reason}");
+            try
+            {
+                await SendWithHttpClientAsync(client).ConfigureAwait(false);
+                return;
+            }
+            catch (Exception ex)
+            {
+                Exception inner = ex.InnerException ?? ex;
+                bool timedOut = inner is OperationCanceledException;
+                string reason = timedOut
+                    ? "The request was canceled or timed out."
+                    : inner.Message ?? "The request failed without an exception.";
+                Logger.Warning($"Cosmetics HTTP: HttpClient failed{(timedOut ? " (timeout, skip SNR fallback)" : ", SNRHttpClient fallback")}. {reason}");
+                if (timedOut)
+                {
+                    error = reason;
+                    return;
+                }
+            }
         }
 
-        yield return SendWithSnrHttpClient();
+        await SendWithSnrHttpClientAsync().ConfigureAwait(false);
+    }
+
+    /// <summary>
+    /// Unity 無しで IEnumerator を進める。Current が入れ子の IEnumerator ならそれも駆動する。
+    /// </summary>
+    public static async Task PumpEnumeratorAsync(IEnumerator enumerator)
+    {
+        while (true)
+        {
+            bool hasNext;
+            try
+            {
+                hasNext = enumerator.MoveNext();
+            }
+            catch (Exception ex)
+            {
+                Logger.Warning($"Cosmetics HTTP: SNRHttpClient pump failed. {ex.Message}");
+                return;
+            }
+
+            if (!hasNext)
+                return;
+
+            if (enumerator.Current is IEnumerator nested)
+                await PumpEnumeratorAsync(nested).ConfigureAwait(false);
+            else
+                // Task.Yield() は待ち時間を作らず、バックグラウンド実行時にビジーループになる。
+                await Task.Delay(10).ConfigureAwait(false);
+        }
+    }
+
+    /// <summary>
+    /// ホスト到達プローブ。HTTP ステータスがあれば到達（4xx/5xx 含む）。
+    /// error 空かつ responseCode 0（未駆動の SNR フォールバック）は到達扱いにしない。
+    /// </summary>
+    public static bool IsHostProbeReachable(long responseCode, string error)
+    {
+        return responseCode > 0;
     }
 
     private async Task SendWithHttpClientAsync(HttpClient client)
@@ -220,16 +279,21 @@ public sealed class CosmeticsHttpRequest
         }
     }
 
-    private IEnumerator SendWithSnrHttpClient()
+    private async Task SendWithSnrHttpClientAsync()
     {
         SNRHttpClient fallback = SNRHttpClient.Get(url);
         fallback.timeout = timeout;
         fallback.ignoreSslErrors = ignoreSslErrors;
         fallback.maxResponseBytes = maxResponseBytes;
         fallback.downloadProgressChanged = downloadProgressChanged;
-        yield return fallback.SendWebRequest();
+
+        // SendWebRequest 自体が IEnumerator なので、入れ子にせず直接駆動する。
+        await PumpEnumeratorAsync(fallback.SendWebRequest()).ConfigureAwait(false);
+
         error = fallback.error;
         responseCode = fallback.responseCode;
         downloadHandler.data = fallback.downloadHandler?.data;
+        if (responseCode == 0 && string.IsNullOrEmpty(error))
+            error = "SNRHttpClient fallback returned no response.";
     }
 }

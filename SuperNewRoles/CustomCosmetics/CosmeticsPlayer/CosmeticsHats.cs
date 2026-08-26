@@ -434,8 +434,4 @@ public class CustomHatLayer : MonoBehaviour
         return BackLayer != null && FrontLayer != null;
     }
 
-    private void OnDestroy()
-    {
-        CustomCosmeticsLayers.Unregister(CosmeticLayer);
-    }
 }

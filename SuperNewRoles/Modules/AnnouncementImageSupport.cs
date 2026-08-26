@@ -146,7 +146,10 @@ internal static class AnnouncementImageCache
         }
 
         OwnedSprites.Remove(id);
+        Texture2D texture = sprite.texture;
         UnityEngine.Object.Destroy(sprite);
+        if (texture != null)
+            UnityEngine.Object.Destroy(texture);
     }
     private static readonly Dictionary<string, string> MediaPathCache = new(StringComparer.Ordinal);
     private static readonly Regex MarkdownImageRegex = new Regex("!\\[(?<alt>[^\\]]*)\\]\\((?<url>[^\\)]+)\\)", RegexOptions.Compiled);
