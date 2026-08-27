@@ -113,18 +113,48 @@ public static class CustomOptionManager
         if (changed)
             SnrSettingChangeNotifier.NotifyOptionChanged(option, SnrSettingChangeNotifier.ShouldPlayRemoteSound());
     }
-    [CustomRPC]
+    [CustomRPC(onlyOtherPlayer: true)]
     public static void _RpcSyncOptionsAll(Dictionary<ushort, byte> options, bool resetToDefault)
     {
+        // ホストは送信元なので再適用しない。
+        // 試合開始同期の先頭チャンクは resetToDefault 付きで、自分宛 RPC やローカル実行に
+        // 乗ると保存済み設定が既定値へ戻る。
+        if (ShouldIgnoreIncomingOptionSync())
+            return;
+
         Logger.Info("RpcSyncOptionsAll");
+        ApplySyncedOptions(CustomOptions, options, resetToDefault);
+    }
+
+    internal static bool ShouldIgnoreIncomingOptionSync()
+    {
+        try
+        {
+            return AmongUsClient.Instance != null && AmongUsClient.Instance.AmHost;
+        }
+        catch
+        {
+            return false;
+        }
+    }
+
+    internal static void ApplySyncedOptions(IList<CustomOption> customOptions, Dictionary<ushort, byte> options, bool resetToDefault)
+    {
+        if (customOptions == null)
+            return;
+
         if (resetToDefault)
         {
-            foreach (var option in CustomOptions)
+            foreach (var option in customOptions)
             {
                 option.UpdateSelection(option.DefaultSelection);
             }
         }
-        foreach (var option in CustomOptions)
+
+        if (options == null)
+            return;
+
+        foreach (var option in customOptions)
         {
             if (options.TryGetValue(option.IndexId, out var selection))
                 option.UpdateSelection(selection);
