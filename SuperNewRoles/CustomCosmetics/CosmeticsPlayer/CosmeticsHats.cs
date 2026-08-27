@@ -433,4 +433,5 @@ public class CustomHatLayer : MonoBehaviour
     {
         return BackLayer != null && FrontLayer != null;
     }
+
 }

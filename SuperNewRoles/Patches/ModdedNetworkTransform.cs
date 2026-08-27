@@ -271,7 +271,6 @@ public static class ModdedNetworkTransform
             if (directionChangedSignificantly)
             {
                 // Direction Change: Send current buffer immediately, reset timers
-                Logger.Info($"Direction Change: sendTimer = {sendTimer}, SEND_TIMER_THRESHOLD = {SEND_TIMER_THRESHOLD}, {(SEND_TIMER_THRESHOLD - sendTimer) / 3f}");
                 sendTimer += (SEND_TIMER_THRESHOLD - sendTimer) / 2f;
                 // Add data for the new direction immediately after sending old buffer
                 movementBuffer.Add(new MovementData { position = player.transform.position, velocity = currentVelocity });

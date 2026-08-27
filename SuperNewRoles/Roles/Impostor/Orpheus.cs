@@ -280,7 +280,6 @@ public sealed class OrpheusMainAbility : AbilityBase
         UnregisterSharedListeners();
         _dieListener = DieEvent.Instance.AddListener(OnDie);
         _wrapListener = WrapUpEvent.Instance.AddListener(OnWrapUp);
-        _hudUpdateListener = HudUpdateEvent.Instance.AddListener(UpdateRitualCorpseReportability);
         _fixedUpdateListener = FixedUpdateEvent.Instance.AddListener(UpdateRitualCorpseReportability);
     }
 

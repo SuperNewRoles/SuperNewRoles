@@ -152,6 +152,7 @@ public static class HelpMenuObjectManager
                 CurrentCategory = categories[index];
                 CurrentCategory.Show(rightContainer);
                 CurrentCategory.UpdateShow();
+                HelpMenuClipMaterialController.MarkDirty();
 
                 // 選択されたボタンのSelectedを表示する
                 selectedObject.SetActive(true);
@@ -245,6 +246,8 @@ public static class HelpMenuObjectManager
         // フェード対象へ含めるため、ここで改めてフェードインを開始する。
         if (needsFadeIn)
             fadeCoroutine.StartFadeIn(helpMenuObject, 0.115f);
+
+        HelpMenuClipMaterialController.MarkDirty();
 
         var activeIndicator = HelpMenusHudManagerStartPatch.helpMenuButton?.transform.Find("active");
         if (activeIndicator != null)
@@ -351,6 +354,7 @@ public static class HelpMenuObjectManager
 
         CurrentCategory.Show(rightContainer);
         CurrentCategory.UpdateShow();
+        HelpMenuClipMaterialController.MarkDirty();
         if (selectedButtons != null
             && selectedButtons.TryGetValue(CurrentCategory.Name, out var selectedObject))
         {
@@ -393,6 +397,7 @@ public static class HelpMenuObjectManager
                     if (CurrentCategory != null)
                     {
                         CurrentCategory.Show(rightContainer);
+                        HelpMenuClipMaterialController.MarkDirty();
                         if (selectedButtons.TryGetValue(CurrentCategory.Name, out var newSelectedObject))
                             newSelectedObject.SetActive(true);
                     }
@@ -412,6 +417,7 @@ public static class HelpMenuObjectManager
                     if (CurrentCategory != null)
                     {
                         CurrentCategory.Show(rightContainer);
+                        HelpMenuClipMaterialController.MarkDirty();
                         if (selectedButtons.TryGetValue(CurrentCategory.Name, out var newSelectedObject))
                             newSelectedObject.SetActive(true);
                     }
@@ -530,19 +536,19 @@ public static class HelpMenuObjectManager
 }
 public class HelpMenuObjectComponent : MonoBehaviour
 {
-    public void Start()
+    public void OnEnable()
     {
-        HelpMenuClipMaterialController.Refresh(gameObject, retryShaderLoad: true);
-    }
-
-    public void LateUpdate()
-    {
-        HelpMenuClipMaterialController.Refresh(gameObject);
+        HelpMenuClipMaterialController.Attach(gameObject);
     }
 
     public void OnClick()
     {
         HelpMenuObjectManager.CurrentCategory?.OnUpdate();
+    }
+
+    public void OnDisable()
+    {
+        HelpMenuClipMaterialController.Detach(gameObject);
     }
 
     public void OnDestroy()

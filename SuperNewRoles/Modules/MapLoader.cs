@@ -73,6 +73,7 @@ public static class MapLoader
         if (prefabs.Count <= (int)map)
         {
             Logger.Error($"Out of range: {map}");
+            loadingMaps.Remove(map);
             yield break;
         }
         AssetReference ship = prefabs[(int)map];
@@ -152,6 +153,7 @@ public static class MapLoader
         if (ship.Asset == null)
         {
             SuperNewRoles.Logger.Error($"Failed to load asset [{ship.AssetGUID}] after 10 retries. Ignoring...");
+            loadingMaps.Remove(map);
         }
         if (ship.Asset != null)
         {
@@ -220,6 +222,5 @@ public static class MapLoader
         if (fungle is not null)
             fungle = null;
         loadedMaps.Clear();
-        Resources.UnloadUnusedAssets();
     }
 }

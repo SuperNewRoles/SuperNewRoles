@@ -8,6 +8,8 @@ namespace SuperNewRoles;
 public static class Encryption
 {
     private static byte[]? Key;
+    private static Aes? sharedAes;
+    private static readonly object AesLock = new();
     private static readonly string rsaPublicKey = @"
     -----BEGIN PUBLIC KEY-----
     MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEApX20mtxp3Mvx6/Oz5ETG
@@ -23,6 +25,11 @@ public static class Encryption
     public static void SetEncryptKey()
     {
         Key = RandomByte(16);
+        lock (AesLock)
+        {
+            EnsureSharedAesNoLock();
+            sharedAes.Key = Key;
+        }
         SuperNewRolesPlugin.Instance.Log.LogInfo(EncryptKey());
     }
 
@@ -43,15 +50,32 @@ public static class Encryption
     //文章をAESで暗号化して返却する
     public static string Encrypt(string plainText){
         if (BranchConfig.IsBeta) return plainText;
-        using Aes aesAlg = Aes.Create();
-        aesAlg.Key = Key;
-        aesAlg.IV = RandomByte(16);
-        ICryptoTransform encryptor = aesAlg.CreateEncryptor(aesAlg.Key, aesAlg.IV);
-        using MemoryStream ms = new();
-        using CryptoStream cs = new(ms, encryptor, CryptoStreamMode.Write);
-        byte[] plainBytes = System.Text.Encoding.UTF8.GetBytes(plainText);
-        cs.Write(plainBytes, 0, plainBytes.Length);
-        cs.FlushFinalBlock();
-        return $"$SNRST${Convert.ToBase64String(aesAlg.IV)}{Convert.ToBase64String(ms.ToArray())}$SNRET$";
+        lock (AesLock)
+        {
+            EnsureSharedAesNoLock();
+            sharedAes.Key = Key;
+            sharedAes.IV = RandomByte(16);
+            using ICryptoTransform encryptor = sharedAes.CreateEncryptor(sharedAes.Key, sharedAes.IV);
+            using MemoryStream ms = new();
+            using (CryptoStream cs = new(ms, encryptor, CryptoStreamMode.Write))
+            {
+                byte[] plainBytes = System.Text.Encoding.UTF8.GetBytes(plainText);
+                cs.Write(plainBytes, 0, plainBytes.Length);
+                cs.FlushFinalBlock();
+            }
+            return $"$SNRST${Convert.ToBase64String(sharedAes.IV)}{Convert.ToBase64String(ms.ToArray())}$SNRET$";
+        }
+    }
+
+    private static void EnsureSharedAesNoLock()
+    {
+        if (sharedAes != null)
+            return;
+
+        sharedAes = Aes.Create();
+        sharedAes.Mode = CipherMode.CBC;
+        sharedAes.Padding = PaddingMode.PKCS7;
+        if (Key != null)
+            sharedAes.Key = Key;
     }
 }

@@ -224,6 +224,7 @@ internal static class SquidSharedState
 {
     private static readonly Dictionary<byte, float> NoKillRemaining = new();
     private static readonly Dictionary<byte, float> ObstructionRemaining = new();
+    private static readonly List<byte> ExpireKeys = new();
 
     private static EventListener _fixedUpdate;
     private static EventListener<MeetingStartEventData> _meetingStart;
@@ -264,22 +265,22 @@ internal static class SquidSharedState
 
     private static void OnFixedUpdate()
     {
-        if (NoKillRemaining.Count != 0)
-        {
-            foreach (var key in new List<byte>(NoKillRemaining.Keys))
-            {
-                NoKillRemaining[key] -= Time.fixedDeltaTime;
-                if (NoKillRemaining[key] <= 0f) NoKillRemaining.Remove(key);
-            }
-        }
+        // キル不可時間と妨害時間を減算
+        TickRemaining(NoKillRemaining);
+        TickRemaining(ObstructionRemaining);
+    }
 
-        if (ObstructionRemaining.Count != 0)
+    private static void TickRemaining(Dictionary<byte, float> remaining)
+    {
+        if (remaining.Count == 0) return;
+        ExpireKeys.Clear();
+        foreach (var key in remaining.Keys)
+            ExpireKeys.Add(key);
+        for (int i = 0; i < ExpireKeys.Count; i++)
         {
-            foreach (var key in new List<byte>(ObstructionRemaining.Keys))
-            {
-                ObstructionRemaining[key] -= Time.fixedDeltaTime;
-                if (ObstructionRemaining[key] <= 0f) ObstructionRemaining.Remove(key);
-            }
+            byte key = ExpireKeys[i];
+            remaining[key] -= Time.fixedDeltaTime;
+            if (remaining[key] <= 0f) remaining.Remove(key);
         }
     }
 

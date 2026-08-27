@@ -79,6 +79,7 @@ public class SpelunkerAbility : AbilityBase
 
     // Spelunker specific variables
     private bool _isVentChecked;
+    private Vent _checkedVent;
     private float _commsDeathTimer;
     private float _powerdownDeathTimer;
     private Vector2? _deathPosition;
@@ -131,6 +132,12 @@ public class SpelunkerAbility : AbilityBase
 
     private void CheckVentDeath()
     {
+        Vector2 playerPos = ExPlayerControl.LocalPlayer.transform.position;
+        // 同じベント圏内なら全ベント走査しない。圏を完全に出るまで再抽選しない（重なりがあっても1回）。
+        if (_isVentChecked && _checkedVent != null &&
+            ModHelpers.IsPositionDistance(_checkedVent.transform.position, playerPos, _checkedVent.UsableDistance))
+            return;
+
         Vent currentVent = null;
         bool nearVent = false;
 
@@ -138,7 +145,8 @@ public class SpelunkerAbility : AbilityBase
         {
             foreach (var vent in ShipStatus.Instance.AllVents)
             {
-                if (Vector2.Distance(vent.transform.position, ExPlayerControl.LocalPlayer.transform.position) < vent.UsableDistance)
+                if (vent == null) continue;
+                if (ModHelpers.IsPositionDistance(vent.transform.position, playerPos, vent.UsableDistance))
                 {
                     currentVent = vent;
                     nearVent = true;
@@ -158,10 +166,12 @@ public class SpelunkerAbility : AbilityBase
                     FinalStatusManager.RpcSetFinalStatus(ExPlayerControl.LocalPlayer, FinalStatus.SpelunkerVentDeath);
                 }
             }
+            _checkedVent = currentVent;
         }
         else
         {
             _isVentChecked = false;
+            _checkedVent = null;
         }
     }
 
