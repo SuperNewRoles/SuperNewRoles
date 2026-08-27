@@ -536,19 +536,19 @@ public static class HelpMenuObjectManager
 }
 public class HelpMenuObjectComponent : MonoBehaviour
 {
-    public void Start()
+    public void OnEnable()
     {
-        HelpMenuClipMaterialController.Refresh(gameObject, retryShaderLoad: true);
-    }
-
-    public void LateUpdate()
-    {
-        HelpMenuClipMaterialController.Refresh(gameObject);
+        HelpMenuClipMaterialController.Attach(gameObject);
     }
 
     public void OnClick()
     {
         HelpMenuObjectManager.CurrentCategory?.OnUpdate();
+    }
+
+    public void OnDisable()
+    {
+        HelpMenuClipMaterialController.Detach(gameObject);
     }
 
     public void OnDestroy()
