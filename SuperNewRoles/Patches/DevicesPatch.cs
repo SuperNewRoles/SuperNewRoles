@@ -34,6 +34,8 @@ public static class DevicesPatch
     public static Dictionary<string, HashSet<byte>> UsePlayers = new();
     public static Dictionary<string, float> DeviceTimers = new();
     public static float SyncTimer;
+    private static readonly HashSet<int> OverlapPlayerIds = new();
+    private static readonly List<int> ColorIds = new();
     public enum DeviceType
     {
         Admin,
@@ -213,6 +215,7 @@ public static class DevicesPatch
 
             bool canSeeImpostorIcon = advancedAdminAbility?.Data.distinctionImpostor ?? false;
             bool canSeeDeadIcon = advancedAdminAbility?.Data.distinctionDead ?? false;
+            var blackHatHacker = ExPlayerControl.LocalPlayer.GetAbility<BlackHatHackerAbility>();
 
             for (int i = 0; i < __instance.CountAreas.Length; i++)
             {
@@ -235,10 +238,10 @@ public static class DevicesPatch
                     continue;
                 }
 
-                HashSet<int> hashSet = new();
+                OverlapPlayerIds.Clear();
+                ColorIds.Clear();
                 int num = plainShipRoom.roomArea.OverlapCollider(__instance.filter, __instance.buffer);
                 int count = 0;
-                List<int> colors = new();
                 int numDeadIcons = 0;
                 int numImpostorIcons = 0;
 
@@ -251,7 +254,6 @@ public static class DevicesPatch
                                 var deadPlayerData = ExPlayerControl.ById(deadBodyComponent.ParentId);
 
                                 // BlackHatHackerのフィルター：感染していない死体は表示しない
-                                var blackHatHacker = ExPlayerControl.LocalPlayer.GetAbility<BlackHatHackerAbility>();
                                 if (DevicesPatch.DontCountBecausePortableAdmin && blackHatHacker != null && blackHatHacker.AdminAbility != null &&
                                     !blackHatHacker.InfectedPlayerId.Contains(deadBodyComponent.ParentId)) continue;
 
@@ -261,7 +263,7 @@ public static class DevicesPatch
                                 }
 
                                 count++;
-                                colors.Add(deadPlayerData.Player.CurrentOutfit.ColorId);
+                                ColorIds.Add(deadPlayerData.Player.CurrentOutfit.ColorId);
                             }
                             else
                             {
@@ -269,16 +271,15 @@ public static class DevicesPatch
                                 if (component?.Player == null) continue;
                                 if (component.Data == null || component.Data.Disconnected || component.Data.IsDead) continue;
                                 if (!__instance.showLivePlayerPosition && component.AmOwner) continue;
-                                if (!hashSet.Add(component.PlayerId)) continue;
+                                if (!OverlapPlayerIds.Add(component.PlayerId)) continue;
 
                                 if (((ExPlayerControl)component).GetAbility<HideInAdminAbility>()?.IsHideInAdmin ?? false) continue;
 
                                 // BlackHatHackerのフィルター
-                                var blackHatHacker = ExPlayerControl.LocalPlayer.GetAbility<BlackHatHackerAbility>();
                                 if (DevicesPatch.DontCountBecausePortableAdmin && blackHatHacker != null && blackHatHacker.AdminAbility != null &&
                                     !blackHatHacker.InfectedPlayerId.Contains(component.PlayerId) && !component.AmOwner) continue;
                                 if (DevicesPatch.DontCountBecausePortableAdmin && blackHatHacker != null && blackHatHacker.AdminAbility != null && BlackHatHacker.BlackHatHackerIsAdminColor)
-                                    colors.Add(component.Player.CurrentOutfit.ColorId);
+                                    ColorIds.Add(component.Player.CurrentOutfit.ColorId);
                                 count++;
                                 if (canSeeImpostorIcon && component.IsImpostor())
                                 {
@@ -299,12 +300,12 @@ public static class DevicesPatch
                         {
                             foreach (PoolableBehavior icon in counterArea.myIcons)
                             {
-                                if (colors.Count <= 0) continue;
+                                if (ColorIds.Count <= 0) continue;
                                 Material material = icon.GetComponent<SpriteRenderer>().material;
-                                Color iconColor = Palette.PlayerColors[colors.FirstOrDefault()];
+                                Color iconColor = Palette.PlayerColors[ColorIds[0]];
                                 material.SetColor(PlayerMaterial.BackColor, iconColor);
                                 material.SetColor(PlayerMaterial.BodyColor, iconColor);
-                                colors.RemoveAt(0);
+                                ColorIds.RemoveAt(0);
                             }
                         }
             }

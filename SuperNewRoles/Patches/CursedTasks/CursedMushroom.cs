@@ -82,6 +82,17 @@ public static class CursedMushroom
 
         private static readonly Dictionary<int, TargetCacheEntry> TargetCache = new();
 
+        [HarmonyPatch(typeof(AmongUsClient), nameof(AmongUsClient.CoStartGame))]
+        public static class CursedMushroomCoStartGamePatch
+        {
+            public static void Postfix()
+            {
+                TargetCache.Clear();
+                AlivePlayersCache.Clear();
+                _alivePlayersCacheFixedTime = -1f;
+            }
+        }
+
         private static void EnsureAlivePlayersCache()
         {
             if (Time.fixedTime - _alivePlayersCacheFixedTime <= 0.1f) return;

@@ -80,10 +80,14 @@ class PlayerArrowsAbility : AbilityBase
 
     private void OnFixedUpdate()
     {
-        IEnumerable<ExPlayerControl> currentTargetPlayers = getPlayers?.Invoke() ?? new List<ExPlayerControl>();
+        IEnumerable<ExPlayerControl> currentTargetPlayers = getPlayers?.Invoke() ?? System.Array.Empty<ExPlayerControl>();
         // キャッシュしたセットをクリアして再利用
         targetPlayersSetCache.Clear();
-        targetPlayersSetCache.UnionWith(currentTargetPlayers);
+        foreach (ExPlayerControl player in currentTargetPlayers)
+        {
+            if (player != null)
+                targetPlayersSetCache.Add(player);
+        }
         // キャッシュしたリストをクリリングして再利用
         playersToRemoveCache.Clear();
 
@@ -103,7 +107,7 @@ class PlayerArrowsAbility : AbilityBase
         }
 
         // 2. 各ターゲットプレイヤーに矢印を割り当てる/更新する
-        foreach (PlayerControl targetPlayer in currentTargetPlayers)
+        foreach (ExPlayerControl targetPlayer in targetPlayersSetCache)
         {
             if (targetPlayer == null) continue;
             if (activeArrows.TryGetValue(targetPlayer, out Arrow arrow))

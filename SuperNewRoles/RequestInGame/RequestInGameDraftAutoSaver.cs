@@ -3,10 +3,9 @@ using UnityEngine;
 
 namespace SuperNewRoles.RequestInGame;
 
+// 報告画面の入力変化をメモリへ即保存し、閉じる／一時停止時だけディスクへ Flush する。
 public class RequestInGameDraftAutoSaver : MonoBehaviour
 {
-    private const float MinSaveIntervalSeconds = 0.3f;
-
     private RequestInGameType requestInGameType;
     private TextBoxTMP titleTextBox;
     private TextBoxTMP descriptionTextBox;
@@ -14,7 +13,6 @@ public class RequestInGameDraftAutoSaver : MonoBehaviour
     private TextBoxTMP roleTextBox;
     private TextBoxTMP timingTextBox;
     private RequestInGameDraft lastDraft = RequestInGameDraft.Empty;
-    private float lastSaveAt;
     private bool initialized;
     private bool savingEnabled = true;
 
@@ -54,25 +52,42 @@ public class RequestInGameDraftAutoSaver : MonoBehaviour
         SaveIfChanged();
     }
 
+    // debounce 待ちを待たずディスクへ確定する（誤クローズやアプリ切り替えでも復元できるように）。
     public void OnDestroy()
     {
-        if (!initialized || !savingEnabled)
-            return;
-
-        SaveIfChanged(true);
+        FlushToDisk();
     }
 
-    private void SaveIfChanged(bool force = false)
+    public void OnApplicationPause(bool pauseStatus)
+    {
+        if (pauseStatus)
+            FlushToDisk();
+    }
+
+    public void OnApplicationFocus(bool hasFocus)
+    {
+        if (!hasFocus)
+            FlushToDisk();
+    }
+
+    private void FlushToDisk()
+    {
+        if (!initialized)
+            return;
+
+        if (savingEnabled)
+            SaveIfChanged();
+        RequestInGameDraftStore.Flush();
+    }
+
+    private void SaveIfChanged()
     {
         RequestInGameDraft currentDraft = CreateCurrentDraft();
         if (currentDraft == lastDraft)
             return;
-        if (!force && Time.unscaledTime - lastSaveAt < MinSaveIntervalSeconds)
-            return;
 
         RequestInGameDraftStore.Save(requestInGameType, currentDraft);
         lastDraft = currentDraft;
-        lastSaveAt = Time.unscaledTime;
     }
 
     private RequestInGameDraft CreateCurrentDraft()

@@ -36,10 +36,11 @@ public class BlackHatHackerAbility : AbilityBase
     {
         get
         {
-            List<byte> add = InfectionTimer
-                .Where(x => !_SelfPropagationPlayerId.Contains(x.Key) && IsSelfPropagation(x.Value))
-                .Select(x => x.Key).ToList();
-            _SelfPropagationPlayerId.AddRange(add);
+            foreach (var x in InfectionTimer)
+            {
+                if (!_SelfPropagationPlayerId.Contains(x.Key) && IsSelfPropagation(x.Value))
+                    _SelfPropagationPlayerId.Add(x.Key);
+            }
             return _SelfPropagationPlayerId;
         }
     }
@@ -48,10 +49,11 @@ public class BlackHatHackerAbility : AbilityBase
     {
         get
         {
-            List<byte> check = InfectionTimer
-                .Where(x => !_InfectedPlayerId.Contains(x.Key) && x.Value >= Data.HackInfectiousTime)
-                .Select(x => x.Key).ToList();
-            _InfectedPlayerId.AddRange(check);
+            foreach (var x in InfectionTimer)
+            {
+                if (!_InfectedPlayerId.Contains(x.Key) && x.Value >= Data.HackInfectiousTime)
+                    _InfectedPlayerId.Add(x.Key);
+            }
             return _InfectedPlayerId;
         }
     }

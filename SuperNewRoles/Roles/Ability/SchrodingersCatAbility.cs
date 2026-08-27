@@ -50,9 +50,7 @@ public class SchrodingersCatAbility : AbilityBase
         => ShouldSnapKillerToTarget(killerPos.x, killerPos.y, targetPos.x, targetPos.y);
     internal static bool ShouldSnapKillerToTarget(float killerX, float killerY, float targetX, float targetY)
     {
-        float dx = killerX - targetX;
-        float dy = killerY - targetY;
-        return (dx * dx) + (dy * dy) <= MaxMeleeKillSnapDistance * MaxMeleeKillSnapDistance;
+        return ModHelpers.IsPositionDistance(killerX, killerY, targetX, targetY, MaxMeleeKillSnapDistance);
     }
 
     public SchrodingersCatAbility(SchrodingersCatData data)

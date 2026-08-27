@@ -23,6 +23,9 @@ public abstract class EventTargetBase<T, U> : InternalEventTargetBase<T, EventLi
 
     public void Awake(U obj)
     {
+        if (!HasListeners && _pendingRemoval.Count == 0)
+            return;
+
         _awakeDepth++;
         try
         {
@@ -117,6 +120,9 @@ public abstract class EventTargetBase<T> : InternalEventTargetBase<T, EventListe
 
     public void Awake()
     {
+        if (!HasListeners && _pendingRemoval.Count == 0)
+            return;
+
         _awakeDepth++;
         try
         {
@@ -203,6 +209,7 @@ public abstract class EventTargetBase<T> : InternalEventTargetBase<T, EventListe
 public abstract class InternalEventTargetBase<T, U> : BaseSingleton<T>, IEventTargetBase where T : InternalEventTargetBase<T, U>, new() where U : IEventListener
 {
     protected List<U> listeners { get; set; }
+    public bool HasListeners => listeners != null && listeners.Count > 0;
     protected override void Init()
     {
         listeners = new();

@@ -1,47 +1,44 @@
 using HarmonyLib;
 using SuperNewRoles.Events;
 using SuperNewRoles.Modules.Events.Bases;
+using UnityEngine;
 
 namespace SuperNewRoles.Modules;
 
 public class SaboAndVent
 {
     public static EventListener updateEventListener;
+    private static int _lastUpdateFrame = -1;
+    private static bool _cachedCanUseVent;
+    private static bool _cachedShowVentButtonVanilla;
+    private static bool _cachedCanSabotage;
+    private static bool _cachedShowSaboButtonVanilla;
+    private static bool _cachedIsShowKillButton;
+    private static bool _cachedKillDisabled;
+
     public static void RegisterListener()
     {
         updateEventListener = HudUpdateEvent.Instance.AddListener(SaboAndVentUpdate);
     }
     public static void SaboAndVentUpdate()
     {
-        bool canUseVent = ExPlayerControl.LocalPlayer.CanUseVent();
-        bool showVentButtonVanilla = ExPlayerControl.LocalPlayer.ShowVanillaVentButton();
-        bool canSabotage = ExPlayerControl.LocalPlayer.CanSabotage();
-        bool showSaboButtonVanilla = ExPlayerControl.LocalPlayer.ShowVanillaSabotageButton();
-        bool isShowKillButton = ExPlayerControl.LocalPlayer.showKillButtonVanilla();
-        bool killDisabled = ExPlayerControl.LocalPlayer.HasCustomKillButton() || !isShowKillButton;
-        SetVentActive(canUseVent, showVentButtonVanilla);
-        SetSaboActive(canSabotage, showSaboButtonVanilla);
-        SetKillActive(killDisabled, isShowKillButton);
-    }
-    private static void SetVentActive(bool canUseVent, bool showVentButtonVanilla)
-    {
-        if (!canUseVent || !showVentButtonVanilla)
-            HudManager.Instance.ImpostorVentButton.gameObject.SetActive(false);
-        else
-            HudManager.Instance.ImpostorVentButton.gameObject.SetActive(true);
-    }
-    private static void SetSaboActive(bool canSabotage, bool showSaboButtonVanilla)
-    {
-        if (!canSabotage || !showSaboButtonVanilla)
-            HudManager.Instance.SabotageButton.gameObject.SetActive(false);
-        else
-            HudManager.Instance.SabotageButton.gameObject.SetActive(true);
-    }
-    private static void SetKillActive(bool killDisabled, bool isShowKillButton)
-    {
-        if (killDisabled)
+        int frame = Time.frameCount;
+        if (frame != _lastUpdateFrame)
+        {
+            _lastUpdateFrame = frame;
+            _cachedCanUseVent = ExPlayerControl.LocalPlayer.CanUseVent();
+            _cachedShowVentButtonVanilla = ExPlayerControl.LocalPlayer.ShowVanillaVentButton();
+            _cachedCanSabotage = ExPlayerControl.LocalPlayer.CanSabotage();
+            _cachedShowSaboButtonVanilla = ExPlayerControl.LocalPlayer.ShowVanillaSabotageButton();
+            _cachedIsShowKillButton = ExPlayerControl.LocalPlayer.showKillButtonVanilla();
+            _cachedKillDisabled = ExPlayerControl.LocalPlayer.HasCustomKillButton() || !_cachedIsShowKillButton;
+        }
+
+        HudManager.Instance.ImpostorVentButton.gameObject.SetActive(_cachedCanUseVent && _cachedShowVentButtonVanilla);
+        HudManager.Instance.SabotageButton.gameObject.SetActive(_cachedCanSabotage && _cachedShowSaboButtonVanilla);
+        if (_cachedKillDisabled)
             HudManager.Instance.KillButton.gameObject.SetActive(false);
-        else if (isShowKillButton && (HudManager.Instance.UseButton.gameObject.activeSelf || HudManager.Instance.PetButton.gameObject.activeSelf))
+        else if (_cachedIsShowKillButton && (HudManager.Instance.UseButton.gameObject.activeSelf || HudManager.Instance.PetButton.gameObject.activeSelf))
             HudManager.Instance.KillButton.gameObject.SetActive(true);
     }
     [HarmonyPatch(typeof(HudManager), nameof(HudManager.Update))]

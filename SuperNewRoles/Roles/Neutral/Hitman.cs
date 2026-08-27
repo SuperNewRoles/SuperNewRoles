@@ -89,6 +89,7 @@ public class HitmanAbility : AbilityBase
     public HitmanData Data { get; set; }
 
     private ExPlayerControl _currentTarget;
+    private readonly List<ExPlayerControl> _uiTargets = new(1);
 
     private int _failedCount;
     private int _successCount;
@@ -114,7 +115,7 @@ public class HitmanAbility : AbilityBase
             canUseVent: () => Data.CanUseVent
         );
         _showPlayerUIAbility = new ShowPlayerUIAbility(
-            getPlayerList: () => [_currentTarget]
+            getPlayerList: GetUiTargets
         );
         _impostorVisionAbility = new ImpostorVisionAbility(
             hasImpostorVision: () => Data.HasImpostorVision
@@ -126,6 +127,15 @@ public class HitmanAbility : AbilityBase
         Player.AttachAbility(_impostorVisionAbility, new AbilityParentAbility(this));
 
         SubscribeWithAbility(NameTextUpdateEvent.Instance, OnNameTextUpdate);
+    }
+    private List<ExPlayerControl> GetUiTargets()
+    {
+        if (_uiTargets.Count == 1 && _uiTargets[0] == _currentTarget)
+            return _uiTargets;
+        _uiTargets.Clear();
+        if (_currentTarget != null)
+            _uiTargets.Add(_currentTarget);
+        return _uiTargets;
     }
     public override void AttachToLocalPlayer()
     {

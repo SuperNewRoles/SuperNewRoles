@@ -53,7 +53,8 @@ class SelfBomber : RoleBase<SelfBomber>
         obj.transform.localPosition = new(0, 0, -0.5f);
         float size = 1.68f;
         obj.transform.localScale = player.MyPhysics.FlipX ? new Vector3(-size, size, size) : Vector3.one * size;
-        player.CustomDeath(CustomDeathType.SelfBomb, source: player);
+        if (player.IsAlive())
+            player.CustomDeath(CustomDeathType.SelfBomb, source: player);
         if (player.AmOwner && Minigame.Instance != null)
         {
             new LateTask(() => Minigame.Instance.Close(), 0.1f, "SelfBomberCloseMinigame");

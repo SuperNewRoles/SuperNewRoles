@@ -477,6 +477,16 @@ internal static class PsychometristSharedState
         _fixedUpdateListener = FixedUpdateEvent.Instance.AddListener(OnFixedUpdate);
     }
 
+    private static bool HasAssignedPsychometrist()
+    {
+        foreach (var player in ExPlayerControl.ExPlayerControls)
+        {
+            if (player != null && player.Role == RoleId.Psychometrist)
+                return true;
+        }
+        return false;
+    }
+
     /// <summary>
     /// 殺人発生時の処理
     /// 殺人者の足跡記録を開始する
@@ -485,6 +495,7 @@ internal static class PsychometristSharedState
     private static void OnMurder(MurderEventData data)
     {
         if (data.killer == null || data.target == null) return;
+        if (!HasAssignedPsychometrist()) return;
         if (!Psychometrist.PsychometristIsCheckFootprints) return;
         if (!data.resultFlags.HasFlag(MurderResultFlags.Succeeded)) return;
 

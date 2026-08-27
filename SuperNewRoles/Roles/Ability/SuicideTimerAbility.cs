@@ -15,6 +15,7 @@ public class SuicideTimerAbility : AbilityBase
     public float CurrentTimer => timer;
     private bool firstKilled = false;
     private TextMeshPro timerText;
+    private int _lastDisplayedSeconds = int.MinValue;
 
     public SuicideTimerAbility(Func<float> suicideTimeGetter, Func<bool> resetOnMeetingGetter)
     {
@@ -101,7 +102,12 @@ public class SuicideTimerAbility : AbilityBase
             ExPlayerControl.LocalPlayer.RpcCustomDeath(CustomDeathType.Suicide);
         }
         if (timerText == null) return;
-        timerText.text = string.Format(ModTranslation.GetString("SerialKillerSuicideText"), ((int)timer) + 1);
+        int displaySeconds = ((int)timer) + 1;
+        if (displaySeconds != _lastDisplayedSeconds)
+        {
+            _lastDisplayedSeconds = displaySeconds;
+            timerText.text = string.Format(ModTranslation.GetString("SerialKillerSuicideText"), displaySeconds);
+        }
     }
 
     private Transform GetTimerTextParent()

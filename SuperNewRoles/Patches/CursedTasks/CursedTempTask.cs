@@ -170,13 +170,11 @@ public class CursedTempTask
             // ボタンが押されている場合、PressTimers を更新
             if (__instance.deltaSinceLastChangeNumber < 0.2f)
             {
-                Logger.Info("Yes Dir");
                 if (!PressTimers.ContainsKey(__instance.MyTask.Id)) PressTimers.Add(__instance.MyTask.Id, 0f);
                 PressTimers[__instance.MyTask.Id] += Time.deltaTime;
             }
             else
             {
-                Logger.Info("No Dir");
                 // 押されていない場合、リセット
                 if (PressTimers.ContainsKey(__instance.MyTask.Id)) PressTimers[__instance.MyTask.Id] = 0f;
             }

@@ -39,8 +39,12 @@ internal sealed class OpacityFadeController
 
         if (_targets.TryGetValue(playerId, out var prevTarget) && Mathf.Abs(prevTarget - targetOpacity) < 0.001f)
         {
-            if (forceSnap && (!_fades.TryGetValue(playerId, out var existing) || existing == null))
+            if (forceSnap)
             {
+                var hudSnap = FastDestroyableSingleton<HudManager>.Instance;
+                if (_fades.TryGetValue(playerId, out var existingFade) && existingFade != null && hudSnap != null)
+                    hudSnap.StopCoroutine(existingFade);
+                _fades.Remove(playerId);
                 ModHelpers.SetOpacity(target.Player, targetOpacity);
             }
             return;

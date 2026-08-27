@@ -11,6 +11,7 @@ using System.Net; // WebHeaderCollection のため
 using System.Net.Security;
 using System.Net.Sockets;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 using UnityEngine; // MonoBehaviour, Coroutine のため
 
@@ -58,6 +59,7 @@ namespace SuperNewRoles.Modules
         public Action<long> downloadProgressChanged { get; set; }
         public float timeout { get; set; } = 5f;
         public bool ignoreSslErrors { get; set; } = false;
+        public long maxResponseBytes { get; set; } = 128L * 1024 * 1024; // 128MB
 
         private SNRWebResponse _response;
 
@@ -101,7 +103,11 @@ namespace SuperNewRoles.Modules
 
             isDone = true; // タスク完了後、成否に関わらず完了状態とする
 
-            if (task.Exception != null)
+            if (task.IsCanceled)
+            {
+                error = "Connection Error: Request timed out.";
+            }
+            else if (task.Exception != null)
             {
                 var aggEx = task.Exception;
                 var innermostEx = aggEx.InnerException ?? aggEx;
@@ -153,7 +159,7 @@ namespace SuperNewRoles.Modules
                 using (var tcpClient = new TcpClient())
                 {
                     // タイムアウト設定 (接続、SSL認証に適用)
-                    var connectionTimeout = TimeSpan.FromSeconds(timeout); // プロパティを使用
+                    var connectionTimeout = TimeSpan.FromSeconds(Math.Max(0.1f, timeout)); // プロパティを使用
 
                     // 接続タイムアウト
                     var connectTask = tcpClient.ConnectAsync(uri.Host, port);
@@ -168,21 +174,32 @@ namespace SuperNewRoles.Modules
                         Stream streamToUse = baseStream;
                         if (uri.Scheme.Equals("https", StringComparison.OrdinalIgnoreCase))
                         {
-                            var sslStream = new SslStream(baseStream, false, (sender, certificate, chain, sslPolicyErrors) => ignoreSslErrors);
-                            // SSL認証タイムアウト
-                            var authTask = sslStream.AuthenticateAsClientAsync(uri.Host);
-                            if (await Task.WhenAny(authTask, Task.Delay(connectionTimeout)) != authTask)
+                            var sslStream = new SslStream(
+                                baseStream,
+                                false,
+                                (sender, certificate, chain, sslPolicyErrors) =>
+                                    ignoreSslErrors || sslPolicyErrors == SslPolicyErrors.None);
+                            // SSL認証は接続タイムアウトのみ適用する。本文転送の期限には使わない。
+                            using (var connectionCts = new CancellationTokenSource(connectionTimeout))
                             {
-                                throw new TimeoutException($"SSL authentication for {uri.Host} timed out after {timeout} seconds.");
+                                var authTask = sslStream.AuthenticateAsClientAsync(uri.Host);
+                                if (await Task.WhenAny(authTask, Task.Delay(Timeout.Infinite, connectionCts.Token)) != authTask)
+                                {
+                                    throw new TimeoutException($"SSL authentication for {uri.Host} timed out after {timeout} seconds.");
+                                }
                             }
                             // authTask.GetAwaiter().GetResult();
                             streamToUse = sslStream;
                         }
 
-                        // streamToUse の読み書きにタイムアウト設定
-                        // これはアイドルタイムアウトであり、全体のタイムアウトとは異なる
-                        streamToUse.ReadTimeout = (int)(timeout * 1000); // float秒をintミリ秒に変換
-                        streamToUse.WriteTimeout = (int)(timeout * 1000); // float秒をintミリ秒に変換
+                        // 同期 I/O にはアイドルタイムアウトを設定する。非同期 I/O は下記の
+                        // linked CTS で、各読み書きが停止した場合にも同じ期限で中断する。
+                        int idleTimeoutMilliseconds = (int)Math.Min(int.MaxValue, connectionTimeout.TotalMilliseconds);
+                        streamToUse.ReadTimeout = idleTimeoutMilliseconds;
+                        streamToUse.WriteTimeout = idleTimeoutMilliseconds;
+                        // 本文・解凍には長めの全体監視期限を付け、各 I/O にはアイドル期限を付ける。
+                        using var transferCts = new CancellationTokenSource(TimeSpan.FromMinutes(10));
+                        CancellationToken transferToken = transferCts.Token;
 
                         string httpRequest = $"GET {uri.PathAndQuery} HTTP/1.1\r\n" +
                                            $"Host: {uri.Host}\r\n" +
@@ -192,8 +209,12 @@ namespace SuperNewRoles.Modules
                                            "Accept-Encoding: gzip, deflate\r\n" + // 圧縮サポートを通知
                                            "\r\n"; // ヘッダー終了
                         byte[] requestBytes = Encoding.ASCII.GetBytes(httpRequest);
-                        await streamToUse.WriteAsync(requestBytes, 0, requestBytes.Length);
-                        await streamToUse.FlushAsync();
+                        using (var writeCts = CancellationTokenSource.CreateLinkedTokenSource(transferToken))
+                        {
+                            writeCts.CancelAfter(connectionTimeout);
+                            await streamToUse.WriteAsync(requestBytes, 0, requestBytes.Length, writeCts.Token);
+                            await streamToUse.FlushAsync(writeCts.Token);
+                        }
 
                         using (var memoryStream = new MemoryStream())
                         {
@@ -201,19 +222,36 @@ namespace SuperNewRoles.Modules
                             int bytesRead;
                             bool headersParsedForProgress = false;
                             int bodyStartIndexForProgress = -1;
-                            // "Connection: Close" のため、サーバーが接続を閉じるまで読み込む
-                            while ((bytesRead = await streamToUse.ReadAsync(buffer, 0, buffer.Length)) > 0)
+                            int headerScanLength = 0;
+                            // "Connection: Close" のため、サーバーが接続を閉じるまで読み込む。
+                            // ReadTimeout は ReadAsync に効かないため、読み取りごとにアイドル期限を設定する。
+                            while (true)
                             {
+                                using (var readCts = CancellationTokenSource.CreateLinkedTokenSource(transferToken))
+                                {
+                                    readCts.CancelAfter(connectionTimeout);
+                                    bytesRead = await streamToUse.ReadAsync(buffer, 0, buffer.Length, readCts.Token);
+                                }
+                                if (bytesRead <= 0)
+                                    break;
+
+                                if (memoryStream.Length + bytesRead > maxResponseBytes)
+                                {
+                                    throw new InvalidOperationException($"HTTP response from {uri.Host} exceeded {maxResponseBytes} bytes.");
+                                }
                                 memoryStream.Write(buffer, 0, bytesRead);
                                 if (!headersParsedForProgress)
                                 {
-                                    byte[] currentBytes = memoryStream.ToArray();
-                                    int separatorIndex = FindHeaderBodySeparator(currentBytes, currentBytes.Length);
+                                    byte[] currentBytes = memoryStream.GetBuffer();
+                                    int length = (int)memoryStream.Length;
+                                    int searchFrom = Math.Max(0, headerScanLength - 3);
+                                    int separatorIndex = FindHeaderBodySeparator(currentBytes, length, searchFrom);
+                                    headerScanLength = length;
                                     if (separatorIndex >= 0)
                                     {
                                         headersParsedForProgress = true;
                                         bodyStartIndexForProgress = separatorIndex + 4;
-                                        UpdateDownloadProgress(currentBytes.Length - bodyStartIndexForProgress);
+                                        UpdateDownloadProgress(length - bodyStartIndexForProgress);
                                     }
                                 }
                                 else
@@ -251,26 +289,14 @@ namespace SuperNewRoles.Modules
                                 string contentEncoding = currentResponse.Headers["Content-Encoding"]?.ToLowerInvariant();
                                 if (contentEncoding == "gzip")
                                 {
-                                    using (var compressedStream = new MemoryStream(fullResponseMessage, bodyStartIndex, bodyLen, false))
-                                    using (var gzipStream = new GZipStream(compressedStream, CompressionMode.Decompress))
-                                    using (var decompressedStream = new MemoryStream())
-                                    {
-                                        await gzipStream.CopyToAsync(decompressedStream);
-                                        currentResponse.Body = decompressedStream.ToArray();
-                                    }
+                                    currentResponse.Body = await DecompressBodyAsync(fullResponseMessage, bodyStartIndex, bodyLen, useGzip: true, transferToken);
                                 }
                                 else if (contentEncoding == "deflate")
                                 {
-                                    using (var compressedStream = new MemoryStream(fullResponseMessage, bodyStartIndex, bodyLen, false))
                                     // DeflateStreamはヘッダーなしの生deflateデータ用。zlibヘッダー(RFC 1950)やgzipヘッダー(RFC 1952)付きの場合は注意が必要
                                     // 一般的なHTTPのdeflateはzlibヘッダーを持つことが多いが、ここではヘッダーなしと仮定
                                     // もしzlibヘッダー付きdeflateに対応するなら、ヘッダーをスキップするか、より高度なライブラリが必要
-                                    using (var deflateStream = new DeflateStream(compressedStream, CompressionMode.Decompress))
-                                    using (var decompressedStream = new MemoryStream())
-                                    {
-                                        await deflateStream.CopyToAsync(decompressedStream);
-                                        currentResponse.Body = decompressedStream.ToArray();
-                                    }
+                                    currentResponse.Body = await DecompressBodyAsync(fullResponseMessage, bodyStartIndex, bodyLen, useGzip: false, transferToken);
                                 }
                                 else
                                 {
@@ -303,15 +329,34 @@ namespace SuperNewRoles.Modules
             return currentResponse;
         }
 
+        private async Task<byte[]> DecompressBodyAsync(byte[] responseBytes, int bodyStartIndex, int bodyLength, bool useGzip, CancellationToken cancellationToken)
+        {
+            using var compressedStream = new MemoryStream(responseBytes, bodyStartIndex, bodyLength, writable: false);
+            using Stream decompressionStream = useGzip
+                ? new GZipStream(compressedStream, CompressionMode.Decompress)
+                : new DeflateStream(compressedStream, CompressionMode.Decompress);
+            using var decompressedStream = new MemoryStream();
+            byte[] buffer = new byte[8192];
+            int bytesRead;
+            while ((bytesRead = await decompressionStream.ReadAsync(buffer, 0, buffer.Length, cancellationToken)) > 0)
+            {
+                if (decompressedStream.Length + bytesRead > maxResponseBytes)
+                    throw new InvalidOperationException($"Decompressed HTTP response exceeded {maxResponseBytes} bytes.");
+                decompressedStream.Write(buffer, 0, bytesRead);
+            }
+            return decompressedStream.ToArray();
+        }
+
         private void UpdateDownloadProgress(long bytes)
         {
             downloadedBytes = Math.Max(0, bytes);
             downloadProgressChanged?.Invoke(downloadedBytes);
         }
 
-        private static int FindHeaderBodySeparator(byte[] responseBytes, int length)
+        private static int FindHeaderBodySeparator(byte[] responseBytes, int length, int startIndex = 0)
         {
-            for (int i = 0; i < length - 3; i++)
+            int start = startIndex < 0 ? 0 : startIndex;
+            for (int i = start; i < length - 3; i++)
             {
                 if (responseBytes[i] == 13 &&
                     responseBytes[i + 1] == 10 &&

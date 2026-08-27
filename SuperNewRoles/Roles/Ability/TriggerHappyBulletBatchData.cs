@@ -95,7 +95,7 @@ public sealed class TriggerHappyBulletBatchData : ICustomRpcObject
             return;
 
         AnglePacked = reader.ReadUInt16();
-        ushort count = reader.ReadUInt16();
+        ushort count = (ushort)CustomRPCManager.ValidateRpcCollectionCount(reader.ReadUInt16());
         if (count == 0)
         {
             Xs = Array.Empty<short>();
