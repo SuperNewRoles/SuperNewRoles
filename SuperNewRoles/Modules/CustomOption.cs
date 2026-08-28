@@ -162,22 +162,13 @@ public static class CustomOptionManager
     }
     public static void RpcSyncOptionsAll()
     {
-        const int ChunkSize = 30;
-        var options = CustomOptions.Where(o => !o.IsDefaultValue).ToList();
-        if (options.Count == 0)
+        var options = CustomOptions.Where(o => !o.IsDefaultValue).ToDictionary(o => o.IndexId, o => o.Selection);
+        int keysMax = options.Keys.Count > 0 ? options.Keys.Max() : 0;
+        for (int i = 0; i <= keysMax; i += 30)
         {
-            _RpcSyncOptionsAll(new Dictionary<ushort, byte>(), true);
-            return;
-        }
-        for (int i = 0; i < options.Count; i += ChunkSize)
-        {
-            int count = Math.Min(ChunkSize, options.Count - i);
-            var partialOptions = new Dictionary<ushort, byte>(count);
-            for (int j = 0; j < count; j++)
-            {
-                var option = options[i + j];
-                partialOptions[option.IndexId] = option.Selection;
-            }
+            var partialOptions = options
+                .Where(kvp => kvp.Key >= i && kvp.Key < i + 30)
+                .ToDictionary(kvp => kvp.Key, kvp => kvp.Value);
             _RpcSyncOptionsAll(partialOptions, i == 0);
         }
     }
