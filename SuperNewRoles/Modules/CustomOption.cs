@@ -2229,12 +2229,12 @@ public sealed class ExclusivitySettingsRpcData : ICustomRpcObject
 
     public void Deserialize(MessageReader reader)
     {
-        int count = CustomRPCManager.ValidateRpcCollectionCount(reader.ReadInt32());
+        int count = reader.ReadInt32();
         Settings = new List<ExclusivitySettingRpcData>(count);
         for (int i = 0; i < count; i++)
         {
             int maxAssign = reader.ReadInt32();
-            int roleCount = CustomRPCManager.ValidateRpcCollectionCount(reader.ReadInt32());
+            int roleCount = reader.ReadInt32();
             var roles = new List<string>(roleCount);
             for (int j = 0; j < roleCount; j++)
             {
