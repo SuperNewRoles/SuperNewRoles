@@ -2,9 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
-using System.Linq.Expressions;
 using System.Reflection;
-using System.Text;
 using System.Threading.Tasks;
 using HarmonyLib;
 using Hazel;
@@ -62,17 +60,9 @@ public static class CustomRPCManager
     /// </summary>
     public static Dictionary<int, MethodInfo> RpcMethods = new();
     /// <summary>
-    /// 受信時に Method.Invoke を避けるためのデリゲート
-    /// </summary>
-    private static Dictionary<int, Action<object?, object[]>> RpcInvokers = new();
-    /// <summary>
     /// RPC メソッドを保存するディクショナリ
     /// </summary>
     public static Dictionary<string, int> RpcMethodIds = new();
-    /// <summary>
-    /// 受信コレクションの最大要素数。悪意ある件数指定による OOM を防ぐ。
-    /// </summary>
-    internal const int MaxRpcCollectionCount = 16384;
     /// <summary>
     /// キャッシュ用：メソッドからRPC IDを高速取得
     /// </summary>
@@ -107,11 +97,6 @@ public static class CustomRPCManager
     /// RPCの受信状態を追跡するフラグ
     /// </summary>
     private static bool IsRpcReceived = false;
-
-    [ThreadStatic]
-    private static StringBuilder rpcLogBuilder;
-    [ThreadStatic]
-    private static byte[] rpcPayloadScratch;
 
     /// <summary>
     /// Writeメソッドの型ごとの処理をキャッシュする辞書
@@ -199,35 +184,15 @@ public static class CustomRPCManager
         return unchecked((int)hash);
     }
 
-    private static StringBuilder GetRpcLogBuilder()
-    {
-        return rpcLogBuilder ??= new StringBuilder(128);
-    }
-
-    private static void AppendInvariantInt(StringBuilder sb, int value)
-    {
-        Span<char> digits = stackalloc char[11];
-        if (value.TryFormat(digits, out int written, default, CultureInfo.InvariantCulture))
-            sb.Append(digits[..written]);
-        else
-            sb.Append(value.ToString(CultureInfo.InvariantCulture));
-    }
-
     /// <summary>
     /// 送信ログ。S{rpcId} {payload-base64}。payload は rpcId 以降のワイヤーバイト。
     /// </summary>
     internal static string FormatRpcSendLog(int rpcId, byte[] buffer, int offset, int count)
     {
-        StringBuilder sb = GetRpcLogBuilder();
-        sb.Clear();
-        sb.Append('S');
-        AppendInvariantInt(sb, rpcId);
+        string prefix = "S" + rpcId.ToString(CultureInfo.InvariantCulture);
         if (buffer != null && offset >= 0 && count > 0 && count <= buffer.Length - offset)
-        {
-            sb.Append(' ');
-            sb.Append(Convert.ToBase64String(buffer, offset, count));
-        }
-        return sb.ToString();
+            return prefix + " " + Convert.ToBase64String(buffer, offset, count);
+        return prefix;
     }
 
     /// <summary>
@@ -235,11 +200,7 @@ public static class CustomRPCManager
     /// </summary>
     internal static string FormatRpcReceiveLog(int rpcId)
     {
-        StringBuilder sb = GetRpcLogBuilder();
-        sb.Clear();
-        sb.Append('R');
-        AppendInvariantInt(sb, rpcId);
-        return sb.ToString();
+        return "R" + rpcId.ToString(CultureInfo.InvariantCulture);
     }
 
     /// <summary>
@@ -247,22 +208,7 @@ public static class CustomRPCManager
     /// </summary>
     internal static string FormatRpcCallIdLog(byte callId)
     {
-        StringBuilder sb = GetRpcLogBuilder();
-        sb.Clear();
-        sb.Append('C');
-        AppendInvariantInt(sb, callId);
-        return sb.ToString();
-    }
-
-    private static byte[] EnsureRpcPayloadScratch(int count)
-    {
-        byte[] scratch = rpcPayloadScratch;
-        if (scratch == null || scratch.Length < count)
-        {
-            scratch = new byte[Math.Max(count, 256)];
-            rpcPayloadScratch = scratch;
-        }
-        return scratch;
+        return "C" + callId.ToString(CultureInfo.InvariantCulture);
     }
 
     private static string FormatRpcSendLogFromWriter(int rpcId, MessageWriter writer, int payloadStart)
@@ -271,10 +217,10 @@ public static class CustomRPCManager
         var buf = writer.Buffer;
         if (buf != null && payloadStart >= 0 && count > 0 && payloadStart <= buf.Length && count <= buf.Length - payloadStart)
         {
-            byte[] scratch = EnsureRpcPayloadScratch(count);
+            byte[] payload = new byte[count];
             for (int i = 0; i < count; i++)
-                scratch[i] = buf[payloadStart + i];
-            return FormatRpcSendLog(rpcId, scratch, 0, count);
+                payload[i] = buf[payloadStart + i];
+            return FormatRpcSendLog(rpcId, payload, 0, count);
         }
 
         byte[] all = writer.ToByteArray(false);
@@ -402,34 +348,10 @@ public static class CustomRPCManager
 
         var newHarmonyMethod = NewMethod;
         RpcMethods[id] = method;
-        RpcInvokers[id] = CreateRpcInvoker(method);
         RpcMethodIds[hash] = id; // 事前計算したハッシュを使用
 
         // メソッドの中身をRPCを送信するものに入れ替える
         return () => SuperNewRolesPlugin.Instance.Harmony.Patch(method, new HarmonyMethod(newHarmonyMethod.Method));
-    }
-    private static Action<object?, object[]> CreateRpcInvoker(MethodInfo method)
-    {
-        var instanceParam = Expression.Parameter(typeof(object), "instance");
-        var argsParam = Expression.Parameter(typeof(object[]), "args");
-        ParameterInfo[] parameters = method.GetParameters();
-        Expression[] callArgs = new Expression[parameters.Length];
-        for (int i = 0; i < parameters.Length; i++)
-        {
-            Expression boxed = Expression.ArrayIndex(argsParam, Expression.Constant(i));
-            callArgs[i] = Expression.Convert(boxed, parameters[i].ParameterType);
-        }
-
-        Expression call;
-        if (method.IsStatic)
-            call = Expression.Call(method, callArgs);
-        else
-            call = Expression.Call(Expression.Convert(instanceParam, method.DeclaringType!), method, callArgs);
-
-        if (method.ReturnType != typeof(void))
-            call = Expression.Block(call, Expression.Empty());
-
-        return Expression.Lambda<Action<object?, object[]>>(call, instanceParam, argsParam).Compile();
     }
     private static string GetMethodFullName(MethodInfo method)
     {
@@ -489,7 +411,7 @@ public static class CustomRPCManager
                     {
                         int id = reader.ReadInt32();
                         Logger.Info(FormatRpcReceiveLog(id));
-                        if (!RpcMethods.TryGetValue(id, out var method) || !RpcInvokers.TryGetValue(id, out var invoker))
+                        if (!RpcMethods.TryGetValue(id, out var method))
                         {
                             Logger.Warning($"Unknown RPC method ID: {id}");
                             return;
@@ -531,7 +453,8 @@ public static class CustomRPCManager
                         }
 
                         IsRpcReceived = true;
-                        invoker(instance, argsRecv);
+                        Logger.Info($"Invoking RPC: {method.Name}");
+                        method.Invoke(instance, argsRecv);
                     }
                     catch (Exception ex)
                     {
@@ -1079,21 +1002,6 @@ public static class CustomRPCManager
         return exPlayer.GetAbility(abilityId);
     }
     /// <summary>
-    /// 受信したコレクション件数を上限チェックする。
-    /// </summary>
-    internal static int ValidateRpcCollectionCount(int count)
-    {
-        if ((uint)count > MaxRpcCollectionCount)
-            throw new InvalidOperationException($"RPC collection count {count} exceeds limit {MaxRpcCollectionCount}");
-        return count;
-    }
-
-    private static int ReadBoundedCount(MessageReader reader)
-    {
-        return ValidateRpcCollectionCount(reader.ReadInt32());
-    }
-
-    /// <summary>
     /// Dictionary を読み取るヘルパーメソッド
     /// </summary>
     private static Dictionary<TKey, TValue> ReadDictionary<TKey, TValue>(
@@ -1101,8 +1009,8 @@ public static class CustomRPCManager
         Func<MessageReader, TKey> keyReader,
         Func<MessageReader, TValue> valueReader)
     {
-        int count = ReadBoundedCount(reader);
-        var dict = new Dictionary<TKey, TValue>(count);
+        int count = reader.ReadInt32();
+        var dict = new Dictionary<TKey, TValue>();
         for (int i = 0; i < count; i++)
         {
             var key = keyReader(reader);
@@ -1117,8 +1025,8 @@ public static class CustomRPCManager
     /// </summary>
     private static Dictionary<byte, (byte, int)> ReadDictionaryWithTuple(MessageReader reader)
     {
-        int count = ReadBoundedCount(reader);
-        var dict = new Dictionary<byte, (byte, int)>(count);
+        int count = reader.ReadInt32();
+        var dict = new Dictionary<byte, (byte, int)>();
         for (int i = 0; i < count; i++)
         {
             byte key = reader.ReadByte();
@@ -1130,7 +1038,7 @@ public static class CustomRPCManager
     }
     private static List<string> ReadStringList(MessageReader reader)
     {
-        int count = ReadBoundedCount(reader);
+        int count = reader.ReadInt32();
         var list = new List<string>(count);
         for (int i = 0; i < count; i++)
         {
@@ -1144,7 +1052,7 @@ public static class CustomRPCManager
     /// </summary>
     private static PlayerControl[] ReadPlayerControlArray(MessageReader reader)
     {
-        int length = ReadBoundedCount(reader);
+        int length = reader.ReadInt32();
         PlayerControl[] array = new PlayerControl[length];
         for (int i = 0; i < length; i++)
         {
@@ -1158,7 +1066,7 @@ public static class CustomRPCManager
     /// </summary>
     private static ExPlayerControl[] ReadExPlayerControlArray(MessageReader reader)
     {
-        int length = ReadBoundedCount(reader);
+        int length = reader.ReadInt32();
         ExPlayerControl[] array = new ExPlayerControl[length];
         for (int i = 0; i < length; i++)
         {
@@ -1172,7 +1080,7 @@ public static class CustomRPCManager
     /// </summary>
     private static List<ExPlayerControl> ReadExPlayerControlList(MessageReader reader)
     {
-        int count = ReadBoundedCount(reader);
+        int count = reader.ReadInt32();
         List<ExPlayerControl> list = new(count);
         for (int i = 0; i < count; i++)
         {
@@ -1186,7 +1094,7 @@ public static class CustomRPCManager
     /// </summary>
     private static List<byte> ReadByteList(MessageReader reader)
     {
-        int count = ReadBoundedCount(reader);
+        int count = reader.ReadInt32();
         List<byte> list = new List<byte>(count);
         for (int i = 0; i < count; i++)
         {
@@ -1200,7 +1108,7 @@ public static class CustomRPCManager
     /// </summary>
     private static List<uint> ReadUIntList(MessageReader reader)
     {
-        int count = ReadBoundedCount(reader);
+        int count = reader.ReadInt32();
         List<uint> list = new List<uint>(count);
         for (int i = 0; i < count; i++)
         {
@@ -1212,7 +1120,7 @@ public static class CustomRPCManager
     // Vector2[]を読み取るヘルパーメソッド
     private static Vector2[] ReadVector2Array(MessageReader reader)
     {
-        int length = ReadBoundedCount(reader);
+        int length = reader.ReadInt32();
         Vector2[] array = new Vector2[length];
         for (int i = 0; i < length; i++)
         {
@@ -1224,7 +1132,7 @@ public static class CustomRPCManager
     // Vector3[]を読み取るヘルパーメソッド
     private static Vector3[] ReadVector3Array(MessageReader reader)
     {
-        int length = ReadBoundedCount(reader);
+        int length = reader.ReadInt32();
         Vector3[] array = new Vector3[length];
         for (int i = 0; i < length; i++)
         {
@@ -1238,7 +1146,7 @@ public static class CustomRPCManager
     /// </summary>
     private static uint[] ReadUIntArray(MessageReader reader)
     {
-        int length = ReadBoundedCount(reader);
+        int length = reader.ReadInt32();
         uint[] array = new uint[length];
         for (int i = 0; i < length; i++)
         {
@@ -1252,7 +1160,7 @@ public static class CustomRPCManager
     /// </summary>
     private static ulong[] ReadULongArray(MessageReader reader)
     {
-        int length = ReadBoundedCount(reader);
+        int length = reader.ReadInt32();
         ulong[] array = new ulong[length];
         for (int i = 0; i < length; i++)
         {

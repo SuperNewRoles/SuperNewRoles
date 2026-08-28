@@ -282,51 +282,6 @@ public class CustomRPCTests
     }
 
     [Fact]
-    public void ValidateRpcCollectionCount_AcceptsValuesWithinCap()
-    {
-        int max = CustomRPCManager.MaxRpcCollectionCount;
-        CustomRPCManager.ValidateRpcCollectionCount(0).Should().Be(0);
-        CustomRPCManager.ValidateRpcCollectionCount(1).Should().Be(1);
-        CustomRPCManager.ValidateRpcCollectionCount(max).Should().Be(max);
-    }
-
-    [Fact]
-    public void ValidateRpcCollectionCount_RejectsNegativeAndOversizedCounts()
-    {
-        int max = CustomRPCManager.MaxRpcCollectionCount;
-        Action overMax = () => CustomRPCManager.ValidateRpcCollectionCount(max + 1);
-        Action negative = () => CustomRPCManager.ValidateRpcCollectionCount(-1);
-        Action intMax = () => CustomRPCManager.ValidateRpcCollectionCount(int.MaxValue);
-
-        overMax.Should().Throw<InvalidOperationException>();
-        negative.Should().Throw<InvalidOperationException>();
-        intMax.Should().Throw<InvalidOperationException>();
-    }
-
-    [Fact]
-    public void Load_RegistersReceiveDelegates_ForMappedMethods()
-    {
-        EnsurePluginLogger();
-        CustomRPCManager.RpcMethods.Clear();
-        CustomRPCManager.RpcMethodIds.Clear();
-
-        CustomRPCManager.Load();
-
-        var invokersField = typeof(CustomRPCManager).GetField(
-            "RpcInvokers",
-            BindingFlags.Static | BindingFlags.NonPublic);
-        invokersField.Should().NotBeNull();
-        var invokers = (System.Collections.IDictionary)invokersField!.GetValue(null)!;
-
-        CustomRPCManager.RpcMethods.Should().NotBeEmpty();
-        foreach (var id in CustomRPCManager.RpcMethods.Keys)
-        {
-            invokers.Contains(id).Should().BeTrue($"RPC id {id} should have a receive delegate");
-            invokers[id].Should().NotBeNull();
-        }
-    }
-
-    [Fact]
     public void FormatRpcSendLog_RoundTripsPayloadBytes()
     {
         int rpcId = unchecked((int)0xA1B2C3D4);
