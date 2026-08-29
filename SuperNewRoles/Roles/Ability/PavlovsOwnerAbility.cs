@@ -31,9 +31,10 @@ public class PavlovsOwnerAbility : AbilityBase
         _sidekickCount = 0;
     }
 
-    public override void Attach(PlayerControl player, ulong abilityId, AbilityParentBase parent)
+    public override void AttachToAlls()
     {
-        base.Attach(player, abilityId, parent);
+        base.AttachToAlls();
+        var player = Player.Player;
 
         _sidekickAbility = CreateSidekickAbility(player);
         _knowOtherAbility = new KnowOtherAbility(
@@ -41,7 +42,7 @@ public class PavlovsOwnerAbility : AbilityBase
             () => true
         );
 
-        ExPlayerControl exPlayer = (ExPlayerControl)player;
+        ExPlayerControl exPlayer = Player;
         AbilityParentAbility parentAbility = new(this);
         exPlayer.AttachAbility(_sidekickAbility, parentAbility);
         exPlayer.AttachAbility(_knowOtherAbility, parentAbility);

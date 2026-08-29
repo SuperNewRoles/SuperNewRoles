@@ -7,6 +7,7 @@ using SuperNewRoles.CustomOptions.Categories;
 using SuperNewRoles.CustomOptions;
 using SuperNewRoles.Modules.Events.Bases;
 using SuperNewRoles.Events;
+using SuperNewRoles.Events.PCEvents;
 using AmongUs.GameOptions;
 using HarmonyLib;
 using SuperNewRoles.Extensions;
@@ -45,6 +46,8 @@ public class BattleRoyalMode : ModeBase<BattleRoyalMode>, IModeBase
 
     // イベントリスナー
     private EventListener fixedUpdateListener;
+    private EventListener<DisconnectEventData> disconnectListener;
+    private EventListener<DieEventData> dieListener;
 
     // 設定オプション
     [CustomOptionBool("BattleRoyalTeamMode", false, displayMode: DisplayModeId.BattleRoyal, parentFieldName: nameof(Categories.ModeOption), parentActiveValue: ModeId.BattleRoyal)]
@@ -82,6 +85,7 @@ public class BattleRoyalMode : ModeBase<BattleRoyalMode>, IModeBase
 
         lastAliveCount = 0;
         lastAllPlayerCount = 0;
+        MarkAlivePlayersDirty();
 
         if (AmongUsClient.Instance.AmHost)
         {
@@ -111,6 +115,8 @@ public class BattleRoyalMode : ModeBase<BattleRoyalMode>, IModeBase
 
         // イベントリスナー登録
         fixedUpdateListener = FixedUpdateEvent.Instance.AddListener(FixedUpdate);
+        disconnectListener = DisconnectEvent.Instance.AddListener(OnDisconnect);
+        dieListener = DieEvent.Instance.AddListener(OnDie);
 
         Logger.Info($"BattleRoyalMode: Setup complete. Team mode: {isTeamMode}");
     }
@@ -124,16 +130,40 @@ public class BattleRoyalMode : ModeBase<BattleRoyalMode>, IModeBase
         }
     }
 
+    private static PlayerControl[] _alivePlayersCache = System.Array.Empty<PlayerControl>();
+    private static bool _alivePlayersDirty = true;
+
     private static bool IsBot(PlayerControl player)
     {
         return AmongUsClient.Instance.GetClientIdFromCharacter(player) < 0;
     }
 
+    private static void MarkAlivePlayersDirty()
+    {
+        _alivePlayersDirty = true;
+    }
+
     private static PlayerControl[] GetAlivePlayers()
     {
-        return PlayerControl.AllPlayerControls
-            .Where(p => p != null && !p.Data.Disconnected && !p.Data.IsDead && !IsBot(p))
-            .ToArray();
+        if (!_alivePlayersDirty)
+            return _alivePlayersCache;
+
+        int count = 0;
+        foreach (PlayerControl p in PlayerControl.AllPlayerControls)
+        {
+            if (p != null && p.Data != null && !p.Data.Disconnected && !p.Data.IsDead && !IsBot(p))
+                count++;
+        }
+        if (_alivePlayersCache.Length != count)
+            _alivePlayersCache = new PlayerControl[count];
+        int index = 0;
+        foreach (PlayerControl p in PlayerControl.AllPlayerControls)
+        {
+            if (p != null && p.Data != null && !p.Data.Disconnected && !p.Data.IsDead && !IsBot(p))
+                _alivePlayersCache[index++] = p;
+        }
+        _alivePlayersDirty = false;
+        return _alivePlayersCache;
     }
 
     public override void OnGameEnd()
@@ -149,11 +179,9 @@ public class BattleRoyalMode : ModeBase<BattleRoyalMode>, IModeBase
         teams.Clear();
 
         // イベントリスナー解除
-        if (fixedUpdateListener != null)
-        {
-            FixedUpdateEvent.Instance.RemoveListener(fixedUpdateListener);
-            fixedUpdateListener = null;
-        }
+        fixedUpdateListener?.RemoveListener();
+        disconnectListener?.RemoveListener();
+        dieListener?.RemoveListener();
     }
 
     public override void OnPlayerDeath(PlayerControl player, PlayerControl killer)
@@ -161,6 +189,8 @@ public class BattleRoyalMode : ModeBase<BattleRoyalMode>, IModeBase
         if (!isGameStarted) return;
 
         Logger.Info($"BattleRoyalMode: Player {player.name} killed by {killer?.name ?? "unknown"}");
+
+        MarkAlivePlayersDirty();
 
         // キル数カウント
         if (killer != null && killer != player)
@@ -172,6 +202,19 @@ public class BattleRoyalMode : ModeBase<BattleRoyalMode>, IModeBase
 
         // 勝利条件チェック
         CheckWinCondition();
+    }
+
+    private void OnDisconnect(DisconnectEventData data)
+    {
+        MarkAlivePlayersDirty();
+        if (isGameStarted)
+            CheckWinCondition();
+    }
+
+    private void OnDie(DieEventData data)
+    {
+        // Exile など OnPlayerDeath を通らない死亡経路用。Murder は OnPlayerDeath 側でも破棄する。
+        MarkAlivePlayersDirty();
     }
 
     public override bool CheckWinCondition()
@@ -366,7 +409,7 @@ public class BattleRoyalMode : ModeBase<BattleRoyalMode>, IModeBase
                 // 個人戦: Old同様、自分=Shapeshifter、他人視点=Scientistのデシンク表現
                 SetupTeamModeRoles(allPlayers);
             }
-        }, 3f);
+        }, 3f, "BattleRoyalSetupPlayerRoles");
     }
 
     private void SetupTeamModeRoles(List<PlayerControl> allPlayers)
@@ -484,7 +527,7 @@ public class BattleRoyalMode : ModeBase<BattleRoyalMode>, IModeBase
 
             // 全クライアントへ「バトル開始」を通知し、キルクールを同時リセットする、イントロ開始時からのキルク積算はズレが生じるため
             RpcStartBattle();
-            
+
             // プレイヤー名をリセット（キャッシュした元名で）
             foreach (var player in PlayerControl.AllPlayerControls)
             {
@@ -508,7 +551,7 @@ public class BattleRoyalMode : ModeBase<BattleRoyalMode>, IModeBase
                 GameOptionsManager.Instance.CurrentGameOptions.GetFloat(FloatOptionNames.KillCooldown));
         }
     }
-    
+
     private void HandleGamePhase()
     {
         // 生存人数とキル数の表示更新
@@ -522,14 +565,26 @@ public class BattleRoyalMode : ModeBase<BattleRoyalMode>, IModeBase
 
     private void UpdatePlayerDisplayNames()
     {
-        var alivePlayers = PlayerControl.AllPlayerControls
-            .Where(p => !p.Data.IsDead && !p.Data.Disconnected && !IsBot(p)).ToList();
-        var allPlayers = PlayerControl.AllPlayerControls
-            .Where(p => !p.Data.Disconnected && !IsBot(p)).ToList();
+        int aliveCount = 0;
+        int allCount = 0;
+        foreach (var p in PlayerControl.AllPlayerControls)
+        {
+            if (p == null || p.Data == null || p.Data.Disconnected || IsBot(p)) continue;
+            allCount++;
+            if (!p.Data.IsDead) aliveCount++;
+        }
 
         // 変更があった場合のみ更新（全員のSuffixを一括生成し、各viewerへ送信）
-        if (lastAliveCount != alivePlayers.Count || lastAllPlayerCount != allPlayers.Count)
+        if (lastAliveCount != aliveCount || lastAllPlayerCount != allCount)
         {
+            MarkAlivePlayersDirty();
+            var alivePlayers = GetAlivePlayers();
+            var allPlayers = new List<PlayerControl>(allCount);
+            foreach (var p in PlayerControl.AllPlayerControls)
+            {
+                if (p == null || p.Data == null || p.Data.Disconnected || IsBot(p)) continue;
+                allPlayers.Add(p);
+            }
             // まず全員分の表示名を作成（自己視点と他人視点を分けて用意）
             Dictionary<byte, string> selfViewName = new();
             Dictionary<byte, string> otherViewName = new();
@@ -537,7 +592,7 @@ public class BattleRoyalMode : ModeBase<BattleRoyalMode>, IModeBase
             foreach (var player in allPlayers)
             {
                 var baseName = originalPlayerNames.TryGetValue(player.PlayerId, out var n) ? n : player.Data.PlayerName;
-                string aliveSuffix = BattleRoyalShowAliveCount ? $" ({alivePlayers.Count}/{allPlayers.Count})" : "";
+                string aliveSuffix = BattleRoyalShowAliveCount ? $" ({alivePlayers.Length}/{allPlayers.Count})" : "";
 
                 if (BattleRoyalShowKillCount)
                 {
@@ -563,8 +618,8 @@ public class BattleRoyalMode : ModeBase<BattleRoyalMode>, IModeBase
                 }
             }
 
-            lastAliveCount = alivePlayers.Count;
-            lastAllPlayerCount = allPlayers.Count;
+            lastAliveCount = aliveCount;
+            lastAllPlayerCount = allCount;
         }
     }
 

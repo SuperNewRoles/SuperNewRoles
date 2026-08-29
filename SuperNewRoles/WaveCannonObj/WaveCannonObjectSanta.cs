@@ -1,5 +1,4 @@
 using System.Collections.Generic;
-using System.Linq;
 using SuperNewRoles.Modules;
 using SuperNewRoles.Roles.Ability;
 using UnityEngine;
@@ -15,9 +14,9 @@ public class WaveCannonObjectSanta : WaveCannonObjectBase
     private const string SantaTankSpriteNameFallback = "WaveCannonTank.png";
 
     private readonly List<WCSantaHandler> _santas = new();
+    private Collider2D[] _hitColliders = System.Array.Empty<Collider2D>();
     private float _santaSpawnTimer = -1f;
     private readonly string _shootSound;
-    // この発射の向きをインスタンスに保持する。
     private readonly bool _isFlipX;
 
     public WaveCannonObjectSanta(
@@ -31,10 +30,6 @@ public class WaveCannonObjectSanta : WaveCannonObjectBase
     {
         _shootSound = shootSound;
         _isFlipX = isFlipX;
-        WCSantaHandler.WiseManVector = Vector3.zero;
-        WCSantaHandler.Angle = 0f;
-        WCSantaHandler.reflection = false;
-        WCSantaHandler.Xdiff = 0f;
 
         _gameObject = new GameObject("WaveCannonObjectSanta");
         _gameObject.transform.localScale = new Vector3(isFlipX ? -1 : 1, 1, 1);
@@ -83,11 +78,7 @@ public class WaveCannonObjectSanta : WaveCannonObjectBase
         return prefab ?? AssetManager.GetAsset<GameObject>(fallback);
     }
 
-    public override Collider2D[] HitColliders
-        => _santas
-            .Where(x => x != null && x.KillCollider != null)
-            .Select(x => (Collider2D)x.KillCollider)
-            .ToArray();
+    public override Collider2D[] HitColliders => _hitColliders;
     public override float ShootTime => 2.88f;
     private GameObject _gameObject;
     private GameObject _tankObj;
@@ -114,7 +105,8 @@ public class WaveCannonObjectSanta : WaveCannonObjectBase
         if (_santaSpawnTimer < 0f)
             return;
 
-        _santas.RemoveAll(x => x == null);
+        if (_santas.RemoveAll(x => x == null) > 0)
+            RebuildHitColliders();
         _santaSpawnTimer -= Time.deltaTime;
         if (_santaSpawnTimer <= 0f)
         {
@@ -154,10 +146,33 @@ public class WaveCannonObjectSanta : WaveCannonObjectBase
         santaHandler.Init(ability, _isFlipX);
         // 発射終了後にWaveCannonObjectがDestroyされてもサンタが破棄されないよう、親子付けしない
         santaHandler.transform.position = _gameObject.transform.TransformPoint(new Vector3(-2.4f + 3.3f, 0.275f, 0.1f));
-        santaHandler.transform.localScale = new(_isFlipX ? -0.1f : 0.1f, 0.1f, 0.1f);
+        santaHandler.transform.localScale = new(_isFlipX ? 0.1f : -0.1f, 0.1f, 0.1f);
         santaHandler.moveX = 2.4f;
         _santas.Add(santaHandler);
+        RebuildHitColliders();
         _santaSpawnTimer = SantaSpawnTimeInterval;
+    }
+
+    private void RebuildHitColliders()
+    {
+        int count = 0;
+        for (int i = 0; i < _santas.Count; i++)
+        {
+            var santa = _santas[i];
+            if (santa != null && santa.KillCollider != null)
+                count++;
+        }
+
+        if (_hitColliders.Length != count)
+            _hitColliders = count == 0 ? System.Array.Empty<Collider2D>() : new Collider2D[count];
+
+        int write = 0;
+        for (int i = 0; i < _santas.Count; i++)
+        {
+            var santa = _santas[i];
+            if (santa == null || santa.KillCollider == null) continue;
+            _hitColliders[write++] = santa.KillCollider;
+        }
     }
 
     private void SetChildrenLayer(GameObject gameObject, int layer)

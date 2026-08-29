@@ -7,7 +7,6 @@ using SuperNewRoles.CustomOptions;
 using SuperNewRoles.Events;
 using SuperNewRoles.Events.PCEvents;
 using SuperNewRoles.Modules;
-using SuperNewRoles.Modules.Events.Bases;
 using SuperNewRoles.Patches;
 using SuperNewRoles.Roles.Ability;
 using SuperNewRoles.Roles.Ability.CustomButton;
@@ -90,15 +89,11 @@ public class HitmanAbility : AbilityBase
     public HitmanData Data { get; set; }
 
     private ExPlayerControl _currentTarget;
+    private readonly List<ExPlayerControl> _uiTargets = new(1);
 
     private int _failedCount;
     private int _successCount;
     private float _timer;
-
-    private EventListener _fixedUpdateListener;
-    private EventListener<MurderEventData> _murderListener;
-    private EventListener<MeetingCloseEventData> _meetingCloseListener;
-    private EventListener<NameTextUpdateEventData> _nameTextUpdateListener;
 
     private Arrow ArrowToTarget;
 
@@ -120,7 +115,7 @@ public class HitmanAbility : AbilityBase
             canUseVent: () => Data.CanUseVent
         );
         _showPlayerUIAbility = new ShowPlayerUIAbility(
-            getPlayerList: () => [_currentTarget]
+            getPlayerList: GetUiTargets
         );
         _impostorVisionAbility = new ImpostorVisionAbility(
             hasImpostorVision: () => Data.HasImpostorVision
@@ -131,29 +126,30 @@ public class HitmanAbility : AbilityBase
         Player.AttachAbility(_showPlayerUIAbility, new AbilityParentAbility(this));
         Player.AttachAbility(_impostorVisionAbility, new AbilityParentAbility(this));
 
-        _nameTextUpdateListener = NameTextUpdateEvent.Instance.AddListener(OnNameTextUpdate);
+        SubscribeWithAbility(NameTextUpdateEvent.Instance, OnNameTextUpdate);
+    }
+    private List<ExPlayerControl> GetUiTargets()
+    {
+        if (_uiTargets.Count == 1 && _uiTargets[0] == _currentTarget)
+            return _uiTargets;
+        _uiTargets.Clear();
+        if (_currentTarget != null)
+            _uiTargets.Add(_currentTarget);
+        return _uiTargets;
     }
     public override void AttachToLocalPlayer()
     {
         base.AttachToLocalPlayer();
-        _fixedUpdateListener = FixedUpdateEvent.Instance.AddListener(OnFixedUpdate);
-        _murderListener = MurderEvent.Instance.AddListener(OnMurder);
-        _meetingCloseListener = MeetingCloseEvent.Instance.AddListener(OnMeetingClose);
+        SubscribeWithAbility(FixedUpdateEvent.Instance, OnFixedUpdate);
+        SubscribeWithAbility(MurderEvent.Instance, OnMurder);
+        SubscribeWithAbility(MeetingCloseEvent.Instance, OnMeetingClose);
         reSelect();
         ArrowToTarget = new Arrow(Color.red);
     }
     public override void DetachToLocalPlayer()
     {
-        _fixedUpdateListener?.RemoveListener();
-        _murderListener?.RemoveListener();
-        _meetingCloseListener?.RemoveListener();
         GameObject.Destroy(ArrowToTarget?.arrow.gameObject);
         ArrowToTarget = null;
-    }
-    public override void DetachToAlls()
-    {
-        base.DetachToAlls();
-        _nameTextUpdateListener?.RemoveListener();
     }
     private void OnNameTextUpdate(NameTextUpdateEventData data)
     {
@@ -208,6 +204,7 @@ public class HitmanAbility : AbilityBase
     {
         if (ExPlayerControl.LocalPlayer.IsDead()) return;
         if (data.killer != Player) return;
+        if (!data.resultFlags.HasFlag(MurderResultFlags.Succeeded)) return;
         if (_currentTarget == data.target)
             SuccessfulKill();
         else

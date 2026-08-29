@@ -5,7 +5,6 @@ using AmongUs.GameOptions;
 using SuperNewRoles.CustomOptions;
 using SuperNewRoles.Modules;
 using SuperNewRoles.Roles.Ability;
-using SuperNewRoles.Modules.Events.Bases;
 using UnityEngine.PlayerLoop;
 using SuperNewRoles.Events;
 using SuperNewRoles.Events.PCEvents;
@@ -104,11 +103,6 @@ public class VampireAbility : AbilityBase
     public VampireKillData kill { get; }
     public ExPlayerControl TargetingPlayer { get; private set; }
     public VampireData Vampire { get; }
-    private EventListener _fixedUpdateListener;
-    private EventListener<MurderEventData> _murderListener;
-    private EventListener<WrapUpEventData> _wrapUpListener;
-    private EventListener<CalledMeetingEventData> _meetingCalledListener;
-    private EventListener<NameTextUpdateEventData> _nameTextUpdateListener;
 
     private float delayTimer;
     private float bloodStainTimer;
@@ -172,30 +166,16 @@ public class VampireAbility : AbilityBase
         Player.AttachAbility(deviceCanUseAbility, new AbilityParentAbility(this));
         Player.AttachAbility(hideInAdminAbility, new AbilityParentAbility(this));
         Player.AttachAbility(new KnowOtherAbility((player) => player.Player == dependent?.Player, () => true), new AbilityParentAbility(this));
-        _fixedUpdateListener = FixedUpdateEvent.Instance.AddListener(OnFixedUpdate);
-        _murderListener = MurderEvent.Instance.AddListener(OnMurder);
-        _wrapUpListener = WrapUpEvent.Instance.AddListener(OnWrapUp);
-        _meetingCalledListener = CalledMeetingEvent.Instance.AddListener(OnMeetingCalled);
+        SubscribeWithAbility(FixedUpdateEvent.Instance, OnFixedUpdate);
+        SubscribeWithAbility(MurderEvent.Instance, OnMurder);
+        SubscribeWithAbility(WrapUpEvent.Instance, OnWrapUp);
+        SubscribeWithAbility(CalledMeetingEvent.Instance, OnMeetingCalled);
     }
     public override void AttachToLocalPlayer()
     {
         base.AttachToLocalPlayer();
-        _nameTextUpdateListener = NameTextUpdateEvent.Instance.AddListener(OnNameTextUpdate);
+        SubscribeWithAbility(NameTextUpdateEvent.Instance, OnNameTextUpdate);
     }
-    public override void DetachToAlls()
-    {
-        base.DetachToAlls();
-        _fixedUpdateListener?.RemoveListener();
-        _murderListener?.RemoveListener();
-        _wrapUpListener?.RemoveListener();
-        _meetingCalledListener?.RemoveListener();
-    }
-    public override void DetachToLocalPlayer()
-    {
-        base.DetachToLocalPlayer();
-        _nameTextUpdateListener?.RemoveListener();
-    }
-
     private void OnNameTextUpdate(NameTextUpdateEventData data)
     {
         // 眷属の名前に印を付ける

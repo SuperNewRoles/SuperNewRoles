@@ -16,7 +16,9 @@ public static class CommonCustom
         static void Postfix(NormalPlayerTask __instance)
         {
             if (__instance.TaskType != TaskTypes.FixWiring || !MapSettingOptions.WireTaskIsRandom) return;
-            List<Console> orgList = ShipStatus.Instance.AllConsoles.Where((global::Console t) => t.TaskTypes.Contains(__instance.TaskType)).ToList<global::Console>();
+            if (ShipStatus.Instance?.AllConsoles == null) return;
+            List<Console> orgList = ShipStatus.Instance.AllConsoles.Where((global::Console t) => t != null && t.TaskTypes != null && t.TaskTypes.Contains(__instance.TaskType)).ToList<global::Console>();
+            if (orgList.Count == 0) return;
             List<Console> list = new(orgList);
 
             __instance.MaxStep = MapSettingOptions.WireTaskNum;
@@ -29,7 +31,7 @@ public static class CommonCustom
                 __instance.Data[i] = (byte)list[index].ConsoleId;
                 list.RemoveAt(index);
             }
-            __instance.StartAt = orgList.FirstOrDefault(console => console.ConsoleId == __instance.Data[0]).Room;
+            __instance.StartAt = orgList.FirstOrDefault(console => console.ConsoleId == __instance.Data[0])?.Room ?? __instance.StartAt;
         }
     }
 

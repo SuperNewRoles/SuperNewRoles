@@ -345,7 +345,7 @@ public class ReportUIMenu
                         text = ModTranslation.GetString("RequestInGameSendingReportProgress", 0);
                         Dictionary<string, string> additionalInfo = new();
                         additionalInfo["mode"] = Categories.ModeOption.ToString();
-                        additionalInfo["log_compressed"] = LogCompression.CompressAndEncryptLog(SNRLogListener.Instance.logBuilder.ToString());
+                        additionalInfo["log_compressed"] = LogCompression.CompressAndEncryptLog(SNRLogListener.Instance.GetLogText());
                         string errorLogData = BugReportErrorLogCollector.CollectAndCompress();
                         if (!string.IsNullOrEmpty(errorLogData))
                             additionalInfo[BugReportErrorLogCollector.PayloadKey] = errorLogData;
@@ -375,7 +375,7 @@ public class ReportUIMenu
                                 {
                                     CreateSuccessUI(parent.parent);
                                     GameObject.Destroy(parent.gameObject);
-                                }, 0f);
+                                }, 0f, "ReportUIMenuShowSuccess");
                             }
                         }, progress =>
                         {
@@ -411,7 +411,7 @@ public class ReportUIMenu
                                 {
                                     CreateSuccessUI(parent.parent);
                                     GameObject.Destroy(parent.gameObject);
-                                }, 0f);
+                                }, 0f, "ReportUIMenuShowSuccess");
                             }
                         }, progress =>
                         {

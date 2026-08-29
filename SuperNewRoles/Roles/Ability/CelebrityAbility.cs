@@ -2,7 +2,6 @@ using System;
 using System.Collections.Generic;
 using UnityEngine;
 using SuperNewRoles.Modules;
-using SuperNewRoles.Modules.Events.Bases;
 using SuperNewRoles.Events;
 using SuperNewRoles.Roles.Crewmate;
 using AmongUs.GameOptions;
@@ -18,10 +17,6 @@ public record CelebrityData
 }
 public class CelebrityAbility : AbilityBase
 {
-    private EventListener<NameTextUpdateEventData> _nameTextUpdateEvent;
-    private EventListener<NameTextUpdateVisiableEventData> _nameTextUpdateVisiableEvent;
-    private EventListener _fixedUpdateEvent;
-    private EventListener<MeetingStartEventData> _meetingStartEvent;
     private float _glowTimer = 0f;
     private bool _isAlive = true;
     public CelebrityData Data;
@@ -31,20 +26,21 @@ public class CelebrityAbility : AbilityBase
     }
     public override void AttachToLocalPlayer()
     {
-        _fixedUpdateEvent = FixedUpdateEvent.Instance.AddListener(OnFixedUpdate);
+        SubscribeWithAbility(FixedUpdateEvent.Instance, OnFixedUpdate);
     }
     public override void AttachToAlls()
     {
-        _nameTextUpdateEvent = NameTextUpdateEvent.Instance.AddListener(OnNameTextUpdate);
-        _nameTextUpdateVisiableEvent = NameTextUpdateVisiableEvent.Instance.AddListener(OnNameTextUpdateVisiable);
-        _meetingStartEvent = MeetingStartEvent.Instance.AddListener(OnMeetingStart);
-        _isAlive = ExPlayerControl.LocalPlayer.IsAlive();
+        SubscribeWithAbility(NameTextUpdateEvent.Instance, OnNameTextUpdate);
+        SubscribeWithAbility(NameTextUpdateVisiableEvent.Instance, OnNameTextUpdateVisiable);
+        SubscribeWithAbility(MeetingStartEvent.Instance, OnMeetingStart);
+        _isAlive = Player?.IsAlive() == true;
         if (Data.YellowChangedRole)
             Player.AttachAbility(new AlwaysCelebrityAbility(), new AbilityParentPlayer(Player));
     }
     private void OnMeetingStart(MeetingStartEventData data)
     {
         _glowTimer = 0f;
+        // 会議でのみ更新する
         _isAlive = Player.IsAlive();
     }
     // 名前の色を更新するイベントハンドラ
@@ -109,34 +105,14 @@ public class CelebrityAbility : AbilityBase
         return true;
     }
 
-    public override void DetachToLocalPlayer()
-    {
-        base.DetachToLocalPlayer();
-        _fixedUpdateEvent?.RemoveListener();
-    }
-    public override void DetachToAlls()
-    {
-        base.DetachToAlls();
-        _nameTextUpdateEvent?.RemoveListener();
-        _nameTextUpdateVisiableEvent?.RemoveListener();
-        _meetingStartEvent?.RemoveListener();
-    }
 }
 public class AlwaysCelebrityAbility : AbilityBase
 {
-    private EventListener<NameTextUpdateEventData> _nameTextUpdateEvent;
-    private EventListener<NameTextUpdateVisiableEventData> _nameTextUpdateVisiableEvent;
     public override void AttachToAlls()
     {
         base.AttachToAlls();
-        _nameTextUpdateEvent = NameTextUpdateEvent.Instance.AddListener(OnNameTextUpdate);
-        _nameTextUpdateVisiableEvent = NameTextUpdateVisiableEvent.Instance.AddListener(OnNameTextUpdateVisiable);
-    }
-    public override void DetachToAlls()
-    {
-        base.DetachToAlls();
-        _nameTextUpdateEvent?.RemoveListener();
-        _nameTextUpdateVisiableEvent?.RemoveListener();
+        SubscribeWithAbility(NameTextUpdateEvent.Instance, OnNameTextUpdate);
+        SubscribeWithAbility(NameTextUpdateVisiableEvent.Instance, OnNameTextUpdateVisiable);
     }
     private void OnNameTextUpdate(NameTextUpdateEventData data)
     {

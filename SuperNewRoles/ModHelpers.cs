@@ -21,6 +21,7 @@ using UnityEngine.Audio;
 using UnityEngine.Networking;
 
 namespace SuperNewRoles;
+
 public static class ModHelpers
 {
     private static readonly RandomNumberGenerator Rng = RandomNumberGenerator.Create();
@@ -74,7 +75,7 @@ public static class ModHelpers
     {
         if (percentage <= 0) return false;
         if (percentage >= 100) return true;
-        return GetRandomInt(100) < percentage;
+        return GetRandomInt(99) < percentage;
     }
     public static string HashMD5(string str)
     {
@@ -427,22 +428,19 @@ public static class ModHelpers
         return GetRandomInt(list.Count - 1); // 0 から list.Count - 1 までのインデックス
     }
     /// <summary>
-    /// 2つの位置が指定された距離以内かどうかを確認します
+    /// 2点が指定距離以内か（XY の平方距離）。
     /// </summary>
-    /// <param name="pos">位置1</param>
-    /// <param name="pos2">位置2</param>
-    /// <param name="distance">最大距離</param>
-    /// <returns>距離以内の場合はtrue</returns>
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static bool IsPositionDistance(Vector2 pos, Vector2 pos2, float distance)
     {
-        float dis = Vector2.Distance(pos, pos2);
-        return dis <= distance;
+        return IsPositionDistance(pos.x, pos.y, pos2.x, pos2.y, distance);
     }
-    // Overload for unit tests to avoid UnityEngine.Vector2 construction
+
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static bool IsPositionDistance(float x1, float y1, float x2, float y2, float distance)
     {
-        var dx = x1 - x2;
-        var dy = y1 - y2;
+        float dx = x1 - x2;
+        float dy = y1 - y2;
         return (dx * dx + dy * dy) <= (distance * distance);
     }
 

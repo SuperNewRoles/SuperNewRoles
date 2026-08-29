@@ -13,6 +13,7 @@ public static class PluginConfig
     public const string Id = "jp.ykundesu.supernewrolesnext";
     public const string Name = "SuperNewRoles";
     public const string ProcessName = "Among Us.exe";
+    public const string ModGuid = "9f21dfdc-1224-4322-af7b-63db54cea706";
 }
 
 public static class VersionInfo
@@ -22,7 +23,7 @@ public static class VersionInfo
     public static string VersionString => Current.ToString() + (SnapShotVersion?.ToString() ?? string.Empty);
 
     public static bool IsSnapShot => SnapShotVersion != null;
-    public static char? SnapShotVersion = null;
+    public static char? SnapShotVersion = 'b';
 
     public static string NewVersion = "";
     public static bool IsUpdate = false;
@@ -115,19 +116,31 @@ public static class Statics
     }
 
     /// <summary>
+    /// オンライン用の DisableServerAuthority フラグ（+25）。revision が既に 25 以上なら加算しない（Reactor 共存時の +50 防止）。
+    /// </summary>
+    public static int ApplyDisableServerAuthorityFlag(int broadcastVersion)
+    {
+        const int flag = 25;
+        int revision = broadcastVersion % 50;
+        if (revision < 0)
+            revision += 50;
+        if (revision < flag)
+            return broadcastVersion + flag;
+        return broadcastVersion;
+    }
+
+    /// <summary>
     /// 互換とみなす Among Us の <c>GetBroadcastVersion()</c> 値。
     /// オンラインでは <c>main.cs</c> の Postfix で +25 されるため、その値も列挙する。
     /// 空の場合は同一数値のみ一致とみなす。
     /// </summary>
     public static readonly int[] CompatibleAmongUsBroadcastVersions =
     {
-        // v17.4
-        ComputeAmongUsBroadcastVersion(2026, 3, 18), // 17.4 (PC)
-        ComputeAmongUsBroadcastVersion(2026, 4, 23), // 17.4 (Android)
-
-        // v17.4 + 25
-        ComputeAmongUsBroadcastVersion(2026, 3, 18) + 25, // 17.4 (PC)
-        ComputeAmongUsBroadcastVersion(2026, 4, 23) + 25, // 17.4 (Android)
+        // v18.0
+        ComputeAmongUsBroadcastVersion(2026, 7, 15), // 18.0 (PC)
+        ComputeAmongUsBroadcastVersion(2026, 7, 16), // 18.0 (Android)
+        ComputeAmongUsBroadcastVersion(2026, 7, 15) + 25, // 18.0 (PC)
+        ComputeAmongUsBroadcastVersion(2026, 7, 16) + 25, // 18.0 (Android)
 
         // ComputeAmongUsBroadcastVersion(2024, 8, 10, 0),
         // ComputeAmongUsBroadcastVersion(2024, 8, 10, 0) + 25,

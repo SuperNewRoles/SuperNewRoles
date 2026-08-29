@@ -14,6 +14,7 @@ public static class ConsoleCanUsePatch
         __result = 0f;
         if (AmongUsClient.Instance.NetworkMode == NetworkModes.FreePlay) return true;
         if (__instance.AllowImpostor) return true;
+        if (__instance.TaskTypes == null || __instance.TaskTypes.Length == 0) return true;
         ExPlayerControl exPlayer = (ExPlayerControl)pc;
 
         if (ShouldBypassRoleCanUse(__instance, pc, exPlayer))

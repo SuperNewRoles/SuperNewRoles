@@ -2,15 +2,12 @@ using System;
 using SuperNewRoles.Events;
 using SuperNewRoles.Events.PCEvents;
 using SuperNewRoles.Modules;
-using SuperNewRoles.Modules.Events.Bases;
 
 namespace SuperNewRoles.Roles.Ability;
 
 public class ChangeKillTimerAbility : AbilityBase
 {
     public Func<float> KillTimerGetter { get; }
-    private EventListener<MurderEventData> MurderEventListener;
-    private EventListener<WrapUpEventData> WrapUpEventListener;
 
     public ChangeKillTimerAbility(Func<float> killTimerGetter)
     {
@@ -19,15 +16,8 @@ public class ChangeKillTimerAbility : AbilityBase
 
     public override void AttachToLocalPlayer()
     {
-        MurderEventListener = MurderEvent.Instance.AddListener(OnMurder);
-        WrapUpEventListener = WrapUpEvent.Instance.AddListener(OnWrapUp);
-    }
-
-    public override void DetachToLocalPlayer()
-    {
-        base.DetachToLocalPlayer();
-        MurderEvent.Instance.RemoveListener(MurderEventListener);
-        WrapUpEvent.Instance.RemoveListener(WrapUpEventListener);
+        SubscribeWithAbility(MurderEvent.Instance, OnMurder);
+        SubscribeWithAbility(WrapUpEvent.Instance, OnWrapUp);
     }
 
     private void OnMurder(MurderEventData data)
@@ -41,7 +31,7 @@ public class ChangeKillTimerAbility : AbilityBase
             new LateTask(() =>
             {
                 ((ExPlayerControl)Player).SetKillTimerUnchecked(killTime, killTime);
-            }, 0.05f);
+            }, 0.05f, "ChangeKillTimerOnMurder");
         }
     }
 
@@ -52,6 +42,6 @@ public class ChangeKillTimerAbility : AbilityBase
         {
             float killTime = KillTimerGetter();
             ((ExPlayerControl)Player).SetKillTimerUnchecked(killTime, killTime);
-        }, 0.5f);
+        }, 0.5f, "ChangeKillTimerOnWrapUp");
     }
 }

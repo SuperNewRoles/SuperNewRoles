@@ -4,7 +4,6 @@ using UnityEngine;
 using SuperNewRoles.Modules;
 using SuperNewRoles.Roles.Ability.CustomButton;
 using SuperNewRoles.Events;
-using SuperNewRoles.Modules.Events.Bases;
 using SuperNewRoles.Modules.Events;
 using SuperNewRoles.Events.PCEvents;
 using HarmonyLib;
@@ -20,9 +19,6 @@ public class InvisibleAbility : CustomButtonBase, IButtonEffect
     private float coolTime;
     private float durationTime;
     private bool canLighterSeeScientist;
-    private EventListener<MeetingStartEventData> _onMeetingStartEvent;
-    private EventListener<DieEventData> _onDie;
-    private EventListener _onFixedUpdate;
     private readonly OpacityFadeController _opacityFader = new();
 
     public string SpriteName { get; }
@@ -67,13 +63,12 @@ public class InvisibleAbility : CustomButtonBase, IButtonEffect
     public override void AttachToAlls()
     {
         base.AttachToAlls();
-        _onFixedUpdate = FixedUpdateEvent.Instance.AddListener(OnFixedUpdate);
+        SubscribeWithAbility(FixedUpdateEvent.Instance, OnFixedUpdate);
     }
 
     public override void DetachToAlls()
     {
         base.DetachToAlls();
-        _onFixedUpdate?.RemoveListener();
         _opacityFader.StopAll();
         _invisiblePlayers.Remove(Player.PlayerId);
     }
@@ -81,15 +76,8 @@ public class InvisibleAbility : CustomButtonBase, IButtonEffect
     public override void AttachToLocalPlayer()
     {
         base.AttachToLocalPlayer();
-        _onMeetingStartEvent = MeetingStartEvent.Instance.AddListener(OnMeetingStart);
-        _onDie = DieEvent.Instance.AddListener(OnDie);
-    }
-
-    public override void DetachToLocalPlayer()
-    {
-        base.DetachToLocalPlayer();
-        _onMeetingStartEvent?.RemoveListener();
-        _onDie?.RemoveListener();
+        SubscribeWithAbility(MeetingStartEvent.Instance, OnMeetingStart);
+        SubscribeWithAbility(DieEvent.Instance, OnDie);
     }
 
     private void OnMeetingStart(MeetingStartEventData data)

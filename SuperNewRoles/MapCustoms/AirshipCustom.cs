@@ -95,7 +95,7 @@ public static class AirshipCustom
                 return;
 
             // ランダムなスポーン位置を選択
-            new LateTask(() => __instance.LocationButtons[ModHelpers.GetRandomIndex(__instance.LocationButtons)].ReceiveClickUp(), 0f);
+            new LateTask(() => __instance.LocationButtons[ModHelpers.GetRandomIndex(__instance.LocationButtons)].ReceiveClickUp(), 0f, "AirshipRandomSpawnClick");
         }
     }
 }

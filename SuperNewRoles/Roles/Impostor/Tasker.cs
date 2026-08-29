@@ -7,7 +7,6 @@ using SuperNewRoles.Ability;
 using SuperNewRoles.CustomOptions;
 using SuperNewRoles.Events.PCEvents;
 using SuperNewRoles.Modules;
-using SuperNewRoles.Modules.Events.Bases;
 using SuperNewRoles.Patches;
 using SuperNewRoles.Roles.Ability;
 using UnityEngine;
@@ -19,7 +18,10 @@ class Tasker : RoleBase<Tasker>
     public override RoleId Role { get; } = RoleId.Tasker;
     public override Color32 RoleColor { get; } = Palette.ImpostorRed;
     public override List<Func<AbilityBase>> Abilities { get; } = [
-        () => new CustomTaskAbility(() => (true, false, null), GetTaskData()),
+        () => new CustomTaskAbility(
+            isTaskTrigger: () => true,
+            countsForCrewWin: () => false,
+            taskOptions: () => GetTaskData()),
         () => new KillableAbility(() => TaskerCanKill),
         () => new TaskerAbility()
     ];
@@ -63,17 +65,10 @@ class Tasker : RoleBase<Tasker>
 
 public class TaskerAbility : AbilityBase
 {
-    private EventListener<TaskCompleteEventData> _taskCompleteListener;
 
     public override void AttachToAlls()
     {
-        _taskCompleteListener = TaskCompleteEvent.Instance.AddListener(OnTaskComplete);
-    }
-
-    public override void DetachToAlls()
-    {
-        _taskCompleteListener?.RemoveListener();
-        _taskCompleteListener = null;
+        SubscribeWithAbility(TaskCompleteEvent.Instance, OnTaskComplete);
     }
 
     private void OnTaskComplete(TaskCompleteEventData data)

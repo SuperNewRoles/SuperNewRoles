@@ -5,7 +5,6 @@ using AmongUs.GameOptions;
 using SuperNewRoles.CustomOptions;
 using SuperNewRoles.Modules;
 using SuperNewRoles.Roles.Ability;
-using SuperNewRoles.Modules.Events.Bases;
 using SuperNewRoles.Events.PCEvents;
 using SuperNewRoles.Events;
 using SuperNewRoles.CustomOptions.Categories;
@@ -50,9 +49,6 @@ public class VampireDependentAbility : AbilityBase
     public CustomVentAbility ventAbility;
     private CustomKillButtonAbility killButtonAbility;
     public VampireDependentData Data { get; }
-    private EventListener<MurderEventData> _murderListener;
-    private EventListener<ExileEventData> _exileListener;
-    private EventListener<NameTextUpdateEventData> _nameTextUpdateListener;
     private SabotageCanUseAbility sabotageCanUseAbility;
     private DeviceCanUseAbility deviceCanUseAbility;
     private HideInAdminAbility hideInAdminAbility;

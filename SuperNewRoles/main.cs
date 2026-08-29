@@ -16,6 +16,7 @@ using TMPro;
 using UnityEngine;
 using BepInEx.Logging;
 using SuperNewRoles.Modules;
+using SuperNewRoles.Modules.Compatibility;
 using SuperNewRoles.Patches;
 using SuperNewRoles.Roles;
 using SuperNewRoles.CustomOptions;
@@ -43,6 +44,8 @@ namespace SuperNewRoles;
 
 [BepInAutoPlugin(PluginConfig.Id, PluginConfig.Name)]
 [BepInProcess(PluginConfig.ProcessName)]
+[BepInDependency(LevelImposterSupport.ReactorPluginGuid, BepInDependency.DependencyFlags.SoftDependency)]
+[BepInDependency(LevelImposterSupport.PluginGuid, BepInDependency.DependencyFlags.SoftDependency)]
 [BepInIncompatibility("com.emptybottle.townofhost")]
 [BepInIncompatibility("me.eisbison.theotherroles")]
 [BepInIncompatibility("me.yukieiji.extremeroles")]
@@ -71,18 +74,21 @@ public partial class SuperNewRolesPlugin : BasePlugin
     public static string SecretDirectory => Path.GetFullPath(Path.Combine(UnityEngine.Application.persistentDataPath, "SuperNewRolesNextSecrets"));
     private static Task TaskRunIfWindows(Action action)
     {
-        bool needed = false;
-        if (needed && ModHelpers.IsAndroid())
+        // Android は UnityMain で同期実行する。バックグラウンドの Harmony パッチは
+        // SafeHook trampoline の W^X と競合して SEGV_ACCERR になる。
+        if (ModHelpers.IsAndroid())
+        {
             action();
-        else
-            return Task.Run(() =>
-            {
-                IL2CPP.il2cpp_thread_attach(IL2CPP.il2cpp_domain_get());
-                action();
-            });
-        return Task.Run(() => { });
+            return Task.CompletedTask;
+        }
 
+        return Task.Run(() =>
+        {
+            IL2CPP.il2cpp_thread_attach(IL2CPP.il2cpp_domain_get());
+            action();
+        });
     }
+
     // 複数起動中の場合に絶対に重複しない数
     private static int ProcessNumber = 0;
 
@@ -98,10 +104,10 @@ public partial class SuperNewRolesPlugin : BasePlugin
         Logger = Log;
 
         Instance = this;
+        Encryption.SetEncryptKey();
 
         LoadAnnouncementImageDecoder();
-
-        Encryption.SetEncryptKey();
+        LevelImposterSupport.Initialize();
 
         SuperNewRoles.Logger.Info($"BaseDirectory: {BaseDirectory}");
         SuperNewRoles.Logger.Info($"SecretDirectory: {SecretDirectory}");
@@ -121,6 +127,7 @@ public partial class SuperNewRolesPlugin : BasePlugin
             Directory.CreateDirectory(SecretDirectory);
 
         ConfigRoles.Init();
+        CustomCosmeticsLoader.TryStartHttpPrefetch();
         UpdateCPUProcessorAffinity();
         CustomRoleManager.Load();
         AssetManager.Load();
@@ -188,6 +195,7 @@ public partial class SuperNewRolesPlugin : BasePlugin
             Logger.LogWarning($"Failed to load announcement image decoder: {ex}");
         }
     }
+
     public void PatchAll(Harmony harmony)
     {
         var assembly = Assembly;
@@ -222,6 +230,7 @@ public partial class SuperNewRolesPlugin : BasePlugin
         NormalGameOptionsV08.MaxImpostors = ints;
         NormalGameOptionsV09.MaxImpostors = ints;
         NormalGameOptionsV10.MaxImpostors = ints;
+        NormalGameOptionsV11.MaxImpostors = ints;
     }
 
     // CPUのコア割当を変更してパフォーマンスを改善する
@@ -319,6 +328,7 @@ public partial class SuperNewRolesPlugin : BasePlugin
         ClassInjector.RegisterTypeInIl2Cpp<HelpMenuObjectComponent>();
         ClassInjector.RegisterTypeInIl2Cpp<GotTrophyUI.SlideAnimator>();
         ClassInjector.RegisterTypeInIl2Cpp<CustomCosmeticsCostumeSlot>();
+        ClassInjector.RegisterTypeInIl2Cpp<CustomCosmeticsLayerOwner>();
         ClassInjector.RegisterTypeInIl2Cpp<CustomHatLayer>();
         ClassInjector.RegisterTypeInIl2Cpp<CustomVisorLayer>();
         ClassInjector.RegisterTypeInIl2Cpp<PushedPlayerDeadbody>();
@@ -460,7 +470,7 @@ public partial class SuperNewRolesPlugin : BasePlugin
         public static void Postfix(ref int __result)
         {
             if (AmongUsClient.Instance.NetworkMode is NetworkModes.LocalGame or NetworkModes.FreePlay) return;
-            __result += 25;
+            __result = Statics.ApplyDisableServerAuthorityFlag(__result);
         }
     }
     [HarmonyPatch(typeof(Constants), nameof(Constants.IsVersionModded))]

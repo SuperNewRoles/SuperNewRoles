@@ -1,7 +1,6 @@
 using System;
 using SuperNewRoles.Modules;
 using SuperNewRoles.Modules.Events;
-using SuperNewRoles.Modules.Events.Bases;
 using SuperNewRoles.Roles.Ability.CustomButton;
 using UnityEngine;
 
@@ -9,7 +8,6 @@ namespace SuperNewRoles.Roles.Ability;
 
 public class SpeedBoosterAbility : CustomButtonBase, IButtonEffect
 {
-    private EventListener<PlayerPhysicsFixedUpdateEventData> _physicsUpdateListener;
 
     private bool SpeedBoosterActive;
 
@@ -47,13 +45,7 @@ public class SpeedBoosterAbility : CustomButtonBase, IButtonEffect
     public override void AttachToLocalPlayer()
     {
         base.AttachToLocalPlayer();
-        _physicsUpdateListener = PlayerPhysicsFixedUpdateEvent.Instance.AddListener(OnPhysicsFixedUpdate);
-    }
-
-    public override void DetachToLocalPlayer()
-    {
-        base.DetachToLocalPlayer();
-        _physicsUpdateListener?.RemoveListener();
+        SubscribeWithAbility(PlayerPhysicsFixedUpdateEvent.Instance, OnPhysicsFixedUpdate);
     }
 
     private void OnPhysicsFixedUpdate(PlayerPhysicsFixedUpdateEventData data)

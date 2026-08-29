@@ -4,7 +4,6 @@ using UnityEngine;
 using SuperNewRoles.Modules;
 using SuperNewRoles.Roles.Ability.CustomButton;
 using SuperNewRoles.Events;
-using SuperNewRoles.Modules.Events.Bases;
 using SuperNewRoles.Events.PCEvents;
 using SuperNewRoles.Modules.Events;
 using Il2CppSystem.Collections.Generic;
@@ -33,10 +32,6 @@ public class WiseManAbility : CustomButtonBase, IButtonEffect
     public bool isEffectActive { get; set; }
     public float EffectTimer { get; set; }
 
-    private EventListener<WrapUpEventData> _wrapUpEventListener;
-    private EventListener<PlayerPhysicsFixedUpdateEventData> _playerPhysicsFixedUpdateEventListener;
-    private EventListener<TryKillEventData> _tryKillEventListener;
-    private EventListener<DieEventData> _dieEventListener;
     public bool Active { get; private set; }
     private Vector3 position;
     public bool Guarded { get; set; }
@@ -51,16 +46,13 @@ public class WiseManAbility : CustomButtonBase, IButtonEffect
     public override void AttachToAlls()
     {
         base.AttachToAlls();
-        _tryKillEventListener = TryKillEvent.Instance.AddListener(OnTryKill);
-        _playerPhysicsFixedUpdateEventListener = PlayerPhysicsFixedUpdateEvent.Instance.AddListener(PhysicsUpdate);
-        _dieEventListener = DieEvent.Instance.AddListener(OnDie);
+        SubscribeWithAbility(TryKillEvent.Instance, OnTryKill);
+        SubscribeWithAbility(PlayerPhysicsFixedUpdateEvent.Instance, PhysicsUpdate);
+        SubscribeWithAbility(DieEvent.Instance, OnDie);
     }
     public override void DetachToAlls()
     {
         base.DetachToAlls();
-        _tryKillEventListener?.RemoveListener();
-        _playerPhysicsFixedUpdateEventListener?.RemoveListener();
-        _dieEventListener?.RemoveListener();
         Active = false;
     }
 
@@ -77,13 +69,12 @@ public class WiseManAbility : CustomButtonBase, IButtonEffect
     public override void AttachToLocalPlayer()
     {
         base.AttachToLocalPlayer();
-        _wrapUpEventListener = WrapUpEvent.Instance.AddListener(x => OnMeetingStart());
+        SubscribeWithAbility(WrapUpEvent.Instance, x => OnMeetingStart());
     }
 
     public override void DetachToLocalPlayer()
     {
         base.DetachToLocalPlayer();
-        _wrapUpEventListener?.RemoveListener();
         if (Active)
         {
             Player.Player.moveable = true;

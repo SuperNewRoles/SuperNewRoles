@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using BepInEx.Unity.IL2CPP.Utils.Collections;
 using HarmonyLib;
+using SuperNewRoles.Modules.Compatibility;
 using UnityEngine;
 using UnityEngine.AddressableAssets;
 using UnityEngine.ResourceManagement.AsyncOperations;
@@ -72,6 +73,7 @@ public static class MapLoader
         if (prefabs.Count <= (int)map)
         {
             Logger.Error($"Out of range: {map}");
+            loadingMaps.Remove(map);
             yield break;
         }
         AssetReference ship = prefabs[(int)map];
@@ -151,6 +153,7 @@ public static class MapLoader
         if (ship.Asset == null)
         {
             SuperNewRoles.Logger.Error($"Failed to load asset [{ship.AssetGUID}] after 10 retries. Ignoring...");
+            loadingMaps.Remove(map);
         }
         if (ship.Asset != null)
         {
@@ -200,6 +203,15 @@ public static class MapLoader
     }
     private static void UnloadMaps()
     {
+        // LevelImposter の PrefabDB が同じ ShipPrefabs を握ったまま再利用する。
+        // ここで ReleaseAsset / UnloadUnusedAssets すると次試合の ss-fungle 等が死ぬ。
+        if (LevelImposterSupport.IsPluginLoaded)
+        {
+            loadingMaps.Clear();
+            Logger.Info("MapLoader: keeping Airship/Fungle prefabs loaded for LevelImposter");
+            return;
+        }
+
         foreach (var ship in loadedMaps)
         {
             ship.ReleaseAsset();
@@ -210,6 +222,5 @@ public static class MapLoader
         if (fungle is not null)
             fungle = null;
         loadedMaps.Clear();
-        Resources.UnloadUnusedAssets();
     }
 }

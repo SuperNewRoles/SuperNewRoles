@@ -5,7 +5,6 @@ using UnityEngine;
 using SuperNewRoles.Modules;
 using SuperNewRoles.Roles.Ability.CustomButton;
 using SuperNewRoles.Events.PCEvents;
-using SuperNewRoles.Modules.Events.Bases;
 using SuperNewRoles.Roles.Neutral;
 using SuperNewRoles.Events;
 using SuperNewRoles.Patches;
@@ -32,17 +31,16 @@ public class BlackHatHackerAbility : AbilityBase
     public List<byte> _SelfPropagationPlayerId { get; private set; }
     public List<byte> _InfectedPlayerId { get; private set; }
 
-    private EventListener _fixedUpdateEvent;
-    private EventListener<WrapUpEventData> _wrapUpEvent;
 
     public List<byte> SelfPropagationPlayerId
     {
         get
         {
-            List<byte> add = InfectionTimer
-                .Where(x => !_SelfPropagationPlayerId.Contains(x.Key) && IsSelfPropagation(x.Value))
-                .Select(x => x.Key).ToList();
-            _SelfPropagationPlayerId.AddRange(add);
+            foreach (var x in InfectionTimer)
+            {
+                if (!_SelfPropagationPlayerId.Contains(x.Key) && IsSelfPropagation(x.Value))
+                    _SelfPropagationPlayerId.Add(x.Key);
+            }
             return _SelfPropagationPlayerId;
         }
     }
@@ -51,10 +49,11 @@ public class BlackHatHackerAbility : AbilityBase
     {
         get
         {
-            List<byte> check = InfectionTimer
-                .Where(x => !_InfectedPlayerId.Contains(x.Key) && x.Value >= Data.HackInfectiousTime)
-                .Select(x => x.Key).ToList();
-            _InfectedPlayerId.AddRange(check);
+            foreach (var x in InfectionTimer)
+            {
+                if (!_InfectedPlayerId.Contains(x.Key) && x.Value >= Data.HackInfectiousTime)
+                    _InfectedPlayerId.Add(x.Key);
+            }
             return _InfectedPlayerId;
         }
     }
@@ -108,15 +107,13 @@ public class BlackHatHackerAbility : AbilityBase
     {
         base.AttachToLocalPlayer();
         // イベントリスナーの登録
-        _fixedUpdateEvent = FixedUpdateEvent.Instance.AddListener(OnFixedUpdate);
-        _wrapUpEvent = WrapUpEvent.Instance.AddListener(OnWrapUp);
+        SubscribeWithAbility(FixedUpdateEvent.Instance, OnFixedUpdate);
+        SubscribeWithAbility(WrapUpEvent.Instance, OnWrapUp);
     }
 
     public override void DetachToLocalPlayer()
     {
         base.DetachToLocalPlayer();
-        _fixedUpdateEvent?.RemoveListener();
-        _wrapUpEvent?.RemoveListener();
 
         // 静的参照をクリア
         if (LocalInstance == this)

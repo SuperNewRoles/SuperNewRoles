@@ -7,8 +7,6 @@ using SuperNewRoles.Roles.Ability;
 using SuperNewRoles.Roles.Ability.CustomButton;
 using SuperNewRoles;
 using UnityEngine;
-using System.Linq;
-using SuperNewRoles.Modules.Events.Bases;
 using SuperNewRoles.Events;
 
 namespace SuperNewRoles.Roles.Impostor;
@@ -84,14 +82,11 @@ public class BansheeAbility : AbilityBase
     private bool canKillImpostor;
     private bool canDefaultKill;
 
-    /* イベント */
-    private EventListener _fixedUpdateListener;
-    private EventListener<MeetingStartEventData> _startMeetingListener;
-
     /* データ */
     private ExPlayerControl currentFairyPlayer;
     private bool whisperTriggered = false;
     private HashSet<byte> playersInRangeAlreadyChecked;
+    private readonly List<ExPlayerControl> _uiPlayers = new(1);
 
     public BansheeAbility(float releaseCooldown, float whisperCooldown, float fairyRange, bool canKillImpostor, bool canDefaultKill)
     {
@@ -114,7 +109,7 @@ public class BansheeAbility : AbilityBase
             () => currentFairyPlayer != null && !whisperTriggered,
             () => whisperTriggered = true
         );
-        showPlayerUIAbility = new ShowPlayerUIAbility(() => currentFairyPlayer != null ? [currentFairyPlayer] : []);
+        showPlayerUIAbility = new ShowPlayerUIAbility(GetUiPlayers);
         customKillButtonAbility = new CustomKillButtonAbility(
             // 囁いた後は押せない
             () => canDefaultKill && !whisperTriggered,
@@ -139,15 +134,8 @@ public class BansheeAbility : AbilityBase
         playersInRangeAlreadyChecked = new();
         currentFairyPlayer = null;
 
-        _fixedUpdateListener = FixedUpdateEvent.Instance.AddListener(OnFixedUpdate);
-        _startMeetingListener = MeetingStartEvent.Instance.AddListener(OnStartMeeting);
-    }
-
-    public override void DetachToLocalPlayer()
-    {
-        base.DetachToLocalPlayer();
-        _fixedUpdateListener?.RemoveListener();
-        _startMeetingListener?.RemoveListener();
+        SubscribeWithAbility(FixedUpdateEvent.Instance, OnFixedUpdate);
+        SubscribeWithAbility(MeetingStartEvent.Instance, OnStartMeeting);
     }
 
     private void OnStartMeeting(MeetingStartEventData data)
@@ -159,10 +147,33 @@ public class BansheeAbility : AbilityBase
         currentFairyPlayer = null;
         whisperTriggered = false;
         playersInRangeAlreadyChecked.Clear();
+        _uiPlayers.Clear();
+    }
+
+    private List<ExPlayerControl> GetUiPlayers()
+    {
+        if (currentFairyPlayer == null)
+        {
+            if (_uiPlayers.Count != 0)
+                _uiPlayers.Clear();
+            return _uiPlayers;
+        }
+        if (_uiPlayers.Count == 1 && _uiPlayers[0] == currentFairyPlayer)
+            return _uiPlayers;
+        _uiPlayers.Clear();
+        _uiPlayers.Add(currentFairyPlayer);
+        return _uiPlayers;
     }
 
     private void OnFixedUpdate()
     {
+        // 役職者が死亡・切断した後は、残留したイベントリスナーから囁きキルを発生させない。
+        if (Player == null || Player.IsDead())
+        {
+            ResetStatus();
+            return;
+        }
+
         if (currentFairyPlayer == null) return;
 
         // 妖精がついたプレイヤーが死んだらリセット
@@ -177,7 +188,7 @@ public class BansheeAbility : AbilityBase
             if (player.IsDead()) continue;
             if (player.AmOwner) continue;
             if (player == currentFairyPlayer) continue;
-            if (Vector3.Distance(currentFairyPlayer.transform.position, player.transform.position) <= fairyRange)
+            if (ModHelpers.IsPositionDistance(currentFairyPlayer.transform.position, player.transform.position, fairyRange))
             {
                 if (playersInRangeAlreadyChecked.Contains(player.PlayerId)) continue;
                 if (whisperTriggered)

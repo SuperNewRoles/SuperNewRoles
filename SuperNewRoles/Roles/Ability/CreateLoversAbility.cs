@@ -2,7 +2,6 @@ using System;
 using System.Collections.Generic;
 using SuperNewRoles.Events;
 using SuperNewRoles.Modules;
-using SuperNewRoles.Modules.Events.Bases;
 using SuperNewRoles.Roles.Ability.CustomButton;
 using SuperNewRoles.Roles.Modifiers;
 using SuperNewRoles.Roles.Neutral;
@@ -33,7 +32,6 @@ public class CreateLoversAbility : TargetCustomButtonBase
     public float _timeLimit { get; }
 
     private bool _created = false;
-    private EventListener _fixedUpdateListener;
     public override bool OnlyCrewmates => false;
     private float _currentTimer = 0f;
     public override Func<ExPlayerControl, bool> IsTargetable => IsLoversTargetable;
@@ -93,14 +91,8 @@ public class CreateLoversAbility : TargetCustomButtonBase
     public override void AttachToLocalPlayer()
     {
         base.AttachToLocalPlayer();
-        _fixedUpdateListener = FixedUpdateEvent.Instance.AddListener(OnFixedUpdate);
+        SubscribeWithAbility(FixedUpdateEvent.Instance, OnFixedUpdate);
     }
-    public override void DetachToLocalPlayer()
-    {
-        base.DetachToLocalPlayer();
-        _fixedUpdateListener?.RemoveListener();
-    }
-
     private void OnFixedUpdate()
     {
         if (ExPlayerControl.LocalPlayer.IsDead()) return;

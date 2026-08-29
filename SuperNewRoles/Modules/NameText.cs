@@ -219,11 +219,10 @@ public static class NameText
             UpdateNameInfo(x.killer);
             UpdateNameInfo(x.target);
         }));
-        DieEvent.Instance.AddListener(x => { if (x.player?.PlayerId == ExPlayerControl.LocalPlayer?.PlayerId) new LateTask(() => UpdateAllNameInfo(), 0.5f); });
+        DieEvent.Instance.AddListener(x => { if (x.player?.PlayerId == ExPlayerControl.LocalPlayer?.PlayerId) new LateTask(() => UpdateAllNameInfo(), 0.5f, "NameTextUpdateOnLocalDeath"); });
         WrapUpEvent.Instance.AddListener(x => UpdateAllNameInfo());
         MeetingStartEvent.Instance.AddListener(x => UpdateAllNameInfo());
         FixedUpdateEvent.Instance.AddListener(UpdateAllVisible);
-        _lastDead = new();
     }
     [HarmonyPatch(typeof(HudOverrideSystemType), nameof(HudOverrideSystemType.UpdateSystem))]
     public static class HudOverrideSystemTypePatch
@@ -239,14 +238,16 @@ public static class NameText
                 UpdateAllNameInfo();
         }
     }
-    private static Dictionary<ExPlayerControl, bool> _lastDead = new();
     private static void UpdateAllVisible()
     {
         HideRoleOnGhostAbility hideRoleOnGhostAbility = ExPlayerControl.LocalPlayer.GetAbility<HideRoleOnGhostAbility>();
         foreach (var player in ExPlayerControl.ExPlayerControls)
         {
+            bool playerVisible = player?.Player != null && player.Player.Visible;
             UpdateVisible(player, hideRoleOnGhostAbility);
-            NameTextUpdateVisiableEvent.Invoke(player, player.Player.Visible);
+            // CanSeeRoleOf のあと毎フレーム再適用する。KnowOther / PartTimer 等が
+            // 役職名表示を上書きするため、Visible 変化時だけだと翌フレームで消える。
+            NameTextUpdateVisiableEvent.Invoke(player, playerVisible);
         }
     }
     public static void UpdateVisible(ExPlayerControl player, HideRoleOnGhostAbility localHideRoleOnGhostAbility)
@@ -271,8 +272,9 @@ public static class NameText
         if (visiable && player.PlayerInfoText == null)
             Initialize(player);
 
-        player.PlayerInfoText.gameObject.SetActive(visiable);
-        if (player.MeetingInfoText != null)
+        if (player.PlayerInfoText.gameObject.activeSelf != visiable)
+            player.PlayerInfoText.gameObject.SetActive(visiable);
+        if (player.MeetingInfoText != null && player.MeetingInfoText.gameObject.activeSelf != visiable)
             player.MeetingInfoText.gameObject.SetActive(visiable);
     }
     public static void UpdateAllNameInfo()

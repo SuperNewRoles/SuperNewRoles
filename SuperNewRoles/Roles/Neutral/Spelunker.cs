@@ -7,7 +7,6 @@ using SuperNewRoles.Modules;
 using SuperNewRoles.Roles.Ability;
 using SuperNewRoles.Events;
 using SuperNewRoles.Events.PCEvents;
-using SuperNewRoles.Modules.Events.Bases;
 using UnityEngine;
 using HarmonyLib;
 
@@ -77,13 +76,10 @@ public class SpelunkerAbility : AbilityBase
 {
     public SpelunkerData Data { get; set; }
 
-    private EventListener _fixedUpdateListener;
-    private EventListener<ExileEventData> _exileListener;
-    private EventListener<UsePlatformEventData> _usePlatformListener;
-    private EventListener<DoorConsoleUseEventData> _doorConsoleUseListener;
 
     // Spelunker specific variables
     private bool _isVentChecked;
+    private Vent _checkedVent;
     private float _commsDeathTimer;
     private float _powerdownDeathTimer;
     private Vector2? _deathPosition;
@@ -98,18 +94,10 @@ public class SpelunkerAbility : AbilityBase
     public override void AttachToLocalPlayer()
     {
         base.AttachToLocalPlayer();
-        _fixedUpdateListener = FixedUpdateEvent.Instance.AddListener(OnFixedUpdate);
-        _exileListener = ExileEvent.Instance.AddListener(OnExile);
-        _usePlatformListener = UsePlatformEvent.Instance.AddListener(OnUsePlatform);
-        _doorConsoleUseListener = DoorConsoleUseEvent.Instance.AddListener(OnDoorConsoleUse);
-    }
-
-    public override void DetachToLocalPlayer()
-    {
-        _fixedUpdateListener?.RemoveListener();
-        _exileListener?.RemoveListener();
-        _usePlatformListener?.RemoveListener();
-        _doorConsoleUseListener?.RemoveListener();
+        SubscribeWithAbility(FixedUpdateEvent.Instance, OnFixedUpdate);
+        SubscribeWithAbility(ExileEvent.Instance, OnExile);
+        SubscribeWithAbility(UsePlatformEvent.Instance, OnUsePlatform);
+        SubscribeWithAbility(DoorConsoleUseEvent.Instance, OnDoorConsoleUse);
     }
 
     private void OnFixedUpdate()
@@ -144,6 +132,12 @@ public class SpelunkerAbility : AbilityBase
 
     private void CheckVentDeath()
     {
+        Vector2 playerPos = ExPlayerControl.LocalPlayer.transform.position;
+        // 同じベント圏内なら全ベント走査しない。圏を完全に出るまで再抽選しない（重なりがあっても1回）。
+        if (_isVentChecked && _checkedVent != null &&
+            ModHelpers.IsPositionDistance(_checkedVent.transform.position, playerPos, _checkedVent.UsableDistance))
+            return;
+
         Vent currentVent = null;
         bool nearVent = false;
 
@@ -151,7 +145,8 @@ public class SpelunkerAbility : AbilityBase
         {
             foreach (var vent in ShipStatus.Instance.AllVents)
             {
-                if (Vector2.Distance(vent.transform.position, ExPlayerControl.LocalPlayer.transform.position) < vent.UsableDistance)
+                if (vent == null) continue;
+                if (ModHelpers.IsPositionDistance(vent.transform.position, playerPos, vent.UsableDistance))
                 {
                     currentVent = vent;
                     nearVent = true;
@@ -171,10 +166,12 @@ public class SpelunkerAbility : AbilityBase
                     FinalStatusManager.RpcSetFinalStatus(ExPlayerControl.LocalPlayer, FinalStatus.SpelunkerVentDeath);
                 }
             }
+            _checkedVent = currentVent;
         }
         else
         {
             _isVentChecked = false;
+            _checkedVent = null;
         }
     }
 
