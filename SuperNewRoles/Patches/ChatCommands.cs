@@ -46,14 +46,6 @@ public static class SendChatPatch
                     __instance.AddChat(PlayerControl.LocalPlayer, $"キルクールタイムを{cooltime}秒に変更しました！");
                 }
             }
-            else if (text.StartsWith("/block ", StringComparison.OrdinalIgnoreCase)
-                || text.StartsWith("/report ", StringComparison.OrdinalIgnoreCase)
-                || text.StartsWith("/player ", StringComparison.OrdinalIgnoreCase)
-                || text.StartsWith("/unblock ", StringComparison.OrdinalIgnoreCase)
-                || text.StartsWith("/blocknote ", StringComparison.OrdinalIgnoreCase))
-            {
-                handled = SafetyChatCommands.TryHandle(text, __instance);
-            }
             else if (text.ToLower().StartsWith("/rename "))
             {
                 if (AmongUsClient.Instance.AmHost)
@@ -118,9 +110,6 @@ public static class SendChatPatch
 
     private static bool HandleGameCommand(string text)
     {
-        if (SafetyChatCommands.TryHandle(text, FastDestroyableSingleton<HudManager>.Instance?.Chat))
-            return true;
-
         if (!AmongUsClient.Instance.AmHost)
             return false;
 

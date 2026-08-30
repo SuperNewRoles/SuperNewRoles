@@ -46,9 +46,10 @@ public static class PublicGameListingFilter
 
         foreach (OccupancyGame game in games ?? Array.Empty<OccupancyGame>())
         {
-            if (game == null || string.IsNullOrEmpty(game.HostIdentityId)) continue;
-            if (blocked.Contains(game.HostIdentityId)) continue;
-            if (blockedByHost.Contains(game.HostIdentityId)) continue;
+            if (game == null) continue;
+            bool hostKnown = !string.IsNullOrEmpty(game.HostIdentityId);
+            if (hostKnown && blocked.Contains(game.HostIdentityId)) continue;
+            if (hostKnown && blockedByHost.Contains(game.HostIdentityId)) continue;
 
             bool hasBlockedOccupant = false;
             foreach (string occupant in game.OccupantIds)

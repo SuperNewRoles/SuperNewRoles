@@ -1,5 +1,7 @@
+using System;
 using BepInEx.Unity.IL2CPP.Utils.Collections;
 using SuperNewRoles.Modules;
+using SuperNewRoles.Safety.Api;
 using TMPro;
 using UnityEngine;
 using UnityEngine.Events;
@@ -41,6 +43,33 @@ public class MessagesUI
         sendButton.OnClick = new();
         float lastY = InitialMessageAnchorY;
         string lastMessageSender = ""; // 最後のメッセージの送信者を追跡
+        if (thread.isSafetyNotice)
+        {
+            chatUI.transform.Find("InputBox")?.gameObject.SetActive(false);
+            chatUI.transform.Find("SendButton")?.gameObject.SetActive(false);
+            bool activeSafety = true;
+            LoadingUI.ShowLoadingUI(chatUI.transform, () => ModTranslation.GetString("RequestInGameLoading"), () => activeSafety);
+            activeSafety = false;
+            new LateTask(() =>
+            {
+                string author = ModTranslation.GetString("SafetyReportActionedAuthor");
+                string body = ModTranslation.GetString("SafetyReportActionedBody");
+                lastY -= ThreadHeaderSpacing;
+                bool first = true;
+                foreach (DateTime at in thread.safetyEvents)
+                {
+                    string text = body + "\n" + at.ToLocalTime().ToString("g");
+                    GenerateMessage(text, scroller, false, author, !first, first, true, ref lastY);
+                    first = false;
+                }
+                UpdateScrollerMax(scroller, lastY);
+            }, 0f, "SafetyNoticeUI");
+            AmongUsClient.Instance.StartCoroutine(PlayerSafetyApiClient.AckNotices(_ =>
+            {
+                CreateButtons.ModManagerLateUpdatePatch.ForceNotificationCheck = true;
+            }).WrapToIl2Cpp());
+            return chatUI;
+        }
         sendButton.OnClick.AddListener((UnityAction)(() =>
         {
             bool activeSendLoading = true;

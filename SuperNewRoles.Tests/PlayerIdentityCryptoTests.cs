@@ -91,4 +91,22 @@ public class PublicGameListingFilterTests
         result[0].HasBlockedPlayer.Should().BeTrue();
         result[0].Code.Should().Be("ROOM01");
     }
+
+    [Fact]
+    public void UnknownHostStaysVisible()
+    {
+        var games = new[]
+        {
+            new OccupancyGame("ROOM02", "", new[] { "blocked-player" }),
+        };
+
+        var result = PublicGameListingFilter.Filter(
+            games,
+            viewerId: "viewer",
+            blockedIds: new[] { "blocked-player" },
+            hostsWhoBlockedViewer: Array.Empty<string>());
+
+        result.Should().ContainSingle();
+        result[0].HasBlockedPlayer.Should().BeTrue();
+    }
 }

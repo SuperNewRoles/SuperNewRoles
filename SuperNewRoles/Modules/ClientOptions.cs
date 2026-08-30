@@ -134,14 +134,6 @@ public static class ClientOptions
                     () => "ClientOptions.NotifyHostWhenBlockedJoin",
                     () => ConfigRoles.NotifyHostWhenBlockedJoin.Value,
                     value => ConfigRoles.NotifyHostWhenBlockedJoin.Value = value),
-                ClientOptionEntry.Button(
-                    () => "ClientOptions.OpenBlockList",
-                    () => BlockListPopup.Open(_animationOwner != null ? _animationOwner : HudManager.Instance),
-                    () => true),
-                ClientOptionEntry.Button(
-                    () => "ClientOptions.OpenPublicGames",
-                    () => PublicGamesPopup.Open(_animationOwner != null ? _animationOwner : HudManager.Instance),
-                    () => true),
             ]),
         new(
             "ClientOptions.Category.Performance",

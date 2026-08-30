@@ -98,6 +98,24 @@ namespace SuperNewRoles.Modules
             return result;
         }
 
+        // AnalyticsBG の TMP はメニュー用フォントしか持たないことがある。
+        // 試合中に <sprite>/<material> などが残るとネイティブクラッシュしうる。
+        private static readonly Regex UnsafeTmpTagRegex = new Regex(
+            @"</?(?:sprite|material|quad|page)\b[^>]*>",
+            RegexOptions.IgnoreCase | RegexOptions.Compiled);
+
+        public static string ConvertForSafetyPopup(string markdownText)
+        {
+            return StripUnsafeTmpTags(Convert(markdownText));
+        }
+
+        public static string StripUnsafeTmpTags(string text)
+        {
+            if (string.IsNullOrEmpty(text))
+                return string.Empty;
+            return UnsafeTmpTagRegex.Replace(text, string.Empty);
+        }
+
         public static string FormatUnixTimestamp(long unixSeconds, string format)
         {
             try

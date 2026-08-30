@@ -19,6 +19,7 @@ using SuperNewRoles.Modules;
 using SuperNewRoles.Modules.Compatibility;
 using SuperNewRoles.Patches;
 using SuperNewRoles.Safety.Identity;
+using SuperNewRoles.Safety;
 using SuperNewRoles.Roles;
 using SuperNewRoles.CustomOptions;
 using UnityEngine.EventSystems;
@@ -357,6 +358,7 @@ public partial class SuperNewRolesPlugin : BasePlugin
         ClassInjector.RegisterTypeInIl2Cpp<RocketLauncherProjectile>();
         ClassInjector.RegisterTypeInIl2Cpp<RocketLauncherHeldPlayer>();
         ClassInjector.RegisterTypeInIl2Cpp<LoadingTextFadeRunner>();
+        ClassInjector.RegisterTypeInIl2Cpp<SafetyPopupHost>();
 
         try
         {
