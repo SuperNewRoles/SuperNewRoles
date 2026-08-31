@@ -27,8 +27,15 @@ public static class MainMenuLogos
     }
     public static void Postfix()
     {
-        ShowModStamp();
-        CreateMainMenuLogo();
+        try
+        {
+            ShowModStamp();
+            CreateMainMenuLogo();
+        }
+        catch (Exception e)
+        {
+            Logger.Error($"MainMenuLogos failed: {e}");
+        }
     }
 
     private static void ShowModStamp() =>
@@ -100,12 +107,19 @@ public static class VersionTextHandler
     {
         static void Postfix(VersionShower __instance)
         {
-            if (GameObject.FindObjectOfType<MainMenuManager>() == null) return;
-            CreateCredentialsText(__instance);
-            var versionText = CreateVersionText(__instance);
-            // Android版は外部ブラウザ起動の挙動が不安定なため、SNSアイコンはPC版のみ表示する
-            if (!ModHelpers.IsAndroid())
-                CreateSocialIcons(versionText);
+            try
+            {
+                if (GameObject.FindObjectOfType<MainMenuManager>() == null) return;
+                CreateCredentialsText(__instance);
+                var versionText = CreateVersionText(__instance);
+                // Android版は外部ブラウザ起動の挙動が不安定なため、SNSアイコンはPC版のみ表示する
+                if (!ModHelpers.IsAndroid())
+                    CreateSocialIcons(versionText);
+            }
+            catch (Exception e)
+            {
+                Logger.Error($"VersionShowerPatch failed: {e}");
+            }
         }
 
         // クレジットテキスト生成処理
@@ -320,7 +334,7 @@ public static class VersionTextHandler
         public static void Postfix()
         {
             ShowInGameLogosPatch._aspectPosition.Alignment = AspectPosition.EdgeAlignments.RightTop;
-            ShowInGameLogosPatch._aspectPosition.DistanceFromEdge = new(-0.13f, 0.5f);
+            ShowInGameLogosPatch._aspectPosition.DistanceFromEdge = new(4.98f, 0.5f);
             ShowInGameLogosPatch._aspectPosition.OnEnable();
         }
     }

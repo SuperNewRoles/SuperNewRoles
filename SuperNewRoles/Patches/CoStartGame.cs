@@ -40,8 +40,9 @@ class AmongUsClientStartPatch
             }
 
             // 初期化処理を一箇所に統合
-            ExPlayerControl.SetUpExPlayers();
+            // ResetAllListener が先。後だと SetUpExPlayers で登録した切断リスナーが即消える
             EventListenerManager.ResetAllListener();
+            ExPlayerControl.SetUpExPlayers();
             ProctedMessager.Init();
             OrpheusMainAbility.ResetForNewGame();
             SuperTrophyManager.CoStartGame();

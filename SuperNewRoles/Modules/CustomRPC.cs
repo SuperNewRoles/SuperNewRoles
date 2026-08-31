@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using System.Reflection;
 using System.Threading.Tasks;
@@ -184,23 +185,71 @@ public static class CustomRPCManager
     }
 
     /// <summary>
+    /// 送信ログ。S{rpcId} {payload-base64}。payload は rpcId 以降のワイヤーバイト。
+    /// </summary>
+    internal static string FormatRpcSendLog(int rpcId, byte[] buffer, int offset, int count)
+    {
+        string prefix = "S" + rpcId.ToString(CultureInfo.InvariantCulture);
+        if (buffer != null && offset >= 0 && count > 0 && count <= buffer.Length - offset)
+            return prefix + " " + Convert.ToBase64String(buffer, offset, count);
+        return prefix;
+    }
+
+    /// <summary>
+    /// 受信した CustomRPC の rpcId ログ。R{rpcId}。
+    /// </summary>
+    internal static string FormatRpcReceiveLog(int rpcId)
+    {
+        return "R" + rpcId.ToString(CultureInfo.InvariantCulture);
+    }
+
+    /// <summary>
+    /// 受信した vanilla / その他 callId ログ。C{callId}。
+    /// </summary>
+    internal static string FormatRpcCallIdLog(byte callId)
+    {
+        return "C" + callId.ToString(CultureInfo.InvariantCulture);
+    }
+
+    private static string FormatRpcSendLogFromWriter(int rpcId, MessageWriter writer, int payloadStart)
+    {
+        int count = writer.Position - payloadStart;
+        var buf = writer.Buffer;
+        if (buf != null && payloadStart >= 0 && count > 0 && payloadStart <= buf.Length && count <= buf.Length - payloadStart)
+        {
+            byte[] payload = new byte[count];
+            for (int i = 0; i < count; i++)
+                payload[i] = buf[payloadStart + i];
+            return FormatRpcSendLog(rpcId, payload, 0, count);
+        }
+
+        byte[] all = writer.ToByteArray(false);
+        return FormatRpcSendLog(rpcId, all, payloadStart, count);
+    }
+
+    /// <summary>
     /// すべてのRPCメソッドを読み込み、登録する
     /// </summary>
     public static List<Action> Load()
     {
-        // すべてのRPCメソッドのハッシュ値を収集
+        // [CustomRPC] 付きメソッドだけを対象にハッシュする
         var methodsWithDetails = SuperNewRolesPlugin.Assembly
             .GetTypes()
             .SelectMany(t => t.GetMethods(BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance | BindingFlags.Static))
             .Select(m => new
             {
                 Method = m,
-                Attribute = m.GetCustomAttribute<CustomRPCAttribute>(),
-                Hash = RpcHashGenerate(m), // RpcHashGenerateを一度だけ呼び出す
-                ParamTypes = m.GetParameters().Select(p => p.ParameterType).ToArray() // パラメータ型もここで取得
+                Attribute = m.GetCustomAttribute<CustomRPCAttribute>()
             })
             .Where(m => m.Attribute != null)
-            .OrderBy(m => m.Hash) // 事前に計算したハッシュでソート
+            .Select(m => new
+            {
+                m.Method,
+                m.Attribute,
+                Hash = RpcHashGenerate(m.Method),
+                ParamTypes = m.Method.GetParameters().Select(p => p.ParameterType).ToArray()
+            })
+            .OrderBy(m => m.Hash)
             .ToList();
 
         List<Action> tasks = new();
@@ -274,6 +323,7 @@ public static class CustomRPCManager
             var onlyOther = OnlyOtherFlagsByMethod[__originalMethod];
             // RPC送信の準備
             var writer = AmongUsClient.Instance.StartRpcImmediately(PlayerControl.LocalPlayer.NetId, SNRRpcId, SendOption.Reliable, -1);
+            int payloadStart = writer.Position;
             writer.Write(rpcId);
 
             // インスタンスメソッドならインスタンスを送信
@@ -289,12 +339,13 @@ public static class CustomRPCManager
                 writer.Write(__args[i], originalParamTypes[i]);
             }
 
-            // RPC送信
+            // Finish 前にワイヤーバイトをスナップショット（rpcId から復元可能）
+            Logger.Info(FormatRpcSendLogFromWriter(rpcId, writer, payloadStart));
             AmongUsClient.Instance.FinishRpcImmediately(writer);
-            Logger.Info($"Sent RPC: {__originalMethod.Name} OnlyOther={onlyOther}");
             return !onlyOther;
         }
         Logger.Info($"Registering RPC: {method.Name} {id} {hash}");
+
         var newHarmonyMethod = NewMethod;
         RpcMethods[id] = method;
         RpcMethodIds[hash] = id; // 事前計算したハッシュを使用
@@ -349,9 +400,9 @@ public static class CustomRPCManager
         /// </summary>
         public static void Postfix(byte callId, MessageReader reader)
         {
-            // ネットワーク移動RPCはログを出さない（頻繁に呼ばれるため）
-            if (callId != SNRNetworkTransformRpc)
-                Logger.Info($"Received RPC: {callId}");
+            // 移動RPCは出さない。SNR 本体は内側の rpcId だけを残す。
+            if (callId != SNRNetworkTransformRpc && callId != SNRRpcId)
+                Logger.Info(FormatRpcCallIdLog(callId));
             // SuperNewRoles専用のRPCの場合
             switch (callId)
             {
@@ -359,7 +410,7 @@ public static class CustomRPCManager
                     try
                     {
                         int id = reader.ReadInt32();
-                        Logger.Info($"Received RPC: {id}");
+                        Logger.Info(FormatRpcReceiveLog(id));
                         if (!RpcMethods.TryGetValue(id, out var method))
                         {
                             Logger.Warning($"Unknown RPC method ID: {id}");

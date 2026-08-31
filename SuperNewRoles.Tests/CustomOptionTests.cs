@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Reflection;
@@ -168,6 +169,39 @@ public class CustomOptionTests
         Categories.ModeOption = ModeId.SuperHostRoles;
         // 目的: SuperHostRoles モードで表示
         option.ShouldDisplay().Should().BeTrue();
+    }
+
+    [Fact]
+    public void ApplySyncedOptions_ResetToDefault_KeepsOnlyProvidedSelections()
+    {
+        var toggleAttr = new CustomOptionBoolAttribute("FeatureToggle", false, translationName: "FeatureToggle");
+        var toggle = new CustomOption(toggleAttr, GetField(typeof(DummyOptions), nameof(DummyOptions.FeatureToggle)));
+        toggle.IndexId = 1;
+        toggle.UpdateSelection(1);
+
+        var levelAttr = new CustomOptionIntAttribute("Level", 0, 10, 2, 4, translationName: "Level");
+        var level = new CustomOption(levelAttr, GetField(typeof(DummyOptions), nameof(DummyOptions.Level)));
+        level.IndexId = 2;
+        level.UpdateSelection(3);
+
+        DummyOptions.FeatureToggle.Should().BeTrue();
+        DummyOptions.Level.Should().Be(6);
+
+        CustomOptionManager.ApplySyncedOptions(
+            new[] { toggle, level },
+            new Dictionary<ushort, byte> { [toggle.IndexId] = 1 },
+            resetToDefault: true);
+
+        DummyOptions.FeatureToggle.Should().BeTrue();
+        toggle.Selection.Should().Be(1);
+        DummyOptions.Level.Should().Be(4);
+        level.Selection.Should().Be(level.DefaultSelection);
+    }
+
+    [Fact]
+    public void ShouldIgnoreIncomingOptionSync_WithoutAmongUsClient_IsFalse()
+    {
+        CustomOptionManager.ShouldIgnoreIncomingOptionSync().Should().BeFalse();
     }
 
     [Fact]

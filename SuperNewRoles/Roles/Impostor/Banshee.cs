@@ -7,7 +7,6 @@ using SuperNewRoles.Roles.Ability;
 using SuperNewRoles.Roles.Ability.CustomButton;
 using SuperNewRoles;
 using UnityEngine;
-using System.Linq;
 using SuperNewRoles.Events;
 
 namespace SuperNewRoles.Roles.Impostor;
@@ -87,6 +86,7 @@ public class BansheeAbility : AbilityBase
     private ExPlayerControl currentFairyPlayer;
     private bool whisperTriggered = false;
     private HashSet<byte> playersInRangeAlreadyChecked;
+    private readonly List<ExPlayerControl> _uiPlayers = new(1);
 
     public BansheeAbility(float releaseCooldown, float whisperCooldown, float fairyRange, bool canKillImpostor, bool canDefaultKill)
     {
@@ -109,7 +109,7 @@ public class BansheeAbility : AbilityBase
             () => currentFairyPlayer != null && !whisperTriggered,
             () => whisperTriggered = true
         );
-        showPlayerUIAbility = new ShowPlayerUIAbility(() => currentFairyPlayer != null ? [currentFairyPlayer] : []);
+        showPlayerUIAbility = new ShowPlayerUIAbility(GetUiPlayers);
         customKillButtonAbility = new CustomKillButtonAbility(
             // 囁いた後は押せない
             () => canDefaultKill && !whisperTriggered,
@@ -147,6 +147,22 @@ public class BansheeAbility : AbilityBase
         currentFairyPlayer = null;
         whisperTriggered = false;
         playersInRangeAlreadyChecked.Clear();
+        _uiPlayers.Clear();
+    }
+
+    private List<ExPlayerControl> GetUiPlayers()
+    {
+        if (currentFairyPlayer == null)
+        {
+            if (_uiPlayers.Count != 0)
+                _uiPlayers.Clear();
+            return _uiPlayers;
+        }
+        if (_uiPlayers.Count == 1 && _uiPlayers[0] == currentFairyPlayer)
+            return _uiPlayers;
+        _uiPlayers.Clear();
+        _uiPlayers.Add(currentFairyPlayer);
+        return _uiPlayers;
     }
 
     private void OnFixedUpdate()
@@ -172,7 +188,7 @@ public class BansheeAbility : AbilityBase
             if (player.IsDead()) continue;
             if (player.AmOwner) continue;
             if (player == currentFairyPlayer) continue;
-            if (Vector3.Distance(currentFairyPlayer.transform.position, player.transform.position) <= fairyRange)
+            if (ModHelpers.IsPositionDistance(currentFairyPlayer.transform.position, player.transform.position, fairyRange))
             {
                 if (playersInRangeAlreadyChecked.Contains(player.PlayerId)) continue;
                 if (whisperTriggered)

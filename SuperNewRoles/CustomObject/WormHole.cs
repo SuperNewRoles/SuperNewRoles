@@ -20,6 +20,7 @@ public class WormHole : MonoBehaviour
     public bool IsActivating { get; private set; }
     public Vent _vent { get; private set; }
     public bool PlayAnimation { get; private set; }
+    private int _lastDisplayedTimer = int.MinValue;
 
     private SpriteRenderer spriteRenderer;
 
@@ -130,8 +131,15 @@ public class WormHole : MonoBehaviour
         if (IsActivating)
             return;
 
-        if (TimerText != null)
-            TimerText.text = Mathf.Max(0, Mathf.CeilToInt(ActivateTimer)).ToString();
+        if (TimerText != null && TimerText.gameObject.activeSelf)
+        {
+            int displayed = Mathf.Max(0, Mathf.CeilToInt(ActivateTimer));
+            if (displayed != _lastDisplayedTimer)
+            {
+                _lastDisplayedTimer = displayed;
+                TimerText.text = displayed.ToString();
+            }
+        }
 
         if (ActivateTimer <= 0)
             Activate();

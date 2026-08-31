@@ -115,7 +115,10 @@ public class AnnouncementImageRendererAndroid : MonoBehaviour
         foreach (var renderer in _imageRenderers.Values)
         {
             if (renderer != null)
+            {
+                AnnouncementImageCache.ReleaseSprite(renderer.sprite);
                 Destroy(renderer.gameObject);
+            }
         }
         _imageRenderers.Clear();
     }
@@ -132,6 +135,7 @@ public class AnnouncementImageRendererAndroid : MonoBehaviour
         renderer.sprite = sprite;
         SyncSorting(renderer);
         ApplyMask(renderer);
+        AnnouncementImageCache.RetainSprite(sprite);
         AnnouncementImageViewer.ConfigureThumbnail(go, sprite, () => OpenExpandedImage(sprite));
         return renderer;
     }
