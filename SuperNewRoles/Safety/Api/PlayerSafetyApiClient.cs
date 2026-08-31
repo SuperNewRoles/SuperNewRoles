@@ -36,9 +36,12 @@ public static class PlayerSafetyApiClient
         });
     }
 
-    public static IEnumerator Consent(int version, Action<bool> callback)
+    public static IEnumerator Consent(int version, Action<bool> callback, string bodyHash = null)
     {
-        string json = JsonParser.Serialize(new Dictionary<string, object> { ["version"] = version });
+        var payload = new Dictionary<string, object> { ["version"] = version };
+        if (!string.IsNullOrEmpty(bodyHash))
+            payload["body_hash"] = bodyHash;
+        string json = JsonParser.Serialize(payload);
         yield return Send("POST", "/v1/conduct/consent?lang=" + ConductLanguageQuery(), ConductConsent, json, text => callback(text != null));
     }
 
@@ -237,7 +240,15 @@ public static class PlayerSafetyApiClient
         Action<string> failureCallback = null)
     {
         byte[] bodyBytes = jsonBody == null ? Array.Empty<byte>() : Encoding.UTF8.GetBytes(jsonBody);
+        bool publicConductGet = IsUnsignedConductGet(method, path);
         PlayerIdentityProof proof = PlayerIdentityStore.CreateProof(action, bodyBytes);
+        if (proof == null && !publicConductGet)
+        {
+            Logger.Info($"PlayerSafety API {path} skipped: identity key not created");
+            failureCallback?.Invoke("identity key not created");
+            callback?.Invoke(null);
+            yield break;
+        }
         var request = new UnityWebRequest(SNRURLs.IdentityAPI + path, method)
         {
             downloadHandler = new DownloadHandlerBuffer(),
@@ -246,11 +257,14 @@ public static class PlayerSafetyApiClient
         if (bodyBytes.Length > 0)
             request.uploadHandler = new UploadHandlerRaw(bodyBytes);
         request.SetRequestHeader("Content-Type", "application/json");
-        request.SetRequestHeader("X-SNR-Public-Key", proof.PublicKeyBase64);
-        request.SetRequestHeader("X-SNR-Timestamp", proof.TimestampUnix.ToString());
-        request.SetRequestHeader("X-SNR-Nonce", proof.Nonce);
-        request.SetRequestHeader("X-SNR-Signature", proof.SignatureBase64);
-        request.SetRequestHeader("X-SNR-Action", proof.Action);
+        if (proof != null)
+        {
+            request.SetRequestHeader("X-SNR-Public-Key", proof.PublicKeyBase64);
+            request.SetRequestHeader("X-SNR-Timestamp", proof.TimestampUnix.ToString());
+            request.SetRequestHeader("X-SNR-Nonce", proof.Nonce);
+            request.SetRequestHeader("X-SNR-Signature", proof.SignatureBase64);
+            request.SetRequestHeader("X-SNR-Action", proof.Action);
+        }
         yield return request.SendWebRequest();
         if (request.result == UnityWebRequest.Result.Success && (request.responseCode is >= 200 and < 300))
         {
@@ -299,6 +313,15 @@ public static class PlayerSafetyApiClient
         return string.IsNullOrEmpty(status) ? "network error" : status;
     }
 
+    internal static bool IsUnsignedConductGet(string method, string path)
+    {
+        if (!string.Equals(method, "GET", StringComparison.OrdinalIgnoreCase) || string.IsNullOrEmpty(path))
+            return false;
+        int query = path.IndexOf('?');
+        string withoutQuery = query < 0 ? path : path.Substring(0, query);
+        return string.Equals(withoutQuery, "/v1/conduct", StringComparison.Ordinal);
+    }
+
     private static ConductResponse ParseConduct(string text)
     {
         return ConductResponse.Parse(text);
@@ -323,7 +346,7 @@ public sealed class WarningInfo
 
 public sealed class ConductResponse
 {
-    public ConductResponse(int version, string body, bool consented, bool banned, BanInfo ban = null, WarningInfo warning = null)
+    public ConductResponse(int version, string body, bool consented, bool banned, BanInfo ban = null, WarningInfo warning = null, string bodyHash = null)
     {
         Version = version;
         Body = body;
@@ -331,10 +354,12 @@ public sealed class ConductResponse
         Banned = banned;
         Ban = ban;
         Warning = warning;
+        BodyHash = bodyHash;
     }
 
     public int Version { get; }
     public string Body { get; }
+    public string BodyHash { get; }
     public bool Consented { get; }
     public bool Banned { get; }
     public BanInfo Ban { get; }
@@ -355,7 +380,8 @@ public sealed class ConductResponse
         WarningInfo warning = null;
         if (root.TryGetValue("warning", out var warnRaw) && warnRaw is Dictionary<string, object> warnRow)
             warning = WarningInfo.From(warnRow);
-        return new ConductResponse(version, body, consented, banned, banInfo, warning);
+        string bodyHash = root.TryGetValue("body_hash", out var hashRaw) ? hashRaw?.ToString() : null;
+        return new ConductResponse(version, body, consented, banned, banInfo, warning, bodyHash);
     }
 }
 

@@ -26,6 +26,40 @@ public class BanNoticeTests
     }
 }
 
+public class ConductBanLeaveNoticeTests
+{
+    [Fact]
+    public void ReplacesSanctionsOnly()
+    {
+        ConductBanLeaveNotice.ShouldReplace(DisconnectReasons.Sanctions).Should().BeTrue();
+        ConductBanLeaveNotice.ShouldReplace(DisconnectReasons.Error).Should().BeFalse();
+        ConductBanLeaveNotice.ShouldReplace(DisconnectReasons.Banned).Should().BeFalse();
+        ConductBanLeaveNotice.ShouldReplace(DisconnectReasons.ExitGame).Should().BeFalse();
+        ConductBanLeaveNotice.ShouldReplace(DisconnectReasons.Kicked).Should().BeFalse();
+    }
+
+    [Fact]
+    public void SuppressesVanillaDisconnectTextForRememberedName()
+    {
+        ConductBanLeaveNotice.RememberName("スイカ");
+        ConductBanLeaveNotice.ShouldSuppressVanilla("スイカはエラーのため退出しました").Should().BeTrue();
+        ConductBanLeaveNotice.ShouldSuppressVanilla("スイカはエラーのため退出しました").Should().BeFalse();
+        ConductBanLeaveNotice.ShouldSuppressVanilla("他の人はエラーのため退出しました").Should().BeFalse();
+    }
+}
+
+public class HostBlockLeaveNoticeTests
+{
+    [Fact]
+    public void SuppressesVanillaDisconnectTextForRememberedName()
+    {
+        HostBlockLeaveNotice.RememberName("メロン");
+        HostBlockLeaveNotice.ShouldSuppressVanilla("メロンはエラーのため退出しました").Should().BeTrue();
+        HostBlockLeaveNotice.ShouldSuppressVanilla("メロンはエラーのため退出しました").Should().BeFalse();
+        HostBlockLeaveNotice.ShouldSuppressVanilla("他の人はエラーのため退出しました").Should().BeFalse();
+    }
+}
+
 public class SafetyDisconnectCopyTests
 {
     [Fact]

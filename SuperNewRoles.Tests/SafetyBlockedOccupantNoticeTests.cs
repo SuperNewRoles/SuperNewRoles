@@ -68,9 +68,8 @@ public class SafetyBlockedOccupantNoticeTests
     }
 
     [Fact]
-    public void HostNameLooksWarned_DetectsListingPrefix()
+    public void FormatBlockedJoinRejected_IncludesName()
     {
-        SafetyBlockedOccupantNotice.HostNameLooksWarned("⚠ Alice").Should().BeTrue();
-        SafetyBlockedOccupantNotice.HostNameLooksWarned("Alice").Should().BeFalse();
+        PlayerSafetyActions.FormatBlockedJoinRejected("Alice").Should().Contain("Alice");
     }
 }

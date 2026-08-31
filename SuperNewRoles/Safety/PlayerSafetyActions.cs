@@ -265,6 +265,30 @@ public static class PlayerSafetyActions
         }, reason => failureReason = reason).WrapToIl2Cpp());
     }
 
+    public static void NotifyBlockedJoinRejected(string name)
+    {
+        if (!ConfigRoles.NotifyHostWhenBlockedJoin.Value) return;
+        if (string.IsNullOrWhiteSpace(name)) return;
+        MonoBehaviour host = SafetyPopupUi.EnsureHost();
+        if (host == null)
+        {
+            Logger.Info(FormatBlockedJoinRejected(name));
+            return;
+        }
+        host.StartCoroutine(CoNotifyBlockedJoinRejected(name).WrapToIl2Cpp());
+    }
+
+    public static string FormatBlockedJoinRejected(string name)
+    {
+        return string.Format(ModTranslation.GetString("SafetyHostBlockRejected"), name ?? string.Empty);
+    }
+
+    private static IEnumerator CoNotifyBlockedJoinRejected(string name)
+    {
+        yield return null;
+        Notify(FormatBlockedJoinRejected(name), FriendListNotification.IconType.Block);
+    }
+
     public static void Notify(string text)
     {
         Notify(text, FriendListNotification.IconType.Friend);

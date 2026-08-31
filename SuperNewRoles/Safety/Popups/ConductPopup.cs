@@ -1,6 +1,7 @@
 using System.Collections;
 using SuperNewRoles.Modules;
 using SuperNewRoles.Safety.Api;
+using SuperNewRoles.Safety.Identity;
 using TMPro;
 using UnityEngine;
 using BepInEx.Unity.IL2CPP.Utils.Collections;
@@ -121,6 +122,8 @@ public static class ConductGate
 public static class ConductPopup
 {
     private const string PrefabName = "AnalyticsBG";
+    private const float BodyFontSizeMax = 3.5f;
+    private const float ActionButtonScale = 0.8f;
     private static GameObject _popup;
     private static GameObject _decline;
     private static ConductResponse _pending;
@@ -240,6 +243,7 @@ public static class ConductPopup
         {
             Vector3 agreePos = agree.transform.localPosition;
             agree.transform.localPosition = new Vector3(3f, agreePos.y, -5f);
+            agree.transform.localScale = agree.transform.localScale * ActionButtonScale;
             SafetyPopupUi.WireButton(agree, "SafetyConductAgree", OnAgree);
             _decline = Object.Instantiate(agree, agree.transform.parent);
             _decline.name = "SafetyConductDecline";
@@ -263,7 +267,10 @@ public static class ConductPopup
         if (tmp == null) return;
         tmp.richText = true;
         tmp.enableWordWrapping = true;
-        tmp.text = MarkdownToUnityTag.Convert(body ?? string.Empty);
+        tmp.enableAutoSizing = true;
+        tmp.fontSizeMax = BodyFontSizeMax;
+        tmp.text = MarkdownToUnityTag.ConvertForSafetyPopup(body ?? string.Empty);
+        SafetyMarkdownLinks.Bind(tmp);
     }
 
     private static void SetActionsVisible(bool visible)
@@ -284,16 +291,32 @@ public static class ConductPopup
         if (host == null)
             host = AmongUsClient.Instance;
         if (host == null) return;
-        host.StartCoroutine(PlayerSafetyApiClient.Consent(response.Version, ok =>
-        {
-            if (ok) ConductGate.MarkConsented();
-        }).WrapToIl2Cpp());
+        host.StartCoroutine(CoAgree(response.Version).WrapToIl2Cpp());
+    }
+
+    private static IEnumerator CoAgree(int version)
+    {
+        PlayerIdentityStore.GetOrCreate();
+        bool ok = false;
+        yield return PlayerSafetyApiClient.Consent(version, value => ok = value, ConductGate.Last?.BodyHash).WrapToIl2Cpp();
+        if (!ok)
+            yield break;
+        ConductResponse fetched = null;
+        yield return PlayerSafetyApiClient.GetConduct(result => fetched = result).WrapToIl2Cpp();
+        ConductGate.Apply(fetched);
+        if (fetched != null && fetched.Consented)
+            ConductGate.MarkConsented();
+        if (ConductGate.IsBannedNow || ConductGate.HasUnackedWarning)
+            CloseVisible();
     }
 
     private static void Close(bool declined)
     {
         if (declined)
+        {
             WasDeclined = true;
+            ConductDeclineAbort.Run();
+        }
         if (_closing)
             return;
         if (!_popup)

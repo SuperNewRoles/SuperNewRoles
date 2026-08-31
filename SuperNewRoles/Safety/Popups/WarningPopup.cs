@@ -150,6 +150,7 @@ public static class WarningPopup
                     tmp.richText = true;
                     tmp.enableWordWrapping = true;
                     tmp.text = MarkdownToUnityTag.ConvertForSafetyPopup(info?.Body ?? string.Empty);
+                    SafetyMarkdownLinks.Bind(tmp);
                 }
             }
 

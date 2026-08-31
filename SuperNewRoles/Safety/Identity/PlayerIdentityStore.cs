@@ -34,27 +34,24 @@ public static class PlayerIdentityStore
 
     private static string LegacyAndroidFilePath => Path.Combine(SuperNewRolesPlugin.SecretDirectory, FileName);
 
+    public static bool HasKey()
+    {
+        lock (Gate)
+            return TryGetUnlocked() != null;
+    }
+
+    public static bool TryLoad()
+    {
+        lock (Gate)
+            return TryGetUnlocked() != null;
+    }
+
     public static ECDsa GetOrCreate()
     {
         lock (Gate)
         {
-            if (_cached != null) return _cached;
-
-            byte[] stored = ReadStored();
-            if (stored != null)
-            {
-                try
-                {
-                    _cached = PlayerIdentityCrypto.ImportPkcs8(Unprotect(stored));
-                    WriteStored(Protect(PlayerIdentityCrypto.ExportPkcs8(_cached)));
-                    return _cached;
-                }
-                catch (Exception ex)
-                {
-                    // Keystore/DPAPI の失効やファイル破損では、削除と同じ扱いで新しい身元を作る。
-                    Logger.Warning($"Stored identity could not be restored; rotating identity: {ex.Message}");
-                }
-            }
+            ECDsa existing = TryGetUnlocked();
+            if (existing != null) return existing;
 
             ECDsa created = PlayerIdentityCrypto.CreateKey();
             WriteStored(Protect(PlayerIdentityCrypto.ExportPkcs8(created)));
@@ -65,21 +62,46 @@ public static class PlayerIdentityStore
 
     public static byte[] GetPublicKey()
     {
-        return PlayerIdentityCrypto.ExportUncompressedPublicKey(GetOrCreate());
+        ECDsa key;
+        lock (Gate)
+            key = TryGetUnlocked();
+        return key == null ? null : PlayerIdentityCrypto.ExportUncompressedPublicKey(key);
     }
 
     public static PlayerIdentityProof CreateProof(string action, byte[] body)
     {
-        ECDsa key = GetOrCreate();
+        ECDsa key;
+        lock (Gate)
+            key = TryGetUnlocked();
+        if (key == null) return null;
         long timestamp = DateTimeOffset.UtcNow.ToUnixTimeSeconds();
         string nonce = PlayerIdentityCrypto.NewNonce();
         byte[] signature = PlayerIdentityCrypto.Sign(key, action, timestamp, nonce, body ?? Array.Empty<byte>());
         return new PlayerIdentityProof(
-            Convert.ToBase64String(GetPublicKey()),
+            Convert.ToBase64String(PlayerIdentityCrypto.ExportUncompressedPublicKey(key)),
             timestamp,
             nonce,
             Convert.ToBase64String(signature),
             action);
+    }
+
+    private static ECDsa TryGetUnlocked()
+    {
+        if (_cached != null) return _cached;
+
+        byte[] stored = ReadStored();
+        if (stored == null) return null;
+        try
+        {
+            _cached = PlayerIdentityCrypto.ImportPkcs8(Unprotect(stored));
+            WriteStored(Protect(PlayerIdentityCrypto.ExportPkcs8(_cached)));
+            return _cached;
+        }
+        catch (Exception ex)
+        {
+            Logger.Warning($"Stored identity could not be restored: {ex.Message}");
+            return null;
+        }
     }
 
     private static byte[] ReadStored()

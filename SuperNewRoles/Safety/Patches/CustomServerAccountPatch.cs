@@ -19,6 +19,8 @@ internal static class CustomServerFriendsListDisplay
         public bool AddFriendObjectsActive;
         public GameObject AddFriendArea;
         public bool AddFriendAreaActive;
+        public Transform TabsRoot;
+        public Vector3 TabsRootPosition;
     }
 
     private sealed class TabState
@@ -78,6 +80,7 @@ internal static class CustomServerFriendsListDisplay
                     AddFriendArea = ui.AddFriendArea?.gameObject,
                     AddFriendAreaActive = ui.AddFriendArea != null && ui.AddFriendArea.gameObject.activeSelf,
                 };
+                CaptureTabsRoot(ui, state);
                 if (ui.Tabs != null)
                 {
                     foreach (FriendsListUI.FriendsListTabButton tab in ui.Tabs)
@@ -109,6 +112,7 @@ internal static class CustomServerFriendsListDisplay
                 if (state.AddFriendArea != null)
                     state.AddFriendArea.SetActive(false);
                 HideAddFriendControls(ui);
+                ApplyTabsRootPosition(state, snrMode: true);
                 GameObject addFriendTab = FindTabObject(ui, FriendsListUI.FriendsListTab.AddFriend);
                 // FriendsListTabButton.tabObject points to the tab's content root,
                 // not the clickable tab header.  Restoring its active flag here
@@ -160,6 +164,7 @@ internal static class CustomServerFriendsListDisplay
         if (state.AddFriendArea != null)
             state.AddFriendArea.SetActive(state.AddFriendAreaActive);
         RestoreTabLayout(state);
+        ApplyTabsRootPosition(state, snrMode: false);
     }
 
     private static void ConfigureModeToggle(FriendsListUI ui, OriginalState state, bool visible)
@@ -254,6 +259,27 @@ internal static class CustomServerFriendsListDisplay
             Position = tabObject.transform.localPosition,
             Active = tabObject.activeSelf,
         });
+    }
+
+    private const float SnrTabsLocalX = -3.6f;
+
+    private static void CaptureTabsRoot(FriendsListUI ui, OriginalState state)
+    {
+        Transform menu = ui.transform.Find("Menu") ?? FindDescendant(ui.transform, "Menu");
+        if (menu == null) return;
+        Transform tabs = menu.Find("Tabs") ?? FindDescendant(menu, "Tabs");
+        if (tabs == null) return;
+        state.TabsRoot = tabs;
+        state.TabsRootPosition = tabs.localPosition;
+    }
+
+    private static void ApplyTabsRootPosition(OriginalState state, bool snrMode)
+    {
+        if (state.TabsRoot == null) return;
+        Vector3 original = state.TabsRootPosition;
+        state.TabsRoot.localPosition = snrMode
+            ? new Vector3(SnrTabsLocalX, original.y, original.z)
+            : original;
     }
 
     private static void RestoreTabLayout(OriginalState state, bool restoreActive = true)

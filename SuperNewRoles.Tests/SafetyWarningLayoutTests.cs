@@ -67,6 +67,53 @@ public class SafetyWarningMarkdownTests
         MarkdownToUnityTag.ConvertForSafetyPopup(null).Should().BeEmpty();
         MarkdownToUnityTag.ConvertForSafetyPopup("").Should().BeEmpty();
     }
+
+    [Fact]
+    public void ConvertsMarkdownLinksToUnderlinedTmpLinkTags()
+    {
+        MarkdownToUnityTag.ConvertForSafetyPopup("[wiki](https://wiki.supernewroles.com/path)")
+            .Should().Be("<link=\"https://wiki.supernewroles.com/path\"><u>wiki</u></link>");
+    }
+}
+
+public class SafetyMarkdownLinkTests
+{
+    [Fact]
+    public void AllowsHttpAndHttpsUrls()
+    {
+        SafetyMarkdownLinks.TryGetOpenableUrl("https://wiki.supernewroles.com/path", out string https)
+            .Should().BeTrue();
+        https.Should().Be("https://wiki.supernewroles.com/path");
+        SafetyMarkdownLinks.TryGetOpenableUrl("http://example.com", out string http)
+            .Should().BeTrue();
+        http.Should().StartWith("http://");
+    }
+
+    [Fact]
+    public void RejectsNonHttpUrls()
+    {
+        SafetyMarkdownLinks.TryGetOpenableUrl("javascript:alert(1)", out _).Should().BeFalse();
+        SafetyMarkdownLinks.TryGetOpenableUrl("file:///tmp/x", out _).Should().BeFalse();
+        SafetyMarkdownLinks.TryGetOpenableUrl("not a url", out _).Should().BeFalse();
+        SafetyMarkdownLinks.TryGetOpenableUrl("", out _).Should().BeFalse();
+        SafetyMarkdownLinks.TryGetOpenableUrl(null, out _).Should().BeFalse();
+    }
+
+    [Fact]
+    public void ColorsOnlyTheHoveredLink()
+    {
+        const string source =
+            "<link=\"https://a.example\"><u>A</u></link> and <link=\"https://b.example\"><u>B</u></link>";
+        SafetyMarkdownLinks.ColorNthLink(source, 1)
+            .Should().Be(
+                "<link=\"https://a.example\"><u>A</u></link> and " +
+                $"<link=\"https://b.example\"><color=#{SafetyMarkdownLinks.HoverColorHex}><u>B</u></color></link>");
+        SafetyMarkdownLinks.ColorNthLink(source, -1).Should().Be(source);
+        SafetyMarkdownLinks.ColorNthLink(source, 0)
+            .Should().Be(
+                $"<link=\"https://a.example\"><color=#{SafetyMarkdownLinks.HoverColorHex}><u>A</u></color></link> and " +
+                "<link=\"https://b.example\"><u>B</u></link>");
+    }
 }
 
 public class WarningAckCountdownTests

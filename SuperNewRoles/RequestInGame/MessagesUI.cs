@@ -47,6 +47,7 @@ public class MessagesUI
         {
             chatUI.transform.Find("InputBox")?.gameObject.SetActive(false);
             chatUI.transform.Find("SendButton")?.gameObject.SetActive(false);
+            chatUI.transform.Find("chatBG")?.gameObject.SetActive(false);
             bool activeSafety = true;
             LoadingUI.ShowLoadingUI(chatUI.transform, () => ModTranslation.GetString("RequestInGameLoading"), () => activeSafety);
             activeSafety = false;

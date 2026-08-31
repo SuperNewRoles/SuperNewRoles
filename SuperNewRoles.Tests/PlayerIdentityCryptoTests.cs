@@ -2,8 +2,8 @@ using System;
 using System.Security.Cryptography;
 using System.Text;
 using FluentAssertions;
+using SuperNewRoles.Safety.Api;
 using SuperNewRoles.Safety.Identity;
-using SuperNewRoles.Safety.Listing;
 using Xunit;
 
 namespace SuperNewRoles.Tests;
@@ -52,61 +52,16 @@ public class PlayerIdentityCryptoTests
     }
 }
 
-public class PublicGameListingFilterTests
+public class PlayerSafetyUnsignedConductTests
 {
-    [Fact]
-    public void HidesHostBlockedByViewer_AndHostWhoBlockedViewer()
+    [Theory]
+    [InlineData("GET", "/v1/conduct", true)]
+    [InlineData("GET", "/v1/conduct?lang=ja", true)]
+    [InlineData("POST", "/v1/conduct/consent", false)]
+    [InlineData("GET", "/v1/notices", false)]
+    [InlineData("GET", "/v1/conduct/consent", false)]
+    public void OnlyUnsignedConductGetIsAllowedWithoutKey(string method, string path, bool allowed)
     {
-        var games = new[]
-        {
-            new OccupancyGame("AAAAAA", "host-a", new[] { "host-a", "p1" }),
-            new OccupancyGame("BBBBBB", "host-b", new[] { "host-b", "blocked-player" }),
-            new OccupancyGame("CCCCCC", "host-c", new[] { "host-c" }),
-        };
-
-        PublicGameListingFilter.Filter(
-            games,
-            viewerId: "viewer",
-            blockedIds: new[] { "host-a", "blocked-player" },
-            hostsWhoBlockedViewer: new[] { "host-c" })
-            .Should().ContainSingle(g => g.Code == "BBBBBB")
-            .Which.HasBlockedPlayer.Should().BeTrue();
-    }
-
-    [Fact]
-    public void OccupantBlockDoesNotHideRoom()
-    {
-        var games = new[]
-        {
-            new OccupancyGame("ROOM01", "host", new[] { "host", "blocked-player" }),
-        };
-
-        var result = PublicGameListingFilter.Filter(
-            games,
-            viewerId: "viewer",
-            blockedIds: new[] { "blocked-player" },
-            hostsWhoBlockedViewer: Array.Empty<string>());
-
-        result.Should().ContainSingle();
-        result[0].HasBlockedPlayer.Should().BeTrue();
-        result[0].Code.Should().Be("ROOM01");
-    }
-
-    [Fact]
-    public void UnknownHostStaysVisible()
-    {
-        var games = new[]
-        {
-            new OccupancyGame("ROOM02", "", new[] { "blocked-player" }),
-        };
-
-        var result = PublicGameListingFilter.Filter(
-            games,
-            viewerId: "viewer",
-            blockedIds: new[] { "blocked-player" },
-            hostsWhoBlockedViewer: Array.Empty<string>());
-
-        result.Should().ContainSingle();
-        result[0].HasBlockedPlayer.Should().BeTrue();
+        PlayerSafetyApiClient.IsUnsignedConductGet(method, path).Should().Be(allowed);
     }
 }

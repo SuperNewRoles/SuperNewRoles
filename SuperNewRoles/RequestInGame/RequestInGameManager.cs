@@ -11,6 +11,7 @@ using Il2CppInterop.Runtime;
 using BepInEx.Unity.IL2CPP.Utils.Collections;
 using SuperNewRoles.Modules;
 using SuperNewRoles.Safety.Api;
+using SuperNewRoles.Safety.Identity;
 using UnityEngine.Networking;
 using System.Text;
 using System.Collections;
@@ -436,7 +437,8 @@ public class RequestInGameManager
             yield break;
         }
         bool identityUnread = false;
-        yield return PlayerSafetyApiClient.GetNotices(inbox => identityUnread = inbox != null && inbox.Unread);
+        if (PlayerIdentityStore.HasKey())
+            yield return PlayerSafetyApiClient.GetNotices(inbox => identityUnread = inbox != null && inbox.Unread);
         callback(identityUnread);
     }
 }

@@ -56,7 +56,12 @@ namespace SuperNewRoles.Modules
 
             // Links [text](url)
             // Processed first to avoid interference with other markdown characters within the link text or URL.
-            result = Regex.Replace(result, @"\[([^\[\]]*?)\]\((.*?)\)", "<link=\"$2\">$1</link>");
+            result = Regex.Replace(result, @"\[([^\[\]]*?)\]\((.*?)\)", match =>
+            {
+                string text = match.Groups[1].Value;
+                string url = EscapeLinkHref(match.Groups[2].Value);
+                return $"<link=\"{url}\">{text}</link>";
+            });
 
             // Bold and Italic (***text***)
             result = Regex.Replace(result, @"\*\*\*([^\*]+?)\*\*\*", "<b><i>$1</i></b>");
@@ -104,9 +109,14 @@ namespace SuperNewRoles.Modules
             @"</?(?:sprite|material|quad|page)\b[^>]*>",
             RegexOptions.IgnoreCase | RegexOptions.Compiled);
 
+        private static readonly Regex TmpLinkRegex = new Regex(
+            @"<link=""([^""]*)"">(.*?)</link>",
+            RegexOptions.Singleline | RegexOptions.Compiled);
+
         public static string ConvertForSafetyPopup(string markdownText)
         {
-            return StripUnsafeTmpTags(Convert(markdownText));
+            string converted = StripUnsafeTmpTags(Convert(markdownText));
+            return TmpLinkRegex.Replace(converted, "<link=\"$1\"><u>$2</u></link>");
         }
 
         public static string StripUnsafeTmpTags(string text)
@@ -114,6 +124,13 @@ namespace SuperNewRoles.Modules
             if (string.IsNullOrEmpty(text))
                 return string.Empty;
             return UnsafeTmpTagRegex.Replace(text, string.Empty);
+        }
+
+        private static string EscapeLinkHref(string url)
+        {
+            if (string.IsNullOrEmpty(url))
+                return string.Empty;
+            return url.Replace("\"", "%22").Replace("<", "%3C").Replace(">", "%3E");
         }
 
         public static string FormatUnixTimestamp(long unixSeconds, string format)

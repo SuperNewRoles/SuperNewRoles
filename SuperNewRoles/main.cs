@@ -140,7 +140,7 @@ public partial class SuperNewRolesPlugin : BasePlugin
         CustomColors.Load();
         ApiServerManager.Initialize();
         RequestInGameManager.Load();
-        PlayerIdentityStore.GetOrCreate();
+        PlayerIdentityStore.TryLoad();
         FixOver15();
         StartGameHandlerManager.Load();
 
@@ -359,6 +359,7 @@ public partial class SuperNewRolesPlugin : BasePlugin
         ClassInjector.RegisterTypeInIl2Cpp<RocketLauncherHeldPlayer>();
         ClassInjector.RegisterTypeInIl2Cpp<LoadingTextFadeRunner>();
         ClassInjector.RegisterTypeInIl2Cpp<SafetyPopupHost>();
+        ClassInjector.RegisterTypeInIl2Cpp<SafetyMarkdownLinks>();
 
         try
         {

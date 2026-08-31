@@ -66,7 +66,8 @@ internal static class OfficialPlayGate
     public static bool AllowOrDefer(MonoBehaviour host, Action resume)
     {
         if (!OfficialSnrServer.IsIdentityEnabled() || _passthrough) return true;
-        if (_deferring || ConductPopup.IsBusy || WarningPopup.IsOpen) return false;
+        if (ConductJoinDecision.ShouldBlockRepeatJoinClick(_deferring, ConductPopup.IsBusy, WarningPopup.IsOpen))
+            return false;
 
         MonoBehaviour runner = host != null ? host : SafetyRuntime.FindCoroutineRunner(AmongUsClient.Instance);
         if (runner == null)
@@ -83,7 +84,8 @@ internal static class OfficialPlayGate
         bool allow = false;
         yield return WaitUntilAllowed(runner, value => allow = value).WrapToIl2Cpp();
         _deferring = false;
-        if (!allow) yield break;
+        if (!ConductJoinDecision.ShouldResumeDeferredJoin(allow, ConductPopup.WasDeclined))
+            yield break;
         _passthrough = true;
         try
         {
@@ -149,13 +151,47 @@ internal static class OfficialPlayGate
 
         ConductPopup.Queue(ConductGate.Last);
         ConductPopup.ShowNow(runner);
-        while (!ConductGate.CanPlayOfficial && !ConductPopup.WasDeclined)
+        while (!ConductGate.CanPlayOfficial && !ConductPopup.WasDeclined && !ConductGate.IsBannedNow)
         {
+            if (ConductGate.HasUnackedWarning && ConductGate.Last?.Consented == true)
+                break;
             if (!ConductPopup.IsOpen)
                 ConductPopup.ShowNow(runner);
             ConductPopup.RebindToCamera();
             yield return null;
         }
+
+        if (ConductPopup.WasDeclined)
+        {
+            ConductDeclineAbort.Run();
+            done(false);
+            yield break;
+        }
+
+        if (ConductGate.IsBannedNow)
+        {
+            ConductPopup.CloseVisible();
+            yield return BanPopup.WaitUntilDismissed(runner).WrapToIl2Cpp();
+            done(false);
+            yield break;
+        }
+
+        if (ConductGate.HasUnackedWarning)
+        {
+            ConductPopup.CloseVisible();
+            if (ConductGate.Last?.Warning != null)
+                WarningPopup.Queue(ConductGate.Last.Warning);
+            yield return WarningPopup.WaitUntilDismissed(runner).WrapToIl2Cpp();
+        }
+
+        if (ConductGate.IsBannedNow)
+        {
+            ConductPopup.CloseVisible();
+            yield return BanPopup.WaitUntilDismissed(runner).WrapToIl2Cpp();
+            done(false);
+            yield break;
+        }
+
         done(ConductGate.CanPlayOfficial);
     }
 
@@ -163,7 +199,7 @@ internal static class OfficialPlayGate
     {
         bool allow = false;
         yield return WaitUntilAllowed(client, value => allow = value).WrapToIl2Cpp();
-        if (!allow)
+        if (!ConductJoinDecision.ShouldResumeDeferredJoin(allow, ConductPopup.WasDeclined))
             yield break;
         while (original != null && original.MoveNext())
             yield return original.Current;
@@ -219,6 +255,15 @@ public static class CreateGameContinueConductPatch
     public static bool Prefix(CreateGameOptions __instance)
     {
         return OfficialPlayGate.AllowOrDefer(__instance, __instance.ContinueStart);
+    }
+}
+
+[HarmonyPatch(typeof(EnterCodeManager), nameof(EnterCodeManager.ClickJoin))]
+public static class EnterCodeJoinConductPatch
+{
+    public static bool Prefix(EnterCodeManager __instance)
+    {
+        return OfficialPlayGate.AllowOrDefer(__instance, __instance.ClickJoin);
     }
 }
 
@@ -308,6 +353,11 @@ internal static class IdentityPreJoinGate
     public static bool AllowOrDefer(InnerNetClient client, Action replay)
     {
         if (!OfficialSnrServer.IsIdentityEnabled()) return true;
+        if (!PlayerIdentityStore.HasKey())
+        {
+            Logger.Warning("Identity key missing; refusing join/host until conduct consent");
+            return false;
+        }
         if (_accepted) return true;
         if (_allowOneFailOpenReplay)
         {
@@ -349,20 +399,26 @@ internal static class IdentityPreJoinGate
             yield return null;
         }
 
-        if (generation != _generation)
-        {
-            _pending = false;
-            yield break;
-        }
         if (client == null)
         {
             _pending = false;
             yield break;
         }
         _pending = false;
-        if (!_accepted)
+        ConductJoinDecision.HandshakeJoinAction action = ConductJoinDecision.AfterHandshakeWait(
+            generationChanged: generation != _generation,
+            declined: ConductPopup.WasDeclined,
+            accepted: _accepted,
+            hasKey: PlayerIdentityStore.HasKey());
+        if (action == ConductJoinDecision.HandshakeJoinAction.Abort)
+            yield break;
+        if (action == ConductJoinDecision.HandshakeJoinAction.Refuse)
         {
-            // Identity/Impostorが一時的に利用できない場合は、既定方針どおりfail-open。
+            Logger.Warning("Identity pre-join handshake has no key; refusing join");
+            yield break;
+        }
+        if (action == ConductJoinDecision.HandshakeJoinAction.FailOpenReplay)
+        {
             _allowOneFailOpenReplay = true;
             Logger.Warning("Identity pre-join handshake timed out; allowing join (fail-open)");
         }
@@ -404,10 +460,11 @@ public static class OnGameJoinedIdentityPatch
 
     public static void SendIdentityHello()
     {
+        if (!PlayerIdentityStore.HasKey()) return;
         if (AmongUsClient.Instance?.connection == null) return;
         MessageWriter writer = MessageWriter.Get(SendOption.Reliable);
-        writer.StartMessage(0xD1);
-        writer.Write((byte)4);
+        writer.StartMessage(IdentityRoot.Flag);
+        writer.Write((byte)IdentityRootSubtype.Hello);
         writer.Write(SuperNewRoles.VersionInfo.VersionString);
         writer.EndMessage();
         AmongUsClient.Instance.connection.Send(writer);
@@ -421,11 +478,12 @@ public static class OnGameJoinedIdentityPatch
         if (AmongUsClient.Instance?.connection == null) return;
         byte[] body = System.Text.Encoding.UTF8.GetBytes(challenge);
         PlayerIdentityProof proof = PlayerIdentityStore.CreateProof("impostor.connect", body);
+        if (proof == null) return;
         byte[] publicKey = System.Convert.FromBase64String(proof.PublicKeyBase64);
         byte[] signature = System.Convert.FromBase64String(proof.SignatureBase64);
         MessageWriter writer = MessageWriter.Get(SendOption.Reliable);
-        writer.StartMessage(0xD1);
-        writer.Write((byte)1);
+        writer.StartMessage(IdentityRoot.Flag);
+        writer.Write((byte)IdentityRootSubtype.Prove);
         writer.WriteBytesAndSize(publicKey);
         writer.WritePacked((int)proof.TimestampUnix);
         writer.Write(proof.Nonce);
@@ -457,8 +515,8 @@ public static class OnGameJoinedIdentityPatch
     {
         if (AmongUsClient.Instance?.connection == null) return;
         MessageWriter writer = MessageWriter.Get(SendOption.Reliable);
-        writer.StartMessage(0xD1);
-        writer.Write((byte)2);
+        writer.StartMessage(IdentityRoot.Flag);
+        writer.Write((byte)IdentityRootSubtype.HostKick);
         writer.WritePacked(clientId);
         writer.EndMessage();
         AmongUsClient.Instance.connection.Send(writer);
@@ -470,42 +528,41 @@ public static class SafetyInboundMessagePatch
 {
     public static bool Prefix(MessageReader reader)
     {
-        if (reader == null || reader.Tag != 0xD1) return true;
+        if (reader == null || reader.Tag != IdentityRoot.Flag) return true;
         MessageReader clone = null;
         try
         {
             clone = MessageReader.Get(reader);
-            byte subtype = clone.ReadByte();
-            if (subtype == 5)
+            switch ((IdentityRootSubtype)clone.ReadByte())
             {
-                OnGameJoinedIdentityPatch.ReceiveIdentityChallenge(clone.ReadString());
-                return false;
+                case IdentityRootSubtype.Notify:
+                    PlayerSafetyActions.NotifyBlockedJoinRejected(clone.ReadString());
+                    break;
+                case IdentityRootSubtype.Challenge:
+                    OnGameJoinedIdentityPatch.ReceiveIdentityChallenge(clone.ReadString());
+                    break;
+                case IdentityRootSubtype.ParticipantIds:
+                    SafetyParticipantIds.Apply(clone);
+                    break;
+                case IdentityRootSubtype.IdentityAccepted:
+                    OnGameJoinedIdentityPatch.ReceiveIdentityAccepted();
+                    break;
+                case IdentityRootSubtype.Warn:
+                    string warningId = clone.ReadString();
+                    string warningBody = clone.ReadString();
+                    WarningPopup.ReceiveFromServer(new WarningInfo { Id = warningId, Body = warningBody });
+                    break;
+                case IdentityRootSubtype.ConductBanLeave:
+                    int bannedClientId = clone.ReadPackedInt32();
+                    string bannedName = clone.Position < clone.Length ? clone.ReadString() : string.Empty;
+                    ConductBanLeaveNotice.Receive(bannedClientId, bannedName);
+                    break;
+                case IdentityRootSubtype.HostBlockLeave:
+                    int blockedClientId = clone.ReadPackedInt32();
+                    string blockedName = clone.Position < clone.Length ? clone.ReadString() : string.Empty;
+                    HostBlockLeaveNotice.Receive(blockedClientId, blockedName);
+                    break;
             }
-            if (subtype == 6)
-            {
-                SafetyParticipantIds.Apply(clone);
-                return false;
-            }
-            if (subtype == 7)
-            {
-                OnGameJoinedIdentityPatch.ReceiveIdentityAccepted();
-                return false;
-            }
-            if (subtype == 8)
-            {
-                string warningId = clone.ReadString();
-                string warningBody = clone.ReadString();
-                WarningPopup.ReceiveFromServer(new WarningInfo { Id = warningId, Body = warningBody });
-                return false;
-            }
-            if (subtype != 3) return false;
-            string name = clone.ReadString();
-            if (!ConfigRoles.NotifyHostWhenBlockedJoin.Value) return false;
-            string text = string.Format(ModTranslation.GetString("SafetyHostBlockRejected"), name);
-            if (FastDestroyableSingleton<HudManager>.Instance?.Chat != null)
-                FastDestroyableSingleton<HudManager>.Instance.Chat.AddChatWarning(text);
-            else
-                Logger.Info(text);
         }
         catch (Exception error)
         {
@@ -557,6 +614,8 @@ public static class MatchmakingIdentityHeaderPatch
             return;
 
         PlayerIdentityProof proof = PlayerIdentityStore.CreateProof("games.list", System.Array.Empty<byte>());
+        if (proof == null)
+            return;
         __instance.SetRequestHeader("X-SNR-Public-Key", proof.PublicKeyBase64);
         __instance.SetRequestHeader("X-SNR-Timestamp", proof.TimestampUnix.ToString());
         __instance.SetRequestHeader("X-SNR-Nonce", proof.Nonce);
@@ -611,11 +670,13 @@ public static class HostBlockedDisconnectPatch
         }
         if (SafetyDisconnectCopy.IsNeedConduct(stringReason))
         {
+            reason = DisconnectReasons.ExitGame;
+            stringReason = string.Empty;
+            if (!ConductJoinDecision.ShouldReopenConductAfterDisconnect(isNeedConduct: true, ConductPopup.WasDeclined))
+                return;
             ConductGate.InvalidateFetched();
             ConductPopup.WasDeclined = false;
             _showConductAfterDisconnect = true;
-            reason = DisconnectReasons.ExitGame;
-            stringReason = string.Empty;
             return;
         }
         if (string.IsNullOrEmpty(stringReason)) return;
