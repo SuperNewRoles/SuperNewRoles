@@ -112,14 +112,16 @@ public class RequestInGameManager
         return fallback;
     }
 
-    private static string ReadThreadString(Dictionary<string, object> dict, params string[] keys)
+    private static T Get<T>(Dictionary<string, object> dict, string key, T defaultValue = default)
     {
-        foreach (string key in keys)
+        if (dict == null)
+            return defaultValue;
+        if (dict.TryGetValue(key, out var value))
         {
-            if (dict.TryGetValue(key, out var value) && value is string text && !string.IsNullOrEmpty(text))
-                return text;
+            if (value is T result)
+                return result;
         }
-        return string.Empty;
+        return defaultValue;
     }
 
     private static string Token = string.Empty;
@@ -247,17 +249,17 @@ public class RequestInGameManager
                 {
                     if (threadObj is Dictionary<string, object> threadDict)
                     {
-                        string title = threadDict.TryGetValue("title", out var titleVal) && titleVal is string titleStr ? titleStr : string.Empty;
-                        string threadId = threadDict.TryGetValue("thread_id", out var idVal) && idVal is string idStr ? idStr : string.Empty;
-                        string firstMessage = threadDict.TryGetValue("message", out var msgVal) && msgVal is string msgStr ? msgStr : string.Empty;
-                        string createdAt = ReadThreadString(threadDict, "created_at");
-                        string updatedAt = ReadThreadString(threadDict, "last_updated", "updated_at", "last_message_at", "last_updated_at");
-                        bool unread = threadDict.TryGetValue("has_unread_messages", out var unreadVal) && unreadVal is bool unreadBool ? unreadBool : false;
-                        Dictionary<string, object> statusDict = threadDict.TryGetValue("status", out var statusVal) && statusVal is Dictionary<string, object> statusDict2 ? statusDict2 : null;
-                        string status = statusDict != null && statusDict.TryGetValue("status", out var statusStr) && statusStr is string statusStr2 ? statusStr2 : string.Empty;
+                        string title = Get<string>(threadDict, "title");
+                        string threadId = Get<string>(threadDict, "thread_id");
+                        string firstMessage = Get<string>(threadDict, "message");
+                        string createdAt = Get<string>(threadDict, "created_at");
+                        string updatedAt = Get<string>(threadDict, "last_updated");
+                        bool unread = Get<bool>(threadDict, "has_unread_messages");
+                        Dictionary<string, object> statusDict = Get<Dictionary<string, object>>(threadDict, "status");
+                        string status = Get<string>(statusDict, "status");
                         // 16進数をColor32に変換
-                        string color = statusDict != null && statusDict.TryGetValue("color", out var colorVal) && colorVal is string colorStr ? colorStr : string.Empty;
-                        string mark = statusDict != null && statusDict.TryGetValue("mark", out var markVal) && markVal is string markStr ? markStr : string.Empty;
+                        string color = Get<string>(statusDict, "color");
+                        string mark = Get<string>(statusDict, "mark");
                         threads.Add(new Thread(threadId, title, firstMessage, createdAt, unread, status, color, mark, updatedAt));
                     }
                 }

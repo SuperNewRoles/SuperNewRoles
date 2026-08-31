@@ -64,7 +64,7 @@ internal static class SafetyBlockedOccupantCache
             yield break;
         }
 
-        if (!force && RowsByCode.Count > 0 && DateTime.UtcNow - _fetchedAtUtc < TimeSpan.FromSeconds(8))
+        if (!force && RowsByCode.Count > 0 && DateTime.UtcNow - _fetchedAtUtc < TimeSpan.FromSeconds(2))
             yield break;
 
         _fetching = true;
