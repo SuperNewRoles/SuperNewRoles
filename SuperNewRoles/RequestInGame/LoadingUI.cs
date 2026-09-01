@@ -37,6 +37,7 @@ public class LoadingUIComponent : MonoBehaviour
     public void Awake()
     {
         text = GetComponentInChildren<TextMeshPro>();
+        text.text = loadingTextFunc();
         spriteRenderer = GetComponentInChildren<SpriteRenderer>();
     }
     public void Update()

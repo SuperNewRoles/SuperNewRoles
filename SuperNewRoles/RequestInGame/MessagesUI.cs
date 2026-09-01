@@ -37,15 +37,14 @@ public class MessagesUI
             {
                 string author = ModTranslation.GetString("SafetyReportActionedAuthor");
                 string body = ModTranslation.GetString("SafetyReportActionedBody");
-                lastY -= ThreadHeaderSpacing;
                 bool first = true;
                 foreach (DateTime at in thread.safetyEvents)
                 {
                     string text = body + "\n" + at.ToLocalTime().ToString("g");
-                    GenerateMessage(text, scroller, false, author, !first, first, true, ref lastY);
+                    GenerateMessage(text, scroller, false, author, !first, first, true, ref nextTopY, ref contentBottomY);
                     first = false;
                 }
-                UpdateScrollerMax(scroller, lastY);
+                UpdateScrollerMax(scroller, contentBottomY);
             }, 0f, "SafetyNoticeUI");
             AmongUsClient.Instance.StartCoroutine(PlayerSafetyApiClient.AckNotices(_ =>
             {
