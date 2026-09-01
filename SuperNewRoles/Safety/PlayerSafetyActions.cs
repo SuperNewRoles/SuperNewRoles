@@ -76,7 +76,7 @@ public static class PlayerSafetyActions
             Logger.Error(
                 $"Safety recent block rejected before send name={playerName} game_id={gameId} client_id={clientId} "
                 + $"code_empty={string.IsNullOrEmpty(code)} public_id_empty={string.IsNullOrEmpty(publicId)} runner_null={runner == null}");
-            NotifyFailure(ModTranslation.GetString("SafetyBlockFailed"), "対象情報が無効です。");
+            NotifyFailure(ModTranslation.GetString("SafetyBlockFailed"), ModTranslation.GetString("SafetyTargetInvalid"));
             return;
         }
 
@@ -111,7 +111,7 @@ public static class PlayerSafetyActions
         if (match == null)
         {
             Logger.Error($"Safety recent block could not resolve public id name={playerName} game_id={gameId} client_id={clientId}");
-            NotifyFailure(ModTranslation.GetString("SafetyBlockFailed"), "最近のプレイヤー情報を取得できませんでした。");
+            NotifyFailure(ModTranslation.GetString("SafetyBlockFailed"), ModTranslation.GetString("SafetyRecentPlayersUnavailable"));
             yield break;
         }
 
@@ -162,7 +162,7 @@ public static class PlayerSafetyActions
         string code = GameCode.IntToGameName(gameId)?.ToUpperInvariant() ?? string.Empty;
         if (string.IsNullOrEmpty(code) || gameId == 0 || clientId < 0 || string.IsNullOrEmpty(publicId) || runner == null)
         {
-            NotifyFailure(ModTranslation.GetString("SafetyReportFailed"), "対象情報が無効です。");
+            NotifyFailure(ModTranslation.GetString("SafetyReportFailed"), ModTranslation.GetString("SafetyTargetInvalid"));
             return;
         }
 
@@ -199,7 +199,7 @@ public static class PlayerSafetyActions
         MonoBehaviour host = SafetyRuntime.FindCoroutineRunner(runner);
         if (host == null)
         {
-            NotifyFailure(ModTranslation.GetString("SafetyBlockFailed"), "ブロック解除を実行できる状態ではありません。");
+            NotifyFailure(ModTranslation.GetString("SafetyBlockFailed"), ModTranslation.GetString("SafetyUnblockUnavailable"));
             return;
         }
 
@@ -253,7 +253,7 @@ public static class PlayerSafetyActions
         MonoBehaviour host = SafetyRuntime.FindCoroutineRunner(runner);
         if (host == null)
         {
-            NotifyFailure(ModTranslation.GetString("SafetyReportFailed"), "メモを保存できる状態ではありません。");
+            NotifyFailure(ModTranslation.GetString("SafetyReportFailed"), ModTranslation.GetString("SafetyNoteSaveUnavailable"));
             return;
         }
 
@@ -326,6 +326,7 @@ public static class PlayerSafetyActions
     public static void NotifyFailure(string message, string reason = null)
     {
         string suffix = NormalizeFailureReason(reason);
+        Logger.Warning(string.IsNullOrEmpty(suffix) ? message : $"{message} {suffix}");
         Notify(
             string.IsNullOrEmpty(suffix) ? message : $"{message}\n{suffix}",
             FriendListNotification.IconType.Failed);

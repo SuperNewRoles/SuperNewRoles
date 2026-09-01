@@ -109,7 +109,7 @@ public static class ConductGate
     public static void MarkWarningAcked()
     {
         if (Last != null && Last.Warning != null)
-            Last = new ConductResponse(Last.Version, Last.Body, Last.Consented, Last.Banned, Last.Ban, null);
+            Last = new ConductResponse(Last.Version, Last.Body, Last.Consented, Last.Banned, Last.Ban, null, Last.BodyHash);
         WarningPopup.CloseVisible();
     }
 
@@ -130,6 +130,7 @@ public static class ConductPopup
     private static bool _busy;
     private static bool _fetching;
     private static bool _closing;
+    private static int _closeGeneration;
     private static MonoBehaviour _runner;
 
     public static ConductResponse Pending => _pending;
@@ -218,7 +219,10 @@ public static class ConductPopup
     private static void EnsurePopup()
     {
         if (_closing)
+        {
+            _closeGeneration++;
             FinishClose();
+        }
 
         if (_popup)
         {
@@ -291,16 +295,19 @@ public static class ConductPopup
         if (host == null)
             host = AmongUsClient.Instance;
         if (host == null) return;
-        host.StartCoroutine(CoAgree(response.Version).WrapToIl2Cpp());
+        host.StartCoroutine(CoAgree(response).WrapToIl2Cpp());
     }
 
-    private static IEnumerator CoAgree(int version)
+    private static IEnumerator CoAgree(ConductResponse response)
     {
         PlayerIdentityStore.GetOrCreate();
         bool ok = false;
-        yield return PlayerSafetyApiClient.Consent(version, value => ok = value, ConductGate.Last?.BodyHash).WrapToIl2Cpp();
+        yield return PlayerSafetyApiClient.Consent(response.Version, value => ok = value, response.BodyHash).WrapToIl2Cpp();
         if (!ok)
+        {
+            Logger.Warning($"Conduct consent failed: version={response.Version} body_hash_present={!string.IsNullOrEmpty(response.BodyHash)}");
             yield break;
+        }
         ConductResponse fetched = null;
         yield return PlayerSafetyApiClient.GetConduct(result => fetched = result).WrapToIl2Cpp();
         ConductGate.Apply(fetched);
@@ -325,7 +332,13 @@ public static class ConductPopup
             return;
         }
         _closing = true;
-        SafetyPopupUi.PlayCloseAnimation(_popup, SafetyPopupUi.EnsureHost(), FinishClose);
+        int generation = ++_closeGeneration;
+        SafetyPopupUi.PlayCloseAnimation(_popup, SafetyPopupUi.EnsureHost(), () =>
+        {
+            if (generation != _closeGeneration)
+                return;
+            FinishClose();
+        });
     }
 
     private static void FinishClose()

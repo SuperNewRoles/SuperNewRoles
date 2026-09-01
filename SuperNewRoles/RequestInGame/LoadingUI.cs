@@ -32,12 +32,13 @@ public class LoadingUIComponent : MonoBehaviour
     public void Init(Func<string> loadingTextFunc, Func<bool> isActiveFunc)
     {
         this.loadingTextFunc = loadingTextFunc;
+        if (loadingTextFunc != null)
+            text.text = loadingTextFunc();
         this.isActiveFunc = isActiveFunc;
     }
     public void Awake()
     {
         text = GetComponentInChildren<TextMeshPro>();
-        text.text = loadingTextFunc();
         spriteRenderer = GetComponentInChildren<SpriteRenderer>();
     }
     public void Update()

@@ -48,6 +48,11 @@ public static class BanPopup
         {
             if (!IsOpen)
                 ShowNow(SafetyPopupUi.EnsureHost());
+            if (!IsOpen && _pending == null && ConductGate.Last?.Banned != true)
+            {
+                Logger.Warning("Ban popup could not be shown; abandoning wait");
+                yield break;
+            }
             RebindToCamera();
             yield return null;
         }
@@ -122,7 +127,11 @@ public static class BanPopup
 
         Transform title = _popup.transform.Find("Title");
         if (title != null)
-            title.GetComponent<TextMeshPro>().text = ModTranslation.GetString("SafetyBanTitle");
+        {
+            TextMeshPro titleTmp = title.GetComponent<TextMeshPro>();
+            if (titleTmp != null)
+                titleTmp.text = ModTranslation.GetString("SafetyBanTitle");
+        }
         Transform text = _popup.transform.Find("Text");
         if (text != null)
         {

@@ -289,35 +289,41 @@ public static class PlayerSafetyApiClient
             callback?.Invoke(null);
             yield break;
         }
-        var request = new UnityWebRequest(SNRURLs.IdentityAPI + path, method)
+        UnityWebRequest request = new UnityWebRequest(SNRURLs.IdentityAPI + path, method)
         {
             downloadHandler = new DownloadHandlerBuffer(),
             timeout = RequestTimeoutSeconds,
         };
-        if (bodyBytes.Length > 0)
-            request.uploadHandler = new UploadHandlerRaw(bodyBytes);
-        request.SetRequestHeader("Content-Type", "application/json");
-        if (proof != null)
+        try
         {
-            request.SetRequestHeader("X-SNR-Public-Key", proof.PublicKeyBase64);
-            request.SetRequestHeader("X-SNR-Timestamp", proof.TimestampUnix.ToString());
-            request.SetRequestHeader("X-SNR-Nonce", proof.Nonce);
-            request.SetRequestHeader("X-SNR-Signature", proof.SignatureBase64);
-            request.SetRequestHeader("X-SNR-Action", proof.Action);
+            if (bodyBytes.Length > 0)
+                request.uploadHandler = new UploadHandlerRaw(bodyBytes);
+            request.SetRequestHeader("Content-Type", "application/json");
+            if (proof != null)
+            {
+                request.SetRequestHeader("X-SNR-Public-Key", proof.PublicKeyBase64);
+                request.SetRequestHeader("X-SNR-Timestamp", proof.TimestampUnix.ToString());
+                request.SetRequestHeader("X-SNR-Nonce", proof.Nonce);
+                request.SetRequestHeader("X-SNR-Signature", proof.SignatureBase64);
+                request.SetRequestHeader("X-SNR-Action", proof.Action);
+            }
+            yield return request.SendWebRequest();
+            if (request.result == UnityWebRequest.Result.Success && (request.responseCode is >= 200 and < 300))
+            {
+                string text = request.downloadHandler?.text;
+                callback?.Invoke(acceptEmpty ? (text ?? string.Empty) : text);
+            }
+            else
+            {
+                Logger.Error($"PlayerSafety API {path} failed: {request.responseCode} {request.error} {request.downloadHandler?.text}");
+                failureCallback?.Invoke(BuildFailureReason(request));
+                callback?.Invoke(null);
+            }
         }
-        yield return request.SendWebRequest();
-        if (request.result == UnityWebRequest.Result.Success && (request.responseCode is >= 200 and < 300))
+        finally
         {
-            string text = request.downloadHandler?.text;
-            callback?.Invoke(acceptEmpty ? (text ?? string.Empty) : text);
+            request.Dispose();
         }
-        else
-        {
-            Logger.Error($"PlayerSafety API {path} failed: {request.responseCode} {request.error} {request.downloadHandler?.text}");
-            failureCallback?.Invoke(BuildFailureReason(request));
-            callback?.Invoke(null);
-        }
-        request.Dispose();
     }
 
     private static string BuildFailureReason(UnityWebRequest request)

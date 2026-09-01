@@ -396,6 +396,11 @@ internal static class IdentityPreJoinGate
         if (!PlayerIdentityStore.HasKey())
         {
             Logger.Warning("Identity key missing; refusing join/host until conduct consent");
+            if (!ConductPopup.IsBusy)
+            {
+                MonoBehaviour host = SafetyPopupUi.EnsureHost();
+                host.StartCoroutine(ConductPopup.CoRefreshAndPresent(host).WrapToIl2Cpp());
+            }
             return false;
         }
         if (_accepted) return true;

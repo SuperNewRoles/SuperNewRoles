@@ -504,7 +504,7 @@ public static class FriendsListIdentityUnblockPatch
             Logger.Error($"Safety unblock rejected before send row={rowId}: coroutine runner missing");
             PlayerSafetyActions.NotifyFailure(
                 ModTranslation.GetString("SafetyBlockFailed"),
-                "ブロック解除を実行できる状態ではありません。");
+                ModTranslation.GetString("SafetyUnblockUnavailable"));
             return false;
         }
 
@@ -554,7 +554,7 @@ public static class BlockedPlayerBarIdentityUnblockPatch
             Logger.Error($"Safety unblock rejected before send row={rowId}: coroutine runner missing");
             PlayerSafetyActions.NotifyFailure(
                 ModTranslation.GetString("SafetyBlockFailed"),
-                "ブロック解除を実行できる状態ではありません。");
+                ModTranslation.GetString("SafetyUnblockUnavailable"));
             return false;
         }
 
@@ -846,7 +846,7 @@ internal static class SnrLobbyBlock
         {
             PlayerSafetyActions.NotifyFailure(
                 ModTranslation.GetString("SafetyBlockFailed"),
-                "最近のプレイヤー情報を取得できませんでした。");
+                ModTranslation.GetString("SafetyRecentPlayersUnavailable"));
             return;
         }
 

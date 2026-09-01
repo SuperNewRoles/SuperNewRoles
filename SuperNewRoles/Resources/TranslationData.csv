@@ -348,6 +348,10 @@ SafetyReportReason.cheating,チート,Cheating / hacking,作弊,作弊
 SafetyReportReason.harassment,嫌がらせ,Harassment,骚扰,騷擾
 SafetyReportReason.other,その他,Other,其他,其他
 SafetyNotInThisMatch,この試合にいないプレイヤーには通報・ブロックできません,You can only report or block players in this match,只能举报或屏蔽本局玩家,只能檢舉或封鎖本局玩家
+SafetyTargetInvalid,対象情報が無効です,Target information is invalid,目标信息无效,目標資訊無效
+SafetyRecentPlayersUnavailable,最近のプレイヤー情報を取得できませんでした,Could not retrieve recent player information,无法获取最近的玩家信息,無法取得最近的玩家資訊
+SafetyUnblockUnavailable,ブロック解除を実行できる状態ではありません,Unblock cannot be performed in the current state,当前无法执行取消屏蔽,目前無法執行解除封鎖
+SafetyNoteSaveUnavailable,メモを保存できる状態ではありません,Note cannot be saved in the current state,当前无法保存备注,目前無法儲存備註
 SafetyConductFetching,行動規範を確認しています…,Checking the code of conduct…,正在确认行为规范…,正在確認行為規範…
 SafetyReportActionedTitle,【報告されたプレイヤーの処置について】,Regarding action taken on a reported player,关于被举报玩家的处理,關於被檢舉玩家的處置
 SafetyReportActionedBody,報告されたプレイヤーに対して、SuperNewRoles Teamが処置を行いました。\n健全な環境づくりにご協力いただきありがとうございます！,Action has been taken by the SuperNewRoles Team against the reported player.\nThank you for helping us maintain a healthy environment!,针对被举报的玩家，SuperNewRoles Team 已采取处理措施。\n感谢您为营造健康环境所做的贡献！,對於被檢舉的玩家，SuperNewRoles Team 已採取處置。\n感謝您為營造健康環境所做的貢獻！

@@ -89,11 +89,13 @@ public static class PlayerIdentityStore
     {
         if (_cached != null) return _cached;
 
-        byte[] stored = ReadStored();
-        if (stored == null) return null;
         try
         {
-            _cached = PlayerIdentityCrypto.ImportPkcs8(Unprotect(stored));
+            byte[] stored = ReadStored();
+            if (stored == null) return null;
+            byte[] unlocked = Unprotect(stored);
+            if (unlocked == null) return null;
+            _cached = PlayerIdentityCrypto.ImportPkcs8(unlocked);
             WriteStored(Protect(PlayerIdentityCrypto.ExportPkcs8(_cached)));
             return _cached;
         }
@@ -108,33 +110,80 @@ public static class PlayerIdentityStore
     {
         if (ModHelpers.IsAndroid())
         {
+            // Keystore protect 失敗時は SecretDirectory のみに書くため、prefs/external の SNRAK1 より先に読む。
+            if (File.Exists(LegacyAndroidFilePath))
+            {
+                byte[] fromSecret = TryReadUnlockable(LegacyAndroidFilePath);
+                if (fromSecret != null)
+                    return fromSecret;
+            }
+
             byte[] fromPrefs = AndroidIdentityBlobStore.TryReadPrefs();
-            if (fromPrefs != null && fromPrefs.Length > 0)
+            if (IsUnlockable(fromPrefs))
                 return fromPrefs;
         }
 
         if (File.Exists(FilePath))
-            return File.ReadAllBytes(FilePath);
+        {
+            byte[] fromFile = TryReadUnlockable(FilePath);
+            if (fromFile != null)
+                return fromFile;
+        }
 
-        if (ModHelpers.IsAndroid() && File.Exists(LegacyAndroidFilePath))
-            return File.ReadAllBytes(LegacyAndroidFilePath);
+        return null;
+    }
 
+    private static byte[] TryReadUnlockable(string path)
+    {
+        try
+        {
+            byte[] stored = File.ReadAllBytes(path);
+            return IsUnlockable(stored) ? stored : null;
+        }
+        catch (Exception ex)
+        {
+            Logger.Warning($"Failed to read identity file: {ex.Message}");
+            return null;
+        }
+    }
+
+    internal static bool IsUnlockable(byte[] stored)
+    {
+        return stored != null && stored.Length > 0 && Unprotect(stored) != null;
+    }
+
+    internal static byte[] SelectUnlockableStored(params byte[][] sources)
+    {
+        if (sources == null)
+            return null;
+        foreach (byte[] stored in sources)
+        {
+            if (!IsUnlockable(stored))
+                continue;
+            return stored;
+        }
         return null;
     }
 
     private static void WriteStored(byte[] blob)
     {
+        bool androidUnprotected = ModHelpers.IsAndroid() && !HasMagic(blob, AndroidMagic);
+        string path = androidUnprotected ? LegacyAndroidFilePath : FilePath;
+
+        if (androidUnprotected)
+            Logger.Warning("Android Keystore protect failed; writing identity only to SecretDirectory (not external storage or SharedPreferences)");
+
         try
         {
-            Directory.CreateDirectory(Path.GetDirectoryName(FilePath) ?? StorageDirectory);
-            File.WriteAllBytes(FilePath, blob);
+            Directory.CreateDirectory(Path.GetDirectoryName(path) ?? SuperNewRolesPlugin.SecretDirectory);
+            File.WriteAllBytes(path, blob);
         }
         catch (Exception ex)
         {
             Logger.Warning($"Failed to write identity file: {ex.Message}");
         }
 
-        if (ModHelpers.IsAndroid())
+        if (ModHelpers.IsAndroid() && !androidUnprotected)
             AndroidIdentityBlobStore.TryWritePrefs(blob);
     }
 
@@ -154,12 +203,14 @@ public static class PlayerIdentityStore
         return Prefix(DpapiMagic, protectedBytes);
     }
 
-    private static byte[] Unprotect(byte[] stored)
+    internal static byte[] Unprotect(byte[] stored)
     {
+        if (stored == null || stored.Length == 0)
+            return null;
         if (HasMagic(stored, AndroidMagic))
         {
             byte[] payload = Strip(stored, AndroidMagic);
-            return AndroidKeyProtector.TryUnprotect(payload) ?? stored;
+            return AndroidKeyProtector.TryUnprotect(payload);
         }
         if (HasMagic(stored, DpapiMagic))
         {

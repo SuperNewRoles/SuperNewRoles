@@ -33,7 +33,18 @@ public static class SafetyPopupUi
 
     public static GameObject Create(string title, string body)
     {
-        GameObject popup = AssetManager.Instantiate("AnalyticsBG", Camera.main.transform);
+        Camera cam = Camera.main;
+        Transform parent;
+        if (cam != null)
+        {
+            parent = cam.transform;
+        }
+        else
+        {
+            Logger.Warning("SafetyPopupUi.Create: Camera.main is null; parenting to popup host");
+            parent = EnsureHost().transform;
+        }
+        GameObject popup = AssetManager.Instantiate("AnalyticsBG", parent);
         popup.SetActive(true);
         popup.transform.localScale = Vector3.one * PopupScale;
         popup.transform.Find("Title").GetComponent<TextMeshPro>().text = title;
