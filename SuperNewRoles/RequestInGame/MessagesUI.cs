@@ -189,7 +189,10 @@ public class MessagesUI
         RectTransform textRect = textTransform.GetComponent<RectTransform>();
         RectTransform authorRect = authorTransform.GetComponent<RectTransform>();
         SpriteRenderer textBackgroundRenderer = textBG.GetComponent<SpriteRenderer>();
-        string renderedMessage = renderMarkdown ? ModHelpers.ConvertSimpleMarkdownToRichText(message) : message;
+        ChatMessageRichText.Result rendered = renderMarkdown
+            ? ChatMessageRichText.ConvertDetailed(message)
+            : ChatMessageRichText.Result.Plain(message);
+        string renderedMessage = rendered.Text;
 
         Vector2 textAnchored = ResolveAnchoredPosition(textRect, textTransform);
         Vector2 authorAnchored = ResolveAnchoredPosition(authorRect, authorTransform);
@@ -272,6 +275,8 @@ public class MessagesUI
         textBG.localPosition = new Vector3(layout.BubbleX, layout.BubbleY, textBG.localPosition.z);
         chatTail.localPosition = new Vector3(layout.TailX, layout.TailY, chatTail.localPosition.z);
         textMeshPro.ForceMeshUpdate();
+        if (rendered.Urls.Length > 0)
+            textTransform.gameObject.AddComponent<ChatMessageLinkHandler>().Init(textMeshPro, rendered.Urls);
     }
 
     private static Vector2 ResolveAnchoredPosition(RectTransform rect, Transform transform)
