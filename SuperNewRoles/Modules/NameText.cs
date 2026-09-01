@@ -187,6 +187,7 @@ public static class NameText
     public static void SetCustomTaskCount(ExPlayerControl player, int completed, int total, bool showOnMeeting = false, bool showCompletedOnComms = false)
     {
         string text = ModHelpers.Cs(Color.yellow, "(" + (showOnMeeting ? (ModHelpers.IsComms() ? "?" : completed.ToString()) : (showCompletedOnComms ? completed.ToString() : "?")) + "/" + total.ToString() + ")");
+        if (player.PlayerInfoText != null)
             player.PlayerInfoText.text += text;
         if (player.MeetingInfoText != null && showOnMeeting)
             player.MeetingInfoText.text += text;
