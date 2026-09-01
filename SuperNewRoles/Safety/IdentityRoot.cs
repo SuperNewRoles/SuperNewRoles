@@ -1,7 +1,7 @@
 namespace SuperNewRoles.Safety;
 
 /// <summary>
-/// 0xD1 identity root protocol. Keep values in sync with Impostor StarlightSafety <c>IdentityRoot</c>.
+/// 0xD1 identity root protocol. Keep values in sync with Impostor SNRSafety <c>IdentityRoot</c>.
 /// </summary>
 public static class IdentityRoot
 {

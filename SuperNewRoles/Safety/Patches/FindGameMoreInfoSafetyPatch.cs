@@ -42,7 +42,7 @@ public static class FindGameMoreInfoPopupSetupInfoPatch
 
     private static IEnumerator CoRefresh(FindGameMoreInfoPopup popup, int gameId, string code)
     {
-        bool miss = !SafetyBlockedOccupantCache.TryGet(code, out _);
+        bool miss = !SafetyBlockedOccupantCache.TryGetByListing(gameId, code, out _);
         yield return SafetyBlockedOccupantCache.Refresh(force: miss).WrapToIl2Cpp();
         if (popup == null || popup.gameListing.GameId != gameId)
             yield break;
@@ -51,7 +51,7 @@ public static class FindGameMoreInfoPopupSetupInfoPatch
 
     private static void ApplyCached(FindGameMoreInfoPopup popup, GameListing listing, string code)
     {
-        if (SafetyBlockedOccupantCache.TryGet(code, out PublicGameRow row))
+        if (SafetyBlockedOccupantCache.TryGetByListing(listing.GameId, code, out PublicGameRow row))
         {
             if (row.HasBlockedPlayer)
                 SetNotice(popup, SafetyBlockedOccupantNotice.Format(row.BlockedPlayerNames));

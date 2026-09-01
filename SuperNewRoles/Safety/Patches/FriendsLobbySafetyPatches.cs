@@ -23,13 +23,17 @@ internal static class SnrLobbyReportContext
     public static int ClientId = -1;
     public static int GameId;
     public static string PublicId = string.Empty;
+    public static string SessionId = string.Empty;
+    public static string RegionId = string.Empty;
 
-    public static void Capture(string name, int clientId = -1, int gameId = 0, string publicId = null)
+    public static void Capture(string name, int clientId = -1, int gameId = 0, string publicId = null, string sessionId = null, string regionId = null)
     {
         Name = name ?? string.Empty;
         ClientId = clientId;
         GameId = gameId;
         PublicId = publicId ?? SafetyParticipantIds.Get(gameId, clientId) ?? string.Empty;
+        SessionId = string.IsNullOrEmpty(sessionId) ? SafetyParticipantIds.GetSessionId(gameId) ?? string.Empty : sessionId;
+        RegionId = string.IsNullOrEmpty(regionId) ? SafetyParticipantIds.GetRegionId(gameId) : regionId;
     }
 
     public static void Clear()
@@ -38,6 +42,8 @@ internal static class SnrLobbyReportContext
         ClientId = -1;
         GameId = 0;
         PublicId = string.Empty;
+        SessionId = string.Empty;
+        RegionId = string.Empty;
     }
 
     public static void CaptureFromBar(LobbyPlayerBar bar)
@@ -48,20 +54,28 @@ internal static class SnrLobbyReportContext
         int gameId = live == null ? recent?.roomID ?? 0 : AmongUsClient.Instance?.GameId ?? 0;
         int clientId = live?.Id ?? recent?.clientId ?? -1;
         string publicId = SnrRecentPublicIds.Get(recent) ?? SafetyParticipantIds.Get(gameId, clientId);
-        Capture(name, clientId, gameId, publicId);
+        Capture(name, clientId, gameId, publicId, SnrRecentPublicIds.GetSessionId(recent), SnrRecentPublicIds.GetRegionId(recent));
     }
 }
 
 internal static class SnrRecentPublicIds
 {
     private static readonly Dictionary<IntPtr, string> ByRecentPlayer = new();
+    private static readonly Dictionary<IntPtr, (string SessionId, string RegionId)> Metadata = new();
 
-    public static void Clear() => ByRecentPlayer.Clear();
+    public static void Clear() { ByRecentPlayer.Clear(); Metadata.Clear(); }
 
     public static void Set(FriendsListManager.RecentPlayedWithPlayer recent, string publicId)
     {
         if (recent == null || recent.Pointer == IntPtr.Zero || string.IsNullOrEmpty(publicId)) return;
         ByRecentPlayer[recent.Pointer] = publicId;
+    }
+
+    public static void Set(FriendsListManager.RecentPlayedWithPlayer recent, string publicId, string sessionId, string regionId)
+    {
+        Set(recent, publicId);
+        if (recent != null && recent.Pointer != IntPtr.Zero)
+            Metadata[recent.Pointer] = (sessionId ?? string.Empty, regionId ?? string.Empty);
     }
 
     public static string Get(FriendsListManager.RecentPlayedWithPlayer recent)
@@ -71,6 +85,12 @@ internal static class SnrRecentPublicIds
             ? publicId
             : null;
     }
+
+    public static string GetSessionId(FriendsListManager.RecentPlayedWithPlayer recent)
+        => recent != null && recent.Pointer != IntPtr.Zero && Metadata.TryGetValue(recent.Pointer, out var value) ? value.SessionId : string.Empty;
+
+    public static string GetRegionId(FriendsListManager.RecentPlayedWithPlayer recent)
+        => recent != null && recent.Pointer != IntPtr.Zero && Metadata.TryGetValue(recent.Pointer, out var value) ? value.RegionId : string.Empty;
 }
 
 internal static class SnrBlockedPlayerIds
@@ -95,7 +115,7 @@ internal static class SnrRecentPlayerIds
 {
     private const string Prefix = "snr-identity-recent:";
 
-    public static string Encode(int gameId, int clientId) => $"{Prefix}{gameId}:{clientId}";
+    public static string Encode(int gameId, int clientId, string sessionId = null) => $"{Prefix}{gameId}:{clientId}:{sessionId ?? string.Empty}";
 
     public static bool IsSynthetic(string value)
     {
@@ -139,7 +159,7 @@ internal static class SnrLobbyTargeting
             SnrLobbyReportContext.Name);
     }
 
-    public static bool TryGetRecentReportTarget(FriendsListManager manager, out int gameId, out int clientId, out string publicId, out string name)
+    public static bool TryGetRecentReportTarget(FriendsListManager manager, out int gameId, out int clientId, out string publicId, out string name, out string sessionId, out string regionId)
     {
         var info = manager?.GetReportInfo();
         gameId = SnrLobbyReportContext.GameId != 0 ? SnrLobbyReportContext.GameId : info?.roomID ?? 0;
@@ -148,7 +168,13 @@ internal static class SnrLobbyTargeting
             ? SnrLobbyReportContext.PublicId
             : SafetyParticipantIds.Get(gameId, clientId);
         name = SnrLobbyReportContext.Name ?? string.Empty;
-        return gameId != 0 && clientId >= 0;
+        sessionId = string.IsNullOrEmpty(SnrLobbyReportContext.SessionId)
+            ? SafetyParticipantIds.GetSessionId(gameId)
+            : SnrLobbyReportContext.SessionId;
+        regionId = string.IsNullOrEmpty(SnrLobbyReportContext.RegionId)
+            ? SafetyParticipantIds.GetRegionId(gameId)
+            : SnrLobbyReportContext.RegionId;
+        return gameId != 0 && clientId >= 0 && !string.IsNullOrEmpty(publicId);
     }
 
     public static string ReadName(LobbyPlayerBar bar, FriendsListManager.RecentPlayedWithPlayer recent = null)
@@ -245,7 +271,7 @@ public static class FriendsListRecentPlayersOverridePatch
                     PlayerName = row.Name ?? string.Empty,
                     // Never leave this empty: vanilla's EOS lookup rejects empty product ids.
                     // GetAndSetPlatform is skipped for this sentinel below.
-                    Puid = SnrRecentPlayerIds.Encode(row.GameId, row.ClientId),
+                    Puid = SnrRecentPlayerIds.Encode(row.GameId, row.ClientId, row.SessionId),
                     FriendCode = string.Empty,
                     clientId = row.ClientId,
                     roomID = row.GameId,
@@ -253,7 +279,7 @@ public static class FriendsListRecentPlayersOverridePatch
                     isReported = false,
                 };
                 recentPlayers.Add(recent);
-                SnrRecentPublicIds.Set(recent, row.PublicId);
+                SnrRecentPublicIds.Set(recent, row.PublicId, row.SessionId, row.RegionId);
             }
             manager.RecentlyPlayedWith = recentPlayers;
             _applying = true;
@@ -719,7 +745,7 @@ public static class FriendsListStartReportPatch
         if (!OfficialSnrServer.IsIdentityEnabled()) return true;
         var client = SnrLobbyTargeting.FromReportInfo(__instance);
         var runner = SafetyRuntime.FindCoroutineRunner(AmongUsClient.Instance);
-        if (client == null && runner != null && SnrLobbyTargeting.TryGetRecentReportTarget(__instance, out int gameId, out int clientId, out string publicId, out string name))
+        if (client == null && runner != null && SnrLobbyTargeting.TryGetRecentReportTarget(__instance, out int gameId, out int clientId, out string publicId, out string name, out string sessionId, out string regionId))
         {
             __instance.Ui?.Close();
             PlayerSafetyActions.ReportRecentClient(
@@ -729,7 +755,9 @@ public static class FriendsListStartReportPatch
                 name,
                 SafetyReportCategories.FromVanilla(__instance.GetReportInfo()?.reason ?? default),
                 string.Empty,
-                runner);
+                runner,
+                sessionId,
+                regionId);
             SnrLobbyReportContext.Clear();
             return false;
         }
@@ -814,7 +842,7 @@ internal static class SnrLobbyBlock
     public static void BlockRecent(MonoBehaviour runner, FriendsListManager manager = null)
     {
         manager ??= DestroyableSingleton<FriendsListManager>.Instance;
-        if (!SnrLobbyTargeting.TryGetRecentReportTarget(manager, out int gameId, out int clientId, out string publicId, out string name))
+        if (!SnrLobbyTargeting.TryGetRecentReportTarget(manager, out int gameId, out int clientId, out string publicId, out string name, out string sessionId, out string regionId))
         {
             PlayerSafetyActions.NotifyFailure(
                 ModTranslation.GetString("SafetyBlockFailed"),
@@ -822,7 +850,7 @@ internal static class SnrLobbyBlock
             return;
         }
 
-        PlayerSafetyActions.BlockRecentClient(gameId, clientId, publicId, name, string.Empty, runner);
+        PlayerSafetyActions.BlockRecentClient(gameId, clientId, publicId, name, string.Empty, runner, sessionId, regionId);
     }
 
     public static void BlockClient(ClientData client, MonoBehaviour runner)

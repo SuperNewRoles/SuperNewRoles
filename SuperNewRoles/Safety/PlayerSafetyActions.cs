@@ -42,6 +42,7 @@ public static class PlayerSafetyActions
     {
         string code = CurrentGameCode();
         string publicId = SafetyParticipantIds.Get(AmongUsClient.Instance.GameId, client.Id);
+        string sessionId = SafetyParticipantIds.GetSessionId(AmongUsClient.Instance.GameId);
         string failureReason = null;
         runner.StartCoroutine(PlayerSafetyApiClient.CreateBlock(code, AmongUsClient.Instance.GameId, client.Id, publicId, note, false, result =>
         {
@@ -58,10 +59,10 @@ public static class PlayerSafetyActions
                 OnGameJoinedIdentityPatch.SendHostBlockKick(client.Id);
             if (result.LeaveSelf)
                 AmongUsClient.Instance.ExitGame(DisconnectReasons.ExitGame);
-        }, reason => failureReason = reason).WrapToIl2Cpp());
+        }, reason => failureReason = reason, sessionId: sessionId).WrapToIl2Cpp());
     }
 
-    public static void BlockRecentClient(int gameId, int clientId, string publicId, string playerName, string note, MonoBehaviour runner)
+    public static void BlockRecentClient(int gameId, int clientId, string publicId, string playerName, string note, MonoBehaviour runner, string sessionId = null, string regionId = null)
     {
         if (string.IsNullOrEmpty(publicId) && runner != null)
         {
@@ -94,7 +95,7 @@ public static class PlayerSafetyActions
             {
                 NotifyFailure(ModTranslation.GetString("SafetyBlockFailed"), failureReason);
             }
-        }, reason => failureReason = reason).WrapToIl2Cpp());
+        }, reason => failureReason = reason, sessionId: sessionId, regionId: regionId).WrapToIl2Cpp());
     }
 
     private static IEnumerator ResolveRecentThenBlock(int gameId, int clientId, string playerName, string note, MonoBehaviour runner)
@@ -107,11 +108,6 @@ public static class PlayerSafetyActions
             && (gameId == 0 || row.GameId == gameId)
             && (clientId < 0 || row.ClientId == clientId)
             && (string.IsNullOrEmpty(playerName) || string.Equals(row.Name, playerName, StringComparison.Ordinal)));
-        match ??= rows?.FirstOrDefault(row =>
-            row != null
-            && !string.IsNullOrEmpty(row.PublicId)
-            && (string.IsNullOrEmpty(playerName) || string.Equals(row.Name, playerName, StringComparison.Ordinal)));
-
         if (match == null)
         {
             Logger.Error($"Safety recent block could not resolve public id name={playerName} game_id={gameId} client_id={clientId}");
@@ -125,13 +121,16 @@ public static class PlayerSafetyActions
             match.PublicId,
             string.IsNullOrEmpty(match.Name) ? playerName : match.Name,
             note,
-            runner);
+            runner,
+            match.SessionId,
+            match.RegionId);
     }
 
     public static void ReportClient(ClientData client, string category, string comment, MonoBehaviour runner)
     {
         string code = CurrentGameCode();
         string publicId = SafetyParticipantIds.Get(AmongUsClient.Instance.GameId, client.Id);
+        string sessionId = SafetyParticipantIds.GetSessionId(AmongUsClient.Instance.GameId);
         Logger.Info(
             $"Safety report sending name={client.PlayerName} client_id={client.Id} self_client_id={AmongUsClient.Instance.ClientId} game_code={code} game_id={AmongUsClient.Instance.GameId}");
         string failureReason = null;
@@ -154,13 +153,14 @@ public static class PlayerSafetyActions
                 }
             },
             publicId: publicId,
-            failureCallback: reason => failureReason = reason).WrapToIl2Cpp());
+            failureCallback: reason => failureReason = reason,
+            sessionId: sessionId).WrapToIl2Cpp());
     }
 
-    public static void ReportRecentClient(int gameId, int clientId, string publicId, string playerName, string category, string comment, MonoBehaviour runner)
+    public static void ReportRecentClient(int gameId, int clientId, string publicId, string playerName, string category, string comment, MonoBehaviour runner, string sessionId = null, string regionId = null)
     {
         string code = GameCode.IntToGameName(gameId)?.ToUpperInvariant() ?? string.Empty;
-        if (string.IsNullOrEmpty(code) || gameId == 0 || clientId < 0 || runner == null)
+        if (string.IsNullOrEmpty(code) || gameId == 0 || clientId < 0 || string.IsNullOrEmpty(publicId) || runner == null)
         {
             NotifyFailure(ModTranslation.GetString("SafetyReportFailed"), "対象情報が無効です。");
             return;
@@ -189,7 +189,9 @@ public static class PlayerSafetyActions
             gameId,
             recent: true,
             publicId: publicId,
-            failureCallback: reason => failureReason = reason).WrapToIl2Cpp());
+            failureCallback: reason => failureReason = reason,
+            sessionId: sessionId,
+            regionId: regionId).WrapToIl2Cpp());
     }
 
     public static void Unblock(string rowIdOrName, MonoBehaviour runner)

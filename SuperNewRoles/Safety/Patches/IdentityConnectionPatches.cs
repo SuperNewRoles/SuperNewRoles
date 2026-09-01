@@ -19,17 +19,44 @@ namespace SuperNewRoles.Safety.Patches;
 
 internal static class SafetyParticipantIds
 {
-    private static readonly Dictionary<int, Dictionary<int, string>> ByGame = new();
+    private sealed class Snapshot
+    {
+        public string SessionId = string.Empty;
+        public string RegionId = string.Empty;
+        public Dictionary<int, string> Players = new();
+    }
+
+    private static readonly Dictionary<int, Snapshot> ByGame = new();
     private static readonly Queue<int> GameOrder = new();
+
+    public static void Clear()
+    {
+        ByGame.Clear();
+        GameOrder.Clear();
+    }
+
+    public static void Retain(int gameId)
+    {
+        if (!ByGame.TryGetValue(gameId, out Snapshot snapshot))
+        {
+            Clear();
+            return;
+        }
+        ByGame.Clear();
+        GameOrder.Clear();
+        ByGame[gameId] = snapshot;
+        GameOrder.Enqueue(gameId);
+    }
 
     public static void Apply(MessageReader reader)
     {
         int gameId = reader.ReadPackedInt32();
+        string sessionId = reader.Position < reader.Length ? reader.ReadString() : string.Empty;
         int count = Math.Min(reader.ReadPackedInt32(), 100);
-        if (!ByGame.TryGetValue(gameId, out Dictionary<int, string> players))
+        if (!ByGame.TryGetValue(gameId, out Snapshot snapshot))
         {
-            players = new Dictionary<int, string>();
-            ByGame[gameId] = players;
+            snapshot = new Snapshot();
+            ByGame[gameId] = snapshot;
             GameOrder.Enqueue(gameId);
             while (GameOrder.Count > 8)
             {
@@ -37,22 +64,35 @@ internal static class SafetyParticipantIds
                 ByGame.Remove(expired);
             }
         }
+        snapshot.SessionId = sessionId;
+        snapshot.Players.Clear();
 
         for (int i = 0; i < count; i++)
         {
             int clientId = reader.ReadPackedInt32();
             string publicId = reader.ReadString();
             if (clientId >= 0 && !string.IsNullOrEmpty(publicId))
-                players[clientId] = publicId;
+                snapshot.Players[clientId] = publicId;
         }
+        snapshot.RegionId = reader.Position < reader.Length ? reader.ReadString() : string.Empty;
     }
 
     public static string Get(int gameId, int clientId)
     {
-        return ByGame.TryGetValue(gameId, out Dictionary<int, string> players)
-            && players.TryGetValue(clientId, out string publicId)
+        return ByGame.TryGetValue(gameId, out Snapshot snapshot)
+            && snapshot.Players.TryGetValue(clientId, out string publicId)
             ? publicId
             : null;
+    }
+
+    public static string GetSessionId(int gameId)
+    {
+        return ByGame.TryGetValue(gameId, out Snapshot snapshot) ? snapshot.SessionId : string.Empty;
+    }
+
+    public static string GetRegionId(int gameId)
+    {
+        return ByGame.TryGetValue(gameId, out Snapshot snapshot) ? snapshot.RegionId : string.Empty;
     }
 }
 
@@ -434,6 +474,9 @@ public static class OnGameJoinedIdentityPatch
     public static void Postfix(AmongUsClient __instance)
     {
         if (!OfficialSnrServer.IsIdentityEnabled()) return;
+        // Keep the snapshot for this gameId if ParticipantIds already arrived.
+        // Drop other lobbies so a reused numeric id cannot keep stale aliases.
+        SafetyParticipantIds.Retain(__instance.GameId);
         SendIdentityHello();
         SendIdentityProof();
         __instance.StartCoroutine(CoHandleBanNotice(__instance).WrapToIl2Cpp());

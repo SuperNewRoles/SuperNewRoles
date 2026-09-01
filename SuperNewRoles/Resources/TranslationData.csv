@@ -318,7 +318,7 @@ SafetyConductAgree,同意する,Agree,同意,同意
 SafetyConductDecline,同意しない,Decline,不同意,不同意
 SafetyBanned,この端末はこのサーバーで遊ぶことができません,This device cannot play on this server,此设备无法在此服务器游玩,此裝置無法在此伺服器遊玩
 SafetyBanTitle,あなたはBANされました,You have been banned,你已被封禁,你已被封禁
-SafetyBanBody,あなたはこのサーバーからBANされています。\n理由:{0}\n期限:{1}\nこの決定に異議がある場合は公式Discordサーバーまでお問い合わせください。\nお問い合わせId: {2},You are banned from this server.\nReason: {0}\nExpires: {1}\nIf you want to appeal this decision, contact the official Discord server.\nInquiry ID: {2},你已被此服务器封禁。\n理由:{0}\n期限:{1}\n如有异议请联系官方 Discord。\n咨询Id: {2},你已被此伺服器封禁。\n理由:{0}\n期限:{1}\n如有異議請聯絡官方 Discord。\n諮詢Id: {2}
+SafetyBanBody,あなたはこのサーバーからBANされています。\n理由:{0}\n期限:{1}\nこの決定に異議がある場合は公式Discordサーバーまでお問い合わせください。\nお問い合わせId: {2},You are banned from this server.\nReason: {0}\nExpires: {1}\nIf you want to appeal this decision，contact the official Discord server.\nInquiry ID: {2},你已被此服务器封禁。\n理由:{0}\n期限:{1}\n如有异议请联系官方 Discord。\n咨询Id: {2},你已被此伺服器封禁。\n理由:{0}\n期限:{1}\n如有異議請聯絡官方 Discord。\n諮詢Id: {2}
 SafetyBanExpiresNever,無期限,Permanent,永久,永久
 SafetyBanOk,OK,OK,确定,確定
 SafetyConductBanLeave,{0}は行動規範に違反していたためBANされました,{0} was banned for violating the code of conduct,{0} 因违反行为规范已被封禁,{0} 因違反行為規範已被封禁

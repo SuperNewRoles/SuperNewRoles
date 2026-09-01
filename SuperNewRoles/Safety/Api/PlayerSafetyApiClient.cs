@@ -6,6 +6,7 @@ using BepInEx.Unity.IL2CPP.Utils.Collections;
 using SuperNewRoles.Modules;
 using SuperNewRoles.Safety.Identity;
 using SuperNewRoles.Safety;
+using SuperNewRoles.Safety.Patches;
 using UnityEngine;
 using UnityEngine.Networking;
 
@@ -82,17 +83,22 @@ public static class PlayerSafetyApiClient
         string note,
         bool recent,
         Action<BlockCreateResult> callback,
-        Action<string> failureCallback = null)
+        Action<string> failureCallback = null,
+        string sessionId = null,
+        string regionId = null)
     {
-        string json = JsonParser.Serialize(new Dictionary<string, object>
-        {
-            ["game_code"] = gameCode,
-            ["game_id"] = gameId,
-            ["client_id"] = clientId,
-            ["public_id"] = publicId ?? string.Empty,
-            ["note"] = note ?? string.Empty,
-            ["recent"] = recent,
-        });
+        string json = JsonParser.Serialize(RoomRequest(
+            gameCode,
+            gameId,
+            clientId,
+            publicId,
+            extra: new Dictionary<string, object>
+            {
+                ["note"] = note ?? string.Empty,
+                ["recent"] = recent,
+            },
+            sessionId: sessionId,
+            regionId: regionId));
         yield return Send("POST", "/v1/blocks", BlocksCreate, json, text =>
         {
             callback(BlockCreateResult.From(text));
@@ -154,18 +160,23 @@ public static class PlayerSafetyApiClient
         int? gameId = null,
         bool recent = false,
         string publicId = null,
-        Action<string> failureCallback = null)
+        Action<string> failureCallback = null,
+        string sessionId = null,
+        string regionId = null)
     {
-        string json = JsonParser.Serialize(new Dictionary<string, object>
-        {
-            ["game_code"] = gameCode,
-            ["game_id"] = gameId ?? AmongUsClient.Instance.GameId,
-            ["client_id"] = clientId,
-            ["public_id"] = publicId ?? string.Empty,
-            ["category"] = category ?? "other",
-            ["comment"] = comment ?? string.Empty,
-            ["recent"] = recent,
-        });
+        string json = JsonParser.Serialize(RoomRequest(
+            gameCode,
+            gameId ?? AmongUsClient.Instance.GameId,
+            clientId,
+            publicId,
+            extra: new Dictionary<string, object>
+            {
+                ["category"] = category ?? "other",
+                ["comment"] = comment ?? string.Empty,
+                ["recent"] = recent,
+            },
+            sessionId: sessionId,
+            regionId: regionId));
         yield return Send(
             "POST",
             "/v1/reports",
@@ -228,6 +239,35 @@ public static class PlayerSafetyApiClient
         {
             return "ja";
         }
+    }
+
+    private static Dictionary<string, object> RoomRequest(
+        string gameCode,
+        int gameId,
+        int clientId,
+        string publicId,
+        Dictionary<string, object> extra,
+        string sessionId,
+        string regionId)
+    {
+        string resolvedRegion = string.IsNullOrEmpty(regionId) ? SafetyParticipantIds.GetRegionId(gameId) : regionId;
+        var payload = new Dictionary<string, object>
+        {
+            ["game_code"] = gameCode,
+            ["game_id"] = gameId,
+            ["region_id"] = resolvedRegion ?? string.Empty,
+            ["client_id"] = clientId,
+            ["public_id"] = publicId ?? string.Empty,
+        };
+        string resolvedSession = string.IsNullOrEmpty(sessionId) ? SafetyParticipantIds.GetSessionId(gameId) : sessionId;
+        if (!string.IsNullOrEmpty(resolvedSession))
+            payload["session_id"] = resolvedSession;
+        if (extra != null)
+        {
+            foreach (var pair in extra)
+                payload[pair.Key] = pair.Value;
+        }
+        return payload;
     }
 
     private static IEnumerator Send(
@@ -428,6 +468,9 @@ public sealed class BlockCreateResult
 public sealed class PublicGameRow
 {
     public string Code;
+    public int GameId;
+    public string RegionId;
+    public string SessionId;
     public string HostName;
     public int PlayerCount;
     public int MaxPlayers;
@@ -441,6 +484,9 @@ public sealed class PublicGameRow
         return new PublicGameRow
         {
             Code = row.TryGetValue("code", out var code) ? code?.ToString() : string.Empty,
+            GameId = row.ContainsKey("game_id") ? ToInt(row, "game_id") : int.MinValue,
+            RegionId = ReadString(row, "region_id"),
+            SessionId = ReadString(row, "session_id"),
             HostName = row.TryGetValue("host_name", out var host) ? host?.ToString() : string.Empty,
             PlayerCount = ToInt(row, "player_count"),
             MaxPlayers = ToInt(row, "max_players"),
@@ -453,6 +499,11 @@ public sealed class PublicGameRow
     {
         if (!row.TryGetValue(key, out var value) || value == null) return 0;
         return Convert.ToInt32(value);
+    }
+
+    private static string ReadString(Dictionary<string, object> row, string key)
+    {
+        return row.TryGetValue(key, out object value) ? value?.ToString() ?? string.Empty : string.Empty;
     }
 
     private static string[] ReadStringList(Dictionary<string, object> row, string key)
@@ -478,6 +529,8 @@ public sealed class RecentPlayerRow
     public string GameCode;
     public int GameId;
     public string LastSeenAt;
+    public string SessionId;
+    public string RegionId;
 
     public static RecentPlayerRow From(Dictionary<string, object> row)
     {
@@ -488,6 +541,8 @@ public sealed class RecentPlayerRow
             ClientId = ReadInt(row, "client_id"),
             GameCode = ReadString(row, "game_code"),
             GameId = ReadInt(row, "game_id"),
+            SessionId = ReadString(row, "session_id"),
+            RegionId = ReadString(row, "region_id"),
             LastSeenAt = ReadString(row, "last_seen_at"),
         };
     }
