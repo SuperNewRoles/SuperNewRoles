@@ -186,8 +186,7 @@ public static class NameText
     }
     public static void SetCustomTaskCount(ExPlayerControl player, int completed, int total, bool showOnMeeting = false, bool showCompletedOnComms = false)
     {
-        string text = ModHelpers.Cs(Color.yellow, "(" + (showOnMeeting ? (ModHelpers.IsComms() ? "?" : completed.ToString()) : (showCompletedOnComms ? completed.ToString() : "?")) + "/" + total.ToString() + ")");
-        if (player.PlayerInfoText != null)
+            string text = ModHelpers.Cs(Color.yellow, "(" + (showOnMeeting ? (ModHelpers.IsComms() ? "?" : completed.ToString()) : (ModHelpers.IsComms() ? (showCompletedOnComms ? completed.ToString() : "?") : completed.ToString())) + "/" + total.ToString() + ")");
             player.PlayerInfoText.text += text;
         if (player.MeetingInfoText != null && showOnMeeting)
             player.MeetingInfoText.text += text;
@@ -223,20 +222,14 @@ public static class NameText
         WrapUpEvent.Instance.AddListener(x => UpdateAllNameInfo());
         MeetingStartEvent.Instance.AddListener(x => UpdateAllNameInfo());
         FixedUpdateEvent.Instance.AddListener(UpdateAllVisible);
-    }
-    [HarmonyPatch(typeof(HudOverrideSystemType), nameof(HudOverrideSystemType.UpdateSystem))]
-    public static class HudOverrideSystemTypePatch
-    {
-        private static bool _lastActive = false;
-        public static void Prefix(HudOverrideSystemType __instance)
-        {
-            _lastActive = __instance.IsActive;
-        }
-        public static void Postfix(HudOverrideSystemType __instance)
-        {
-            if (__instance.IsActive && !_lastActive)
-                UpdateAllNameInfo();
-        }
+        SaboStartEvent.Instance.AddListener(x => {
+        if (x.saboType == SystemTypes.Comms) 
+            UpdateAllNameInfo();
+        });
+        SaboEndEvent.Instance.AddListener(x => {
+        if (x.saboType == SystemTypes.Comms) 
+            UpdateAllNameInfo();
+        });
     }
     private static void UpdateAllVisible()
     {
