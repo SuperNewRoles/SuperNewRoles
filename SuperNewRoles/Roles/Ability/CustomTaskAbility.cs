@@ -60,7 +60,7 @@ public class CustomTaskAbility : AbilityBase, IPrioritizedAbility
             customTaskTypeAbility.AssignTasks(all);
             return;
         }
-    var taskData = taskOptions;
+        var taskData = taskOptions;
         if (taskData == null && player.GetAbilities<CustomTaskAbility>()
             .Any(ability => ability?.IsTaskSelectionExclusionActive == true))
         {
@@ -83,7 +83,7 @@ public class CustomTaskAbility : AbilityBase, IPrioritizedAbility
 
         // CommonTasksを追加
         int startIndex = 0;
-    var shuffledCommonTasks = TaskSelectionExclusion.GetAvailableTasks(player, ShipStatus.Instance.CommonTasks).Shuffled();
+        var shuffledCommonTasks = TaskSelectionExclusion.GetAvailableTasks(player, ShipStatus.Instance.CommonTasks).Shuffled();
         ShipStatus.Instance.AddTasksFromList(ref startIndex, GetTaskCountToAssign(taskData.Common, shuffledCommonTasks.Count), taskList, types, shuffledCommonTasks.ToIl2CppList());
 
         // ShortTasksを追加
