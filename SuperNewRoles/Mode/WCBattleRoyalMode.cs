@@ -304,6 +304,18 @@ public class WCBattleRoyalMode : ModeBase<WCBattleRoyalMode>, IModeBase
         if (winnerTeam == -1)
         {
             winners = PlayerControl.AllPlayerControls.ToArray().Where(p => p != null && !p.Data.IsDead && !p.Data.Disconnected).Select(p => p.PlayerId).ToList();
+
+            // 全員離脱時は勝者なしとして終了する。
+            EndGameManagerSetUpPatch.EndGameWithCondition(
+                GameOverReason.CrewmatesByVote,
+                winners,
+                "Draw",
+                new List<string>(),
+                Color.gray,
+                false,
+                "WinText"
+            );
+            return;
         }
         else
         {
