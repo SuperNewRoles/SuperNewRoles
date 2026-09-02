@@ -35,6 +35,7 @@ public class WCBattleRoyalMode : ModeBase<WCBattleRoyalMode>, IModeBase
     public int TotalTeams => totalTeams;
     private EventListener<NameTextUpdateEventData> nameTextListener;
     private EventListener<EmergencyCheckEventData> emergencyCheckListener;
+    private EventListener<DisconnectEventData> disconnectListener;
 
     // チーム名（A, B, C...）
     private static readonly string[] TeamNames = "ABCDEFGHIJKLMNOPQRSTUVWXYZ".Select(c => c.ToString()).ToArray();
@@ -102,6 +103,7 @@ public class WCBattleRoyalMode : ModeBase<WCBattleRoyalMode>, IModeBase
 
         nameTextListener = NameTextUpdateEvent.Instance.AddListener(OnNameTextUpdate);
         emergencyCheckListener = EmergencyCheckEvent.Instance.AddListener(OnEmergencyCheck);
+        disconnectListener = DisconnectEvent.Instance.AddListener(OnDisconnect);
 
     }
 
@@ -191,6 +193,7 @@ public class WCBattleRoyalMode : ModeBase<WCBattleRoyalMode>, IModeBase
         teams.Clear();
         nameTextListener?.RemoveListener();
         emergencyCheckListener?.RemoveListener();
+        disconnectListener?.RemoveListener();
     }
 
     private void OnNameTextUpdate(NameTextUpdateEventData data)
@@ -212,12 +215,20 @@ public class WCBattleRoyalMode : ModeBase<WCBattleRoyalMode>, IModeBase
         }
     }
 
+    private void OnDisconnect(DisconnectEventData data)
+    {
+        // キルを伴わない切断でも、生存人数が減った時点で勝利判定を行う。
+        if (AmongUsClient.Instance != null && AmongUsClient.Instance.AmHost && CanWin())
+            EndGame();
+    }
+
     public override bool CheckWinCondition()
     {
         if (ExPlayerControl.ExPlayerControls.Where(x => x.IsAlive()).Count() <= 1)
         {
             EndGame();
         }
+
         return true;
     }
 
