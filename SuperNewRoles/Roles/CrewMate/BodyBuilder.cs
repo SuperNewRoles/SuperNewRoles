@@ -32,7 +32,8 @@ class BodyBuilder : RoleBase<BodyBuilder>
     internal static TaskSelectionExclusionConfig CreateTaskSelectionExclusion() => new(
         () => BodyBuilderExcludeSpecificTasksFromSelection,
         (TaskTypes.ResetBreakers, () => BodyBuilderExcludeResetBreakersTaskFromSelection),
-        (TaskTypes.ClearAsteroids, () => BodyBuilderExcludeClearAsteroidsTaskFromSelection));
+        (TaskTypes.ClearAsteroids, () => BodyBuilderExcludeClearAsteroidsTaskFromSelection),
+        (TaskTypes.SortRecords, () => BodyBuilderExcludeSortRecordsTaskFromSelection));
 
     public override QuoteMod QuoteMod { get; } = QuoteMod.SuperNewRoles;
     public override RoleTypes IntroSoundType { get; } = RoleTypes.Crewmate;
@@ -55,6 +56,9 @@ class BodyBuilder : RoleBase<BodyBuilder>
 
     [CustomOptionBool("BodyBuilderExcludeClearAsteroidsTaskFromSelection", false, translationName: "ExcludeClearAsteroidsTaskFromSelection", parentFieldName: nameof(BodyBuilderExcludeSpecificTasksFromSelection))]
     public static bool BodyBuilderExcludeClearAsteroidsTaskFromSelection;
+
+    [CustomOptionBool("BodyBuilderExcludeSortRecordsTaskFromSelection", false, translationName: "ExcludeSortRecordsTaskFromSelection", parentFieldName: nameof(BodyBuilderExcludeSpecificTasksFromSelection))]
+    public static bool BodyBuilderExcludeSortRecordsTaskFromSelection;
 
     [CustomOptionBool("BodyBuilderTaskOptionAvailable", false)]
     public static bool BodyBuilderTaskOptionAvailable;

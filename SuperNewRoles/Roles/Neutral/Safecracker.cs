@@ -32,7 +32,8 @@ class Safecracker : RoleBase<Safecracker>
     internal static TaskSelectionExclusionConfig CreateTaskSelectionExclusion() => new(
         () => SafecrackerExcludeSpecificTasksFromSelection,
         (TaskTypes.ResetBreakers, () => SafecrackerExcludeResetBreakersTaskFromSelection),
-        (TaskTypes.ClearAsteroids, () => SafecrackerExcludeClearAsteroidsTaskFromSelection));
+        (TaskTypes.ClearAsteroids, () => SafecrackerExcludeClearAsteroidsTaskFromSelection),
+        (TaskTypes.SortRecords, () => SafecrackerExcludeSortRecordsTaskFromSelection));
 
     public override QuoteMod QuoteMod { get; } = QuoteMod.SuperNewRoles;
     public override RoleTypes IntroSoundType { get; } = RoleTypes.Crewmate;
@@ -79,6 +80,9 @@ class Safecracker : RoleBase<Safecracker>
 
     [CustomOptionBool("SafecrackerExcludeClearAsteroidsTaskFromSelection", false, translationName: "ExcludeClearAsteroidsTaskFromSelection", parentFieldName: nameof(SafecrackerExcludeSpecificTasksFromSelection))]
     public static bool SafecrackerExcludeClearAsteroidsTaskFromSelection;
+
+    [CustomOptionBool("SafecrackerExcludeSortRecordsTaskFromSelection", false, translationName: "ExcludeSortRecordsTaskFromSelection", parentFieldName: nameof(SafecrackerExcludeSpecificTasksFromSelection))]
+    public static bool SafecrackerExcludeSortRecordsTaskFromSelection;
 
     [CustomOptionTask("SafecrackerTask", 3, 3, 3)]
     public static TaskOptionData SafecrackerTask;

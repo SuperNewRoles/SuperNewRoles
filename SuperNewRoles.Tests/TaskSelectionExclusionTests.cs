@@ -198,7 +198,6 @@ public class TaskSelectionExclusionTests
             () => true,
             (TaskTypes.ResetBreakers, () => true));
         var ability = new CustomTaskAbility(
-            () => (true, true, null),
             taskSelectionExclusionConfig: config);
 
         ability.IsTaskSelectionExclusionActive.Should().BeTrue();
@@ -213,19 +212,22 @@ public class TaskSelectionExclusionTests
             HamburgerShop.CreateTaskSelectionExclusion,
             nameof(HamburgerShop.HamburgerShopExcludeSpecificTasksFromSelection),
             nameof(HamburgerShop.HamburgerShopExcludeResetBreakersTaskFromSelection),
-            nameof(HamburgerShop.HamburgerShopExcludeClearAsteroidsTaskFromSelection));
+            nameof(HamburgerShop.HamburgerShopExcludeClearAsteroidsTaskFromSelection),
+            nameof(HamburgerShop.HamburgerShopExcludeSortRecordsTaskFromSelection));
         AssertRoleFactory(
             typeof(BodyBuilder),
             BodyBuilder.CreateTaskSelectionExclusion,
             nameof(BodyBuilder.BodyBuilderExcludeSpecificTasksFromSelection),
             nameof(BodyBuilder.BodyBuilderExcludeResetBreakersTaskFromSelection),
-            nameof(BodyBuilder.BodyBuilderExcludeClearAsteroidsTaskFromSelection));
+            nameof(BodyBuilder.BodyBuilderExcludeClearAsteroidsTaskFromSelection),
+            nameof(BodyBuilder.BodyBuilderExcludeSortRecordsTaskFromSelection));
         AssertRoleFactory(
             typeof(Safecracker),
             Safecracker.CreateTaskSelectionExclusion,
             nameof(Safecracker.SafecrackerExcludeSpecificTasksFromSelection),
             nameof(Safecracker.SafecrackerExcludeResetBreakersTaskFromSelection),
-            nameof(Safecracker.SafecrackerExcludeClearAsteroidsTaskFromSelection));
+            nameof(Safecracker.SafecrackerExcludeClearAsteroidsTaskFromSelection),
+            nameof(Safecracker.SafecrackerExcludeSortRecordsTaskFromSelection));
     }
 
     [Fact]
@@ -236,18 +238,21 @@ public class TaskSelectionExclusionTests
             nameof(HamburgerShop.HamburgerShopExcludeSpecificTasksFromSelection),
             nameof(HamburgerShop.HamburgerShopExcludeResetBreakersTaskFromSelection),
             nameof(HamburgerShop.HamburgerShopExcludeClearAsteroidsTaskFromSelection),
+            nameof(HamburgerShop.HamburgerShopExcludeSortRecordsTaskFromSelection),
             DisplayModeId.Default);
         AssertRoleOptions(
             typeof(BodyBuilder),
             nameof(BodyBuilder.BodyBuilderExcludeSpecificTasksFromSelection),
             nameof(BodyBuilder.BodyBuilderExcludeResetBreakersTaskFromSelection),
             nameof(BodyBuilder.BodyBuilderExcludeClearAsteroidsTaskFromSelection),
+            nameof(BodyBuilder.BodyBuilderExcludeSortRecordsTaskFromSelection),
             DisplayModeId.All);
         AssertRoleOptions(
             typeof(Safecracker),
             nameof(Safecracker.SafecrackerExcludeSpecificTasksFromSelection),
             nameof(Safecracker.SafecrackerExcludeResetBreakersTaskFromSelection),
             nameof(Safecracker.SafecrackerExcludeClearAsteroidsTaskFromSelection),
+            nameof(Safecracker.SafecrackerExcludeSortRecordsTaskFromSelection),
             DisplayModeId.All);
     }
 
@@ -256,28 +261,33 @@ public class TaskSelectionExclusionTests
         Func<TaskSelectionExclusionConfig> createConfig,
         string parentName,
         string leverName,
-        string shootingName)
+        string shootingName,
+        string sortRecordsName)
     {
         var parent = roleType.GetField(parentName, BindingFlags.Public | BindingFlags.Static)!;
         var lever = roleType.GetField(leverName, BindingFlags.Public | BindingFlags.Static)!;
         var shooting = roleType.GetField(shootingName, BindingFlags.Public | BindingFlags.Static)!;
-        bool[] original = [(bool)parent.GetValue(null)!, (bool)lever.GetValue(null)!, (bool)shooting.GetValue(null)!];
+        var sortRecords = roleType.GetField(sortRecordsName, BindingFlags.Public | BindingFlags.Static)!;
+        bool[] original = [(bool)parent.GetValue(null)!, (bool)lever.GetValue(null)!, (bool)shooting.GetValue(null)!, (bool)sortRecords.GetValue(null)!];
 
         try
         {
             parent.SetValue(null, true);
             lever.SetValue(null, true);
             shooting.SetValue(null, true);
+            sortRecords.SetValue(null, true);
             var config = createConfig();
 
             config.IsExcluded(TaskTypes.ResetBreakers).Should().BeTrue(roleType.Name);
             config.IsExcluded(TaskTypes.ClearAsteroids).Should().BeTrue(roleType.Name);
+            config.IsExcluded(TaskTypes.SortRecords).Should().BeTrue(roleType.Name);
         }
         finally
         {
             parent.SetValue(null, original[0]);
             lever.SetValue(null, original[1]);
             shooting.SetValue(null, original[2]);
+            sortRecords.SetValue(null, original[3]);
         }
     }
 
@@ -286,6 +296,7 @@ public class TaskSelectionExclusionTests
         string parentName,
         string leverName,
         string shootingName,
+        string sortRecordsName,
         DisplayModeId displayMode)
     {
         var parent = roleType.GetField(parentName, BindingFlags.Public | BindingFlags.Static)!;
@@ -293,7 +304,7 @@ public class TaskSelectionExclusionTests
         parentOption.DefaultValue.Should().BeFalse();
         parentOption.DisplayMode.Should().Be(displayMode);
 
-        foreach (var childName in new[] { leverName, shootingName })
+        foreach (var childName in new[] { leverName, shootingName, sortRecordsName })
         {
             var child = roleType.GetField(childName, BindingFlags.Public | BindingFlags.Static)!;
             var childOption = child.GetCustomAttribute<CustomOptionBoolAttribute>()!;
