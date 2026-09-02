@@ -4,7 +4,6 @@ using AmongUs.GameOptions;
 using SuperNewRoles.CustomOptions;
 using SuperNewRoles.Events;
 using SuperNewRoles.Modules;
-using SuperNewRoles.Modules.Events.Bases;
 using SuperNewRoles.Patches;
 using SuperNewRoles.Roles.Ability;
 using UnityEngine;
@@ -64,9 +63,12 @@ public class SaunerAbility : AbilityBase
     private Coroutine _audioFadeCoroutine;
     private FlashHandler.FlashHandle _flashHandle;
     private readonly HashSet<Sauner.SaunerState> _missingAudioStates = new();
-    private EventListener _fixedUpdateListener;
     private ImportantTextTask _task;
     private Arrow _arrow;
+    private Sauner.SaunerState _lastTaskState;
+    private int _lastTaskRemaining = int.MinValue;
+    private bool _lastTaskInMeeting;
+    private bool _otherTasksHidden;
 
     public SaunerAbility(SaunerConfig config)
     {
@@ -77,14 +79,13 @@ public class SaunerAbility : AbilityBase
 
     public override void AttachToLocalPlayer()
     {
-        _fixedUpdateListener = FixedUpdateEvent.Instance.AddListener(OnFixedUpdate);
+        SubscribeWithAbility(FixedUpdateEvent.Instance, OnFixedUpdate);
         EnsureArrow();
     }
 
     public override void DetachToLocalPlayer()
     {
         // 全クライアント共通のリスナー/演出を片付ける
-        _fixedUpdateListener?.RemoveListener();
         StopEffects(false, true);
         DestroyTask();
         DestroyArrow();
@@ -399,6 +400,8 @@ public class SaunerAbility : AbilityBase
         if (pc != null) pc.myTasks.Remove(_task);
         UnityEngine.Object.Destroy(_task.gameObject);
         _task = null;
+        _otherTasksHidden = false;
+        _lastTaskRemaining = int.MinValue;
     }
 
     private void UpdateTaskText(bool inMeeting)
@@ -409,7 +412,21 @@ public class SaunerAbility : AbilityBase
         var pc = Player?.Player;
         if (pc == null) return;
 
-        // ステージ名と残り時間を組み立ててタスク欄に表示
+        float stageLimit = _state switch
+        {
+            Sauner.SaunerState.Darkroom => _config.DarkroomTime,
+            Sauner.SaunerState.Shower => _config.ShowerTime,
+            Sauner.SaunerState.ObservationDeck => _config.DeckTime,
+            _ => 0f
+        };
+        int remainingSeconds = _timer < stageLimit ? Math.Max(0, (int)(_timer + 1)) : -1;
+        if (_task.Text != null && _lastTaskState == _state && _lastTaskRemaining == remainingSeconds && _lastTaskInMeeting == inMeeting && _otherTasksHidden)
+            return;
+
+        _lastTaskState = _state;
+        _lastTaskRemaining = remainingSeconds;
+        _lastTaskInMeeting = inMeeting;
+
         string stageName = ModTranslation.GetString($"Sauner{_state}");
         string action = _state switch
         {
@@ -418,15 +435,8 @@ public class SaunerAbility : AbilityBase
             Sauner.SaunerState.ObservationDeck => ModTranslation.GetString("SaunerTextAirBath"),
             _ => string.Empty
         };
-        float stageLimit = _state switch
-        {
-            Sauner.SaunerState.Darkroom => _config.DarkroomTime,
-            Sauner.SaunerState.Shower => _config.ShowerTime,
-            Sauner.SaunerState.ObservationDeck => _config.DeckTime,
-            _ => 0f
-        };
-        string remaining = _timer < stageLimit
-            ? ModTranslation.GetString("SaunerTextRemaining", Math.Max(0, (int)(_timer + 1)))
+        string remaining = remainingSeconds >= 0
+            ? ModTranslation.GetString("SaunerTextRemaining", remainingSeconds)
             : string.Empty;
         string meetingText = inMeeting ? $" ({ModTranslation.GetString("Meeting")})" : string.Empty;
         Color color = GetFlashColor(_state);
@@ -435,17 +445,19 @@ public class SaunerAbility : AbilityBase
         // FixMapIconsの方でアイコンの場所を変更してます
         _task.Text = "<size=0%>Sauner</size>" + ModHelpers.Cs(color, $"{stageName}: {action}{remaining}{meetingText}");
 
-        // 共通タスク以外は非表示にしてタスク欄を圧迫しない
+        if (_otherTasksHidden) return;
+
         int index = 0;
-        foreach (PlayerTask t in pc.myTasks.ToArray())
+        for (int i = 0; i < pc.myTasks.Count; i++)
         {
+            PlayerTask t = pc.myTasks[i];
             NormalPlayerTask npt = t.TryCast<NormalPlayerTask>();
             if (npt != null)
             {
                 if (npt.Length != NormalPlayerTask.TaskLength.Common)
                 {
                     pc.myTasks.RemoveAt(index);
-                    // RemoveAtで1個減っているので。(後でどうせ++される)
+                    i--;
                     index--;
                 }
                 else
@@ -453,6 +465,7 @@ public class SaunerAbility : AbilityBase
             }
             index++;
         }
+        _otherTasksHidden = true;
     }
 
     private static Color GetFlashColor(Sauner.SaunerState state)

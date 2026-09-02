@@ -9,7 +9,6 @@ using UnityEngine;
 using AmongUs.GameOptions;
 using SuperNewRoles.CustomOptions;
 using SuperNewRoles.Events;
-using SuperNewRoles.Modules.Events.Bases;
 using SuperNewRoles.Roles.Ability.CustomButton;
 
 namespace SuperNewRoles.Roles.Neutral;
@@ -46,7 +45,6 @@ class FalseCharges : RoleBase<FalseCharges>
 public class FalseChargesAbility : TargetCustomButtonBase
 {
     private readonly FalseChargesData _data;
-    private EventListener<WrapUpEventData> _wrapUpListener;
 
     private int _turn;
     private PlayerControl _target;
@@ -59,7 +57,7 @@ public class FalseChargesAbility : TargetCustomButtonBase
     public override void AttachToLocalPlayer()
     {
         base.AttachToLocalPlayer();
-        _wrapUpListener = WrapUpEvent.Instance.AddListener(OnWrapUp);
+        SubscribeWithAbility(WrapUpEvent.Instance, OnWrapUp);
     }
 
     private void OnWrapUp(WrapUpEventData data)
@@ -72,12 +70,6 @@ public class FalseChargesAbility : TargetCustomButtonBase
         {
             EndGamer.RpcEndGameWithWinner(CustomGameOverReason.FalseChargesWin, WinType.SingleNeutral, [Player], FalseCharges.Instance.RoleColor, "FalseCharges", string.Empty);
         }
-    }
-
-    public override void DetachToLocalPlayer()
-    {
-        // イベントリスナーを削除
-        _wrapUpListener?.RemoveListener();
     }
 
     public override Color32 OutlineColor => FalseCharges.Instance.RoleColor;

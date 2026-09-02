@@ -19,9 +19,11 @@ class HamburgerShop : RoleBase<HamburgerShop>
             MapNames.Airship
         ),
         () => new CustomTaskAbility(
-            () => (true, true, HamburgerShopTaskOptionAvailable ? HamburgerShopTaskOption.Total : null),
-            HamburgerShopTaskOptionAvailable ? HamburgerShopTaskOption : null,
-            CreateTaskSelectionExclusion()
+            isTaskTrigger: () => true,
+            countsForCrewWin: () => true,
+            requiredTaskCount: () => HamburgerShopTaskOptionAvailable ? HamburgerShopTaskOption.Total : null,
+            taskOptions: () => HamburgerShopTaskOptionAvailable ? HamburgerShopTaskOption : null,
+            taskSelectionExclusionConfig: CreateTaskSelectionExclusion()
         )
     ];
 

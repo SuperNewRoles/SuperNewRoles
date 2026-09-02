@@ -8,7 +8,6 @@ using Hazel;
 using SuperNewRoles.CustomOptions;
 using SuperNewRoles.Events;
 using SuperNewRoles.Modules;
-using SuperNewRoles.Modules.Events.Bases;
 using SuperNewRoles.Patches;
 using SuperNewRoles.Roles.Ability;
 using SuperNewRoles.Roles.Ability.CustomButton;
@@ -82,19 +81,14 @@ class BalancerAbility : AbilityBase, IAbilityCount
     #endregion
 
     #region Fields
-    private EventListener<MeetingStartEventData> meetingStartEventListener;
-    private EventListener<MeetingCloseEventData> meetingCloseEventListener;
-    private EventListener fixedUpdateEventListener;
-    private EventListener updateEventListener;
-    private EventListener<VotingCompleteEventData> votingCompleteEventListener;
-    private EventListener<WrapUpEventData> wrapUpEventListener;
-
     private List<PlayerControl> targetPlayers = new();
     public bool isAbilityUsed = false;
     private PlayerControl targetPlayerLeft;
     private PlayerControl targetPlayerRight;
     private bool isDoubleExile = false;
     public bool isOnePlayerDead = false;
+    private bool isNoPlayerToExile = false;
+    private bool isPlayerStatusHandled = false;
 
     public static BalancerAbility BalancingAbility { get; private set; }
     public static MeetingHud currentMeetingHud;
@@ -154,6 +148,9 @@ class BalancerAbility : AbilityBase, IAbilityCount
         targetPlayerLeft = null;
         targetPlayerRight = null;
         isAbilityUsed = false;
+        isOnePlayerDead = false;
+        isNoPlayerToExile = false;
+        isPlayerStatusHandled = false;
         BalancingAbility = null;
         currentMeetingHud = null;
 
@@ -229,54 +226,26 @@ class BalancerAbility : AbilityBase, IAbilityCount
     #region Lifecycle
     public override void AttachToLocalPlayer()
     {
-        updateEventListener = FixedUpdateEvent.Instance.AddListener(Update);
+        SubscribeWithAbility(FixedUpdateEvent.Instance, Update);
     }
 
-    public override void Attach(PlayerControl player, ulong abilityId, AbilityParentBase parent)
+    public override void AttachToAlls()
     {
-        base.Attach(player, abilityId, parent);
-        meetingStartEventListener = MeetingStartEvent.Instance.AddListener(x => OnMeetingStart());
-        meetingCloseEventListener = MeetingCloseEvent.Instance.AddListener(x => OnMeetingClosed());
-        fixedUpdateEventListener = FixedUpdateEvent.Instance.AddListener(FixedUpdateAnimation);
-        votingCompleteEventListener = VotingCompleteEvent.Instance.AddListener(OnVotingComplete);
-        wrapUpEventListener = WrapUpEvent.Instance.AddListener(OnWrapUp);
+        base.AttachToAlls();
+        SubscribeWithAbility(MeetingStartEvent.Instance, x => OnMeetingStart());
+        SubscribeWithAbility(MeetingCloseEvent.Instance, x => OnMeetingClosed());
+        SubscribeWithAbility(FixedUpdateEvent.Instance, FixedUpdateAnimation);
+        SubscribeWithAbility(VotingCompleteEvent.Instance, OnVotingComplete);
+        SubscribeWithAbility(WrapUpEvent.Instance, OnWrapUp);
 
         balancerButton = new BalancerMeetingButton(this);
-        ExPlayerControl exPlayer = (ExPlayerControl)player;
+        ExPlayerControl exPlayer = Player;
         exPlayer.AddAbility(balancerButton, new AbilityParentAbility(this));
     }
 
-    public override void Detach()
+    public override void DetachToAlls()
     {
-        base.Detach();
-
-        // イベントリスナーを安全に解除
-        if (meetingStartEventListener != null)
-        {
-            MeetingStartEvent.Instance.RemoveListener(meetingStartEventListener);
-            meetingStartEventListener = null;
-        }
-        if (meetingCloseEventListener != null)
-        {
-            MeetingCloseEvent.Instance.RemoveListener(meetingCloseEventListener);
-            meetingCloseEventListener = null;
-        }
-        if (fixedUpdateEventListener != null)
-        {
-            FixedUpdateEvent.Instance.RemoveListener(fixedUpdateEventListener);
-            fixedUpdateEventListener = null;
-        }
-        if (updateEventListener != null)
-        {
-            FixedUpdateEvent.Instance.RemoveListener(updateEventListener);
-            updateEventListener = null;
-        }
-        if (votingCompleteEventListener != null)
-        {
-            VotingCompleteEvent.Instance.RemoveListener(votingCompleteEventListener);
-            votingCompleteEventListener = null;
-        }
-        wrapUpEventListener?.RemoveListener();
+        base.DetachToAlls();
 
         if (BalancingAbility == this && AmongUsClient.Instance.AmHost)
         {
@@ -331,26 +300,43 @@ class BalancerAbility : AbilityBase, IAbilityCount
 
     private bool IsValidMeetingState()
     {
-        return MeetingHud.Instance.state is MeetingHud.VoteStates.Discussion
-            or MeetingHud.VoteStates.Voted
-            or MeetingHud.VoteStates.NotVoted;
+        if (MeetingHud.Instance == null) return false;
+        return MeetingHud.Instance.state is MeetingHud.MeetingStates.Discussion
+            or MeetingHud.MeetingStates.Voted
+            or MeetingHud.MeetingStates.NotVoted;
     }
 
     private bool CheckPlayerStatus()
     {
-        if (targetPlayerLeft?.Data?.IsDead == true || targetPlayerRight?.Data?.IsDead == true ||
-            targetPlayerLeft == null || targetPlayerRight == null)
-        {
-            PlayerControl target = targetPlayerLeft?.Data?.IsDead != true ? targetPlayerLeft : targetPlayerRight;
-            isOnePlayerDead = true;
+        bool leftDead = IsUnavailable(targetPlayerLeft);
+        bool rightDead = IsUnavailable(targetPlayerRight);
 
-            if (AmongUsClient.Instance.AmHost && target != null)
+        if (leftDead || rightDead)
+        {
+            if (isPlayerStatusHandled) return true;
+
+            isPlayerStatusHandled = true;
+            PlayerControl target = !leftDead ? targetPlayerLeft : !rightDead ? targetPlayerRight : null;
+            isNoPlayerToExile = target == null;
+            isOnePlayerDead = !isNoPlayerToExile;
+
+            if (AmongUsClient.Instance.AmHost && MeetingHud.Instance != null)
             {
-                MeetingHud.Instance.RpcVotingComplete(new List<MeetingHud.VoterState>().ToArray(), target.Data, false);
+                NetworkedPlayerInfo exiled = target?.Data;
+                bool wasOverruled = MeetingHudCheckForEndVotingPatch.TryApplyJudgeOverrule(MeetingHud.Instance, ref exiled, out ushort overruleNonce);
+                MeetingHud.Instance.RpcVotingComplete(new List<MeetingHud.VoterState>().ToArray(), exiled, false, wasOverruled, overruleNonce);
             }
             return true;
         }
         return false;
+    }
+
+    private static bool IsUnavailable(PlayerControl player)
+    {
+        return player == null
+            || player.Data == null
+            || player.Data.IsDead
+            || player.Data.Disconnected;
     }
 
     private bool CheckAllPlayersVoted()
@@ -456,8 +442,8 @@ class BalancerAbility : AbilityBase, IAbilityCount
         // プレイヤー以外のエリアを非表示に保つ
         foreach (var area in MeetingHud.Instance.playerStates)
         {
-            if (area.TargetPlayerId != targetPlayerLeft.PlayerId &&
-                area.TargetPlayerId != targetPlayerRight.PlayerId &&
+            if (area.PlayerId != targetPlayerLeft.PlayerId &&
+                area.PlayerId != targetPlayerRight.PlayerId &&
                 area.gameObject.activeSelf)
             {
                 area.gameObject.SetActive(false);
@@ -476,7 +462,7 @@ class BalancerAbility : AbilityBase, IAbilityCount
 
     public void OnWrapUp(WrapUpEventData data)
     {
-        if (BalancingAbility != null &&
+        if (BalancingAbility == this &&
             BalancingAbility.isDoubleExile &&
             ExileController.Instance != additionalExileController &&
             additionalExileController != null)
@@ -488,12 +474,29 @@ class BalancerAbility : AbilityBase, IAbilityCount
             GameObject.Destroy(additionalExileController.gameObject);
             additionalExileController = null;
         }
+
+        if (BalancingAbility == this)
+        {
+            ClearAndReload();
+        }
     }
     public void OnVotingComplete(VotingCompleteEventData data)
     {
-        if (data.IsTie && isAbilityUsed)
+        if (!isAbilityUsed) return;
+
+        if (data.IsTie)
         {
             isDoubleExile = true;
+        }
+        else if (data.Exiled == null
+            && (data.States == null || data.States.Length == 0)
+            && IsUnavailable(targetPlayerLeft)
+            && IsUnavailable(targetPlayerRight))
+        {
+            // CheckPlayerStatusが投票状態を空にして終了させた「追放者なし」を全クライアントで共有する
+            isNoPlayerToExile = true;
+            isOnePlayerDead = false;
+            isPlayerStatusHandled = true;
         }
     }
     public void OnMeetingStart()
@@ -540,14 +543,15 @@ class BalancerAbility : AbilityBase, IAbilityCount
         isAbilityUsed = true;
 
         // 会議時間を変更
+        // 6.5秒は演出の分
         MeetingHud.Instance.discussionTimer = GameOptionsManager.Instance.CurrentGameOptions.GetInt(Int32OptionNames.VotingTime) - Balancer.BalancerVoteTime - 6.5f;
 
         // 天秤会議の開始処理
         CurrentState = BalancerState.Animation_Chain;
-        MeetingHud.Instance.ClearVote();
+        MeetingHud.Instance.ClearVote(PlayerControl.LocalPlayer.PlayerId, true);
         foreach (PlayerVoteArea area in MeetingHud.Instance.playerStates)
         {
-            area.VotedFor = byte.MaxValue;
+            area.UnsetVote();
         }
 
         // プレイヤー配置の設定
@@ -567,12 +571,12 @@ class BalancerAbility : AbilityBase, IAbilityCount
     {
         foreach (PlayerVoteArea area in MeetingHud.Instance.playerStates)
         {
-            if (area.TargetPlayerId == targetPlayerLeft.PlayerId)
+            if (area.PlayerId == targetPlayerLeft.PlayerId)
             {
                 area.transform.localPosition = new(999, 999, 999);
                 leftPlayerArea = area;
             }
-            else if (area.TargetPlayerId == targetPlayerRight.PlayerId)
+            else if (area.PlayerId == targetPlayerRight.PlayerId)
             {
                 area.transform.localPosition = new(999, 999, 999);
                 rightPlayerArea = area;
@@ -873,9 +877,9 @@ class BalancerAbility : AbilityBase, IAbilityCount
             foreach (PlayerVoteArea area in MeetingHud.Instance.playerStates)
             {
                 if (area.AmDead) continue;
-                if (area.VotedFor == noVoteId || area.VotedFor == byte.MaxValue || !targetIds.Contains(area.VotedFor))
+                if (area.VotedForId == noVoteId || area.VotedForId == byte.MaxValue || !targetIds.Contains(area.VotedForId))
                 {
-                    area.VotedFor = targetIds[UnityEngine.Random.Range(0, targetIds.Count)];
+                    area.SetVote(targetIds[UnityEngine.Random.Range(0, targetIds.Count)]);
                 }
             }
         }
@@ -885,9 +889,9 @@ class BalancerAbility : AbilityBase, IAbilityCount
             foreach (PlayerVoteArea area in MeetingHud.Instance.playerStates)
             {
                 if (area.AmDead) continue;
-                if (!targetIds.Contains(area.VotedFor))
+                if (!targetIds.Contains(area.VotedForId))
                 {
-                    area.VotedFor = noVoteId;
+                    area.SetVoteMissed();
                 }
             }
         }
@@ -903,11 +907,13 @@ class BalancerAbility : AbilityBase, IAbilityCount
         {
             PlayerVoteArea playerVoteArea = MeetingHud.Instance.playerStates[i];
             MeetingHud.VoterState voterState = default;
-            voterState.VoterId = playerVoteArea.TargetPlayerId;
-            voterState.VotedForId = playerVoteArea.VotedFor;
+            voterState.VoterId = playerVoteArea.PlayerId;
+            voterState.VotedForId = playerVoteArea.VotedForId;
             array[i] = voterState;
         }
-        MeetingHud.Instance.RpcVotingComplete(array, exiled?.Data, tie);
+        NetworkedPlayerInfo exiledInfo = exiled?.Data;
+        bool wasOverruled = MeetingHudCheckForEndVotingPatch.TryApplyJudgeOverrule(MeetingHud.Instance, ref exiledInfo, out ushort overruleNonce);
+        MeetingHud.Instance.RpcVotingComplete(array, exiledInfo, tie, wasOverruled, overruleNonce);
     }
 
     [HarmonyPatch(typeof(ExileController), nameof(ExileController.Begin))]
@@ -951,14 +957,14 @@ class BalancerAbility : AbilityBase, IAbilityCount
                     controller.EjectSound = null;
                     void createlate(int index)
                     {
-                        new LateTask(() => { controller.StopAllCoroutines(); controller.StartCoroutine(controller.Animate()); }, 0.025f + index * 0.025f);
+                        new LateTask(() => { controller.StopAllCoroutines(); controller.StartCoroutine(controller.Animate()); }, 0.025f + index * 0.025f, $"BalancerEjectAnimate_{index}");
                     }
-                    new LateTask(() => controller.StartCoroutine(controller.Animate()), 0f);
+                    new LateTask(() => controller.StartCoroutine(controller.Animate()), 0f, "BalancerEjectAnimateStart");
                     for (int i = 0; i < 23; i++)
                     {
                         createlate(i);
                     }
-                    new LateTask(() => { controller.StopAllCoroutines(); controller.EjectSound = sound; controller.StartCoroutine(controller.Animate()); }, 0.6f);
+                    new LateTask(() => { controller.StopAllCoroutines(); controller.EjectSound = sound; controller.StartCoroutine(controller.Animate()); }, 0.6f, "BalancerEjectAnimateFinish");
                     ExileController.Instance = __instance;
                     init = ModHelpers.GenerateExileInitProperties(BalancingAbility.targetPlayerLeft.Data, false);
                     if (ModHelpers.IsMap(MapNames.Fungle))
@@ -979,6 +985,10 @@ class BalancerAbility : AbilityBase, IAbilityCount
                 if (BalancingAbility.isDoubleExile)
                 {
                     __instance.completeString = ModTranslation.GetString("BalancerDoubleExileText");
+                }
+                else if (BalancingAbility.isNoPlayerToExile)
+                {
+                    __instance.completeString = ModTranslation.GetString("BalancerNoPlayerText");
                 }
                 else if (BalancingAbility.isOnePlayerDead)
                 {

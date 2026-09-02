@@ -50,8 +50,6 @@ public abstract class CustomButtonBase : AbilityBase
 {
     //エフェクトがある(≒押したらカウントダウンが始まる？)ボタンの場合は追加でIButtonEffectを継承すること
     //奪える能力の場合はIRobableを継承し、Serializer/DeSerializerを実装
-    private EventListener hudUpdateEvent;
-    private EventListener<WrapUpEventData> wrapUpEvent;
     public ActionButton actionButton { get; private set; }
     private IButtonEffect buttonEffect;
     public virtual float Timer { get; set; }
@@ -170,8 +168,8 @@ public abstract class CustomButtonBase : AbilityBase
             actionButton.buttonLabelText.transform.localPosition = new(0, -0.56f, -10);
         }
         SetActive(false);
-        hudUpdateEvent = HudUpdateEvent.Instance.AddListener(OnUpdate);
-        wrapUpEvent = WrapUpEvent.Instance.AddListener(x => OnMeetingEnds());
+        SubscribeWithAbility(HudUpdateEvent.Instance, OnUpdate);
+        SubscribeWithAbility(WrapUpEvent.Instance, _ => OnMeetingEnds());
         ResetTimer();
     }
 
@@ -211,6 +209,13 @@ public abstract class CustomButtonBase : AbilityBase
             DecreaseTimer();
         }
 
+        bool isEffectActive = buttonEffect?.isEffectActive ?? false;
+        if (isEffectActive)
+            buttonEffect.OnFixedUpdate(actionButton);
+
+        if (!active)
+            return;
+
         // --- UIの基本設定 ---
         actionButton.graphic.sprite = Sprite; // スプライトを設定
         actionButton.OverrideText(buttonText); // ボタン下部のテキストを設定
@@ -221,7 +226,6 @@ public abstract class CustomButtonBase : AbilityBase
         bool isCoolingDown = Timer > 0f;
         bool canUseByCondition = CheckIsAvailable(); // クールダウン以外の使用条件をチェック
         bool canUseNow = !isCoolingDown && canUseByCondition;
-        bool isEffectActive = buttonEffect?.isEffectActive ?? false;
 
         // --- パイチャートと数字の表示更新 ---
         // この処理は常に呼び出す。不要な場合はSetCoolDownメソッド内部で非表示になる。
@@ -298,12 +302,6 @@ public abstract class CustomButtonBase : AbilityBase
 
         // --- その他のUI更新 ---
         UpdateText(); // 残り回数などのテキストを更新
-
-        // IButtonEffectが作動中なら、その更新処理を呼び出す
-        if (isEffectActive)
-        {
-            buttonEffect.OnFixedUpdate(actionButton);
-        }
     }
 
     private void UpdateText()
@@ -376,8 +374,6 @@ public abstract class CustomButtonBase : AbilityBase
     public override void DetachToLocalPlayer()
     {
         base.DetachToLocalPlayer();
-        HudUpdateEvent.Instance.RemoveListener(hudUpdateEvent);
-        WrapUpEvent.Instance.RemoveListener(wrapUpEvent);
         GameObject.Destroy(actionButton.gameObject);
     }
     public void SetInitialCooldown()

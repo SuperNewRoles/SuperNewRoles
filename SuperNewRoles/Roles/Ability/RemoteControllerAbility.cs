@@ -8,7 +8,6 @@ using SuperNewRoles.CustomOptions.Categories;
 using SuperNewRoles.Events;
 using SuperNewRoles.Events.PCEvents;
 using SuperNewRoles.Modules;
-using SuperNewRoles.Modules.Events.Bases;
 using SuperNewRoles.Patches;
 using SuperNewRoles.Roles.Ability.CustomButton;
 using SuperNewRoles.Roles.Impostor;
@@ -22,10 +21,6 @@ public sealed class RemoteControllerAbility : AbilityBase
     private RemoteControllerOperationButton _operationButton;
     private CustomKillButtonAbility _killButton;
 
-    private EventListener<MeetingStartEventData> _meetingStartListener;
-    private EventListener<MeetingCloseEventData> _meetingCloseListener;
-    private EventListener<DieEventData> _dieListener;
-    private EventListener _fixedUpdateListener;
 
     private GameObject _targetUiContainer;
     private PoolablePlayer _targetIcon;
@@ -68,10 +63,10 @@ public sealed class RemoteControllerAbility : AbilityBase
     public override void AttachToLocalPlayer()
     {
         base.AttachToLocalPlayer();
-        _meetingStartListener = MeetingStartEvent.Instance.AddListener(OnMeetingStart);
-        _meetingCloseListener = MeetingCloseEvent.Instance.AddListener(OnMeetingClose);
-        _dieListener = DieEvent.Instance.AddListener(OnDie);
-        _fixedUpdateListener = FixedUpdateEvent.Instance.AddListener(OnFixedUpdate);
+        SubscribeWithAbility(MeetingStartEvent.Instance, OnMeetingStart);
+        SubscribeWithAbility(MeetingCloseEvent.Instance, OnMeetingClose);
+        SubscribeWithAbility(DieEvent.Instance, OnDie);
+        SubscribeWithAbility(FixedUpdateEvent.Instance, OnFixedUpdate);
 
         CreateTargetUi();
         CreateLightChild();
@@ -80,10 +75,6 @@ public sealed class RemoteControllerAbility : AbilityBase
     public override void DetachToLocalPlayer()
     {
         base.DetachToLocalPlayer();
-        _meetingStartListener?.RemoveListener();
-        _meetingCloseListener?.RemoveListener();
-        _dieListener?.RemoveListener();
-        _fixedUpdateListener?.RemoveListener();
 
         StopOperationLocalOnly();
 
@@ -206,6 +197,8 @@ public sealed class RemoteControllerAbility : AbilityBase
         {
             var prefab = FastDestroyableSingleton<HudManager>.Instance.IntroPrefab.PlayerPrefab;
             _targetIcon = UnityEngine.Object.Instantiate(prefab, _targetUiContainer.transform);
+            _lastOutfitHash = int.MinValue;
+            _lastOutfitPlayerId = byte.MaxValue;
             _targetIcon.cosmetics.showColorBlindText = false;
             _targetIcon.cosmetics.isNameVisible = true;
             _targetIcon.cosmetics.UpdateNameVisibility();
@@ -213,8 +206,37 @@ public sealed class RemoteControllerAbility : AbilityBase
             _targetIcon.transform.localPosition = new(0f, 0f, -0.3f);
         }
 
-        _targetIcon.UpdateFromEitherPlayerDataOrCache(target.Data, PlayerOutfitType.Default, PlayerMaterial.MaskType.None, false);
+        // 毎フレーム実行されているので、ターゲットのOutfitが変わった場合に更新する
+        int outfitHash = HashOutfit(target.Data);
+        if (target.PlayerId != _lastOutfitPlayerId || outfitHash != _lastOutfitHash)
+        {
+            _targetIcon.UpdateFromEitherPlayerDataOrCache(target.Data, PlayerOutfitType.Default, PlayerMaterial.MaskType.None, false);
+            _lastOutfitPlayerId = target.PlayerId;
+            _lastOutfitHash = outfitHash;
+        }
+
+        // UpdateFromEitherPlayerDataOrCache は nameText も更新するため、ラベルは最後に設定する。
         _targetIcon.cosmetics.nameText.text = $"[ {ModTranslation.GetString("RemoteControllerTargetLabel")} ]\n{target.Data.PlayerName}";
+    }
+
+    private int _lastOutfitHash = int.MinValue;
+    private byte _lastOutfitPlayerId = byte.MaxValue;
+
+    private static int HashOutfit(NetworkedPlayerInfo data)
+    {
+        if (data == null)
+            return 0;
+        var outfit = data.DefaultOutfit;
+        if (outfit == null)
+            return data.PlayerName?.GetHashCode() ?? 0;
+        int hash = 17;
+        hash = hash * 31 + outfit.ColorId;
+        hash = hash * 31 + (outfit.HatId?.GetHashCode() ?? 0);
+        hash = hash * 31 + (outfit.SkinId?.GetHashCode() ?? 0);
+        hash = hash * 31 + (outfit.VisorId?.GetHashCode() ?? 0);
+        hash = hash * 31 + (outfit.PetId?.GetHashCode() ?? 0);
+        hash = hash * 31 + (data.PlayerName?.GetHashCode() ?? 0);
+        return hash;
     }
 
     private void CreateLightChild()

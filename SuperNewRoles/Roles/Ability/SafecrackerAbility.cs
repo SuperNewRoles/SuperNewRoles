@@ -6,7 +6,6 @@ using HarmonyLib;
 using SuperNewRoles.Events;
 using SuperNewRoles.Events.PCEvents;
 using SuperNewRoles.Modules;
-using SuperNewRoles.Modules.Events.Bases;
 using SuperNewRoles.Roles.Ability.CustomButton;
 using SuperNewRoles.Roles.Neutral;
 using UnityEngine;
@@ -31,9 +30,6 @@ public class SafecrackerAbility : AbilityBase
     private Dictionary<CheckTasks, bool> _unlockedAbilities;
     private readonly TaskSelectionExclusionConfig _taskSelectionExclusionConfig;
 
-    private EventListener<TryKillEventData> _onTryKillListener;
-    private EventListener<ExileEventData> _exileListener;
-    private EventListener<TaskCompleteEventData> _taskCompleteListener;
     private TaskOptionData _task;
 
 
@@ -86,23 +82,17 @@ public class SafecrackerAbility : AbilityBase
         _killGuardCount = 0;
         _exiledGuardCount = 0;
 
-        _onTryKillListener = TryKillEvent.Instance.AddListener(OnTryKill);
-        _exileListener = ExileEvent.Instance.AddListener(OnExile);
-        _taskCompleteListener = TaskCompleteEvent.Instance.AddListener(OnTaskComplete);
-        Player.AttachAbility(new CustomTaskAbility(() => (true, false, null), _task, _taskSelectionExclusionConfig), new AbilityParentAbility(this));
+        SubscribeWithAbility(TryKillEvent.Instance, OnTryKill);
+        SubscribeWithAbility(ExileEvent.Instance, OnExile);
+        SubscribeWithAbility(TaskCompleteEvent.Instance, OnTaskComplete);
+        Player.AttachAbility(new CustomTaskAbility(
+            isTaskTrigger: () => true,
+            countsForCrewWin: () => false,
+        taskOptions: () => _task,
+        taskSelectionExclusionConfig: _taskSelectionExclusionConfig), new AbilityParentAbility(this));
         Player.AttachAbility(new CustomTaskTypeAbility(TaskTypes.UnlockSafe, ChangeTaskPrefab, MapNames.Airship), new AbilityParentAbility(this));
         CheckAllAbilities();
     }
-
-    public override void DetachToAlls()
-    {
-        base.DetachToAlls();
-
-        TryKillEvent.Instance.RemoveListener(_onTryKillListener);
-        ExileEvent.Instance.RemoveListener(_exileListener);
-        TaskCompleteEvent.Instance.RemoveListener(_taskCompleteListener);
-    }
-
 
     private int GetTotalTaskCount()
     {

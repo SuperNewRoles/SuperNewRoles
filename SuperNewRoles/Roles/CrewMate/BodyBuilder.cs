@@ -21,9 +21,11 @@ class BodyBuilder : RoleBase<BodyBuilder>
             MapNames.Fungle
         ),
         () => new CustomTaskAbility(
-            () => (true, BodyBuilderTaskOptionAvailable, BodyBuilderTaskOptionAvailable ? BodyBuilderTaskOption.Total : null),
-            BodyBuilderTaskOptionAvailable ? BodyBuilderTaskOption : null,
-            CreateTaskSelectionExclusion()
+            isTaskTrigger: () => true,
+            countsForCrewWin: () => BodyBuilderTaskOptionAvailable,
+            requiredTaskCount: () => BodyBuilderTaskOptionAvailable ? BodyBuilderTaskOption.Total : null,
+            taskOptions: () => BodyBuilderTaskOptionAvailable ? BodyBuilderTaskOption : null,
+            taskSelectionExclusionConfig: CreateTaskSelectionExclusion()
         )
     ];
 

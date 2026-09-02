@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Linq;
 using SuperNewRoles.Events;
 using SuperNewRoles.Modules;
-using SuperNewRoles.Modules.Events.Bases;
 using SuperNewRoles.Roles.Ability;
 using SuperNewRoles.Roles.Impostor;
 using SuperNewRoles.Roles.Neutral;
@@ -17,8 +16,11 @@ public class DeadBodyArrowsAbility : AbilityBase
     /// <summary>死体矢印に反映させるボディカラーのモード</summary>
     private readonly DeadBodyColorMode _deadBodyColorMode;
     private Dictionary<DeadBody, (Arrow arrow, Color color)> _deadBodyArrows = new();
-    private EventListener _fixedUpdateEvent;
-    private EventListener<WrapUpEventData> _wrapUpEvent;
+    private readonly List<DeadBody> _arrowRemoveBuffer = new();
+    private readonly HashSet<int> _trackedParentIds = new();
+    private DeadBody[] _cachedDeadBodies = System.Array.Empty<DeadBody>();
+    private int _scanCounter;
+    private int _lastDeadCount = -1;
 
     /// <param name="showArrows">矢印のを表示できるか</param>
     /// <param name="arrowColor">矢印の色(指定無しの場合Vultureのロールカラー)</param>
@@ -32,8 +34,8 @@ public class DeadBodyArrowsAbility : AbilityBase
     public override void AttachToLocalPlayer()
     {
         // 矢印表示のイベントリスナーを設定
-        _fixedUpdateEvent = FixedUpdateEvent.Instance.AddListener(OnFixedUpdate);
-        _wrapUpEvent = WrapUpEvent.Instance.AddListener(OnWrapUp);
+        SubscribeWithAbility(FixedUpdateEvent.Instance, OnFixedUpdate);
+        SubscribeWithAbility(WrapUpEvent.Instance, OnWrapUp);
     }
 
     private void OnWrapUp(WrapUpEventData data)
@@ -45,6 +47,10 @@ public class DeadBodyArrowsAbility : AbilityBase
                 UnityEngine.Object.Destroy(arrow.arrow);
         }
         _deadBodyArrows.Clear();
+        _trackedParentIds.Clear();
+        _lastDeadCount = -1;
+        _scanCounter = 0;
+        _cachedDeadBodies = System.Array.Empty<DeadBody>();
     }
 
     private void OnFixedUpdate()
@@ -58,36 +64,44 @@ public class DeadBodyArrowsAbility : AbilityBase
                     UnityEngine.Object.Destroy(arrow.arrow);
             }
             _deadBodyArrows.Clear();
+            _trackedParentIds.Clear();
+            _lastDeadCount = -1;
+            _cachedDeadBodies = System.Array.Empty<DeadBody>();
             return;
         }
         if (!ShowArrows) return;
 
-        // DeadBodyの検索を一度だけ行い、ParentIdでグループ化してキャッシュ
-        DeadBody[] allDeadBodies = UnityEngine.Object.FindObjectsOfType<DeadBody>();
-        Dictionary<int, DeadBody> deadBodiesByParentId = new();
-        foreach (DeadBody dead in allDeadBodies)
+        // FindObjectsOfTypeは間引くが、死者数が変わったら即スキャンする
+        _scanCounter++;
+        int deadCount = CountDeadPlayers();
+        if (_scanCounter >= 10 || _cachedDeadBodies.Length == 0 || deadCount != _lastDeadCount)
         {
-            if (!IsTrackableDeadBody(dead)) continue;
-            if (!deadBodiesByParentId.ContainsKey(dead.ParentId))
-                deadBodiesByParentId.Add(dead.ParentId, dead);
+            _scanCounter = 0;
+            _lastDeadCount = deadCount;
+            _cachedDeadBodies = UnityEngine.Object.FindObjectsOfType<DeadBody>();
         }
 
-        // 既存の矢印を更新または不要な矢印を削除
-        foreach (var arrowEntry in _deadBodyArrows.ToList())
+        _trackedParentIds.Clear();
+        foreach (DeadBody dead in _cachedDeadBodies)
         {
-            // DeadBody オブジェクトが Destroy 済みの場合はクリーンアップしてスキップ
+            if (!IsTrackableDeadBody(dead)) continue;
+            _trackedParentIds.Add(dead.ParentId);
+        }
+
+        _arrowRemoveBuffer.Clear();
+        foreach (var arrowEntry in _deadBodyArrows)
+        {
             if (arrowEntry.Key == null)
             {
                 if (arrowEntry.Value.arrow?.arrow != null)
                     UnityEngine.Object.Destroy(arrowEntry.Value.arrow.arrow);
-                _deadBodyArrows.Remove(arrowEntry.Key);
+                _arrowRemoveBuffer.Add(arrowEntry.Key);
                 continue;
             }
 
             int parentId = arrowEntry.Key.ParentId;
-            if (deadBodiesByParentId.ContainsKey(parentId))
+            if (_trackedParentIds.Contains(parentId))
             {
-
                 if (arrowEntry.Value.arrow == null)
                 {
                     var arrowColor = _deadBodyColorMode == DeadBodyColorMode.None ? _defaultArrowColor : ResolveDeadBodyArrowColor(arrowEntry.Key);
@@ -100,20 +114,46 @@ public class DeadBodyArrowsAbility : AbilityBase
             {
                 if (arrowEntry.Value.arrow?.arrow != null)
                     UnityEngine.Object.Destroy(arrowEntry.Value.arrow.arrow);
-                _deadBodyArrows.Remove(arrowEntry.Key);
+                _arrowRemoveBuffer.Add(arrowEntry.Key);
             }
         }
+        for (int i = 0; i < _arrowRemoveBuffer.Count; i++)
+            _deadBodyArrows.Remove(_arrowRemoveBuffer[i]);
 
-        // 新しい死体に対して矢印を追加（既に同じParentIdの矢印が存在しなければ）
-        foreach (var kv in deadBodiesByParentId)
+        foreach (DeadBody dead in _cachedDeadBodies)
         {
-            if (_deadBodyArrows.Keys.Any(db => db.ParentId == kv.Key)) continue;
+            if (!IsTrackableDeadBody(dead)) continue;
+            bool exists = false;
+            foreach (DeadBody key in _deadBodyArrows.Keys)
+            {
+                if (key != null && key.ParentId == dead.ParentId)
+                {
+                    exists = true;
+                    break;
+                }
+            }
+            if (exists) continue;
 
-            Color arrowColor = _deadBodyColorMode == DeadBodyColorMode.None ? _defaultArrowColor : ResolveDeadBodyArrowColor(kv.Value);
-            _deadBodyArrows.Add(kv.Value, (new Arrow(arrowColor), arrowColor));
-            _deadBodyArrows[kv.Value].arrow.Update(kv.Value.transform.position, arrowColor);
-            _deadBodyArrows[kv.Value].arrow.arrow.SetActive(true);
+            // 新しい死体に対して矢印を追加（既に同じParentIdの矢印が存在しなければ）
+            Color arrowColor = _deadBodyColorMode == DeadBodyColorMode.None ? _defaultArrowColor : ResolveDeadBodyArrowColor(dead);
+            _deadBodyArrows.Add(dead, (new Arrow(arrowColor), arrowColor));
+            _deadBodyArrows[dead].arrow.Update(dead.transform.position, arrowColor);
+            _deadBodyArrows[dead].arrow.arrow.SetActive(true);
         }
+    }
+
+    private static int CountDeadPlayers()
+    {
+        int count = 0;
+        var players = PlayerControl.AllPlayerControls;
+        if (players == null)
+            return 0;
+        foreach (var player in players)
+        {
+            if (player != null && player.Data != null && player.Data.IsDead)
+                count++;
+        }
+        return count;
     }
 
     private static bool IsTrackableDeadBody(DeadBody dead)
@@ -137,10 +177,6 @@ public class DeadBodyArrowsAbility : AbilityBase
     {
         base.DetachToLocalPlayer();
 
-        // イベントリスナーを削除
-        _fixedUpdateEvent?.RemoveListener();
-        _wrapUpEvent?.RemoveListener();
-
         // 矢印を削除
         foreach (var (arrow, color) in _deadBodyArrows.Values)
         {
@@ -148,6 +184,10 @@ public class DeadBodyArrowsAbility : AbilityBase
                 UnityEngine.Object.Destroy(arrow.arrow);
         }
         _deadBodyArrows.Clear();
+        _trackedParentIds.Clear();
+        _lastDeadCount = -1;
+        _scanCounter = 0;
+        _cachedDeadBodies = System.Array.Empty<DeadBody>();
     }
 
     /// <summary>死体用矢印の色をモードに応じて取得する</summary>

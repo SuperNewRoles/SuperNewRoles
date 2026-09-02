@@ -6,7 +6,6 @@ using SuperNewRoles.Roles.Ability;
 using SuperNewRoles.Roles.Ability.CustomButton;
 using SuperNewRoles.Modules;
 using SuperNewRoles.Events;
-using SuperNewRoles.Modules.Events.Bases;
 using AmongUs.GameOptions;
 
 namespace SuperNewRoles.Roles.Crewmate;
@@ -62,9 +61,6 @@ public class ClergyAbility : CustomButtonBase, IButtonEffect
     public float EffectDuration => Data.Duration;
     public float EffectTimer { get; set; }
 
-    private EventListener<ShipStatusLightEventData> _shipStatusLightListener;
-    private EventListener<MeetingStartEventData> _meetingStartListener;
-    private EventListener _fixedUpdateListener;
     private bool active;
     private float transitionTimer;
     private float effectTimer;
@@ -78,17 +74,9 @@ public class ClergyAbility : CustomButtonBase, IButtonEffect
     public override void AttachToAlls()
     {
         base.AttachToAlls();
-        _shipStatusLightListener = ShipStatusLightEvent.Instance.AddListener(OnShipStatusLight);
-        _meetingStartListener = MeetingStartEvent.Instance.AddListener(OnMeetingStart);
-        _fixedUpdateListener = FixedUpdateEvent.Instance.AddListener(OnFixedUpdate);
-    }
-
-    public override void DetachToAlls()
-    {
-        base.DetachToAlls();
-        _shipStatusLightListener?.RemoveListener();
-        _meetingStartListener?.RemoveListener();
-        _fixedUpdateListener?.RemoveListener();
+        SubscribeWithAbility(ShipStatusLightEvent.Instance, OnShipStatusLight);
+        SubscribeWithAbility(MeetingStartEvent.Instance, OnMeetingStart);
+        SubscribeWithAbility(FixedUpdateEvent.Instance, OnFixedUpdate);
     }
 
     public override bool CheckIsAvailable()

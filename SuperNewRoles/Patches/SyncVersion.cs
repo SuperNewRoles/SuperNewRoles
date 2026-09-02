@@ -9,6 +9,8 @@ using HarmonyLib;
 using Hazel;
 using InnerNet;
 using SuperNewRoles.Modules;
+using SuperNewRoles.Modules.Compatibility;
+using SuperNewRoles.Mode;
 using TMPro;
 using UnityEngine;
 using UnityEngine.Events;
@@ -318,6 +320,9 @@ public static class SyncVersion
     /// </summary>
     public static bool CanHostStartGame()
     {
+        // Battle Royal はホストモードで、バニラクライアントとのプレイに対応している。
+        // バニラクライアントは SNR 同期情報を送信できないため、通常の同期判定を適用しない。
+        if (ModeManager.IsMode(ModeId.BattleRoyal)) return true;
         if (GameData.Instance == null) return true;
         foreach (NetworkedPlayerInfo p in GameData.Instance.AllPlayers)
         {
@@ -357,7 +362,7 @@ public static class SyncVersion
     /// HelpMenu 等の Postfix の後でも、バージョン不一致なら開始ボタンを必ず無効化する。
     /// </summary>
     [HarmonyPatch(typeof(GameStartManager), nameof(GameStartManager.Update))]
-    [HarmonyAfter("SuperNewRoles.HelpMenus.HelpMenuObjectManager+GameStartManagerUpdatePatch")]
+    [HarmonyAfter("SuperNewRoles.HelpMenus.HelpMenuObjectManager+GameStartManagerUpdatePatch", LevelImposterSupport.PluginGuid)]
     public static class GameStartManagerUpdateSyncVersionEnforcePatch
     {
         public static void Postfix(GameStartManager __instance)
@@ -375,6 +380,42 @@ public static class SyncVersion
         }
     }
 
+    internal static void CancelPendingSyncTasks()
+    {
+        RetryManager.CancelAll();
+        foreach (var task in PendingSyncTasks)
+            task.Cancel();
+        PendingSyncTasks.Clear();
+    }
+
+    private static readonly List<LateTask> PendingSyncTasks = new();
+
+    private static void QueueSyncTask(Action action, float delay, string name)
+    {
+        LateTask task = null;
+        task = new LateTask(() =>
+        {
+            PendingSyncTasks.Remove(task);
+            action();
+        }, delay, name);
+        PendingSyncTasks.Add(task);
+    }
+
+    private static bool IsConnectedGameSession()
+    {
+        var client = AmongUsClient.Instance;
+        return client != null && client.GameState != InnerNetClient.GameStates.NotJoined;
+    }
+
+    [HarmonyPatch(typeof(InnerNetClient), nameof(InnerNetClient.HandleDisconnect))]
+    public static class SyncVersionHandleDisconnectPatch
+    {
+        public static void Postfix()
+        {
+            CancelPendingSyncTasks();
+        }
+    }
+
     [HarmonyPatch(typeof(GameStartManager), nameof(GameStartManager.Start))]
     public static class GameStartManagerStartPatch
     {
@@ -382,12 +423,13 @@ public static class SyncVersion
         {
             VersionData.ClearTrackedState();
             RetryManager.CreateRetryTask(
-                () => PlayerControl.LocalPlayer != null,
+                () => IsConnectedGameSession() && PlayerControl.LocalPlayer != null,
                 SendSyncVersion,
                 MAX_RETRY_COUNT,
-                SYNC_RETRY_DELAY
+                SYNC_RETRY_DELAY,
+                "SyncVersion.WaitLocalPlayer"
             );
-            new LateTask(() => SendSyncVersion(), 5f);
+            QueueSyncTask(SendSyncVersion, 5f, "SyncVersion.SendSyncVersion.Delay5");
             RoleOptionManager.DelayedSyncTasks.Clear();
 
         }
@@ -399,7 +441,7 @@ public static class SyncVersion
         {
             if (PlayerControl.LocalPlayer != null)
             {
-                new LateTask(() => SendSyncVersion(), PLAYER_JOIN_SYNC_DELAY);
+                QueueSyncTask(SendSyncVersion, PLAYER_JOIN_SYNC_DELAY, "SyncVersion.SendOnPlayerJoined");
             }
 
             HandleNewPlayer(data);
@@ -409,10 +451,11 @@ public static class SyncVersion
         {
             int clientId = data.Id;
             RetryManager.CreateRetryTask(
-                () => data.Character != null,
+                () => IsConnectedGameSession() && data.Character != null,
                 () => InitializePlayerVersion(data, clientId),
                 MAX_RETRY_COUNT,
-                SYNC_RETRY_DELAY
+                SYNC_RETRY_DELAY,
+                "SyncVersion.WaitCharacter"
             );
         }
 
@@ -424,7 +467,7 @@ public static class SyncVersion
             VersionData.IsError[playerId] = SyncErrorType.NotMismatch;
             VersionData.VersionMap[playerId] = "";
 
-            new LateTask(() => CheckPlayerVersion(data, clientId, playerId), SYNC_SHOWERROR_DELAY);
+            QueueSyncTask(() => CheckPlayerVersion(data, clientId, playerId), SYNC_SHOWERROR_DELAY, "SyncVersion.CheckPlayerVersion");
         }
 
         private static void CheckPlayerVersion(InnerNet.ClientData data, int clientId, byte playerId)
@@ -459,13 +502,29 @@ public static class SyncVersion
 
 internal static class RetryManager
 {
-    public static void CreateRetryTask(Func<bool> condition, Action action, int maxRetries, float delay)
+    private static readonly List<LateTask> PendingTasks = new();
+    private static int SessionId;
+
+    public static void CancelAll()
     {
+        SessionId++;
+        foreach (var task in PendingTasks)
+            task.Cancel();
+        PendingTasks.Clear();
+    }
+
+    public static void CreateRetryTask(Func<bool> condition, Action action, int maxRetries, float delay, string taskName = "No Name Task")
+    {
+        int session = SessionId;
         int retryCount = maxRetries;
         void TryAction()
         {
-            new LateTask(() =>
+            if (session != SessionId) return;
+            LateTask task = null;
+            task = new LateTask(() =>
             {
+                PendingTasks.Remove(task);
+                if (session != SessionId) return;
                 if (!condition())
                 {
                     if (retryCount > 0)
@@ -476,7 +535,8 @@ internal static class RetryManager
                     }
                 }
                 action();
-            }, delay);
+            }, delay, taskName);
+            PendingTasks.Add(task);
         }
         TryAction();
     }
@@ -491,6 +551,7 @@ internal static class SyncVersionErrorHandler
     private static TextMeshPro ErrorText;
     private static readonly List<string> ErrorCache = new();
     private static GameObject ResyncButtonRoot;
+    private static HudManager _lastHudManager;
 
     public static void CreateResyncButton(HudManager hudManager)
     {
@@ -586,19 +647,82 @@ internal static class SyncVersionErrorHandler
         return false;
     }
 
+    // エラー行の収集用。毎フレーム new せず Clear して再利用する。
+    private static readonly HashSet<byte> AddedPlayers = new();
+    // エラー集合の指紋。一致なら翻訳文字列も TMP も作り直さない。
+    private static int _lastErrorSignature;
+    private static bool _hasLastErrorSignature;
+    private static bool _lastHadErrors;
+
     public static void UpdateErrorDisplay(HudManager hudManager)
     {
-        if (!ShouldDisplayErrors(hudManager)) return;
+        if (!ShouldDisplayErrors(hudManager))
+        {
+            // 非表示中に同じエラー集合で再表示されても、必ず再構築する。
+            _hasLastErrorSignature = false;
+            _lastHadErrors = false;
+            return;
+        }
+
+        int signature = ComputeErrorSignature();
+        // HudManager.Update は毎フレーム来る。集合が同じなら CollectErrors / DisplayErrors を省略する。
+        bool sameHud = ReferenceEquals(_lastHudManager, hudManager);
+        bool cachedErrorTextReady = !_lastHadErrors
+            || (ErrorText != null && ErrorText.gameObject.activeSelf);
+        if (_hasLastErrorSignature && signature == _lastErrorSignature && sameHud && cachedErrorTextReady)
+            return;
 
         CollectErrors();
-        if (ErrorCache.Count > 0)
+        _lastErrorSignature = signature;
+        _hasLastErrorSignature = true;
+        _lastHudManager = hudManager;
+        bool hasErrors = ErrorCache.Count > 0;
+        if (hasErrors)
         {
             DisplayErrors(hudManager);
         }
-        else if (ErrorText != null)
+        // エラーが消えた遷移のときだけ非表示にする。毎フレーム SetActive(false) しない。
+        else if (ErrorText != null && (_lastHadErrors || ErrorText.gameObject.activeSelf))
         {
             ErrorText.gameObject.SetActive(false);
         }
+        _lastHadErrors = hasErrors;
+    }
+
+    /// <summary>
+    /// エラー表示の入力集合の指紋。IsError のプレイヤーID・種別・SNRバージョンと、
+    /// ホスト開始ブロック用の未報告有無を混ぜる。一致すれば翻訳 TMP の再構築を省略できる。
+    /// </summary>
+    private static int ComputeErrorSignature()
+    {
+        int hash = 17;
+        foreach (var error in SyncVersion.VersionData.IsError)
+        {
+            hash = hash * 31 + error.Key;
+            hash = hash * 31 + (int)error.Value;
+            if (SyncVersion.VersionData.VersionMap.TryGetValue(error.Key, out string version) && version != null)
+                hash = hash * 31 + version.GetHashCode();
+            if (error.Value == SyncErrorType.AmongUsVersionMismatch)
+                hash = hash * 31 + GetAmongUsVersionMismatchDisplay(error.Key).GetHashCode();
+        }
+        if (GameData.Instance != null)
+        {
+            foreach (NetworkedPlayerInfo playerInfo in GameData.Instance.AllPlayers)
+            {
+                if (playerInfo == null || playerInfo.Disconnected)
+                    continue;
+                hash = hash * 31 + playerInfo.PlayerId;
+                hash = hash * 31 + (playerInfo.PlayerName?.GetHashCode() ?? 0);
+                if (AmongUsClient.Instance != null
+                    && AmongUsClient.Instance.AmHost
+                    && AmongUsClient.Instance.NetworkMode == NetworkModes.OnlineGame)
+                {
+                    bool hasVersion = SyncVersion.VersionData.VersionMap.TryGetValue(playerInfo.PlayerId, out string version) && !string.IsNullOrEmpty(version);
+                    hash = hash * 31 + (hasVersion ? 1 : 0);
+                }
+            }
+        }
+        return hash;
     }
 
     private static bool ShouldDisplayErrors(HudManager hudManager)
@@ -631,18 +755,18 @@ internal static class SyncVersionErrorHandler
     private static void CollectErrors()
     {
         ErrorCache.Clear();
-        HashSet<byte> addedPlayers = new();
+        AddedPlayers.Clear();
         foreach (var error in SyncVersion.VersionData.IsError)
         {
             var errorMessage = CreateErrorMessage(error);
             if (!string.IsNullOrEmpty(errorMessage))
             {
                 ErrorCache.Add(errorMessage);
-                addedPlayers.Add(error.Key);
+                AddedPlayers.Add(error.Key);
             }
         }
 
-        CollectHostStartBlockErrors(addedPlayers);
+        CollectHostStartBlockErrors(AddedPlayers);
     }
 
     private static void CollectHostStartBlockErrors(HashSet<byte> addedPlayers)
@@ -731,7 +855,10 @@ internal static class SyncVersionErrorHandler
 
     private static void InitializeErrorText(HudManager instance)
     {
-        if (ErrorText != null) return;
+        if (ErrorText != null && ErrorText.transform.parent == instance.transform)
+            return;
+        if (ErrorText != null)
+            GameObject.Destroy(ErrorText.gameObject);
 
         ErrorText = GameObject.Instantiate(instance.roomTracker.text);
         ErrorText.name = "SyncErrorText";

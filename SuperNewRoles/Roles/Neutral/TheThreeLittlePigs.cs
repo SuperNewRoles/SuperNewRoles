@@ -6,7 +6,6 @@ using SuperNewRoles.CustomOptions;
 using SuperNewRoles.Events;
 using SuperNewRoles.Events.PCEvents;
 using SuperNewRoles.Modules;
-using SuperNewRoles.Modules.Events.Bases;
 using SuperNewRoles.Patches;
 using SuperNewRoles.Roles.Ability;
 using UnityEngine;
@@ -130,7 +129,11 @@ internal sealed class TheFirstLittlePig : RoleBase<TheFirstLittlePig>
     public override Color32 RoleColor { get; } = TheThreeLittlePigs.Instance.RoleColor;
     public override List<Func<AbilityBase>> Abilities { get; } = [
         () => new KnowOtherAbility((player) => TheThreeLittlePigs.IsInSameTeam(player, ExPlayerControl.LocalPlayer), () => true),
-        () => new CustomTaskAbility(() => (true, false, Mathf.CeilToInt(TheThreeLittlePigs.GetAllTaskCount() * (TheThreeLittlePigs.TheFirstLittlePigClearTaskPercent / 100f))), TheThreeLittlePigs.TheThreeLittlePigsUseCustomTaskSetting ? TheThreeLittlePigs.TheThreeLittlePigsTaskData : null),
+        () => new CustomTaskAbility(
+            isTaskTrigger: () => true,
+            countsForCrewWin: () => false,
+            requiredTaskCount: () => Mathf.CeilToInt(TheThreeLittlePigs.GetAllTaskCount() * (TheThreeLittlePigs.TheFirstLittlePigClearTaskPercent / 100f)),
+            taskOptions: () => TheThreeLittlePigs.TheThreeLittlePigsUseCustomTaskSetting ? TheThreeLittlePigs.TheThreeLittlePigsTaskData : null),
         () => new FirstLittlePigFlashAbility()
     ];
     public override QuoteMod QuoteMod { get; } = QuoteMod.SuperNewRoles;
@@ -149,7 +152,11 @@ internal sealed class TheSecondLittlePig : RoleBase<TheSecondLittlePig>
     public override Color32 RoleColor { get; } = TheThreeLittlePigs.Instance.RoleColor;
     public override List<Func<AbilityBase>> Abilities { get; } = [
         () => new KnowOtherAbility((player) => TheThreeLittlePigs.IsInSameTeam(player, ExPlayerControl.LocalPlayer), () => true),
-        () => new CustomTaskAbility(() => (true, false, Mathf.CeilToInt(TheThreeLittlePigs.GetAllTaskCount() * (TheThreeLittlePigs.TheSecondLittlePigClearTaskPercent / 100f))), TheThreeLittlePigs.TheThreeLittlePigsUseCustomTaskSetting ? TheThreeLittlePigs.TheThreeLittlePigsTaskData : null),
+        () => new CustomTaskAbility(
+            isTaskTrigger: () => true,
+            countsForCrewWin: () => false,
+            requiredTaskCount: () => Mathf.CeilToInt(TheThreeLittlePigs.GetAllTaskCount() * (TheThreeLittlePigs.TheSecondLittlePigClearTaskPercent / 100f)),
+            taskOptions: () => TheThreeLittlePigs.TheThreeLittlePigsUseCustomTaskSetting ? TheThreeLittlePigs.TheThreeLittlePigsTaskData : null),
         () => new SecondLittlePigGuardAbility(TheThreeLittlePigs.TheSecondLittlePigMaxGuardCount)
     ];
     public override QuoteMod QuoteMod { get; } = QuoteMod.SuperNewRoles;
@@ -168,7 +175,11 @@ internal sealed class TheThirdLittlePig : RoleBase<TheThirdLittlePig>
     public override Color32 RoleColor { get; } = TheThreeLittlePigs.Instance.RoleColor;
     public override List<Func<AbilityBase>> Abilities { get; } = [
         () => new KnowOtherAbility((player) => TheThreeLittlePigs.IsInSameTeam(player, ExPlayerControl.LocalPlayer), () => true),
-        () => new CustomTaskAbility(() => (true, false, Mathf.CeilToInt(TheThreeLittlePigs.GetAllTaskCount() * (TheThreeLittlePigs.TheThirdLittlePigClearTaskPercent / 100f))), TheThreeLittlePigs.TheThreeLittlePigsUseCustomTaskSetting ? TheThreeLittlePigs.TheThreeLittlePigsTaskData : null),
+        () => new CustomTaskAbility(
+            isTaskTrigger: () => true,
+            countsForCrewWin: () => false,
+            requiredTaskCount: () => Mathf.CeilToInt(TheThreeLittlePigs.GetAllTaskCount() * (TheThreeLittlePigs.TheThirdLittlePigClearTaskPercent / 100f)),
+            taskOptions: () => TheThreeLittlePigs.TheThreeLittlePigsUseCustomTaskSetting ? TheThreeLittlePigs.TheThreeLittlePigsTaskData : null),
         () => new ThirdLittlePigCounterAbility()
     ];
     public override QuoteMod QuoteMod { get; } = QuoteMod.SuperNewRoles;
@@ -186,18 +197,12 @@ internal sealed class TheThirdLittlePig : RoleBase<TheThirdLittlePig>
 /// </summary>
 internal sealed class FirstLittlePigFlashAbility : AbilityBase
 {
-    private EventListener _fixedUpdate;
     private float _timer;
 
     public override void AttachToLocalPlayer()
     {
         _timer = 0f;
-        _fixedUpdate = FixedUpdateEvent.Instance.AddListener(OnFixedUpdate);
-    }
-
-    public override void DetachToLocalPlayer()
-    {
-        _fixedUpdate?.RemoveListener();
+        SubscribeWithAbility(FixedUpdateEvent.Instance, OnFixedUpdate);
     }
 
     private void OnFixedUpdate()
@@ -233,7 +238,6 @@ internal sealed class FirstLittlePigFlashAbility : AbilityBase
 /// </summary>
 internal sealed class SecondLittlePigGuardAbility : AbilityBase, IAbilityCount
 {
-    private EventListener<TryKillEventData> _tryKill;
     private int _needTasks;
     private int _allTasks;
 
@@ -247,13 +251,7 @@ internal sealed class SecondLittlePigGuardAbility : AbilityBase, IAbilityCount
         base.AttachToAlls();
         _allTasks = TheThreeLittlePigs.GetAllTaskCount();
         _needTasks = Mathf.CeilToInt(_allTasks * (TheThreeLittlePigs.TheSecondLittlePigClearTaskPercent / 100f));
-        _tryKill = TryKillEvent.Instance.AddListener(OnTryKill);
-    }
-
-    public override void DetachToAlls()
-    {
-        base.DetachToAlls();
-        _tryKill?.RemoveListener();
+        SubscribeWithAbility(TryKillEvent.Instance, OnTryKill);
     }
 
     private void OnTryKill(TryKillEventData data)
@@ -282,7 +280,6 @@ internal sealed class SecondLittlePigGuardAbility : AbilityBase, IAbilityCount
 /// </summary>
 internal sealed class ThirdLittlePigCounterAbility : AbilityBase, IAbilityCount
 {
-    private EventListener<TryKillEventData> _tryKill;
     private int _needTasks;
     private int _allTasks;
 
@@ -296,13 +293,7 @@ internal sealed class ThirdLittlePigCounterAbility : AbilityBase, IAbilityCount
         base.AttachToAlls();
         _allTasks = TheThreeLittlePigs.GetAllTaskCount();
         _needTasks = Mathf.CeilToInt(_allTasks * (TheThreeLittlePigs.TheThirdLittlePigClearTaskPercent / 100f));
-        _tryKill = TryKillEvent.Instance.AddListener(OnTryKill);
-    }
-
-    public override void DetachToAlls()
-    {
-        base.DetachToAlls();
-        _tryKill?.RemoveListener();
+        SubscribeWithAbility(TryKillEvent.Instance, OnTryKill);
     }
 
     private void OnTryKill(TryKillEventData data)

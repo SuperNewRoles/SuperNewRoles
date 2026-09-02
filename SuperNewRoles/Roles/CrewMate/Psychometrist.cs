@@ -153,13 +153,6 @@ public sealed class PsychometristReadAbility : CustomButtonBase, IButtonEffect
     /// <summary>表示中の足跡管理</summary>
     private readonly Dictionary<(byte killerId, byte victimId), List<Footprint>> _shownFootprints = new();
 
-    /// <summary>FixedUpdateイベントリスナー</summary>
-    private EventListener _fixedUpdateListener;
-    /// <summary>会議開始イベントリスナー</summary>
-    private EventListener<MeetingStartEventData> _meetingStartListener;
-    /// <summary>PhysicsFixedUpdateイベントリスナー</summary>
-    private EventListener<PlayerPhysicsFixedUpdateEventData> _physicsUpdateListener;
-
     public PsychometristReadAbility(PsychometristReadData data)
     {
         Data = data;
@@ -172,21 +165,18 @@ public sealed class PsychometristReadAbility : CustomButtonBase, IButtonEffect
     public override void AttachToLocalPlayer()
     {
         base.AttachToLocalPlayer();
-        _fixedUpdateListener = FixedUpdateEvent.Instance.AddListener(OnFixedUpdate);
-        _meetingStartListener = MeetingStartEvent.Instance.AddListener(_ => ClearLocalVisuals());
-        _physicsUpdateListener = PlayerPhysicsFixedUpdateEvent.Instance.AddListener(OnPhysicsFixedUpdate);
+        SubscribeWithAbility(FixedUpdateEvent.Instance, OnFixedUpdate);
+        SubscribeWithAbility(MeetingStartEvent.Instance, _ => ClearLocalVisuals());
+        SubscribeWithAbility(PlayerPhysicsFixedUpdateEvent.Instance, OnPhysicsFixedUpdate);
     }
 
     /// <summary>
     /// ローカルプレイヤーから能力をデタッチする
-    /// イベントリスナーを解除し、視覚効果をクリアする
+    /// 視覚効果をクリアする
     /// </summary>
     public override void DetachToLocalPlayer()
     {
         base.DetachToLocalPlayer();
-        _fixedUpdateListener?.RemoveListener();
-        _meetingStartListener?.RemoveListener();
-        _physicsUpdateListener?.RemoveListener();
         ClearLocalVisuals();
     }
 
@@ -487,6 +477,16 @@ internal static class PsychometristSharedState
         _fixedUpdateListener = FixedUpdateEvent.Instance.AddListener(OnFixedUpdate);
     }
 
+    private static bool HasAssignedPsychometrist()
+    {
+        foreach (var player in ExPlayerControl.ExPlayerControls)
+        {
+            if (player != null && player.Role == RoleId.Psychometrist)
+                return true;
+        }
+        return false;
+    }
+
     /// <summary>
     /// 殺人発生時の処理
     /// 殺人者の足跡記録を開始する
@@ -495,7 +495,9 @@ internal static class PsychometristSharedState
     private static void OnMurder(MurderEventData data)
     {
         if (data.killer == null || data.target == null) return;
+        if (!HasAssignedPsychometrist()) return;
         if (!Psychometrist.PsychometristIsCheckFootprints) return;
+        if (!data.resultFlags.HasFlag(MurderResultFlags.Succeeded)) return;
 
         var key = (killerId: data.killer.PlayerId, victimId: data.target.PlayerId);
         // 足跡追跡データの初期化

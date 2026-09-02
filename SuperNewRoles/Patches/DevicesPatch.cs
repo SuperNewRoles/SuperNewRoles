@@ -34,6 +34,8 @@ public static class DevicesPatch
     public static Dictionary<string, HashSet<byte>> UsePlayers = new();
     public static Dictionary<string, float> DeviceTimers = new();
     public static float SyncTimer;
+    private static readonly HashSet<int> OverlapPlayerIds = new();
+    private static readonly List<int> ColorIds = new();
     public enum DeviceType
     {
         Admin,
@@ -190,6 +192,9 @@ public static class DevicesPatch
 
         private static void CreateAdmins(MapCountOverlay __instance)
         {
+            if (__instance.CountAreas == null || __instance.CountAreas.Length == 0)
+                return;
+
             AdvancedAdminAbility advancedAdminAbility = ExPlayerControl.LocalPlayer.GetAbility<AdvancedAdminAbility>();
             bool commsActive = !(advancedAdminAbility?.Data.canUseAdminDuringComms ?? false) && ModHelpers.IsComms();
 
@@ -210,23 +215,35 @@ public static class DevicesPatch
 
             bool canSeeImpostorIcon = advancedAdminAbility?.Data.distinctionImpostor ?? false;
             bool canSeeDeadIcon = advancedAdminAbility?.Data.distinctionDead ?? false;
+            var blackHatHacker = ExPlayerControl.LocalPlayer.GetAbility<BlackHatHackerAbility>();
 
             for (int i = 0; i < __instance.CountAreas.Length; i++)
             {
                 CounterArea counterArea = __instance.CountAreas[i];
+                if (counterArea == null)
+                    continue;
 
-                if (!commsActive && counterArea.RoomType > SystemTypes.Hallway)
+                if (commsActive)
                 {
-                    PlainShipRoom plainShipRoom = ShipStatus.Instance.FastRooms.TryGetValue(counterArea.RoomType, out var room) ? room : null;
+                    counterArea.UpdateCount(0);
+                    continue;
+                }
 
-                    if (plainShipRoom != null && plainShipRoom.roomArea)
-                    {
-                        HashSet<int> hashSet = new();
-                        int num = plainShipRoom.roomArea.OverlapCollider(__instance.filter, __instance.buffer);
-                        int count = 0;
-                        List<int> colors = new();
-                        int numDeadIcons = 0;
-                        int numImpostorIcons = 0;
+                if (ShipStatus.Instance?.FastRooms == null ||
+                    !ShipStatus.Instance.FastRooms.TryGetValue(counterArea.RoomType, out PlainShipRoom plainShipRoom) ||
+                    plainShipRoom == null ||
+                    !plainShipRoom.roomArea)
+                {
+                    counterArea.UpdateCount(0);
+                    continue;
+                }
+
+                OverlapPlayerIds.Clear();
+                ColorIds.Clear();
+                int num = plainShipRoom.roomArea.OverlapCollider(__instance.filter, __instance.buffer);
+                int count = 0;
+                int numDeadIcons = 0;
+                int numImpostorIcons = 0;
 
                         for (int j = 0; j < num; j++)
                         {
@@ -237,7 +254,6 @@ public static class DevicesPatch
                                 var deadPlayerData = ExPlayerControl.ById(deadBodyComponent.ParentId);
 
                                 // BlackHatHackerのフィルター：感染していない死体は表示しない
-                                var blackHatHacker = ExPlayerControl.LocalPlayer.GetAbility<BlackHatHackerAbility>();
                                 if (DevicesPatch.DontCountBecausePortableAdmin && blackHatHacker != null && blackHatHacker.AdminAbility != null &&
                                     !blackHatHacker.InfectedPlayerId.Contains(deadBodyComponent.ParentId)) continue;
 
@@ -247,7 +263,7 @@ public static class DevicesPatch
                                 }
 
                                 count++;
-                                colors.Add(deadPlayerData.Player.CurrentOutfit.ColorId);
+                                ColorIds.Add(deadPlayerData.Player.CurrentOutfit.ColorId);
                             }
                             else
                             {
@@ -255,16 +271,15 @@ public static class DevicesPatch
                                 if (component?.Player == null) continue;
                                 if (component.Data == null || component.Data.Disconnected || component.Data.IsDead) continue;
                                 if (!__instance.showLivePlayerPosition && component.AmOwner) continue;
-                                if (!hashSet.Add(component.PlayerId)) continue;
+                                if (!OverlapPlayerIds.Add(component.PlayerId)) continue;
 
                                 if (((ExPlayerControl)component).GetAbility<HideInAdminAbility>()?.IsHideInAdmin ?? false) continue;
 
                                 // BlackHatHackerのフィルター
-                                var blackHatHacker = ExPlayerControl.LocalPlayer.GetAbility<BlackHatHackerAbility>();
                                 if (DevicesPatch.DontCountBecausePortableAdmin && blackHatHacker != null && blackHatHacker.AdminAbility != null &&
                                     !blackHatHacker.InfectedPlayerId.Contains(component.PlayerId) && !component.AmOwner) continue;
                                 if (DevicesPatch.DontCountBecausePortableAdmin && blackHatHacker != null && blackHatHacker.AdminAbility != null && BlackHatHacker.BlackHatHackerIsAdminColor)
-                                    colors.Add(component.Player.CurrentOutfit.ColorId);
+                                    ColorIds.Add(component.Player.CurrentOutfit.ColorId);
                                 count++;
                                 if (canSeeImpostorIcon && component.IsImpostor())
                                 {
@@ -285,18 +300,14 @@ public static class DevicesPatch
                         {
                             foreach (PoolableBehavior icon in counterArea.myIcons)
                             {
-                                if (colors.Count <= 0) continue;
+                                if (ColorIds.Count <= 0) continue;
                                 Material material = icon.GetComponent<SpriteRenderer>().material;
-                                Color iconColor = Palette.PlayerColors[colors.FirstOrDefault()];
+                                Color iconColor = Palette.PlayerColors[ColorIds[0]];
                                 material.SetColor(PlayerMaterial.BackColor, iconColor);
                                 material.SetColor(PlayerMaterial.BodyColor, iconColor);
-                                colors.RemoveAt(0);
+                                ColorIds.RemoveAt(0);
                             }
                         }
-                    }
-                    else Debug.LogWarning($"Couldn't find counter for:{counterArea.RoomType}");
-                }
-                else counterArea.UpdateCount(0);
             }
         }
 

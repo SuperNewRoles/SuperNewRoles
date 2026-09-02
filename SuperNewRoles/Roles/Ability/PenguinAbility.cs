@@ -10,7 +10,6 @@ using AmongUs.GameOptions;
 using SuperNewRoles.Roles.Impostor;
 using SuperNewRoles.Ability;
 using SuperNewRoles.SuperTrophies;
-using System.Linq;
 
 namespace SuperNewRoles.Roles.Ability;
 
@@ -33,8 +32,6 @@ public class PenguinAbility : TargetCustomButtonBase, IButtonEffect
     public float EffectTimer { get; set; }
     public bool effectCancellable => false;
     private bool meetingKill;
-    private EventListener<CalledMeetingEventData> _preCalledMeeting;
-    private EventListener<TryKillEventData> tryKillEvent;
     public override Sprite Sprite => _sprite;
     public override string buttonText => ModTranslation.GetString("PenguinButtonText");
     protected override KeyType keytype => KeyType.Ability1;
@@ -45,9 +42,6 @@ public class PenguinAbility : TargetCustomButtonBase, IButtonEffect
 
     private ExPlayerControl targetPlayer;
 
-    private EventListener fixedUpdateEvent;
-    private EventListener<WrapUpEventData> wrapUpEvent;
-    private EventListener<DieEventData> dieEvent;
     private KillableAbility customKillButtonAbility;
     private bool CanDefaultKill;
     private Sprite _sprite;
@@ -66,17 +60,8 @@ public class PenguinAbility : TargetCustomButtonBase, IButtonEffect
         if (Target == null || Target.IsDead()) return;
         targetPlayer = Target;
         RpcStartPenguin(targetPlayer);
-        new LateTask(() => ExPlayerControl.LocalPlayer.SetKillTimerUnchecked(0.00001f, 0.00001f), 0f);
+        new LateTask(() => ExPlayerControl.LocalPlayer.SetKillTimerUnchecked(0.00001f, 0.00001f), 0f, "PenguinAbilitySetKillTimer");
         ResetTimer();
-    }
-    public override void DetachToAlls()
-    {
-        base.DetachToAlls();
-        fixedUpdateEvent?.RemoveListener();
-        _preCalledMeeting?.RemoveListener();
-        wrapUpEvent?.RemoveListener();
-        dieEvent?.RemoveListener();
-        tryKillEvent?.RemoveListener();
     }
     private void OnFixedUpdate()
     {
@@ -98,13 +83,13 @@ public class PenguinAbility : TargetCustomButtonBase, IButtonEffect
     {
         base.AttachToAlls();
         SyncKillCoolTimeAbility.CreateAndAttach(this);
-        _preCalledMeeting = PreCalledMeetingEvent.Instance.AddListener(OnPreCalledMeeting);
+        SubscribeWithAbility(PreCalledMeetingEvent.Instance, OnPreCalledMeeting);
         customKillButtonAbility = new KillableAbility(() => CanDefaultKill || (targetPlayer != null && targetPlayer.IsAlive()));
         Player.AttachAbility(customKillButtonAbility, new AbilityParentAbility(this));
-        fixedUpdateEvent = FixedUpdateEvent.Instance.AddListener(OnFixedUpdate);
-        wrapUpEvent = WrapUpEvent.Instance.AddListener(OnWrapUp);
-        dieEvent = DieEvent.Instance.AddListener(OnDie);
-        tryKillEvent = TryKillEvent.Instance.AddListener(OnTryKill);
+        SubscribeWithAbility(FixedUpdateEvent.Instance, OnFixedUpdate);
+        SubscribeWithAbility(WrapUpEvent.Instance, OnWrapUp);
+        SubscribeWithAbility(DieEvent.Instance, OnDie);
+        SubscribeWithAbility(TryKillEvent.Instance, OnTryKill);
     }
 
     private void OnTryKill(TryKillEventData data)
@@ -197,8 +182,7 @@ public class PenguinKillTrophy : SuperTrophyAbility<PenguinKillTrophy>
     public override void OnRegister()
     {
         // ペンギン能力の取得
-        _penguinAbility = ExPlayerControl.LocalPlayer.PlayerAbilities
-            .FirstOrDefault(x => x is PenguinAbility) as PenguinAbility;
+        _penguinAbility = ExPlayerControl.LocalPlayer.GetAbility<PenguinAbility>();
 
         // 殺害イベントのリスナーを登録
         _onMurderEvent = MurderEvent.Instance.AddListener(HandleMurderEvent);
@@ -245,8 +229,7 @@ public class PenguinHundredKillTrophy : SuperTrophyAbility<PenguinHundredKillTro
     public override void OnRegister()
     {
         // ペンギン能力の取得
-        _penguinAbility = ExPlayerControl.LocalPlayer.PlayerAbilities
-            .FirstOrDefault(x => x is PenguinAbility) as PenguinAbility;
+        _penguinAbility = ExPlayerControl.LocalPlayer.GetAbility<PenguinAbility>();
 
         // 殺害イベントのリスナーを登録
         _onMurderEvent = MurderEvent.Instance.AddListener(HandleMurderEvent);

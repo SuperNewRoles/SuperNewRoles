@@ -5,7 +5,6 @@ using System.Text;
 using System.Threading.Tasks;
 using SuperNewRoles.Events;
 using SuperNewRoles.Modules;
-using SuperNewRoles.Modules.Events.Bases;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -15,9 +14,6 @@ public abstract class CustomMeetingButtonBase : AbilityBase
 {
     //エフェクトがある(≒押したらカウントダウンが始まる？)ボタンの場合は追加でIButtonEffectを継承すること
     //奪える能力の場合はIRobableを継承し、Serializer/DeSerializerを実装
-    private EventListener<MeetingStartEventData> startMeetingEvent;
-    private EventListener<MeetingCloseEventData> closeMeetingEvent;
-    private EventListener updateMeetingEvent;
     public abstract Sprite Sprite { get; }
     private static readonly Color GrayOut = new(1f, 1f, 1f, 0.3f);
     public abstract bool HasButtonLocalPlayer { get; }
@@ -37,9 +33,9 @@ public abstract class CustomMeetingButtonBase : AbilityBase
 
     public override void AttachToLocalPlayer()
     {
-        startMeetingEvent = MeetingStartEvent.Instance.AddListener(x => OnStartMeeting());
-        closeMeetingEvent = MeetingCloseEvent.Instance.AddListener(x => OnCloseMeeting());
-        updateMeetingEvent = MeetingUpdateEvent.Instance.AddListener(OnMeetingUpdate);
+        SubscribeWithAbility(MeetingStartEvent.Instance, x => OnStartMeeting());
+        SubscribeWithAbility(MeetingCloseEvent.Instance, x => OnCloseMeeting());
+        SubscribeWithAbility(MeetingUpdateEvent.Instance, OnMeetingUpdate);
     }
     private void OnStartMeeting()
     {
@@ -95,7 +91,7 @@ public abstract class CustomMeetingButtonBase : AbilityBase
 
     public virtual void OnMeetingUpdate()
     {
-        if (PlayerControl.LocalPlayer?.Data == null || ExileController.Instance || !MeetingHud.Instance || MeetingHud.Instance.state == MeetingHud.VoteStates.Results)
+        if (PlayerControl.LocalPlayer?.Data == null || ExileController.Instance || !MeetingHud.Instance || MeetingHud.Instance.state == MeetingHud.MeetingStates.Results)
         {
             SetActiveAll(false);
             return;
@@ -146,12 +142,5 @@ public abstract class CustomMeetingButtonBase : AbilityBase
     {
         if (button == null || button.activeSelf == isActive) return;
         button.SetActive(isActive);
-    }
-    public override void DetachToLocalPlayer()
-    {
-        base.DetachToLocalPlayer();
-        MeetingStartEvent.Instance.RemoveListener(startMeetingEvent);
-        MeetingCloseEvent.Instance.RemoveListener(closeMeetingEvent);
-        MeetingUpdateEvent.Instance.RemoveListener(updateMeetingEvent);
     }
 }

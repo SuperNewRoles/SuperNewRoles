@@ -45,7 +45,7 @@ public static class MeetingTimerSyncPatch
     }
 
     [CustomRPC]
-    public static void RpcSyncMeetingTimer(int meetingCount, MeetingHud.VoteStates hostState, float hostDiscussionTimer)
+    public static void RpcSyncMeetingTimer(int meetingCount, MeetingHud.MeetingStates hostState, float hostDiscussionTimer)
     {
         if (AmongUsClient.Instance.AmHost)
             return;
@@ -64,29 +64,29 @@ public static class MeetingTimerSyncPatch
         meetingHud.discussionTimer = hostDiscussionTimer;
     }
 
-    private static bool CanSendState(MeetingHud.VoteStates state)
+    private static bool CanSendState(MeetingHud.MeetingStates state)
     {
-        return IsVotingPhase(state) || state == MeetingHud.VoteStates.Results;
+        return IsVotingPhase(state) || state == MeetingHud.MeetingStates.Results;
     }
 
-    private static bool CanApplyState(MeetingHud.VoteStates localState, MeetingHud.VoteStates hostState)
+    private static bool CanApplyState(MeetingHud.MeetingStates localState, MeetingHud.MeetingStates hostState)
     {
         if (!CanSendState(hostState))
             return false;
 
-        if (localState == MeetingHud.VoteStates.Animating)
+        if (localState == MeetingHud.MeetingStates.Animating)
             return IsVotingPhase(hostState);
 
-        if (hostState == MeetingHud.VoteStates.Results)
-            return localState == MeetingHud.VoteStates.Results;
+        if (hostState == MeetingHud.MeetingStates.Results)
+            return localState == MeetingHud.MeetingStates.Results;
 
         return IsVotingPhase(localState);
     }
 
-    private static bool IsVotingPhase(MeetingHud.VoteStates state)
+    private static bool IsVotingPhase(MeetingHud.MeetingStates state)
     {
-        return state is MeetingHud.VoteStates.Discussion
-            or MeetingHud.VoteStates.NotVoted
-            or MeetingHud.VoteStates.Voted;
+        return state is MeetingHud.MeetingStates.Discussion
+            or MeetingHud.MeetingStates.NotVoted
+            or MeetingHud.MeetingStates.Voted;
     }
 }

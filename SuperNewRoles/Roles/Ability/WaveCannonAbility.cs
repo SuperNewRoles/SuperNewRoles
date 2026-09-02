@@ -6,7 +6,6 @@ using SuperNewRoles.WaveCannonObj;
 using SuperNewRoles.Events.PCEvents;
 using SuperNewRoles.Modules.Events.Bases;
 using SuperNewRoles.SuperTrophies;
-using System.Linq;
 
 namespace SuperNewRoles.Roles.Ability;
 
@@ -35,7 +34,6 @@ public class WaveCannonAbility : CustomButtonBase, IButtonEffect
     public bool friendlyFire { get; }
     public bool KillSound { get; }
     public bool distributedKillSound { get; }
-    private EventListener<MurderEventData> _onMurderEvent;
     public WaveCannonAbility(
         float coolDown,
         float effectDuration,
@@ -73,27 +71,20 @@ public class WaveCannonAbility : CustomButtonBase, IButtonEffect
     public override void AttachToLocalPlayer()
     {
         base.AttachToLocalPlayer();
-        _onMurderEvent = MurderEvent.Instance.AddListener(x =>
+        SubscribeWithAbility(MurderEvent.Instance, x =>
         {
             if (isResetKillCooldown && x.killer == PlayerControl.LocalPlayer)
                 ExPlayerControl.LocalPlayer.ResetKillCooldown();
         });
     }
-    public override void DetachToLocalPlayer()
-    {
-        base.DetachToLocalPlayer();
-        if (_onMurderEvent != null)
-            MurderEvent.Instance.RemoveListener(_onMurderEvent);
-    }
-
     public override bool CheckIsAvailable()
     {
         return PlayerControl.LocalPlayer.CanMove;
     }
-    public override void Detach()
+    public override void DetachToAlls()
     {
-        base.Detach();
-        new LateTask(() => WaveCannonObject?.Detach(), 0f);
+        base.DetachToAlls();
+        new LateTask(() => WaveCannonObject?.Detach(), 0f, "WaveCannonAbilityDetach");
     }
     public void SpawnedWaveCannonObject(WaveCannonObjectBase waveCannonObject)
     {
@@ -141,8 +132,7 @@ public class WaveCannonFiveShotTrophy : SuperTrophyAbility<WaveCannonFiveShotTro
     public override void OnRegister()
     {
         // WaveCannonAbility の取得とカウンターの初期化
-        _waveCannonAbility = ExPlayerControl.LocalPlayer.PlayerAbilities
-            .FirstOrDefault(x => x is WaveCannonAbility) as WaveCannonAbility;
+        _waveCannonAbility = ExPlayerControl.LocalPlayer.GetAbility<WaveCannonAbility>();
         _killedCounter = 0;
 
         // 殺害イベントのリスナーを登録
@@ -199,8 +189,7 @@ public class WaveCannonOneThousandShotTrophy : SuperTrophyAbility<WaveCannonOneT
 
     public override void OnRegister()
     {
-        _waveCannonAbility = ExPlayerControl.LocalPlayer.PlayerAbilities
-            .FirstOrDefault(x => x is WaveCannonAbility) as WaveCannonAbility;
+        _waveCannonAbility = ExPlayerControl.LocalPlayer.GetAbility<WaveCannonAbility>();
         _onMurderEvent = MurderEvent.Instance.AddListener(HandleMurderEvent);
     }
     private void HandleMurderEvent(MurderEventData data)

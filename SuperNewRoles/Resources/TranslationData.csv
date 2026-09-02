@@ -4,6 +4,7 @@ WelcomeNextSuperNewRoles,新しいSuperNewRolesへ、ようこそ！,Welcome to 
 Close,閉じる,Close,关闭,關閉
 CustomCosmetics_Loading,Modコスメティック(ハットやバイザーなど)を読み込んでいます,Loading mod cosmetics (hats / visors / etc.)
 CustomCosmetics_Loaded,コスメティック 読み込み完了！,Cosmetics loaded!
+Meeting,会議,Meeting,会议,會議
 
 Impostor,インポスター,Impostor,伪装者,偽裝者
 Crewmate,クルーメイト,Crewmate,船员,船員
@@ -437,6 +438,7 @@ FinalStatus.HappyGatling,ガトリング,Gatling,加特林,加特林
 FinalStatus.SluggerSlug,ツッコミ,Harisen,击飞,擊飛
 FinalStatus.ConjurerMagic,魔術,Magic,魔术,魔術
 FinalStatus.TheThirdLittlePigCounterKill,仔豚のカウンターで死亡,Killed by Little Pig Counter,被小猪反击杀死,被小豬反擊殺死
+FinalStatus.Dead,死亡,Dead,死亡,死亡
 
 # HelpMenu
 HelpMenu.MyRoleInformation,自分の役職,My Role Information,我的职业信息,我的职业資訊
@@ -707,7 +709,7 @@ Hitman.Description,キル能力を有する第三陣営です。\n指定数の�
 LoversBreaker.Description,特殊なキル能力を有する第三陣営です。\nラバーズを設定数爆破した上でラバーズが全滅すると単独勝利します。\nただし、ラバーズ以外を爆破しようとすると自殺してしまいます。,A third-faction role with a special kill ability.\nThey plant bombs on Lovers，and if they destroy the set number of Lovers and eliminate them all，they win solo.\nHowever，attempting to bomb anyone other than Lovers causes self-destruction.,这是一个拥有特殊击杀能力的第三阵营角色。\n他们会在恋人身上放置炸弹，如果炸掉设定数量的恋人并将其全部消灭，他们会单独获胜。\n但是，如果尝试炸毁恋人以外的玩家，则会自杀。,這是一個具有特殊擊殺能力的第三陣營角色。\n他們會在戀人身上放置炸彈，如果炸掉設定數量的戀人並將其全部消滅，他們會單獨獲勝。\n但是，如果嘗試炸毀戀人以外的玩家，則會自殺。,
 God.Description,キル能力を有さない独自の勝利条件を持つ第三陣営です。\n全てのプレイヤーの役職が何かを見ることができます。\nゲーム終了まで生存していると、一部役職の特殊勝利を除き、その勝利を横取りして勝利することができます。,This is a third-party role with no killing ability and a unique win condition.\nYou can see the roles of all players.\nIf you survive until the end of the game，you will steal the victory from the actual winners and claim it as your own，except in cases where special roles have unique win conditions.,这是一个没有击杀能力、拥有独特胜利条件的第三方阵营角色。\n你可以查看所有玩家的角色。\n如果你能存活到游戏结束，除部分具有特殊胜利条件的角色外，你将窃取原本的胜利并获得胜利。,這是一個沒有擊殺能力、擁有獨特勝利條件的第三方陣營角色。\n你可以查看所有玩家的角色。\n如果你能存活到遊戲結束，除了部分具有特殊勝利條件的角色之外，你將竊取原本的勝利並獲得勝利。,
 Owl.Description,キル能力を有する第三陣営です。\n自陣営以外のキルができる陣営が全滅した上で、自陣営とクルーが同数以下になれば勝利します。\nベントに「巣作り」をすることで各種能力を使用できるようになります。\n死体をひきずって運ぶことができ、その死体を巣にしたベントに運べば隠すことができます。\nまた、停電中に視界が広くなります。,A third-faction role with a kill ability.\nIt wins if all factions capable of killing outside its own are eliminated and its faction and the Crewmates are equal in number or fewer.\nBy “nesting” in a vent，it gains various abilities.\nIt can drag bodies and hide them by placing them in a vent it has nested in.\nAlso，its vision expands during blackouts.,这是一个拥有击杀能力的第三阵营角色。\n当所有能够击杀的其他阵营被消灭，并且其阵营与船员人数相等或更少时，即可获胜。\n通过在通风口中“筑巢”，它可使用各种能力。\n它可以拖动尸体并将其隐藏在自己筑巢的通风口中。\n此外，它在停电期间视野会扩大。,這是一個具有擊殺能力的第三陣營角色。\n當其他能夠擊殺的陣營被消滅，且其陣營與船員數量相等或更少時，即獲勝。\n通過在通風口中「築巢」，它可使用各種能力。\n它可以拖動屍體並將其隱藏在自己築巢的通風口中。\n此外，它在停電期間視野會擴大。,
-SchrodingersCat.Description,キル能力を有さない第三陣営です。\nこの役職は勝利条件を持ちません。\n特定の陣営の役職にキルされると、その場で生き返ってそのキラーの陣営の仲間になり、勝利条件を獲得します。\n特定の陣営：インポスター、ジャッカル、パブロフの犬、クルーメイト,This is a third-faction role with no killing ability.\nThis role does not have a win condition.\nIf killed by a member of certain factions，it revives on the spot，joins the killer’s faction，and gains that faction’s win condition.\nThose factions are: Impostor，Jackal，Pavlov’s Dog，and Crewmate.,这是一个没有击杀能力的第三阵营角色。\n此角色没有胜利条件。\n如果被以下阵营的成员击杀，它会在原地复活，加入击杀者的阵营，并获得该阵营的胜利条件。\n这些阵营包括：内鬼，杰克，帕夫洛夫之犬，和船员。,這是一個沒有擊殺能力的第三陣營角色。\n此角色沒有勝利條件。\n如果被以下陣營的成員擊殺，它會在原地復活，加入擊殺者的陣營，並獲得該陣營的勝利條件。\n這些陣營包括：內鬼，傑克，帕夫洛夫之犬，和船員。,
+SchrodingersCat.Description,キル能力を有さない第三陣営です。\nこの役職は勝利条件を持ちません。\n特定の陣営の役職にキルされると、その場で生き返ってそのキラーの陣営の仲間になり、勝利条件を獲得します。\n特定の陣営：インポスター、ジャッカル、パブロフの犬、クルーメイト\n対応陣営以外からキルされた場合は、自殺します。,This is a third-faction role with no killing ability.\nThis role does not have a win condition.\nIf killed by a member of certain factions，it revives on the spot，joins the killer’s faction，and gains that faction’s win condition.\nThose factions are: Impostor，Jackal，Pavlov’s Dog，and Crewmate.\nIf killed by someone outside those factions，it commits suicide.,这是一个没有击杀能力的第三阵营角色。\n此角色没有胜利条件。\n如果被以下阵营的成员击杀，它会在原地复活，加入击杀者的阵营，并获得该阵营的胜利条件。\n这些阵营包括：内鬼，杰克，帕夫洛夫之犬，和船员。\n如果被这些阵营以外的角色击杀，它会自杀。,這是一個沒有擊殺能力的第三陣營角色。\n此角色沒有勝利條件。\n如果被以下陣營的成員擊殺，它會在原地復活，加入擊殺者的陣營，並獲得該陣營的勝利條件。\n這些陣營包括：內鬼，傑克，帕夫洛夫之犬，和船員。\n如果被這些陣營以外的角色擊殺，它會自殺。,
 Truelover.Description,キル能力を有さない独自の勝利条件を持つ第三陣営です。\n「一目惚れ」ボタンを押すと、対象のプレイヤーとラバーズになります。\n勝利条件や能力はラバーズと同じになります。,A third-faction role without a kill ability that has its own win condition.\nBy pressing the “Love at First Sight” button，you become Lovers with a target player.\nYour win conditions and abilities match those of Lovers.,这是一个没有击杀能力、拥有独特胜利条件的第三阵营角色。\n按下“一见钟情”按钮后，会与你选择的玩家成为恋人。\n你的胜利条件和能力与恋人相同。,這是一個沒有擊殺能力且具備獨特勝利條件的第三陣營角色。\n按下「一見鍾情」按鈕後，會與你選擇的玩家成為戀人。\n你的勝利條件和能力與戀人相同。,
 Cupid.Description,キル能力を有さない独自の勝利条件を持つ第三陣営です。\n「恋の矢」ボタンを二人のプレイヤーに向かって押すと、その二人をラバーズにします。\n作成したラバーズが勝利すると共に勝利します。\nなお、勝利に自身の生存は必要ありません。,A third-faction role without a kill ability that has a unique win condition.\nBy pressing the “Arrow of Love” button toward two players，you make them Lovers.\nWhen those Lovers win，you also win alongside them.\nNote that your survival is not required for victory.,这是一个没有击杀能力、拥有独特胜利条件的第三阵营角色。\n按下“爱之箭”按钮指向两名玩家，即会使他们成为恋人。\n当那对恋人获胜时，你也会随之获胜。\n注意，你的存活并非胜利的必要条件。,這是一個沒有擊殺能力且具備獨特勝利條件的第三陣營角色。\n按下「愛之箭」按鈕指向兩名玩家，即會使他們成為戀人。\n當那對戀人獲勝時，你也會隨之獲勝。\n注意，你的存活並非勝利的必要條件。,
 Safecracker.Description,キル能力を有さない第三陣営です。\nタスクが全てAirshipの金庫解錠タスクになります。\nタスクを全て完了すると、その時点で単独勝利します。,A third faction without any kill ability.\nAll tasks are Airship vault unlocking tasks.\nIf you complete all tasks, you win solo at that point.,一个没有任何击杀能力的第三阵营。\n所有任务都是Airship的金库解锁任务。\n完成所有任务后，你将在那时获得单独胜利。,一個沒有任何擊殺能力的第三陣營。\n所有任務都是Airship的金庫解鎖任務。\n完成所有任務後，你將在那時獲得單獨勝利。
@@ -742,7 +744,7 @@ NiceNekomata.Description,会議に関する能力を有するクルーメイト�
 Pteranodon.Description,タスクターンに使用できる能力を有するクルーメイトです。\nこの役職はエアシップのみ配役されます。\n本来であれば昇降機を使用しなければ渡れない箇所を、「ジャーンプ！」ボタンを押すことで飛び越えることができます。,A Crewmate with an ability usable during task turns.\nThis role is only assigned on the Airship map.\nBy pressing the “Jaaaump!” button，they can leap across areas that normally require using an elevator.,这是一个在任务回合中可使用能力的船员。\n此职业仅在空中飞船（Airship）地图上出现。\n按下“跳跃！”按钮后，可以跨过通常需要使用电梯才能到达的区域。,這是一個在任務回合中可使用能力的船員。\n此职业僅在空中船（Airship）地圖上出現。\n按下「跳躍！」按鈕後，可以跨過通常需要使用電梯才能到達的區域。
 NiceButtoner.Description,タスクターンに使用できる能力を有するクルーメイトです。\n「ポチッ」ボタンを押すことでサボタージュ中以外ならいつでもどこでも緊急会議を開始できます。,A Crewmate with an ability usable during task turns.\nBy pressing the “Button” button，they can call an emergency meeting anytime and anywhere，as long as no sabotage is in progress.,这是一个在任务回合中可使用能力的船员。\n按下“会议”按钮后，只要没有破坏进行，就可以随时随地发起紧急会议。,這是一個在任務回合中可使用能力的船員。\n按下「會議」按鈕後，只要沒有破壞進行，就可以隨時隨地發起緊急會議。
 Mayor.Description,会議に関する能力を有するクルーメイトです。\nこの役職は、他の役職よりも多くの票を投票することができます。,A Crewmate with a meeting-related ability.\nThis role can cast more votes than any other role during meetings.,这是一个拥有会议相关能力的船员。\n此职业在会议中可以投出比其他任何职业更多的票。,這是一個具備會議相關能力的船員。\n此职业在會議中可以投出比其他任何职业更多的票。
-Bakery.Description,会議に関する能力を有するクルーメイトです。\nこの役職が生存していると、会議終了時にパンを焼いたことが通知されます。,A Crewmate with a meeting-related ability.\nWhen this role is alive，the game notifies everyone at the end of each meeting that bread has been baked.,这是一个拥有会议相关能力的船员。\n当此职业存活时，每次会议结束时会通知大家面包已烤好。,這是一個具備會議相關能力的船員。\n當此职业存活時，每次會議結束時會通知大家麵包已烤好。
+Bakery.Description,会議に関する能力を有するクルーメイトです。\nこの役職が生存していると、会議終了時にパンを焼いたことが通知されます。\n追放された場合、その次の会議からパンは焼かれなくなります。,A Crewmate with a meeting-related ability.\nWhen this role is alive，the game notifies everyone at the end of each meeting that bread has been baked.\nIf ejected，bread will no longer be baked from the next meeting onward.,这是一个拥有会议相关能力的船员。\n当此职业存活时，每次会议结束时会通知大家面包已烤好。\n被放逐后，从下一场会议开始将不再烤面包。,這是一個具備會議相關能力的船員。\n當此职业存活時，每次會議結束時會通知大家麵包已烤好。\n被逐出後，從下一場會議開始將不再烤麵包。
 VentTrapper.Description,タスクターンに使用できる能力を有するクルーメイトです。\nベントの上で「トラップ！」ボタンを押すと、そのベントにトラップを仕掛けることができます。\nトラップが仕掛けられたベントを仕掛けた本人以外が使用すると、一度だけそのベントの上に一定時間拘束されます。\n発動したことはわかりません。\nトラップは1つのベントにつき1回だけ仕掛けられます。,A crewmate with the ability to use Task Turn.\nIf you press the “Trap!” button while standing over a vent，you can set a trap on that vent.\nWhen anyone other than the trap-setter uses that vent，they’ll be held in place on it for a brief time—just once—and they won’t know it was triggered.\nYou can only set one trap per vent.,一名具备设置陷阱能力的船员。当你站在通风口上方按下“设陷”按钮时，即可在该通风口设置陷阱。除设陷阱者外的任何人使用该通风口时，都会被短暂困住——仅限一次——且不会察觉陷阱已被触发。每个通风口仅能设置一个陷阱。,一名具備設置陷阱能力的船員。站在通風口上方按下「設陷」按鈕時即可在該通風口設置陷阱。除設陷阱者外的任何人使用該通風口時都會被短暫困住且僅限一次並不會察覺陷阱已被觸發。每個通風口僅能設置一個陷阱。
 SpeedBooster.Description,タスクターンに使用できる能力を有するクルーメイトです。\n「ブースト！」ボタンを押すことでしばらくの間素早く動けるようになります。,A Crewmate with an ability usable during task turns.\nBy pressing the “Boost!” button，they can move quickly for a short period.,这是一个在任务回合中可使用能力的船员。\n按下“加速！”按钮后，可在短时间内快速移动。,這是一個在任務回合中可使用能力的船員。\n按下「加速！」按鈕後，可在短時間內快速移動。
 NiceTeleporter.Description,タスクターンに使用できる能力を有するクルーメイトです。\n「テレポート！」ボタンを押すことで自分を含む生存者の誰かのところへ生存者全員をテレポートさせます。,A Crewmate with an ability usable during task turns.\nBy pressing the “Teleport!” button，they teleport all survivors，including themselves，to the location of any chosen survivor.,这是一个在任务回合中可使用能力的船员。\n按下“传送！”按钮后，可将包括自己在内的所有存活玩家传送到任意存活玩家的位置。,這是一個在任務回合中可使用能力的船員。\n按下「傳送！」按鈕後，可將包括自己在內的所有倖存者傳送到任意倖存者的位置。
@@ -847,7 +849,6 @@ DarkKillerIntro1,疾風漆黒,Jet-black gale,漆黑暴风,漆黑暴風
 EvilSeerIntro1,彼らは共に在る,They exist together,他们同在,他們同在
 RobberIntro1,その進捗、頂戴するぜ,I'll be taking that progress．,我要收下你的进度了．,我要收下你的進度了．
 OverKillerIntro1,何度だって切り刻む,I'll slice you up again and again．,无论多少次我都要将你切碎．,無論多少次我都要將你切碎．
-EvilSeerIntro1,彼岸の呼び声,A call from the other side．,来自彼岸的呼唤．,來自彼岸的呼喚．
 JammerIntro1,隠蔽工作,Cover-up operation．,隐蔽行动．,隱蔽行動．
 EvilMovingIntro1,不意の急襲,A sudden ambush．,突如其来的奇袭．,突如其來的奇襲．
 MagazinerIntro1,殺意の弾倉,Magazine filled with murderous intent．,充满杀意的弹匣．,充滿殺意的彈匣．
@@ -1063,6 +1064,7 @@ BalancerAbilityUseText,能力発動,Ability activated,太空审判,能力發動
 BalancerVoteText,どちらかに投票せよ！,Vote for one or the other!,请选择一名玩家投票！,將票投給其中一邊！
 BalancerDoubleExileText,どちらも追放された...,Both were exiled...,两名玩家都被驱逐了...,兩名玩家都被驅逐了...
 BalancerOnePlayerDeadText,こうなる運命だったのだ...,It was destined to be this way...,这就是命运...,這就是命運...
+BalancerNoPlayerText,追放する者すら、もう残っていなかった...,There was no one left to exile...,已经没有人可以驱逐了...,已經沒有任何人可以放逐了...
 BalancerRandomVoteWhenNoVote,未投票時ランダムに投票する,Random Vote When No Vote,未投票時随机投票,未投票時隨機投票
 BalancerLimitText,天秤残り{0}回,Balancer Limit {0} times,天秤剩余{0}次,天秤剩餘{0}次
 
@@ -1096,6 +1098,8 @@ WaveCannonKillSound,キル音を鳴らす,Play WaveCannon Kill Sound,播放波�
 WaveCannonKillSoundDistributed,キル音を分散させる,Distribute Kill Sounds,分散播放击杀音效,分散播放擊殺音效
 
 # WaveCannonJackal
+WaveCannonJackalBulletCanSeeParent,弾が親を見られる,Bullet can see parent,子弹可以看到父级,子彈可以看到父級
+WaveCannonJackalCanSeeBullet,親が弾を見られる,Parent can see bullet,父级可以看到子弹,父級可以看到子彈
 WaveCannonJackalKillCooldown,キルクールダウン,Kill Cooldown,豺狼击杀冷却时间,豺狼殺人冷卻時間
 WaveCannonJackalCanCreateSidekick,サイドキックを作成できる,Can Create Sidekick,豺狼可以创建跟班队员,豺狼可以創建跟班隊員
 WaveCannonJackalSidekickCooldown,サイドキック 作成クールダウン,Sidekick Cooldown,豺狼跟班队员冷却时间,豺狼跟班隊員冷卻時間
@@ -1862,6 +1866,8 @@ OrientalShamanCannotUseReportButton,死体を通報できない,Cannot Use Repor
 OrientalShamanCannotUseEmergencyButton,緊急ボタンを使用できない,Cannot Use Emergency Button,无法使用紧急按钮,無法使用緊急按鈕
 
 # Safecracker
+SafecrackerKillGuardActivated,キルガード発動,Kill guard activated,击杀保护已启动,擊殺保護已啟動
+SafecrackerExiledGuardActivated,追放ガード発動,Exile guard activated,放逐保护已启动,放逐保護已啟動
 SafecrackerKillGuardTaskSetting,キルガードができるようになるタスク量(全タスク内),Amount of tasks to be able to kill guard (of all tasks),盗贼获得击杀保护需要打开的保险库数,盜賊獲得擊殺保護需要打開的保險箱數目
 SafecrackerMaxKillGuardCountSetting,キルガードできる回数,Kill guard max count,击杀保护次数,擊殺保護次數
 SafecrackerExiledGuardTaskSetting,追放ガードができるようになるタスク量(全タスク内),Amount of tasks to be able to be able to exiled guard (of all tasks),盗贼获得放逐保护需要打开的保险库数,盜賊獲得放逐保護需要打開的保險箱數目

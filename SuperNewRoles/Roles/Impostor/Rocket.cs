@@ -1,6 +1,5 @@
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using UnityEngine;
 using AmongUs.GameOptions;
 using SuperNewRoles.CustomOptions;
@@ -9,7 +8,6 @@ using SuperNewRoles.Modules;
 using SuperNewRoles.Roles.Ability.CustomButton;
 using SuperNewRoles.Events;
 using SuperNewRoles.Events.PCEvents;
-using SuperNewRoles.Modules.Events.Bases;
 using SuperNewRoles.Ability;
 using SuperNewRoles.CustomObject;
 
@@ -84,9 +82,6 @@ public class RocketGrabAbility : TargetCustomButtonBase
     private bool launchAfterMeeting = false;
     private bool launchAfterMeetingOption = false;
 
-    private EventListener<MeetingStartEventData> _onMeetingStartEvent;
-    private EventListener<WrapUpEventData> _onWrapUpEvent;
-    private EventListener _fixedUpdateEvent;
 
     // Use a placeholder sprite path for now
     public override Sprite Sprite => AssetManager.GetAsset<Sprite>("RocketGrabButton.png");
@@ -131,17 +126,14 @@ public class RocketGrabAbility : TargetCustomButtonBase
     public override void AttachToAlls()
     {
         base.AttachToAlls();
-        _onMeetingStartEvent = MeetingStartEvent.Instance.AddListener(OnMeetingStart);
-        _onWrapUpEvent = WrapUpEvent.Instance.AddListener(OnWrapUp);
-        _fixedUpdateEvent = FixedUpdateEvent.Instance.AddListener(OnFixedUpdate);
+        SubscribeWithAbility(MeetingStartEvent.Instance, OnMeetingStart);
+        SubscribeWithAbility(WrapUpEvent.Instance, OnWrapUp);
+        SubscribeWithAbility(FixedUpdateEvent.Instance, OnFixedUpdate);
     }
 
     public override void DetachToAlls()
     {
         base.DetachToAlls();
-        _onMeetingStartEvent?.RemoveListener();
-        _onWrapUpEvent?.RemoveListener();
-        _fixedUpdateEvent?.RemoveListener();
         if (Player != null && Player.AmOwner && GrabbedPlayers.Count > 0)
         {
             RpcClearGrabbedPlayers();
@@ -157,12 +149,28 @@ public class RocketGrabAbility : TargetCustomButtonBase
                 RpcClearGrabbedPlayers();
             return;
         }
-        foreach (var grabbedPlayer in GrabbedPlayers.ToList())
+        for (int i = GrabbedPlayers.Count - 1; i >= 0; i--)
         {
-            if (Player.AmOwner && (grabbedPlayer == null || grabbedPlayer.IsDead()))
+            var grabbedPlayer = GrabbedPlayers[i];
+            if (grabbedPlayer == null)
             {
-                // Pass PlayerControl via .PlayerControl property
-                RpcRemoveGrabbedPlayer(grabbedPlayer.Player);
+                // A disconnected object can disappear before its PlayerId can be read.
+                // Remove all state that no longer belongs to a remaining grabbed player.
+                RemoveNullGrabbedPlayersLocally();
+                continue;
+            }
+
+            if (grabbedPlayer.IsDead())
+            {
+                if (Player.AmOwner)
+                {
+                    RpcRemoveGrabbedPlayer(grabbedPlayer.PlayerId);
+                }
+                else
+                {
+                    GrabbedPlayers.RemoveAll(player => player?.PlayerId == grabbedPlayer.PlayerId);
+                    _grabbedOriginalPositions.Remove(grabbedPlayer.PlayerId);
+                }
                 continue;
             }
             if (MeetingHud.Instance == null)
@@ -172,6 +180,35 @@ public class RocketGrabAbility : TargetCustomButtonBase
                 grabbedPlayer.transform.position = Player.transform.position;
             }
         }
+    }
+
+    // GrabbedPlayersの中にnullが混入している場合に、GrabbedPlayersと_grabbedOriginalPositionsを同期して削除する
+    private void RemoveNullGrabbedPlayersLocally()
+    {
+        if (GrabbedPlayers.RemoveAll(player => player == null) == 0) return;
+
+        HashSet<byte> remainingPlayerIds = new();
+        for (int i = 0; i < GrabbedPlayers.Count; i++)
+        {
+            var player = GrabbedPlayers[i];
+            if (player != null)
+                remainingPlayerIds.Add(player.PlayerId);
+        }
+        List<byte> staleIds = null;
+        foreach (byte playerId in _grabbedOriginalPositions.Keys)
+        {
+            if (remainingPlayerIds.Contains(playerId)) continue;
+            staleIds ??= new List<byte>();
+            staleIds.Add(playerId);
+        }
+        if (staleIds != null)
+        {
+            for (int i = 0; i < staleIds.Count; i++)
+                _grabbedOriginalPositions.Remove(staleIds[i]);
+        }
+
+        if (Player != null && Player.AmOwner && launchAbility != null)
+            launchAbility.SetActive(launchAbility.CheckIsAvailable());
     }
 
     private void OnMeetingStart(MeetingStartEventData data)
@@ -228,14 +265,14 @@ public class RocketGrabAbility : TargetCustomButtonBase
     }
 
     [CustomRPC]
-    public void RpcRemoveGrabbedPlayer(PlayerControl targetPlayerControl)
+    public void RpcRemoveGrabbedPlayer(byte targetPlayerId)
     {
-        var playerInfo = GameData.Instance.GetPlayerById(targetPlayerControl.PlayerId);
-        var targetEx = playerInfo != null ? (ExPlayerControl)playerInfo.Object : null;
+        if (targetPlayerId == byte.MaxValue) return;
 
-        if (targetEx != null && GrabbedPlayers.Remove(targetEx))
+        bool removed = GrabbedPlayers.RemoveAll(player => player?.PlayerId == targetPlayerId) > 0;
+        _grabbedOriginalPositions.Remove(targetPlayerId);
+        if (removed)
         {
-            _grabbedOriginalPositions.Remove(targetEx.PlayerId);
             if (Player != null && Player.AmOwner && launchAbility != null)
             {
                 launchAbility.SetActive(launchAbility.CheckIsAvailable());

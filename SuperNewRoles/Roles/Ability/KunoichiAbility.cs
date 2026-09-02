@@ -5,7 +5,6 @@ using SuperNewRoles.Ability;
 using SuperNewRoles.Events;
 using SuperNewRoles.Modules;
 using SuperNewRoles.Modules.Events;
-using SuperNewRoles.Modules.Events.Bases;
 using SuperNewRoles.Events.PCEvents;
 using SuperNewRoles.Roles.Ability.CustomButton;
 using TMPro;
@@ -83,9 +82,6 @@ public class KunoichiKunaiAbility : CustomButtonBase
     private readonly Func<bool> _isInvisible;
     private readonly bool _allowWhileInvisible;
 
-    private EventListener<WrapUpEventData> _wrapUpEvent;
-    private EventListener<MeetingStartEventData> _meetingStartEvent;
-    private EventListener _fixedUpdateEvent;
 
     private Dictionary<byte, Dictionary<byte, int>> HitCounts = new();
     public int KillThreshold => _killThreshold;
@@ -117,14 +113,14 @@ public class KunoichiKunaiAbility : CustomButtonBase
     public override void AttachToAlls()
     {
         base.AttachToAlls();
-        _wrapUpEvent = WrapUpEvent.Instance.AddListener(_ => ClearDeadHits());
-        _meetingStartEvent = MeetingStartEvent.Instance.AddListener(_ =>
+        SubscribeWithAbility(WrapUpEvent.Instance, _ => ClearDeadHits());
+        SubscribeWithAbility(MeetingStartEvent.Instance, _ =>
         {
             ClearDeadHits();
             DestroyProjectiles();
             SetAndroidAimVisible(false);
         });
-        _fixedUpdateEvent = FixedUpdateEvent.Instance.AddListener(OnFixedUpdate);
+        SubscribeWithAbility(FixedUpdateEvent.Instance, OnFixedUpdate);
         UpdateAndroidAimVisibility();
     }
 
@@ -132,9 +128,6 @@ public class KunoichiKunaiAbility : CustomButtonBase
     public override void DetachToAlls()
     {
         base.DetachToAlls();
-        _wrapUpEvent?.RemoveListener();
-        _meetingStartEvent?.RemoveListener();
-        _fixedUpdateEvent?.RemoveListener();
         DestroyProjectiles();
         ClearLocalHits();
         SetAndroidAimVisible(false);
@@ -273,7 +266,7 @@ public class KunoichiKunaiAbility : CustomButtonBase
                 continue;
             }
 
-            foreach (var candidate in PlayerControl.AllPlayerControls.ToArray())
+            foreach (var candidate in PlayerControl.AllPlayerControls)
             {
                 if (candidate == null || candidate.PlayerId == shooter.PlayerId) continue;
                 if (candidate.Data == null || candidate.Data.IsDead) continue;
@@ -370,7 +363,8 @@ public class KunoichiKunaiHitUIAbility : AbilityBase
     private GameObject _container;
     private readonly List<(byte playerId, int count)> _lastHits = new();
     private readonly List<PoolablePlayer> _uiObjects = new();
-    private EventListener _fixedUpdateListener;
+    private readonly List<(ExPlayerControl target, int count)> _hitsBuffer = new();
+    private Comparison<(ExPlayerControl target, int count)> _hitComparison;
 
     public KunoichiKunaiHitUIAbility(
         Func<IEnumerable<(ExPlayerControl target, int count)>> getHits,
@@ -382,7 +376,7 @@ public class KunoichiKunaiHitUIAbility : AbilityBase
 
     public override void AttachToLocalPlayer()
     {
-        _fixedUpdateListener = FixedUpdateEvent.Instance.AddListener(OnFixedUpdate);
+        SubscribeWithAbility(FixedUpdateEvent.Instance, OnFixedUpdate);
         _container = new GameObject("KunoichiHitUIContainer");
         _container.transform.SetParent(FastDestroyableSingleton<HudManager>.Instance.transform);
         _container.transform.localPosition = new(-4.19f, -2.4f, 0f);
@@ -395,7 +389,6 @@ public class KunoichiKunaiHitUIAbility : AbilityBase
 
     public override void DetachToLocalPlayer()
     {
-        _fixedUpdateListener?.RemoveListener();
         if (_container != null)
         {
             GameObject.Destroy(_container);
@@ -422,28 +415,38 @@ public class KunoichiKunaiHitUIAbility : AbilityBase
             return;
         }
 
-        var hits = (_getHits?.Invoke() ?? Enumerable.Empty<(ExPlayerControl target, int count)>())
-            .Where(h => h.target != null && h.target.Data != null && h.count > 0)
-            .Select(h => (h.target, h.count))
-            .OrderByDescending(h => h.count)
-            .ThenBy(h => h.target.PlayerId)
-            .ToList();
+        _hitsBuffer.Clear();
+        var hitsSource = _getHits?.Invoke();
+        if (hitsSource != null)
+        {
+            foreach (var h in hitsSource)
+            {
+                if (h.target == null || h.target.Data == null || h.count <= 0) continue;
+                _hitsBuffer.Add((h.target, h.count));
+            }
+        }
 
-        if (hits.Count == 0)
+        if (_hitsBuffer.Count == 0)
         {
             if (_container.activeSelf) _container.SetActive(false);
             _lastHits.Clear();
             return;
         }
 
+        if (_hitsBuffer.Count > 1)
+        {
+            _hitComparison ??= CompareHits;
+            _hitsBuffer.Sort(_hitComparison);
+        }
+
         if (!_container.activeSelf) _container.SetActive(true);
 
-        bool updated = hits.Count != _lastHits.Count;
+        bool updated = _hitsBuffer.Count != _lastHits.Count;
         if (!updated)
         {
-            for (int i = 0; i < hits.Count; i++)
+            for (int i = 0; i < _hitsBuffer.Count; i++)
             {
-                if (_lastHits[i].playerId != hits[i].target.PlayerId || _lastHits[i].count != hits[i].count)
+                if (_lastHits[i].playerId != _hitsBuffer[i].target.PlayerId || _lastHits[i].count != _hitsBuffer[i].count)
                 {
                     updated = true;
                     break;
@@ -454,9 +457,9 @@ public class KunoichiKunaiHitUIAbility : AbilityBase
         if (!updated) return;
 
         var prefab = FastDestroyableSingleton<HudManager>.Instance.IntroPrefab.PlayerPrefab;
-        for (int i = 0; i < hits.Count; i++)
+        for (int i = 0; i < _hitsBuffer.Count; i++)
         {
-            var hit = hits[i];
+            var hit = _hitsBuffer[i];
             PoolablePlayer uiObj;
             if (i < _uiObjects.Count)
             {
@@ -483,16 +486,23 @@ public class KunoichiKunaiHitUIAbility : AbilityBase
             }
         }
 
-        for (int i = hits.Count; i < _uiObjects.Count; i++)
+        for (int i = _hitsBuffer.Count; i < _uiObjects.Count; i++)
         {
             _uiObjects[i].gameObject.SetActive(false);
         }
 
         _lastHits.Clear();
-        foreach (var hit in hits)
+        foreach (var hit in _hitsBuffer)
         {
             _lastHits.Add((hit.target.PlayerId, hit.count));
         }
+    }
+
+    private static int CompareHits((ExPlayerControl target, int count) a, (ExPlayerControl target, int count) b)
+    {
+        int countCompare = b.count.CompareTo(a.count);
+        if (countCompare != 0) return countCompare;
+        return a.target.PlayerId.CompareTo(b.target.PlayerId);
     }
 }
 
@@ -507,8 +517,6 @@ public class KunoichiHideAbility : CustomButtonBase, IButtonEffect
     private float _stopTimer;
     private Vector2 _lastPosition;
 
-    private EventListener _fixedUpdateEvent;
-    private EventListener<MeetingStartEventData> _meetingStartEvent;
     private readonly OpacityFadeController _opacityFader = new();
 
     public bool IsInvisible { get; private set; }
@@ -535,15 +543,13 @@ public class KunoichiHideAbility : CustomButtonBase, IButtonEffect
     public override void AttachToAlls()
     {
         base.AttachToAlls();
-        _fixedUpdateEvent = FixedUpdateEvent.Instance.AddListener(OnFixedUpdate);
-        _meetingStartEvent = MeetingStartEvent.Instance.AddListener(_ => ExitInvisibility());
+        SubscribeWithAbility(FixedUpdateEvent.Instance, OnFixedUpdate);
+        SubscribeWithAbility(MeetingStartEvent.Instance, _ => ExitInvisibility());
     }
 
     public override void DetachToAlls()
     {
         base.DetachToAlls();
-        _fixedUpdateEvent?.RemoveListener();
-        _meetingStartEvent?.RemoveListener();
         _opacityFader.StopAll();
         ExitInvisibility();
     }
@@ -633,7 +639,6 @@ public class KunoichiKunaiDisplayAbility : CustomButtonBase
     private readonly bool _canThrowWhileInvisible;
     private readonly Func<bool> _isInvisible;
     private GameObject _displayKunai;
-    private EventListener _fixedUpdateEvent;
     private bool _isShown;
     private bool _hasInitialPosition;
     private Vector3 _followVelocity;
@@ -653,13 +658,12 @@ public class KunoichiKunaiDisplayAbility : CustomButtonBase
     public override void AttachToAlls()
     {
         base.AttachToAlls();
-        _fixedUpdateEvent = FixedUpdateEvent.Instance.AddListener(OnFixedUpdate);
+        SubscribeWithAbility(FixedUpdateEvent.Instance, OnFixedUpdate);
     }
 
     public override void DetachToAlls()
     {
         base.DetachToAlls();
-        _fixedUpdateEvent?.RemoveListener();
         if (_displayKunai != null) UnityEngine.Object.Destroy(_displayKunai);
     }
 

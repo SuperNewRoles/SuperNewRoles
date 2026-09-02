@@ -5,7 +5,6 @@ using AmongUs.GameOptions;
 using SuperNewRoles.CustomOptions;
 using SuperNewRoles.Events;
 using SuperNewRoles.Modules;
-using SuperNewRoles.Modules.Events.Bases;
 using SuperNewRoles.Roles.Ability;
 using UnityEngine;
 
@@ -36,7 +35,6 @@ internal class Pursuer : RoleBase<Pursuer>
 internal class ArrowToNearPlayerAbility : AbilityBase
 {
     private Arrow _arrow;
-    private EventListener _fixedUpdateListener;
     private float _timer = 0f;
     private float _updateInterval = 0f;
     private bool _targetOnlyCrews = false;
@@ -49,7 +47,7 @@ internal class ArrowToNearPlayerAbility : AbilityBase
     public override void AttachToLocalPlayer()
     {
         base.AttachToLocalPlayer();
-        _fixedUpdateListener = FixedUpdateEvent.Instance.AddListener(OnFixedUpdate);
+        SubscribeWithAbility(FixedUpdateEvent.Instance, OnFixedUpdate);
         _arrow = new(Pursuer.Instance.RoleColor);
         UpdateArrows();
     }
@@ -57,7 +55,6 @@ internal class ArrowToNearPlayerAbility : AbilityBase
     public override void DetachToLocalPlayer()
     {
         base.DetachToLocalPlayer();
-        _fixedUpdateListener?.RemoveListener();
         DestroyArrowIfExist();
     }
 

@@ -118,6 +118,14 @@ public static class PlayerControl_SetHatAndVisorAlpha
         CustomCosmeticsAlpha.Set(__instance.cosmetics, a);
     }
 }
+[HarmonyPatch(typeof(CosmeticsLayer), nameof(CosmeticsLayer.SetPhantomRoleAlpha))]
+public static class CosmeticsLayer_SetPhantomRoleAlpha
+{
+    public static void Postfix(CosmeticsLayer __instance, [HarmonyArgument(0)] float alpha)
+    {
+        CustomCosmeticsAlpha.Set(__instance, alpha);
+    }
+}
 [HarmonyPatch(typeof(CosmeticsLayer), nameof(CosmeticsLayer.SetFlipXWithoutPet))]
 public static class CosmeticsLayer_SetFlipXWithoutPet
 {
@@ -435,7 +443,7 @@ public static class MeetingHud_PopulateButtons
         {
             if (playerState?.PlayerIcon?.cosmetics == null) continue;
 
-            ExPlayerControl player = ExPlayerControl.ById(playerState.TargetPlayerId);
+            ExPlayerControl player = ExPlayerControl.ById(playerState.PlayerId);
             if (player?.Player == null || player.Data == null || player.cosmetics == null) continue;
 
             CustomCosmeticsLayer iconLayer = CustomCosmeticsLayers.ExistsOrInitialize(playerState.PlayerIcon.cosmetics);

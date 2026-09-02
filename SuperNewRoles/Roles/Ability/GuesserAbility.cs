@@ -8,7 +8,6 @@ using System.Collections.Generic;
 using HarmonyLib;
 using SuperNewRoles.Events;
 using SuperNewRoles.Events.PCEvents;
-using SuperNewRoles.Modules.Events.Bases;
 using SuperNewRoles.Roles;
 
 namespace SuperNewRoles.Roles.Ability;
@@ -32,7 +31,6 @@ public class GuesserAbility : CustomMeetingButtonBase, IAbilityCount
     private int MeetingCount = -1;
     private TMPro.TextMeshPro limitText;
     public override Sprite Sprite => AssetManager.GetAsset<Sprite>("TargetIcon.png");
-    private EventListener<DieEventData> dieEventListener;
     private bool anyoneDied = false;
 
     public GuesserAbility(int maxShots, int shotsPerMeeting, bool cannotShootCrewmate, bool cannotShootCelebrity, bool celebrityLimitedTurns = false, int celebrityLimitedTurnsCount = 3, bool madmateSuicide = false, bool cannotShootFirstTurn = false, bool cannotShootNoDead = false)
@@ -52,12 +50,7 @@ public class GuesserAbility : CustomMeetingButtonBase, IAbilityCount
     public override void AttachToLocalPlayer()
     {
         base.AttachToLocalPlayer();
-        dieEventListener = DieEvent.Instance.AddListener(OnPlayerDie);
-    }
-    public override void DetachToLocalPlayer()
-    {
-        base.DetachToLocalPlayer();
-        dieEventListener?.RemoveListener();
+        SubscribeWithAbility(DieEvent.Instance, OnPlayerDie);
     }
     private void OnPlayerDie(DieEventData data)
     {
@@ -140,9 +133,9 @@ public class GuesserAbility : CustomMeetingButtonBase, IAbilityCount
         // ミーティングHUDの取得と状態チェック（仮想例）
         MeetingHud meetingHud = MeetingHud.Instance;
         if (meetingHud == null) return;
-        if (guesserUI != null || !(meetingHud.state == MeetingHud.VoteStates.Voted ||
-                                    meetingHud.state == MeetingHud.VoteStates.NotVoted ||
-                                    meetingHud.state == MeetingHud.VoteStates.Discussion))
+        if (guesserUI != null || !(meetingHud.state == MeetingHud.MeetingStates.Voted ||
+                                    meetingHud.state == MeetingHud.MeetingStates.NotVoted ||
+                                    meetingHud.state == MeetingHud.MeetingStates.Discussion))
             return;
 
         if (exPlayer.IsDead()) return;
@@ -386,9 +379,9 @@ public class GuesserAbility : CustomMeetingButtonBase, IAbilityCount
                     }
                     else
                     {
-                        if (!(meetingHud.state == MeetingHud.VoteStates.Voted ||
-                              meetingHud.state == MeetingHud.VoteStates.NotVoted ||
-                              meetingHud.state == MeetingHud.VoteStates.Discussion) || exPlayer == null)
+                        if (!(meetingHud.state == MeetingHud.MeetingStates.Voted ||
+                              meetingHud.state == MeetingHud.MeetingStates.NotVoted ||
+                              meetingHud.state == MeetingHud.MeetingStates.Discussion) || exPlayer == null)
                             return;
                         this.UseAbilityCount();
                         this.ShotThisMeeting++;
@@ -589,14 +582,14 @@ public class GuesserAbility : CustomMeetingButtonBase, IAbilityCount
         {
             foreach (PlayerVoteArea pva in MeetingHud.Instance.playerStates)
             {
-                if (pva.TargetPlayerId == dyingTarget.PlayerId)
+                if (pva.PlayerId == dyingTarget.PlayerId)
                 {
-                    pva.SetDead(pva.DidReport, true);
+                    pva.SetDead(true);
                     pva.Overlay.gameObject.SetActive(true);
                 }
                 pva.UnsetVote();
             }
-            MeetingHud.Instance.ClearVote();
+            MeetingHud.Instance.ClearVote(PlayerControl.LocalPlayer.PlayerId, true);
             if (AmongUsClient.Instance.AmHost)
                 MeetingHud.Instance.CheckForEndVoting();
         }

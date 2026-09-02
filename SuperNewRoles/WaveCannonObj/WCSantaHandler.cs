@@ -15,40 +15,45 @@ public class WCSantaHandler : MonoBehaviour
     public SpriteRenderer Renderer;
     public PolygonCollider2D KillCollider { get; private set; }
     public static readonly float SantaSpeed = 6.5f;
-    public static bool IsFlipX;
     public float moveX;
-    public static bool reflection = false;
-    public static float Angle;
-    public static Vector3 WiseManVector;
-    public static float Xdiff;
 
     private WaveCannonAbility _ability;
     private ExPlayerControl _source;
     private bool _friendlyFire;
+    private bool _isFlipX;
     private readonly HashSet<byte> _alreadyKilled = new();
 
     /// <summary>
     /// サンタが撃ち終わり後も死亡判定を継続するために、発射者情報を保持する。
     /// </summary>
-    public void Init(WaveCannonAbility ability)
+    public void Init(WaveCannonAbility ability, bool isFlipX)
     {
         _ability = ability;
         _source = ability?.Player;
         _friendlyFire = ability?.friendlyFire ?? true;
+        _isFlipX = isFlipX;
+        EnsureComponents();
     }
 
     public void Start()
     {
-        Renderer = gameObject.AddComponent<SpriteRenderer>();
+        EnsureComponents();
+    }
+
+    private void EnsureComponents()
+    {
+        if (Renderer == null)
+            Renderer = gameObject.GetComponent<SpriteRenderer>() ?? gameObject.AddComponent<SpriteRenderer>();
         Renderer.sprite = AssetManager.GetAsset<Sprite>("WaveCannonSanta.png");
         // サンタ本体に死亡判定用のコライダーを付与
-        KillCollider = gameObject.AddComponent<PolygonCollider2D>();
+        if (KillCollider == null)
+            KillCollider = gameObject.GetComponent<PolygonCollider2D>() ?? gameObject.AddComponent<PolygonCollider2D>();
         KillCollider.isTrigger = true;
     }
 
     public void Update()
     {
-        int flip = transform.parent == null && IsFlipX ? -1 : 1;
+        int flip = transform.parent == null && _isFlipX ? -1 : 1;
         if (transform.localScale.y < 0.725f)
             transform.localScale += new Vector3(flip * -0.05f, 0.05f, 0.05f);
 
@@ -57,7 +62,7 @@ public class WCSantaHandler : MonoBehaviour
         // 撃ち終わり(Detach)後もサンタ自体が死亡判定を持ち続ける
         TryKillTouchingPlayers();
 
-        if (Vector2.Distance(transform.position, PlayerControl.LocalPlayer.transform.position) > 30)
+        if (!ModHelpers.IsPositionDistance(transform.position, PlayerControl.LocalPlayer.transform.position, 30f))
             Destroy(gameObject);
     }
 

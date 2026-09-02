@@ -4,7 +4,6 @@ using SuperNewRoles.CustomOptions;
 using SuperNewRoles.Events;
 using SuperNewRoles.Modules;
 using SuperNewRoles.Modules.Events;
-using SuperNewRoles.Modules.Events.Bases;
 using SuperNewRoles.Roles.Ability;
 using SuperNewRoles.Roles.Ability.CustomButton;
 using SuperNewRoles.WaveCannonObj;
@@ -49,7 +48,6 @@ public class BulletAbility : TargetCustomButtonBase
 
     public override string buttonText => ModTranslation.GetString("BulletButton");
 
-    private EventListener<PlayerPhysicsFixedUpdateEventData> _playerPhysicsFixedUpdateEvent;
 
     public override Sprite Sprite => AssetManager.GetAsset<Sprite>("BulletLoadBulletButton.png");
 
@@ -59,9 +57,6 @@ public class BulletAbility : TargetCustomButtonBase
     private AbilityParentRole _parent;
     private WaveCannonAbility _waveCannonAbility;
 
-    private EventListener<NameTextUpdateEventData> _nameTextUpdateEvent;
-    private EventListener<MeetingStartEventData> _meetingStartEvent;
-    private EventListener<EmergencyCheckEventData> _emergencyCheckEvent;
 
     public BulletAbility(float coolDown, float effectDuration)
     {
@@ -76,19 +71,15 @@ public class BulletAbility : TargetCustomButtonBase
         {
             _parent = Player.GetAbility<PromoteOnParentDeathAbility>()?.Owner;
             _waveCannonAbility = _parent.Player.GetAbility<WaveCannonAbility>();
-        }, 0f);
-        _playerPhysicsFixedUpdateEvent = PlayerPhysicsFixedUpdateEvent.Instance.AddListener(OnPlayerPhysicsFixedUpdate);
-        _nameTextUpdateEvent = NameTextUpdateEvent.Instance.AddListener(OnNameTextUpdate);
-        _meetingStartEvent = MeetingStartEvent.Instance.AddListener(OnMeetingStart);
-        _emergencyCheckEvent = EmergencyCheckEvent.Instance.AddListener(OnEmergencyCheck);
+        }, 0f, "BulletAbilityAttachParent");
+        SubscribeWithAbility(PlayerPhysicsFixedUpdateEvent.Instance, OnPlayerPhysicsFixedUpdate);
+        SubscribeWithAbility(NameTextUpdateEvent.Instance, OnNameTextUpdate);
+        SubscribeWithAbility(MeetingStartEvent.Instance, OnMeetingStart);
+        SubscribeWithAbility(EmergencyCheckEvent.Instance, OnEmergencyCheck);
     }
     public override void DetachToAlls()
     {
         base.DetachToAlls();
-        _playerPhysicsFixedUpdateEvent?.RemoveListener();
-        _nameTextUpdateEvent?.RemoveListener();
-        _meetingStartEvent?.RemoveListener();
-        _emergencyCheckEvent?.RemoveListener();
         if (_waveCannonAbility != null)
             _waveCannonAbility.bullet = null;
     }

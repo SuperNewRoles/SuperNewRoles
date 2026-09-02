@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Linq;
 using SuperNewRoles.Events;
 using SuperNewRoles.Modules;
-using SuperNewRoles.Modules.Events.Bases;
 using UnityEngine;
 
 namespace SuperNewRoles.Roles.Ability;
@@ -20,7 +19,6 @@ class PlayerArrowsAbility : AbilityBase
     private readonly List<ExPlayerControl> playersToRemoveCache = new();
     private readonly HashSet<ExPlayerControl> targetPlayersSetCache = new();
 
-    private EventListener _fixedUpdateListener;
 
     public PlayerArrowsAbility(Func<IEnumerable<ExPlayerControl>> getPlayers, Func<ExPlayerControl, Color32> getColor)
     {
@@ -35,17 +33,12 @@ class PlayerArrowsAbility : AbilityBase
         activeArrows.Clear();
         inactiveArrows.Clear();
         allCreatedArrows.Clear();
-        _fixedUpdateListener = FixedUpdateEvent.Instance.AddListener(OnFixedUpdate);
+        SubscribeWithAbility(FixedUpdateEvent.Instance, OnFixedUpdate);
     }
 
     public override void DetachToLocalPlayer()
     {
         base.DetachToLocalPlayer();
-        if (_fixedUpdateListener != null)
-        {
-            FixedUpdateEvent.Instance.RemoveListener(_fixedUpdateListener);
-            _fixedUpdateListener = null;
-        }
 
         foreach (var arrow in allCreatedArrows)
         {
@@ -87,10 +80,14 @@ class PlayerArrowsAbility : AbilityBase
 
     private void OnFixedUpdate()
     {
-        IEnumerable<ExPlayerControl> currentTargetPlayers = getPlayers?.Invoke() ?? new List<ExPlayerControl>();
+        IEnumerable<ExPlayerControl> currentTargetPlayers = getPlayers?.Invoke() ?? System.Array.Empty<ExPlayerControl>();
         // キャッシュしたセットをクリアして再利用
         targetPlayersSetCache.Clear();
-        targetPlayersSetCache.UnionWith(currentTargetPlayers);
+        foreach (ExPlayerControl player in currentTargetPlayers)
+        {
+            if (player != null)
+                targetPlayersSetCache.Add(player);
+        }
         // キャッシュしたリストをクリリングして再利用
         playersToRemoveCache.Clear();
 
@@ -110,7 +107,7 @@ class PlayerArrowsAbility : AbilityBase
         }
 
         // 2. 各ターゲットプレイヤーに矢印を割り当てる/更新する
-        foreach (PlayerControl targetPlayer in currentTargetPlayers)
+        foreach (ExPlayerControl targetPlayer in targetPlayersSetCache)
         {
             if (targetPlayer == null) continue;
             if (activeArrows.TryGetValue(targetPlayer, out Arrow arrow))
