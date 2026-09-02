@@ -53,6 +53,32 @@ public static class CustomOptionManager
                 }, 2f, "CustomOptionManager.RpcSyncOptionsAll");
         }
     }
+    [HarmonyPatch(typeof(AmongUsClient), nameof(AmongUsClient.OnBecomeHost))]
+    public static class AmongUsClientOnBecomeHostPatch
+    {
+        public static void Postfix()
+        {
+            // ホスト移譲後は CustomOption の参照先がローカル設定へ切り替わるため、
+            // 役職の静的な設定フィールドにもローカル値を反映し直す。
+            ApplyLocalOptionValuesToFields();
+        }
+    }
+
+    internal static void ApplyLocalOptionValuesToFields()
+    {
+        foreach (var option in CustomOptions)
+        {
+            try
+            {
+                option.ApplyLocalSelectionToField();
+            }
+            catch (Exception ex)
+            {
+                Logger.Error($"ホスト移譲後のオプション反映に失敗しました ({option.Id}): {ex.Message}");
+            }
+        }
+    }
+
     [HarmonyPatch(typeof(AmongUsClient), nameof(AmongUsClient.StartGame))]
     public static class AmongUsClientStartGamePatch
     {
@@ -483,27 +509,42 @@ public class CustomOption
                 _value_My = Selections[value];
                 _hasLocalSelection = true;
             }
-            if (!IsTaskOption)
-                FieldInfo.SetValue(null, Value);
-
-            // 値が変更されたときにイベントを発火
-            if (Attribute is CustomOptionNumericAttribute<int> intAttr)
-            {
-                intAttr.OnValueChanged((int)Value);
-            }
-            else if (Attribute is CustomOptionNumericAttribute<float> floatAttr)
-            {
-                floatAttr.OnValueChanged((float)Value);
-            }
-            else if (Attribute is CustomOptionNumericAttribute<byte> byteAttr)
-            {
-                byteAttr.OnValueChanged((byte)Value);
-            }
+            ApplyValueToField(Value);
         }
         catch (Exception ex)
         {
             Logger.Error($"Failed to update option {Id}: {ex.Message}");
             throw;
+        }
+    }
+
+    internal void ApplyLocalSelectionToField()
+    {
+        if (!_hasLocalSelection)
+            return;
+
+        // OnBecomeHost の実行中は接続状態の切替タイミングに依存せず、
+        // 新ホスト自身が保持しているローカル値を明示的に反映する。
+        ApplyValueToField(_value_My);
+    }
+
+    private void ApplyValueToField(object value)
+    {
+        if (!IsTaskOption)
+            FieldInfo.SetValue(null, value);
+
+        // 値が変更されたときにイベントを発火
+        if (Attribute is CustomOptionNumericAttribute<int> intAttr)
+        {
+            intAttr.OnValueChanged((int)value);
+        }
+        else if (Attribute is CustomOptionNumericAttribute<float> floatAttr)
+        {
+            floatAttr.OnValueChanged((float)value);
+        }
+        else if (Attribute is CustomOptionNumericAttribute<byte> byteAttr)
+        {
+            byteAttr.OnValueChanged((byte)value);
         }
     }
 
