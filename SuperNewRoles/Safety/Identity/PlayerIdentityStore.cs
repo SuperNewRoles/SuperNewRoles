@@ -185,6 +185,8 @@ public static class PlayerIdentityStore
 
         if (androidUnprotected)
             Logger.Warning("Android Keystore protect failed; writing identity only to SecretDirectory (not external storage or SharedPreferences)");
+        else if (ModHelpers.IsAndroid())
+            Logger.Info("Android Keystore protect succeeded; writing identity to external storage and SharedPreferences");
 
         try
         {
