@@ -516,6 +516,7 @@ public static class OnGameJoinedIdentityPatch
         writer.Write(SuperNewRoles.VersionInfo.VersionString);
         writer.EndMessage();
         AmongUsClient.Instance.connection.Send(writer);
+        writer.Recycle();
     }
 
     public static void SendIdentityProof()
@@ -540,6 +541,7 @@ public static class OnGameJoinedIdentityPatch
         writer.Write(SuperNewRoles.VersionInfo.VersionString);
         writer.EndMessage();
         AmongUsClient.Instance.connection.Send(writer);
+        writer.Recycle();
     }
 
     public static void ReceiveIdentityChallenge(string challenge)
@@ -568,6 +570,7 @@ public static class OnGameJoinedIdentityPatch
         writer.WritePacked(clientId);
         writer.EndMessage();
         AmongUsClient.Instance.connection.Send(writer);
+        writer.Recycle();
     }
 }
 
