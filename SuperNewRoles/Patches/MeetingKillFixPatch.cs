@@ -56,6 +56,16 @@ public static class MeetingHud_Update
         DeadPlayers.Clear();
         DeadBody[] bodies = GameObject.FindObjectsOfType<DeadBody>();
         _lastFoundBodyCount = bodies.Length;
+        // 会議開始直前のキルでは、死体が会議生成処理で消費されることがある。
+        // 死体だけを信頼すると、死亡済みのプレイヤーが投票枠では生存扱いのまま残る。
+        if (PlayerControl.AllPlayerControls != null)
+        {
+            foreach (PlayerControl player in PlayerControl.AllPlayerControls)
+            {
+                if (player?.Data != null && player.Data.IsDead)
+                    DeadPlayers.Add(player.PlayerId);
+            }
+        }
         // 死体がまだ生成されていない会議キルでは、死亡数だけ先に増える。
         // 空スキャンで cached を更新すると以降スキップされ、死体も投票枠も直らない。
         if (bodies.Length != 0 || deadPlayerCount == 0)
