@@ -149,7 +149,20 @@ public static class PlayerIdentityStore
 
     internal static bool IsUnlockable(byte[] stored)
     {
-        return stored != null && stored.Length > 0 && Unprotect(stored) != null;
+        if (stored == null || stored.Length == 0)
+            return false;
+        try
+        {
+            byte[] unlocked = Unprotect(stored);
+            if (unlocked == null)
+                return false;
+            using ECDsa key = PlayerIdentityCrypto.ImportPkcs8(unlocked);
+            return key != null;
+        }
+        catch
+        {
+            return false;
+        }
     }
 
     internal static byte[] SelectUnlockableStored(params byte[][] sources)

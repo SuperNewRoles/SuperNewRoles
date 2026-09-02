@@ -50,6 +50,28 @@ public class PlayerIdentityStoreTests
         PlayerIdentityStore.Unprotect(pkcs8).Should().Equal(pkcs8);
     }
 
+    [Fact]
+    public void IsUnlockable_CorruptPlaintext_IsFalse()
+    {
+        byte[] corrupt = new byte[32];
+        PlayerIdentityStore.IsUnlockable(corrupt).Should().BeFalse();
+    }
+
+    [Fact]
+    public void SelectUnlockableStored_SkipsCorruptPlaintext_AndUsesNextPlainKey()
+    {
+        using ECDsa key = PlayerIdentityCrypto.CreateKey();
+        byte[] pkcs8 = PlayerIdentityCrypto.ExportPkcs8(key);
+        byte[] corruptSecret = new byte[48];
+
+        byte[] selected = PlayerIdentityStore.SelectUnlockableStored(corruptSecret, pkcs8);
+
+        selected.Should().Equal(pkcs8);
+        using ECDsa restored = PlayerIdentityCrypto.ImportPkcs8(selected);
+        PlayerIdentityCrypto.ExportUncompressedPublicKey(restored)
+            .Should().Equal(PlayerIdentityCrypto.ExportUncompressedPublicKey(key));
+    }
+
     private static byte[] Wrap(string magic, byte[] payload)
     {
         byte[] prefix = Encoding.ASCII.GetBytes(magic);
