@@ -222,6 +222,28 @@ public class CustomOptionTests
     }
 
     [Fact]
+    public void CustomOption_ApplyLocalSelectionToField_RestoresLocalValueAfterHostPromotion()
+    {
+        var attr = new CustomOptionIntAttribute("Level", 0, 10, 2, 4, translationName: "Level");
+        var option = new CustomOption(attr, GetField(typeof(DummyOptions), nameof(DummyOptions.Level)));
+
+        int? observed = null;
+        attr.ValueChanged += value => observed = value;
+        option.UpdateSelection(1);
+
+        // ホストから受信した値が静的フィールドに残っている状態を再現する。
+        SetPrivateField(option, "_selection_Host", (byte)2);
+        SetPrivateField(option, "_value_Host", 4);
+        SetPrivateField(option, "_hasHostSelection", true);
+        DummyOptions.Level = 4;
+
+        option.ApplyLocalSelectionToField();
+
+        DummyOptions.Level.Should().Be(2);
+        observed.Should().Be(2);
+    }
+
+    [Fact]
     public void FormatOptionValue_NullValue_FallsBackWithoutThrowing()
     {
         var attr = new CustomOptionIntAttribute("Level", 0, 10, 2, 4, translationName: "Level");
