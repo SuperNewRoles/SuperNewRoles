@@ -141,7 +141,7 @@ ExcludeSpecificTasksFromSelection,特定のタスクを選出しない,Exclude s
 ExcludeUnlockSafeTaskFromSelection,金庫タスクを選出しない,Exclude safe task from selection,不选择保险柜任务,不選擇保險箱任務
 ExcludeResetBreakersTaskFromSelection,レバータスクを選出しない,Exclude lever task from selection,不选择拉杆任务,不選擇拉桿任務
 ExcludeClearAsteroidsTaskFromSelection,シューティングタスクを選出しない,Exclude shooting task from selection,不选择射击任务,不選擇射擊任務
-ExcludeSortRecordsTaskFromSelection,本整理タスクを選出しない,Exclude Sort Records task from selection,不选择整理记录任务,不選擇整理記錄任務
+ExcludeSortRecordsTaskFromSelection,資料整理タスクを選出しない,Exclude Sort Records task from selection,不选择整理记录任务,不選擇整理記錄任務
 ExcludeCatchFishTaskFromSelection,釣りタスクを選出しない,Exclude fishing task from selection,不选择钓鱼任务,不選擇釣魚任務
 ExcludeUploadDataTaskFromSelection,ダウンロードタスクを選出しない,Exclude download task from selection,不选择下载任务,不選擇下載任務
 ExcludeVentCleaningTaskFromSelection,ベント掃除タスクを選出しない,Exclude vent cleaning task from selection,不选择清理通风口任务,不選擇清理通風口任務
