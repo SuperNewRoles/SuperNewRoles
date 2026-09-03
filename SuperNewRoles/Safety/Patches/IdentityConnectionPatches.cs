@@ -109,27 +109,43 @@ internal static class OfficialPlayGate
         if (ConductJoinDecision.ShouldBlockRepeatJoinClick(_deferring, ConductPopup.IsBusy, WarningPopup.IsOpen))
             return false;
 
-        MonoBehaviour runner = host != null ? host : SafetyRuntime.FindCoroutineRunner(AmongUsClient.Instance);
+        // host は部屋一覧の行ボタンなど、一覧更新で作り直されることがある。
+        // その上で待機コルーチンを動かすと、取得中に破棄されてコルーチンが死に、
+        // _deferring が true のまま残って以降の参加が無言で捨てられる。
+        // 必ず永続するランナーを使う。
+        MonoBehaviour runner = SafetyRuntime.FindCoroutineRunner(host);
         if (runner == null)
-            runner = AmongUsClient.Instance;
+            runner = SafetyPopupUi.EnsureHost();
         if (runner == null) return true;
 
         _deferring = true;
-        runner.StartCoroutine(CoDefer(runner, resume).WrapToIl2Cpp());
+        runner.StartCoroutine(CoDefer(runner, host, resume).WrapToIl2Cpp());
         return false;
     }
 
-    private static IEnumerator CoDefer(MonoBehaviour runner, Action resume)
+    private static IEnumerator CoDefer(MonoBehaviour runner, MonoBehaviour host, Action resume)
     {
         bool allow = false;
         yield return WaitUntilAllowed(runner, value => allow = value).WrapToIl2Cpp();
         _deferring = false;
         if (!ConductJoinDecision.ShouldResumeDeferredJoin(allow, ConductPopup.WasDeclined))
+        {
+            ConductDeclineAbort.AbortJoinUi();
             yield break;
+        }
+        if (host == null)
+        {
+            Logger.Warning("Join target was destroyed while waiting for conduct; join cancelled");
+            yield break;
+        }
         _passthrough = true;
         try
         {
             resume();
+        }
+        catch (Exception error)
+        {
+            Logger.Warning($"Deferred join resume failed: {error.Message}");
         }
         finally
         {
@@ -240,7 +256,10 @@ internal static class OfficialPlayGate
         bool allow = false;
         yield return WaitUntilAllowed(client, value => allow = value).WrapToIl2Cpp();
         if (!ConductJoinDecision.ShouldResumeDeferredJoin(allow, ConductPopup.WasDeclined))
+        {
+            ConductDeclineAbort.AbortJoinUi();
             yield break;
+        }
         while (original != null && original.MoveNext())
             yield return original.Current;
     }
@@ -329,6 +348,15 @@ public static class JoinGameContinueConductPatch
 public static class MatchMakerJoinConductPatch
 {
     public static bool Prefix(MatchMakerGameButton __instance)
+    {
+        return OfficialPlayGate.AllowOrDefer(__instance, __instance.OnClick);
+    }
+}
+
+[HarmonyPatch(typeof(FindGameMoreInfoPopup), nameof(FindGameMoreInfoPopup.OnClick))]
+public static class FindGameMoreInfoJoinConductPatch
+{
+    public static bool Prefix(FindGameMoreInfoPopup __instance)
     {
         return OfficialPlayGate.AllowOrDefer(__instance, __instance.OnClick);
     }

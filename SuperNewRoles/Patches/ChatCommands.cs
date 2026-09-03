@@ -6,7 +6,6 @@ using HarmonyLib;
 using InnerNet;
 using SuperNewRoles.Modules;
 using SuperNewRoles.Roles;
-using SuperNewRoles.Safety;
 
 namespace SuperNewRoles.Patches;
 

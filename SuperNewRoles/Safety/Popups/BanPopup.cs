@@ -14,6 +14,7 @@ public static class BanPopup
     private static bool _swallowDisconnect;
     private static bool _suppressAutoShow;
     private static bool _closing;
+    private static int _closeGeneration;
 
     public static bool IsOpen => _popup;
     public static bool SwallowDisconnect => _swallowDisconnect || _popup;
@@ -61,7 +62,14 @@ public static class BanPopup
     public static void ShowNow(MonoBehaviour runner)
     {
         _suppressAutoShow = false;
-        if (_popup || _closing) return;
+        if (_closing)
+        {
+            // 前回分のクローズアニメ中に次のBAN要求が来た場合、古い完了コールバックが
+            // 新しい待機を誤って解放しないよう世代を進めて同期的に閉じる。
+            _closeGeneration++;
+            FinishClose();
+        }
+        if (_popup) return;
         BanInfo info = _pending;
         if (info == null && ConductGate.Last?.Banned == true)
             info = ConductGate.Last.Ban ?? new BanInfo();
@@ -123,6 +131,7 @@ public static class BanPopup
         MonoBehaviour host = SafetyPopupUi.EnsureHost();
         _popup = AssetManager.Instantiate(PrefabName, host.transform);
         _popup.SetActive(true);
+        WasDismissed = false;
         SafetyPopupUi.PlaceInFront(_popup);
 
         Transform title = _popup.transform.Find("Title");
@@ -177,7 +186,13 @@ public static class BanPopup
             return;
         }
         _closing = true;
-        SafetyPopupUi.PlayCloseAnimation(_popup, SafetyPopupUi.EnsureHost(), FinishClose);
+        int generation = ++_closeGeneration;
+        SafetyPopupUi.PlayCloseAnimation(_popup, SafetyPopupUi.EnsureHost(), () =>
+        {
+            if (generation != _closeGeneration)
+                return;
+            FinishClose();
+        });
     }
 
     private static void FinishClose()
@@ -186,8 +201,11 @@ public static class BanPopup
             Object.Destroy(_popup);
         _popup = null;
         _closing = false;
+        _pending = null;
         WasDismissed = true;
         if (AmongUsClient.Instance != null && AmongUsClient.Instance.AmConnected)
             AmongUsClient.Instance.ExitGame(DisconnectReasons.ExitGame);
+        else
+            _swallowDisconnect = false;
     }
 }

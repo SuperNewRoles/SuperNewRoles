@@ -10,6 +10,16 @@ public static class ConductDeclineAbort
 {
     public static void Run()
     {
+        AbortJoinUi();
+    }
+
+    /// <summary>
+    /// 参加が止まったとき、進行中の部屋接続と身元ハンドシェイクを打ち切る。
+    /// 拒否だけでなくBANなど他のブロック理由でも使う。メニューは捨てず、
+    /// 接続待ちだけ解除して作成・参加ボタンを再度押せるようにする。
+    /// </summary>
+    public static void AbortJoinUi()
+    {
         IdentityPreJoinGate.Reset();
         if (!ConductJoinDecision.ShouldRestoreConnectUiAfterDecline())
             return;
