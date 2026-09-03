@@ -7,8 +7,9 @@ namespace SuperNewRoles.Patches;
 public static class TaskSelectionExclusionPatch
 {
     public static void Prefix(
+        [HarmonyArgument(1)] int count,
         [HarmonyArgument(4)] ref Il2CppSystem.Collections.Generic.List<NormalPlayerTask> candidates)
     {
-        candidates = TaskSelectionExclusion.FilterCandidates(candidates);
+        candidates = TaskSelectionExclusion.FilterCandidates(candidates, count);
     }
 }

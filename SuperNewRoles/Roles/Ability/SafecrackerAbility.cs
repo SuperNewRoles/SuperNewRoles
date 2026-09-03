@@ -28,6 +28,7 @@ public class SafecrackerAbility : AbilityBase
     private int _killGuardCount;
     private int _exiledGuardCount;
     private Dictionary<CheckTasks, bool> _unlockedAbilities;
+    private readonly TaskSelectionExclusionConfig _taskSelectionExclusionConfig;
 
     private TaskOptionData _task;
 
@@ -52,6 +53,7 @@ public class SafecrackerAbility : AbilityBase
         float impostorLightTaskRate,
         float checkImpostorTaskRate,
         bool changeTaskPrefab,
+        TaskSelectionExclusionConfig taskSelectionExclusion,
         TaskOptionData task)
     {
         KillGuardTaskRate = killGuardTaskRate;
@@ -63,6 +65,7 @@ public class SafecrackerAbility : AbilityBase
         ImpostorLightTaskRate = impostorLightTaskRate;
         CheckImpostorTaskRate = checkImpostorTaskRate;
         ChangeTaskPrefab = changeTaskPrefab;
+        _taskSelectionExclusionConfig = taskSelectionExclusion;
 
         _unlockedAbilities = new();
         _killGuardCount = 0;
@@ -85,7 +88,8 @@ public class SafecrackerAbility : AbilityBase
         Player.AttachAbility(new CustomTaskAbility(
             isTaskTrigger: () => true,
             countsForCrewWin: () => false,
-            taskOptions: () => _task), new AbilityParentAbility(this));
+        taskOptions: () => _task,
+        taskSelectionExclusionConfig: _taskSelectionExclusionConfig), new AbilityParentAbility(this));
         Player.AttachAbility(new CustomTaskTypeAbility(TaskTypes.UnlockSafe, ChangeTaskPrefab, MapNames.Airship), new AbilityParentAbility(this));
         CheckAllAbilities();
     }

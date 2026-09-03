@@ -18,6 +18,8 @@ using BepInEx.Logging;
 using SuperNewRoles.Modules;
 using SuperNewRoles.Modules.Compatibility;
 using SuperNewRoles.Patches;
+using SuperNewRoles.Safety.Identity;
+using SuperNewRoles.Safety;
 using SuperNewRoles.Roles;
 using SuperNewRoles.CustomOptions;
 using UnityEngine.EventSystems;
@@ -141,6 +143,7 @@ public partial class SuperNewRolesPlugin : BasePlugin
         CustomColors.Load();
         ApiServerManager.Initialize();
         RequestInGameManager.Load();
+        PlayerIdentityStore.TryLoad();
         FixOver15();
         StartGameHandlerManager.Load();
 
@@ -340,6 +343,7 @@ public partial class SuperNewRolesPlugin : BasePlugin
         ClassInjector.RegisterTypeInIl2Cpp<LoadingUIComponent>();
         ClassInjector.RegisterTypeInIl2Cpp<ActionOnEsc>();
         ClassInjector.RegisterTypeInIl2Cpp<RequestInGameDraftAutoSaver>();
+        ClassInjector.RegisterTypeInIl2Cpp<ChatMessageLinkHandler>();
         ClassInjector.RegisterTypeInIl2Cpp<RocketDeadbody>();
         ClassInjector.RegisterTypeInIl2Cpp<VersionUpdatesComponent>();
         ClassInjector.RegisterTypeInIl2Cpp<ReleaseNoteComponent>();
@@ -360,6 +364,8 @@ public partial class SuperNewRolesPlugin : BasePlugin
         ClassInjector.RegisterTypeInIl2Cpp<RocketLauncherProjectile>();
         ClassInjector.RegisterTypeInIl2Cpp<RocketLauncherHeldPlayer>();
         ClassInjector.RegisterTypeInIl2Cpp<LoadingTextFadeRunner>();
+        ClassInjector.RegisterTypeInIl2Cpp<SafetyPopupHost>();
+        ClassInjector.RegisterTypeInIl2Cpp<SafetyMarkdownLinks>();
 
         try
         {

@@ -423,6 +423,9 @@ public class BattleRoyalMode : ModeBase<BattleRoyalMode>, IModeBase
             if (!playerTeams.TryGetValue(player.PlayerId, out int playerTeamId))
                 continue;
             Logger.Info($"BattleRoyalMode: SetupTeamModeRoles: {player.Data.PlayerName} : {playerTeamId}", "SetupTeamModeRoles");
+            // ここ通ってる時点でLocalPlayerはホストなので、自分のPlayerIdと比較してホストかを判定する
+            bool isLocalHostViewer = PlayerControl.LocalPlayer != null &&
+                player.PlayerId == PlayerControl.LocalPlayer.PlayerId;
 
             foreach (var otherPlayer in allPlayers)
             {
@@ -430,11 +433,11 @@ public class BattleRoyalMode : ModeBase<BattleRoyalMode>, IModeBase
                 if (player.PlayerId == otherPlayer.PlayerId)
                 {
                     // 自分自身
-                    if (player.PlayerId != 0) // ホスト以外
+                    if (!isLocalHostViewer)
                     {
                         player.RpcSetRoleDesync(RoleTypes.Impostor, player);
                     }
-                    else // ホスト
+                    else
                     {
                         player.StartCoroutine(player.CoSetRole(RoleTypes.Impostor, false));
                         Logger.Info($"{player.Data.PlayerName} : {player.Data.PlayerName} => {RoleTypes.Impostor}を実行(ホスト)", "RpcSetRoleDesync");
@@ -447,7 +450,7 @@ public class BattleRoyalMode : ModeBase<BattleRoyalMode>, IModeBase
                         playerTeamId == otherTeamId)
                     {
                         // 同じチーム = 味方 = Shapeshifter (赤い名前)
-                        if (player.PlayerId == 0) // ホスト以外
+                        if (isLocalHostViewer)
                         {
                             (otherPlayer).StartCoroutine(otherPlayer.CoSetRole(RoleTypes.Shapeshifter, false));
                             Logger.Info($"{player.Data.PlayerName} : {player.Data.PlayerName} => {RoleTypes.Shapeshifter}を実行(ホスト)", "RpcSetRoleDesync");
@@ -460,7 +463,7 @@ public class BattleRoyalMode : ModeBase<BattleRoyalMode>, IModeBase
                     else
                     {
                         // 違うチーム = 敵 = Scientist (青い名前)
-                        if (player.PlayerId == 0) // ホスト以外
+                        if (isLocalHostViewer)
                         {
                             (otherPlayer).StartCoroutine(otherPlayer.CoSetRole(RoleTypes.Scientist, false));
                             Logger.Info($"{player.Data.PlayerName} : {player.Data.PlayerName} => {RoleTypes.Shapeshifter}を実行(ホスト)", "RpcSetRoleDesync");
