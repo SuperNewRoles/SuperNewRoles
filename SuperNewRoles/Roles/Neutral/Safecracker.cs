@@ -24,9 +24,16 @@ class Safecracker : RoleBase<Safecracker>
             impostorLightTaskRate: SafecrackerIsImpostorLightTask,
             checkImpostorTaskRate: SafecrackerCheckImpostorTask,
             changeTaskPrefab: SafecrackerChangeTaskPrefab,
+            taskSelectionExclusion: CreateTaskSelectionExclusion(),
             task: SafecrackerTask
         )
     ];
+
+    internal static TaskSelectionExclusionConfig CreateTaskSelectionExclusion() => new(
+        () => SafecrackerExcludeSpecificTasksFromSelection,
+        (TaskTypes.ResetBreakers, () => SafecrackerExcludeResetBreakersTaskFromSelection),
+        (TaskTypes.ClearAsteroids, () => SafecrackerExcludeClearAsteroidsTaskFromSelection),
+        (TaskTypes.SortRecords, () => SafecrackerExcludeSortRecordsTaskFromSelection));
 
     public override QuoteMod QuoteMod { get; } = QuoteMod.SuperNewRoles;
     public override RoleTypes IntroSoundType { get; } = RoleTypes.Crewmate;
@@ -64,6 +71,18 @@ class Safecracker : RoleBase<Safecracker>
 
     [CustomOptionBool("SafecrackerChangeTaskPrefab", false, translationName: "SafecrackerChangeTaskPrefabSetting")]
     public static bool SafecrackerChangeTaskPrefab;
+
+    [CustomOptionBool("SafecrackerExcludeSpecificTasksFromSelection", false, translationName: "ExcludeSpecificTasksFromSelection")]
+    public static bool SafecrackerExcludeSpecificTasksFromSelection;
+
+    [CustomOptionBool("SafecrackerExcludeResetBreakersTaskFromSelection", false, translationName: "ExcludeResetBreakersTaskFromSelection", parentFieldName: nameof(SafecrackerExcludeSpecificTasksFromSelection))]
+    public static bool SafecrackerExcludeResetBreakersTaskFromSelection;
+
+    [CustomOptionBool("SafecrackerExcludeClearAsteroidsTaskFromSelection", false, translationName: "ExcludeClearAsteroidsTaskFromSelection", parentFieldName: nameof(SafecrackerExcludeSpecificTasksFromSelection))]
+    public static bool SafecrackerExcludeClearAsteroidsTaskFromSelection;
+
+    [CustomOptionBool("SafecrackerExcludeSortRecordsTaskFromSelection", false, translationName: "ExcludeSortRecordsTaskFromSelection", parentFieldName: nameof(SafecrackerExcludeSpecificTasksFromSelection))]
+    public static bool SafecrackerExcludeSortRecordsTaskFromSelection;
 
     [CustomOptionTask("SafecrackerTask", 3, 3, 3)]
     public static TaskOptionData SafecrackerTask;

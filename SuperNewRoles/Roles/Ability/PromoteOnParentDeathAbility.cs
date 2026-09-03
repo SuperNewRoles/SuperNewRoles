@@ -48,16 +48,24 @@ public class PromoteOnParentDeathAbility : AbilityBase
         if (exPlayer.IsDead()) return;
 
         RpcPromote(exPlayer, PromoteRole, PromoteRoleVanilla);
-        // Playerはこの時点でnullになってるのでexPlayerを渡す
-        OnPromoted?.Invoke(exPlayer);
     }
     [CustomRPC]
     public static void RpcPromote(ExPlayerControl player, RoleId roleId, RoleTypes roleType)
     {
         if (player.IsDead()) return;
+
+        // SetRole でこの Ability が外れる前に取る。受信側でも OnPromoted を実行する。
+        Action<ExPlayerControl> onPromoted = null;
+        foreach (var ability in player.GetAbilities<PromoteOnParentDeathAbility>())
+        {
+            if (ability.PromoteRole != roleId) continue;
+            onPromoted += ability.OnPromoted;
+        }
+
         player.SetRole(roleId);
         RoleManager.Instance.SetRole(player, roleType);
         NameText.UpdateAllNameInfo();
+        // Playerはこの時点でnullになってるのでexPlayerを渡す
+        onPromoted?.Invoke(player);
     }
 }
-

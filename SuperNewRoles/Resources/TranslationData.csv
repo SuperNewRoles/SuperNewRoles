@@ -140,6 +140,8 @@ CursedTaskOption,呪いタスク,Cursed Tasks,诅咒任务,詛咒任務
 ExcludeSpecificTasksFromSelection,特定のタスクを選出しない,Exclude specific tasks from selection,不选择特定任务,不選擇特定任務
 ExcludeUnlockSafeTaskFromSelection,金庫タスクを選出しない,Exclude safe task from selection,不选择保险柜任务,不選擇保險箱任務
 ExcludeResetBreakersTaskFromSelection,レバータスクを選出しない,Exclude lever task from selection,不选择拉杆任务,不選擇拉桿任務
+ExcludeClearAsteroidsTaskFromSelection,シューティングタスクを選出しない,Exclude shooting task from selection,不选择射击任务,不選擇射擊任務
+ExcludeSortRecordsTaskFromSelection,資料整理タスクを選出しない,Exclude Sort Records task from selection,不选择整理记录任务,不選擇整理記錄任務
 ExcludeCatchFishTaskFromSelection,釣りタスクを選出しない,Exclude fishing task from selection,不选择钓鱼任务,不選擇釣魚任務
 ExcludeUploadDataTaskFromSelection,ダウンロードタスクを選出しない,Exclude download task from selection,不选择下载任务,不選擇下載任務
 ExcludeVentCleaningTaskFromSelection,ベント掃除タスクを選出しない,Exclude vent cleaning task from selection,不选择清理通风口任务,不選擇清理通風口任務
@@ -311,6 +313,53 @@ RequestInGame.UpdateStatusTo,{0} に変更されました,Changed to {0},已更�
 RequestInGame.UpdateStatus,ステータス,Status,状态,狀態
 RequestInGameDeveloperNotice,このメッセージは見えてはいけないよ。,The developer lives in Japan and speaks only Japanese，so responses may take time or may be translated unnaturally.,开发者是日本人，因此回复可能需要时间，并且经日文翻译后的回复文本可能会有语法错误。,開發者居住在日本，只會說日語，因此回覆可能需要時間，或者翻譯可能不自然。
 RequestInGameCurrentJapanTime,現在の日本時間: {0},Current Japan Time: {0},当前日本时间：{0},當前日本時間：{0}
+
+# Public room safety
+SafetyConductTitle,SNRカスタムサーバー行動規範,SNR CustomServer Code of conduct,SNR自定义服务器行为规范,SNR自訂伺服器行為規範
+SafetyConductAgree,同意する,Agree,同意,同意
+SafetyConductDecline,同意しない,Decline,不同意,不同意
+SafetyBanned,この端末はこのサーバーで遊ぶことができません,This device cannot play on this server,此设备无法在此服务器游玩,此裝置無法在此伺服器遊玩
+SafetyBanTitle,あなたはBANされました,You have been banned,你已被封禁,你已被封禁
+SafetyBanBody,あなたはこのサーバーからBANされています。\n理由:{0}\n期限:{1}\nこの決定に異議がある場合は公式Discordサーバーまでお問い合わせください。\nお問い合わせId: {2},You are banned from this server.\nReason: {0}\nExpires: {1}\nIf you want to appeal this decision，contact the official Discord server.\nInquiry ID: {2},你已被此服务器封禁。\n理由:{0}\n期限:{1}\n如有异议请联系官方 Discord。\n咨询Id: {2},你已被此伺服器封禁。\n理由:{0}\n期限:{1}\n如有異議請聯絡官方 Discord。\n諮詢Id: {2}
+SafetyBanExpiresNever,無期限,Permanent,永久,永久
+SafetyBanOk,OK,OK,确定,確定
+SafetyConductBanLeave,{0}は行動規範に違反していたためBANされました,{0} was banned for violating the code of conduct,{0} 因违反行为规范已被封禁,{0} 因違反行為規範已被封禁
+SafetyWarningTitle,警告,Warning from SuperNewRoles,警告,警告
+SafetyWarningAck,確認しました,I understand,我已确认,我已確認
+SafetyBlockFailed,ブロックを送信できませんでした,Could not send the block,无法发送屏蔽,無法送出封鎖
+SafetyBlockListTitle,ブロック一覧,Block list,屏蔽列表,封鎖清單
+SafetyBlockListEmpty,ブロックしているプレイヤーはいません,You have not blocked anyone,尚未屏蔽任何玩家,尚未封鎖任何玩家
+SafetyUnblockNamed,{0} のブロックを解除,Unblock {0},取消屏蔽 {0},解除封鎖 {0}
+SafetyHasBlockedPlayer,（ブロック中のプレイヤーがいます）, (contains a blocked player),（房间内有已屏蔽的玩家）,（房間內有已封鎖的玩家）
+SafetyBlockedPlayerInRoom,あなたがブロックしているプレイヤー「{0}」が入室しています。,The player you blocked ("{0}") is in this room.,你屏蔽的玩家「{0}」正在房间内。,你封鎖的玩家「{0}」正在房間內。
+SafetyBlockedPlayerInRoomUnknown,あなたがブロックしているプレイヤーが入室しています。,A player you blocked is in this room.,你屏蔽的玩家正在房间内。,你封鎖的玩家正在房間內。
+SafetyHostBlockRejected,{0} はホストのブロックにより入室できませんでした,{0} could not join because the host blocked them,{0} 因房主屏蔽无法加入,{0} 因房主封鎖無法加入
+SafetyHostBlockedDisconnect,ホストにブロックされています,You are blocked by the host,你已被房主屏蔽,你已被房主封鎖
+SafetyHostBlockLeave,{0}はホストにブロックされたため退出しました,{0} left because the host blocked them,{0} 因被房主屏蔽而退出,{0} 因被房主封鎖而退出
+SafetyYouBlockedHostDisconnect,ブロックしたホストの部屋には参加できません,You cannot join a room hosted by a player you blocked,无法加入已屏蔽房主的房间,無法加入已封鎖房主的房間
+SafetyBlocked,{0} をブロックしました,Blocked {0},已屏蔽 {0},已封鎖 {0}
+SafetyReported,{0}を通報しました。,Reported {0}.,【个人消息】已举报 {0}。,【個人訊息】已檢舉 {0}。
+SafetyReportFailed,通報を送信できませんでした,Could not send the report,无法发送举报,無法送出檢舉
+SafetyUnblocked,ブロックを解除しました,Block removed,已取消屏蔽,已解除封鎖
+SafetyNoteSaved,ノートを保存しました,Note saved,已保存备注,已儲存備註
+SafetyReportDestinationSnr,SuperNewRolesサーバーへの通報,Report to SuperNewRoles servers,向 SuperNewRoles 服务器举报,向 SuperNewRoles 伺服器檢舉
+SafetyReportDestinationVanilla,Among Us 公式への通報,Report to Among Us official,向 Among Us 官方举报,向 Among Us 官方檢舉
+SafetyReportReason.inappropriate_name,不適切な名前,Inappropriate name,不当的名字,不當的名字
+SafetyReportReason.inappropriate_chat,不適切な発言,Inappropriate chat,不当发言,不當發言
+SafetyReportReason.cheating,チート,Cheating / hacking,作弊,作弊
+SafetyReportReason.harassment,嫌がらせ,Harassment,骚扰,騷擾
+SafetyReportReason.other,その他,Other,其他,其他
+SafetyNotInThisMatch,この試合にいないプレイヤーには通報・ブロックできません,You can only report or block players in this match,只能举报或屏蔽本局玩家,只能檢舉或封鎖本局玩家
+SafetyTargetInvalid,対象情報が無効です,Target information is invalid,目标信息无效,目標資訊無效
+SafetyRecentPlayersUnavailable,最近のプレイヤー情報を取得できませんでした,Could not retrieve recent player information,无法获取最近的玩家信息,無法取得最近的玩家資訊
+SafetyUnblockUnavailable,ブロック解除を実行できる状態ではありません,Unblock cannot be performed in the current state,当前无法执行取消屏蔽,目前無法執行解除封鎖
+SafetyNoteSaveUnavailable,メモを保存できる状態ではありません,Note cannot be saved in the current state,当前无法保存备注,目前無法儲存備註
+SafetyConductFetching,行動規範を確認しています…,Checking the code of conduct…,正在确认行为规范…,正在確認行為規範…
+SafetyReportActionedTitle,【報告されたプレイヤーの処置について】,Regarding action taken on a reported player,关于被举报玩家的处理,關於被檢舉玩家的處置
+SafetyReportActionedBody,報告されたプレイヤーに対して、SuperNewRoles Teamが処置を行いました。\n健全な環境づくりにご協力いただきありがとうございます！,Action has been taken by the SuperNewRoles Team against the reported player.\nThank you for helping us maintain a healthy environment!,针对被举报的玩家，SuperNewRoles Team 已采取处理措施。\n感谢您为营造健康环境所做的贡献！,對於被檢舉的玩家，SuperNewRoles Team 已採取處置。\n感謝您為營造健康環境所做的貢獻！
+SafetyReportActionedAuthor,SuperNewRoles Team,SuperNewRoles Team,SuperNewRoles Team,SuperNewRoles Team
+ClientOptions.NotifyHostWhenBlockedJoin,ブロック入室拒否を通知,Notify when a blocked player is denied,屏蔽玩家被拒绝时通知,封鎖玩家被拒絕時通知
+ClientOptions.OpenBlockList,ブロック一覧を開く,Open block list,打开屏蔽列表,開啟封鎖清單
 
 # RoleOptionMenu
 RoleOptionMenuType.Impostor,インポスター,Impostor,伪装者,偽裝者

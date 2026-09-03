@@ -651,6 +651,7 @@ public static class AssetManager
     public static class OnActiveSceneChangePatch
     {
         private static int _pendingUnloadVersion;
+        private const float DeferredUnloadFallbackDelaySeconds = 0.05f;
 
         public static void Postfix(AmongUsClient __instance)
         {
@@ -661,11 +662,47 @@ public static class AssetManager
             try
             {
                 int version = ++_pendingUnloadVersion;
-                __instance.StartCoroutine(UnloadAllAssetsDeferred(version).WrapToIl2Cpp());
+                MonoBehaviour runner = GetCoroutineRunner(__instance);
+                if (runner != null)
+                {
+                    runner.StartCoroutine(UnloadAllAssetsDeferred(version).WrapToIl2Cpp());
+                    return;
+                }
+
+                // シーン遷移直後は AmongUsClient が未生成のことがあるため LateTask で遅延実行する
+                new LateTask(
+                    () => RunDeferredUnloadIfCurrent(version),
+                    DeferredUnloadFallbackDelaySeconds,
+                    "AssetManager.DeferredUnload",
+                    log: false);
             }
             catch (Exception e)
             {
                 Logger.Error($"Failed to schedule deferred asset unload: {e}", "AssetManager");
+            }
+        }
+
+        private static MonoBehaviour GetCoroutineRunner(AmongUsClient preferred)
+        {
+            if (AmongUsClient.Instance != null)
+                return AmongUsClient.Instance;
+            if (preferred != null)
+                return preferred;
+            return ModManager.Instance;
+        }
+
+        private static void RunDeferredUnloadIfCurrent(int version)
+        {
+            if (version != _pendingUnloadVersion)
+                return;
+
+            try
+            {
+                UnloadAllAssets();
+            }
+            catch (Exception e)
+            {
+                Logger.Error($"UnloadAllAssets failed: {e}", "AssetManager");
             }
         }
 
@@ -678,14 +715,7 @@ public static class AssetManager
             if (version != _pendingUnloadVersion)
                 yield break;
 
-            try
-            {
-                UnloadAllAssets();
-            }
-            catch (Exception e)
-            {
-                Logger.Error($"UnloadAllAssets failed: {e}", "AssetManager");
-            }
+            RunDeferredUnloadIfCurrent(version);
         }
     }
 }

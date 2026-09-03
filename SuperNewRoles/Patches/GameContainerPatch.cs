@@ -23,6 +23,10 @@ public static class GameContainerAwakePatch
         RoomName.text = __instance.gameListing.HostName;
         RoomName.name = "RoomNameText";
         RoomName.transform.localPosition = new Vector3(-0.92f, 0f, -4f);
+        if (!string.IsNullOrEmpty(__instance.gameListing.HostName) && __instance.gameListing.HostName.StartsWith("⚠ "))
+            RoomName.color = new Color(1f, 0.82f, 0.2f);
+        else
+            RoomName.color = Color.white;
 
         // parentのparent
         TextMeshPro RoomLanguage = null;

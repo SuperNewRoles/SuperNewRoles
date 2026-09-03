@@ -107,8 +107,9 @@ public class MadKillerAbility : AbilityBase
 
     private void Awaken()
     {
+        if (_isAwakened || Player.IsDead()) return;
+        // 送信前に立てて、同フレームの FixedUpdate 再入で二重送信しない。
         _isAwakened = true;
-        if (Player.IsDead()) return;
         RpcMadkillerAwaken(Player);
     }
 
@@ -116,7 +117,11 @@ public class MadKillerAbility : AbilityBase
     public static void RpcMadkillerAwaken(ExPlayerControl player)
     {
         if (player.IsDead()) return;
+        var ability = player.GetAbility<MadKillerAbility>();
         RoleManager.Instance.SetRole(player, RoleTypes.Impostor);
+        // 受信側でも覚醒状態を共有する。名前色や試合終了判定がローカルだけ進むのを防ぐ。
+        if (ability != null)
+            ability._isAwakened = true;
         NameText.UpdateAllNameInfo();
     }
 

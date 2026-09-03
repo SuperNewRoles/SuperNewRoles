@@ -1,5 +1,6 @@
 using BepInEx.Unity.IL2CPP.Utils.Collections;
 using SuperNewRoles.Modules;
+using SuperNewRoles.Safety;
 using TMPro;
 using UnityEngine;
 using UnityEngine.Events;
@@ -14,7 +15,7 @@ public class MessageListUI
         messageListUI.transform.localPosition = new(0f, 0f, -10f);
         bool active = true;
         LoadingUI.ShowLoadingUI(parent, () => ModTranslation.GetString("RequestInGameLoading"), () => active);
-        AmongUsClient.Instance.StartCoroutine(RequestInGameManager.GetThreads(threads =>
+        AmongUsClient.Instance.StartCoroutine(SafetyMailbox.LoadThreads(threads =>
         {
             if (threads == null)
             {
@@ -65,6 +66,6 @@ public class MessageListUI
                     scroller.ContentYBounds.max = index <= 5 ? 0 : index == 6 ? 1.3f : (index - 6f) * 1.35f + 1.3f;
                 }, 0f, "MessageListUI");
             }
-        }, unreadOnly: true).WrapToIl2Cpp());
+        }).WrapToIl2Cpp());
     }
 }

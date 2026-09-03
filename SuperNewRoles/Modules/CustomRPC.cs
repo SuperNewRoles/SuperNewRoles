@@ -94,9 +94,14 @@ public static class CustomRPCManager
     /// </summary>
     public const byte SNRNetworkTransformRpc = SNRBaseRpcId - 2;
     /// <summary>
-    /// RPCの受信状態を追跡するフラグ
+    /// 受信した RPC の元メソッド。
+    ///
+    /// 受信処理では元メソッドを reflection 経由で呼び出すため、
+    /// その呼び出しに入った Harmony prefix だけが送信を抑止する必要があります。
+    /// RPC 全体で共有する bool にすると、別の RPC の送信まで誤って抑止されます。
     /// </summary>
-    private static bool IsRpcReceived = false;
+    [ThreadStatic]
+    private static MethodBase? ReceivedRpcMethod;
 
     /// <summary>
     /// Writeメソッドの型ごとの処理をキャッシュする辞書
@@ -211,6 +216,18 @@ public static class CustomRPCManager
         return "C" + callId.ToString(CultureInfo.InvariantCulture);
     }
 
+    /// <summary>
+    /// 受信処理中の元メソッドかどうかを確認し、該当する場合だけ送信抑止状態を消費します。
+    /// </summary>
+    internal static bool TryConsumeReceivedRpc(MethodBase method)
+    {
+        if (!Equals(ReceivedRpcMethod, method))
+            return false;
+
+        ReceivedRpcMethod = null;
+        return true;
+    }
+
     private static string FormatRpcSendLogFromWriter(int rpcId, MessageWriter writer, int payloadStart)
     {
         int count = writer.Position - payloadStart;
@@ -311,38 +328,13 @@ public static class CustomRPCManager
         // RPC送信用の新しいメソッドを定義
         static bool NewMethod(object? __instance, object[] __args, MethodBase __originalMethod)
         {
-            // 重複RPC送信を防ぐ
-            if (IsRpcReceived)
-            {
-                IsRpcReceived = false;
+            // 受信処理から呼ばれた元メソッド自身の再送だけを防ぐ。
+            // 別の RPC の受信後や、受信処理中に発生した別 RPC は送信する。
+            if (TryConsumeReceivedRpc(__originalMethod))
                 return true;
-            }
 
-            // RPC ID をキャッシュから取得
-            var rpcId = RpcIdsByMethod[__originalMethod];
-            var onlyOther = OnlyOtherFlagsByMethod[__originalMethod];
-            // RPC送信の準備
-            var writer = AmongUsClient.Instance.StartRpcImmediately(PlayerControl.LocalPlayer.NetId, SNRRpcId, SendOption.Reliable, -1);
-            int payloadStart = writer.Position;
-            writer.Write(rpcId);
-
-            // インスタンスメソッドならインスタンスを送信
-            if (__instance != null && InstanceMethodSet.Contains(__originalMethod))
-            {
-                writer.Write(__instance, __originalMethod.DeclaringType);
-            }
-
-            // 引数を書き込み
-            var originalParamTypes = ParamTypesByMethod[__originalMethod];
-            for (int i = 0; i < __args.Length; i++)
-            {
-                writer.Write(__args[i], originalParamTypes[i]);
-            }
-
-            // Finish 前にワイヤーバイトをスナップショット（rpcId から復元可能）
-            Logger.Info(FormatRpcSendLogFromWriter(rpcId, writer, payloadStart));
-            AmongUsClient.Instance.FinishRpcImmediately(writer);
-            return !onlyOther;
+            SendRpc(__originalMethod, __instance, __args);
+            return !OnlyOtherFlagsByMethod[__originalMethod];
         }
         Logger.Info($"Registering RPC: {method.Name} {id} {hash}");
 
@@ -353,6 +345,37 @@ public static class CustomRPCManager
         // メソッドの中身をRPCを送信するものに入れ替える
         return () => SuperNewRolesPlugin.Instance.Harmony.Patch(method, new HarmonyMethod(newHarmonyMethod.Method));
     }
+
+    /// <summary>
+    /// 登録済み RPC の送信だけを行います。ローカルの元メソッドは呼び出しません。
+    /// </summary>
+    internal static void SendRpc(MethodBase method, object? instance, object[] args)
+    {
+        // RPC ID をキャッシュから取得
+        var rpcId = RpcIdsByMethod[method];
+        // RPC送信の準備
+        var writer = AmongUsClient.Instance.StartRpcImmediately(PlayerControl.LocalPlayer.NetId, SNRRpcId, SendOption.Reliable, -1);
+        int payloadStart = writer.Position;
+        writer.Write(rpcId);
+
+        // インスタンスメソッドならインスタンスを送信
+        if (instance != null && InstanceMethodSet.Contains(method))
+        {
+            writer.Write(instance, method.DeclaringType);
+        }
+
+        // 引数を書き込み
+        var paramTypes = ParamTypesByMethod[method];
+        for (int i = 0; i < args.Length; i++)
+        {
+            writer.Write(args[i], paramTypes[i]);
+        }
+
+        // Finish 前にワイヤーバイトをスナップショット（rpcId から復元可能）
+        Logger.Info(FormatRpcSendLogFromWriter(rpcId, writer, payloadStart));
+        AmongUsClient.Instance.FinishRpcImmediately(writer);
+    }
+
     private static string GetMethodFullName(MethodInfo method)
     {
         string declaringTypeName = method.DeclaringType != null ? GetStableTypeName(method.DeclaringType) : "<UnknownType>";
@@ -452,9 +475,18 @@ public static class CustomRPCManager
                             }
                         }
 
-                        IsRpcReceived = true;
-                        Logger.Info($"Invoking RPC: {method.Name}");
-                        method.Invoke(instance, argsRecv);
+                        ReceivedRpcMethod = method;
+                        try
+                        {
+                            Logger.Info($"Invoking RPC: {method.Name}");
+                            method.Invoke(instance, argsRecv);
+                        }
+                        finally
+                        {
+                            // Harmony prefix が実行されない経路や、元メソッドが例外を投げる経路でも
+                            // 次のローカル RPC に受信状態を持ち越さない。
+                            ReceivedRpcMethod = null;
+                        }
                     }
                     catch (Exception ex)
                     {

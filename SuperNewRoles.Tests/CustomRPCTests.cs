@@ -6,6 +6,7 @@ using System.IO;
 using System.Linq;
 using System.Reflection;
 using System.Text;
+using System.Threading;
 using FluentAssertions;
 using SuperNewRoles;
 using SuperNewRoles.Modules;
@@ -45,6 +46,8 @@ public class CustomRPCTests
     }
 
     private static void RpcMapEntryTarget() { }
+    private static void ReceivedRpcTargetA() { }
+    private static void ReceivedRpcTargetB() { }
 
     [Fact]
     public void RpcMapEntry_IsIdentical_AcrossCultures()
@@ -346,4 +349,114 @@ public class CustomRPCTests
         CustomRPCManager.FormatRpcCallIdLog(0).Should().Be("C0");
         CustomRPCManager.FormatRpcCallIdLog(byte.MaxValue).Should().Be("C255");
     }
+
+    private static FieldInfo ReceivedRpcMethodField()
+    {
+        var field = typeof(CustomRPCManager).GetField(
+            "ReceivedRpcMethod",
+            BindingFlags.Static | BindingFlags.NonPublic);
+        field.Should().NotBeNull();
+        return field!;
+    }
+
+    [Fact]
+    public void ReceivedRpcSuppression_IsScopedToTheReceivedMethod()
+    {
+        var receivedRpcMethodField = ReceivedRpcMethodField();
+        var methodA = typeof(CustomRPCTests).GetMethod(
+            nameof(ReceivedRpcTargetA),
+            BindingFlags.Static | BindingFlags.NonPublic)!;
+        var methodB = typeof(CustomRPCTests).GetMethod(
+            nameof(ReceivedRpcTargetB),
+            BindingFlags.Static | BindingFlags.NonPublic)!;
+
+        try
+        {
+            receivedRpcMethodField.SetValue(null, methodA);
+
+            // A pending receive must not suppress an unrelated local RPC (B).
+            CustomRPCManager.TryConsumeReceivedRpc(methodB).Should().BeFalse();
+            // The receive token remains available for the method that was actually received (A).
+            CustomRPCManager.TryConsumeReceivedRpc(methodA).Should().BeTrue();
+            // The token is one-shot, just like the original-method invocation.
+            CustomRPCManager.TryConsumeReceivedRpc(methodA).Should().BeFalse();
+        }
+        finally
+        {
+            receivedRpcMethodField.SetValue(null, null);
+        }
+    }
+
+    [Fact]
+    public void ReceivedRpcSuppression_DoesNotCrossThreads()
+    {
+        var receivedRpcMethodField = ReceivedRpcMethodField();
+        var method = typeof(CustomRPCTests).GetMethod(
+            nameof(ReceivedRpcTargetA),
+            BindingFlags.Static | BindingFlags.NonPublic)!;
+
+        try
+        {
+            receivedRpcMethodField.SetValue(null, method);
+            bool consumedOnOtherThread = true;
+            var thread = new Thread(() =>
+            {
+                consumedOnOtherThread = CustomRPCManager.TryConsumeReceivedRpc(method);
+            });
+            thread.Start();
+            thread.Join();
+
+            consumedOnOtherThread.Should().BeFalse();
+            CustomRPCManager.TryConsumeReceivedRpc(method).Should().BeTrue();
+        }
+        finally
+        {
+            receivedRpcMethodField.SetValue(null, null);
+        }
+    }
+
+    [Fact]
+    public void ReceivedRpcSuppression_MatchesEquivalentMethodInfoInstances()
+    {
+        var receivedRpcMethodField = ReceivedRpcMethodField();
+        var viaGetMethod = typeof(PromoteOnParentDeathAbility).GetMethod(
+            nameof(PromoteOnParentDeathAbility.RpcPromote),
+            BindingFlags.Public | BindingFlags.Static);
+        var viaGetMethods = typeof(PromoteOnParentDeathAbility)
+            .GetMethods(BindingFlags.Public | BindingFlags.Static)
+            .Single(m => m.Name == nameof(PromoteOnParentDeathAbility.RpcPromote));
+
+        viaGetMethod.Should().NotBeNull();
+        Equals(viaGetMethod, viaGetMethods).Should().BeTrue();
+
+        try
+        {
+            receivedRpcMethodField.SetValue(null, viaGetMethods);
+            CustomRPCManager.TryConsumeReceivedRpc(viaGetMethod!).Should().BeTrue();
+        }
+        finally
+        {
+            receivedRpcMethodField.SetValue(null, null);
+        }
+    }
+
+    [Fact]
+    public void RpcIdsByMethod_LooksUpRpcPromote_FromGetMethod()
+    {
+        EnsurePluginLogger();
+        CustomRPCManager.Load();
+
+        var method = typeof(PromoteOnParentDeathAbility).GetMethod(
+            nameof(PromoteOnParentDeathAbility.RpcPromote),
+            BindingFlags.Public | BindingFlags.Static);
+        method.Should().NotBeNull();
+
+        var rpcIdsField = typeof(CustomRPCManager).GetField(
+            "RpcIdsByMethod",
+            BindingFlags.Static | BindingFlags.NonPublic);
+        rpcIdsField.Should().NotBeNull();
+        var rpcIds = (System.Collections.IDictionary)rpcIdsField!.GetValue(null)!;
+        rpcIds.Contains(method!).Should().BeTrue();
+    }
+
 }

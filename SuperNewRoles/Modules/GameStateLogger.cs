@@ -34,7 +34,10 @@ public static class GameStateLogger
     private static string FormatPlayer(ExPlayerControl ex)
     {
         if (ex == null) return "null";
-        return $"{ex.PlayerId}:{ex.Player?.name ?? "??"}({ex.Role})";
+        PlayerControl player = ex.Player;
+        if (player == null || player.Data == null)
+            return $"{ex.PlayerId}:??({ex.Role})";
+        return $"{ex.PlayerId}:{player.Data.PlayerName}({ex.Role})";
     }
 
     private static string FormatPlayer(PlayerControl pc)

@@ -209,8 +209,7 @@ public abstract class CustomButtonBase : AbilityBase
             DecreaseTimer();
         }
 
-        bool isEffectActive = buttonEffect?.isEffectActive ?? false;
-        if (isEffectActive)
+        if (buttonEffect?.isEffectActive == true)
             buttonEffect.OnFixedUpdate(actionButton);
 
         if (!active)
@@ -226,10 +225,13 @@ public abstract class CustomButtonBase : AbilityBase
         bool isCoolingDown = Timer > 0f;
         bool canUseByCondition = CheckIsAvailable(); // クールダウン以外の使用条件をチェック
         bool canUseNow = !isCoolingDown && canUseByCondition;
+        bool isEffectActive = buttonEffect?.isEffectActive ?? false;
 
         // --- パイチャートと数字の表示更新 ---
-        // この処理は常に呼び出す。不要な場合はSetCoolDownメソッド内部で非表示になる。
-        actionButton.SetCoolDown(Timer, DefaultTimerAdjusted);
+        // 効果中の表示は IButtonEffect.OnFixedUpdate が EffectTimer で更新する。
+        // ここで通常の Timer を設定すると、持続時間がクールダウン値で上書きされる。
+        if (!isEffectActive)
+            actionButton.SetCoolDown(Timer, DefaultTimerAdjusted);
 
         // --- 状態に基づいたボタンの見た目と入力処理 ---
         if (isEffectActive)
