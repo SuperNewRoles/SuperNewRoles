@@ -38,6 +38,7 @@ public static class SNRURLs
     public const string SNRCS_JP = "https://cs.supernewroles.com";
     public const string SNRCS_USEast = "https://cs-useast.supernewroles.com";
     public const string ReportInGameAPI = "https://reports-api.supernewroles.com/api/v3";
+    public const string IdentityAPI = "https://identity.supernewroles.com";
     public const string UpdateURL = "https://update.supernewroles.com/";
     public const string GithubAPITags = "https://api.github.com/repos/supernewroles/SuperNewRoles/releases/tags";
     public const string JoinRoomHost = "joinroom.supernewroles.com";
