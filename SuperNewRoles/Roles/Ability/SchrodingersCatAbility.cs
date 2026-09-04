@@ -104,6 +104,7 @@ public class SchrodingersCatAbility : AbilityBase
     }
     private void OnWrapUp(WrapUpEventData data)
     {
+        _isProcessingKill = false;
         if (ModHelpers.Not(data.exiled?.PlayerId == Player.PlayerId && Data.BeCrewOnExile && CurrentTeam == SchrodingersCatTeam.SchrodingersCat))
             return;
         CurrentTeam = SchrodingersCatTeam.Crewmate;
@@ -166,7 +167,6 @@ public class SchrodingersCatAbility : AbilityBase
             {
                 data.RefTarget.MyPhysics.body.velocity = Vector2.zero;
                 DestroyableSingleton<HudManager>.Instance.KillOverlay.ShowKillAnimation(data.Killer.Data, data.RefTarget.Data);
-            }
         }
     }
     /// <summary>

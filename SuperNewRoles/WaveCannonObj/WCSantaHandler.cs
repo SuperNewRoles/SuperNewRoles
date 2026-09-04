@@ -25,6 +25,7 @@ public class WCSantaHandler : MonoBehaviour
 
     /// <summary>
     /// サンタが撃ち終わり後も死亡判定を継続するために、発射者情報を保持する。
+    ///  _isFlipXに発射した瞬間のプレイヤーの反転状態を保存
     /// </summary>
     public void Init(WaveCannonAbility ability, bool isFlipX)
     {
