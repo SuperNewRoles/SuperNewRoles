@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Net.Http;
@@ -9,6 +10,8 @@ using System.Threading.Tasks;
 using Il2CppInterop.Runtime;
 using BepInEx.Unity.IL2CPP.Utils.Collections;
 using SuperNewRoles.Modules;
+using SuperNewRoles.Safety.Api;
+using SuperNewRoles.Safety.Identity;
 using UnityEngine.Networking;
 using System.Text;
 using System.Collections;
@@ -33,15 +36,21 @@ public class RequestInGameManager
         public string title { get; }
         public string first_message { get; }
         public DateTime created_at { get; }
+        public DateTime updated_at { get; }
         public bool unread { get; }
+        public bool isSafetyNotice { get; }
+        public IReadOnlyList<DateTime> safetyEvents { get; }
         public StatusData currentStatus { get; }
-        public Thread(string thread_id, string title, string first_message, string created_at, bool unread, string status, string color, string mark)
+        public Thread(string thread_id, string title, string first_message, string created_at, bool unread, string status, string color, string mark, string updated_at = null, bool isSafetyNotice = false, IReadOnlyList<DateTime> safetyEvents = null)
         {
             this.thread_id = thread_id;
             this.title = title;
             this.first_message = first_message;
-            this.created_at = DateTime.Parse(created_at);
+            this.created_at = ParseThreadTime(created_at, DateTime.UtcNow);
+            this.updated_at = ParseThreadTime(updated_at, this.created_at);
             this.unread = unread;
+            this.isSafetyNotice = isSafetyNotice;
+            this.safetyEvents = safetyEvents ?? Array.Empty<DateTime>();
             // 何もなかったら黄緑色●のオープン表記
             this.currentStatus = new StatusData(status, string.IsNullOrEmpty(color) ? "#32CD32" : color, string.IsNullOrEmpty(mark) ? "●" : mark);
         }
@@ -94,6 +103,27 @@ public class RequestInGameManager
             this.sender = sender;
         }
     }
+    private static DateTime ParseThreadTime(string raw, DateTime fallback)
+    {
+        // RequestInGame API は naive UTC（末尾 Z なし）を返すことがある。ローカル時刻扱いすると受信箱の時系列が崩れる。
+        if (!string.IsNullOrEmpty(raw) &&
+            DateTimeOffset.TryParse(raw, CultureInfo.InvariantCulture, DateTimeStyles.AssumeUniversal | DateTimeStyles.AdjustToUniversal, out DateTimeOffset parsed))
+            return parsed.UtcDateTime;
+        return fallback;
+    }
+
+    private static T Get<T>(Dictionary<string, object> dict, string key, T defaultValue = default)
+    {
+        if (dict == null)
+            return defaultValue;
+        if (dict.TryGetValue(key, out var value))
+        {
+            if (value is T result)
+                return result;
+        }
+        return defaultValue;
+    }
+
     private static string Token = string.Empty;
     private static bool ValidatedToken = false;
     private static string FilePath = Path.Combine(SuperNewRolesPlugin.SecretDirectory, "RequestInGame.token");
@@ -195,7 +225,7 @@ public class RequestInGameManager
         yield return GetOrCreateToken(t => token = t, createIfMissing: false);
         if (string.IsNullOrEmpty(token))
         {
-            callback(null);
+            callback(new List<Thread>());
             yield break;
         }
 
@@ -219,17 +249,18 @@ public class RequestInGameManager
                 {
                     if (threadObj is Dictionary<string, object> threadDict)
                     {
-                        string title = threadDict.TryGetValue("title", out var titleVal) && titleVal is string titleStr ? titleStr : string.Empty;
-                        string threadId = threadDict.TryGetValue("thread_id", out var idVal) && idVal is string idStr ? idStr : string.Empty;
-                        string firstMessage = threadDict.TryGetValue("message", out var msgVal) && msgVal is string msgStr ? msgStr : string.Empty;
-                        string createdAt = threadDict.TryGetValue("created_at", out var caVal) && caVal is string caStr ? caStr : string.Empty;
-                        bool unread = threadDict.TryGetValue("has_unread_messages", out var unreadVal) && unreadVal is bool unreadBool ? unreadBool : false;
-                        Dictionary<string, object> statusDict = threadDict.TryGetValue("status", out var statusVal) && statusVal is Dictionary<string, object> statusDict2 ? statusDict2 : null;
-                        string status = statusDict != null && statusDict.TryGetValue("status", out var statusStr) && statusStr is string statusStr2 ? statusStr2 : string.Empty;
+                        string title = Get<string>(threadDict, "title");
+                        string threadId = Get<string>(threadDict, "thread_id");
+                        string firstMessage = Get<string>(threadDict, "message");
+                        string createdAt = Get<string>(threadDict, "created_at");
+                        string updatedAt = Get<string>(threadDict, "last_updated");
+                        bool unread = Get<bool>(threadDict, "has_unread_messages");
+                        Dictionary<string, object> statusDict = Get<Dictionary<string, object>>(threadDict, "status");
+                        string status = Get<string>(statusDict, "status");
                         // 16進数をColor32に変換
-                        string color = statusDict != null && statusDict.TryGetValue("color", out var colorVal) && colorVal is string colorStr ? colorStr : string.Empty;
-                        string mark = statusDict != null && statusDict.TryGetValue("mark", out var markVal) && markVal is string markStr ? markStr : string.Empty;
-                        threads.Add(new Thread(threadId, title, firstMessage, createdAt, unread, status, color, mark));
+                        string color = Get<string>(statusDict, "color");
+                        string mark = Get<string>(statusDict, "mark");
+                        threads.Add(new Thread(threadId, title, firstMessage, createdAt, unread, status, color, mark, updatedAt));
                     }
                 }
             }
@@ -384,26 +415,32 @@ public class RequestInGameManager
 
     public static IEnumerator hasNotifications(Action<bool> callback)
     {
+        bool hasNotifications = false;
         string token = string.Empty;
         yield return GetOrCreateToken(t => token = t, createIfMissing: false);
-        if (string.IsNullOrEmpty(token))
+        if (!string.IsNullOrEmpty(token))
         {
-            callback(false);
+            string url = $"{SNRURLs.ReportInGameAPI}/getNotification/";
+            var request = UnityWebRequest.Get(url);
+            request.SetRequestHeader("Authorization", $"Bearer {token}");
+            yield return request.SendWebRequest();
+
+            if (request.result == UnityWebRequest.Result.Success)
+            {
+                var root = JsonParser.Parse(request.downloadHandler.text) as Dictionary<string, object>;
+                if (root != null && root.TryGetValue("notification", out var notificationVal) && notificationVal is bool notificationBool)
+                    hasNotifications = notificationBool;
+            }
+            request.Dispose();
+        }
+        if (hasNotifications)
+        {
+            callback(true);
             yield break;
         }
-
-        string url = $"{SNRURLs.ReportInGameAPI}/getNotification/";
-        var request = UnityWebRequest.Get(url);
-        request.SetRequestHeader("Authorization", $"Bearer {token}");
-        yield return request.SendWebRequest();
-
-        bool hasNotifications = false;
-        if (request.result == UnityWebRequest.Result.Success)
-        {
-            var root = JsonParser.Parse(request.downloadHandler.text) as Dictionary<string, object>;
-            if (root != null && root.TryGetValue("notification", out var notificationVal) && notificationVal is bool notificationBool)
-                hasNotifications = notificationBool;
-        }
-        callback(hasNotifications);
+        bool identityUnread = false;
+        if (PlayerIdentityStore.HasKey())
+            yield return PlayerSafetyApiClient.GetNotices(inbox => identityUnread = inbox != null && inbox.Unread);
+        callback(identityUnread);
     }
 }

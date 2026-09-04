@@ -133,6 +133,10 @@ public static class ClientOptions
                     () => "ClientOptions.CanUseDataConnection",
                     () => ConfigRoles.CanUseDataConnection.Value,
                     value => ConfigRoles.CanUseDataConnection.Value = value),
+                ClientOptionEntry.Toggle(
+                    () => "ClientOptions.NotifyHostWhenBlockedJoin",
+                    () => ConfigRoles.NotifyHostWhenBlockedJoin.Value,
+                    value => ConfigRoles.NotifyHostWhenBlockedJoin.Value = value)
             ]),
         new(
             "ClientOptions.Category.Performance",

@@ -13,14 +13,25 @@ class HamburgerShop : RoleBase<HamburgerShop>
     public override RoleId Role { get; } = RoleId.HamburgerShop;
     public override Color32 RoleColor { get; } = new(255, 165, 0, byte.MaxValue); // オレンジ色
     public override List<Func<AbilityBase>> Abilities { get; } = [
-        () => new CustomTaskTypeAbility(TaskTypes.MakeBurger, HamburgerShopChangeAllTasksToBurger, MapNames.Airship),
+        () => new CustomTaskTypeAbility(
+            TaskTypes.MakeBurger,
+            HamburgerShopChangeAllTasksToBurger,
+            MapNames.Airship
+        ),
         () => new CustomTaskAbility(
             isTaskTrigger: () => true,
             countsForCrewWin: () => true,
             requiredTaskCount: () => HamburgerShopTaskOptionAvailable ? HamburgerShopTaskOption.Total : null,
-            taskOptions: () => HamburgerShopTaskOptionAvailable ? HamburgerShopTaskOption : null
+            taskOptions: () => HamburgerShopTaskOptionAvailable ? HamburgerShopTaskOption : null,
+            taskSelectionExclusionConfig: CreateTaskSelectionExclusion()
         )
     ];
+
+    internal static TaskSelectionExclusionConfig CreateTaskSelectionExclusion() => new(
+        () => HamburgerShopExcludeSpecificTasksFromSelection,
+        (TaskTypes.ResetBreakers, () => HamburgerShopExcludeResetBreakersTaskFromSelection),
+        (TaskTypes.ClearAsteroids, () => HamburgerShopExcludeClearAsteroidsTaskFromSelection),
+        (TaskTypes.SortRecords, () => HamburgerShopExcludeSortRecordsTaskFromSelection));
 
     public override QuoteMod QuoteMod { get; } = QuoteMod.SuperNewRoles;
     public override RoleTypes IntroSoundType { get; } = RoleTypes.Crewmate;
@@ -34,6 +45,18 @@ class HamburgerShop : RoleBase<HamburgerShop>
 
     [CustomOptionBool("HamburgerShopChangeAllTasksToBurger", true, displayMode: DisplayModeId.Default)]
     public static bool HamburgerShopChangeAllTasksToBurger;
+
+    [CustomOptionBool("HamburgerShopExcludeSpecificTasksFromSelection", false, translationName: "ExcludeSpecificTasksFromSelection", displayMode: DisplayModeId.Default)]
+    public static bool HamburgerShopExcludeSpecificTasksFromSelection;
+
+    [CustomOptionBool("HamburgerShopExcludeResetBreakersTaskFromSelection", false, translationName: "ExcludeResetBreakersTaskFromSelection", parentFieldName: nameof(HamburgerShopExcludeSpecificTasksFromSelection), displayMode: DisplayModeId.Default)]
+    public static bool HamburgerShopExcludeResetBreakersTaskFromSelection;
+
+    [CustomOptionBool("HamburgerShopExcludeClearAsteroidsTaskFromSelection", false, translationName: "ExcludeClearAsteroidsTaskFromSelection", parentFieldName: nameof(HamburgerShopExcludeSpecificTasksFromSelection), displayMode: DisplayModeId.Default)]
+    public static bool HamburgerShopExcludeClearAsteroidsTaskFromSelection;
+
+    [CustomOptionBool("HamburgerShopExcludeSortRecordsTaskFromSelection", false, translationName: "ExcludeSortRecordsTaskFromSelection", parentFieldName: nameof(HamburgerShopExcludeSpecificTasksFromSelection), displayMode: DisplayModeId.Default)]
+    public static bool HamburgerShopExcludeSortRecordsTaskFromSelection;
 
     [CustomOptionBool("HamburgerShopTaskOptionAvailable", false)]
     public static bool HamburgerShopTaskOptionAvailable;

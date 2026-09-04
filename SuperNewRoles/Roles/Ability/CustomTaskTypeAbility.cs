@@ -17,7 +17,10 @@ public class CustomTaskTypeAbility : AbilityBase
     public MapNames? TargetMap { get; }
     public bool ChangeAllTasks { get; }
 
-    public CustomTaskTypeAbility(TaskTypes targetTaskType, bool changeAllTasks = false, MapNames? targetMap = null)
+    public CustomTaskTypeAbility(
+        TaskTypes targetTaskType,
+        bool changeAllTasks = false,
+        MapNames? targetMap = null)
     {
         TargetTaskType = targetTaskType;
         ChangeAllTasks = changeAllTasks;
@@ -26,7 +29,10 @@ public class CustomTaskTypeAbility : AbilityBase
 
     public bool ShouldChangeTask()
     {
-        return ChangeAllTasks || (byte)TargetMap != GameOptionsManager.Instance.CurrentGameOptions.MapId;
+        if (ChangeAllTasks || !TargetMap.HasValue) return ChangeAllTasks;
+        if (GameOptionsManager.Instance?.CurrentGameOptions == null) return false;
+
+        return (byte)TargetMap.Value != GameOptionsManager.Instance.CurrentGameOptions.MapId;
     }
 
     public NormalPlayerTask GetTargetTask()
