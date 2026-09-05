@@ -1,9 +1,10 @@
-using System.Linq;
 using System.Collections.Generic;
-using SuperNewRoles.Modules;
-using SuperNewRoles.Roles;
+using System.Linq;
+using AmongUs.GameOptions;
 using SuperNewRoles.CustomOptions;
 using SuperNewRoles.HelpMenus;
+using SuperNewRoles.Modules;
+using SuperNewRoles.Roles;
 using TMPro;
 using UnityEngine;
 using UnityEngine.Events;
@@ -160,6 +161,13 @@ public class RoleDictionaryHelpMenu : HelpMenuCategoryBase
             .OrderBy(r => r.Role.ToString())
             .ToList();
 
+        var vanillaRoles = GetVanillaRolesForTeam(teamType);
+        var allEntries = new List<(IRoleInformation Role, string VanillaDescKey)>();
+        foreach (var r in roles)
+            allEntries.Add((r, null));
+        foreach (var v in vanillaRoles)
+            allEntries.Add((v.Role, v.DescriptionKey));
+
         // ボタンの配置設定
         int maxColumns = 4; // 1行に4役職
         float startX = -1.03f; // 左上はx: -1から開始
@@ -168,7 +176,7 @@ public class RoleDictionaryHelpMenu : HelpMenuCategoryBase
         float buttonHeight = 0.35f; // 縦は0.7ずつ減少
 
         // 役職ボタンを作成
-        for (int i = 0; i < roles.Count; i++)
+        for (int i = 0; i < allEntries.Count; i++)
         {
             int column = i % maxColumns;
             int row = i / maxColumns;
@@ -179,7 +187,10 @@ public class RoleDictionaryHelpMenu : HelpMenuCategoryBase
                 0f
             );
 
-            CreateRoleButton(container, roles[i], position);
+            if (allEntries[i].VanillaDescKey != null)
+                CreateVanillaRoleButton(container, allEntries[i].Role, allEntries[i].VanillaDescKey, position);
+            else
+                CreateRoleButton(container, (IRoleBase)allEntries[i].Role, position);
         }
     }
 
@@ -564,7 +575,8 @@ public class RoleDictionaryHelpMenu : HelpMenuCategoryBase
             case RoleOptionMenuType.Ghost:
                 return CustomRoleManager.AllGhostRoles
                     .Where(r => r.QuoteMod != QuoteMod.Vanilla && !r.HideInRoleDictionary)
-                    .Count();
+                    .Count()
+                    + GetVanillaRolesForTeam(teamType).Count;
 
             case RoleOptionMenuType.Modifier:
                 return CustomRoleManager.AllModifiers
@@ -574,7 +586,111 @@ public class RoleDictionaryHelpMenu : HelpMenuCategoryBase
             default:
                 return CustomRoleManager.AllRoles
                     .Where(r => ShouldShowRoleForTeam(r, teamType))
-                    .Count();
+                    .Count()
+                    + GetVanillaRolesForTeam(teamType).Count;
         }
     }
+    /// <summary>
+    /// チームに属するバニラ役職の一覧を動的に取得します。
+    /// RoleManager.Instance.AllRoles から全バニラ役職を取得し、SimpleRole を除外します。
+    /// </summary>
+    private static List<(VanillaRoleInfo Role, string DescriptionKey)> GetVanillaRolesForTeam(RoleOptionMenuType teamType)
+    {
+        var result = new List<(VanillaRoleInfo, string)>();
+
+        foreach (var roleBehaviour in RoleManager.Instance.AllRoles)
+        {
+            var roleType = roleBehaviour.Role;
+            if (roleType is RoleTypes.Crewmate or RoleTypes.Impostor
+                or RoleTypes.CrewmateGhost or RoleTypes.ImpostorGhost)
+                continue;
+
+            bool isImpostor = roleBehaviour.TeamType == RoleTeamTypes.Impostor;
+            bool matchesTeam = teamType switch
+            {
+                RoleOptionMenuType.Crewmate => !isImpostor && roleType != RoleTypes.GuardianAngel,
+                RoleOptionMenuType.Impostor => isImpostor,
+                RoleOptionMenuType.Ghost => roleType == RoleTypes.GuardianAngel,
+                _ => false,
+            };
+
+            if (!matchesTeam) continue;
+
+            string roleName = roleType.ToString();
+            result.Add((new VanillaRoleInfo
+            {
+                RoleName = roleName,
+                RoleColor = isImpostor ? Palette.ImpostorRed : Color.white,
+                AssignedTeams = new() { isImpostor ? AssignedTeamType.Impostor : AssignedTeamType.Crewmate },
+            }, $"{roleName}.Description"));
+        }
+
+        return result;
+    }
+
+    private GameObject CreateVanillaRoleButton(Transform parent, IRoleInformation roleInfo, string descriptionKey, Vector3 position)
+    {
+        var bulkRoleButtonAsset = AssetManager.GetAsset<GameObject>("RoleDictButton");
+        var roleButton = GameObject.Instantiate(bulkRoleButtonAsset, parent);
+        roleButton.name = $"RoleButton_Vanilla_{roleInfo.RoleName}";
+        roleButton.transform.localPosition = position;
+        roleButton.transform.localScale = Vector3.one * 0.25f;
+
+        var textComponent = roleButton.transform.Find("Text")?.GetComponent<TextMeshPro>();
+        if (textComponent != null)
+        {
+            textComponent.text = ModHelpers.CsWithTranslation(roleInfo.RoleColor, roleInfo.RoleName);
+        }
+
+        var passiveButton = roleButton.AddComponent<PassiveButton>();
+        passiveButton.Colliders = new Collider2D[] { roleButton.GetComponent<BoxCollider2D>() };
+        passiveButton.OnClick = new();
+        passiveButton.OnClick.AddListener((UnityAction)(() =>
+        {
+            ShowVanillaRoleDetail(roleInfo);
+        }));
+
+        passiveButton.OnMouseOver = new();
+        passiveButton.OnMouseOver.AddListener((UnityAction)(() =>
+        {
+            roleButton.transform.Find("Selected")?.gameObject.SetActive(true);
+        }));
+
+        passiveButton.OnMouseOut = new();
+        passiveButton.OnMouseOut.AddListener((UnityAction)(() =>
+        {
+            roleButton.transform.Find("Selected")?.gameObject.SetActive(false);
+        }));
+
+        return roleButton;
+    }
+
+    /// <summary>
+    /// バニラ役職の詳細を表示する (RoleDetailHelperを使用)
+    /// </summary>
+    private void ShowVanillaRoleDetail(IRoleInformation roleInfo)
+    {
+        if (RoleDetailObject != null)
+            GameObject.Destroy(RoleDetailObject);
+
+        isShowingRoleDetail = true;
+
+        RoleDetailObject = RoleDetailHelper.ShowRoleDetail(roleInfo, Container, MenuObject, CloseRoleDetail);
+    }
+}
+
+/// <summary>
+/// バニラ Among Us 役職の情報を IRoleInformation として提供するクラス
+/// </summary>
+internal class VanillaRoleInfo : IRoleInformation
+{
+    public string RoleName { get; set; }
+    public Color32 RoleColor { get; set; }
+    public bool HiddenOption => false;
+    public bool HideInRoleDictionary => false;
+    public List<AssignedTeamType> AssignedTeams { get; set; } = new();
+    public CustomOption[] Options => [];
+    public int? PercentageOption => null;
+    public int? NumberOfCrews => null;
+    public Sprite RoleIcon => null;
 }
