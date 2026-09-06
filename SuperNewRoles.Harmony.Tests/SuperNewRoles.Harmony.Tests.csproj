@@ -1,0 +1,28 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <!-- Match the game's runtime: the bundled desktop MonoMod cannot detour .NET 8. -->
+    <TargetFramework Condition="'$(TestRuntime)' == ''">net6.0</TargetFramework>
+    <TargetFramework Condition="'$(TestRuntime)' != ''">$(TestRuntime)</TargetFramework>
+    <IsPackable>false</IsPackable>
+    <HarmonyCore Condition="'$(HarmonyCore)' == ''">$(AmongUs)/BepInEx/core</HarmonyCore>
+    <DefineConstants Condition="'$(GenerateFixture)' == 'true'">$(DefineConstants);GENERATED_FIXTURE</DefineConstants>
+  </PropertyGroup>
+  <ItemGroup>
+    <PackageReference Include="xunit" Version="2.8.1" />
+    <PackageReference Include="xunit.runner.visualstudio" Version="2.8.1" PrivateAssets="all" />
+    <PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.10.0" />
+    <Reference Include="$(HarmonyCore)/*.dll" />
+    <Compile Include="../SuperNewRoles/Modules/StartupHarmonyPatcher.cs" Link="StartupHarmonyPatcher.cs" />
+    <Compile Include="../SuperNewRoles/Modules/GeneratedHarmonyRegistry.cs" Link="GeneratedHarmonyRegistry.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Remove="CorpusTests.cs" />
+    <Compile Include="CorpusTests.cs" Condition="'$(EnableCorpusTests)' == 'true'" />
+    <CustomAdditionalCompileInputs Include="../SuperNewRoles.RpcWeaver/*.cs;../SuperNewRoles.RpcWeaver/*.csproj" />
+  </ItemGroup>
+  <Target Name="GenerateFixture" AfterTargets="CoreCompile" BeforeTargets="CopyFilesToOutputDirectory" Condition="'$(GenerateFixture)' == 'true'">
+    <MSBuild Projects="../SuperNewRoles.RpcWeaver/SuperNewRoles.RpcWeaver.csproj" Targets="Restore;Build" Properties="Configuration=Release;TargetFramework=net8.0" />
+    <WriteLinesToFile File="$(IntermediateOutputPath)weaver.references.txt" Lines="@(ReferencePath->'%(FullPath)')" Overwrite="true" />
+    <Exec Command="dotnet &quot;$(MSBuildProjectDirectory)/../SuperNewRoles.RpcWeaver/bin/Release/net8.0/SuperNewRoles.RpcWeaver.dll&quot; --harmony &quot;@(IntermediateAssembly)&quot; &quot;$(IntermediateOutputPath)weaver.references.txt&quot;" />
+  </Target>
+</Project>

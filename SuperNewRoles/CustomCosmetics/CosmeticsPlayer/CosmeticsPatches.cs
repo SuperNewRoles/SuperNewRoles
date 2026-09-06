@@ -1,3 +1,5 @@
+using System.Collections.Generic;
+using System.Reflection;
 using AmongUs.Data;
 using HarmonyLib;
 using SuperNewRoles.CustomOptions.Categories;
@@ -347,9 +349,11 @@ public static class CosmeticsLayer_AnimateClimb
 [HarmonyPatch(typeof(CosmeticsLayer), nameof(CosmeticsLayer.Visible), MethodType.Setter)]
 public static class CosmeticsLayer_Visible
 {
-    public static void Postfix(CosmeticsLayer __instance, bool value)
+    public static void Postfix(CosmeticsLayer __instance)
     {
-        __instance.UpdateVisibility();
+        // IL2CPPではsetter内に表示更新がインライン化され、UpdateVisibilityのパッチを通らない。
+        // 本体の更新は繰り返さず、lockVisible適用後の実際の状態を追加衣装に同期する。
+        CosmeticsLayer_UpdateVisibility.ApplyCustomVisibility(__instance);
     }
 }
 [HarmonyPatch(typeof(CosmeticsLayer), nameof(CosmeticsLayer.UpdateVisibility))]
@@ -357,11 +361,41 @@ public static class CosmeticsLayer_UpdateVisibility
 {
     public static void Postfix(CosmeticsLayer __instance)
     {
-        CustomCosmeticsLayer customCosmeticsLayer = CustomCosmeticsLayers.ExistsOrInitialize(__instance);
-        customCosmeticsLayer.hat1.Visible = __instance.visible;
-        customCosmeticsLayer.hat2.Visible = __instance.visible;
-        customCosmeticsLayer.visor1.Visible = __instance.visible;
-        customCosmeticsLayer.visor2.Visible = __instance.visible;
+        ApplyCustomVisibility(__instance);
+    }
+
+    internal static void ApplyCustomVisibility(CosmeticsLayer cosmeticsLayer)
+    {
+        CustomCosmeticsLayer customCosmeticsLayer = CustomCosmeticsLayers.ExistsOrInitialize(cosmeticsLayer);
+        customCosmeticsLayer.hat1.Visible = cosmeticsLayer.visible;
+        customCosmeticsLayer.hat2.Visible = cosmeticsLayer.visible;
+        customCosmeticsLayer.visor1.Visible = cosmeticsLayer.visible;
+        customCosmeticsLayer.visor2.Visible = cosmeticsLayer.visible;
+    }
+}
+[HarmonyPatch]
+public static class PlayerAnimations_RefreshCustomCosmeticsUpdates
+{
+    public static IEnumerable<MethodBase> TargetMethods()
+    {
+        yield return AccessTools.Method(typeof(PlayerAnimations), nameof(PlayerAnimations.SetBodyType));
+        yield return AccessTools.Method(typeof(PlayerAnimations), nameof(PlayerAnimations.UpdateCosmeticOffset));
+    }
+
+    public static void Postfix(PlayerAnimations __instance)
+    {
+        // バニラは体型・オフセット変更時に現在のグループの全ノードを有効化する。
+        // 空装備のノードだけ停止し直し、装備済みレイヤーは次の更新で親を再同期する。
+        if (__instance.group?.NodeSyncs == null) return;
+        foreach (var node in __instance.group.NodeSyncs)
+        {
+            if (node == null) continue;
+            CustomHatLayer hatLayer = node.GetComponent<CustomHatLayer>();
+            if (hatLayer != null)
+                hatLayer.RefreshUpdateState();
+            else
+                node.GetComponent<CustomVisorLayer>()?.RefreshUpdateState();
+        }
     }
 }
 [HarmonyPatch(typeof(CosmeticsLayer), nameof(CosmeticsLayer.SetBodyCosmeticsVisible))]

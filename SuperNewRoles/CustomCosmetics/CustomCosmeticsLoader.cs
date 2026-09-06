@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Net.Http;
 using System.Threading.Tasks;
@@ -247,7 +247,22 @@ public partial class CustomCosmeticsLoader
     {
         SetRuntimeCosmeticsVisible(IsRuntimeEnabled);
         if (IsRuntimeEnabled)
+        {
+            // 読み込み完了前に入室した場合、未取得だった1枠目の装備も現在の服装で復元する。
+            foreach (var player in PlayerControl.AllPlayerControls)
+            {
+                if (player == null || player.cosmetics == null)
+                    continue;
+                var outfit = player.CurrentOutfit;
+                if (outfit == null)
+                    continue;
+                if (outfit.HatId?.StartsWith(ModdedPrefix, StringComparison.Ordinal) == true)
+                    player.cosmetics.SetHat(outfit.HatId, outfit.ColorId);
+                if (outfit.VisorId?.StartsWith(ModdedPrefix, StringComparison.Ordinal) == true)
+                    player.cosmetics.SetVisor(outfit.VisorId, outfit.ColorId);
+            }
             ReapplyLocalLayeredCosmetics();
+        }
 
         CustomCosmeticsUIStart.RefreshCurrentMenu();
     }
@@ -680,16 +695,23 @@ public partial class CustomCosmeticsLoader
 
     private static IEnumerator LoadPackages(AssetBundle assetBundle, string[] packagesHats, string[] packagesVisors, string[] packagesNamePlates, Func<IEnumerator, Coroutine> startCoroutine)
     {
+        // 大量のコスチューム登録を1フレームに集中させない。個々の読込・解析自体の時間は別途かかる。
+        const long registrationBudgetMilliseconds = 3;
+        var registrationTimer = new System.Diagnostics.Stopwatch();
         foreach (string package in packagesHats)
         {
-            Logger.Info("Loading PackagesLoadAssetASync");
+            Logger.Info("Loading package metadata");
             // package.jsonをロードするパスを組み立て、読み込み
             string packageJsonPath = $"assets/hats/{package}/package.json";
+            // Do not queue behind the splash scene's pending activation.
             var packageTextAsset = assetBundle.LoadAsset<TextAsset>(packageJsonPath);
+            yield return null;
+            registrationTimer.Restart();
 
             if (packageTextAsset == null)
             {
                 Logger.Error($"パッケージ: {package} の package.json が読み込めません(Hats)");
+                continue;
             }
             string packageJson = packageTextAsset.text;
             CustomCosmeticsJsonNode packageJsonObject = CustomCosmeticsJsonNode.Parse(packageJson);
@@ -724,6 +746,11 @@ public partial class CustomCosmeticsLoader
                     );
                     cosmeticsPackage.hats.Add(customCosmeticsHat);
                     moddedHats[customCosmeticsHat.ProdId] = customCosmeticsHat;
+                    if (registrationTimer.ElapsedMilliseconds >= registrationBudgetMilliseconds)
+                    {
+                        yield return null;
+                        registrationTimer.Restart();
+                    }
                 }
             }
             else
@@ -733,7 +760,10 @@ public partial class CustomCosmeticsLoader
         foreach (string package in packagesVisors)
         {
             string visorsPath = $"assets/visors/{package}/package.json";
+            // Do not queue behind the splash scene's pending activation.
             var visorsTextAsset = assetBundle.LoadAsset<TextAsset>(visorsPath);
+            yield return null;
+            registrationTimer.Restart();
 
             if (visorsTextAsset == null)
             {
@@ -777,6 +807,11 @@ public partial class CustomCosmeticsLoader
                     );
                     cosmeticsPackage.visors.Add(customCosmeticsVisor);
                     moddedVisors[customCosmeticsVisor.ProdId] = customCosmeticsVisor;
+                    if (registrationTimer.ElapsedMilliseconds >= registrationBudgetMilliseconds)
+                    {
+                        yield return null;
+                        registrationTimer.Restart();
+                    }
                 }
             }
             else
@@ -788,7 +823,10 @@ public partial class CustomCosmeticsLoader
         foreach (string package in packagesNamePlates)
         {
             string namePlatesPath = $"assets/nameplates/{package}/package.json";
+            // Do not queue behind the splash scene's pending activation.
             var namePlatesTextAsset = assetBundle.LoadAsset<TextAsset>(namePlatesPath);
+            yield return null;
+            registrationTimer.Restart();
 
             if (namePlatesTextAsset == null)
             {
@@ -830,6 +868,11 @@ public partial class CustomCosmeticsLoader
                     );
                     cosmeticsPackage.namePlates.Add(customCosmeticsNamePlate);
                     moddedNamePlates[customCosmeticsNamePlate.ProdId] = customCosmeticsNamePlate;
+                    if (registrationTimer.ElapsedMilliseconds >= registrationBudgetMilliseconds)
+                    {
+                        yield return null;
+                        registrationTimer.Restart();
+                    }
                 }
             }
             else
@@ -939,25 +982,26 @@ public partial class CustomCosmeticsLoader
 
     private static IEnumerator LoadAssetBundle(string assetBundlePath, Action<AssetBundle> onFinish, Action onError)
     {
-        Logger.Info("Loading!!! AssetBundle");
-        // var assetBundleRequest = AssetBundle.LoadFromFileAsync(assetBundlePath);
+        // SplashManager holds scene activation until cosmetics finish. Unity's async
+        // operation queue can stall behind that scene, so these loads must be synchronous.
+        AssetBundle bundle;
         try
         {
-            var assetBundle = AssetBundle.LoadFromFile(assetBundlePath);
-            assetBundle.DontUnload();
-            onFinish(assetBundle);
+            bundle = AssetBundle.LoadFromFile(assetBundlePath);
+            if (bundle != null)
+                bundle.DontUnload();
         }
         catch (Exception e)
         {
+            Logger.Error($"Failed to load AssetBundle: {assetBundlePath}: {e}");
             onError();
+            yield break;
         }
-        yield break;
-        /*
-        yield return assetBundle;
-        Logger.Info("Loaded!!! AssetBunde");
-        assetBundle.assetBundle.DontUnload();
-        Logger.Info($"アセットバンドルをロードしました: {assetBundlePath} {assetBundle != null}");
-        onFinish(assetBundle.assetBundle);*/
+
+        if (bundle == null)
+            onError();
+        else
+            onFinish(bundle);
     }
 
     private static IEnumerator DownloadAssetBundleWithRetryAsync(string assetBundleUrl, string expectedHash, Action onFinish)

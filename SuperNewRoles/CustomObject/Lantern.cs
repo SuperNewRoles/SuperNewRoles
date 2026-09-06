@@ -84,6 +84,16 @@ public class Lantern : MonoBehaviour
     public static IEnumerable<Lantern> GetLanternsByOwner(ExPlayerControl player)
         => AllLanterns.Where(x => x.Owner == player && x != null);
 
+    public static bool HasActiveLantern(ExPlayerControl player)
+    {
+        foreach (var lantern in AllLanterns)
+        {
+            if (lantern != null && lantern.Owner == player && lantern.IsActivating)
+                return true;
+        }
+        return false;
+    }
+
     public static void ResetLanterns()
     {
         AllLanterns.Clear();

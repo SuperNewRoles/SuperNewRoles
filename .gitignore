@@ -19,3 +19,11 @@ hatstest.bundle
 *.log.txt
 .agents/
 CodexDevAutomation/
+SuperNewRoles.Harmony.Tests/bin/
+SuperNewRoles.Harmony.Tests/obj/
+SuperNewRoles.RpcWeaver/bin/
+SuperNewRoles.RpcWeaver/obj/
+SuperNewRoles.RpcWeaver.Fixture/bin/
+SuperNewRoles.RpcWeaver.Fixture/obj/
+SuperNewRoles.RpcWeaver.Tests/bin/
+SuperNewRoles.RpcWeaver.Tests/obj/

@@ -74,6 +74,17 @@ public class CustomHatLayer : MonoBehaviour
         return false;
     }
 
+    internal void RefreshUpdateState()
+    {
+        // GameObject の表示状態はキル演出などでも制御されるため変更しない。
+        // 空装備では MonoBehaviour と同期ノードの更新だけを停止する。
+        bool hasHat = HasHat();
+        enabled = hasHat;
+        if (!hasHat && spriteSyncNode != null)
+            spriteSyncNode.enabled = false;
+        count = 0;
+    }
+
     public void SetShapeshiftHat(string hatId, int color)
     {
         if (DestroyableSingleton<HatManager>.InstanceExists)
@@ -93,6 +104,7 @@ public class CustomHatLayer : MonoBehaviour
     {
         Hats[CustomOutfitType.Camouflager] = new CosmeticDataWrapperHat(FastDestroyableSingleton<HatManager>.Instance.GetHatById(HatData.EmptyId));
         CurrentHatType = CustomOutfitType.Camouflager;
+        RefreshUpdateState();
         SetMaterialColor(colorId);
         PopulateFromViewData();
     }
@@ -135,6 +147,7 @@ public class CustomHatLayer : MonoBehaviour
 
     private void SetHat(int color)
     {
+        RefreshUpdateState();
         if (Hat == null)
             return;
 

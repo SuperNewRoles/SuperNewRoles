@@ -130,6 +130,10 @@ public static class AssignRoles
             CreateTickets();
             AssignedRoleIds.Clear(); // 役職アサイン前にクリア
 
+            // 排他最大数が0のグループに含まれる役職は、最初の抽選前に除外する
+            // (ApplyExclusivitySettingsは従来アサイン後のみ呼ばれていたため、0設定でも先発選出されていた)
+            RoleOptionManager.ApplyExclusivitySettings(AssignedRoleIds, AssignTickets_NotHundredPercent.Values.ToArray(), AssignTickets_HundredPercent.Values.ToArray());
+
             foreach (PlayerControl player in PlayerControl.AllPlayerControls)
             {
                 if (player == null || player.Data == null || player.Data.Disconnected)
@@ -277,6 +281,9 @@ public static class AssignRoles
         }
         if (targetPlayers.Count <= 0)
             return;
+
+        // 100%チケットの最初の抽選前に排他設定を適用（最大数0のグループを除外するため）
+        RoleOptionManager.ApplyExclusivitySettings(AssignedRoleIds, AssignTickets_NotHundredPercent.Values.ToArray(), AssignTickets_HundredPercent.Values.ToArray());
 
         // 100%チケットの割り当て処理
         while (tickets_hundred.Count > 0 && targetPlayers.Count > 0 && maxBeans > 0)

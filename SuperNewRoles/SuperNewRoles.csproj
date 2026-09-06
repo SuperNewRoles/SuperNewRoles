@@ -1,6 +1,9 @@
-﻿<Project Sdk="Microsoft.NET.Sdk">
+<Project Sdk="Microsoft.NET.Sdk">
     <PropertyGroup>
         <TargetFramework>net6.0</TargetFramework>
+        <EnableRpcWeaving Condition="'$(EnableRpcWeaving)' == ''">true</EnableRpcWeaving>
+        <EnableHarmonyBatching Condition="'$(EnableHarmonyBatching)' == ''">true</EnableHarmonyBatching>
+        <EnableHarmonyRegistry Condition="'$(EnableHarmonyRegistry)' == ''">$(EnableHarmonyBatching)</EnableHarmonyRegistry>
         <Version>3.2.0.3</Version>
         <Description>SuperNewRoles</Description>
         <Authors>ykundesu</Authors>
@@ -43,6 +46,8 @@
          明示Includeでのみ拾うことで重複(CS2002)を回避する -->
     <ItemGroup>
         <Compile Remove="Generated\**" />
+        <!-- Changing the build-time transformer must regenerate a pristine compiler output. -->
+        <CustomAdditionalCompileInputs Include="../SuperNewRoles.RpcWeaver/*.cs;../SuperNewRoles.RpcWeaver/*.csproj" />
     </ItemGroup>
     <Target Name="GenerateBuildTime" BeforeTargets="BeforeBuild">
         <PropertyGroup>
@@ -66,6 +71,26 @@ namespace SuperNewRoles
         </ItemGroup>
     </Target>
 
+    <Target Name="GenerateHarmonyRegistry" AfterTargets="WeaveCustomRpc" BeforeTargets="CopyFilesToOutputDirectory"
+            Condition="'$(EnableHarmonyRegistry)' == 'true' and '$(DesignTimeBuild)' != 'true'">
+        <Error Condition="'$(EnableHarmonyBatching)' != 'true'" Text="EnableHarmonyRegistry requires EnableHarmonyBatching=true." />
+        <MSBuild Projects="$(MSBuildProjectDirectory)/../SuperNewRoles.RpcWeaver/SuperNewRoles.RpcWeaver.csproj"
+                 Targets="Restore;Build" Properties="Configuration=Release;TargetFramework=net8.0" />
+        <WriteLinesToFile File="$(IntermediateOutputPath)rpc-weaver.references.txt" Lines="@(ReferencePath->'%(FullPath)')" Overwrite="true" />
+        <Exec WorkingDirectory="$(MSBuildProjectDirectory)"
+              Command="dotnet &quot;$(MSBuildProjectDirectory)/../SuperNewRoles.RpcWeaver/bin/Release/net8.0/SuperNewRoles.RpcWeaver.dll&quot; --harmony &quot;@(IntermediateAssembly)&quot; &quot;$(IntermediateOutputPath)rpc-weaver.references.txt&quot;" />
+    </Target>
+
+    <!-- 加工は配布・ゲームへのコピー前に行う。比較用は -p:EnableRpcWeaving=false。 -->
+    <Target Name="WeaveCustomRpc" AfterTargets="CoreCompile" BeforeTargets="CopyFilesToOutputDirectory"
+            Condition="'$(EnableRpcWeaving)' == 'true' and '$(DesignTimeBuild)' != 'true'">
+        <MSBuild Projects="$(MSBuildProjectDirectory)/../SuperNewRoles.RpcWeaver/SuperNewRoles.RpcWeaver.csproj"
+                 Targets="Restore;Build" Properties="Configuration=Release;TargetFramework=net8.0" />
+        <WriteLinesToFile File="$(IntermediateOutputPath)rpc-weaver.references.txt" Lines="@(ReferencePath->'%(FullPath)')" Overwrite="true" />
+        <Exec WorkingDirectory="$(MSBuildProjectDirectory)"
+              Command="dotnet &quot;$(MSBuildProjectDirectory)/../SuperNewRoles.RpcWeaver/bin/Release/net8.0/SuperNewRoles.RpcWeaver.dll&quot; &quot;@(IntermediateAssembly)&quot; &quot;$(IntermediateOutputPath)rpc-weaver.references.txt&quot;" />
+    </Target>
+
     <Target Name="CopyCustomContent" AfterTargets="AfterBuild" Condition="'$(Configuration)' == 'Debug' and '$(SkipGameLaunch)' != 'true'">
         <Message Text="Second occurrence" />
         <Copy SourceFiles="$(ProjectDir)bin\$(Configuration)\net6.0\SuperNewRoles.dll" DestinationFolder="$(AmongUs)/BepInEx/plugins/" />
@@ -75,6 +100,17 @@ namespace SuperNewRoles
 
     <PropertyGroup Condition="'$(Configuration)' == 'Debug'">
         <DefineConstants>DEBUG;TRACE</DefineConstants>
+    </PropertyGroup>
+
+    <!-- true/false の切替時にコンパイル入力も変えて、前回の加工済みDLLを再利用しない。 -->
+    <PropertyGroup Condition="'$(EnableRpcWeaving)' == 'true'">
+        <DefineConstants>$(DefineConstants);SNR_RPC_WEAVING</DefineConstants>
+    </PropertyGroup>
+    <PropertyGroup Condition="'$(EnableHarmonyBatching)' == 'true'">
+        <DefineConstants>$(DefineConstants);SNR_HARMONY_BATCHING</DefineConstants>
+    </PropertyGroup>
+    <PropertyGroup Condition="'$(EnableHarmonyRegistry)' == 'true'">
+        <DefineConstants>$(DefineConstants);SNR_HARMONY_REGISTRY</DefineConstants>
     </PropertyGroup>
 
     <ItemGroup>

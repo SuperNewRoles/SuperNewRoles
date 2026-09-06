@@ -165,19 +165,22 @@ public class BlackHatHackerAbility : AbilityBase
         }
 
         // 感染拡散処理
+        float scope = BlackHatHackerInfectionScope.GetDistance(Data.InfectionScope);
+        var allPlayers = PlayerControl.AllPlayerControls;
         foreach (byte id in InfectedPlayerId)
         {
             PlayerControl player = GameData.Instance.GetPlayerById(id)?.Object;
             if (!player || player.Data.IsDead) continue;
 
-            float scope = BlackHatHackerInfectionScope.GetDistance(Data.InfectionScope);
-            var infection = PlayerControl.AllPlayerControls.ToArray()
-                .Where(x => !x.AmOwner && Vector3.Distance(player.transform.position, x.transform.position) <= scope);
-
-            foreach (PlayerControl target in infection)
+            Vector3 sourcePosition = player.transform.position;
+            for (int i = 0; i < allPlayers.Count; i++)
             {
-                if (InfectionTimer.ContainsKey(target.PlayerId))
-                    InfectionTimer[target.PlayerId] += Time.fixedDeltaTime;
+                PlayerControl target = allPlayers[i];
+                if (target.AmOwner || Vector3.Distance(sourcePosition, target.transform.position) > scope)
+                    continue;
+
+                if (InfectionTimer.TryGetValue(target.PlayerId, out float timer))
+                    InfectionTimer[target.PlayerId] = timer + Time.fixedDeltaTime;
             }
         }
     }

@@ -99,6 +99,14 @@ public partial class SuperNewRolesPlugin : BasePlugin
 
     public override void Load()
     {
+        var loadTimer = Stopwatch.StartNew();
+        long previousStageMilliseconds = 0;
+        void ReportLoadStage(string stage)
+        {
+            long elapsed = loadTimer.ElapsedMilliseconds;
+            Logger.LogInfo($"[Load] {stage}: {elapsed - previousStageMilliseconds} ms (total {elapsed} ms)");
+            previousStageMilliseconds = elapsed;
+        }
         Assembly = Assembly.GetExecutingAssembly();
         BepInEx.Logging.Logger.Listeners.Add(new SNRLogListener());
 
@@ -121,7 +129,9 @@ public partial class SuperNewRolesPlugin : BasePlugin
         SuperNewRoles.Patches.CursedTasks.Main.ClearAndReload();
 
         RegisterCustomObjects();
+        ReportLoadStage("Bootstrap / RegisterCustomObjects");
         HarmonyPatchAllTask = TaskRunIfWindows(() => PatchAll(Harmony));
+        ReportLoadStage("PatchAll dispatch (Android: synchronous)");
 
         if (!Directory.Exists(BaseDirectory))
             Directory.CreateDirectory(BaseDirectory);
@@ -129,13 +139,19 @@ public partial class SuperNewRolesPlugin : BasePlugin
             Directory.CreateDirectory(SecretDirectory);
 
         ConfigRoles.Init();
+        ReportLoadStage("ConfigRoles");
         CustomCosmeticsLoader.TryStartHttpPrefetch();
         UpdateCPUProcessorAffinity();
         CustomRoleManager.Load();
+        ReportLoadStage("Prefetch dispatch / affinity / roles");
         AssetManager.Load();
+        ReportLoadStage("AssetManager");
         ModTranslation.Load();
+        ReportLoadStage("ModTranslation");
         var tasks = CustomRPCManager.Load();
+        ReportLoadStage("RPC discovery / registration");
         CustomOptionManager.Load();
+        ReportLoadStage("CustomOptionManager");
         SyncVersion.Load();
         EventListenerManager.Load();
         SuperTrophyManager.Load();
@@ -150,19 +166,24 @@ public partial class SuperNewRolesPlugin : BasePlugin
         CustomServer.UpdateRegions();
 
         CheckStarts();
+        ReportLoadStage("Remaining managers");
 
         CustomRPCManagerLoadTask = TaskRunIfWindows(() =>
         {
+            var rpcPatchTimer = Stopwatch.StartNew();
             foreach (var task in tasks)
             {
                 task();
             }
+            CustomRPCManager.ActivateWovenRpc();
+            Logger.LogInfo($"[LoadTiming] RPC patches: {tasks.Count}, elapsed: {rpcPatchTimer.ElapsedMilliseconds} ms");
         });
 
         Logger.LogInfo("Waiting for Harmony patch");
 
         HarmonyPatchAllTask?.Wait();
         CustomRPCManagerLoadTask?.Wait();
+        ReportLoadStage("RPC patching / pending patch waits");
 
         Logger.LogInfo("SuperNewRoles loaded");
         Logger.LogInfo("--------------------------------");
@@ -201,7 +222,12 @@ public partial class SuperNewRolesPlugin : BasePlugin
 
     public void PatchAll(Harmony harmony)
     {
+        var patchTimer = Stopwatch.StartNew();
         var assembly = Assembly;
+#if SNR_HARMONY_BATCHING
+        StartupHarmonyPatcher.PatchAll(harmony, assembly);
+        HarmonyCoroutinePatchProcessor.ProcessCoroutinePatches(harmony, assembly);
+#else
         if (ModHelpers.IsAndroid())
         {
             harmony.PatchAll(assembly);
@@ -221,6 +247,8 @@ public partial class SuperNewRolesPlugin : BasePlugin
             // コルーチンパッチを処理
             HarmonyCoroutinePatchProcessor.ProcessCoroutinePatches(harmony, assembly);
         }
+#endif
+        Logger.LogInfo($"[LoadTiming] Harmony PatchAll: {patchTimer.ElapsedMilliseconds} ms");
     }
     private void FixOver15()
     {

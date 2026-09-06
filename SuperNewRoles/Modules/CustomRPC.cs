@@ -27,6 +27,15 @@ public class CustomRPCAttribute : Attribute
     }
 }
 
+// ビルド時の加工済みメソッドを識別し、Harmonyとの二重適用を防ぐ。
+[AttributeUsage(AttributeTargets.Method, Inherited = false)]
+internal sealed class WovenRpcAttribute : Attribute
+{
+    public int Id { get; }
+    public int Version { get; }
+    public WovenRpcAttribute(int id, int version) { Id = id; Version = version; }
+}
+
 public interface ICustomRpcObject
 {
     void Serialize(MessageWriter writer);
@@ -102,6 +111,9 @@ public static class CustomRPCManager
     /// </summary>
     [ThreadStatic]
     private static MethodBase? ReceivedRpcMethod;
+    private static volatile bool WovenRpcEnabled;
+
+    internal static void ActivateWovenRpc() => WovenRpcEnabled = true;
 
     /// <summary>
     /// Writeメソッドの型ごとの処理をキャッシュする辞書
@@ -250,9 +262,7 @@ public static class CustomRPCManager
     public static List<Action> Load()
     {
         // [CustomRPC] 付きメソッドだけを対象にハッシュする
-        var methodsWithDetails = SuperNewRolesPlugin.Assembly
-            .GetTypes()
-            .SelectMany(t => t.GetMethods(BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance | BindingFlags.Static))
+        var methodsWithDetails = DiscoverRpcMethods(SuperNewRolesPlugin.Assembly)
             .Select(m => new
             {
                 Method = m,
@@ -300,10 +310,23 @@ public static class CustomRPCManager
                 }
             }
             SuperNewRoles.Logger.Info($"[Splash] Loading RPC method ({i + 1}/{methodsWithDetails.Count}): {method.Name}");
-            tasks.Add(RegisterRPC(method, attribute, rpcId, hash, paramTypes)); // ハッシュとパラメータ型を渡す
+            var patch = RegisterRPC(method, attribute, rpcId, hash, paramTypes);
+            if (patch != null)
+                tasks.Add(patch);
         }
         SuperNewRoles.Logger.Info($"[Splash] Registered {RpcMethods.Count} RPC methods");
         return tasks;
+    }
+
+    internal static IEnumerable<MethodInfo> DiscoverRpcMethods(Assembly assembly)
+    {
+        // 継承元はその型を走査した際に登録する。同じRPCへの重複パッチも避ける。
+        const BindingFlags flags = BindingFlags.Public | BindingFlags.NonPublic |
+            BindingFlags.Instance | BindingFlags.Static | BindingFlags.DeclaredOnly;
+        foreach (var type in assembly.GetTypes())
+            foreach (var method in type.GetMethods(flags))
+                if (method.IsDefined(typeof(CustomRPCAttribute), inherit: true))
+                    yield return method;
     }
 
 
@@ -315,7 +338,7 @@ public static class CustomRPCManager
     /// <param name="id">RPC ID</param>
     /// <param name="hash">メソッドのハッシュ値</param>
     /// <param name="paramTypes">メソッドのパラメータ型配列</param>
-    private static Action RegisterRPC(MethodInfo method, CustomRPCAttribute attribute, int id, string hash, Type[] paramTypes)
+    private static Action? RegisterRPC(MethodInfo method, CustomRPCAttribute attribute, int id, string hash, Type[] paramTypes)
     {
         // キャッシュにメソッド情報を登録
         RpcIdsByMethod[method] = id;
@@ -342,8 +365,31 @@ public static class CustomRPCManager
         RpcMethods[id] = method;
         RpcMethodIds[hash] = id; // 事前計算したハッシュを使用
 
+        var woven = method.GetCustomAttribute<WovenRpcAttribute>();
+        if (woven != null)
+        {
+            if (woven.Version != 1 || woven.Id != id)
+                throw new InvalidOperationException($"Invalid woven RPC metadata: {hash}");
+            return null;
+        }
+
         // メソッドの中身をRPCを送信するものに入れ替える
         return () => SuperNewRolesPlugin.Instance.Harmony.Patch(method, new HarmonyMethod(newHarmonyMethod.Method));
+    }
+
+    // Weaverが元のメソッド先頭から呼ぶ。受信時は元の本体を実行し、
+    // 本体から別のRPCを呼んだ場合は従来どおり送信する。
+    internal static bool ShouldExecuteWovenRpc(int id, object? instance, object[] args)
+    {
+        // 従来も起動時のパッチ適用前は元の本体が実行される。
+        // 型初期化や登録より早い呼び出しを、未登録のRPC送信に変えない。
+        if (!WovenRpcEnabled)
+            return true;
+        var method = RpcMethods[id];
+        if (TryConsumeReceivedRpc(method))
+            return true;
+        SendRpc(method, instance, args);
+        return !OnlyOtherFlagsByMethod[method];
     }
 
     /// <summary>

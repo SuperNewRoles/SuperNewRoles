@@ -72,6 +72,17 @@ public class CustomVisorLayer : MonoBehaviour
 
     public ICosmeticData DefaultVisor => Visors.TryGetValue(CustomOutfitType.Default, out var visor) ? visor as ICosmeticData : null;
 
+    internal void RefreshUpdateState()
+    {
+        // 空装備でも装着・表示切替は呼べるように、GameObject はそのまま残す。
+        ICosmeticData visor = Visor;
+        bool hasVisor = visor != null && visor.ProdId != VisorData.EmptyId;
+        enabled = hasVisor;
+        if (!hasVisor && nodeSync != null)
+            nodeSync.enabled = false;
+        count = 0;
+    }
+
     public void SetVisor(string visorId, int colorId)
     {
         if (DestroyableSingleton<HatManager>.InstanceExists)
@@ -98,6 +109,7 @@ public class CustomVisorLayer : MonoBehaviour
                 visor = new CosmeticDataWrapperVisor(FastDestroyableSingleton<HatManager>.Instance.GetVisorById(visorId));
             Visors[CustomOutfitType.Shapeshifter] = visor;
             CurrentVisorType = CustomOutfitType.Shapeshifter;
+            RefreshUpdateState();
             SetMaterialColor(colorId);
             // UnloadAsset();
             Visor.LoadAsync(() =>
@@ -111,6 +123,7 @@ public class CustomVisorLayer : MonoBehaviour
     {
         CurrentVisorType = CustomOutfitType.Camouflager;
         Visors[CustomOutfitType.Camouflager] = new CosmeticDataWrapperVisor(FastDestroyableSingleton<HatManager>.Instance.GetVisorById(VisorData.EmptyId));
+        RefreshUpdateState();
         SetMaterialColor(colorId);
         // UnloadAsset();
         Visor.LoadAsync(() =>
@@ -122,6 +135,7 @@ public class CustomVisorLayer : MonoBehaviour
     public void FinishShapeshift(int colorId)
     {
         CurrentVisorType = CustomOutfitType.Default;
+        RefreshUpdateState();
         SetMaterialColor(colorId);
         // UnloadAsset();
         if (Visor == null) return;
@@ -139,6 +153,7 @@ public class CustomVisorLayer : MonoBehaviour
                 Image.sprite = null;
         }
         Visors[CurrentVisorType] = data;
+        RefreshUpdateState();
         SetMaterialColor(color);
         // UnloadAsset();
         Visor?.LoadAsync(() =>

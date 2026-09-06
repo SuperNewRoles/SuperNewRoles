@@ -77,6 +77,7 @@ public abstract class CustomButtonBase : AbilityBase
     public virtual ShowTextType showTextType { get; } = ShowTextType.Hidden;
     public virtual string showText { get; } = string.Empty;
     private TextMeshPro _text;
+    private readonly ButtonCountTextCache _countTextCache = new();
 
     /// <summary>
     /// カウントを進めるかの判定
@@ -317,7 +318,7 @@ public abstract class CustomButtonBase : AbilityBase
                 _text.text = showText;
                 break;
             case ShowTextType.ShowWithCount:
-                _text.text = string.Format(
+                _text.text = _countTextCache.GetText(
                     string.IsNullOrEmpty(showText)
                     ? ModTranslation.GetString("RemainingText")
                     : showText, Count);

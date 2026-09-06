@@ -1,4 +1,6 @@
 using AmongUs.GameOptions;
+using BepInEx.Unity.IL2CPP.Utils.Collections;
+using System.Collections;
 using UnityEngine;
 using SuperNewRoles.Modules;
 using SuperNewRoles.Roles.Ability.CustomButton;
@@ -56,9 +58,23 @@ public class ShapeshiftButtonAbility : CustomButtonBase, IButtonEffect
         RoleTypes baseRole = ExPlayerControl.LocalPlayer.Data.Role.Role;
         float killTimer = PlayerControl.LocalPlayer.killTimer;
         RoleManager.Instance.SetRole(Player, RoleTypes.Shapeshifter);
-        ExPlayerControl.LocalPlayer.Data.Role.TryCast<ShapeshifterRole>()?.UseAbility();
-        RoleManager.Instance.SetRole(Player, baseRole);
-        PlayerControl.LocalPlayer.killTimer = killTimer;
+        try
+        {
+            ExPlayerControl.LocalPlayer.Data.Role.TryCast<ShapeshifterRole>()?.UseAbility();
+
+            // ShapeshifterMinigame checks the current vanilla role while selecting a target.
+            // Restoring the role here leaves the minigame open and the player unable to move.
+            // Keep the temporary role until the target is selected or the minigame is cancelled.
+            if (Minigame.Instance?.TryCast<ShapeshifterMinigame>() != null)
+                FastDestroyableSingleton<HudManager>.Instance.StartCoroutine(RestoreBaseRoleAfterMinigame(baseRole, killTimer).WrapToIl2Cpp());
+            else
+                RestoreBaseRole(baseRole, killTimer);
+        }
+        catch
+        {
+            RestoreBaseRole(baseRole, killTimer);
+            throw;
+        }
 
         new LateTask(() =>
         {
@@ -66,6 +82,23 @@ public class ShapeshiftButtonAbility : CustomButtonBase, IButtonEffect
             Timer = 0.0001f;
             actionButton.cooldownTimerText.color = Palette.EnabledColor;
         }, 2f / 60f, "ShapeshiftButtonAbility");
+    }
+
+    private IEnumerator RestoreBaseRoleAfterMinigame(RoleTypes baseRole, float killTimer)
+    {
+        while (Minigame.Instance?.TryCast<ShapeshifterMinigame>() != null)
+            yield return null;
+
+        RestoreBaseRole(baseRole, killTimer);
+    }
+
+    private void RestoreBaseRole(RoleTypes baseRole, float killTimer)
+    {
+        // Do not overwrite a role changed by another game flow while the minigame was open.
+        if (Player?.Data?.Role?.Role == RoleTypes.Shapeshifter)
+            RoleManager.Instance.SetRole(Player, baseRole);
+        if (PlayerControl.LocalPlayer != null)
+            PlayerControl.LocalPlayer.killTimer = killTimer;
     }
 
     public override bool CheckIsAvailable()

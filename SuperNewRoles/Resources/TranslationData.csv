@@ -231,6 +231,20 @@ OnboardingFaqBodyCol2,<b>Q. 公開ルームが存在しない</b>\nA. 誰も部�
 OnboardingEnjoyTitle,準備完了！,You're All Set!,准备完成！,準備完成！
 OnboardingEnjoyBody,<size=150%>これで全ての準備が整いました。\n\n<color=#ffa500>Super</color><color=#ff0000>New</color><color=#00ff00>Roles</color>を楽しみましょう！</size>,<size=150%>Everything is ready.\n\nEnjoy <color=#ffa500>Super</color><color=#ff0000>New</color><color=#00ff00>Roles</color>!</size>,<size=150%>一切准备就绪。\n\n尽情享受 <color=#ffa500>Super</color><color=#ff0000>New</color><color=#00ff00>Roles</color>！</size>,<size=150%>一切準備就緒。\n\n盡情享受 <color=#ffa500>Super</color><color=#ff0000>New</color><color=#00ff00>Roles</color>！</size>
 
+# RoomDiscovery
+RoomDiscoveryLoading,公開ルームの状況を取得中…,Checking public rooms…,正在获取公开房间情况…,正在取得公開房間狀況…
+RoomDiscoveryBusy,その他、満員・開始中・開始済みの部屋：{0} 部屋,Other public rooms (full, starting, or started): {0},其他满员、开始中、已开始的房间：{0},其他滿員、開始中、已開始的房間：{0}
+RoomDiscoveryUnavailable,公開ルーム数を取得できませんでした,Could not load public room counts,无法获取公开房间数,無法取得公開房間數
+RoomDiscoveryRecommend,表示言語に合わせて {0} サーバーをおすすめします,For your display language we recommend the {0} server,根据显示语言，推荐使用 {0} 服务器,根據顯示語言，建議使用 {0} 伺服器
+RoomDiscoverySwitch,{0} に変更する,Switch to {0},切换到 {0},切換到 {0}
+RoomDiscoveryCreate,部屋を作成する,Create a room,创建房间,建立房間
+RoomDiscoveryDiscord,Discord\n(マッチメイキング),Discord\n(Find players),Discord\n(匹配),Discord\n(配對)
+RoomDiscoveryCreatePrompt1,波動砲をぶっ放そう！,Fire the Wave Cannon!,发射波动炮吧！,發射波動砲吧！
+RoomDiscoveryCreatePrompt2,いっぱいのスーパーな新しい役職で遊ぼう！,Play with tons of super new roles!,用超多超级新职业来玩吧！,用超多超級新職業來玩吧！
+RoomDiscoveryCreatePrompt3,ミーティングルームへ行こう！,Let's go to the meeting room!,去会议室吧！,去會議室吧！
+RoomDiscoveryCreatePrompt4,緊急会議を開くための部屋が必要です！,We need a room for an emergency meeting!,需要一个召开紧急会议的房间！,需要一個召開緊急會議的房間！
+
+
 # ClientOptions
 ClientOptionsVanilla,バニラ設定,Vanilla Settings,原版设置,原版設定
 ClientOptionsMod,Mod設定,Mod Settings,模组设置,模組設定

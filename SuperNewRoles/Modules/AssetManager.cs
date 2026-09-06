@@ -185,28 +185,7 @@ public static class AssetManager
 
     private static string GetAndroidAssetBundleStamp(Assembly assembly, string resourceName)
     {
-        string assemblyLocation = string.Empty;
-        long assemblyLength = 0;
-        long assemblyTicks = 0;
-
-        try
-        {
-            assemblyLocation = assembly.Location ?? string.Empty;
-            if (!string.IsNullOrEmpty(assemblyLocation) && File.Exists(assemblyLocation))
-            {
-                var info = new FileInfo(assemblyLocation);
-                assemblyLength = info.Length;
-                assemblyTicks = info.LastWriteTimeUtc.Ticks;
-            }
-        }
-        catch (Exception e)
-        {
-            Logger.Warning($"Failed to read assembly stamp: {e.Message}", "LoadAssetBundle");
-        }
-
-        Logger.Info($"Android AssetBundle assembly stamp source: location='{assemblyLocation}', length={assemblyLength}, lastWriteTimeUtcTicks={assemblyTicks}", "LoadAssetBundle");
-
-        return string.Join("\n", resourceName, assembly.FullName, assemblyLocation, assemblyLength.ToString(), assemblyTicks.ToString());
+        return EmbeddedAssetBundleStamp.Create(assembly, resourceName);
     }
 
     private static void LoadSpriteAtlasLookup(byte typeKey, AssetBundle assetBundle)
@@ -598,7 +577,9 @@ public static class AssetManager
         return obj;
     }
 
-    public static void UnloadAllAssets()
+    public static void UnloadAllAssets() => UnloadAllAssetsCore(forceUnload: false);
+
+    private static void UnloadAllAssetsCore(bool forceUnload)
     {
         SuperNewRoles.Logger.Info("[AssetManager] Unloading all cached assets...");
         bool isAndroid = ModHelpers.IsAndroid();
@@ -643,7 +624,7 @@ public static class AssetManager
 
         // Optionally, if you also want to clear the Bundles dictionary (though this might not be what you want if bundles are meant to persist across scenes)
         // Bundles.Clear();
-        if (!isAndroid || removedAssetCount > 0)
+        if (forceUnload || removedAssetCount > 0)
             Resources.UnloadUnusedAssets();
         SuperNewRoles.Logger.Info($"[AssetManager] Cached assets unloaded. removed={removedAssetCount}, androidAtlases={removedAndroidAtlasCount}");
     }
@@ -653,25 +634,45 @@ public static class AssetManager
         private static int _pendingUnloadVersion;
         private const float DeferredUnloadFallbackDelaySeconds = 0.05f;
 
-        public static void Postfix(AmongUsClient __instance)
+        public static bool Prefix(ref bool __state)
         {
-            // バニラの OnActiveSceneChange は直前に Resources.UnloadUnusedAssets + GC を実行済み。
-            // 同じフレームで UnloadUnusedAssets を重ねると、新シーンが非同期初期化中に
-            // まだ参照されていないアセットまで破棄され、メインメニューが真っ暗になることがある
-            // (Reports #2002 / #1819 / #1761)。数フレーム遅らせてシーン初期化後に解放する。
+            __state = false;
+            try
+            {
+                // 本体のシーン変更処理はフレンドUIを閉じた後、アセット回収とGCを行う。
+                // UI処理は維持し、回収だけを下のModキャッシュ解放とまとめる。
+                string sceneName = UnityEngine.SceneManagement.SceneManager.GetActiveScene().name;
+                if (sceneName != "SplashIntro" && sceneName != "EarlyInitialization" &&
+                    DestroyableSingleton<FriendsListManager>.Instance != null)
+                    DestroyableSingleton<FriendsListManager>.Instance.CloseUI();
+
+                __state = true;
+                return false;
+            }
+            catch (Exception e)
+            {
+                Logger.Error($"Failed to prepare deferred scene cleanup: {e}", "AssetManager");
+                return true;
+            }
+        }
+
+        public static void Postfix(bool __state)
+        {
+            // 即座のキャッシュ解放は、新シーンが非同期初期化中に必要なアセットを
+            // 破棄することがある (Reports #2002 / #1819 / #1761)。既存の3フレーム待機を維持する。
             try
             {
                 int version = ++_pendingUnloadVersion;
-                MonoBehaviour runner = GetCoroutineRunner(__instance);
+                MonoBehaviour runner = GetCoroutineRunner();
                 if (runner != null)
                 {
-                    runner.StartCoroutine(UnloadAllAssetsDeferred(version).WrapToIl2Cpp());
+                    runner.StartCoroutine(UnloadAllAssetsDeferred(version, __state).WrapToIl2Cpp());
                     return;
                 }
 
                 // シーン遷移直後は AmongUsClient が未生成のことがあるため LateTask で遅延実行する
                 new LateTask(
-                    () => RunDeferredUnloadIfCurrent(version),
+                    () => RunDeferredUnloadIfCurrent(version, __state),
                     DeferredUnloadFallbackDelaySeconds,
                     "AssetManager.DeferredUnload",
                     log: false);
@@ -679,26 +680,32 @@ public static class AssetManager
             catch (Exception e)
             {
                 Logger.Error($"Failed to schedule deferred asset unload: {e}", "AssetManager");
+                if (__state)
+                {
+                    // 本体を省略したのに予約できなかった場合は、本体相当の回収を実行する。
+                    Resources.UnloadUnusedAssets();
+                    Il2CppSystem.GC.Collect();
+                }
             }
         }
 
-        private static MonoBehaviour GetCoroutineRunner(AmongUsClient preferred)
+        private static MonoBehaviour GetCoroutineRunner()
         {
             if (AmongUsClient.Instance != null)
                 return AmongUsClient.Instance;
-            if (preferred != null)
-                return preferred;
             return ModManager.Instance;
         }
 
-        private static void RunDeferredUnloadIfCurrent(int version)
+        private static void RunDeferredUnloadIfCurrent(int version, bool collectGarbage)
         {
             if (version != _pendingUnloadVersion)
                 return;
 
             try
             {
-                UnloadAllAssets();
+                UnloadAllAssetsCore(forceUnload: collectGarbage);
+                if (collectGarbage)
+                    Il2CppSystem.GC.Collect();
             }
             catch (Exception e)
             {
@@ -706,7 +713,7 @@ public static class AssetManager
             }
         }
 
-        private static System.Collections.IEnumerator UnloadAllAssetsDeferred(int version)
+        private static System.Collections.IEnumerator UnloadAllAssetsDeferred(int version, bool collectGarbage)
         {
             for (int i = 0; i < 3; i++)
                 yield return null;
@@ -715,7 +722,7 @@ public static class AssetManager
             if (version != _pendingUnloadVersion)
                 yield break;
 
-            RunDeferredUnloadIfCurrent(version);
+            RunDeferredUnloadIfCurrent(version, collectGarbage);
         }
     }
 }

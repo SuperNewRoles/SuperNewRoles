@@ -82,6 +82,11 @@ public abstract class CosmeticDataWrapper : ICosmeticData
             return;
 
         _data.SetPreview(renderer, colorId);
+        ApplyPreviewMaterial(renderer, colorId);
+    }
+
+    internal void ApplyPreviewMaterial(SpriteRenderer renderer, int colorId)
+    {
         if (!DestroyableSingleton<HatManager>.InstanceExists)
             return;
 
@@ -815,6 +820,7 @@ public class CustomCosmeticsCostumeMenu : CustomCosmeticsMenuBase<CustomCosmetic
     public Action<ICosmeticData> onPreview;
 
     private float lastInnerY;
+    private int lastFirstVisibleRow = -1;
     private List<Transform> activeSlots;
 
     private class VirtualCosmeticSlotData
@@ -1053,6 +1059,9 @@ public class CustomCosmeticsCostumeMenu : CustomCosmeticsMenuBase<CustomCosmetic
         lastInnerY = currentInnerY;
 
         int firstVisibleRow = Mathf.Max(0, Mathf.FloorToInt((currentInnerY - 1f) / virtualRowHeight));
+        if (!force && firstVisibleRow == lastFirstVisibleRow)
+            return;
+        lastFirstVisibleRow = firstVisibleRow;
         int lastVisibleRow = firstVisibleRow + 8;
 
         int firstSlotIndex = firstVisibleRow * virtualItemsPerRow;
@@ -1062,15 +1071,21 @@ public class CustomCosmeticsCostumeMenu : CustomCosmeticsMenuBase<CustomCosmetic
         int visibleEnd = BinarySearchLastLE(lastSlotIndex);
 
         selectedButton = null;
-        boundSlotIndices.Clear();
-        int poolIndex = 0;
-        for (int dataIndex = visibleStart; dataIndex <= visibleEnd && poolIndex < slotPool.Count; dataIndex++, poolIndex++)
+        foreach (var slot in slotPool)
         {
-            BindVirtualSlot(slotPool[poolIndex], dataIndex);
+            if (boundSlotIndices.TryGetValue(slot, out int dataIndex) &&
+                (dataIndex < visibleStart || dataIndex > visibleEnd))
+            {
+                boundSlotIndices.Remove(slot);
+                slot.ClearPreview();
+                slot.gameObject.SetActive(false);
+            }
         }
-        for (; poolIndex < slotPool.Count; poolIndex++)
+
+        // 同じデータには同じ枠を使い、スクロールで新しく入った行だけを読み込む。
+        for (int dataIndex = visibleStart; dataIndex <= visibleEnd; dataIndex++)
         {
-            slotPool[poolIndex].gameObject.SetActive(false);
+            BindVirtualSlot(slotPool[dataIndex % slotPool.Count], dataIndex);
         }
     }
 
@@ -1106,13 +1121,15 @@ public class CustomCosmeticsCostumeMenu : CustomCosmeticsMenuBase<CustomCosmetic
     {
         var data = virtualSlotData[dataIndex];
         var cosmetic = data.Cosmetic;
-        int col = data.SlotIndex % virtualItemsPerRow;
-        int row = data.SlotIndex / virtualItemsPerRow;
-
-        slot.transform.localPosition = new(virtualStartX + col * virtualColumnWidth, 2.63f - row * virtualRowHeight + virtualOffsetY, -10);
-        slot.transform.localScale = Vector3.one * virtualSlotScale;
-        slot.gameObject.SetActive(true);
-        boundSlotIndices[slot] = dataIndex;
+        bool isNewBinding = !boundSlotIndices.TryGetValue(slot, out int currentIndex) || currentIndex != dataIndex;
+        if (isNewBinding)
+        {
+            int col = data.SlotIndex % virtualItemsPerRow;
+            int row = data.SlotIndex / virtualItemsPerRow;
+            slot.transform.localPosition = new(virtualStartX + col * virtualColumnWidth, 2.63f - row * virtualRowHeight + virtualOffsetY, -10);
+            slot.gameObject.SetActive(true);
+            boundSlotIndices[slot] = dataIndex;
+        }
 
         var selected = slot.transform.Find("Selected")?.gameObject;
         bool isCurrent = cosmetic.ProdId == currentCosmeticIdCached;
@@ -1121,19 +1138,12 @@ public class CustomCosmeticsCostumeMenu : CustomCosmeticsMenuBase<CustomCosmetic
         if (isCurrent)
             selectedButton = slot.button;
 
-        slot.spriteRenderer.sprite = null;
-        if (data.IsEmpty)
+        if (!isNewBinding)
             return;
 
-        cosmetic.LoadAsync(() =>
-        {
-            if (!boundSlotIndices.TryGetValue(slot, out int currentIndex) || currentIndex != dataIndex)
-                return;
-            if (PlayerCustomizationMenu.Instance == null || slot == null || slot.spriteRenderer == null)
-                return;
-
-            cosmetic.SetPreview(slot.spriteRenderer, GetPreviewColorId());
-        });
+        slot.ClearPreview();
+        if (!data.IsEmpty)
+            slot.LoadPreview(cosmetic, GetPreviewColorId());
     }
 
     private void ClearVirtualizedSlots()
@@ -1149,6 +1159,7 @@ public class CustomCosmeticsCostumeMenu : CustomCosmeticsMenuBase<CustomCosmetic
         virtualSlotData.Clear();
         virtualSlotPrefab = null;
         virtualInner = null;
+        lastFirstVisibleRow = -1;
         // プールの GameObject を破棄したので、selectedButton もクリアする。
         // クリアしないと破棄済みオブジェクトを指したままになり、次回メニューを開いたときに
         // SetupSlotEvents の OnClick で selectedButton.SelectButton(false) が破棄済みオブジェクトにアクセスしてしまう。
@@ -1426,6 +1437,61 @@ public class CustomCosmeticsCostumeSlot : MonoBehaviour
 {
     public PassiveButton button;
     public SpriteRenderer spriteRenderer;
+    private AddressableAsset<PreviewViewData> previewAsset;
+    private int previewRequest;
+
+    // 本体のSetPreviewは呼ぶたびにAddressableAssetHandlerを追加する。
+    // 再利用する枠ではアセットを1件だけ所有し、変更・破棄時に解放する。
+    internal void LoadPreview(ICosmeticData cosmetic, int colorId)
+    {
+        int request = previewRequest;
+        if (cosmetic is CosmeticDataWrapper vanilla)
+        {
+            var reference = vanilla.ToCosmeticData().PreviewData;
+            if (reference == null || !reference.RuntimeKeyIsValid())
+                return;
+
+            var asset = new AddressableAsset<PreviewViewData>(reference);
+            previewAsset = asset;
+            asset.LoadAsync((Il2CppSystem.Action)(() =>
+            {
+                if (this == null || request != previewRequest || spriteRenderer == null)
+                    return;
+
+                spriteRenderer.sprite = asset.GetAsset()?.PreviewSprite;
+                vanilla.ApplyPreviewMaterial(spriteRenderer, colorId);
+            }), null, (Il2CppSystem.Action)(() =>
+            {
+                // ロード中に枠が再利用された場合、完了してから参照を解放する。
+                if (this == null || request != previewRequest)
+                    asset.Unload();
+            }));
+            return;
+        }
+
+        cosmetic.LoadAsync(() =>
+        {
+            if (this != null && request == previewRequest && spriteRenderer != null)
+                cosmetic.SetPreview(spriteRenderer, colorId);
+        });
+    }
+
+    public void ClearPreview()
+    {
+        previewRequest++;
+        if (spriteRenderer != null)
+            spriteRenderer.sprite = null;
+        // ロード中のDestroyは本体の完了コールバックを壊すため、完了側に解放を任せる。
+        if (previewAsset != null && !previewAsset.IsLoading())
+            previewAsset.Unload();
+        previewAsset = null;
+    }
+
+    public void OnDestroy()
+    {
+        ClearPreview();
+    }
+
     public void Awake()
     {
         if (button == null)

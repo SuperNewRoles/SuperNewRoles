@@ -319,6 +319,7 @@ public class CustomCosmeticsLayer
             visorLayer.nodeSync = nodeSync;
         }
         visorLayer.vanillaNodeSyncs = cosmeticsLayer.visor.GetComponents<SpriteAnimNodeSync>().ToList();
+        visorLayer.RefreshUpdateState();
         // if (cosmeticsLayer.visor)
         return visorLayer;
     }
@@ -364,6 +365,8 @@ public class CustomCosmeticsLayer
         hatLayer.FrontLayer.gameObject.layer = baseLayer.gameObject.layer;
         hatLayer.FrontLayer.material = hatParent.FrontLayer.material;
         hatLayer.FrontLayer.sortingOrder = sortingOrder;
+
+        hatLayer.RefreshUpdateState();
 
         return hatLayer;
     }

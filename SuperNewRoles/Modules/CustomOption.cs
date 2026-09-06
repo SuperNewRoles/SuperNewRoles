@@ -1417,12 +1417,13 @@ public static class RoleOptionManager
     /// <summary>
     /// 排他設定を適用します。
     /// 役職がアサインされた際に、同じ排他グループ内の他の役職をアサインテーブルから除外します。
+    /// 最大数が0のグループは最初から除外対象です（まだ何もアサインされていない場合も除外します）。
     /// </summary>
     /// <param name="assignedRoleIds">既にアサインされた役職のIDリスト</param>
     /// <param name="ticketsToUpdate">更新するチケットリスト</param>
     public static void ApplyExclusivitySettings(List<RoleId> assignedRoleIds, List<AssignTickets>[] ticketsToUpdatesNotHandred, List<AssignTickets>[] ticketsToUpdatesHundred)
     {
-        if (ExclusivitySettings.Count == 0 || assignedRoleIds.Count == 0 || ticketsToUpdatesNotHandred.Length == 0 || ticketsToUpdatesHundred.Length == 0)
+        if (ExclusivitySettings.Count == 0 || ticketsToUpdatesNotHandred.Length == 0 || ticketsToUpdatesHundred.Length == 0)
             return;
 
         // チケットを削除する役職IDのセットを作成

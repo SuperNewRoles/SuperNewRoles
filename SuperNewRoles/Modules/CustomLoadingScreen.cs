@@ -219,26 +219,28 @@ public static class CustomLoadingScreen
             CenteredLoadingTextBaseOrthographicSize = -1f;
             SplashStartedAt = Time.realtimeSinceStartup;
             Inited = true;
+            IsLoading = true;
+            // オフライン等ではコルーチンが開始直後に完了するため、開始前にリセットする。
+            CustomCosmeticsLoader.runned = false;
             ModManager.Instance.StartCoroutine(CustomCosmeticsLoader.LoadCosmeticsTaskAsync((c) => ModManager.Instance.StartCoroutine(c.WrapToIl2Cpp())).WrapToIl2Cpp());
             PatcherUpdater.Initialize();
-            CustomCosmeticsLoader.runned = false;
 
+            int cosmeticsWaitMilliseconds = StartupLoadFallbackTimeoutMilliseconds;
             Task.Run(() =>
             {
                 try
                 {
                     Logger.Info("Started");
-                    IsLoading = true;
                     long startTicks = Environment.TickCount64;
                     Logger.Info("Waiting load");
                     WaitStartupTask(SuperNewRolesPlugin.CustomRPCManagerLoadTask, nameof(SuperNewRolesPlugin.CustomRPCManagerLoadTask));
                     Logger.Info("CustomRPCManagerLoadTask done");
                     WaitStartupTask(SuperNewRolesPlugin.HarmonyPatchAllTask, nameof(SuperNewRolesPlugin.HarmonyPatchAllTask));
                     Logger.Info("HarmonyPatchAllTask done");
-                    if (!WaitForCustomCosmeticsLoader(ref startTicks))
+                    if (!WaitForCustomCosmeticsLoader(ref startTicks, cosmeticsWaitMilliseconds))
                     {
                         StartupContinuedBeforeCosmeticsFinished = true;
-                        Logger.Warning($"Custom cosmetics loading did not finish within {StartupLoadFallbackTimeoutMilliseconds / 1000} seconds. Continue startup while loading continues in background.");
+                        Logger.Info($"Custom cosmetics startup wait budget ({cosmeticsWaitMilliseconds / 1000}s) reached. Continue loading in background.");
                     }
                     Logger.Info("CustomCosmeticsLoaderSplashManagerStartPatch done");
                 }
@@ -253,10 +255,10 @@ public static class CustomLoadingScreen
             });
         }
 
-        private static int GetRemainingTimeout(ref long startTicks)
+        private static int GetRemainingTimeout(ref long startTicks, int timeoutMilliseconds)
         {
             long elapsed = Environment.TickCount64 - startTicks;
-            return Math.Max(0, StartupLoadFallbackTimeoutMilliseconds - (int)elapsed);
+            return (int)Math.Max(0L, timeoutMilliseconds - elapsed);
         }
 
         private static void WaitStartupTask(Task task, string taskName)
@@ -278,11 +280,11 @@ public static class CustomLoadingScreen
                 Logger.Error($"{taskName} failed: {task.Exception}");
         }
 
-        private static bool WaitForCustomCosmeticsLoader(ref long startTicks)
+        private static bool WaitForCustomCosmeticsLoader(ref long startTicks, int timeoutMilliseconds)
         {
             while (!CustomCosmeticsLoader.runned)
             {
-                if (GetRemainingTimeout(ref startTicks) <= 0)
+                if (GetRemainingTimeout(ref startTicks, timeoutMilliseconds) <= 0)
                     return false;
                 Task.Delay(100).Wait();
             }

@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using HarmonyLib;
 using Hazel;
@@ -67,15 +68,21 @@ public static class SaboStateTracker
         }
 
         // O2 や Mushroom Mixup は UpdateSystem ではなく Deteriorate 側で解除されるため、都度実状態を差分検知する。
-        var currentActiveSaboTypes = new HashSet<SystemTypes>();
+        Span<SystemTypes> currentActiveSaboTypes = stackalloc SystemTypes[TrackedSaboTypes.Length];
+        int activeCount = 0;
         foreach (var systemType in TrackedSaboTypes)
         {
             if (IsSabotageActive(shipStatus, systemType))
             {
-                currentActiveSaboTypes.Add(systemType);
+                currentActiveSaboTypes[activeCount++] = systemType;
             }
         }
 
+        ApplyActiveSabotages(currentActiveSaboTypes[..activeCount]);
+    }
+
+    internal static void ApplyActiveSabotages(ReadOnlySpan<SystemTypes> currentActiveSaboTypes)
+    {
         foreach (var systemType in currentActiveSaboTypes)
         {
             if (activeSaboTypes.Contains(systemType))
@@ -89,16 +96,25 @@ public static class SaboStateTracker
             SaboStartEvent.Invoke(systemType);
         }
 
-        var endedSaboTypes = new List<SystemTypes>();
+        // 通知から再入しても外側のスナップショットを上書きしないよう、呼び出しごとのスタック領域を使う。
+        Span<SystemTypes> endedSaboTypes = stackalloc SystemTypes[activeSaboTypes.Count];
+        int endedCount = 0;
         foreach (var systemType in activeSaboTypes)
         {
-            if (!currentActiveSaboTypes.Contains(systemType))
+            bool stillActive = false;
+            foreach (var currentType in currentActiveSaboTypes)
             {
-                endedSaboTypes.Add(systemType);
+                if (currentType == systemType)
+                {
+                    stillActive = true;
+                    break;
+                }
             }
+            if (!stillActive)
+                endedSaboTypes[endedCount++] = systemType;
         }
 
-        foreach (var systemType in endedSaboTypes)
+        foreach (var systemType in endedSaboTypes[..endedCount])
         {
             Logger.Info("Sabotage End: " + systemType);
             // Listeners can call ShipStatus.UpdateSystem, so commit state before firing events.

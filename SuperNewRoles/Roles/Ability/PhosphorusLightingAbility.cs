@@ -1,5 +1,4 @@
 using System;
-using System.Linq;
 using UnityEngine;
 using SuperNewRoles.Modules;
 using SuperNewRoles.Roles.Ability.CustomButton;
@@ -38,10 +37,7 @@ public class PhosphorusLightingAbility : CustomButtonBase, IButtonEffect
     public override void OnClick()
     {
         // アクティブなランタンがあるかチェック
-        var activeLanterns = Lantern.GetLanternsByOwner(ExPlayerControl.LocalPlayer)
-            .Where(x => x.IsActivating).ToList();
-
-        if (activeLanterns.Count == 0) return;
+        if (!Lantern.HasActiveLantern(ExPlayerControl.LocalPlayer)) return;
 
         // ランタンを点灯
         RpcLightingOn(ExPlayerControl.LocalPlayer.PlayerId);
@@ -52,10 +48,7 @@ public class PhosphorusLightingAbility : CustomButtonBase, IButtonEffect
         if (!ExPlayerControl.LocalPlayer.IsAlive()) return false;
 
         // アクティブなランタンがあるかチェック
-        var activeLanterns = Lantern.GetLanternsByOwner(ExPlayerControl.LocalPlayer)
-            .Where(x => x.IsActivating).ToList();
-
-        return activeLanterns.Count > 0;
+        return Lantern.HasActiveLantern(ExPlayerControl.LocalPlayer);
     }
 
     public override void OnMeetingEnds()
