@@ -53,6 +53,18 @@ public static class CustomOptionManager
                 }, 2f, "CustomOptionManager.RpcSyncOptionsAll");
         }
     }
+    [HarmonyPatch(typeof(AmongUsClient), nameof(AmongUsClient.OnGameJoined))]
+    public static class AmongUsClientOnGameJoinedPatch
+    {
+        public static void Postfix(AmongUsClient __instance)
+        {
+            // 新規作成では OnBecomeHost が呼ばれない。以前参加した部屋の値が
+            // 役職フィールドに残らないよう、自分の部屋への入室時にも復元する。
+            if (__instance.AmHost)
+                ApplyLocalOptionValuesToFields();
+        }
+    }
+
     [HarmonyPatch(typeof(AmongUsClient), nameof(AmongUsClient.OnBecomeHost))]
     public static class AmongUsClientOnBecomeHostPatch
     {
@@ -74,7 +86,7 @@ public static class CustomOptionManager
             }
             catch (Exception ex)
             {
-                Logger.Error($"ホスト移譲後のオプション反映に失敗しました ({option.Id}): {ex.Message}");
+                Logger.Error($"ホストのローカルオプション反映に失敗しました ({option.Id}): {ex.Message}");
             }
         }
     }
