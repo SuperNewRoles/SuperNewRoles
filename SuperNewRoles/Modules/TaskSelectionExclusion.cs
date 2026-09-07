@@ -45,6 +45,7 @@ public static class TaskSelectionExclusion
         [TaskTypes.UploadData] = () => GameSettingOptions.ExcludeUploadDataTaskFromSelection,
         [TaskTypes.VentCleaning] = () => GameSettingOptions.ExcludeVentCleaningTaskFromSelection,
         [TaskTypes.SubmitScan] = () => GameSettingOptions.ExcludeSubmitScanTaskFromSelection,
+        [TaskTypes.FixWeatherNode] = () => GameSettingOptions.ExcludeFixWeatherNodeTaskFromSelection,
     };
 
     public static bool IsExcluded(TaskTypes taskType)
