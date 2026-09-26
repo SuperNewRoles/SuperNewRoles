@@ -137,6 +137,7 @@ WaitingSpawnText,ロドー中... 残り:{0}/{1}クルー,Waiting... {0}/{1} Crew
 # GameSettings
 CannotTaskTrigger,タスクに関係ない役職の場合、タスクをできなくする,Disable tasks for non-task-related roles,如果职业与任务无关，则无法完成任务,如果职业與任務無關，則無法完成任務
 CursedTaskOption,呪いタスク,Cursed Tasks,诅咒任务,詛咒任務
+UploadDataTasksAsLongTasks,ダウンロード／アップロードをすべてロングタスクにする,Classify all download/upload tasks as long tasks,将所有下载／上传任务归为长任务,將所有下載／上傳任務歸為長任務
 ExcludeSpecificTasksFromSelection,特定のタスクを選出しない,Exclude specific tasks from selection,不选择特定任务,不選擇特定任務
 ExcludeUnlockSafeTaskFromSelection,金庫タスクを選出しない,Exclude safe task from selection,不选择保险柜任务,不選擇保險箱任務
 ExcludeResetBreakersTaskFromSelection,レバータスクを選出しない,Exclude lever task from selection,不选择拉杆任务,不選擇拉桿任務
