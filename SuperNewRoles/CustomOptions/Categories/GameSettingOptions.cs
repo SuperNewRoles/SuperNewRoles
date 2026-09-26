@@ -75,6 +75,9 @@ public static class GameSettingOptions
     [CustomOptionSelect("InitialCooldown", typeof(InitialCooldownType), "InitialCooldownType.", parentFieldName: nameof(Categories.GameSettings), defaultValue: InitialCooldownType.TenSeconds)]
     public static InitialCooldownType InitialCooldown;
 
+    [CustomOptionBool("DecreaseAbilityCooldownDuringTraversal", false, parentFieldName: nameof(Categories.GameSettings))]
+    public static bool DecreaseAbilityCooldownDuringTraversal;
+
     [CustomOptionBool("DisableHauntNonCompleted", false, parentFieldName: nameof(Categories.GameSettings))]
     public static bool DisableHauntNonCompleted;
 }
