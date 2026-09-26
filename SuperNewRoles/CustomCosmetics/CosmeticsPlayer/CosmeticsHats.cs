@@ -205,13 +205,12 @@ public class CustomHatLayer : MonoBehaviour
         if (!AreRenderersReady() || CustomCosmeticHat == null)
             return;
 
-        if (!CustomCosmeticHat.Options.climb.HasFlag(HatOptionType.None))
-        {
-            base.transform.localPosition = new Vector3(base.transform.localPosition.x, base.transform.localPosition.y, -0.02f);
-            BackLayer.enabled = false;
-            FrontLayer.enabled = true;
-            FrontLayer.sprite = CustomCosmeticHat.Climb;
-        }
+        // A missing climb image must clear the idle image, including back-only hats.
+        Sprite climbSprite = CustomCosmeticHat.Climb;
+        base.transform.SetLocalZ(ClimbZOffset);
+        BackLayer.enabled = false;
+        FrontLayer.sprite = climbSprite;
+        FrontLayer.enabled = climbSprite != null;
     }
 
     public void SetLocalPlayer(bool localPlayer)

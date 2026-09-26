@@ -23,6 +23,10 @@ public static class GameSettingOptions
     public static bool ExcludeVentCleaningTaskFromSelection;
     [CustomOptionBool("ExcludeSubmitScanTaskFromSelection", false, parentFieldName: nameof(ExcludeSpecificTasksFromSelection))]
     public static bool ExcludeSubmitScanTaskFromSelection;
+    [CustomOptionBool("ExcludeFixWeatherNodeTaskFromSelection", false, parentFieldName: nameof(ExcludeSpecificTasksFromSelection))]
+    public static bool ExcludeFixWeatherNodeTaskFromSelection;
+    [CustomOptionBool("UploadDataTasksAsLongTasks", false, parentFieldName: nameof(Categories.GameSettings))]
+    public static bool UploadDataTasksAsLongTasks;
     [CustomOptionBool("RandomizeFixLightsSwitches", false, parentFieldName: nameof(Categories.GameSettings))]
     public static bool RandomizeFixLightsSwitches;
     // |:========== ベントアニメーション有効化の設定 ==========:|
@@ -72,6 +76,9 @@ public static class GameSettingOptions
 
     [CustomOptionSelect("InitialCooldown", typeof(InitialCooldownType), "InitialCooldownType.", parentFieldName: nameof(Categories.GameSettings), defaultValue: InitialCooldownType.TenSeconds)]
     public static InitialCooldownType InitialCooldown;
+
+    [CustomOptionBool("DecreaseAbilityCooldownDuringTraversal", false, parentFieldName: nameof(Categories.GameSettings))]
+    public static bool DecreaseAbilityCooldownDuringTraversal;
 
     [CustomOptionBool("DisableHauntNonCompleted", false, parentFieldName: nameof(Categories.GameSettings))]
     public static bool DisableHauntNonCompleted;
