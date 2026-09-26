@@ -25,6 +25,8 @@ public static class GameSettingOptions
     public static bool ExcludeSubmitScanTaskFromSelection;
     [CustomOptionBool("ExcludeFixWeatherNodeTaskFromSelection", false, parentFieldName: nameof(ExcludeSpecificTasksFromSelection))]
     public static bool ExcludeFixWeatherNodeTaskFromSelection;
+    [CustomOptionBool("UploadDataTasksAsLongTasks", false, parentFieldName: nameof(Categories.GameSettings))]
+    public static bool UploadDataTasksAsLongTasks;
     [CustomOptionBool("RandomizeFixLightsSwitches", false, parentFieldName: nameof(Categories.GameSettings))]
     public static bool RandomizeFixLightsSwitches;
     // |:========== ベントアニメーション有効化の設定 ==========:|
