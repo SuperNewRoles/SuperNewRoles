@@ -580,17 +580,7 @@ internal sealed class RemoteControllerKillButton : CustomKillButtonAbility
             : PlayerControl.LocalPlayer;
 
     public override bool CheckDecreaseCoolCount()
-    {
-        if (DestroyableSingleton<HudManager>.Instance.IsIntroDisplayed)
-            return false;
-
-        var targetingPlayer = TargetingPlayer;
-        if (targetingPlayer == null)
-            return false;
-
-        var moveable = !targetingPlayer.inVent && targetingPlayer.moveable;
-        return !targetingPlayer.inVent && moveable;
-    }
+        => CheckDecreaseCoolCount(TargetingPlayer);
 
     public override bool CheckIsAvailable()
     {

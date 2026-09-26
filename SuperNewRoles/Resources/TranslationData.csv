@@ -137,6 +137,7 @@ WaitingSpawnText,ロドー中... 残り:{0}/{1}クルー,Waiting... {0}/{1} Crew
 # GameSettings
 CannotTaskTrigger,タスクに関係ない役職の場合、タスクをできなくする,Disable tasks for non-task-related roles,如果职业与任务无关，则无法完成任务,如果职业與任務無關，則無法完成任務
 CursedTaskOption,呪いタスク,Cursed Tasks,诅咒任务,詛咒任務
+UploadDataTasksAsLongTasks,ダウンロード／アップロードをすべてロングタスクにする,Classify all download/upload tasks as long tasks,将所有下载／上传任务归为长任务,將所有下載／上傳任務歸為長任務
 ExcludeSpecificTasksFromSelection,特定のタスクを選出しない,Exclude specific tasks from selection,不选择特定任务,不選擇特定任務
 ExcludeUnlockSafeTaskFromSelection,金庫タスクを選出しない,Exclude safe task from selection,不选择保险柜任务,不選擇保險箱任務
 ExcludeResetBreakersTaskFromSelection,レバータスクを選出しない,Exclude lever task from selection,不选择拉杆任务,不選擇拉桿任務
@@ -146,6 +147,7 @@ ExcludeCatchFishTaskFromSelection,釣りタスクを選出しない,Exclude fish
 ExcludeUploadDataTaskFromSelection,ダウンロードタスクを選出しない,Exclude download task from selection,不选择下载任务,不選擇下載任務
 ExcludeVentCleaningTaskFromSelection,ベント掃除タスクを選出しない,Exclude vent cleaning task from selection,不选择清理通风口任务,不選擇清理通風口任務
 ExcludeSubmitScanTaskFromSelection,クルーメイトスキャンタスクを選出しない,Exclude crewmate scan task from selection,不选择船员扫描任务,不選擇船員掃描任務
+ExcludeFixWeatherNodeTaskFromSelection,迷路タスクを選出しない,Exclude maze task from selection,不选择迷宫任务,不選擇迷宮任務
 RandomizeFixLightsSwitches,停電修理の初期状態を完全にランダムにする,Fully randomize lights repair switches,完全随机化修灯开关,完全隨機化修燈開關
 SyncSpawn,スポーンを同期する(選択スポーンのみ),Sync Spawn (Selected Spawn Only),同步出生点(仅选择出生点),同步出生點(僅選擇出生點)
 AdvancedRandom,よりランダムな乱数を使用する,Use Enhanced Randomness,使用增强型随机数,使用更隨機的隨機數
@@ -178,6 +180,7 @@ EnabledZoomOnDead,霊界千里眼を有効にする,Enable spectator clairvoyanc
 EnabledZoomOnDeadRequireCompletedTasks,タスクを完了していないとズームできない,Cannot zoom until your tasks are completed,未完成任务前无法缩放视野,未完成任務前無法縮放視野
 EnabledZoomOnDeadDisableForGhostOrGuardianAngel,幽霊役職または守護天使ならズームできない,Cannot zoom if you are a ghost role or Guardian Angel,如果是幽灵职业或守护天使则无法缩放视野,如果是幽靈職業或守護天使則無法縮放視野
 InitialCooldown,初手クールタイム設定,Initial Cooldown Setting,初始冷却设置,初始冷卻設定
+DecreaseAbilityCooldownDuringTraversal,はしご・ぬーん・ジップライン中も能力クールタイムを進める,Advance ability cooldowns on ladders / moving platforms / ziplines,在梯子／移动平台／滑索上继续能力冷却,在梯子／移動平台／滑索上繼續能力冷卻
 InitialCooldownType.TenSeconds,10秒,10 Seconds,10秒,10秒
 InitialCooldownType.Immediate,設定値通り,Immediate,遵循设置,遵循設定
 InitialCooldownType.OneThird,設定値の1/3,1/3 of set value,设置值的1/3,設置值的1/3

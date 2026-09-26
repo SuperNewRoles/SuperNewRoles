@@ -81,20 +81,21 @@ public abstract class CustomButtonBase : AbilityBase
 
     /// <summary>
     /// カウントを進めるかの判定
-    /// デフォルトのままだとベント内もしくは移動不可の時はカウントが進まない
+    /// ベント内もしくは移動不可の時はカウントが進まない。はしご・ぬーん・ジップライン中は共通設定に従う。
     /// 他の条件を付けたければこれをoverrideすること
     /// </summary>
     /// <returns>trueならカウントが進む</returns>
     public virtual bool CheckDecreaseCoolCount()
+        => CheckDecreaseCoolCount(PlayerControl.LocalPlayer);
+
+    protected bool CheckDecreaseCoolCount(PlayerControl player)
     {
-        // イントロ中はカウントしない
-        if (DestroyableSingleton<HudManager>.Instance.IsIntroDisplayed)
+        if (player == null || player.inVent || HudManager.Instance.IsIntroDisplayed)
             return false;
 
-        var localPlayer = PlayerControl.LocalPlayer;
-        var moveable = !PlayerControl.LocalPlayer.inVent && PlayerControl.LocalPlayer.moveable;
-
-        return !localPlayer.inVent && moveable;
+        bool isTraversing = player.onLadder || player.inMovingPlat ||
+            ShipStatus.Instance?.TryCast<FungleShipStatus>()?.Zipline?.playerIdHands.ContainsKey(player.PlayerId) == true;
+        return isTraversing ? GameSettingOptions.DecreaseAbilityCooldownDuringTraversal : player.moveable;
     }
 
     private static KeyCode GetKeyCode(KeyType keyType)
