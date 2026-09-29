@@ -32,6 +32,34 @@ public class StaticsBroadcastVersionTests
         (twice % 50).Should().Be(25);
     }
 
+    [Theory]
+    [InlineData(0, 0)]
+    [InlineData(0, 25)]
+    [InlineData(25, 0)]
+    [InlineData(25, 25)]
+    public void V19SteamAndAndroid_AreCompatible(int pcFlag, int androidFlag)
+    {
+        int pc = 50663600 + pcFlag; // Constants: 2026.7.20.0
+        int android = 50663650 + androidFlag; // Constants: 2026.7.21.0
+        Statics.AreAmongUsBroadcastVersionsCompatible(pc, android).Should().BeTrue();
+        Statics.AreAmongUsBroadcastVersionsCompatible(android, pc).Should().BeTrue();
+    }
+
+    [Theory]
+    [InlineData(15)]
+    [InlineData(16)]
+    public void V18_IsNotCompatibleWithV19(int oldDay)
+    {
+        foreach (int oldFlag in new[] { 0, 25 })
+        foreach (int currentFlag in new[] { 0, 25 })
+        foreach (int currentDay in new[] { 20, 21 })
+        {
+            int oldVersion = Statics.ComputeAmongUsBroadcastVersion(2026, 7, oldDay) + oldFlag;
+            int currentVersion = Statics.ComputeAmongUsBroadcastVersion(2026, 7, currentDay) + currentFlag;
+            Statics.AreAmongUsBroadcastVersionsCompatible(oldVersion, currentVersion).Should().BeFalse();
+            Statics.AreAmongUsBroadcastVersionsCompatible(currentVersion, oldVersion).Should().BeFalse();
+        }
+    }
     [Fact]
     public void LevelImposterCustomMapId_Is7()
     {

@@ -194,6 +194,13 @@ public static class NameText
     }
     public static void SetNameTextColor(ExPlayerControl player, Color color, bool nonLog = false)
     {
+        var viewer = ExPlayerControl.LocalPlayer;
+        if (viewer != null && viewer.PlayerId != player.PlayerId && viewer.ShouldHideOtherRolesForGhostRole)
+        {
+            // 役職固有の表示イベントから色を再適用されても役職色を漏らさない。
+            color = viewer.IsImpostor() && player.IsImpostor() ? Palette.ImpostorRed : Color.white;
+            player.Data.Role.NameColor = color;
+        }
         if (!nonLog)
             Logger.Info($"SetNameTextColor: {player.Data.PlayerName} {color}");
         player.Player.cosmetics.nameText.color = color;
@@ -257,7 +264,8 @@ public static class NameText
 
         bool visiable = ExPlayerControl.LocalPlayer.CanSeeRoleOf(player);
         UpdateVisible(player, visiable);
-        if (!visiable && localHideRoleOnGhostAbility != null && localHideRoleOnGhostAbility.IsHideRole(player))
+        if (!visiable && (ExPlayerControl.LocalPlayer.ShouldHideOtherRolesForGhostRole
+            || (localHideRoleOnGhostAbility != null && localHideRoleOnGhostAbility.IsHideRole(player))))
         {
             // When role info is not visible, the name color may need to be updated (e.g. to red for fellow impostors).
             SetPlayerNameColor(player, visiable);
@@ -269,10 +277,13 @@ public static class NameText
             return;
         if (!player.Player.Visible)
             visiable = false;
+        var viewer = ExPlayerControl.LocalPlayer;
+        if (viewer != null && viewer.PlayerId != player.PlayerId && viewer.ShouldHideOtherRolesForGhostRole)
+            visiable = false;
         if (visiable && player.PlayerInfoText == null)
             Initialize(player);
 
-        if (player.PlayerInfoText.gameObject.activeSelf != visiable)
+        if (player.PlayerInfoText != null && player.PlayerInfoText.gameObject.activeSelf != visiable)
             player.PlayerInfoText.gameObject.SetActive(visiable);
         if (player.MeetingInfoText != null && player.MeetingInfoText.gameObject.activeSelf != visiable)
             player.MeetingInfoText.gameObject.SetActive(visiable);

@@ -42,6 +42,8 @@ public static class GameSettingOptions
     public static bool HideGhostRoles;
     [CustomOptionBool("ShowGhostRolesToImpostor", false, parentFieldName: nameof(HideGhostRoles))]
     public static bool ShowGhostRolesToImpostor;
+    [CustomOptionBool("HideRolesFromGhostRolePlayers", false, parentFieldName: nameof(Categories.GameSettings))]
+    public static bool HideRolesFromGhostRolePlayers;
     [CustomOptionSelect("GhostVoteDisplay", typeof(GhostVoteDisplayType), "GhostVoteDisplayType.", parentFieldName: nameof(Categories.GameSettings), defaultValue: GhostVoteDisplayType.Vanilla)]
     public static GhostVoteDisplayType GhostVoteDisplay;
 
