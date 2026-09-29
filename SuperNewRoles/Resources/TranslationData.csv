@@ -156,6 +156,7 @@ DisableTaskWin,タスク勝利を無効にする,Disable task victory,禁用任�
 DisableHijackTaskWin,第三陣営のタスク勝利横取りを無効にする,Disable hijack task victory by third party,禁用中立阵营抢夺任务胜利,禁用中立陣營搶奪任務勝利
 HideGhostRoles,死亡時に他クルーの役職を表示しない,Hide Crew Roles on Death,死亡时隐藏船员职业,死亡時隱藏船員職業
 ShowGhostRolesToImpostor,インポスターにのみ表示する,Only visible to impostors,仅显示给伪装者,僅顯示給偽裝者
+HideRolesFromGhostRolePlayers,幽霊役職のプレイヤーに他プレイヤーの役職を表示しない,Hide other players' roles from players with ghost roles,对拥有幽灵职业的玩家隐藏其他玩家的职业,對擁有幽靈職業的玩家隱藏其他玩家的職業
 GhostVoteDisplay,死亡時の投票表示,Ghost vote display,鬼魂无视匿名投票,鬼魂無視匿名投票
 GhostVoteDisplayType.Vanilla,バニラ,Vanilla,默认,預設
 GhostVoteDisplayType.Show,表示,Show,显示,顯示
