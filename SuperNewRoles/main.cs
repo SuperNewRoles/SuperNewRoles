@@ -262,6 +262,7 @@ public partial class SuperNewRolesPlugin : BasePlugin
         NormalGameOptionsV09.MaxImpostors = ints;
         NormalGameOptionsV10.MaxImpostors = ints;
         NormalGameOptionsV11.MaxImpostors = ints;
+        NormalGameOptionsV12.MaxImpostors = ints;
     }
 
     // CPUのコア割当を変更してパフォーマンスを改善する

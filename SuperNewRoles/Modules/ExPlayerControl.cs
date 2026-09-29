@@ -712,8 +712,13 @@ public class ExPlayerControl
         return IsCrewmate();
     }
 
+    internal bool ShouldHideOtherRolesForGhostRole =>
+        GameSettingOptions.HideRolesFromGhostRolePlayers && IsDead()
+        && (GhostRole != GhostRoleId.None
+            || (Data?.Role != null && GhostAssignRole.IsSpecialVanillaGhostRole(Data.Role.Role)));
+
     /// <summary>
-    /// このプレイヤーの役職をローカルプレイヤーが見えるかどうかを判定します
+    /// このプレイヤーから相手の役職を見えるかどうかを判定します
     /// </summary>
     public bool CanSeeRoleOf(ExPlayerControl otherPlayer)
     {
@@ -726,6 +731,11 @@ public class ExPlayerControl
         if (PlayerId == otherPlayer.PlayerId)
         {
             return true;
+        }
+
+        if (ShouldHideOtherRolesForGhostRole)
+        {
+            return false;
         }
 
         // 神は生存中でも全プレイヤーの役職を確認できる。

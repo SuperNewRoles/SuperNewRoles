@@ -35,33 +35,9 @@ public class GhostAssignRole
         
         if (exPlayer.IsAlive()) return false; //生存者は弾く
 
-        if (GetReleaseHauntAbility(player))
-        {
-            if (!player.Data.Role.IsImpostor && specialRolesAllowed)
-            {
-                // TryAssignSpecialGhostRoles
-                RoleTypes roleTypes = RoleTypes.GuardianAngel;
-                int num = PlayerControl.AllPlayerControls.Count((PlayerControl pc) => pc.Data.IsDead && !pc.Data.Role.IsImpostor);
-                IRoleOptionsCollection roleOptions = GameOptionsManager.Instance.CurrentGameOptions.RoleOptions;
-                if (AmongUsClient.Instance.NetworkMode == NetworkModes.FreePlay)
-                {
-                    player.RpcSetRole(roleTypes, true);
-                }
-                else if (num <= roleOptions.GetNumPerGame(roleTypes))
-                {
-                    int chancePerGame = roleOptions.GetChancePerGame(roleTypes);
-                    if (ModHelpers.IsSuccessChance(chancePerGame))
-                    {
-                        player.RpcSetRole(roleTypes, true);
-                    }
-                }
-            }
-            if (!RoleManager.IsGhostRole(player.Data.Role.Role))
-                player.RpcSetRole(player.Data.Role.DefaultGhostRole, true);
-            return false; // 憑依可能な設定なら
-        }
-        else
-            return false; // 憑依不可能な設定なら
+        // バニラの候補・確率・人数制限を使う。GuardianAngel のみを再実装すると
+        // 2026.9.29 で追加された SpiritGuide が配布されなくなる。
+        return GetReleaseHauntAbility(exPlayer);
     }
 
     public static void Postfix([HarmonyArgument(0)] PlayerControl player)
@@ -76,10 +52,16 @@ public class GhostAssignRole
         }
         
         if (exPlayer.IsAlive() || exPlayer.GhostRole != GhostRoleId.None) return; // 生存者と割り当て済みの人は弾く
-        if (player.Data.Role.Role == RoleTypes.GuardianAngel) return; // 守護天使がアサインされていたら, Mod幽霊役職をアサインしない
+        if (IsSpecialVanillaGhostRole(player.Data.Role.Role)) return;
 
         bool isAssign = HandleAssign(player);
     }
+
+    // 通常の幽霊にはMOD役職を追加できるが、固有能力を持つバニラ幽霊とは重ねない。
+    public static bool IsSpecialVanillaGhostRole(RoleTypes role)
+        => RoleManager.IsGhostRole(role)
+            && role != RoleTypes.CrewmateGhost
+            && role != RoleTypes.ImpostorGhost;
 
     /// <summary>
     /// 憑依能力を開放するか判定する

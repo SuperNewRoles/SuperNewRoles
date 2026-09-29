@@ -2,6 +2,7 @@ using AmongUs.GameOptions;
 using HarmonyLib;
 using SuperNewRoles.CustomOptions.Categories;
 using SuperNewRoles.Modules;
+using SuperNewRoles.Roles;
 
 namespace SuperNewRoles.GameSettings;
 
@@ -15,7 +16,7 @@ public static class HudManagerUpdatePatch
         if (ExPlayerControl.LocalPlayer.IsAlive()) return;
         if (!ExPlayerControl.LocalPlayer.IsTaskTriggerRole()) return;
         if (ExPlayerControl.LocalPlayer.IsAllTasksCompleted()) return;
-        if (ExPlayerControl.LocalPlayer.Data.Role.Role == RoleTypes.GuardianAngel) return;
+        if (GhostAssignRole.IsSpecialVanillaGhostRole(ExPlayerControl.LocalPlayer.Data.Role.Role)) return;
         if (__instance.AbilityButton != null)
             __instance.AbilityButton.gameObject.SetActive(false);
     }
@@ -32,6 +33,7 @@ public static class PlayerControlCompleteTask
         if (ExPlayerControl.LocalPlayer.IsAlive()) return;
         if (!ExPlayerControl.LocalPlayer.IsTaskTriggerRole()) return;
         if (!ExPlayerControl.LocalPlayer.IsAllTasksCompleted()) return;
+        if (GhostAssignRole.IsSpecialVanillaGhostRole(ExPlayerControl.LocalPlayer.Data.Role.Role)) return;
         if (HudManager.Instance.AbilityButton != null)
             HudManager.Instance.AbilityButton.gameObject.SetActive(true);
     }
