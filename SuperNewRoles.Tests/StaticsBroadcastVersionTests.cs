@@ -46,16 +46,37 @@ public class StaticsBroadcastVersionTests
     }
 
     [Theory]
+    [InlineData(0, 0)]
+    [InlineData(0, 25)]
+    [InlineData(25, 0)]
+    [InlineData(25, 25)]
+    public void V19_0_1Android_IsCompatibleWithV19(int existingFlag, int latestFlag)
+    {
+        int latestAndroid = 50666750 + latestFlag; // Constants: 2026.9.11.0 (versionCode 7616)
+        foreach (int existingVersion in new[] { 50663600, 50663650 })
+        {
+            int existing = existingVersion + existingFlag;
+            Statics.AreAmongUsBroadcastVersionsCompatible(existing, latestAndroid).Should().BeTrue();
+            Statics.AreAmongUsBroadcastVersionsCompatible(latestAndroid, existing).Should().BeTrue();
+        }
+    }
+
+    [Theory]
     [InlineData(15)]
     [InlineData(16)]
     public void V18_IsNotCompatibleWithV19(int oldDay)
     {
         foreach (int oldFlag in new[] { 0, 25 })
         foreach (int currentFlag in new[] { 0, 25 })
-        foreach (int currentDay in new[] { 20, 21 })
+        foreach (int currentBase in new[]
+        {
+            Statics.ComputeAmongUsBroadcastVersion(2026, 7, 20),
+            Statics.ComputeAmongUsBroadcastVersion(2026, 7, 21),
+            Statics.ComputeAmongUsBroadcastVersion(2026, 9, 11),
+        })
         {
             int oldVersion = Statics.ComputeAmongUsBroadcastVersion(2026, 7, oldDay) + oldFlag;
-            int currentVersion = Statics.ComputeAmongUsBroadcastVersion(2026, 7, currentDay) + currentFlag;
+            int currentVersion = currentBase + currentFlag;
             Statics.AreAmongUsBroadcastVersionsCompatible(oldVersion, currentVersion).Should().BeFalse();
             Statics.AreAmongUsBroadcastVersionsCompatible(currentVersion, oldVersion).Should().BeFalse();
         }
