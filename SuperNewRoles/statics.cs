@@ -143,6 +143,10 @@ public static class Statics
         ComputeAmongUsBroadcastVersion(2026, 7, 20) + 25, // Steam: Constants 2026.7.20.0
         ComputeAmongUsBroadcastVersion(2026, 7, 21) + 25, // Android: Constants 2026.7.21.0 (versionCode 7492)
 
+        // v19.0.1 (2026.11.3)
+        ComputeAmongUsBroadcastVersion(2026, 9, 11), // Android: Constants 2026.9.11.0 (versionCode 7616)
+        ComputeAmongUsBroadcastVersion(2026, 9, 11) + 25, // Android: Constants 2026.9.11.0 (versionCode 7616)
+
         // ComputeAmongUsBroadcastVersion(2024, 8, 10, 0),
         // ComputeAmongUsBroadcastVersion(2024, 8, 10, 0) + 25,
     };
