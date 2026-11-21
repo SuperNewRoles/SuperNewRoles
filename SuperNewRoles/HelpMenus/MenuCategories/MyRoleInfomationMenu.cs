@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using System.Linq;
+using AmongUs.GameOptions;
 using SuperNewRoles.Modules;
 using SuperNewRoles.Roles;
 using SuperNewRoles.Roles.Ability;
@@ -73,7 +74,21 @@ public class MyRoleInfomationMenu : HelpMenuCategoryBase
             }
 
             // 役職を取得
-            var roleBase = ExPlayerControl.LocalPlayer.roleBase;
+            IRoleInformation roleBase = ExPlayerControl.LocalPlayer.roleBase;
+
+            // バニラ役職 (Engineer, Scientist, etc.) の場合は VanillaRoleInfo で上書き
+            if (!ExPlayerControl.LocalPlayer.Data.Role.IsSimpleRole)
+            {
+                var vanillaRoleType = ExPlayerControl.LocalPlayer.Data.Role.Role;
+                roleBase = new VanillaRoleInfo
+                {
+                    RoleName = vanillaRoleType.ToString(),
+                    RoleColor = ExPlayerControl.LocalPlayer.Data.Role.TeamType == RoleTeamTypes.Impostor
+                        ? Palette.ImpostorRed : Color.white,
+                    AssignedTeams = new() { ExPlayerControl.LocalPlayer.Data.Role.TeamType == RoleTeamTypes.Impostor
+                        ? AssignedTeamType.Impostor : AssignedTeamType.Crewmate },
+                };
+            }
 
             // 生きている時は役職を自覚できない役職の場合は 偽装情報を取得
             var hideMyRoleAbility = ExPlayerControl.LocalPlayer.GetAbility<HideMyRoleWhenAliveAbility>();
